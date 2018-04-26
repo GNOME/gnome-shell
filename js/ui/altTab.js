@@ -902,8 +902,6 @@ var AppSwitcher = new Lang.Class({
     },
 
     _addIcon(appIcon, index) {
-        let item = this.addItem(appIcon.actor, appIcon.label, index, index * 2);
-
         appIcon._stateChangedId = appIcon.app.connect('notify::state', app => {
             if (app.state != Shell.AppState.RUNNING)
                 this._removeIcon(app);
@@ -923,6 +921,9 @@ var AppSwitcher = new Lang.Class({
 
             this._list.add_child(arrow);
         }
+
+        // Add item after pushing the arrow since the allocation function needs the arrow list
+        let item = this.addItem(appIcon.actor, appIcon.label, index, index * 2);
 
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
