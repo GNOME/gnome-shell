@@ -960,35 +960,13 @@ var ThumbnailList = new Lang.Class({
     _init(windows) {
         this.parent(false);
 
-        this._thumbnailBins = new Array();
-        this._clones = new Array();
+        this._thumbnailBins = [];
+        this._clones = [];
+        this._currentIndex = -1;
         this._windows = windows;
 
         for (let i = 0; i < windows.length; i++) {
-            let box = new St.BoxLayout({ style_class: 'thumbnail-box',
-                                         vertical: true });
-
-            let bin = new St.Bin({ style_class: 'thumbnail' });
-
-            box.add_actor(bin);
-            this._thumbnailBins.push(bin);
-
-            let title = windows[i].get_title();
-            if (title) {
-                let name = new St.Label({ text: title });
-                // St.Label doesn't support text-align so use a Bin
-                let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-
-                this._lastLabel = bin;
-
-                bin.add_actor(name);
-                box.add_actor(bin);
-
-                this.addItem(box, name);
-            } else {
-                this.addItem(box, null);
-            }
-
+            this._addThumbnail(this._windows[i]);
         }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -1020,11 +998,48 @@ var ThumbnailList = new Lang.Class({
             clone._destroyId = mutterWindow.connect('destroy', source => {
                 this._removeThumbnail(source, clone);
             });
-            this._clones.push(clone);
+
+            if (this._currentIndex >= 0)
+                this._clones.splice(this._currentIndex, 0, clone);
+            else
+                this._clones.push(clone);
         }
 
-        // Make sure we only do this once
-        this._thumbnailBins = new Array();
+        this._thumbnailBins = [];
+    },
+
+    _addThumbnail(window, index) {
+        if (index !== undefined)
+            this._currentIndex = index;
+
+        let box = new St.BoxLayout({ style_class: 'thumbnail-box',
+                                     vertical: true });
+        let bin = new St.Bin({ style_class: 'thumbnail' });
+
+        box.add_actor(bin);
+
+        // We don't splice here because this is a temporary list for
+        // stuff to draw on the next allocation
+        this._thumbnailBins.push(bin);
+
+        let title = window.get_title();
+        let name = null;
+
+        if (title) {
+            name = new St.Label({ text: title });
+            // St.Label doesn't support text-align so use a Bin
+            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+
+            bin.add_actor(name);
+            box.add_actor(bin);
+
+            this._lastLabel = bin;
+        }
+
+        if (index !== undefined)
+            this.addItem(box, name, index);
+        else
+            this.addItem(box, name);
     },
 
     _removeThumbnail(source, clone) {
