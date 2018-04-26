@@ -980,36 +980,12 @@ var ThumbnailSwitcher = new Lang.Class({
     _init(windows) {
         this.parent(false);
 
-        this._thumbnailBins = new Array();
-        this._clones = new Array();
+        this._thumbnailBins = [];
+        this._clones = [];
+        this._currentIndex = -1;
         this._windows = windows;
 
-        for (let i = 0; i < windows.length; i++) {
-            let box = new St.BoxLayout({ style_class: 'thumbnail-box',
-                                         vertical: true });
-
-            let bin = new St.Bin({ style_class: 'thumbnail' });
-
-            box.add_actor(bin);
-            this._thumbnailBins.push(bin);
-
-            let title = windows[i].get_title();
-            if (title) {
-                let name = new St.Label({ text: title });
-                // St.Label doesn't support text-align so use a Bin
-                let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-
-                this._lastLabel = bin;
-
-                bin.add_actor(name);
-                box.add_actor(bin);
-
-                this.addItem(box, name);
-            } else {
-                this.addItem(box, null);
-            }
-
-        }
+        this._windows.forEach(window => this._addThumbnail(window));
     },
 
     addClones(availHeight) {
@@ -1027,8 +1003,14 @@ var ThumbnailSwitcher = new Lang.Class({
         let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;
         binHeight = Math.min(thumbnailSize, binHeight);
 
+        // this._thumbnailBins will only include one item if this._currentIndex is set
         for (let i = 0; i < this._thumbnailBins.length; i++) {
-            let mutterWindow = this._windows[i].get_compositor_private();
+            let mutterWindow = null;
+            if (this._currentIndex >= 0)
+                mutterWindow = this._windows[this._currentIndex].get_compositor_private();
+            else
+                mutterWindow = this._windows[i].get_compositor_private();
+
             if (!mutterWindow)
                 continue;
 
@@ -1039,11 +1021,45 @@ var ThumbnailSwitcher = new Lang.Class({
             clone._destroyId = mutterWindow.connect('destroy', source => {
                 this._removeThumbnail(source, clone);
             });
-            this._clones.push(clone);
+
+            if (this._currentIndex >= 0)
+                this._clones.splice(this._currentIndex, 0, clone);
+            else
+                this._clones.push(clone);
         }
 
-        // Make sure we only do this once
-        this._thumbnailBins = new Array();
+        this._thumbnailBins = [];
+    },
+
+    _addThumbnail(window, index) {
+        if (index != undefined)
+            this._currentIndex = index;
+
+        let box = new St.BoxLayout({ style_class: 'thumbnail-box',
+                                     vertical: true });
+        let bin = new St.Bin({ style_class: 'thumbnail' });
+
+        box.add_actor(bin);
+
+        // We don't splice here because this is a temporary list for
+        // stuff to draw on the next allocation
+        this._thumbnailBins.push(bin);
+
+        let title = window.get_title();
+        let name = null;
+
+        if (title) {
+            name = new St.Label({ text: title });
+            // St.Label doesn't support text-align so use a Bin
+            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+
+            bin.add_actor(name);
+            box.add_actor(bin);
+
+            this._lastLabel = bin;
+        }
+
+        this.addItem(box, name, index);
     },
 
     _removeThumbnail(source, clone) {
