@@ -274,6 +274,12 @@ var AppSwitcherPopup = new Lang.Class({
         this._select(this._selectedIndex, n);
     },
 
+    _windowAdded(thumbnailSwitcher, n) {
+        // Only select new thumbnail if a thumbnail was selected before
+        if (this._thumbnailsFocused && (n < this._currentWindow || n == this._currentWindow))
+            this._select(this._selectedIndex, this._currentWindow + 1);
+    },
+
     _windowRemoved(thumbnailSwitcher, n) {
         let appIcon = this._items[this._selectedIndex];
         if (!appIcon)
@@ -414,6 +420,7 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails = new ThumbnailSwitcher(this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
+        this._thumbnails.connect('item-added', this._windowAdded.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
 
         this.actor.add_actor(this._thumbnails.actor);
