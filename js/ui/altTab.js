@@ -71,12 +71,17 @@ var AppSwitcherPopup = new Lang.Class({
 
         this.thumbnailsVisible = false;
 
-        let apps = Shell.AppSystem.get_default().get_running ();
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
+        this._currentWorkspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
 
-        if (apps.length == 0)
+        let appSys = Shell.AppSystem.get_default();
+
+        let runningApps = appSys.get_running();
+
+        if (runningApps.length == 0)
             return;
 
-        this._switcherList = new AppSwitcher(apps, this);
+        this._switcherList = new AppSwitcher(runningApps, this._currentWorkspace, this);
         this._items = this._switcherList.icons;
     },
 
@@ -676,17 +681,16 @@ var AppSwitcher = new Lang.Class({
     Name: 'AppSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(apps, altTabPopup) {
+    _init(apps, currentWorkspace, altTabPopup) {
         this.parent(true);
 
         this.icons = [];
         this._arrows = [];
 
+        this._currentWorkspace = currentWorkspace;
+
         let windowTracker = Shell.WindowTracker.get_default();
-        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
-        let workspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace()
-                                                                       : null;
-        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
+        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, this._currentWorkspace);
 
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
