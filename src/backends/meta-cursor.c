@@ -23,17 +23,15 @@
 
 #include "meta-cursor.h"
 
-#include <meta/errors.h>
-
-#include "display-private.h"
-#include "screen-private.h"
-#include "meta-backend-private.h"
-
 #include <string.h>
-
-#include <X11/cursorfont.h>
-#include <X11/extensions/Xfixes.h>
 #include <X11/Xcursor/Xcursor.h>
+
+#include "backends/meta-backend-private.h"
+#include "backends/meta-cursor-renderer.h"
+#include "clutter/clutter.h"
+#include "cogl/cogl.h"
+#include "meta/common.h"
+#include "meta/prefs.h"
 
 enum {
   PREPARE_AT,
