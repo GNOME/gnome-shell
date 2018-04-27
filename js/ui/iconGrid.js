@@ -6,6 +6,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Pango = imports.gi.Pango;
 
 const Lang = imports.lang;
 const Params = imports.misc.params;
@@ -71,6 +72,9 @@ var BaseIcon = new Lang.Class({
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
+            let clutter_text = this.label.get_clutter_text();
+            clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
+            clutter_text.set_line_wrap(true);
             box.add_actor(this.label);
         } else {
             this.label = null;
@@ -99,7 +103,7 @@ var BaseIcon = new Lang.Class({
         let childBox = new Clutter.ActorBox();
 
         if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(-1);
+            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(availWidth);
             preferredHeight += this._spacing + labelNatHeight;
 
             let labelHeight = availHeight >= preferredHeight ? labelNatHeight

@@ -1334,9 +1334,14 @@ StScrollBar {
 
   /* App Vault/Grid */
   .icon-grid {
-    spacing: 30px;
-    -shell-grid-horizontal-item-size: 136px;
-    -shell-grid-vertical-item-size: 136px;
+    /* Enforced spacing should be minimal. Default spacing is really dictated
+     * by the *-item-size, which needs to be large enough to accommodate
+     * multi-line labels (if any). The net result is the same appearance as
+     * the old 30px/136px/136px but now there is space for multi-line labels.
+     */
+    spacing: 10px;
+    -shell-grid-horizontal-item-size: 156px;
+    -shell-grid-vertical-item-size: 156px;
 
     .overview-icon { icon-size: 96px; }
   }
