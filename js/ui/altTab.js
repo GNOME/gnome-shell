@@ -75,7 +75,10 @@ var AppSwitcherPopup = new Lang.Class({
         if (apps.length == 0)
             return;
 
-        this._switcherList = new AppSwitcher(apps, this);
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
+        this._currentWorkspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+
+        this._switcherList = new AppSwitcher(apps, this._currentWorkspace, this);
         this._items = this._switcherList.icons;
     },
 
@@ -172,7 +175,11 @@ var AppSwitcherPopup = new Lang.Class({
         if (!appIcon)
             return;
 
-        appIcon.app.request_quit();
+        // If we are limited to the workspace only close windows on workspace
+        if (this._currentWorkspace)
+            appIcon.cachedWindows.forEach(window => window.delete(global.get_current_time()));
+        else
+            appIcon.app.request_quit();
     },
 
     _keyPressHandler(keysym, action) {
@@ -676,17 +683,15 @@ var AppSwitcher = new Lang.Class({
     Name: 'AppSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(apps, altTabPopup) {
+    _init(apps, currentWorkspace, altTabPopup) {
         this.parent(true);
 
         this.icons = [];
         this._arrows = [];
 
         let windowTracker = Shell.WindowTracker.get_default();
-        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
-        let workspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace()
-                                                                       : null;
-        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
+
+        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, currentWorkspace);
 
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
