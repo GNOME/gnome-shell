@@ -178,7 +178,14 @@ var AppSwitcherPopup = new Lang.Class({
         if (!appIcon)
             return;
 
-        appIcon.app.request_quit();
+        // If we are limited to the workspace, only close windows on workspace
+        if (this._currentWorkspace) {
+            for (let window of appIcon.cachedWindows) {
+                window.delete(global.get_current_time());
+            }
+        } else {
+            appIcon.app.request_quit();
+        }
     },
 
     _keyPressHandler(keysym, action) {
