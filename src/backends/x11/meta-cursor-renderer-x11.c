@@ -65,7 +65,9 @@ meta_cursor_renderer_x11_update_cursor (MetaCursorRenderer *renderer,
 
       if (cursor != META_CURSOR_NONE)
         {
-          Cursor xcursor = meta_cursor_create_x_cursor (xdisplay, cursor);
+          Cursor xcursor;
+
+          xcursor = meta_create_x_cursor (xdisplay, cursor);
           XDefineCursor (xdisplay, xwindow, xcursor);
           XFlush (xdisplay);
           XFreeCursor (xdisplay, xcursor);

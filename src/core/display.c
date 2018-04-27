@@ -3018,7 +3018,7 @@ Cursor
 meta_display_create_x_cursor (MetaDisplay *display,
                               MetaCursor   cursor)
 {
-  return meta_cursor_create_x_cursor (display->xdisplay, cursor);
+  return meta_create_x_cursor (display->xdisplay, cursor);
 }
 
 MetaGestureTracker *

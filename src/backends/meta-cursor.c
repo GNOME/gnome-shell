@@ -111,8 +111,8 @@ translate_meta_cursor (MetaCursor cursor)
 }
 
 Cursor
-meta_cursor_create_x_cursor (Display    *xdisplay,
-                             MetaCursor  cursor)
+meta_create_x_cursor (Display    *xdisplay,
+                      MetaCursor  cursor)
 {
   return XcursorLibraryLoadCursor (xdisplay, translate_meta_cursor (cursor));
 }

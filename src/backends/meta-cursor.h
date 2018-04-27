@@ -46,8 +46,8 @@ void meta_cursor_sprite_set_theme_scale (MetaCursorSprite *sprite,
 
 MetaCursor meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *sprite);
 
-Cursor meta_cursor_create_x_cursor (Display    *xdisplay,
-                                    MetaCursor  cursor);
+Cursor meta_create_x_cursor (Display    *xdisplay,
+                             MetaCursor  cursor);
 
 void meta_cursor_sprite_prepare_at (MetaCursorSprite *sprite,
                                     int               x,
