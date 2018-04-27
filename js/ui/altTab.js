@@ -750,20 +750,8 @@ var AppSwitcher = new Lang.Class({
 
         this._currentWorkspace = currentWorkspace;
 
-        // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon(apps[i]);
-
-            appIcon.cachedWindows = apps[i].get_windows();
-
-            if (this._currentWorkspace) {
-                appIcon.cachedWindows = appIcon.cachedWindows.filter(
-                    w => w.located_on_workspace(this._currentWorkspace)
-                );
-            }
-
-            if (appIcon.cachedWindows.length > 0)
-                this._addIcon(appIcon);
+            this.addApp(apps[i]);
         }
 
         this._iconSize = 0;
@@ -771,6 +759,25 @@ var AppSwitcher = new Lang.Class({
         this._mouseTimeOutId = 0;
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
+    },
+
+    addApp(app, insertIndex) {
+        let appIcon = new AppIcon(app);
+
+        appIcon.cachedWindows = appIcon.app.get_windows();
+
+        if (this._currentWorkspace) {
+            appIcon.cachedWindows = appIcon.cachedWindows.filter(
+                w => w.located_on_workspace(this._currentWorkspace)
+            );
+        }
+
+        if (appIcon.cachedWindows.length > 0)
+            this._addIcon(appIcon, insertIndex);
+    },
+
+    removeApp(app) {
+        this._removeIcon(app);
     },
 
     _onDestroy() {
