@@ -99,7 +99,7 @@ meta_wayland_tablet_tool_update_cursor_surface (MetaWaylandTabletTool *tool)
         cursor = NULL;
     }
   else if (tool->current_tablet)
-    cursor = tool->default_sprite;
+    cursor = META_CURSOR_SPRITE (tool->default_sprite);
   else
     cursor = NULL;
 
@@ -382,10 +382,10 @@ tablet_tool_handle_cursor_surface_destroy (struct wl_listener *listener,
 }
 
 static void
-tool_cursor_prepare_at (MetaCursorSprite      *cursor_sprite,
-                        int                    x,
-                        int                    y,
-                        MetaWaylandTabletTool *tool)
+tool_cursor_prepare_at (MetaCursorSpriteXcursor *sprite_xcursor,
+                        int                      x,
+                        int                      y,
+                        MetaWaylandTabletTool   *tool)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
@@ -397,7 +397,8 @@ tool_cursor_prepare_at (MetaCursorSprite      *cursor_sprite,
 
   /* Reload the cursor texture if the scale has changed. */
   if (logical_monitor)
-    meta_cursor_sprite_set_theme_scale (cursor_sprite, logical_monitor->scale);
+    meta_cursor_sprite_xcursor_set_theme_scale (sprite_xcursor,
+                                                logical_monitor->scale);
 }
 
 MetaWaylandTabletTool *
@@ -417,7 +418,7 @@ meta_wayland_tablet_tool_new (MetaWaylandTabletSeat  *seat,
   tool->focus_surface_destroy_listener.notify = tablet_tool_handle_focus_surface_destroy;
   tool->cursor_surface_destroy_listener.notify = tablet_tool_handle_cursor_surface_destroy;
 
-  tool->default_sprite = meta_cursor_sprite_from_theme (META_CURSOR_CROSSHAIR);
+  tool->default_sprite = meta_cursor_sprite_xcursor_new (META_CURSOR_CROSSHAIR);
   tool->prepare_at_signal_id =
     g_signal_connect (tool->default_sprite, "prepare-at",
                       G_CALLBACK (tool_cursor_prepare_at), tool);

@@ -114,6 +114,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-cursor-tracker-private.h	\
 	backends/meta-cursor-renderer.c		\
 	backends/meta-cursor-renderer.h		\
+	backends/meta-cursor-sprite-xcursor.c	\
+	backends/meta-cursor-sprite-xcursor.h	\
 	backends/meta-dnd-private.h		\
 	backends/meta-egl.c			\
 	backends/meta-egl.h			\

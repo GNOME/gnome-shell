@@ -28,6 +28,7 @@
 
 #include "meta-wayland-types.h"
 #include "meta-cursor-renderer.h"
+#include "backends/meta-cursor-sprite-xcursor.h"
 
 struct _MetaWaylandTabletTool
 {
@@ -43,7 +44,7 @@ struct _MetaWaylandTabletTool
   MetaWaylandSurface *cursor_surface;
   struct wl_listener cursor_surface_destroy_listener;
   MetaCursorRenderer *cursor_renderer;
-  MetaCursorSprite *default_sprite;
+  MetaCursorSpriteXcursor *default_sprite;
   guint prepare_at_signal_id;
 
   MetaWaylandSurface *current;

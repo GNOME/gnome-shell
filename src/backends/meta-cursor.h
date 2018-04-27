@@ -25,29 +25,23 @@
 #include <meta/common.h>
 #include <meta/boxes.h>
 
-struct _MetaCursorSpriteClass
-{
-  GObjectClass parent_class;
-};
-
 #define META_TYPE_CURSOR_SPRITE (meta_cursor_sprite_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaCursorSprite,
                           meta_cursor_sprite,
                           META, CURSOR_SPRITE,
                           GObject)
 
+struct _MetaCursorSpriteClass
+{
+  GObjectClass parent_class;
+
+  void (* realize_texture) (MetaCursorSprite *sprite);
+  gboolean (* is_animated) (MetaCursorSprite *sprite);
+  void (* tick_frame) (MetaCursorSprite *sprite);
+  unsigned int (* get_current_frame_time) (MetaCursorSprite *sprite);
+};
+
 MetaCursorSprite * meta_cursor_sprite_new (void);
-
-MetaCursorSprite * meta_cursor_sprite_from_theme  (MetaCursor cursor);
-
-
-void meta_cursor_sprite_set_theme_scale (MetaCursorSprite *sprite,
-                                         int               scale);
-
-MetaCursor meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *sprite);
-
-Cursor meta_create_x_cursor (Display    *xdisplay,
-                             MetaCursor  cursor);
 
 void meta_cursor_sprite_prepare_at (MetaCursorSprite *sprite,
                                     int               x,
@@ -55,6 +49,7 @@ void meta_cursor_sprite_prepare_at (MetaCursorSprite *sprite,
 
 void meta_cursor_sprite_realize_texture (MetaCursorSprite *sprite);
 
+void meta_cursor_sprite_clear_texture (MetaCursorSprite *sprite);
 
 void meta_cursor_sprite_set_texture (MetaCursorSprite *sprite,
                                      CoglTexture      *texture,

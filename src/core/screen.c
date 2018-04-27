@@ -60,6 +60,7 @@
 #include "x11/xprops.h"
 
 #include "backends/x11/meta-backend-x11.h"
+#include "backends/meta-cursor-sprite-xcursor.h"
 
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
@@ -1323,12 +1324,13 @@ find_highest_logical_monitor_scale (MetaBackend      *backend,
 }
 
 static void
-root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
-                        int               x,
-                        int               y,
-                        MetaScreen       *screen)
+root_cursor_prepare_at (MetaCursorSpriteXcursor *sprite_xcursor,
+                        int                      x,
+                        int                      y,
+                        MetaScreen              *screen)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_xcursor);
 
   if (meta_is_stage_views_scaled ())
     {
@@ -1337,7 +1339,7 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
       scale = find_highest_logical_monitor_scale (backend, cursor_sprite);
       if (scale != 0.0)
         {
-          meta_cursor_sprite_set_theme_scale (cursor_sprite, scale);
+          meta_cursor_sprite_xcursor_set_theme_scale (sprite_xcursor, scale);
           meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0 / scale);
         }
     }
@@ -1353,18 +1355,18 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
       /* Reload the cursor texture if the scale has changed. */
       if (logical_monitor)
         {
-          meta_cursor_sprite_set_theme_scale (cursor_sprite,
-                                              logical_monitor->scale);
+          meta_cursor_sprite_xcursor_set_theme_scale (sprite_xcursor,
+                                                      logical_monitor->scale);
           meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0);
         }
     }
 }
 
 static void
-manage_root_cursor_sprite_scale (MetaScreen       *screen,
-                                 MetaCursorSprite *cursor_sprite)
+manage_root_cursor_sprite_scale (MetaScreen              *screen,
+                                 MetaCursorSpriteXcursor *sprite_xcursor)
 {
-  g_signal_connect_object (cursor_sprite,
+  g_signal_connect_object (sprite_xcursor,
                            "prepare-at",
                            G_CALLBACK (root_cursor_prepare_at),
                            screen,
@@ -1377,17 +1379,18 @@ meta_screen_update_cursor (MetaScreen *screen)
   MetaDisplay *display = screen->display;
   MetaCursor cursor = screen->current_cursor;
   Cursor xcursor;
-  MetaCursorSprite *cursor_sprite;
+  MetaCursorSpriteXcursor *sprite_xcursor;
   MetaBackend *backend = meta_get_backend ();
   MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
-  cursor_sprite = meta_cursor_sprite_from_theme (cursor);
+  sprite_xcursor = meta_cursor_sprite_xcursor_new (cursor);
 
   if (meta_is_wayland_compositor ())
-    manage_root_cursor_sprite_scale (screen, cursor_sprite);
+    manage_root_cursor_sprite_scale (screen, sprite_xcursor);
 
-  meta_cursor_tracker_set_root_cursor (cursor_tracker, cursor_sprite);
-  g_object_unref (cursor_sprite);
+  meta_cursor_tracker_set_root_cursor (cursor_tracker,
+                                       META_CURSOR_SPRITE (sprite_xcursor));
+  g_object_unref (sprite_xcursor);
 
   /* Set a cursor for X11 applications that don't specify their own */
   xcursor = meta_display_create_x_cursor (display, cursor);
