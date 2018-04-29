@@ -347,10 +347,10 @@ if options.perf == None:
         options.perf = 'core'
 
 if options.extra_filter is None:
-    if options.hwtest:
-        options.extra_filter = ['Gedit']
-    else:
-        options.extra_filter = []
+    options.extra_filter = []
+
+if options.perf == 'hwtest':
+    options.extra_filter.append('Gedit')
 
 if args:
     parser.print_usage()
