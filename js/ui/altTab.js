@@ -469,7 +469,7 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailSwitcher(this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailSwitcher(this._items[this._selectedIndex]);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-added', this._windowAdded.bind(this));
@@ -998,15 +998,16 @@ var ThumbnailSwitcher = new Lang.Class({
     Name: 'ThumbnailSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(windows) {
+    _init(icon) {
         this.parent(false);
 
         this._thumbnailBins = [];
         this._clones = [];
         this._currentIndex = -1;
-        this._windows = windows;
 
-        this._windows.forEach(window => this._addThumbnail(window));
+        this.icon = icon;
+
+        this.icon.cachedWindows.forEach(window => this._addThumbnail(window));
     },
 
     addClones(availHeight) {
@@ -1028,9 +1029,9 @@ var ThumbnailSwitcher = new Lang.Class({
         for (let i = 0; i < this._thumbnailBins.length; i++) {
             let mutterWindow = null;
             if (this._currentIndex >= 0)
-                mutterWindow = this._windows[this._currentIndex].get_compositor_private();
+                mutterWindow = this.icon.cachedWindows[this._currentIndex].get_compositor_private();
             else
-                mutterWindow = this._windows[i].get_compositor_private();
+                mutterWindow = this.icon.cachedWindows[i].get_compositor_private();
 
             if (!mutterWindow)
                 continue;
@@ -1089,7 +1090,7 @@ var ThumbnailSwitcher = new Lang.Class({
             return;
 
         this._clones.splice(index, 1);
-        this._windows.splice(index, 1);
+        this.icon.cachedWindows.splice(index, 1);
         this.removeItem(index);
 
         if (this._clones.length == 0)
