@@ -706,7 +706,6 @@ var AppSwitcher = new Lang.Class({
                 this._addIcon(appIcon);
         }
 
-        this._curApp = -1;
         this._iconSize = 0;
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
@@ -826,21 +825,20 @@ var AppSwitcher = new Lang.Class({
     // show a dim arrow, but show a bright arrow when they are
     // highlighted.
     highlight(n, justOutline) {
-        if (this.icons[this._curApp]) {
-            if (this.icons[this._curApp].cachedWindows.length == 1)
-                this._arrows[this._curApp].hide();
+        if (this.icons[this._highlighted]) {
+            if (this.icons[this._highlighted].cachedWindows.length == 1)
+                this._arrows[this._highlighted].hide();
             else
-                this._arrows[this._curApp].remove_style_pseudo_class('highlighted');
+                this._arrows[this._highlighted].remove_style_pseudo_class('highlighted');
         }
 
         this.parent(n, justOutline);
-        this._curApp = n;
 
-        if (this._curApp != -1) {
-            if (justOutline && this.icons[this._curApp].cachedWindows.length == 1)
-                this._arrows[this._curApp].show();
+        if (this._highlighted != -1) {
+            if (justOutline && this.icons[this._highlighted].cachedWindows.length == 1)
+                this._arrows[this._highlighted].show();
             else
-                this._arrows[this._curApp].add_style_pseudo_class('highlighted');
+                this._arrows[this._highlighted].add_style_pseudo_class('highlighted');
         }
     },
 
