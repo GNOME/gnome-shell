@@ -461,7 +461,7 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex]);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-added', this._windowAdded.bind(this));
@@ -957,16 +957,17 @@ var ThumbnailList = new Lang.Class({
     Name: 'ThumbnailList',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(windows) {
+    _init(icon) {
         this.parent(false);
 
         this._thumbnailBins = [];
         this._clones = [];
         this._currentIndex = -1;
-        this._windows = windows;
 
-        for (let i = 0; i < windows.length; i++) {
-            this._addThumbnail(this._windows[i]);
+        this.icon = icon;
+
+        for (let i = 0; i < this.icon.cachedWindows.length; i++) {
+            this._addThumbnail(this.icon.cachedWindows[i]);
         }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -987,7 +988,7 @@ var ThumbnailList = new Lang.Class({
         binHeight = Math.min(thumbnailSize, binHeight);
 
         for (let i = 0; i < this._thumbnailBins.length; i++) {
-            let mutterWindow = this._windows[i].get_compositor_private();
+            let mutterWindow = this.icon.cachedWindows[i].get_compositor_private();
             if (!mutterWindow)
                 continue;
 
@@ -1048,7 +1049,7 @@ var ThumbnailList = new Lang.Class({
             return;
 
         this._clones.splice(index, 1);
-        this._windows.splice(index, 1);
+        this.icon.cachedWindows.splice(index, 1);
         this.removeItem(index);
 
         if (this._clones.length == 0)
