@@ -89,6 +89,7 @@ var KeyboardManager = new Lang.Class({
     },
 
     setUserLayouts(ids) {
+        let currentId = this._current ? this._current.id : null;
         this._current = null;
         this._layoutInfos = {};
 
@@ -114,6 +115,9 @@ var KeyboardManager = new Lang.Class({
             group[groupIndex] = info;
             info.group = group;
             info.groupIndex = groupIndex;
+
+            if (id == currentId)
+                this._current = info;
 
             i += 1;
         }
