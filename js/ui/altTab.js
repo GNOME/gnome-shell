@@ -76,6 +76,9 @@ var AppSwitcherPopup = new Lang.Class({
 
         let appSys = Shell.AppSystem.get_default();
 
+        this._appStateChangedSignalId =
+            appSys.connect('app-state-changed', this._onAppStateChanged.bind(this));
+
         let runningApps = appSys.get_running();
 
         if (runningApps.length == 0)
@@ -83,6 +86,25 @@ var AppSwitcherPopup = new Lang.Class({
 
         this._switcherList = new AppSwitcher(runningApps, this._currentWorkspace, this);
         this._items = this._switcherList.icons;
+    },
+
+    _onAppStateChanged(appSys, app) {
+        if (app.state == Shell.AppState.RUNNING) {
+            let runningApps = appSys.get_running();
+
+            // Get the index of the app in the currently open apps
+            if (this._currentWorkspace) {
+                runningApps = runningApps.filter(
+                    app => app.is_on_workspace(this._currentWorkspace)
+                );
+            }
+
+            let index = runningApps.indexOf(app);
+
+            this._switcherList.addApp(app, index);
+        } else if (app.state == Shell.AppState.STOPPED) {
+            this._switcherList.removeApp(app);
+        }
     },
 
     _allocate(actor, box, flags) {
@@ -376,6 +398,12 @@ var AppSwitcherPopup = new Lang.Class({
 
     _onDestroy() {
         this.parent();
+
+        if (this._appStateChangedSignalId > 0) {
+            let appSys = Shell.AppSystem.get_default();
+            appSys.disconnect(this._appStateChangedSignalId);
+            this._appStateChangedSignalId = 0;
+        }
 
         if (this._thumbnails)
             this._destroyThumbnails();
