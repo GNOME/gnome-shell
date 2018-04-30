@@ -178,6 +178,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/x11/meta-gpu-xrandr.h			\
 	backends/x11/cm/meta-backend-x11-cm.c		\
 	backends/x11/cm/meta-backend-x11-cm.h		\
+	backends/x11/cm/meta-cursor-sprite-xfixes.c	\
+	backends/x11/cm/meta-cursor-sprite-xfixes.h	\
 	backends/x11/cm/meta-renderer-x11-cm.c		\
 	backends/x11/cm/meta-renderer-x11-cm.h		\
 	backends/x11/nested/meta-backend-x11-nested.c	\

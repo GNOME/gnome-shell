@@ -40,9 +40,9 @@
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
-#include <X11/extensions/Xfixes.h>
 
 #include "meta-backend-private.h"
+#include "backends/x11/cm/meta-cursor-sprite-xfixes.h"
 
 G_DEFINE_TYPE (MetaCursorTracker, meta_cursor_tracker, G_TYPE_OBJECT);
 
@@ -218,75 +218,14 @@ static void
 ensure_xfixes_cursor (MetaCursorTracker *tracker)
 {
   MetaDisplay *display = meta_get_display ();
-  XFixesCursorImage *cursor_image;
-  CoglTexture2D *sprite;
-  guint8 *cursor_data;
-  gboolean free_cursor_data;
-  CoglContext *ctx;
-  CoglError *error = NULL;
+  g_autoptr (GError) error = NULL;
 
   if (tracker->xfixes_cursor)
     return;
 
-  cursor_image = XFixesGetCursorImage (display->xdisplay);
-  if (!cursor_image)
-    return;
-
-  /* Like all X APIs, XFixesGetCursorImage() returns arrays of 32-bit
-   * quantities as arrays of long; we need to convert on 64 bit */
-  if (sizeof(long) == 4)
-    {
-      cursor_data = (guint8 *)cursor_image->pixels;
-      free_cursor_data = FALSE;
-    }
-  else
-    {
-      int i, j;
-      guint32 *cursor_words;
-      gulong *p;
-      guint32 *q;
-
-      cursor_words = g_new (guint32, cursor_image->width * cursor_image->height);
-      cursor_data = (guint8 *)cursor_words;
-
-      p = cursor_image->pixels;
-      q = cursor_words;
-      for (j = 0; j < cursor_image->height; j++)
-        for (i = 0; i < cursor_image->width; i++)
-          *(q++) = *(p++);
-
-      free_cursor_data = TRUE;
-    }
-
-  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  sprite = cogl_texture_2d_new_from_data (ctx,
-                                          cursor_image->width,
-                                          cursor_image->height,
-                                          CLUTTER_CAIRO_FORMAT_ARGB32,
-                                          cursor_image->width * 4, /* stride */
-                                          cursor_data,
-                                          &error);
-
-  if (free_cursor_data)
-    g_free (cursor_data);
-
-  if (error != NULL)
-    {
-      meta_warning ("Failed to allocate cursor sprite texture: %s\n", error->message);
-      cogl_error_free (error);
-    }
-
-  if (sprite != NULL)
-    {
-      MetaCursorSprite *cursor_sprite = meta_cursor_sprite_new ();
-      meta_cursor_sprite_set_texture (cursor_sprite,
-                                      COGL_TEXTURE (sprite),
-                                      cursor_image->xhot,
-                                      cursor_image->yhot);
-      cogl_object_unref (sprite);
-      tracker->xfixes_cursor = cursor_sprite;
-    }
-  XFree (cursor_image);
+  tracker->xfixes_cursor = meta_cursor_sprite_xfixes_new (display, &error);
+  if (!tracker->xfixes_cursor)
+    g_warning ("Failed to create XFIXES cursor: %s", error->message);
 }
 
 /**
@@ -308,7 +247,7 @@ meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
   else
     {
       ensure_xfixes_cursor (tracker);
-      cursor_sprite = tracker->xfixes_cursor;
+      cursor_sprite = META_CURSOR_SPRITE (tracker->xfixes_cursor);
     }
 
   if (cursor_sprite)
@@ -345,7 +284,7 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
   else
     {
       ensure_xfixes_cursor (tracker);
-      cursor_sprite = tracker->xfixes_cursor;
+      cursor_sprite = META_CURSOR_SPRITE (tracker->xfixes_cursor);
     }
 
   if (cursor_sprite)

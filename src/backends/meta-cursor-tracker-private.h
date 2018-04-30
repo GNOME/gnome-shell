@@ -26,6 +26,7 @@
 
 #include "meta-cursor.h"
 #include "meta-cursor-renderer.h"
+#include "backends/x11/cm/meta-cursor-sprite-xfixes.h"
 
 struct _MetaCursorTracker {
   GObject parent_instance;
@@ -46,7 +47,7 @@ struct _MetaCursorTracker {
   MetaCursorSprite *root_cursor;
 
   /* The cursor from the X11 server. */
-  MetaCursorSprite *xfixes_cursor;
+  MetaCursorSpriteXfixes *xfixes_cursor;
 };
 
 struct _MetaCursorTrackerClass {
