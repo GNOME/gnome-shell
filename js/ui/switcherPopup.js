@@ -244,6 +244,7 @@ var SwitcherPopup = new Lang.Class({
     _itemEntered(switcher, n) {
         if (!this.mouseActive)
             return;
+
         this._itemEnteredHandler(n);
     },
 
@@ -311,12 +312,11 @@ var SwitcherPopup = new Lang.Class({
                              { opacity: 0,
                                time: POPUP_FADE_OUT_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.destroy();
-                               }
+                               onComplete: () => this.actor.destroy()
                              });
-        } else
+        } else {
             this.actor.destroy();
+        }
     },
 
     _finish(timestamp) {
@@ -442,8 +442,8 @@ var SwitcherList = new Lang.Class({
     },
 
     removeItem(index) {
-        let item = this._items.splice(index, 1);
-        item[0].destroy();
+        let item = this._items.splice(index, 1)[0];
+        item.destroy();
 
         this._refreshItemEvents();
 
@@ -505,7 +505,6 @@ var SwitcherList = new Lang.Class({
             this._scrollToRight(index);
         else if (this._items[index].allocation.x1 - value < 0)
             this._scrollToLeft(index);
-
     },
 
     _scrollToLeft(index) {
@@ -520,6 +519,7 @@ var SwitcherList = new Lang.Class({
             value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableRight = true;
+
         Tweener.addTween(adjustment,
                          { value: value,
                            time: POPUP_SCROLL_TIME,
@@ -527,6 +527,7 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (index == 0)
                                     this._scrollableLeft = false;
+
                                 this.actor.queue_relayout();
                            }
                           });
@@ -544,6 +545,7 @@ var SwitcherList = new Lang.Class({
             value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableLeft = true;
+
         Tweener.addTween(adjustment,
                          { value: value,
                            time: POPUP_SCROLL_TIME,
@@ -551,8 +553,9 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (index == this._items.length - 1)
                                     this._scrollableRight = false;
+
                                 this.actor.queue_relayout();
-                            }
+                           }
                           });
     },
 
@@ -614,18 +617,12 @@ var SwitcherList = new Lang.Class({
 
     _allocate(actor, box, flags) {
         let childHeight = box.y2 - box.y1;
-
-        let [maxChildMin, maxChildNat] = this._maxChildWidth(childHeight);
         let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
-
         let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
 
         let x = 0;
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
-
-        let primary = Main.layoutManager.primaryMonitor;
-        let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
 
         for (let i = 0; i < children.length; i++) {
             if (this._items.indexOf(children[i]) != -1) {
@@ -652,7 +649,7 @@ function drawArrow(area, side) {
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();
 
-    let [width, height] = area.get_surface_size ();
+    let [width, height] = area.get_surface_size();
     let cr = area.get_context();
 
     cr.setLineWidth(1.0);
