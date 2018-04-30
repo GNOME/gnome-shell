@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -8,7 +9,6 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Atk = imports.gi.Atk;
 
 const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
@@ -175,6 +175,7 @@ var AppSwitcherPopup = new Lang.Class({
         return SwitcherPopup.mod(this._currentWindow + 1,
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
+
     _previousWindow() {
         // Also assume second window here
         if (this._currentWindow == -1)
@@ -460,7 +461,7 @@ var AppSwitcherPopup = new Lang.Class({
             this._thumbnails.highlight(window, forceAppFocus);
         } else if (this._items[this._selectedIndex].cachedWindows.length > 1 &&
                    !forceAppFocus) {
-            this._thumbnailTimeoutId = Mainloop.timeout_add (
+            this._thumbnailTimeoutId = Mainloop.timeout_add(
                 THUMBNAIL_POPUP_TIME,
                 this._timeoutPopupThumbnails.bind(this));
             GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
@@ -491,7 +492,7 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex]);
+        this._thumbnails = new ThumbnailList(this._items[this._selectedIndex]);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-added', this._windowAdded.bind(this));
@@ -765,10 +766,11 @@ var AppIcon = new Lang.Class({
         this.app = app;
         this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
                                          vertical: true });
+
         this.icon = null;
         this._iconBin = new St.Bin({ x_fill: true, y_fill: true });
+        this.actor.add(this._iconBin, { x_fill: false, y_fill: false });
 
-        this.actor.add(this._iconBin, { x_fill: false, y_fill: false } );
         this.label = new St.Label({ text: this.app.get_name() });
         this.actor.add(this.label, { x_fill: false });
     },
@@ -849,9 +851,10 @@ var AppSwitcher = new Lang.Class({
             return;
 
         let j = 0;
-        while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
-                j++;
+        while (this._items.length > 1 && this._items[j].style_class != 'item-box') {
+            j++;
         }
+
         let themeNode = this._items[j].get_theme_node();
 
         let iconPadding = themeNode.get_horizontal_padding();
@@ -860,7 +863,7 @@ var AppSwitcher = new Lang.Class({
         let iconSpacing = iconNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
 
-        // We just assume the whole screen here due to weirdness happing with the passed width
+        // We just assume the whole screen here due to weirdness happening with the passed width
         let primary = Main.layoutManager.primaryMonitor;
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
@@ -871,18 +874,19 @@ var AppSwitcher = new Lang.Class({
         if (this._items.length == 1) {
             this._iconSize = baseIconSizes[0];
         } else {
-            for(let i =  0; i < baseIconSizes.length; i++) {
+            for (let i = 0; i < baseIconSizes.length; i++) {
                 this._iconSize = baseIconSizes[i];
                 let height = iconSizes[i] + iconSpacing;
-                let w = height * this._items.length + totalSpacing;
-                if (w <= availWidth)
+                let width = height * this._items.length + totalSpacing;
+                if (width <= availWidth)
                     break;
             }
         }
 
-        for(let i = 0; i < this.icons.length; i++) {
+        for (let i = 0; i < this.icons.length; i++) {
             if (this.icons[i].icon != null)
                 break;
+
             this.icons[i].set_size(this._iconSize);
         }
     },
@@ -918,6 +922,7 @@ var AppSwitcher = new Lang.Class({
         if (index != this._highlighted) {
             if (this._mouseTimeOutId != 0)
                 Mainloop.source_remove(this._mouseTimeOutId);
+
             if (this._altTabPopup.thumbnailsVisible) {
                 this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
                                                             () => {
@@ -926,8 +931,9 @@ var AppSwitcher = new Lang.Class({
                                                                 return GLib.SOURCE_REMOVE;
                                                             });
                 GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
-            } else
+            } else {
                this._itemEntered(index);
+            }
         }
 
         return Clutter.EVENT_PROPAGATE;
@@ -1058,7 +1064,7 @@ var AppSwitcher = new Lang.Class({
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
         else
-            item.add_accessible_state (Atk.StateType.EXPANDABLE);
+            item.add_accessible_state(Atk.StateType.EXPANDABLE);
 
         // Make sure to set a size if the item is added later
         if (this._iconSize)
@@ -1072,7 +1078,7 @@ var AppSwitcher = new Lang.Class({
         this.icons.splice(index, 1);
 
         this.removeItem(index);
-    },
+    }
 });
 
 var ThumbnailList = new Lang.Class({
@@ -1109,6 +1115,7 @@ var ThumbnailList = new Lang.Class({
     addClones(availHeight) {
         if (!this._thumbnailBins.length)
             return;
+
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
         let [labelMinHeight, labelNaturalHeight] = this._lastLabel.get_preferred_height(-1);
@@ -1180,8 +1187,7 @@ var ThumbnailList = new Lang.Class({
     _onDestroy() {
         this.icon.onWindowAdded = null;
         this.icon.onWindowRemoved = null;
-    },
-
+    }
 });
 
 var WindowIcon = new Lang.Class({
@@ -1305,9 +1311,7 @@ var WindowList = new Lang.Class({
     },
 
     _removeWindow(window) {
-        let index = this.icons.findIndex(icon => {
-            return icon.window == window;
-        });
+        let index = this.icons.findIndex(icon => icon.window == window);
         if (index === -1)
             return;
 

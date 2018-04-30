@@ -246,6 +246,7 @@ var SwitcherPopup = new Lang.Class({
     _itemEntered(switcher, n) {
         if (!this.mouseActive)
             return;
+
         this._itemEnteredHandler(n);
     },
 
@@ -533,7 +534,6 @@ var SwitcherList = new Lang.Class({
             this._scrollToRight(index);
         else if (this._items[index].allocation.x1 - value < 0)
             this._scrollToLeft(index);
-
     },
 
     _scrollToLeft(index) {
@@ -548,6 +548,7 @@ var SwitcherList = new Lang.Class({
             value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableRight = true;
+
         Tweener.addTween(adjustment,
                          { value: value,
                            time: POPUP_SCROLL_TIME,
@@ -555,6 +556,7 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (index == 0)
                                     this._scrollableLeft = false;
+
                                 this.actor.queue_relayout();
                            }
                           });
@@ -572,6 +574,7 @@ var SwitcherList = new Lang.Class({
             value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableLeft = true;
+
         Tweener.addTween(adjustment,
                          { value: value,
                            time: POPUP_SCROLL_TIME,
@@ -579,8 +582,9 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (index == this._items.length - 1)
                                     this._scrollableRight = false;
+
                                 this.actor.queue_relayout();
-                            }
+                           }
                           });
     },
 
@@ -680,7 +684,7 @@ function drawArrow(area, side) {
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();
 
-    let [width, height] = area.get_surface_size ();
+    let [width, height] = area.get_surface_size();
     let cr = area.get_context();
 
     cr.setLineWidth(1.0);
