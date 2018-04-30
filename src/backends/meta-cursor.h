@@ -41,8 +41,6 @@ struct _MetaCursorSpriteClass
   unsigned int (* get_current_frame_time) (MetaCursorSprite *sprite);
 };
 
-MetaCursorSprite * meta_cursor_sprite_new (void);
-
 void meta_cursor_sprite_prepare_at (MetaCursorSprite *sprite,
                                     int               x,
                                     int               y);

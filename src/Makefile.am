@@ -374,6 +374,8 @@ if HAVE_WAYLAND
 libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	compositor/meta-surface-actor-wayland.c	\
 	compositor/meta-surface-actor-wayland.h	\
+	wayland/meta-cursor-sprite-wayland.c	\
+	wayland/meta-cursor-sprite-wayland.h	\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\

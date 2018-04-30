@@ -46,7 +46,9 @@ typedef struct _MetaCursorSpritePrivate
   int hot_x, hot_y;
 } MetaCursorSpritePrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaCursorSprite,
+                                     meta_cursor_sprite,
+                                     G_TYPE_OBJECT)
 
 gboolean
 meta_cursor_sprite_is_animated (MetaCursorSprite *sprite)
@@ -69,12 +71,6 @@ unsigned int
 meta_cursor_sprite_get_current_frame_time (MetaCursorSprite *sprite)
 {
   return META_CURSOR_SPRITE_GET_CLASS (sprite)->get_current_frame_time (sprite);
-}
-
-MetaCursorSprite *
-meta_cursor_sprite_new (void)
-{
-  return g_object_new (META_TYPE_CURSOR_SPRITE, NULL);
 }
 
 void

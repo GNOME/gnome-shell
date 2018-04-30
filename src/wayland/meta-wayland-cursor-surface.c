@@ -31,6 +31,7 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "core/boxes-private.h"
+#include "wayland/meta-cursor-sprite-wayland.h"
 
 typedef struct _MetaWaylandCursorSurfacePrivate MetaWaylandCursorSurfacePrivate;
 
@@ -38,7 +39,7 @@ struct _MetaWaylandCursorSurfacePrivate
 {
   int hot_x;
   int hot_y;
-  MetaCursorSprite *cursor_sprite;
+  MetaCursorSpriteWayland *cursor_sprite;
   MetaCursorRenderer *cursor_renderer;
   MetaWaylandBuffer *buffer;
   struct wl_list frame_callbacks;
@@ -57,7 +58,7 @@ update_cursor_sprite_texture (MetaWaylandCursorSurface *cursor_surface)
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (cursor_surface));
   MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
-  MetaCursorSprite *cursor_sprite = priv->cursor_sprite;
+  MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (priv->cursor_sprite);
 
   g_return_if_fail (!buffer || buffer->texture);
 
@@ -267,7 +268,7 @@ meta_wayland_cursor_surface_init (MetaWaylandCursorSurface *role)
   MetaWaylandCursorSurfacePrivate *priv =
     meta_wayland_cursor_surface_get_instance_private (role);
 
-  priv->cursor_sprite = meta_cursor_sprite_new ();
+  priv->cursor_sprite = meta_cursor_sprite_wayland_new ();
   g_signal_connect_object (priv->cursor_sprite,
                            "prepare-at",
                            G_CALLBACK (cursor_sprite_prepare_at),
@@ -299,7 +300,7 @@ meta_wayland_cursor_surface_get_sprite (MetaWaylandCursorSurface *cursor_surface
   MetaWaylandCursorSurfacePrivate *priv =
     meta_wayland_cursor_surface_get_instance_private (cursor_surface);
 
-  return priv->cursor_sprite;
+  return META_CURSOR_SPRITE (priv->cursor_sprite);
 }
 
 void
@@ -342,7 +343,7 @@ on_cursor_painted (MetaCursorRenderer       *renderer,
     meta_wayland_cursor_surface_get_instance_private (cursor_surface);
   guint32 time = (guint32) (g_get_monotonic_time () / 1000);
 
-  if (displayed_sprite != priv->cursor_sprite)
+  if (displayed_sprite != META_CURSOR_SPRITE (priv->cursor_sprite))
     return;
 
   while (!wl_list_empty (&priv->frame_callbacks))
