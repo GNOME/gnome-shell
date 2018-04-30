@@ -61,7 +61,7 @@ update_cursor_sprite_texture (MetaWaylandCursorSurface *cursor_surface)
 
   g_return_if_fail (!buffer || buffer->texture);
 
-  if (!priv->cursor_renderer || !cursor_sprite)
+  if (!priv->cursor_renderer)
     return;
 
   if (buffer)
