@@ -928,6 +928,10 @@ var AppSwitcher = new Lang.Class({
             arrow.hide();
         else
             item.add_accessible_state (Atk.StateType.EXPANDABLE);
+
+        // Make sure to set a size if the item is added later
+        if (this._iconSize)
+            appIcon.set_size(this._iconSize);
     },
 
     _removeIcon(app) {
