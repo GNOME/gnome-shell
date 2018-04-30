@@ -20,6 +20,7 @@
 #define META_CURSOR_SPRITE_XCURSOR_H
 
 #include <glib-object.h>
+#include <X11/Xcursor/Xcursor.h>
 
 #include "backends/meta-cursor.h"
 
@@ -33,6 +34,8 @@ void meta_cursor_sprite_xcursor_set_theme_scale (MetaCursorSpriteXcursor *sprite
                                                  int                      scale);
 
 MetaCursor meta_cursor_sprite_xcursor_get_cursor (MetaCursorSpriteXcursor *sprite_xcusror);
+
+XcursorImage * meta_cursor_sprite_xcursor_get_current_image (MetaCursorSpriteXcursor *sprite_xcursor);
 
 Cursor meta_create_x_cursor (Display    *xdisplay,
                              MetaCursor  cursor);

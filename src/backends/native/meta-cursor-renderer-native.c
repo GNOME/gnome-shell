@@ -954,13 +954,14 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *r
 #endif
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (MetaCursorRenderer *renderer,
-                                                                 MetaGpuKms         *gpu_kms,
-                                                                 MetaCursorSprite   *cursor_sprite,
-                                                                 XcursorImage       *xc_image)
+meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
+                                                                 MetaGpuKms              *gpu_kms,
+                                                                 MetaCursorSpriteXcursor *sprite_xcursor,
+                                                                 XcursorImage            *xc_image)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
+  MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_xcursor);
 
   cursor_renderer_gpu_data =
     meta_cursor_renderer_native_gpu_data_from_gpu (gpu_kms);
@@ -980,16 +981,17 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (MetaCursorRende
 }
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer *renderer,
-                                                         MetaCursorSprite   *cursor_sprite,
-                                                         XcursorImage       *xc_image)
+meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer      *renderer,
+                                                         MetaCursorSpriteXcursor *sprite_xcursor)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
 	  meta_cursor_renderer_native_get_instance_private (native);
+  XcursorImage *xc_image;
   GList *gpus;
   GList *l;
 
+  xc_image = meta_cursor_sprite_xcursor_get_current_image (sprite_xcursor);
   gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
   for (l = gpus; l; l = l->next)
     {
@@ -998,7 +1000,7 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer *ren
       meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (
         renderer,
         gpu_kms,
-        cursor_sprite,
+        sprite_xcursor,
         xc_image);
     }
 }
