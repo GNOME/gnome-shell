@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -9,7 +10,6 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Atk = imports.gi.Atk;
 
 const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
@@ -72,7 +72,7 @@ var AppSwitcherPopup = new Lang.Class({
 
         this.thumbnailsVisible = false;
 
-        let apps = Shell.AppSystem.get_default().get_running ();
+        let apps = Shell.AppSystem.get_default().get_running();
 
         if (apps.length == 0)
             return;
@@ -149,6 +149,7 @@ var AppSwitcherPopup = new Lang.Class({
         return SwitcherPopup.mod(this._currentWindow + 1,
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
+
     _previousWindow() {
         // Also assume second window here
         if (this._currentWindow == -1)
@@ -729,8 +730,9 @@ var AppSwitcher = new Lang.Class({
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app (w) == appIcon.app
+                w => windowTracker.get_window_app(w) == appIcon.app
             );
+
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
         }
@@ -753,9 +755,9 @@ var AppSwitcher = new Lang.Class({
 
     _setIconSize() {
         let j = 0;
-        while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
-                j++;
-        }
+        while (this._items.length > 1 && this._items[j].style_class != 'item-box')
+            j++;
+
         let themeNode = this._items[j].get_theme_node();
 
         let iconPadding = themeNode.get_horizontal_padding();
@@ -764,31 +766,31 @@ var AppSwitcher = new Lang.Class({
         let iconSpacing = iconNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
 
-        // We just assume the whole screen here due to weirdness happing with the passed width
+        // We just assume the whole screen here due to weirdness happening with the passed width
         let primary = Main.layoutManager.primaryMonitor;
         let parentPadding = this.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.get_theme_node().get_horizontal_padding();
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
-        let iconSize = baseIconSizes[0];
 
-        if (this._items.length > 1) {
-            for(let i =  0; i < baseIconSizes.length; i++) {
-                iconSize = baseIconSizes[i];
+        if (this._items.length == 1) {
+            this._iconSize = baseIconSizes[0];
+        } else {
+            for (let i = 0; i < baseIconSizes.length; i++) {
+                this._iconSize = baseIconSizes[i];
                 let height = iconSizes[i] + iconSpacing;
-                let w = height * this._items.length + totalSpacing;
-                if (w <= availWidth)
+                let width = height * this._items.length + totalSpacing;
+                if (width <= availWidth)
                     break;
             }
         }
 
-        this._iconSize = iconSize;
-
-        for(let i = 0; i < this.icons.length; i++) {
+        for (let i = 0; i < this.icons.length; i++) {
             if (this.icons[i].icon != null)
                 break;
-            this.icons[i].set_size(iconSize);
+
+            this.icons[i].set_size(this._iconSize);
         }
     },
 
@@ -831,8 +833,9 @@ var AppSwitcher = new Lang.Class({
                                                             return GLib.SOURCE_REMOVE;
                                                         });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
-        } else
-           this._itemEntered(index);
+        } else {
+            this._itemEntered(index);
+        }
     },
 
     _enterItem(index) {
@@ -886,7 +889,7 @@ var AppSwitcher = new Lang.Class({
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
         else
-            item.add_accessible_state (Atk.StateType.EXPANDABLE);
+            item.add_accessible_state(Atk.StateType.EXPANDABLE);
     },
 
     _removeIcon(app) {
@@ -898,7 +901,7 @@ var AppSwitcher = new Lang.Class({
 
         this.icons.splice(index, 1);
         this.removeItem(index);
-    },
+    }
 });
 
 var ThumbnailList = new Lang.Class({
@@ -944,6 +947,7 @@ var ThumbnailList = new Lang.Class({
     addClones(availHeight) {
         if (!this._thumbnailBins.length)
             return;
+
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.get_theme_node().get_horizontal_padding() + this.get_theme_node().get_vertical_padding();
         let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
@@ -1035,8 +1039,8 @@ var WindowIcon = new Lang.Class({
                 this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
 
                 if (this.app)
-                    this._icon.add_actor(this._createAppIcon(this.app,
-                                                             APP_ICON_SIZE_SMALL));
+                    this._icon.add_actor(this._createAppIcon(this.app, APP_ICON_SIZE_SMALL));
+
                 break;
 
             case AppIconMode.APP_ICON_ONLY:
@@ -1136,9 +1140,7 @@ var WindowList = new Lang.Class({
     },
 
     _removeWindow(window) {
-        let index = this.icons.findIndex(icon => {
-            return icon.window == window;
-        });
+        let index = this.icons.findIndex(icon => icon.window == window);
         if (index === -1)
             return;
 
