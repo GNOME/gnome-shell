@@ -516,6 +516,19 @@ var AppSwitcherPopup = new Lang.Class({
                          });
 
         this._switcherList.addAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
+    },
+
+    // We need this function to start showing thumbnails if the item is already selected
+    onWindowAdded(index) {
+        if (this._thumbnailTimeoutId != 0)
+            return;
+
+        if (this._selectedIndex == index && !this._thumbnails) {
+            this._thumbnailTimeoutId = Mainloop.timeout_add(
+                THUMBNAIL_POPUP_TIME,
+                this._timeoutPopupThumbnails.bind(this));
+            GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
+        }
     }
 });
 
@@ -980,8 +993,10 @@ var AppSwitcher = new Lang.Class({
 
             // If the app has more than one windows, show the arrow and open
             // the thumbnails if it is selected right now
-            if (numWindowsNow > 1)
+            if (numWindowsNow > 1) {
                 this._arrows[index].show();
+                this._altTabPopup.onWindowAdded(index);
+            }
 
             if (appIcon.onWindowAdded) {
                 let addedWindow, windowIndex;
