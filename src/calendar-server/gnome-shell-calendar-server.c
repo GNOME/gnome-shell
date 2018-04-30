@@ -590,6 +590,11 @@ app_load_events (App *app)
   g_list_free (app->live_views);
   app->live_views = NULL;
 
+  if (!app->since || !app->until)
+    {
+      print_debug ("Skipping load of events, no time interval set yet");
+      return;
+    }
   /* timezone could have changed */
   app_update_timezone (app);
 
