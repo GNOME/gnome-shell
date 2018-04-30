@@ -774,6 +774,7 @@ var AppSwitcher = new Lang.Class({
         this.parent(true);
 
         this.icons = [];
+        this._trackedApps = [];
         this._arrows = [];
 
         this._currentWorkspace = currentWorkspace;
@@ -790,6 +791,9 @@ var AppSwitcher = new Lang.Class({
     },
 
     addApp(app, insertIndex) {
+        app._windowsChangedId = app.connect('windows-changed', this._onAppWindowsChanged.bind(this));
+        this._trackedApps.push(app);
+
         let appIcon = new AppIcon(app);
 
         appIcon.cachedWindows = appIcon.app.get_windows();
@@ -805,15 +809,25 @@ var AppSwitcher = new Lang.Class({
     },
 
     removeApp(app) {
-        this._removeIcon(app);
+        let index = this._trackedApps.indexOf(app);
+
+        app.disconnect(app._windowsChangedId);
+        this._trackedApps.splice(index, 1);
+
+        let iconIndex = this.icons.findIndex(icon => icon.app == app);
+        if (iconIndex === -1)
+            return;
+
+        // Make sure the icon is also removed
+        this._removeIcon(iconIndex);
     },
 
     _onDestroy() {
         if (this._mouseTimeOutId != 0)
             Mainloop.source_remove(this._mouseTimeOutId);
 
-        this.icons.forEach(icon => {
-            icon.app.disconnect(icon._stateChangedId);
+        this._trackedApps.forEach(app => {
+            app.disconnect(app._windowsChangedId);
         });
     },
 
@@ -938,12 +952,76 @@ var AppSwitcher = new Lang.Class({
         }
     },
 
-    _addIcon(appIcon, index) {
-        appIcon._stateChangedId = appIcon.app.connect('notify::state', app => {
-            if (app.state != Shell.AppState.RUNNING)
-                this._removeIcon(app);
-        });
+    _onAppWindowsChanged(app) {
+        let index = this.icons.findIndex(icon => icon.app == app);
+        let appIcon = this.icons[index];
 
+        let windowsBefore = appIcon ? appIcon.cachedWindows : [];
+        let windowsNow = app.get_windows();
+        if (this._currentWorkspace) {
+            windowsNow = windowsNow.filter(
+                w => w.located_on_workspace(this._currentWorkspace)
+            );
+        }
+
+        let numWindowsNow = windowsNow.length;
+
+        if (numWindowsNow > windowsBefore.length) {
+            // If this is the first window of the app, create icon
+            if (numWindowsNow == 1) {
+                appIcon = new AppIcon(app)
+
+                // Just use index 0 here
+                this._addIcon(appIcon, 0);
+            }
+
+            // Refresh the cached windows
+            appIcon.cachedWindows = windowsNow;
+
+            // If the app has more than one windows, show the arrow and open
+            // the thumbnails if it is selected right now
+            if (numWindowsNow > 1)
+                this._arrows[index].show();
+
+            if (appIcon.onWindowAdded) {
+                let addedWindow, windowIndex;
+                for (let i in windowsNow) {
+                    if (windowsBefore.indexOf(windowsNow[i]) === -1) {
+                        addedWindow = windowsNow[i];
+                        windowIndex = i;
+                    }
+                }
+
+                appIcon.onWindowAdded(addedWindow, windowIndex);
+            }
+        } else if (numWindowsNow < windowsBefore.length) {
+            // If we have no more windows, remove the icon
+            if (numWindowsNow == 0) {
+                this._removeIcon(index);
+            } else {
+                // Refresh the cached windows
+                appIcon.cachedWindows = windowsNow;
+
+                // If this is the last window, remove the arrow
+                if (numWindowsNow == 1)
+                    this._arrows[index].hide();
+
+                if (appIcon.onWindowRemoved) {
+                    let removedWindow, windowIndex;
+                    for (let i in windowsBefore) {
+                        if (windowsNow.indexOf(windowsBefore[i]) === -1) {
+                            removedWindow = windowsBefore[i];
+                            windowIndex = i;
+                        }
+                    }
+
+                    appIcon.onWindowRemoved(windowIndex);
+                }
+            }
+        }
+    },
+
+    _addIcon(appIcon, index) {
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', () => { SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM); });
 
@@ -972,15 +1050,7 @@ var AppSwitcher = new Lang.Class({
             appIcon.set_size(this._iconSize);
     },
 
-    _removeIcon(app) {
-        let index = this.icons.findIndex(icon => {
-            return icon.app == app;
-        });
-        if (index === -1)
-            return;
-
-        app.disconnect(this.icons[index]._stateChangedId);
-
+    _removeIcon(index) {
         let arrow = this._arrows.splice(index, 1);
         arrow[0].destroy();
 
@@ -1001,6 +1071,9 @@ var ThumbnailList = new Lang.Class({
         this._clones = [];
         this._currentIndex = -1;
 
+        icon.onWindowAdded = this._windowAdded.bind(this);
+        icon.onWindowRemoved = this._windowRemoved.bind(this);
+
         this.icon = icon;
 
         for (let i = 0; i < this.icon.cachedWindows.length; i++) {
@@ -1008,6 +1081,14 @@ var ThumbnailList = new Lang.Class({
         }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
+    },
+
+    _windowAdded(window, index) {
+        this._addThumbnail(window, index);
+    },
+
+    _windowRemoved(index) {
+        this._removeThumbnail(index);
     },
 
     addClones(availHeight) {
@@ -1032,10 +1113,6 @@ var ThumbnailList = new Lang.Class({
             let clone = _createWindowClone(mutterWindow, thumbnailSize);
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
-
-            clone._destroyId = mutterWindow.connect('destroy', source => {
-                this._removeThumbnail(source, clone);
-            });
 
             if (this._currentIndex >= 0)
                 this._clones.splice(this._currentIndex, 0, clone);
@@ -1080,21 +1157,14 @@ var ThumbnailList = new Lang.Class({
             this.addItem(box, name);
     },
 
-    _removeThumbnail(source, clone) {
-        let index = this._clones.indexOf(clone);
-        if (index === -1)
-            return;
-
+    _removeThumbnail(index) {
         this._clones.splice(index, 1);
-        this.icon.cachedWindows.splice(index, 1);
         this.removeItem(index);
     },
 
     _onDestroy() {
-        this._clones.forEach(clone => {
-            if (clone.source)
-                clone.source.disconnect(clone._destroyId);
-        });
+        this.icon.onWindowAdded = null;
+        this.icon.onWindowRemoved = null;
     },
 
 });
