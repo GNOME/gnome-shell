@@ -149,10 +149,9 @@ load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
                                            rowstride,
                                            (uint8_t *) xc_image->pixels,
                                            &error);
-
-  if (error)
+  if (!texture)
     {
-      meta_warning ("Failed to allocate cursor texture: %s\n", error->message);
+      g_warning ("Failed to allocate cursor texture: %s\n", error->message);
       cogl_error_free (error);
     }
 
