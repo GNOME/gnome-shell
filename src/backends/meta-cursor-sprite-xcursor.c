@@ -20,7 +20,6 @@
 
 #include "backends/meta-cursor-sprite-xcursor.h"
 
-#include "backends/meta-backend-private.h"
 #include "backends/meta-cursor.h"
 #include "backends/meta-cursor-renderer.h"
 #include "clutter/clutter.h"
@@ -118,8 +117,6 @@ static void
 load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
 {
   MetaCursorSprite *sprite = META_CURSOR_SPRITE (sprite_xcursor);
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
   XcursorImage *xc_image;
   int width, height, rowstride;
   CoglPixelFormat cogl_format;
@@ -160,8 +157,6 @@ load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
                                   xc_image->xhot, xc_image->yhot);
 
   g_clear_pointer (&texture, cogl_object_unref);
-
-  meta_cursor_renderer_realize_cursor_sprite (renderer, sprite);
 }
 
 void

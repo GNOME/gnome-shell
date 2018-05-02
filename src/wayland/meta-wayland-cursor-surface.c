@@ -71,16 +71,6 @@ update_cursor_sprite_texture (MetaWaylandCursorSurface *cursor_surface)
                                       buffer->texture,
                                       priv->hot_x * surface->scale,
                                       priv->hot_y * surface->scale);
-
-      if (priv->buffer)
-        {
-          g_assert (priv->buffer == buffer);
-          meta_cursor_renderer_realize_cursor_sprite (priv->cursor_renderer,
-                                                      cursor_sprite);
-
-          meta_wayland_surface_unref_buffer_use_count (surface);
-          g_clear_object (&priv->buffer);
-        }
     }
   else
     {

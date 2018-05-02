@@ -119,6 +119,10 @@ static GQuark quark_cursor_renderer_native_gpu_data = 0;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorRendererNative, meta_cursor_renderer_native, META_TYPE_CURSOR_RENDERER);
 
+static void
+realize_cursor_sprite (MetaCursorRenderer *renderer,
+                       MetaCursorSprite   *cursor_sprite);
+
 static MetaCursorNativeGpuState *
 get_cursor_gpu_state (MetaCursorNativePrivate *cursor_priv,
                       MetaGpuKms              *gpu_kms);
@@ -675,7 +679,7 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
     meta_cursor_renderer_native_get_instance_private (native);
 
   if (cursor_sprite)
-    meta_cursor_sprite_realize_texture (cursor_sprite);
+    realize_cursor_sprite (renderer, cursor_sprite);
 
   maybe_schedule_cursor_sprite_animation_frame (native, cursor_sprite);
 
@@ -718,6 +722,24 @@ ensure_cursor_gpu_state (MetaCursorNativePrivate *cursor_priv,
 }
 
 static void
+on_cursor_sprite_texture_changed (MetaCursorSprite *cursor_sprite)
+{
+  MetaCursorNativePrivate *cursor_priv = get_cursor_priv (cursor_sprite);
+  GHashTableIter iter;
+  MetaCursorNativeGpuState *cursor_gpu_state;
+
+  g_hash_table_iter_init (&iter, cursor_priv->gpu_states);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &cursor_gpu_state))
+    {
+      guint pending_bo;
+      pending_bo = get_pending_cursor_sprite_gbm_bo_index (cursor_gpu_state);
+      g_clear_pointer (&cursor_gpu_state->bos[pending_bo],
+                       (GDestroyNotify) gbm_bo_destroy);
+      cursor_gpu_state->pending_bo_state = META_CURSOR_GBM_BO_STATE_INVALIDATED;
+    }
+}
+
+static void
 cursor_priv_free (MetaCursorNativePrivate *cursor_priv)
 {
   g_hash_table_destroy (cursor_priv->gpu_states);
@@ -748,6 +770,9 @@ ensure_cursor_priv (MetaCursorSprite *cursor_sprite)
                            quark_cursor_sprite,
                            cursor_priv,
                            (GDestroyNotify) cursor_priv_free);
+
+  g_signal_connect (cursor_sprite, "texture-changed",
+                    G_CALLBACK (on_cursor_sprite_texture_changed), NULL);
 
   return cursor_priv;
 }
@@ -816,26 +841,31 @@ load_cursor_sprite_gbm_buffer_for_gpu (MetaCursorRendererNative *native,
     }
 }
 
-static void
-invalidate_pending_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite,
-                                         MetaGpuKms       *gpu_kms)
+static gboolean
+is_cursor_hw_state_valid (MetaCursorSprite *cursor_sprite,
+                          MetaGpuKms       *gpu_kms)
 {
   MetaCursorNativePrivate *cursor_priv;
   MetaCursorNativeGpuState *cursor_gpu_state;
-  guint pending_bo;
 
   cursor_priv = get_cursor_priv (cursor_sprite);
   if (!cursor_priv)
-    return;
+    return FALSE;
 
   cursor_gpu_state = get_cursor_gpu_state (cursor_priv, gpu_kms);
   if (!cursor_gpu_state)
-    return;
+    return FALSE;
 
-  pending_bo = get_pending_cursor_sprite_gbm_bo_index (cursor_gpu_state);
-  g_clear_pointer (&cursor_gpu_state->bos[pending_bo],
-                   (GDestroyNotify) gbm_bo_destroy);
-  cursor_gpu_state->pending_bo_state = META_CURSOR_GBM_BO_STATE_INVALIDATED;
+  switch (cursor_gpu_state->pending_bo_state)
+    {
+    case META_CURSOR_GBM_BO_STATE_SET:
+    case META_CURSOR_GBM_BO_STATE_NONE:
+      return TRUE;
+    case META_CURSOR_GBM_BO_STATE_INVALIDATED:
+      return FALSE;
+    }
+
+  g_assert_not_reached ();
 }
 
 #ifdef HAVE_WAYLAND
@@ -858,10 +888,8 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
   if (!cursor_renderer_gpu_data || cursor_renderer_gpu_data->hw_cursor_broken)
     return;
 
-  /* Destroy any previous pending cursor buffer; we'll always either fail (which
-   * should unset, or succeed, which will set new buffer.
-   */
-  invalidate_pending_cursor_sprite_gbm_bo (cursor_sprite, gpu_kms);
+  if (is_cursor_hw_state_valid (cursor_sprite, gpu_kms))
+    return;
 
   texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);
   width = cogl_texture_get_width (texture);
@@ -990,7 +1018,8 @@ realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
   if (!cursor_renderer_gpu_data || cursor_renderer_gpu_data->hw_cursor_broken)
     return;
 
-  invalidate_pending_cursor_sprite_gbm_bo (cursor_sprite, gpu_kms);
+  if (is_cursor_hw_state_valid (cursor_sprite, gpu_kms))
+    return;
 
   load_cursor_sprite_gbm_buffer_for_gpu (native,
                                          gpu_kms,
@@ -1027,9 +1056,11 @@ realize_cursor_sprite_from_xcursor (MetaCursorRenderer      *renderer,
 }
 
 static void
-meta_cursor_renderer_native_realize_cursor_sprite (MetaCursorRenderer *renderer,
-                                                   MetaCursorSprite   *cursor_sprite)
+realize_cursor_sprite (MetaCursorRenderer *renderer,
+                       MetaCursorSprite   *cursor_sprite)
 {
+  meta_cursor_sprite_realize_texture (cursor_sprite);
+
   if (META_IS_CURSOR_SPRITE_XCURSOR (cursor_sprite))
     {
       MetaCursorSpriteXcursor *sprite_xcursor =
@@ -1056,8 +1087,6 @@ meta_cursor_renderer_native_class_init (MetaCursorRendererNativeClass *klass)
 
   object_class->finalize = meta_cursor_renderer_native_finalize;
   renderer_class->update_cursor = meta_cursor_renderer_native_update_cursor;
-  renderer_class->realize_cursor_sprite =
-    meta_cursor_renderer_native_realize_cursor_sprite;
 
   quark_cursor_sprite = g_quark_from_static_string ("-meta-cursor-native");
   quark_cursor_renderer_native_gpu_data =

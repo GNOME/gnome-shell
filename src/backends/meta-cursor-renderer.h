@@ -40,8 +40,6 @@ struct _MetaCursorRendererClass
 
   gboolean (* update_cursor) (MetaCursorRenderer *renderer,
                               MetaCursorSprite   *cursor_sprite);
-  void (* realize_cursor_sprite) (MetaCursorRenderer *renderer,
-                                  MetaCursorSprite   *cursor_sprite);
 };
 
 MetaCursorRenderer * meta_cursor_renderer_new (void);
@@ -58,9 +56,6 @@ void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
 MetaCursorSprite * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer);
 
 ClutterRect meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
-                                                 MetaCursorSprite   *cursor_sprite);
-
-void meta_cursor_renderer_realize_cursor_sprite (MetaCursorRenderer *renderer,
                                                  MetaCursorSprite   *cursor_sprite);
 
 void meta_cursor_renderer_emit_painted (MetaCursorRenderer *renderer,
