@@ -630,8 +630,8 @@ meta_cursor_renderer_native_update_animation (MetaCursorRendererNative *native)
 }
 
 static void
-meta_cursor_renderer_native_trigger_frame (MetaCursorRendererNative *native,
-                                           MetaCursorSprite         *cursor_sprite)
+maybe_schedule_cursor_sprite_animation_frame (MetaCursorRendererNative *native,
+                                              MetaCursorSprite         *cursor_sprite)
 {
   MetaCursorRendererNativePrivate *priv =
     meta_cursor_renderer_native_get_instance_private (native);
@@ -677,7 +677,7 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
   if (cursor_sprite)
     meta_cursor_sprite_realize_texture (cursor_sprite);
 
-  meta_cursor_renderer_native_trigger_frame (native, cursor_sprite);
+  maybe_schedule_cursor_sprite_animation_frame (native, cursor_sprite);
 
   priv->has_hw_cursor = should_have_hw_cursor (renderer, cursor_sprite);
   update_hw_cursor (native, cursor_sprite);
