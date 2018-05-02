@@ -286,15 +286,14 @@ meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer)
 
 #ifdef HAVE_WAYLAND
 void
-meta_cursor_renderer_realize_cursor_from_wl_buffer (MetaCursorRenderer *renderer,
-                                                    MetaCursorSprite   *cursor_sprite,
-                                                    struct wl_resource *buffer)
+meta_cursor_renderer_realize_cursor_from_wl_buffer (MetaCursorRenderer      *renderer,
+                                                    MetaCursorSpriteWayland *sprite_wayland)
 {
 
   MetaCursorRendererClass *renderer_class = META_CURSOR_RENDERER_GET_CLASS (renderer);
 
   if (renderer_class->realize_cursor_from_wl_buffer)
-    renderer_class->realize_cursor_from_wl_buffer (renderer, cursor_sprite, buffer);
+    renderer_class->realize_cursor_from_wl_buffer (renderer, sprite_wayland);
 }
 #endif
 

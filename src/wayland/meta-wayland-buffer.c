@@ -88,6 +88,12 @@ meta_wayland_buffer_from_resource (struct wl_resource *resource)
   return buffer;
 }
 
+struct wl_resource *
+meta_wayland_buffer_get_resource (MetaWaylandBuffer *buffer)
+{
+  return buffer->resource;
+}
+
 static gboolean
 meta_wayland_buffer_is_realized (MetaWaylandBuffer *buffer)
 {

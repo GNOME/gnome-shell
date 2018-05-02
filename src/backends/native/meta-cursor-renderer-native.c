@@ -43,6 +43,11 @@
 #include "core/boxes-private.h"
 #include "meta/boxes.h"
 
+#ifdef HAVE_WAYLAND
+#include "wayland/meta-cursor-sprite-wayland.h"
+#include "wayland/meta-wayland-buffer.h"
+#endif
+
 #ifndef DRM_CAP_CURSOR_WIDTH
 #define DRM_CAP_CURSOR_WIDTH 0x8
 #endif
@@ -827,12 +832,13 @@ invalidate_pending_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite,
 
 #ifdef HAVE_WAYLAND
 static void
-realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer *renderer,
-                                              MetaGpuKms         *gpu_kms,
-                                              MetaCursorSprite   *cursor_sprite,
-                                              struct wl_resource *buffer)
+realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
+                                              MetaGpuKms              *gpu_kms,
+                                              MetaCursorSpriteWayland *sprite_wayland,
+                                              struct wl_resource      *buffer)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_wayland);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
   uint32_t gbm_format;
   uint64_t cursor_width, cursor_height;
@@ -929,15 +935,24 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer *renderer,
 }
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *renderer,
-                                                           MetaCursorSprite *cursor_sprite,
-                                                           struct wl_resource *buffer)
+meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer      *renderer,
+                                                           MetaCursorSpriteWayland *sprite_wayland)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
 	  meta_cursor_renderer_native_get_instance_private (native);
+  MetaWaylandBuffer *buffer;
+  struct wl_resource *buffer_resource;
   GList *gpus;
   GList *l;
+
+  buffer = meta_cursor_sprite_wayland_get_buffer (sprite_wayland);
+  if (!buffer)
+    return;
+
+  buffer_resource = meta_wayland_buffer_get_resource (buffer);
+  if (!buffer_resource)
+    return;
 
   gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
   for (l = gpus; l; l = l->next)
@@ -946,8 +961,8 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *r
 
       realize_cursor_sprite_from_wl_buffer_for_gpu (renderer,
                                                     gpu_kms,
-                                                    cursor_sprite,
-                                                    buffer);
+                                                    sprite_wayland,
+                                                    buffer_resource);
     }
 }
 #endif

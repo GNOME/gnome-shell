@@ -74,13 +74,9 @@ update_cursor_sprite_texture (MetaWaylandCursorSurface *cursor_surface)
 
       if (priv->buffer)
         {
-          struct wl_resource *buffer_resource;
-
           g_assert (priv->buffer == buffer);
-          buffer_resource = buffer->resource;
           meta_cursor_renderer_realize_cursor_from_wl_buffer (priv->cursor_renderer,
-                                                              cursor_sprite,
-                                                              buffer_resource);
+                                                              priv->cursor_sprite);
 
           meta_wayland_surface_unref_buffer_use_count (surface);
           g_clear_object (&priv->buffer);
@@ -260,6 +256,13 @@ meta_wayland_cursor_surface_constructed (GObject *object)
       g_set_object (&priv->buffer, buffer);
       meta_wayland_surface_ref_buffer_use_count (surface);
     }
+
+  priv->cursor_sprite = meta_cursor_sprite_wayland_new (surface);
+  g_signal_connect_object (priv->cursor_sprite,
+                           "prepare-at",
+                           G_CALLBACK (cursor_sprite_prepare_at),
+                           cursor_surface,
+                           0);
 }
 
 static void
@@ -268,12 +271,6 @@ meta_wayland_cursor_surface_init (MetaWaylandCursorSurface *role)
   MetaWaylandCursorSurfacePrivate *priv =
     meta_wayland_cursor_surface_get_instance_private (role);
 
-  priv->cursor_sprite = meta_cursor_sprite_wayland_new ();
-  g_signal_connect_object (priv->cursor_sprite,
-                           "prepare-at",
-                           G_CALLBACK (cursor_sprite_prepare_at),
-                           role,
-                           0);
   wl_list_init (&priv->frame_callbacks);
 }
 

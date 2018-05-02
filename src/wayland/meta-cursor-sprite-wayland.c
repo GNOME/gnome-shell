@@ -23,6 +23,8 @@
 struct _MetaCursorSpriteWayland
 {
   MetaCursorSprite parent;
+
+  MetaWaylandSurface *surface;
 };
 
 G_DEFINE_TYPE (MetaCursorSpriteWayland,
@@ -41,9 +43,20 @@ meta_cursor_sprite_wayland_is_animated (MetaCursorSprite *sprite)
 }
 
 MetaCursorSpriteWayland *
-meta_cursor_sprite_wayland_new (void)
+meta_cursor_sprite_wayland_new (MetaWaylandSurface *surface)
 {
-  return g_object_new (META_TYPE_CURSOR_SPRITE_WAYLAND, NULL);
+  MetaCursorSpriteWayland *sprite_wayland;
+
+  sprite_wayland = g_object_new (META_TYPE_CURSOR_SPRITE_WAYLAND, NULL);
+  sprite_wayland->surface = surface;
+
+  return sprite_wayland;
+}
+
+MetaWaylandBuffer *
+meta_cursor_sprite_wayland_get_buffer (MetaCursorSpriteWayland *sprite_wayland)
+{
+  return meta_wayland_surface_get_buffer (sprite_wayland->surface);
 }
 
 static void

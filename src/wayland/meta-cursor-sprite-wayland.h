@@ -22,11 +22,14 @@
 #include <glib-object.h>
 
 #include "backends/meta-cursor.h"
+#include "wayland/meta-wayland-surface.h"
 
 #define META_TYPE_CURSOR_SPRITE_WAYLAND meta_cursor_sprite_wayland_get_type ()
 G_DECLARE_FINAL_TYPE (MetaCursorSpriteWayland, meta_cursor_sprite_wayland,
                       META, CURSOR_SPRITE_WAYLAND, MetaCursorSprite)
 
-MetaCursorSpriteWayland * meta_cursor_sprite_wayland_new (void);
+MetaCursorSpriteWayland * meta_cursor_sprite_wayland_new (MetaWaylandSurface *surface);
+
+MetaWaylandBuffer * meta_cursor_sprite_wayland_get_buffer (MetaCursorSpriteWayland *sprite_wayland);
 
 #endif /* META_CURSOR_SPRITE_WAYLAND_H */
