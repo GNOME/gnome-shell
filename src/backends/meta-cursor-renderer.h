@@ -29,11 +29,6 @@
 
 #include <meta/screen.h>
 #include "meta-cursor.h"
-#include "backends/meta-cursor-sprite-xcursor.h"
-
-#ifdef HAVE_WAYLAND
-#include "wayland/meta-cursor-sprite-wayland.h"
-#endif
 
 #define META_TYPE_CURSOR_RENDERER (meta_cursor_renderer_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaCursorRenderer, meta_cursor_renderer,
@@ -45,12 +40,8 @@ struct _MetaCursorRendererClass
 
   gboolean (* update_cursor) (MetaCursorRenderer *renderer,
                               MetaCursorSprite   *cursor_sprite);
-#ifdef HAVE_WAYLAND
-  void (* realize_cursor_from_wl_buffer) (MetaCursorRenderer      *renderer,
-                                          MetaCursorSpriteWayland *sprite_wayland);
-#endif
-  void (* realize_cursor_from_xcursor) (MetaCursorRenderer      *renderer,
-                                        MetaCursorSpriteXcursor *sprite_xcursor);
+  void (* realize_cursor_sprite) (MetaCursorRenderer *renderer,
+                                  MetaCursorSprite   *cursor_sprite);
 };
 
 MetaCursorRenderer * meta_cursor_renderer_new (void);
@@ -69,13 +60,8 @@ MetaCursorSprite * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer
 ClutterRect meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
                                                  MetaCursorSprite   *cursor_sprite);
 
-#ifdef HAVE_WAYLAND
-void meta_cursor_renderer_realize_cursor_from_wl_buffer (MetaCursorRenderer      *renderer,
-                                                         MetaCursorSpriteWayland *sprite_wayland);
-#endif
-
-void meta_cursor_renderer_realize_cursor_from_xcursor (MetaCursorRenderer      *renderer,
-                                                       MetaCursorSpriteXcursor *sprite_xcursor);
+void meta_cursor_renderer_realize_cursor_sprite (MetaCursorRenderer *renderer,
+                                                 MetaCursorSprite   *cursor_sprite);
 
 void meta_cursor_renderer_emit_painted (MetaCursorRenderer *renderer,
                                         MetaCursorSprite   *cursor_sprite);

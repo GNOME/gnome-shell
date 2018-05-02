@@ -117,6 +117,7 @@ load_cursor_on_client (MetaCursor cursor, int scale)
 static void
 load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
 {
+  MetaCursorSprite *sprite = META_CURSOR_SPRITE (sprite_xcursor);
   MetaBackend *backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
   XcursorImage *xc_image;
@@ -127,7 +128,7 @@ load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
   CoglTexture2D *texture;
   CoglError *error = NULL;
 
-  g_assert (!meta_cursor_sprite_get_cogl_texture (META_CURSOR_SPRITE (sprite_xcursor)));
+  g_assert (!meta_cursor_sprite_get_cogl_texture (sprite));
 
   xc_image = meta_cursor_sprite_xcursor_get_current_image (sprite_xcursor);
   width = (int) xc_image->width;
@@ -155,13 +156,13 @@ load_from_current_xcursor_image (MetaCursorSpriteXcursor *sprite_xcursor)
       cogl_error_free (error);
     }
 
-  meta_cursor_sprite_set_texture (META_CURSOR_SPRITE (sprite_xcursor),
+  meta_cursor_sprite_set_texture (sprite,
                                   COGL_TEXTURE (texture),
                                   xc_image->xhot, xc_image->yhot);
 
   g_clear_pointer (&texture, cogl_object_unref);
 
-  meta_cursor_renderer_realize_cursor_from_xcursor (renderer, sprite_xcursor);
+  meta_cursor_renderer_realize_cursor_sprite (renderer, sprite);
 }
 
 void

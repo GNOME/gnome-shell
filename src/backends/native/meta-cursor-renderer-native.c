@@ -35,6 +35,7 @@
 #include <meta/meta-backend.h>
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-cursor-sprite-xcursor.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
@@ -942,8 +943,8 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
 }
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer      *renderer,
-                                                           MetaCursorSpriteWayland *sprite_wayland)
+realize_cursor_sprite_from_wl_buffer (MetaCursorRenderer      *renderer,
+                                      MetaCursorSpriteWayland *sprite_wayland)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
@@ -1002,8 +1003,8 @@ realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
 }
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer      *renderer,
-                                                         MetaCursorSpriteXcursor *sprite_xcursor)
+realize_cursor_sprite_from_xcursor (MetaCursorRenderer      *renderer,
+                                    MetaCursorSpriteXcursor *sprite_xcursor)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
@@ -1026,6 +1027,28 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer     
 }
 
 static void
+meta_cursor_renderer_native_realize_cursor_sprite (MetaCursorRenderer *renderer,
+                                                   MetaCursorSprite   *cursor_sprite)
+{
+  if (META_IS_CURSOR_SPRITE_XCURSOR (cursor_sprite))
+    {
+      MetaCursorSpriteXcursor *sprite_xcursor =
+        META_CURSOR_SPRITE_XCURSOR (cursor_sprite);
+
+      realize_cursor_sprite_from_xcursor (renderer, sprite_xcursor);
+    }
+#ifdef HAVE_WAYLAND
+  else if (META_IS_CURSOR_SPRITE_WAYLAND (cursor_sprite))
+    {
+      MetaCursorSpriteWayland *sprite_wayland =
+        META_CURSOR_SPRITE_WAYLAND (cursor_sprite);
+
+      realize_cursor_sprite_from_wl_buffer (renderer, sprite_wayland);
+    }
+#endif
+}
+
+static void
 meta_cursor_renderer_native_class_init (MetaCursorRendererNativeClass *klass)
 {
   MetaCursorRendererClass *renderer_class = META_CURSOR_RENDERER_CLASS (klass);
@@ -1033,12 +1056,8 @@ meta_cursor_renderer_native_class_init (MetaCursorRendererNativeClass *klass)
 
   object_class->finalize = meta_cursor_renderer_native_finalize;
   renderer_class->update_cursor = meta_cursor_renderer_native_update_cursor;
-#ifdef HAVE_WAYLAND
-  renderer_class->realize_cursor_from_wl_buffer =
-    meta_cursor_renderer_native_realize_cursor_from_wl_buffer;
-#endif
-  renderer_class->realize_cursor_from_xcursor =
-    meta_cursor_renderer_native_realize_cursor_from_xcursor;
+  renderer_class->realize_cursor_sprite =
+    meta_cursor_renderer_native_realize_cursor_sprite;
 
   quark_cursor_sprite = g_quark_from_static_string ("-meta-cursor-native");
   quark_cursor_renderer_native_gpu_data =
