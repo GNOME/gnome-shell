@@ -692,7 +692,7 @@ Cally_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 Cally_@LIBMUTTER_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='cally/cally.h' \
-	--pkg-export=mutter-cally-@LIBMUTTER_API_VERSION@ \
+	--pkg-export=mutter-clutter-@LIBMUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@LIBMUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@LIBMUTTER_API_VERSION@.gir
