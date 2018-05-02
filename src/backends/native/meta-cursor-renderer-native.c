@@ -157,7 +157,8 @@ static void
 meta_cursor_renderer_native_finalize (GObject *object)
 {
   MetaCursorRendererNative *renderer = META_CURSOR_RENDERER_NATIVE (object);
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (renderer);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (renderer);
 
   if (priv->animation_timeout_id)
     g_source_remove (priv->animation_timeout_id);
@@ -208,7 +209,8 @@ set_crtc_cursor (MetaCursorRendererNative *native,
                  MetaCrtc                 *crtc,
                  MetaCursorSprite         *cursor_sprite)
 {
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
   MetaGpuKms *gpu_kms;
   int kms_fd;
@@ -374,7 +376,8 @@ static void
 update_hw_cursor (MetaCursorRendererNative *native,
                   MetaCursorSprite         *cursor_sprite)
 {
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (native);
   MetaMonitorManager *monitor_manager = priv->monitor_manager;
   GList *logical_monitors;
@@ -570,7 +573,8 @@ should_have_hw_cursor (MetaCursorRenderer *renderer,
                        MetaCursorSprite   *cursor_sprite)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
   GList *gpus;
   GList *l;
   CoglTexture *texture;
@@ -612,7 +616,8 @@ should_have_hw_cursor (MetaCursorRenderer *renderer,
 static gboolean
 meta_cursor_renderer_native_update_animation (MetaCursorRendererNative *native)
 {
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (native);
   MetaCursorSprite *cursor_sprite = meta_cursor_renderer_get_cursor (renderer);
 
@@ -627,7 +632,8 @@ static void
 meta_cursor_renderer_native_trigger_frame (MetaCursorRendererNative *native,
                                            MetaCursorSprite         *cursor_sprite)
 {
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
   gboolean cursor_change;
   guint delay;
 
@@ -664,7 +670,8 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
                                            MetaCursorSprite   *cursor_sprite)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
 
   if (cursor_sprite)
     meta_cursor_sprite_realize_texture (cursor_sprite);
@@ -940,7 +947,7 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer   
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
-	  meta_cursor_renderer_native_get_instance_private (native);
+    meta_cursor_renderer_native_get_instance_private (native);
   MetaWaylandBuffer *buffer;
   struct wl_resource *buffer_resource;
   GList *gpus;
@@ -1000,7 +1007,7 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer     
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
-	  meta_cursor_renderer_native_get_instance_private (native);
+    meta_cursor_renderer_native_get_instance_private (native);
   XcursorImage *xc_image;
   GList *gpus;
   GList *l;
