@@ -15,22 +15,22 @@
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2017.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2018.
 # Enrico Nicoletto <liverig@gmail.com>, 2013-2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-16 21:34+0000\n"
-"PO-Revision-Date: 2018-02-09 21:52-0200\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2018-04-13 18:31+0000\n"
+"PO-Revision-Date: 2018-05-02 15:45-0200\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Virtaal 1.0.0-beta1\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -356,7 +356,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ocorreu um erro ao carregar o dialogo de preferências para %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -642,7 +642,7 @@ msgstr "Negar acesso"
 
 #: js/ui/accessDialog.js:64 js/ui/status/location.js:396
 msgid "Grant Access"
-msgstr "Garantir acesso"
+msgstr "Conceder acesso"
 
 #: js/ui/appDisplay.js:793
 msgid "Frequently used applications will appear here"
@@ -676,12 +676,12 @@ msgstr "Adicionar aos favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s foi adicionado aos seus favoritos."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removido dos seus favoritos."
@@ -876,7 +876,7 @@ msgstr "Unidade externa desconectada"
 msgid "Open with %s"
 msgstr "Abrir com %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Senha:"
 
@@ -964,15 +964,15 @@ msgstr "Uma senha é necessária para se conectar a “%s”."
 msgid "Network Manager"
 msgstr "Gerenciador de rede"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Administrador"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "Autenticação"
 
@@ -980,7 +980,7 @@ msgstr "Autenticação"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
@@ -1028,7 +1028,7 @@ msgstr "Adicionar relógios mundiais…"
 msgid "World Clocks"
 msgstr "Relógios mundiais"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "Meteorologia"
 
@@ -1036,7 +1036,7 @@ msgstr "Meteorologia"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s por todo o dia."
@@ -1045,7 +1045,7 @@ msgstr "%s por todo o dia."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, depois %s mais tarde."
@@ -1054,30 +1054,30 @@ msgstr "%s, depois %s mais tarde."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, depois %s, seguido de %s mais tarde."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Selecione uma localização…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "Carregando…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Sensação térmica de %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Conecte-se à internet para obter as informações meteorológicas"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "No momento as informações meteorológicas não estão disponíveis"
 
