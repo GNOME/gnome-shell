@@ -121,7 +121,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorRendererNative, meta_cursor_renderer_nativ
 
 static void
 realize_cursor_sprite (MetaCursorRenderer *renderer,
-                       MetaCursorSprite   *cursor_sprite);
+                       MetaCursorSprite   *cursor_sprite,
+                       GList              *gpus);
 
 static MetaCursorNativeGpuState *
 get_cursor_gpu_state (MetaCursorNativePrivate *cursor_priv,
@@ -575,19 +576,15 @@ can_draw_cursor_unscaled (MetaCursorRenderer *renderer,
 
 static gboolean
 should_have_hw_cursor (MetaCursorRenderer *renderer,
-                       MetaCursorSprite   *cursor_sprite)
+                       MetaCursorSprite   *cursor_sprite,
+                       GList              *gpus)
 {
-  MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
-  MetaCursorRendererNativePrivate *priv =
-    meta_cursor_renderer_native_get_instance_private (native);
-  GList *gpus;
   GList *l;
   CoglTexture *texture;
 
   if (!cursor_sprite)
     return FALSE;
 
-  gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
   for (l = gpus; l; l = l->next)
     {
       MetaGpuKms *gpu_kms = l->data;
@@ -670,6 +667,54 @@ maybe_schedule_cursor_sprite_animation_frame (MetaCursorRendererNative *native,
     }
 }
 
+static GList *
+calculate_cursor_sprite_gpus (MetaCursorRenderer *renderer,
+                              MetaCursorSprite   *cursor_sprite)
+{
+  MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (native);
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
+  GList *gpus = NULL;
+  GList *logical_monitors;
+  GList *l;
+  ClutterRect cursor_rect;
+
+  cursor_rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+      MetaRectangle logical_monitor_layout;
+      ClutterRect logical_monitor_rect;
+      GList *monitors, *l_mon;
+
+      logical_monitor_layout =
+        meta_logical_monitor_get_layout (logical_monitor);
+      logical_monitor_rect =
+        meta_rectangle_to_clutter_rect (&logical_monitor_layout);
+
+      if (!clutter_rect_intersection (&cursor_rect, &logical_monitor_rect,
+                                      NULL))
+        continue;
+
+      monitors = meta_logical_monitor_get_monitors (logical_monitor);
+      for (l_mon = monitors; l_mon; l_mon = l_mon->next)
+        {
+          MetaMonitor *monitor = l_mon->data;
+          MetaGpu *gpu;
+
+          gpu = meta_monitor_get_gpu (monitor);
+          if (!g_list_find (gpus, gpu))
+            gpus = g_list_prepend (gpus, gpu);
+        }
+    }
+
+  return gpus;
+}
+
 static gboolean
 meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
                                            MetaCursorSprite   *cursor_sprite)
@@ -677,13 +722,18 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv =
     meta_cursor_renderer_native_get_instance_private (native);
+  g_autoptr (GList) gpus = NULL;
 
   if (cursor_sprite)
-    realize_cursor_sprite (renderer, cursor_sprite);
+    {
+      meta_cursor_sprite_realize_texture (cursor_sprite);
+      gpus = calculate_cursor_sprite_gpus (renderer, cursor_sprite);
+      realize_cursor_sprite (renderer, cursor_sprite, gpus);
+    }
 
   maybe_schedule_cursor_sprite_animation_frame (native, cursor_sprite);
 
-  priv->has_hw_cursor = should_have_hw_cursor (renderer, cursor_sprite);
+  priv->has_hw_cursor = should_have_hw_cursor (renderer, cursor_sprite, gpus);
   update_hw_cursor (native, cursor_sprite);
 
   return (priv->has_hw_cursor ||
@@ -875,8 +925,7 @@ is_cursor_hw_state_valid (MetaCursorSprite *cursor_sprite,
 static void
 realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
                                               MetaGpuKms              *gpu_kms,
-                                              MetaCursorSpriteWayland *sprite_wayland,
-                                              struct wl_resource      *buffer)
+                                              MetaCursorSpriteWayland *sprite_wayland)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_wayland);
@@ -885,6 +934,9 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
   uint64_t cursor_width, cursor_height;
   CoglTexture *texture;
   uint width, height;
+  MetaWaylandBuffer *buffer;
+  struct wl_resource *buffer_resource;
+  struct wl_shm_buffer *shm_buffer;
 
   cursor_renderer_gpu_data =
     meta_cursor_renderer_native_gpu_data_from_gpu (gpu_kms);
@@ -898,7 +950,15 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
   width = cogl_texture_get_width (texture);
   height = cogl_texture_get_height (texture);
 
-  struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (buffer);
+  buffer = meta_cursor_sprite_wayland_get_buffer (sprite_wayland);
+  if (!buffer)
+    return;
+
+  buffer_resource = meta_wayland_buffer_get_resource (buffer);
+  if (!buffer_resource)
+    return;
+
+  shm_buffer = wl_shm_buffer_get (buffer_resource);
   if (shm_buffer)
     {
       int rowstride = wl_shm_buffer_get_stride (shm_buffer);
@@ -972,49 +1032,17 @@ realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer      *renderer,
       set_pending_cursor_sprite_gbm_bo (cursor_sprite, gpu_kms, bo);
     }
 }
-
-static void
-realize_cursor_sprite_from_wl_buffer (MetaCursorRenderer      *renderer,
-                                      MetaCursorSpriteWayland *sprite_wayland)
-{
-  MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
-  MetaCursorRendererNativePrivate *priv =
-    meta_cursor_renderer_native_get_instance_private (native);
-  MetaWaylandBuffer *buffer;
-  struct wl_resource *buffer_resource;
-  GList *gpus;
-  GList *l;
-
-  buffer = meta_cursor_sprite_wayland_get_buffer (sprite_wayland);
-  if (!buffer)
-    return;
-
-  buffer_resource = meta_wayland_buffer_get_resource (buffer);
-  if (!buffer_resource)
-    return;
-
-  gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
-  for (l = gpus; l; l = l->next)
-    {
-      MetaGpuKms *gpu_kms = l->data;
-
-      realize_cursor_sprite_from_wl_buffer_for_gpu (renderer,
-                                                    gpu_kms,
-                                                    sprite_wayland,
-                                                    buffer_resource);
-    }
-}
 #endif
 
 static void
 realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
                                             MetaGpuKms              *gpu_kms,
-                                            MetaCursorSpriteXcursor *sprite_xcursor,
-                                            XcursorImage            *xc_image)
+                                            MetaCursorSpriteXcursor *sprite_xcursor)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
   MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_xcursor);
+  XcursorImage *xc_image;
 
   cursor_renderer_gpu_data =
     meta_cursor_renderer_native_gpu_data_from_gpu (gpu_kms);
@@ -1023,6 +1051,8 @@ realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
 
   if (is_cursor_hw_state_valid (cursor_sprite, gpu_kms))
     return;
+
+  xc_image = meta_cursor_sprite_xcursor_get_current_image (sprite_xcursor);
 
   load_cursor_sprite_gbm_buffer_for_gpu (native,
                                          gpu_kms,
@@ -1035,41 +1065,18 @@ realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
 }
 
 static void
-realize_cursor_sprite_from_xcursor (MetaCursorRenderer      *renderer,
-                                    MetaCursorSpriteXcursor *sprite_xcursor)
+realize_cursor_sprite_for_gpu (MetaCursorRenderer *renderer,
+                               MetaGpuKms         *gpu_kms,
+                               MetaCursorSprite   *cursor_sprite)
 {
-  MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
-  MetaCursorRendererNativePrivate *priv =
-    meta_cursor_renderer_native_get_instance_private (native);
-  XcursorImage *xc_image;
-  GList *gpus;
-  GList *l;
-
-  xc_image = meta_cursor_sprite_xcursor_get_current_image (sprite_xcursor);
-  gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
-  for (l = gpus; l; l = l->next)
-    {
-      MetaGpuKms *gpu_kms = l->data;
-
-      realize_cursor_sprite_from_xcursor_for_gpu (renderer,
-                                                  gpu_kms,
-                                                  sprite_xcursor,
-                                                  xc_image);
-    }
-}
-
-static void
-realize_cursor_sprite (MetaCursorRenderer *renderer,
-                       MetaCursorSprite   *cursor_sprite)
-{
-  meta_cursor_sprite_realize_texture (cursor_sprite);
-
   if (META_IS_CURSOR_SPRITE_XCURSOR (cursor_sprite))
     {
       MetaCursorSpriteXcursor *sprite_xcursor =
         META_CURSOR_SPRITE_XCURSOR (cursor_sprite);
 
-      realize_cursor_sprite_from_xcursor (renderer, sprite_xcursor);
+      realize_cursor_sprite_from_xcursor_for_gpu (renderer,
+                                                  gpu_kms,
+                                                  sprite_xcursor);
     }
 #ifdef HAVE_WAYLAND
   else if (META_IS_CURSOR_SPRITE_WAYLAND (cursor_sprite))
@@ -1077,9 +1084,26 @@ realize_cursor_sprite (MetaCursorRenderer *renderer,
       MetaCursorSpriteWayland *sprite_wayland =
         META_CURSOR_SPRITE_WAYLAND (cursor_sprite);
 
-      realize_cursor_sprite_from_wl_buffer (renderer, sprite_wayland);
+      realize_cursor_sprite_from_wl_buffer_for_gpu (renderer,
+                                                    gpu_kms,
+                                                    sprite_wayland);
     }
 #endif
+}
+
+static void
+realize_cursor_sprite (MetaCursorRenderer *renderer,
+                       MetaCursorSprite   *cursor_sprite,
+                       GList              *gpus)
+{
+  GList *l;
+
+  for (l = gpus; l; l = l->next)
+    {
+      MetaGpuKms *gpu_kms = l->data;
+
+      realize_cursor_sprite_for_gpu (renderer, gpu_kms, cursor_sprite);
+    }
 }
 
 static void
