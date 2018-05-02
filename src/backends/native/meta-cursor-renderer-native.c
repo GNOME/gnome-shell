@@ -827,10 +827,10 @@ invalidate_pending_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite,
 
 #ifdef HAVE_WAYLAND
 static void
-meta_cursor_renderer_native_realize_cursor_from_wl_buffer_for_gpu (MetaCursorRenderer *renderer,
-                                                                   MetaGpuKms         *gpu_kms,
-                                                                   MetaCursorSprite   *cursor_sprite,
-                                                                   struct wl_resource *buffer)
+realize_cursor_sprite_from_wl_buffer_for_gpu (MetaCursorRenderer *renderer,
+                                              MetaGpuKms         *gpu_kms,
+                                              MetaCursorSprite   *cursor_sprite,
+                                              struct wl_resource *buffer)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
@@ -944,20 +944,19 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *r
     {
       MetaGpuKms *gpu_kms = l->data;
 
-      meta_cursor_renderer_native_realize_cursor_from_wl_buffer_for_gpu (
-        renderer,
-        gpu_kms,
-        cursor_sprite,
-        buffer);
+      realize_cursor_sprite_from_wl_buffer_for_gpu (renderer,
+                                                    gpu_kms,
+                                                    cursor_sprite,
+                                                    buffer);
     }
 }
 #endif
 
 static void
-meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
-                                                                 MetaGpuKms              *gpu_kms,
-                                                                 MetaCursorSpriteXcursor *sprite_xcursor,
-                                                                 XcursorImage            *xc_image)
+realize_cursor_sprite_from_xcursor_for_gpu (MetaCursorRenderer      *renderer,
+                                            MetaGpuKms              *gpu_kms,
+                                            MetaCursorSpriteXcursor *sprite_xcursor,
+                                            XcursorImage            *xc_image)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativeGpuData *cursor_renderer_gpu_data;
@@ -997,11 +996,10 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer     
     {
       MetaGpuKms *gpu_kms = l->data;
 
-      meta_cursor_renderer_native_realize_cursor_from_xcursor_for_gpu (
-        renderer,
-        gpu_kms,
-        sprite_xcursor,
-        xc_image);
+      realize_cursor_sprite_from_xcursor_for_gpu (renderer,
+                                                  gpu_kms,
+                                                  sprite_xcursor,
+                                                  xc_image);
     }
 }
 
