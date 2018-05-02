@@ -54,4 +54,7 @@ MetaMonitorSwitchConfigType meta_monitor_manager_get_switch_config (MetaMonitorM
 
 gint meta_monitor_manager_get_display_configuration_timeout (void);
 
+/* Re-declaration of parent type for introspection */
+GType meta_dbus_display_config_skeleton_get_type (void) G_GNUC_CONST;
+
 #endif /* META_MONITOR_MANAGER_H */

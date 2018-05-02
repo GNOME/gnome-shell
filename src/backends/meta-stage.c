@@ -22,7 +22,7 @@
 
 #include <config.h>
 
-#include "meta-stage.h"
+#include "meta-stage-private.h"
 
 #include <meta/meta-backend.h>
 #include <meta/meta-monitor-manager.h>

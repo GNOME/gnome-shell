@@ -37,7 +37,7 @@
 #include <X11/Xlib-xcb.h>
 #include <xkbcommon/xkbcommon-x11.h>
 
-#include "backends/meta-stage.h"
+#include "backends/meta-stage-private.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
 #include "backends/x11/meta-renderer-x11.h"
 #include "meta/meta-cursor-tracker.h"

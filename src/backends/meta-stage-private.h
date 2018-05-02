@@ -17,38 +17,22 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_STAGE_H
-#define META_STAGE_H
+#ifndef META_STAGE_PRIVATE_H
+#define META_STAGE_PRIVATE_H
 
-#include <clutter/clutter.h>
+#include <meta/meta-stage.h>
 
 #include "meta-cursor.h"
 #include <meta/boxes.h>
 
 G_BEGIN_DECLS
 
-#define META_TYPE_STAGE            (meta_stage_get_type ())
-#define META_STAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_STAGE, MetaStage))
-#define META_STAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_STAGE, MetaStageClass))
-#define META_IS_STAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_STAGE))
-#define META_IS_STAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_STAGE))
-#define META_STAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_STAGE, MetaStageClass))
-
-typedef struct _MetaStage      MetaStage;
-typedef struct _MetaStageClass MetaStageClass;
 typedef struct _MetaOverlay    MetaOverlay;
-
-struct _MetaStageClass
-{
-  ClutterStageClass parent_class;
-};
 
 struct _MetaStage
 {
   ClutterStage parent;
 };
-
-GType             meta_stage_get_type                (void) G_GNUC_CONST;
 
 ClutterActor     *meta_stage_new                     (void);
 
@@ -68,4 +52,4 @@ void meta_stage_update_view_layout (MetaStage *stage);
 
 G_END_DECLS
 
-#endif /* META_STAGE_H */
+#endif /* META_STAGE_PRIVATE_H */

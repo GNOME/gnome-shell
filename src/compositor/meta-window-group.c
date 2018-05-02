@@ -10,7 +10,7 @@
 #include "clutter-utils.h"
 #include "compositor-private.h"
 #include "meta-window-actor-private.h"
-#include "meta-window-group.h"
+#include "meta-window-group-private.h"
 #include "window-private.h"
 #include "meta-cullable.h"
 

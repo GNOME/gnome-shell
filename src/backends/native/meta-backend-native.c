@@ -43,7 +43,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-pointer-constraint.h"
-#include "backends/meta-stage.h"
+#include "backends/meta-stage-private.h"
 #include "backends/native/meta-clutter-backend-native.h"
 #include "backends/native/meta-input-settings-native.h"
 #include "backends/native/meta-renderer-native.h"

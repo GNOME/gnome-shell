@@ -67,7 +67,7 @@
 #include <meta/meta-background-group.h>
 #include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
-#include "meta-window-group.h"
+#include "meta-window-group-private.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() and meta_display_cancel_touch() */
 #include "util-private.h"

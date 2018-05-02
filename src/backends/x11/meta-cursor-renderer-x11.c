@@ -29,7 +29,7 @@
 #include <X11/extensions/Xfixes.h>
 
 #include "meta-backend-x11.h"
-#include "meta-stage.h"
+#include "meta-stage-private.h"
 
 struct _MetaCursorRendererX11Private
 {

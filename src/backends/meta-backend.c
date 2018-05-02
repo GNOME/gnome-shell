@@ -34,7 +34,7 @@
 #include "meta-input-settings-private.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "meta-cursor-tracker-private.h"
-#include "meta-stage.h"
+#include "meta-stage-private.h"
 
 #ifdef HAVE_REMOTE_DESKTOP
 #include "backends/meta-dbus-session-watcher.h"

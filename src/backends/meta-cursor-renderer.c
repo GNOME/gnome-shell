@@ -33,7 +33,7 @@
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>
 
-#include "meta-stage.h"
+#include "meta-stage-private.h"
 
 struct _MetaCursorRendererPrivate
 {
