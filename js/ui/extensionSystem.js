@@ -313,11 +313,7 @@ function _loadExtensions() {
 
     enabledExtensions = getEnabledExtensions();
 
-    let finder = new ExtensionUtils.ExtensionFinder();
-    finder.connect('extension-found', (finder, extension) => {
-        loadExtension(extension);
-    });
-    finder.scanExtensions();
+    ExtensionUtils.scanExtensions((extension) => loadExtension(extension));
 }
 
 function enableAllExtensions() {

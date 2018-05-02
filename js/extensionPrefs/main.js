@@ -192,13 +192,11 @@ var Application = new Lang.Class({
     },
 
     _scanExtensions() {
-        let finder = new ExtensionUtils.ExtensionFinder();
-        finder.connect('extension-found', this._extensionFound.bind(this));
-        finder.scanExtensions();
+        ExtensionUtils.scanExtensions((extension) => this._extensionFound(extension));
         this._extensionsLoaded();
     },
 
-    _extensionFound(finder, extension) {
+    _extensionFound(extension) {
         let row = new ExtensionRow(extension.uuid);
 
         row.prefsButton.visible = this._extensionAvailable(row.uuid);
