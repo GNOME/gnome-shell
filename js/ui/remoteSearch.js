@@ -295,7 +295,7 @@ var RemoteSearchProvider = new Lang.Class({
                                name: metas[i]['name'],
                                description: metas[i]['description'],
                                createIcon: size => {
-                                   this.createIcon(size, metas[i]);
+                                   return this.createIcon(size, metas[i]);
                                },
                                clipboardText: metas[i]['clipboardText'] });
         }
