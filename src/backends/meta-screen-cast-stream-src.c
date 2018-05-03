@@ -153,6 +153,11 @@ meta_screen_cast_stream_src_maybe_record_frame (MetaScreenCastStreamSrc *src)
     return;
 
   buffer = pw_stream_peek_buffer (priv->pipewire_stream, buffer_id);
+  if (!buffer)
+    {
+      g_warning ("Failed to peek at PipeWire buffer");
+      return;
+    }
 
   if (buffer->datas[0].type == priv->pipewire_type->data.MemFd)
     {
@@ -327,10 +332,18 @@ create_pipewire_stream (MetaScreenCastStreamSrc  *src,
   struct spa_fraction max_framerate;
   struct spa_fraction min_framerate;
   const struct spa_pod *params[1];
+  int result;
 
   pipewire_stream = pw_stream_new (priv->pipewire_remote,
                                    "meta-screen-cast-src",
                                    NULL);
+  if (!pipewire_stream)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to create PipeWire stream: %s",
+                   strerror (errno));
+      return NULL;
+    }
 
   meta_screen_cast_stream_src_get_specs (src, &width, &height, &frame_rate);
   frame_rate_fraction = meta_fraction_from_double (frame_rate);
@@ -356,14 +369,15 @@ create_pipewire_stream (MetaScreenCastStreamSrc  *src,
                           &stream_events,
                           src);
 
-  if (pw_stream_connect (pipewire_stream,
-                         PW_DIRECTION_OUTPUT,
-                         NULL,
-                         PW_STREAM_FLAG_NONE,
-                         params, G_N_ELEMENTS (params)) != 0)
+  result = pw_stream_connect (pipewire_stream,
+                              PW_DIRECTION_OUTPUT,
+                              NULL,
+                              PW_STREAM_FLAG_NONE,
+                              params, G_N_ELEMENTS (params));
+  if (result != 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Could not connect");
+                   "Could not connect: %s", spa_strerror (result));
       return NULL;
     }
 
@@ -466,6 +480,12 @@ create_pipewire_source (void)
     (MetaPipeWireSource *) g_source_new (&pipewire_source_funcs,
                                          sizeof (MetaPipeWireSource));
   pipewire_source->pipewire_loop = pw_loop_new (NULL);
+  if (!pipewire_source->pipewire_loop)
+    {
+      g_source_destroy ((GSource *) pipewire_source);
+      return NULL;
+    }
+
   g_source_add_unix_fd (&pipewire_source->base,
                         pw_loop_get_fd (pipewire_source->pipewire_loop),
                         G_IO_IN | G_IO_ERR);
@@ -491,6 +511,13 @@ meta_screen_cast_stream_src_initable_init (GInitable     *initable,
     meta_screen_cast_stream_src_get_instance_private (src);
 
   priv->pipewire_source = create_pipewire_source ();
+  if (!priv->pipewire_source)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to create PipeWire source");
+      return FALSE;
+    }
+
   priv->pipewire_core = pw_core_new (priv->pipewire_source->pipewire_loop,
                                      NULL);
   if (!priv->pipewire_core)
