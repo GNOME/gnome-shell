@@ -1086,8 +1086,8 @@ var CalendarMessageList = class CalendarMessageList {
         box.add_actor(this._scrollView);
 
         this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
-                                            label: _("Clear"),
                                             can_focus: true });
+        this._clearButton.add_actor(new St.Icon({ icon_name: 'edit-clear-all-symbolic' }));
         this._clearButton.set_x_align(Clutter.ActorAlign.END);
         this._clearButton.connect('clicked', () => {
             let sections = [...this._sections.keys()];
