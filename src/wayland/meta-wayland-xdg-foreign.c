@@ -384,7 +384,7 @@ xdg_importer_import (struct wl_client   *client,
       (!META_IS_WAYLAND_XDG_SURFACE (exported->surface->role) &&
        !META_IS_WAYLAND_ZXDG_SURFACE_V6 (exported->surface->role)))
     {
-      zxdg_imported_v1_send_destroyed (resource);
+      zxdg_imported_v1_send_destroyed (xdg_imported_resource);
       return;
     }
 
