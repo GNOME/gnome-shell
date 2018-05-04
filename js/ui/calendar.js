@@ -3,10 +3,12 @@
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
+const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
 const Mpris = imports.ui.mpris;
+const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
@@ -1102,6 +1104,33 @@ class Placeholder extends St.BoxLayout {
     }
 });
 
+const DoNotDisturbSwitch = GObject.registerClass(
+class DoNotDisturbSwitch extends PopupMenu.Switch {
+    _init() {
+        super._init(false);
+
+        this._presence = new GnomeSession.Presence(
+            proxy => this._onStatusChanged(proxy.status));
+        this._presence.connectSignal('StatusChanged',
+            (proxy, sender, [status]) => this._onStatusChanged(status));
+    }
+
+    _onStatusChanged(status) {
+        this.setToggleState(status === GnomeSession.PresenceStatus.BUSY);
+    }
+
+    setToggleState(state) {
+        super.setToggleState(state);
+
+        if (!this._presence)
+            return;
+
+        this._presence.SetStatusRemote(state
+            ? GnomeSession.PresenceStatus.BUSY
+            : GnomeSession.PresenceStatus.AVAILABLE);
+    }
+});
+
 var CalendarMessageList = GObject.registerClass(
 class CalendarMessageList extends St.Widget {
     _init() {
@@ -1127,16 +1156,33 @@ class CalendarMessageList extends St.Widget {
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
+        let hbox = new St.BoxLayout({ style_class: 'message-list-controls' });
+        box.add_child(hbox);
+
+        hbox.add_child(new St.Label({
+            text: _('Do Not Disturb'),
+            y_align: Clutter.ActorAlign.CENTER,
+        }));
+
+        this._dndSwitch = new DoNotDisturbSwitch();
+        this._dndButton = new St.Button({
+            can_focus: true,
+            child: this._dndSwitch,
+        });
+        this._dndButton.connect('clicked', () => this._dndSwitch.toggle());
+        hbox.add_child(this._dndButton);
+
         this._clearButton = new St.Button({
             style_class: 'message-list-clear-button button',
             label: _('Clear'),
             can_focus: true,
+            x_expand: true,
             x_align: Clutter.ActorAlign.END,
         });
         this._clearButton.connect('clicked', () => {
             this._sectionList.get_children().forEach(s => s.clear());
         });
-        box.add_actor(this._clearButton);
+        hbox.add_actor(this._clearButton);
 
         this._placeholder.bind_property('visible',
             this._clearButton, 'visible',
