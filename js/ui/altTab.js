@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -314,7 +313,7 @@ var AppSwitcherPopup = new Lang.Class({
         if (this._thumbnails)
             this._destroyThumbnails();
         if (this._thumbnailTimeoutId != 0)
-            Mainloop.source_remove(this._thumbnailTimeoutId);
+            GLib.source_remove(this._thumbnailTimeoutId);
     },
 
     /**
@@ -349,7 +348,7 @@ var AppSwitcherPopup = new Lang.Class({
         }
 
         if (this._thumbnailTimeoutId != 0) {
-            Mainloop.source_remove(this._thumbnailTimeoutId);
+            GLib.source_remove(this._thumbnailTimeoutId);
             this._thumbnailTimeoutId = 0;
         }
 
@@ -366,7 +365,8 @@ var AppSwitcherPopup = new Lang.Class({
             this._thumbnails.highlight(window, forceAppFocus);
         } else if (this._items[this._selectedIndex].cachedWindows.length > 1 &&
                    !forceAppFocus) {
-            this._thumbnailTimeoutId = Mainloop.timeout_add (
+            this._thumbnailTimeoutId = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
                 THUMBNAIL_POPUP_TIME,
                 this._timeoutPopupThumbnails.bind(this));
             GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
@@ -705,7 +705,7 @@ var AppSwitcher = new Lang.Class({
 
     _onDestroy() {
         if (this._mouseTimeOutId != 0)
-            Mainloop.source_remove(this._mouseTimeOutId);
+            GLib.source_remove(this._mouseTimeOutId);
 
         this.icons.forEach(icon => {
             icon.app.disconnect(icon._stateChangedId);
@@ -785,9 +785,10 @@ var AppSwitcher = new Lang.Class({
         // Avoid reentrancy
         if (index != this._highlighted) {
             if (this._mouseTimeOutId != 0)
-                Mainloop.source_remove(this._mouseTimeOutId);
+                GLib.source_remove(this._mouseTimeOutId);
+
             if (this._altTabPopup.thumbnailsVisible) {
-                this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
+                this._mouseTimeOutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, APP_ICON_HOVER_TIMEOUT,
                                                             () => {
                                                                 this._enterItem(index);
                                                                 this._mouseTimeOutId = 0;
