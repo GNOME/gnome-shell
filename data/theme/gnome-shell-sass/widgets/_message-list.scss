@@ -24,9 +24,10 @@
   &:rtl {padding:0;}
 }
 
-// clear button
-.message-list-clear-button.button {
-  margin:$base_margin $base_margin*2;
+// do-not-disturb + clear button
+.message-list-controls {
+  margin: $base_margin $base_margin*2;
+  spacing: $base_spacing;
 }
 
 // message bubbles
