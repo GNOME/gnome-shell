@@ -7,10 +7,12 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 
+const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
 const Mpris = imports.ui.mpris;
+const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
 var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
@@ -1065,6 +1067,33 @@ var Placeholder = class Placeholder {
     }
 };
 
+var DoNotDisturbSwitch = class DoNotDisturbSwitch extends PopupMenu.Switch {
+    constructor() {
+        super(false);
+
+        this._presence = new GnomeSession.Presence((proxy, error) => {
+            this._onStatusChanged(proxy.status);
+        });
+        this._presence.connectSignal('StatusChanged', (proxy, sender, [status]) => {
+            this._onStatusChanged(status);
+        });
+    }
+
+    _onStatusChanged(status) {
+        this.setToggleState(status == GnomeSession.PresenceStatus.BUSY);
+    }
+
+    setToggleState(state) {
+        super.setToggleState(state);
+
+        if (!this._presence)
+            return;
+
+        this._presence.SetStatusRemote(state ? GnomeSession.PresenceStatus.BUSY
+                                             : GnomeSession.PresenceStatus.AVAILABLE);
+    }
+}
+
 var CalendarMessageList = class CalendarMessageList {
     constructor() {
         this.actor = new St.Widget({ style_class: 'message-list',
@@ -1085,7 +1114,20 @@ var CalendarMessageList = class CalendarMessageList {
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
+        let hbox = new St.BoxLayout({ style_class: 'message-list-controls' });
+        box.add_actor(hbox);
+
+        hbox.add_actor(new St.Label({ text: _("Do Not Disturb"),
+                                      y_align: Clutter.ActorAlign.CENTER }));
+
+        this._dndSwitch = new DoNotDisturbSwitch();
+        this._dndButton = new St.Button({ can_focus: true,
+                                          child: this._dndSwitch.actor });
+        this._dndButton.connect('clicked', () => { this._dndSwitch.toggle(); });
+        hbox.add_actor(this._dndButton);
+
         this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
+                                            x_expand: true,
                                             can_focus: true });
         this._clearButton.add_actor(new St.Icon({ icon_name: 'edit-clear-all-symbolic' }));
         this._clearButton.set_x_align(Clutter.ActorAlign.END);
@@ -1093,7 +1135,7 @@ var CalendarMessageList = class CalendarMessageList {
             let sections = [...this._sections.keys()];
             sections.forEach((s) => { s.clear(); });
         });
-        box.add_actor(this._clearButton);
+        hbox.add_actor(this._clearButton);
 
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
