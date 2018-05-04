@@ -381,6 +381,12 @@ var AppSwitcherPopup = new Lang.Class({
 
     _destroyThumbnails() {
         let thumbnailsActor = this._thumbnails.actor;
+
+        // Disconnect signal handlers now instead of onDestroy.
+        // When this._thumbnails is null, the object isn't referenced
+        // anymore and GC will kick in, making disconnecting
+        // signal handlers impossible.
+        this._thumbnails.disconnectHandlers();
         this._thumbnails = null;
         this.thumbnailsVisible = false;
         this._thumbnailsFocused = false;
@@ -904,8 +910,6 @@ var ThumbnailSwitcher = new Lang.Class({
             }
 
         }
-
-        this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     addClones(availHeight) {
@@ -954,13 +958,12 @@ var ThumbnailSwitcher = new Lang.Class({
             this.actor.destroy();
     },
 
-    _onDestroy() {
+    disconnectHandlers() {
         this._clones.forEach(clone => {
             if (clone.source)
                 clone.source.disconnect(clone._destroyId);
         });
-    },
-
+    }
 });
 
 var WindowIcon = new Lang.Class({
