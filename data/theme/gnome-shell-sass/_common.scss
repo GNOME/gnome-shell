@@ -1016,6 +1016,11 @@ StScrollBar {
           background-color: transparent;
           &:hover,&:focus { background-color: lighten($bg_color,5%); }
           margin: 1.5em 1.5em 0;
+          padding: 8px;
+        }
+
+        .message-list-clear-button > StIcon {
+          icon-size: 1.09em;
         }
 
         .message-list-sections {
