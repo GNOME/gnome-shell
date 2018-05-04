@@ -252,10 +252,8 @@ is_valid_child (MetaWaylandSurface *surface)
   if (!surface->role)
     return FALSE;
 
-  if (!META_IS_WAYLAND_XDG_SURFACE (surface->role))
-    return FALSE;
-
-  if (!META_IS_WAYLAND_ZXDG_SURFACE_V6 (surface->role))
+  if (!META_IS_WAYLAND_XDG_TOPLEVEL (surface->role) &&
+      !META_IS_WAYLAND_ZXDG_TOPLEVEL_V6 (surface->role))
     return FALSE;
 
   if (!surface->window)
