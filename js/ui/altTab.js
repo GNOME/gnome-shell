@@ -357,17 +357,16 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _destroyThumbnails() {
-        let thumbnailsActor = this._thumbnails;
+        let thumbnails = this._thumbnails;
         this._thumbnails = null;
+        this.thumbnailsVisible = false;
+        this._thumbnailsFocused = false;
 
-        this._thumbnails.ease({
+        thumbnails.ease({
             opacity: 0,
             duration: THUMBNAIL_FADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                thumbnailsActor.destroy();
-                this.thumbnailsVisible = false;
-            },
+            onComplete: () => thumbnails.destroy(),
         });
 
         if (this._switcherList._items[this._selectedIndex])
@@ -379,9 +378,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
-        this._thumbnails.connect('destroy', () => {
-            this._thumbnailsFocused = false;
-        });
 
         this.add_actor(this._thumbnails);
 
@@ -394,11 +390,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             opacity: 255,
             duration: THUMBNAIL_FADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this.thumbnailsVisible = true;
-            },
         });
 
+        this.thumbnailsVisible = true;
         this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
     }
 });
