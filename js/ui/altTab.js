@@ -794,9 +794,10 @@ var AppSwitcher = new Lang.Class({
         if (index == this._highlighted)
             return;
 
-        if (this._mouseTimeOutId != 0)
-            Mainloop.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
+            if (this._mouseTimeOutId != 0)
+                return;
+
             this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
                                                         () => {
                                                             this._enterItem(index);
