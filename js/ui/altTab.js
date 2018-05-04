@@ -964,6 +964,11 @@ var ThumbnailSwitcher = new Lang.Class({
             if (clone.source)
                 clone.source.disconnect(clone._destroyId);
         });
+
+        this._items.forEach(item => {
+            item.disconnect(item._clickEventId);
+            item.disconnect(item._motionEventId);
+        });
     }
 });
 
