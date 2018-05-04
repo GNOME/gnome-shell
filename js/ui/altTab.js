@@ -386,15 +386,14 @@ var AppSwitcherPopup = new Lang.Class({
     _destroyThumbnails() {
         let thumbnailsActor = this._thumbnails.actor;
         this._thumbnails = null;
+        this.thumbnailsVisible = false;
+        this._thumbnailsFocused = false;
 
         Tweener.addTween(thumbnailsActor,
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: () => {
-                               thumbnailsActor.destroy();
-                               this.thumbnailsVisible = false;
-                           }
+                           onComplete: () => thumbnailsActor.destroy()
                          });
 
         if  (this._switcherList._items[this._selectedIndex])
@@ -406,9 +405,6 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
-        this._thumbnails.actor.connect('destroy', () => {
-            this._thumbnailsFocused = false;
-        });
 
         this.actor.add_actor(this._thumbnails.actor);
 
@@ -420,10 +416,10 @@ var AppSwitcherPopup = new Lang.Class({
         Tweener.addTween(this._thumbnails.actor,
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: () => { this.thumbnailsVisible = true; }
+                           transition: 'easeOutQuad'
                          });
 
+        this.thumbnailsVisible = true;
         this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
     }
 });
