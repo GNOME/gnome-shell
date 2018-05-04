@@ -22,9 +22,13 @@
   &:rtl {padding:0;}
 }
 
+.message-list-controls {
+  margin:$base_margin $base_margin*2;
+  spacing: $base_spacing;
+}
+
 // clear button
 .message-list-clear-button {
-  margin:$base_margin $base_margin*2;
   .button {
     @extend %button;
   }
