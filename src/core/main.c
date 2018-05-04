@@ -417,7 +417,7 @@ check_for_wayland_session_type (void)
  *
  * If no flag is passed that forces the compositor type, the compositor type
  * is determined first from the logind session type, or if that fails, from the
- * XDG_SESSION_TYPE enviornment variable.
+ * XDG_SESSION_TYPE environment variable.
  *
  * If no flag is passed that forces the backend type, the backend type is
  * determined given the compositor type. If the compositor is a Wayland
