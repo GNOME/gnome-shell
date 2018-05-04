@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -159,7 +158,7 @@ var SwitcherPopup = new Lang.Class({
 
         // We delay showing the popup so that fast Alt+Tab users aren't
         // disturbed by the popup briefly flashing.
-        this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
+        this._initialDelayTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPUP_DELAY_TIMEOUT,
                                                            () => {
                                                                Main.osdWindowManager.hideAll();
                                                                this.actor.opacity = 255;
@@ -281,9 +280,9 @@ var SwitcherPopup = new Lang.Class({
         this.mouseActive = false;
 
         if (this._motionTimeoutId != 0)
-            Mainloop.source_remove(this._motionTimeoutId);
+            GLib.source_remove(this._motionTimeoutId);
 
-        this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
+        this._motionTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
         GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     },
 
@@ -295,9 +294,9 @@ var SwitcherPopup = new Lang.Class({
 
     _resetNoModsTimeout() {
         if (this._noModsTimeoutId != 0)
-            Mainloop.source_remove(this._noModsTimeoutId);
+            GLib.source_remove(this._noModsTimeoutId);
 
-        this._noModsTimeoutId = Mainloop.timeout_add(NO_MODS_TIMEOUT,
+        this._noModsTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, NO_MODS_TIMEOUT,
                                                      () => {
                                                          this._finish(global.get_current_time());
                                                          this._noModsTimeoutId = 0;
@@ -335,11 +334,11 @@ var SwitcherPopup = new Lang.Class({
         this._popModal();
 
         if (this._motionTimeoutId != 0)
-            Mainloop.source_remove(this._motionTimeoutId);
+            GLib.source_remove(this._motionTimeoutId);
         if (this._initialDelayTimeoutId != 0)
-            Mainloop.source_remove(this._initialDelayTimeoutId);
+            GLib.source_remove(this._initialDelayTimeoutId);
         if (this._noModsTimeoutId != 0)
-            Mainloop.source_remove(this._noModsTimeoutId);
+            GLib.source_remove(this._noModsTimeoutId);
     },
 
     _select(num) {
