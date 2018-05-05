@@ -593,7 +593,9 @@ var CyclerPopup = new Lang.Class({
             this._currentWorkspace = workspaceManager.get_active_workspace();
         }
 
-        this._items = this._getWindows();
+        let windows = this._getWindows();
+
+        windows.forEach(window => this._addWindow(window));
 
         this._highlight = new CyclerHighlight();
         global.window_group.add_actor(this._highlight.actor);
@@ -603,6 +605,31 @@ var CyclerPopup = new Lang.Class({
         this._switcherList = { actor: new St.Widget(),
                                highlight: this._highlightItem.bind(this),
                                connect() {} };
+    },
+
+    _addWindow(window, index) {
+        if (index != undefined) {
+            this._items.splice(index, 0, window);
+
+            // Call _itemAdded here since there won't be an event emitted by SwitcherList
+            this._itemAdded(this._switcherList, index);
+        } else {
+            this._items.push(window);
+        }
+
+        window._unmanagedSignalId = window.connect('unmanaged', this._removeWindow.bind(this));
+    },
+
+    _removeWindow(window) {
+        let index = this._items.indexOf(window);
+        if (index === -1)
+            return;
+
+        let item = this._items.splice(index, 1)[0];
+        window.disconnect(item._unmanagedSignalId);
+
+        // Call _itemRemoved here since there won't be an event emitted by SwitcherList
+        this._itemRemoved(this._switcherList, index);
     },
 
     _highlightItem(index, justOutline) {
@@ -655,6 +682,10 @@ var CyclerPopup = new Lang.Class({
 
     _onDestroy() {
         this._highlight.actor.destroy();
+
+        this._items.forEach(window => {
+            window.disconnect(window._unmanagedSignalId);
+        });
 
         this.parent();
     }
