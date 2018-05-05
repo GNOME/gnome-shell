@@ -677,18 +677,15 @@ var WindowSwitcherPopup = new Lang.Class({
 
     _init() {
         this.parent();
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
 
-        let windows = this._getWindowList();
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        let currentWorkspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+        let mode = settings.get_enum('app-icon-mode');
 
-        let mode = this._settings.get_enum('app-icon-mode');
-        this._switcherList = new WindowSwitcher(windows, mode);
+        let windows = getWindows(currentWorkspace);
+
+        this._switcherList = new WindowSwitcher(windows, mode, currentWorkspace);
         this._items = this._switcherList.icons;
-    },
-
-    _getWindowList() {
-        let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
-        return getWindows(workspace);
     },
 
     _closeWindow(windowIndex) {
@@ -1142,7 +1139,7 @@ var WindowSwitcher = new Lang.Class({
     Name: 'WindowSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(windows, mode) {
+    _init(windows, mode, workspace) {
         this.parent(true);
 
         this._label = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
@@ -1151,16 +1148,86 @@ var WindowSwitcher = new Lang.Class({
 
         this.icons = [];
         this._mode = mode;
+        this._currentWorkspace = workspace;
 
         windows.forEach(window => this._addWindow(window));
+
+        if (this._currentWorkspace) {
+            this._workspaceWindowAddedSignalId = this._currentWorkspace.connect_after('window-added', (workspace, window) => {
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/157
+                // When running under Wayland, the app tracker doesn't know about the app the new window
+                // belongs to, because the gtk-application-id isn't set.
+                // Wait until the id has been updated to be sure the tracker can resolve the window to an app.
+                // We don't have to apply the other workaround here since we're waiting anyway.
+                if (Meta.is_wayland_compositor()) {
+                    let tmpId = window.connect_after('notify::gtk-application-id', () => {
+                        // Another bug in Mutter, wait until the window is allocated so we can generate the clone.
+                        let mutterWindow = window.get_compositor_private();
+                        let tmpId2 = mutterWindow.connect('allocation-changed', () => {
+                            this._onWindowAdded(window);
+                            mutterWindow.disconnect(tmpId2);
+                        });
+
+                        window.disconnect(tmpId);
+                    });
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/156
+                // The window-added signal for the workspace is emitted before the window actor is created,
+                // wait until the window-created signal is emitted and then handle the new window.
+                } else {
+                    let tmpId = global.display.connect('window-created', () => {
+                        this._onWindowAdded(window);
+                        global.display.disconnect(tmpId);
+                    });
+                }
+            });
+
+            this._workspaceWindowRemovedSignalId = this._currentWorkspace.connect_after('window-removed', (workspace, window) => this._removeWindow(window));
+        } else {
+            this._windowCreatedSignalId = global.display.connect('window-created', (display, window) => {
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/157
+                // When running under Wayland, the app tracker doesn't know about the app the new window
+                // belongs to, because the gtk-application-id isn't set.
+                // Wait until the id has been updated to be sure the tracker can resolve the window to an app.
+                if (Meta.is_wayland_compositor()) {
+                    let tmpId = window.connect_after('notify::gtk-application-id', () => {
+                        // Another bug in Mutter, wait until the window is allocated so we can generate the clone.
+                        let mutterWindow = window.get_compositor_private();
+                        let tmpId2 = mutterWindow.connect('allocation-changed', () => {
+                            this._onWindowAdded(window);
+                            mutterWindow.disconnect(tmpId2);
+                        });
+
+                        window.disconnect(tmpId);
+                    });
+                } else {
+                    this._onWindowAdded(window);
+                }
+            });
+        }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     _onDestroy() {
+        if (this._currentWorkspace) {
+            this._currentWorkspace.disconnect(this._workspaceWindowAddedSignalId);
+            this._currentWorkspace.disconnect(this._workspaceWindowRemovedSignalId);
+        } else {
+            global.display.disconnect(this._windowCreatedSignalId);
+        }
+
         this.icons.forEach(icon => {
             icon.window.disconnect(icon._unmanagedSignalId);
         });
+    },
+
+    _onWindowAdded(window) {
+        let windows = getWindows(this._currentWorkspace);
+        let index = windows.indexOf(window);
+        if (index === -1)
+            return;
+
+        this._addWindow(window, index);
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
