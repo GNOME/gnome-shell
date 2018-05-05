@@ -554,6 +554,39 @@ var GroupCyclerPopup = new Lang.Class({
     }
 });
 
+var WindowCyclerPopup = new Lang.Class({
+    Name: 'WindowCyclerPopup',
+    Extends: CyclerPopup,
+
+    _init() {
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        this.parent();
+    },
+
+    _getWindows() {
+        let workspace = null;
+
+        if (this._settings.get_boolean('current-workspace-only')) {
+            let workspaceManager = global.workspace_manager;
+
+            workspace = workspaceManager.get_active_workspace();
+        }
+
+        return getWindows(workspace);
+    },
+
+    _keyPressHandler(keysym, action) {
+        if (action == Meta.KeyBindingAction.CYCLE_WINDOWS)
+            this._select(this._next());
+        else if (action == Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
+            this._select(this._previous());
+        else
+            return Clutter.EVENT_PROPAGATE;
+
+        return Clutter.EVENT_STOP;
+    }
+});
+
 var WindowSwitcherPopup = new Lang.Class({
     Name: 'WindowSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
@@ -615,39 +648,6 @@ var WindowSwitcherPopup = new Lang.Class({
         Main.activateWindow(this._items[this._selectedIndex].window);
 
         this.parent();
-    }
-});
-
-var WindowCyclerPopup = new Lang.Class({
-    Name: 'WindowCyclerPopup',
-    Extends: CyclerPopup,
-
-    _init() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
-        this.parent();
-    },
-
-    _getWindows() {
-        let workspace = null;
-
-        if (this._settings.get_boolean('current-workspace-only')) {
-            let workspaceManager = global.workspace_manager;
-
-            workspace = workspaceManager.get_active_workspace();
-        }
-
-        return getWindows(workspace);
-    },
-
-    _keyPressHandler(keysym, action) {
-        if (action == Meta.KeyBindingAction.CYCLE_WINDOWS)
-            this._select(this._next());
-        else if (action == Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
-            this._select(this._previous());
-        else
-            return Clutter.EVENT_PROPAGATE;
-
-        return Clutter.EVENT_STOP;
     }
 });
 
