@@ -18,6 +18,7 @@ var POPUP_DELAY_TIMEOUT = 150; // milliseconds
 var POPUP_SCROLL_TIME = 0.10; // seconds
 var POPUP_FADE_OUT_TIME = 0.1; // seconds
 
+var INITIAL_DISABLE_HOVER_TIMEOUT = 250; // milliseconds
 var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 var NO_MODS_TIMEOUT = 1500; // milliseconds
 
@@ -66,7 +67,9 @@ var SwitcherPopup = new Lang.Class({
 
         // Initially disable hover so we ignore the enter-event if
         // the switcher appears underneath the current pointer location
-        this._disableHover();
+        this.mouseActive = false;
+        this._motionTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, INITIAL_DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
+        GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     },
 
     _getPreferredWidth(actor, forHeight, alloc) {
