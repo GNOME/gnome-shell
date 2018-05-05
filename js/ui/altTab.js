@@ -259,20 +259,20 @@ var AppSwitcherPopup = new Lang.Class({
         this._select(n);
     },
 
-    _windowActivated(thumbnailList, n) {
+    _windowActivated(thumbnailSwitcher, n) {
         let appIcon = this._items[this._selectedIndex];
         Main.activateWindow(appIcon.cachedWindows[n]);
         this.destroy();
     },
 
-    _windowEntered(thumbnailList, n) {
+    _windowEntered(thumbnailSwitcher, n) {
         if (!this.mouseActive)
             return;
 
         this._select(this._selectedIndex, n);
     },
 
-    _windowRemoved(thumbnailList, n) {
+    _windowRemoved(thumbnailSwitcher, n) {
         let appIcon = this._items[this._selectedIndex];
         if (!appIcon)
             return;
@@ -383,7 +383,7 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailSwitcher(this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
@@ -601,7 +601,7 @@ var WindowSwitcherPopup = new Lang.Class({
             return;
 
         let mode = this._settings.get_enum('app-icon-mode');
-        this._switcherList = new WindowList(windows, mode);
+        this._switcherList = new WindowSwitcher(windows, mode);
         this._items = this._switcherList.icons;
     },
 
@@ -812,7 +812,7 @@ var AppSwitcher = new Lang.Class({
     },
 
     // We override SwitcherList's highlight() method to also deal with
-    // the AppSwitcher->ThumbnailList arrows. Apps with only 1 window
+    // the AppSwitcher->ThumbnailSwitcher arrows. Apps with only 1 window
     // will hide their arrows by default, but show them when their
     // thumbnails are visible (ie, when the app icon is supposed to be
     // in justOutline mode). Apps with multiple windows will normally
@@ -870,8 +870,8 @@ var AppSwitcher = new Lang.Class({
     },
 });
 
-var ThumbnailList = new Lang.Class({
-    Name: 'ThumbnailList',
+var ThumbnailSwitcher = new Lang.Class({
+    Name: 'ThumbnailSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
     _init(windows) {
@@ -1025,8 +1025,8 @@ var WindowIcon = new Lang.Class({
     }
 });
 
-var WindowList = new Lang.Class({
-    Name: 'WindowList',
+var WindowSwitcher = new Lang.Class({
+    Name: 'WindowSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
     _init(windows, mode) {
