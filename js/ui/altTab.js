@@ -1170,20 +1170,10 @@ var WindowSwitcher = new Lang.Class({
                                      y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_actor(this._label);
 
-        this.windows = windows;
         this.icons = [];
+        this._mode = mode;
 
-        for (let i = 0; i < windows.length; i++) {
-            let win = windows[i];
-            let icon = new WindowIcon(win, mode);
-
-            this.addItem(icon.actor, icon.label);
-            this.icons.push(icon);
-
-            icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
-                this._removeWindow(window)
-            });
-        }
+        windows.forEach(window => this._addWindow(window));
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
     },
@@ -1222,12 +1212,27 @@ var WindowSwitcher = new Lang.Class({
         this._label.set_text(index == -1 ? '' : this.icons[index].label.text);
     },
 
+    _addWindow(window, index) {
+        let icon = new WindowIcon(window, this._mode);
+
+        if (index != undefined)
+            this.icons.splice(index, 0, icon);
+        else
+            this.icons.push(icon);
+
+        this.addItem(icon.actor, icon.label, index);
+
+        icon._unmanagedSignalId = window.connect('unmanaged', this._removeWindow.bind(this));
+    },
+
     _removeWindow(window) {
         let index = this.icons.findIndex(icon => icon.window == window);
         if (index === -1)
             return;
 
-        this.icons.splice(index, 1);
+        let icon = this.icons.splice(index, 1)[0];
+        window.disconnect(icon._unmanagedSignalId);
+
         this.removeItem(index);
     }
 });
