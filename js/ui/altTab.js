@@ -716,25 +716,22 @@ var WindowSwitcherPopup = new Lang.Class({
 
     _init() {
         this.parent();
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
 
-        let windows = this._getWindowList();
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
 
-        let mode = this._settings.get_enum('app-icon-mode');
-        this._switcherList = new WindowSwitcher(windows, mode);
-        this._items = this._switcherList.icons;
-    },
-
-    _getWindowList() {
-        let workspace = null;
-
-        if (this._settings.get_boolean('current-workspace-only')) {
+        let currentWorkspace = null;
+        if (settings.get_boolean('current-workspace-only')) {
             let workspaceManager = global.workspace_manager;
 
-            workspace = workspaceManager.get_active_workspace();
+            currentWorkspace = workspaceManager.get_active_workspace();
         }
 
-        return getWindows(workspace);
+        let mode = settings.get_enum('app-icon-mode');
+
+        let windows = getWindows(currentWorkspace);
+
+        this._switcherList = new WindowSwitcher(windows, mode, currentWorkspace);
+        this._items = this._switcherList.icons;
     },
 
     _closeWindow(windowIndex) {
@@ -1186,7 +1183,7 @@ var WindowSwitcher = new Lang.Class({
     Name: 'WindowSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init(windows, mode) {
+    _init(windows, mode, workspace) {
         this.parent(true);
 
         this._label = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
@@ -1195,16 +1192,44 @@ var WindowSwitcher = new Lang.Class({
 
         this.icons = [];
         this._mode = mode;
+        this._currentWorkspace = workspace;
 
         windows.forEach(window => this._addWindow(window));
+
+        if (this._currentWorkspace) {
+            this._workspaceWindowAddedSignalId = this._currentWorkspace.connect_after('window-added', (workspace, window) => {
+                let tmpId = global.display.connect('window-created', () => {
+                    _waitForWindow(window, () => this._onWindowAdded(window));
+                    global.display.disconnect(tmpId);
+                });
+            });
+        } else {
+            this._windowCreatedSignalId = global.display.connect('window-created', (display, window) => {
+                _waitForWindow(window, () => this._onWindowAdded(window));
+            });
+        }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     _onDestroy() {
+        if (this._currentWorkspace)
+            this._currentWorkspace.disconnect(this._workspaceWindowAddedSignalId);
+        else
+            global.display.disconnect(this._windowCreatedSignalId);
+
         this.icons.forEach(icon => {
             icon.window.disconnect(icon._unmanagedSignalId);
         });
+    },
+
+    _onWindowAdded(window) {
+        let windows = getWindows(this._currentWorkspace);
+        let index = windows.indexOf(window);
+        if (index === -1)
+            return;
+
+        this._addWindow(window, index);
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
