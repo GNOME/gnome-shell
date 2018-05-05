@@ -19,7 +19,7 @@ var APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
 var THUMBNAIL_DEFAULT_SIZE = 256;
 var THUMBNAIL_POPUP_TIME = 500; // milliseconds
-var THUMBNAIL_FADE_TIME = 0.1; // seconds
+var THUMBNAIL_FADE_TIME = 0.2; // seconds
 
 var WINDOW_PREVIEW_SIZE = 128;
 var APP_ICON_SIZE = 96;
