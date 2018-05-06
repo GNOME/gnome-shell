@@ -227,6 +227,8 @@ var SwitcherPopup = new Lang.Class({
     },
 
     _scrollEvent(actor, event) {
+        this._disableHover();
+
         this._scrollHandler(event.get_scroll_direction());
         return Clutter.EVENT_PROPAGATE;
     },
