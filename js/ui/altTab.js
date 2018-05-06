@@ -548,6 +548,9 @@ var CyclerPopup = new Lang.Class({
     _init() {
         this.parent();
 
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        this._currentWorkspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+
         this._items = this._getWindows();
 
         this._highlight = new CyclerHighlight();
@@ -604,7 +607,9 @@ var GroupCyclerPopup = new Lang.Class({
 
     _getWindows() {
         let app = Shell.WindowTracker.get_default().focus_app;
-        return app ? app.get_windows() : [];
+        let allWindows = getWindows(this._currentWorkspace);
+
+        return allWindows.filter(w => this._tracker.get_window_app(w) == app);
     },
 
     _keyPressHandler(keysym, action) {
@@ -623,14 +628,8 @@ var WindowCyclerPopup = new Lang.Class({
     Name: 'WindowCyclerPopup',
     Extends: CyclerPopup,
 
-    _init() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
-        this.parent();
-    },
-
     _getWindows() {
-        let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
-        return getWindows(workspace);
+        return getWindows(this._currentWorkspace);
     },
 
     _keyPressHandler(keysym, action) {
