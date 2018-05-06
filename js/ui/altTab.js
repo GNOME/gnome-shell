@@ -578,6 +578,22 @@ var CyclerPopup = new Lang.Class({
         this._switcherList = { actor: new St.Widget(),
                                highlight: this._highlightItem.bind(this),
                                connect() {} };
+
+        if (this._currentWorkspace) {
+            this._workspaceWindowAddedSignalId = this._currentWorkspace.connect_after('window-added', (workspace, window) => this._onWindowAdded(window));
+            this._workspaceWindowRemovedSignalId = this._currentWorkspace.connect_after('window-removed', (workspace, window) => this._removeWindow(window));
+        } else {
+            this._windowCreatedSignalId = global.display.connect('window-created', (display, window) => this._onWindowAdded(window));
+        }
+    },
+
+    _onWindowAdded(window) {
+        let windows = this._getWindows();
+        let index = windows.indexOf(window);
+        if (index === -1)
+            return;
+
+        this._addWindow(window, index);
     },
 
     _addWindow(window, index) {
@@ -656,6 +672,13 @@ var CyclerPopup = new Lang.Class({
     _onDestroy() {
         this._highlight.actor.destroy();
 
+        if (this._currentWorkspace) {
+            this._currentWorkspace.disconnect(this._workspaceWindowAddedSignalId);
+            this._currentWorkspace.disconnect(this._workspaceWindowRemovedSignalId);
+        } else {
+            global.display.disconnect(this._windowCreatedSignalId);
+        }
+
         this._items.forEach(window => {
             window.disconnect(window._unmanagedSignalId);
         });
@@ -669,11 +692,17 @@ var GroupCyclerPopup = new Lang.Class({
     Name: 'GroupCyclerPopup',
     Extends: CyclerPopup,
 
+    _init() {
+        this._tracker = Shell.WindowTracker.get_default();
+        this._app = this._tracker.focus_app;
+
+        this.parent();
+    },
+
     _getWindows() {
-        let app = Shell.WindowTracker.get_default().focus_app;
         let allWindows = getWindows(this._currentWorkspace);
 
-        return allWindows.filter(w => this._tracker.get_window_app(w) == app);
+        return allWindows.filter(w => this._tracker.get_window_app(w) == this._app);
     },
 
     _keyPressHandler(keysym, action) {
