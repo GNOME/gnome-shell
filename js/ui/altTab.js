@@ -792,18 +792,17 @@ var AppSwitcher = new Lang.Class({
         this.icons = [];
         this._arrows = [];
 
-        let windowTracker = Shell.WindowTracker.get_default();
+        this._tracker = Shell.WindowTracker.get_default();
+        this._appSystem = Shell.AppSystem.get_default();
+        this._currentWorkspace = currentWorkspace;
 
-        let allWindows = getWindows(currentWorkspace);
+        let allWindows = getWindows(this._currentWorkspace);
 
-        // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
             let appIcon = new AppIcon(apps[i]);
-            // Cache the window list now; we don't handle dynamic changes here,
-            // and we don't want to be continually retrieving it
-            appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app(w) == appIcon.app
-            );
+
+            // Cache the window list
+            appIcon.cachedWindows = allWindows.filter(w => this._tracker.get_window_app(w) == appIcon.app);
 
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
@@ -813,6 +812,59 @@ var AppSwitcher = new Lang.Class({
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
 
+        if (this._currentWorkspace) {
+            this._workspaceWindowAddedSignalId = this._currentWorkspace.connect_after('window-added', (workspace, window) => {
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/157
+                // When running under Wayland, the app tracker doesn't know about the app the new window
+                // belongs to, because the gtk-application-id isn't set.
+                // Wait until the id has been updated to be sure the tracker can resolve the window to an app.
+                // We don't have to apply the other workaround here since we're waiting anyway.
+                if (Meta.is_wayland_compositor()) {
+                    let tmpId = window.connect_after('notify::gtk-application-id', () => {
+                        // Another bug in Mutter, wait until the window is allocated so we can generate the clone.
+                        let mutterWindow = window.get_compositor_private();
+                        let tmpId2 = mutterWindow.connect('allocation-changed', () => {
+                            this._onWindowAdded(window);
+                            mutterWindow.disconnect(tmpId2);
+                        });
+
+                        window.disconnect(tmpId);
+                    });
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/156
+                // The window-added signal for the workspace is emitted before the window actor is created,
+                // wait until the window-created signal is emitted and then handle the new window.
+                } else {
+                    let tmpId = global.display.connect('window-created', () => {
+                        this._onWindowAdded(window);
+                        global.display.disconnect(tmpId);
+                    });
+                }
+            });
+
+            this._workspaceWindowRemovedSignalId = this._currentWorkspace.connect_after('window-removed', (workspace, window) => this._onWindowRemoved(window));
+        } else {
+            this._windowCreatedSignalId = global.display.connect('window-created', (display, window) => {
+                // Workaround for a bug in Mutter: https://gitlab.gnome.org/GNOME/mutter/issues/157
+                // When running under Wayland, the app tracker doesn't know about the app the new window
+                // belongs to, because the gtk-application-id isn't set.
+                // Wait until the id has been updated to be sure the tracker can resolve the window to an app.
+                if (Meta.is_wayland_compositor()) {
+                    let tmpId = window.connect_after('notify::gtk-application-id', () => {
+                        // Another bug in Mutter, wait until the window is allocated so we can generate the clone.
+                        let mutterWindow = window.get_compositor_private();
+                        let tmpId2 = mutterWindow.connect('allocation-changed', () => {
+                            this._onWindowAdded(window);
+                            mutterWindow.disconnect(tmpId2);
+                        });
+
+                        window.disconnect(tmpId);
+                    });
+                } else {
+                    this._onWindowAdded(window);
+                }
+            });
+        }
+
         this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
@@ -820,8 +872,15 @@ var AppSwitcher = new Lang.Class({
         if (this._mouseTimeOutId != 0)
             GLib.source_remove(this._mouseTimeOutId);
 
+        if (this._currentWorkspace) {
+            this._currentWorkspace.disconnect(this._workspaceWindowAddedSignalId);
+            this._currentWorkspace.disconnect(this._workspaceWindowRemovedSignalId);
+        } else {
+            global.display.disconnect(this._windowCreatedSignalId);
+        }
+
         this.icons.forEach(icon => {
-            icon.app.disconnect(icon._stateChangedId);
+            icon.cachedWindows.forEach(window => window.disconnect(window._unmanagedSignalId));
         });
     },
 
@@ -950,12 +1009,73 @@ var AppSwitcher = new Lang.Class({
         }
     },
 
-    _addIcon(appIcon, index) {
-        appIcon._stateChangedId = appIcon.app.connect('notify::state', app => {
-            if (app.state != Shell.AppState.RUNNING)
-                this._removeIcon(app);
-        });
+    _onWindowAdded(window) {
+        let app = this._tracker.get_window_app(window);
 
+        let index = this.icons.findIndex(icon => icon.app == app);
+        let appIcon = this.icons[index];
+
+        let allWindows = getWindows(this._currentWorkspace);
+        let appWindows = allWindows.filter(w => this._tracker.get_window_app(w) == app);
+        let windowIndex = appWindows.indexOf(window);
+
+        // We don't want to add windows not included in the list (eg. dialogs)
+        if (windowIndex === -1)
+            return;
+
+        if (!appIcon) {
+            appIcon = new AppIcon(app);
+            appIcon.cachedWindows = appWindows;
+
+            let runningApps = this._appSystem.get_running();
+            index = runningApps.indexOf(appIcon.app);
+
+            // Sometimes the app is not included in the running apps list
+            if (index === -1)
+                index = 0;
+
+            if (appIcon.cachedWindows.length > 0)
+                this._addIcon(appIcon, index);
+        } else {
+            window._unmanagedSignalId = window.connect('unmanaged', this._onWindowRemoved.bind(this));
+            appIcon.cachedWindows.splice(windowIndex, 0, window);
+        }
+
+        // If the app has more than one windows now, show the arrow
+        if (appIcon.cachedWindows.length > 1)
+            this._arrows[index].show();
+
+        // Notify the ThumbnailSwitcher about the added window
+        if (appIcon.onWindowAdded)
+            appIcon.onWindowAdded(window, windowIndex);
+    },
+
+    _onWindowRemoved(window) {
+        let index = this.icons.findIndex(icon => icon.cachedWindows.includes(window));
+        let appIcon = this.icons[index];
+        if (!appIcon)
+            return;
+
+        let windowIndex = appIcon.cachedWindows.indexOf(window);
+
+        window = appIcon.cachedWindows.splice(windowIndex, 1)[0];
+        window.disconnect(window._unmanagedSignalId);
+
+        // If we have no more windows, remove the icon
+        if (appIcon.cachedWindows.length == 0) {
+            this._removeIcon(index);
+        } else {
+            // If this is the last window, remove the arrow
+            if (appIcon.cachedWindows.length == 1)
+                this._arrows[index].hide();
+
+            // Notify the ThumbnailSwitcher about the removed window
+            if (appIcon.onWindowRemoved)
+                appIcon.onWindowRemoved(window, windowIndex);
+        }
+    },
+
+    _addIcon(appIcon, index) {
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
 
@@ -974,6 +1094,10 @@ var AppSwitcher = new Lang.Class({
         // Add item after pushing the arrow since the allocation function needs the arrow list
         let item = this.addItem(appIcon.actor, appIcon.label, index, index * 2);
 
+        appIcon.cachedWindows.forEach(window => {
+            window._unmanagedSignalId = window.connect('unmanaged', this._onWindowRemoved.bind(this))
+        });
+
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
         else
@@ -984,17 +1108,9 @@ var AppSwitcher = new Lang.Class({
             appIcon.set_size(this._iconSize);
     },
 
-    _removeIcon(app) {
-        let index = this.icons.findIndex(icon => {
-            return icon.app == app;
-        });
-        if (index === -1)
-            return;
-
-        app.disconnect(this.icons[index]._stateChangedId);
-
-        let arrow = this._arrows.splice(index, 1);
-        arrow[0].destroy();
+    _removeIcon(index) {
+        let arrow = this._arrows.splice(index, 1)[0];
+        arrow.destroy();
 
         this.icons.splice(index, 1);
 
@@ -1012,6 +1128,9 @@ var ThumbnailSwitcher = new Lang.Class({
         this._thumbnailBins = [];
         this._clones = [];
         this._currentIndex = -1;
+
+        icon.onWindowAdded = this._addThumbnail.bind(this);
+        icon.onWindowRemoved = this._removeThumbnail.bind(this);
 
         this.icon = icon;
 
@@ -1047,10 +1166,6 @@ var ThumbnailSwitcher = new Lang.Class({
             let clone = _createWindowClone(mutterWindow, thumbnailSize);
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
-
-            clone._destroyId = mutterWindow.connect('destroy', source => {
-                this._removeThumbnail(source, clone);
-            });
 
             if (this._currentIndex >= 0)
                 this._clones.splice(this._currentIndex, 0, clone);
@@ -1092,26 +1207,19 @@ var ThumbnailSwitcher = new Lang.Class({
         this.addItem(box, name, index);
     },
 
-    _removeThumbnail(source, clone) {
-        let index = this._clones.indexOf(clone);
-        if (index === -1)
-            return;
-
+    _removeThumbnail(window, index) {
         this._clones.splice(index, 1);
-        this.icon.cachedWindows.splice(index, 1);
         this.removeItem(index);
     },
 
     disconnectHandlers() {
-        this._clones.forEach(clone => {
-            if (clone.source)
-                clone.source.disconnect(clone._destroyId);
-        });
-
         this._items.forEach(item => {
             item.disconnect(item._clickEventId);
             item.disconnect(item._motionEventId);
         });
+
+        this.icon.onWindowAdded = null;
+        this.icon.onWindowRemoved = null;
     }
 });
 
