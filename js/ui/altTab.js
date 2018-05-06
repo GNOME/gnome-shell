@@ -72,9 +72,6 @@ var AppSwitcherPopup = new Lang.Class({
 
         let apps = Shell.AppSystem.get_default().get_running();
 
-        if (apps.length == 0)
-            return;
-
         let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
         this._currentWorkspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
 
@@ -504,9 +501,6 @@ var CyclerPopup = new Lang.Class({
 
         this._items = this._getWindows();
 
-        if (this._items.length == 0)
-            return;
-
         this._highlight = new CyclerHighlight();
         global.window_group.add_actor(this._highlight.actor);
 
@@ -611,9 +605,6 @@ var WindowSwitcherPopup = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
 
         let windows = this._getWindowList();
-
-        if (windows.length == 0)
-            return;
 
         let mode = this._settings.get_enum('app-icon-mode');
         this._switcherList = new WindowSwitcher(windows, mode);
