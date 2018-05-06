@@ -1197,18 +1197,19 @@ var ThumbnailSwitcher = new Lang.Class({
 var WindowIcon = new Lang.Class({
     Name: 'WindowIcon',
 
-    _init(window, mode) {
+    _init(window, app, mode) {
         this.window = window;
+        this.app = app;
 
         this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
                                         vertical: true });
         this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
         this.actor.add(this._icon, { x_fill: false, y_fill: false } );
-        this.label = new St.Label({ text: window.get_title() });
 
-        let tracker = Shell.WindowTracker.get_default();
-        this.app = tracker.get_window_app(window);
+        // If the window doesn't have a title, use the app name
+        let title = this.window.get_title() || this.app.get_name();
+        this.label = new St.Label({ text: title });
 
         let mutterWindow = this.window.get_compositor_private();
         let size;
@@ -1263,6 +1264,7 @@ var WindowSwitcher = new Lang.Class({
         this.actor.add_actor(this._label);
 
         this.icons = [];
+        this._tracker = Shell.WindowTracker.get_default();
         this._mode = mode;
         this._currentWorkspace = workspace;
 
@@ -1338,7 +1340,8 @@ var WindowSwitcher = new Lang.Class({
     },
 
     _addWindow(window, index) {
-        let icon = new WindowIcon(window, this._mode);
+        let app = this._tracker.get_window_app(window);
+        let icon = new WindowIcon(window, app, this._mode);
 
         if (index != undefined)
             this.icons.splice(index, 0, icon);
