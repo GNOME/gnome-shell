@@ -317,6 +317,11 @@ var SwitcherPopup = new Lang.Class({
             Mainloop.source_remove(this._initialDelayTimeoutId);
         if (this._noModsTimeoutId != 0)
             Mainloop.source_remove(this._noModsTimeoutId);
+
+        // Make sure the SwitcherList is always destroyed, it may not be
+        // a child of the actor at this point.
+        if (this._switcherList)
+            this._switcherList.actor.destroy();
     },
 
     _select(num) {
