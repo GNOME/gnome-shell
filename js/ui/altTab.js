@@ -1233,26 +1233,45 @@ var ThumbnailSwitcher = new Lang.Class({
         let title = window.get_title();
         let name = null;
 
+        // St.Label doesn't support text-align so use a Bin
+        let labelBin = new St.Bin({ x_align: St.Align.MIDDLE });
+        box.add_actor(labelBin);
+        this._lastLabel = labelBin;
+
         if (title) {
             name = new St.Label({ text: title });
-            // St.Label doesn't support text-align so use a Bin
-            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-
-            bin.add_actor(name);
-            box.add_actor(bin);
-
-            this._lastLabel = bin;
+            labelBin.add_actor(name);
         }
 
         this.addItem(box, name, index);
+
+        window._titleChangedSignalId = window.connect('notify::title', (w) => {
+            title = w.get_title();
+
+            if (title) {
+                if (!name) {
+                    name = new St.Label({ text: title });
+                    labelBin.add_actor(name);
+                } else {
+                    name.set_text(title);
+                }
+            } else {
+                labelBin.remove_actor(name);
+                name = null;
+            }
+        });
     },
 
     _removeThumbnail(window, index) {
+        window.disconnect(window._titleChangedSignalId);
+
         this._clones.splice(index, 1);
         this.removeItem(index);
     },
 
     disconnectHandlers() {
+        this.icon.cachedWindows.forEach(window => window.disconnect(window._titleChangedSignalId));
+
         this._items.forEach(item => {
             item.disconnect(item._clickEventId);
             item.disconnect(item._motionEventId);
@@ -1363,6 +1382,7 @@ var WindowSwitcher = new Lang.Class({
 
         this.icons.forEach(icon => {
             icon.window.disconnect(icon._unmanagedSignalId);
+            icon.window.disconnect(icon._titleChangedSignalId);
         });
     },
 
@@ -1415,6 +1435,15 @@ var WindowSwitcher = new Lang.Class({
         this.addItem(icon.actor, icon.label, index);
 
         icon._unmanagedSignalId = window.connect('unmanaged', this._removeWindow.bind(this));
+        icon._titleChangedSignalId = window.connect('notify::title', (w) => {
+            let title = w.get_title() || icon.app.get_name();
+
+            icon.label.set_text(title);
+
+            // If this window is highlighted also update the visible label
+            if (this.icons[this._highlighted] && this.icons[this._highlighted].window == w)
+                this._label.set_text(icon.label.text);
+        });
     },
 
     _removeWindow(window) {
@@ -1424,6 +1453,7 @@ var WindowSwitcher = new Lang.Class({
 
         let icon = this.icons.splice(index, 1)[0];
         window.disconnect(icon._unmanagedSignalId);
+        window.disconnect(icon._titleChangedSignalId);
 
         this.removeItem(index);
     }
