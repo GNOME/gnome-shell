@@ -153,7 +153,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-pointer-constraint.h	\
 	backends/meta-settings.c		\
 	backends/meta-settings-private.h	\
-	backends/meta-stage.h			\
+	backends/meta-stage-private.h		\
 	backends/meta-stage.c			\
 	backends/meta-renderer.c		\
 	backends/meta-renderer.h		\
@@ -246,7 +246,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	compositor/meta-window-actor.c		\
 	compositor/meta-window-actor-private.h	\
 	compositor/meta-window-group.c		\
-	compositor/meta-window-group.h		\
+	compositor/meta-window-group-private.h	\
 	compositor/meta-window-shape.c		\
 	compositor/region-utils.c		\
 	compositor/region-utils.h		\
