@@ -1,3 +1,18 @@
+3.28.2
+======
+* Fix lock-up on cancelling polkit dialog [Florian; #221]
+* Guard against untimely keyboard map changes [Carlos; #240]
+* Fix blurriness of OSD under some resolutions [Silvère; #782011]
+* Fix icons in search provider results [Florian; #249]
+* Misc. bug fixes [Marco, Florian; #792687, #781471]
+
+Contributors:
+  Carlos Garnacho, Silvère Latchurié, Florian Müllner, Mario Sanchez Prada,
+  Ray Strode, Marco Trevisan (Treviño)
+
+Translators:
+  Stas Solovey [ru], Rafael Fontenelle [pt_BR]
+
 3.28.1
 ======
 * Fix compose characters in shell entries [Carlos; #115]
