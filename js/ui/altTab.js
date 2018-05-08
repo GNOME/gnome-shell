@@ -91,28 +91,29 @@ var AppSwitcherPopup = new Lang.Class({
             let childBox = this._switcherList.get_allocation_box();
             let primary = Main.layoutManager.primaryMonitor;
 
-            let leftPadding = this.get_theme_node().get_padding(St.Side.LEFT);
-            let rightPadding = this.get_theme_node().get_padding(St.Side.RIGHT);
-            let bottomPadding = this.get_theme_node().get_padding(St.Side.BOTTOM);
-            let hPadding = leftPadding + rightPadding;
+            let themeNode = this.get_theme_node();
+            let leftPadding = themeNode.get_padding(St.Side.LEFT);
+            let rightPadding = themeNode.get_padding(St.Side.RIGHT);
+            let bottomPadding = themeNode.get_padding(St.Side.BOTTOM);
+            let spacing = themeNode.get_length('spacing');
 
             let icon = this._items[this._selectedIndex];
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
+
             let [childMinWidth, childNaturalWidth] = this._thumbnails.get_preferred_width(-1);
             childBox.x1 = Math.max(primary.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > primary.x + primary.width - hPadding) {
-                let offset = childBox.x1 + childNaturalWidth - primary.width + hPadding;
-                childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
-            }
+            let rightLimit = primary.x + primary.width - rightPadding;
+            if (childBox.x1 + childNaturalWidth > rightLimit)
+                childBox.x1 = Math.max(primary.x + leftPadding, rightLimit - childNaturalWidth);
 
-            let spacing = this.get_theme_node().get_length('spacing');
+            childBox.x2 = Math.min(childBox.x1 + childNaturalWidth, rightLimit);
 
-            childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > primary.x + primary.width - rightPadding)
-                childBox.x2 = primary.x + primary.width - rightPadding;
             childBox.y1 = this._switcherList.allocation.y2 + spacing;
-            this._thumbnails.addClones(primary.y + primary.height - bottomPadding - childBox.y1);
+
+            let maxSwitcherListHeight = primary.y + primary.height - bottomPadding - childBox.y1;
+            this._thumbnails.addClones(maxSwitcherListHeight);
+
             let [childMinHeight, childNaturalHeight] = this._thumbnails.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.allocate(childBox, flags);
