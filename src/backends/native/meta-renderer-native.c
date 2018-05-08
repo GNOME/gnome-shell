@@ -1601,6 +1601,12 @@ gbm_get_next_fb_id (MetaGpuKms         *gpu_kms,
   /* Now we need to set the CRTC to whatever is the front buffer */
   next_bo = gbm_surface_lock_front_buffer (gbm_surface);
 
+  if (!next_bo)
+    {
+      g_error ("Impossible to lock surface front buffer: %m");
+      return FALSE;
+    }
+
   for (i = 0; i < gbm_bo_get_plane_count (next_bo); i++)
     {
       strides[i] = gbm_bo_get_stride_for_plane (next_bo, i);
