@@ -92,27 +92,25 @@ var AppSwitcherPopup = new Lang.Class({
             let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
             let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
             let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
-            let hPadding = leftPadding + rightPadding;
 
             let icon = this._items[this._selectedIndex].actor;
             let [posX, posY] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
+
             let [childMinWidth, childNaturalWidth] = this._thumbnails.actor.get_preferred_width(-1);
             childBox.x1 = Math.max(primary.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > primary.x + primary.width - hPadding) {
-                let offset = childBox.x1 + childNaturalWidth - primary.width + hPadding;
-                childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
-            }
+            let rightLimit = primary.x + primary.width - rightPadding;
+            if (childBox.x1 + childNaturalWidth > rightLimit)
+                childBox.x1 = Math.max(primary.x + leftPadding, rightLimit - childNaturalWidth);
+
+            childBox.x2 = Math.min(childBox.x1 + childNaturalWidth, rightLimit);
 
             let spacing = this.actor.get_theme_node().get_length('spacing');
-
-            childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > primary.x + primary.width - rightPadding)
-                childBox.x2 = primary.x + primary.width - rightPadding;
             childBox.y1 = this._switcherList.actor.allocation.y2 + spacing;
             this._thumbnails.addClones(primary.y + primary.height - bottomPadding - childBox.y1);
             let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
+
             this._thumbnails.actor.allocate(childBox, flags);
         }
     },
