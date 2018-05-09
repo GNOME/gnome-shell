@@ -627,24 +627,20 @@ var SwitcherList = new Lang.Class({
         let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
 
         let x = 0;
-        let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
-        for (let i = 0; i < children.length; i++) {
-            if (this._items.indexOf(children[i]) != -1) {
-                let [childMin, childNat] = children[i].get_preferred_height(childWidth);
-                let vSpacing = (childHeight - childNat) / 2;
-                childBox.x1 = x;
-                childBox.y1 = vSpacing;
-                childBox.x2 = x + childWidth;
-                childBox.y2 = childBox.y1 + childNat;
-                children[i].allocate(childBox, flags);
+        // We're only responsible for allocating our own items,
+        // don't allocate every child of this._list.
+        for (let i = 0; i < this._items.length; i++) {
+            let [childMin, childNat] = this._items[i].get_preferred_height(childWidth);
+            let vSpacing = (childHeight - childNat) / 2;
+            childBox.x1 = x;
+            childBox.y1 = vSpacing;
+            childBox.x2 = x + childWidth;
+            childBox.y2 = childBox.y1 + childNat;
+            this._items[i].allocate(childBox, flags);
 
-                x += this._list.spacing + childWidth;
-            } else {
-                // Something else, eg, AppSwitcher's arrows;
-                // we don't allocate it.
-            }
+            x += this._list.spacing + childWidth;
         }
     }
 });
