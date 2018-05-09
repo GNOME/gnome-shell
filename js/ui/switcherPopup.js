@@ -72,17 +72,13 @@ var SwitcherPopup = new Lang.Class({
     },
 
     _getPreferredWidth(actor, forHeight, alloc) {
-        let primary = Main.layoutManager.primaryMonitor;
-
-        alloc.min_size = primary.width;
-        alloc.natural_size = primary.width;
+        alloc.min_size = global.stage.width;
+        alloc.natural_size = global.stage.width;
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
-        let primary = Main.layoutManager.primaryMonitor;
-
-        alloc.min_size = primary.height;
-        alloc.natural_size = primary.height;
+        alloc.min_size = global.stage.height;
+        alloc.natural_size = global.stage.height;
     },
 
     _allocate(actor, box, flags) {
