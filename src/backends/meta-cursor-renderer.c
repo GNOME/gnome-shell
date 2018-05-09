@@ -193,8 +193,8 @@ meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
 }
 
 static void
-update_cursor (MetaCursorRenderer *renderer,
-               MetaCursorSprite   *cursor_sprite)
+meta_cursor_renderer_update_cursor (MetaCursorRenderer *renderer,
+                                    MetaCursorSprite   *cursor_sprite)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
   gboolean handled_by_backend;
@@ -237,7 +237,7 @@ meta_cursor_renderer_set_cursor (MetaCursorRenderer *renderer,
     return;
   priv->displayed_cursor = cursor_sprite;
 
-  update_cursor (renderer, cursor_sprite);
+  meta_cursor_renderer_update_cursor (renderer, cursor_sprite);
 }
 
 void
@@ -246,7 +246,7 @@ meta_cursor_renderer_force_update (MetaCursorRenderer *renderer)
   MetaCursorRendererPrivate *priv =
     meta_cursor_renderer_get_instance_private (renderer);
 
-  update_cursor (renderer, priv->displayed_cursor);
+  meta_cursor_renderer_update_cursor (renderer, priv->displayed_cursor);
 }
 
 void
@@ -261,7 +261,7 @@ meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
   priv->current_x = x;
   priv->current_y = y;
 
-  update_cursor (renderer, priv->displayed_cursor);
+  meta_cursor_renderer_update_cursor (renderer, priv->displayed_cursor);
 }
 
 ClutterPoint
