@@ -645,8 +645,6 @@ void meta_backend_native_resume (MetaBackendNative *native)
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
-  MetaCursorRenderer *cursor_renderer;
-  MetaCursorRendererNative *cursor_renderer_native;
   ClutterActor *stage;
   MetaIdleMonitor *idle_monitor;
 
@@ -657,10 +655,6 @@ void meta_backend_native_resume (MetaBackendNative *native)
 
   stage = meta_backend_get_stage (backend);
   clutter_actor_queue_redraw (stage);
-
-  cursor_renderer = meta_backend_get_cursor_renderer (backend);
-  cursor_renderer_native = META_CURSOR_RENDERER_NATIVE (cursor_renderer);
-  meta_cursor_renderer_native_force_update (cursor_renderer_native);
 
   idle_monitor = meta_backend_get_idle_monitor (backend, 0);
   meta_idle_monitor_reset_idletime (idle_monitor);
