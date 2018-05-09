@@ -1101,7 +1101,7 @@ force_update_hw_cursor (MetaCursorRendererNative *native)
     meta_cursor_renderer_native_get_instance_private (native);
 
   priv->hw_state_invalidated = TRUE;
-  update_hw_cursor (native, meta_cursor_renderer_get_cursor (renderer));
+  meta_cursor_renderer_force_update (renderer);
 }
 
 static void
