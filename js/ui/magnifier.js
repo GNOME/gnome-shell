@@ -19,7 +19,6 @@ const MagnifierDBus = imports.ui.magnifierDBus;
 const Params = imports.misc.params;
 const PointerWatcher = imports.ui.pointerWatcher;
 
-var MOUSE_POLL_FREQUENCY = 50;
 var CROSSHAIRS_CLIP_SIZE = [100, 100];
 var NO_CHANGE = 0.0;
 
@@ -152,8 +151,10 @@ var Magnifier = new Lang.Class({
      * Turn on mouse tracking, if not already doing so.
      */
     startTrackingMouse() {
-        if (!this._pointerWatch)
-            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(MOUSE_POLL_FREQUENCY, this.scrollToMousePos.bind(this));
+        if (!this._pointerWatch) {
+            let interval = 1000 / Clutter.get_default_frame_rate();
+            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(interval, this.scrollToMousePos.bind(this));
+        }
     },
 
     /**
