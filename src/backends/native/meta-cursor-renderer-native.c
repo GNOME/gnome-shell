@@ -685,7 +685,10 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer,
 
   priv->has_hw_cursor = should_have_hw_cursor (renderer, cursor_sprite);
   update_hw_cursor (native, cursor_sprite);
-  return priv->has_hw_cursor;
+
+  return (priv->has_hw_cursor ||
+          !cursor_sprite ||
+          !meta_cursor_sprite_get_cogl_texture (cursor_sprite));
 }
 
 static void
