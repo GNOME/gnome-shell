@@ -1191,11 +1191,36 @@ app_child_setup (gpointer user_data)
 #endif
 
 static void
+_shell_app_watch_callback (GPid      pid,
+                           gint      status,
+                           ShellApp *app)
+{
+  if (app->state == SHELL_APP_STATE_STARTING)
+    {
+      ShellWindowTracker *tracker = shell_window_tracker_get_default ();
+      GSList *startup_sequences = shell_window_tracker_get_startup_sequences (tracker);
+      GSList *iter = NULL;
+
+      for (iter = startup_sequences; iter; iter = g_slist_next (iter))
+        {
+          ShellStartupSequence *sequence = (ShellStartupSequence*) iter->data;
+          ShellApp *startup_app = shell_startup_sequence_get_app (sequence);
+          if (startup_app == app)
+            shell_startup_sequence_complete (sequence);
+        }
+
+      shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+    }
+
+  g_spawn_close_pid (pid);
+}
+
+static void
 wait_pid (GDesktopAppInfo *appinfo,
           GPid             pid,
-          gpointer         user_data)
+          ShellApp        *app)
 {
-  g_child_watch_add (pid, (GChildWatchFunc) g_spawn_close_pid, NULL);
+  g_child_watch_add (pid, (GChildWatchFunc) _shell_app_watch_callback, app);
 }
 
 /**
@@ -1242,7 +1267,8 @@ shell_app_launch (ShellApp     *app,
 #else
                                                    NULL, NULL,
 #endif
-                                                   wait_pid, NULL,
+                                                   (GDesktopAppLaunchCallback) wait_pid,
+                                                   app,
                                                    error);
   g_object_unref (context);
 
