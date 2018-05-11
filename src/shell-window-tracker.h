@@ -36,6 +36,7 @@ const char *shell_startup_sequence_get_name (ShellStartupSequence *sequence);
 gboolean shell_startup_sequence_get_completed (ShellStartupSequence *sequence);
 int shell_startup_sequence_get_workspace (ShellStartupSequence *sequence);
 ClutterActor *shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size);
+void shell_startup_sequence_complete (ShellStartupSequence *sequence);
 
 G_END_DECLS
 

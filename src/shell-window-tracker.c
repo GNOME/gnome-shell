@@ -906,6 +906,11 @@ shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
   return texture;
 }
 
+void
+shell_startup_sequence_complete (ShellStartupSequence *sequence)
+{
+  sn_startup_sequence_complete ((SnStartupSequence*)sequence);
+}
 
 /**
  * shell_window_tracker_get_default:
