@@ -139,6 +139,9 @@ void clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
 
 void clutter_seat_evdev_sync_leds (ClutterSeatEvdev *seat);
 
+ClutterInputDevice * clutter_seat_evdev_get_device (ClutterSeatEvdev *seat,
+                                                    gint              id);
+
 ClutterTouchState * clutter_seat_evdev_acquire_touch_state (ClutterSeatEvdev *seat,
                                                             int               device_slot);
 

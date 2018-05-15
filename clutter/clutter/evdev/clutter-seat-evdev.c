@@ -858,6 +858,24 @@ clutter_seat_evdev_free (ClutterSeatEvdev *seat)
   g_free (seat);
 }
 
+ClutterInputDevice *
+clutter_seat_evdev_get_device (ClutterSeatEvdev *seat,
+                               gint              id)
+{
+  ClutterInputDevice *device;
+  GSList *l;
+
+  for (l = seat->devices; l; l = l->next)
+    {
+      device = l->data;
+
+      if (clutter_input_device_get_device_id (device) == id)
+        return device;
+    }
+
+  return NULL;
+}
+
 void
 clutter_seat_evdev_set_stage (ClutterSeatEvdev *seat,
                               ClutterStage     *stage)
