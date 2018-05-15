@@ -919,7 +919,6 @@ clutter_device_manager_evdev_get_device (ClutterDeviceManager *manager,
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
   GSList *l;
-  GSList *device_it;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
   priv = manager_evdev->priv;
@@ -927,17 +926,13 @@ clutter_device_manager_evdev_get_device (ClutterDeviceManager *manager,
   for (l = priv->seats; l; l = l->next)
     {
       ClutterSeatEvdev *seat = l->data;
+      ClutterInputDevice *device = clutter_seat_evdev_get_device (seat, id);
 
-      for (device_it = seat->devices; device_it; device_it = device_it->next)
-        {
-          ClutterInputDevice *device = device_it->data;
-
-          if (clutter_input_device_get_device_id (device) == id)
-            return device;
-        }
+      if (device)
+        return device;
     }
 
-  return NULL;
+  return clutter_seat_evdev_get_device (priv->main_seat, id);
 }
 
 static void
