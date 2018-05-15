@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-04-13 19:54+0000\n"
-"PO-Revision-Date: 2018-02-09 12:15+0200\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"POT-Creation-Date: 2018-05-15 21:59+0000\n"
+"PO-Revision-Date: 2018-05-16 00:22+0200\n"
+"Last-Translator: marcos <marcoslansgarza@gmail.com>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -358,20 +358,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: js/gdm/loginDialog.js:315
+#: js/gdm/loginDialog.js:319
 msgid "Choose Session"
 msgstr "Escolla unha sesión"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:458
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:887
+#: js/gdm/loginDialog.js:891
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
@@ -379,12 +379,12 @@ msgstr "(p.ex., usuario ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:892 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "Nome de usuario: "
 
-#: js/gdm/loginDialog.js:1228
+#: js/gdm/loginDialog.js:1234
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -858,7 +858,7 @@ msgstr "Unidade externa desconectada"
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:297
 msgid "Password:"
 msgstr "Contrasinal:"
 
@@ -895,11 +895,11 @@ msgstr "Contrasinal da chave privada: "
 msgid "Service: "
 msgstr "Servizo: "
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:664
 msgid "Authentication required by wireless network"
 msgstr "A rede sen fíos require autenticación"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:660
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:665
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -908,7 +908,7 @@ msgstr ""
 "Requírense contrasinais ou chaves de cifrado para acceder á rede sen fíos "
 "«%s»."
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:668
 msgid "Wired 802.1X authentication"
 msgstr "Autenticación con fíos 802.1X"
 
@@ -916,15 +916,15 @@ msgstr "Autenticación con fíos 802.1X"
 msgid "Network name: "
 msgstr "Nome da rede:"
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:667
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:672
 msgid "DSL authentication"
 msgstr "Autenticación DSL"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:678
 msgid "PIN code required"
 msgstr "Requírese un código PIN"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:674
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:679
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "É necesario un código PIN para o dispositivo de banda larga móbil"
 
@@ -932,17 +932,17 @@ msgstr "É necesario un código PIN para o dispositivo de banda larga móbil"
 msgid "PIN: "
 msgstr "PIN:"
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:685
 msgid "Mobile broadband network password"
 msgstr "Contrasinal da rede de banda larga móbil"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:664
-#: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:669
+#: js/ui/components/networkAgent.js:673 js/ui/components/networkAgent.js:686
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:653 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -962,7 +962,7 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Desculpe, iso non funcionou. Ténteo de novo."
 
@@ -1101,7 +1101,7 @@ msgstr "Apagar"
 #: js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Instalar anovacións e apagar"
+msgstr "Instalar actualizacións e apagar"
 
 #: js/ui/endSessionDialog.js:87
 #, javascript-format
@@ -1113,7 +1113,7 @@ msgstr[1] "O sistema apagarase automaticamente en %d segundos."
 #: js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr "Instalar anovacións de software pendentes"
+msgstr "Instalar actualizacóns de software pendentes"
 
 #: js/ui/endSessionDialog.js:94 js/ui/endSessionDialog.js:111
 msgctxt "button"
@@ -1167,7 +1167,7 @@ msgstr "Instalar e apagar"
 #: js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr "Apagar despois de instalar as anovacións"
+msgstr "Apagar despois de instalar as actualizacións"
 
 #: js/ui/endSessionDialog.js:137
 msgctxt "title"
@@ -1189,7 +1189,7 @@ msgstr ""
 
 #: js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
-msgstr "Con enerxía da batería: enchufar antes de instalar anovacións."
+msgstr "Con enerxía da batería: enchufar antes de instalar actualizacións."
 
 #: js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
@@ -1623,7 +1623,7 @@ msgstr[1] "%d conectados"
 
 #: js/ui/status/bluetooth.js:139
 msgid "Off"
-msgstr "Desactivar"
+msgstr "Desactivado"
 
 #: js/ui/status/bluetooth.js:141
 msgid "On"
