@@ -120,8 +120,6 @@ meta_wayland_text_input_focus_commit_text (ClutterInputFocus *focus,
       gtk_text_input_send_preedit_string (resource, NULL, 0);
       gtk_text_input_send_commit_string (resource, text);
     }
-
-  clutter_input_focus_reset (focus);
 }
 
 static void
