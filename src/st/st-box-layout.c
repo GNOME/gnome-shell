@@ -490,7 +490,7 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
                                 ClutterPaintVolume *volume)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
-  gdouble x, y;
+  gdouble x, y, lower, upper;
   StBoxLayoutPrivate *priv = self->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
@@ -505,13 +505,42 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
    * our paint volume on that. */
   if (priv->hadjustment || priv->vadjustment)
     {
+      gdouble width, height;
+
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
       origin.x = content_box.x1 - allocation_box.x1;
       origin.y = content_box.y1 - allocation_box.y2;
       origin.z = 0.f;
-      clutter_paint_volume_set_width (volume, content_box.x2 - content_box.x1);
-      clutter_paint_volume_set_height (volume, content_box.y2 - content_box.y1);
+
+      if (priv->hadjustment)
+        {
+          g_object_get (priv->hadjustment,
+                        "lower", &lower,
+                        "upper", &upper,
+                        NULL);
+          width = upper - lower;
+        }
+      else
+        {
+          width = content_box.x2 - content_box.x1;
+        }
+
+      if (priv->vadjustment)
+        {
+          g_object_get (priv->vadjustment,
+                        "lower", &lower,
+                        "upper", &upper,
+                        NULL);
+          height = upper - lower;
+        }
+      else
+        {
+          height = content_box.y2 - content_box.y1;
+        }
+
+      clutter_paint_volume_set_width (volume, width);
+      clutter_paint_volume_set_height (volume, height);
     }
   else if (!CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume))
     return FALSE;
