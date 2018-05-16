@@ -304,6 +304,13 @@ st_scroll_view_pick (ClutterActor       *actor,
     clutter_actor_paint (priv->vscroll);
 }
 
+static gboolean
+st_scroll_view_get_paint_volume (ClutterActor       *actor,
+                                 ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
 static double
 get_scrollbar_width (StScrollView *scroll,
                      gfloat        for_height)
@@ -793,6 +800,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 
   actor_class->paint = st_scroll_view_paint;
   actor_class->pick = st_scroll_view_pick;
+  actor_class->get_paint_volume = st_scroll_view_get_paint_volume;
   actor_class->get_preferred_width = st_scroll_view_get_preferred_width;
   actor_class->get_preferred_height = st_scroll_view_get_preferred_height;
   actor_class->allocate = st_scroll_view_allocate;
