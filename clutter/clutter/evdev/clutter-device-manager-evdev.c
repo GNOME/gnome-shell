@@ -793,10 +793,12 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
       if (priv->main_seat->libinput_seat == NULL)
         seat = priv->main_seat;
       else
-        seat = clutter_seat_evdev_new (manager_evdev);
+        {
+          seat = clutter_seat_evdev_new (manager_evdev);
+          priv->seats = g_slist_append (priv->seats, seat);
+        }
 
       clutter_seat_evdev_set_libinput_seat (seat, libinput_seat);
-      priv->seats = g_slist_append (priv->seats, seat);
     }
 
   device = _clutter_input_device_evdev_new (manager, seat, libinput_device);
@@ -932,7 +934,7 @@ clutter_device_manager_evdev_get_device (ClutterDeviceManager *manager,
         return device;
     }
 
-  return clutter_seat_evdev_get_device (priv->main_seat, id);
+  return NULL;
 }
 
 static void
@@ -1962,6 +1964,7 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   xkb_context_unref (ctx);
 
   priv->main_seat = clutter_seat_evdev_new (manager_evdev);
+  priv->seats = g_slist_append (priv->seats, priv->main_seat);
 
   dispatch_libinput (manager_evdev);
 
@@ -2010,7 +2013,6 @@ clutter_device_manager_evdev_finalize (GObject *object)
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (object);
   priv = manager_evdev->priv;
 
-  clutter_seat_evdev_free (priv->main_seat);
   g_slist_free_full (priv->seats, (GDestroyNotify) clutter_seat_evdev_free);
   g_slist_free (priv->devices);
 
@@ -2071,8 +2073,6 @@ clutter_device_manager_evdev_stage_added_cb (ClutterStageManager *manager,
   priv->stage = stage;
 
   /* Set the stage of any devices that don't already have a stage */
-  clutter_seat_evdev_set_stage (priv->main_seat, stage);
-
   for (l = priv->seats; l; l = l->next)
     {
       ClutterSeatEvdev *seat = l->data;
@@ -2098,8 +2098,6 @@ clutter_device_manager_evdev_stage_removed_cb (ClutterStageManager *manager,
 
   /* Remove the stage of any input devices that were pointing to this
      stage so we don't send events to invalid stages */
-  clutter_seat_evdev_set_stage (priv->main_seat, NULL);
-
   for (l = priv->seats; l; l = l->next)
     {
       ClutterSeatEvdev *seat = l->data;
