@@ -2070,6 +2070,8 @@ clutter_device_manager_evdev_stage_added_cb (ClutterStageManager *manager,
   priv->stage = stage;
 
   /* Set the stage of any devices that don't already have a stage */
+  clutter_seat_evdev_set_stage (priv->main_seat, stage);
+
   for (l = priv->seats; l; l = l->next)
     {
       ClutterSeatEvdev *seat = l->data;
@@ -2095,6 +2097,8 @@ clutter_device_manager_evdev_stage_removed_cb (ClutterStageManager *manager,
 
   /* Remove the stage of any input devices that were pointing to this
      stage so we don't send events to invalid stages */
+  clutter_seat_evdev_set_stage (priv->main_seat, NULL);
+
   for (l = priv->seats; l; l = l->next)
     {
       ClutterSeatEvdev *seat = l->data;
