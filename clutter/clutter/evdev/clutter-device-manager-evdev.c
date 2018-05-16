@@ -2010,6 +2010,7 @@ clutter_device_manager_evdev_finalize (GObject *object)
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (object);
   priv = manager_evdev->priv;
 
+  clutter_seat_evdev_free (priv->main_seat);
   g_slist_free_full (priv->seats, (GDestroyNotify) clutter_seat_evdev_free);
   g_slist_free (priv->devices);
 
