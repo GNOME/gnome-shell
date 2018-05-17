@@ -800,7 +800,7 @@ var AppSwitcher = new Lang.Class({
     _onItemEnter(index) {
         // Avoid reentrancy
         if (index != this._highlighted) {
-            if (this._altTabPopup.thumbnailsVisible) {
+            if (this._altTabPopup.thumbnailsVisible && this._altTabPopup.mouseActive) {
                 if (this._mouseTimeOutId != 0)
                     return;
 
