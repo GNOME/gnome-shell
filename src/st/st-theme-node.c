@@ -3019,6 +3019,39 @@ st_theme_node_get_font (StThemeNode *node)
   return node->font_desc;
 }
 
+gchar *
+st_theme_node_get_font_features (StThemeNode *node)
+{
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, "font-feature-settings") == 0)
+        {
+          CRTerm *term = decl->value;
+
+          if (!term->next && term->type == TERM_IDENT)
+            {
+              gchar *ident = term->content.str->stryng->str;
+
+              if (strcmp (ident, "inherit") == 0)
+                break;
+
+              if (strcmp (ident, "normal") == 0)
+                return NULL;
+            }
+
+          return (gchar *)cr_term_to_string (term);
+        }
+    }
+
+  return node->parent_node ? st_theme_node_get_font_features (node->parent_node) : NULL;
+}
+
 /**
  * st_theme_node_get_border_image:
  * @node: a #StThemeNode

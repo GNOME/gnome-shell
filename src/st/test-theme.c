@@ -59,6 +59,24 @@ assert_font (StThemeNode *node,
   g_free (value);
 }
 
+static void
+assert_font_features (StThemeNode *node,
+                      const char  *node_description,
+                      const char  *expected)
+{
+  char *value = st_theme_node_get_font_features (node);
+
+  if (g_strcmp0 (expected, value) != 0)
+    {
+      g_print ("%s: %s.font-feature-settings: expected: %s, got: %s\n",
+               test, node_description, expected, value);
+      fail = TRUE;
+    }
+
+  if (value)
+    g_free (value);
+}
+
 static char *
 text_decoration_to_string (StTextDecoration decoration)
 {
@@ -414,6 +432,22 @@ test_font (void)
 }
 
 static void
+test_font_features (void)
+{
+  test = "font_features";
+  /* group1 has font-feature-settings: "tnum" */
+  assert_font_features (group1, "group1", "\"tnum\"");
+  /* text2 should inherit from group1 */
+  assert_font_features (text2,  "text2", "\"tnum\"");
+  /* group2 has font-feature-settings: "tnum", "zero" */
+  assert_font_features (group2, "group2", "\"tnum\", \"zero\"");
+  /* text3 should inherit from group2 using the inherit keyword */
+  assert_font_features (text3,  "text3",  "\"tnum\", \"zero\"");
+  /* text4 has font-feature-settings: normal */
+  assert_font_features (text4,  "text4",  NULL);
+}
+
+static void
 test_pseudo_class (void)
 {
   StWidget *label;
@@ -554,6 +588,7 @@ main (int argc, char **argv)
   test_border ();
   test_background ();
   test_font ();
+  test_font_features ();
   test_pseudo_class ();
   test_inline_style ();
 
