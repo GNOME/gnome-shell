@@ -585,17 +585,6 @@ is_new_size_hints_valid (MetaWindow              *window,
           (new_max_height == 0 || new_min_height <= new_max_height));
 }
 
-static inline gboolean
-did_geometry_change (MetaWaylandZxdgSurfaceV6 *xdg_surface,
-                     MetaWaylandPendingState  *pending)
-{
-  MetaWaylandZxdgSurfaceV6Private *priv =
-    meta_wayland_zxdg_surface_v6_get_instance_private (xdg_surface);
-
-  return pending->has_new_geometry &&
-         !meta_rectangle_equal (&priv->geometry, &pending->new_geometry);
-}
-
 static void
 meta_wayland_zxdg_toplevel_v6_commit (MetaWaylandSurfaceRole  *surface_role,
                                       MetaWaylandPendingState *pending)
@@ -611,11 +600,10 @@ meta_wayland_zxdg_toplevel_v6_commit (MetaWaylandSurfaceRole  *surface_role,
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWindow *window = surface->window;
   MetaRectangle window_geometry;
+  MetaRectangle old_geometry;
   gboolean geometry_changed;
 
-  /* This check must happen before chaining up, otherwise the new geometry
-   * is applied and it'll always return FALSE. */
-  geometry_changed = did_geometry_change (xdg_surface, pending);
+  old_geometry = xdg_surface_priv->geometry;
 
   surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_zxdg_toplevel_v6_parent_class);
@@ -633,6 +621,8 @@ meta_wayland_zxdg_toplevel_v6_commit (MetaWaylandSurfaceRole  *surface_role,
   /* If the window disappeared the surface is not coming back. */
   if (!window)
     return;
+
+  geometry_changed = !meta_rectangle_equal (&old_geometry, &xdg_surface_priv->geometry);
 
   if (geometry_changed || meta_window_wayland_needs_move_resize (window))
     {
