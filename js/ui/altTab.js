@@ -817,8 +817,9 @@ var AppSwitcher = new Lang.Class({
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
     _onItemEnter(index) {
-        // Avoid reentrancy
-        if (index == this._highlighted)
+        // Check for mouseActive here to catch the case where mouse usage is allowed after the app
+        // icon hover timeout finished, but forbidden now (when the actual mouse movement happened).
+        if (!this._altTabPopup.mouseActive || index == this._highlighted)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._mouseTimeOutId != 0)
