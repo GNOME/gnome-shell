@@ -232,6 +232,8 @@ double st_theme_node_get_letter_spacing (StThemeNode *node);
  */
 const PangoFontDescription *st_theme_node_get_font (StThemeNode *node);
 
+gchar *st_theme_node_get_font_features (StThemeNode *node);
+
 StBorderImage *st_theme_node_get_border_image (StThemeNode *node);
 StShadow      *st_theme_node_get_box_shadow   (StThemeNode *node);
 StShadow      *st_theme_node_get_text_shadow  (StThemeNode *node);
