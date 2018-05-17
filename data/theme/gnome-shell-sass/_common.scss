@@ -623,12 +623,12 @@ StScrollBar {
   .switcher-list-item-container { spacing: 8px;  }
 
   .switcher-list .item-box {
-    padding: 8px;
+    padding: 8px 6px 4px 6px;
     border-radius: 4px;
   }
 
   .switcher-list .item-box:outlined {
-    padding: 6px;
+    padding: 6px 4px 2px 4px;
     border: 2px solid darken($borders_color,10%);
   }
 
@@ -637,9 +637,13 @@ StScrollBar {
     color: $selected_fg_color;
   }
 
+  .switcher-list .alt-tab-app {
+    spacing: 2px;
+  }
+
   .switcher-list .thumbnail-box {
     padding: 2px;
-    spacing: 4px;
+    spacing: 2px;
   }
 
   .switcher-list .thumbnail {
