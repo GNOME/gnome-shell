@@ -113,7 +113,7 @@ _st_set_text_from_style (ClutterText *text,
 
   ClutterColor color;
   StTextDecoration decoration;
-  PangoAttrList *attribs = NULL;
+  PangoAttrList *attribs;
   const PangoFontDescription *font;
   StTextAlign align;
   gdouble spacing;
@@ -123,8 +123,6 @@ _st_set_text_from_style (ClutterText *text,
 
   font = st_theme_node_get_font (theme_node);
   clutter_text_set_font_description (text, (PangoFontDescription *) font);
-
-  attribs = pango_attr_list_new ();
 
   decoration = st_theme_node_get_text_decoration (theme_node);
   if (decoration)
@@ -151,10 +149,19 @@ _st_set_text_from_style (ClutterText *text,
       pango_attr_list_insert (attribs, letter_spacing);
     }
 
+  /* Rather than making a temporary addition to the theme API to control
+   * tabular figures, just make all text use tabular figures. Using tabular
+   * figures where proportional figures would be better is relatively harmless;
+   * doing the reverse leads to UI jittering when numbers are changed
+   * frequently (for example, in the clock when seconds are visible, or in
+   * extensions that display numeric readouts). This hack will become
+   * unnecessary when gnome-shell uses GTK+ 4, which permits font features to
+   * be controlled through CSS. */
+  pango_attr_list_insert (attribs, pango_attr_font_features_new ("tnum"));
+
   clutter_text_set_attributes (text, attribs);
 
-  if (attribs)
-    pango_attr_list_unref (attribs);
+  pango_attr_list_unref (attribs);
 
   align = st_theme_node_get_text_align (theme_node);
   if (align == ST_TEXT_ALIGN_JUSTIFY)
