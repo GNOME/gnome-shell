@@ -1311,7 +1311,7 @@ var WindowIcon = new Lang.Class({
         this.window = window;
         this.app = app;
 
-        this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
+        this.actor = new St.BoxLayout({ style_class: 'alt-tab-app-no-label',
                                         vertical: true });
         this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
