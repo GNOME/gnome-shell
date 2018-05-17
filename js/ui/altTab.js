@@ -688,7 +688,7 @@ var AppSwitcher = new Lang.Class({
 
         let windowTracker = Shell.WindowTracker.get_default();
 
-        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, currentWorkspace);
+        let allWindows = getWindows(this._currentWorkspace);
 
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
