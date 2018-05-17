@@ -116,7 +116,7 @@ var AppSwitcherPopup = new Lang.Class({
             childBox.y1 = this._switcherList.actor.allocation.y2 + spacing;
 
             let maxSwitcherListHeight = primary.y + primary.height - bottomPadding - childBox.y1;
-            this._thumbnails.addClones(maxSwitcherListHeight);
+            this._thumbnails.setMaxHeight(maxSwitcherListHeight);
 
             let [childMinHeight, childNaturalHeight] = this._thumbnails.actor.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
@@ -1177,6 +1177,79 @@ var AppSwitcher = new Lang.Class({
     }
 });
 
+var LimitedHeightBin = new Lang.Class({
+    Name:'LimitedHeightBin',
+    Extends: St.Bin,
+
+    vfunc_get_preferred_height(forWidth) {
+        let [minHeight, natHeight] = this.parent(forWidth);
+
+        if (this.maxHeight && natHeight > this.maxHeight)
+            return [this.maxHeight, this.maxHeight];
+
+        if (this.minHeight && natHeight < this.minHeight)
+            return [this.minHeight, this.minHeight];
+
+        return [minHeight, natHeight];
+    }
+});
+
+var ThumbnailBox = new Lang.Class({
+    Name: 'ThumbnailBox',
+
+    _init(window) {
+        this.window = window;
+        this.actor = new St.BoxLayout({ style_class: 'thumbnail-box',
+                                        vertical: true });
+        this._cloneContainer = new LimitedHeightBin({ style_class: 'thumbnail' });
+
+        this.actor.add(this._cloneContainer, { expand: true });
+
+        this.label = new St.Label();
+        this.updateLabel();
+
+        this.actor.add(this.label, { x_fill: false });
+
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
+        let aspectRatio = Main.layoutManager.primaryMonitor.aspectRatio;
+        this._cloneContainer.minHeight = aspectRatio > 1 ? thumbnailSize / aspectRatio : thumbnailSize * aspectRatio;
+
+        let mutterWindow = this.window.get_compositor_private();
+        this._cloneContainer.add_actor(_createWindowClone(mutterWindow, thumbnailSize));
+    },
+
+    updateLabel() {
+        let title = this.window.get_title();
+        this.label.set_text(title);
+
+        title ? this.label.show() : this.label.hide();
+
+        // We changed the height of the actor, so calculate a new
+        // max height for the clone container.
+        if (this._maxHeight)
+            this.setMaxHeight(this._maxHeight);
+    },
+
+    setMaxHeight(height) {
+        this._maxHeight = height;
+
+        let themeNode = this.actor.get_theme_node();
+        let labelHeight = this.label.get_height();
+        let spacing = themeNode.get_length('spacing');
+
+        this._cloneContainer.maxHeight = themeNode.adjust_for_height(height - labelHeight - spacing);
+
+        // If the monitor is too small for the smallest thumbnails, use the available
+        // height as fixed height.
+        if (this._cloneContainer.minHeight > this._cloneContainer.maxHeight)
+            this._cloneContainer.minHeight = this._cloneContainer.maxHeight;
+
+        // Reset the clutter size cache to make sure the new values are returned
+        this._cloneContainer.queue_relayout();
+    }
+});
+
 var ThumbnailSwitcher = new Lang.Class({
     Name: 'ThumbnailSwitcher',
     Extends: SwitcherPopup.SwitcherList,
@@ -1184,9 +1257,8 @@ var ThumbnailSwitcher = new Lang.Class({
     _init(icon) {
         this.parent(false);
 
-        this._thumbnailBins = [];
-        this._clones = [];
-        this._currentIndex = -1;
+        this._thumbnails = [];
+        this._maxHeight = -1;
 
         icon.onWindowAdded = this._addThumbnail.bind(this);
         icon.onWindowRemoved = this._removeThumbnail.bind(this);
@@ -1196,100 +1268,49 @@ var ThumbnailSwitcher = new Lang.Class({
         this.icon.cachedWindows.forEach(window => this._addThumbnail(window));
     },
 
-    addClones(availHeight) {
-        if (!this._thumbnailBins.length)
+    setMaxHeight(height) {
+        if (this._maxHeight == height)
             return;
 
-        let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
-        totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
-        let [labelMinHeight, labelNaturalHeight] = this._lastLabel.get_preferred_height(-1);
-        let spacing = this._items[0].child.get_theme_node().get_length('spacing');
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
+        this._maxHeight = height;
 
-        availHeight = Math.min(availHeight - labelNaturalHeight - totalPadding - spacing, thumbnailSize);
-        let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;
-        binHeight = Math.min(thumbnailSize, binHeight);
+        let switcherContentHeight = this.actor.get_theme_node().adjust_for_height(height);
+        let itemBoxContentHeight = this._items[0].get_theme_node().adjust_for_height(switcherContentHeight);
 
-        // this._thumbnailBins will only include one item if this._currentIndex is set
-        for (let i = 0; i < this._thumbnailBins.length; i++) {
-            let mutterWindow = null;
-            if (this._currentIndex >= 0)
-                mutterWindow = this.icon.cachedWindows[this._currentIndex].get_compositor_private();
-            else
-                mutterWindow = this.icon.cachedWindows[i].get_compositor_private();
-
-            if (!mutterWindow)
-                continue;
-
-            let clone = _createWindowClone(mutterWindow, thumbnailSize);
-            this._thumbnailBins[i].set_height(binHeight);
-            this._thumbnailBins[i].add_actor(clone);
-
-            if (this._currentIndex >= 0)
-                this._clones.splice(this._currentIndex, 0, clone);
-            else
-                this._clones.push(clone);
-        }
-
-        this._thumbnailBins = [];
+        this._thumbnails.forEach(thumbnail => thumbnail.setMaxHeight(itemBoxContentHeight));
     },
 
     _addThumbnail(window, index) {
+        let thumbnail = new ThumbnailBox(window);
+
         if (index != undefined)
-            this._currentIndex = index;
+            this._thumbnails.splice(index, 0, thumbnail);
+        else
+            this._thumbnails.push(thumbnail);
 
-        let box = new St.BoxLayout({ style_class: 'thumbnail-box',
-                                     vertical: true });
-        let bin = new St.Bin({ style_class: 'thumbnail' });
+        let item = this.addItem(thumbnail.actor, thumbnail.label, index);
 
-        box.add_actor(bin);
+        // If we calculated a max height before, use it
+        if (this._maxHeight > 0) {
+            let switcherContentHeight = this.actor.get_theme_node().adjust_for_height(this._maxHeight);
+            let itemBoxContentHeight = this._items[0].get_theme_node().adjust_for_height(switcherContentHeight);
 
-        // We don't splice here because this is a temporary list for
-        // stuff to draw on the next allocation
-        this._thumbnailBins.push(bin);
-
-        let title = window.get_title();
-        let name = null;
-
-        // St.Label doesn't support text-align so use a Bin
-        let labelBin = new St.Bin({ x_align: St.Align.MIDDLE });
-        box.add_actor(labelBin);
-        this._lastLabel = labelBin;
-
-        if (title) {
-            name = new St.Label({ text: title });
-            labelBin.add_actor(name);
+            thumbnail.setMaxHeight(itemBoxContentHeight);
         }
 
-        this.addItem(box, name, index);
-
-        window._titleChangedSignalId = window.connect('notify::title', (w) => {
-            title = w.get_title();
-
-            if (title) {
-                if (!name) {
-                    name = new St.Label({ text: title });
-                    labelBin.add_actor(name);
-                } else {
-                    name.set_text(title);
-                }
-            } else {
-                labelBin.remove_actor(name);
-                name = null;
-            }
-        });
+        thumbnail._titleChangedSignalId = thumbnail.window.connect('notify::title', () => thumbnail.updateLabel());
     },
 
     _removeThumbnail(window, index) {
-        window.disconnect(window._titleChangedSignalId);
+        let thumbnail = this._thumbnails.splice(index, 1)[0];
+        window.disconnect(thumbnail._titleChangedSignalId);
 
-        this._clones.splice(index, 1);
         this.removeItem(index);
     },
 
     disconnectHandlers() {
-        this.icon.cachedWindows.forEach(window => window.disconnect(window._titleChangedSignalId));
+        this._thumbnails.forEach(thumbnail =>
+            thumbnail.window.disconnect(thumbnail._titleChangedSignalId));
 
         this._items.forEach(item => {
             item.disconnect(item._clickEventId);
