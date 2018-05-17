@@ -161,6 +161,7 @@ var Monitor = new Lang.Class({
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
+        this.aspectRatio = this.width / this.height;
     },
 
     get inFullscreen() {
