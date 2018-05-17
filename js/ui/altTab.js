@@ -713,7 +713,7 @@ var AppSwitcher = new Lang.Class({
             workspace = workspaceManager.get_active_workspace();
         }
 
-        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
+        let allWindows = getWindows(workspace);
 
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
