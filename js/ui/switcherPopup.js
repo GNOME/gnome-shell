@@ -447,7 +447,7 @@ var SwitcherList = new Lang.Class({
 
     addItem(item, label, index, listIndex) {
         let bbox = new St.Button({ style_class: 'item-box',
-                                   reactive: true });
+                                   reactive: true, y_fill: true });
 
         bbox.set_child(item);
 
@@ -654,17 +654,23 @@ var SwitcherList = new Lang.Class({
         let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
 
         let x = 0;
+        let childExpandHeight, vSpacing;
         let childBox = new Clutter.ActorBox();
 
         // We're only responsible for allocating our own items,
         // don't allocate every child of this._list.
         for (let i = 0; i < this._items.length; i++) {
-            let [childMin, childNat] = this._items[i].get_preferred_height(childWidth);
-            let vSpacing = (childHeight - childNat) / 2;
+            // Save the calculated height, we want all items to expand and
+            // those values can be used for every item.
+            if (!childExpandHeight) {
+                childExpandHeight = this._items[i].get_theme_node().adjust_for_height(childHeight - this._list.spacing);
+                vSpacing = (childHeight - childExpandHeight) / 2;
+            }
+
             childBox.x1 = x;
             childBox.y1 = vSpacing;
             childBox.x2 = x + childWidth;
-            childBox.y2 = childBox.y1 + childNat;
+            childBox.y2 = childBox.y1 + childExpandHeight;
             this._items[i].allocate(childBox, flags);
 
             x += this._list.spacing + childWidth;
