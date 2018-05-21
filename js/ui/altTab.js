@@ -175,7 +175,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
-        } else if (keysym === Clutter.KEY_q) {
+        } else if (keysym == Clutter.KEY_q || keysym === Clutter.KEY_Q) {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym === Clutter.KEY_Left)
@@ -184,7 +184,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this._select(this._selectedIndex, this._nextWindow());
             else if (keysym === Clutter.KEY_Up)
                 this._select(this._selectedIndex, null, true);
-            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
+            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
@@ -587,7 +587,7 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(this._previous());
         else if (keysym == Clutter.KEY_Right)
             this._select(this._next());
-        else if (keysym == Clutter.KEY_w || keysym == Clutter.KEY_F4)
+        else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
             this._closeWindow(this._selectedIndex);
         else
             return Clutter.EVENT_PROPAGATE;
