@@ -97,6 +97,8 @@ var CloseDialog = new Lang.Class({
         if (this._dialog != null)
             return;
 
+        Meta.disable_unredirect_for_screen(global.screen);
+
         this._addWindowEffect();
         this._initDialog();
 
@@ -116,6 +118,8 @@ var CloseDialog = new Lang.Class({
     vfunc_hide() {
         if (this._dialog == null)
             return;
+
+        Meta.enable_unredirect_for_screen(global.screen);
 
         let dialog = this._dialog;
         this._dialog = null;
