@@ -185,10 +185,13 @@ var SwitcherPopup = new Lang.Class({
         let keysym = event.get_key_symbol();
         let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
 
-        this._disableHover();
+        let selectedBefore = this._selectedIndex;
 
-        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
+        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE) {
+            if (selectedBefore != this._selectedIndex)
+                this._disableHover();
             return Clutter.EVENT_STOP;
+        }
 
         if (keysym == Clutter.Escape)
             this.destroy();
