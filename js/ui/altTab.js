@@ -189,6 +189,8 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _keyPressHandler(keysym, action) {
+        let selectedWindowBefore = this._currentWindow;
+
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
                 this._select(this._selectedIndex, 0);
@@ -223,6 +225,9 @@ var AppSwitcherPopup = new Lang.Class({
             else
                 return Clutter.EVENT_PROPAGATE;
         }
+
+        if (selectedWindowBefore != this._currentWindow)
+            this._disableHover();
 
         return Clutter.EVENT_STOP;
     },
