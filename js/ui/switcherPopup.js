@@ -187,10 +187,14 @@ var SwitcherPopup = new Lang.Class({
         let keysym = event.get_key_symbol();
         let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
 
-        this._disableHover();
+        let selectedBefore = this._selectedIndex;
 
-        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
+        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE) {
+            if (selectedBefore != this._selectedIndex)
+                this._disableHover();
+
             return Clutter.EVENT_STOP;
+        }
 
         // Note: pressing one of the below keys will destroy the popup only if
         // that key is not used by the active popup's keyboard shortcut
