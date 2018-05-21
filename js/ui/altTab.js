@@ -194,7 +194,7 @@ var AppSwitcherPopup = new Lang.Class({
             this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
-        } else if (keysym == Clutter.q) {
+        } else if (keysym == Clutter.q || keysym == Clutter.Q) {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Left)
@@ -203,7 +203,7 @@ var AppSwitcherPopup = new Lang.Class({
                 this._select(this._selectedIndex, this._nextWindow());
             else if (keysym == Clutter.Up)
                 this._select(this._selectedIndex, null, true);
-            else if (keysym == Clutter.w || keysym == Clutter.F4)
+            else if (keysym == Clutter.w || keysym == Clutter.W || keysym == Clutter.F4)
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
@@ -636,7 +636,7 @@ var WindowSwitcherPopup = new Lang.Class({
                 this._select(this._previous());
             else if (keysym == Clutter.Right)
                 this._select(this._next());
-            else if (keysym == Clutter.w || keysym == Clutter.F4)
+            else if (keysym == Clutter.w || keysym == Clutter.W || keysym == Clutter.F4)
                 this._closeWindow(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
