@@ -315,10 +315,10 @@ var NotificationApplicationPolicy = new Lang.Class({
 // You can add a secondary icon to the banner with 'secondaryGIcon'. There
 // is no fallback for this icon.
 //
-// If @params contains 'bannerMarkup', with the value %true, then
-// the corresponding element is assumed to use pango markup. If the
-// parameter is not present for an element, then anything that looks
-// like markup in that element will appear literally in the output.
+// If @params contains 'bannerMarkup', with the value %true, a subset (<b>,
+// <i> and <u>) of the markup in [1] will be interpreted within @banner. If
+// the parameter is not present, then anything that looks like markup
+// in @banner will appear literally in the output.
 //
 // If @params contains a 'clear' parameter with the value %true, then
 // the content and the action area of the notification will be cleared.
@@ -328,6 +328,8 @@ var NotificationApplicationPolicy = new Lang.Class({
 // If @params contains 'soundName' or 'soundFile', the corresponding
 // event sound is played when the notification is shown (if the policy for
 // @source allows playing sounds).
+//
+// [1] https://developer.gnome.org/notification-spec/#markup 
 var Notification = new Lang.Class({
     Name: 'Notification',
 

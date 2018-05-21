@@ -27,6 +27,7 @@ function _fixMarkup(text, allowMarkup) {
 
         // Support <b>, <i>, and <u>, escape anything else
         // so it displays as raw markup.
+        // Ref: https://developer.gnome.org/notification-spec/#markup
         _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
 
         try {
