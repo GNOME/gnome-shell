@@ -306,7 +306,7 @@ var IconGrid = new Lang.Class({
             // later we'll allocate as many children as fit the parent
             return;
 
-        let nChildren = this._grid.get_n_children();
+        let nChildren = this._items.length;
         let nColumns = this._colLimit ? Math.min(this._colLimit,
                                                  nChildren)
                                       : nChildren;
@@ -682,19 +682,27 @@ var IconGrid = new Lang.Class({
         if (!item.icon instanceof BaseIcon)
             throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
 
-        this._items.push(item);
-        if (index !== undefined)
+        if (index !== undefined) {
+            this._items.splice(index, 0, item);
             this._grid.insert_child_at_index(item.actor, index);
-        else
+        } else {
+            this._items.push(item);
             this._grid.add_actor(item.actor);
+        }
     },
 
     removeItem(item) {
+        let index = this._items.indexOf(item);
+        if (index === -1)
+            return;
+
+        this._items.splice(index, 1);
+
         this._grid.remove_child(item.actor);
     },
 
     getItemAtIndex(index) {
-        return this._grid.get_child_at_index(index);
+        return this._items[index].actor;
     },
 
     visibleItemsCount() {
