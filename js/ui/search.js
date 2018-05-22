@@ -347,12 +347,12 @@ var GridSearchResults = new Lang.Class({
 
     _init(provider, resultsView) {
         this.parent(provider, resultsView);
-        // We need to use the parent container to know how much results we can show.
+        // We need to read values from the parent to know how many results we can show.
         // None of the actors in this class can be used for that, since the main actor
         // goes hidden when no results are displayed, and then it lost its allocation.
-        // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
+        // Then on the next use of _getMaxDisplayedResults allocation is 0, therefore
         // it doesn't show any result although we have some.
-        this._parentContainer = resultsView.actor;
+        this._parent = resultsView;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -363,8 +363,21 @@ var GridSearchResults = new Lang.Class({
     },
 
     _getMaxDisplayedResults() {
-        let parentThemeNode = this._parentContainer.get_theme_node();
-        let availableWidth = parentThemeNode.adjust_for_width(this._parentContainer.width);
+        let contentThemeNode = this._parent._content.get_theme_node();
+
+        // Using the width of the parents actor doesn't always work.
+        // Since the parent-actor always has the width of the full screen
+        // and the dash is displayed on the primary monitor, use its width.
+        let actorWidth = Main.layoutManager.primaryMonitor.width;
+
+        let contentBinMaxWidth = this._parent._contentBin.get_theme_node().get_max_width();
+
+        let availContentBinMaxWidth = contentThemeNode.adjust_for_width(contentBinMaxWidth);
+        let availableWidth = contentThemeNode.adjust_for_width(actorWidth);
+
+        if (availableWidth > availContentBinMaxWidth)
+            availableWidth = availContentBinMaxWidth;
+
         return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
     },
 
