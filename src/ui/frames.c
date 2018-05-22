@@ -75,7 +75,8 @@ enum {
   META_ACTION_CLICK,
   META_ACTION_RIGHT_CLICK,
   META_ACTION_MIDDLE_CLICK,
-  META_ACTION_DOUBLE_CLICK
+  META_ACTION_DOUBLE_CLICK,
+  META_ACTION_IGNORE
 };
 
 static GObject *
@@ -974,6 +975,10 @@ get_action (const ClutterEvent *event)
           return META_ACTION_RIGHT_CLICK;
         case CLUTTER_BUTTON_MIDDLE:
           return META_ACTION_MIDDLE_CLICK;
+        default:
+          meta_verbose ("No action triggered for button %u %s\n",
+                        event->button.button,
+                        (event->type == CLUTTER_BUTTON_PRESS) ? "press" : "release");
         }
     }
   else if (event->type == CLUTTER_TOUCH_BEGIN ||
@@ -983,7 +988,7 @@ get_action (const ClutterEvent *event)
       return META_ACTION_CLICK;
     }
 
-  g_assert_not_reached ();
+  return META_ACTION_IGNORE;
 }
 
 static uint32_t
@@ -1115,13 +1120,15 @@ handle_press_event (MetaUIFrame        *frame,
   g_assert (event->type == CLUTTER_BUTTON_PRESS ||
             event->type == CLUTTER_TOUCH_BEGIN);
 
+  action = get_action (event);
+  if (action == META_ACTION_IGNORE)
+    return FALSE;
+
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
   evtime = clutter_event_get_time (event);
   clutter_event_get_coords (event, &x, &y);
   control = get_control (frame, x, y);
-  action = get_action (event);
-
   /* don't do the rest of this if on client area */
   if (control == META_FRAME_CONTROL_CLIENT_AREA)
     return FALSE; /* not on the frame, just passed through from client */
