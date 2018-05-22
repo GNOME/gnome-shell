@@ -274,6 +274,8 @@ var IconGrid = new Lang.Class({
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', this._onStyleChanged.bind(this));
 
+        this._styleUpdated = false;
+
         // Cancel animations when hiding the overview, to avoid icons
         // swarming into the void ...
         this.actor.connect('notify::mapped', () => {
@@ -615,6 +617,11 @@ var IconGrid = new Lang.Class({
     },
 
     columnsForWidth(rowWidth) {
+        // Try getting the styles from css if the style-changed signal
+        // wasn't fired yet.
+        if (!this._styleUpdated)
+            this._onStyleChanged();
+
         return this._computeLayout(rowWidth)[0];
     },
 
@@ -645,6 +652,8 @@ var IconGrid = new Lang.Class({
         this._hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
         this._vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
         this._grid.queue_relayout();
+
+        this._styleUpdated = true;
     },
 
     nRows(forWidth) {
