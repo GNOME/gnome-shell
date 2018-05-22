@@ -1407,6 +1407,7 @@ StScrollBar {
     color: $osd_fg_color;
     border-radius: 4px;
     padding: 6px;
+    spacing: 4px;
     border: 1px solid transparent;
     transition-duration: 100ms;
     text-align: center;
@@ -1454,10 +1455,8 @@ StScrollBar {
 
   .no-frequent-applications-label { @extend %status_text; }
 
-  .app-well-app > .overview-icon.overview-icon-with-label,
-  .grid-search-result .overview-icon.overview-icon-with-label {
-    padding: 10px 8px 5px 8px;
-    spacing: 4px;
+  .app-well-app .overview-icon.overview-icon-with-label {
+    padding: 8px 6px 4px 6px;
   }
 
   // Workspace pager
