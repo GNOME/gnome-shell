@@ -529,7 +529,8 @@ var Dash = new Lang.Class({
     _createAppItem(app) {
         let appIcon = new AppDisplay.AppIcon(app,
                                              { setSizeManually: true,
-                                               showLabel: false });
+                                               showLabel: false,
+                                               showRunningIndicator: true });
         if (appIcon._draggable) {
             appIcon._draggable.connect('drag-begin',
                                        () => {
