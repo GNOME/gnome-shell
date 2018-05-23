@@ -2821,7 +2821,7 @@ _clutter_actor_fully_transform_vertices (ClutterActor *self,
   /* Note: we pass NULL as the ancestor because we don't just want the modelview
    * that gets us to stage coordinates, we want to go all the way to eye
    * coordinates */
-  _clutter_actor_apply_relative_transformation_matrix (self, NULL, &modelview);
+  _clutter_actor_get_relative_transformation_matrix (self, NULL, &modelview);
 
   /* Fetch the projection and viewport */
   _clutter_stage_get_projection_matrix (CLUTTER_STAGE (stage), &projection);
