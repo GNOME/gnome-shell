@@ -1,19 +1,16 @@
-Coding guide
-============
+# Coding guide
 
 Our goal is to have all JavaScript code in GNOME follow a consistent style. In
 a dynamic language like JavaScript, it is essential to be rigorous about style
 (and unit tests), or you rapidly end up with a spaghetti-code mess.
 
-A quick note
-------------
+## A quick note
 
 Life isn't fun if you can't break the rules. If a rule seems unnecessarily
 restrictive while you're coding, ignore it, and let the patch reviewer decide
 what to do.
 
-Indentation and whitespace
---------------------------
+## Indentation and whitespace
 
 Use four-space indents. Braces are on the same line as their associated
 statements.  You should only omit braces if *both* sides of the statement are
@@ -22,7 +19,7 @@ on one line.
 * One space after the `function` keyword.  No space between the function name
 * in a declaration or a call.  One space before the parens in the `if`
 * statements, or `while`, or `for` loops.
-
+```javascript
     function foo(a, b) {
         let bar;
 
@@ -39,22 +36,20 @@ on one line.
             print(20);
         }
     }
+```
 
-Semicolons
-----------
+## Semicolons
 
 JavaScript allows omitting semicolons at the end of lines, but don't. Always
 end statements with a semicolon.
 
-js2-mode
---------
+## js2-mode
 
 If using Emacs, do not use js2-mode. It is outdated and hasn't worked for a
 while. emacs now has a built-in JavaScript mode, js-mode, based on
 espresso-mode. It is the de facto emacs mode for JavaScript.
 
-File naming and creation
-------------------------
+## File naming and creation
 
 For JavaScript files, use lowerCamelCase-style names, with a `.js` extension.
 
@@ -67,14 +62,13 @@ library name followed by a dash, e.g. `shell-app-system.c`. Create a
 `-private.h` header when you want to share code internally in the
 library. These headers are not installed, distributed or introspected.
 
-Imports
--------
+## Imports
 
 Use UpperCamelCase when importing modules to distinguish them from ordinary
 variables, e.g.
-
+```javascript
     const GLib = imports.gi.GLib;
-
+```
 Imports should be categorized into one of two places. The top-most import block
 should contain only "environment imports". These are either modules from
 gobject-introspection or modules added by gjs itself.
@@ -85,7 +79,7 @@ e.g. `imports.ui.popupMenu`.
 
 Each import block should be sorted alphabetically. Don't import modules you
 don't use.
-
+```javascript
     const GLib = imports.gi.GLib;
     const Gio = imports.gi.Gio;
     const Lang = imports.lang;
@@ -95,23 +89,22 @@ don't use.
     const Params = imports.misc.params;
     const Tweener = imports.ui.tweener;
     const Util = imports.misc.util;
-
+```
 The alphabetical ordering should be done independently of the location of the
 location. Never reference `imports` in actual code.
 
-Constants
----------
+## Constants
 
 We use CONSTANTS_CASE to define constants. All constants should be directly
 under the imports:
-
+```javascript
     const MY_DBUS_INTERFACE = 'org.my.Interface';
+```
 
-Variable declaration
---------------------
+## Variable declaration
 
 Always use either `const` or `let` when defining a variable.
-
+```javascript
     // Iterating over an array
     for (let i = 0; i < arr.length; ++i) {
         let item = arr[i];
@@ -121,17 +114,17 @@ Always use either `const` or `let` when defining a variable.
     for (let prop in someobj) {
         ...
     }
+```
 
 If you use "var" then the variable is added to function scope, not block scope.
 See [What's new in JavaScript 1.7](https://developer.mozilla.org/en/JavaScript/New_in_JavaScript/1.7#Block_scope_with_let_%28Merge_into_let_Statement%29)
 
-Classes
--------
+## Classes
 
 There are many approaches to classes in JavaScript. We use our own class framework
 (sigh), which is built in gjs. The advantage is that it supports inheriting from
 GObjects, although this feature isn't used very often in the Shell itself.
-
+```javascript
     var IconLabelMenuItem = new Lang.Class({
         Name: 'IconLabelMenuItem',
         Extends: PopupMenu.PopupMenuBaseItem,
@@ -146,6 +139,7 @@ GObjects, although this feature isn't used very often in the Shell itself.
             log("menu opened!");
         }
     });
+```
 
 * 'Name' is required. 'Extends' is optional. If you leave it out, you will
   automatically inherit from Object.
@@ -162,13 +156,12 @@ GObjects, although this feature isn't used very often in the Shell itself.
   still a giant function call, even though it may resemble a more
   conventional syntax.
 
-GObject Introspection
----------------------
+## GObject Introspection
 
 GObject Introspection is a powerful feature that allows us to have native
 bindings for almost any library built around GObject. If a library requires
 you to inherit from a type to use it, you can do so:
-
+```javascript
     var MyClutterActor = new Lang.Class({
         Name: 'MyClutterActor',
         Extends: Clutter.Actor,
@@ -188,9 +181,9 @@ you to inherit from a type to use it, you can do so:
                             alloc.x2, alloc.y2);
         }
     });
+```
 
-Translatable strings, `environment.js`
---------------------------------------
+## Translatable strings, `environment.js`
 
 We use gettext to translate the GNOME Shell into all the languages that GNOME
 supports. The `gettext` function is aliased globally as `_`, you do not need to
@@ -204,8 +197,7 @@ and "double quotes" for strings that the user may see. This allows us to
 quickly find untranslated or mistranslated strings by grepping through the
 sources for double quotes without a gettext call around them.
 
-`actor` and `_delegate`
------------------------
+## `actor` and `_delegate`
 
 gjs allows us to set so-called "expando properties" on introspected objects,
 allowing us to treat them like any other. Because the Shell was built before
@@ -214,7 +206,7 @@ that has a property called `actor`. We call this wrapper class the "delegate".
 
 We sometimes use expando properties to set a property called `_delegate` on
 the actor itself:
-
+```javascript
     var MyClass = new Lang.Class({
         Name: 'MyClass',
 
@@ -229,6 +221,7 @@ the actor itself:
             actor.set_label("You clicked the button!");
         }
     });
+```
 
 The 'delegate' property is important for anything which trying to get the
 delegate object from an associated actor. For instance, the drag and drop
@@ -236,16 +229,14 @@ system calls the `handleDragOver` function on the delegate of a "drop target"
 when the user drags an item over it. If you do not set the `_delegate`
 property, your actor will not be able to be dropped onto.
 
-Functional style
-----------------
+## Functional style
 
 JavaScript Array objects offer a lot of common functional programming
 capabilities such as forEach, map, filter and so on. You can use these when
 they make sense, but please don't have a spaghetti mess of function programming
 messed in a procedural style. Use your best judgment.
 
-Closures
---------
+## Closures
 
 `this` will not be captured in a closure, it is relative to how the closure is
 invoked, not to the value of this where the closure is created, because "this"
@@ -254,15 +245,16 @@ variable that can be captured in closures.
 
 All closures should be wrapped with Function.prototype.bind or use arrow
 notation.
-
+```javascript
     const Lang = imports.lang;
 
     let closure1 = () => { this._fnorbate(); };
     let closure2 = this._fnorbate.bind(this);
+```
 
 A more realistic example would be connecting to a signal on a method of a
 prototype:
-
+```javascript
     const Lang = imports.lang;
     const FnorbLib = imports.fborbLib;
 
@@ -276,19 +268,21 @@ prototype:
             this._updateFnorb();
         }
     });
+```
 
-Object literal syntax
----------------------
+## Object literal syntax
 
 In JavaScript, these are equivalent:
-
+```javascript
     foo = { 'bar': 42 };
     foo = { bar: 42 };
+```
 
 and so are these:
-
+```javascript
     var b = foo['bar'];
     var b = foo.bar;
+```
 
 If your usage of an object is like an object, then you're defining "member
 variables." For member variables, use the no-quotes no-brackets syntax: `{ bar:
@@ -298,14 +292,13 @@ If your usage of an object is like a hash table (and thus conceptually the keys
 can have special chars in them), don't use quotes, but use brackets: `{ bar: 42
 }`, `foo['bar']`.
 
-Getters, setters, and Tweener
------------------------------
+## Getters, setters, and Tweener
 
 Getters and setters should be used when you are dealing with an API that is
 designed around setting properties, like Tweener. If you want to animate an
 arbitrary property, create a getter and setter, and use Tweener to animate the
 property.
-
+```javascript
     var ANIMATION_TIME = 2000;
 
     var MyClass = new Lang.Class({
@@ -331,3 +324,4 @@ property.
                      { position: 100,
                        time: ANIMATION_TIME,
                        transition: 'easeOutQuad' });
+```
