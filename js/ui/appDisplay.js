@@ -1595,6 +1595,7 @@ var AppIcon = new Lang.Class({
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
+                                    visible: false,
                                     x_expand: true, y_expand: true,
                                     x_align: Clutter.ActorAlign.CENTER,
                                     y_align: Clutter.ActorAlign.END });
@@ -1611,9 +1612,11 @@ var AppIcon = new Lang.Class({
             iconParams = {};
 
         // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        let appIconParams = Params.parse(iconParams, { isDraggable: true, showRunningIndicator: false }, true);
         let isDraggable = appIconParams['isDraggable'];
+        let showRunningIndicator = appIconParams['showRunningIndicator'];
         delete iconParams['isDraggable'];
+        delete iconParams['showRunningIndicator'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
@@ -1648,16 +1651,22 @@ var AppIcon = new Lang.Class({
         this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._menuTimeoutId = 0;
-        this._stateChangedId = this.app.connect('notify::state', () => {
+        this._stateChangedId = 0;
+
+        if (showRunningIndicator) {
+            this._stateChangedId = this.app.connect('notify::state', () => {
+                this._updateRunningStyle();
+            });
             this._updateRunningStyle();
-        });
-        this._updateRunningStyle();
+        }
     },
 
     _onDestroy() {
-        if (this._stateChangedId > 0)
+        if (this._stateChangedId > 0) {
             this.app.disconnect(this._stateChangedId);
-        this._stateChangedId = 0;
+            this._stateChangedId = 0;
+        }
+
         this._removeMenuTimeout();
     },
 
