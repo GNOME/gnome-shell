@@ -1,3 +1,17 @@
+3.29.2
+======
+* Fix size change animations on wayland [Georges; #780292]
+* Handle touch events on server-side titlebars [Carlos; #770185]
+* Misc. bug fixes [Florian, Olivier, Jonas, Georges; #134, #124, !96, #138,
+  !102, #781471, #150]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Florian Müllner,
+  Georges Basile Stavracas Neto, Marco Trevisan (Treviño), Daniel van Vugt
+
+Translators:
+  Daniel Șerbănescu [ro], Marcos Lans [gl], Dz Chen [zh_CN]
+
 3.29.1
 ======
 * Fix various input-method regressions [Carlos, Olivier; #65, #74, #66, #112]
