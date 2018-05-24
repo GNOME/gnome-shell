@@ -797,6 +797,7 @@ var Panel = new Lang.Class({
         this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
         this.actor.connect('allocate', this._allocate.bind(this));
         this.actor.connect('button-press-event', this._onButtonPress.bind(this));
+        this.actor.connect('touch-event', this._onButtonPress.bind(this));
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
 
         Main.overview.connect('showing', () => {
@@ -940,8 +941,13 @@ var Panel = new Lang.Class({
         if (event.get_source() != actor)
             return Clutter.EVENT_PROPAGATE;
 
-        let button = event.get_button();
-        if (button != 1)
+        let type = event.type();
+        let isPress = type == Clutter.EventType.BUTTON_PRESS;
+        if (!isPress && type != Clutter.EventType.TOUCH_BEGIN)
+            return Clutter.EVENT_PROPAGATE;
+
+        let button = isPress ? event.get_button() : -1;
+        if (isPress && button != 1)
             return Clutter.EVENT_PROPAGATE;
 
         let focusWindow = global.display.focus_window;
