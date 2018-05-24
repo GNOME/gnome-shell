@@ -347,7 +347,11 @@ var DBusEventSource = new Lang.Class({
         if (!this._initialized)
             return;
 
-        if (this._curRequestBegin && this._curRequestEnd){
+        if (this._curRequestBegin && this._curRequestEnd) {
+            if (forceReload) {
+                this._events.clear();
+                this.emit('changed');
+            }
             this._dbusProxy.SetTimeRangeRemote(this._curRequestBegin.getTime() / 1000,
                                                this._curRequestEnd.getTime() / 1000,
                                                forceReload,
@@ -371,7 +375,7 @@ var DBusEventSource = new Lang.Class({
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
             this._curRequestEnd = end;
-            this._loadEvents(false);
+            this._loadEvents(true);
         }
     },
 
