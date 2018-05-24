@@ -142,8 +142,21 @@ const CalendarServerIface = '<node> \
     <arg type="b" direction="in" /> \
     <arg type="a(sssbxxa{sv})" direction="out" /> \
 </method> \
+<method name="SetTimeRange"> \
+    <arg type="x" name="since" direction="in"/> \
+    <arg type="x" name="until" direction="in"/> \
+    <arg type="b" name="force_reload" direction="in"/> \
+</method> \
+<signal name="EventsAdded"> \
+    <arg type="a(ssbxxa{sv})" name="events" direction="out"/> \
+</signal> \
+<signal name="EventsRemoved"> \
+    <arg type="as" name="ids" direction="out"/> \
+</signal> \
+<signal name="ClientDisappeared"> \
+    <arg type="s" name="source_uid" direction="out"/> \
+</signal> \
 <property name="HasCalendars" type="b" access="read" /> \
-<signal name="Changed" /> \
 </interface> \
 </node>';
 
@@ -215,7 +228,9 @@ var DBusEventSource = new Lang.Class({
                 }
             }
 
-            this._dbusProxy.connectSignal('Changed', this._onChanged.bind(this));
+            this._dbusProxy.connectSignal('EventsAdded', this._onEventsAdded.bind(this));
+            this._dbusProxy.connectSignal('EventsRemoved', this._onEventsRemoved.bind(this));
+            this._dbusProxy.connectSignal('ClientDisappeared', this._onClientDisappeared.bind(this));
 
             this._dbusProxy.connect('notify::g-name-owner', () => {
                 if (this._dbusProxy.g_name_owner)
@@ -264,30 +279,67 @@ var DBusEventSource = new Lang.Class({
         this.emit('changed');
     },
 
-    _onChanged() {
-        this._loadEvents(false);
-    },
-
-    _onEventsReceived(results, error) {
-        let newEvents = [];
-        let appointments = results ? results[0] : null;
+    _onEventsAdded(in_appts) {
+        let appointments = in_appts ? in_appts[0] : null;
         if (appointments != null) {
+            let changed = false;
+
             for (let n = 0; n < appointments.length; n++) {
                 let a = appointments[n];
-                let date = new Date(a[4] * 1000);
-                let end = new Date(a[5] * 1000);
                 let id = a[0];
-                let summary = a[1];
-                let allDay = a[3];
-                let event = new CalendarEvent(id, date, end, summary, allDay);
-                newEvents.push(event);
-            }
-            newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
-        }
 
-        this._events = newEvents;
-        this.isLoading = false;
-        this.emit('changed');
+                if (this._ignoredEvents.has(id))
+                    continue;
+
+                let date = new Date(a[3] * 1000);
+                let end = new Date(a[4] * 1000);
+                let summary = a[1];
+                let allDay = a[2];
+                let event = new CalendarEvent(id, date, end, summary, allDay);
+                this._events.set(event.id, event);
+                changed = true;
+            }
+
+            if (changed)
+                this.emit('changed');
+        }
+    },
+
+    _onEventsRemoved(in_ids) {
+        let ids = in_ids ? in_ids[0] : null;
+        if (ids != null) {
+            let changed = false;
+
+            for (let n = 0; n < ids.length; n++) {
+                let id = ids[n];
+
+                if (!this._ignoredEvents.has(id) &&
+                    this._events.delete(id))
+                    changed = true;
+            }
+
+            if (changed)
+                this.emit('changed');
+        }
+    },
+
+    _onClientDisappeared(source_uid) {
+        let ids = this._events.keys();
+        if (ids != null) {
+            let changed = false;
+
+            source_uid = source_uid + '\n';
+            for (let n = 0; n < ids.length; n++) {
+                let id = ids[n];
+
+                if (id.startsWith(source_uid) &&
+                    this._events.delete(id))
+                    changed = true;
+            }
+
+            if (changed)
+                this.emit('changed');
+        }
     },
 
     _loadEvents(forceReload) {
@@ -296,11 +348,10 @@ var DBusEventSource = new Lang.Class({
             return;
 
         if (this._curRequestBegin && this._curRequestEnd){
-            this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
-                                            this._curRequestEnd.getTime() / 1000,
-                                            forceReload,
-                                            this._onEventsReceived.bind(this),
-                                            Gio.DBusCallFlags.NONE);
+            this._dbusProxy.SetTimeRangeRemote(this._curRequestBegin.getTime() / 1000,
+                                               this._curRequestEnd.getTime() / 1000,
+                                               forceReload,
+                                               Gio.DBusCallFlags.NONE);
         }
     },
 
@@ -316,7 +367,6 @@ var DBusEventSource = new Lang.Class({
 
     requestRange(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
-            this.isLoading = true;
             this._lastRequestBegin = begin;
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
@@ -327,8 +377,9 @@ var DBusEventSource = new Lang.Class({
 
     getEvents(begin, end) {
         let result = [];
-        for(let n = 0; n < this._events.length; n++) {
-            let event = this._events[n];
+        let events = this._events.values;
+        for(let n = 0; n < events.length; n++) {
+            let event = events[n];
 
             if (this._ignoredEvents.has(event.id))
                 continue;
@@ -870,7 +921,7 @@ var EventsSection = new Lang.Class({
     },
 
     _reloadEvents() {
-        if (this._eventSource.isLoading)
+        if (this._eventSource.isLoading || this._reloading)
             return;
 
         this._reloading = true;

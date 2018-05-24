@@ -14,8 +14,8 @@ cogl_pango_pc = 'mutter-cogl-pango-' + mutter_api_version
 libmutter_pc = 'libmutter-' + mutter_api_version
 
 croco_req = '>= 0.6.8'
-ecal_req = '>= 3.5.3'
-eds_req = '>= 3.17.2'
+ecal_req = '>= 3.29.3'
+eds_req = '>= 3.29.3'
 gcr_req = '>= 3.7.5'
 gdesktop_req = '>= 3.7.90'
 gio_req = '>= 2.56.0'

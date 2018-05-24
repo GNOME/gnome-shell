@@ -25,6 +25,8 @@
 #define __CALENDAR_SOURCES_H__
 
 #include <glib-object.h>
+#include <libedataserver/libedataserver.h>
+#include <libecal/libecal.h>
 
 G_BEGIN_DECLS
 
@@ -32,11 +34,30 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (CalendarSources, calendar_sources,
                       CALENDAR, SOURCES, GObject)
 
-CalendarSources *calendar_sources_get                     (void);
-GList           *calendar_sources_get_appointment_clients (CalendarSources *sources);
-GList           *calendar_sources_get_task_clients        (CalendarSources *sources);
+CalendarSources *calendar_sources_get                (void);
+ESourceRegistry *calendar_sources_get_registry       (CalendarSources *sources);
+GSList          *calendar_sources_ref_clients        (CalendarSources *sources);
+gboolean         calendar_sources_has_clients        (CalendarSources *sources);
 
-gboolean         calendar_sources_has_sources             (CalendarSources *sources);
+EClient         *calendar_sources_connect_client_sync(CalendarSources *sources,
+                                                      gboolean is_for_events,
+                                                      ESource *source,
+                                                      ECalClientSourceType source_type,
+                                                      guint32 wait_for_connected_seconds,
+                                                      GCancellable *cancellable,
+                                                      GError **error);
+void             calendar_sources_connect_client     (CalendarSources *sources,
+                                                      gboolean is_for_events,
+                                                      ESource *source,
+                                                      ECalClientSourceType source_type,
+                                                      guint32 wait_for_connected_seconds,
+                                                      GCancellable *cancellable,
+                                                      GAsyncReadyCallback callback,
+                                                      gpointer user_data);
+EClient         *calendar_sources_connect_client_finish
+                                                     (CalendarSources *sources,
+                                                      GAsyncResult *result,
+                                                      GError **error);
 
 G_END_DECLS
 
