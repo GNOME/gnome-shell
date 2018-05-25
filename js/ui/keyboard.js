@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const FocusCaretTracker = imports.ui.focusCaretTracker;
 const Atspi = imports.gi.Atspi;
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
@@ -13,6 +12,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const InputSourceManager = imports.ui.status.keyboard;
 
+const IBusManager = imports.misc.ibusManager;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -261,6 +261,7 @@ var Key = new Lang.Class({
         this._extended_keyboard = null;
         this._pressTimeoutId = 0;
         this._capturedPress = false;
+
         this._capturedEventId = 0;
         this._unmapId = 0;
         this._longPress = false;
@@ -484,6 +485,71 @@ var KeyboardModel = new Lang.Class({
     }
 });
 
+var FocusTracker = new Lang.Class({
+    Name: 'FocusTracker',
+
+    _init() {
+        this._currentWindow = null;
+        this._currentWindowPositionId = 0;
+
+        global.screen.get_display().connect('notify::focus-window', () => {
+            this._setCurrentWindow(global.screen.get_display().focus_window);
+            this.emit('window-changed', this._currentWindow);
+        });
+
+        /* Valid for wayland clients */
+        Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
+            let newRect = { x: rect.get_x(), y: rect.get_y(), width: rect.get_width(), height: rect.get_height() };
+            this._setCurrentRect(newRect);
+        });
+
+        this._ibusManager = IBusManager.getIBusManager();
+        this._ibusManager.connect('set-cursor-location', (manager, rect) => {
+            /* Valid for X11 clients only */
+            if (Main.inputMethod.currentFocus)
+                return;
+
+            this._setCurrentRect(rect);
+        });
+    },
+
+    get currentWindow() {
+        return this._currentWindow;
+    },
+
+    _setCurrentWindow(window) {
+        if (this._currentWindow)
+            this._currentWindow.disconnect(this._currentWindowPositionId);
+
+        this._currentWindow = window;
+        if (window) {
+            this._currentWindowPositionId = this._currentWindow.connect('position-changed', () => {
+                if (global.display.get_grab_op() == Meta.GrabOp.NONE)
+                    this.emit('position-changed');
+                else
+                    this.emit('reset');
+            });
+        }
+    },
+
+    _setCurrentRect(rect) {
+        let frameRect = this._currentWindow.get_frame_rect();
+        rect.x -= frameRect.x;
+        rect.y -= frameRect.y;
+
+        this._rect = rect;
+        this.emit('position-changed');
+    },
+
+    getCurrentRect() {
+        let frameRect = this._currentWindow.get_frame_rect();
+        let rect = { x: this._rect.x + frameRect.x, y: this._rect.y + frameRect.y, width: this._rect.width, height: this._rect.height };
+
+        return rect;
+    }
+});
+Signals.addSignalMethods(FocusTracker.prototype);
+
 var Keyboard = new Lang.Class({
     Name: 'Keyboard',
 
@@ -491,15 +557,10 @@ var Keyboard = new Lang.Class({
         this.actor = null;
         this._focusInExtendedKeys = false;
 
-        this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
-        this._focusCaretTracker.connect('focus-changed', this._onFocusChanged.bind(this));
-        this._focusCaretTracker.connect('caret-moved', this._onCaretMoved.bind(this));
         this._languagePopup = null;
-        this._currentAccessible = null;
-        this._caretTrackingEnabled = false;
-        this._updateCaretPositionId = 0;
         this._currentFocusWindow = null;
-        this._originalWindowY = null;
+        this._animFocusedWindow = null;
+        this._delayedAnimFocusWindow = null;
 
         this._enableKeyboard = false; // a11y settings value
         this._enabled = false; // enabled state (by setting or device type)
@@ -509,6 +570,14 @@ var Keyboard = new Lang.Class({
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
         this._lastDeviceId = null;
         this._suggestions = null;
+
+        this._focusTracker = new FocusTracker();
+        this._focusTracker.connect('position-changed', this._onFocusPositionChanged.bind(this));
+        this._focusTracker.connect('reset', () => {
+            this._delayedAnimFocusWindow = null;
+            this._animFocusedWindow = null;
+            this._oskFocusWindow = null;
+        });
 
         Meta.get_backend().connect('last-device-changed', 
             (backend, deviceId) => {
@@ -532,102 +601,15 @@ var Keyboard = new Lang.Class({
         this._keyboardRestingId = 0;
 
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
-        //Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
-        //    if (this._keyboardVisible) {
-        //        let currentWindow = global.screen.get_display().focus_window;
-        //        this.setCursorLocation(currentWindow, rect.get_x(), rect.get_y(),
-        //                               rect.get_width(), rect.get_height());
-        //    }
-        //});
     },
 
     get visible() {
         return this._keyboardVisible;
     },
 
-    _setCaretTrackerEnabled(enabled) {
-        if (this._caretTrackingEnabled == enabled)
-            return;
-
-        this._caretTrackingEnabled = enabled;
-
-        if (enabled) {
-            this._focusCaretTracker.registerFocusListener();
-            this._focusCaretTracker.registerCaretListener();
-        } else {
-            this._focusCaretTracker.deregisterFocusListener();
-            this._focusCaretTracker.deregisterCaretListener();
-        }
-    },
-
-    _updateCaretPosition(accessible) {
-        if (this._updateCaretPositionId)
-            GLib.source_remove(this._updateCaretPositionId);
-        if (!this._keyboardRequested)
-            return;
-        this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-            this._updateCaretPositionId = 0;
-
-            let currentWindow = global.screen.get_display().focus_window;
-            if (!currentWindow) {
-                this.setCursorLocation(null);
-                return GLib.SOURCE_REMOVE;
-            }
-
-            let windowRect = currentWindow.get_frame_rect();
-            let text = accessible.get_text_iface();
-            let component = accessible.get_component_iface();
-
-            try {
-                let caretOffset = text.get_caret_offset();
-                let caretRect = text.get_character_extents(caretOffset, Atspi.CoordType.WINDOW);
-                let focusRect = component.get_extents(Atspi.CoordType.WINDOW);
-
-                if (caretRect.width == 0 && caretRect.height == 0)
-                    caretRect = focusRect;
-
-                this.setCursorLocation(currentWindow, caretRect.x, caretRect.y, caretRect.width, caretRect.height);
-            } catch (e) {
-                log('Error updating caret position for OSK: ' + e.message);
-            }
-
-            return GLib.SOURCE_REMOVE;
-        });
-
-        GLib.Source.set_name_by_id(this._updateCaretPositionId, '[gnome-shell] this._updateCaretPosition');
-    },
-
-    _focusIsTextEntry(accessible) {
-        try {
-            let role = accessible.get_role();
-            let stateSet = accessible.get_state_set();
-            return stateSet.contains(Atspi.StateType.EDITABLE) || role == Atspi.Role.TERMINAL;
-        } catch (e) {
-            log('Error determining accessible role: ' + e.message);
-            return false;
-        }
-    },
-
-    _onFocusChanged(caretTracker, event) {
-        let accessible = event.source;
-        if (!this._focusIsTextEntry(accessible))
-            return;
-
-        let focused = event.detail1 != 0;
-        if (focused) {
-            this._currentAccessible = accessible;
-            this._updateCaretPosition(accessible);
-            this.show(Main.layoutManager.focusIndex);
-        } else if (this._currentAccessible == accessible) {
-            this._currentAccessible = null;
-            this.hide();
-        }
-    },
-
-    _onCaretMoved(caretTracker, event) {
-        let accessible = event.source;
-        if (this._currentAccessible == accessible)
-            this._updateCaretPosition(accessible);
+    _onFocusPositionChanged(focusTracker) {
+        let rect = focusTracker.getCurrentRect();
+        this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
     },
 
     _lastDeviceIsTouchscreen() {
@@ -649,8 +631,6 @@ var Keyboard = new Lang.Class({
         this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
         if (!this._enabled && !this._keyboardController)
             return;
-
-        this._setCaretTrackerEnabled(this._enabled);
 
         if (this._enabled && !this._keyboardController)
             this._setupKeyboard();
@@ -1027,11 +1007,14 @@ var Keyboard = new Lang.Class({
         if (!this._keyboardRequested)
             return;
 
-        if (this._currentAccessible)
-            this._updateCaretPosition(this._currentAccessible);
         Main.layoutManager.keyboardIndex = monitor;
         this._relayout();
         Main.layoutManager.showKeyboard();
+
+        if (this._delayedAnimFocusWindow) {
+            this._setAnimationWindow(this._delayedAnimFocusWindow);
+            this._delayedAnimFocusWindow = null;
+        }
     },
 
     hide() {
@@ -1102,8 +1085,9 @@ var Keyboard = new Lang.Class({
         window.move_frame(true, frameRect.x, frameRect.y);
     },
 
-    _animateWindow(window, show, deltaY) {
+    _animateWindow(window, show) {
         let windowActor = window.get_compositor_private();
+        let deltaY = Main.layoutManager.keyboardBox.height;
         if (!windowActor)
             return;
 
@@ -1124,35 +1108,39 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    setCursorLocation(window, x, y , w, h) {
-        if (window == this._oskFocusWindow)
+    _setAnimationWindow(window) {
+        if (this._animFocusedWindow == window)
             return;
 
-        if (this._oskFocusWindow) {
-            let display = global.screen.get_display();
+        if (this._animFocusedWindow)
+            this._animateWindow(this._animFocusedWindow, false);
+        if (window)
+            this._animateWindow(window, true);
 
-            if (display.get_grab_op() == Meta.GrabOp.NONE ||
-                display.get_focus_window() != this._oskFocusWindow)
-                this._animateWindow(this._oskFocusWindow, false, this._oskFocusWindowDelta);
+        this._animFocusedWindow = window;
+    },
 
-            this._oskFocusWindow = null;
-            this._oskFocusWindowDelta = null;
-        }
+    setCursorLocation(window, x, y , w, h) {
+        let monitor = Main.layoutManager.keyboardMonitor;
 
-        if (window) {
-            let monitor = Main.layoutManager.keyboardMonitor;
+        if (window && monitor) {
             let keyboardHeight = Main.layoutManager.keyboardBox.height;
-            let frameRect = window.get_frame_rect();
-            let windowActor = window.get_compositor_private();
-            let delta = 0;
+            let focusObscured = false;
 
-            if (frameRect.y + y + h >= monitor.height - keyboardHeight)
-                delta = keyboardHeight;
-
-            this._animateWindow(window, true, delta);
-            this._oskFocusWindow = window;
-            this._oskFocusWindowDelta = delta;
+            if (y + h >= monitor.y + monitor.height - keyboardHeight) {
+                if (this._keyboardVisible)
+                    this._setAnimationWindow(window);
+                else
+                    this._delayedAnimFocusWindow = window;
+            } else if (y < keyboardHeight) {
+                this._delayedAnimFocusWindow = null;
+                this._setAnimationWindow(null);
+            }
+        } else {
+            this._setAnimationWindow(null);
         }
+
+        this._oskFocusWindow = window;
     },
 });
 
