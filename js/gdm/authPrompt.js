@@ -439,6 +439,7 @@ var AuthPrompt = new Lang.Class({
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
         this.nextButton.label = _("Next");
+        this._preemptiveAnswer = null;
 
         if (this._userVerifier)
             this._userVerifier.cancel();
