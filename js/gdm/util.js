@@ -565,7 +565,7 @@ var ShellUserVerifier = new Lang.Class({
             }
         }
 
-        this.emit('verification-failed');
+        this.emit('verification-failed', canRetry);
     },
 
     _onConversationStopped(client, serviceName) {
