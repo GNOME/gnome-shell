@@ -537,12 +537,13 @@ var ShellUserVerifier = new Lang.Class({
     _verificationFailed(retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
-        // Otherwise, we allow ALLOWED_FAILURES attempts. After that, we
-        // go back to the welcome screen.
+        // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
+        // After that, we go back to the welcome screen.
 
         this._failCounter++;
         let canRetry = retry && this._userName &&
-            this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
+            (this._reauthOnly ||
+             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY));
 
         if (canRetry) {
             if (!this.hasPendingMessages) {
