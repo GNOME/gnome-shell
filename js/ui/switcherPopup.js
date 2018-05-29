@@ -192,7 +192,7 @@ var SwitcherPopup = new Lang.Class({
         if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
             return Clutter.EVENT_STOP;
 
-        if (keysym == Clutter.Escape)
+        if (keysym == Clutter.Escape || keysym == Clutter.Tab)
             this.destroy();
 
         return Clutter.EVENT_STOP;
