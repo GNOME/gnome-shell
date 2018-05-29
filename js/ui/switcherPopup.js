@@ -192,7 +192,9 @@ var SwitcherPopup = new Lang.Class({
         if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
             return Clutter.EVENT_STOP;
 
-        if (keysym == Clutter.Escape)
+        // Note: pressing one of the below keys will destroy the popup only if
+        // that key is not used by the active popup's keyboard shortcut
+        if (keysym == Clutter.Escape || keysym == Clutter.Tab)
             this.destroy();
 
         return Clutter.EVENT_STOP;
