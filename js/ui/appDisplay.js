@@ -1779,9 +1779,8 @@ var AppIcon = new Lang.Class({
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
         let openNewWindow = this.app.can_open_new_window () &&
-                            modifiers & Clutter.ModifierType.CONTROL_MASK &&
-                            this.app.state == Shell.AppState.RUNNING ||
-                            button && button == 2;
+                            (modifiers & Clutter.ModifierType.CONTROL_MASK || button == 2) &&
+                            this.app.state == Shell.AppState.RUNNING;
 
         if (this.app.state == Shell.AppState.STOPPED || openNewWindow)
             this.animateLaunch();
