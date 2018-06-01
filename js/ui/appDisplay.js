@@ -1818,6 +1818,14 @@ var AppIcon = new Lang.Class({
         this.icon.animateZoomOut();
     },
 
+    canLaunchNow() {
+        if (this.app.state == Shell.AppState.STOPPED ||
+            (this.app.state == Shell.AppState.RUNNING && this.app.can_open_new_window()))
+            return true;
+        else
+            return false;
+    },
+
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
