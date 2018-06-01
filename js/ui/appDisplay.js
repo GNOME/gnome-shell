@@ -1811,6 +1811,7 @@ var AppIcon = new Lang.Class({
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
+        this.animateLaunch();
         this.app.open_new_window(params.workspace);
     },
 
