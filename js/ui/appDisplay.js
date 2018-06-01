@@ -107,6 +107,26 @@ function _getFolderName(folder) {
     return name;
 }
 
+/*
+* This is used as a workaround for a bug resulting in no new windows being opened
+* for certain running applications when calling open_new_window().
+*
+* https://bugzilla.gnome.org/show_bug.cgi?id=756844
+*
+* Similar to whats done when generating the popupMenu entries, if the application provides
+* a "New Window" action, use it instead of directly requesting a new window with
+* open_new_window(), which fails for certain application, notably Nautilus.
+*/
+function _appLaunchNewWindow(app, workspace) {
+    let appInfo = app.get_app_info();
+    let actions = appInfo.list_actions();
+    let newWindowActionIndex = actions.indexOf('new-window');
+    if (newWindowActionIndex === -1)
+        app.open_new_window(workspace);
+    else
+        app.launch_action(actions[newWindowActionIndex], global.get_current_time(), workspace);
+}
+
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -1787,7 +1807,7 @@ var AppIcon = new Lang.Class({
             this.animateLaunch();
 
         if (openNewWindow)
-            this.app.open_new_window(-1);
+            _appLaunchNewWindow(this.app, -1);
         else
             this.app.activate();
 
@@ -1802,7 +1822,7 @@ var AppIcon = new Lang.Class({
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
-        this.app.open_new_window(params.workspace);
+        _appLaunchNewWindow(this.app, params.workspace);
     },
 
     getDragActor() {
@@ -1890,7 +1910,7 @@ var AppIconMenu = new Lang.Class({
                     if (this._source.app.state == Shell.AppState.STOPPED)
                         this._source.animateLaunch();
 
-                    this._source.app.open_new_window(-1);
+                    _appLaunchNewWindow(this._source.app, -1);
                     this.emit('activate-window', null);
                 });
                 this._appendSeparator();
