@@ -493,6 +493,23 @@ var CyclerPopup = new Lang.Class({
         global.window_group.set_child_above_sibling(this._highlight.actor, null);
     },
 
+    _closeWindow(windowIndex) {
+        let window = this._items[windowIndex];
+        if (!window)
+            return;
+
+        window.delete(global.get_current_time());
+    },
+
+    _keyPressHandler(keysym, action) {
+        if (keysym == Clutter.w || keysym == Clutter.W || keysym == Clutter.F4)
+            this._closeWindow(this._selectedIndex);
+        else
+            return Clutter.EVENT_PROPAGATE;
+
+        return Clutter.EVENT_STOP;
+    },
+
     _finish() {
         let window = this._items[this._selectedIndex];
         let ws = window.get_workspace();
@@ -537,6 +554,9 @@ var GroupCyclerPopup = new Lang.Class({
     },
 
     _keyPressHandler(keysym, action) {
+        if (this.parent(keysym, action) != Clutter.EVENT_PROPAGATE)
+           return Clutter.EVENT_STOP;
+
         if (action == Meta.KeyBindingAction.CYCLE_GROUP)
             this._select(this._next());
         else if (action == Meta.KeyBindingAction.CYCLE_GROUP_BACKWARD)
@@ -570,6 +590,9 @@ var WindowCyclerPopup = new Lang.Class({
     },
 
     _keyPressHandler(keysym, action) {
+        if (this.parent(keysym, action) != Clutter.EVENT_PROPAGATE)
+           return Clutter.EVENT_STOP;
+
         if (action == Meta.KeyBindingAction.CYCLE_WINDOWS)
             this._select(this._next());
         else if (action == Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
