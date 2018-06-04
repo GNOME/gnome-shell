@@ -39,6 +39,7 @@ extern GType gnome_shell_plugin_get_type (void);
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
 static int caught_signal = 0;
+static char *override_schema = NULL;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
@@ -450,6 +451,12 @@ GOptionEntry gnome_shell_options[] = {
     N_("List possible modes"),
     NULL
   },
+  {
+    "override-schema", 0, 0, G_OPTION_ARG_STRING,
+    &override_schema,
+    N_("Override the override schema"),
+    "SCHEMA"
+  },
   { NULL }
 };
 
@@ -507,7 +514,9 @@ main (int argc, char **argv)
   if (session_mode == NULL)
     session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
-  _shell_global_init ("session-mode", session_mode, NULL);
+  _shell_global_init ("session-mode", session_mode,
+                      "override-schema", override_schema,
+                      NULL);
 
   shell_prefs_init ();
 
