@@ -72,10 +72,18 @@ meta_wayland_actor_surface_assigned (MetaWaylandSurfaceRole *surface_role)
     meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (surface_role));
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  GList *l;
 
   meta_surface_actor_wayland_add_frame_callbacks (META_SURFACE_ACTOR_WAYLAND (priv->actor),
                                                   &surface->pending_frame_callback_list);
   wl_list_init (&surface->pending_frame_callback_list);
+
+  for (l = surface->subsurfaces; l; l = l->next)
+    {
+      ClutterActor *subsurface_actor =
+        CLUTTER_ACTOR (meta_wayland_surface_get_actor (l->data));
+      clutter_actor_add_child (CLUTTER_ACTOR (priv->actor), subsurface_actor);
+    }
 }
 
 static void

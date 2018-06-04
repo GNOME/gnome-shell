@@ -471,8 +471,11 @@ wl_subcompositor_get_subsurface (struct wl_client   *client,
                                     &surface->sub.parent_destroy_listener);
   parent->subsurfaces = g_list_append (parent->subsurfaces, surface);
 
-  clutter_actor_add_child (CLUTTER_ACTOR (meta_wayland_surface_get_actor (parent)),
-                           CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface)));
+  if (meta_wayland_surface_get_actor (parent))
+    {
+      clutter_actor_add_child (CLUTTER_ACTOR (meta_wayland_surface_get_actor (parent)),
+                               CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface)));
+    }
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface)), TRUE);
 }
