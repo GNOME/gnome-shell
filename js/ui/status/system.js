@@ -67,12 +67,15 @@ var AltSwitcher = new Lang.Class({
                     childShown.fake_release();
                 childShown.remove_action(this._clickAction);
             }
-            childToShow.add_action(this._clickAction);
 
-            let hasFocus = this.actor.contains(global.stage.get_key_focus());
-            this.actor.set_child(childToShow);
-            if (hasFocus)
-                childToShow.grab_key_focus();
+            if (childToShow) {
+                childToShow.add_action(this._clickAction);
+
+                let hasFocus = this.actor.contains(global.stage.get_key_focus());
+                this.actor.set_child(childToShow);
+                if (hasFocus)
+                    childToShow.grab_key_focus();
+            }
 
             // The actors might respond to hover, so
             // sync the pointer to make sure they update.
