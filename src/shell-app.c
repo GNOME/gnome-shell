@@ -1207,7 +1207,7 @@ shell_app_request_quit (ShellApp   *app)
   return TRUE;
 }
 
-#ifdef HAVE_SYSTEMD
+#if !defined(HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS) && defined(HAVE_SYSTEMD)
 /* This sets up the launched application to log to the journal
  * using its own identifier, instead of just "gnome-session".
  */
@@ -1255,6 +1255,7 @@ shell_app_launch (ShellApp     *app,
   ShellGlobal *global;
   GAppLaunchContext *context;
   gboolean ret;
+  GSpawnFlags flags;
 
   if (app->info == NULL)
     {
@@ -1274,9 +1275,39 @@ shell_app_launch (ShellApp     *app,
   if (discrete_gpu)
     g_app_launch_context_setenv (context, "DRI_PRIME", "1");
 
+  /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
+   * codepath. The shell's open file descriptors should be marked CLOEXEC
+   * so that they are automatically closed even with this flag set.
+   */
+  flags = G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD |
+          G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
+
+#ifdef HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS
+  /* Optimized spawn path, avoiding a child_setup function */
+  {
+    int journalfd = -1;
+
+#ifdef HAVE_SYSTEMD
+    journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
+#endif /* HAVE_SYSTEMD */
+
+    ret = g_desktop_app_info_launch_uris_as_manager_with_fds (app->info, NULL,
+                                                              context,
+                                                              flags,
+                                                              NULL, NULL,
+                                                              wait_pid, NULL,
+                                                              -1,
+                                                              journalfd,
+                                                              journalfd,
+                                                              error);
+
+    if (journalfd >= 0)
+      (void) close (journalfd);
+  }
+#else /* !HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS */
   ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
                                                    context,
-                                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                   flags,
 #ifdef HAVE_SYSTEMD
                                                    app_child_setup, (gpointer)shell_app_get_id (app),
 #else
@@ -1284,6 +1315,7 @@ shell_app_launch (ShellApp     *app,
 #endif
                                                    wait_pid, NULL,
                                                    error);
+#endif /* HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS */
   g_object_unref (context);
 
   return ret;
