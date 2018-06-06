@@ -152,6 +152,11 @@ cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_SYSTEMD', have_systemd)
 
+# New API added in glib-2.57.2
+cdata.set('HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS',
+          cc.has_function('g_desktop_app_info_launch_uris_as_manager_with_fds',
+                          dependencies : gio_dep)
+)
 cdata.set('HAVE_FDWALK', cc.has_function('fdwalk'))
 cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))
 cdata.set('HAVE_SYS_RESOURCE_H', cc.has_header('sys/resource.h'))
