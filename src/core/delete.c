@@ -115,5 +115,8 @@ meta_window_kill (MetaWindow *window)
 void
 meta_window_free_delete_dialog (MetaWindow *window)
 {
+  if (window->close_dialog &&
+      meta_close_dialog_is_visible (window->close_dialog))
+    meta_close_dialog_hide (window->close_dialog);
   g_clear_object (&window->close_dialog);
 }
