@@ -260,7 +260,6 @@ experimental_features_handler (GVariant *features_variant,
   g_variant_iter_init (&features_iter, features_variant);
   while (g_variant_iter_loop (&features_iter, "s", &feature))
     {
-      /* So far no experimental features defined. */
       if (g_str_equal (feature, "scale-monitor-framebuffer"))
         features |= META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER;
       else if (g_str_equal (feature, "kms-modifiers"))
