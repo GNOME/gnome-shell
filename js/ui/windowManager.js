@@ -991,6 +991,13 @@ var WindowManager = new Lang.Class({
             Main.keyboard.show(Main.layoutManager.bottomIndex);
         });
         global.stage.add_action(gesture);
+
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
+        gesture.connect('activated', Lang.bind(this, function() {
+            if (global.display.focus_window)
+                global.display.focus_window.unmake_fullscreen(global.get_current_time());
+        }));
+        global.stage.add_action(gesture);
     },
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
