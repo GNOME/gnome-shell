@@ -418,28 +418,6 @@ meta_backend_create_input_settings (MetaBackend *backend)
   return META_BACKEND_GET_CLASS (backend)->create_input_settings (backend);
 }
 
-#ifdef HAVE_REMOTE_DESKTOP
-static gboolean
-is_screen_cast_enabled (MetaBackend *backend)
-{
-  MetaSettings *settings = meta_backend_get_settings (backend);
-
-  return meta_settings_is_experimental_feature_enabled (
-    settings,
-    META_EXPERIMENTAL_FEATURE_SCREEN_CAST);
-}
-
-static gboolean
-is_remote_desktop_enabled (MetaBackend *backend)
-{
-  MetaSettings *settings = meta_backend_get_settings (backend);
-
-  return meta_settings_is_experimental_feature_enabled (
-    settings,
-    META_EXPERIMENTAL_FEATURE_REMOTE_DESKTOP);
-}
-#endif /* HAVE_REMOTE_DESKTOP */
-
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
@@ -473,10 +451,8 @@ meta_backend_real_post_init (MetaBackend *backend)
 
 #ifdef HAVE_REMOTE_DESKTOP
   priv->dbus_session_watcher = g_object_new (META_TYPE_DBUS_SESSION_WATCHER, NULL);
-  if (is_screen_cast_enabled (backend))
-    priv->screen_cast = meta_screen_cast_new (priv->dbus_session_watcher);
-  if (is_remote_desktop_enabled (backend))
-    priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
+  priv->screen_cast = meta_screen_cast_new (priv->dbus_session_watcher);
+  priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
 #endif /* HAVE_REMOTE_DESKTOP */
 
   if (!meta_monitor_manager_is_headless (priv->monitor_manager))
@@ -568,26 +544,6 @@ meta_backend_class_init (MetaBackendClass *klass)
   stage_views_disabled = g_strcmp0 (mutter_stage_views, "0") == 0;
 }
 
-static void
-experimental_features_changed (MetaSettings            *settings,
-                               MetaExperimentalFeature  old_experimental_features,
-                               MetaBackend             *backend)
-{
-#ifdef HAVE_REMOTE_DESKTOP
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  if (is_screen_cast_enabled (backend) && !priv->screen_cast)
-    priv->screen_cast = meta_screen_cast_new (priv->dbus_session_watcher);
-  else if (!is_screen_cast_enabled (backend))
-    g_clear_object (&priv->screen_cast);
-
-  if (is_remote_desktop_enabled (backend) && !priv->remote_desktop)
-    priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
-  else if (!is_remote_desktop_enabled (backend))
-    g_clear_object (&priv->remote_desktop);
-#endif /* HAVE_REMOTE_DESKTOP */
-}
-
 static MetaMonitorManager *
 meta_backend_create_monitor_manager (MetaBackend *backend,
                                      GError     **error)
@@ -670,9 +626,6 @@ meta_backend_initable_init (GInitable     *initable,
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   priv->settings = meta_settings_new (backend);
-  g_signal_connect (priv->settings, "experimental-features-changed",
-                    G_CALLBACK (experimental_features_changed),
-                    backend);
 
   priv->egl = g_object_new (META_TYPE_EGL, NULL);
 
