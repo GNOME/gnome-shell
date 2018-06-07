@@ -991,14 +991,29 @@ meta_renderer_native_choose_egl_config (CoglDisplay  *cogl_display,
   CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
   MetaBackend *backend = meta_get_backend ();
   MetaEgl *egl = meta_backend_get_egl (backend);
+  MetaRendererNativeGpuData *renderer_gpu_data = cogl_renderer_egl->platform;
   EGLDisplay egl_display = cogl_renderer_egl->edpy;
 
-  return choose_egl_config_from_gbm_format (egl,
-                                            egl_display,
-                                            attributes,
-                                            GBM_FORMAT_XRGB8888,
-                                            out_config,
-                                            error);
+  switch (renderer_gpu_data->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      return choose_egl_config_from_gbm_format (egl,
+                                                egl_display,
+                                                attributes,
+                                                GBM_FORMAT_XRGB8888,
+                                                out_config,
+                                                error);
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      return meta_egl_choose_first_config (egl,
+                                           egl_display,
+                                           attributes,
+                                           out_config,
+                                           error);
+#endif
+    }
+
+  return FALSE;
 }
 
 static gboolean
@@ -2904,10 +2919,11 @@ meta_renderer_native_set_property (GObject      *object,
 }
 
 static gboolean
-create_secondary_egl_config (MetaEgl   *egl,
-                             EGLDisplay egl_display,
-                             EGLConfig *egl_config,
-                             GError   **error)
+create_secondary_egl_config (MetaEgl               *egl,
+                             MetaRendererNativeMode mode,
+                             EGLDisplay             egl_display,
+                             EGLConfig             *egl_config,
+                             GError               **error)
 {
   EGLint attributes[] = {
     EGL_RED_SIZE, 1,
@@ -2920,12 +2936,26 @@ create_secondary_egl_config (MetaEgl   *egl,
     EGL_NONE
   };
 
-  return choose_egl_config_from_gbm_format (egl,
-                                            egl_display,
-                                            attributes,
-                                            GBM_FORMAT_XRGB8888,
-                                            egl_config,
-                                            error);
+  switch (mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      return choose_egl_config_from_gbm_format (egl,
+                                                egl_display,
+                                                attributes,
+                                                GBM_FORMAT_XRGB8888,
+                                                egl_config,
+                                                error);
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      return meta_egl_choose_first_config (egl,
+                                           egl_display,
+                                           attributes,
+                                           egl_config,
+                                           error);
+#endif
+    }
+
+  return FALSE;
 }
 
 static EGLContext
@@ -2969,7 +2999,8 @@ init_secondary_gpu_data_gpu (MetaRendererNativeGpuData *renderer_gpu_data,
   EGLContext egl_context;
   char **missing_gl_extensions;
 
-  if (!create_secondary_egl_config (egl,egl_display, &egl_config, error))
+  if (!create_secondary_egl_config (egl, renderer_gpu_data->mode, egl_display,
+                                    &egl_config, error))
     return FALSE;
 
   egl_context = create_secondary_egl_context (egl, egl_display, egl_config, error);
