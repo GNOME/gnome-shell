@@ -860,6 +860,9 @@ var LoginDialog = new Lang.Class({
             this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
           return false;
 
+        if (this._authPrompt._userVerifier.reauthenticating)
+            return false;
+
         if (this._user && this._user.is_loaded && this._user.is_logged_in())
           return false;
 
