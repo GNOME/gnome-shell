@@ -396,7 +396,7 @@ test_background (void)
   /* text1 inherits the background image but not the color */
   assert_background_color (text1,  "text1",  0x00000000);
   assert_background_image (text1,  "text1",  "st/some-background.png");
-  /* text1 inherits inherits both, but then background: none overrides both */
+  /* text2 inherits both, but then background: none overrides both */
   assert_background_color (text2,  "text2",  0x00000000);
   assert_background_image (text2,  "text2",  NULL);
   /* background-image property */
