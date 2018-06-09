@@ -821,6 +821,8 @@ var EventsSection = new Lang.Class({
         this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
         this._eventSource = new EmptyEventSource();
 
+        this._messageById = new Map();
+
         this.parent();
 
         this._title = new St.Button({ style_class: 'events-section-title',
@@ -875,20 +877,32 @@ var EventsSection = new Lang.Class({
 
         this._reloading = true;
 
-        this._list.destroy_all_children();
-
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
         let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
+        let ids = events.map(e => e.id);
+        this._messageById.forEach((message, id) => {
+            if (ids.includes(id))
+                return;
+            this._messageById.delete(id);
+            this.removeMessage(message);
+        });
+
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
 
-            let message = new EventMessage(event, this._date);
-            message.connect('close', () => {
-                this._ignoreEvent(event);
-            });
-            this.addMessage(message, false);
+            let message = this._messageById.get(event.id);
+            if (!message) {
+                message = new EventMessage(event, this._date);
+                message.connect('close', () => {
+                    this._ignoreEvent(event);
+                });
+                this._messageById.set(event.id, message);
+                this.addMessage(message, false);
+            } else {
+                this.moveMessage(message, i, false);
+            }
         }
 
         this._reloading = false;
