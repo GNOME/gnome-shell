@@ -62,20 +62,156 @@ meta_launcher_get_seat_id (MetaLauncher *launcher)
   return launcher->seat_id;
 }
 
+static gboolean
+find_systemd_session (gchar **session_id,
+                      GError **error)
+{
+  const gchar * const graphical_session_types[] = { "wayland", "x11", "mir", NULL };
+  const gchar * const active_states[] = { "active", "online", NULL };
+  g_autofree gchar *class = NULL;
+  g_autofree gchar *local_session_id = NULL;
+  g_autofree gchar *type = NULL;
+  g_autofree gchar *state = NULL;
+  g_auto (GStrv) sessions = NULL;
+  int n_sessions;
+  int saved_errno;
+
+  g_assert (session_id != NULL);
+  g_assert (error == NULL || *error == NULL);
+
+  saved_errno = sd_uid_get_display (getuid (), &local_session_id);
+  if (saved_errno < 0)
+    {
+      /* no session, maybe there's a greeter session */
+      if (saved_errno == -ENODATA)
+        {
+          n_sessions = sd_uid_get_sessions (getuid (), 1, &sessions);
+          if (n_sessions < 0)
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_NOT_FOUND,
+                           "Failed to get all sessions for user %d (%m)",
+                           getuid ());
+              return FALSE;
+            }
+
+        if (n_sessions == 0)
+          {
+            g_set_error (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_NOT_FOUND,
+                         "User %d has no sessions",
+                         getuid ());
+            return FALSE;
+          }
+
+        for (int i = 0; i < n_sessions; ++i)
+          {
+            saved_errno = sd_session_get_class (sessions[i], &class);
+            if (saved_errno < 0)
+              {
+                g_warning ("Couldn't get class for session '%d': %s",
+                           i,
+                           g_strerror (-saved_errno));
+                continue;
+              }
+
+            if (g_strcmp0 (class, "greeter") == 0)
+              {
+                local_session_id = g_strdup (sessions[i]);
+                break;
+              }
+          }
+
+        if (!local_session_id)
+          {
+            g_set_error (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_NOT_FOUND,
+                         "Couldn't find a session or a greeter session for user %d",
+                         getuid ());
+            return FALSE;
+          }
+        }
+      else
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_FOUND,
+                       "Couldn't get display for user %d: %s",
+                       getuid (),
+                       g_strerror (-saved_errno));
+          return FALSE;
+        }
+    }
+
+  /* sd_uid_get_display will return any session if there is no graphical
+   * one, so let's check it really is graphical. */
+  saved_errno = sd_session_get_type (local_session_id, &type);
+  if (saved_errno < 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_NOT_FOUND,
+                   "Couldn't get type for session '%s': %s",
+                   local_session_id,
+                   g_strerror (-saved_errno));
+      return FALSE;
+    }
+
+  if (!g_strv_contains (graphical_session_types, type))
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_NOT_FOUND,
+                   "Session '%s' is not a graphical session (type: '%s')",
+                   local_session_id,
+                   type);
+      return FALSE;
+    }
+
+    /* and display sessions can be 'closing' if they are logged out but
+     * some processes are lingering; we shouldn't consider these */
+    saved_errno = sd_session_get_state (local_session_id, &state);
+    if (saved_errno < 0)
+      {
+        g_set_error (error,
+                     G_IO_ERROR,
+                     G_IO_ERROR_NOT_FOUND,
+                     "Couldn't get state for session '%s': %s",
+                     local_session_id,
+                     g_strerror (-saved_errno));
+        return FALSE;
+      }
+
+    if (!g_strv_contains (active_states, state))
+      {
+         g_set_error (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_NOT_FOUND,
+                         "Session '%s' is not active",
+                         local_session_id);
+         return FALSE;
+      }
+
+  *session_id = g_steal_pointer (&local_session_id);
+
+  return TRUE;
+}
+
 static Login1Session *
 get_session_proxy (GCancellable *cancellable,
                    GError      **error)
 {
   g_autofree char *proxy_path = NULL;
   g_autofree char *session_id = NULL;
+  g_autoptr (GError) local_error = NULL;
   Login1Session *session_proxy;
 
-  if (sd_pid_get_session (getpid (), &session_id) < 0)
+  if (!find_systemd_session (&session_id, &local_error))
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NOT_FOUND,
-                   "Could not get session ID: %m");
+      g_propagate_prefixed_error (error, local_error, "Could not get session ID: ");
       return NULL;
     }
 
@@ -302,17 +438,14 @@ on_active_changed (Login1Session *session,
 static gchar *
 get_seat_id (GError **error)
 {
+  g_autoptr (GError) local_error = NULL;
   g_autofree char *session_id = NULL;
   char *seat_id = NULL;
   int r;
 
-  r = sd_pid_get_session (0, &session_id);
-  if (r < 0)
+  if (!find_systemd_session (&session_id, &local_error))
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NOT_FOUND,
-                   "Could not get session for PID: %s", g_strerror (-r));
+      g_propagate_prefixed_error (error, local_error, "Could not get session ID: ");
       return NULL;
     }
 
