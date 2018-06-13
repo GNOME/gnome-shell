@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-05 21:11+0000\n"
-"PO-Revision-Date: 2018-03-10 20:30+0800\n"
+"POT-Creation-Date: 2018-06-08 17:30+0000\n"
+"PO-Revision-Date: 2018-06-09 11:17+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.8\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -308,7 +308,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "載入 %s 的偏好設定對話盒時發生錯誤："
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -328,20 +328,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "登入"
 
-#: js/gdm/loginDialog.js:315
+#: js/gdm/loginDialog.js:319
 msgid "Choose Session"
 msgstr "選擇工作階段"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:458
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:887
+#: js/gdm/loginDialog.js:891
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(例如： user 或 %s)"
@@ -349,12 +349,12 @@ msgstr "(例如： user 或 %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:892 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "使用者名稱："
 
-#: js/gdm/loginDialog.js:1228
+#: js/gdm/loginDialog.js:1234
 msgid "Login Window"
 msgstr "登入視窗"
 
@@ -601,32 +601,32 @@ msgstr "常用"
 msgid "All"
 msgstr "全部"
 
-#: js/ui/appDisplay.js:1886
+#: js/ui/appDisplay.js:1889
 msgid "New Window"
 msgstr "新視窗"
 
-#: js/ui/appDisplay.js:1900
+#: js/ui/appDisplay.js:1903
 msgid "Launch using Dedicated Graphics Card"
 msgstr "使用獨立顯卡啟動"
 
-#: js/ui/appDisplay.js:1927 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: js/ui/appDisplay.js:1933
+#: js/ui/appDisplay.js:1936
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
-#: js/ui/appDisplay.js:1943
+#: js/ui/appDisplay.js:1946
 msgid "Show Details"
 msgstr "顯示詳細資訊"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s 已加入您的喜好中。"
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已經從您的喜好中移除。"
@@ -787,22 +787,22 @@ msgid "Clear All"
 msgstr "全部清除"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:44
+#: js/ui/closeDialog.js:47
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "「%s」沒有回應。"
 
-#: js/ui/closeDialog.js:45
+#: js/ui/closeDialog.js:48
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "您可以選擇再等一下讓它繼續，或是強制讓應用程式立刻退出。"
 
-#: js/ui/closeDialog.js:61
+#: js/ui/closeDialog.js:64
 msgid "Force Quit"
 msgstr "強制退出"
 
-#: js/ui/closeDialog.js:64
+#: js/ui/closeDialog.js:67
 msgid "Wait"
 msgstr "等待"
 
@@ -819,7 +819,7 @@ msgstr "外部裝置已拔除"
 msgid "Open with %s"
 msgstr "用 %s 開啟"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:297
 msgid "Password:"
 msgstr "密碼： "
 
@@ -856,18 +856,18 @@ msgstr "私密金鑰密碼："
 msgid "Service: "
 msgstr "服務："
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:664
 msgid "Authentication required by wireless network"
 msgstr "無線網路所需要的核對"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:660
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:665
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "需要密碼或是加密金鑰來存取無線網路「%s」。"
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:668
 msgid "Wired 802.1X authentication"
 msgstr "有線網路 802.1X 核對"
 
@@ -875,15 +875,15 @@ msgstr "有線網路 802.1X 核對"
 msgid "Network name: "
 msgstr "網路名稱："
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:667
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:672
 msgid "DSL authentication"
 msgstr "DSL 核對"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:678
 msgid "PIN code required"
 msgstr "需要 PIN 碼"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:674
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:679
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "這個行動寬頻裝置需要 PIN 碼"
 
@@ -891,29 +891,29 @@ msgstr "這個行動寬頻裝置需要 PIN 碼"
 msgid "PIN: "
 msgstr "PIN： "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:685
 msgid "Mobile broadband network password"
 msgstr "行動寬頻網路密碼"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:664
-#: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:669
+#: js/ui/components/networkAgent.js:673 js/ui/components/networkAgent.js:686
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "連線至「%s」需要密碼。"
 
-#: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:653 js/ui/status/network.js:1704
 msgid "Network Manager"
 msgstr "網路管理員"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "要求核對"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "管理員"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "核對"
 
@@ -921,7 +921,7 @@ msgstr "核對"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "抱歉，那沒有作用。請再試一次。"
 
@@ -969,7 +969,7 @@ msgstr "加入世界時鐘…"
 msgid "World Clocks"
 msgstr "世界時鐘"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "天氣"
 
@@ -977,7 +977,7 @@ msgstr "天氣"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "全天%s。"
@@ -986,7 +986,7 @@ msgstr "全天%s。"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s，較晚%s。"
@@ -995,30 +995,30 @@ msgstr "%s，較晚%s。"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s，然後%s，接著較晚%s。"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "選擇位置…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "載入中…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "體感溫度 %s。"
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "上線以取得天氣資訊"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "天氣資訊目前不可使用"
 
@@ -1239,13 +1239,13 @@ msgid "Leave On"
 msgstr "離開"
 
 #: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
-#: js/ui/status/network.js:1281
+#: js/ui/status/network.js:1294
 msgid "Turn On"
 msgstr "開啟"
 
 #: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
 #: js/ui/status/network.js:154 js/ui/status/network.js:337
-#: js/ui/status/network.js:1281 js/ui/status/network.js:1396
+#: js/ui/status/network.js:1294 js/ui/status/network.js:1409
 #: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
@@ -1307,7 +1307,7 @@ msgstr "檢示來源"
 msgid "Web Page"
 msgstr "網頁"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1495
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -1622,7 +1622,7 @@ msgid "<unknown>"
 msgstr "<不明>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:441 js/ui/status/network.js:1310
+#: js/ui/status/network.js:441 js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Off"
 msgstr "%s 關閉"
@@ -1648,7 +1648,7 @@ msgid "%s Disconnecting"
 msgstr "%s 正在斷線"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:459 js/ui/status/network.js:1302
+#: js/ui/status/network.js:459 js/ui/status/network.js:1315
 #, javascript-format
 msgid "%s Connecting"
 msgstr "正連線到 %s"
@@ -1688,7 +1688,7 @@ msgid "Mobile Broadband Settings"
 msgstr "行動寬頻設定值"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:578 js/ui/status/network.js:1307
+#: js/ui/status/network.js:578 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s 硬體已停用"
@@ -1744,78 +1744,78 @@ msgstr "沒有網路"
 msgid "Use hardware switch to turn off"
 msgstr "使用硬體開關來關閉"
 
-#: js/ui/status/network.js:1173
+#: js/ui/status/network.js:1186
 msgid "Select Network"
 msgstr "選擇網路"
 
-#: js/ui/status/network.js:1179
+#: js/ui/status/network.js:1192
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 設定值"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1298
+#: js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s 熱點有效"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1313
+#: js/ui/status/network.js:1326
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s 未連線"
 
-#: js/ui/status/network.js:1413
+#: js/ui/status/network.js:1426
 msgid "connecting…"
 msgstr "連線中…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1416
+#: js/ui/status/network.js:1429
 msgid "authentication required"
 msgstr "要求核對"
 
-#: js/ui/status/network.js:1418
+#: js/ui/status/network.js:1431
 msgid "connection failed"
 msgstr "連線失敗"
 
-#: js/ui/status/network.js:1472
+#: js/ui/status/network.js:1485
 msgid "VPN Settings"
 msgstr "VPN 設定值"
 
-#: js/ui/status/network.js:1485
+#: js/ui/status/network.js:1498
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1495
+#: js/ui/status/network.js:1508
 msgid "VPN Off"
 msgstr "VPN 關閉"
 
-#: js/ui/status/network.js:1559 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "網路設定值"
 
-#: js/ui/status/network.js:1588
+#: js/ui/status/network.js:1601
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s 個有線網路連線"
 
-#: js/ui/status/network.js:1592
+#: js/ui/status/network.js:1605
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s 個 Wi-Fi 連線"
 
-#: js/ui/status/network.js:1596
+#: js/ui/status/network.js:1609
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s 個數據機連線"
 
-#: js/ui/status/network.js:1728
+#: js/ui/status/network.js:1741
 msgid "Connection failed"
 msgstr "連線失敗"
 
-#: js/ui/status/network.js:1729
+#: js/ui/status/network.js:1742
 msgid "Activation of network connection failed"
 msgstr "啟動網路連線失敗"
 
@@ -1918,7 +1918,7 @@ msgstr "Thunderbolt 授權錯誤"
 
 #: js/ui/status/thunderbolt.js:357
 #, javascript-format
-msgid "Could not authorize the thunderbolt device: %s"
+msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "無法授權該 Thunderbolt 裝置：%s"
 
 #: js/ui/status/volume.js:128
