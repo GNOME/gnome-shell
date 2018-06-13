@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-03-01 18:57+0000\n"
-"PO-Revision-Date: 2018-03-03 15:20+0800\n"
+"POT-Creation-Date: 2018-06-07 13:00+0000\n"
+"PO-Revision-Date: 2018-06-09 11:26+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.8\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -379,32 +379,27 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
-"enables remote desktop support. To support remote desktop with screen "
-"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
-"screen cast support."
+"manage HiDPI monitors. Does not require a restart."
 msgstr ""
 "若要啟用實驗性功能，請將功能關鍵字加入列表中。置於該功能是否須要重新啟動混成"
 "器則視給予的功能而定。任何實驗性功能不一定能用、或是可以調整設定。請不要預期"
 "在此設定中加入的任何東西未來都能存在。目前可用的關鍵字有： • “scale-monitor-"
 "framebuffer” — 讓 mutter 預設採用邏輯像素座標空間的配置邏輯螢幕，而縮放螢幕 "
-"framebuffer 則取代視窗內容以管理 HiDPI 螢幕。不須要重新啟動。 • “remote-"
-"desktop” — 啟用遠端桌面支援。若要支援遠端桌面的螢幕分享，則必須也啟用“screen-"
-"cast”。• “screen-cast” — 啟用螢幕投放支援。"
+"framebuffer 則取代視窗內容以管理 HiDPI 螢幕。不須要重新啟動。"
 
-#: data/org.gnome.mutter.gschema.xml.in:145
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "從分頁彈出項選擇視窗"
 
-#: data/org.gnome.mutter.gschema.xml.in:150
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "取消分頁彈出項"
 
-#: data/org.gnome.mutter.gschema.xml.in:155
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Switch monitor configurations"
 msgstr "切換螢幕組態"
 
-#: data/org.gnome.mutter.gschema.xml.in:160
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Rotates the built-in monitor configuration"
 msgstr "旋轉切換內建螢幕組態"
 
@@ -520,22 +515,22 @@ msgstr "切換螢幕"
 msgid "Show on-screen help"
 msgstr "顯示螢幕求助"
 
-#: src/backends/meta-monitor-manager.c:900
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "內建顯示"
 
-#: src/backends/meta-monitor-manager.c:923
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "不明"
 
-#: src/backends/meta-monitor-manager.c:925
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "不明的顯示器"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:933
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
