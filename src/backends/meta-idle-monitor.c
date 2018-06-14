@@ -263,8 +263,11 @@ meta_idle_monitor_init (MetaIdleMonitor *monitor)
 
   v = g_dbus_proxy_get_cached_property (monitor->session_proxy,
                                         "InhibitedActions");
-  monitor->inhibited = g_variant_get_uint32 (v) & GSM_INHIBITOR_FLAG_IDLE;
-  g_variant_unref (v);
+  if (v)
+    {
+      monitor->inhibited = g_variant_get_uint32 (v) & GSM_INHIBITOR_FLAG_IDLE;
+      g_variant_unref (v);
+    }
 }
 
 /**
