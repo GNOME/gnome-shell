@@ -1094,14 +1094,18 @@ var ScreenShield = new Lang.Class({
 
         this._checkArrowAnimation();
 
-        let motionId = global.stage.connect('captured-event', (stage, event) => {
-            if (event.type() == Clutter.EventType.MOTION) {
-                this._cursorTracker.set_pointer_visible(true);
-                global.stage.disconnect(motionId);
-            }
-
-            return Clutter.EVENT_PROPAGATE;
-        });
+        if( !params.fadeToBlack ) {
+            // Allow motion events to cancel the short light box - but not from the intitial lock() event.
+            let motionId = global.stage.connect('captured-event', (stage, event) => {
+                if (event.type() == Clutter.EventType.MOTION) {
+                    this._cursorTracker.set_pointer_visible(true);
+                    global.stage.disconnect(motionId);
+                }
+    
+                return Clutter.EVENT_PROPAGATE;
+            });
+        }
+        
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
