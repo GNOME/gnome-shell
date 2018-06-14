@@ -14,7 +14,7 @@ except ImportError:
     try:
         import simplejson as json
     except ImportError:
-        print('The Python simplejson module is required')
+        print 'The Python simplejson module is required'
         sys.exit(1)
 
 from gi.repository import Gio, GLib
@@ -88,36 +88,36 @@ function disable() {
 }
 
 def create_extension():
-    print()
-    print('''Name should be a very short (ideally descriptive) string.
+    print
+    print '''Name should be a very short (ideally descriptive) string.
 Examples are: "Click To Focus",  "Adblock", "Shell Window Shrinker".
-''')
-    name = input('Name: ').strip()
-    print()
-    print('''Description is a single-sentence explanation of what your extension does.
+'''
+    name = raw_input('Name: ').strip()
+    print
+    print '''Description is a single-sentence explanation of what your extension does.
 Examples are: "Make windows visible on click", "Block advertisement popups"
               "Animate windows shrinking on minimize"
-''')
-    description = input('Description: ').strip()
+'''
+    description = raw_input('Description: ').strip()
     underifier = re.compile('[^A-Za-z]')
     sample_uuid = underifier.sub('_', name)
     # TODO use evolution data server
     hostname = socket.gethostname()
     sample_uuid = sample_uuid + '@' + hostname
 
-    print()
-    print('''Uuid is a globally-unique identifier for your extension.
+    print
+    print '''Uuid is a globally-unique identifier for your extension.
 This should be in the format of an email address (foo.bar@extensions.example.com), but
 need not be an actual email address, though it's a good idea to base the uuid on your
 email address.  For example, if your email address is janedoe@example.com, you might
-use an extension title clicktofocus@janedoe.example.com.''')
-    uuid = input('Uuid [%s]: ' % (sample_uuid, )).strip()
+use an extension title clicktofocus@janedoe.example.com.'''
+    uuid = raw_input('Uuid [%s]: ' % (sample_uuid, )).strip()
     if uuid == '':
         uuid = sample_uuid
 
     extension_path = os.path.join(os.path.expanduser('~/.local'), 'share', 'gnome-shell', 'extensions', uuid)
     if os.path.exists(extension_path):
-        print("Extension path %r already exists" % (extension_path, ))
+        print "Extension path %r already exists" % (extension_path, )
         sys.exit(0)
     os.makedirs(extension_path)
     meta = { 'name': name,
@@ -132,13 +132,13 @@ use an extension title clicktofocus@janedoe.example.com.''')
         f.write(json.write(meta) + '\n')
     f.close()
 
-    for filename, contents in SAMPLE_EXTENSION_FILES.items():
+    for filename, contents in SAMPLE_EXTENSION_FILES.iteritems():
         path = os.path.join(extension_path, filename)
         f = open(path, 'w')
         f.write(contents)
         f.close()
 
-    print("Created extension in %r" % (extension_path, ))
+    print "Created extension in %r" % (extension_path, )
     extensionjs_path = os.path.join(extension_path, 'extension.js')
     subprocess.Popen(['xdg-open', extensionjs_path])
 
@@ -149,19 +149,19 @@ def enable_extension(uuid):
     extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
 
     if uuid in extensions:
-        print("%r is already enabled." % (uuid,), file=sys.stderr)
+        print >> sys.stderr, "%r is already enabled." % (uuid,)
         sys.exit(1)
 
     extensions.append(uuid)
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now enabled." % (uuid,), file=sys.stderr)
+    print >> sys.stderr, "%r is now enabled." % (uuid,)
 
 def disable_extension(uuid):
     settings = Gio.Settings(schema='org.gnome.shell')
     extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
 
     if uuid not in extensions:
-        print("%r is not enabled or installed." % (uuid,), file=sys.stderr)
+        print >> sys.stderr, "%r is not enabled or installed." % (uuid,)
         sys.exit(1)
 
     # Use a while loop here to remove *all* mentions instances
@@ -170,14 +170,14 @@ def disable_extension(uuid):
         extensions.remove(uuid)
 
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now disabled." % (uuid,), file=sys.stderr)
+    print >> sys.stderr, "%r is now disabled." % (uuid,)
 
 def reload_extension(uuid):
     settings = Gio.Settings(schema='org.gnome.shell')
     extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
 
     if uuid not in extensions:
-        print("%r is not enabled or installed." % (uuid,), file=sys.stderr)
+        print >> sys.stderr, "%r is not enabled or installed." % (uuid,)
         sys.exit(1)
 
     proxy = Gio.DBusProxy.new_sync(Gio.bus_get_sync(Gio.BusType.SESSION, None),
@@ -193,7 +193,7 @@ def reload_extension(uuid):
                     -1,
                     None)
 
-    print("%r reloaded." % (uuid,), file=sys.stderr)
+    print >> sys.stderr, "%r reloaded." % (uuid,)
 
 
 def main():

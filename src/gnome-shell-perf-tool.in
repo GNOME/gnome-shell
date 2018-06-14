@@ -14,14 +14,15 @@ import subprocess
 import sys
 import tempfile
 import base64
-from configparser import RawConfigParser
+from ConfigParser import RawConfigParser
 import hashlib
 import hmac
-from http import client
-from urllib import parse
+import httplib
+import urlparse
+import urllib
 
 def show_version(option, opt_str, value, parser):
-    print("GNOME Shell Performance Test @VERSION@")
+    print "GNOME Shell Performance Test @VERSION@"
     sys.exit()
 
 def wait_for_dbus_name(wait_name):
@@ -40,7 +41,7 @@ def wait_for_dbus_name(wait_name):
                                   None)
 
     def on_timeout():
-        print("\nFailed to start %s: timed out" % (wait_name,))
+        print "\nFailed to start %s: timed out" % (wait_name,)
         sys.exit(1)
     GLib.timeout_add_seconds(7, on_timeout)
 
@@ -130,15 +131,15 @@ def upload_performance_report(report_text):
         base_url = config.get('upload', 'url')
         system_name = config.get('upload', 'name')
         secret_key = config.get('upload', 'key')
-    except Exception as e:
-        print("Can't read upload configuration from %s: %s" % (config_file, str(e)))
+    except Exception, e:
+        print "Can't read upload configuration from %s: %s" % (config_file, str(e))
         sys.exit(1)
 
     # Determine host, port and upload URL from provided data, we're
     # a bit extra-careful about normalization since the URL is part
     # of the signature.
 
-    split = parse.urlsplit(base_url)
+    split = urlparse.urlsplit(base_url)
     scheme = split[0].lower()
     netloc = split[1]
     base_path = split[2]
@@ -150,7 +151,7 @@ def upload_performance_report(report_text):
         host, port = m.group(1), None
 
     if scheme != "http":
-        print("'%s' is not a HTTP URL" % base_url)
+        print "'%s' is not a HTTP URL" % base_url
         sys.exit(1)
 
     if port is None:
@@ -165,7 +166,7 @@ def upload_performance_report(report_text):
         normalized_base = "%s://%s:%d%s" % (scheme, host, port, base_path)
 
     upload_url = normalized_base + '/system/%s/upload' % system_name
-    upload_path = parse.urlsplit(upload_url)[2] # path portion
+    upload_path = urlparse.urlsplit(upload_url)[2] # path portion
 
     # Create signature based on upload URL and the report data
 
@@ -173,7 +174,7 @@ def upload_performance_report(report_text):
     h = hmac.new(secret_key, digestmod=hashlib.sha1)
     h.update(signature_data)
     h.update(report_text)
-    signature = parse.quote(base64.b64encode(h.digest()), "~")
+    signature = urllib.quote(base64.b64encode(h.digest()), "~")
 
     headers = {
         'User-Agent': 'gnome-shell-performance-tool/@VERSION@',
@@ -181,15 +182,15 @@ def upload_performance_report(report_text):
         'X-Shell-Signature': 'HMAC-SHA1 ' + signature
     };
 
-    connection = client.HTTPConnection(host, port)
+    connection = httplib.HTTPConnection(host, port)
     connection.request('POST', upload_path, report_text, headers)
     response = connection.getresponse()
 
     if response.status == 200:
-        print("Performance report upload succeeded")
+        print "Performance report upload succeeded"
     else:
-        print("Performance report upload failed with status %d" % response.status)
-        print(response.read())
+        print "Performance report upload failed with status %d" % response.status
+        print response.read()
 
 def gnome_hwtest_log(*args):
     command = ['gnome-hwtest-log', '-t', 'gnome-shell-perf-tool']
@@ -206,7 +207,7 @@ def run_performance_test():
 
     start_perf_helper()
 
-    for i in range(0, iters):
+    for i in xrange(0, iters):
         # We create an empty temporary file that the shell will overwrite
         # with the contents.
         handle, output_file = tempfile.mkstemp(".json", "gnome-shell-perf.")
@@ -305,12 +306,12 @@ def run_performance_test():
         gnome_hwtest_log('--finished')
     else:
         # Write a human readable summary
-        print('------------------------------------------------------------')
+        print '------------------------------------------------------------';
         for metric in sorted(metric_summaries.keys()):
             summary = metric_summaries[metric]
-            print("#", summary['description'])
-            print(metric, ", ".join((str(x) for x in summary['values'])))
-        print('------------------------------------------------------------')
+            print "#", summary['description']
+            print metric, ", ".join((str(x) for x in summary['values']))
+        print '------------------------------------------------------------';
 
     return True
 
