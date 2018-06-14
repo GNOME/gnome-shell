@@ -50,19 +50,23 @@ meta_wayland_actor_surface_constructed (GObject *object)
 }
 
 static void
-meta_wayland_actor_surface_finalize (GObject *object)
+meta_wayland_actor_surface_dispose (GObject *object)
 {
   MetaWaylandActorSurfacePrivate *priv =
     meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (object));
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (object));
 
-  g_signal_handlers_disconnect_by_func (priv->actor,
-                                        meta_wayland_surface_notify_geometry_changed,
-                                        surface);
-  g_object_unref (priv->actor);
+  if (priv->actor)
+    {
+      g_signal_handlers_disconnect_by_func (priv->actor,
+                                            meta_wayland_surface_notify_geometry_changed,
+                                            surface);
+      clutter_actor_set_reactive (CLUTTER_ACTOR (priv->actor), FALSE);
+      g_clear_object (&priv->actor);
+    }
 
-  G_OBJECT_CLASS (meta_wayland_actor_surface_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meta_wayland_actor_surface_parent_class)->dispose (object);
 }
 
 static void
@@ -270,7 +274,7 @@ meta_wayland_actor_surface_class_init (MetaWaylandActorSurfaceClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructed = meta_wayland_actor_surface_constructed;
-  object_class->finalize = meta_wayland_actor_surface_finalize;
+  object_class->dispose = meta_wayland_actor_surface_dispose;
 
   surface_role_class->assigned = meta_wayland_actor_surface_assigned;
   surface_role_class->commit = meta_wayland_actor_surface_commit;
