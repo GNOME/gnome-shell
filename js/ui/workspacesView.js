@@ -24,7 +24,7 @@ var AnimationType = {
     FADE: 1
 };
 
-const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
+const OVERRIDE_SCHEMA = 'org.gnome.mutter';
 
 var WorkspacesViewBase = new Lang.Class({
     Name: 'WorkspacesViewBase',
