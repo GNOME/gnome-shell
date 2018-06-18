@@ -31,7 +31,7 @@ var WORKSPACE_CUT_SIZE = 10;
 
 var WORKSPACE_KEEP_ALIVE_TIME = 100;
 
-const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
+var OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
@@ -241,7 +241,7 @@ var WindowClone = new Lang.Class({
 Signals.addSignalMethods(WindowClone.prototype);
 
 
-const ThumbnailState = {
+var ThumbnailState = {
     NEW   :         0,
     ANIMATING_IN :  1,
     NORMAL:         2,
