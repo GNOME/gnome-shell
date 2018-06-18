@@ -612,6 +612,8 @@ var WorkspacesDisplay = new Lang.Class({
         this._notifyOpacityId = 0;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            if(!this.actor)
+                return;
             let newParent = this.actor.get_parent();
             if (!newParent)
                 return;
