@@ -199,7 +199,7 @@ var AutomountManager = new Lang.Class({
             // backend in this case, see 
             // https://bugs.freedesktop.org/show_bug.cgi?id=51271
             if (e.message.indexOf('No key available with this passphrase') != -1 ||
-                e.message.indexOf('No device header detected with this passphrase') != -1) {
+                e.message.indexOf('Failed to load device\'s parameters: Operation not permitted') != -1) {
                 this._reaskPassword(volume);
             } else {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
