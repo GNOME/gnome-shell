@@ -524,9 +524,10 @@ var WindowOverlay = new Lang.Class({
         let title = this.title;
         let border = this.border;
 
-        Tweener.removeTweens(button);
-        Tweener.removeTweens(border);
-        Tweener.removeTweens(title);
+        // Only remove relayout tweens, not the fading ones
+        Tweener.removeTweens(button, "x", "y", "width", "height");
+        Tweener.removeTweens(border, "x", "y", "width", "height");
+        Tweener.removeTweens(title, "x", "y", "width", "height");
 
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
