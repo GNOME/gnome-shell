@@ -168,8 +168,8 @@ var ShellMountOperation = new Lang.Class({
                         this.mountOp.set_password_save(Gio.PasswordSave.NEVER);
 
                     this.mountOp.set_password(password);
-                    this.mountOp.set_hidden_volume(hidden_volume);
-                    this.mountOp.set_system_volume(system_volume);
+                    this.mountOp.set_is_tcrypt_hidden_volume(hidden_volume);
+                    this.mountOp.set_is_tcrypt_system_volume(system_volume);
                     this.mountOp.set_pim(pim);
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
