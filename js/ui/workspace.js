@@ -22,7 +22,10 @@ var WINDOW_DND_SIZE = 256;
 
 var WINDOW_CLONE_MAXIMUM_SCALE = 1.0;
 
-var CLOSE_BUTTON_FADE_TIME = 0.1;
+var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
+var WINDOW_OVERLAY_FADE_TIME = 0.1;
+
+var WINDOW_REPOSITIONING_DELAY = 750;
 
 var DRAGGING_WINDOW_OPACITY = 100;
 
@@ -460,7 +463,7 @@ var WindowOverlay = new Lang.Class({
         let button = new St.Button({ style_class: 'window-close' });
         button._overlap = 0;
 
-        this._idleToggleCloseId = 0;
+        this._idleHideOverlayId = 0;
         button.connect('clicked', this._closeWindow.bind(this));
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
@@ -626,9 +629,9 @@ var WindowOverlay = new Lang.Class({
             this._workspace.disconnect(this._windowAddedId);
             this._windowAddedId = 0;
         }
-        if (this._idleToggleCloseId > 0) {
-            Mainloop.source_remove(this._idleToggleCloseId);
-            this._idleToggleCloseId = 0;
+        if (this._idleHideOverlayId > 0) {
+            Mainloop.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
         }
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
         this.title.destroy();
@@ -648,7 +651,7 @@ var WindowOverlay = new Lang.Class({
             a.opacity = 0;
             Tweener.addTween(a,
                              { opacity: 255,
-                               time: CLOSE_BUTTON_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME,
                                transition: 'easeOutQuad' });
         });
     },
@@ -658,7 +661,7 @@ var WindowOverlay = new Lang.Class({
             a.opacity = 255;
             Tweener.addTween(a,
                              { opacity: 0,
-                               time: CLOSE_BUTTON_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME,
                                transition: 'easeInQuad' });
         });
     },
@@ -676,14 +679,14 @@ var WindowOverlay = new Lang.Class({
     },
 
     _onHideChrome() {
-        if (this._idleToggleCloseId == 0) {
-            this._idleToggleCloseId = Mainloop.timeout_add(750, this._idleToggleCloseButton.bind(this));
-            GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
+        if (this._idleHideOverlayId == 0) {
+            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleToggleCloseButton.bind(this));
+            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleToggleCloseButton');
         }
     },
 
     _idleToggleCloseButton() {
-        this._idleToggleCloseId = 0;
+        this._idleHideOverlayId = 0;
 
         if (!this._windowClone.actor['has-pointer'] &&
             !this.closeButton['has-pointer'])
@@ -693,9 +696,9 @@ var WindowOverlay = new Lang.Class({
     },
 
     hideCloseButton() {
-        if (this._idleToggleCloseId > 0) {
-            Mainloop.source_remove(this._idleToggleCloseId);
-            this._idleToggleCloseId = 0;
+        if (this._idleHideOverlayId > 0) {
+            Mainloop.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
         }
         this.closeButton.hide();
         this.border.hide();
@@ -1481,7 +1484,7 @@ var Workspace = new Lang.Class({
         this._cursorY = y;
 
         this._currentLayout = null;
-        this._repositionWindowsId = Mainloop.timeout_add(750,
+        this._repositionWindowsId = Mainloop.timeout_add(WINDOW_REPOSITIONING_DELAY,
             this._delayedWindowRepositioning.bind(this));
         GLib.Source.set_name_by_id(this._repositionWindowsId, '[gnome-shell] this._delayedWindowRepositioning');
     },
