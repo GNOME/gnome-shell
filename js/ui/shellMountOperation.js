@@ -10,6 +10,7 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -18,8 +19,13 @@ const ModalDialog = imports.ui.modalDialog;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const Util = imports.misc.util;
+const Tweener = imports.ui.tweener;
 
 var LIST_ITEM_ICON_SIZE = 48;
+
+var WORK_SPINNER_ICON_SIZE = 16;
+var WORK_SPINNER_ANIMATION_DELAY = 1.0;
+var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -327,6 +333,12 @@ var ShellMountPasswordDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
 
+        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._setWorking(false);
+        this._passwordBox.add(this._workSpinner.actor);
+
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
                                                  text: _("Sorry, that didn’t work. Please try again.") });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -345,6 +357,7 @@ var ShellMountPasswordDialog = new Lang.Class({
         }
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
+
             this._hiddenVolume = new CheckBox.CheckBox();
             this._hiddenVolume.getLabelActor().text = _("Hidden Volume");
             content.messageBox.add(this._hiddenVolume.actor);
@@ -408,9 +421,34 @@ var ShellMountPasswordDialog = new Lang.Class({
         this.setButtons(buttons);
     },
 
+    _setWorking(working) {
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                { opacity: 255,
+                    delay: WORK_SPINNER_ANIMATION_DELAY,
+                    time: WORK_SPINNER_ANIMATION_TIME,
+                    transition: 'linear'
+                });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                { opacity: 0,
+                    time: WORK_SPINNER_ANIMATION_TIME,
+                    transition: 'linear',
+                    onCompleteScope: this,
+                    onComplete() {
+                        if (this._workSpinner)
+                            this._workSpinner.stop();
+                    }
+                });
+        }
+    },
+
     reaskPassword() {
         this._passwordEntry.set_text('');
         this._errorMessageLabel.show();
+        this._setWorking(false);
     },
 
     _onCancelButton() {
@@ -422,6 +460,8 @@ var ShellMountPasswordDialog = new Lang.Class({
     },
 
     _onEntryActivate() {
+        this._setWorking(true);
+
         let pim = 0;
         if (this._pimEntry !== null)
             pim = this._pimEntry.get_text();
