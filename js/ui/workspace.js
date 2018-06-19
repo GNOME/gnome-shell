@@ -370,14 +370,28 @@ var WindowClone = new Lang.Class({
     },
 
     _onClicked(action, actor) {
-        this._activate();
+        let button = action.get_button();
+        let isMiddleButton = button && button == Clutter.BUTTON_MIDDLE;
+
+        if (isMiddleButton)
+            this.deleteAll()
+        else
+            this._activate();
     },
 
     _onLongPress(action, actor, state) {
+        let button = action.get_button();
+        let isMiddleButton = button && button == Clutter.BUTTON_MIDDLE;
+
         // Take advantage of the Clutter policy to consider
         // a long-press canceled when the pointer movement
         // exceeds dnd-drag-threshold to manually start the drag
         if (state == Clutter.LongPressState.CANCEL) {
+            if (isMiddleButton) {
+                action.release();
+                return false;
+            }
+
             let event = Clutter.get_current_event();
             this._dragTouchSequence = event.get_event_sequence();
 
@@ -393,6 +407,7 @@ var WindowClone = new Lang.Class({
         } else {
             this.emit('show-chrome');
         }
+
         return true;
     },
 
