@@ -179,6 +179,7 @@ var WindowClone = new Lang.Class({
         this.inDrag = false;
 
         this._selected = false;
+        this._closeRequested = false;
     },
 
     set slot(slot) {
@@ -194,7 +195,6 @@ var WindowClone = new Lang.Class({
 
     deleteAll() {
         // Delete all windows, starting from the bottom-most (most-modal) one
-
         let windows = this.actor.get_children();
         for (let i = windows.length - 1; i >= 1; i--) {
             let realWindow = windows[i].source;
@@ -204,11 +204,24 @@ var WindowClone = new Lang.Class({
         }
 
         this.metaWindow.delete(global.get_current_time());
+        this._closeRequested = true;
     },
 
-    addAttachedDialog(win) {
-        this._doAddAttachedDialog(win, win.get_compositor_private());
-        this._onMetaWindowSizeChanged();
+    addDialog(win) {
+        // Get the topmost ancestor of the parent attached dialogs, only add the dialog
+        // to the clone if the ancestor is our metaWindow.
+        let parentWin = win.get_transient_for();
+        while (parentWin.is_attached_dialog())
+            parentWin = parentWin.get_transient_for();
+
+        if (win.is_attached_dialog() && parentWin == this.metaWindow) {
+            this._doAddAttachedDialog(win, win.get_compositor_private());
+            this._onMetaWindowSizeChanged();
+        }
+
+        // If a dialog is added after we tried closing the window, show the window
+        if (this._closeRequested)
+            this._activate();
     },
 
     hasAttachedDialogs() {
@@ -462,13 +475,11 @@ var WindowOverlay = new Lang.Class({
         button._overlap = 0;
 
         this._idleToggleCloseId = 0;
-        button.connect('clicked', this._closeWindow.bind(this));
+        button.connect('clicked', () => this._windowClone.deleteAll());
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
         windowClone.connect('show-chrome', this._onShowChrome.bind(this));
         windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
-
-        this._windowAddedId = 0;
 
         button.hide();
         title.hide();
@@ -590,43 +601,12 @@ var WindowOverlay = new Lang.Class({
         Tweener.addTween(actor, params);
     },
 
-    _closeWindow(actor) {
-        let metaWindow = this._windowClone.metaWindow;
-        this._workspace = metaWindow.get_workspace();
-
-        this._windowAddedId = this._workspace.connect('window-added',
-                                                      this._onWindowAdded.bind(this));
-
-        this._windowClone.deleteAll();
-    },
-
     _windowCanClose() {
         return this._windowClone.metaWindow.can_close() &&
                !this._windowClone.hasAttachedDialogs();
     },
 
-    _onWindowAdded(workspace, win) {
-        let metaWindow = this._windowClone.metaWindow;
-
-        if (win.get_transient_for() == metaWindow) {
-            workspace.disconnect(this._windowAddedId);
-            this._windowAddedId = 0;
-
-            // use an idle handler to avoid mapping problems -
-            // see comment in Workspace._windowAdded
-            let id = Mainloop.idle_add(() => {
-                this._windowClone.emit('selected');
-                return GLib.SOURCE_REMOVE;
-            });
-            GLib.Source.set_name_by_id(id, '[gnome-shell] this._windowClone.emit');
-        }
-    },
-
     _onDestroy() {
-        if (this._windowAddedId > 0) {
-            this._workspace.disconnect(this._windowAddedId);
-            this._windowAddedId = 0;
-        }
         if (this._idleToggleCloseId > 0) {
             Mainloop.source_remove(this._idleToggleCloseId);
             this._idleToggleCloseId = 0;
@@ -1516,21 +1496,19 @@ var Workspace = new Lang.Class({
             return;
 
         if (!this._isOverviewWindow(win)) {
-            if (metaWin.is_attached_dialog()) {
-                let parentMetaWin = metaWin;
-                while (parentMetaWin.get_transient_for())
-                    parentMetaWin = parentMetaWin.get_transient_for();
+            // Get the topmost ancestor of all parent windows so we can always find
+            // a valid clone. The clone's addDialog function will make sure only
+            // attached dialogs get added to the view.
+            let parentMetaWin = metaWin;
+            while (parentMetaWin.get_transient_for())
+                parentMetaWin = parentMetaWin.get_transient_for();
 
-                let idx = this._lookupIndex (parentMetaWin);
-                if (idx < 0) {
-                    // parent was not created yet, it will take care
-                    // of the dialog when created
-                    return;
-                }
+            let idx = this._lookupIndex (parentMetaWin);
+            if (idx < 0) // Parent not created yet, dialogs will be updated when it's created
+                return;
 
-                let clone = this._windows[idx];
-                clone.addAttachedDialog(metaWin);
-            }
+            let clone = this._windows[idx];
+            clone.addDialog(metaWin);
 
             return;
         }
