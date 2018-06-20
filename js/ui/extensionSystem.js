@@ -4,6 +4,7 @@
 const { GLib, Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const Desktop = imports.misc.desktop;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const FileUtils = imports.misc.fileUtils;
@@ -351,6 +352,10 @@ var ExtensionManager = class {
         this.loadExtension(newExtension);
     }
 
+    isModeExtension(uuid) {
+        return this._getModeExtensions().indexOf(uuid) !== -1;
+    }
+
     _callExtensionInit(uuid) {
         if (!Main.sessionMode.allowExtensions)
             return false;
@@ -532,6 +537,10 @@ var ExtensionManager = class {
             let type = dir.has_prefix(perUserDir)
                 ? ExtensionType.PER_USER
                 : ExtensionType.SYSTEM;
+            if (Desktop.is('endless') && this.isModeExtension(uuid) && type === ExtensionType.PER_USER) {
+                log(`Found user extension ${uuid}, but not loading from ${dir.get_path()} directory as part of session mode.`);
+                return;
+            }
             try {
                 extension = this.createExtensionObject(uuid, dir, type);
             } catch (e) {
