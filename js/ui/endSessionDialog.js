@@ -286,13 +286,32 @@ var EndSessionDialog = new Lang.Class({
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
+        this._updatesPermission = false;
 
         this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
                                                   'org.freedesktop.PackageKit',
                                                   '/org/freedesktop/PackageKit',
                                                   (proxy, error) => {
-                                                      if (error)
-                                                          log(error.message);
+                                                      if (error) {
+                                                           log(error.message);
+                                                          return;
+                                                      }
+
+                                                      // Creating a D-Bus proxy won't propagate SERVICE_UNKNOWN or NAME_HAS_NO_OWNER
+                                                      // errors if PackageKit is not available, but the GIO implementation will make
+                                                      // sure in that case that the proxy's g-name-owner is set to null, so check that.
+                                                      if (this._pkOfflineProxy.g_name_owner === null) {
+                                                          this._pkOfflineProxy = null;
+                                                          return;
+                                                      }
+
+                                                      // It only makes sense to check for this permission if PackageKit is available.
+                                                      try {
+                                                          this._updatesPermission =
+                                                              Polkit.Permission.new_sync("org.freedesktop.packagekit.trigger-offline-update", null, null);
+                                                      } catch(e) {
+                                                          log('No permission to trigger offline updates: %s'.format(e.toString()));
+                                                      }
                                                   });
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
                                            'org.freedesktop.UPower',
@@ -388,12 +407,6 @@ var EndSessionDialog = new Lang.Class({
         this._inhibitorSection.add_actor(this._sessionHeader);
         this._inhibitorSection.add_actor(this._sessionList);
 
-        try {
-            this._updatesPermission = Polkit.Permission.new_sync("org.freedesktop.packagekit.trigger-offline-update", null, null);
-        } catch(e) {
-            log('No permission to trigger offline updates: %s'.format(e.toString()));
-        }
-
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
     },
@@ -442,7 +455,8 @@ var EndSessionDialog = new Lang.Class({
         }
 
         // Use a different description when we are installing a system upgrade
-        if (dialogContent.upgradeDescription) {
+        // if the PackageKit proxy is available (i.e. PackageKit is available).
+        if (this._pkOfflineProxy && dialogContent.upgradeDescription) {
             let name = this._pkOfflineProxy.PreparedUpgrade['name'].deep_unpack();
             let version = this._pkOfflineProxy.PreparedUpgrade['version'].deep_unpack();
 
@@ -551,6 +565,12 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateReboot(callback) {
+        // Handle this gracefully if PackageKit is not available.
+        if (!this._pkOfflineProxy) {
+            callback();
+            return;
+        }
+
         this._pkOfflineProxy.TriggerRemote('reboot', (result, error) => {
             if (error)
                 log(error.message);
@@ -560,6 +580,12 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateShutdown(callback) {
+        // Handle this gracefully if PackageKit is not available.
+        if (!this._pkOfflineProxy) {
+            callback();
+            return;
+        }
+
         this._pkOfflineProxy.TriggerRemote('power-off', (result, error) => {
             if (error)
                 log(error.message);
@@ -569,6 +595,12 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateCancel(callback) {
+        // Handle this gracefully if PackageKit is not available.
+        if (!this._pkOfflineProxy) {
+            callback();
+            return;
+        }
+
         this._pkOfflineProxy.CancelRemote((result, error) => {
             if (error)
                 log(error.message);
@@ -724,7 +756,8 @@ var EndSessionDialog = new Lang.Class({
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
-        if (this._type == DialogType.RESTART) {
+        // Only consider updates and upgrades if PackageKit is available.
+        if (this._pkOfflineProxy && this._type == DialogType.RESTART) {
             if (this._pkOfflineProxy.UpdateTriggered)
                 this._type = DialogType.UPDATE_RESTART;
             else if (this._pkOfflineProxy.UpgradeTriggered)
@@ -756,8 +789,9 @@ var EndSessionDialog = new Lang.Class({
         if (dialogContent.showOtherSessions)
             this._loadSessions();
 
-        let updateTriggered = this._pkOfflineProxy.UpdateTriggered;
-        let updatePrepared = this._pkOfflineProxy.UpdatePrepared;
+        // Only consider updates and upgrades if PackageKit is available.
+        let updateTriggered = this._pkOfflineProxy ? this._pkOfflineProxy.UpdateTriggered : false;
+        let updatePrepared = this._pkOfflineProxy ? this._pkOfflineProxy.UpdatePrepared : false;
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText);
