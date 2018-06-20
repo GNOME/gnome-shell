@@ -11,6 +11,7 @@
 
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
+    <file>misc/desktop.js</file>
     <file>misc/fileUtils.js</file>
     <file>misc/gnomeSession.js</file>
     <file>misc/history.js</file>
