@@ -1628,6 +1628,20 @@ var AppIcon = new Lang.Class({
         this.actor.connect('clicked', this._onClicked.bind(this));
         this.actor.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
+        this._hoverText = null;
+        this._hoverTimeoutId = 0;
+
+        if (this.icon.label) {
+            this._hoverText = new St.Label({ style_class: 'app-well-hover-text',
+                                             text: this.icon.label.text,
+                                             visible: false });
+            this._hoverText.clutter_text.line_wrap = true;
+            Main.layoutManager.addChrome(this._hoverText);
+
+            this.actor.connect('notify::hover', this._syncHoverText.bind(this));
+            this.connect('sync-tooltip', this._syncHoverText.bind(this));
+        }
+
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
@@ -1659,16 +1673,50 @@ var AppIcon = new Lang.Class({
             this.app.disconnect(this._stateChangedId);
         this._stateChangedId = 0;
         this._removeMenuTimeout();
+        this._removeHoverTimeout();
+        if (this._hoverText)
+            this._hoverText.destroy();
+        this._hoverText = null;
     },
 
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
     },
 
+    _syncHoverText() {
+        if (this.shouldShowTooltip()) {
+            if (this._hoverTimeoutId)
+                return;
+
+            this._hoverTimeoutId = Mainloop.timeout_add(300, () => {
+                this._hoverText.style = `max-width: ${2 * this.icon.iconSize}px;`;
+                this._hoverText.ensure_style();
+
+                let [x, y] = this.icon.label.get_transformed_position();
+                let offset = (this._hoverText.width - this.icon.label.width) / 2;
+                this._hoverText.set_position(Math.floor(x - offset), Math.floor(y));
+                this._hoverText.show();
+
+                this._hoverTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+        } else {
+            this._removeHoverTimeout();
+            this._hoverText.hide();
+        }
+    },
+
     _removeMenuTimeout() {
         if (this._menuTimeoutId > 0) {
             Mainloop.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
+        }
+    },
+
+    _removeHoverTimeout() {
+        if (this._hoverTimeoutId > 0) {
+            Mainloop.source_remove(this._hoverTimeoutId);
+            this._hoverTimeoutId = 0;
         }
     },
 
