@@ -141,8 +141,21 @@ var PopupBaseMenuItem = new Lang.Class({
     },
 
     _onKeyPressEvent(actor, event) {
-        let symbol = event.get_key_symbol();
+        let state = event.get_state();
 
+        // Key events involved in a keyboard shortcut are not completely
+        // consumed by the shortcut in Mutter. That means that if the popupMenu
+        // is binded to a shortcut (e.g. Alt<Space>) and the user keeps the
+        // keys pressed, the same key-event will be delivered to the popupMenu.
+        // We can workaround this issue filtering out all the events where a
+        // a modifier is  down (except capslock).
+        state &= ~Clutter.ModifierType.LOCK_MASK;
+        state &= Clutter.ModifierType.MODIFIER_MASK;
+
+        if (state)
+            return Clutter.EVENT_PROPAGATE;
+
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.activate(event);
             return Clutter.EVENT_STOP;
