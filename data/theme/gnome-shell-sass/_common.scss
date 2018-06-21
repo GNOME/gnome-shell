@@ -1402,6 +1402,14 @@ StScrollBar {
 
   }
 
+  .app-well-hover-text {
+      text-align: center;
+      color: $osd_fg_color;
+      background-color: $osd_bg_color;
+      border-radius: 5px;
+      padding: 3px;
+  }
+
   .app-well-app-running-dot { //running apps indicator
     width: 10px; height: 3px;
     background-color: $selected_bg_color;
