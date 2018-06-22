@@ -230,14 +230,14 @@ var ViewSelector = new Lang.Class({
 
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
+                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
                               this._toggleAppsPage.bind(this));
 
         Main.wm.addKeybinding('toggle-overview',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
+                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
                               Main.overview.toggle.bind(Main.overview));
