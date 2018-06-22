@@ -948,14 +948,14 @@ var WindowManager = new Lang.Class({
 
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.NONE,
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.POPUP,
                            this._toggleAppMenu.bind(this));
 
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.NONE,
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.OVERVIEW |
                            Shell.ActionMode.POPUP,
