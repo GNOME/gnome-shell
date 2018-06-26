@@ -163,11 +163,11 @@ var WindowClone = new Lang.Class({
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
 
-        this.actor.connect('enter-event', () => { this.emit('show-chrome'); });
-        this.actor.connect('key-focus-in', () => { this.emit('show-chrome'); });
+        this.actor.connect('motion-event', () => this.emit('show-chrome'));
+        this.actor.connect('key-focus-in', () => this.emit('show-chrome'));
 
-        this.actor.connect('leave-event', () => { this.emit('hide-chrome'); });
-        this.actor.connect('key-focus-out', () => { this.emit('hide-chrome'); });
+        this.actor.connect('leave-event', () => this.emit('hide-chrome'));
+        this.actor.connect('key-focus-out', () => this.emit('hide-chrome'));
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
