@@ -455,7 +455,8 @@ var WindowOverlay = new Lang.Class({
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
         this.title = new St.Label({ style_class: 'window-caption',
-                                    text: this._getCaption() });
+                                    text: this._getCaption(),
+                                    reactive: true });
         this.title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         windowClone.actor.label_actor = this.title;
 
@@ -476,7 +477,6 @@ var WindowOverlay = new Lang.Class({
         this._windowAddedId = 0;
 
         // Don't block drop targets
-        Shell.util_set_hidden_from_pick(this.title, true);
         Shell.util_set_hidden_from_pick(this.border, true);
 
         parentActor.add_actor(this.border);
@@ -686,7 +686,8 @@ var WindowOverlay = new Lang.Class({
             Mainloop.source_remove(this._idleHideOverlayId);
 
         this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
-            if (this.closeButton['has-pointer'])
+            if (this.closeButton['has-pointer'] ||
+                this.title['has-pointer'])
                 return GLib.SOURCE_CONTINUE;
 
             this._idleHideOverlayId = 0;
