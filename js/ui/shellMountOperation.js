@@ -108,12 +108,14 @@ var ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
     _init(source, params) {
-        params = Params.parse(params, { existingDialog: null });
+        params = Params.parse(params, { existingDialog: null,
+                                        errorMessage: null });
 
         this._dialog = null;
         this._dialogId = 0;
         this._existingDialog = params.existingDialog;
         this._processesDialog = null;
+        this._errorMessage = params.errorMessage;
 
         this.mountOp = new Shell.MountOperation();
 
@@ -158,7 +160,7 @@ var ShellMountOperation = new Lang.Class({
     _onAskPassword(op, message, defaultUser, defaultDomain, flags) {
         if (this._existingDialog) {
             this._dialog = this._existingDialog;
-            this._dialog.reaskPassword();
+            this._dialog.reaskPassword({ errorMessage: this._errorMessage });
         } else {
             this._dialog = new ShellMountPasswordDialog(message, this._gicon, flags);
         }
@@ -339,8 +341,7 @@ var ShellMountPasswordDialog = new Lang.Class({
         this._setWorking(false);
         this._passwordBox.add(this._workSpinner.actor);
 
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn’t work. Please try again.") });
+        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();
@@ -445,8 +446,10 @@ var ShellMountPasswordDialog = new Lang.Class({
         }
     },
 
-    reaskPassword() {
+    reaskPassword(params) {
+        params = Params.parse(params, { errorMessage: _("Sorry, that didn’t work. Please try again.") });
         this._passwordEntry.set_text('');
+        this._errorMessageLabel.text = errorMessage;
         this._errorMessageLabel.show();
         this._setWorking(false);
     },
