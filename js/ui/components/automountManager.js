@@ -201,6 +201,15 @@ var AutomountManager = new Lang.Class({
             if (e.message.indexOf('No key available with this passphrase') != -1 ||
                 e.message.indexOf('Failed to load device\'s parameters: Operation not permitted') != -1) {
                 this._reaskPassword(volume);
+            } else if (e.message.indexOf('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting') != -1) {
+                let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
+                if (existingDialog) {
+                    existingDialog._pimEntry.text = "";
+                    existingDialog._pimEntry.can_focus = false;
+                    existingDialog._pimEntry.reactive = false;
+                    existingDialog._pimEntry.clutter_text.editable = false;
+                }
+                this._reaskPassword(volume, { errorMessage: _("The installed udisks version does not support the PIM setting") });
             } else {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
                     log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
@@ -215,11 +224,13 @@ var AutomountManager = new Lang.Class({
             this._volumeQueue.filter(element => (element != volume));
     },
 
-    _reaskPassword(volume) {
+    _reaskPassword(volume, params) {
+        params = Params.parse(params, { errorMessage: null });
         let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
-                                                        { existingDialog: existingDialog });
+                                                        { existingDialog: existingDialog,
+                                                          errorMessage: errorMessage });
         this._mountVolume(volume, operation);
     },
 
