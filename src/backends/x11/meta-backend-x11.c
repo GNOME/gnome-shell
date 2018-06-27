@@ -802,3 +802,13 @@ meta_backend_x11_get_xwindow (MetaBackendX11 *x11)
   ClutterActor *stage = meta_backend_get_stage (META_BACKEND (x11));
   return clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 }
+
+void
+meta_backend_x11_reload_cursor (MetaBackendX11 *x11)
+{
+  MetaBackend *backend = META_BACKEND (x11);
+  MetaCursorRenderer *cursor_renderer =
+    meta_backend_get_cursor_renderer (backend);
+
+  meta_cursor_renderer_force_update (cursor_renderer);
+}

@@ -57,4 +57,6 @@ void meta_backend_x11_handle_event (MetaBackendX11 *x11,
 
 uint8_t meta_backend_x11_get_xkb_event_base (MetaBackendX11 *x11);
 
+void meta_backend_x11_reload_cursor (MetaBackendX11 *x11);
+
 #endif /* META_BACKEND_X11_H */
