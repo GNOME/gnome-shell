@@ -226,7 +226,7 @@ var Overview = new Lang.Class({
 
         // Add a clone of the panel to the overview so spacing and such is
         // automatic
-        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel.actor }),
+        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel }),
                                         reactive: false,
                                         opacity: 0 });
         this._overview.add_actor(this._panelGhost);
