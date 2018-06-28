@@ -587,7 +587,6 @@ var SwitcherList = new Lang.Class({
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
-        let primary = Main.layoutManager.primaryMonitor;
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
 
         for (let i = 0; i < children.length; i++) {
