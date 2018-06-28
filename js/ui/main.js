@@ -14,6 +14,7 @@ const St = imports.gi.St;
 const AccessDialog = imports.ui.accessDialog;
 const AudioDeviceSelection = imports.ui.audioDeviceSelection;
 const Components = imports.ui.components;
+const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
 const Environment = imports.ui.environment;
@@ -249,26 +250,61 @@ function _initializeUI() {
     });
 }
 
+function _findThemeDirByVersion(dir, major, minor, name) {
+    let path;
+    let stylesheet;
+    let subpath;
+
+    /* Don't search back to before we introduced this support */
+    let max_minor = (major == 3) ? 28 : 0;
+
+    for (let i = minor; i >= max_minor; i = i - 2) {
+        subpath = major + '.' + i;
+        path = GLib.build_filenamev([dir, 'gnome-shell', subpath, 'theme', name]);
+        stylesheet = Gio.file_new_for_path(path);
+
+        log('Checking for ' + path);
+
+        if (stylesheet.query_exists(null)) {
+            log('Using ' + path);
+            return stylesheet;
+        }
+    }
+
+    path = GLib.build_filenamev([dir, 'gnome-shell', 'theme', name]);
+    stylesheet = Gio.file_new_for_path(path);
+
+    if (stylesheet.query_exists(null)) {
+        log('Using unversioned' + path);
+        return stylesheet;
+    }
+
+    return null;
+}
+
 function _getStylesheet(name) {
     let stylesheet;
 
+    let [major, minor] = Config.PACKAGE_VERSION.split('.');
+
+    // Directories are versioned according to the stable version
+    if ((minor % 2) == 1)
+        minor++;
+
     stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/' + name);
-    if (stylesheet.query_exists(null))
+    if (stylesheet.query_exists(null)) {
+        log('Using built-in default theme ' + name)
         return stylesheet;
+    }
 
     let dataDirs = GLib.get_system_data_dirs();
     for (let i = 0; i < dataDirs.length; i++) {
-        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'theme', name]);
-        let stylesheet = Gio.file_new_for_path(path);
-        if (stylesheet.query_exists(null))
+        stylesheet = _findThemeDirByVersion(dataDirs[i], major, minor, name)
+        if (stylesheet != null)
             return stylesheet;
     }
 
-    stylesheet = Gio.File.new_for_path(global.datadir + '/theme/' + name);
-    if (stylesheet.query_exists(null))
-        return stylesheet;
-
-    return null;
+    return _findThemeDirByVersion(global.datadir, major, minor, name);
 }
 
 function _getDefaultStylesheet() {
