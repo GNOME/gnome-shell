@@ -80,8 +80,8 @@ var AppSwitcherPopup = new Lang.Class({
         this._items = this._switcherList.icons;
     },
 
-    _allocate(actor, box, flags) {
-        this.parent(actor, box, flags);
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
 
         // Allocate the thumbnails
         // We try to avoid overflowing the screen so we base the resulting size on
@@ -90,9 +90,9 @@ var AppSwitcherPopup = new Lang.Class({
             let childBox = this._switcherList.actor.get_allocation_box();
             let primary = Main.layoutManager.primaryMonitor;
 
-            let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
-            let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
-            let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+            let leftPadding = this.get_theme_node().get_padding(St.Side.LEFT);
+            let rightPadding = this.get_theme_node().get_padding(St.Side.RIGHT);
+            let bottomPadding = this.get_theme_node().get_padding(St.Side.BOTTOM);
             let hPadding = leftPadding + rightPadding;
 
             let icon = this._items[this._selectedIndex].actor;
@@ -105,7 +105,7 @@ var AppSwitcherPopup = new Lang.Class({
                 childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
             }
 
-            let spacing = this.actor.get_theme_node().get_length('spacing');
+            let spacing = this.get_theme_node().get_length('spacing');
 
             childBox.x2 = childBox.x1 +  childNaturalWidth;
             if (childBox.x2 > primary.x + primary.width - rightPadding)
@@ -392,7 +392,7 @@ var AppSwitcherPopup = new Lang.Class({
             this._thumbnailsFocused = false;
         });
 
-        this.actor.add_actor(this._thumbnails.actor);
+        this.add_actor(this._thumbnails.actor);
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
