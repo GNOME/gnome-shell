@@ -557,6 +557,8 @@ var LayoutManager = new Lang.Class({
     },
 
     get focusMonitor() {
+        if (this.focusIndex < 0)
+            return null;
         return this.monitors[this.focusIndex];
     },
 
