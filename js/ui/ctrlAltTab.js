@@ -125,10 +125,10 @@ var CtrlAltTabManager = new Lang.Class({
             this._popup = new CtrlAltTabPopup(items);
             this._popup.show(backward, binding, mask);
 
-            this._popup.actor.connect('destroy',
-                                      () => {
-                                          this._popup = null;
-                                      });
+            this._popup.connect('destroy',
+                                () => {
+                                    this._popup = null;
+                                });
         }
     },
 
