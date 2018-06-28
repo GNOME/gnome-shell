@@ -414,7 +414,7 @@ var InputSourceManager = new Lang.Class({
 
         let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
         if (!popup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
-            popup.destroy();
+            popup.fadeAndDestroy();
     },
 
     _keyboardOptionsChanged() {
