@@ -110,6 +110,7 @@ var WindowClone = new Lang.Class({
         this.metaWindow = realWindow.meta_window;
         this.metaWindow._delegate = this;
         this._workspace = workspace;
+        this._attachedDialogs = [];
 
         this._windowClone = new Clutter.Clone({ source: realWindow });
         // We expect this.actor to be used for all interaction rather than
@@ -205,13 +206,19 @@ var WindowClone = new Lang.Class({
     },
 
     addAttachedDialog(win) {
+        let realWin = win.get_compositor_private();
+
+        if (this._attachedDialogs.indexOf(realWin) != -1)
+            return;
+
+        this._attachedDialogs.push(realWin);
         this._doAddAttachedDialog(win, win.get_compositor_private());
         this._computeBoundingBox();
         this.emit('size-changed');
     },
 
     hasAttachedDialogs() {
-        return this.actor.get_n_children() > 1;
+        return this._attachedDialogs.length > 1;
     },
 
     _doAddAttachedDialog(metaWin, realWin) {
@@ -221,6 +228,9 @@ var WindowClone = new Lang.Class({
             this.emit('size-changed');
         });
         clone._destroyId = realWin.connect('destroy', () => {
+            let idx = this._attachedDialogs.indexOf(realWin);
+            this._attachedDialogs.splice(idx, 1);
+
             clone.destroy();
 
             this._computeBoundingBox();
