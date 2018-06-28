@@ -90,7 +90,7 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StBoxLayout  *box)
 {
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
 }
 
 static void
