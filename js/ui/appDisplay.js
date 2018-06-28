@@ -762,7 +762,7 @@ var AllView = new Lang.Class({
             this._scrollView.get_effect('fade').fade_edges = true;
 
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
-            this._adjustment.value = 0;
+            this._adjustment.set_value(0);
             this._grid.currentPage = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._pageIndicators.setNPages(this._grid.nPages());
