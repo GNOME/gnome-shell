@@ -151,7 +151,7 @@ var WindowClone = new Lang.Class({
 
     _doAddAttachedDialog(metaDialog, realDialog) {
         let clone = new Clutter.Clone({ source: realDialog });
-        this._updateDialogPosition(realDialog, clone);
+        this._updateDialogPosition(metaDialog, clone);
 
         clone._updateId = realDialog.connect('notify::position', dialog => {
             this._updateDialogPosition(dialog, clone);
@@ -162,8 +162,7 @@ var WindowClone = new Lang.Class({
         this.actor.add_child(clone);
     },
 
-    _updateDialogPosition(realDialog, cloneDialog) {
-        let metaDialog = realDialog.meta_window;
+    _updateDialogPosition(metaDialog, cloneDialog) {
         let dialogRect = metaDialog.get_frame_rect();
         let rect = this.metaWindow.get_frame_rect();
 
