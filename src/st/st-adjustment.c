@@ -205,7 +205,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   g_object_class_install_property (object_class,
                                    PROP_UPPER,
                                    g_param_spec_double ("upper",
@@ -215,7 +216,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   g_object_class_install_property (object_class,
                                    PROP_VALUE,
                                    g_param_spec_double ("value",
@@ -225,7 +227,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   g_object_class_install_property (object_class,
                                    PROP_STEP_INC,
                                    g_param_spec_double ("step-increment",
@@ -235,7 +238,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   g_object_class_install_property (object_class,
                                    PROP_PAGE_INC,
                                    g_param_spec_double ("page-increment",
@@ -245,7 +249,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   g_object_class_install_property (object_class,
                                    PROP_PAGE_SIZE,
                                    g_param_spec_double ("page-size",
@@ -255,7 +260,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_MAXDOUBLE,
                                                         0.0,
                                                         ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT));
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_EXPLICIT_NOTIFY));
   /**
    * StAdjustment::changed:
    * @self: the #StAdjustment
