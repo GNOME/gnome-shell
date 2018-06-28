@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -83,13 +84,13 @@ var SwitcherPopup = new Lang.Class({
 
         // Allocate the switcherList
         // We select a size based on an icon size that does not overflow the screen
-        let [childMinHeight, childNaturalHeight] = this._switcherList.actor.get_preferred_height(primary.width - hPadding);
-        let [childMinWidth, childNaturalWidth] = this._switcherList.actor.get_preferred_width(childNaturalHeight);
+        let [childMinHeight, childNaturalHeight] = this._switcherList.get_preferred_height(primary.width - hPadding);
+        let [childMinWidth, childNaturalWidth] = this._switcherList.get_preferred_width(childNaturalHeight);
         childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
         childBox.x2 = Math.min(primary.x + primary.width - rightPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
-        this._switcherList.actor.allocate(childBox, flags);
+        this._switcherList.allocate(childBox, flags);
     },
 
     _initialSelection(backward, binding) {
@@ -119,7 +120,7 @@ var SwitcherPopup = new Lang.Class({
         this.connect('button-press-event', this._clickedOutside.bind(this));
         this.connect('scroll-event', this._scrollEvent.bind(this));
 
-        this.add_actor(this._switcherList.actor);
+        this.add_actor(this._switcherList);
         this._switcherList.connect('item-activated', this._itemActivated.bind(this));
         this._switcherList.connect('item-entered', this._itemEntered.bind(this));
         this._switcherList.connect('item-removed', this._itemRemoved.bind(this));
@@ -324,35 +325,53 @@ var SwitcherPopup = new Lang.Class({
     }
 });
 
+var SwitcherButton = new Lang.Class({
+    Name: 'SwitcherButton',
+    Extends: St.Button,
+
+    _init(square) {
+        this.parent({ style_class: 'item-box',
+                      reactive: true });
+
+        this._square = square;
+    },
+
+    vfunc_get_preferred_width(forHeight) {
+        if (this._square)
+            return this.get_preferred_height(-1);
+        else
+            return this.parent(forHeight);
+    }
+});
+
 var SwitcherList = new Lang.Class({
     Name: 'SwitcherList',
+    Extends: St.Widget,
+    Signals: { 'item-activated': { param_types: [GObject.TYPE_INT] },
+               'item-entered': { param_types: [GObject.TYPE_INT] },
+               'item-removed': { param_types: [GObject.TYPE_INT] } },
 
     _init(squareItems) {
-        this.actor = new Shell.GenericContainer({ style_class: 'switcher-list' });
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocateTop.bind(this));
+        this.parent({ style_class: 'switcher-list' });
 
-        // Here we use a GenericContainer so that we can force all the
-        // children to have the same width.
-        this._list = new Shell.GenericContainer({ style_class: 'switcher-list-item-container' });
+        this._list = new St.BoxLayout({ style_class: 'switcher-list-item-container',
+                                        vertical: false,
+                                        x_expand: true,
+                                        y_expand: true });
+
+        let layoutManager = this._list.get_layout_manager();
+
         this._list.spacing = 0;
         this._list.connect('style-changed', () => {
             this._list.spacing = this._list.get_theme_node().get_length('spacing');
         });
 
-        this._list.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this._list.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this._list.connect('allocate', this._allocate.bind(this));
-
         this._scrollView = new St.ScrollView({ style_class: 'hfade',
                                                enable_mouse_scrolling: false });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER);
 
-        let scrollBox = new St.BoxLayout();
-        scrollBox.add_actor(this._list);
-        this._scrollView.add_actor(scrollBox);
-        this.actor.add_actor(this._scrollView);
+        this._scrollView.add_actor(this._list);
+        this.add_actor(this._scrollView);
 
         // Those arrows indicate whether scrolling in one direction is possible
         this._leftArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
@@ -366,50 +385,20 @@ var SwitcherList = new Lang.Class({
             drawArrow(this._rightArrow, St.Side.RIGHT);
         });
 
-        this.actor.add_actor(this._leftArrow);
-        this.actor.add_actor(this._rightArrow);
+        this.add_actor(this._leftArrow);
+        this.add_actor(this._rightArrow);
 
         this._items = [];
         this._highlighted = -1;
         this._squareItems = squareItems;
-        this._minSize = 0;
         this._scrollableRight = true;
         this._scrollableLeft = false;
-    },
 
-    _allocateTop(actor, box, flags) {
-        let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
-        let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
-
-        let childBox = new Clutter.ActorBox();
-        let scrollable = this._minSize > box.x2 - box.x1;
-
-        box.y1 -= this.actor.get_theme_node().get_padding(St.Side.TOP);
-        box.y2 += this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
-        this._scrollView.allocate(box, flags);
-
-        let arrowWidth = Math.floor(leftPadding / 3);
-        let arrowHeight = arrowWidth * 2;
-        childBox.x1 = leftPadding / 2;
-        childBox.y1 = this.actor.height / 2 - arrowWidth;
-        childBox.x2 = childBox.x1 + arrowWidth;
-        childBox.y2 = childBox.y1 + arrowHeight;
-        this._leftArrow.allocate(childBox, flags);
-        this._leftArrow.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
-
-        arrowWidth = Math.floor(rightPadding / 3);
-        arrowHeight = arrowWidth * 2;
-        childBox.x1 = this.actor.width - arrowWidth - rightPadding / 2;
-        childBox.y1 = this.actor.height / 2 - arrowWidth;
-        childBox.x2 = childBox.x1 + arrowWidth;
-        childBox.y2 = childBox.y1 + arrowHeight;
-        this._rightArrow.allocate(childBox, flags);
-        this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
+        layoutManager.homogeneous = squareItems;
     },
 
     addItem(item, label) {
-        let bbox = new St.Button({ style_class: 'item-box',
-                                   reactive: true });
+        let bbox = new SwitcherButton(this._squareItems);
 
         bbox.set_child(item);
         this._list.add_actor(bbox);
@@ -462,8 +451,8 @@ var SwitcherList = new Lang.Class({
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
         let [absItemX, absItemY] = this._items[index].get_transformed_position();
-        let [result, posX, posY] = this.actor.transform_stage_point(absItemX, 0);
-        let [containerWidth, containerHeight] = this.actor.get_transformed_size();
+        let [result, posX, posY] = this.transform_stage_point(absItemX, 0);
+        let [containerWidth, containerHeight] = this.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
         else if (this._items[index].allocation.x1 - value < 0)
@@ -490,7 +479,7 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (this._highlighted == 0)
                                     this._scrollableLeft = false;
-                                this.actor.queue_relayout();
+                                this.queue_relayout();
                            }
                           });
     },
@@ -514,7 +503,7 @@ var SwitcherList = new Lang.Class({
                            onComplete: () => {
                                 if (this._highlighted == this._items.length - 1)
                                     this._scrollableRight = false;
-                                this.actor.queue_relayout();
+                                this.queue_relayout();
                             }
                           });
     },
@@ -546,16 +535,15 @@ var SwitcherList = new Lang.Class({
         return [maxChildMin, maxChildNat];
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let [maxChildMin, maxChildNat] = this._maxChildWidth(forHeight);
+    vfunc_get_preferred_width(forHeight) {
+        let themeNode = this.get_theme_node();
+        let [maxChildMin, ] = this._maxChildWidth(forHeight);
+        let [minListWidth, ] = this._list.get_preferred_width(forHeight);
 
-        let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
-        alloc.min_size = this._items.length * maxChildMin + totalSpacing;
-        alloc.natural_size = alloc.min_size;
-        this._minSize = alloc.min_size;
+        return themeNode.adjust_preferred_width(maxChildMin, minListWidth);
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
+    vfunc_get_preferred_height(forWidth) {
         let maxChildMin = 0;
         let maxChildNat = 0;
 
@@ -571,43 +559,46 @@ var SwitcherList = new Lang.Class({
             maxChildNat = maxChildMin;
         }
 
-        alloc.min_size = maxChildMin;
-        alloc.natural_size = maxChildNat;
+        let themeNode = this.get_theme_node();
+        return themeNode.adjust_preferred_height(maxChildMin, maxChildNat);
     },
 
-    _allocate(actor, box, flags) {
-        let childHeight = box.y2 - box.y1;
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
 
-        let [maxChildMin, maxChildNat] = this._maxChildWidth(childHeight);
-        let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
+        let contentBox = this.get_theme_node().get_content_box(box);
+        let width = contentBox.x2 - contentBox.x1;
+        let height = contentBox.y2 - contentBox.y1;
 
-        let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
+        let leftPadding = this.get_theme_node().get_padding(St.Side.LEFT);
+        let rightPadding = this.get_theme_node().get_padding(St.Side.RIGHT);
 
-        let x = 0;
-        let children = this._list.get_children();
+        let [, natScrollViewWidth] = this._scrollView.get_preferred_width(height);
+
         let childBox = new Clutter.ActorBox();
+        let scrollable = natScrollViewWidth > width;
 
-        let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
+        this._scrollView.allocate(contentBox, flags);
 
-        for (let i = 0; i < children.length; i++) {
-            if (this._items.indexOf(children[i]) != -1) {
-                let [childMin, childNat] = children[i].get_preferred_height(childWidth);
-                let vSpacing = (childHeight - childNat) / 2;
-                childBox.x1 = x;
-                childBox.y1 = vSpacing;
-                childBox.x2 = x + childWidth;
-                childBox.y2 = childBox.y1 + childNat;
-                children[i].allocate(childBox, flags);
+        let arrowWidth = Math.floor(leftPadding / 3);
+        let arrowHeight = arrowWidth * 2;
+        childBox.x1 = leftPadding / 2;
+        childBox.y1 = this.height / 2 - arrowWidth;
+        childBox.x2 = childBox.x1 + arrowWidth;
+        childBox.y2 = childBox.y1 + arrowHeight;
+        this._leftArrow.allocate(childBox, flags);
+        this._leftArrow.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
 
-                x += this._list.spacing + childWidth;
-            } else {
-                // Something else, eg, AppSwitcher's arrows;
-                // we don't allocate it.
-            }
-        }
+        arrowWidth = Math.floor(rightPadding / 3);
+        arrowHeight = arrowWidth * 2;
+        childBox.x1 = this.width - arrowWidth - rightPadding / 2;
+        childBox.y1 = this.height / 2 - arrowWidth;
+        childBox.x2 = childBox.x1 + arrowWidth;
+        childBox.y2 = childBox.y1 + arrowHeight;
+        this._rightArrow.allocate(childBox, flags);
+        this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
     }
 });
-Signals.addSignalMethods(SwitcherList.prototype);
 
 function drawArrow(area, side) {
     let themeNode = area.get_theme_node();
