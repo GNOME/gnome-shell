@@ -292,9 +292,8 @@ gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
 
-void          meta_display_unmanage_windows_for_screen (MetaDisplay *display,
-                                                        MetaScreen  *screen,
-                                                        guint32      timestamp);
+void meta_display_unmanage_windows (MetaDisplay *display,
+                                    guint32      timestamp);
 
 /* Utility function to compare the stacking of two windows */
 int           meta_display_stack_cmp           (const void *a,

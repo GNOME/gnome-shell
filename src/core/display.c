@@ -981,6 +981,10 @@ meta_display_close (MetaDisplay *display,
 
   display->closing += 1;
 
+  meta_compositor_unmanage (display->compositor);
+
+  meta_display_unmanage_windows (display, timestamp);
+
   meta_prefs_remove_listener (prefs_changed_callback, display);
 
   meta_display_remove_autoraise_callback (display);
@@ -2632,9 +2636,8 @@ meta_display_unmanage_screen (MetaDisplay *display,
 }
 
 void
-meta_display_unmanage_windows_for_screen (MetaDisplay *display,
-                                          MetaScreen  *screen,
-                                          guint32      timestamp)
+meta_display_unmanage_windows (MetaDisplay *display,
+                               guint32      timestamp)
 {
   GSList *tmp;
   GSList *winlist;
