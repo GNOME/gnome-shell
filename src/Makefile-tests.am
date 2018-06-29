@@ -72,6 +72,9 @@ mutter_test_headless_start_test_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API
 
 .PHONY: run-tests run-test-runner-tests run-unit-tests run-headless-start-test
 
+export G_TEST_SRCDIR = $(abs_srcdir)
+export G_TEST_BUILDDIR = $(abs_builddir)
+
 run-test-runner-tests: mutter-test-client mutter-test-runner
 	./mutter-test-runner $(dist_stacking_DATA)
 
