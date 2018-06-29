@@ -627,13 +627,19 @@ var WindowOverlay = new Lang.Class({
         else
             button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
-        let titleX = cloneX + (cloneWidth - title.width) / 2;
+        // Workaround, StLabel doesn't update it's preferred width if the text was changed.
+        let titleClutterText = title.get_clutter_text();
+        let titleThemeNode = title.get_theme_node();
+        let [, titleClutterTextNatWidth] = titleClutterText.get_preferred_width(-1);
+        let titleWidth = titleThemeNode.adjust_preferred_width(0, titleClutterTextNatWidth)[1];
+
+        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
         if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), title.width);
+            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
         } else {
-            title.width = title.width;
+            title.set_width(titleWidth);
             title.set_position(Math.floor(titleX), Math.floor(titleY));
         }
 
