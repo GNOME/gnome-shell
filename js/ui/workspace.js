@@ -545,12 +545,10 @@ var WindowOverlay = new Lang.Class({
         let titleX = cloneX + (cloneWidth - title.width) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
-        if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), title.width);
-        } else {
-            title.width = title.width;
+        if (animate)
+            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY));
+        else
             title.set_position(Math.floor(titleX), Math.floor(titleY));
-        }
 
         let borderX = cloneX - this.borderSize;
         let borderY = cloneY - this.borderSize;
@@ -572,6 +570,9 @@ var WindowOverlay = new Lang.Class({
                        width: width,
                        time: Overview.ANIMATION_TIME,
                        transition: 'easeOutQuad' };
+
+        if (width !== undefined)
+            params.width = width;
 
         if (height !== undefined)
             params.height = height;
