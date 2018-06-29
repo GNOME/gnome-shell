@@ -11,13 +11,13 @@ test_programs = \
 
 if BUILDOPT_INSTALL_TESTS
 stackingdir = $(pkgdatadir)/tests/stacking
-dist_stacking_DATA =				\
-	tests/stacking/basic-x11.metatest	\
-	tests/stacking/basic-wayland.metatest	\
-	tests/stacking/minimized.metatest   	\
-	tests/stacking/mixed-windows.metatest   \
-	tests/stacking/set-parent.metatest	\
-	tests/stacking/override-redirect.metatest
+dist_stacking_DATA =						\
+	$(abs_srcdir)/tests/stacking/basic-x11.metatest 	\
+	$(abs_srcdir)/tests/stacking/basic-wayland.metatest	\
+	$(abs_srcdir)/tests/stacking/minimized.metatest 	\
+	$(abs_srcdir)/tests/stacking/mixed-windows.metatest     \
+	$(abs_srcdir)/tests/stacking/set-parent.metatest	\
+	$(abs_srcdir)/tests/stacking/override-redirect.metatest
 
 mutter-all.test: tests/mutter-all.test.in
 	$(AM_V_GEN) sed  -e "s|@libexecdir[@]|$(libexecdir)|g"  $< > $@.tmp && mv $@.tmp $@
