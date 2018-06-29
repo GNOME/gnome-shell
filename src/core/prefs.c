@@ -860,8 +860,6 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 
       tmp = tmp->next;
     }
-
-  meta_bug ("Did not find listener to remove\n");
 }
 
 static void
