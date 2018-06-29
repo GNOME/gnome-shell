@@ -492,6 +492,7 @@ var WindowOverlay = new Lang.Class({
 
         this.title.hide();
         this.closeButton.hide();
+        this.border.hide();
 
         // Don't block drop targets
         Shell.util_set_hidden_from_pick(this.border, true);
@@ -716,7 +717,7 @@ var WindowOverlay = new Lang.Class({
         let borderNode = this.border.get_theme_node();
         this.borderSize = borderNode.get_border_width(St.Side.TOP);
 
-        this._parentActor.queue_relayout();
+        this.relayout(false);
     }
 });
 Signals.addSignalMethods(WindowOverlay.prototype);
