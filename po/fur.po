@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-02-06 04:14+0000\n"
-"PO-Revision-Date: 2018-02-06 22:43+0100\n"
+"POT-Creation-Date: 2018-06-07 13:00+0000\n"
+"PO-Revision-Date: 2018-06-29 15:33+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.8\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -391,10 +391,7 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
-"enables remote desktop support. To support remote desktop with screen "
-"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
-"screen cast support."
+"manage HiDPI monitors. Does not require a restart."
 msgstr ""
 "Par abilitâ lis funzionalitâts sperimentâls, zonte la peraule clâf de "
 "funzionalitât ae liste. Il fat che la funzionalitât e vedi bisugne di tornâ "
@@ -405,25 +402,21 @@ msgstr ""
 "“scale-monitor-framebuffer” — al rint come predefinît par mutter, la "
 "disposizion logjiche dai visôrs intun spazi logjic di coordenadis di pixel, "
 "in plui si fâs il scjalâ dai framebuffer dai visôrs invezit che il contignût "
-"dal barcon; dut chest par gjestî i visôrs HiDPI. Nol covente tornâ a inviâ. "
-"• “remote-desktop” — al abilite il supuart pal scritori rimot. Par podê "
-"supuartâ il scritori rimot cun la condivision dal schermi si scugne abilitâ "
-"ancje “screen-cast”. • “screen-cast” — al abilite il supuart pe trasmission "
-"dal schermi."
+"dal barcon; dut chest par gjestî i visôrs HiDPI. Nol covente tornâ a inviâ."
 
-#: data/org.gnome.mutter.gschema.xml.in:145
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Selezione barcon dal tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:150
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Anule tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:155
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Switch monitor configurations"
 msgstr "Cambie configurazions visôr"
 
-#: data/org.gnome.mutter.gschema.xml.in:160
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Rotates the built-in monitor configuration"
 msgstr "Al volte la configurazion dal visôr integrât"
 
@@ -529,7 +522,7 @@ msgstr ""
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2260
+#: src/backends/meta-input-settings.c:2325
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Cambie mût (Grup %d)"
@@ -537,30 +530,30 @@ msgstr "Cambie mût (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2283
+#: src/backends/meta-input-settings.c:2348
 msgid "Switch monitor"
 msgstr "Cambie visôr"
 
-#: src/backends/meta-input-settings.c:2285
+#: src/backends/meta-input-settings.c:2350
 msgid "Show on-screen help"
 msgstr "Mostre jutori a schermi"
 
-#: src/backends/meta-monitor-manager.c:900
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Display integrât"
 
-#: src/backends/meta-monitor-manager.c:923
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/backends/meta-monitor-manager.c:925
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Display no cognossût"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:933
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -696,7 +689,7 @@ msgstr "Schermi %d su display “%s” no valit\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter al è stât compilât cence supuart pe modalitât fetose\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:567
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Cambie mût: mût %d"
