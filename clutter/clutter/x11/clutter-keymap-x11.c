@@ -59,6 +59,7 @@ struct _ClutterKeymapX11
 
   ClutterModifierType num_lock_mask;
   ClutterModifierType scroll_lock_mask;
+  ClutterModifierType level3_shift_mask;
 
   PangoDirection current_direction;
 
@@ -69,6 +70,7 @@ struct _ClutterKeymapX11
   Atom current_group_atom;
   guint current_cache_serial;
   DirectionCacheEntry group_direction_cache[4];
+  int current_group;
 #endif
 
   guint caps_lock_state : 1;
@@ -198,6 +200,9 @@ get_xkb (ClutterKeymapX11 *keymap_x11)
   if (keymap_x11->scroll_lock_mask == 0)
     keymap_x11->scroll_lock_mask = XkbKeysymToModifiers (backend_x11->xdpy,
                                                          XK_Scroll_Lock);
+  if (keymap_x11->level3_shift_mask == 0)
+    keymap_x11->level3_shift_mask = XkbKeysymToModifiers (backend_x11->xdpy,
+                                                          XK_ISO_Level3_Shift);
 
   return keymap_x11->xkb_desc;
 }
@@ -469,6 +474,7 @@ static void
 clutter_keymap_x11_init (ClutterKeymapX11 *keymap)
 {
   keymap->current_direction = PANGO_DIRECTION_NEUTRAL;
+  keymap->current_group = -1;
 }
 
 static ClutterTranslateReturn
@@ -498,7 +504,8 @@ clutter_keymap_x11_translate_event (ClutterEventTranslator *translator,
         {
         case XkbStateNotify:
           CLUTTER_NOTE (EVENT, "Updating keyboard state");
-          update_direction (keymap_x11, XkbStateGroup (&xkb_event->state));
+          keymap_x11->current_group = XkbStateGroup (&xkb_event->state);
+          update_direction (keymap_x11, keymap_x11->current_group);
           update_locked_mods (keymap_x11, xkb_event->state.locked_mods);
           retval = CLUTTER_TRANSLATE_REMOVE;
           break;
@@ -664,4 +671,133 @@ _clutter_keymap_x11_get_direction (ClutterKeymapX11 *keymap)
   else
 #endif
     return PANGO_DIRECTION_NEUTRAL;
+}
+
+gboolean
+clutter_keymap_x11_get_entries_for_keyval (ClutterKeymapX11  *keymap_x11,
+                                           guint              keyval,
+                                           ClutterKeymapKey **keys,
+                                           gint              *n_keys)
+{
+#ifdef HAVE_XKB
+  if (CLUTTER_BACKEND_X11 (keymap_x11->backend)->use_xkb)
+    {
+      XkbDescRec *xkb = get_xkb (keymap_x11);
+      GArray *retval;
+      gint keycode;
+
+      keycode = keymap_x11->min_keycode;
+      retval = g_array_new (FALSE, FALSE, sizeof (ClutterKeymapKey));
+
+      while (keycode <= keymap_x11->max_keycode)
+        {
+          gint max_shift_levels = XkbKeyGroupsWidth (xkb, keycode);
+          gint group = 0;
+          gint level = 0;
+          gint total_syms = XkbKeyNumSyms (xkb, keycode);
+          gint i = 0;
+          KeySym *entry;
+
+          /* entry is an array with all syms for group 0, all
+           * syms for group 1, etc. and for each group the
+           * shift level syms are in order
+           */
+          entry = XkbKeySymsPtr (xkb, keycode);
+
+          while (i < total_syms)
+            {
+              g_assert (i == (group * max_shift_levels + level));
+
+              if (entry[i] == keyval)
+                {
+                  ClutterKeymapKey key;
+
+                  key.keycode = keycode;
+                  key.group = group;
+                  key.level = level;
+
+                  g_array_append_val (retval, key);
+
+                  g_assert (XkbKeySymEntry (xkb, keycode, level, group) ==
+                            keyval);
+                }
+
+              ++level;
+
+              if (level == max_shift_levels)
+                {
+                  level = 0;
+                  ++group;
+                }
+
+              ++i;
+            }
+
+          ++keycode;
+        }
+
+      if (retval->len > 0)
+        {
+          *keys = (ClutterKeymapKey*) retval->data;
+          *n_keys = retval->len;
+        }
+      else
+        {
+          *keys = NULL;
+          *n_keys = 0;
+        }
+
+      g_array_free (retval, retval->len > 0 ? FALSE : TRUE);
+
+      return *n_keys > 0;
+    }
+  else
+#endif
+    {
+      return FALSE;
+    }
+}
+
+void
+clutter_keymap_x11_latch_modifiers (ClutterKeymapX11 *keymap_x11,
+                                    uint32_t          level,
+                                    gboolean          enable)
+{
+#ifdef HAVE_XKB
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (keymap_x11->backend);
+  uint32_t modifiers[] = {
+    0,
+    ShiftMask,
+    keymap_x11->level3_shift_mask,
+    keymap_x11->level3_shift_mask | ShiftMask,
+  };
+  uint32_t value = 0;
+
+  if (!CLUTTER_BACKEND_X11 (keymap_x11->backend)->use_xkb)
+    return;
+
+  level = CLAMP (level, 0, G_N_ELEMENTS (modifiers) - 1);
+
+  if (enable)
+    value = modifiers[level];
+  else
+    value = 0;
+
+  XkbLatchModifiers (clutter_x11_get_default_display (),
+                     XkbUseCoreKbd, modifiers[level],
+                     value);
+#endif
+}
+
+uint32_t
+clutter_keymap_x11_get_current_group (ClutterKeymapX11 *keymap_x11)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (keymap_x11->backend);
+  XkbStateRec state_rec;
+
+  if (keymap_x11->current_group >= 0)
+    return keymap_x11->current_group;
+
+  XkbGetState (backend_x11->xdpy, XkbUseCoreKbd, &state_rec);
+  return XkbStateGroup (&state_rec);
 }

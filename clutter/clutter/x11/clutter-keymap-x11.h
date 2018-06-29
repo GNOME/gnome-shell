@@ -35,6 +35,14 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_KEYMAP_X11(obj)      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_KEYMAP_X11))
 
 typedef struct _ClutterKeymapX11        ClutterKeymapX11;
+typedef struct _ClutterKeymapKey        ClutterKeymapKey;
+
+struct _ClutterKeymapKey
+{
+  guint keycode;
+  guint group;
+  guint level;
+};
 
 GType _clutter_keymap_x11_get_type (void) G_GNUC_CONST;
 
@@ -50,6 +58,15 @@ gboolean _clutter_keymap_x11_get_is_modifier     (ClutterKeymapX11    *keymap,
                                                   gint                 keycode);
 
 PangoDirection _clutter_keymap_x11_get_direction (ClutterKeymapX11    *keymap);
+
+gboolean clutter_keymap_x11_get_entries_for_keyval (ClutterKeymapX11  *keymap,
+                                                    guint              keyval,
+                                                    ClutterKeymapKey **keys,
+                                                    gint              *n_keys);
+void     clutter_keymap_x11_latch_modifiers (ClutterKeymapX11 *keymap_x11,
+                                             uint32_t          level,
+                                             gboolean          enable);
+uint32_t clutter_keymap_x11_get_current_group (ClutterKeymapX11 *keymap_x11);
 
 G_END_DECLS
 

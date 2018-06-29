@@ -32,6 +32,8 @@
 
 #include "clutter-virtual-input-device.h"
 #include "x11/clutter-virtual-input-device-x11.h"
+#include "x11/clutter-backend-x11.h"
+#include "x11/clutter-keymap-x11.h"
 
 struct _ClutterVirtualInputDeviceX11
 {
@@ -129,17 +131,62 @@ clutter_virtual_input_device_x11_notify_key (ClutterVirtualInputDevice *virtual_
                      key, key_state == CLUTTER_KEY_STATE_PRESSED, 0);
 }
 
+static gboolean
+pick_keycode_for_keyval_in_current_group (ClutterKeymapX11 *keymap,
+                                          guint             keyval,
+                                          guint            *keycode_out,
+                                          guint            *level_out)
+{
+  ClutterKeymapKey *keys;
+  gint i, n_keys, group;
+  gboolean found = FALSE;
+
+  if (!clutter_keymap_x11_get_entries_for_keyval (keymap, keyval, &keys, &n_keys))
+    return FALSE;
+
+  group = clutter_keymap_x11_get_current_group (keymap);
+
+  for (i = 0; i < n_keys; i++)
+    {
+      if (keys[i].group == group)
+        {
+          *keycode_out = keys[i].keycode;
+          *level_out = keys[i].level;
+          found = TRUE;
+        }
+    }
+
+  g_free (keys);
+
+  return found;
+}
+
 static void
 clutter_virtual_input_device_x11_notify_keyval (ClutterVirtualInputDevice *virtual_device,
 						uint64_t                   time_us,
 						uint32_t                   keyval,
 						ClutterKeyState            key_state)
 {
-  KeyCode keycode;
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
+  ClutterKeymapX11 *keymap = backend_x11->keymap;
+  uint32_t keycode, level;
 
-  keycode = XKeysymToKeycode (clutter_x11_get_default_display (), keyval);
+  if (!pick_keycode_for_keyval_in_current_group (keymap, keyval,
+                                                 &keycode, &level))
+    {
+      g_warning ("No keycode found for keyval %x in current group", keyval);
+      return;
+    }
+
+  if (key_state)
+    clutter_keymap_x11_latch_modifiers (keymap, level, TRUE);
+
   XTestFakeKeyEvent (clutter_x11_get_default_display (),
-                     keycode, key_state == CLUTTER_KEY_STATE_PRESSED, 0);
+                     (KeyCode) keycode,
+                     key_state == CLUTTER_KEY_STATE_PRESSED, 0);
+
+  if (!key_state)
+    clutter_keymap_x11_latch_modifiers (keymap, level, FALSE);
 }
 
 static void
