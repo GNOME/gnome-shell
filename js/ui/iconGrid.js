@@ -36,6 +36,7 @@ var APPICON_ANIMATION_OUT_TIME = 0.25;
 
 var BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
+    Extends: St.Bin,
 
     _init(label, params) {
         params = Params.parse(params, { createIcon: null,
@@ -46,22 +47,17 @@ var BaseIcon = new Lang.Class({
         if (params.showLabel)
             styleClass += ' overview-icon-with-label';
 
-        this.actor = new St.Bin({ style_class: styleClass,
-                                  x_fill: true,
-                                  y_fill: true });
-        this.actor._delegate = this;
-        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.parent({ style_class: styleClass,
+                      x_fill: true,
+                      y_fill: true });
+
+        this.connect('style-changed', this._onStyleChanged.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._spacing = 0;
 
-        let box = new Shell.GenericContainer();
-        box.connect('allocate', this._allocate.bind(this));
-        box.connect('get-preferred-width',
-                    this._getPreferredWidth.bind(this));
-        box.connect('get-preferred-height',
-                    this._getPreferredHeight.bind(this));
-        this.actor.set_child(box);
+        let box = new St.BoxLayout();
+        this.set_child(box);
 
         this.iconSize = ICON_SIZE;
         this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
@@ -86,7 +82,12 @@ var BaseIcon = new Lang.Class({
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
+
+        // Adjust the content sizes
+        box = this.get_theme_node().get_content_box(box);
+
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
@@ -120,20 +121,20 @@ var BaseIcon = new Lang.Class({
         this._iconBin.allocate(childBox, flags);
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        this._getPreferredHeight(actor, -1, alloc);
+    vfunc_get_preferred_width(forHeight) {
+        return this.get_preferred_height(-1);
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
-        alloc.min_size = iconMinHeight;
-        alloc.natural_size = iconNatHeight;
+    vfunc_get_preferred_height(forWidth) {
+        let [minHeight, natHeight] = this._iconBin.get_preferred_height(forWidth);
 
         if (this.label) {
             let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(forWidth);
-            alloc.min_size += this._spacing + labelMinHeight;
-            alloc.natural_size += this._spacing + labelNatHeight;
+            minHeight += this._spacing + labelMinHeight;
+            natHeight += this._spacing + labelNatHeight;
         }
+
+        return this.get_theme_node().adjust_preferred_height(minHeight, natHeight);
     },
 
     // This can be overridden by a subclass, or by the createIcon
@@ -162,7 +163,7 @@ var BaseIcon = new Lang.Class({
     },
 
     _onStyleChanged() {
-        let node = this.actor.get_theme_node();
+        let node = this.get_theme_node();
         this._spacing = node.get_length('spacing');
 
         let size;
@@ -195,7 +196,7 @@ var BaseIcon = new Lang.Class({
         // Animate only the child instead of the entire actor, so the
         // styles like hover and running are not applied while
         // animating.
-        zoomOutActor(this.actor.child);
+        zoomOutActor(this.child);
     }
 });
 

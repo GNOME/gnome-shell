@@ -247,7 +247,7 @@ var ShowAppsIcon = new Lang.Class({
                                            { setSizeManually: true,
                                              showLabel: false,
                                              createIcon: this._createIcon.bind(this) });
-        this.toggleButton.add_actor(this.icon.actor);
+        this.toggleButton.add_actor(this.icon);
         this.toggleButton._delegate = this;
 
         this.setChild(this.toggleButton);
