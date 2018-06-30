@@ -36,6 +36,7 @@ var APPICON_ANIMATION_OUT_TIME = 0.25;
 
 var BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
+    Extends: St.Bin,
 
     _init(label, params) {
         params = Params.parse(params, { createIcon: null,
@@ -46,32 +47,26 @@ var BaseIcon = new Lang.Class({
         if (params.showLabel)
             styleClass += ' overview-icon-with-label';
 
-        this.actor = new St.Bin({ style_class: styleClass,
-                                  x_fill: true,
-                                  y_fill: true });
-        this.actor._delegate = this;
-        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.parent({ style_class: styleClass,
+                      x_fill: true,
+                      y_fill: true });
 
-        this._spacing = 0;
+        this.actor = this;
 
-        let box = new Shell.GenericContainer();
-        box.connect('allocate', this._allocate.bind(this));
-        box.connect('get-preferred-width',
-                    this._getPreferredWidth.bind(this));
-        box.connect('get-preferred-height',
-                    this._getPreferredHeight.bind(this));
-        this.actor.set_child(box);
+        this.connect('destroy', this._onDestroy.bind(this));
+
+        this._box = new St.BoxLayout({ vertical: true });
+        this.set_child(this._box);
 
         this.iconSize = ICON_SIZE;
         this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                      y_align: St.Align.MIDDLE });
 
-        box.add_actor(this._iconBin);
+        this._box.add_actor(this._iconBin);
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
-            box.add_actor(this.label);
+            this._box.add_actor(this.label);
         } else {
             this.label = null;
         }
@@ -86,54 +81,9 @@ var BaseIcon = new Lang.Class({
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
     },
 
-    _allocate(actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-
-        let iconSize = availHeight;
-
-        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
-        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(-1);
-        let preferredHeight = iconNatHeight;
-
-        let childBox = new Clutter.ActorBox();
-
-        if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(-1);
-            preferredHeight += this._spacing + labelNatHeight;
-
-            let labelHeight = availHeight >= preferredHeight ? labelNatHeight
-                                                             : labelMinHeight;
-            iconSize -= this._spacing + labelHeight;
-
-            childBox.x1 = 0;
-            childBox.x2 = availWidth;
-            childBox.y1 = iconSize + this._spacing;
-            childBox.y2 = childBox.y1 + labelHeight;
-            this.label.allocate(childBox, flags);
-        }
-
-        childBox.x1 = Math.floor((availWidth - iconNatWidth) / 2);
-        childBox.y1 = Math.floor((iconSize - iconNatHeight) / 2);
-        childBox.x2 = childBox.x1 + iconNatWidth;
-        childBox.y2 = childBox.y1 + iconNatHeight;
-        this._iconBin.allocate(childBox, flags);
-    },
-
-    _getPreferredWidth(actor, forHeight, alloc) {
-        this._getPreferredHeight(actor, -1, alloc);
-    },
-
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
-        alloc.min_size = iconMinHeight;
-        alloc.natural_size = iconNatHeight;
-
-        if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(forWidth);
-            alloc.min_size += this._spacing + labelMinHeight;
-            alloc.natural_size += this._spacing + labelNatHeight;
-        }
+    vfunc_get_preferred_width(forHeight) {
+        // Return the actual height to keep the squared aspect
+        return this.get_preferred_height(-1);
     },
 
     // This can be overridden by a subclass, or by the createIcon
@@ -161,9 +111,8 @@ var BaseIcon = new Lang.Class({
         this._iconBin.child = this.icon;
     },
 
-    _onStyleChanged() {
-        let node = this.actor.get_theme_node();
-        this._spacing = node.get_length('spacing');
+    vfunc_style_changed() {
+        let node = this.get_theme_node();
 
         let size;
         if (this._setSizeManually) {
@@ -195,7 +144,7 @@ var BaseIcon = new Lang.Class({
         // Animate only the child instead of the entire actor, so the
         // styles like hover and running are not applied while
         // animating.
-        zoomOutActor(this.actor.child);
+        zoomOutActor(this.child);
     }
 });
 
