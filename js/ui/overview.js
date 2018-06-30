@@ -597,8 +597,8 @@ var Overview = new Lang.Class({
             let type = event.type();
             let button = (type == Clutter.EventType.BUTTON_PRESS ||
                           type == Clutter.EventType.BUTTON_RELEASE);
-            let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) != 0;
-            if (button && ctrl)
+            let shiftPressed = (event.get_state() & Clutter.ModifierType.SHIFT_MASK) != 0;
+            if (button && shiftPressed)
                 return;
         }
 
