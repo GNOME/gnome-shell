@@ -1005,7 +1005,7 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
-    meta_xwayland_complete_init ();
+    meta_xwayland_complete_init (display);
 #endif
 
   if (meta_is_syncing ())

@@ -550,9 +550,15 @@ out:
   return started;
 }
 
+static void
+on_x11_display_closing (MetaDisplay *display)
+{
+  meta_xwayland_shutdown_selection ();
+}
+
 /* To be called right after connecting */
 void
-meta_xwayland_complete_init (void)
+meta_xwayland_complete_init (MetaDisplay *display)
 {
   /* We install an X IO error handler in addition to the child watch,
      because after Xlib connects our child watch may not be called soon
@@ -561,6 +567,8 @@ meta_xwayland_complete_init (void)
   */
   XSetIOErrorHandler (x_io_error);
 
+  g_signal_connect (display, "x11-display-closing",
+                    G_CALLBACK (on_x11_display_closing), NULL);
   meta_xwayland_init_selection ();
 }
 
@@ -570,7 +578,6 @@ meta_xwayland_stop (MetaXWaylandManager *manager)
   char path[256];
 
   g_cancellable_cancel (manager->xserver_died_cancellable);
-  meta_xwayland_shutdown_selection ();
   g_clear_object (&manager->proc);
   g_clear_object (&manager->xserver_died_cancellable);
 

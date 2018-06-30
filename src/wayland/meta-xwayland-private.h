@@ -29,7 +29,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                      struct wl_display   *display);
 
 void
-meta_xwayland_complete_init (void);
+meta_xwayland_complete_init (MetaDisplay *display);
 
 void
 meta_xwayland_stop (MetaXWaylandManager *manager);
