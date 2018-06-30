@@ -247,7 +247,7 @@ var ShowAppsIcon = new Lang.Class({
                                            { setSizeManually: true,
                                              showLabel: false,
                                              createIcon: this._createIcon.bind(this) });
-        this.toggleButton.add_actor(this.icon.actor);
+        this.toggleButton.add_actor(this.icon);
         this.toggleButton._delegate = this;
 
         this.setChild(this.toggleButton);
@@ -643,10 +643,10 @@ var Dash = new Lang.Class({
 
         // Enforce the current icon size during the size request
         firstIcon.icon.ensure_style();
-        let [currentWidth, currentHeight] = firstIcon.icon.get_size();
-        firstIcon.icon.set_size(this.iconSize * scaleFactor, this.iconSize * scaleFactor);
+        let [, currentHeight] = firstIcon.icon.get_size();
+        firstIcon.icon.set_height(this.iconSize * scaleFactor);
         [minHeight, natHeight] = firstButton.get_preferred_height(-1);
-        firstIcon.icon.set_size(currentWidth, currentHeight);
+        firstIcon.icon.set_height(currentHeight);
 
         // Subtract icon padding and box spacing from the available height
         availHeight -= iconChildren.length * (natHeight - this.iconSize * scaleFactor) +
