@@ -118,6 +118,8 @@ G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
 /* Signals */
 enum
 {
+  X11_DISPLAY_OPENED,
+  X11_DISPLAY_CLOSING,
   OVERLAY_KEY,
   ACCELERATOR_ACTIVATED,
   MODIFIERS_ACCELERATOR_ACTIVATED,
@@ -205,6 +207,22 @@ meta_display_class_init (MetaDisplayClass *klass)
 
   object_class->get_property = meta_display_get_property;
   object_class->set_property = meta_display_set_property;
+
+  display_signals[X11_DISPLAY_OPENED] =
+    g_signal_new ("x11-display-opened",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  display_signals[X11_DISPLAY_CLOSING] =
+    g_signal_new ("x11-display-closing",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 
   display_signals[OVERLAY_KEY] =
     g_signal_new ("overlay-key",
@@ -673,6 +691,7 @@ meta_display_open (void)
   x11_display = meta_x11_display_new (display, &error);
   g_assert (x11_display != NULL); /* Required, for now */
   display->x11_display = x11_display;
+  g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
 
   /* here we use XDisplayName which is what the user
    * probably put in, vs. DisplayString(display) which is
@@ -1170,6 +1189,7 @@ meta_display_close (MetaDisplay *display,
 
   if (display->x11_display)
     {
+      g_signal_emit (display, display_signals[X11_DISPLAY_CLOSING], 0);
       g_object_run_dispose (G_OBJECT (display->x11_display));
       g_clear_object (&display->x11_display);
     }
