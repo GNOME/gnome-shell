@@ -1270,7 +1270,7 @@ var FolderIcon = new Lang.Class({
         this._popupInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this), setSizeManually: true });
-        this.actor.set_child(this.icon.actor);
+        this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView();
@@ -1618,7 +1618,7 @@ var AppIcon = new Lang.Class({
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
-        this._iconContainer.add_child(this.icon.actor);
+        this._iconContainer.add_child(this.icon);
 
         this.actor.label_actor = this.icon.label;
 
