@@ -1241,9 +1241,6 @@ meta_compositor_new (MetaDisplay *display)
   compositor->display = display;
   compositor->context = clutter_backend->cogl_context;
 
-  if (g_getenv("META_DISABLE_MIPMAPS"))
-    compositor->no_mipmaps = TRUE;
-
   g_signal_connect (meta_shadow_factory_get_default (),
                     "changed",
                     G_CALLBACK (on_shadow_factory_changed),
