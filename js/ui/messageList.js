@@ -362,7 +362,8 @@ var Message = new Lang.Class({
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
-        this.actor.connect('notify::hover', this._sync.bind(this));
+        let actorHoverId = this.actor.connect('notify::hover', this._sync.bind(this));
+        this._closeButton.connect('destroy', this.actor.disconnect.bind(this.actor, actorHoverId));
         this.actor.connect('clicked', this._onClicked.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._sync();
