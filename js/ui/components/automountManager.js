@@ -210,6 +210,10 @@ var AutomountManager = new Lang.Class({
     },
 
     _onVolumeRemoved(monitor, volume) {
+        if (volume._allowAutorunExpireId && volume._allowAutorunExpireId > 0) {
+            Mainloop.source_remove(volume._allowAutorunExpireId);
+            delete volume._allowAutorunExpireId;
+        }
         this._volumeQueue = 
             this._volumeQueue.filter(element => (element != volume));
     },
@@ -234,8 +238,10 @@ var AutomountManager = new Lang.Class({
     _allowAutorunExpire(volume) {
         let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
             volume.allowAutorun = false;
+            delete volume._allowAutorunExpireId;
             return GLib.SOURCE_REMOVE;
         });
+        volume._allowAutorunExpireId = id;
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
 });
