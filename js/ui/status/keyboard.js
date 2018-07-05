@@ -360,6 +360,7 @@ var InputSourceManager = new Lang.Class({
         this._settings.connect('per-window-changed', this._sourcesPerWindowChanged.bind(this));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
+        this._disableHoldKeyboard = false;
     },
 
     reload() {
@@ -458,7 +459,11 @@ var InputSourceManager = new Lang.Class({
     },
 
     activateInputSource(is, interactive) {
-        KeyboardManager.holdKeyboard();
+        // KeyboardManager.holdKeyboard() and releaseKeyboard() change the
+        // current focus in Xorg
+        // https://gitlab.gnome.org/GNOME/gnome-shell/issues/391
+        if (!this._disableHoldKeyboard)
+            KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
         // All the "xkb:..." IBus engines simply "echo" back symbols,
@@ -473,7 +478,10 @@ var InputSourceManager = new Lang.Class({
         else
             engine = 'xkb:us::eng';
 
-        this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
+        if (!this._disableHoldKeyboard)
+            this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
+        else
+            this._ibusManager.setEngine(engine);
         this._currentInputSourceChanged(is);
 
         if (interactive)
@@ -674,7 +682,9 @@ var InputSourceManager = new Lang.Class({
                 return;
             this._disableIBus = false;
         }
+        this._disableHoldKeyboard = true;
         this.reload();
+        this._disableHoldKeyboard = false;
     },
 
     _getNewInputSource(current) {
