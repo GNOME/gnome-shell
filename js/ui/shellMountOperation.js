@@ -10,6 +10,7 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -17,8 +18,14 @@ const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
+const Util = imports.misc.util;
+const Tweener = imports.ui.tweener;
 
 var LIST_ITEM_ICON_SIZE = 48;
+
+var WORK_SPINNER_ICON_SIZE = 16;
+var WORK_SPINNER_ANIMATION_DELAY = 1.0;
+var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -101,12 +108,14 @@ var ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
     _init(source, params) {
-        params = Params.parse(params, { existingDialog: null });
+        params = Params.parse(params, { existingDialog: null,
+                                        errorMessage: null });
 
         this._dialog = null;
         this._dialogId = 0;
         this._existingDialog = params.existingDialog;
         this._processesDialog = null;
+        this._errorMessage = params.errorMessage;
 
         this.mountOp = new Shell.MountOperation();
 
@@ -151,13 +160,13 @@ var ShellMountOperation = new Lang.Class({
     _onAskPassword(op, message, defaultUser, defaultDomain, flags) {
         if (this._existingDialog) {
             this._dialog = this._existingDialog;
-            this._dialog.reaskPassword();
+            this._dialog.reaskPassword({ errorMessage: this._errorMessage });
         } else {
             this._dialog = new ShellMountPasswordDialog(message, this._gicon, flags);
         }
 
         this._dialogId = this._dialog.connect('response',
-            (object, choice, password, remember) => {
+            (object, choice, password, remember, hidden_volume, system_volume, pim) => {
                 if (choice == -1) {
                     this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                 } else {
@@ -167,6 +176,9 @@ var ShellMountOperation = new Lang.Class({
                         this.mountOp.set_password_save(Gio.PasswordSave.NEVER);
 
                     this.mountOp.set_password(password);
+                    this.mountOp.set_is_tcrypt_hidden_volume(hidden_volume);
+                    this.mountOp.set_is_tcrypt_system_volume(system_volume);
+                    this.mountOp.set_pim(pim);
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
             });
@@ -323,8 +335,13 @@ var ShellMountPasswordDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
 
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn’t work. Please try again.") });
+        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._setWorking(false);
+        this._passwordBox.add(this._workSpinner.actor);
+
+        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();
@@ -340,6 +357,44 @@ var ShellMountPasswordDialog = new Lang.Class({
             this._rememberChoice = null;
         }
 
+        if (flags & Gio.AskPasswordFlags.TCRYPT) {
+
+            this._hiddenVolume = new CheckBox.CheckBox();
+            this._hiddenVolume.getLabelActor().text = _("Hidden Volume");
+            content.messageBox.add(this._hiddenVolume.actor);
+
+            this._systemVolume = new CheckBox.CheckBox();
+            this._systemVolume.getLabelActor().text = _("Windows System Volume");
+            content.messageBox.add(this._systemVolume.actor);
+
+            this._pimBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-pim-box' });
+            content.messageBox.add(this._pimBox);
+
+            this._pimLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
+                                             text: _("PIM") }));
+            this._pimBox.add(this._pimLabel, { y_fill: false, y_align: St.Align.MIDDLE });
+
+            this._pimEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
+                                            text: "",
+                                            can_focus: true });
+            ShellEntry.addContextMenu(this._pimEntry, { isPassword: true });
+            this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
+            this._pimEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+            this._pimBox.add(this._pimEntry, { expand: true });
+
+            this._pimErrorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
+                                                        text: _("The PIM must be a number or empty.") });
+            this._pimErrorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._pimErrorMessageLabel.clutter_text.line_wrap = true;
+            this._pimErrorMessageLabel.hide();
+            content.messageBox.add(this._pimErrorMessageLabel);
+        } else {
+            this._hiddenVolume = null;
+            this._systemVolume = null;
+            this._pimEntry = null;
+            this._pimErrorMessageLabel = null;
+        }
+
         let buttons = [{ label: _("Cancel"),
                          action: this._onCancelButton.bind(this),
                          key:    Clutter.Escape
@@ -352,9 +407,36 @@ var ShellMountPasswordDialog = new Lang.Class({
         this.setButtons(buttons);
     },
 
-    reaskPassword() {
+    _setWorking(working) {
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                { opacity: 255,
+                    delay: WORK_SPINNER_ANIMATION_DELAY,
+                    time: WORK_SPINNER_ANIMATION_TIME,
+                    transition: 'linear'
+                });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                { opacity: 0,
+                    time: WORK_SPINNER_ANIMATION_TIME,
+                    transition: 'linear',
+                    onCompleteScope: this,
+                    onComplete() {
+                        if (this._workSpinner)
+                            this._workSpinner.stop();
+                    }
+                });
+        }
+    },
+
+    reaskPassword(params) {
+        params = Params.parse(params, { errorMessage: _("Sorry, that didn’t work. Please try again.") });
         this._passwordEntry.set_text('');
+        this._errorMessageLabel.text = errorMessage;
         this._errorMessageLabel.show();
+        this._setWorking(false);
     },
 
     _onCancelButton() {
@@ -366,12 +448,30 @@ var ShellMountPasswordDialog = new Lang.Class({
     },
 
     _onEntryActivate() {
+        this._setWorking(true);
+
+        let pim = 0;
+        if (this._pimEntry !== null)
+            pim = this._pimEntry.get_text();
+        if (isNaN(pim)) {
+            this._pimEntry.set_text('');
+            this._pimErrorMessageLabel.show();
+            return;
+        } else if (this._pimErrorMessageLabel !== null) {
+            this._pimErrorMessageLabel.hide();
+        }
+
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.actor.checked);
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
-            this._rememberChoice.actor.checked);
+            this._rememberChoice.actor.checked,
+            this._hiddenVolume &&
+            this._hiddenVolume.actor.checked,
+            this._systemVolume &&
+            this._systemVolume.actor.checked,
+            pim);
     }
 });
 
@@ -569,7 +669,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
 
         this._dialog = new ShellMountPasswordDialog(message, this._createGIcon(iconName), flags);
         this._dialog.connect('response',
-            (object, choice, password, remember) => {
+            (object, choice, password, remember, hidden_volume, system_volume, pim) => {
                 let details = {};
                 let response;
 
@@ -581,6 +681,9 @@ var GnomeShellMountOpHandler = new Lang.Class({
                     let passSave = remember ? Gio.PasswordSave.PERMANENTLY : Gio.PasswordSave.NEVER;
                     details['password_save'] = GLib.Variant.new('u', passSave);
                     details['password'] = GLib.Variant.new('s', password);
+                    details['hidden_volume'] = GLib.Variant.new('b', hidden_volume);
+                    details['system_volume'] = GLib.Variant.new('b', system_volume);
+                    details['pim'] = GLib.Variant.new('u', parseInt(pim));
                 }
 
                 this._clearCurrentRequest(response, details);
