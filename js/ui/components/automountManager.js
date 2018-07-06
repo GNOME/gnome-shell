@@ -5,6 +5,7 @@ const Mainloop = imports.mainloop;
 const Params = imports.misc.params;
 
 const GnomeSession = imports.misc.gnomeSession;
+const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 
 var GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
@@ -199,12 +200,17 @@ var AutomountManager = class {
             // error strings are not unique for the cases in the comments below.
             if (e.message.includes('No key available with this passphrase') || // cryptsetup
                 e.message.includes('No key available to unlock device') ||     // udisks (no password)
-                e.message.includes('Error unlocking')) {                       // udisks (wrong password)
+                e.message.includes('Error unlocking') ||                      // udisks (wrong password)
+                e.message.includes('Failed to load device\'s parameters: Operation not permitted')) {
                 this._reaskPassword(volume);
             } else {
+                if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
+                    Main.notifyError(_("Unable to unlock"),
+                        _("The installed udisks version does not support the PIM setting"));
+                }
+
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
                     log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
-
                 this._closeOperation(volume);
             }
         }
@@ -219,12 +225,14 @@ var AutomountManager = class {
             this._volumeQueue.filter(element => (element != volume));
     }
 
-    _reaskPassword(volume) {
+    _reaskPassword(volume, params) {
+        params = Params.parse(params, { errorMessage: null });
         let prevOperation = this._activeOperations.get(volume);
         let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
-                                                        { existingDialog: existingDialog });
+                                                        { existingDialog: existingDialog,
+                                                          errorMessage: params.errorMessage });
         this._mountVolume(volume, operation);
     }
 
