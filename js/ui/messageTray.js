@@ -587,15 +587,15 @@ var NotificationBanner = new Lang.Class({
 
 var SourceActor = new Lang.Class({
     Name: 'SourceActor',
+    Extends: St.Widget,
 
     _init(source, size) {
+        this.parent();
+
         this._source = source;
         this._size = size;
 
-        this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
+        this.actor = this;
         this.actor.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
@@ -618,17 +618,17 @@ var SourceActor = new Lang.Class({
         this._iconSet = true;
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let [min, nat] = this._iconBin.get_preferred_width(forHeight);
-        alloc.min_size = min; alloc.nat_size = nat;
+    vfunc_get_preferred_width(forHeight) {
+        return this._iconBin.get_preferred_width(forHeight);
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let [min, nat] = this._iconBin.get_preferred_height(forWidth);
-        alloc.min_size = min; alloc.nat_size = nat;
+    _getPreferredHeight(forWidth) {
+        return this._iconBin.get_preferred_height(forWidth);
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
         // the iconBin should fill our entire box
         this._iconBin.allocate(box, flags);
     },
@@ -675,8 +675,8 @@ var SourceActorWithLabel = new Lang.Class({
         });
     },
 
-    _allocate(actor, box, flags) {
-        this.parent(actor, box, flags);
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
 
         let childBox = new Clutter.ActorBox();
 
