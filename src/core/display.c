@@ -676,6 +676,13 @@ on_startup_notification_changed (MetaStartupNotification *sn,
   g_signal_emit_by_name (display, "startup-sequence-changed", sequence);
 }
 
+static void
+on_ui_scaling_factor_changed (MetaSettings *settings,
+                              MetaDisplay  *display)
+{
+  meta_display_reload_cursor (display);
+}
+
 /**
  * meta_display_open:
  *
@@ -697,6 +704,7 @@ meta_display_open (void)
   Window old_active_xwindow = None;
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager;
+  MetaSettings *settings;
 
   g_assert (the_display == NULL);
   display = the_display = g_object_new (META_TYPE_DISPLAY, NULL);
@@ -754,6 +762,10 @@ meta_display_open (void)
   monitor_manager = meta_backend_get_monitor_manager (backend);
   g_signal_connect (monitor_manager, "monitors-changed-internal",
                     G_CALLBACK (on_monitors_changed_internal), display);
+
+  settings = meta_backend_get_settings (backend);
+  g_signal_connect (settings, "ui-scaling-factor-changed",
+                    G_CALLBACK (on_ui_scaling_factor_changed), display);
 
   meta_display_set_cursor (display, META_CURSOR_DEFAULT);
 

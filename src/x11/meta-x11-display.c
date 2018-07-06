@@ -53,6 +53,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-settings-private.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "core/frame.h"
 #include "core/meta-workspace-manager-private.h"
@@ -1462,8 +1463,13 @@ meta_x11_display_reload_cursor (MetaX11Display *x11_display)
 static void
 set_cursor_theme (Display *xdisplay)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
+  int scale;
+
+  scale = meta_settings_get_ui_scaling_factor (settings);
   XcursorSetTheme (xdisplay, meta_prefs_get_cursor_theme ());
-  XcursorSetDefaultSize (xdisplay, meta_prefs_get_cursor_size ());
+  XcursorSetDefaultSize (xdisplay, meta_prefs_get_cursor_size () * scale);
 }
 
 static void
