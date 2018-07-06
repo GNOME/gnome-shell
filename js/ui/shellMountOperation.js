@@ -294,11 +294,20 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
         content._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
+            this._keyfilesBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-keyfiles-box' });
+            content.messageBox.add(this._keyfilesBox);
+
             this._keyfilesLabel = new St.Label(({ style_class: 'prompt-dialog-keyfiles-label' }));
             this._keyfilesLabel.clutter_text.set_markup(_("To unlock a volume that uses keyfiles, use the <i>Disks</i> utility instead."));
             this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             this._keyfilesLabel.clutter_text.line_wrap = true;
-            content.messageBox.add(this._keyfilesLabel);
+            this._keyfilesBox.add(this._keyfilesLabel, { y_fill: false, y_align: St.Align.MIDDLE, expand: true });
+
+            this._openDisksButton = new St.Button({ style_class: 'prompt-dialog-button button',
+                label: _("Open Disks"),
+                can_focus: true });
+            this._openDisksButton.connect('clicked', this._onOpenDisksButton.bind(this));
+            this._keyfilesBox.add(this._openDisksButton, { y_fill: false, y_align: St.Align.TOP, expand: false });
         }
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
@@ -417,6 +426,16 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
             this._systemVolume &&
             this._systemVolume.actor.checked,
             pim);
+    }
+
+    _onOpenDisksButton() {
+        let app = Shell.AppSystem.get_default().lookup_app("org.gnome.DiskUtility.desktop");
+        if (app)
+            app.activate();
+        else
+            Main.notifyError(_("Unable to start Disks utility"),
+                             _("Couldn't find the Disks utility application"));
+        this._onCancelButton();
     }
 };
 
