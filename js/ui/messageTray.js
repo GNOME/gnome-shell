@@ -587,16 +587,16 @@ var NotificationBanner = new Lang.Class({
 
 var SourceActor = new Lang.Class({
     Name: 'SourceActor',
+    Extends: St.Widget,
 
     _init(source, size) {
+        this.parent();
+
         this._source = source;
         this._size = size;
 
-        this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
-        this.actor.connect('destroy', () => {
+        this.actor = this;
+        this.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
         });
@@ -604,10 +604,11 @@ var SourceActor = new Lang.Class({
 
         let scale_factor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._iconBin = new St.Bin({ x_fill: true,
+                                     x_expand: true,
                                      height: size * scale_factor,
                                      width: size * scale_factor });
 
-        this.actor.add_actor(this._iconBin);
+        this.add_actor(this._iconBin);
 
         this._iconUpdatedId = this._source.connect('icon-updated', this._updateIcon.bind(this));
         this._updateIcon();
@@ -616,21 +617,6 @@ var SourceActor = new Lang.Class({
     setIcon(icon) {
         this._iconBin.child = icon;
         this._iconSet = true;
-    },
-
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let [min, nat] = this._iconBin.get_preferred_width(forHeight);
-        alloc.min_size = min; alloc.nat_size = nat;
-    },
-
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let [min, nat] = this._iconBin.get_preferred_height(forWidth);
-        alloc.min_size = min; alloc.nat_size = nat;
-    },
-
-    _allocate(actor, box, flags) {
-        // the iconBin should fill our entire box
-        this._iconBin.allocate(box, flags);
     },
 
     _updateIcon() {
@@ -665,23 +651,23 @@ var SourceActorWithLabel = new Lang.Class({
             this._counterBin.translation_y = themeNode.get_length('-shell-counter-overlap-y');
         });
 
-        this.actor.add_actor(this._counterBin);
+        this.add_actor(this._counterBin);
 
         this._countUpdatedId = this._source.connect('count-updated', this._updateCount.bind(this));
         this._updateCount();
 
-        this.actor.connect('destroy', () => {
+        this.connect('destroy', () => {
             this._source.disconnect(this._countUpdatedId);
         });
     },
 
-    _allocate(actor, box, flags) {
-        this.parent(actor, box, flags);
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
 
         let childBox = new Clutter.ActorBox();
 
         let [minWidth, minHeight, naturalWidth, naturalHeight] = this._counterBin.get_preferred_size();
-        let direction = this.actor.get_text_direction();
+        let direction = this.get_text_direction();
 
         if (direction == Clutter.TextDirection.LTR) {
             // allocate on the right in LTR
