@@ -418,6 +418,14 @@ StScrollBar {
     spacing-columns: 1em;
   }
 
+  .prompt-dialog-keyfiles-box {
+    spacing: 1em;
+  }
+
+  .prompt-dialog-button.button {
+    padding: 8px;
+  }
+
 
 /* Polkit Dialog */
 
