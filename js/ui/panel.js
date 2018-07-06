@@ -86,6 +86,7 @@ function _unpremultiply(color) {
 var AppMenuButton = new Lang.Class({
     Name: 'AppMenuButton',
     Extends: PanelMenu.Button,
+    Signals: {'changed': {}},
 
     _init(panel) {
         this.parent(0.0, null, true);
@@ -127,7 +128,7 @@ var AppMenuButton = new Lang.Class({
         this._visible = this._gtkSettings.gtk_shell_shows_app_menu &&
                         !Main.overview.visible;
         if (!this._visible)
-            this.actor.hide();
+            St.Widget.prototype.hide.call(this);
         this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
         this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
         this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
@@ -147,6 +148,8 @@ var AppMenuButton = new Lang.Class({
             global.window_manager.connect('switch-workspace', this._sync.bind(this));
 
         this._sync();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     show() {
@@ -155,7 +158,7 @@ var AppMenuButton = new Lang.Class({
 
         this._visible = true;
         this.actor.reactive = true;
-        this.actor.show();
+        St.Widget.prototype.show.call(this);
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
@@ -175,7 +178,7 @@ var AppMenuButton = new Lang.Class({
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete() {
-                               this.actor.hide();
+                               St.Widget.prototype.hide.call(this);
                            },
                            onCompleteScope: this });
     },
@@ -363,7 +366,7 @@ var AppMenuButton = new Lang.Class({
             this._menuManager.addMenu(menu);
     },
 
-    destroy() {
+    _onDestroy() {
         if (this._appStateChangedSignalId > 0) {
             let appSys = Shell.AppSystem.get_default();
             appSys.disconnect(this._appStateChangedSignalId);
@@ -390,12 +393,8 @@ var AppMenuButton = new Lang.Class({
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;
         }
-
-        this.parent();
     }
 });
-
-Signals.addSignalMethods(AppMenuButton.prototype);
 
 var ActivitiesButton = new Lang.Class({
     Name: 'ActivitiesButton',
