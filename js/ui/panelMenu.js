@@ -15,21 +15,21 @@ const PopupMenu = imports.ui.popupMenu;
 
 var ButtonBox = new Lang.Class({
     Name: 'ButtonBox',
+    Extends: St.Widget,
 
     _init(params) {
         params = Params.parse(params, { style_class: 'panel-button' }, true);
-        this.actor = new Shell.GenericContainer(params);
-        this.actor._delegate = this;
+
+        this.parent(params);
+
+        this.actor = this;
+        this._delegate = this;
 
         this.container = new St.Bin({ y_fill: true,
                                       x_fill: true,
                                       child: this.actor });
 
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
-
-        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
+        this.connect('style-changed', this._onStyleChanged.bind(this));
         this._minHPadding = this._natHPadding = 0.0;
     },
 
@@ -40,31 +40,34 @@ var ButtonBox = new Lang.Class({
         this._natHPadding = themeNode.get_length('-natural-hpadding');
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let child = actor.get_first_child();
+    vfunc_get_preferred_width(forHeight) {
+        let child = this.get_first_child();
+        let minimumSize, naturalSize;
 
-        if (child) {
-            [alloc.min_size, alloc.natural_size] = child.get_preferred_width(-1);
-        } else {
-            alloc.min_size = alloc.natural_size = 0;
-        }
+        if (child)
+            [minimumSize, naturalSize] = child.get_preferred_width(-1);
+        else
+            minimumSize = naturalSize = 0;
 
-        alloc.min_size += 2 * this._minHPadding;
-        alloc.natural_size += 2 * this._natHPadding;
+        minimumSize += 2 * this._minHPadding;
+        naturalSize += 2 * this._natHPadding;
+
+        return [minimumSize, naturalSize];
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let child = actor.get_first_child();
+    vfunc_get_preferred_height(forWidth) {
+        let child = this.get_first_child();
 
-        if (child) {
-            [alloc.min_size, alloc.natural_size] = child.get_preferred_height(-1);
-        } else {
-            alloc.min_size = alloc.natural_size = 0;
-        }
+        if (child)
+            return child.get_preferred_height(-1);
+
+        return [0, 0];
     },
 
-    _allocate(actor, box, flags) {
-        let child = actor.get_first_child();
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
+        let child = this.get_first_child();
         if (!child)
             return;
 
@@ -92,6 +95,7 @@ var ButtonBox = new Lang.Class({
 var Button = new Lang.Class({
     Name: 'PanelMenuButton',
     Extends: ButtonBox,
+    Signals: {'menu-set': {} },
 
     _init(menuAlignment, nameText, dontCreateMenu) {
         this.parent({ reactive: true,
@@ -100,8 +104,9 @@ var Button = new Lang.Class({
                       accessible_name: nameText ? nameText : "",
                       accessible_role: Atk.Role.MENU });
 
-        this.actor.connect('event', this._onEvent.bind(this));
-        this.actor.connect('notify::visible', this._onVisibilityChanged.bind(this));
+        this.connect('event', this._onEvent.bind(this));
+        this.connect('notify::visible', this._onVisibilityChanged.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this.actor);
@@ -110,9 +115,9 @@ var Button = new Lang.Class({
     },
 
     setSensitive(sensitive) {
-        this.actor.reactive = sensitive;
-        this.actor.can_focus = sensitive;
-        this.actor.track_hover = sensitive;
+        this.reactive = sensitive;
+        this.can_focus = sensitive;
+        this.track_hover = sensitive;
     },
 
     setMenu(menu) {
@@ -184,17 +189,11 @@ var Button = new Lang.Class({
         this.menu.actor.style = ('max-height: %spx;').format(maxHeight);
     },
 
-    destroy() {
-        this.actor._delegate = null;
-
+    _onDestroy() {
         if (this.menu)
             this.menu.destroy();
-        this.actor.destroy();
-
-        this.emit('destroy');
     }
 });
-Signals.addSignalMethods(Button.prototype);
 
 /* SystemIndicator:
  *
