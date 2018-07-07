@@ -203,21 +203,12 @@ var LayoutManager = new Lang.Class({
         global.stage.no_clear_hint = true;
 
         // Set up stage hierarchy to group all UI actors under one container.
-        this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
+        this.uiGroup = new St.Widget({ name: 'uiGroup' });
         this.uiGroup.set_flags(Clutter.ActorFlags.NO_LAYOUT);
-        this.uiGroup.connect('allocate', (actor, box, flags) => {
-            let children = actor.get_children();
-            for (let i = 0; i < children.length; i++)
-                children[i].allocate_preferred_size(flags);
-        });
-        this.uiGroup.connect('get-preferred-width', (actor, forHeight, alloc) => {
-            let width = global.stage.width;
-            [alloc.min_size, alloc.natural_size] = [width, width];
-        });
-        this.uiGroup.connect('get-preferred-height', (actor, forWidth, alloc) => {
-            let height = global.stage.height;
-            [alloc.min_size, alloc.natural_size] = [height, height];
-        });
+        this.uiGroup.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
 
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
