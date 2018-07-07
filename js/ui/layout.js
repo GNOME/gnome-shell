@@ -177,8 +177,16 @@ const defaultParams = {
 
 var LayoutManager = new Lang.Class({
     Name: 'LayoutManager',
+    Extends: St.Widget,
+    Signals: { 'hot-corners-changed': {},
+               'startup-complete': {},
+               'startup-prepared': {},
+               'monitors-changed': {},
+               'keyboard-visible-changed': { param_types: [GObject.TYPE_BOOLEAN] } },
 
     _init() {
+        this.parent({ name: 'uiGroup' });
+
         this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         this.monitors = [];
         this.primaryMonitor = null;
@@ -203,20 +211,7 @@ var LayoutManager = new Lang.Class({
         global.stage.no_clear_hint = true;
 
         // Set up stage hierarchy to group all UI actors under one container.
-        this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
-        this.uiGroup.connect('allocate', (actor, box, flags) => {
-            let children = actor.get_children();
-            for (let i = 0; i < children.length; i++)
-                children[i].allocate_preferred_size(flags);
-        });
-        this.uiGroup.connect('get-preferred-width', (actor, forHeight, alloc) => {
-            let width = global.stage.width;
-            [alloc.min_size, alloc.natural_size] = [width, width];
-        });
-        this.uiGroup.connect('get-preferred-height', (actor, forWidth, alloc) => {
-            let height = global.stage.height;
-            [alloc.min_size, alloc.natural_size] = [height, height];
-        });
+        this.uiGroup = this;
 
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
@@ -296,6 +291,23 @@ var LayoutManager = new Lang.Class({
                     Meta.Background.refresh_all();
                 });
         }
+    },
+
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
+
+        for (let child of this.get_children())
+            child.allocate_preferred_size(flags);
+    },
+
+    vfunc_get_preferred_width(forHeight) {
+        let width = global.stage.width;
+        return [width, width];
+    },
+
+    vfunc_get_preferred_height(forWidth) {
+        let height = global.stage.height;
+        return [height, height];
     },
 
     // This is called by Main after everything else is constructed
@@ -1076,7 +1088,6 @@ var LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
     },
 });
-Signals.addSignalMethods(LayoutManager.prototype);
 
 
 // HotCorner:
