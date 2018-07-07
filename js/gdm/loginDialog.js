@@ -408,16 +408,18 @@ Signals.addSignalMethods(SessionMenuButton.prototype);
 
 var LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
+    Extends: St.Widget,
+    Signals: { 'failed': {} },
 
     _init(parentActor) {
-        this.actor = new Shell.GenericContainer({ style_class: 'login-dialog',
-                                                  visible: false });
-        this.actor.get_accessible().set_role(Atk.Role.WINDOW);
+        this.parent({ style_class: 'login-dialog',
+                      visible: false });
 
-        this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        this.actor.connect('allocate', this._onAllocate.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        parentActor.add_child(this.actor);
+        this.get_accessible().set_role(Atk.Role.WINDOW);
+
+        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.connect('destroy', this._onDestroy.bind(this));
+        parentActor.add_child(this);
 
         this._userManager = AccountsService.UserManager.get_default()
         this._gdmClient = new Gdm.Client();
@@ -442,7 +444,7 @@ var LoginDialog = new Lang.Class({
                                                     y_align: Clutter.ActorAlign.CENTER,
                                                     vertical: true,
                                                     visible: false });
-        this.actor.add_child(this._userSelectionBox);
+        this.add_child(this._userSelectionBox);
 
         this._userList = new UserList();
         this._userSelectionBox.add(this._userList.actor,
@@ -454,7 +456,7 @@ var LoginDialog = new Lang.Class({
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.hide();
-        this.actor.add_child(this._authPrompt.actor);
+        this.add_child(this._authPrompt.actor);
 
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
@@ -482,7 +484,7 @@ var LoginDialog = new Lang.Class({
                                                opacity: 0,
                                                vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER });
-        this.actor.add_child(this._bannerView);
+        this.add_child(this._bannerView);
 
         let bannerBox = new St.BoxLayout({ vertical: true });
 
@@ -497,7 +499,7 @@ var LoginDialog = new Lang.Class({
         this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
                                         x_align: Clutter.ActorAlign.CENTER,
                                         y_align: Clutter.ActorAlign.END });
-        this.actor.add_child(this._logoBin);
+        this.add_child(this._logoBin);
         this._updateLogo();
 
         this._userList.connect('activate', (userList, item) => {
@@ -576,7 +578,9 @@ var LoginDialog = new Lang.Class({
         return actorBox;
     },
 
-    _onAllocate(actor, dialogBox, flags) {
+    vfunc_allocate(dialogBox, flags) {
+        this.set_allocation(dialogBox, flags);
+
         let dialogWidth = dialogBox.x2 - dialogBox.x1;
         let dialogHeight = dialogBox.y2 - dialogBox.y1;
 
@@ -919,10 +923,10 @@ var LoginDialog = new Lang.Class({
     },
 
     _loginScreenSessionActivated() {
-        if (this.actor.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+        if (this.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
-        Tweener.addTween(this.actor,
+        Tweener.addTween(this,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -931,7 +935,7 @@ var LoginDialog = new Lang.Class({
 
                                for (let i = 0; i < children.length; i++) {
                                    if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.actor.opacity;
+                                       children[i].opacity = this.opacity;
                                }
                            },
                            onUpdateScope: this,
@@ -952,7 +956,7 @@ var LoginDialog = new Lang.Class({
     },
 
     _startSession(serviceName) {
-        Tweener.addTween(this.actor,
+        Tweener.addTween(this,
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -961,7 +965,7 @@ var LoginDialog = new Lang.Class({
 
                                for (let i = 0; i < children.length; i++) {
                                    if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.actor.opacity;
+                                       children[i].opacity = this.opacity;
                                }
                            },
                            onUpdateScope: this,
@@ -1230,17 +1234,17 @@ var LoginDialog = new Lang.Class({
     },
 
     open() {
-        Main.ctrlAltTabManager.addGroup(this.actor,
+        Main.ctrlAltTabManager.addGroup(this,
                                         _("Login Window"),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
         this._userList.actor.grab_key_focus();
-        this.actor.show();
-        this.actor.opacity = 0;
+        this.show();
+        this.opacity = 0;
 
-        Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOGIN_SCREEN });
+        Main.pushModal(this, { actionMode: Shell.ActionMode.LOGIN_SCREEN });
 
-        Tweener.addTween(this.actor,
+        Tweener.addTween(this,
                          { opacity: 255,
                            time: 1,
                            transition: 'easeInQuad' });
@@ -1249,8 +1253,8 @@ var LoginDialog = new Lang.Class({
     },
 
     close() {
-        Main.popModal(this.actor);
-        Main.ctrlAltTabManager.removeGroup(this.actor);
+        Main.popModal(this);
+        Main.ctrlAltTabManager.removeGroup(this);
     },
 
     cancel() {
@@ -1265,4 +1269,3 @@ var LoginDialog = new Lang.Class({
         this._authPrompt.finish(onComplete);
     },
 });
-Signals.addSignalMethods(LoginDialog.prototype);
