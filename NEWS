@@ -1,3 +1,22 @@
+3.29.3
+======
+* Fix Korean Hangul support on wayland [Changwoo; #152]
+* Improve support for proprietary Nvidia driver [Jonas; #790316]
+* Only upload HW cursor sprite to the GPU that will display them [Jonas; #77]
+* nvidia [Miguel; #2]
+* nvidia [Miguel; #782575]
+* Remove MetaScreen to prepare for non-mandatary X11 dependency
+  [Armin, Jonas; #759538]
+* Misc. bug fixes [Olivier, Jonas, Sam; #160, !130, #786929, #788834]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Armin Krezović, Corentin Noël,
+  Changwoo Ryu, Sam Spilsbury, Daniel Stone, Marco Trevisan (Treviño),
+  Miguel A. Vico, Daniel van Vugt
+
+Translators:
+  Yi-Jyun Pan [zh_TW], Jordi Mas [ca], Daniel Șerbănescu [ro], Fabio Tomat [fur]
+
 3.29.2
 ======
 * Fix size change animations on wayland [Georges; #780292]
