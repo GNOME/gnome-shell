@@ -887,7 +887,8 @@ constrain_modal_dialog (MetaWindow         *window,
   MetaRectangle child_rect, parent_rect;
   gboolean constraint_already_satisfied;
 
-  if (!meta_window_is_attached_dialog (window) ||
+  if (!parent ||
+      !meta_window_is_attached_dialog (window) ||
       meta_window_get_placement_rule (window))
     return TRUE;
 
