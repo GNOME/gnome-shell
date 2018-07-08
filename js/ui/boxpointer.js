@@ -34,24 +34,24 @@ var POPUP_ANIMATION_TIME = 0.15;
  */
 var BoxPointer = new Lang.Class({
     Name: 'BoxPointer',
+    Extends: St.Widget,
+    Signals: { 'arrow-side-changed': {} },
 
     _init(arrowSide, binProperties) {
+        this.parent({ x_align: Clutter.ActorAlign.FILL,
+                      y_align: Clutter.ActorAlign.FILL });
+
+        this.actor = this;
+
         this._arrowSide = arrowSide;
         this._userArrowSide = arrowSide;
         this._arrowOrigin = 0;
         this._arrowActor = null;
-        this.actor = new St.Bin({ x_fill: true,
-                                  y_fill: true });
-        this._container = new Shell.GenericContainer();
-        this.actor.set_child(this._container);
-        this._container.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this._container.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this._container.connect('allocate', this._allocate.bind(this));
         this.bin = new St.Bin(binProperties);
-        this._container.add_actor(this.bin);
+        this.add_actor(this.bin);
         this._border = new St.DrawingArea();
         this._border.connect('repaint', this._drawBorder.bind(this));
-        this._container.add_actor(this._border);
+        this.add_actor(this._border);
         this.bin.raise(this._border);
         this._xOffset = 0;
         this._yOffset = 0;
@@ -89,7 +89,7 @@ var BoxPointer = new Lang.Class({
         else
             this.opacity = 255;
 
-        this.actor.show();
+        St.Widget.prototype.show.call(this);
 
         if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
@@ -157,7 +157,7 @@ var BoxPointer = new Lang.Class({
                                  transition: 'linear',
                                  time: animationTime,
                                  onComplete: () => {
-                                     this.actor.hide();
+                                     St.Widget.prototype.hide.call(this);
                                      this.opacity = 0;
                                      this.xOffset = 0;
                                      this.yOffset = 0;
@@ -167,36 +167,36 @@ var BoxPointer = new Lang.Class({
                                });
     },
 
-    _adjustAllocationForArrow(isWidth, alloc) {
+    _adjustAllocationForArrow(isWidth, minSize, natSize) {
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
-        alloc.min_size += borderWidth * 2;
-        alloc.natural_size += borderWidth * 2;
+        minSize += borderWidth * 2;
+        natSize += borderWidth * 2;
         if ((!isWidth && (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM))
             || (isWidth && (this._arrowSide == St.Side.LEFT || this._arrowSide == St.Side.RIGHT))) {
             let rise = themeNode.get_length('-arrow-rise');
-            alloc.min_size += rise;
-            alloc.natural_size += rise;
+            minSize += rise;
+            natSize += rise;
         }
+
+        return [minSize, natSize];
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
+    vfunc_get_preferred_width(forHeight) {
         let [minInternalSize, natInternalSize] = this.bin.get_preferred_width(forHeight);
-        alloc.min_size = minInternalSize;
-        alloc.natural_size = natInternalSize;
-        this._adjustAllocationForArrow(true, alloc);
+        return this._adjustAllocationForArrow(true, minInternalSize, natInternalSize);
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
+    vfunc_get_preferred_height(forWidth) {
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let [minSize, naturalSize] = this.bin.get_preferred_height(forWidth - 2 * borderWidth);
-        alloc.min_size = minSize;
-        alloc.natural_size = naturalSize;
-        this._adjustAllocationForArrow(false, alloc);
+        return this._adjustAllocationForArrow(false, minSize, naturalSize);
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
+
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let rise = themeNode.get_length('-arrow-rise');
@@ -586,7 +586,7 @@ var BoxPointer = new Lang.Class({
 
     _calculateArrowSide(arrowSide) {
         let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
-        let [minWidth, minHeight, boxWidth, boxHeight] = this._container.get_preferred_size();
+        let [minWidth, minHeight, boxWidth, boxHeight] = this.get_preferred_size();
         let monitorActor = this.sourceActor;
         if (!monitorActor)
             monitorActor = this.actor;
@@ -624,7 +624,7 @@ var BoxPointer = new Lang.Class({
             this._arrowSide = arrowSide;
             this._reposition();
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._container.queue_relayout();
+                this.queue_relayout();
                 return false;
             });
 
@@ -650,14 +650,6 @@ var BoxPointer = new Lang.Class({
         return this._yOffset;
     },
 
-    set opacity(opacity) {
-        this.actor.opacity = opacity;
-    },
-
-    get opacity() {
-        return this.actor.opacity;
-    },
-
     updateArrowSide(side) {
         this._arrowSide = side;
         this._border.queue_repaint();
@@ -673,4 +665,3 @@ var BoxPointer = new Lang.Class({
         return this.actor.get_theme_node().get_length('-arrow-rise');
     }
 });
-Signals.addSignalMethods(BoxPointer.prototype);
