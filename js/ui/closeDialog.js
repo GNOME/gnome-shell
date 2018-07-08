@@ -100,7 +100,7 @@ var CloseDialog = new Lang.Class({
         if (this._dialog != null)
             return;
 
-        Meta.disable_unredirect_for_screen(global.screen);
+        Meta.disable_unredirect_for_display(global.display);
 
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ALIVE_TIMEOUT,
             () => {
@@ -128,7 +128,7 @@ var CloseDialog = new Lang.Class({
         if (this._dialog == null)
             return;
 
-        Meta.enable_unredirect_for_screen(global.screen);
+        Meta.enable_unredirect_for_display(global.display);
 
         GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
