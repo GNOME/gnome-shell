@@ -534,7 +534,7 @@ var Keyboard = new Lang.Class({
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         //Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
         //    if (this._keyboardVisible) {
-        //        let currentWindow = global.screen.get_display().focus_window;
+        //        let currentWindow = global.display.focus_window;
         //        this.setCursorLocation(currentWindow, rect.get_x(), rect.get_y(),
         //                               rect.get_width(), rect.get_height());
         //    }
