@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-10 12:32+0000\n"
+"POT-Creation-Date: 2018-04-13 19:54+0000\n"
 "PO-Revision-Date: 2018-03-10 21:24+0100\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -349,7 +349,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "S'ha produït un error en carregar el diàleg de preferències de %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -669,12 +669,12 @@ msgstr "Afegeix als preferits"
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "S'ha afegit %s als preferits."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "S'ha suprimit %s dels preferits."
@@ -869,7 +869,7 @@ msgstr "S'ha desconnectat un dispositiu extern"
 msgid "Open with %s"
 msgstr "Obre amb %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Contrasenya:"
 
@@ -957,15 +957,15 @@ msgstr "Cal introduir una contrasenya per connectar-vos a «%s»."
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Cal autenticació"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Administrador"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "Autentica"
 
@@ -973,7 +973,7 @@ msgstr "Autentica"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "No ha funcionat. Torneu-ho a provar."
 
@@ -1021,7 +1021,7 @@ msgstr "Afegeix rellotges del món…"
 msgid "World Clocks"
 msgstr "Rellotges del món"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "El temps"
 
@@ -1029,7 +1029,7 @@ msgstr "El temps"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s tot el dia."
@@ -1038,7 +1038,7 @@ msgstr "%s tot el dia."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, llavors %s més tard."
@@ -1047,30 +1047,30 @@ msgstr "%s, llavors %s més tard."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, llavors %s, seguit per %s més tard."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Trieu una ubicació…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "S'està carregant…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Sensació tèrmica de %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Vés en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
@@ -1990,16 +1990,17 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"El nou dispositiu s'ha detectat mentre estàveu absents. Desconnecteu i torneu a connectar el dispositiu per a començar a utilitzar-lo."
+"El nou dispositiu s'ha detectat mentre estàveu absents. Desconnecteu i "
+"torneu a connectar el dispositiu per a començar a utilitzar-lo."
 
 #: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
 msgstr "S'ha produït un error d'autorització a Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:357
-#, javascript-format
-msgid "Could not authorize the thunderbolt device: %s"
-msgstr "No s'ha pogut autoritzar el dispositiu thunderbolt: %s"
+#,  javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "No s'ha pogut autoritzar el dispositiu Thunderbolt: %s"
 
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
