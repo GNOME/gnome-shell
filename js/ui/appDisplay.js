@@ -1538,7 +1538,7 @@ var AppFolderPopup = new Lang.Class({
         // is completed so we can animate the icons after as we like without
         // showing them while boxpointer is animating.
         this._view.actor.opacity = 0;
-        this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
+        this._boxPointer.open(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE,
                               () => {
                 this._view.actor.opacity = 255;
@@ -1554,8 +1554,8 @@ var AppFolderPopup = new Lang.Class({
 
         this._grabHelper.ungrab({ actor: this.actor });
 
-        this._boxPointer.hide(BoxPointer.PopupAnimation.FADE |
-                              BoxPointer.PopupAnimation.SLIDE);
+        this._boxPointer.close(BoxPointer.PopupAnimation.FADE |
+                               BoxPointer.PopupAnimation.SLIDE);
         this._isOpen = false;
         this.emit('open-state-changed', false);
     },
