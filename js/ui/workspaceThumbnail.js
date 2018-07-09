@@ -374,16 +374,9 @@ var WorkspaceThumbnail = new Lang.Class({
     _doRemoveWindow(metaWin) {
         let win = metaWin.get_compositor_private();
 
-        // find the position of the window in our list
-        let index = this._lookupIndex (metaWin);
-
-        if (index == -1)
-            return;
-
-        let clone = this._windows[index];
-        this._windows.splice(index, 1);
-
-        clone.destroy();
+        let clone = this._removeWindowClone(metaWin);
+        if (clone)
+            clone.destroy();
     },
 
     _doAddWindow(metaWin) {
@@ -535,6 +528,9 @@ var WorkspaceThumbnail = new Lang.Class({
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
         });
+        clone.actor.connect('destroy', () => {
+            this._removeWindowClone(clone.metaWindow);
+        });
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
@@ -545,6 +541,16 @@ var WorkspaceThumbnail = new Lang.Class({
         this._windows.push(clone);
 
         return clone;
+    },
+
+    _removeWindowClone(metaWin) {
+        // find the position of the window in our list
+        let index = this._lookupIndex (metaWin);
+
+        if (index == -1)
+            return null;
+
+        return this._windows.splice(index, 1).pop();
     },
 
     activate(time) {
