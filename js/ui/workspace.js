@@ -1431,34 +1431,26 @@ var Workspace = new Lang.Class({
     _doRemoveWindow(metaWin) {
         let win = metaWin.get_compositor_private();
 
-        // find the position of the window in our list
-        let index = this._lookupIndex (metaWin);
+        let clone = this._removeWindowClone(metaWin);
 
-        if (index == -1)
-            return;
-
-        let clone = this._windows[index];
-
-        this._windows.splice(index, 1);
-        this._windowOverlays.splice(index, 1);
-
-        // If metaWin.get_compositor_private() returned non-NULL, that
-        // means the window still exists (and is just being moved to
-        // another workspace or something), so set its overviewHint
-        // accordingly. (If it returned NULL, then the window is being
-        // destroyed; we'd like to animate this, but it's too late at
-        // this point.)
-        if (win) {
-            let [stageX, stageY] = clone.actor.get_transformed_position();
-            let [stageWidth, stageHeight] = clone.actor.get_transformed_size();
-            win._overviewHint = {
-                x: stageX,
-                y: stageY,
-                scale: stageWidth / clone.actor.width
-            };
+        if (clone) {
+            // If metaWin.get_compositor_private() returned non-NULL, that
+            // means the window still exists (and is just being moved to
+            // another workspace or something), so set its overviewHint
+            // accordingly. (If it returned NULL, then the window is being
+            // destroyed; we'd like to animate this, but it's too late at
+            // this point.)
+            if (win) {
+                let [stageX, stageY] = clone.actor.get_transformed_position();
+                let [stageWidth, stageHeight] = clone.actor.get_transformed_size();
+                win._overviewHint = {
+                    x: stageX,
+                    y: stageY,
+                    scale: stageWidth / clone.actor.width
+                };
+            }
+            clone.destroy();
         }
-        clone.destroy();
-
 
         // We need to reposition the windows; to avoid shuffling windows
         // around while the user is interacting with the workspace, we delay
@@ -1848,6 +1840,9 @@ var Workspace = new Lang.Class({
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
         });
+        clone.actor.connect('destroy', () => {
+            this._removeWindowClone(clone.metaWindow);
+        });
 
         this.actor.add_actor(clone.actor);
 
@@ -1867,6 +1862,17 @@ var Workspace = new Lang.Class({
         this._windowOverlays.push(overlay);
 
         return [clone, overlay];
+    },
+
+    _removeWindowClone(metaWin) {
+        // find the position of the window in our list
+        let index = this._lookupIndex (metaWin);
+
+        if (index == -1)
+            return null;
+
+        this._windowOverlays.splice(index, 1);
+        return this._windows.splice(index, 1).pop();
     },
 
     _onShowOverlayClose(windowOverlay) {
