@@ -802,6 +802,8 @@ var NotificationMessage = new Lang.Class({
     },
 
     _onDestroy() {
+        this.parent();
+
         if (this._updatedId)
             this.notification.disconnect(this._updatedId);
         this._updatedId = 0;
