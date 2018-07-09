@@ -66,11 +66,16 @@ plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 # and uncomment systemd_dep below
 systemduserunitdir = join_paths(libdir, 'systemd', 'user')
 
+keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
-  keysdir = keybindings_dep.get_pkgconfig_variable('keysdir')
-else
-  keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
+  system_keysdir = keybindings_dep.get_pkgconfig_variable('keysdir')
+  # Use the proper system directory from pkg-config only if we can write to it.
+  # This ensures installation doesn't needlessly fail for non-root users'
+  # local builds.
+  if run_command('test', '-w', system_keysdir).returncode() == 0
+    keysdir = system_keysdir
+  endif
 endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
