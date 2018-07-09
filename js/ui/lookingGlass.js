@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Cogl = imports.gi.Cogl;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
@@ -501,18 +502,21 @@ var RedBorderEffect = new Lang.Class({
 
 var Inspector = new Lang.Class({
     Name: 'Inspector',
+    Extends: Clutter.Actor,
+    Signals: { 'closed': {},
+               'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] } },
 
     _init(lookingGlass) {
-        let container = new Shell.GenericContainer({ width: 0,
-                                                     height: 0 });
-        container.connect('allocate', this._allocate.bind(this));
-        Main.uiGroup.add_actor(container);
+        this.parent({ width: 0,
+                      height: 0 });
+
+        Main.uiGroup.add_actor(this);
 
         let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
                                               vertical: false,
                                               reactive: true });
         this._eventHandler = eventHandler;
-        container.add_actor(eventHandler);
+        this.add_actor(eventHandler);
         this._displayText = new St.Label();
         eventHandler.add(this._displayText, { expand: true });
 
@@ -534,7 +538,9 @@ var Inspector = new Lang.Class({
         this._lookingGlass = lookingGlass;
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
         if (!this._eventHandler)
             return;
 
@@ -630,8 +636,6 @@ var Inspector = new Lang.Class({
         this._lookingGlass.setBorderPaintTarget(this._target);
     }
 });
-
-Signals.addSignalMethods(Inspector.prototype);
 
 var Extensions = new Lang.Class({
     Name: 'Extensions',
