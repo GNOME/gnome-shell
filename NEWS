@@ -1,3 +1,19 @@
+3.29.3
+======
+* Save creation time in screenshot metadata [Florian; #790481]
+* Improve consistency between ctrl- and middle-click on app icons [Xavier; #316]
+* Add support for font-feature-settings CSS property [Ryan; #34]
+* Adjust to MetaScreen removal [Jonas; #759538]
+* Misc. bug fixes [Florian, Marco, Sam; #298, #788931, #26, #76, !54, #788882,
+  #791233]
+
+Contributors:
+  Jonas Ådahl, Ryan Hendrickson, Xavier Johnson, Florian Müllner, Joe Rabinoff,
+  Sam Spilsbury, Marco Trevisan (Treviño)
+
+Translators:
+  Gun Chleoc [gd], Yi-Jyun Pan [zh_TW], Cédric Valmary [oc], Jordi Mas [ca]
+
 3.29.2
 ======
 * Guard against untimely keyboard map changes [Carlos; #240]
