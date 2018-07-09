@@ -56,15 +56,9 @@ mozplugindir = join_paths(libdir, 'mozilla', 'plugins')
 portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
+keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
 
 plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
-
-keybindings_dep = dependency('gnome-keybindings', required: false)
-if keybindings_dep.found()
-  keysdir = keybindings_dep.get_pkgconfig_variable('keysdir')
-else
-  keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
-endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
 canberra_dep = dependency('libcanberra')
