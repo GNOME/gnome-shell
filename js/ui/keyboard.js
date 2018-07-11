@@ -492,8 +492,8 @@ var FocusTracker = new Lang.Class({
         this._currentWindow = null;
         this._currentWindowPositionId = 0;
 
-        global.screen.get_display().connect('notify::focus-window', () => {
-            this._setCurrentWindow(global.screen.get_display().focus_window);
+        global.display.connect('notify::focus-window', () => {
+            this._setCurrentWindow(global.display.focus_window);
             this.emit('window-changed', this._currentWindow);
         });
 
