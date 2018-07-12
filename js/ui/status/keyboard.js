@@ -773,6 +773,61 @@ function getInputSourceManager() {
     return _inputSourceManager;
 }
 
+var InputSourceIndicatorContainer = new Lang.Class({
+    Name: 'InputSourceIndicatorContainer',
+    Extends: St.Widget,
+
+    _init(indicator) {
+        this.parent();
+
+        this._indicator = indicator;
+    },
+
+    vfunc_get_preferred_width(forHeight) {
+        // Here, and in _containerGetPreferredHeight, we need to query
+        // for the height of all children, but we ignore the results
+        // for those we don't actually display.
+        let max_min_width = 0, max_natural_width = 0;
+
+        for (let i in this._indicator.inputSourceManager.inputSources) {
+            let label = this._indicator.indicatorLabels[i];
+            let [min_width, natural_width] = label.get_preferred_width(forHeight);
+            max_min_width = Math.max(max_min_width, min_width);
+            max_natural_width = Math.max(max_natural_width, natural_width);
+        }
+
+        return [max_min_width, max_natural_width];
+    },
+
+    vfunc_get_preferred_height(forWidth) {
+        let max_min_height = 0, max_natural_height = 0;
+
+        for (let i in this._indicator.inputSourceManager.inputSources) {
+            let label = this._indicator.indicatorLabels[i];
+            let [min_height, natural_height] = label.get_preferred_height(forWidth);
+            max_min_height = Math.max(max_min_height, min_height);
+            max_natural_height = Math.max(max_natural_height, natural_height);
+        }
+
+        return [max_min_height, max_natural_height];
+    },
+
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
+        // translate box to (0, 0)
+        box.x2 -= box.x1;
+        box.x1 = 0;
+        box.y2 -= box.y1;
+        box.y1 = 0;
+
+        for (let i in this._indicator._inputSourceManager.inputSources) {
+            let label = this._indicator.indicatorLabels[i];
+            label.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
+        }
+    }
+});
+
 var InputSourceIndicator = new Lang.Class({
     Name: 'InputSourceIndicator',
     Extends: PanelMenu.Button,
@@ -783,10 +838,12 @@ var InputSourceIndicator = new Lang.Class({
         this._menuItems = {};
         this._indicatorLabels = {};
 
-        this._container = new Shell.GenericContainer();
-        this._container.connect('get-preferred-width', this._containerGetPreferredWidth.bind(this));
-        this._container.connect('get-preferred-height', this._containerGetPreferredHeight.bind(this));
-        this._container.connect('allocate', this._containerAllocate.bind(this));
+        this._inputSourceManager = getInputSourceManager();
+        this._inputSourceManager.connect('sources-changed', this._sourcesChanged.bind(this));
+        this._inputSourceManager.connect('current-source-changed', this._currentSourceChanged.bind(this));
+        this._inputSourceManager.reload();
+
+        this._container = new InputSourceIndicatorContainer(this);
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(this._container);
@@ -805,11 +862,6 @@ var InputSourceIndicator = new Lang.Class({
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
-
-        this._inputSourceManager = getInputSourceManager();
-        this._inputSourceManager.connect('sources-changed', this._sourcesChanged.bind(this));
-        this._inputSourceManager.connect('current-source-changed', this._currentSourceChanged.bind(this));
-        this._inputSourceManager.reload();
     },
 
     _sessionUpdated() {
@@ -1022,47 +1074,11 @@ var InputSourceIndicator = new Lang.Class({
         Util.spawn(['gkbd-keyboard-display', '-l', description]);
     },
 
-    _containerGetPreferredWidth(container, for_height, alloc) {
-        // Here, and in _containerGetPreferredHeight, we need to query
-        // for the height of all children, but we ignore the results
-        // for those we don't actually display.
-        let max_min_width = 0, max_natural_width = 0;
-
-        for (let i in this._inputSourceManager.inputSources) {
-            let label = this._indicatorLabels[i];
-            let [min_width, natural_width] = label.get_preferred_width(for_height);
-            max_min_width = Math.max(max_min_width, min_width);
-            max_natural_width = Math.max(max_natural_width, natural_width);
-        }
-
-        alloc.min_size = max_min_width;
-        alloc.natural_size = max_natural_width;
+    get inputSourceManager() {
+        return this._inputSourceManager;
     },
 
-    _containerGetPreferredHeight(container, for_width, alloc) {
-        let max_min_height = 0, max_natural_height = 0;
-
-        for (let i in this._inputSourceManager.inputSources) {
-            let label = this._indicatorLabels[i];
-            let [min_height, natural_height] = label.get_preferred_height(for_width);
-            max_min_height = Math.max(max_min_height, min_height);
-            max_natural_height = Math.max(max_natural_height, natural_height);
-        }
-
-        alloc.min_size = max_min_height;
-        alloc.natural_size = max_natural_height;
-    },
-
-    _containerAllocate(container, box, flags) {
-        // translate box to (0, 0)
-        box.x2 -= box.x1;
-        box.x1 = 0;
-        box.y2 -= box.y1;
-        box.y1 = 0;
-
-        for (let i in this._inputSourceManager.inputSources) {
-            let label = this._indicatorLabels[i];
-            label.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
-        }
+    get indicatorLabels() {
+        return this._indicatorLabels;
     }
 });
