@@ -81,8 +81,14 @@ configure_file(
 
 
 install_data('gnome-shell.portal', install_dir: portaldir)
-install_data('50-gnome-shell-system.xml', install_dir: keysdir)
 
+# If prefix and datadir are local for development then it's likely the
+# user (non-root) doesn't have permission to write to keysdir. But that
+# doesn't matter too much because it's an optional dependency anyway.
+# If we don't have write permission then ignore it.
+if run_command('test', '-w', keysdir).returncode() == 0
+  install_data('50-gnome-shell-system.xml', install_dir: keysdir)
+endif
 
 schemaconf = configuration_data()
 schemaconf.set('GETTEXT_PACKAGE', meson.project_name())
