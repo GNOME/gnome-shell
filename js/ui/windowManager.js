@@ -1017,10 +1017,10 @@ var WindowManager = new Lang.Class({
     },
 
     _actionSwitchWorkspace(action, direction) {
-            let workspaceManager = global.workspace_manager;
-            let activeWorkspace = workspaceManager.get_active_workspace();
-            let newWs = activeWorkspace.get_neighbor(direction);
-            this.actionMoveWorkspace(newWs);
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let newWs = activeWorkspace.get_neighbor(direction);
+        this.actionMoveWorkspace(newWs);
     },
 
     _lookupIndex(windows, metaWindow) {
@@ -1700,63 +1700,96 @@ var WindowManager = new Lang.Class({
         if (this._switchData == null)
             return;
 
-        // Update stacking of windows in inGroup (aka the workspace we are
-        // switching to). Windows in outGroup are about to be hidden anyway,
-        // so we just ignore them here.
         let windows = global.get_window_actors();
-        let sibling = null;
+        let lastCurSibling = null;
+        let lastDirSibling = [];
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() != this._switchData.inGroup)
-                continue;
+            if (windows[i].get_parent() == this._switchData.curGroup) {
+                this._switchData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
+                lastCurSibling = windows[i];
+            } else {
+                for (let dir of Object.values(Meta.MotionDirection)) {
+                    let info = this._switchData.surroundings[dir];
+                    if (!info || windows[i].get_parent() != info.actor)
+                        continue;
 
-            this._switchData.inGroup.set_child_above_sibling(windows[i], sibling);
-            sibling = windows[i];
+                    let sibling = lastDirSibling[dir];
+                    if (sibling == undefined)
+                        sibling = null;
+
+                    info.actor.set_child_above_sibling(windows[i], sibling);
+                    lastDirSibling[dir] = windows[i];
+                    break;
+                }
+            }
         }
     },
 
-    _switchWorkspace(shellwm, from, to, direction) {
-        if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
-            shellwm.completed_switch_workspace();
-            return;
-        }
-
-        let windows = global.get_window_actors();
-
-        /* @direction is the direction that the "camera" moves, so the
-         * screen contents have to move one screen's worth in the
-         * opposite direction.
-         */
+    _getPositionForDirection(direction) {
         let xDest = 0, yDest = 0;
 
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-                yDest = global.screen_height - Main.panel.actor.height;
+            yDest = -global.screen_height + Main.panel.actor.height;
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-                yDest = -global.screen_height + Main.panel.actor.height;
+            yDest = global.screen_height - Main.panel.actor.height;
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.DOWN_LEFT)
-                xDest = global.screen_width;
+            xDest = -global.screen_width;
         else if (direction == Meta.MotionDirection.RIGHT ||
                  direction == Meta.MotionDirection.UP_RIGHT ||
                  direction == Meta.MotionDirection.DOWN_RIGHT)
-                xDest = -global.screen_width;
+            xDest = global.screen_width;
 
-        let switchData = {};
-        this._switchData = switchData;
-        switchData.inGroup = new Clutter.Actor();
-        switchData.outGroup = new Clutter.Actor();
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.windows = [];
+        return [xDest, yDest];
+    },
+
+    _prepareWorkspaceSwitch(from, to, direction) {
+        if (this._switchData)
+            return;
 
         let wgroup = global.window_group;
-        wgroup.add_actor(switchData.inGroup);
-        wgroup.add_actor(switchData.outGroup);
+        let windows = global.get_window_actors();
+        let switchData = {};
+
+        this._switchData = switchData;
+        switchData.curGroup = new Clutter.Actor();
+        switchData.movingWindowBin = new Clutter.Actor();
+        switchData.windows = [];
+        switchData.surroundings = {};
+
+        switchData.container = new Clutter.Actor();
+        switchData.container.add_actor(switchData.curGroup);
+
         wgroup.add_actor(switchData.movingWindowBin);
+        wgroup.add_actor(switchData.container);
+
+        let workspaceManager = global.workspace_manager;
+        let curWs = workspaceManager.get_workspace_by_index (from);
+
+        for (let dir of Object.values(Meta.MotionDirection)) {
+            let ws = curWs.get_neighbor(dir);
+            if (ws == curWs || (to >= 0 && ws.index() != to)) {
+                switchData.surroundings[dir] = null;
+                continue;
+            }
+
+            let info = { index: ws.index(),
+                         actor: new Clutter.Actor() };
+            switchData.surroundings[dir] = info;
+            switchData.container.add_actor(info.actor);
+            info.actor.raise_top();
+
+            let [x, y] = this._getPositionForDirection(dir);
+            info.actor.set_position(x, y);
+        }
+
+        switchData.movingWindowBin.raise_top();
 
         for (let i = 0; i < windows.length; i++) {
             let actor = windows[i];
@@ -1777,20 +1810,65 @@ var WindowManager = new Lang.Class({
                 actor.reparent(switchData.movingWindowBin);
             } else if (window.get_workspace().index() == from) {
                 switchData.windows.push(record);
-                actor.reparent(switchData.outGroup);
-            } else if (window.get_workspace().index() == to) {
-                switchData.windows.push(record);
-                actor.reparent(switchData.inGroup);
-                actor.show();
+                actor.reparent(switchData.curGroup);
+            } else {
+                let visible = false;
+                for (let dir of Object.values(Meta.MotionDirection)) {
+                    let info = switchData.surroundings[dir];
+
+                    if (!info || info.index != window.get_workspace().index())
+                        continue;
+
+                    switchData.windows.push(record);
+                    actor.reparent(info.actor);
+                    visible = true;
+                    break;
+                }
+
+                actor.visible = visible;
             }
         }
+    },
 
-        switchData.inGroup.set_position(-xDest, -yDest);
-        switchData.inGroup.raise_top();
+    _finishWorkspaceSwitch(switchData) {
+        this._switchData = null;
 
-        switchData.movingWindowBin.raise_top();
+        for (let i = 0; i < switchData.windows.length; i++) {
+            let w = switchData.windows[i];
+            if (w.window.is_destroyed()) // Window gone
+                continue;
 
-        Tweener.addTween(switchData.outGroup,
+            w.window.reparent(w.parent);
+
+            if (w.window.get_meta_window().get_workspace() !=
+                global.workspace_manager.get_active_workspace())
+                w.window.hide();
+        }
+        Tweener.removeTweens(switchData.container);
+        switchData.container.destroy();
+        switchData.movingWindowBin.destroy();
+
+        this._movingWindow = null;
+    },
+
+    _switchWorkspace(shellwm, from, to, direction) {
+        if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
+            shellwm.completed_switch_workspace();
+            return;
+        }
+
+        let [xDest, yDest] = this._getPositionForDirection(direction);
+
+        /* @direction is the direction that the "camera" moves, so the
+         * screen contents have to move one screen's worth in the
+         * opposite direction.
+         */
+        xDest = -xDest;
+        yDest = -yDest;
+
+        this._prepareWorkspaceSwitch(from, to, direction);
+
+        Tweener.addTween(this._switchData.container,
                          { x: xDest,
                            y: yDest,
                            time: WINDOW_ANIMATION_TIME,
@@ -1799,39 +1877,10 @@ var WindowManager = new Lang.Class({
                            onCompleteScope: this,
                            onCompleteParams: [shellwm]
                          });
-        Tweener.addTween(switchData.inGroup,
-                         { x: 0,
-                           y: 0,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
     },
 
     _switchWorkspaceDone(shellwm) {
-        let switchData = this._switchData;
-        if (!switchData)
-            return;
-        this._switchData = null;
-
-        for (let i = 0; i < switchData.windows.length; i++) {
-                let w = switchData.windows[i];
-                if (w.window.is_destroyed()) // Window gone
-                    continue;
-                if (w.window.get_parent() == switchData.outGroup) {
-                    w.window.reparent(w.parent);
-                    w.window.hide();
-                } else
-                    w.window.reparent(w.parent);
-        }
-        Tweener.removeTweens(switchData.inGroup);
-        Tweener.removeTweens(switchData.outGroup);
-        switchData.inGroup.destroy();
-        switchData.outGroup.destroy();
-        switchData.movingWindowBin.destroy();
-
-        if (this._movingWindow)
-            this._movingWindow = null;
-
+        this._finishWorkspaceSwitch(this._switchData);
         shellwm.completed_switch_workspace();
     },
 
