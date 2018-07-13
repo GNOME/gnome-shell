@@ -32,26 +32,22 @@ const BOX_WIDTHS = [
 
 const SPACING = 10;
 
-function FlowedBoxes() {
-    this._init();
-}
+var FlowedBoxes = new Lang.Class({
+    Name: 'FlowedBoxes',
+    Extends: St.Widget,
 
-FlowedBoxes.prototype = {
     _init() {
-	this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
+        this.parent();
 
 	for (let i = 0; i < BOX_WIDTHS.length; i++) {
 	    let child = new St.Bin({ width: BOX_WIDTHS[i], height: BOX_HEIGHT,
 	                             style: 'border: 1px solid #444444; background: #00aa44' })
-	    this.actor.add_actor(child);
+	    this.add_actor(child);
 	}
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let children = this.actor.get_children();
+    vfunc_get_preferred_width(forHeight) {
+        let children = this.get_children();
 
 	let maxMinWidth = 0;
 	let totalNaturalWidth = 0;
@@ -65,12 +61,11 @@ FlowedBoxes.prototype = {
 	    totalNaturalWidth += naturalWidth;
 	}
 
-	alloc.min_size = maxMinWidth;
-	alloc.natural_size = totalNaturalWidth;
+        return [maxMinWidth, totalNaturalWidth];
     },
 
     _layoutChildren(forWidth, callback) {
-        let children = this.actor.get_children();
+        let children = this.get_children();
 
 	let x = 0;
 	let y = 0;
@@ -99,24 +94,26 @@ FlowedBoxes.prototype = {
 
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
+    vfunc_get_preferred_height(forWidth) {
 	let height = 0;
 	this._layoutChildren(forWidth,
            function(child, x1, y1, x2, y2) {
 	       height = Math.max(height, y2);
 	   });
 
-	alloc.min_size = alloc.natural_size = height;
+        return [height, height];
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
 	this._layoutChildren(box.x2 - box.x1,
            function(child, x1, y1, x2, y2) {
 	       child.allocate(new Clutter.ActorBox({ x1: x1, y1: y1, x2: x2, y2: y2 }),
 			      flags);
 	   });
     }
-};
+});
 
 /****************************************************************************/
 
@@ -127,39 +124,34 @@ FlowedBoxes.prototype = {
 //
 // This is currently only written for the case where the child is height-for-width
 
-function SizingIllustrator() {
-    this._init();
-}
+var SizingIllustrator = new Lang.Class({
+    Name: 'SizingIllustrator',
+    Extends: St.Widget,
 
-SizingIllustrator.prototype = {
     _init() {
-	this.actor = new Shell.GenericContainer();
-
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
+        this.parent();
 
 	this.minWidthLine = new St.Bin({ style: 'background: red' });
-	this.actor.add_actor(this.minWidthLine);
+        this.add_actor(this.minWidthLine);
 	this.minHeightLine = new St.Bin({ style: 'background: red' });
-	this.actor.add_actor(this.minHeightLine);
+        this.add_actor(this.minHeightLine);
 
 	this.naturalWidthLine = new St.Bin({ style: 'background: #4444ff' });
-	this.actor.add_actor(this.naturalWidthLine);
+        this.add_actor(this.naturalWidthLine);
 	this.naturalHeightLine = new St.Bin({ style: 'background: #4444ff' });
-	this.actor.add_actor(this.naturalHeightLine);
+        this.add_actor(this.naturalHeightLine);
 
 	this.currentWidthLine = new St.Bin({ style: 'background: #aaaaaa' });
-	this.actor.add_actor(this.currentWidthLine);
+        this.add_actor(this.currentWidthLine);
 	this.currentHeightLine = new St.Bin({ style: 'background: #aaaaaa' });
-	this.actor.add_actor(this.currentHeightLine);
+        this.add_actor(this.currentHeightLine);
 
 	this.handle = new St.Bin({ style: 'background: yellow; border: 1px solid black;',
 				   reactive: true });
 	this.handle.connect('button-press-event', this._handlePressed.bind(this));
 	this.handle.connect('button-release-event', this._handleReleased.bind(this));
 	this.handle.connect('motion-event', this._handleMotion.bind(this));
-	this.actor.add_actor(this.handle);
+        this.add_actor(this.handle);
 
 	this._inDrag = false;
 
@@ -168,13 +160,13 @@ SizingIllustrator.prototype = {
     },
 
     add(child) {
-	this.child = child;
-	this.actor.add_actor(this.child);
-	this.child.lower_bottom();
+        this.child = child;
+        this.add_child(child);
+        this.child.lower_bottom();
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let children = this.actor.get_children();
+    vfunc_get_preferred_width(forHeight) {
+        let children = this.get_children();
 	for (let i = 0; i < children.length; i++) {
 	    let child = children[i];
 	    let [minWidth, naturalWidth] = child.get_preferred_width(-1);
@@ -184,27 +176,28 @@ SizingIllustrator.prototype = {
 	    }
 	}
 
-	alloc.min_size = 0;
-	alloc.natural_size = 400;
+        return [0, 400];
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let children = this.actor.get_children();
+    vfunc_get_preferred_height(forWidth) {
+        let children = this.get_children();
 	for (let i = 0; i < children.length; i++) {
 	    let child = children[i];
 	    if (child == this.child) {
 		[this.minHeight, this.naturalHeight] = child.get_preferred_height(this.width);
 	    } else {
-		let [minWidth, naturalWidth] = child.get_preferred_width(-1);
-		child.get_preferred_height(naturalWidth);
+		let [minWidth, naturalWidth] = child.get_preferred_height(naturalWidth);
 	    }
 	}
 
-	alloc.min_size = 0;
-	alloc.natural_size = 400;
+        return [0, 400];
     },
 
-    _allocate(actor, box, flags) {
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
+        box = this.get_theme_node().get_content_box(box);
+
 	let allocWidth = box.x2 - box.x1;
 	let allocHeight = box.y2 - box.y1;
 
@@ -244,13 +237,13 @@ SizingIllustrator.prototype = {
     _handleMotion(handle, event) {
 	if (this._inDrag) {
 	    let [x, y] = event.get_coords();
-	    let [actorX, actorY] = this.actor.get_transformed_position();
+            let [actorX, actorY] = this.get_transformed_position();
 	    this.width = x - this._dragX - actorX;
 	    this.height = y - this._dragY - actorY;
-	    this.actor.queue_relayout();
+            this.queue_relayout();
 	}
     }
-};
+});
 
 /****************************************************************************/
 
@@ -278,7 +271,7 @@ function test() {
     mainBox.add(bin, { x_fill: true, y_fill: true, expand: true });
 
     let illustrator = new SizingIllustrator();
-    bin.add_actor(illustrator.actor);
+    bin.add_actor(illustrator);
 
     let scrollView = new St.ScrollView();
     illustrator.add(scrollView);
@@ -287,7 +280,7 @@ function test() {
     scrollView.add_actor(box);
 
     let flowedBoxes = new FlowedBoxes();
-    box.add(flowedBoxes.actor, { expand: false, x_fill: true, y_fill: true });
+    box.add(flowedBoxes, { expand: false, x_fill: true, y_fill: true });
 
     let policyBox = new St.BoxLayout({ vertical: false });
     mainBox.add(policyBox);
