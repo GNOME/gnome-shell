@@ -526,9 +526,7 @@ var FocusTracker = new Lang.Class({
         this._currentWindow = window;
         if (window) {
             this._currentWindowPositionId = this._currentWindow.connect('position-changed', () => {
-                if (global.display.get_grab_op() == Meta.GrabOp.NONE)
-                    this.emit('position-changed');
-                else
+                if (global.display.get_grab_op() != Meta.GrabOp.NONE)
                     this.emit('reset');
             });
         }
