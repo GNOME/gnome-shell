@@ -635,8 +635,8 @@ var AppSwitchAction = new Lang.Class({
 
         if (this.get_n_current_points() == 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
-                [startX, startY] = this.get_press_coords(i);
-                [x, y] = this.get_motion_coords(i);
+                let [startX, startY] = this.get_press_coords(i);
+                let [x, y] = this.get_motion_coords(i);
 
                 if (Math.abs(x - startX) > MOTION_THRESHOLD ||
                     Math.abs(y - startY) > MOTION_THRESHOLD)
