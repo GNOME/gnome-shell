@@ -63,6 +63,10 @@ gboolean clutter_keymap_x11_get_entries_for_keyval (ClutterKeymapX11  *keymap,
                                                     guint              keyval,
                                                     ClutterKeymapKey **keys,
                                                     gint              *n_keys);
+gboolean clutter_keymap_x11_keycode_for_keyval (ClutterKeymapX11 *keymap_x11,
+                                                guint             keyval,
+                                                guint            *keycode_out,
+                                                guint            *level_out);
 void     clutter_keymap_x11_latch_modifiers (ClutterKeymapX11 *keymap_x11,
                                              uint32_t          level,
                                              gboolean          enable);
