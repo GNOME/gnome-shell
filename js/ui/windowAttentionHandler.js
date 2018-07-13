@@ -13,6 +13,8 @@ var WindowAttentionHandler = new Lang.Class({
         this._tracker = Shell.WindowTracker.get_default();
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
                                                                 this._onWindowDemandsAttention.bind(this));
+        this._windowMarkedUrgentId = global.display.connect('window-marked-urgent',
+                                                                this._onWindowDemandsAttention.bind(this));
     },
 
     _getTitleAndBanner(app, window) {
@@ -66,13 +68,21 @@ var Source = new Lang.Class({
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention',
-                                                 () => { this.destroy(); }));
+                                                 this._sync.bind(this));
+        this.signalIDs.push(this._window.connect('notify::urgent',
+                                                 this._sync.bind(this));
         this.signalIDs.push(this._window.connect('focus',
                                                  () => { this.destroy(); }));
         this.signalIDs.push(this._window.connect('unmanaged',
                                                  () => { this.destroy(); }));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    },
+
+    _sync() {
+        if (this._window.demands_attention || this._window.urgent)
+            return;
+        this.destroy();
     },
 
     _onDestroy() {
