@@ -17,7 +17,6 @@
 
   <chapter>
     <title>Actors</title>
-    <xi:include href="xml/shell-generic-container.xml"/>
     <xi:include href="xml/shell-stack.xml"/>
   </chapter>
   <chapter>
