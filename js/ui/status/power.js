@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const UPower = imports.gi.UPowerGlib;
 
 const Main = imports.ui.main;
+const Battery = imports.ui.battery;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -40,9 +41,18 @@ var Indicator = new Lang.Class({
         this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
                                       this._sync.bind(this));
 
-        this._indicator = this._addIndicator();
+        this._indicator = new Battery.BatteryIcon({
+            style_class: 'system-status-icon'
+        });
+        let menuIcon = new Battery.BatteryIcon({
+            style_class: 'popup-menu-icon'
+        });
+        this._indicator.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._percentageLabel = new St.Label({ y_expand: true,
                                                y_align: Clutter.ActorAlign.CENTER });
+
+        this.indicators.add(this._indicator);
+
         this.indicators.add(this._percentageLabel, { expand: true, y_fill: true });
         this.indicators.add_style_class_name('power-status');
 
@@ -57,7 +67,10 @@ var Indicator = new Lang.Class({
                                                 this._sync();
                                             });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
+        this._indicator.setProxy(this._proxy);
+        menuIcon.setProxy(this._proxy);
+
+        this._item = new PopupMenu.PopupSubMenuMenuItem("", false, menuIcon);
         this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
         this.menu.addMenuItem(this._item);
 
@@ -115,15 +128,14 @@ var Indicator = new Lang.Class({
         } else {
             // If there's no battery, then we use the power icon.
             this._item.actor.hide();
-            this._indicator.icon_name = 'system-shutdown-symbolic';
+            this._indicator.update();
             this._percentageLabel.hide();
             return;
         }
 
         // The icons
-        let icon = this._proxy.IconName;
-        this._indicator.icon_name = icon;
-        this._item.icon.icon_name = icon;
+        this._indicator.update();
+        this._item.customWidget.update();
 
         // The icon label
         let label
