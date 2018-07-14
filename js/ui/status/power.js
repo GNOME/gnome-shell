@@ -29,6 +29,173 @@ const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface)
 
 const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
 
+const CAUTION_PERCENTAGE = 10;
+
+// FIXME: Should themes be able to override this and battery bar direction?
+const BATTERY_TOP = 1 / 16;
+const BATTERY_BOTTOM = 15 / 16;
+const BATTERY_LEFT = 3 / 16;
+const BATTERY_RIGHT = 13 / 16;
+
+var BatteryIcon = new Lang.Class({
+    Name: 'BatteryIcon',
+    Extends: St.Bin,
+
+    _init(proxy) {
+        this.parent();
+        this.x_fill = true;
+        this.y_fill = true;
+
+        this._drawingArea = new St.DrawingArea();
+        this._drawingArea.connect('repaint', this._repaint.bind(this));
+        this._drawingArea.connect('style-changed', this._updateSize.bind(this));
+        this.child = this._drawingArea;
+
+        this._shadowHelper = null;
+
+        this._proxy = proxy;
+        this._proxy.connect('g-properties-changed', this._update.bind(this));
+    },
+
+    vfunc_get_paint_volume(volume) {
+        if (!this.parent(volume))
+            return false;
+
+        if (!this._shadow)
+            return true;
+
+        let shadow_box = new Clutter.ActorBox();
+        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadow_box);
+
+        volume.set_width(Math.max(shadow_box.x2 - shadow_box.x1, volume.get_width()));
+        volume.set_height(Math.max(shadow_box.y2 - shadow_box.y1, volume.get_height()));
+
+        return true;
+    },
+
+    vfunc_style_changed() {
+        let node = this.get_theme_node();
+        this._shadow = node.get_shadow('icon-shadow');
+        if (this._shadow)
+            this._shadowHelper = St.ShadowHelper.new(this._shadow);
+        else
+            this._shadowHelper = null;
+
+        this.parent();
+    },
+
+    vfunc_paint() {
+        if (this._shadowHelper) {
+            this._shadowHelper.update(this._drawingArea);
+
+            let allocation = this._drawingArea.get_allocation_box();
+            let paintOpacity = this._drawingArea.get_paint_opacity();
+            this._shadowHelper.paint(allocation, paintOpacity);
+        }
+
+        this._drawingArea.paint();
+    },
+
+    _updateSize() {
+        let node = this.get_theme_node();
+        let iconSize = Math.round(node.get_length('icon-size'));
+        this._drawingArea.width = iconSize;
+        this._drawingArea.height = iconSize;
+    },
+
+    _repaint(icon) {
+        let cr = icon.get_context();
+        let [w, h] = icon.get_surface_size();
+        let node = this.get_theme_node();
+
+        let iconSize = Math.round(node.get_length('icon-size'));
+        cr.translate(Math.floor((w - iconSize) / 2), Math.floor((h - iconSize) / 2));
+
+        this._drawIcon(cr, iconSize, node);
+
+        cr.$dispose();
+    },
+
+    _update() {
+        // Explicitly update shadow
+        this.style_changed();
+        this.child.queue_repaint();
+    },
+
+    _drawIcon(cr, size, themeNode) {
+        if (!this._proxy || !this._proxy.IsPresent) {
+            this._drawStaticIcon(cr, size, themeNode, 'system-shutdown-symbolic');
+        } else {
+            switch(this._proxy.State) {
+                case UPower.DeviceState.EMPTY:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-bg-empty-symbolic');
+                    return;
+
+                case UPower.DeviceState.FULLY_CHARGED:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-bg-full-charged-symbolic');
+                    return;
+
+                case UPower.DeviceState.CHARGING:
+                case UPower.DeviceState.PENDING_CHARGE:
+                    if (this._proxy.Percentage == 0) {
+                        this._drawStaticIcon(cr, size, themeNode, 'battery-bg-empty-charging-symbolic');
+                        return;
+                    }
+
+                    this._drawDynamicBattery(cr, size, themeNode, true);
+                    return;
+                case UPower.DeviceState.DISCHARGING:
+                case UPower.DeviceState.PENDING_DISCHARGE:
+                    this._drawDynamicBattery(cr, size, themeNode, false);
+                    return;
+                default:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-bg-missing-symbolic');
+                    return;
+            }
+        }
+    },
+
+    _drawStaticIcon(cr, size, themeNode, iconName) {
+        let icon = new Gio.ThemedIcon({ name: iconName });
+        let textureCache = St.TextureCache.get_default();
+        let surface = textureCache.load_gicon_to_cairo_surface (themeNode, icon, size, 1);
+        cr.setSourceSurface(surface, 0, 0);
+        cr.rectangle(0, 0, size, size);
+        cr.fill();
+    },
+
+    _drawDynamicBattery(cr, size, themeNode, charging) {
+        let percentage = this._proxy.Percentage;
+        let caution = percentage <= CAUTION_PERCENTAGE;
+        let frac = 1 - percentage / 100;
+
+        let iconName = '';
+        if (caution)
+            iconName += '-caution';
+        if (charging)
+            iconName += '-charging';
+
+        let bgName = 'battery-bg' + iconName + '-symbolic';
+        let fgName = 'battery-fg' + iconName + '-symbolic';
+
+        this._drawStaticIcon(cr, size, themeNode, bgName);
+
+        let rectT = BATTERY_TOP * size;
+        let rectB = BATTERY_BOTTOM * size;
+        let rectL = BATTERY_LEFT * size;
+        let rectR = BATTERY_RIGHT * size;
+
+        rectT += (rectB - rectT) * frac;
+
+        let icon = new Gio.ThemedIcon({ name: fgName });
+        let textureCache = St.TextureCache.get_default();
+        let surface = textureCache.load_gicon_to_cairo_surface (themeNode, icon, size, 1);
+        cr.setSourceSurface(surface, 0, 0);
+        cr.rectangle(rectL, rectT, rectR - rectL, rectB - rectT);
+        cr.fill();
+    }
+});
+
 var Indicator = new Lang.Class({
     Name: 'PowerIndicator',
     Extends: PanelMenu.SystemIndicator,
