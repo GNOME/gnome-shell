@@ -220,6 +220,19 @@ var BatteryIcon = new Lang.Class({
     }
 });
 
+var PowerMenuItem = new Lang.Class({
+    Name: 'PowerMenuItem',
+    Extends: PopupMenu.PopupSubMenuMenuItem,
+
+    _init() {
+        this.parent("", true);
+    },
+
+    _createIcon() {
+        return new BatteryIcon({ style_class: 'popup-menu-icon' });
+    },
+});
+
 var Indicator = new Lang.Class({
     Name: 'PowerIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -248,12 +261,19 @@ var Indicator = new Lang.Class({
                                                 this._sync();
                                             });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
+        this._indicator.setProxy(this._proxy);
+
+        this._item = new PowerMenuItem();
         this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
+        this._item.icon.setProxy(this._proxy);
         this.menu.addMenuItem(this._item);
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
+    },
+
+    _createIcon() {
+        return new BatteryIcon({ style_class: 'system-status-icon' });
     },
 
     _sessionUpdated() {
@@ -306,15 +326,14 @@ var Indicator = new Lang.Class({
         } else {
             // If there's no battery, then we use the power icon.
             this._item.actor.hide();
-            this._indicator.icon_name = 'system-shutdown-symbolic';
+            this._indicator.update();
             this._percentageLabel.hide();
             return;
         }
 
         // The icons
-        let icon = this._proxy.IconName;
-        this._indicator.icon_name = icon;
-        this._item.icon.icon_name = icon;
+        this._indicator.update();
+        this._item.icon.update();
 
         // The icon label
         let label
