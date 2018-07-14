@@ -5,6 +5,15 @@ const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 const St = imports.gi.St;
+const UPower = imports.gi.UPowerGlib;
+
+const CAUTION_PERCENTAGE = 10;
+
+// FIXME: Should themes be able to override this and battery bar direction?
+const BATTERY_TOP = 1 / 16;
+const BATTERY_BOTTOM = 15 / 16;
+const BATTERY_LEFT = 3 / 16;
+const BATTERY_RIGHT = 13 / 16;
 
 // FIXME: could this be in StTextureCache instead?
 function loadSymbolicIcon(cr, name, size, themeNode) {
@@ -112,5 +121,85 @@ var DynamicIcon = new Lang.Class({
         // Explicitly update shadow
         this.emit('style-changed');
         this.child.queue_repaint();
+    }
+});
+
+var BatteryIcon = new Lang.Class({
+    Name: 'BatteryIcon',
+    Extends: DynamicIcon,
+
+    setProxy(proxy) {
+        this._proxy = proxy;
+    },
+
+    drawIcon(cr, size, themeNode) {
+        if (!this._proxy || !this._proxy.IsPresent) {
+            this._drawStaticIcon(cr, size, themeNode, 'system-shutdown-symbolic');
+        } else {
+            switch(this._proxy.State) {
+                case UPower.DeviceState.EMPTY:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-empty-symbolic');
+                    return;
+
+                case UPower.DeviceState.FULLY_CHARGED:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-full-charged-symbolic');
+                    return;
+
+                case UPower.DeviceState.CHARGING:
+                case UPower.DeviceState.PENDING_CHARGE:
+                    if (this._proxy.Percentage == 0) {
+                        this._drawStaticIcon(cr, size, themeNode, 'battery-empty-charging-symbolic');
+                        return;
+                    }
+
+                    this._drawDynamicBattery(cr, size, themeNode, true);
+                    return;
+                case UPower.DeviceState.DISCHARGING:
+                case UPower.DeviceState.PENDING_DISCHARGE:
+                    this._drawDynamicBattery(cr, size, themeNode, false);
+                    return;
+                default:
+                    this._drawStaticIcon(cr, size, themeNode, 'battery-missing-symbolic');
+                    return;
+            }
+        }
+    },
+
+    _drawStaticIcon(cr, size, themeNode, iconName) {
+        let pixbuf = loadSymbolicIcon(cr, iconName, size, themeNode);
+        Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+        cr.rectangle(0, 0, size, size);
+        cr.fill();
+    },
+
+    _drawDynamicBattery(cr, size, themeNode, charging) {
+        let percentage = this._proxy.Percentage;
+        let caution = percentage <= CAUTION_PERCENTAGE;
+        let frac = 1 - percentage / 100;
+
+        let iconName = '';
+        if (caution)
+            iconName += '-caution';
+        if (charging)
+            iconName += '-charging';
+
+        bgName = 'battery-bg' + iconName + '-symbolic';
+        fgName = 'battery-fg' + iconName + '-symbolic';
+
+        this._drawStaticIcon(cr, size, themeNode, bgName);
+
+        let baseSize = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+
+        let rectT = BATTERY_TOP / baseSize * size;
+        let rectB = BATTERY_BOTTOM / baseSize * size;
+        let rectL = BATTERY_LEFT / baseSize * size;
+        let rectR = BATTERY_RIGHT / baseSize * size;
+
+        rectT += (rectB - rectT) * frac;
+
+        let pixbuf = loadSymbolicIcon(cr, fgName, size, themeNode);
+        Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+        cr.rectangle(rectL, rectT, rectR - rectL, rectB - rectT);
+        cr.fill();
     }
 });
