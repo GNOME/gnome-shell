@@ -219,6 +219,20 @@ var BatteryIcon = new Lang.Class({
     }
 });
 
+var PowerMenuItem = new Lang.Class({
+    Name: 'PowerMenuItem',
+    Extends: PopupMenu.PopupSubMenuMenuItem,
+
+    _init(proxy) {
+        this._proxy = proxy;
+        this.parent("", true);
+    },
+
+    _createIcon() {
+        return new BatteryIcon(this._proxy, { style_class: 'popup-menu-icon' });
+    },
+});
+
 var Indicator = new Lang.Class({
     Name: 'PowerIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -229,12 +243,6 @@ var Indicator = new Lang.Class({
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
                                       this._sync.bind(this));
-
-        this._indicator = this._addIndicator();
-        this._percentageLabel = new St.Label({ y_expand: true,
-                                               y_align: Clutter.ActorAlign.CENTER });
-        this.indicators.add(this._percentageLabel, { expand: true, y_fill: true });
-        this.indicators.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
                                             (proxy, error) => {
@@ -247,12 +255,22 @@ var Indicator = new Lang.Class({
                                                 this._sync();
                                             });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
+        this._indicator = this._addIndicator();
+        this._percentageLabel = new St.Label({ y_expand: true,
+                                               y_align: Clutter.ActorAlign.CENTER });
+        this.indicators.add(this._percentageLabel, { expand: true, y_fill: true });
+        this.indicators.add_style_class_name('power-status');
+
+        this._item = new PowerMenuItem(this._proxy);
         this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
         this.menu.addMenuItem(this._item);
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
+    },
+
+    _createIcon() {
+        return new BatteryIcon(this._proxy, { style_class: 'system-status-icon' });
     },
 
     _sessionUpdated() {
@@ -305,15 +323,9 @@ var Indicator = new Lang.Class({
         } else {
             // If there's no battery, then we use the power icon.
             this._item.actor.hide();
-            this._indicator.icon_name = 'system-shutdown-symbolic';
             this._percentageLabel.hide();
             return;
         }
-
-        // The icons
-        let icon = this._proxy.IconName;
-        this._indicator.icon_name = icon;
-        this._item.icon.icon_name = icon;
 
         // The icon label
         let label
