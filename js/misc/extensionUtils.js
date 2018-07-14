@@ -31,7 +31,7 @@ function getCurrentExtension() {
     // Search for an occurrence of an extension stack frame
     // Start at 1 because 0 is the stack frame of this function
     for (let i = 1; i < stack.length; i++) {
-        if (stack[i].indexOf('/gnome-shell/extensions/') > -1) {
+        if (stack[i].includes('/gnome-shell/extensions/')) {
             extensionStackLine = stack[i];
             break;
         }

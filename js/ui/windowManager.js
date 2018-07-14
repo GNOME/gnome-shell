@@ -1288,7 +1288,7 @@ var WindowManager = class {
             return false;
 
         let type = actor.meta_window.get_window_type();
-        return types.indexOf(type) >= 0;
+        return types.includes(type);
     }
 
     _removeEffect(list, actor) {
@@ -1501,7 +1501,7 @@ var WindowManager = class {
     _sizeChangedWindow(shellwm, actor) {
         if (!actor.__animationInfo)
             return;
-        if (this._resizing.indexOf(actor) != -1)
+        if (this._resizing.includes(actor))
             return;
 
         let actorClone = actor.__animationInfo.clone;

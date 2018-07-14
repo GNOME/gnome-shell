@@ -536,7 +536,7 @@ var WindowOverlay = class {
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
         let layout = Meta.prefs_get_button_layout();
-        let side = layout.left_buttons.indexOf(Meta.ButtonFunction.CLOSE) > -1 ? St.Side.LEFT : St.Side.RIGHT;
+        let side = layout.left_buttons.includes(Meta.ButtonFunction.CLOSE) ? St.Side.LEFT : St.Side.RIGHT;
 
         let buttonX;
         let buttonY = cloneY - (button.height - button._overlap);

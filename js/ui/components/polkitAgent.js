@@ -45,9 +45,9 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         let userName = GLib.get_user_name();
-        if (userNames.indexOf(userName) < 0)
+        if (!userNames.includes(userName))
             userName = 'root';
-        if (userNames.indexOf(userName) < 0)
+        if (!userNames.includes(userName))
             userName = userNames[0];
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
