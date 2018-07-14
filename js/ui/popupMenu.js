@@ -1093,7 +1093,7 @@ var PopupSubMenuMenuItem = new Lang.Class({
         this.actor.add_style_class_name('popup-submenu-menu-item');
 
         if (wantIcon) {
-            this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
+            this.icon = this._createIcon();
             this.actor.add_child(this.icon);
         }
 
@@ -1118,6 +1118,10 @@ var PopupSubMenuMenuItem = new Lang.Class({
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
         this.menu.connect('open-state-changed', this._subMenuOpenStateChanged.bind(this));
+    },
+
+    _createIcon() {
+        return new St.Icon({ style_class: 'popup-menu-icon' });
     },
 
     _setParent(parent) {
