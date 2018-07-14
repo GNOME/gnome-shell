@@ -1087,7 +1087,8 @@ var PopupSubMenuMenuItem = new Lang.Class({
     Name: 'PopupSubMenuMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init(text, wantIcon) {
+    // FIXME: Should icons be generalized somehow?
+    _init(text, wantIcon, customWidget = undefined) {
         this.parent();
 
         this.actor.add_style_class_name('popup-submenu-menu-item');
@@ -1095,6 +1096,11 @@ var PopupSubMenuMenuItem = new Lang.Class({
         if (wantIcon) {
             this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
             this.actor.add_child(this.icon);
+        }
+
+        if (customWidget) {
+            this.customWidget = customWidget;
+            this.actor.add_child(customWidget);
         }
 
         this.label = new St.Label({ text: text,
