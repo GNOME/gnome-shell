@@ -69,7 +69,7 @@ function _getCategories(info) {
 
 function _listsIntersect(a, b) {
     for (let itemA of a)
-        if (b.indexOf(itemA) >= 0)
+        if (b.includes(itemA))
             return true;
     return false;
 }
@@ -1165,7 +1165,7 @@ var FolderIcon = class FolderIcon {
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
-            if (excludedApps.indexOf(appId) >= 0)
+            if (excludedApps.includes(appId))
                 return;
 
             let app = appSys.lookup_app(appId);
@@ -1728,7 +1728,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             let appInfo = this._source.app.get_app_info();
             let actions = appInfo.list_actions();
             if (this._source.app.can_open_new_window() &&
-                actions.indexOf('new-window') == -1) {
+                actions.includes('new-window')) {
                 this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                 this._newWindowMenuItem.connect('activate', () => {
                     if (this._source.app.state == Shell.AppState.STOPPED)
@@ -1742,7 +1742,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 
             if (discreteGpuAvailable &&
                 this._source.app.state == Shell.AppState.STOPPED &&
-                actions.indexOf('activate-discrete-gpu') == -1) {
+                actions.includes('activate-discrete-gpu')) {
                 this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                 this._onDiscreteGpuMenuItem.connect('activate', () => {
                     if (this._source.app.state == Shell.AppState.STOPPED)

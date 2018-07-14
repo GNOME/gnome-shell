@@ -125,7 +125,7 @@ var KeyboardManager = class {
 
     _getLocaleLayout() {
         let locale = GLib.get_language_names()[0];
-        if (locale.indexOf('_') == -1)
+        if (!locale.includes('_'))
             locale = DEFAULT_LOCALE;
 
         let [found, , id] = GnomeDesktop.get_input_source_from_locale(locale);

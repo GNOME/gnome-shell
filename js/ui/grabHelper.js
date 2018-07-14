@@ -87,7 +87,7 @@ var GrabHelper = class GrabHelper {
     _isWithinGrabbedActor(actor) {
         let currentActor = this.currentGrab.actor;
         while (actor) {
-            if (this._actors.indexOf(actor) != -1)
+            if (this._actors.includes(actor))
                 return true;
             if (actor == currentActor)
                 return true;

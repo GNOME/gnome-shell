@@ -128,7 +128,7 @@ function _loadMode(file, info) {
     let propBlacklist = ['unlockDialog'];
     for (let prop in _modes[DEFAULT_MODE]) {
         if (newMode[prop] !== undefined &&
-            propBlacklist.indexOf(prop) == -1)
+            !propBlacklist.includes(prop))
             _modes[modeName][prop] = newMode[prop];
     }
     _modes[modeName]['isPrimary'] = true;

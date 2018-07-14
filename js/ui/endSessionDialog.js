@@ -585,7 +585,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _onInhibitorLoaded(inhibitor) {
-        if (this._applications.indexOf(inhibitor) < 0) {
+        if (!this._applications.includes(inhibitor)) {
             // Stale inhibitor
             return;
         }

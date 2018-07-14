@@ -228,7 +228,7 @@ class NotificationApplicationPolicy extends NotificationPolicy {
         this._settings.set_string('application-id', this.id + '.desktop');
 
         let apps = this._masterSettings.get_strv('application-children');
-        if (apps.indexOf(this._canonicalId) < 0) {
+        if (!apps.includes(this._canonicalId)) {
             apps.push(this._canonicalId);
             this._masterSettings.set_strv('application-children', apps);
         }
@@ -772,7 +772,7 @@ var Source = class Source {
     }
 
     pushNotification(notification) {
-        if (this.notifications.indexOf(notification) >= 0)
+        if (this.notifications.includes(notification))
             return;
 
         while (this.notifications.length >= MAX_NOTIFICATIONS_PER_SOURCE)
@@ -1069,7 +1069,7 @@ var MessageTray = class MessageTray {
             // If a new notification is updated while it is being hidden,
             // we stop hiding it and show it again.
             this._updateShowingNotification();
-        } else if (this._notificationQueue.indexOf(notification) < 0) {
+        } else if (!this._notificationQueue.includes(notification)) {
             // If the queue is "full", we skip banner mode and just show a small
             // indicator in the panel; however do make an exception for CRITICAL
             // notifications, as only banner mode allows expansion.
