@@ -218,11 +218,16 @@ var SystemIndicator = new Lang.Class({
     },
 
     _addIndicator() {
-        let icon = new St.Icon({ style_class: 'system-status-icon' });
+        let icon = this._createIcon();
+        icon.style_class = 'system-status-icon';
         this.indicators.add_actor(icon);
         icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();
         return icon;
+    },
+
+    _createIcon() {
+        return new St.Icon();
     }
 });
 Signals.addSignalMethods(SystemIndicator.prototype);
