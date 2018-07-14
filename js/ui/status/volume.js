@@ -215,7 +215,7 @@ var OutputStreamSlider = class extends StreamSlider {
         // of different identifiers for headphones, and I could
         // not find the complete list
         if (sink.get_ports().length > 0)
-            return sink.get_port().port.indexOf('headphone') >= 0;
+            return sink.get_port().port.includes('headphone');
 
         return false;
     }

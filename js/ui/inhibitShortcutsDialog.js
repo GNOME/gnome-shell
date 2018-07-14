@@ -111,7 +111,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
     }
 
     vfunc_show() {
-        if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1) {
+        if (this._app && APP_WHITELIST.includes(this._app.get_id())) {
             this._emitResponse(DialogResponse.ALLOW);
             return;
         }

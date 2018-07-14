@@ -327,7 +327,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._getPPPoESecrets(content.secrets);
             break;
         case 'gsm':
-            if (this._hints.indexOf('pin') != -1) {
+            if (this._hints.includes('pin')) {
                 let gsmSetting = this._connection.get_setting_gsm();
                 content.title = _("PIN code required");
                 content.message = _("PIN code is needed for the mobile broadband device");
@@ -695,7 +695,7 @@ var NetworkAgent = class {
             body = _("A password is required to connect to “%s”.".format(connection.get_id()));
             break;
         case 'gsm':
-            if (hints.indexOf('pin') != -1) {
+            if (hints.includes('pin')) {
                 let gsmSetting = connection.get_setting_gsm();
                 title = _("PIN code required");
                 body = _("PIN code is needed for the mobile broadband device");

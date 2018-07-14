@@ -582,12 +582,12 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
     _isEnabled() {
         let extensions = this._settings.get_strv('enabled-extensions');
-        return extensions.indexOf(this.uuid) != -1;
+        return extensions.includes(this.uuid);
     }
 
     _enable() {
         let extensions = this._settings.get_strv('enabled-extensions');
-        if (extensions.indexOf(this.uuid) != -1)
+        if (extensions.includes(this.uuid))
             return;
 
         extensions.push(this.uuid);
