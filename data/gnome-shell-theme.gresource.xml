@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell/theme">
+    <file alias="icons/battery-bg-caution-symbolic.svg">battery-bg-caution-symbolic.svg</file>
+    <file alias="icons/battery-bg-caution-charging-symbolic.svg">battery-bg-caution-charging-symbolic.svg</file>
+    <file alias="icons/battery-bg-charging-symbolic.svg">battery-bg-charging-symbolic.svg</file>
+    <file alias="icons/battery-bg-symbolic.svg">battery-bg-symbolic.svg</file>
+    <file alias="icons/battery-bg-empty-charging-symbolic.svg">battery-bg-empty-charging-symbolic.svg</file>
+    <file alias="icons/battery-bg-empty-symbolic.svg">battery-bg-empty-symbolic.svg</file>
+    <file alias="icons/battery-fg-caution-symbolic.svg">battery-fg-caution-symbolic.svg</file>
+    <file alias="icons/battery-fg-caution-charging-symbolic.svg">battery-fg-caution-charging-symbolic.svg</file>
+    <file alias="icons/battery-fg-charging-symbolic.svg">battery-fg-charging-symbolic.svg</file>
+    <file alias="icons/battery-fg-symbolic.svg">battery-fg-symbolic.svg</file>
+    <file alias="icons/battery-bg-full-charged-symbolic.svg">battery-bg-full-charged-symbolic.svg</file>
+    <file alias="icons/battery-bg-missing-symbolic.svg">battery-bg-missing-symbolic.svg</file>
     <file>calendar-arrow-left.svg</file>
     <file>calendar-arrow-right.svg</file>
     <file>calendar-today.svg</file>

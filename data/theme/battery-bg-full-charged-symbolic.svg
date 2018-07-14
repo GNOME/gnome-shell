@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="adwaita2-full-charged-symbolic.svg"
+   inkscape:export-filename="/home/sam/dev/RESOURCES/gnome-icon-theme-symbolic/src/gnome-stencils.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   height="16.001423"
+   id="svg7384"
+   version="1.1"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   width="16">
+  <metadata
+     id="metadata90">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Gnome Symbolic Icon Theme</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:bbox-nodes="false"
+     inkscape:bbox-paths="true"
+     bordercolor="#666666"
+     borderopacity="1"
+     inkscape:current-layer="layer9"
+     inkscape:cx="6.4208298"
+     inkscape:cy="10.687372"
+     gridtolerance="10"
+     inkscape:guide-bbox="true"
+     guidetolerance="10"
+     id="namedview88"
+     inkscape:object-nodes="true"
+     inkscape:object-paths="true"
+     objecttolerance="10"
+     pagecolor="#3a3b39"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     showborder="false"
+     showgrid="false"
+     showguides="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="false"
+     inkscape:snap-global="true"
+     inkscape:snap-grids="true"
+     inkscape:snap-nodes="true"
+     inkscape:snap-others="false"
+     inkscape:snap-to-guides="true"
+     inkscape:window-height="704"
+     inkscape:window-maximized="1"
+     inkscape:window-width="1366"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:zoom="45.254834"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-midpoints="true">
+    <inkscape:grid
+       dotted="false"
+       empspacing="2"
+       enabled="true"
+       id="grid4866"
+       originx="60"
+       originy="0.0014224199"
+       snapvisiblegridlinesonly="true"
+       spacingx="1"
+       spacingy="1"
+       type="xygrid"
+       visible="true" />
+  </sodipodi:namedview>
+  <title
+     id="title9167">Gnome Symbolic Icon Theme</title>
+  <defs
+     id="defs7386" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="status"
+     style="display:inline"
+     transform="translate(-181.0002,-217)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 189.7795,222.00771 c -0.17789,0.0489 -0.3419,0.14729 -0.46875,0.28125 l -3.03125,3 c -0.2353,0.23074 -0.34458,0.58284 -0.28125,0.90625 l 0,0.8125 0.8125,0 0.1875,0 1.4707,0 -1.1875,1.27359 c -0.21461,0.21931 -0.32135,0.53954 -0.28125,0.84375 -0.001,0.0312 -0.001,0.0625 0,0.0937 l 0,0.78125 0.84375,0 0.15625,0 c 0.26386,0.004 0.52791,-0.099 0.71875,-0.28125 l 3,-2.99234 c 0.18369,-0.18976 0.28735,-0.45466 0.28125,-0.7187 0.003,-0.0416 0.003,-0.0834 0,-0.125 l 0,-0.875 -0.84375,0 -0.15625,0 -1.56445,0 1.3125,-1.28125 c 0.21461,-0.2193 0.32135,-0.53953 0.28125,-0.84375 10e-4,-0.0312 10e-4,-0.0625 0,-0.0937 l 0,-0.7813 -0.84375,0 -0.0937,0 c -0.0208,-6.4e-4 -0.0417,-6.4e-4 -0.0625,0 -0.0829,-0.0103 -0.16709,-0.0103 -0.25,0 z"
+       id="path10747"
+       sodipodi:nodetypes="ccccccccccccccccccccccccccccccc"
+       style="color:#bebebe;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:xx-small;line-height:normal;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:currentColor;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;enable-background:accumulate" />
+    <path
+       style="color:#bebebe;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:currentColor;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.00264454;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="M 6.46875 1 C 6.2929616 1 6.1488677 1.0356207 6.015625 1.0839844 C 5.7733845 1.1673125 5.5855232 1.3071613 5.4335938 1.4628906 C 5.4255774 1.4711074 5.4249687 1.4851761 5.4179688 1.4941406 C 5.1938326 1.7305466 5.0048876 2.0379632 5.0019531 2.4902344 C 5.0005689 2.4909527 4.9994452 2.4914771 4.9980469 2.4921875 L 4.9980469 3 L 2.9980469 3 L 2.9980469 15 L 13 15.001953 L 13 14 L 13 3.0019531 L 11 3.0019531 L 11 2.6035156 L 10.998047 2.5761719 C 10.974147 2.1457119 10.817881 1.84217 10.582031 1.5625 C 10.346191 1.28283 9.9615794 0.97539254 9.3808594 1.0078125 L 9.4375 1.0058594 L 6.4765625 1.0058594 C 6.4733953 1.003552 6.471922 1.0023126 6.46875 1 z M 8.6347656 3.9394531 C 8.6452656 3.9395431 8.6556156 3.9399231 8.6660156 3.9394531 C 8.7079156 3.9374531 8.7497156 3.9324531 8.7910156 3.9394531 L 10.998047 3.9394531 L 10.998047 7.0019531 L 11.998047 7.0019531 L 11.998047 9.1953125 C 12.071847 9.5336125 11.965547 9.8860232 11.716797 10.126953 L 8.1953125 13.626953 C 8.0347225 13.784893 7.8255225 13.883993 7.6015625 13.908203 C 7.5505625 13.917203 7.4989756 13.921275 7.4472656 13.921875 C 7.4367656 13.921785 7.4263156 13.921405 7.4160156 13.921875 C 7.3741156 13.923875 7.3323156 13.928875 7.2910156 13.921875 L 4.9980469 13.921875 L 4.9980469 11.001953 L 3.9980469 11.001953 L 3.9980469 8.6660156 C 3.9241469 8.3277156 4.0305469 7.975295 4.2792969 7.734375 L 7.8867188 4.234375 C 8.0473188 4.076435 8.2565287 3.977325 8.4804688 3.953125 C 8.5314688 3.944125 8.5830655 3.940053 8.6347656 3.9394531 z "
+       transform="translate(181.0002,217)"
+       id="path3434-5" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer10"
+     inkscape:label="devices"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer11"
+     inkscape:label="apps"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer13"
+     inkscape:label="places"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer14"
+     inkscape:label="mimetypes"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer15"
+     inkscape:label="emblems"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="g71291"
+     inkscape:label="emotes"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="g4953"
+     inkscape:label="categories"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer12"
+     inkscape:label="actions"
+     style="display:inline"
+     transform="translate(-181.0002,-217)" />
+</svg>
