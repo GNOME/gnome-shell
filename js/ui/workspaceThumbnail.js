@@ -397,7 +397,7 @@ var WorkspaceThumbnail = new Lang.Class({
             return;
         }
 
-        if (this._allWindows.indexOf(metaWin) == -1) {
+        if (!this._allWindows.includes(metaWin)) {
             let minimizedChangedId = metaWin.connect('notify::minimized',
                                                      this._updateMinimized.bind(this));
             this._allWindows.push(metaWin);

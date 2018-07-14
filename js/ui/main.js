@@ -648,7 +648,7 @@ function initializeDeferredWork(actor, callback, props) {
     _deferredWorkData[workId] = { 'actor': actor,
                                   'callback': callback };
     actor.connect('notify::mapped', () => {
-        if (!(actor.mapped && _deferredWorkQueue.indexOf(workId) >= 0))
+        if (!(actor.mapped && _deferredWorkQueue.includes(workId)))
             return;
         _queueBeforeRedraw(workId);
     });
@@ -678,7 +678,7 @@ function queueDeferredWork(workId) {
         logError(new Error(message), message);
         return;
     }
-    if (_deferredWorkQueue.indexOf(workId) < 0)
+    if (!_deferredWorkQueue.includes(workId))
         _deferredWorkQueue.push(workId);
     if (data.actor.mapped) {
         _queueBeforeRedraw(workId);

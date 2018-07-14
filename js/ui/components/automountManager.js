@@ -198,7 +198,7 @@ var AutomountManager = new Lang.Class({
             // FIXME: we will always get G_IO_ERROR_FAILED from the gvfs udisks
             // backend in this case, see 
             // https://bugs.freedesktop.org/show_bug.cgi?id=51271
-            if (e.message.indexOf('No key available with this passphrase') != -1) {
+            if (e.message.includes('No key available with this passphrase')) {
                 this._reaskPassword(volume);
             } else {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))

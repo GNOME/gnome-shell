@@ -148,10 +148,10 @@ function loadRemoteSearchProviders(searchSettings, callback) {
 
         if (provider.defaultEnabled) {
             let disabled = searchSettings.get_strv('disabled');
-            return disabled.indexOf(appId) == -1;
+            return !disabled.includes(appId);
         } else {
             let enabled = searchSettings.get_strv('enabled');
-            return enabled.indexOf(appId) != -1;
+            return enabled.includes(appId);
         }
     });
 

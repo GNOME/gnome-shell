@@ -241,7 +241,7 @@ var InstallExtensionDialog = new Lang.Class({
         function callback() {
             // Add extension to 'enabled-extensions' for the user, always...
             let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
-            if (enabledExtensions.indexOf(uuid) == -1) {
+            if (!enabledExtensions.includes(uuid)) {
                 enabledExtensions.push(uuid);
                 global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
             }

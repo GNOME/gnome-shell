@@ -649,7 +649,7 @@ var PadOsd = new Lang.Class({
             // If the device is being removed, destroy the padOsd.
             if (device == this.padDevice) {
                 this.destroy();
-            } else if (this._groupPads.indexOf(device) != -1) {
+            } else if (this._groupPads.includes(device)) {
                 // Or update the pad chooser if the device belongs to
                 // the same group.
                 this._groupPads.splice(this._groupPads.indexOf(device), 1);
@@ -768,8 +768,7 @@ var PadOsd = new Lang.Class({
     },
 
     _requestForOtherPad(pad) {
-        if (pad == this.padDevice ||
-            this._groupPads.indexOf(pad) == -1)
+        if (pad == this.padDevice || !this._groupPads.includes(pad))
             return;
 
         let editionMode = this._editionMode;
@@ -820,7 +819,7 @@ var PadOsd = new Lang.Class({
 
         // If the event comes from another pad in the same group,
         // show the OSD for it.
-        if (this._groupPads.indexOf(event.get_source_device()) != -1) {
+        if (this._groupPads.includes(event.get_source_device())) {
             this._requestForOtherPad(event.get_source_device());
             return Clutter.EVENT_STOP;
         }

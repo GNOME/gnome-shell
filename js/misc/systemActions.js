@@ -273,7 +273,7 @@ const SystemActions = new Lang.Class({
         let results = [];
 
         for (let [key, {available, keywords}] of this._actions)
-            if (available && terms.every(t => keywords.some(k => (k.indexOf(t) >= 0))))
+            if (available && terms.every(t => keywords.some(k => (k.includes(t)))))
                 results.push(key);
 
         return results;

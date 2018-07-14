@@ -82,7 +82,7 @@ var URLHighlighter = new Lang.Class({
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
                 let url = this._urls[urlId].url;
-                if (url.indexOf(':') == -1)
+                if (!url.includes(':'))
                     url = 'http://' + url;
 
                 Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context(0, -1));

@@ -1045,9 +1045,9 @@ var Panel = new Lang.Class({
         this._updateBox(panel.center, this._centerBox);
         this._updateBox(panel.right, this._rightBox);
 
-        if (panel.left.indexOf('dateMenu') != -1)
+        if (panel.left.includes('dateMenu'))
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.START;
-        else if (panel.right.indexOf('dateMenu') != -1)
+        else if (panel.right.includes('dateMenu'))
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.END;
         // Default to center if there is no dateMenu
         else
