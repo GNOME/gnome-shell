@@ -360,11 +360,11 @@ var SessionMenuButton = new Lang.Class({
 
     _updateOrnament() {
         let itemIds = Object.keys(this._items);
-        for (let i = 0; i < itemIds.length; i++) {
-            if (itemIds[i] == this._activeSessionId)
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
+        for (let id of itemIds) {
+            if (id == this._activeSessionId)
+                this._items[id].setOrnament(PopupMenu.Ornament.DOT);
             else
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
+                this._items[id].setOrnament(PopupMenu.Ornament.NONE);
         }
     },
 
@@ -389,10 +389,9 @@ var SessionMenuButton = new Lang.Class({
             return;
         }
 
-        for (let i = 0; i < ids.length; i++) {
-            let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
+        for (let id of ids) {
+            let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(id);
 
-            let id = ids[i];
             let item = new PopupMenu.PopupMenuItem(sessionName);
             this._menu.addMenuItem(item);
             this._items[id] = item;
@@ -929,9 +928,9 @@ var LoginDialog = new Lang.Class({
                            onUpdate() {
                                let children = Main.layoutManager.uiGroup.get_children();
 
-                               for (let i = 0; i < children.length; i++) {
-                                   if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.actor.opacity;
+                               for (let child of children) {
+                                   if (child != Main.layoutManager.screenShieldGroup)
+                                       child.opacity = this.actor.opacity;
                                }
                            },
                            onUpdateScope: this,
@@ -959,9 +958,9 @@ var LoginDialog = new Lang.Class({
                            onUpdate() {
                                let children = Main.layoutManager.uiGroup.get_children();
 
-                               for (let i = 0; i < children.length; i++) {
-                                   if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.actor.opacity;
+                               for (let child of children) {
+                                   if (child != Main.layoutManager.screenShieldGroup)
+                                       child.opacity = this.actor.opacity;
                                }
                            },
                            onUpdateScope: this,
@@ -1197,11 +1196,8 @@ var LoginDialog = new Lang.Class({
 
         this._userListLoaded = true;
 
-        let users = this._userManager.list_users();
-
-        for (let i = 0; i < users.length; i++) {
-            this._userList.addUser(users[i]);
-        }
+        for (let user of this._userManager.list_users())
+            this._userList.addUser(user);
 
         this._updateDisableUserList();
 

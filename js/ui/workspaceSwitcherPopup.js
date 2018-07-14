@@ -65,9 +65,9 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         availHeight -= this._list.get_theme_node().get_vertical_padding();
 
         let height = 0;
-        for (let i = 0; i < children.length; i++) {
-            let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(-1);
-            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(childNaturalHeight);
+        for (let child of children) {
+            let [childMinHeight, childNaturalHeight] = child.get_preferred_height(-1);
+            let [childMinWidth, childNaturalWidth] = child.get_preferred_width(childNaturalHeight);
             height += childNaturalHeight * workArea.width / workArea.height;
         }
 
@@ -96,14 +96,14 @@ var WorkspaceSwitcherPopup = new Lang.Class({
 
         let y = box.y1;
         let prevChildBoxY2 = box.y1 - this._itemSpacing;
-        for (let i = 0; i < children.length; i++) {
+        for (let child of children) {
             childBox.x1 = box.x1;
             childBox.x2 = box.x1 + this._childWidth;
             childBox.y1 = prevChildBoxY2 + this._itemSpacing;
             childBox.y2 = Math.round(y + this._childHeight);
             y += this._childHeight + this._itemSpacing;
             prevChildBoxY2 = childBox.y2;
-            children[i].allocate(childBox, flags);
+            child.allocate(childBox, flags);
         }
     },
 
@@ -171,8 +171,8 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._timeoutId = 0;
 
         let workspaceManager = global.workspace_manager;
-        for (let i = 0; i < this._workspaceManagerSignals.length; i++)
-            workspaceManager.disconnect(this._workspaceManagerSignals[i]);
+        for (let signal of this._workspaceManagerSignals)
+            workspaceManager.disconnect(signal);
 
         this.actor.destroy();
 

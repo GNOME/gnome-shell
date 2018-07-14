@@ -150,12 +150,7 @@ var FdoNotificationDaemon = new Lang.Class({
     },
 
     _lookupSource(title, pid) {
-        for (let i = 0; i < this._sources.length; i++) {
-            let source = this._sources[i];
-            if (source.pid == pid && source.initialTitle == title)
-                return source;
-        }
-        return null;
+        return this._sources.find(s => s.pid == pid && s.initialTitle == title);
     },
 
     // Returns the source associated with ndata.notification if it is set.
@@ -230,8 +225,7 @@ var FdoNotificationDaemon = new Lang.Class({
 
         let rewrites = rewriteRules[appName];
         if (rewrites) {
-            for (let i = 0; i < rewrites.length; i++) {
-                let rule = rewrites[i];
+            for (let rule of rewrites) {
                 if (summary.search(rule.pattern) != -1)
                     summary = summary.replace(rule.pattern, rule.replacement);
             }
@@ -437,8 +431,7 @@ var FdoNotificationDaemon = new Lang.Class({
         if (!tracker.focus_app)
             return;
 
-        for (let i = 0; i < this._sources.length; i++) {
-            let source = this._sources[i];
+        for (let source of this._sources) {
             if (source.app == tracker.focus_app) {
                 source.destroyNonResidentNotifications();
                 return;
@@ -849,10 +842,8 @@ var GtkNotificationDaemon = new Lang.Class({
             return;
 
         let sources = [];
-        for (let appId in this._sources) {
-            let source = this._sources[appId];
+        for (let source of this._sources)
             sources.push(source.serialize());
-        }
 
         global.set_persistent_state('notifications', new GLib.Variant('a(sa(sv))', sources));
     },

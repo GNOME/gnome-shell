@@ -1037,12 +1037,10 @@ var NMWirelessDialog = new Lang.Class({
     },
 
     _findExistingNetwork(accessPoint) {
-        for (let i = 0; i < this._networks.length; i++) {
-            let network = this._networks[i];
-            for (let j = 0; j < network.accessPoints.length; j++) {
-                if (network.accessPoints[j] == accessPoint)
-                    return { network: i, ap: j };
-            }
+        for (let i in this._networks) {
+            let j = this._networks[i].accessPoints.findIndex(ap => ap == accessPoint);
+            if (j != -1)
+                return { network: i, ap: j };
         }
 
         return null;
@@ -1052,11 +1050,7 @@ var NMWirelessDialog = new Lang.Class({
         if (accessPoint.get_ssid() == null)
             return -1;
 
-        for (let i = 0; i < this._networks.length; i++) {
-            if (this._networkCompare(this._networks[i], accessPoint))
-                return i;
-        }
-        return -1;
+        return this._networks.findIndex(n => this._networkCompare(n, accessPoint));
     },
 
     _checkConnections(network, accessPoint) {
@@ -1522,9 +1516,8 @@ var NMVpnSection = new Lang.Class({
 
     setActiveConnections(vpnConnections) {
         let connections = this._connectionItems.values();
-        for (let item of connections) {
+        for (let item of connections)
             item.setActiveConnection(null);
-        }
         vpnConnections.forEach(a => {
             if (a.connection) {
                 let item = this._connectionItems.get(a.connection.get_uuid());
@@ -1712,9 +1705,8 @@ var NMApplet = new Lang.Class({
 
     _readDevices() {
         let devices = this._client.get_devices() || [ ];
-        for (let i = 0; i < devices.length; ++i) {
-            this._deviceAdded(this._client, devices[i], true);
-        }
+        for (let device of devices)
+            this._deviceAdded(this._client, device, true);
         this._syncDeviceNames();
     },
 
@@ -1745,7 +1737,7 @@ var NMApplet = new Lang.Class({
 
     _syncDeviceNames() {
         let names = NM.Device.disambiguate_names(this._nmDevices);
-        for (let i = 0; i < this._nmDevices.length; i++) {
+        for (let i in this._nmDevices) {
             let device = this._nmDevices[i];
             let description = names[i];
             if (device._delegate)
@@ -1922,9 +1914,9 @@ var NMApplet = new Lang.Class({
             this._vpnSection.removeConnection(connection);
         } else {
             let devices = this._devices[section].devices;
-            for (let i = 0; i < devices.length; i++) {
-                if (devices[i] instanceof NMConnectionSection)
-                    devices[i].removeConnection(connection);
+            for (let device of devices) {
+                if (device instanceof NMConnectionSection)
+                    device.removeConnection(connection);
             }
         }
 

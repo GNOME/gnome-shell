@@ -284,20 +284,20 @@ var RemoteSearchProvider = new Lang.Class({
         }
         let metas = results[0];
         let resultMetas = [];
-        for (let i = 0; i < metas.length; i++) {
-            for (let prop in metas[i]) {
+        for (let meta of metas) {
+            for (let prop in meta) {
                 // we can use the serialized icon variant directly
                 if (prop != 'icon')
-                    metas[i][prop] = metas[i][prop].deep_unpack();
+                    meta[prop] = meta[prop].deep_unpack();
             }
 
-            resultMetas.push({ id: metas[i]['id'],
-                               name: metas[i]['name'],
-                               description: metas[i]['description'],
+            resultMetas.push({ id: meta['id'],
+                               name: meta['name'],
+                               description: meta['description'],
                                createIcon: size => {
-                                   return this.createIcon(size, metas[i]);
+                                   return this.createIcon(size, meta);
                                },
-                               clipboardText: metas[i]['clipboardText'] });
+                               clipboardText: meta['clipboardText'] });
         }
         callback(resultMetas);
     },

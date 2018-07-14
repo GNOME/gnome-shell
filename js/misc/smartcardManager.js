@@ -40,8 +40,8 @@ var SmartcardManager = new Lang.Class({
     _onLoaded() {
         let tokens = this._objectManager.getProxiesForInterface('org.gnome.SettingsDaemon.Smartcard.Token');
 
-        for (let i = 0; i < tokens.length; i++)
-            this._addToken(tokens[i]);
+        for (let token of tokens)
+            this._addToken(token);
 
         this._objectManager.connect('interface-added', (objectManager, interfaceName, proxy) => {
             if (interfaceName == 'org.gnome.SettingsDaemon.Smartcard.Token')

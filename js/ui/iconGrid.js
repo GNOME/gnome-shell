@@ -378,15 +378,15 @@ var IconGrid = new Lang.Class({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
-        for (let i = 0; i < children.length; i++) {
-            let childBox = this._calculateChildBox(children[i], x, y, box);
+        for (let child of children) {
+            let childBox = this._calculateChildBox(child, x, y, box);
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
-                this._grid.set_skip_paint(children[i], true);
+                this._grid.set_skip_paint(child, true);
             } else {
-                children[i].allocate(childBox, flags);
-                this._grid.set_skip_paint(children[i], false);
+                child.allocate(childBox, flags);
+                this._grid.set_skip_paint(child, false);
             }
 
             columnIndex++;
@@ -441,7 +441,7 @@ var IconGrid = new Lang.Class({
         let maxDelay = Math.min(ANIMATION_BASE_DELAY_FOR_ITEM * actors.length,
                                 ANIMATION_MAX_DELAY_FOR_ITEM);
 
-        for (let index = 0; index < actors.length; index++) {
+        for (let index in actors) {
             let actor = actors[index];
             actor.reactive = false;
             actor.set_scale(0, 0);
@@ -502,7 +502,7 @@ var IconGrid = new Lang.Class({
         }, Infinity);
         let normalization = maxDist - minDist;
 
-        for (let index = 0; index < actors.length; index++) {
+        for (let index in actors) {
             let actor = actors[index];
             actor.opacity = 0;
             actor.reactive = false;
@@ -582,9 +582,8 @@ var IconGrid = new Lang.Class({
     },
 
     _restoreItemsOpacity() {
-        for (let index = 0; index < this._items.length; index++) {
-            this._items[index].actor.opacity = 255;
-        }
+        for (let item of this._items)
+            item.actor.opacity = 255;
     },
 
     _getAllocatedChildSizeAndSpacing(child) {
@@ -785,9 +784,8 @@ var IconGrid = new Lang.Class({
     _updateIconSizes() {
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
         let newIconSize = Math.floor(ICON_SIZE * scale);
-        for (let i in this._items) {
-            this._items[i].icon.setIconSize(newIconSize);
-        }
+        for (let item of this._items)
+            item.icon.setIconSize(newIconSize);
     }
 });
 Signals.addSignalMethods(IconGrid.prototype);
@@ -843,10 +841,10 @@ var PaginatedIconGrid = new Lang.Class({
         let columnIndex = 0;
         let rowIndex = 0;
 
-        for (let i = 0; i < children.length; i++) {
-            let childBox = this._calculateChildBox(children[i], x, y, box);
-            children[i].allocate(childBox, flags);
-            this._grid.set_skip_paint(children[i], false);
+        for (let child of children) {
+            let childBox = this._calculateChildBox(child, x, y, box);
+            child.allocate(childBox, flags);
+            this._grid.set_skip_paint(child, false);
 
             columnIndex++;
             if (columnIndex == nColumns) {
@@ -987,7 +985,7 @@ var PaginatedIconGrid = new Lang.Class({
         if (direction == Gtk.DirectionType.UP)
             translationY *= -1;
 
-        for (let i = 0; i < children.length; i++) {
+        for (let i in children) {
             children[i].translation_y = 0;
             let params = { translation_y: translationY,
                            time: EXTRA_SPACE_ANIMATION_TIME,
@@ -1005,10 +1003,10 @@ var PaginatedIconGrid = new Lang.Class({
             return;
         }
 
-        for (let i = 0; i < this._translatedChildren.length; i++) {
-            if (!this._translatedChildren[i].translation_y)
+        for (let child of this._translatedChildren) {
+            if (!child.translation_y)
                 continue;
-            Tweener.addTween(this._translatedChildren[i],
+            Tweener.addTween(child,
                              { translation_y: 0,
                                time: EXTRA_SPACE_ANIMATION_TIME,
                                transition: 'easeInOutQuad',

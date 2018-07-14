@@ -98,9 +98,9 @@ var IBusManager = new Lang.Class({
     _initEngines(ibus, result) {
         let enginesList = this._ibus.list_engines_async_finish(result);
         if (enginesList) {
-            for (let i = 0; i < enginesList.length; ++i) {
-                let name = enginesList[i].get_name();
-                this._engines[name] = enginesList[i];
+            for (let engine of enginesList) {
+                let name = engine.get_name();
+                this._engines[name] = engine;
             }
             this._updateReadiness();
         } else {

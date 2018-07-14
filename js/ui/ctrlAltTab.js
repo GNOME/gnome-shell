@@ -49,7 +49,7 @@ var CtrlAltTabManager = new Lang.Class({
     removeGroup(root) {
         if (root instanceof St.Widget)
             global.focus_manager.remove_group(root);
-        for (let i = 0; i < this._items.length; i++) {
+        for (let i in this._items) {
             if (this._items[i].root == root) {
                 this._items.splice(i, 1);
                 return;
@@ -92,24 +92,24 @@ var CtrlAltTabManager = new Lang.Class({
                                                activeWorkspace);
             let windowTracker = Shell.WindowTracker.get_default();
             let textureCache = St.TextureCache.get_default();
-            for (let i = 0; i < windows.length; i++) {
+            for (let win of windows) {
                 let icon = null;
                 let iconName = null;
-                if (windows[i].get_window_type () == Meta.WindowType.DESKTOP) {
+                if (win.get_window_type () == Meta.WindowType.DESKTOP) {
                     iconName = 'video-display-symbolic';
                 } else {
-                    let app = windowTracker.get_window_app(windows[i]);
+                    let app = windowTracker.get_window_app(win);
                     if (app)
                         icon = app.create_icon_texture(POPUP_APPICON_SIZE);
                     else
-                        icon = textureCache.bind_cairo_surface_property(windows[i], 'icon');
+                        icon = textureCache.bind_cairo_surface_property(win, 'icon');
                 }
 
-                items.push({ name: windows[i].title,
-                             proxy: windows[i].get_compositor_private(),
+                items.push({ name: win.title,
+                             proxy: win.get_compositor_private(),
                              focusCallback: function(timestamp) {
                                  Main.activateWindow(this, timestamp);
-                             }.bind(windows[i]),
+                             }.bind(win),
                              iconActor: icon,
                              iconName: iconName,
                              sortGroup: SortGroup.MIDDLE });
@@ -175,8 +175,8 @@ var CtrlAltTabSwitcher = new Lang.Class({
     _init(items) {
         this.parent(true);
 
-        for (let i = 0; i < items.length; i++)
-            this._addIcon(items[i]);
+        for (let item of items)
+            this._addIcon(item);
     },
 
     _addIcon(item) {

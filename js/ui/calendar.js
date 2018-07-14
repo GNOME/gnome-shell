@@ -272,8 +272,7 @@ var DBusEventSource = new Lang.Class({
         let newEvents = [];
         let appointments = results ? results[0] : null;
         if (appointments != null) {
-            for (let n = 0; n < appointments.length; n++) {
-                let a = appointments[n];
+            for (let a of appointments) {
                 let date = new Date(a[4] * 1000);
                 let end = new Date(a[5] * 1000);
                 let id = a[0];
@@ -327,9 +326,7 @@ var DBusEventSource = new Lang.Class({
 
     getEvents(begin, end) {
         let result = [];
-        for(let n = 0; n < this._events.length; n++) {
-            let event = this._events[n];
-
+        for(let event of this._events) {
             if (this._ignoredEvents.has(event.id))
                 continue;
 
@@ -889,7 +886,7 @@ var EventsSection = new Lang.Class({
             this.removeMessage(message);
         });
 
-        for (let i = 0; i < events.length; i++) {
+        for (let i in events) {
             let event = events[i];
 
             let message = this._messageById.get(event.id);

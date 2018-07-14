@@ -513,10 +513,8 @@ var PopupMenuBase = new Lang.Class({
     },
 
     _setSettingsVisibility(visible) {
-        for (let id in this._settingsActions) {
-            let item = this._settingsActions[id];
+        for (let item of this._settingsActions)
             item.actor.visible = visible;
-        }
     },
 
     isEmpty() {
@@ -742,10 +740,8 @@ var PopupMenuBase = new Lang.Class({
 
     removeAll() {
         let children = this._getMenuItems();
-        for (let i = 0; i < children.length; i++) {
-            let item = children[i];
+        for (let item of children)
             item.destroy();
-        }
     },
 
     toggle() {
@@ -1325,12 +1321,7 @@ var PopupMenuManager = new Lang.Class({
     },
 
     _findMenu(item) {
-        for (let i = 0; i < this._menus.length; i++) {
-            let menudata = this._menus[i];
-            if (item == menudata.menu)
-                return i;
-        }
-        return -1;
+        return this._menus.findIndex(menudata => menudata.menu == item);
     },
 
     _closeMenu(isUser, menu) {

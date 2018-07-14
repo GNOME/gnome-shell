@@ -127,18 +127,18 @@ var WorkspacesView = new Lang.Class({
     },
 
     _setReservedSlot(window) {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setReservedSlot(window);
+        for (let workspace of this._workspaces)
+            workspace.setReservedSlot(window);
     },
 
     _syncFullGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setFullGeometry(this._fullGeometry);
+        for (let workspace of this._workspaces)
+            workspace.setFullGeometry(this._fullGeometry);
     },
 
     _syncActualGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setActualGeometry(this._actualGeometry);
+        for (let workspace of this._workspaces)
+            workspace.setActualGeometry(this._actualGeometry);
     },
 
     getActiveWorkspace() {
@@ -148,11 +148,11 @@ var WorkspacesView = new Lang.Class({
     },
 
     animateToOverview(animationType) {
-        for (let w = 0; w < this._workspaces.length; w++) {
+        for (let workspace of this._workspaces) {
             if (animationType == AnimationType.ZOOM)
-                this._workspaces[w].zoomToOverview();
+                workspace.zoomToOverview();
             else
-                this._workspaces[w].fadeToOverview();
+                workspace.fadeToOverview();
         }
         this._updateWorkspaceActors(false);
     },
@@ -160,17 +160,17 @@ var WorkspacesView = new Lang.Class({
     animateFromOverview(animationType) {
         this.actor.remove_clip();
 
-        for (let w = 0; w < this._workspaces.length; w++) {
+        for (let workspace of this._workspaces) {
             if (animationType == AnimationType.ZOOM)
-                this._workspaces[w].zoomFromOverview();
+                workspace.zoomFromOverview();
             else
-                this._workspaces[w].fadeFromOverview();
+                workspace.fadeFromOverview();
         }
     },
 
     syncStacking(stackIndices) {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].syncStacking(stackIndices);
+        for (let workspace of this._workspaces)
+            workspace.syncStacking(stackIndices);
     },
 
     _scrollToActive() {
@@ -189,7 +189,7 @@ var WorkspacesView = new Lang.Class({
 
         this._animating = showAnimation;
 
-        for (let w = 0; w < this._workspaces.length; w++) {
+        for (let w in this._workspaces) {
             let workspace = this._workspaces[w];
 
             Tweener.removeTweens(workspace.actor);
@@ -224,7 +224,7 @@ var WorkspacesView = new Lang.Class({
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
 
-        for (let w = 0; w < this._workspaces.length; w++) {
+        for (let w in this._workspaces) {
             let workspace = this._workspaces[w];
             if (this._animating || this._scrolling) {
                 workspace.actor.show();
@@ -352,7 +352,7 @@ var WorkspacesView = new Lang.Class({
 
         let dy = newY - currentY;
 
-        for (let i = 0; i < this._workspaces.length; i++) {
+        for (let i in this._workspaces) {
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.y += dy;
         }
@@ -451,19 +451,19 @@ var WorkspacesDisplay = new Lang.Class({
                     return false;
             }
 
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].startSwipeScroll();
+            for (let workspaceView of this._workspacesViews)
+                workspacesView.startSwipeScroll();
             return true;
         });
         panAction.connect('gesture-cancel', () => {
             clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
+            for (let workspaceView of this._workspacesViews)
+                workspacesView.endSwipeScroll();
         });
         panAction.connect('gesture-end', () => {
             clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
+            for (let workspacesView of this._workspacesViews)
+                workspacesView.endSwipeScroll();
         });
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
@@ -500,7 +500,7 @@ var WorkspacesDisplay = new Lang.Class({
 
     show(fadeOnPrimary) {
         this._updateWorkspacesViews();
-        for (let i = 0; i < this._workspacesViews.length; i++) {
+        for (let i in this._workspacesViews) {
             let animationType;
             if (fadeOnPrimary && i == this._primaryIndex)
                 animationType = AnimationType.FADE;
@@ -520,7 +520,7 @@ var WorkspacesDisplay = new Lang.Class({
     },
 
     animateFromOverview(fadeOnPrimary) {
-        for (let i = 0; i < this._workspacesViews.length; i++) {
+        for (let i in this._workspacesViews) {
             let animationType;
             if (fadeOnPrimary && i == this._primaryIndex)
                 animationType = AnimationType.FADE;
@@ -543,8 +543,8 @@ var WorkspacesDisplay = new Lang.Class({
             global.stage.disconnect(this._keyPressEventId);
             this._keyPressEventId = 0;
         }
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].destroy();
+        for (let workspacesView of this._workspacesViews)
+            workspacesView.destroy();
         this._workspacesViews = [];
     },
 
@@ -558,13 +558,13 @@ var WorkspacesDisplay = new Lang.Class({
     },
 
     _updateWorkspacesViews() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].destroy();
+        for (let workspacesView of this._workspacesViews)
+            workspacesView.destroy();
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
         let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
+        for (let i in monitors) {
             let view;
             if (this._workspacesOnlyOnPrimary && i != this._primaryIndex)
                 view = new ExtraWorkspaceView(i);
@@ -587,7 +587,7 @@ var WorkspacesDisplay = new Lang.Class({
     },
 
     _scrollValueChanged() {
-        for (let i = 0; i < this._workspacesViews.length; i++) {
+        for (let i in this._workspacesViews) {
             if (i == this._primaryIndex)
                 continue;
 
@@ -654,7 +654,7 @@ var WorkspacesDisplay = new Lang.Class({
             return;
 
         let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
+        for (let i in monitors) {
             let geometry = (i == this._primaryIndex) ? this._fullGeometry : monitors[i];
             this._workspacesViews[i].setFullGeometry(geometry);
         }
@@ -671,15 +671,15 @@ var WorkspacesDisplay = new Lang.Class({
         let primaryGeometry = { x: x, y: y, width: width, height: height };
 
         let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
+        for (let i in monitors) {
             let geometry = (i == this._primaryIndex) ? primaryGeometry : monitors[i];
             this._workspacesViews[i].setActualGeometry(geometry);
         }
     },
 
     _onRestacked(overview, stackIndices) {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].syncStacking(stackIndices);
+        for (let workspacesView of this._workspacesViews)
+            workspacesView.syncStacking(stackIndices);
     },
 
     _onScrollEvent(actor, event) {

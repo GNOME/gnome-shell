@@ -76,9 +76,8 @@ var Source = new Lang.Class({
     },
 
     _onDestroy() {
-        for(let i = 0; i < this.signalIDs.length; i++) {
-           this._window.disconnect(this.signalIDs[i]);
-        }
+        for(let id of this.signalIDs)
+           this._window.disconnect(id);
         this.signalIDs = [];
     },
 

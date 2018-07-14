@@ -67,13 +67,12 @@ var OsdMonitorLabeler = new Lang.Class({
     },
 
     _reset() {
-        for (let i in this._osdLabels)
-            this._osdLabels[i].destroy();
+        for (let label of this._osdLabels)
+            label.destroy();
         this._osdLabels = [];
         this._monitorLabels = new Map();
-        let monitors = Main.layoutManager.monitors;
-        for (let i in monitors)
-            this._monitorLabels.set(monitors[i].index, []);
+        for (let monitor in Main.layoutManager.monitors)
+            this._monitorLabels.set(monitor.index, []);
     },
 
     _trackClient(client) {

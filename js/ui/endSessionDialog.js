@@ -482,9 +482,9 @@ var EndSessionDialog = new Lang.Class({
                          label:  _("Cancel"),
                          key:    Clutter.Escape }];
 
-        for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
-            let signal = dialogContent.confirmButtons[i].signal;
-            let label = dialogContent.confirmButtons[i].label;
+        for (let confirmButton of dialogContent.confirmButtons) {
+            let signal = confirmButton.signal;
+            let label = confirmButton.label;
             buttons.push({ action: () => {
                                this.close(true);
                                let signalId = this.connect('closed', () => {
@@ -687,8 +687,7 @@ var EndSessionDialog = new Lang.Class({
     _loadSessions() {
         this._loginManager.listSessions(result => {
             let n = 0;
-            for (let i = 0; i < result.length; i++) {
-                let[id, uid, userName, seat, sessionPath] = result[i];
+            for (let [id, uid, userName, seat, sessionPath] of result) {
                 let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
                 if (proxy.Class != 'user')
@@ -745,8 +744,8 @@ var EndSessionDialog = new Lang.Class({
 
         let dialogContent = DialogContent[this._type];
 
-        for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], (proxy, error) => {
+        for (let inhibitorPath of inhibitorObjectPaths) {
+            let inhibitor = new GnomeSession.Inhibitor(inhibitorPath, (proxy, error) => {
                 this._onInhibitorLoaded(proxy);
             });
 

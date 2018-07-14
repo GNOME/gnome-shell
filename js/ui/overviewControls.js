@@ -268,8 +268,8 @@ var ThumbnailsSlider = new Lang.Class({
             /* Look for any monitor to the right of the primary, if there is
              * one, we always keep zoom out, otherwise its hard to reach
              * the thumbnail area without passing into the next monitor. */
-            for (let i = 0; i < monitors.length; i++) {
-                if (monitors[i].x >= primary.x + primary.width) {
+            for (let monitor of monitors) {
+                if (monitor.x >= primary.x + primary.width) {
                     alwaysZoomOut = true;
                     break;
                 }

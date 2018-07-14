@@ -170,12 +170,12 @@ var Overview = new Lang.Class({
     },
 
     _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
+        for (let bgManager of this._bgManagers)
+            bgManager.destroy();
 
         this._bgManagers = [];
 
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
+        for (let i in Main.layoutManager.monitors) {
             let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
                                                                monitorIndex: i,
                                                                vignette: true });
@@ -184,27 +184,23 @@ var Overview = new Lang.Class({
     },
 
     _unshadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            Tweener.addTween(backgrounds[i],
+        for (let background of this._backgroundGroup.get_children())
+            Tweener.addTween(background,
                              { brightness: 1.0,
                                vignette_sharpness: 0.0,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
-        }
     },
 
     _shadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            Tweener.addTween(backgrounds[i],
+        for (let background of this._backgroundGroup.get_children())
+            Tweener.addTween(background,
                              { brightness: Lightbox.VIGNETTE_BRIGHTNESS,
                                vignette_sharpness: Lightbox.VIGNETTE_SHARPNESS,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
-        }
     },
 
     _sessionUpdated() {
@@ -407,10 +403,9 @@ var Overview = new Lang.Class({
         let stack = global.get_window_actors();
         let stackIndices = {};
 
-        for (let i = 0; i < stack.length; i++) {
+        for (let i in stack)
             // Use the stable sequence for an integer to use as a hash key
             stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
-        }
 
         this.emit('windows-restacked', stackIndices);
     },

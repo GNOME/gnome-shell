@@ -97,10 +97,9 @@ var XdndHandler = new Lang.Class({
             targetActor: pickedActor
         };
 
-        for (let i = 0; i < DND.dragMonitors.length; i++) {
-            let motionFunc = DND.dragMonitors[i].dragMotion;
-            if (motionFunc) {
-                let result = motionFunc(dragEvent);
+        for (let { dragMotion } of DND.dragMonitors) {
+            if (dragMotion) {
+                let result = dragMotion(dragEvent);
                 if (result != DND.DragMotionResult.CONTINUE)
                     return;
             }

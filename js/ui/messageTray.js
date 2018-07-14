@@ -816,8 +816,8 @@ var Source = new Lang.Class({
         let notifications = this.notifications;
         this.notifications = [];
 
-        for (let i = 0; i < notifications.length; i++)
-            notifications[i].destroy(reason);
+        for (let n of notifications)
+            n.destroy(reason);
 
         this.emit('destroy', reason);
     },

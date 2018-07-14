@@ -206,8 +206,8 @@ var LayoutManager = new Lang.Class({
         this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
         this.uiGroup.connect('allocate', (actor, box, flags) => {
             let children = actor.get_children();
-            for (let i = 0; i < children.length; i++)
-                children[i].allocate_preferred_size(flags);
+            for (let child of children)
+                child.allocate_preferred_size(flags);
         });
         this.uiGroup.connect('get-preferred-width', (actor, forHeight, alloc) => {
             let width = global.stage.width;
@@ -340,11 +340,10 @@ var LayoutManager = new Lang.Class({
             // If there are monitors below the primary, then we need
             // to split primary from bottom.
             this.primaryIndex = this.bottomIndex = display.get_primary_monitor();
-            for (let i = 0; i < this.monitors.length; i++) {
-                let monitor = this.monitors[i];
+            for (let monitor of this.monitors) {
                 if (this._isAboveOrBelowPrimary(monitor)) {
                     if (monitor.y > this.monitors[this.bottomIndex].y)
-                        this.bottomIndex = i;
+                        this.bottomIndex = monitor.index;
                 }
             }
         }
@@ -373,14 +372,13 @@ var LayoutManager = new Lang.Class({
         let size = this.panelBox.height;
 
         // build new hot corners
-        for (let i = 0; i < this.monitors.length; i++) {
-            let monitor = this.monitors[i];
+        for (let monitor of this.monitors) {
             let cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
             let cornerY = monitor.y;
 
             let haveTopLeftCorner = true;
 
-            if (i != this.primaryIndex) {
+            if (monitor.index != this.primaryIndex) {
                 // Check if we have a top left (right for RTL) corner.
                 // I.e. if there is no monitor directly above or to the left(right)
                 let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
@@ -388,10 +386,9 @@ var LayoutManager = new Lang.Class({
                 let aboveX = cornerX;
                 let aboveY = cornerY - 1;
 
-                for (let j = 0; j < this.monitors.length; j++) {
-                    if (i == j)
+                for (let otherMonitor of this.monitors) {
+                    if (monitor.index == otherMonitor.index)
                         continue;
-                    let otherMonitor = this.monitors[j];
                     if (besideX >= otherMonitor.x &&
                         besideX < otherMonitor.x + otherMonitor.width &&
                         besideY >= otherMonitor.y &&
@@ -437,7 +434,7 @@ var LayoutManager = new Lang.Class({
     },
 
     _showSecondaryBackgrounds() {
-        for (let i = 0; i < this.monitors.length; i++) {
+        for (let i in this.monitors) {
             if (i != this.primaryIndex) {
                 let backgroundActor = this._bgManagers[i].backgroundActor;
                 backgroundActor.show();
@@ -451,16 +448,15 @@ var LayoutManager = new Lang.Class({
     },
 
     _updateBackgrounds() {
-        let i;
-        for (i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
+        for (let bgManager of this._bgManagers)
+            bgManager.destroy();
 
         this._bgManagers = [];
 
         if (Main.sessionMode.isGreeter)
             return;
 
-        for (let i = 0; i < this.monitors.length; i++) {
+        for (let i in this.monitors) {
             let bgManager = this._createBackgroundManager(i);
             this._bgManagers.push(bgManager);
 
@@ -852,12 +848,7 @@ var LayoutManager = new Lang.Class({
     },
 
     _findActor(actor) {
-        for (let i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
-            if (actorData.actor == actor)
-                return i;
-        }
-        return -1;
+        return this._trackedActors.findIndex(data => data.actor == actor);
     },
 
     _trackActor(actor, params) {
@@ -990,8 +981,7 @@ var LayoutManager = new Lang.Class({
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
         let wantsInputRegion = !isPopupMenuVisible;
 
-        for (i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
+        for (let actorData of this._trackedActors) {
             if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
                 continue;
 

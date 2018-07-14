@@ -388,9 +388,9 @@ var Background = new Lang.Class({
 
         let cache = Meta.BackgroundImageCache.get_default();
         let numPendingImages = files.length;
-        for (let i = 0; i < files.length; i++) {
-            this._watchFile(files[i]);
-            let image = cache.load(files[i]);
+        for (let file of files) {
+            this._watchFile(file);
+            let image = cache.load(file);
             if (image.is_loaded()) {
                 numPendingImages--;
                 if (numPendingImages == 0)

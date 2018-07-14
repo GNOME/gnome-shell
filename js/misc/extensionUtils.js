@@ -26,16 +26,12 @@ var extensions = {};
  */
 function getCurrentExtension() {
     let stack = (new Error()).stack.split('\n');
-    let extensionStackLine;
 
     // Search for an occurrence of an extension stack frame
     // Start at 1 because 0 is the stack frame of this function
-    for (let i = 1; i < stack.length; i++) {
-        if (stack[i].includes('/gnome-shell/extensions/')) {
-            extensionStackLine = stack[i];
-            break;
-        }
-    }
+    let extensionStackLine = stack.find(
+        (line, i) => i > 0 && line.includes('/gnome-shell/extensions/')
+    );
     if (!extensionStackLine)
         return null;
 
@@ -83,8 +79,8 @@ function versionCheck(required, current) {
     let major = currentArray[0];
     let minor = currentArray[1];
     let point = currentArray[2];
-    for (let i = 0; i < required.length; i++) {
-        let requiredArray = required[i].split('.');
+    for (let r of required) {
+        let requiredArray = r.split('.');
         if (requiredArray[0] == major &&
             requiredArray[1] == minor &&
             (requiredArray[2] == point ||
@@ -123,11 +119,9 @@ function createExtensionObject(uuid, dir, type) {
     }
 
     let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
-    for (let i = 0; i < requiredProperties.length; i++) {
-        let prop = requiredProperties[i];
-        if (!meta[prop]) {
+    for (let prop of requiredProperties) {
+        if (!meta[prop])
             throw new Error('missing "' + prop + '" property in metadata.json');
-        }
     }
 
     if (uuid != meta.uuid) {

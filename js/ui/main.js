@@ -256,9 +256,8 @@ function _getStylesheet(name) {
     if (stylesheet.query_exists(null))
         return stylesheet;
 
-    let dataDirs = GLib.get_system_data_dirs();
-    for (let i = 0; i < dataDirs.length; i++) {
-        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'theme', name]);
+    for (let dataDir of GLib.get_system_data_dirs()) {
+        let path = GLib.build_filenamev([dataDir, 'gnome-shell', 'theme', name]);
         let stylesheet = Gio.file_new_for_path(path);
         if (stylesheet.query_exists(null))
             return stylesheet;
@@ -346,8 +345,8 @@ function loadTheme() {
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
 
-        for (let i = 0; i < customStylesheets.length; i++)
-            theme.load_stylesheet(customStylesheets[i]);
+        for (let customStylesheet of customStylesheets)
+            theme.load_stylesheet(customStylesheet);
     }
 
     themeContext.set_theme (theme);
@@ -384,11 +383,7 @@ function notifyError(msg, details) {
 }
 
 function _findModal(actor) {
-    for (let i = 0; i < modalActorFocusStack.length; i++) {
-        if (modalActorFocusStack[i].actor == actor)
-            return i;
-    }
-    return -1;
+    return modalActorFocusStack.findIndex(s => s.actor == actor);
 }
 
 /**
@@ -607,10 +602,8 @@ function _runAllDeferredWork() {
 }
 
 function _runBeforeRedrawQueue() {
-    for (let i = 0; i < _beforeRedrawQueue.length; i++) {
-        let workId = _beforeRedrawQueue[i];
+    for (let workId of _beforeRedrawQueue)
         _runDeferredWork(workId);
-    }
     _beforeRedrawQueue = [];
 }
 

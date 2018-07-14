@@ -117,16 +117,15 @@ var Batch = new Lang.Class({
 
         this.tasks = [];
 
-        for (let i = 0; i < tasks.length; i++) {
+        for (let t of tasks) {
             let task;
 
-            if (tasks[i] instanceof Task) {
-                task = tasks[i];
-            } else if (typeof tasks[i] == 'function') {
-                task = new Task(scope, tasks[i]);
-            } else {
+            if (t instanceof Task)
+                task = t;
+            else if (typeof t == 'function')
+                task = new Task(scope, t);
+            else
                 throw new Error('Batch tasks must be functions or Task, Hold or Batch objects');
-            }
 
             this.tasks.push(task);
         }

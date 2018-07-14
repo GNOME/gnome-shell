@@ -541,13 +541,13 @@ var SwitcherList = new Lang.Class({
         let maxChildMin = 0;
         let maxChildNat = 0;
 
-        for (let i = 0; i < this._items.length; i++) {
-            let [childMin, childNat] = this._items[i].get_preferred_width(forHeight);
+        for (let item of this._items) {
+            let [childMin, childNat] = item.get_preferred_width(forHeight);
             maxChildMin = Math.max(childMin, maxChildMin);
             maxChildNat = Math.max(childNat, maxChildNat);
 
             if (this._squareItems) {
-                let [childMin, childNat] = this._items[i].get_preferred_height(-1);
+                let [childMin, childNat] = item.get_preferred_height(-1);
                 maxChildMin = Math.max(childMin, maxChildMin);
                 maxChildNat = Math.max(childNat, maxChildNat);
             }
@@ -569,8 +569,8 @@ var SwitcherList = new Lang.Class({
         let maxChildMin = 0;
         let maxChildNat = 0;
 
-        for (let i = 0; i < this._items.length; i++) {
-            let [childMin, childNat] = this._items[i].get_preferred_height(-1);
+        for (let item of this._items) {
+            let [childMin, childNat] = item.get_preferred_height(-1);
             maxChildMin = Math.max(childMin, maxChildMin);
             maxChildNat = Math.max(childNat, maxChildNat);
         }
@@ -600,9 +600,9 @@ var SwitcherList = new Lang.Class({
         let primary = Main.layoutManager.primaryMonitor;
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
 
-        for (let i = 0; i < children.length; i++) {
-            if (this._items.includes(children[i])) {
-                let [childMin, childNat] = children[i].get_preferred_height(childWidth);
+        for (let child of children) {
+            if (this._items.includes(child)) {
+                let [childMin, childNat] = child.get_preferred_height(childWidth);
                 let vSpacing = (childHeight - childNat) / 2;
                 childBox.x1 = x;
                 childBox.y1 = vSpacing;

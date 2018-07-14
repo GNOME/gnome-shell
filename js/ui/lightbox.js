@@ -247,13 +247,13 @@ var Lightbox = new Lang.Class({
         // sibling of the to-be-lowered one.
 
         let below = this.actor;
-        for (let i = this._children.length - 1; i >= 0; i--) {
-            if (this._children[i] == window)
-                this._children[i].raise_top();
-            else if (this._children[i] == this._highlighted)
-                this._children[i].lower(below);
+        for (let child of this._children.slice().reverse()) {
+            if (child == window)
+                child.raise_top();
+            else if (child == this._highlighted)
+                child.lower(below);
             else
-                below = this._children[i];
+                below = child;
         }
 
         this._highlighted = window;

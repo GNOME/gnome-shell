@@ -131,8 +131,7 @@ var URLHighlighter = new Lang.Class({
         let urls = Util.findUrls(this._text);
         let markup = '';
         let pos = 0;
-        for (let i = 0; i < urls.length; i++) {
-            let url = urls[i];
+        for (let url of urls) {
             let str = this._text.substr(pos, url.pos - pos);
             markup += str + '<span foreground="' + this._linkColor + '"><u>' + url.url + '</u></span>';
             pos = url.pos + url.url.length;
@@ -153,10 +152,9 @@ var URLHighlighter = new Lang.Class({
             find_pos = i;
         }
         if (find_pos != -1) {
-            for (let i = 0; i < this._urls.length; i++)
-            if (find_pos >= this._urls[i].pos &&
-                this._urls[i].pos + this._urls[i].url.length > find_pos)
-                return i;
+            return this._urls.findIndex(url =>
+                find_pos >= url.pos && url.pos + url.url.length > find_pos
+            );
         }
         return -1;
     }
@@ -288,13 +286,10 @@ var LabelExpanderLayout = new Lang.Class({
     },
 
     vfunc_allocate(container, box, flags) {
-        for (let i = 0; i < container.get_n_children(); i++) {
-            let child = container.get_child_at_index(i);
-
+        for (let child of container.get_children()) {
             if (child.visible)
                 child.allocate(box, flags);
         }
-
     }
 });
 
@@ -662,7 +657,7 @@ var MessageListSection = new Lang.Class({
             // Otherwise we slide them out one by one, and then zoom them
             // out "off-screen" in the end to smoothly shrink the parent
             let delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
-            for (let i = 0; i < messages.length; i++) {
+            for (let i in messages) {
                 let message = messages[i];
                 let obj = this._messages.get(message);
                 Tweener.addTween(obj.container,

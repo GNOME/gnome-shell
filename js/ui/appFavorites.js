@@ -84,10 +84,8 @@ var AppFavorites = new Lang.Class({
         let apps = ids.map(id => appSys.lookup_app(id))
                       .filter(app => app != null);
         this._favorites = {};
-        for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
+        for (let app of apps)
             this._favorites[app.get_id()] = app;
-        }
     },
 
     _getIds() {

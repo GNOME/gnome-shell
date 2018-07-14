@@ -176,10 +176,8 @@ var GnomeShell = new Lang.Class({
         let [accels] = params;
         let sender = invocation.get_sender();
         let bindingActions = [];
-        for (let i = 0; i < accels.length; i++) {
-            let [accel, flags] = accels[i];
+        for (let [accel, flags] of accels)
             bindingActions.push(this._grabAcceleratorForSender(accel, flags, sender));
-        }
         return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
     },
 

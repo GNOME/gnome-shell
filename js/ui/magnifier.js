@@ -259,8 +259,8 @@ var Magnifier = new Lang.Class({
      * Remove all the zoom regions from this Magnfier's ZoomRegion list.
      */
     clearAllZoomRegions() {
-        for (let i = 0; i < this._zoomRegions.length; i++)
-            this._zoomRegions[i].setActive(false);
+        for (let zoomRegion of this._zoomRegions)
+            zoomRegion.setActive(false);
 
         this._zoomRegions.length = 0;
         this.stopTrackingMouse();
@@ -1726,8 +1726,8 @@ var Crosshairs = new Lang.Class({
     show() {
         this._actor.show();
         // Clones don't share visibility.
-        for (let i = 0; i < this._clones.length; i++)
-            this._clones[i].show();
+        for (let clone of this._clones)
+            clone.show();
     },
 
     /**
@@ -1737,8 +1737,8 @@ var Crosshairs = new Lang.Class({
     hide() {
         this._actor.hide();
         // Clones don't share visibility.
-        for (let i = 0; i < this._clones.length; i++)
-            this._clones[i].hide();
+        for (let clone of this._clones)
+            clone.hide();
     },
 
     /**

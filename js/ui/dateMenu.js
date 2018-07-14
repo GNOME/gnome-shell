@@ -128,10 +128,10 @@ var WorldClocksSection = new Lang.Class({
 
         let world = GWeather.Location.get_world();
         let clocks = settings.get_value('world-clocks').deep_unpack();
-        for (let i = 0; i < clocks.length; i++) {
-            if (!clocks[i].location)
+        for (let clock of clocks) {
+            if (!clock.location)
                 continue;
-            let l = world.deserialize(clocks[i].location);
+            let l = world.deserialize(clock.location);
             if (l)
                 this._locations.push({ location: l });
         }
@@ -150,8 +150,8 @@ var WorldClocksSection = new Lang.Class({
         layout.attach(header, 0, 0, 2, 1);
         this.actor.label_actor = header;
 
-        for (let i = 0; i < this._locations.length; i++) {
-            let l = this._locations[i].location;
+        for (let loc of this._locations) {
+            let l = loc.location;
 
             let name = l.get_level() == GWeather.LocationLevel.NAMED_TIMEZONE ? l.get_name()
                                                                               : l.get_city_name();
@@ -188,8 +188,7 @@ var WorldClocksSection = new Lang.Class({
     },
 
     _updateLabels() {
-        for (let i = 0; i < this._locations.length; i++) {
-            let l = this._locations[i];
+        for (let l of this._locations) {
             let tz = GLib.TimeZone.new(l.location.get_timezone().get_tzid());
             let now = GLib.DateTime.new_now(tz);
             l.actor.text = Util.formatTime(now, { timeOnly: true });
@@ -269,15 +268,15 @@ var WeatherSection = new Lang.Class({
 
         let current = info;
         let infos = [info];
-        for (let i = 0; i < forecasts.length; i++) {
-            let [ok, timestamp] = forecasts[i].get_value_update();
+        for (let forecast of forecasts) {
+            let [ok, timestamp] = forecast.get_value_update();
             if (!_isToday(new Date(timestamp * 1000)))
                 continue; // Ignore forecasts from other days
 
             if (this._sameSummary(current, forecasts[i]))
                 continue; // Ignore consecutive runs of equal summaries
 
-            current = forecasts[i];
+            current = forecast;
             if (infos.push(current) == 3)
                 break; // Use a maximum of three summaries
         }

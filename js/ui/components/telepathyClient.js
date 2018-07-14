@@ -162,9 +162,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
 
     vfunc_observe_channels(account, conn, channels,
                                      dispatchOp, requests, context) {
-        let len = channels.length;
-        for (let i = 0; i < len; i++) {
-            let channel = channels[i];
+        for (let channel of channels) {
             let [targetHandle, targetHandleType] = channel.get_handle();
 
             if (channel.get_invalidated())
@@ -200,10 +198,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
     },
 
     _handlingChannels(account, conn, channels, notify) {
-        let len = channels.length;
-        for (let i = 0; i < len; i++) {
-            let channel = channels[i];
-
+        for (let channel of channels) {
             // We can only handle text channel, so close any other channel
             if (!(channel instanceof Tp.TextChannel)) {
                 channel.close_async(null);
@@ -451,9 +446,7 @@ var ChatSource = new Lang.Class({
         let pendingTpMessages = this._channel.get_pending_messages();
         let pendingMessages = [];
 
-        for (let i = 0; i < pendingTpMessages.length; i++) {
-            let message = pendingTpMessages[i];
-
+        for (let message of pendingTpMessages) {
             if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
                 continue;
 
@@ -466,13 +459,11 @@ var ChatSource = new Lang.Class({
 
         let showTimestamp = false;
 
-        for (let i = 0; i < logMessages.length; i++) {
-            let logMessage = logMessages[i];
+        for (let logMessage of logMessages) {
             let isPending = false;
 
             // Skip any log messages that are also in pendingMessages
-            for (let j = 0; j < pendingMessages.length; j++) {
-                let pending = pendingMessages[j];
+            for (let pending of pendingMessages) {
                 if (logMessage.timestamp == pending.timestamp && logMessage.text == pending.text) {
                     isPending = true;
                     break;
@@ -488,8 +479,8 @@ var ChatSource = new Lang.Class({
         if (showTimestamp)
             this._notification.appendTimestamp();
 
-        for (let i = 0; i < pendingMessages.length; i++)
-            this._notification.appendMessage(pendingMessages[i], true);
+        for (let pending of pendingMessages)
+            this._notification.appendMessage(pending, true);
 
         if (pendingMessages.length > 0)
             this.notify();
@@ -722,8 +713,8 @@ var ChatNotification = new Lang.Class({
         if (filteredHistory.length > maxLength) {
             let lastMessageToKeep = filteredHistory[maxLength];
             let expired = this.messages.splice(this.messages.indexOf(lastMessageToKeep));
-            for (let i = 0; i < expired.length; i++)
-                this.emit('message-removed', expired[i]);
+            for (let exp of expired)
+                this.emit('message-removed', exp);
         }
     },
 
@@ -878,8 +869,8 @@ var ChatNotificationBanner = new Lang.Class({
                 this._updateTimestamp(message);
             });
 
-        for (let i = this.notification.messages.length - 1; i >= 0; i--)
-            this._addMessage(this.notification.messages[i]);
+        for (let message of this.notification.messages.slice().reverse())
+            this._addMessage(message);
     },
 
     _onDestroy() {
@@ -905,9 +896,8 @@ var ChatNotificationBanner = new Lang.Class({
         let highlighter = new MessageList.URLHighlighter(message.body, true, true);
         let body = highlighter.actor;
 
-        let styles = message.styles;
-        for (let i = 0; i < styles.length; i++)
-            body.add_style_class_name(styles[i]);
+        for (let style of message.styles)
+            body.add_style_class_name(style);
 
         let group = message.group;
         if (group != this._lastGroup) {

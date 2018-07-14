@@ -128,9 +128,7 @@ var KeyContainer = new Lang.Class({
     layoutButtons() {
         let nCol = 0, nRow = 0;
 
-        for (let i = 0; i < this._rows.length; i++) {
-            let row = this._rows[i];
-
+        for (let row of this._rows) {
             /* When starting a new row, see if we need some padding */
             if (nCol == 0) {
                 let diff = this._maxCols - row.width;
@@ -140,8 +138,7 @@ var KeyContainer = new Lang.Class({
                     nCol = diff * KEY_SIZE;
             }
 
-            for (let j = 0; j < row.keys.length; j++) {
-                let keyInfo = row.keys[j];
+            for (let keyInfo of row.keys) {
                 let width = keyInfo.width * KEY_SIZE;
                 let height = keyInfo.height * KEY_SIZE;
 
@@ -186,13 +183,10 @@ var LanguageSelectionPopup = new Lang.Class({
         let inputSourceManager = InputSourceManager.getInputSourceManager();
         let inputSources = inputSourceManager.inputSources;
 
-        for (let i in inputSources) {
-            let is = inputSources[i];
-
+        for (let is of inputSources)
             this.addAction(is.displayName, () => {
                 inputSourceManager.activateInputSource(is, true);
             });
-        }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.addAction(_("Region & Language Settings"), this._launchSettings.bind(this));
@@ -428,8 +422,7 @@ var Key = new Lang.Class({
     _getExtendedKeys() {
         this._extended_keyboard = new St.BoxLayout({ style_class: 'key-container',
                                                      vertical: false });
-        for (let i = 0; i < this._extended_keys.length; ++i) {
-            let extendedKey = this._extended_keys[i];
+        for (let extendedKey of this._extended_keys) {
             let key = this._makeKey(extendedKey);
 
             key.extended_key = extendedKey;
@@ -723,7 +716,7 @@ var Keyboard = new Lang.Class({
         let keyboardModel = new KeyboardModel(groupName);
         let layers = {};
         let levels = keyboardModel.getLevels();
-        for (let i = 0; i < levels.length; i++) {
+        for (let i in levels) {
             let currentLevel = levels[i];
             /* There are keyboard maps which consist of 3 levels (no uppercase,
              * basically). We however make things consistent by skipping that
@@ -750,8 +743,7 @@ var Keyboard = new Lang.Class({
     },
 
     _addRowKeys(keys, layout) {
-        for (let i = 0; i < keys.length; ++i) {
-            let key = keys[i];
+        for (let key of keys) {
             let button = new Key(key.shift(), key);
 
             /* Space key gets special width, dependent on the number of surrounding keys */
@@ -793,8 +785,7 @@ var Keyboard = new Lang.Class({
 
     _loadDefaultKeys(keys, layout, numLevels, numKeys) {
         let extraButton;
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
+        for (let key of keys) {
             let keyval = key.keyval;
             let switchToLevel = key.level;
             let action = key.action;
@@ -893,7 +884,7 @@ var Keyboard = new Lang.Class({
 
     _loadRows(model, level, numLevels, layout) {
         let rows = model.rows;
-        for (let i = 0; i < rows.length; ++i) {
+        for (let i in rows) {
             layout.appendRow();
             let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
             this._mergeRowKeys (layout, pre, rows[i], post, numLevels);
@@ -905,10 +896,8 @@ var Keyboard = new Lang.Class({
         let rows = this._current_page.get_children();
         numOfVertSlots = rows.length;
 
-        for (let i = 0; i < rows.length; ++i) {
-            let keyboard_row = rows[i];
-            let keys = keyboard_row.get_children();
-
+        for (let keyboardRow of rows) {
+            let keys = keyboardRow.get_children();
             numOfHorizSlots = Math.max(numOfHorizSlots, keys.length);
         }
 
@@ -1191,10 +1180,8 @@ var KeyboardController = new Lang.Class({
         let inputSources = this._inputSourceManager.inputSources;
         let groups = []
 
-        for (let i in inputSources) {
-            let is = inputSources[i];
+        for (let is of inputSources)
             groups[is.index] = is.xkbId;
-        }
 
         return groups;
     },

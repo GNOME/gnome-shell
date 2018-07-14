@@ -192,8 +192,8 @@ var SearchResultsBase = new Lang.Class({
     },
 
     clear() {
-        for (let resultId in this._resultDisplays)
-            this._resultDisplays[resultId].actor.destroy();
+        for (let display of this._resultDisplays)
+            display.actor.destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
         this.actor.hide();
@@ -610,8 +610,7 @@ var SearchResults = new Lang.Class({
         let newDefaultResult = null;
 
         let providers = this._providers;
-        for (let i = 0; i < providers.length; i++) {
-            let provider = providers[i];
+        for (let provider of providers) {
             let display = provider.display;
 
             if (!display.actor.visible)

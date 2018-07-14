@@ -170,13 +170,13 @@ var ObjectManager = new Lang.Class({
         this._managerProxy.connectSignal('InterfacesAdded',
                                          (objectManager, sender, [objectPath, interfaces]) => {
                                              let interfaceNames = Object.keys(interfaces);
-                                             for (let i = 0; i < interfaceNames.length; i++)
-                                                 this._addInterface(objectPath, interfaceNames[i]);
+                                             for (let name of interfaceNames)
+                                                 this._addInterface(objectPath, name);
                                          });
         this._managerProxy.connectSignal('InterfacesRemoved',
                                          (objectManager, sender, [objectPath, interfaceNames]) => {
-                                             for (let i = 0; i < interfaceNames.length; i++)
-                                                 this._removeInterface(objectPath, interfaceNames[i]);
+                                             for (let name of interfaceNames)
+                                                 this._removeInterface(objectPath, name);
                                          });
 
         if (Object.keys(this._interfaceInfos).length == 0) {
@@ -214,14 +214,11 @@ var ObjectManager = new Lang.Class({
             }
 
             let objectPaths = Object.keys(objects);
-            for (let i = 0; i < objectPaths.length; i++) {
-                let objectPath = objectPaths[i];
+            for (let objectPath of objectPaths) {
                 let object = objects[objectPath];
 
                 let interfaceNames = Object.getOwnPropertyNames(object);
-                for (let j = 0; j < interfaceNames.length; j++) {
-                    let interfaceName = interfaceNames[j];
-
+                for (let interfaceName of interfaceNames) {
                     // Prevent load from completing until the interface is loaded
                     this._numLoadInhibitors++;
                     this._addInterface(objectPath,
@@ -235,13 +232,11 @@ var ObjectManager = new Lang.Class({
 
     _onNameVanished() {
         let objectPaths = Object.keys(this._objects);
-        for (let i = 0; i < objectPaths.length; i++) {
-            let object = this._objects[objectPaths];
+        for (let objectPath of objectPaths) {
+            let object = this._objects[objectPath];
 
             let interfaceNames = Object.keys(object);
-            for (let j = 0; i < interfaceNames.length; i++) {
-                let interfaceName = interfaceNames[i];
-
+            for (let interfaceName of interfaceNames) {
                 if (object[interfaceName])
                     this._removeInterface(objectPath, interfaceName);
             }
@@ -249,8 +244,8 @@ var ObjectManager = new Lang.Class({
     },
 
     _registerInterfaces(interfaces) {
-        for (let i = 0; i < interfaces.length; i++) {
-            let info = Gio.DBusInterfaceInfo.new_for_xml(interfaces[i]);
+        for (let iface of interfaces) {
+            let info = Gio.DBusInterfaceInfo.new_for_xml(iface);
             this._interfaceInfos[info.name] = info;
         }
     },
@@ -277,12 +272,11 @@ var ObjectManager = new Lang.Class({
         let proxies = [];
 
         let objectPaths = Object.keys(this._objects);
-        for (let i = 0; i < objectPaths.length; i++) {
-            let object = this._objects[objectPaths];
+        for (let objectPath of objectPaths) {
+            let object = this._objects[objectPath];
 
             let interfaceNames = Object.keys(object);
-            for (let j = 0; i < interfaceNames.length; i++) {
-                let interfaceName = interfaceNames[i];
+            for (let interfaceName of interfaceNames) {
                 if (object[interfaceName])
                     proxies.push(object(interfaceName));
             }
