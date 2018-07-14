@@ -193,9 +193,8 @@ var WindowClone = new Lang.Class({
     deleteAll() {
         // Delete all windows, starting from the bottom-most (most-modal) one
 
-        let windows = this.actor.get_children();
-        for (let i = windows.length - 1; i >= 1; i--) {
-            let realWindow = windows[i].source;
+        for (let win of this.actor.get_children().reverse()) {
+            let realWindow = win.source;
             let metaWindow = realWindow.meta_window;
 
             metaWindow.delete(global.get_current_time());
@@ -903,10 +902,8 @@ var LayoutStrategy = new Lang.Class({
 
         // Do this in three parts.
         let heightWithoutSpacing = 0;
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
+        for (let row of rows)
             heightWithoutSpacing += row.height;
-        }
 
         let verticalSpacing = (rows.length - 1) * this._rowSpacing;
         let additionalVerticalScale = Math.min(1, (area.height - verticalSpacing) / heightWithoutSpacing);
@@ -916,9 +913,7 @@ var LayoutStrategy = new Lang.Class({
         let compensation = 0
         let y = 0;
 
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
-
+        for (let row of rows) {
             // If this window layout row doesn't fit in the actual
             // geometry, then apply an additional scale to it.
             let horizontalSpacing = (row.windows.length - 1) * this._columnSpacing;
@@ -942,12 +937,9 @@ var LayoutStrategy = new Lang.Class({
 
         compensation = compensation / 2;
 
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
+        for (let row of rows) {
             let x = row.x;
-            for (let j = 0; j < row.windows.length; j++) {
-                let window = row.windows[j];
-
+            for (let window of row.windows) {
                 let s = scale * this._computeWindowScale(window) * row.additionalScale;
                 let cellWidth = window.width * s;
                 let cellHeight = window.height * s;
@@ -976,8 +968,7 @@ var UnalignedLayoutStrategy = new Lang.Class({
 
     _computeRowSizes(layout) {
         let { rows: rows, scale: scale } = layout;
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
+        for (let row of rows) {
             row.width = row.fullWidth * scale + (row.windows.length - 1) * this._columnSpacing;
             row.height = row.fullHeight * scale;
         }
@@ -1006,8 +997,7 @@ var UnalignedLayoutStrategy = new Lang.Class({
 
         let rows = [];
         let totalWidth = 0;
-        for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
+        for (let window of windows) {
             let s = this._computeWindowScale(window);
             totalWidth += window.width * s;
         }
@@ -1038,8 +1028,7 @@ var UnalignedLayoutStrategy = new Lang.Class({
 
         let gridHeight = 0;
         let maxRow;
-        for (let i = 0; i < numRows; i++) {
-            let row = rows[i];
+        for (let row of rows) {
             this._sortRow(row);
 
             if (!maxRow || row.fullWidth > maxRow.fullWidth)
@@ -1143,10 +1132,9 @@ var Workspace = new Lang.Class({
         // visible in the Overview
         this._windows = [];
         this._windowOverlays = [];
-        for (let i = 0; i < windows.length; i++) {
-            if (this._isOverviewWindow(windows[i])) {
-                this._addWindowClone(windows[i], true);
-            }
+        for (let win of windows) {
+            if (this._isOverviewWindow(win))
+                this._addWindowClone(win, true);
         }
 
         // Track window changes
@@ -1216,12 +1204,7 @@ var Workspace = new Lang.Class({
     },
 
     _lookupIndex(metaWindow) {
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
+        this._windows.findIndex(w => w.metaWindow == metaWindow);
     },
 
     containsMetaWindow(metaWindow) {
@@ -1309,7 +1292,7 @@ var Workspace = new Lang.Class({
         let currentWorkspace = workspaceManager.get_active_workspace();
         let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
 
-        for (let i = 0; i < slots.length; i++) {
+        for (let i in slots) {
             let slot = slots[i];
             let [x, y, scale, clone] = slot;
             let metaWindow = clone.metaWindow;
@@ -1379,7 +1362,7 @@ var Workspace = new Lang.Class({
             return indexA - indexB;
         });
 
-        for (let i = 0; i < clones.length; i++) {
+        for (let i in clones) {
             let clone = clones[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
@@ -1430,8 +1413,8 @@ var Workspace = new Lang.Class({
         }
 
         let actorUnderPointer = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].actor == actorUnderPointer)
+        for (let win of this._windows) {
+            if (win.actor == actorUnderPointer)
                 return GLib.SOURCE_CONTINUE;
         }
 
@@ -1575,14 +1558,11 @@ var Workspace = new Lang.Class({
 
     // check for maximized windows on the workspace
     hasMaximizedWindows() {
-        for (let i = 0; i < this._windows.length; i++) {
-            let metaWindow = this._windows[i].metaWindow;
-            if (metaWindow.showing_on_its_workspace() &&
-                metaWindow.maximized_horizontally &&
-                metaWindow.maximized_vertically)
-                return true;
-        }
-        return false;
+        return this._windows.map(w => w.metaWindow).some(
+            metaWindow.showing_on_its_workspace() &&
+            metaWindow.maximized_horizontally &&
+            metaWindow.maximized_vertically
+        );
     },
 
     fadeToOverview() {
@@ -1613,7 +1593,7 @@ var Workspace = new Lang.Class({
         let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
 
         let topIndex = this._windows.length - 1;
-        for (let i = 0; i < this._windows.length; i++) {
+        for (let i in this._windows) {
             if (i < topMaximizedWindow) {
                 // below top-most maximized window, don't animate
                 let overlay = this._windowOverlays[i];
@@ -1640,10 +1620,8 @@ var Workspace = new Lang.Class({
         if (this._windows.length == 0)
             return;
 
-        for (let i = 0; i < this._windows.length; i++) {
-            let clone = this._windows[i];
+        for (let clone of this._windows)
             Tweener.removeTweens(clone.actor);
-        }
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1671,7 +1649,7 @@ var Workspace = new Lang.Class({
         let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
 
         let topIndex = this._windows.length - 1;
-        for (let i = 0; i < this._windows.length; i++) {
+        for (let i in this._windows) {
             if (i < topMaximizedWindow) {
                 // below top-most maximized window, don't animate
                 let overlay = this._windowOverlays[i];
@@ -1727,10 +1705,8 @@ var Workspace = new Lang.Class({
 
         this.leavingOverview = true;
 
-        for (let i = 0; i < this._windows.length; i++) {
-            let clone = this._windows[i];
+        for (let clone of this._windows)
             Tweener.removeTweens(clone.actor);
-        }
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1742,7 +1718,7 @@ var Workspace = new Lang.Class({
             return;
 
         // Position and scale the windows.
-        for (let i = 0; i < this._windows.length; i++)
+        for (let i in this._windows)
            this._zoomWindowFromOverview(i);
     },
 
@@ -1893,8 +1869,7 @@ var Workspace = new Lang.Class({
     },
 
     _onShowOverlayClose(windowOverlay) {
-        for (let i = 0; i < this._windowOverlays.length; i++) {
-            let overlay = this._windowOverlays[i];
+        for (let overlay of this._windowOverlays) {
             if (overlay == windowOverlay)
                 continue;
             overlay.hideCloseButton();

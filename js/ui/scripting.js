@@ -257,7 +257,7 @@ function _collect(scriptModule, outputFile) {
         let monitors = Main.layoutManager.monitors;
         let primary = Main.layoutManager.primaryIndex;
         Shell.write_string_to_stream(out, ',\n"monitors":\n[');
-        for (let i = 0; i < monitors.length; i++) {
+        for (let i in monitors) {
             let monitor = monitors[i];
             if (i != 0)
                 Shell.write_string_to_stream(out, ', ');
@@ -311,8 +311,7 @@ function _collect(scriptModule, outputFile) {
         metrics.sort();
 
         print ('------------------------------------------------------------');
-        for (let i = 0; i < metrics.length; i++) {
-            let metric = metrics[i];
+        for (let metric of metrics) {
             print ('# ' + scriptModule.METRICS[metric].description);
             print (metric + ': ' +  scriptModule.METRICS[metric].value + scriptModule.METRICS[metric].units);
         }

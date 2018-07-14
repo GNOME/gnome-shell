@@ -73,8 +73,8 @@ var AccessDialog = new Lang.Class({
 
         this._choices = new Map();
 
-        for (let i = 0; i < choices.length; i++) {
-            let [id, name, opts, selected] = choices[i];
+        for (let choice of choices) {
+            let [id, name, opts, selected] = choice;
             if (opts.length > 0)
                 continue; // radio buttons, not implemented
 

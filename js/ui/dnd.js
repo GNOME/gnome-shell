@@ -61,7 +61,7 @@ function addDragMonitor(monitor) {
 }
 
 function removeDragMonitor(monitor) {
-    for (let i = 0; i < dragMonitors.length; i++)
+    for (let i in dragMonitors)
         if (dragMonitors[i] == monitor) {
             dragMonitors.splice(i, 1);
             return;
@@ -407,7 +407,7 @@ var _Draggable = new Lang.Class({
             source: this.actor._delegate,
             targetActor: target
         };
-        for (let i = 0; i < dragMonitors.length; i++) {
+        for (let i in dragMonitors) {
             let motionFunc = dragMonitors[i].dragMotion;
             if (motionFunc) {
                 let result = motionFunc(dragEvent);
@@ -473,7 +473,7 @@ var _Draggable = new Lang.Class({
             targetActor: target,
             clutterEvent: event
         };
-        for (let i = 0; i < dragMonitors.length; i++) {
+        for (let i in dragMonitors) {
             let dropFunc = dragMonitors[i].dragDrop;
             if (dropFunc)
                 switch (dropFunc(dropEvent)) {

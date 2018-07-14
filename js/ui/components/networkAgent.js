@@ -54,8 +54,7 @@ var NetworkSecretDialog = new Lang.Class({
         let rtl = secretTable.get_text_direction() == Clutter.TextDirection.RTL;
         let initialFocusSet = false;
         let pos = 0;
-        for (let i = 0; i < this._content.secrets.length; i++) {
-            let secret = this._content.secrets[i];
+        for (let secret of this._content.secrets) {
             let label = new St.Label({ style_class: 'prompt-dialog-password-label',
                                        text: secret.label,
                                        x_align: Clutter.ActorAlign.START,
@@ -125,10 +124,8 @@ var NetworkSecretDialog = new Lang.Class({
 
     _updateOkButton() {
         let valid = true;
-        for (let i = 0; i < this._content.secrets.length; i++) {
-            let secret = this._content.secrets[i];
+        for (let secret of this._content.secrets)
             valid = valid && secret.valid;
-        }
 
         this._okButton.button.reactive = valid;
         this._okButton.button.can_focus = valid;
@@ -136,8 +133,7 @@ var NetworkSecretDialog = new Lang.Class({
 
     _onOk() {
         let valid = true;
-        for (let i = 0; i < this._content.secrets.length; i++) {
-            let secret = this._content.secrets[i];
+        for (let secret of this._content.secrets) {
             valid = valid && secret.valid;
             if (secret.key != null)
                 this._agent.set_password(this._requestId, secret.key, secret.value);
@@ -356,9 +352,9 @@ var VPNRequestHandler = new Lang.Class({
         if (flags & NM.SecretAgentGetSecretsFlags.REQUEST_NEW)
             argv.push('-r');
         if (authHelper.supportsHints) {
-            for (let i = 0; i < hints.length; i++) {
+            for (let hint of hints) {
                 argv.push('-t');
-                argv.push(hints[i]);
+                argv.push(hint);
             }
         }
 
@@ -517,24 +513,24 @@ var VPNRequestHandler = new Lang.Class({
                                 secrets: [] };
 
             let [groups, len] = keyfile.get_groups();
-            for (let i = 0; i < groups.length; i++) {
-                if (groups[i] == VPN_UI_GROUP)
+            for (let group of groups) {
+                if (group == VPN_UI_GROUP)
                     continue;
 
-                let value = keyfile.get_string(groups[i], 'Value');
-                let shouldAsk = keyfile.get_boolean(groups[i], 'ShouldAsk');
+                let value = keyfile.get_string(group, 'Value');
+                let shouldAsk = keyfile.get_boolean(group, 'ShouldAsk');
 
                 if (shouldAsk) {
-                    contentOverride.secrets.push({ label: keyfile.get_string(groups[i], 'Label'),
-                                                   key: groups[i],
+                    contentOverride.secrets.push({ label: keyfile.get_string(group, 'Label'),
+                                                   key: group,
                                                    value: value,
-                                                   password: keyfile.get_boolean(groups[i], 'IsSecret')
+                                                   password: keyfile.get_boolean(group, 'IsSecret')
                                                  });
                 } else {
                     if (!value.length) // Ignore empty secrets
                         continue;
 
-                    this._agent.set_password(this._requestId, groups[i], value);
+                    this._agent.set_password(this._requestId, group, value);
                 }
             }
         } catch(e) {

@@ -220,7 +220,7 @@ var OsdWindowManager = new Lang.Class({
     },
 
     _monitorsChanged() {
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
+        for (let i in Main.layoutManager.monitors) {
             if (this._osdWindows[i] == undefined)
                 this._osdWindows[i] = new OsdWindow(i);
         }
@@ -242,20 +242,20 @@ var OsdWindowManager = new Lang.Class({
 
     show(monitorIndex, icon, label, level) {
         if (monitorIndex != -1) {
-            for (let i = 0; i < this._osdWindows.length; i++) {
+            for (let i in this._osdWindows) {
                 if (i == monitorIndex)
                     this._showOsdWindow(i, icon, label, level);
                 else
                     this._osdWindows[i].cancel();
             }
         } else {
-            for (let i = 0; i < this._osdWindows.length; i++)
+            for (let i in this._osdWindows)
                 this._showOsdWindow(i, icon, label, level);
         }
     },
 
     hideAll() {
-        for (let i = 0; i < this._osdWindows.length; i++)
-            this._osdWindows[i].cancel();
+        for (let osdWindow of this._osdWindows)
+            osdWindow.cancel();
     }
 });

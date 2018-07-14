@@ -234,8 +234,7 @@ var InputStreamSlider = new Lang.Class({
         let showInput = false;
         let recordingApps = this._control.get_source_outputs();
         if (this._stream && recordingApps) {
-            for (let i = 0; i < recordingApps.length; i++) {
-                let outputStream = recordingApps[i];
+            for (let outputStream of recordingApps) {
                 let id = outputStream.get_application_id();
                 // but skip gnome-volume-control and pavucontrol
                 // (that appear as recording because they show the input level)

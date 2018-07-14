@@ -497,8 +497,8 @@ var Dash = new Lang.Class({
 
     _appIdListToHash(apps) {
         let ids = {};
-        for (let i = 0; i < apps.length; i++)
-            ids[apps[i].get_id()] = apps[i];
+        for (let app of apps)
+            ids[app.get_id()] = app;
         return ids;
     },
 
@@ -656,7 +656,7 @@ var Dash = new Lang.Class({
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
 
         let newIconSize = baseIconSizes[0];
-        for (let i = 0; i < iconSizes.length; i++) {
+        for (let i in iconSizes) {
             if (iconSizes[i] < availSize)
                 newIconSize = baseIconSizes[i];
         }
@@ -669,8 +669,8 @@ var Dash = new Lang.Class({
         this.emit('icon-size-changed');
 
         let scale = oldIconSize / newIconSize;
-        for (let i = 0; i < iconChildren.length; i++) {
-            let icon = iconChildren[i].child._delegate.icon;
+        for (let iconChild of iconChildren) {
+            let icon = iconChild.child._delegate.icon;
 
             // Set the new size immediately, to keep the icons' sizes
             // in sync with this.iconSize
@@ -717,8 +717,7 @@ var Dash = new Lang.Class({
         for (let id in favorites)
             newApps.push(favorites[id]);
 
-        for (let i = 0; i < running.length; i++) {
-            let app = running[i];
+        for (let app of running) {
             if (app.get_id() in favorites)
                 continue;
             newApps.push(app);
@@ -793,13 +792,10 @@ var Dash = new Lang.Class({
             }
         }
 
-        for (let i = 0; i < addedItems.length; i++)
-            this._box.insert_child_at_index(addedItems[i].item,
-                                            addedItems[i].pos);
+        for (let addedItem of addedItems)
+            this._box.insert_child_at_index(addedItem.item, addedItem.pos);
 
-        for (let i = 0; i < removedActors.length; i++) {
-            let item = removedActors[i];
-
+        for (let item of removedActors) {
             // Don't animate item removal when the overview is transitioning
             // or hidden
             if (Main.overview.visible && !Main.overview.animationInProgress)
@@ -819,9 +815,8 @@ var Dash = new Lang.Class({
         if (!this._shownInitially)
             this._shownInitially = true;
 
-        for (let i = 0; i < addedItems.length; i++) {
-            addedItems[i].item.show(animate);
-        }
+        for (let addedItem of addedItems)
+            addedItem.item.show(animate);
 
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache

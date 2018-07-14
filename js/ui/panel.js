@@ -272,11 +272,7 @@ var AppMenuButton = new Lang.Class({
         if (focusedApp && focusedApp.is_on_workspace(workspace))
             return focusedApp;
 
-        for (let i = 0; i < this._startingApps.length; i++)
-            if (this._startingApps[i].is_on_workspace(workspace))
-                return this._startingApps[i];
-
-        return null;
+        return this._startingApps.find(a => a.is_on_workspace(workspace));
     },
 
     _sync() {
@@ -507,11 +503,7 @@ var PanelCorner = new Lang.Class({
             return null;
 
         // Start at the back and work backward
-        let index;
-        for (index = children.length - 1; index >= 0; index--) {
-            if (children[index].visible)
-                break;
-        }
+        let index = children.slice().reverse().findIndex(c => c.visible);
         if (index < 0)
             return null;
 
@@ -675,8 +667,7 @@ var AggregateLayout = new Lang.Class({
         let minWidth = themeNode.get_min_width();
         let natWidth = minWidth;
 
-        for (let i = 0; i < this._sizeChildren.length; i++) {
-            let child = this._sizeChildren[i];
+        for (let child of this._sizeChildren) {
             let [childMin, childNat] = child.get_preferred_width(forHeight);
             minWidth = Math.max(minWidth, childMin);
             natWidth = Math.max(minWidth, childNat);
@@ -1131,8 +1122,7 @@ var Panel = new Lang.Class({
     _updateBox(elements, box) {
         let nChildren = box.get_n_children();
 
-        for (let i = 0; i < elements.length; i++) {
-            let role = elements[i];
+        for (let role of elements) {
             let indicator = this._ensureIndicator(role);
             if (indicator == null)
                 continue;

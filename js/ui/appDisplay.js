@@ -309,8 +309,7 @@ var PageIndicators = new Lang.Class({
             }
         } else {
             let children = this.actor.get_children().splice(diff);
-            for (let i = 0; i < children.length; i++)
-                children[i].destroy();
+            children.forEach(c => { c.destroy(); });
         }
         this._nPages = nPages;
         this.actor.visible = (this._nPages > 1);
@@ -320,7 +319,7 @@ var PageIndicators = new Lang.Class({
         this._currentPage = currentPage;
 
         let children = this.actor.get_children();
-        for (let i = 0; i < children.length; i++)
+        for (let i in children)
             children[i].set_checked(i == this._currentPage);
     },
 
@@ -332,8 +331,7 @@ var PageIndicators = new Lang.Class({
         if (children.length == 0)
             return;
 
-        for (let i = 0; i < this._nPages; i++)
-            Tweener.removeTweens(children[i]);
+        children.forEach(c => { Tweener.removeTweens(c); });
 
         let offset;
         if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
@@ -726,16 +724,16 @@ var AllView = new Lang.Class({
     },
 
     _updateIconOpacities(folderOpen) {
-        for (let id in this._items) {
+        for (let item of this._items) {
             let params, opacity;
-            if (folderOpen && !this._items[id].actor.checked)
+            if (folderOpen && !item.actor.checked)
                 opacity =  INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
             params = { opacity: opacity,
                        time: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                        transition: 'easeOutQuad' };
-            Tweener.addTween(this._items[id].actor, params);
+            Tweener.addTween(item.actor, params);
         }
     },
 
@@ -773,8 +771,8 @@ var AllView = new Lang.Class({
         this._availWidth = availWidth;
         this._availHeight = availHeight;
         // Update folder views
-        for (let i = 0; i < this.folderIcons.length; i++)
-            this.folderIcons[i].adaptToSize(availWidth, availHeight);
+        for (let folderIcon of this.folderIcons)
+            folderIcon.adaptToSize(availWidth, availHeight);
     }
 });
 Signals.addSignalMethods(AllView.prototype);
@@ -830,11 +828,10 @@ var FrequentView = new Lang.Class({
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
-        for (let i = 0; i < mostUsed.length; i++) {
-            if (!mostUsed[i].get_app_info().should_show())
+        for (let app of mostUsed) {
+            if (!app.get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i],
-                                      { isDraggable: favoritesWritable });
+            let appIcon = new AppIcon(app, { isDraggable: favoritesWritable });
             this._grid.addItem(appIcon, -1);
         }
     },
@@ -950,7 +947,7 @@ var AppDisplay = new Lang.Class({
         layout.hookup_style(this._controls);
         this.actor.add_actor(new St.Bin({ child: this._controls }));
 
-        for (let i = 0; i < this._views.length; i++) {
+        for (let i in this._views) {
             this._viewStack.add_actor(this._views[i].view.actor);
             this._controls.add_actor(this._views[i].control);
 
@@ -1019,7 +1016,7 @@ var AppDisplay = new Lang.Class({
     },
 
     _showView(activeIndex) {
-        for (let i = 0; i < this._views.length; i++) {
+        for (let i in this._views) {
             if (i == activeIndex)
                 this._views[i].control.add_style_pseudo_class('checked');
             else
@@ -1055,8 +1052,8 @@ var AppDisplay = new Lang.Class({
         box = this._viewStack.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
-        for (let i = 0; i < this._views.length; i++)
-            this._views[i].view.adaptToSize(availWidth, availHeight);
+        for (let view of this._views)
+            view.view.adaptToSize(availWidth, availHeight);
     }
 })
 
@@ -1866,8 +1863,7 @@ var AppIconMenu = new Lang.Class({
         let activeWorkspace = workspaceManager.get_active_workspace();
         let separatorShown = windows.length > 0 && windows[0].get_workspace() != activeWorkspace;
 
-        for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
+        for (let window of windows) {
             if (!separatorShown && window.get_workspace() != activeWorkspace) {
                 this._appendSeparator();
                 separatorShown = true;
@@ -1911,8 +1907,7 @@ var AppIconMenu = new Lang.Class({
                 });
             }
 
-            for (let i = 0; i < actions.length; i++) {
-                let action = actions[i];
+            for (let action of actions) {
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
                 item.connect('activate', (emitter, event) => {
                     this._source.app.launch_action(action, event.get_time(), -1);

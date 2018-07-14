@@ -70,8 +70,7 @@ var PadChooser = new Lang.Class({
         this._padChooserMenu.actor.hide();
         Main.uiGroup.add_actor(this._padChooserMenu.actor);
 
-        for (let i = 0; i < devices.length; i++) {
-            let device = devices[i];
+        for (let device of devices) {
             if (device == this.currentDevice)
                 continue;
 
@@ -370,8 +369,8 @@ var PadDiagram = new Lang.Class({
     _cssString() {
         let css = this._css;
 
-        for (let i = 0; i < this._activeButtons.length; i++) {
-            let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
+        for (let activeButton of this._activeButtons) {
+            let ch = String.fromCharCode('A'.charCodeAt() + activeButton);
             css += ('.' + ch + ' { ' +
 	            '  stroke: ' + ACTIVE_COLOR + ' !important; ' +
                     '  fill: ' + ACTIVE_COLOR + ' !important; ' +
@@ -432,8 +431,7 @@ var PadDiagram = new Lang.Class({
         this.parent(box, flags);
         this._updateDiagramScale();
 
-        for (let i = 0; i < this._labels.length; i++) {
-            let [label, action, idx, dir] = this._labels[i];
+        for (let [label, action, idx, dir] of this._labels) {
             let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
@@ -560,7 +558,7 @@ var PadDiagram = new Lang.Class({
     },
 
     deactivateButton(button) {
-        for (let i = 0; i < this._activeButtons.length; i++) {
+        for (let i in this._activeButtons) {
             if (this._activeButtons[i] == button)
                 this._activeButtons.splice(i, 1);
         }
@@ -606,10 +604,10 @@ var PadDiagram = new Lang.Class({
         if (this._curEdited)
             return;
 
-        for (let i = 0; i < this._labels.length; i++) {
-            let [label, itemAction, itemIdx, itemDir] = this._labels[i];
+        for (let labelData of this._labels) {
+            let [label, itemAction, itemIdx, itemDir] = labelData;
             if (action == itemAction && idx == itemIdx && dir == itemDir) {
-                this._curEdited = this._labels[i];
+                this._curEdited = labelData;
                 editedLabel = label;
                 break;
             }

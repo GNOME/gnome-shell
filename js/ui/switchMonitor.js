@@ -80,8 +80,8 @@ var SwitchMonitorSwitcher = new Lang.Class({
     _init(items) {
         this.parent(true);
 
-        for (let i = 0; i < items.length; i++)
-            this._addIcon(items[i]);
+        for (let item of items)
+            this._addIcon(item);
     },
 
     _addIcon(item) {

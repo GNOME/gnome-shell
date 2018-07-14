@@ -695,8 +695,8 @@ var AppSwitcher = new Lang.Class({
         let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
 
         // Construct the AppIcons, add to the popup
-        for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon(apps[i]);
+        for (let app of apps) {
+            let appIcon = new AppIcon(app);
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
@@ -744,22 +744,21 @@ var AppSwitcher = new Lang.Class({
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
 
-        if (this._items.length == 1) {
+        if (this._items.length == 1)
             this._iconSize = baseIconSizes[0];
-        } else {
-            for(let i =  0; i < baseIconSizes.length; i++) {
-                this._iconSize = baseIconSizes[i];
+        else
+            for (let baseIconSize of baseIconSizes) {
+                this._iconSize = baseIconSize;
                 let height = iconSizes[i] + iconSpacing;
                 let w = height * this._items.length + totalSpacing;
                 if (w <= availWidth)
                     break;
             }
-        }
 
-        for(let i = 0; i < this.icons.length; i++) {
-            if (this.icons[i].icon != null)
+        for (let icon of this.icons) {
+            if (icon.icon != null)
                 break;
-            this.icons[i].set_size(this._iconSize);
+            icon.set_size(this._iconSize);
         }
     },
 
@@ -777,7 +776,7 @@ var AppSwitcher = new Lang.Class({
 
         // Now allocate each arrow underneath its item
         let childBox = new Clutter.ActorBox();
-        for (let i = 0; i < this._items.length; i++) {
+        for (let i in this._items.length) {
             let itemBox = this._items[i].allocation;
             childBox.x1 = Math.floor(itemBox.x1 + (itemBox.x2 - itemBox.x1 - arrowWidth) / 2);
             childBox.x2 = childBox.x1 + arrowWidth;
@@ -882,7 +881,7 @@ var ThumbnailList = new Lang.Class({
         this._clones = new Array();
         this._windows = windows;
 
-        for (let i = 0; i < windows.length; i++) {
+        for (let win of windows) {
             let box = new St.BoxLayout({ style_class: 'thumbnail-box',
                                          vertical: true });
 
@@ -891,7 +890,7 @@ var ThumbnailList = new Lang.Class({
             box.add_actor(bin);
             this._thumbnailBins.push(bin);
 
-            let title = windows[i].get_title();
+            let title = win.get_title();
             if (title) {
                 let name = new St.Label({ text: title });
                 // St.Label doesn't support text-align so use a Bin
@@ -924,7 +923,7 @@ var ThumbnailList = new Lang.Class({
         let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;
         binHeight = Math.min(thumbnailSize, binHeight);
 
-        for (let i = 0; i < this._thumbnailBins.length; i++) {
+        for (let i in this._thumbnailBins) {
             let mutterWindow = this._windows[i].get_compositor_private();
             if (!mutterWindow)
                 continue;
@@ -1039,8 +1038,7 @@ var WindowList = new Lang.Class({
         this.windows = windows;
         this.icons = [];
 
-        for (let i = 0; i < windows.length; i++) {
-            let win = windows[i];
+        for (let win of windows) {
             let icon = new WindowIcon(win, mode);
 
             this.addItem(icon.actor, icon.label);

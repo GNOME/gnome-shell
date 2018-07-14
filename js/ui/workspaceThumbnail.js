@@ -287,16 +287,15 @@ var WorkspaceThumbnail = new Lang.Class({
         this._windows = [];
         this._allWindows = [];
         this._minimizedChangedIds = [];
-        for (let i = 0; i < windows.length; i++) {
+        for (let win of windows) {
             let minimizedChangedId =
-                windows[i].meta_window.connect('notify::minimized',
-                                               this._updateMinimized.bind(this));
-            this._allWindows.push(windows[i].meta_window);
+                win.meta_window.connect('notify::minimized',
+                                        this._updateMinimized.bind(this));
+            this._allWindows.push(win.meta_window);
             this._minimizedChangedIds.push(minimizedChangedId);
 
-            if (this._isMyWindow(windows[i]) && this._isOverviewWindow(windows[i])) {
-                this._addWindowClone(windows[i]);
-            }
+            if (this._isMyWindow(win) && this._isOverviewWindow(win))
+                this._addWindowClone(win);
         }
 
         // Track window changes
@@ -326,12 +325,7 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     _lookupIndex(metaWindow) {
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
+        this._windows.findIndex(w => w.metaWindow == metaWindow);
     },
 
     syncStacking(stackIndices) {
@@ -341,7 +335,7 @@ var WorkspaceThumbnail = new Lang.Class({
             return indexA - indexB;
         });
 
-        for (let i = 0; i < this._windows.length; i++) {
+        for (let i in this._windows) {
             let clone = this._windows[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
@@ -481,7 +475,7 @@ var WorkspaceThumbnail = new Lang.Class({
         global.display.disconnect(this._windowEnteredMonitorId);
         global.display.disconnect(this._windowLeftMonitorId);
 
-        for (let i = 0; i < this._allWindows.length; i++)
+        for (let i in this._allWindows)
             this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
     },
 
@@ -698,8 +692,7 @@ var ThumbnailsBox = new Lang.Class({
     _activateThumbnailAtPoint(stageX, stageY, time) {
         let [r, x, y] = this.actor.transform_stage_point(stageX, stageY);
 
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            let thumbnail = this._thumbnails[i]
+        for (let thumbnail of this._thumbnails) {
             let [w, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
                 thumbnail.activate(time);
@@ -924,8 +917,8 @@ var ThumbnailsBox = new Lang.Class({
             this._workareasChangedId = 0;
         }
 
-        for (let w = 0; w < this._thumbnails.length; w++)
-            this._thumbnails[w].destroy();
+        for (let thumbnail of this._thumbnails)
+            thumbnail.destroy();
         this._thumbnails = [];
         this._porthole = null;
     },
@@ -1000,9 +993,7 @@ var ThumbnailsBox = new Lang.Class({
 
     removeThumbnails(start, count) {
         let currentPos = 0;
-        for (let k = 0; k < this._thumbnails.length; k++) {
-            let thumbnail = this._thumbnails[k];
-
+        for (let thumbnail of this._thumbnails) {
             if (thumbnail.state > ThumbnailState.NORMAL)
                 continue;
 
@@ -1018,8 +1009,8 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     _syncStacking(overview, stackIndices) {
-        for (let i = 0; i < this._thumbnails.length; i++)
-            this._thumbnails[i].syncStacking(stackIndices);
+        for (let thumbnail of this._thumbnails)
+            thumbnail.syncStacking(stackIndices);
     },
 
     set scale(scale) {
@@ -1050,10 +1041,8 @@ var ThumbnailsBox = new Lang.Class({
         if (this._stateCounts[state] == 0)
             return;
 
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            if (this._thumbnails[i].state == state)
-                callback.call(this, this._thumbnails[i]);
-        }
+        for (let thumbnails of this._thumbnails.filter(t => t.state == state))
+            callback.call(this, thumbnail);
     },
 
     _tweenScale() {
@@ -1270,7 +1259,7 @@ var ThumbnailsBox = new Lang.Class({
 
         let childBox = new Clutter.ActorBox();
 
-        for (let i = 0; i < this._thumbnails.length; i++) {
+        for (let i in this._thumbnails) {
             let thumbnail = this._thumbnails[i];
 
             if (i > 0)
@@ -1342,15 +1331,11 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     _activeWorkspaceChanged(wm, from, to, direction) {
-        let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            if (this._thumbnails[i].metaWorkspace == activeWorkspace) {
-                thumbnail = this._thumbnails[i];
-                break;
-            }
-        }
+        let thumbnail = this._thumbnails.find(
+            t => t.metaWorkspace == activeWorkspace
+        );
 
         this._animatingIndicator = true;
         let indicatorThemeNode = this._indicator.get_theme_node();

@@ -249,7 +249,7 @@ var WorkspaceTracker = new Lang.Class({
         if (this._pauseWorkspaceCheck)
             return true;
 
-        for (i = 0; i < this._workspaces.length; i++) {
+        for (i in this._workspaces) {
             let lastRemoved = this._workspaces[i]._lastRemovedWindow;
             if ((lastRemoved &&
                  (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
@@ -262,15 +262,13 @@ var WorkspaceTracker = new Lang.Class({
         }
 
         let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
-        for (i = 0; i < sequences.length; i++) {
-            let index = sequences[i].get_workspace();
+        for (let sequence of sequences) {
+            let index = sequence.get_workspace();
             if (index >= 0 && index <= workspaceManager.n_workspaces)
                 emptyWorkspaces[index] = false;
         }
 
-        let windows = global.get_window_actors();
-        for (i = 0; i < windows.length; i++) {
-            let actor = windows[i];
+        for (let actor of global.get_window_actors()) {
             let win = actor.get_meta_window();
 
             if (win.is_on_all_workspaces())
@@ -965,12 +963,12 @@ var WindowManager = new Lang.Class({
         });
 
         Main.overview.connect('showing', () => {
-            for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._undimWindow(this._dimmedWindows[i]);
+            for (let win of this._dimmedWindows)
+                this._undimWindow(win);
         });
         Main.overview.connect('hiding', () => {
-            for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._dimWindow(this._dimmedWindows[i]);
+            for (let win of this._dimmedWindows)
+                this._dimWindow(win);
         });
 
         this._windowMenuManager = new WindowMenu.WindowMenuManager();
@@ -1016,12 +1014,7 @@ var WindowManager = new Lang.Class({
     },
 
     _lookupIndex(windows, metaWindow) {
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
+        windows.findIndex(w => w.metaWindow == metaWindow);
     },
 
     _switchApp() {
@@ -1697,12 +1690,12 @@ var WindowManager = new Lang.Class({
         // so we just ignore them here.
         let windows = global.get_window_actors();
         let sibling = null;
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() != this._switchData.inGroup)
+        for (let win of windows) {
+            if (win.get_parent() != this._switchData.inGroup)
                 continue;
 
-            this._switchData.inGroup.set_child_above_sibling(windows[i], sibling);
-            sibling = windows[i];
+            this._switchData.inGroup.set_child_above_sibling(win, sibling);
+            sibling = win;
         }
     },
 
@@ -1750,8 +1743,7 @@ var WindowManager = new Lang.Class({
         wgroup.add_actor(switchData.outGroup);
         wgroup.add_actor(switchData.movingWindowBin);
 
-        for (let i = 0; i < windows.length; i++) {
-            let actor = windows[i];
+        for (let actor of windows) {
             let window = actor.get_meta_window();
 
             if (!window.showing_on_its_workspace())
@@ -1805,8 +1797,7 @@ var WindowManager = new Lang.Class({
             return;
         this._switchData = null;
 
-        for (let i = 0; i < switchData.windows.length; i++) {
-                let w = switchData.windows[i];
+        for (let w of switchData.windows) {
                 if (w.window.is_destroyed()) // Window gone
                     continue;
                 if (w.window.get_parent() == switchData.outGroup) {

@@ -36,7 +36,7 @@ function _setLabelText(label, text) {
 function _setButtonsForChoices(dialog, choices) {
     let buttons = [];
 
-    for (let idx = 0; idx < choices.length; idx++) {
+    for (let idx in choices) {
         let button = idx;
         buttons.unshift({ label: choices[idx],
                           action: () => { dialog.emit('response', button); }

@@ -94,10 +94,10 @@ var KeyboardManager = new Lang.Class({
         this._current = null;
         this._layoutInfos = {};
 
-        for (let i = 0; i < ids.length; ++i) {
-            let [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(ids[i]);
+        for (let id of ids) {
+            let [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(id);
             if (found)
-                this._layoutInfos[ids[i]] = { id: ids[i], layout: _layout, variant: _variant };
+                this._layoutInfos[id] = { id, layout: _layout, variant: _variant };
         }
 
         let i = 0;

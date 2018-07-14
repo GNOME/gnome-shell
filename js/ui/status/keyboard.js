@@ -120,8 +120,8 @@ var InputSourceSwitcher = new Lang.Class({
     _init(items) {
         this.parent(true);
 
-        for (let i = 0; i < items.length; i++)
-            this._addIcon(items[i]);
+        for (let item of items)
+            this._addIcon(item);
     },
 
     _addIcon(item) {
@@ -433,10 +433,8 @@ var InputSourceManager = new Lang.Class({
             return;
 
         let sourcesList = [];
-        for (let i = 0; i < this._mruSources.length; ++i) {
-            let source = this._mruSources[i];
+        for (let source of this._mruSources)
             sourcesList.push([source.type, source.id]);
-        }
 
         this._settings.mruSources = sourcesList;
     },
@@ -447,12 +445,11 @@ var InputSourceManager = new Lang.Class({
 
         this.emit('current-source-changed', oldSource);
 
-        for (let i = 1; i < this._mruSources.length; ++i)
-            if (this._mruSources[i] == newSource) {
-                let currentSource = this._mruSources.splice(i, 1);
-                this._mruSources = currentSource.concat(this._mruSources);
-                break;
-            }
+        let i = this._mruSources.findIndex(s => s == newSource);
+        if (i != -1) {
+            let currentSource = this._mruSources.splice(i, 1);
+            this._mruSources = currentSource.concat(this._mruSources);
+        }
 
         this._changePerWindowSource();
     },
@@ -482,8 +479,8 @@ var InputSourceManager = new Lang.Class({
 
     _updateMruSources() {
         let sourcesList = [];
-        for (let i in this._inputSources)
-            sourcesList.push(this._inputSources[i]);
+        for (let source of this._inputSources)
+            sourcesList.push(source);
 
         this._keyboardManager.setUserLayouts(sourcesList.map(x => x.xkbId));
 
@@ -495,12 +492,10 @@ var InputSourceManager = new Lang.Class({
         // Initialize from settings when we have no MRU sources list
         if (this._mruSources.length == 0) {
             let mruSettings = this._settings.mruSources;
-            for (let i = 0; i < mruSettings.length; i++) {
-                let mruSettingSource = mruSettings[i];
+            for (let mruSettingSource of mruSettings) {
                 let mruSource = null;
 
-                for (let j = 0; j < sourcesList.length; j++) {
-                    let source = sourcesList[j];
+                for (let source of sourcesList) {
                     if (source.type == mruSettingSource.type &&
                         source.id == mruSettingSource.id) {
                         mruSource = source;
@@ -527,18 +522,17 @@ var InputSourceManager = new Lang.Class({
 
     _inputSourcesChanged() {
         let sources = this._settings.inputSources;
-        let nSources = sources.length;
 
         this._currentSource = null;
         this._inputSources = {};
         this._ibusSources = {};
 
         let infosList = [];
-        for (let i = 0; i < nSources; i++) {
+        for (let source of sources) {
             let displayName;
             let shortName;
-            let type = sources[i].type;
-            let id = sources[i].id;
+            let type = source.type;
+            let id = source.id;
             let exists = false;
 
             if (type == INPUT_SOURCE_TYPE_XKB) {
@@ -572,7 +566,7 @@ var InputSourceManager = new Lang.Class({
         }
 
         let inputSourcesByShortName = {};
-        for (let i = 0; i < infosList.length; i++) {
+        for (let i in infosList) {
             let is = new InputSource(infosList[i].type,
                                      infosList[i].id,
                                      infosList[i].displayName,
@@ -590,8 +584,7 @@ var InputSourceManager = new Lang.Class({
                 this._ibusSources[is.id] = is;
         }
 
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
+        for (let is of this._inputSources) {
             if (inputSourcesByShortName[is.shortName].length > 1) {
                 let sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
                 is.shortName += String.fromCharCode(0x2080 + sub);
@@ -683,8 +676,7 @@ var InputSourceManager = new Lang.Class({
             return null;
 
         if (current) {
-            for (let i in this._inputSources) {
-                let is = this._inputSources[i];
+            for (let is of this._inputSources) {
                 if (is.type == current.type &&
                     is.id == current.id)
                     return is;
@@ -734,9 +726,9 @@ var InputSourceManager = new Lang.Class({
             this._overviewHiddenId = 0;
 
             let windows = global.get_window_actors().map(w => w.meta_window);
-            for (let i = 0; i < windows.length; ++i) {
-                delete windows[i]._inputSources;
-                delete windows[i]._currentSource;
+            for (let win of windows) {
+                delete win._inputSources;
+                delete win._currentSource;
             }
             delete Main.overview._inputSources;
             delete Main.overview._currentSource;
@@ -821,10 +813,10 @@ var InputSourceIndicator = new Lang.Class({
     },
 
     _sourcesChanged() {
-        for (let i in this._menuItems)
-            this._menuItems[i].destroy();
-        for (let i in this._indicatorLabels)
-            this._indicatorLabels[i].destroy();
+        for (let item of this._menuItems)
+            item.destroy();
+        for (let label of this._indicatorLabels)
+            label.destroy();
 
         this._menuItems = {};
         this._indicatorLabels = {};
@@ -939,17 +931,16 @@ var InputSourceIndicator = new Lang.Class({
                     if (item.prop.get_state() == IBus.PropState.CHECKED)
                         return;
 
-                    let group = item.radioGroup;
-                    for (let i = 0; i < group.length; ++i) {
-                        if (group[i] == item) {
+                    for (let group of item.radioGroup) {
+                        if (group == item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
                             ibusManager.activateProperty(item.prop.get_key(),
                                                          IBus.PropState.CHECKED);
                         } else {
-                            group[i].setOrnament(PopupMenu.Ornament.NONE);
-                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
-                            ibusManager.activateProperty(group[i].prop.get_key(),
+                            group.setOrnament(PopupMenu.Ornament.NONE);
+                            group.prop.set_state(IBus.PropState.UNCHECKED);
+                            ibusManager.activateProperty(group.prop.get_key(),
                                                          IBus.PropState.UNCHECKED);
                         }
                     }

@@ -71,13 +71,12 @@ var PointerWatcher = new Lang.Class({
     },
 
     _removeWatch(watch) {
-        for (let i = 0; i < this._watches.length; i++) {
-            if (this._watches[i] == watch) {
-                this._watches.splice(i, 1);
-                this._updateTimeout();
-                return;
-            }
-        }
+        let i = this._watches.findIndex(w => w == watch);
+        if (i == -1)
+            return;
+
+        this._watches.splice(i, 1);
+        this._updateTimeout();
     },
 
     _onIdleMonitorBecameActive(monitor) {
@@ -101,9 +100,9 @@ var PointerWatcher = new Lang.Class({
         if (this._idle || this._watches.length == 0)
             return;
 
-        let minInterval = this._watches[0].interval;
-        for (let i = 1; i < this._watches.length; i++)
-            minInterval = Math.min(this._watches[i].interval, minInterval);
+        let minInterval = this._watches.reduce(
+            (min, w) => Math.min(w.interval, min), 0
+        );
 
         this._timeoutId = Mainloop.timeout_add(minInterval,
                                                this._onTimeout.bind(this));

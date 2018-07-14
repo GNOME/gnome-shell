@@ -207,7 +207,7 @@ var Notebook = new Lang.Class({
         if (child == null)
             this.selectIndex(-1);
         else {
-            for (let i = 0; i < this._tabs.length; i++) {
+            for (let i of this._tabs) {
                 let tabData = this._tabs[i];
                 if (tabData.child == child) {
                     this.selectIndex(i);
@@ -332,8 +332,7 @@ var WindowList = new Lang.Class({
         this.actor.destroy_all_children();
         let windows = global.get_window_actors();
         let tracker = Shell.WindowTracker.get_default();
-        for (let i = 0; i < windows.length; i++) {
-            let metaWindow = windows[i].metaWindow;
+        for (let { metaWindow } of windows) {
             // Avoid multiple connections
             if (!metaWindow._lookingGlassManaged) {
                 metaWindow.connect('unmanaged', this._updateWindowList.bind(this));
@@ -413,13 +412,11 @@ var ObjInspector = new Lang.Class({
         hbox.add(button);
         if (typeof(obj) == typeof({})) {
             let properties = [];
-            for (let propName in obj) {
+            for (let propName in obj)
                 properties.push(propName);
-            }
             properties.sort();
 
-            for (let i = 0; i < properties.length; i++) {
-                let propName = properties[i];
+            for (let propName of properties) {
                 let valueStr;
                 let link;
                 try {
@@ -691,8 +688,8 @@ var Extensions = new Lang.Class({
             let errors = extension.errors;
             let errorDisplay = new St.BoxLayout({ vertical: true });
             if (errors && errors.length) {
-                for (let i = 0; i < errors.length; i ++)
-                    errorDisplay.add(new St.Label({ text: errors[i] }));
+                for (let error of errors)
+                    errorDisplay.add(new St.Label({ text: error }));
             } else {
                 /* Translators: argument is an extension UUID. */
                 let message = _("%s has not emitted any errors.").format(extension.uuid);

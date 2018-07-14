@@ -323,9 +323,7 @@ var WebPortalHelper = new Lang.Class({
     },
 
     Close(connection) {
-        for (let i = 0; i < this._queue.length; i++) {
-            let obj = this._queue[i];
-
+        for (let obj of this._queue) {
             if (obj.connection == connection) {
                 if (obj.window)
                     obj.window.destroyWindow();
@@ -338,9 +336,7 @@ var WebPortalHelper = new Lang.Class({
     },
 
     Refresh(connection) {
-        for (let i = 0; i < this._queue.length; i++) {
-            let obj = this._queue[i];
-
+        for (let obj of this._queue) {
             if (obj.connection == connection) {
                 if (obj.window)
                     obj.window.refresh();

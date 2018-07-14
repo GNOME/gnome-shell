@@ -116,11 +116,7 @@ var GrabHelper = new Lang.Class({
         if (!actor)
             return -1;
 
-        for (let i = 0; i < this._grabStack.length; i++) {
-            if (this._grabStack[i].actor === actor)
-                return i;
-        }
-        return -1;
+        return this._grabStack.findIndex(grab => grab.actor == actor);
     },
 
     _actorInGrabStack(actor) {
@@ -260,9 +256,7 @@ var GrabHelper = new Lang.Class({
         // by truncating the array.
         this._grabStack.length = grabStackIndex;
 
-        for (let i = poppedGrabs.length - 1; i >= 0; i--) {
-            let poppedGrab = poppedGrabs[i];
-
+        for (let poppedGrab of poppedGrabs.slice().reverse()) {
             if (poppedGrab.onUngrab)
                 poppedGrab.onUngrab(params.isUser);
 

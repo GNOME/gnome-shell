@@ -82,10 +82,10 @@ var Manager = new Lang.Class({
         if (!realmPaths)
             return;
 
-        for (let i = 0; i < realmPaths.length; i++) {
+        for (let path of realmPaths) {
             let realm = Realm(Gio.DBus.system,
                               'org.freedesktop.realmd',
-                              realmPaths[i],
+                              path,
                               this._onRealmLoaded.bind(this));
         }
     },
@@ -118,8 +118,7 @@ var Manager = new Lang.Class({
     _updateLoginFormat() {
         let newLoginFormat;
 
-        for (let realmPath in this._realms) {
-            let realm = this._realms[realmPath];
+        for (let realm of this._realms) {
             if (realm.LoginFormats && realm.LoginFormats.length > 0) {
                 newLoginFormat = realm.LoginFormats[0];
                 break;

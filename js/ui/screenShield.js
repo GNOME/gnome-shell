@@ -127,9 +127,8 @@ var NotificationsBox = new Lang.Class({
         }
 
         let items = this._sources.entries();
-        for (let [source, obj] of items) {
+        for (let [source, obj] of items)
             this._removeSource(source, obj);
-        }
 
         this.actor.destroy();
     },
@@ -183,9 +182,7 @@ var NotificationsBox = new Lang.Class({
         textBox.add(title);
 
         let visible = false;
-        for (let i = 0; i < source.notifications.length; i++) {
-            let n = source.notifications[i];
-
+        for (let n of source.notifications) {
             if (n.acknowledged)
                 continue;
 
@@ -607,13 +604,13 @@ var ScreenShield = new Lang.Class({
     },
 
     _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
+        for (let bgManager of this._bgManagers)
+            bgManager.destroy();
 
         this._bgManagers = [];
         this._backgroundGroup.destroy_all_children();
 
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
+        for (let i in Main.layoutManager.monitors)
             this._createBackground(i);
     },
 
@@ -738,7 +735,7 @@ var ScreenShield = new Lang.Class({
         let arrows = this._arrowContainer.get_children();
         let unitaryDelay = ARROW_ANIMATION_TIME / (arrows.length + 1);
         let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
-        for (let i = 0; i < arrows.length; i++) {
+        for (let i in arrows) {
             arrows[i].opacity = 0;
             Tweener.addTween(arrows[i],
                              { opacity: 0,

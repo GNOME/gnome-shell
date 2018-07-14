@@ -64,8 +64,7 @@ function disableExtension(uuid) {
     let order = extensionOrder.slice(orderIdx + 1);
     let orderReversed = order.slice().reverse();
 
-    for (let i = 0; i < orderReversed.length; i++) {
-        let uuid = orderReversed[i];
+    for (let uuid of orderReversed) {
         try {
             ExtensionUtils.extensions[uuid].stateObj.disable();
         } catch(e) {
@@ -84,8 +83,7 @@ function disableExtension(uuid) {
         logExtensionError(uuid, e);
     }
 
-    for (let i = 0; i < order.length; i++) {
-        let uuid = order[i];
+    for (let uuid of order) {
         try {
             ExtensionUtils.extensions[uuid].stateObj.enable();
         } catch(e) {
@@ -115,8 +113,8 @@ function enableExtension(uuid) {
     extensionOrder.push(uuid);
 
     let stylesheetNames = [global.session_mode + '.css', 'stylesheet.css'];
-    for (let i = 0; i < stylesheetNames.length; i++) {
-        let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
+    for (let stylesheetName of stylesheetNames) {
+        let stylesheetFile = extension.dir.get_child(stylesheetName);
         if (stylesheetFile.query_exists(null)) {
             let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
             theme.load_stylesheet(stylesheetFile);

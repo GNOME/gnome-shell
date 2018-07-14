@@ -137,8 +137,8 @@ var Dialog = new Lang.Class({
         if (this._initialKeyFocus == null || isDefault)
             this._setInitialKeyFocus(button);
 
-        for (let i in keys)
-            this._buttonKeys[keys[i]] = buttonInfo;
+        for (let key of keys)
+            this._buttonKeys[key] = buttonInfo;
 
         this.buttonLayout.add_actor(button);
 
