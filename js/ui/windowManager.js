@@ -222,7 +222,7 @@ var WorkspaceTracker = new Lang.Class({
     _getWorkspaceSettings() {
         let settings = global.get_overrides_settings();
         if (settings &&
-            settings.settings_schema.list_keys().indexOf('dynamic-workspaces') > -1)
+            settings.settings_schema.list_keys().includes('dynamic-workspaces'))
             return settings;
         return new Gio.Settings({ schema_id: 'org.gnome.mutter' });
     },
@@ -1140,7 +1140,7 @@ var WindowManager = new Lang.Class({
             return false;
 
         let type = actor.meta_window.get_window_type();
-        return types.indexOf(type) >= 0;
+        return types.includes(type);
     },
 
     _removeEffect(list, actor) {
@@ -1348,7 +1348,7 @@ var WindowManager = new Lang.Class({
     _sizeChangedWindow(shellwm, actor) {
         if (!actor.__animationInfo)
             return;
-        if (this._resizing.indexOf(actor) != -1)
+        if (this._resizing.includes(actor))
             return;
 
         let actorClone = actor.__animationInfo.clone;

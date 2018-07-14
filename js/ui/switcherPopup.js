@@ -601,7 +601,7 @@ var SwitcherList = new Lang.Class({
         let parentRightPadding = this.actor.get_parent().get_theme_node().get_padding(St.Side.RIGHT);
 
         for (let i = 0; i < children.length; i++) {
-            if (this._items.indexOf(children[i]) != -1) {
+            if (this._items.includes(children[i])) {
                 let [childMin, childNat] = children[i].get_preferred_height(childWidth);
                 let vSpacing = (childHeight - childNat) / 2;
                 childBox.x1 = x;

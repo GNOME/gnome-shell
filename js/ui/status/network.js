@@ -1062,7 +1062,7 @@ var NMWirelessDialog = new Lang.Class({
     _checkConnections(network, accessPoint) {
         this._connections.forEach(connection => {
             if (accessPoint.connection_valid(connection) &&
-                network.connections.indexOf(connection) == -1) {
+                !network.connections.includes(connection)) {
                 network.connections.push(connection);
             }
         });
@@ -1081,7 +1081,7 @@ var NMWirelessDialog = new Lang.Class({
 
         if (pos != -1) {
             network = this._networks[pos];
-            if (network.accessPoints.indexOf(accessPoint) != -1) {
+            if (network.accessPoints.includes(accessPoint)) {
                 log('Access point was already seen, not adding again');
                 return;
             }

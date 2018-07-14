@@ -42,7 +42,7 @@ function isToday(date) {
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
     let days = C_('calendar-no-work', "06");
-    return days.indexOf(date.getDay().toString()) == -1;
+    return !days.includes(date.getDay().toString());
 }
 
 function _getBeginningOfDay(date) {

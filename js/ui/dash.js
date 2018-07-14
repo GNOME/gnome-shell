@@ -757,14 +757,14 @@ var Dash = new Lang.Class({
             }
 
             // App removed at oldIndex
-            if (oldApp && newApps.indexOf(oldApp) == -1) {
+            if (oldApp && !newApps.includes(oldApp)) {
                 removedActors.push(children[oldIndex]);
                 oldIndex++;
                 continue;
             }
 
             // App added at newIndex
-            if (newApp && oldApps.indexOf(newApp) == -1) {
+            if (newApp && !oldApps.includes(newApp)) {
                 addedItems.push({ app: newApp,
                                   item: this._createAppItem(newApp),
                                   pos: newIndex });

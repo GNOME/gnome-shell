@@ -189,7 +189,7 @@ var RunDialog = new Lang.Class({
     },
 
     _getCompletion(text) {
-        if (text.indexOf('/') != -1) {
+        if (text.includes('/')) {
             return this._pathCompleter.get_completion_suffix(text);
         } else {
             return this._getCommandCompletion(text);
