@@ -72,6 +72,12 @@ ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            gint            size,
                                            gint            scale);
 
+cairo_surface_t *st_texture_cache_load_gicon_to_cairo_surface (StTextureCache *cache,
+                                                               StThemeNode    *theme_node,
+                                                               GIcon          *icon,
+                                                               gint            size,
+                                                               gint            scale);
+
 ClutterActor *st_texture_cache_load_file_async (StTextureCache    *cache,
                                                 GFile             *file,
                                                 int                available_width,

@@ -628,6 +628,38 @@ load_texture_async (StTextureCache       *cache,
     g_assert_not_reached ();
 }
 
+static GdkPixbuf *
+load_icon_sync (StTextureCache *cache,
+                GtkIconInfo    *icon_info,
+                StIconColors   *colors)
+{
+  GdkPixbuf *pixbuf;
+
+  if (colors)
+    {
+      GdkRGBA foreground_color;
+      GdkRGBA success_color;
+      GdkRGBA warning_color;
+      GdkRGBA error_color;
+
+      rgba_from_clutter (&foreground_color, &colors->foreground);
+      rgba_from_clutter (&success_color, &colors->success);
+      rgba_from_clutter (&warning_color, &colors->warning);
+      rgba_from_clutter (&error_color, &colors->error);
+
+      pixbuf = gtk_icon_info_load_symbolic (icon_info,
+                                            &foreground_color, &success_color,
+                                            &warning_color, &error_color,
+                                            NULL, NULL);
+    }
+  else
+    {
+      pixbuf = gtk_icon_info_load_icon (icon_info, NULL);
+    }
+
+    return pixbuf;
+}
+
 typedef struct {
   StTextureCache *cache;
   ClutterTexture *texture;
@@ -843,6 +875,69 @@ ensure_request (StTextureCache        *cache,
   return had_pending;
 }
 
+static GtkIconInfo *
+load_icon_info (StTextureCache *cache,
+                StThemeNode    *theme_node,
+                GIcon          *icon,
+                gint            size,
+                gint            scale)
+{
+  GtkIconTheme *theme;
+  GtkIconInfo *info;
+  StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
+  GtkIconLookupFlags lookup_flags;
+
+  if (theme_node)
+      icon_style = st_theme_node_get_icon_style (theme_node);
+
+  /* Do theme lookups in the main thread to avoid thread-unsafety */
+  theme = cache->priv->icon_theme;
+
+  lookup_flags = GTK_ICON_LOOKUP_USE_BUILTIN;
+
+  if (icon_style == ST_ICON_STYLE_REGULAR)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_REGULAR;
+  else if (icon_style == ST_ICON_STYLE_SYMBOLIC)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC;
+
+  if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+    lookup_flags |= GTK_ICON_LOOKUP_DIR_RTL;
+  else
+    lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
+
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, lookup_flags);
+
+  return info;
+}
+
+static char *
+create_icon_key (char         *gicon_string,
+                 gint          size,
+                 gint          scale,
+                 StIconStyle   icon_style,
+                 StIconColors *colors)
+{
+  char *key;
+
+  if (colors)
+    {
+      /* This raises some doubts about the practice of using string keys */
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_string, size, scale, icon_style,
+                             colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
+                             colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
+                             colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
+                             colors->success.red, colors->success.blue, colors->success.green, colors->success.alpha);
+    }
+  else
+    {
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d",
+                             gicon_string, size, scale, icon_style);
+    }
+
+  return key;
+}
+
 /**
  * st_texture_cache_load_gicon:
  * @cache: The texture cache instance
@@ -874,7 +969,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   StTextureCachePolicy policy;
   StIconColors *colors = NULL;
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
-  GtkIconLookupFlags lookup_flags;
 
   if (theme_node)
     {
@@ -882,22 +976,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       icon_style = st_theme_node_get_icon_style (theme_node);
     }
 
-  /* Do theme lookups in the main thread to avoid thread-unsafety */
-  theme = cache->priv->icon_theme;
-
-  lookup_flags = GTK_ICON_LOOKUP_USE_BUILTIN;
-
-  if (icon_style == ST_ICON_STYLE_REGULAR)
-    lookup_flags |= GTK_ICON_LOOKUP_FORCE_REGULAR;
-  else if (icon_style == ST_ICON_STYLE_SYMBOLIC)
-    lookup_flags |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC;
-
-  if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
-    lookup_flags |= GTK_ICON_LOOKUP_DIR_RTL;
-  else
-    lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
-
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, lookup_flags);
+  info = load_icon_info (cache, theme_node, icon, size, scale);
   if (info == NULL)
     return NULL;
 
@@ -908,21 +987,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
    * now; we should actually blow this away on icon theme changes probably */
   policy = gicon_string != NULL ? ST_TEXTURE_CACHE_POLICY_FOREVER
                                 : ST_TEXTURE_CACHE_POLICY_NONE;
-  if (colors)
-    {
-      /* This raises some doubts about the practice of using string keys */
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
-                             gicon_string, size, scale, icon_style,
-                             colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
-                             colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
-                             colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
-                             colors->success.red, colors->success.blue, colors->success.green, colors->success.alpha);
-    }
-  else
-    {
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d",
-                             gicon_string, size, scale, icon_style);
-    }
+  key = create_icon_key (gicon_string, size, scale, icon_style, colors);
   g_free (gicon_string);
 
   texture = (ClutterActor *) create_default_texture ();
@@ -951,6 +1016,81 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     }
 
   return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * st_texture_cache_load_gicon_to_cairo_surface:
+ * @cache: The texture cache instance
+ * @theme_node: (nullable): The #StThemeNode to use for colors, or NULL
+ *                            if the icon must not be recolored
+ * @icon: the #GIcon to load
+ * @size: Size of themed
+ * @scale: Scale factor of display
+ *
+ * This function synchronously loads the given file path
+ * into a cairo surface.  On error, a warning is emitted
+ * and %NULL is returned.
+ *
+ * Returns: (transfer full): a new #cairo_surface_t
+ */
+cairo_surface_t *
+st_texture_cache_load_gicon_to_cairo_surface (StTextureCache    *cache,
+                                              StThemeNode       *theme_node,
+                                              GIcon             *icon,
+                                              gint               size,
+                                              gint               scale)
+{
+  cairo_surface_t *surface;
+  char *gicon_string;
+  char *key;
+  GtkIconInfo *info;
+  StTextureCachePolicy policy;
+  StIconColors *colors = NULL;
+  StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
+
+  if (theme_node)
+    {
+      colors = st_theme_node_get_icon_colors (theme_node);
+      icon_style = st_theme_node_get_icon_style (theme_node);
+    }
+
+  info = load_icon_info (cache, theme_node, icon, size, scale);
+  if (info == NULL)
+    return NULL;
+
+  gicon_string = g_icon_to_string (icon);
+  /* A return value of NULL indicates that the icon can not be serialized,
+   * so don't have a unique identifier for it as a cache key, and thus can't
+   * be cached. If it is cachable, we hardcode a policy of FOREVER here for
+   * now; we should actually blow this away on icon theme changes probably */
+  policy = gicon_string != NULL ? ST_TEXTURE_CACHE_POLICY_FOREVER
+                                : ST_TEXTURE_CACHE_POLICY_NONE;
+
+  key = create_icon_key (gicon_string, size, scale, icon_style, colors);
+  g_free (gicon_string);
+
+  surface = g_hash_table_lookup (cache->priv->keyed_surface_cache, key);
+
+  if (surface == NULL)
+    {
+      GdkPixbuf *pixbuf;
+
+      pixbuf = load_icon_sync (cache, info, colors);
+
+      surface = pixbuf_to_cairo_surface (pixbuf);
+      g_object_unref (pixbuf);
+
+      if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
+        {
+          cairo_surface_reference (surface);
+          g_hash_table_insert (cache->priv->keyed_surface_cache,
+                               g_strdup (key), surface);
+        }
+    }
+  else
+    cairo_surface_reference (surface);
+
+  return surface;
 }
 
 static ClutterActor *
