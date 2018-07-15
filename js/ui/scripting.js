@@ -216,12 +216,14 @@ function _step(g, finish, onError) {
                          if (onError)
                              onError(err);
                      });
-    } catch (err if err instanceof StopIteration) {
-        if (finish)
-            finish();
     } catch (err) {
-        if (onError)
-            onError(err);
+        if (err instanceof StopIteration) {
+            if (finish)
+                finish();
+        } else {
+            if (onError)
+                onError(err);
+        }
     }
 }
 

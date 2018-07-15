@@ -172,9 +172,10 @@ var RunDialog = new Lang.Class({
                     if (name.slice(0, text.length) == text)
                         results.push(name);
                 }
-            } catch (e if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
-                           !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_DIRECTORY))) {
-                log(e);
+            } catch (e) {
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
+                    !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_DIRECTORY))
+                    log(e);
             } finally {
                 return results;
             }
