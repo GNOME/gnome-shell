@@ -831,8 +831,10 @@ var GtkNotificationDaemon = new Lang.Class({
                 let source;
                 try {
                     source = this._ensureAppSource(appId);
-                } catch(e if e instanceof InvalidAppError) {
-                    return;
+                } catch(e) {
+                    if (e instanceof InvalidAppError)
+                        return;
+                    throw e;
                 }
 
                 notifications.forEach(([notificationId, notification]) => {
@@ -863,9 +865,12 @@ var GtkNotificationDaemon = new Lang.Class({
         let source;
         try {
             source = this._ensureAppSource(appId);
-        } catch(e if e instanceof InvalidAppError) {
-            invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
-            return;
+        } catch(e) {
+            if (e instanceof InvalidAppError) {
+                invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
+                return;
+            }
+            throw e;
         }
 
         let timestamp = GLib.DateTime.new_now_local().to_unix();
