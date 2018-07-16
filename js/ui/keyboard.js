@@ -533,17 +533,25 @@ var FocusTracker = new Lang.Class({
     },
 
     _setCurrentRect(rect) {
-        let frameRect = this._currentWindow.get_frame_rect();
-        rect.x -= frameRect.x;
-        rect.y -= frameRect.y;
+        if (this._currentWindow) {
+            let frameRect = this._currentWindow.get_frame_rect();
+            rect.x -= frameRect.x;
+            rect.y -= frameRect.y;
+        }
 
         this._rect = rect;
         this.emit('position-changed');
     },
 
     getCurrentRect() {
-        let frameRect = this._currentWindow.get_frame_rect();
-        let rect = { x: this._rect.x + frameRect.x, y: this._rect.y + frameRect.y, width: this._rect.width, height: this._rect.height };
+        let rect = { x: this._rect.x, y: this._rect.y,
+                     width: this._rect.width, height: this._rect.height };
+
+        if (this._currentWindow) {
+            let frameRect = this._currentWindow.get_frame_rect();
+            rect.x += frameRect.x;
+            rect.y += frameRect.y;
+        }
 
         return rect;
     }
