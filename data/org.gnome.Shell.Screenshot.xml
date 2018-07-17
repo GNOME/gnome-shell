@@ -92,6 +92,23 @@
     </method>
 
     <!--
+        PickColor:
+
+        Picks a color and returns the result.
+
+        The @result vardict contains:
+        <variablelist>
+          <varlistentry>
+            <term>color (ddd)</term>
+            <listitem><para>The color, RGB values in the range [0,1].</para></listitem>
+          </varlistentry>
+        </variablelist>
+    -->
+    <method name="PickColor">
+      <arg type="a{sv}" direction="out" name="result"/>
+    </method>
+
+    <!--
         FlashArea:
         @x: the X coordinate of the area to flash
         @y: the Y coordinate of the area to flash
