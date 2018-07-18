@@ -1,3 +1,16 @@
+3.28.3
+======
+* Fix lagging pointer when zoomed [Daniel; #682013]
+* Fix "Clear All" for calendar events [Florian; #325]
+* Misc. bug fixes [Florian, Mario, Marco; #136, #214, #788931, #791233]
+
+Contributors:
+  Carlos Garnacho, Florian Müllner, Mario Sanchez Prada, Joe Rabinoff,
+  Didier Roche, Marco Trevisan (Treviño), Daniel van Vugt
+
+Translators:
+  Pieter Schalk Schoeman [af], Gun Chleoc [gd]
+
 3.28.2
 ======
 * Fix lock-up on cancelling polkit dialog [Florian; #221]
