@@ -94,6 +94,15 @@ schema = configure_file(
 )
 install_data('00_org.gnome.shell.gschema.override', install_dir: schemadir)
 
+overrides_migration_conf = configuration_data()
+overrides_migration_conf.set('libexecdir', libexecdir)
+overrides_migration = configure_file(
+  input: 'gnome-shell-overrides-migration.desktop.in',
+  output: 'gnome-shell-overrides-migration.desktop',
+  configuration: overrides_migration_conf,
+  install_dir: autostartdir
+)
+
 if have_systemd
   unitconf = configuration_data()
   unitconf.set('bindir', bindir)
