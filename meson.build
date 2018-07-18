@@ -64,7 +64,7 @@ plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 # systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
 #                                                         define_variable: ['prefix', prefix])
 # and uncomment systemd_dep below
-systemduserunitdir = join_paths(libdir, 'systemd', 'user')
+systemduserunitdir = join_paths(prefix, 'lib', 'systemd', 'user')
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
