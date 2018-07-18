@@ -1,3 +1,19 @@
+3.29.4
+======
+* Fix "Clear All" for calendar events [Florian; #325]
+* Allow cancelling direct switch operations [Xavier; #315]
+* Support being started by systemd --user [Iain; !137, !138]
+* Support key event forwarding required by some input methods [Carlos; #275]
+* Misc. bug fixes and cleanups [Jasper, Andrea, Florian; #663461, #372, !112,
+  #414, !151]
+
+Contributors:
+  Andrea Azzarone, Carlos Garnacho, Xavier Johnson, Iain Lane, Florian Müllner,
+  Jasper St. Pierre
+
+Translators:
+  Stas Solovey [ru]
+
 3.29.3
 ======
 * Save creation time in screenshot metadata [Florian; #790481]
