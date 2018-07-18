@@ -111,9 +111,9 @@ var GnomeShell = new Lang.Class({
     },
 
     GrabAcceleratorAsync(params, invocation) {
-        let [accel, flags] = params;
+        let [accel, modeFlags, grabFlags] = params;
         let sender = invocation.get_sender();
-        let bindingAction = this._grabAcceleratorForSender(accel, flags, sender);
+        let bindingAction = this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender);
         return invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
     },
 
@@ -122,8 +122,8 @@ var GnomeShell = new Lang.Class({
         let sender = invocation.get_sender();
         let bindingActions = [];
         for (let i = 0; i < accels.length; i++) {
-            let [accel, flags] = accels[i];
-            bindingActions.push(this._grabAcceleratorForSender(accel, flags, sender));
+            let [accel, modeFlags, grabFlags] = accels[i];
+            bindingActions.push(this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender));
         }
         return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
     },
@@ -157,13 +157,13 @@ var GnomeShell = new Lang.Class({
                                GLib.Variant.new('(ua{sv})', [action, params]));
     },
 
-    _grabAcceleratorForSender(accelerator, flags, sender) {
-        let bindingAction = global.display.grab_accelerator(accelerator);
+    _grabAcceleratorForSender(accelerator, modeFlags, grabFlags, sender) {
+        let bindingAction = global.display.grab_accelerator(accelerator, grabFlags);
         if (bindingAction == Meta.KeyBindingAction.NONE)
             return Meta.KeyBindingAction.NONE;
 
         let bindingName = Meta.external_binding_name_for_action(bindingAction);
-        Main.wm.allowKeybinding(bindingName, flags);
+        Main.wm.allowKeybinding(bindingName, modeFlags);
 
         this._grabbedAccelerators.set(bindingAction, sender);
 
