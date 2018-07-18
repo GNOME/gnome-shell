@@ -39,10 +39,11 @@ const GnomeShellIface = '<node> \
 <method name="GrabAccelerator"> \
     <arg type="s" direction="in" name="accelerator"/> \
     <arg type="u" direction="in" name="flags"/> \
+    <arg type="b" direction="in" name="ignore_key_repeat"/> \
     <arg type="u" direction="out" name="action"/> \
 </method> \
 <method name="GrabAccelerators"> \
-    <arg type="a(su)" direction="in" name="accelerators"/> \
+    <arg type="a(sub)" direction="in" name="accelerators"/> \
     <arg type="au" direction="out" name="actions"/> \
 </method> \
 <method name="UngrabAccelerator"> \
@@ -166,9 +167,9 @@ var GnomeShell = new Lang.Class({
     },
 
     GrabAcceleratorAsync(params, invocation) {
-        let [accel, flags] = params;
+        let [accel, flags, ignore_key_repeat] = params;
         let sender = invocation.get_sender();
-        let bindingAction = this._grabAcceleratorForSender(accel, flags, sender);
+        let bindingAction = this._grabAcceleratorForSender(accel, flags, ignore_key_repeat, sender);
         return invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
     },
 
@@ -177,8 +178,8 @@ var GnomeShell = new Lang.Class({
         let sender = invocation.get_sender();
         let bindingActions = [];
         for (let i = 0; i < accels.length; i++) {
-            let [accel, flags] = accels[i];
-            bindingActions.push(this._grabAcceleratorForSender(accel, flags, sender));
+            let [accel, flags, ignore_key_repeat] = accels[i];
+            bindingActions.push(this._grabAcceleratorForSender(accel, flags, ignore_key_repeat, sender));
         }
         return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
     },
@@ -212,8 +213,11 @@ var GnomeShell = new Lang.Class({
                                GLib.Variant.new('(ua{sv})', [action, params]));
     },
 
-    _grabAcceleratorForSender(accelerator, flags, sender) {
-        let bindingAction = global.display.grab_accelerator(accelerator);
+    _grabAcceleratorForSender(accelerator, flags, ignore_key_repeat, sender) {
+        let bindingAction = global.display.grab_accelerator(accelerator,
+                                                            (ignore_key_repeat ?
+                                                             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT :
+                                                             Meta.KeyBindingFlags.NONE));
         if (bindingAction == Meta.KeyBindingAction.NONE)
             return Meta.KeyBindingAction.NONE;
 
