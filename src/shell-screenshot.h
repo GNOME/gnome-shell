@@ -16,28 +16,41 @@ G_DECLARE_FINAL_TYPE (ShellScreenshot, shell_screenshot,
 
 ShellScreenshot *shell_screenshot_new (void);
 
-typedef void (*ShellScreenshotCallback)  (ShellScreenshot *screenshot,
-                                          gboolean success,
-                                          cairo_rectangle_int_t *screenshot_area,
-                                          const gchar *filename_used);
+void    shell_screenshot_screenshot_area      (ShellScreenshot      *screenshot,
+                                               int                   x,
+                                               int                   y,
+                                               int                   width,
+                                               int                   height,
+                                               const char           *filename,
+                                               GAsyncReadyCallback   callback,
+                                               gpointer              user_data);
+gboolean shell_screenshot_screenshot_area_finish (ShellScreenshot       *screenshot,
+                                                  GAsyncResult          *result,
+                                                  cairo_rectangle_int_t **area,
+                                                  const char            **filename_used,
+                                                  GError                **error);
 
-void    shell_screenshot_screenshot_area      (ShellScreenshot *screenshot,
-                                                int x,
-                                                int y,
-                                                int width,
-                                                int height,
-                                                const char *filename,
-                                                ShellScreenshotCallback callback);
+void    shell_screenshot_screenshot_window    (ShellScreenshot     *screenshot,
+                                               gboolean             include_frame,
+                                               gboolean             include_cursor,
+                                               const char          *filename,
+                                               GAsyncReadyCallback  callback,
+                                               gpointer             user_data);
+gboolean shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
+                                                    GAsyncResult           *result,
+                                                    cairo_rectangle_int_t **area,
+                                                    const char            **filename_used,
+                                                    GError                **error);
 
-void    shell_screenshot_screenshot_window    (ShellScreenshot *screenshot,
-                                                gboolean include_frame,
-                                                gboolean include_cursor,
-                                                const char *filename,
-                                                ShellScreenshotCallback callback);
-
-void    shell_screenshot_screenshot           (ShellScreenshot *screenshot,
-                                                gboolean include_cursor,
-                                                const char *filename,
-                                                ShellScreenshotCallback callback);
+void    shell_screenshot_screenshot           (ShellScreenshot     *screenshot,
+                                               gboolean             include_cursor,
+                                               const char          *filename,
+                                               GAsyncReadyCallback  callback,
+                                               gpointer             user_data);
+gboolean shell_screenshot_screenshot_finish   (ShellScreenshot        *screenshot,
+                                               GAsyncResult           *result,
+                                               cairo_rectangle_int_t **area,
+                                               const char            **filename_used,
+                                               GError                **error);
 
 #endif /* ___SHELL_SCREENSHOT_H__ */
