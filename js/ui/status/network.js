@@ -419,7 +419,9 @@ var NMConnectionDevice = new Lang.Class({
         this._deactivateItem.actor.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
-            this._activeConnection = this._device.active_connection;
+            let deviceConnection = this._device.active_connection;
+            if (deviceConnection && this._connectionValid(deviceConnection))
+                this._activeConnection = deviceConnection;
 
             if (this._activeConnection) {
                 ensureActiveConnectionProps(this._activeConnection, this._client);
