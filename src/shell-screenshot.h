@@ -53,4 +53,14 @@ gboolean shell_screenshot_screenshot_finish   (ShellScreenshot        *screensho
                                                const char            **filename_used,
                                                GError                **error);
 
+void     shell_screenshot_pick_color        (ShellScreenshot      *screenshot,
+                                             int                   x,
+                                             int                   y,
+                                             GAsyncReadyCallback   callback,
+                                             gpointer              user_data);
+gboolean shell_screenshot_pick_color_finish (ShellScreenshot      *screenshot,
+                                             GAsyncResult         *result,
+                                             ClutterColor         *color,
+                                             GError              **error);
+
 #endif /* ___SHELL_SCREENSHOT_H__ */
