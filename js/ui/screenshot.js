@@ -110,7 +110,7 @@ var ScreenshotService = new Lang.Class({
                y + height <= global.screen_height;
     },
 
-    _onScreenshotComplete(obj, result, area, filenameUsed, flash, invocation) {
+    _onScreenshotComplete(result, area, filenameUsed, flash, invocation) {
         if (result) {
             if (flash) {
                 let flashspot = new Flashspot(area);
@@ -157,8 +157,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot_area (x, y, width, height, filename,
-            (obj, result, area, filenameUsed) => {
-                this._onScreenshotComplete(obj, result, area, filenameUsed,
+            (o, res) => {
+                let [result, area, filenameUsed] =
+                    screenshot.screenshot_area_finish(res);
+                this._onScreenshotComplete(result, area, filenameUsed,
                                            flash, invocation);
             });
     },
@@ -169,8 +171,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot_window (include_frame, include_cursor, filename,
-            (obj, result, area, filenameUsed) => {
-                this._onScreenshotComplete(obj, result, area, filenameUsed,
+            (o, res) => {
+                let [result, area, filenameUsed] =
+                    screenshot.screenshot_window_finish(res);
+                this._onScreenshotComplete(result, area, filenameUsed,
                                            flash, invocation);
             });
     },
@@ -181,8 +185,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot(include_cursor, filename,
-            (obj, result, area, filenameUsed) => {
-                this._onScreenshotComplete(obj, result, area, filenameUsed,
+            (o, res) => {
+                let [result, area, filenameUsed] =
+                    screenshot.screenshot_finish(res);
+                this._onScreenshotComplete(result, area, filenameUsed,
                                            flash, invocation);
             });
     },
