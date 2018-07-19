@@ -456,6 +456,27 @@ grab_window_screenshot (ClutterActor *stage,
   g_object_unref (task);
 }
 
+static void
+grab_pixel (ClutterActor *stage,
+            GTask        *result)
+{
+  ShellScreenshot *screenshot = g_task_get_source_object (result);
+  ShellScreenshotPrivate *priv = screenshot->priv;
+
+  do_grab_screenshot (screenshot,
+                      CLUTTER_STAGE (stage),
+                      priv->screenshot_area.x,
+                      priv->screenshot_area.y,
+                      1,
+                      1);
+
+  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
+
+  g_signal_handlers_disconnect_by_func (stage, grab_pixel, result);
+  g_task_return_boolean (result, TRUE);
+  g_object_unref (result);
+}
+
 static gboolean
 finish_screenshot (ShellScreenshot        *screenshot,
                    GAsyncResult           *result,
@@ -730,6 +751,107 @@ shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
                         FALSE);
   return finish_screenshot (screenshot, result, area, filename_used, error);
 }
+
+/**
+ * shell_screenshot_pick_color:
+ * @screenshot: the #ShellScreenshot
+ * @x: The X coordinate to pick
+ * @y: The Y coordinate to pick
+ * @callback: (scope async): function to call returning success or failure
+ * of the async grabbing
+ *
+ * Picks the pixel at @x, @y and returns its color as #ClutterColor.
+ *
+ */
+void
+shell_screenshot_pick_color (ShellScreenshot     *screenshot,
+                             int                  x,
+                             int                  y,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  MetaDisplay *display = shell_global_get_display (priv->global);
+  ClutterActor *stage;
+  GTask *result;
+
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_pick_color);
+
+  priv->screenshot_area.x = x;
+  priv->screenshot_area.y = y;
+  priv->screenshot_area.width = 1;
+  priv->screenshot_area.height = 1;
+
+  stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
+
+  meta_disable_unredirect_for_display (display);
+
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_pixel), result);
+
+  clutter_actor_queue_redraw (stage);
+}
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define INDEX_A 3
+#define INDEX_R 2
+#define INDEX_G 1
+#define INDEX_B 0
+#else
+#define INDEX_A 0
+#define INDEX_R 1
+#define INDEX_G 2
+#define INDEX_B 3
+#endif
+
+/**
+ * shell_screenshot_pick_color_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @color: (out caller-allocates): the picked color
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by shell_screenshot_pick_color()
+ * and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
+                                    GAsyncResult     *result,
+                                    ClutterColor     *color,
+                                    GError          **error)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_pick_color),
+                        FALSE);
+
+  if (!g_task_propagate_boolean (G_TASK (result), error))
+    return FALSE;
+
+  /* protect against mutter changing the format used for stage captures */
+  g_assert (cairo_image_surface_get_format (priv->image) == CAIRO_FORMAT_ARGB32);
+
+  if (color)
+    {
+      uint8_t *data = cairo_image_surface_get_data (priv->image);
+
+      color->alpha = data[INDEX_A];
+      color->red   = data[INDEX_R];
+      color->green = data[INDEX_G];
+      color->blue  = data[INDEX_B];
+    }
+
+  return TRUE;
+}
+
+#undef INDEX_A
+#undef INDEX_R
+#undef INDEX_G
+#undef INDEX_B
 
 ShellScreenshot *
 shell_screenshot_new (void)
