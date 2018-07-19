@@ -137,8 +137,10 @@ var WindowClone = new Lang.Class({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._windowClone._updateId = this.metaWindow.connect('size-changed',
-            this._onRealWindowSizeChanged.bind(this));
+        this._windowClone._positionChangedId = this.metaWindow.connect(
+            'position-changed', this._onRealWindowPositionChanged.bind(this));
+        this._windowClone._sizeChangedId = this.metaWindow.connect(
+            'size-changed', this._onRealWindowSizeChanged.bind(this));
         this._windowClone._destroyId =
             this.realWindow.connect('destroy', () => {
                 // First destroy the clone and then destroy everything
@@ -216,7 +218,11 @@ var WindowClone = new Lang.Class({
 
     _doAddAttachedDialog(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._updateId = metaWin.connect('size-changed', () => {
+        clone._positionChangedId = metaWin.connect('position-changed', () => {
+            this._computeBoundingBox();
+            this.emit('position-changed');
+        });
+        clone._sizeChangedId = metaWin.connect('size-changed', () => {
             this._computeBoundingBox();
             this.emit('size-changed');
         });
@@ -321,9 +327,15 @@ var WindowClone = new Lang.Class({
             else
                 realWindow = child.source;
 
-            realWindow.meta_window.disconnect(child._updateId);
+            realWindow.meta_window.disconnect(child._positionChangedId);
+            realWindow.meta_window.disconnect(child._sizeChangedId);
             realWindow.disconnect(child._destroyId);
         });
+    },
+
+    _onRealWindowPositionChanged() {
+        this._computeBoundingBox();
+        this.emit('position-changed');
     },
 
     _onRealWindowSizeChanged() {
@@ -1853,6 +1865,9 @@ var Workspace = new Lang.Class({
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
             overlay.show();
+        });
+        clone.connect('position-changed', () => {
+            this._recalculateWindowPositions(WindowPositionFlags.NONE);
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
