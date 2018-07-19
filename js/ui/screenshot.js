@@ -72,10 +72,13 @@ var ScreenshotService = new Lang.Class({
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
-    _createScreenshot(invocation) {
+    _createScreenshot(invocation, needsDisk=true) {
+        let lockedDown = false;
+        if (needsDisk)
+            lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk')
+
         let sender = invocation.get_sender();
-        if (this._screenShooter.has(sender) ||
-            this._lockdownSettings.get_boolean('disable-save-to-disk')) {
+        if (this._screenShooter.has(sender) || lockedDown) {
             invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
             return null;
         }
