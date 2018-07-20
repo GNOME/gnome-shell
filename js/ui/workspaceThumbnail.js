@@ -676,7 +676,11 @@ var ThumbnailsBox = new Lang.Class({
         this._settings.connect('changed::dynamic-workspaces',
             this._updateSwitcherVisibility.bind(this));
 
-        Main.layoutManager.connect('monitors-changed', this._rebuildThumbnails.bind(this));
+        Main.layoutManager.connect('monitors-changed', () => {
+            this._destroyThumbnails();
+            if (Main.overview.visible)
+                this._createThumbnails();
+        });
     },
 
     _updateSwitcherVisibility() {
@@ -869,9 +873,6 @@ var ThumbnailsBox = new Lang.Class({
             Main.overview.connect('windows-restacked',
                                   this._syncStacking.bind(this));
 
-        this._workareasChangedId =
-            global.screen.connect('workareas-changed', this._rebuildThumbnails.bind(this));
-
         this._targetScale = 0;
         this._scale = 0;
         this._pendingScaleUpdate = false;
@@ -901,22 +902,10 @@ var ThumbnailsBox = new Lang.Class({
             this._syncStackingId = 0;
         }
 
-        if (this._workareasChangedId > 0) {
-            global.screen.disconnect(this._workareasChangedId);
-            this._workareasChangedId = 0;
-        }
-
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
         this._porthole = null;
-    },
-
-    _rebuildThumbnails() {
-        this._destroyThumbnails();
-
-        if (Main.overview.visible)
-            this._createThumbnails();
     },
 
     _workspacesChanged() {
