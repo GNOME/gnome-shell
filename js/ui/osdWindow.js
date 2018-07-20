@@ -133,10 +133,11 @@ var OsdWindow = class {
             this.actor.opacity = 0;
             this.actor.get_parent().set_child_above_sibling(this.actor, null);
 
-            Tweener.addTween(this.actor,
-                             { opacity: 255,
-                               time: FADE_TIME / 1000,
-                               transition: 'easeOutQuad' });
+            this.actor.ease({
+                opacity: 255,
+                duration: FADE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
 
         if (this._hideTimeoutId)
@@ -156,15 +157,15 @@ var OsdWindow = class {
 
     _hide() {
         this._hideTimeoutId = 0;
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           time: FADE_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._reset();
-                               Meta.enable_unredirect_for_display(global.display);
-                           }
-                         });
+        this.actor.ease({
+            opacity: 0,
+            duration: FADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._reset();
+                Meta.enable_unredirect_for_display(global.display);
+            }
+        });
         return GLib.SOURCE_REMOVE;
     }
 

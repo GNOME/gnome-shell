@@ -5,7 +5,6 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var FROZEN_WINDOW_BRIGHTNESS = -0.3;
 var DIALOG_TRANSITION_TIME = 150;
@@ -149,12 +148,12 @@ var CloseDialog = GObject.registerClass({
         this._dialog.scale_y = 0;
         this._dialog.set_pivot_point(0.5, 0.5);
 
-        Tweener.addTween(this._dialog,
-                         { scale_y: 1,
-                           transition: 'linear',
-                           time: DIALOG_TRANSITION_TIME / 1000,
-                           onComplete: this._onFocusChanged.bind(this)
-                         });
+        this._dialog.ease({
+            scale_y: 1,
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: DIALOG_TRANSITION_TIME,
+            onComplete: this._onFocusChanged.bind(this)
+        });
     }
 
     vfunc_hide() {
@@ -176,14 +175,12 @@ var CloseDialog = GObject.registerClass({
         this._dialog = null;
         this._removeWindowEffect();
 
-        Tweener.addTween(dialog,
-                         { scale_y: 0,
-                           transition: 'linear',
-                           time: DIALOG_TRANSITION_TIME / 1000,
-                           onComplete: () => {
-                               dialog.destroy();
-                           }
-                         });
+        dialog.ease({
+            scale_y: 0,
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: DIALOG_TRANSITION_TIME,
+            onComplete: () => dialog.destroy()
+        });
     }
 
     vfunc_focus() {

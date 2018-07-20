@@ -168,16 +168,16 @@ var Lightbox = class Lightbox {
                                }
                              });
         } else {
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor,
-                             { opacity: 255 * this._fadeFactor,
-                               time: fadeInTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.shown = true;
-                                   this.emit('shown');
-                               }
-                             });
+            this.actor.remove_all_transitions();
+            this.actor.ease({
+                opacity: 255 * this._fadeFactor,
+                duration: fadeInTime,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this.shown = true;
+                    this.emit('shown');
+                }
+            });
         }
 
         this.actor.show();
@@ -202,15 +202,15 @@ var Lightbox = class Lightbox {
                                }
                              });
         } else {
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor,
-                             { opacity: 0,
-                               time: fadeOutTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.hide();
-                               }
-                             });
+            this.actor.remove_all_transitions();
+            this.actor.ease({
+                opacity: 0,
+                duration: fadeOutTime,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this.actor.hide();
+                }
+            });
         }
     }
 

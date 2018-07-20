@@ -4,7 +4,6 @@
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
 var ICON_SIZE = 96;
@@ -169,18 +168,16 @@ function zoomOutActor(actor) {
     let containedX = clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
     let containedY = clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
 
-    Tweener.addTween(actorClone,
-                     { time: APPICON_ANIMATION_OUT_TIME / 1000,
-                       scale_x: APPICON_ANIMATION_OUT_SCALE,
-                       scale_y: APPICON_ANIMATION_OUT_SCALE,
-                       translation_x: containedX - scaledX,
-                       translation_y: containedY - scaledY,
-                       opacity: 0,
-                       transition: 'easeOutQuad',
-                       onComplete() {
-                           actorClone.destroy();
-                       }
-                    });
+    actorClone.ease({
+        scale_x: APPICON_ANIMATION_OUT_SCALE,
+        scale_y: APPICON_ANIMATION_OUT_SCALE,
+        translation_x: containedX - scaledX,
+        translation_y: containedY - scaledY,
+        opacity: 0,
+        duration: APPICON_ANIMATION_OUT_TIME,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => actorClone.destroy()
+    });
 }
 
 var IconGrid = GObject.registerClass({
@@ -459,25 +456,27 @@ var IconGrid = GObject.registerClass({
             let delay = index / actors.length * maxDelay;
             let bounceUpTime = ANIMATION_TIME_IN / 4;
             let isLastItem = index == actors.length - 1;
-            Tweener.addTween(actor,
-                             { time: bounceUpTime / 1000,
-                               transition: 'easeInOutQuad',
-                               delay: delay / 1000,
-                               scale_x: ANIMATION_BOUNCE_ICON_SCALE,
-                               scale_y: ANIMATION_BOUNCE_ICON_SCALE,
-                               onComplete: () => {
-                                   Tweener.addTween(actor,
-                                                    { time: (ANIMATION_TIME_IN - bounceUpTime) / 1000,
-                                                      transition: 'easeInOutQuad',
-                                                      scale_x: 1,
-                                                      scale_y: 1,
-                                                      onComplete: () => {
-                                                          if (isLastItem)
-                                                              this._animationDone();
-                                                      }
-                                                    });
-                               }
-                             });
+            actor.ease({
+                scale_x: ANIMATION_BOUNCE_ICON_SCALE,
+                scale_y: ANIMATION_BOUNCE_ICON_SCALE,
+                duration: bounceUpTime,
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                delay: delay,
+                onComplete: () => {
+                    let duration = ANIMATION_TIME_IN - bounceUpTime;
+                    actor.ease({
+                        scale_x: 1,
+                        scale_y: 1,
+                        duration,
+                        mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                        onComplete: () => {
+                            if (isLastItem)
+                                this._animationDone();
+                            actor.reactive = true;
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -536,21 +535,25 @@ var IconGrid = GObject.registerClass({
 
                 let delay = (1 - (actor._distance - minDist) / normalization) * ANIMATION_MAX_DELAY_FOR_ITEM;
                 let [finalX, finalY]  = actor._transformedPosition;
-                movementParams = { time: ANIMATION_TIME_IN / 1000,
-                                   transition: 'easeInOutQuad',
-                                   delay: delay / 1000,
-                                   x: finalX,
-                                   y: finalY,
-                                   scale_x: 1,
-                                   scale_y: 1,
-                                   onComplete: () => {
-                                       if (isLastItem)
-                                           this._animationDone();
-                                   } };
-                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM / 1000,
-                               transition: 'easeInOutQuad',
-                               delay: delay / 1000,
-                               opacity: 255 };
+                movementParams = {
+                    x: finalX,
+                    y: finalY,
+                    scale_x: 1,
+                    scale_y: 1,
+                    duration: ANIMATION_TIME_IN,
+                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                    delay,
+                    onComplete: () => {
+                        if (isLastItem)
+                            this._animationDone();
+                    }
+                };
+                fadeParams = {
+                    opacity: 255,
+                    duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
+                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                    delay
+                };
             } else {
                 let isLastItem = actor._distance == maxDist;
 
@@ -558,26 +561,30 @@ var IconGrid = GObject.registerClass({
                 actorClone.set_position(startX, startY);
 
                 let delay = (actor._distance - minDist) / normalization * ANIMATION_MAX_DELAY_OUT_FOR_ITEM;
-                movementParams = { time: ANIMATION_TIME_OUT / 1000,
-                                   transition: 'easeInOutQuad',
-                                   delay: delay / 1000,
-                                   x: adjustedSourcePositionX,
-                                   y: adjustedSourcePositionY,
-                                   scale_x: scaleX,
-                                   scale_y: scaleY,
-                                   onComplete: () => {
-                                       if (isLastItem)
-                                           this._animationDone();
-                                   } };
-                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM / 1000,
-                               transition: 'easeInOutQuad',
-                               delay: (ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM) / 1000,
-                               opacity: 0 };
+                movementParams = {
+                    x: adjustedSourcePositionX,
+                    y: adjustedSourcePositionY,
+                    scale_x: scaleX,
+                    scale_y: scaleY,
+                    duration: ANIMATION_TIME_OUT,
+                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                    delay,
+                    onComplete: () => {
+                        if (isLastItem) {
+                            this._animationDone();
+                        }
+                    }
+                };
+                fadeParams = {
+                    opacity: 0,
+                    duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
+                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM
+                };
             }
 
-
-            Tweener.addTween(actorClone, movementParams);
-            Tweener.addTween(actorClone, fadeParams);
+            actorClone.ease(movementParams);
+            actorClone.ease(fadeParams);
         }
     }
 
@@ -982,13 +989,14 @@ var PaginatedIconGrid = GObject.registerClass({
 
         for (let i = 0; i < children.length; i++) {
             children[i].translation_y = 0;
-            let params = { translation_y: translationY,
-                           time: EXTRA_SPACE_ANIMATION_TIME / 1000,
-                           transition: 'easeInOutQuad'
-                         };
+            let params = {
+                translation_y: translationY,
+                duration: EXTRA_SPACE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD
+            };
             if (i == (children.length - 1))
                 params.onComplete = () => this.emit('space-opened');
-            Tweener.addTween(children[i], params);
+            children[i].ease(params);
         }
     }
 
@@ -1001,12 +1009,12 @@ var PaginatedIconGrid = GObject.registerClass({
         for (let i = 0; i < this._translatedChildren.length; i++) {
             if (!this._translatedChildren[i].translation_y)
                 continue;
-            Tweener.addTween(this._translatedChildren[i],
-                             { translation_y: 0,
-                               time: EXTRA_SPACE_ANIMATION_TIME / 1000,
-                               transition: 'easeInOutQuad',
-                               onComplete: () => this.emit('space-closed')
-                             });
+            this._translatedChildren[i].ease({
+                translation_y: 0,
+                duration: EXTRA_SPACE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                onComplete: () => this.emit('space-closed')
+            });
         }
     }
 });

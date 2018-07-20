@@ -99,7 +99,6 @@ const Signals = imports.signals;
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
@@ -710,14 +709,12 @@ var BackgroundManager = class BackgroundManager {
         this._newBackgroundActor = null;
         this.emit('changed');
 
-        Tweener.addTween(oldBackgroundActor,
-                         { opacity: 0,
-                           time: FADE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete() {
-                               oldBackgroundActor.destroy();
-                           }
-                         });
+        oldBackgroundActor.ease({
+            opacity: 0,
+            duration: FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => oldBackgroundActor.destroy()
+        });
     }
 
     _updateBackgroundActor() {
