@@ -130,6 +130,7 @@
     <file>ui/status/rfkill.js</file>
     <file>ui/status/volume.js</file>
     <file>ui/status/bluetooth.js</file>
+    <file>ui/status/remoteAccess.js</file>
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
