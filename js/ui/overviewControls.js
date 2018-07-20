@@ -284,6 +284,11 @@ var ThumbnailsSlider = new Lang.Class({
         return child.get_theme_node().get_length('visible-width');
     },
 
+    _onDragEnd() {
+        this.actor.sync_hover();
+        this.parent();
+    },
+
     _getSlide() {
         if (!this._visible)
             return 0;
