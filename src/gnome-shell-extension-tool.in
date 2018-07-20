@@ -23,7 +23,6 @@ SAMPLE_EXTENSION_FILES = {
     "extension.js": """
 const St = imports.gi.St;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 let text, button;
 
@@ -45,11 +44,12 @@ function _showHello() {
     text.set_position(monitor.x + Math.floor(monitor.width / 2 - text.width / 2),
                       monitor.y + Math.floor(monitor.height / 2 - text.height / 2));
 
-    Tweener.addTween(text,
-                     { opacity: 0,
-                       time: 2,
-                       transition: 'easeOutQuad',
-                       onComplete: _hideHello });
+    text.ease({
+        opacity: 0,
+        duration: 2000,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => _hideHello()
+    });
 }
 
 function init() {

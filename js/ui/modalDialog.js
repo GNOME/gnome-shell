@@ -8,7 +8,6 @@ const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 var OPEN_AND_CLOSE_TIME = 100;
 var FADE_OUT_DIALOG_TIME = 1000;
@@ -125,15 +124,15 @@ var ModalDialog = GObject.registerClass({
             this._lightbox.show();
         this.opacity = 0;
         this.show();
-        Tweener.addTween(this,
-                         { opacity: 255,
-                           time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME / 1000 : 0,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._setState(State.OPENED);
-                               this.emit('opened');
-                           }
-                         });
+        this.ease({
+            opacity: 255,
+            duration: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._setState(State.OPENED);
+                this.emit('opened');
+            }
+        });
     }
 
     setInitialKeyFocus(actor) {
@@ -176,15 +175,16 @@ var ModalDialog = GObject.registerClass({
         this.popModal(timestamp);
         this._savedKeyFocus = null;
 
-        if (this._shouldFadeOut)
-            Tweener.addTween(this,
-                             { opacity: 0,
-                               time: OPEN_AND_CLOSE_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: this._closeComplete.bind(this)
-                             });
-        else
+        if (this._shouldFadeOut) {
+            this.ease({
+                opacity: 0,
+                duration: OPEN_AND_CLOSE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => this._closeComplete()
+            });
+        } else {
             this._closeComplete();
+        }
     }
 
     // Drop modal status without closing the dialog; this makes the
@@ -249,13 +249,11 @@ var ModalDialog = GObject.registerClass({
             return;
 
         this.popModal(timestamp);
-        Tweener.addTween(this.dialogLayout,
-                         { opacity: 0,
-                           time: FADE_OUT_DIALOG_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._setState(State.FADED_OUT);
-                           }
-                         });
+        this.dialogLayout.ease({
+            opacity: 0,
+            duration: FADE_OUT_DIALOG_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.state = State.FADED_OUT
+        });
     }
 });

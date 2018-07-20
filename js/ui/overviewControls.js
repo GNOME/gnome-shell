@@ -196,17 +196,19 @@ var SlidingControl = class {
     }
 
     fadeIn() {
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
-                                       transition: 'easeInQuad'
-                                     });
+        this.actor.ease({
+            opacity: 255,
+            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
     }
 
     fadeHalf() {
-        Tweener.addTween(this.actor, { opacity: 128,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
-                                       transition: 'easeOutQuad'
-                                     });
+        this.actor.ease({
+            opacity: 128,
+            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     slideIn() {

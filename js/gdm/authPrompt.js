@@ -8,7 +8,6 @@ const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
-const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
@@ -267,7 +266,7 @@ var AuthPrompt = class {
         let oldActor = this._defaultButtonWellActor;
 
         if (oldActor)
-            Tweener.removeTweens(oldActor);
+            oldActor.remove_all_transitions();
 
         let wasSpinner;
         if (oldActor == this._spinner.actor)
@@ -290,18 +289,18 @@ var AuthPrompt = class {
                         this._spinner.stop();
                 }
             } else {
-                Tweener.addTween(oldActor,
-                                 { opacity: 0,
-                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME / 1000,
-                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY / 1000,
-                                   transition: 'linear',
-                                   onComplete: () => {
-                                       if (wasSpinner) {
-                                           if (this._spinner)
-                                               this._spinner.stop();
-                                       }
-                                   }
-                                 });
+                oldActor.ease({
+                    opacity: 0,
+                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                    mode: Clutter.AnimationMode.LINEAR,
+                    onComplete: () => {
+                        if (wasSpinner) {
+                            if (this._spinner)
+                                this._spinner.stop();
+                        }
+                    }
+                });
             }
         }
 
@@ -312,11 +311,12 @@ var AuthPrompt = class {
             if (!animate)
                 actor.opacity = 255;
             else
-                Tweener.addTween(actor,
-                                 { opacity: 255,
-                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME / 1000,
-                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY / 1000,
-                                   transition: 'linear' });
+                actor.ease({
+                    opacity: 255,
+                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                    mode: Clutter.AnimationMode.LINEAR
+                });
         }
 
         this._defaultButtonWellActor = actor;
@@ -365,12 +365,12 @@ var AuthPrompt = class {
     _fadeOutMessage() {
         if (this._message.opacity == 0)
             return;
-        Tweener.removeTweens(this._message);
-        Tweener.addTween(this._message,
-                         { opacity: 0,
-                           time: MESSAGE_FADE_OUT_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad'
-                         });
+        this._message.remove_all_transitions();
+        this._message.ease({
+            opacity: 0,
+            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     setMessage(message, type) {
@@ -385,7 +385,7 @@ var AuthPrompt = class {
             this._message.remove_style_class_name('login-dialog-message-hint');
 
         if (message) {
-            Tweener.removeTweens(this._message);
+            this._message.remove_all_transitions();
             this._message.text = message;
             this._message.opacity = 255;
         } else {
