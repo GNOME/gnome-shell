@@ -710,6 +710,17 @@ var AggregateMenu = new Lang.Class({
             this._bluetooth = null;
         }
 
+        let backend = Meta.get_backend();
+        let remoteAccessController = backend.get_remote_access_controller();
+        if (remoteAccessController) {
+            log('has remote access controller');
+            this._remoteAccess =
+                new imports.ui.status.remoteAccess.RemoteAccessApplet(remoteAccessController);
+        } else {
+            log('has no remote access controller');
+            this._remoteAccess = null;
+        }
+
         this._power = new imports.ui.status.power.Indicator();
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
@@ -730,6 +741,9 @@ var AggregateMenu = new Lang.Class({
         if (this._bluetooth) {
             this._indicators.add_child(this._bluetooth.indicators);
         }
+        if (this._remoteAccess) {
+            this._indicators.add_child(this._remoteAccess.indicators);
+        }
         this._indicators.add_child(this._rfkill.indicators);
         this._indicators.add_child(this._volume.indicators);
         this._indicators.add_child(this._power.indicators);
@@ -743,6 +757,9 @@ var AggregateMenu = new Lang.Class({
         }
         if (this._bluetooth) {
             this.menu.addMenuItem(this._bluetooth.menu);
+        }
+        if (this._remoteAccess) {
+            this.menu.addMenuItem(this._remoteAccess.menu);
         }
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
