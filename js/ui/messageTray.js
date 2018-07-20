@@ -1249,30 +1249,6 @@ var MessageTray = class MessageTray {
         this._notificationExpired = false;
     }
 
-    _tween(actor, statevar, value, params) {
-        let onComplete = params.onComplete;
-        let onCompleteScope = params.onCompleteScope;
-        let onCompleteParams = params.onCompleteParams;
-
-        params.onComplete = this._tweenComplete;
-        params.onCompleteScope = this;
-        params.onCompleteParams = [statevar, value, onComplete, onCompleteScope, onCompleteParams];
-
-        // Remove other tweens that could mess with the state machine
-        Tweener.removeTweens(actor);
-        Tweener.addTween(actor, params);
-
-        let valuing = (value == State.SHOWN) ? State.SHOWING : State.HIDING;
-        this[statevar] = valuing;
-    }
-
-    _tweenComplete(statevar, value, onComplete, onCompleteScope, onCompleteParams) {
-        this[statevar] = value;
-        if (onComplete)
-            onComplete.apply(onCompleteScope, onCompleteParams);
-        this._updateState();
-    }
-
     _clampOpacity() {
         this._bannerBin.opacity = Math.max(0, Math.min(this._bannerBin._opacity, 255));
     }
@@ -1349,17 +1325,20 @@ var MessageTray = class MessageTray {
         // We use this._showNotificationCompleted() onComplete callback to extend the time the updated
         // notification is being shown.
 
-        let tweenParams = { y: 0,
-                            _opacity: 255,
-                            time: ANIMATION_TIME / 1000,
-                            transition: 'easeOutBack',
-                            onUpdate: this._clampOpacity,
-                            onUpdateScope: this,
-                            onComplete: this._showNotificationCompleted,
-                            onCompleteScope: this
-                          };
-
-        this._tween(this._bannerBin, '_notificationState', State.SHOWN, tweenParams);
+        this._notificationState = State.SHOWING;
+        Tweener.removeTweens(this._bannerBin);
+        Tweener.addTween(this._bannerBin, {
+            y: 0,
+            _opacity: 255,
+            time: ANIMATION_TIME / 1000,
+            transition: 'easeOutBack',
+            onUpdate: () => this._clampOpacity,
+            onComplete: () => {
+                this._notificationState = State.SHOWN;
+                this._showNotificationCompleted();
+                this._updateState();
+            }
+        });
     }
 
     _showNotificationCompleted() {
@@ -1419,16 +1398,20 @@ var MessageTray = class MessageTray {
         this._resetNotificationLeftTimeout();
 
         if (animate) {
-            this._tween(this._bannerBin, '_notificationState', State.HIDDEN,
-                        { y: -this._bannerBin.height,
-                          _opacity: 0,
-                          time: ANIMATION_TIME / 1000,
-                          transition: 'easeOutBack',
-                          onUpdate: this._clampOpacity,
-                          onUpdateScope: this,
-                          onComplete: this._hideNotificationCompleted,
-                          onCompleteScope: this
-                        });
+            this._notificationState = State.HIDING;
+            Tweener.removeTweens(this._bannerBin);
+            Tweener.addTween(this._bannerBin, {
+                y: -this._bannerBin.height,
+                _opacity: 0,
+                time: ANIMATION_TIME / 1000,
+                transition: 'easeOutBack',
+                onUpdate: () => this._clampOpacity,
+                onComplete: () => {
+                    this._notificationState = State.HIDDEN;
+                    this._hideNotificationCompleted();
+                    this._updateState();
+                }
+            });
         } else {
             Tweener.removeTweens(this._bannerBin);
             this._bannerBin.y = -this._bannerBin.height;
