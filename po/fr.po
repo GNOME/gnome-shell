@@ -14,22 +14,22 @@
 # Alain Lojewski <allomervan@gmail.com>, 2014-2018.
 # Erwan Georget <egeorget@opmbx.org>, 2016.
 # Claude Paroz <claude@2xlibre.net>, 2010-2011, 2016.
-# Charles Monzat <superboa@hotmail.fr>, 2016.
+# Charles Monzat <superboa@hotmail.fr>, 2016, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-03 10:22+0000\n"
-"PO-Revision-Date: 2018-03-01 09:00+0100\n"
-"Last-Translator: Alain Lojewski <allomervan@gmail.com>\n"
+"POT-Creation-Date: 2018-04-13 19:54+0000\n"
+"PO-Revision-Date: 2018-04-18 19:30+0200\n"
+"Last-Translator: Charles Monzat <superboa@hotmail.fr>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -234,7 +234,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:116
 msgid "Keybinding to open the overview"
-msgstr "Combinaison de touches pour ouvrir la vue d'ensemble"
+msgstr "Combinaison de touches pour ouvrir la vue d’ensemble"
 
 #: data/org.gnome.shell.gschema.xml.in:117
 msgid "Keybinding to open the Activities Overview."
@@ -329,7 +329,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:206
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Activer l’empilage des fenêtres déposées sur les bords de l'écran"
+msgstr "Activer l’empilage des fenêtres déposées sur les bords de l’écran"
 
 #: data/org.gnome.shell.gschema.xml.in:214
 msgid "Workspaces are managed dynamically"
@@ -362,7 +362,7 @@ msgstr ""
 "préférences de %s :"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -682,12 +682,12 @@ msgstr "Ajouter aux favoris"
 msgid "Show Details"
 msgstr "Afficher les détails"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s a été ajouté à vos favoris."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s a été supprimé de vos favoris."
@@ -897,7 +897,7 @@ msgstr "Disque externe déconnecté"
 msgid "Open with %s"
 msgstr "Ouvrir avec %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Mot de passe :"
 
@@ -985,15 +985,15 @@ msgstr "Un mot de passe est requis pour se connecter à « %s »."
 msgid "Network Manager"
 msgstr "Gestionnaire de réseau"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Authentification nécessaire"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "S’authentifier"
 
@@ -1001,7 +1001,7 @@ msgstr "S’authentifier"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Échec de l’authentification. Essayez à nouveau."
 
@@ -1061,7 +1061,7 @@ msgstr "Ajouter des horloges locales…"
 msgid "World Clocks"
 msgstr "Horloges locales"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "Météo"
 
@@ -1069,7 +1069,7 @@ msgstr "Météo"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s toute la journée."
@@ -1078,7 +1078,7 @@ msgstr "%s toute la journée."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, puis %s plus tard."
@@ -1087,30 +1087,30 @@ msgstr "%s, puis %s plus tard."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, puis %s, suivi par %s plus tard."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Choisir un emplacement…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "Chargement…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Température ressentie : %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Chercher les informations météorologiques en ligne"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "Les informations météorologiques ne sont pas disponibles actuellement"
 
@@ -1706,7 +1706,7 @@ msgstr "Paramètres de confidentialité"
 
 #: js/ui/status/location.js:196
 msgid "Location In Use"
-msgstr "Localisation en cours d'utilisation"
+msgstr "Localisation en cours d’utilisation"
 
 #: js/ui/status/location.js:200
 msgid "Location Disabled"
@@ -1947,11 +1947,11 @@ msgstr "Reprendre"
 
 #: js/ui/status/nightLight.js:71
 msgid "Disable Until Tomorrow"
-msgstr "Désactiver jusqu'à demain"
+msgstr "Désactiver jusqu’à demain"
 
 #: js/ui/status/power.js:61
 msgid "Power Settings"
-msgstr "Paramètres de gestion de l'énergie"
+msgstr "Paramètres de gestion de l’énergie"
 
 #: js/ui/status/power.js:77
 msgid "Fully Charged"
@@ -2011,16 +2011,16 @@ msgstr "Mettre en veille"
 msgid "Power Off"
 msgstr "Éteindre"
 
-#: js/ui/status/thunderbolt.js:272
+#: js/ui/status/thunderbolt.js:294
 msgid "Thunderbolt"
 msgstr "Interface Thunderbolt"
 
 #. we are done
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:350
 msgid "Unknown Thunderbolt device"
 msgstr "Périphérique Thunderbolt inconnu"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:351
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2028,13 +2028,14 @@ msgstr ""
 "Un nouveau périphérique a été détecté pendant votre absence. Veuillez le "
 "débrancher et rebrancher avant de commencer à l’utiliser"
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
 msgstr "Erreur d’autorisation Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:357
 #, javascript-format
-msgid "Could not authorize the thunderbolt device: %s"
+#| msgid "Could not authorize the thunderbolt device: %s"
+msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impossible d’autoriser le périphérique Thunderbolt : %s"
 
 #: js/ui/status/volume.js:128
