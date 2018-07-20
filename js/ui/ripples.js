@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Ripples */
 
-const { St } = imports.gi;
-const Tweener = imports.ui.tweener;
+const { Clutter, St } = imports.gi;
 
 // Shamelessly copied from the layout "hotcorner" ripples implementation
 var Ripples = class Ripples {
@@ -35,7 +34,7 @@ var Ripples = class Ripples {
         this._ripple3.set_pivot_point(px, py);
     }
 
-    _animRipple(ripple, delay, time, startScale, startOpacity, finalScale) {
+    _animRipple(ripple, delay, duration, startScale, startOpacity, finalScale) {
         // We draw a ripple by using a source image and animating it scaling
         // outwards and fading away. We want the ripples to move linearly
         // or it looks unrealistic, but if the opacity of the ripple goes
@@ -50,16 +49,20 @@ var Ripples = class Ripples {
         ripple.scale_x = ripple.scale_y = startScale;
         ripple.set_translation( - this._px * ripple.width, - this._py * ripple.height, 0.0);
 
-        Tweener.addTween(ripple, { opacity: 0,
-                                   delay: delay,
-                                   time: time,
-                                   transition: 'easeInQuad' });
-        Tweener.addTween(ripple, { scale_x: finalScale,
-                                   scale_y: finalScale,
-                                   delay: delay,
-                                   time: time,
-                                   transition: 'linear',
-                                   onComplete: () => ripple.visible = false });
+        ripple.ease({
+            opacity: 0,
+            delay,
+            duration,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
+        ripple.ease({
+            scale_x: finalScale,
+            scale_y: finalScale,
+            delay,
+            duration,
+            mode: Clutter.AnimationMode.LINEAR,
+            onComplete: () => ripple.visible = false
+        });
     }
 
     addTo(stage) {
@@ -87,9 +90,9 @@ var Ripples = class Ripples {
         // parameters were found by trial and error, so don't look
         // for them to make perfect sense mathematically
 
-        //                              delay  time  scale opacity => scale
-        this._animRipple(this._ripple1, 0.0,   0.83,  0.25,  1.0,     1.5);
-        this._animRipple(this._ripple2, 0.05,  1.0,   0.0,   0.7,     1.25);
-        this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
+        //                              delay  time   scale opacity => scale
+        this._animRipple(this._ripple1,   0,    830,   0.25,  1.0,     1.5);
+        this._animRipple(this._ripple2,  50,   1000,   0.0,   0.7,     1.25);
+        this._animRipple(this._ripple3, 350,   1000,   0.0,   0.3,     1);
     }
 };

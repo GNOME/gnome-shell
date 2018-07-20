@@ -1654,19 +1654,23 @@ var Keyboard = class Keyboard {
             return;
 
         if (show) {
-            Tweener.addTween(windowActor,
-                             { y: windowActor.y - deltaY,
-                               time: Layout.KEYBOARD_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: this._windowSlideAnimationComplete,
-                               onCompleteParams: [window, -deltaY] });
+            windowActor.ease({
+                y: windowActor.y - deltaY,
+                duration: Layout.KEYBOARD_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._windowSlideAnimationComplete(window, -deltaY);
+                }
+            });
         } else {
-            Tweener.addTween(windowActor,
-                             { y: windowActor.y + deltaY,
-                               time: Layout.KEYBOARD_ANIMATION_TIME / 1000,
-                               transition: 'easeInQuad',
-                               onComplete: this._windowSlideAnimationComplete,
-                               onCompleteParams: [window, deltaY] });
+            windowActor.ease({
+                y: windowActor.y + deltaY,
+                duration: Layout.KEYBOARD_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                onComplete: () => {
+                    this._windowSlideAnimationComplete(window, deltaY);
+                }
+            });
         }
     }
 

@@ -1,6 +1,5 @@
 /* exported PointerA11yTimeout */
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
-const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const Cairo = imports.cairo;
 
@@ -57,7 +56,7 @@ class PieTimer extends St.DrawingArea {
     }
 
     start(x, y, duration) {
-        Tweener.removeTweens(this);
+        this.remove_all_transitions();
 
         this.x = x - this.width / 2;
         this.y = y - this.height / 2;
@@ -67,16 +66,16 @@ class PieTimer extends St.DrawingArea {
         this._startTime = GLib.get_monotonic_time() / 1000.0;
         this._duration = duration;
 
-        Tweener.addTween(this,
-                         { opacity: 255,
-                           time: duration / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => this.stop()
-                          });
+        this.ease({
+            opacity: 255,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.stop()
+        });
     }
 
     stop() {
-        Tweener.removeTweens(this);
+        this.remove_all_transitions();
         this.hide();
     }
 });

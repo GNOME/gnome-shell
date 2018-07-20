@@ -10,7 +10,6 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var DASH_ANIMATION_TIME = 200;
 var DASH_ITEM_LABEL_SHOW_TIME = 150;
@@ -100,11 +99,11 @@ class DashItemContainer extends St.Widget {
             x = stageX + this.get_width() + xOffset;
 
         this.label.set_position(x, y);
-        Tweener.addTween(this.label,
-                         { opacity: 255,
-                           time: DASH_ITEM_LABEL_SHOW_TIME / 1000,
-                           transition: 'easeOutQuad',
-                         });
+        this.label.ease({
+            opacity: 255,
+            duration: DASH_ITEM_LABEL_SHOW_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     setLabelText(text) {
@@ -113,14 +112,12 @@ class DashItemContainer extends St.Widget {
     }
 
     hideLabel() {
-        Tweener.addTween(this.label,
-                         { opacity: 0,
-                           time: DASH_ITEM_LABEL_HIDE_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this.label.hide();
-                           }
-                         });
+        this.label.ease({
+            opacity: 0,
+            duration: DASH_ITEM_LABEL_HIDE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.label.hide()
+        });
     }
 
     setChild(actor) {
@@ -138,13 +135,13 @@ class DashItemContainer extends St.Widget {
             return;
 
         let time = animate ? DASH_ANIMATION_TIME : 0;
-        Tweener.addTween(this,
-                         { scale_x: 1.0,
-                           scale_y: 1.0,
-                           opacity: 255,
-                           time: time / 1000,
-                           transition: 'easeOutQuad'
-                         });
+        this.ease({
+            scale_x: 1,
+            scale_y: 1,
+            opacity: 255,
+            duration: time,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     animateOutAndDestroy() {
@@ -156,14 +153,14 @@ class DashItemContainer extends St.Widget {
         }
 
         this.animatingOut = true;
-        Tweener.addTween(this,
-                         { scale_x: 0,
-                           scale_y: 0,
-                           opacity: 0,
-                           time: DASH_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => this.destroy()
-                         });
+        this.ease({
+            scale_x: 0,
+            scale_y: 0,
+            opacity: 0,
+            duration: DASH_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.destroy()
+        });
     }
 });
 
@@ -612,12 +609,12 @@ var Dash = class Dash {
             icon.icon.set_size(icon.icon.width * scale,
                                icon.icon.height * scale);
 
-            Tweener.addTween(icon.icon,
-                             { width: targetWidth,
-                               height: targetHeight,
-                               time: DASH_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad',
-                             });
+            icon.icon.ease({
+                width: targetWidth,
+                height: targetHeight,
+                time: DASH_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
     }
 

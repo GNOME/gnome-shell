@@ -3,7 +3,6 @@
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
-const Tweener = imports.ui.tweener;
 const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
 
 var INDICATORS_BASE_TIME = 250;
@@ -118,7 +117,7 @@ class AnimatedPageIndicators extends PageIndicators {
             return;
 
         for (let i = 0; i < this._nPages; i++)
-            Tweener.removeTweens(children[i]);
+            children[i].remove_all_transitions();
 
         let offset;
         if (this.get_text_direction() == Clutter.TextDirection.RTL)
@@ -138,11 +137,11 @@ class AnimatedPageIndicators extends PageIndicators {
 
         for (let i = 0; i < this._nPages; i++) {
             children[i].translation_x = isAnimationIn ? offset : 0;
-            Tweener.addTween(children[i], {
+            children[i].ease({
                 translation_x: isAnimationIn ? 0 : offset,
-                time: (baseTime + delay * i) / 1000,
-                transition: 'easeInOutQuad',
-                delay: isAnimationIn ? ANIMATION_DELAY / 1000 : 0
+                duration: baseTime + delay * i,
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+                delay: isAnimationIn ? ANIMATION_DELAY : 0
             });
         }
     }
