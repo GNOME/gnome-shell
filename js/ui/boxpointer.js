@@ -4,7 +4,6 @@
 const { Clutter, GObject, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var PopupAnimation = {
     NONE:  0,
@@ -106,16 +105,18 @@ var BoxPointer = GObject.registerClass({
             }
         }
 
-        Tweener.addTween(this, { opacity: 255,
-                                 translation_x: 0,
-                                 translation_y: 0,
-                                 transition: 'linear',
-                                 onComplete: () => {
-                                     this._unmuteInput();
-                                     if (onComplete)
-                                         onComplete();
-                                 },
-                                 time: animationTime / 1000 });
+        this.ease({
+            opacity: 255,
+            translation_x: 0,
+            translation_y: 0,
+            duration: animationTime,
+            mode: Clutter.AnimationMode.LINEAR,
+            onComplete: () => {
+                this._unmuteInput();
+                if (onComplete)
+                    onComplete();
+            }
+        });
     }
 
     close(animate, onComplete) {
@@ -148,21 +149,22 @@ var BoxPointer = GObject.registerClass({
 
         this._muteInput();
 
-        Tweener.removeTweens(this);
-        Tweener.addTween(this, { opacity: fade ? 0 : 255,
-                                 translation_x: translationX,
-                                 translation_y: translationY,
-                                 transition: 'linear',
-                                 time: animationTime / 1000,
-                                 onComplete: () => {
-                                     this.hide();
-                                     this.opacity = 0;
-                                     this.translation_x = 0;
-                                     this.translation_y = 0;
-                                     if (onComplete)
-                                         onComplete();
-                                 }
-                               });
+        this.remove_all_transitions();
+        this.ease({
+            opacity: fade ? 0 : 255,
+            translation_x: translationX,
+            translation_y: translationY,
+            duration: animationTime,
+            mode: Clutter.AnimationMode.LINEAR,
+            onComplete: () => {
+                this.hide();
+                this.opacity = 0;
+                this.translation_x = 0;
+                this.translation_y = 0;
+                if (onComplete)
+                    onComplete();
+            }
+        });
     }
 
     _adjustAllocationForArrow(isWidth, minSize, natSize) {

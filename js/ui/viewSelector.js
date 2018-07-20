@@ -10,7 +10,6 @@ const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
-const Tweener = imports.ui.tweener;
 const WorkspacesView = imports.ui.workspacesView;
 const EdgeDragAction = imports.ui.edgeDragAction;
 const IconGrid = imports.ui.iconGrid;
@@ -322,23 +321,21 @@ var ViewSelector = class {
     }
 
     _fadePageIn() {
-        Tweener.addTween(this._activePage,
-                         { opacity: 255,
-                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad'
-                         });
+        this._activePage.ease({
+            opacity: 255,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     _fadePageOut(page) {
         let oldPage = page;
-        Tweener.addTween(page,
-                         { opacity: 0,
-                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._animateIn(oldPage);
-                           }
-                         });
+        page.ease({
+            opacity: 0,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._animateIn(oldPage)
+        });
     }
 
     _animateIn(oldPage) {
@@ -605,18 +602,20 @@ var ViewSelector = class {
 
     fadeIn() {
         let actor = this._activePage;
-        Tweener.addTween(actor, { opacity: 255,
-                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
-                                  transition: 'easeInQuad'
-                                });
+        actor.ease({
+            opacity: 255,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
     }
 
     fadeHalf() {
         let actor = this._activePage;
-        Tweener.addTween(actor, { opacity: 128,
-                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
-                                  transition: 'easeOutQuad'
-                                });
+        actor.ease({
+            opacity: 128,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 };
 Signals.addSignalMethods(ViewSelector.prototype);

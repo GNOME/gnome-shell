@@ -188,7 +188,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            Tweener.removeTweens(workspace.actor);
+            workspace.actor.remove_all_transitions();
 
             let params = {};
             if (workspaceManager.layout_rows == -1)
@@ -199,21 +199,21 @@ var WorkspacesView = class extends WorkspacesViewBase {
                 params.x = (w - active) * this._fullGeometry.width;
 
             if (showAnimation) {
-                let tweenParams = Object.assign(params, {
-                    time: WORKSPACE_SWITCH_TIME / 1000,
-                    transition: 'easeOutQuad'
+                let easeParams = Object.assign(params, {
+                    duration: WORKSPACE_SWITCH_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
                 });
                 // we have to call _updateVisibility() once before the
                 // animation and once afterwards - it does not really
                 // matter which tween we use, so we pick the first one ...
                 if (w == 0) {
                     this._updateVisibility();
-                    tweenParams.onComplete = () => {
+                    easeParams.onComplete = () => {
                         this._animating = false;
                         this._updateVisibility();
                     };
                 }
-                Tweener.addTween(workspace.actor, tweenParams);
+                workspace.actor.ease(easeParams);
             } else {
                 workspace.actor.set(params);
                 if (w == 0)
