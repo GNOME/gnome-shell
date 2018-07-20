@@ -1249,10 +1249,6 @@ var MessageTray = class MessageTray {
         this._notificationExpired = false;
     }
 
-    _clampOpacity() {
-        this._bannerBin.opacity = Math.max(0, Math.min(this._bannerBin._opacity, 255));
-    }
-
     _onIdleMonitorBecameActive() {
         this._userActiveWhileNotificationShown = true;
         this._updateNotificationTimeout(2000);
@@ -1279,7 +1275,6 @@ var MessageTray = class MessageTray {
 
         this._bannerBin.add_actor(this._banner.actor);
 
-        this._bannerBin._opacity = 0;
         this._bannerBin.opacity = 0;
         this._bannerBin.y = -this._banner.actor.height;
         this.actor.show();
@@ -1328,11 +1323,14 @@ var MessageTray = class MessageTray {
         this._notificationState = State.SHOWING;
         Tweener.removeTweens(this._bannerBin);
         Tweener.addTween(this._bannerBin, {
+            opacity: 255,
+            time: ANIMATION_TIME / 1000,
+            transition: 'linear'
+        });
+        Tweener.addTween(this._bannerBin, {
             y: 0,
-            _opacity: 255,
             time: ANIMATION_TIME / 1000,
             transition: 'easeOutBack',
-            onUpdate: () => this._clampOpacity,
             onComplete: () => {
                 this._notificationState = State.SHOWN;
                 this._showNotificationCompleted();
@@ -1401,11 +1399,14 @@ var MessageTray = class MessageTray {
             this._notificationState = State.HIDING;
             Tweener.removeTweens(this._bannerBin);
             Tweener.addTween(this._bannerBin, {
+                opacity: 0,
+                time: ANIMATION_TIME / 1000,
+                transition: 'linear'
+            });
+            Tweener.addTween(this._bannerBin, {
                 y: -this._bannerBin.height,
-                _opacity: 0,
                 time: ANIMATION_TIME / 1000,
                 transition: 'easeOutBack',
-                onUpdate: () => this._clampOpacity,
                 onComplete: () => {
                     this._notificationState = State.HIDDEN;
                     this._hideNotificationCompleted();
