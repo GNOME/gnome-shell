@@ -5,7 +5,6 @@ const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var ANIMATION_TIME = 100;
 var DISPLAY_TIMEOUT = 600;
@@ -182,10 +181,11 @@ class WorkspaceSwitcherPopup extends St.Widget {
     }
 
     _show() {
-        Tweener.addTween(this._container, { opacity: 255,
-                                            time: ANIMATION_TIME / 1000,
-                                            transition: 'easeOutQuad'
-                                           });
+        this._container.ease({
+            opacity: 255,
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
         this.show();
     }
 
@@ -204,11 +204,12 @@ class WorkspaceSwitcherPopup extends St.Widget {
     _onTimeout() {
         Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;
-        Tweener.addTween(this._container, { opacity: 0.0,
-                                            time: ANIMATION_TIME / 1000,
-                                            transition: 'easeOutQuad',
-                                            onComplete: () => this.destroy()
-                                           });
+        this._container.ease({
+            opacity: 0.0,
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.destroy()
+        });
         return GLib.SOURCE_REMOVE;
     }
 

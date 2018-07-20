@@ -7,7 +7,6 @@ const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
-const Tweener = imports.ui.tweener;
 
 var APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
@@ -362,15 +361,15 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _destroyThumbnails() {
         let thumbnailsActor = this._thumbnails;
-        Tweener.addTween(thumbnailsActor,
-                         { opacity: 0,
-                           time: THUMBNAIL_FADE_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               thumbnailsActor.destroy();
-                               this.thumbnailsVisible = false;
-                           }
-                         });
+        this._thumbnails.ease({
+            opacity: 0,
+            duration: THUMBNAIL_FADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                thumbnailsActor.destroy();
+                this.thumbnailsVisible = false;
+            }
+        });
         this._thumbnails = null;
         if (this._switcherList._items[this._selectedIndex])
             this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
@@ -393,12 +392,14 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._thumbnails.get_allocation_box();
 
         this._thumbnails.opacity = 0;
-        Tweener.addTween(this._thumbnails,
-                         { opacity: 255,
-                           time: THUMBNAIL_FADE_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => this.thumbnailsVisible = true
-                         });
+        this._thumbnails.ease({
+            opacity: 255,
+            duration: THUMBNAIL_FADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this.thumbnailsVisible = true;
+            }
+        });
 
         this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
     }

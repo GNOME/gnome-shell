@@ -12,7 +12,6 @@ const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
@@ -1321,16 +1320,16 @@ var MessageTray = class MessageTray {
         // notification is being shown.
 
         this._notificationState = State.SHOWING;
-        Tweener.removeTweens(this._bannerBin);
-        Tweener.addTween(this._bannerBin, {
+        this._bannerBin.remove_all_transitions();
+        this._bannerBin.ease({
             opacity: 255,
-            time: ANIMATION_TIME / 1000,
-            transition: 'linear'
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.LINEAR
         });
-        Tweener.addTween(this._bannerBin, {
+        this._bannerBin.ease({
             y: 0,
-            time: ANIMATION_TIME / 1000,
-            transition: 'easeOutBack',
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_BACK,
             onComplete: () => {
                 this._notificationState = State.SHOWN;
                 this._showNotificationCompleted();
@@ -1394,19 +1393,19 @@ var MessageTray = class MessageTray {
         }
 
         this._resetNotificationLeftTimeout();
+        this._bannerBin.remove_all_transitions();
 
         if (animate) {
             this._notificationState = State.HIDING;
-            Tweener.removeTweens(this._bannerBin);
-            Tweener.addTween(this._bannerBin, {
+            this._bannerBin.ease({
                 opacity: 0,
-                time: ANIMATION_TIME / 1000,
-                transition: 'linear'
+                duration: ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_BACK
             });
-            Tweener.addTween(this._bannerBin, {
+            this._bannerBin.ease({
                 y: -this._bannerBin.height,
-                time: ANIMATION_TIME / 1000,
-                transition: 'easeOutBack',
+                duration: ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_BACK,
                 onComplete: () => {
                     this._notificationState = State.HIDDEN;
                     this._hideNotificationCompleted();
@@ -1414,7 +1413,6 @@ var MessageTray = class MessageTray {
                 }
             });
         } else {
-            Tweener.removeTweens(this._bannerBin);
             this._bannerBin.y = -this._bannerBin.height;
             this._bannerBin.opacity = 0;
             this._notificationState = State.HIDDEN;

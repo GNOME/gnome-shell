@@ -427,10 +427,11 @@ var Overview = class {
     fadeInDesktop() {
         this._desktopFade.opacity = 0;
         this._desktopFade.show();
-        Tweener.addTween(this._desktopFade,
-                         { opacity: 255,
-                           time: ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad' });
+        this._desktopFade.ease({
+            opacity: 255,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME
+        });
     }
 
     fadeOutDesktop() {
@@ -444,11 +445,11 @@ var Overview = class {
 
         this._desktopFade.opacity = 255;
         this._desktopFade.show();
-        Tweener.addTween(this._desktopFade,
-                         { opacity: 0,
-                           time: ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad'
-                         });
+        this._desktopFade.ease({
+            opacity: 0,
+            mode: Clutter.Animates.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME
+        });
     }
 
     // Checks if the Activities button is currently sensitive to
@@ -528,13 +529,12 @@ var Overview = class {
         this.viewSelector.show();
 
         this._overview.opacity = 0;
-        Tweener.addTween(this._overview,
-                         { opacity: 255,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME / 1000,
-                           onComplete: this._showDone,
-                           onCompleteScope: this
-                         });
+        this._overview.ease({
+            opacity: 255,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME,
+            onComplete: () => this._showDone()
+        });
         this._shadeBackgrounds();
 
         this._coverPane.raise_top();
@@ -592,13 +592,12 @@ var Overview = class {
         this.viewSelector.animateFromOverview();
 
         // Make other elements fade out.
-        Tweener.addTween(this._overview,
-                         { opacity: 0,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME / 1000,
-                           onComplete: this._hideDone,
-                           onCompleteScope: this
-                         });
+        this._overview.ease({
+            opacity: 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME,
+            onComplete: () => this._hideDone()
+        });
         this._unshadeBackgrounds();
 
         this._coverPane.raise_top();

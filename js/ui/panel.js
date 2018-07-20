@@ -13,7 +13,6 @@ const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var PANEL_ICON_SIZE = 16;
 var APP_MENU_ICON_MARGIN = 0;
@@ -262,11 +261,12 @@ var AppMenuButton = GObject.registerClass({
         this._visible = true;
         this.reactive = true;
         this.show();
-        Tweener.removeTweens(this);
-        Tweener.addTween(this,
-                         { opacity: 255,
-                           time: Overview.ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad' });
+        this.remove_all_transitions();
+        this.ease({
+            opacity: 255,
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     fadeOut() {
@@ -275,14 +275,13 @@ var AppMenuButton = GObject.registerClass({
 
         this._visible = false;
         this.reactive = false;
-        Tweener.removeTweens(this);
-        Tweener.addTween(this,
-                         { opacity: 0,
-                           time: Overview.ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this.hide();
-                           } });
+        this.remove_all_transitions();
+        this.ease({
+            opacity: 0,
+            mode: Clutter.Animation.EASE_OUT_QUAD,
+            duration: Overview.ANIMATION_TIME,
+            onComplete: () => this.hide()
+        });
     }
 
     _syncIcon() {

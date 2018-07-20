@@ -6,7 +6,6 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
-const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const History = imports.misc.history;
 
@@ -243,15 +242,16 @@ class RunDialog extends ModalDialog.ModalDialog {
             let [, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
 
             let parentActor = this._errorBox.get_parent();
-            Tweener.addTween(parentActor,
-                             { height: parentActor.height + errorBoxNaturalHeight,
-                               time: DIALOG_GROW_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   parentActor.set_height(-1);
-                                   this._errorBox.show();
-                               }
-                             });
+            let height = parentActor.height + errorBoxNaturalHeight;
+            parentActor.ease({
+                height,
+                duration: DIALOG_GROW_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    parentActor.set_height(-1);
+                    this._errorBox.show();
+                }
+            });
         }
     }
 

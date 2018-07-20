@@ -20,7 +20,7 @@
  * In order for transformation animations to look good, they need to be
  * incremental and have some order to them (e.g., fade out hidden items,
  * then shrink to close the void left over). Chaining animations in this way can
- * be error-prone and wordy using just Tweener callbacks.
+ * be error-prone and wordy using just ease() callbacks.
  *
  * The classes in this file help with this:
  *

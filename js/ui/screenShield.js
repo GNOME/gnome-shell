@@ -17,7 +17,6 @@ const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const SmartcardManager = imports.misc.smartcardManager;
-const Tweener = imports.ui.tweener;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
@@ -250,15 +249,15 @@ var NotificationsBox = class {
             let widget = obj.sourceBox;
             let [, natHeight] = widget.get_preferred_height(-1);
             widget.height = 0;
-            Tweener.addTween(widget,
-                             { height: natHeight,
-                               transition: 'easeOutQuad',
-                               time: 0.25,
-                               onComplete: () => {
-                                   this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
-                                   widget.set_height(-1);
-                               }
-                             });
+            widget.ease({
+                height: natHeight,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: 250,
+                onComplete: () => {
+                    this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
+                    widget.set_height(-1);
+                }
+            });
 
             this._updateVisibility();
             if (obj.sourceBox.visible)
@@ -734,26 +733,26 @@ var ScreenShield = class {
         let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
         for (let i = 0; i < arrows.length; i++) {
             arrows[i].opacity = 0;
-            Tweener.addTween(arrows[i],
-                             { opacity: maxOpacity,
-                               delay: (unitaryDelay * (N_ARROWS - (i + 1))) / 1000,
-                               time: ARROW_ANIMATION_TIME / (2 * 1000),
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   Tweener.addTween(arrors[i], {
-                                       opacity: 0,
-                                       time: ARROW_ANIMATION_TIME / (2 * 1000),
-                                       transition: 'easeInQuad'
-                                   });
-                               }
-                             });
+            arrows[i].ease({
+                opacity: maxOpacity,
+                delay: unitaryDelay * (N_ARROWS - (i + 1)),
+                duration: ARROW_ANIMATION_TIME / 2,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    arrows[i].ease({
+                        opacity: 0,
+                        duration: ARROW_ANIMATION_TIME / 2,
+                        mode: Clutter.AnimationMode.EASE_IN_QUAD
+                    });
+                }
+            });
         }
 
         return GLib.SOURCE_CONTINUE;
     }
 
     _onDragBegin() {
-        Tweener.removeTweens(this._lockScreenGroup);
+        this._lockScreenGroup.remove_all_transitions();
         this._lockScreenState = MessageTray.State.HIDING;
 
         if (this._isLocked)
@@ -785,17 +784,17 @@ var ScreenShield = class {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
             let h = global.stage.height;
-            let time = MANUAL_FADE_TIME * (-this._lockScreenGroup.y) / h;
-            Tweener.removeTweens(this._lockScreenGroup);
-            Tweener.addTween(this._lockScreenGroup,
-                             { y: 0,
-                               time: time / 1000,
-                               transition: 'easeInQuad',
-                               onComplete: () => {
-                                   this._lockScreenGroup.fixed_position_set = false;
-                                   this._lockScreenState = MessageTray.State.SHOWN;
-                               }
-                             });
+            let duration = MANUAL_FADE_TIME * (-this._lockScreenGroup.y) / h;
+            this._lockScreenGroup.remove_all_transitions();
+            this._lockScreenGroup.ease({
+                y: 0,
+                duration,
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                onComplete: () => {
+                    this._lockScreenGroup.fixed_position_set = false;
+                    this._lockScreenState = MessageTray.State.SHOWN;
+                }
+            });
 
             this._maybeCancelDialog();
         }
@@ -925,7 +924,7 @@ var ScreenShield = class {
 
         this._lockScreenState = MessageTray.State.HIDING;
 
-        Tweener.removeTweens(this._lockScreenGroup);
+        this._lockScreenGroup.remove_all_transitions();
 
         if (animate) {
             // Tween the lock screen out of screen
@@ -937,14 +936,14 @@ var ScreenShield = class {
             let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
 
             velocity = Math.max(minVelocity, velocity);
-            let time = delta / velocity;
+            let duration = delta / velocity;
 
-            Tweener.addTween(this._lockScreenGroup,
-                             { y: -h,
-                               time: time / 1000,
-                               transition: 'easeInQuad',
-                               onComplete: this._hideLockScreenComplete.bind(this),
-                             });
+            this._lockScreenGroup.ease({
+                y: -h,
+                duration,
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                onComplete: () => this._hideLockScreenComplete()
+            });
         } else {
             this._hideLockScreenComplete();
         }
@@ -1004,16 +1003,15 @@ var ScreenShield = class {
 
         if (params.animateLockScreen) {
             this._lockScreenGroup.y = -global.screen_height;
-            Tweener.removeTweens(this._lockScreenGroup);
-            Tweener.addTween(this._lockScreenGroup,
-                             { y: 0,
-                               time: MANUAL_FADE_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this._lockScreenShown({ fadeToBlack: fadeToBlack,
-                                                           animateFade: true });
-                               }
-                             });
+            this._lockScreenGroup.remove_all_transitions();
+            this._lockScreenGroup.ease({
+                y: 0,
+                duration: MANUAL_FADE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._lockScreenShown({ fadeToBlack, animateFade: true });
+                }
+            });
         } else {
             this._lockScreenGroup.fixed_position_set = false;
             this._lockScreenShown({ fadeToBlack: fadeToBlack,
@@ -1217,13 +1215,12 @@ var ScreenShield = class {
             this._isModal = false;
         }
 
-        Tweener.addTween(this._lockDialogGroup, {
+        this._lockDialogGroup.ease({
             scale_x: 0,
             scale_y: 0,
-            time: animate ? Overview.ANIMATION_TIME / 1000 : 0,
-            transition: 'easeOutQuad',
-            onComplete: this._completeDeactivate.bind(this),
-            onCompleteScope: this
+            duration: animate ? Overview.ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._completeDeactivate()
         });
     }
 
