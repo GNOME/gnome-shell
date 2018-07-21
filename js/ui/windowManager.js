@@ -932,12 +932,6 @@ var WindowManager = class {
                                         Shell.ActionMode.OVERVIEW,
                                         this._startSwitcher.bind(this));
 
-        this.addKeybinding('pause-resume-tweens',
-                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.NONE,
-                           Shell.ActionMode.ALL,
-                           this._toggleTweens.bind(this));
-
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -2087,15 +2081,6 @@ var WindowManager = class {
 
     _toggleCalendar() {
         Main.panel.toggleCalendar();
-    }
-
-    _toggleTweens() {
-        this._tweensPaused = !this._tweensPaused;
-        const OrigTweener = imports.tweener.tweener;
-        if (this._tweensPaused)
-            OrigTweener.pauseAllTweens();
-        else
-            OrigTweener.resumeAllTweens();
     }
 
     _showWorkspaceSwitcher(display, window, binding) {
