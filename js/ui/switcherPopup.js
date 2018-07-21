@@ -283,7 +283,7 @@ var SwitcherPopup = GObject.registerClass({
 
     fadeAndDestroy() {
         this._popModal();
-        if (this.visible) {
+        if (this.opacity > 0) {
             Tweener.addTween(this,
                              { opacity: 0,
                                time: POPUP_FADE_OUT_TIME / 1000,
