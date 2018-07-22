@@ -127,7 +127,8 @@ var WindowDimmer = class {
     }
 
     _syncEnabled() {
-        this._brightnessEffect.enabled = (this._enabled && this._dimFactor > 0);
+        let dimmed = this._brightnessEffect.brightness.red != 127;
+        this._brightnessEffect.enabled = (this._enabled && dimmed);
     }
 
     setEnabled(enabled) {
@@ -144,14 +145,17 @@ var WindowDimmer = class {
                 time: (dimmed ? DIM_TIME : UNDIM_TIME) / 1000,
                 transition: 'linear',
                 onUpdate: () => {
-                    let brightness = this._dimFactor * DIM_BRIGHTNESS;
-                    this._brightnessEffect.set_brightness(brightness);
+                    let val = 127 * (1 + this._dimFactor * DIM_BRIGHTNESS);
+                    let color = Clutter.Color.new(val, val, val, 255);
+                    this._brightnessEffect.brightness = color;
                     this._syncEnabled();
                 }
             });
         } else {
             this._dimFactor = factor;
-            this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
+            let val = 127 * (1 + this._dimFactor * DIM_BRIGHTNESS);
+            let color = Clutter.Color.new(val, val, val, 255);
+            this._brightnessEffect.brightness = color;
             this._syncEnabled();
         }
     }
