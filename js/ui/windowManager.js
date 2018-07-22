@@ -117,12 +117,13 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 
 var WindowDimmer = class {
     constructor(actor) {
-        this._brightnessEffect = new Clutter.BrightnessContrastEffect();
+        this._brightnessEffect = new Clutter.BrightnessContrastEffect({
+            enabled: false
+        });
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
         this._enabled = true;
         this._dimFactor = 0.0;
-        this._syncEnabled();
     }
 
     _syncEnabled() {
