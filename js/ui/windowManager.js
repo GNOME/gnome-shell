@@ -135,14 +135,25 @@ var WindowDimmer = class {
         this._syncEnabled();
     }
 
-    set dimFactor(factor) {
-        this._dimFactor = factor;
-        this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
-        this._syncEnabled();
-    }
+    setDimmed(dimmed, animate) {
+        let factor = dimmed ? 1.0 : 0.0;
 
-    get dimFactor() {
-        return this._dimFactor;
+        if (animate) {
+            Tweener.addTween(this, {
+                _dimFactor: factor,
+                time: (dimmed ? DIM_TIME : UNDIM_TIME) / 1000,
+                transition: 'linear',
+                onUpdate: () => {
+                    let brightness = this._dimFactor * DIM_BRIGHTNESS;
+                    this._brightnessEffect.set_brightness(brightness);
+                    this._syncEnabled();
+                }
+            });
+        } else {
+            this._dimFactor = factor;
+            this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
+            this._syncEnabled();
+        }
     }
 };
 
@@ -1582,14 +1593,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 1.0,
-                               time: DIM_TIME / 1000,
-                               transition: 'linear'
-                             });
-        else
-            dimmer.dimFactor = 1.0;
+        dimmer.setDimmed(true, this._shouldAnimate());
     }
 
     _undimWindow(window) {
@@ -1599,13 +1603,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 0.0,
-                               time: UNDIM_TIME / 1000,
-                               transition: 'linear' });
-        else
-            dimmer.dimFactor = 0.0;
+        dimmer.setDimmed(false, this._shouldAnimate());
     }
 
     _mapWindow(shellwm, actor) {
