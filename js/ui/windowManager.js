@@ -28,8 +28,8 @@ var DESTROY_WINDOW_ANIMATION_TIME = 0.15;
 var DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 0.1;
 var WINDOW_ANIMATION_TIME = 0.25;
 var DIM_BRIGHTNESS = -0.3;
-var DIM_TIME = 0.500;
-var UNDIM_TIME = 0.250;
+var DIM_TIME = 500; // ms
+var UNDIM_TIME = 250; // ms
 var MOTION_THRESHOLD = 100;
 
 var ONE_SECOND = 1000; // in ms
@@ -115,16 +115,39 @@ var DisplayChangeDialog = class extends ModalDialog.ModalDialog {
 
 var WindowDimmer = class {
     constructor(actor) {
-        this._brightnessEffect = new Clutter.BrightnessContrastEffect();
+        this._brightnessEffect = new Clutter.BrightnessContrastEffect({
+            name: 'dim',
+            enabled: false
+        });
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
         this._enabled = true;
-        this._dimFactor = 0.0;
-        this._syncEnabled();
+        this._dimmed = false;
     }
 
     _syncEnabled() {
-        this._brightnessEffect.enabled = (this._enabled && this._dimFactor > 0);
+        this._brightnessEffect.enabled =
+            (this._enabled && (this._dimmed || this._transition != null));
+    }
+
+    get _transition() {
+        return this.actor.get_transition('dim');
+    }
+
+    _ensureTransition() {
+        if (this._transition)
+            return;
+
+        let params = {
+            propertyName: '@effects.dim.brightness',
+            progressMode: Clutter.AnimationMode.LINEAR,
+            duration: (this._dimmed ? DIM_TIME : UNDIM_TIME),
+            removeOnComplete: true
+        };
+        this.actor.add_transition('dim',
+            new Clutter.PropertyTransition(params));
+
+        this._transition.connect('completed', this._syncEnabled.bind(this));
     }
 
     setEnabled(enabled) {
@@ -132,14 +155,20 @@ var WindowDimmer = class {
         this._syncEnabled();
     }
 
-    set dimFactor(factor) {
-        this._dimFactor = factor;
-        this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
-        this._syncEnabled();
-    }
+    setDimmed(dimmed, animate) {
+        this._dimmed = dimmed;
 
-    get dimFactor() {
-        return this._dimFactor;
+        let val = 127 * (1 + dimmed * DIM_BRIGHTNESS);
+        let color = Clutter.Color.new(val, val, val, 255);
+
+        if (animate) {
+            this._ensureTransition();
+            this._transition.set_to(color);
+        } else {
+            this._effect.brightness = color;
+        }
+
+        this._syncEnabled();
     }
 };
 
@@ -1614,14 +1643,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 1.0,
-                               time: DIM_TIME,
-                               transition: 'linear'
-                             });
-        else
-            dimmer.dimFactor = 1.0;
+        dimmer.setDimmed(true, this._shouldAnimate());
     }
 
     _undimWindow(window) {
@@ -1631,13 +1653,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 0.0,
-                               time: UNDIM_TIME,
-                               transition: 'linear' });
-        else
-            dimmer.dimFactor = 0.0;
+        dimmer.setDimmed(false, this._shouldAnimate());
     }
 
     _mapWindow(shellwm, actor) {
