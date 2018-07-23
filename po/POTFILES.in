@@ -58,6 +58,7 @@ js/ui/status/location.js
 js/ui/status/network.js
 js/ui/status/nightLight.js
 js/ui/status/power.js
+js/ui/status/remoteAccess.js
 js/ui/status/rfkill.js
 js/ui/status/system.js
 js/ui/status/thunderbolt.js
