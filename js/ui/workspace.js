@@ -1516,11 +1516,11 @@ var Workspace = new Lang.Class({
 
         if (!this._isOverviewWindow(win)) {
             if (metaWin.is_attached_dialog()) {
-                let parent = metaWin.get_transient_for();
-                while (parent.is_attached_dialog())
-                    parent = metaWin.get_transient_for();
+                let parentMetaWin = metaWin;
+                while (parentMetaWin.get_transient_for())
+                    parentMetaWin = parentMetaWin.get_transient_for();
 
-                let idx = this._lookupIndex (parent);
+                let idx = this._lookupIndex (parentMetaWin);
                 if (idx < 0) {
                     // parent was not created yet, it will take care
                     // of the dialog when created
