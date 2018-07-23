@@ -1507,7 +1507,7 @@ var Workspace = new Lang.Class({
             if (metaWin.is_attached_dialog()) {
                 let parent = metaWin.get_transient_for();
                 while (parent.is_attached_dialog())
-                    parent = metaWin.get_transient_for();
+                    parent = parent.get_transient_for();
 
                 let idx = this._lookupIndex (parent);
                 if (idx < 0) {
