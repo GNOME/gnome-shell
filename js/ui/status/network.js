@@ -331,11 +331,11 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
 
     destroy() {
         if (this._stateChangedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
+            GObject.signal_handler_disconnect(this._device, this._stateChangedId);
             this._stateChangedId = 0;
         }
         if (this._activeConnectionChangedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._activeConnectionChangedId);
+            GObject.signal_handler_disconnect(this._device, this._activeConnectionChangedId);
             this._activeConnectionChangedId = 0;
         }
 
@@ -1187,11 +1187,11 @@ var NMDeviceWireless = class {
 
     destroy() {
         if (this._activeApChangedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._activeApChangedId);
+            GObject.signal_handler_disconnect(this._device, this._activeApChangedId);
             this._activeApChangedId = 0;
         }
         if (this._stateChangedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
+            GObject.signal_handler_disconnect(this._device, this._stateChangedId);
             this._stateChangedId = 0;
         }
         if (this._strengthChangedId > 0) {
