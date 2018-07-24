@@ -261,7 +261,11 @@ var Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
 
-        this._settingsAction = this._createActionButton('preferences-system', _("Settings"));
+        let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
+            'gnome-control-center.desktop'
+        );
+        let [icon, name] = [app.app_info.get_icon().names[0], app.get_name()];
+        this._settingsAction = this._createActionButton(icon, name);
         this._settingsAction.connect('clicked', () => { this._onSettingsClicked(); });
         item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
@@ -330,8 +334,7 @@ var Indicator = new Lang.Class({
 
     _onSettingsClicked() {
         this.menu.itemActivated();
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         Main.overview.hide();
-        app.activate();
+        this._settingsApp.activate();
     }
 });
