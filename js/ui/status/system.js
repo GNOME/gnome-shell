@@ -261,7 +261,7 @@ var Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
 
-        this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
+        this._settingsAction = this._createActionButton('preferences-system', _("Settings"));
         this._settingsAction.connect('clicked', () => { this._onSettingsClicked(); });
         item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
@@ -280,7 +280,7 @@ var Indicator = new Lang.Class({
                                           'icon-name',
                                           bindFlags);
 
-        this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
+        this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"));
         this._lockScreenAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockScreen();
@@ -291,7 +291,7 @@ var Indicator = new Lang.Class({
                                           'visible',
                                           bindFlags);
 
-        this._suspendAction = this._createActionButton('media-playback-pause-symbolic', _("Suspend"));
+        this._suspendAction = this._createActionButton('media-playback-pause', _("Suspend"));
         this._suspendAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateSuspend();
@@ -301,7 +301,7 @@ var Indicator = new Lang.Class({
                                           'visible',
                                           bindFlags);
 
-        this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
+        this._powerOffAction = this._createActionButton('system-shutdown', _("Power Off"));
         this._powerOffAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activatePowerOff();
