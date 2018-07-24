@@ -261,7 +261,7 @@ var Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
 
-        this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
+        this._settingsAction = this._createActionButton('org.gnome.Settings-symbolic', _("Settings"));
         this._settingsAction.connect('clicked', () => { this._onSettingsClicked(); });
         item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
