@@ -1041,6 +1041,10 @@ var Panel = new Lang.Class({
         return this._leftBox.opacity;
     },
 
+    get solidStyle() {
+        return this.actor.has_style_class_name('solid');
+    },
+
     _updatePanel() {
         let panel = Main.sessionMode.panel;
         this._hideIndicators();
@@ -1075,8 +1079,12 @@ var Panel = new Lang.Class({
     },
 
     _updateSolidStyle() {
+        let hadSolidStyle = this.solidStyle;
+
         if (this.actor.has_style_pseudo_class('overview') || !Main.sessionMode.hasWindows) {
             this._removeStyleClassName('solid');
+            if (hadSolidStyle)
+                this.emit('solid-style-changed');
             return;
         }
 
@@ -1106,6 +1114,8 @@ var Panel = new Lang.Class({
         else
             this._removeStyleClassName('solid');
 
+        if (isNearEnough != hadSolidStyle)
+            this.emit('solid-style-changed');
     },
 
     _hideIndicators() {
@@ -1216,3 +1226,4 @@ var Panel = new Lang.Class({
             });
     }
 });
+Signals.addSignalMethods(Panel.prototype);
