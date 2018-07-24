@@ -137,14 +137,13 @@ var Overview = new Lang.Class({
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
         // Dash elements, or mouseover handlers in the workspaces.
-        this._coverPane = new Clutter.Actor({ opacity: 0,
-                                              reactive: true });
-        Main.layoutManager.overviewGroup.add_child(this._coverPane);
-        this._coverPane.connect('event', () => Clutter.EVENT_STOP);
+        this._coverPanes = [];
+        let monitors = Main.layoutManager.monitors;
+        for (let i = 0; i < monitors.length; i++) {
+            this._coverPanes[i] = this._createCoverPane();
+        }
 
         Main.layoutManager.overviewGroup.add_child(this._overview);
-
-        this._coverPane.hide();
 
         // XDND
         this._dragMonitor = {
@@ -167,6 +166,16 @@ var Overview = new Lang.Class({
 
         if (this._initCalled)
             this.init();
+    },
+
+    _createCoverPane() {
+        let coverPane = new Clutter.Actor({ opacity: 0,
+                                            reactive: true });
+        Main.layoutManager.overviewGroup.add_child(coverPane);
+        coverPane.connect('event', () => Clutter.EVENT_STOP);
+        coverPane.hide();
+
+        return coverPane;
     },
 
     _updateBackgrounds() {
@@ -392,13 +401,17 @@ var Overview = new Lang.Class({
         // when it is next shown.
         this.hide();
 
-        if (!Main.layoutManager.primaryMonitor)
-            return;
+        this._coverPanes.forEach(coverPane => coverPane.destroy());
+        this._coverPanes = [];
 
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        let monitors = Main.layoutManager.monitors;
+        for (let i = 0; i < monitors.length; i++) {
+            let workArea = Main.layoutManager.getWorkAreaForMonitor(i);
 
-        this._coverPane.set_position(0, workArea.y);
-        this._coverPane.set_size(workArea.width, workArea.height);
+            this._coverPanes[i] = this._createCoverPane();
+            this._coverPanes[i].set_position(workArea.x, workArea.y);
+            this._coverPanes[i].set_size(workArea.width, workArea.height);
+        }
 
         this._updateBackgrounds();
     },
@@ -565,15 +578,18 @@ var Overview = new Lang.Class({
                          });
         this._shadeBackgrounds();
 
-        this._coverPane.raise_top();
-        this._coverPane.show();
+        this._coverPanes.forEach(coverPane => {
+            coverPane.raise_top();
+            coverPane.show();
+        });
+
         this.emit('showing');
     },
 
     _showDone() {
         this.animationInProgress = false;
         this._desktopFade.hide();
-        this._coverPane.hide();
+        this._coverPanes.forEach(coverPane => coverPane.hide());
 
         this.emit('shown');
         // Handle any calls to hide* while we were showing
@@ -630,8 +646,11 @@ var Overview = new Lang.Class({
                          });
         this._unshadeBackgrounds();
 
-        this._coverPane.raise_top();
-        this._coverPane.show();
+        this._coverPanes.forEach(coverPane => {
+            coverPane.raise_top();
+            coverPane.show();
+        });
+
         this.emit('hiding');
     },
 
@@ -641,7 +660,7 @@ var Overview = new Lang.Class({
 
         this.viewSelector.hide();
         this._desktopFade.hide();
-        this._coverPane.hide();
+        this._coverPanes.forEach(coverPane => coverPane.hide());
 
         this.visible = false;
         this.animationInProgress = false;
