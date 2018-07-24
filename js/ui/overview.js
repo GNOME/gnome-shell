@@ -392,13 +392,8 @@ var Overview = new Lang.Class({
         // when it is next shown.
         this.hide();
 
-        if (!Main.layoutManager.primaryMonitor)
-            return;
-
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-
-        this._coverPane.set_position(0, workArea.y);
-        this._coverPane.set_size(workArea.width, workArea.height);
+        this._coverPane.set_position(0, 0);
+        this._coverPane.set_size(global.screen_width, global.screen_height);
 
         this._updateBackgrounds();
     },
@@ -567,6 +562,7 @@ var Overview = new Lang.Class({
 
         this._coverPane.raise_top();
         this._coverPane.show();
+
         this.emit('showing');
     },
 
@@ -632,6 +628,7 @@ var Overview = new Lang.Class({
 
         this._coverPane.raise_top();
         this._coverPane.show();
+
         this.emit('hiding');
     },
 
