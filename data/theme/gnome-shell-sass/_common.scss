@@ -825,6 +825,8 @@ StScrollBar {
 
   .screencast-indicator { color: $warning_color; }
 
+  .remote-access-indicator { color: $warning_color; }
+
   &.solid {
     background-color: black;
     /* transition from transparent to solid */

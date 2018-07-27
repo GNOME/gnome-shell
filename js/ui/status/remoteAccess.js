@@ -41,6 +41,7 @@ var RemoteAccessApplet = new Lang.Class({
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'screen-shared-symbolic';
+        this._indicator.add_style_class_name('remote-access-indicator');
         this._item =
             new PopupMenu.PopupSubMenuMenuItem(_("Screen is Being Shared"),
                                                true);
