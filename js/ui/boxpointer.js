@@ -80,6 +80,36 @@ var BoxPointer = new Lang.Class({
         }
     },
 
+    // BoxPointer.show() and BoxPointer.hide() are here for only compatibility
+    // purposes, and will be removed in 3.32.
+    show(animate, onComplete) {
+        if (animate !== undefined) {
+            try {
+                throw new Error('BoxPointer.show() has been moved to BoxPointer.open(), this code will break in the future.');
+            } catch(e) {
+                logError(e);
+                this.open(animate, onComplete);
+                return;
+            }
+        }
+
+        this.visible = true;
+    },
+
+    hide(animate, onComplete) {
+        if (animate !== undefined) {
+            try {
+                throw new Error('BoxPointer.hide() has been moved to BoxPointer.close(), this code will break in the future.');
+            } catch(e) {
+                logError(e);
+                this.close(animate, onComplete);
+                return;
+            }
+        }
+
+        this.visible = false;
+    },
+
     open(animate, onComplete) {
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
