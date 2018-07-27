@@ -62,7 +62,11 @@ var RunDialog = new Lang.Class({
                                    'rt': () => {
                                        Main.reloadThemeResource();
                                        Main.loadTheme();
-                                   }
+                                   },
+
+                                   'check_cloexec_fds': () => {
+                                       Shell.util_check_cloexec_fds();
+                                   },
                                  };
 
 

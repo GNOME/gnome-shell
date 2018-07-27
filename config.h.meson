@@ -27,3 +27,6 @@
 
 /* Define if you have the `g_desktop_app_info_launch_uris_as_manager_with_fds` function */
 #mesondefine HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS
+
+/* Define if fdwalk is available in libc */
+#mesondefine HAVE_FDWALK

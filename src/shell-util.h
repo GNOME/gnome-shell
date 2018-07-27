@@ -60,6 +60,8 @@ cairo_surface_t * shell_util_composite_capture_images (ClutterCapture  *captures
                                                        int              width,
                                                        int              height);
 
+void shell_util_check_cloexec_fds (void);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */

@@ -164,6 +164,10 @@ cdata.set('HAVE__NL_TIME_FIRST_WEEKDAY',
   cc.has_header_symbol('langinfo.h', '_NL_TIME_FIRST_WEEKDAY')
 )
 
+cdata.set('HAVE_FDWALK',
+          cc.has_function('fdwalk')
+)
+
 config_h = configure_file(
   input: 'config.h.meson',
   output: 'config.h',
