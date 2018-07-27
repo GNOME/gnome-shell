@@ -2,8 +2,15 @@
 
 #include "config.h"
 
+#include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#ifdef HAVE_SYS_RESOURCE_H
+#include <sys/resource.h>
+#endif
 
 #include <GL/gl.h>
 #include <cogl/cogl.h>
@@ -513,4 +520,105 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
   cairo_destroy (cr);
 
   return image;
+}
+
+#ifndef HAVE_FDWALK
+static int
+fdwalk (int (*cb)(void *data, int fd), void *data)
+{
+  gint open_max;
+  gint fd;
+  gint res = 0;
+
+#ifdef HAVE_SYS_RESOURCE_H
+  struct rlimit rl;
+#endif
+
+#ifdef __linux__
+  DIR *d;
+
+  if ((d = opendir("/proc/self/fd"))) {
+      struct dirent *de;
+
+      while ((de = readdir(d))) {
+          glong l;
+          gchar *e = NULL;
+
+          if (de->d_name[0] == '.')
+              continue;
+
+          errno = 0;
+          l = strtol(de->d_name, &e, 10);
+          if (errno != 0 || !e || *e)
+              continue;
+
+          fd = (gint) l;
+
+          if ((glong) fd != l)
+              continue;
+
+          if (fd == dirfd(d))
+              continue;
+
+          if ((res = cb (data, fd)) != 0)
+              break;
+        }
+
+      closedir(d);
+      return res;
+  }
+
+  /* If /proc is not mounted or not accessible we fall back to the old
+   * rlimit trick */
+
+#endif
+
+#ifdef HAVE_SYS_RESOURCE_H
+  if (getrlimit(RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
+      open_max = rl.rlim_max;
+  else
+#endif
+      open_max = sysconf (_SC_OPEN_MAX);
+
+  for (fd = 0; fd < open_max; fd++)
+      if ((res = cb (data, fd)) != 0)
+          break;
+
+  return res;
+}
+#endif
+
+static int
+check_cloexec(void *data, gint fd)
+{
+  int r;
+
+  if (fd < 3)
+    return 0;
+
+  r = fcntl (fd, F_GETFD);
+  if (r < 0)
+    return 0;
+
+  if (!(r & FD_CLOEXEC))
+    g_warning ("fd %d is not CLOEXEC", fd);
+
+  return 0;
+}
+
+/**
+ * shell_util_check_cloexec_fds:
+ *
+ * Walk over all open file descriptors. Check them for the FD_CLOEXEC flag.
+ * If this flag is not set, log the offending file descriptor number.
+ *
+ * It is important that gnome-shell's file descriptors are all marked CLOEXEC,
+ * so that the shell's open file descriptors are not passed to child processes
+ * that we launch.
+ */
+void
+shell_util_check_cloexec_fds (void)
+{
+  fdwalk (check_cloexec, NULL);
+  g_info ("Open fd CLOEXEC check complete");
 }
