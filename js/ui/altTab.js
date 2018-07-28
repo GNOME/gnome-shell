@@ -57,6 +57,33 @@ function getWindows(workspace) {
     }).filter((w, i, a) => !w.skip_taskbar && a.indexOf(w) == i);
 }
 
+function _waitForWindow(window, cb) {
+    let actor = window.get_compositor_private();
+    let tmpId = actor.connect_after('first-frame', () => {
+        if (actor.has_allocation()) {
+            cb();
+        } else {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                // Stop if the window doesn't exist anymore
+                if (!window.get_workspace())
+                    return GLib.SOURCE_REMOVE;
+
+                // Continue if the window is not allocated yet,
+                // we need an allocation to create a clone.
+                if (!actor.has_allocation())
+                    return GLib.SOURCE_CONTINUE;
+
+                // Let's hope the shell window tracker knows the app by now
+                cb();
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(id, 'wait');
+        }
+
+        actor.disconnect(tmpId);
+    });
+};
+
 var AppSwitcherPopup = new Lang.Class({
     Name: 'AppSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
