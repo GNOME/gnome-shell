@@ -91,10 +91,7 @@ var AppFavorites = new Lang.Class({
     },
 
     _getIds() {
-        let ret = [];
-        for (let id in this._favorites)
-            ret.push(id);
-        return ret;
+        return Object.keys(this._favorites);
     },
 
     getFavoriteMap() {
@@ -102,10 +99,7 @@ var AppFavorites = new Lang.Class({
     },
 
     getFavorites() {
-        let ret = [];
-        for (let id in this._favorites)
-            ret.push(this._favorites[id]);
-        return ret;
+        return Object.values(this._favorites);
     },
 
     isFavorite(appId) {
