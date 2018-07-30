@@ -6,6 +6,7 @@
     <file>checkbox-off-focused.svg</file>
     <file>checkbox-off.svg</file>
     <file>checkbox.svg</file>
+    <file alias="icons/color-pick.svg">color-pick.svg</file>
     <file>dash-placeholder.svg</file>
     <file>gnome-shell.css</file>
     <file>gnome-shell-high-contrast.css</file>
