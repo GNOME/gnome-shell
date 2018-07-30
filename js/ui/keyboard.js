@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Atspi = imports.gi.Atspi;
+const ByteArray = imports.byteArray;
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
@@ -473,7 +474,7 @@ var KeyboardModel = new Lang.Class({
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
         let [success, contents] = file.load_contents(null);
 
-        return JSON.parse(contents);
+        return JSON.parse(ByteArray.toString(contents));
     },
 
     getLevels() {

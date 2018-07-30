@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const ByteArray = imports.byteArray;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -315,7 +316,7 @@ var PadDiagram = new Lang.Class({
         let [success, css, etag] = file.load_contents(null);
         this._curEdited = null;
         this._prevEdited = null;
-        this._css = css;
+        this._css = ByteArray.toString(css);
         this._labels = [];
         this._activeButtons = [];
         this.parent(params);

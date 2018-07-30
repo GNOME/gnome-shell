@@ -3,6 +3,7 @@
 // Common utils for the extension system and the extension
 // preferences tool
 
+const ByteArray = imports.byteArray;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
@@ -117,7 +118,7 @@ function createExtensionObject(uuid, dir, type) {
     }
     let meta;
     try {
-        meta = JSON.parse(metadataContents);
+        meta = JSON.parse(ByteArray.toString(metadataContents));
     } catch (e) {
         throw new Error('Failed to parse metadata.json: ' + e);
     }
