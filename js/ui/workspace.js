@@ -682,21 +682,22 @@ var WindowOverlay = new Lang.Class({
     },
 
     _onHideChrome() {
-        if (this._idleHideOverlayId == 0) {
-            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
-                if (this.closeButton['has-pointer'])
-                    return GLib.SOURCE_CONTINUE;
+        if (this._idleHideOverlayId > 0)
+            Mainloop.source_remove(this._idleHideOverlayId);
 
-                this._idleHideOverlayId = 0;
+        this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
+            if (this.closeButton['has-pointer'])
+                return GLib.SOURCE_CONTINUE;
 
-                if (!this._windowClone.actor['has-pointer'])
-                    this.hide(true);
+            this._idleHideOverlayId = 0;
 
-                return GLib.SOURCE_REMOVE;
-            });
+            if (!this._windowClone.actor['has-pointer'])
+                this.hide(true);
 
-            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
-        }
+            return GLib.SOURCE_REMOVE;
+        });
+
+        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
     },
 
     _onStyleChanged() {
