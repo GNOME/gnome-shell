@@ -313,6 +313,8 @@ var PadDiagram = new Lang.Class({
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success, css, etag] = file.load_contents(null);
+        if (css instanceof Uint8Array)
+            css = imports.byteArray.toString(css);
         this._curEdited = null;
         this._prevEdited = null;
         this._css = css;
