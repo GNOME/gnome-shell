@@ -472,6 +472,8 @@ var KeyboardModel = new Lang.Class({
     _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
         let [success, contents] = file.load_contents(null);
+        if (contents instanceof Uint8Array)
+            contents = imports.byteArray.toString(contents);
 
         return JSON.parse(contents);
     },
