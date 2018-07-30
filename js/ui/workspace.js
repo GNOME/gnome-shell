@@ -446,7 +446,7 @@ var WindowOverlay = new Lang.Class({
         this._windowClone = windowClone;
         this._parentActor = parentActor;
         this._hidden = false;
-        this._forceHidden = false;
+        this._forceHiddenAnimating = false;
         this._forceHiddenDragging = false;
 
         this._idleHideOverlayId = 0;
@@ -461,7 +461,7 @@ var WindowOverlay = new Lang.Class({
 
         this._updateCaptionId = metaWindow.connect('notify::title', w => {
             this.title.text = this._getCaption();
-            this.relayout(false);
+            this.relayout();
         });
 
         this.closeButton = new St.Button({ style_class: 'window-close' });
@@ -496,7 +496,7 @@ var WindowOverlay = new Lang.Class({
     },
 
     show(animate) {
-        if (!this._hidden || this._forceHidden || this._forceHiddenDragging)
+        if (!this._hidden || this._forceHiddenAnimating || this._forceHiddenDragging)
             return;
 
         this._parentActor.raise_top();
@@ -559,12 +559,14 @@ var WindowOverlay = new Lang.Class({
         }
     },
 
-    forceHide(hide) {
+    forceHideAnimating(hide) {
         if (hide) {
-            this._forceHidden = true;
+            this._forceHiddenAnimating = true;
             this.hide();
         } else {
-            this._forceHidden = false;
+            this._forceHiddenAnimating = false;
+            if (this._windowClone.actor['has-pointer'])
+                this.show();
         }
     },
 
@@ -587,14 +589,10 @@ var WindowOverlay = new Lang.Class({
                 Math.max(this.borderSize, this.closeButton.width - this.closeButton._overlap)];
     },
 
-    relayout(animate) {
+    relayout() {
         let button = this.closeButton;
         let title = this.title;
         let border = this.border;
-
-        Tweener.removeTweens(button);
-        Tweener.removeTweens(border);
-        Tweener.removeTweens(title);
 
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
@@ -608,33 +606,21 @@ var WindowOverlay = new Lang.Class({
         else
             buttonX = cloneX + (cloneWidth - button._overlap);
 
-        if (animate)
-            this._animateOverlayActor(button, Math.floor(buttonX), Math.floor(buttonY), button.width);
-        else
-            button.set_position(Math.floor(buttonX), Math.floor(buttonY));
+        button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
         let titleX = cloneX + (cloneWidth - title.width) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
-        if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), title.width);
-        } else {
-            title.width = title.width;
-            title.set_position(Math.floor(titleX), Math.floor(titleY));
-        }
+        title.width = title.width;
+        title.set_position(Math.floor(titleX), Math.floor(titleY));
 
         let borderX = cloneX - this.borderSize;
         let borderY = cloneY - this.borderSize;
         let borderWidth = cloneWidth + 2 * this.borderSize;
         let borderHeight = cloneHeight + 2 * this.borderSize;
 
-        if (animate) {
-            this._animateOverlayActor(this.border, borderX, borderY,
-                                      borderWidth, borderHeight);
-        } else {
-            this.border.set_position(borderX, borderY);
-            this.border.set_size(borderWidth, borderHeight);
-        }
+        this.border.set_position(borderX, borderY);
+        this.border.set_size(borderWidth, borderHeight);
     },
 
     _getCaption() {
@@ -645,19 +631,6 @@ var WindowOverlay = new Lang.Class({
         let tracker = Shell.WindowTracker.get_default();
         let app = tracker.get_window_app(metaWindow);
         return app.get_name();
-    },
-
-    _animateOverlayActor(actor, x, y, width, height) {
-        let params = { x: x,
-                       y: y,
-                       width: width,
-                       time: Overview.ANIMATION_TIME,
-                       transition: 'easeOutQuad' };
-
-        if (height !== undefined)
-            params.height = height;
-
-        Tweener.addTween(actor, params);
     },
 
     _closeWindow(actor) {
@@ -1357,9 +1330,6 @@ var Workspace = new Lang.Class({
             let cloneHeight = clone.actor.height * scale;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
-            if (clone.overlay && (initialPositioning || !clone.positioned))
-                clone.overlay.forceHide(true);
-
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
                 // Grow the clone from the center of the slot
@@ -1397,8 +1367,8 @@ var Workspace = new Lang.Class({
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
                 clone.actor.set_opacity(255);
-                clone.overlay.relayout(false);
-                clone.overlay.forceHide(false);
+                clone.overlay.relayout();
+                clone.overlay.forceHideAnimating(false);
             }
         }
     },
@@ -1424,6 +1394,8 @@ var Workspace = new Lang.Class({
     },
 
     _animateClone(clone, overlay, x, y, scale) {
+        overlay.forceHideAnimating(true);
+
         Tweener.addTween(clone.actor,
                          { x: x,
                            y: y,
@@ -1431,10 +1403,10 @@ var Workspace = new Lang.Class({
                            scale_y: scale,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: () => overlay.forceHide(false)
+                           onComplete: () => overlay.forceHideAnimating(false)
                          });
 
-        clone.overlay.relayout(true);
+        clone.overlay.relayout();
     },
 
     _delayedWindowRepositioning() {
@@ -1568,7 +1540,7 @@ var Workspace = new Lang.Class({
             clone.positioned = true;
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
-            clone.overlay.relayout(false);
+            clone.overlay.relayout();
         }
 
         this._currentLayout = null;
