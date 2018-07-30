@@ -31,7 +31,7 @@ var WORKSPACE_CUT_SIZE = 10;
 
 var WORKSPACE_KEEP_ALIVE_TIME = 100;
 
-var OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
+var OVERRIDE_SCHEMA = 'org.gnome.mutter';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
