@@ -117,6 +117,8 @@ function _loadMode(file, info) {
     let fileContent, success, tag, newMode;
     try {
         [success, fileContent, tag] = file.load_contents(null);
+        if (fileContent instanceof Uint8Array)
+            fileContent = imports.byteArray.toString(fileContent);
         newMode = JSON.parse(fileContent);
     } catch(e) {
         return;
