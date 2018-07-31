@@ -12,6 +12,8 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Slider = imports.ui.slider;
 
+const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
+
 var VOLUME_NOTIFY_ID = 1;
 
 // Each Gvc.MixerControl is a connection to PulseAudio,
@@ -36,6 +38,11 @@ var StreamSlider = new Lang.Class({
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
 
         this._slider = new Slider.Slider(0);
+
+        this._soundSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.sound' });
+        this._soundSettings.connect('changed::' + ALLOW_AMPLIFIED_VOLUME_KEY, this._amplifySettingsChanged.bind(this));
+        this._amplifySettingsChanged();
+
         this._slider.connect('value-changed', this._sliderChanged.bind(this));
         this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
 
@@ -135,6 +142,18 @@ var StreamSlider = new Lang.Class({
         this.emit('stream-updated');
     },
 
+    _amplifySettingsChanged() {
+        this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
+
+        if (this._allowAmplified)
+            this._slider.setMaximumValue(this.getMaxLevel() / 100);
+        else
+            this._slider.setMaximumValue(1);
+
+        if (this._stream)
+            this._updateVolume();
+    },
+
     getIcon() {
         if (!this._stream)
             return null;
@@ -157,6 +176,14 @@ var StreamSlider = new Lang.Class({
             return null;
 
         return 100 * this._stream.volume / this._control.get_vol_max_norm();
+    },
+
+    getMaxLevel() {
+        let maxVolume = this._control.get_vol_max_norm();
+        if (this._allowAmplified)
+            maxVolume = this._control.get_vol_max_amplified();
+
+        return 100 * maxVolume / this._control.get_vol_max_norm();
     }
 });
 Signals.addSignalMethods(StreamSlider.prototype);
@@ -310,6 +337,10 @@ var VolumeMenu = new Lang.Class({
 
     getLevel() {
         return this._output.getLevel();
+    },
+
+    getMaxLevel() {
+        return this._output.getMaxLevel();
     }
 });
 
