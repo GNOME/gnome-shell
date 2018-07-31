@@ -348,6 +348,45 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
+// waitForWindow:
+// @window: the metaWindow to wait for
+// @parentAlive: a function returning false if the callback is no longer needed
+// @cb: the callback function called when the window is ready
+//
+// Waits until the actor of a metaWindow is available and
+// the window has an allocation.
+function waitForWindow(window, parentAlive, cb) {
+    // Wait until window actor is available
+    let waitForActorId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        // Stop if the window doesn't exist anymore or the parent is gone
+        if (!window.get_workspace() || !parentAlive())
+            return GLib.SOURCE_REMOVE;
+
+        // Continue if there's no actor available yet
+        if (!window.get_compositor_private())
+            return GLib.SOURCE_CONTINUE;
+
+        let actor = window.get_compositor_private();
+        let waitForAllocationId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            // Stop if the window doesn't exist anymore or the parent is gone
+            if (!window.get_workspace() || !parentAlive())
+                return GLib.SOURCE_REMOVE;
+
+            // Continue if the window is not allocated yet
+            if (actor.visible && !actor.has_allocation())
+                return GLib.SOURCE_CONTINUE;
+
+            cb();
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(waitForAllocationId, '[gnome-shell] waitForWindowAllocation');
+
+        return GLib.SOURCE_REMOVE;
+    });
+    GLib.Source.set_name_by_id(waitForActorId, '[gnome-shell] waitForWindowActor');
+    return;
+}
+
 var CloseButton = new Lang.Class({
     Name: 'CloseButton',
     Extends: St.Button,

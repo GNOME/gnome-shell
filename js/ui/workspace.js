@@ -16,6 +16,7 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 const WindowManager = imports.ui.windowManager;
 
 var WINDOW_DND_SIZE = 256;
@@ -1152,15 +1153,22 @@ var Workspace = new Lang.Class({
 
         // Track window changes
         if (this.metaWorkspace) {
-            this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                             this._windowAdded.bind(this));
+            this._windowAddedId = this.metaWorkspace.connect('window-added', (workspace, metaWin) =>
+                                                              Util.waitForWindow(metaWin,
+                                                                  () => Main.overview.visible,
+                                                                  () => this._windowAdded(workspace, metaWin)));
+
             this._windowRemovedId = this.metaWorkspace.connect('window-removed',
                                                                this._windowRemoved.bind(this));
         }
-        this._windowEnteredMonitorId = global.display.connect('window-entered-monitor',
-                                                              this._windowEnteredMonitor.bind(this));
+        this._windowEnteredMonitorId = global.display.connect('window-entered-monitor', (metaDisplay, monitorIndex, metaWin) =>
+                                                              Util.waitForWindow(metaWin,
+                                                                  () => Main.overview.visible,
+                                                                  () => this._windowEnteredMonitor(metaDisplay, monitorIndex, metaWin)));
+
         this._windowLeftMonitorId = global.display.connect('window-left-monitor',
                                                            this._windowLeftMonitor.bind(this));
+
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
@@ -1492,20 +1500,8 @@ var Workspace = new Lang.Class({
             return;
 
         let win = metaWin.get_compositor_private();
-
-        if (!win) {
-            // Newly-created windows are added to a workspace before
-            // the compositor finds out about them...
-            let id = Mainloop.idle_add(() => {
-                if (this.actor &&
-                    metaWin.get_compositor_private() &&
-                    metaWin.get_workspace() == this.metaWorkspace)
-                    this._doAddWindow(metaWin);
-                return GLib.SOURCE_REMOVE;
-            });
-            GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
+        if (!win)
             return;
-        }
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
