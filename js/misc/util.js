@@ -348,6 +348,41 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
+// waitForWindow:
+// @window: the metaWindow to wait for
+// @parentAlive: a function returning false if the callback is no longer needed
+// @cb: the callback function called when the window is ready
+//
+// Waits until the actor of a metaWindow is available, it has
+// an allocation and a valid gtk-application-id.
+function waitForWindow(window, parentAlive, cb) {
+    let windowActor;
+
+    // Wait until window actor is available
+    let waitForWindowId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        // Stop if the window doesn't exist anymore or the parent is gone
+        if (!window.get_workspace() || !parentAlive())
+            return GLib.SOURCE_REMOVE;
+
+        // Continue if there's no actor available yet
+        if (!windowActor) {
+            if (!window.get_compositor_private())
+                return GLib.SOURCE_CONTINUE;
+
+            windowActor = window.get_compositor_private();
+        }
+
+        // Continue if the window is not allocated yet
+        if (windowActor.visible && !windowActor.has_allocation())
+            return GLib.SOURCE_CONTINUE;
+
+        cb();
+        return GLib.SOURCE_REMOVE;
+    });
+    GLib.Source.set_name_by_id(waitForWindowId, '[gnome-shell] waitForWindow');
+    return;
+}
+
 var CloseButton = new Lang.Class({
     Name: 'CloseButton',
     Extends: St.Button,
