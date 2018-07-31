@@ -269,7 +269,7 @@ var Indicator = new Lang.Class({
                                 app.get_name()];
             this._settingsAction = this._createActionButton(icon, name);
             this._settingsAction.connect('clicked',
-                                         this._onSettingsClicked().bind(this));
+                                         this._onSettingsClicked.bind(this));
         } else {
             log('Missing required core component Settings, expect trouble…');
             this._settingsAction = new St.Widget();
