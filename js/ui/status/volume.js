@@ -377,8 +377,9 @@ var Indicator = new Lang.Class({
             return result;
 
         let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
-        let level = this._volumeMenu.getLevel();
-        Main.osdWindowManager.show(-1, gicon, null, level);
+        let level = parseInt(this._volumeMenu.getLevel());
+        let maxLevel = parseInt(this._volumeMenu.getMaxLevel());
+        Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
 });
