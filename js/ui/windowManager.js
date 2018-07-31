@@ -1856,8 +1856,14 @@ var WindowManager = new Lang.Class({
         let curWs = workspaceManager.get_workspace_by_index (from);
 
         for (let dir of Object.values(Meta.MotionDirection)) {
-            let ws = curWs.get_neighbor(dir);
-            if (ws == curWs || (to >= 0 && ws.index() != to)) {
+            let ws = null;
+
+            if (to < 0)
+                ws = curWs.get_neighbor(dir);
+            else if (dir == direction)
+                ws = workspaceManager.get_workspace_by_index(to);
+
+            if (ws == null || ws == curWs) {
                 switchData.surroundings[dir] = null;
                 continue;
             }
