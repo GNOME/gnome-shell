@@ -40,6 +40,7 @@ js/ui/messageList.js
 js/ui/messageTray.js
 js/ui/mpris.js
 js/ui/notificationDaemon.js
+js/ui/osdWindow.js
 js/ui/overviewControls.js
 js/ui/overview.js
 js/ui/padOsd.js
