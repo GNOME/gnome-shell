@@ -22,6 +22,7 @@ var LevelBar = new Lang.Class({
 
     _init() {
         this._level = 0;
+        this._maxLevel = 100;
 
         let params = {
             styleClass: 'level',
@@ -38,9 +39,19 @@ var LevelBar = new Lang.Class({
     },
 
     set level(value) {
-        this._level = Math.max(0, Math.min(value, 100));
+        this._level = Math.max(0, Math.min(value, this._maxLevel));
 
         this.setValue(this._level / 100);
+    },
+
+    get maxLevel() {
+        return this._maxLevel;
+    },
+
+    set maxLevel(value) {
+        this._maxLevel = Math.max(100, value);
+
+        this.setMaximumValue(this._maxLevel / 100);
     }
 });
 
@@ -139,6 +150,12 @@ var OsdWindow = new Lang.Class({
         }
     },
 
+    setMaxLevel(maxLevel) {
+        if (maxLevel === undefined)
+            maxLevel = 100;
+        this._level.maxLevel = maxLevel;
+    },
+
     show() {
         if (!this._icon.gicon)
             return;
@@ -188,6 +205,7 @@ var OsdWindow = new Lang.Class({
         this.actor.hide();
         this.setLabel(null);
         this.setLevel(null);
+        this.setMaxLevel(null);
     },
 
     _relayout() {
@@ -232,24 +250,25 @@ var OsdWindowManager = new Lang.Class({
         this._osdWindows.length = Main.layoutManager.monitors.length;
     },
 
-    _showOsdWindow(monitorIndex, icon, label, level) {
+    _showOsdWindow(monitorIndex, icon, label, level, maxLevel) {
         this._osdWindows[monitorIndex].setIcon(icon);
         this._osdWindows[monitorIndex].setLabel(label);
         this._osdWindows[monitorIndex].setLevel(level);
+        this._osdWindows[monitorIndex].setMaxLevel(maxLevel);
         this._osdWindows[monitorIndex].show();
     },
 
-    show(monitorIndex, icon, label, level) {
+    show(monitorIndex, icon, label, level, maxLevel) {
         if (monitorIndex != -1) {
             for (let i = 0; i < this._osdWindows.length; i++) {
                 if (i == monitorIndex)
-                    this._showOsdWindow(i, icon, label, level);
+                    this._showOsdWindow(i, icon, label, level, maxLevel);
                 else
                     this._osdWindows[i].cancel();
             }
         } else {
             for (let i = 0; i < this._osdWindows.length; i++)
-                this._showOsdWindow(i, icon, label, level);
+                this._showOsdWindow(i, icon, label, level, maxLevel);
         }
     },
 
