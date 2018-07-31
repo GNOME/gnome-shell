@@ -524,7 +524,8 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
 
 #ifndef HAVE_FDWALK
 static int
-fdwalk (int (*cb)(void *data, int fd), void *data)
+fdwalk (int  (*cb)(void *data, int fd),
+        void  *data)
 {
   gint open_max;
   gint fd;
@@ -537,31 +538,33 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
 #ifdef __linux__
   DIR *d;
 
-  if ((d = opendir("/proc/self/fd"))) {
+  if ((d = opendir("/proc/self/fd")))
+    {
       struct dirent *de;
 
-      while ((de = readdir(d))) {
+      while ((de = readdir(d)))
+        {
           glong l;
           gchar *e = NULL;
 
           if (de->d_name[0] == '.')
-              continue;
+            continue;
 
           errno = 0;
           l = strtol(de->d_name, &e, 10);
           if (errno != 0 || !e || *e)
-              continue;
+            continue;
 
           fd = (gint) l;
 
           if ((glong) fd != l)
-              continue;
+            continue;
 
           if (fd == dirfd(d))
-              continue;
+            continue;
 
           if ((res = cb (data, fd)) != 0)
-              break;
+            break;
         }
 
       closedir(d);
@@ -574,22 +577,23 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
 #endif
 
 #ifdef HAVE_SYS_RESOURCE_H
-  if (getrlimit(RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
-      open_max = rl.rlim_max;
+  if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
+    open_max = rl.rlim_max;
   else
 #endif
-      open_max = sysconf (_SC_OPEN_MAX);
+    open_max = sysconf (_SC_OPEN_MAX);
 
   for (fd = 0; fd < open_max; fd++)
-      if ((res = cb (data, fd)) != 0)
-          break;
+    if ((res = cb (data, fd)) != 0)
+      break;
 
   return res;
 }
 #endif
 
 static int
-check_cloexec(void *data, gint fd)
+check_cloexec (void *data,
+               gint  fd)
 {
   int r;
 
