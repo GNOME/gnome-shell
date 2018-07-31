@@ -48,9 +48,12 @@ var SwitchMonitorPopup = new Lang.Class({
     },
 
     _initialSelection() {
-        let currentConfig = Meta.MonitorManager.get().get_switch_config();
-        currentConfig %= Meta.MonitorSwitchConfigType.UNKNOWN;
-        this._select(currentConfig);
+        /* The keypress used to open the switcher is intended to select the
+         * next item in the list. */
+        let selectConfig = Meta.MonitorManager.get().get_switch_config();
+        selectConfig += 1;
+        selectConfig %= Meta.MonitorSwitchConfigType.UNKNOWN;
+        this._select(selectConfig);
     },
 
     _keyPressHandler(keysym, action) {
