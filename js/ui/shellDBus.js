@@ -145,14 +145,18 @@ var GnomeShell = new Lang.Class({
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
-        let monitorIndex = params['monitor'] || -1;
-        let label = params['label'] || undefined;
-        let level = params['level'] || undefined;
-        let maxLevel = params['max_level'] || undefined;
+        let { monitor: monitorIndex,
+              label,
+              level,
+              max_level: maxLevel,
+              icon: serializedIcon } = params;
+
+        if (monitorIndex === undefined)
+            monitorIndex = -1;
 
         let icon = null;
-        if (params['icon'])
-            icon = Gio.Icon.new_for_string(params['icon']);
+        if (serializedIcon)
+            icon = Gio.Icon.new_for_string(serializedIcon);
 
         Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
     },
