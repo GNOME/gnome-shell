@@ -1,3 +1,22 @@
+3.29.90
+=======
+* Add remote access indication on wayland [Jonas; !160]
+* Fix wrong window positions in overview on wayland [Marco; #776588]
+* Add gesture to unfullscreen a window [Jan-Michael; !123]
+* Add PickColor method to screenshot D-Bus interface [Florian; #286]
+* Consider "new-window" action when opening new windows [Florian; #756844]
+* Make workspace switching gestures follow motion [Carlos; #788994]
+* Support audio volumes above 100% [Didier; #790280]
+* Misc. bug fixes [Florian, Daniel; #424, !132, !182, #433, !179, #786496]
+
+Contributors:
+  Jonas Ådahl, Jan-Michael Brummer, Piotr Drąg, Daniel Drake, Carlos Garnacho,
+  Florian Müllner, Georges Basile Stavracas Neto, Didier Roche, Jakub Steiner,
+  Marco Trevisan (Treviño)
+
+Translators:
+  Charles Monzat [fr], Daniel Mustieles [es]
+
 3.29.4
 ======
 * Fix "Clear All" for calendar events [Florian; #325]
