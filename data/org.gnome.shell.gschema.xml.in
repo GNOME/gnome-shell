@@ -190,7 +190,7 @@
     </key>
   </schema>
 
-  <!-- unused, change 00_org.gnome.shell.gschema.override instead --!>
+  <!-- unused, change 00_org.gnome.shell.gschema.override instead -->
   <schema id="org.gnome.shell.overrides" path="/org/gnome/shell/overrides/"
 	  gettext-domain="@GETTEXT_PACKAGE@">
     <key name="attach-modal-dialogs" type="b">
