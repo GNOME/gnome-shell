@@ -53,6 +53,13 @@ static const GDebugKey SHELL_DEBUG_KEYS[] = {
   { "backtrace-segfaults",   SHELL_DEBUG_BACKTRACE_SEGFAULTS },
   { "backtrace-aborts",      SHELL_DEBUG_BACKTRACE_ABORTS },
   { "backtrace-math-errors", SHELL_DEBUG_BACKTRACE_FPE },
+  { "backtrace-crashes-all", SHELL_DEBUG_BACKTRACE_SEGFAULTS |
+                             SHELL_DEBUG_BACKTRACE_ABORTS |
+                             SHELL_DEBUG_BACKTRACE_FPE },
+  { "backtrace-all",         SHELL_DEBUG_BACKTRACE_WARNINGS |
+                             SHELL_DEBUG_BACKTRACE_SEGFAULTS |
+                             SHELL_DEBUG_BACKTRACE_ABORTS |
+                             SHELL_DEBUG_BACKTRACE_FPE },
 };
 static int _default_debug_flags = SHELL_DEBUG_BACKTRACE_ABORTS |
                                   SHELL_DEBUG_BACKTRACE_FPE;
