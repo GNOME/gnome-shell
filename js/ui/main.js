@@ -111,6 +111,13 @@ function _sessionUpdated() {
         if (lookingGlass)
             lookingGlass.close();
     }
+
+    if (!GLib.getenv('SHELL_DEBUG')) {
+        if (typeof sessionMode.debugFlags === 'string')
+            global.set_debug_flags(sessionMode.debugFlags);
+        else if (Array.isArray(sessionMode.debugFlags))
+            global.set_debug_flags(sessionMode.debugFlags.join(':'))
+    }
 }
 
 function start() {
