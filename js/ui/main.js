@@ -111,6 +111,9 @@ function _sessionUpdated() {
         if (lookingGlass)
             lookingGlass.close();
     }
+
+    if (!GLib.getenv('SHELL_DEBUG'))
+        global.set_debug_flags(sessionMode.debugFlags.join(':'));
 }
 
 function start() {
