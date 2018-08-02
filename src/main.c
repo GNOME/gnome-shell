@@ -321,6 +321,8 @@ dump_gjs_stack_on_signal_handler (int signo)
   struct sigaction sa = { 0 };
   gsize i;
 
+  g_printerr ("GNOME Shell crashed with signal %d\n", signo);
+
   /* Ignore all the signals starting this point, a part the one we'll raise
    * (which is implicitly ignored here through SA_RESETHAND), this is needed
    * not to get this handler being called by other signals that we were
