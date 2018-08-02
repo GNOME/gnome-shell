@@ -22,6 +22,7 @@ const _modes = {
         allowSettings: false,
         allowExtensions: false,
         allowScreencast: false,
+        debugFlags: [],
         enabledExtensions: [],
         hasRunDialog: false,
         hasWorkspaces: false,
