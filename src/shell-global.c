@@ -1772,6 +1772,8 @@ shell_global_get_debug_flags (ShellGlobal *global)
  *  - 'backtrace-segfaults'
  *  - 'backtrace-aborts'
  *  - 'backtrace-math-errors'
+ *  - 'backtrace-crashes-all'
+ *  - 'backtrace-all'
  *  - 'all'
  */
 void
