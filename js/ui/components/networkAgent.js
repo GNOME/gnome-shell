@@ -506,8 +506,12 @@ var VPNRequestHandler = new Lang.Class({
         try {
             data = this._dataStdout.peek_buffer();
 
-            keyfile.load_from_data(data.toString(), data.length,
-                                   GLib.KeyFileFlags.NONE);
+            if (data instanceof Uint8Array)
+                data = imports.byteArray.toGBytes(data);
+            else
+                data = data.toGBytes();
+
+            keyfile.load_from_bytes(data, GLib.KeyFileFlags.NONE);
 
             if (keyfile.get_integer(VPN_UI_GROUP, 'Version') != 2)
                 throw new Error('Invalid plugin keyfile version, is %d');
