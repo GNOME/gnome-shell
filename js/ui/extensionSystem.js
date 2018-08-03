@@ -131,6 +131,10 @@ function enableExtension(uuid) {
         _signals.emit('extension-state-changed', extension);
         return;
     } catch(e) {
+        if (extension.stylesheet) {
+            theme.unload_stylesheet(extension.stylesheet);
+            delete extension.stylesheet;
+        }
         logExtensionError(uuid, e);
         return;
     }
