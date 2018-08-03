@@ -281,9 +281,9 @@ st_scroll_view_paint (ClutterActor *actor)
 
   if (priv->child)
     clutter_actor_paint (priv->child);
-  if (priv->hscrollbar_visible)
+  if (priv->hscroll && priv->hscrollbar_visible)
     clutter_actor_paint (priv->hscroll);
-  if (priv->vscrollbar_visible)
+  if (priv->vscroll && priv->vscrollbar_visible)
     clutter_actor_paint (priv->vscroll);
 }
 
@@ -298,9 +298,9 @@ st_scroll_view_pick (ClutterActor       *actor,
 
   if (priv->child)
     clutter_actor_paint (priv->child);
-  if (priv->hscrollbar_visible)
+  if (priv->hscroll && priv->hscrollbar_visible)
     clutter_actor_paint (priv->hscroll);
-  if (priv->vscrollbar_visible)
+  if (priv->vscroll && priv->vscrollbar_visible)
     clutter_actor_paint (priv->vscroll);
 }
 
@@ -317,7 +317,7 @@ get_scrollbar_width (StScrollView *scroll,
 {
   StScrollViewPrivate *priv = scroll->priv;
 
-  if (clutter_actor_is_visible (priv->vscroll))
+  if (priv->vscroll && clutter_actor_is_visible (priv->vscroll))
     {
       gfloat min_size;
 
@@ -335,7 +335,7 @@ get_scrollbar_height (StScrollView *scroll,
 {
   StScrollViewPrivate *priv = scroll->priv;
 
-  if (clutter_actor_is_visible (priv->hscroll))
+  if (priv->hscroll && clutter_actor_is_visible (priv->hscroll))
     {
       gfloat min_size;
 
@@ -637,7 +637,8 @@ st_scroll_view_allocate (ClutterActor          *actor,
   child_box.y1 = content_box.y1;
   child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
 
-  clutter_actor_allocate (priv->vscroll, &child_box, flags);
+  if (priv->vscroll)
+    clutter_actor_allocate (priv->vscroll, &child_box, flags);
 
   /* Horizontal scrollbar */
   if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
@@ -653,7 +654,8 @@ st_scroll_view_allocate (ClutterActor          *actor,
   child_box.y1 = content_box.y2 - sb_height;
   child_box.y2 = content_box.y2;
 
-  clutter_actor_allocate (priv->hscroll, &child_box, flags);
+  if (priv->hscroll)
+    clutter_actor_allocate (priv->hscroll, &child_box, flags);
 
   /* In case the scrollbar policy is NEVER or EXTERNAL or scrollbars
    * should be overlayed, we don't trim the content box allocation by
@@ -741,8 +743,11 @@ st_scroll_view_style_changed (StWidget *widget)
   gdouble hfade_offset = st_theme_node_get_length (theme_node, "-st-hfade-offset");
   st_scroll_view_update_fade_effect (self, vfade_offset, hfade_offset);
 
-  st_widget_style_changed (ST_WIDGET (priv->hscroll));
-  st_widget_style_changed (ST_WIDGET (priv->vscroll));
+  if (priv->hscroll)
+    st_widget_style_changed (ST_WIDGET (priv->hscroll));
+
+  if (priv->vscroll)
+    st_widget_style_changed (ST_WIDGET (priv->vscroll));
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
