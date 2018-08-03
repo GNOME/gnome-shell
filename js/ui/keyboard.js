@@ -492,11 +492,16 @@ var FocusTracker = new Lang.Class({
 
     _init() {
         this._currentWindow = null;
-        this._currentWindowPositionId = 0;
 
         global.display.connect('notify::focus-window', () => {
             this._setCurrentWindow(global.display.focus_window);
             this.emit('window-changed', this._currentWindow);
+        });
+
+        global.display.connect('grab-op-begin', (display, window, op) => {
+            if (window == this._currentWindow &&
+                (op == Meta.GrabOp.MOVING || op == Meta.GrabOp.KEYBOARD_MOVING))
+                this.emit('reset');
         });
 
         /* Valid for wayland clients */
@@ -520,16 +525,7 @@ var FocusTracker = new Lang.Class({
     },
 
     _setCurrentWindow(window) {
-        if (this._currentWindow)
-            this._currentWindow.disconnect(this._currentWindowPositionId);
-
         this._currentWindow = window;
-        if (window) {
-            this._currentWindowPositionId = this._currentWindow.connect('position-changed', () => {
-                if (global.display.get_grab_op() != Meta.GrabOp.NONE)
-                    this.emit('reset');
-            });
-        }
     },
 
     _setCurrentRect(rect) {
