@@ -244,11 +244,8 @@ st_scroll_view_dispose (GObject *object)
       priv->fade_effect = NULL;
     }
 
-  if (priv->vscroll)
-    clutter_actor_destroy (priv->vscroll);
-
-  if (priv->hscroll)
-    clutter_actor_destroy (priv->hscroll);
+  g_clear_pointer (&priv->vscroll, clutter_actor_destroy);
+  g_clear_pointer (&priv->hscroll, clutter_actor_destroy);
 
   /* For most reliable freeing of memory, an object with signals
    * like StAdjustment should be explicitly disposed. Since we own
