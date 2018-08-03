@@ -115,14 +115,14 @@ function enableExtension(uuid) {
     extensionOrder.push(uuid);
 
     let stylesheetNames = [global.session_mode + '.css', 'stylesheet.css'];
+    let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
     for (let i = 0; i < stylesheetNames.length; i++) {
         let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
-        if (stylesheetFile.query_exists(null)) {
-            let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+        try {
             theme.load_stylesheet(stylesheetFile);
             extension.stylesheet = stylesheetFile;
             break;
-        }
+        } catch(e) { /* ignore loading errors */ }
     }
 
     try {
