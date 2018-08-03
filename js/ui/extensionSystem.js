@@ -76,6 +76,7 @@ function disableExtension(uuid) {
     if (extension.stylesheet) {
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
         theme.unload_stylesheet(extension.stylesheet);
+        delete extension.stylesheet;
     }
 
     try {
