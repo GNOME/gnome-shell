@@ -50,8 +50,7 @@ gnome.gtkdoc('shell',
     join_paths(meson.build_root(), 'src')
   ],
   scan_args: [
-    '--ignore-headers=' + ' '.join(private_headers + exclude_directories),
-    '--rebuild-types'
+    '--ignore-headers=' + ' '.join(private_headers + exclude_directories)
   ],
   install: true
 )
