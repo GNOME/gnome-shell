@@ -104,29 +104,111 @@ var Application = class {
     }
 
     _buildErrorUI(extension, exc) {
-        let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        let scroll = new Gtk.ScrolledWindow({
+            hscrollbar_policy: Gtk.PolicyType.NEVER,
+            propagate_natural_height: true
+        });
+
+        let box = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 12,
+            margin: 100,
+            margin_bottom: 60
+        });
+        scroll.add(box);
+
         let label = new Gtk.Label({
-            label: _("There was an error loading the preferences dialog for %s:").format(extension.metadata.name)
+            label: `<span size="x-large">${_("Something’s gone wrong")}</span>`,
+            use_markup: true
+        });
+        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
+        box.add(label);
+
+        label = new Gtk.Label({
+            label: _("We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors."),
+            justify: Gtk.Justification.CENTER,
+            wrap: true
         });
         box.add(label);
 
-        let errortext = '';
-        errortext += exc;
-        errortext += '\n\n';
-        errortext += 'Stack trace:\n';
+        let expander = new Expander({
+            label: _("Technical Details"),
+            margin_top: 12
+        });
+        box.add(expander);
 
-        // Indent stack trace.
-        errortext += exc.stack.split('\n').map(line => '  ' + line).join('\n');
+        let errortext = `${exc}\n\nStack trace:\n${
+            // Indent stack trace.
+            exc.stack.split('\n').map(line => `  ${line}`).join('\n')
+        }`;
 
-        let scroll = new Gtk.ScrolledWindow({ vexpand: true });
         let buffer = new Gtk.TextBuffer({ text: errortext });
-        let textview = new Gtk.TextView({ buffer: buffer });
-        textview.override_font(Pango.font_description_from_string('monospace'));
-        scroll.add(textview);
-        box.add(scroll);
+        let textview = new Gtk.TextView({
+            buffer: buffer,
+            wrap_mode: Gtk.WrapMode.WORD,
+            monospace: true,
+            editable: false,
+            top_margin: 12,
+            bottom_margin: 12,
+            left_margin: 12,
+            right_margin: 12
+        });
 
-        box.show_all();
-        return box;
+        let toolbar = new Gtk.Toolbar();
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data(`* {
+            border: 0 solid @borders;
+            border-top-width: 1px;
+        }`);
+        toolbar.get_style_context().add_provider(
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        );
+
+        let copyButton = new Gtk.ToolButton({
+            icon_name: 'edit-copy-symbolic',
+            tooltip_text: _("Copy Error")
+        });
+        toolbar.add(copyButton);
+
+        copyButton.connect('clicked', w => {
+            let clipboard = Gtk.Clipboard.get_default(w.get_display());
+            let backticks = '```';
+            clipboard.set_text(
+                // markdown for pasting in gitlab issues
+                `The settings of extension ${extension.uuid} had an error:\n${
+                backticks}\n${exc}\n${backticks}\n\nStack trace:\n${
+                backticks}\n${exc.stack}${backticks}\n`, -1
+            );
+        });
+
+        let spacing = new Gtk.SeparatorToolItem({ draw: false });
+        toolbar.add(spacing);
+        toolbar.child_set_property(spacing, "expand", true);
+
+        let urlButton = new Gtk.ToolButton({
+            label: _("Homepage"),
+            tooltip_text: _("Visit extension homepage"),
+            no_show_all: true,
+            visible: extension.metadata.url != null
+        });
+        toolbar.add(urlButton);
+
+        urlButton.connect('clicked', w => {
+            let context = w.get_display().get_app_launch_context();
+            Gio.AppInfo.launch_default_for_uri(extension.metadata.url, context);
+        });
+
+        let expandedBox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        expandedBox.add(textview);
+        expandedBox.add(toolbar);
+
+        expander.add(expandedBox);
+
+        scroll.show_all();
+        return scroll;
     }
 
     _buildUI(app) {
@@ -249,6 +331,105 @@ var Application = class {
         return 0;
     }
 };
+
+var Expander = GObject.registerClass({
+    Properties: {
+        'label': GObject.ParamSpec.string(
+            'label', 'label', 'label',
+            GObject.ParamFlags.READWRITE,
+            null
+        )
+    }
+}, class Expander extends Gtk.Box {
+    _init(params = {}) {
+        this._labelText = null;
+
+        super._init(Object.assign(params, {
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 0
+        }));
+
+        this._frame = new Gtk.Frame({
+            shadow_type: Gtk.ShadowType.IN,
+            hexpand: true
+        });
+
+        let eventBox = new Gtk.EventBox();
+        this._frame.add(eventBox);
+
+        let hbox = new Gtk.Box({
+            spacing: 6,
+            margin: 12
+        });
+        eventBox.add(hbox);
+
+        this._arrow = new Gtk.Image({
+            icon_name: 'pan-end-symbolic'
+        });
+        hbox.add(this._arrow);
+
+        this._label = new Gtk.Label({ label: this._labelText });
+        hbox.add(this._label);
+
+        this._revealer = new Gtk.Revealer();
+
+        this._childBin = new Gtk.Frame({
+            shadow_type: Gtk.ShadowType.IN
+        });
+        this._revealer.add(this._childBin);
+
+        // Directly chain up to parent for internal children
+        super.add(this._frame);
+        super.add(this._revealer);
+
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data('* { border-top-width: 0; }');
+        this._childBin.get_style_context().add_provider(
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        );
+
+        this._gesture = new Gtk.GestureMultiPress({
+            widget: this._frame,
+            button: 0,
+            exclusive: true
+        });
+        this._gesture.connect('released', (gesture, nPress) => {
+            if (nPress == 1)
+                this._revealer.reveal_child = !this._revealer.reveal_child;
+        });
+        this._revealer.connect('notify::reveal-child', () => {
+            if (this._revealer.reveal_child)
+                this._arrow.icon_name = 'pan-down-symbolic';
+            else
+                this._arrow.icon_name = 'pan-end-symbolic';
+        });
+    }
+
+    get label() {
+        return this._labelText;
+    }
+
+    set label(text) {
+        if (this._labelText == text)
+            return;
+
+        if (this._label)
+            this._label.label = text;
+        this._labelText = text;
+        this.notify('label');
+    }
+
+    add(child) {
+        // set expanded child
+        this._childBin.get_children().forEach(c => {
+            this._childBin.remove(c);
+        });
+
+        if (child)
+            this._childBin.add(child);
+    }
+});
 
 var EmptyPlaceholder = GObject.registerClass(
 class EmptyPlaceholder extends Gtk.Box {
