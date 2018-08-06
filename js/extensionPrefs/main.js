@@ -147,8 +147,12 @@ var Application = class {
                             Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
+        this._mainStack = new Gtk.Stack({
+            transition_type: Gtk.StackTransitionType.CROSSFADE
+        });
+        this._window.add(this._mainStack);
+
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
-        this._window.add(scroll);
 
         this._extensionSelector = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
         this._extensionSelector.set_sort_func(this._sortList.bind(this));
@@ -156,6 +160,8 @@ var Application = class {
 
         scroll.add(this._extensionSelector);
 
+        this._mainStack.add_named(scroll, 'listing');
+        this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
 
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
         this._shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
@@ -200,6 +206,11 @@ var Application = class {
     }
 
     _extensionsLoaded() {
+        if (this._extensionSelector.get_children().length > 0)
+            this._mainStack.visible_child_name = 'listing';
+        else
+            this._mainStack.visible_child_name = 'placeholder';
+
         if (this._startupUuid && this._extensionAvailable(this._startupUuid))
             this._selectExtension(this._startupUuid);
         this._startupUuid = null;
@@ -238,6 +249,72 @@ var Application = class {
         return 0;
     }
 };
+
+var EmptyPlaceholder = GObject.registerClass(
+class EmptyPlaceholder extends Gtk.Box {
+    _init() {
+        super._init({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 6,
+            margin: 32
+        });
+
+        let image = new Gtk.Image({
+            icon_name: 'application-x-addon-symbolic',
+            pixel_size: 96,
+            visible: true,
+            vexpand: true,
+            valign: Gtk.Align.END
+        });
+        image.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
+        this.add(image);
+
+        let label = new Gtk.Label({
+            label: `<b><span size="x-large">${_("No Extensions Installed" )}</span></b>`,
+            use_markup: true,
+            visible: true
+        });
+        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
+        this.add(label);
+
+        let appInfo = Gio.DesktopAppInfo.new('org.gnome.Software.desktop');
+
+        let desc = new Gtk.Label({
+            label: _("Extensions can be installed through Software or <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."),
+            use_markup: true,
+            wrap: true,
+            justify: Gtk.Justification.CENTER,
+            visible: true,
+            max_width_chars: 50,
+            hexpand: true,
+            vexpand: (appInfo == null),
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.START
+        });
+        this.add(desc);
+
+        if (appInfo) {
+            let button = new Gtk.Button({
+                label: _("Browse in Software"),
+                image: new Gtk.Image({
+                    icon_name: "org.gnome.Software-symbolic"
+                }),
+                always_show_image: true,
+                margin_top: 12,
+                visible: true,
+                halign: Gtk.Align.CENTER,
+                valign: Gtk.Align.START,
+                vexpand: true
+            });
+            this.add(button);
+
+            button.connect('clicked', w => {
+                let context = w.get_display().get_app_launch_context();
+                appInfo.launch([], context);
+            });
+        }
+    }
+});
 
 var DescriptionLabel = GObject.registerClass(
 class DescriptionLabel extends Gtk.Label {
