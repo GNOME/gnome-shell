@@ -25,10 +25,6 @@ var ButtonBox = new Lang.Class({
         this.actor = this;
         this._delegate = this;
 
-        this.container = new St.Bin({ y_fill: true,
-                                      x_fill: true,
-                                      child: this.actor });
-
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this._minHPadding = this._natHPadding = 0.0;
     },

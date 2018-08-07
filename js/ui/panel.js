@@ -1037,7 +1037,6 @@ var Panel = new Lang.Class({
 
     _updatePanel() {
         let panel = Main.sessionMode.panel;
-        this._hideIndicators();
         this._updateBox(panel.left, this._leftBox);
         this._updateBox(panel.center, this._centerBox);
         this._updateBox(panel.right, this._rightBox);
@@ -1102,15 +1101,6 @@ var Panel = new Lang.Class({
 
     },
 
-    _hideIndicators() {
-        for (let role in PANEL_ITEM_IMPLEMENTATIONS) {
-            let indicator = this.statusArea[role];
-            if (!indicator)
-                continue;
-            indicator.container.hide();
-        }
-    },
-
     _ensureIndicator(role) {
         let indicator = this.statusArea[role];
         if (!indicator) {
@@ -1139,22 +1129,17 @@ var Panel = new Lang.Class({
     },
 
     _addToPanelBox(role, indicator, position, box) {
-        let container = indicator.container;
-        container.show();
-
-        let parent = container.get_parent();
+        let parent = indicator.get_parent();
         if (parent)
-            parent.remove_actor(container);
+            parent.remove_actor(indicator);
 
-
-        box.insert_child_at_index(container, position);
+        box.insert_child_at_index(indicator, position);
         if (indicator.menu)
             this.menuManager.addMenu(indicator.menu);
         this.statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', emitter => {
             delete this.statusArea[role];
             emitter.disconnect(destroyId);
-            container.destroy();
         });
         indicator.connect('menu-set', this._onMenuSet.bind(this));
         this._onMenuSet(indicator);
@@ -1198,11 +1183,11 @@ var Panel = new Lang.Class({
         indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
             (menu, isOpen) => {
                 let boxAlignment;
-                if (this._leftBox.contains(indicator.container))
+                if (this._leftBox.contains(indicator))
                     boxAlignment = Clutter.ActorAlign.START;
-                else if (this._centerBox.contains(indicator.container))
+                else if (this._centerBox.contains(indicator))
                     boxAlignment = Clutter.ActorAlign.CENTER;
-                else if (this._rightBox.contains(indicator.container))
+                else if (this._rightBox.contains(indicator))
                     boxAlignment = Clutter.ActorAlign.END;
 
                 if (boxAlignment == Main.messageTray.bannerAlignment)
