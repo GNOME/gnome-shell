@@ -258,7 +258,7 @@ executable('gnome-shell', 'main.c',
 )
 
 executable('gnome-shell-extension-prefs',
-  'gnome-shell-extension-prefs.c', js_resources,
+  'gnome-shell-extension-prefs.c', prefs_resources,
   c_args: '-DLOCALEDIR="@0@"'.format(localedir),
   dependencies: [gio_dep, gjs_dep],
   include_directories: [conf_inc],
@@ -268,7 +268,7 @@ executable('gnome-shell-extension-prefs',
 
 if have_networkmanager
   executable('gnome-shell-portal-helper',
-    'gnome-shell-portal-helper.c', js_resources,
+    'gnome-shell-portal-helper.c', portal_resources,
     c_args: '-DLOCALEDIR="@0@"'.format(localedir),
     dependencies: [gio_dep, gjs_dep],
     include_directories: [conf_inc],

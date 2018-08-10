@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/shell">
+    <file>misc/config.js</file>
+    <file>portalHelper/main.js</file>
+  </gresource>
+</gresources>
