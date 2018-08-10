@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/shell">
+    <file>extensionPrefs/main.js</file>
+
+    <file>misc/config.js</file>
+    <file>misc/extensionUtils.js</file>
+    <file>misc/fileUtils.js</file>
+    <file>misc/params.js</file>
+  </gresource>
+</gresources>
