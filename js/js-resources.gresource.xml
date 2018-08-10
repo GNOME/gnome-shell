@@ -9,8 +9,6 @@
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
 
-    <file>extensionPrefs/main.js</file>
-
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
@@ -32,8 +30,6 @@
 
     <file>perf/core.js</file>
     <file>perf/hwtest.js</file>
-
-    <file>portalHelper/main.js</file>
 
     <file>ui/accessDialog.js</file>
     <file>ui/altTab.js</file>
