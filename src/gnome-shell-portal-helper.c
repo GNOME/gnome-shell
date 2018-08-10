@@ -2,7 +2,6 @@
 
 #include "config.h"
 
-#include <girepository.h>
 #include <gjs/gjs.h>
 #include <glib/gi18n.h>
 
@@ -17,8 +16,6 @@ main (int argc, char *argv[])
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
-
-  g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   context = g_object_new (GJS_TYPE_CONTEXT,
                           "search-path", search_path,
