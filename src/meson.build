@@ -259,11 +259,9 @@ executable('gnome-shell', 'main.c',
 
 executable('gnome-shell-extension-prefs',
   'gnome-shell-extension-prefs.c', js_resources,
-  c_args: gnome_shell_cflags,
-  dependencies: gnome_shell_deps,
+  c_args: '-DLOCALEDIR="@0@"'.format(localedir),
+  dependencies: [gio_dep, gjs_dep],
   include_directories: [conf_inc],
-  build_rpath: mutter_typelibdir,
-  install_rpath: install_rpath,
   install: true
 )
 
@@ -271,11 +269,9 @@ executable('gnome-shell-extension-prefs',
 if have_networkmanager
   executable('gnome-shell-portal-helper',
     'gnome-shell-portal-helper.c', js_resources,
-    c_args: gnome_shell_cflags,
-    dependencies: gnome_shell_deps,
+    c_args: '-DLOCALEDIR="@0@"'.format(localedir),
+    dependencies: [gio_dep, gjs_dep],
     include_directories: [conf_inc],
-    build_rpath: mutter_typelibdir,
-    install_rpath: install_rpath,
     install_dir: libexecdir,
     install: true
   )
@@ -284,8 +280,6 @@ endif
 executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
   dependencies: [gtk_dep, gio_dep, m_dep],
   include_directories: [conf_inc],
-  build_rpath: mutter_typelibdir,
-  install_rpath: install_rpath,
   install_dir: libexecdir,
   install: true
 )
