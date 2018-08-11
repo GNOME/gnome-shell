@@ -116,7 +116,17 @@ var AppFavorites = new Lang.Class({
         if (appId in this._favorites)
             return false;
 
-        let app = Shell.AppSystem.get_default().lookup_app(appId);
+        let app = null;
+        let newId = RENAMED_DESKTOP_IDS[appId];
+        if (newId !== undefined) {
+            if (newId in this._favorites)
+                return false;
+            app = Shell.AppSystem.get_default().lookup_app(newId);
+            if (app != null)
+                appId = newId;
+            else
+                app = Shell.AppSystem.get_default().lookup_app(appId);
+        }
 
         if (!app)
             return false;
