@@ -1309,8 +1309,10 @@ var MessageTray = new Lang.Class({
         }
 
         this._banner = this._notification.createBanner();
-        this._bannerClickedId = this._banner.connect('done-displaying',
-                                                     this._escapeTray.bind(this));
+        this._bannerClickedId = this._banner.connect('done-displaying', () => {
+            Meta.enable_unredirect_for_display(global.display);
+            this._escapeTray();
+        });
         this._bannerUnfocusedId = this._banner.connect('unfocused', () => {
             this._updateState();
         });
@@ -1322,6 +1324,7 @@ var MessageTray = new Lang.Class({
         this._bannerBin.y = -this._banner.actor.height;
         this.actor.show();
 
+        Meta.disable_unredirect_for_display(global.display);
         this._updateShowingNotification();
 
         let [x, y, mods] = global.get_pointer();
