@@ -127,7 +127,6 @@ var AppFavorites = new Lang.Class({
         else
             ids.splice(pos, 0, appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
-        this._favorites[appId] = app;
         return true;
     },
 
