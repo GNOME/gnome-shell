@@ -1408,7 +1408,7 @@ msgstr "Přehled"
 #. characters.
 #: js/ui/overview.js:239
 msgid "Type to search…"
-msgstr "vyhledávejte psaním…"
+msgstr "Vyhledávejte psaním…"
 
 #: js/ui/padOsd.js:105
 msgid "New shortcut…"
