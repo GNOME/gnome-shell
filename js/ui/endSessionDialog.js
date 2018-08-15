@@ -481,25 +481,26 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _updateButtons() {
-        let dialogContent = DialogContent[this._type];
-        let buttons = [{ action: this.cancel.bind(this),
-                         label:  _("Cancel"),
-                         key:    Clutter.Escape }];
+        this.clearButtons();
 
+        this.addButton({ action: this.cancel.bind(this),
+                         label:  _("Cancel"),
+                         key:    Clutter.Escape });
+
+        let dialogContent = DialogContent[this._type];
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;
             let label = dialogContent.confirmButtons[i].label;
-            buttons.push({ action: () => {
+            let button = this.addButton(
+                            { action: () => {
                                this.close(true);
                                let signalId = this.connect('closed', () => {
                                    this.disconnect(signalId);
                                    this._confirm(signal);
                                });
-                           },
-                           label: label });
+                            },
+                            label: label });
         }
-
-        this.setButtons(buttons);
     },
 
     close(skipSignal) {
