@@ -997,15 +997,17 @@ var ThumbnailList = new Lang.Class({
 
 var WindowIcon = new Lang.Class({
     Name: 'WindowIcon',
+    Extends: St.BoxLayout,
 
     _init(window, mode) {
+        this.parent({ style_class: 'alt-tab-app',
+                      vertical: true });
+
         this.window = window;
 
-        this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
-                                        vertical: true });
         this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
-        this.actor.add(this._icon, { x_fill: false, y_fill: false } );
+        this.add(this._icon, { x_fill: false, y_fill: false } );
         this.label = new St.Label({ text: window.get_title() });
 
         let tracker = Shell.WindowTracker.get_default();
@@ -1070,7 +1072,7 @@ var WindowList = new Lang.Class({
             let win = windows[i];
             let icon = new WindowIcon(win, mode);
 
-            this.addItem(icon.actor, icon.label);
+            this.addItem(icon, icon.label);
             this.icons.push(icon);
 
             icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
