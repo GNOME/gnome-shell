@@ -311,6 +311,10 @@ var EndSessionDialog = new Lang.Class({
         this._totalSecondsToStayOpen = 0;
         this._applications = [];
         this._sessions = [];
+        this._capturedEventId = 0;
+        this._rebootButton = null;
+        this._rebootButtonCurr = null;
+        this._rebootButtonAlt = null;
 
         this.connect('destroy',
                      this._onDestroy.bind(this));
@@ -476,6 +480,30 @@ var EndSessionDialog = new Lang.Class({
         this._sessionHeader.visible = hasSessions;
     },
 
+    _onCapturedEvent(actor, event) {
+        let rebootButtonNew = null;
+
+        let type = event.type();
+        if (type != Clutter.EventType.KEY_PRESS && type != Clutter.EventType.KEY_RELEASE)
+            return Clutter.EVENT_PROPAGATE;
+
+        let key = event.get_key_symbol();
+        if (key != Clutter.KEY_Alt_L && key != Clutter.KEY_Alt_R)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (type == Clutter.EventType.KEY_PRESS)
+            rebootButtonNew = this._rebootButtonAlt;
+        else
+            rebootButtonNew = this._rebootButton;
+
+        if (this._rebootButtonCurr != rebootButtonNew) {
+            this.dialogLayout.buttonLayout.replace_child(this._rebootButtonCurr, rebootButtonNew);
+            this._rebootButtonCurr = rebootButtonNew;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _updateButtons() {
         this.clearButtons();
 
@@ -496,7 +524,35 @@ var EndSessionDialog = new Lang.Class({
                                });
                             },
                             label: label });
+
+            // Add Alt "Boot Options" option to the Reboot button
+            if (signal == 'ConfirmedReboot') {
+                this._rebootButton = button;
+                this._rebootButtonAlt = this.addButton(
+                               { action: () => {
+                                 this.close(true);
+                                   let signalId = this.connect('closed', () => {
+                                   this.disconnect(signalId);
+                                   this._confirm('ConfirmedRebootMenu');
+                                 });
+                               },
+                               label: C_("button", "Boot Options") });
+                // Undo automatic addition of alt reboot button
+                this.dialogLayout.buttonLayout.remove_actor(this._rebootButtonAlt);
+                this._rebootButtonCurr = this._rebootButton;
+                this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+            }
         }
+    },
+
+    _stopAltCapture() {
+        if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+        this._rebootButton = null;
+        this._rebootButtonCurr = null;
+        this._rebootButtonAlt = null;
     },
 
     close(skipSignal) {
@@ -508,6 +564,7 @@ var EndSessionDialog = new Lang.Class({
 
     cancel() {
         this._stopTimer();
+        this._stopAltCapture();
         this._dbusImpl.emit_signal('Canceled', null);
         this.close();
     },
@@ -516,6 +573,7 @@ var EndSessionDialog = new Lang.Class({
         let callback = () => {
             this._fadeOutDialog();
             this._stopTimer();
+            this._stopAltCapture();
             this._dbusImpl.emit_signal(signal, null);
         };
 
