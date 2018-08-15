@@ -440,15 +440,17 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _updateButtons() {
-        let dialogContent = DialogContent[this._type];
-        let buttons = [{ action: this.cancel.bind(this),
-                         label: _("Cancel"),
-                         key: Clutter.Escape }];
+        this.clearButtons();
 
+        this.addButton({ action: this.cancel.bind(this),
+                         label: _("Cancel"),
+                         key: Clutter.Escape });
+
+        let dialogContent = DialogContent[this._type];
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;
             let label = dialogContent.confirmButtons[i].label;
-            buttons.push({
+            let button = this.addButton({
                 action: () => {
                     this.close(true);
                     let signalId = this.connect('closed', () => {
@@ -456,11 +458,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                         this._confirm(signal);
                     });
                 },
-                label: label,
+                label: label
             });
         }
-
-        this.setButtons(buttons);
     }
 
     close(skipSignal) {
