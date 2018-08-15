@@ -114,18 +114,16 @@ var RunDialog = new Lang.Class({
 
         this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
                                                      entry: this._entryText });
+        this._entryText.connect('activate', (o) => {
+            this.popModal();
+            this._run(o.get_text(),
+                      Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
+            if (!this._commandError ||
+                !this.pushModal())
+                this.close();
+        });
         this._entryText.connect('key-press-event', (o, e) => {
             let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
-                this.popModal();
-                this._run(o.get_text(),
-                          e.get_state() & Clutter.ModifierType.CONTROL_MASK);
-                if (!this._commandError ||
-                    !this.pushModal())
-                    this.close();
-
-                return Clutter.EVENT_STOP;
-            }
             if (symbol == Clutter.Tab) {
                 let text = o.get_text();
                 let prefix;
