@@ -343,6 +343,9 @@ function loadTheme() {
     let theme = new St.Theme ({ application_stylesheet: _cssStylesheet,
                                 default_stylesheet: _defaultCssStylesheet });
 
+    if (theme.default_stylesheet == null)
+        throw new Error("No valid stylesheet found for '%s'".format(sessionMode.stylesheetName));
+
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
 
