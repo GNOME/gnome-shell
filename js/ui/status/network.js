@@ -419,12 +419,14 @@ var NMConnectionDevice = new Lang.Class({
         this._deactivateItem.actor.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
-            this._activeConnection = this._device.active_connection;
-
-            if (this._activeConnection) {
-                ensureActiveConnectionProps(this._activeConnection, this._client);
-                let item = this._connectionItems.get(this._activeConnection.connection.get_uuid());
-                item.setActiveConnection(this._activeConnection);
+            let activeConnection = this._device.active_connection;
+            if (activeConnection && activeConnection.connection) {
+                let item = this._connectionItems.get(activeConnection.connection.get_uuid());
+                if (item) {
+                    this._activeConnection = activeConnection;
+                    ensureActiveConnectionProps(this._activeConnection, this._client);
+                    item.setActiveConnection(this._activeConnection);
+                }
             }
         }
 
