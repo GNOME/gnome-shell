@@ -1770,8 +1770,13 @@ var NMApplet = new Lang.Class({
                 this._syncDeviceNames();
 
             if (wrapper instanceof NMConnectionSection) {
+                let activeConnection = device.active_connection.connection;
+                if (activeConnection)
+                    wrapper.checkConnection(activeConnection);
+
                 this._connections.forEach(connection => {
-                    wrapper.checkConnection(connection);
+                    if (connection != activeConnection)
+                        wrapper.checkConnection(connection);
                 });
             }
         }
