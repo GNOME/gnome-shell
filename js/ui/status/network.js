@@ -1771,8 +1771,18 @@ var NMApplet = new Lang.Class({
                 this._syncDeviceNames();
 
             if (wrapper instanceof NMConnectionSection) {
+                // If we have an active connection, make sure it's added first.
+                // NMConnectionDevice._sync() assumes that if we have one it
+                // has already been added by the time it gets called (which
+                // happens as a result of calling checkConnection() below.
+                let activeConnection = device.active_connection;
+                if (activeConnection && activeConnection.connection)
+                    wrapper.checkConnection(activeConnection.connection);
+
                 this._connections.forEach(connection => {
-                    wrapper.checkConnection(connection);
+                    if (activeConnection == null ||
+                        connection != activeConnection.connection)
+                        wrapper.checkConnection(connection);
                 });
             }
         }
