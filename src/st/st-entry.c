@@ -1287,10 +1287,10 @@ st_entry_get_input_hints (StEntry *entry)
   return clutter_text_get_input_hints (CLUTTER_TEXT (priv->entry));
 }
 
-static gboolean
-_st_entry_icon_press_cb (ClutterActor       *actor,
-                         ClutterButtonEvent *event,
-                         StEntry            *entry)
+static void
+_st_entry_icon_clicked_cb (ClutterClickAction *action,
+                           ClutterActor       *actor,
+                           StEntry            *entry)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
@@ -1298,8 +1298,6 @@ _st_entry_icon_press_cb (ClutterActor       *actor,
     g_signal_emit (entry, entry_signals[PRIMARY_ICON_CLICKED], 0);
   else
     g_signal_emit (entry, entry_signals[SECONDARY_ICON_CLICKED], 0);
-
-  return FALSE;
 }
 
 static void
@@ -1309,21 +1307,24 @@ _st_entry_set_icon (StEntry       *entry,
 {
   if (*icon)
     {
-      g_signal_handlers_disconnect_by_func (*icon,
-                                            _st_entry_icon_press_cb,
-                                            entry);
+      clutter_actor_remove_action_by_name (*icon, "entry-icon-action");
       clutter_actor_remove_child (CLUTTER_ACTOR (entry), *icon);
       *icon = NULL;
     }
 
   if (new_icon)
     {
+      ClutterAction *action;
+
       *icon = g_object_ref (new_icon);
 
       clutter_actor_set_reactive (*icon, TRUE);
       clutter_actor_add_child (CLUTTER_ACTOR (entry), *icon);
-      g_signal_connect (*icon, "button-release-event",
-                        G_CALLBACK (_st_entry_icon_press_cb), entry);
+
+      action = clutter_click_action_new ();
+      clutter_actor_add_action_with_name (*icon, "entry-icon-action", action);
+      g_signal_connect (action, "clicked",
+                        G_CALLBACK (_st_entry_icon_clicked_cb), entry);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
