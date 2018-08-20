@@ -1,3 +1,23 @@
+3.29.91
+=======
+* Fix handling of 0/false options in ShowOSD D-Bus API [Florian; #791669]
+* overview: Fix handling of confirmation dialogs on wayland [verdre; !180]
+* Avoid some full relayout/redraws [Carlos; !197]
+* Keep workspace switcher slid out when workspaces are in use [Florian; !161]
+* Ignore auto-repeat for some keybindings [Andrea; #373]
+* Misc. bug fixes [Carlos, Florian, Pascal; #464, !189, !191, !192, !162]
+
+Contributors:
+  Andrea Azzarone, Olivier Blin, Carlos Garnacho, Florian Müllner,
+  Pascal Nowack, verdre
+
+Translators:
+  Bruno Lopes da Silva [pt_BR], Matej Urbančič [sl], Piotr Drąg [pl],
+  Aurimas Černius [lt], Emin Tufan Çetin [tr], Fabio Tomat [fur],
+  Alexandre Franke [fr], Yi-Jyun Pan [zh_TW], Bernd Homuth [de],
+  Andre Klapper [cs], Jordi Mas [ca], Daniel Șerbănescu [ro],
+  Bruce Cowan [en_GB]
+
 3.29.90
 =======
 * Add remote access indication on wayland [Jonas; !160]
