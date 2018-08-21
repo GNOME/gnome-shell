@@ -149,7 +149,7 @@ var AppMenuButton = new Lang.Class({
         this._sync();
     },
 
-    show() {
+    fadeIn() {
         if (this._visible)
             return;
 
@@ -163,7 +163,7 @@ var AppMenuButton = new Lang.Class({
                            transition: 'easeOutQuad' });
     },
 
-    hide() {
+    fadeOut() {
         if (!this._visible)
             return;
 
@@ -314,9 +314,9 @@ var AppMenuButton = new Lang.Class({
                        shellShowsAppMenu &&
                        !Main.overview.visibleTarget);
         if (visible)
-            this.show();
+            this.fadeIn();
         else
-            this.hide();
+            this.fadeOut();
 
         let isBusy = (this._targetApp != null &&
                       (this._targetApp.get_state() == Shell.AppState.STARTING ||
