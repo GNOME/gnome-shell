@@ -133,9 +133,9 @@ var CandidatePopup = new Lang.Class({
 
     _init() {
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
-        this._boxPointer.actor.visible = false;
-        this._boxPointer.actor.style_class = 'candidate-popup-boxpointer';
-        Main.layoutManager.addChrome(this._boxPointer.actor);
+        this._boxPointer.visible = false;
+        this._boxPointer.style_class = 'candidate-popup-boxpointer';
+        Main.layoutManager.addChrome(this._boxPointer);
 
         let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
                                      vertical: true });
