@@ -17,6 +17,8 @@ var InputMethod = new Lang.Class({
         this._currentFocus = null;
         this._currentEvent = null;
         this._doForwardEvent = false;
+        this._preeditStr = '';
+        this._preeditPos = 0;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -69,6 +71,8 @@ var InputMethod = new Lang.Class({
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
+        this._context.connect('show-preedit-text', this._onShowPreeditText.bind(this));
+        this._context.connect('hide-preedit-text', this._onHidePreeditText.bind(this));
         this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
 
         this._updateCapabilities();
@@ -79,6 +83,8 @@ var InputMethod = new Lang.Class({
         this._hints = 0;
         this._purpose = 0;
         this._enabled = false;
+        this._preeditStr = ''
+        this._preeditPos = 0;
     },
 
     _emitRequestSurrounding() {
@@ -95,11 +101,22 @@ var InputMethod = new Lang.Class({
     },
 
     _onUpdatePreeditText(context, text, pos, visible) {
-        let str = null;
-        if (visible && text != null)
-            str = text.get_text();
+        if (text == null)
+            return;
+        this._preeditStr = text.get_text();
+        this._preeditPos = pos;
+        if (visible)
+            this.set_preedit_text(this._preeditStr, pos);
+        else
+            this.set_preedit_text(null, pos);
+    },
 
-        this.set_preedit_text(str, pos);
+    _onShowPreeditText(context) {
+        this.set_preedit_text(this._preeditStr, this._preeditPos);
+    },
+
+    _onHidePreeditText(context) {
+        this.set_preedit_text(null, this._preeditPos);
     },
 
     _onForwardKeyEvent(context, keyval, keycode, state) {
