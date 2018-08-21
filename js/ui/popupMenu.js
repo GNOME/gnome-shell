@@ -782,7 +782,7 @@ var PopupMenu = new Lang.Class({
                                                      { x_fill: true,
                                                        y_fill: true,
                                                        x_align: St.Align.START });
-        this.actor = this._boxPointer.actor;
+        this.actor = this._boxPointer;
         this.actor._delegate = this;
         this.actor.style_class = 'popup-menu-boxpointer';
 
