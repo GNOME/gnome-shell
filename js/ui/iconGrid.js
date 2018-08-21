@@ -238,7 +238,7 @@ var IconGrid = new Lang.Class({
     },
 
     _keyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        this.emit('child-focused', actor);
     },
 
     _childAdded(grid, child) {
