@@ -1142,8 +1142,6 @@ var ThumbnailsBox = new Lang.Class({
         let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
 
-        forWidth = themeNode.adjust_for_width(forWidth);
-
         let spacing = themeNode.get_length('spacing');
         let nWorkspaces = workspaceManager.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
