@@ -177,8 +177,16 @@ const defaultParams = {
 
 var LayoutManager = new Lang.Class({
     Name: 'LayoutManager',
+    Extends: GObject.Object,
+    Signals: { 'hot-corners-changed': {},
+               'startup-complete': {},
+               'startup-prepared': {},
+               'monitors-changed': {},
+               'keyboard-visible-changed': { param_types: [GObject.TYPE_BOOLEAN] } },
 
     _init() {
+        this.parent();
+
         this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         this.monitors = [];
         this.primaryMonitor = null;
@@ -1069,7 +1077,6 @@ var LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
     },
 });
-Signals.addSignalMethods(LayoutManager.prototype);
 
 
 // HotCorner:
