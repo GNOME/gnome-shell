@@ -269,7 +269,7 @@ var Key = new Lang.Class({
 
     _onDestroy() {
         if (this._boxPointer) {
-            this._boxPointer.actor.destroy();
+            this._boxPointer.destroy();
             this._boxPointer = null;
         }
     },
@@ -282,7 +282,7 @@ var Key = new Lang.Class({
                                                      { x_fill: true,
                                                        y_fill: true,
                                                        x_align: St.Align.START });
-        this._boxPointer.actor.hide();
+        this._boxPointer.hide();
         Main.layoutManager.addChrome(this._boxPointer.actor);
         this._boxPointer.setPosition(this.keyButton, 0.5);
 
