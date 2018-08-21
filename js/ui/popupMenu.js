@@ -873,7 +873,7 @@ var PopupMenu = new Lang.Class({
         this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
-        this._boxPointer.show(animate);
+        this._boxPointer.open(animate);
 
         this.actor.raise_top();
 
@@ -885,7 +885,7 @@ var PopupMenu = new Lang.Class({
             this._activeMenuItem.setActive(false);
 
         if (this._boxPointer.actor.visible) {
-            this._boxPointer.hide(animate, () => {
+            this._boxPointer.close(animate, () => {
                 this.emit('menu-closed');
             });
         }
