@@ -130,8 +130,8 @@ var BaseAppView = new Lang.Class({
         else
             this._grid = new IconGrid.IconGrid(gridParams);
 
-        this._grid.connect('key-focus-in', (grid, actor) => {
-            this._keyFocusIn(actor);
+        this._grid.connect('child-focused', (grid, actor) => {
+            this._childFocused(actor);
         });
         // Standard hack for ClutterBinLayout
         this._grid.actor.x_expand = true;
@@ -140,7 +140,7 @@ var BaseAppView = new Lang.Class({
         this._allItems = [];
     },
 
-    _keyFocusIn(actor) {
+    _childFocused(actor) {
         // Nothing by default
     },
 
@@ -721,7 +721,7 @@ var AllView = new Lang.Class({
         });
     },
 
-    _keyFocusIn(icon) {
+    _childFocused(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
     },
@@ -1158,7 +1158,7 @@ var FolderView = new Lang.Class({
         this.actor.add_action(action);
     },
 
-    _keyFocusIn(actor) {
+    _childFocused(actor) {
         Util.ensureActorVisibleInScrollView(this.actor, actor);
     },
 
