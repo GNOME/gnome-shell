@@ -356,7 +356,7 @@ var Key = new Lang.Class({
     },
 
     _showSubkeys() {
-        this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
+        this._boxPointer.open(BoxPointer.PopupAnimation.FULL);
         this._capturedEventId = global.stage.connect('captured-event',
                                                      this._onCapturedEvent.bind(this));
         this._unmapId = this.keyButton.connect('notify::mapped', () => {
@@ -367,7 +367,7 @@ var Key = new Lang.Class({
 
     _hideSubkeys() {
         if (this._boxPointer)
-            this._boxPointer.hide(BoxPointer.PopupAnimation.FULL);
+            this._boxPointer.close(BoxPointer.PopupAnimation.FULL);
         if (this._capturedEventId) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
