@@ -26,9 +26,6 @@ const char *_shell_window_tracker_get_app_context (ShellWindowTracker *tracker, 
 
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
 
-ShellApp *shell_startup_sequence_get_app (MetaStartupSequence *sequence);
-ClutterActor *shell_startup_sequence_create_icon (MetaStartupSequence *sequence, guint size);
-
 G_END_DECLS
 
 #endif /* __SHELL_WINDOW_TRACKER_H__ */
