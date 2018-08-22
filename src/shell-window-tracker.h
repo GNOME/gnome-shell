@@ -24,9 +24,6 @@ ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, in
 
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
 
-ShellApp *shell_startup_sequence_get_app (MetaStartupSequence *sequence);
-ClutterActor *shell_startup_sequence_create_icon (MetaStartupSequence *sequence, guint size);
-
 G_END_DECLS
 
 #endif /* __SHELL_WINDOW_TRACKER_H__ */

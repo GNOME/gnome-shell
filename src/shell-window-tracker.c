@@ -72,6 +72,7 @@ static void on_focus_window_changed (MetaDisplay *display, GParamSpec *spec, She
 static void track_window (ShellWindowTracker *tracker, MetaWindow *window);
 static void disassociate_window (ShellWindowTracker *tracker, MetaWindow *window);
 
+static ShellApp * shell_startup_sequence_get_app (MetaStartupSequence *sequence);
 
 static void
 shell_window_tracker_get_property (GObject    *gobject,
@@ -797,13 +798,7 @@ shell_window_tracker_get_startup_sequences (ShellWindowTracker *self)
   return meta_startup_notification_get_sequences (sn);
 }
 
-/**
- * shell_startup_sequence_get_app:
- * @sequence: A #MetaStartupSequence
- *
- * Returns: (transfer none): The application being launched, or %NULL if unknown.
- */
-ShellApp *
+static ShellApp *
 shell_startup_sequence_get_app (MetaStartupSequence *sequence)
 {
   const char *appid;
@@ -821,44 +816,6 @@ shell_startup_sequence_get_app (MetaStartupSequence *sequence)
   g_free (basename);
   return app;
 }
-
-/**
- * shell_startup_sequence_create_icon:
- * @sequence:
- * @size: Size in pixels of icon
- *
- * Returns: (transfer none): A new #ClutterTexture containing an icon for the sequence
- */
-ClutterActor *
-shell_startup_sequence_create_icon (MetaStartupSequence *sequence,
-                                    guint                size)
-{
-  GIcon *themed;
-  const char *icon_name;
-  ClutterActor *texture;
-  gint scale;
-  ShellGlobal *global;
-  StThemeContext *context;
-
-  global = shell_global_get ();
-  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
-  g_object_get (context, "scale-factor", &scale, NULL);
-
-  icon_name = meta_startup_sequence_get_icon_name (sequence);
-  if (!icon_name)
-    {
-      texture = clutter_texture_new ();
-      clutter_actor_set_size (texture, size * scale, size * scale);
-      return texture;
-    }
-
-  themed = g_themed_icon_new (icon_name);
-  texture = st_texture_cache_load_gicon (st_texture_cache_get_default (),
-                                         NULL, themed, size, scale);
-  g_object_unref (G_OBJECT (themed));
-  return texture;
-}
-
 
 /**
  * shell_window_tracker_get_default:
