@@ -16,7 +16,7 @@ ShellApp* _shell_app_new (GDesktopAppInfo *info);
 
 void _shell_app_set_app_info (ShellApp *app, GDesktopAppInfo *info);
 
-void _shell_app_handle_startup_sequence (ShellApp *app, SnStartupSequence *sequence);
+void _shell_app_handle_startup_sequence (ShellApp *app, MetaStartupSequence *sequence);
 
 void _shell_app_add_window (ShellApp *app, MetaWindow *window);
 
