@@ -14,9 +14,7 @@
 #include <meta/util.h>
 #include <meta/window.h>
 #include <meta/meta-workspace-manager.h>
-
-#define SN_API_NOT_YET_FROZEN 1
-#include <libsn/sn.h>
+#include <meta/meta-startup-notification.h>
 
 #include "shell-window-tracker-private.h"
 #include "shell-app-private.h"
@@ -115,7 +113,7 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                    G_SIGNAL_RUN_LAST,
                                    0,
                                    NULL, NULL, NULL,
-                                   G_TYPE_NONE, 1, SHELL_TYPE_STARTUP_SEQUENCE);
+                                   G_TYPE_NONE, 1, META_TYPE_STARTUP_SEQUENCE);
   signals[TRACKED_WINDOWS_CHANGED] = g_signal_new ("tracked-windows-changed",
                                                    SHELL_TYPE_WINDOW_TRACKER,
                                                    G_SIGNAL_RUN_LAST,
@@ -430,8 +428,8 @@ get_app_for_window (ShellWindowTracker    *tracker,
       sequences = shell_window_tracker_get_startup_sequences (tracker);
       for (iter = sequences; iter; iter = iter->next)
         {
-          ShellStartupSequence *sequence = iter->data;
-          const char *id = shell_startup_sequence_get_id (sequence);
+          MetaStartupSequence *sequence = iter->data;
+          const char *id = meta_startup_sequence_get_id (sequence);
           if (strcmp (id, startup_id) != 0)
             continue;
 
@@ -653,13 +651,13 @@ init_window_tracking (ShellWindowTracker *self)
 }
 
 static void
-on_startup_sequence_changed (MetaDisplay           *display,
-                             SnStartupSequence     *sequence,
-                             ShellWindowTracker    *self)
+on_startup_sequence_changed (MetaStartupNotification *sn,
+                             MetaStartupSequence     *sequence,
+                             ShellWindowTracker      *self)
 {
   ShellApp *app;
 
-  app = shell_startup_sequence_get_app ((ShellStartupSequence*)sequence);
+  app = shell_startup_sequence_get_app (sequence);
   if (app)
     _shell_app_handle_startup_sequence (app, sequence);
 
@@ -670,12 +668,13 @@ static void
 shell_window_tracker_init (ShellWindowTracker *self)
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaStartupNotification *sn = meta_display_get_startup_notification (display);
 
   self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                NULL, (GDestroyNotify) g_object_unref);
 
 
-  g_signal_connect (display, "startup-sequence-changed",
+  g_signal_connect (sn, "changed",
                     G_CALLBACK (on_startup_sequence_changed), self);
 
   load_initial_windows (self);
@@ -786,60 +785,33 @@ on_focus_window_changed (MetaDisplay        *display,
  * shell_window_tracker_get_startup_sequences:
  * @tracker:
  *
- * Returns: (transfer none) (element-type ShellStartupSequence): Currently active startup sequences
+ * Returns: (transfer none) (element-type MetaStartupSequence): Currently active startup sequences
  */
 GSList *
 shell_window_tracker_get_startup_sequences (ShellWindowTracker *self)
 {
   ShellGlobal *global = shell_global_get ();
   MetaDisplay *display = shell_global_get_display (global);
+  MetaStartupNotification *sn = meta_display_get_startup_notification (display);
 
-  return meta_display_get_startup_sequences (display);
-}
-
-/* sn_startup_sequence_ref returns void, so make a
- * wrapper which returns self */
-static SnStartupSequence *
-sequence_ref (SnStartupSequence *sequence)
-{
-  sn_startup_sequence_ref (sequence);
-  return sequence;
-}
-
-GType
-shell_startup_sequence_get_type (void)
-{
-  static GType gtype = G_TYPE_INVALID;
-  if (gtype == G_TYPE_INVALID)
-    {
-      gtype = g_boxed_type_register_static ("ShellStartupSequence",
-          (GBoxedCopyFunc)sequence_ref,
-          (GBoxedFreeFunc)sn_startup_sequence_unref);
-    }
-  return gtype;
-}
-
-const char *
-shell_startup_sequence_get_id (ShellStartupSequence *sequence)
-{
-  return sn_startup_sequence_get_id ((SnStartupSequence*)sequence);
+  return meta_startup_notification_get_sequences (sn);
 }
 
 /**
  * shell_startup_sequence_get_app:
- * @sequence: A #ShellStartupSequence
+ * @sequence: A #MetaStartupSequence
  *
  * Returns: (transfer none): The application being launched, or %NULL if unknown.
  */
 ShellApp *
-shell_startup_sequence_get_app (ShellStartupSequence *sequence)
+shell_startup_sequence_get_app (MetaStartupSequence *sequence)
 {
   const char *appid;
   char *basename;
   ShellAppSystem *appsys;
   ShellApp *app;
 
-  appid = sn_startup_sequence_get_application_id ((SnStartupSequence*)sequence);
+  appid = meta_startup_sequence_get_application_id (sequence);
   if (!appid)
     return NULL;
 
@@ -850,24 +822,6 @@ shell_startup_sequence_get_app (ShellStartupSequence *sequence)
   return app;
 }
 
-const char *
-shell_startup_sequence_get_name (ShellStartupSequence *sequence)
-{
-  return sn_startup_sequence_get_name ((SnStartupSequence*)sequence);
-}
-
-gboolean
-shell_startup_sequence_get_completed (ShellStartupSequence *sequence)
-{
-  return sn_startup_sequence_get_completed ((SnStartupSequence*)sequence);
-}
-
-int
-shell_startup_sequence_get_workspace (ShellStartupSequence *sequence)
-{
-  return sn_startup_sequence_get_workspace ((SnStartupSequence*)sequence);
-}
-
 /**
  * shell_startup_sequence_create_icon:
  * @sequence:
@@ -876,7 +830,8 @@ shell_startup_sequence_get_workspace (ShellStartupSequence *sequence)
  * Returns: (transfer none): A new #ClutterTexture containing an icon for the sequence
  */
 ClutterActor *
-shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
+shell_startup_sequence_create_icon (MetaStartupSequence *sequence,
+                                    guint                size)
 {
   GIcon *themed;
   const char *icon_name;
@@ -889,7 +844,7 @@ shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
   context = st_theme_context_get_for_stage (shell_global_get_stage (global));
   g_object_get (context, "scale-factor", &scale, NULL);
 
-  icon_name = sn_startup_sequence_get_icon_name ((SnStartupSequence*)sequence);
+  icon_name = meta_startup_sequence_get_icon_name (sequence);
   if (!icon_name)
     {
       texture = clutter_texture_new ();
