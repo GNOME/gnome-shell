@@ -192,6 +192,7 @@ var SearchResultsBase = new Lang.Class({
     },
 
     clear() {
+        this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
             this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
@@ -225,6 +226,10 @@ var SearchResultsBase = new Lang.Class({
             this._cancellable.reset();
 
             this.provider.getResultMetas(metasNeeded, metas => {
+                if (this._cancellable.is_cancelled()) {
+                    callback(false);
+                    return;
+                }
                 if (metas.length != metasNeeded.length) {
                     log('Wrong number of result metas returned by search provider ' + this.provider.id +
                         ': expected ' + metasNeeded.length + ' but got ' + metas.length);
