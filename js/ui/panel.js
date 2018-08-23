@@ -307,8 +307,11 @@ var AppMenuButton = new Lang.Class({
             }
         }
 
+        let shellShowsAppMenu = this._gtkSettings.gtk_shell_shows_app_menu;
+        Meta.prefs_set_show_fallback_app_menu(!shellShowsAppMenu);
+
         let visible = (this._targetApp != null &&
-                       this._gtkSettings.gtk_shell_shows_app_menu &&
+                       shellShowsAppMenu &&
                        !Main.overview.visibleTarget);
         if (visible)
             this.show();
