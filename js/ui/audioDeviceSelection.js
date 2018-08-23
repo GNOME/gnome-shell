@@ -15,18 +15,19 @@ var AudioDevice = {
     MICROPHONE: 1 << 2
 };
 
-const AudioDeviceSelectionIface = '<node> \
-<interface name="org.gnome.Shell.AudioDeviceSelection"> \
-<method name="Open"> \
-    <arg name="devices" direction="in" type="as" /> \
-</method> \
-<method name="Close"> \
-</method> \
-<signal name="DeviceSelected"> \
-    <arg name="device" type="s" /> \
-</signal> \
-</interface> \
-</node>';
+const AudioDeviceSelectionIface = `
+<node>
+<interface name="org.gnome.Shell.AudioDeviceSelection">
+<method name="Open">
+    <arg name="devices" direction="in" type="as" />
+</method>
+<method name="Close">
+</method>
+<signal name="DeviceSelected">
+    <arg name="device" type="s" />
+</signal>
+</interface>
+</node>`;
 
 var AudioDeviceSelectionDialog = new Lang.Class({
     Name: 'AudioDeviceSelectionDialog',

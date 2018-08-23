@@ -10,12 +10,13 @@ const PopupMenu = imports.ui.popupMenu;
 const BUS_NAME = 'org.gnome.SettingsDaemon.Color';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Color';
 
-const ColorInterface = '<node> \
-<interface name="org.gnome.SettingsDaemon.Color"> \
-  <property name="DisabledUntilTomorrow" type="b" access="readwrite"/> \
-  <property name="NightLightActive" type="b" access="read"/> \
-</interface> \
-</node>';
+const ColorInterface = `
+<node>
+<interface name="org.gnome.SettingsDaemon.Color">
+  <property name="DisabledUntilTomorrow" type="b" access="readwrite"/>
+  <property name="NightLightActive" type="b" access="read"/>
+</interface>
+</node>`;
 
 const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
 

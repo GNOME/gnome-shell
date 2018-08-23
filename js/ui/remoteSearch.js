@@ -12,53 +12,55 @@ const Search = imports.ui.search;
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
 
-const SearchProviderIface = '<node> \
-<interface name="org.gnome.Shell.SearchProvider"> \
-<method name="GetInitialResultSet"> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="out" /> \
-</method> \
-<method name="GetSubsearchResultSet"> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="out" /> \
-</method> \
-<method name="GetResultMetas"> \
-    <arg type="as" direction="in" /> \
-    <arg type="aa{sv}" direction="out" /> \
-</method> \
-<method name="ActivateResult"> \
-    <arg type="s" direction="in" /> \
-</method> \
-</interface> \
-</node>';
+const SearchProviderIface = `
+<node>
+<interface name="org.gnome.Shell.SearchProvider">
+<method name="GetInitialResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetSubsearchResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetResultMetas">
+    <arg type="as" direction="in" />
+    <arg type="aa{sv}" direction="out" />
+</method>
+<method name="ActivateResult">
+    <arg type="s" direction="in" />
+</method>
+</interface>
+</node>`;
 
-const SearchProvider2Iface = '<node> \
-<interface name="org.gnome.Shell.SearchProvider2"> \
-<method name="GetInitialResultSet"> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="out" /> \
-</method> \
-<method name="GetSubsearchResultSet"> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="in" /> \
-    <arg type="as" direction="out" /> \
-</method> \
-<method name="GetResultMetas"> \
-    <arg type="as" direction="in" /> \
-    <arg type="aa{sv}" direction="out" /> \
-</method> \
-<method name="ActivateResult"> \
-    <arg type="s" direction="in" /> \
-    <arg type="as" direction="in" /> \
-    <arg type="u" direction="in" /> \
-</method> \
-<method name="LaunchSearch"> \
-    <arg type="as" direction="in" /> \
-    <arg type="u" direction="in" /> \
-</method> \
-</interface> \
-</node>';
+const SearchProvider2Iface = `
+<node>
+<interface name="org.gnome.Shell.SearchProvider2">
+<method name="GetInitialResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetSubsearchResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetResultMetas">
+    <arg type="as" direction="in" />
+    <arg type="aa{sv}" direction="out" />
+</method>
+<method name="ActivateResult">
+    <arg type="s" direction="in" />
+    <arg type="as" direction="in" />
+    <arg type="u" direction="in" />
+</method>
+<method name="LaunchSearch">
+    <arg type="as" direction="in" />
+    <arg type="u" direction="in" />
+</method>
+</interface>
+</node>`;
 
 var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
 var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);

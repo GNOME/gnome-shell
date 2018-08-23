@@ -10,27 +10,29 @@ const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 
-const RequestIface = '<node> \
-<interface name="org.freedesktop.impl.portal.Request"> \
-<method name="Close"/> \
-</interface> \
-</node>';
+const RequestIface = `
+<node>
+<interface name="org.freedesktop.impl.portal.Request">
+<method name="Close"/>
+</interface>
+</node>`;
 
-const AccessIface = '<node> \
-<interface name="org.freedesktop.impl.portal.Access"> \
-<method name="AccessDialog"> \
-  <arg type="o" name="handle" direction="in"/> \
-  <arg type="s" name="app_id" direction="in"/> \
-  <arg type="s" name="parent_window" direction="in"/> \
-  <arg type="s" name="title" direction="in"/> \
-  <arg type="s" name="subtitle" direction="in"/> \
-  <arg type="s" name="body" direction="in"/> \
-  <arg type="a{sv}" name="options" direction="in"/> \
-  <arg type="u" name="response" direction="out"/> \
-  <arg type="a{sv}" name="results" direction="out"/> \
-</method> \
-</interface> \
-</node>';
+const AccessIface = `
+<node>
+<interface name="org.freedesktop.impl.portal.Access">
+<method name="AccessDialog">
+  <arg type="o" name="handle" direction="in"/>
+  <arg type="s" name="app_id" direction="in"/>
+  <arg type="s" name="parent_window" direction="in"/>
+  <arg type="s" name="title" direction="in"/>
+  <arg type="s" name="subtitle" direction="in"/>
+  <arg type="s" name="body" direction="in"/>
+  <arg type="a{sv}" name="options" direction="in"/>
+  <arg type="u" name="response" direction="out"/>
+  <arg type="a{sv}" name="results" direction="out"/>
+</method>
+</interface>
+</node>`;
 
 var DialogResponse = {
     OK: 0,

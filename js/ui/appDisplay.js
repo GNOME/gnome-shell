@@ -66,11 +66,12 @@ var PAGE_SWITCH_TIME = 0.3;
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
-const SwitcherooProxyInterface = '<node> \
-<interface name="net.hadess.SwitcherooControl"> \
-  <property name="HasDualGpu" type="b" access="read"/> \
-</interface> \
-</node>';
+const SwitcherooProxyInterface = `
+<node>
+<interface name="net.hadess.SwitcherooControl">
+  <property name="HasDualGpu" type="b" access="read"/>
+</interface>
+</node>`;
 
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 let discreteGpuAvailable = false;

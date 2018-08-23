@@ -8,41 +8,44 @@ const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 
-const DBusIface = '<node> \
-<interface name="org.freedesktop.DBus"> \
-  <method name="ListNames"> \
-    <arg type="as" direction="out" name="names" /> \
-  </method> \
-  <signal name="NameOwnerChanged"> \
-    <arg type="s" direction="out" name="name" /> \
-    <arg type="s" direction="out" name="oldOwner" /> \
-    <arg type="s" direction="out" name="newOwner" /> \
-  </signal> \
-</interface> \
-</node>';
+const DBusIface = `
+<node>
+<interface name="org.freedesktop.DBus">
+  <method name="ListNames">
+    <arg type="as" direction="out" name="names" />
+  </method>
+  <signal name="NameOwnerChanged">
+    <arg type="s" direction="out" name="name" />
+    <arg type="s" direction="out" name="oldOwner" />
+    <arg type="s" direction="out" name="newOwner" />
+  </signal>
+</interface>
+</node>`;
 const DBusProxy = Gio.DBusProxy.makeProxyWrapper(DBusIface);
 
-const MprisIface = '<node> \
-<interface name="org.mpris.MediaPlayer2"> \
-  <method name="Raise" /> \
-  <property name="CanRaise" type="b" access="read" /> \
-  <property name="DesktopEntry" type="s" access="read" /> \
-</interface> \
-</node>';
+const MprisIface = `
+<node>
+<interface name="org.mpris.MediaPlayer2">
+  <method name="Raise" />
+  <property name="CanRaise" type="b" access="read" />
+  <property name="DesktopEntry" type="s" access="read" />
+</interface>
+</node>`;
 const MprisProxy = Gio.DBusProxy.makeProxyWrapper(MprisIface);
 
-const MprisPlayerIface = '<node> \
-<interface name="org.mpris.MediaPlayer2.Player"> \
-  <method name="PlayPause" /> \
-  <method name="Next" /> \
-  <method name="Previous" /> \
-  <property name="CanGoNext" type="b" access="read" /> \
-  <property name="CanGoPrevious" type="b" access="read" /> \
-  <property name="CanPlay" type="b" access="read" /> \
-  <property name="Metadata" type="a{sv}" access="read" /> \
-  <property name="PlaybackStatus" type="s" access="read" /> \
-</interface> \
-</node>';
+const MprisPlayerIface = `
+<node>
+<interface name="org.mpris.MediaPlayer2.Player">
+  <method name="PlayPause" />
+  <method name="Next" />
+  <method name="Previous" />
+  <property name="CanGoNext" type="b" access="read" />
+  <property name="CanGoPrevious" type="b" access="read" />
+  <property name="CanPlay" type="b" access="read" />
+  <property name="Metadata" type="a{sv}" access="read" />
+  <property name="PlaybackStatus" type="s" access="read" />
+</interface>
+</node>`;
 const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';

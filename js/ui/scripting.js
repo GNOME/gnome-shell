@@ -68,19 +68,20 @@ function waitLeisure() {
     return callback => { cb = callback; };
 }
 
-const PerfHelperIface = '<node> \
-<interface name="org.gnome.Shell.PerfHelper"> \
-<method name="CreateWindow"> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-    <arg type="b" direction="in" /> \
-    <arg type="b" direction="in" /> \
-    <arg type="b" direction="in" /> \
-</method> \
-<method name="WaitWindows" /> \
-<method name="DestroyWindows" /> \
-</interface> \
-</node>';
+const PerfHelperIface = `
+<node>
+<interface name="org.gnome.Shell.PerfHelper">
+<method name="CreateWindow">
+    <arg type="i" direction="in" />
+    <arg type="i" direction="in" />
+    <arg type="b" direction="in" />
+    <arg type="b" direction="in" />
+    <arg type="b" direction="in" />
+</method>
+<method name="WaitWindows" />
+<method name="DestroyWindows" />
+</interface>
+</node>`;
 
 var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
 function PerfHelper() {

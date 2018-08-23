@@ -7,14 +7,15 @@ const Signals = imports.signals;
 
 const ObjectManager = imports.misc.objectManager;
 
-const SmartcardTokenIface = '<node> \
-<interface name="org.gnome.SettingsDaemon.Smartcard.Token"> \
-  <property name="Name" type="s" access="read"/> \
-  <property name="Driver" type="o" access="read"/> \
-  <property name="IsInserted" type="b" access="read"/> \
-  <property name="UsedToLogin" type="b" access="read"/> \
-</interface> \
-</node>';
+const SmartcardTokenIface = `
+<node>
+<interface name="org.gnome.SettingsDaemon.Smartcard.Token">
+  <property name="Name" type="s" access="read"/>
+  <property name="Driver" type="o" access="read"/>
+  <property name="IsInserted" type="b" access="read"/>
+  <property name="UsedToLogin" type="b" access="read"/>
+</interface>
+</node>`;
 
 let _smartcardManager = null;
 

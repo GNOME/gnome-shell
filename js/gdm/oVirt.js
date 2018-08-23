@@ -4,13 +4,13 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-const OVirtCredentialsIface = '<node> \
-<interface name="org.ovirt.vdsm.Credentials"> \
-<signal name="UserAuthenticated"> \
-    <arg type="s" name="token"/> \
-</signal> \
-</interface> \
-</node>';
+const OVirtCredentialsIface =`<node>
+<interface name="org.ovirt.vdsm.Credentials">
+<signal name="UserAuthenticated">
+    <arg type="s" name="token"/>
+</signal>
+</interface>
+</node>`;
 
 const OVirtCredentialsInfo = Gio.DBusInterfaceInfo.new_for_xml(OVirtCredentialsIface);
 
