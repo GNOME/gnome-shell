@@ -38,7 +38,8 @@ var DashItemContainer = new Lang.Class({
     Extends: St.Widget,
 
     _init() {
-        this.parent({ style_class: 'dash-item-container' });
+        this.parent({ style_class: 'dash-item-container',
+                      pivot_point: new Clutter.Point({ x: .5, y: .5 }) });
 
         this._labelText = "";
         this.label = new St.Label({ style_class: 'dash-label'});
@@ -56,52 +57,20 @@ var DashItemContainer = new Lang.Class({
         });
     },
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
-
-        if (this.child == null)
-            return;
-
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        let [minChildWidth, minChildHeight, natChildWidth, natChildHeight] =
-            this.child.get_preferred_size();
-        let [childScaleX, childScaleY] = this.child.get_scale();
-
-        let childWidth = Math.min(natChildWidth * childScaleX, availWidth);
-        let childHeight = Math.min(natChildHeight * childScaleY, availHeight);
-
-        let childBox = new Clutter.ActorBox();
-        childBox.x1 = (availWidth - childWidth) / 2;
-        childBox.y1 = (availHeight - childHeight) / 2;
-        childBox.x2 = childBox.x1 + childWidth;
-        childBox.y2 = childBox.y1 + childHeight;
-
-        this.child.allocate(childBox, flags);
-    },
-
     vfunc_get_preferred_height(forWidth) {
         let themeNode = this.get_theme_node();
-
-        if (this.child == null)
-            return [0, 0];
-
         forWidth = themeNode.adjust_for_width(forWidth);
-        let [minHeight, natHeight] = this.child.get_preferred_height(forWidth);
-        return themeNode.adjust_preferred_height(minHeight * this.child.scale_y,
-                                                 natHeight * this.child.scale_y);
+        let [minHeight, natHeight] = this.parent(forWidth);
+        return themeNode.adjust_preferred_height(minHeight * this.scale_y,
+                                                 natHeight * this.scale_y);
     },
 
     vfunc_get_preferred_width(forHeight) {
         let themeNode = this.get_theme_node();
-
-        if (this.child == null)
-            return [0, 0];
-
         forHeight = themeNode.adjust_for_height(forHeight);
-        let [minWidth, natWidth] = this.child.get_preferred_width(forHeight);
-        return themeNode.adjust_preferred_width(minWidth * this.child.scale_y,
-                                                natWidth * this.child.scale_y);
+        let [minWidth, natWidth] = this.parent(forHeight);
+        return themeNode.adjust_preferred_width(minWidth * this.scale_x,
+                                                natWidth * this.scale_x);
     },
 
     showLabel() {
@@ -163,9 +132,8 @@ var DashItemContainer = new Lang.Class({
         this.child = actor;
         this.add_actor(this.child);
 
-        this.child.set_scale_with_gravity(this._childScale, this._childScale,
-                                          Clutter.Gravity.CENTER);
-        this.child.set_opacity(this._childOpacity);
+        this.set_scale(this._childScale, this._childScale);
+        this.set_opacity(this._childOpacity);
     },
 
     show(animate) {
@@ -204,11 +172,7 @@ var DashItemContainer = new Lang.Class({
     set childScale(scale) {
         this._childScale = scale;
 
-        if (this.child == null)
-            return;
-
-        this.child.set_scale_with_gravity(scale, scale,
-                                          Clutter.Gravity.CENTER);
+        this.set_scale(scale, scale);
         this.queue_relayout();
     },
 
@@ -219,10 +183,7 @@ var DashItemContainer = new Lang.Class({
     set childOpacity(opacity) {
         this._childOpacity = opacity;
 
-        if (this.child == null)
-            return;
-
-        this.child.set_opacity(opacity);
+        this.set_opacity(opacity);
         this.queue_redraw();
     },
 
