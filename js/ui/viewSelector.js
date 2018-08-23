@@ -311,6 +311,7 @@ var ViewSelector = new Lang.Class({
     },
 
     hide() {
+        this.stopSearch();
         this._workspacesDisplay.hide();
     },
 
@@ -458,13 +459,14 @@ var ViewSelector = new Lang.Class({
             this.reset();
     },
 
-    reset() {
-        global.stage.set_key_focus(null);
-
-        this._entry.text = '';
-
+    _resetSearchField() {
         this._text.set_cursor_visible(true);
         this._text.set_selection(0, 0);
+    },
+
+    reset() {
+        this.stopSearch();
+        this._resetSearchField();
     },
 
     _onStageKeyFocusChanged() {
@@ -485,8 +487,7 @@ var ViewSelector = new Lang.Class({
             // Enable 'find-as-you-type'
             this._capturedEventId = global.stage.connect('captured-event',
                                  this._onCapturedEvent.bind(this));
-            this._text.set_cursor_visible(true);
-            this._text.set_selection(0, 0);
+            this._resetSearchField();
         } else {
             // Disable 'find-as-you-type'
             if (this._capturedEventId > 0)
@@ -518,6 +519,11 @@ var ViewSelector = new Lang.Class({
         let synthEvent = event.copy();
         synthEvent.set_source(this._text);
         this._text.event(synthEvent, false);
+    },
+
+    stopSearch() {
+        this._entry.text = '';
+        global.stage.set_key_focus(null);
     },
 
     // the entry does not show the hint
