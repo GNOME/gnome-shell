@@ -192,6 +192,7 @@ var SearchResultsBase = new Lang.Class({
     },
 
     clear() {
+        this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
             this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
