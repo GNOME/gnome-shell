@@ -40,29 +40,31 @@ function accuracyLevelToString(accuracyLevel) {
     return 'NONE';
 }
 
-var GeoclueIface = '<node> \
-  <interface name="org.freedesktop.GeoClue2.Manager"> \
-    <property name="InUse" type="b" access="read"/> \
-    <property name="AvailableAccuracyLevel" type="u" access="read"/> \
-    <method name="AddAgent"> \
-      <arg name="id" type="s" direction="in"/> \
-    </method> \
-  </interface> \
-</node>';
+var GeoclueIface = `
+<node>
+  <interface name="org.freedesktop.GeoClue2.Manager">
+    <property name="InUse" type="b" access="read"/>
+    <property name="AvailableAccuracyLevel" type="u" access="read"/>
+    <method name="AddAgent">
+      <arg name="id" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>`;
 
 const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
-var AgentIface = '<node> \
-  <interface name="org.freedesktop.GeoClue2.Agent"> \
-    <property name="MaxAccuracyLevel" type="u" access="read"/> \
-    <method name="AuthorizeApp"> \
-      <arg name="desktop_id" type="s" direction="in"/> \
-      <arg name="req_accuracy_level" type="u" direction="in"/> \
-      <arg name="authorized" type="b" direction="out"/> \
-      <arg name="allowed_accuracy_level" type="u" direction="out"/> \
-    </method> \
-  </interface> \
-</node>';
+var AgentIface = `
+<node>
+  <interface name="org.freedesktop.GeoClue2.Agent">
+    <property name="MaxAccuracyLevel" type="u" access="read"/>
+    <method name="AuthorizeApp">
+      <arg name="desktop_id" type="s" direction="in"/>
+      <arg name="req_accuracy_level" type="u" direction="in"/>
+      <arg name="authorized" type="b" direction="out"/>
+      <arg name="allowed_accuracy_level" type="u" direction="out"/>
+    </method>
+  </interface>
+</node>`;
 
 var Indicator = new Lang.Class({
     Name: 'LocationIndicator',

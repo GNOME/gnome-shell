@@ -92,41 +92,43 @@ function _findProviderForSid(sid) {
 // The following are not the complete interfaces, just the methods we need
 // (or may need in the future)
 
-const ModemGsmNetworkInterface = '<node> \
-<interface name="org.freedesktop.ModemManager.Modem.Gsm.Network"> \
-<method name="GetRegistrationInfo"> \
-    <arg type="(uss)" direction="out" /> \
-</method> \
-<method name="GetSignalQuality"> \
-    <arg type="u" direction="out" /> \
-</method> \
-<property name="AccessTechnology" type="u" access="read" /> \
-<signal name="SignalQuality"> \
-    <arg type="u" direction="out" /> \
-</signal> \
-<signal name="RegistrationInfo"> \
-    <arg type="u" direction="out" /> \
-    <arg type="s" direction="out" /> \
-    <arg type="s" direction="out" /> \
-</signal> \
-</interface> \
-</node>';
+const ModemGsmNetworkInterface = `
+<node>
+<interface name="org.freedesktop.ModemManager.Modem.Gsm.Network">
+<method name="GetRegistrationInfo">
+    <arg type="(uss)" direction="out" />
+</method>
+<method name="GetSignalQuality">
+    <arg type="u" direction="out" />
+</method>
+<property name="AccessTechnology" type="u" access="read" />
+<signal name="SignalQuality">
+    <arg type="u" direction="out" />
+</signal>
+<signal name="RegistrationInfo">
+    <arg type="u" direction="out" />
+    <arg type="s" direction="out" />
+    <arg type="s" direction="out" />
+</signal>
+</interface>
+</node>`;
 
 const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInterface);
 
-const ModemCdmaInterface = '<node> \
-<interface name="org.freedesktop.ModemManager.Modem.Cdma"> \
-<method name="GetSignalQuality"> \
-    <arg type="u" direction="out" /> \
-</method> \
-<method name="GetServingSystem"> \
-    <arg type="(usu)" direction="out" /> \
-</method> \
-<signal name="SignalQuality"> \
-    <arg type="u" direction="out" /> \
-</signal> \
-</interface> \
-</node>';
+const ModemCdmaInterface = `
+<node>
+<interface name="org.freedesktop.ModemManager.Modem.Cdma">
+<method name="GetSignalQuality">
+    <arg type="u" direction="out" />
+</method>
+<method name="GetServingSystem">
+    <arg type="(usu)" direction="out" />
+</method>
+<signal name="SignalQuality">
+    <arg type="u" direction="out" />
+</signal>
+</interface>
+</node>`;
 
 const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 
@@ -222,26 +224,29 @@ Signals.addSignalMethods(ModemCdma.prototype);
 // Support for the new ModemManager1 interface (MM >= 0.7)
 //------------------------------------------------------------------------------
 
-const BroadbandModemInterface = '<node> \
-<interface name="org.freedesktop.ModemManager1.Modem"> \
-<property name="SignalQuality" type="(ub)" access="read" /> \
-</interface> \
-</node>';
+const BroadbandModemInterface = `
+<node>
+<interface name="org.freedesktop.ModemManager1.Modem">
+<property name="SignalQuality" type="(ub)" access="read" />
+</interface>
+</node>`;
 const BroadbandModemProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemInterface);
 
-const BroadbandModem3gppInterface = '<node> \
-<interface name="org.freedesktop.ModemManager1.Modem.Modem3gpp"> \
-<property name="OperatorCode" type="s" access="read" /> \
-<property name="OperatorName" type="s" access="read" /> \
-</interface> \
-</node>';
+const BroadbandModem3gppInterface = `
+<node>
+<interface name="org.freedesktop.ModemManager1.Modem.Modem3gpp">
+<property name="OperatorCode" type="s" access="read" />
+<property name="OperatorName" type="s" access="read" />
+</interface>
+</node>`;
 const BroadbandModem3gppProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModem3gppInterface);
 
-const BroadbandModemCdmaInterface = '<node> \
-<interface name="org.freedesktop.ModemManager1.Modem.ModemCdma"> \
-<property name="Sid" type="u" access="read" /> \
-</interface> \
-</node>';
+const BroadbandModemCdmaInterface = `
+<node>
+<interface name="org.freedesktop.ModemManager1.Modem.ModemCdma">
+<property name="Sid" type="u" access="read" />
+</interface>
+</node>`;
 const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
 
 var BroadbandModem = new Lang.Class({

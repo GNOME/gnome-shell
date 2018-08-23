@@ -43,22 +43,23 @@ const _DIALOG_ICON_SIZE = 48;
 
 var GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
 
-const EndSessionDialogIface = '<node> \
-<interface name="org.gnome.SessionManager.EndSessionDialog"> \
-<method name="Open"> \
-    <arg type="u" direction="in" /> \
-    <arg type="u" direction="in" /> \
-    <arg type="u" direction="in" /> \
-    <arg type="ao" direction="in" /> \
-</method> \
-<method name="Close" /> \
-<signal name="ConfirmedLogout" /> \
-<signal name="ConfirmedReboot" /> \
-<signal name="ConfirmedShutdown" /> \
-<signal name="Canceled" /> \
-<signal name="Closed" /> \
-</interface> \
-</node>';
+const EndSessionDialogIface = `
+<node>
+<interface name="org.gnome.SessionManager.EndSessionDialog">
+<method name="Open">
+    <arg type="u" direction="in" />
+    <arg type="u" direction="in" />
+    <arg type="u" direction="in" />
+    <arg type="ao" direction="in" />
+</method>
+<method name="Close" />
+<signal name="ConfirmedLogout" />
+<signal name="ConfirmedReboot" />
+<signal name="ConfirmedShutdown" />
+<signal name="Canceled" />
+<signal name="Closed" />
+</interface>
+</node>`;
 
 const logoutDialogContent = {
     subjectWithUser: C_("title", "Log Out %s"),
@@ -168,39 +169,42 @@ const DialogContent = {
 
 var MAX_USERS_IN_SESSION_DIALOG = 5;
 
-const LogindSessionIface = '<node> \
-<interface name="org.freedesktop.login1.Session"> \
-    <property name="Id" type="s" access="read"/> \
-    <property name="Remote" type="b" access="read"/> \
-    <property name="Class" type="s" access="read"/> \
-    <property name="Type" type="s" access="read"/> \
-    <property name="State" type="s" access="read"/> \
-</interface> \
-</node>';
+const LogindSessionIface = `
+<node>
+<interface name="org.freedesktop.login1.Session">
+    <property name="Id" type="s" access="read"/>
+    <property name="Remote" type="b" access="read"/>
+    <property name="Class" type="s" access="read"/>
+    <property name="Type" type="s" access="read"/>
+    <property name="State" type="s" access="read"/>
+</interface>
+</node>`;
 
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 
-const PkOfflineIface = '<node> \
-<interface name="org.freedesktop.PackageKit.Offline"> \
-    <property name="UpdatePrepared" type="b" access="read"/> \
-    <property name="UpdateTriggered" type="b" access="read"/> \
-    <property name="UpgradePrepared" type="b" access="read"/> \
-    <property name="UpgradeTriggered" type="b" access="read"/> \
-    <property name="PreparedUpgrade" type="a{sv}" access="read"/> \
-    <method name="Trigger"> \
-        <arg type="s" name="action" direction="in"/> \
-    </method> \
-    <method name="Cancel"/> \
-</interface> \
-</node>';
+const PkOfflineIface = `
+<node>
+<interface name="org.freedesktop.PackageKit.Offline">
+    <property name="UpdatePrepared" type="b" access="read"/>
+    <property name="UpdateTriggered" type="b" access="read"/>
+    <property name="UpgradePrepared" type="b" access="read"/>
+    <property name="UpgradeTriggered" type="b" access="read"/>
+    <property name="PreparedUpgrade" type="a{sv}" access="read"/>
+    <method name="Trigger">
+        <arg type="s" name="action" direction="in"/>
+    </method>
+    <method name="Cancel"/>
+</interface>
+</node>`;
 
 const PkOfflineProxy = Gio.DBusProxy.makeProxyWrapper(PkOfflineIface);
 
-const UPowerIface = '<node> \
-<interface name="org.freedesktop.UPower"> \
-    <property name="OnBattery" type="b" access="read"/> \
-</interface> \
-</node>';
+const UPowerIface = `
+<node>
+<interface name="org.freedesktop.UPower">
+    <property name="OnBattery" type="b" access="read"/>
+</interface>
+</node>`;
 
 const UPowerProxy = Gio.DBusProxy.makeProxyWrapper(UPowerIface);
 

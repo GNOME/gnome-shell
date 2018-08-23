@@ -962,14 +962,15 @@ var PadOsd = new Lang.Class({
 });
 Signals.addSignalMethods(PadOsd.prototype);
 
-const PadOsdIface = '<node> \
-<interface name="org.gnome.Shell.Wacom.PadOsd"> \
-<method name="Show"> \
-    <arg name="device_node" direction="in" type="o"/> \
-    <arg name="edition_mode" direction="in" type="b"/> \
-</method> \
-</interface> \
-</node>';
+const PadOsdIface = `
+<node>
+<interface name="org.gnome.Shell.Wacom.PadOsd">
+<method name="Show">
+    <arg name="device_node" direction="in" type="o"/>
+    <arg name="edition_mode" direction="in" type="b"/>
+</method>
+</interface>
+</node>`;
 
 var PadOsdService = new Lang.Class({
     Name: 'PadOsdService',

@@ -30,25 +30,26 @@ const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
 const CONNECTIVITY_CHECK_URI = 'http://' + CONNECTIVITY_CHECK_HOST;
 const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
-const HelperDBusInterface = '<node> \
-<interface name="org.gnome.Shell.PortalHelper"> \
-<method name="Authenticate"> \
-    <arg type="o" direction="in" name="connection" /> \
-    <arg type="s" direction="in" name="url" /> \
-    <arg type="u" direction="in" name="timestamp" /> \
-</method> \
-<method name="Close"> \
-    <arg type="o" direction="in" name="connection" /> \
-</method> \
-<method name="Refresh"> \
-    <arg type="o" direction="in" name="connection" /> \
-</method> \
-<signal name="Done"> \
-    <arg type="o" name="connection" /> \
-    <arg type="u" name="result" /> \
-</signal> \
-</interface> \
-</node>';
+const HelperDBusInterface = `
+<node>
+<interface name="org.gnome.Shell.PortalHelper">
+<method name="Authenticate">
+    <arg type="o" direction="in" name="connection" />
+    <arg type="s" direction="in" name="url" />
+    <arg type="u" direction="in" name="timestamp" />
+</method>
+<method name="Close">
+    <arg type="o" direction="in" name="connection" />
+</method>
+<method name="Refresh">
+    <arg type="o" direction="in" name="connection" />
+</method>
+<signal name="Done">
+    <arg type="o" name="connection" />
+    <arg type="u" name="result" />
+</signal>
+</interface>
+</node>`;
 
 var PortalHeaderBar = new Lang.Class({
     Name: 'PortalHeaderBar',
