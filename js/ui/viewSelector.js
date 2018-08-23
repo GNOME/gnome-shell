@@ -311,6 +311,7 @@ var ViewSelector = new Lang.Class({
     },
 
     hide() {
+        this.reset();
         this._workspacesDisplay.hide();
     },
 
