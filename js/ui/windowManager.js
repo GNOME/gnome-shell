@@ -42,19 +42,19 @@ var ONE_SECOND = 1000; // in ms
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
 const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 
-const GsdWacomIface = '<node name="/org/gnome/SettingsDaemon/Wacom"> \
-<interface name="org.gnome.SettingsDaemon.Wacom"> \
-  <method name="SetGroupModeLED"> \
-    <arg name="device_path" direction="in" type="s"/> \
-    <arg name="group" direction="in" type="u"/> \
-    <arg name="mode" direction="in" type="u"/> \
-  </method> \
-  <method name="SetOLEDLabels"> \
-    <arg name="device_path" direction="in" type="s"/> \
-    <arg name="labels" direction="in" type="as"/> \
-  </method> \
-  </interface> \
-</node>';
+const GsdWacomIface = `<node name="/org/gnome/SettingsDaemon/Wacom">
+<interface name="org.gnome.SettingsDaemon.Wacom">
+  <method name="SetGroupModeLED">
+    <arg name="device_path" direction="in" type="s"/>
+    <arg name="group" direction="in" type="u"/>
+    <arg name="mode" direction="in" type="u"/>
+  </method>
+  <method name="SetOLEDLabels">
+    <arg name="device_path" direction="in" type="s"/>
+    <arg name="labels" direction="in" type="as"/>
+  </method>
+  </interface>
+</node>`;
 
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
