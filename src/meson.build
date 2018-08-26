@@ -6,6 +6,10 @@ subdir('hotplug-sniffer')
 subdir('st')
 subdir('tray')
 
+if get_option('extensions_tool')
+  subdir('extensions-tool')
+endif
+
 script_data = configuration_data()
 script_data.set('bindir', bindir)
 script_data.set('datadir', datadir)

@@ -1,0 +1,5 @@
+executable('gnome-extensions',
+  'main.c',
+  dependencies: gio_dep,
+  install: true
+)
