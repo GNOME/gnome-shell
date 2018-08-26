@@ -1,5 +1,12 @@
+sources = [
+  'commands.h',
+  'command-disable.c',
+  'command-enable.c',
+  'common.h',
+  'main.c'
+]
 executable('gnome-extensions',
-  'main.c',
+  sources,
   dependencies: gio_dep,
   install: true
 )
