@@ -23,6 +23,37 @@
 #include <locale.h>
 
 #include "config.h"
+#include "commands.h"
+#include "common.h"
+
+void
+show_help (GOptionContext *context, const char *message)
+{
+  g_autofree char *help = NULL;
+
+  if (message)
+    g_printerr ("gnome-extensions: %s\n\n", message);
+
+  help = g_option_context_get_help (context, TRUE, NULL);
+  g_printerr ("%s", help);
+}
+
+GSettings *
+get_shell_settings (void)
+{
+  g_autoptr (GSettingsSchema) schema = NULL;
+  GSettingsSchemaSource *schema_source;
+
+  schema_source = g_settings_schema_source_get_default ();
+  schema = g_settings_schema_source_lookup (schema_source,
+                                            "org.gnome.shell",
+                                            TRUE);
+
+  if (schema == NULL)
+    return NULL;
+
+  return g_settings_new_full (schema, NULL, NULL);
+}
 
 static int
 handle_version (int argc, char *argv[], gboolean do_help)
@@ -54,6 +85,8 @@ usage (void)
   g_printerr ("%s\n", _("Commands:"));
   g_printerr ("  help      %s\n", _("Print help"));
   g_printerr ("  version   %s\n", _("Print version"));
+  g_printerr ("  enable    %s\n", _("Enable extension"));
+  g_printerr ("  disable   %s\n", _("Disable extension"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
 }
@@ -107,6 +140,10 @@ main (int argc, char *argv[])
 
   if (g_str_equal (command, "version"))
     return handle_version (argc, argv, do_help);
+  else if (g_str_equal (command, "enable"))
+    return handle_enable (argc, argv, do_help);
+  else if (g_str_equal (command, "disable"))
+    return handle_disable (argc, argv, do_help);
   else
     usage ();
 
