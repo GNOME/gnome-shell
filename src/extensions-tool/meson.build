@@ -8,8 +8,14 @@ configure_file(
   configuration: config_h,
 )
 
+sources = [
+  'command-disable.c',
+  'command-enable.c',
+  'main.c'
+]
+
 executable('gnome-extensions',
-  'main.c',
+  sources,
   dependencies: gio_dep,
   install: true
 )
