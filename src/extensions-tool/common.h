@@ -24,8 +24,32 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  TYPE_SYSTEM = 1,
+  TYPE_USER
+} ExtensionType;
+
+typedef enum {
+  STATE_ENABLED = 1,
+  STATE_DISABLED,
+  STATE_ERROR,
+  STATE_OUT_OF_DATE,
+  STATE_DOWNLOADING,
+  STATE_INITIALIZED,
+
+  STATE_UNINSTALLED = 99
+} ExtensionState;
+
+typedef enum {
+  DISPLAY_ONELINE,
+  DISPLAY_DETAILED
+} DisplayFormat;
+
 void show_help (GOptionContext *context,
                 const char     *message);
+
+void print_extension_info (GVariantDict  *info,
+                           DisplayFormat  format);
 
 GDBusProxy *get_shell_proxy (GError **error);
 GSettings  *get_shell_settings (void);

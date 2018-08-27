@@ -23,14 +23,25 @@
 
 #include "commands.h"
 #include "common.h"
+#include "config.h"
+
+
+typedef enum {
+  LIST_FLAGS_NONE     = 0,
+  LIST_FLAGS_USER     = 1 << 0,
+  LIST_FLAGS_SYSTEM   = 1 << 1,
+  LIST_FLAGS_ENABLED  = 1 << 2,
+  LIST_FLAGS_DISABLED = 1 << 3
+} ListFilterFlags;
 
 static gboolean
-list_extensions (void)
+list_extensions (ListFilterFlags filter, DisplayFormat format)
 {
   g_autoptr (GDBusProxy) proxy = NULL;
   g_autoptr (GVariant) response = NULL;
   g_autoptr (GVariant) extensions = NULL;
   g_autoptr (GError) error = NULL;
+  gboolean needs_newline = FALSE;
   GVariantIter iter;
   GVariant *value;
   char *uuid;
@@ -53,7 +64,32 @@ list_extensions (void)
 
   g_variant_iter_init (&iter, extensions);
   while (g_variant_iter_loop (&iter, "{s@a{sv}}", &uuid, &value))
-    g_print ("%s\n", uuid);
+    {
+      g_autoptr (GVariantDict) info = NULL;
+      double type, state;
+
+      info = g_variant_dict_new (value);
+      g_variant_dict_lookup (info, "type", "d", &type);
+      g_variant_dict_lookup (info, "state", "d", &state);
+
+      if (type == TYPE_USER && (filter & LIST_FLAGS_USER) == 0)
+        continue;
+
+      if (type == TYPE_SYSTEM && (filter & LIST_FLAGS_SYSTEM) == 0)
+        continue;
+
+      if (state == STATE_ENABLED && (filter & LIST_FLAGS_ENABLED) == 0)
+        continue;
+
+      if (state != STATE_ENABLED && (filter & LIST_FLAGS_DISABLED) == 0)
+        continue;
+
+      if (needs_newline)
+        g_print ("\n");
+
+      print_extension_info (info, format);
+      needs_newline = (format != DISPLAY_ONELINE);
+    }
 
   return TRUE;
 }
@@ -63,12 +99,37 @@ handle_list (int argc, char *argv[], gboolean do_help)
 {
   g_autoptr (GOptionContext) context = NULL;
   g_autoptr (GError) error = NULL;
+  int flags = LIST_FLAGS_NONE;
+  gboolean details = FALSE;
+  gboolean user = FALSE;
+  gboolean system = FALSE;
+  gboolean enabled = FALSE;
+  gboolean disabled = FALSE;
+  GOptionEntry entries[] = {
+    { .long_name = "user",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &user,
+      .description = _("Show user-installed extensions") },
+    { .long_name = "system",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &system,
+      .description = _("Show system-installed extensions") },
+    { .long_name = "enabled",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &enabled,
+      .description = _("Show enabled extensions") },
+    { .long_name = "disabled",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &disabled,
+      .description = _("Show disabled extensions") },
+    { .long_name = "details", .short_name = 'd',
+      .arg = G_OPTION_ARG_NONE, .arg_data = &details,
+      .description = _("Print extension details") },
+    { NULL }
+  };
 
   g_set_prgname ("gnome-extensions list");
 
   context = g_option_context_new (NULL);
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("List installed extensions"));
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   if (do_help)
     {
@@ -88,5 +149,18 @@ handle_list (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return list_extensions () ? 0 : 2;
+  if (user || !system)
+    flags |= LIST_FLAGS_USER;
+
+  if (system || !user)
+    flags |= LIST_FLAGS_SYSTEM;
+
+  if (enabled || !disabled)
+    flags |= LIST_FLAGS_ENABLED;
+
+  if (disabled || !enabled)
+    flags |= LIST_FLAGS_DISABLED;
+
+  return list_extensions (flags, details ? DISPLAY_DETAILED
+                                         : DISPLAY_ONELINE) ? 0 : 2;
 }
