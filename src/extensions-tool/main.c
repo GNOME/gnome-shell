@@ -100,6 +100,7 @@ usage (void)
   g_printerr ("  version   %s\n", _("Print version"));
   g_printerr ("  enable    %s\n", _("Enable extension"));
   g_printerr ("  disable   %s\n", _("Disable extension"));
+  g_printerr ("  list      %s\n", _("List extensions"));
   g_printerr ("  create    %s\n", _("Create extension"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
@@ -158,6 +159,8 @@ main (int argc, char *argv[])
     return handle_enable (argc, argv, do_help);
   else if (g_str_equal (command, "disable"))
     return handle_disable (argc, argv, do_help);
+  else if (g_str_equal (command, "list"))
+    return handle_list (argc, argv, do_help);
   else if (g_str_equal (command, "create"))
     return handle_create (argc, argv, do_help);
   else
