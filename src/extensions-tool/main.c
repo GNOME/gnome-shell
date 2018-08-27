@@ -38,6 +38,19 @@ show_help (GOptionContext *context, const char *message)
   g_printerr ("%s", help);
 }
 
+GDBusProxy *
+get_shell_proxy (GError **error)
+{
+  return g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                        G_DBUS_PROXY_FLAGS_NONE,
+                                        NULL,
+                                        "org.gnome.Shell",
+                                        "/org/gnome/Shell",
+                                        "org.gnome.Shell.Extensions",
+                                        NULL,
+                                        error);
+}
+
 GSettings *
 get_shell_settings (void)
 {
@@ -87,6 +100,7 @@ usage (void)
   g_printerr ("  version   %s\n", _("Print version"));
   g_printerr ("  enable    %s\n", _("Enable extension"));
   g_printerr ("  disable   %s\n", _("Disable extension"));
+  g_printerr ("  create    %s\n", _("Create extension"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
 }
@@ -144,6 +158,8 @@ main (int argc, char *argv[])
     return handle_enable (argc, argv, do_help);
   else if (g_str_equal (command, "disable"))
     return handle_disable (argc, argv, do_help);
+  else if (g_str_equal (command, "create"))
+    return handle_create (argc, argv, do_help);
   else
     usage ();
 
