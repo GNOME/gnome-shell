@@ -24,6 +24,7 @@
 
 #include "commands.h"
 #include "common.h"
+#include "config.h"
 
 static char *
 get_shell_version (GError **error)
@@ -172,10 +173,15 @@ prompt_metadata (char **uuid, char **name, char **description)
   g_autoptr (GInputStream) stdin = NULL;
   g_autoptr (GDataInputStream) istream = NULL;
 
+  if ((uuid == NULL || *uuid != NULL) &&
+      (name == NULL || *name != NULL) &&
+      (description == NULL || *description != NULL))
+    return;
+
   stdin = g_unix_input_stream_new (0, FALSE);
   istream = g_data_input_stream_new (stdin);
 
-  if (name != NULL)
+  if (name != NULL && *name == NULL)
     {
       char *line;
 
@@ -189,7 +195,7 @@ prompt_metadata (char **uuid, char **name, char **description)
       *name = g_strdelimit (line, "\n", '\0');
     }
 
-  if (description != NULL)
+  if (description != NULL && *description == NULL)
     {
       char *line;
 
@@ -203,7 +209,7 @@ prompt_metadata (char **uuid, char **name, char **description)
       *description = g_strdelimit (line, "\n", '\0');
     }
 
-  if (uuid != NULL)
+  if (uuid != NULL && *uuid == NULL)
     {
       char *line;
 
@@ -225,12 +231,32 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *name = NULL;
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
+  gboolean interactive = FALSE;
+  GOptionEntry entries[] = {
+    { .long_name = "uuid",
+      .arg = G_OPTION_ARG_STRING, .arg_data = &uuid,
+      .arg_description = "UUID",
+      .description = _("The unique identifier of the new extension") },
+    { .long_name = "name",
+      .arg = G_OPTION_ARG_STRING, .arg_data = &name,
+      .arg_description = _("NAME"),
+      .description = _("The user-visible name of the new extension") },
+    { .long_name = "description",
+      .arg_description = _("DESCRIPTION"),
+      .arg = G_OPTION_ARG_STRING, .arg_data = &description,
+      .description = _("A short description of what the extension does") },
+    { .long_name = "interactive", .short_name = 'i',
+      .arg = G_OPTION_ARG_NONE, .arg_data = &interactive,
+      .description = _("Enter extension information interactively") },
+    { NULL }
+  };
 
   g_set_prgname ("gnome-extensions create");
 
   context = g_option_context_new (NULL);
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Create a new extension"));
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   if (do_help)
     {
@@ -250,7 +276,14 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  prompt_metadata (&uuid, &name, &description);
+  if (interactive)
+    prompt_metadata (&uuid, &name, &description);
+
+  if (uuid == NULL || name == NULL || description == NULL)
+    {
+      show_help (context, _("UUID, name and description are required"));
+      return 1;
+    }
 
   return create_extension (uuid, name, description) ? 0 : 2;
 }
