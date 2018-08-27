@@ -26,6 +26,29 @@
 #include "commands.h"
 #include "common.h"
 
+static const char *
+extension_state_to_string (ExtensionState state)
+{
+  switch (state)
+    {
+    case STATE_ENABLED:
+      return "ENABLED";
+    case STATE_DISABLED:
+      return "DISABLED";
+    case STATE_ERROR:
+      return "ERROR";
+    case STATE_OUT_OF_DATE:
+      return "OUT OF DATE";
+    case STATE_DOWNLOADING:
+      return "DOWNLOADING";
+    case STATE_INITIALIZED:
+      return "INITIALIZED";
+    case STATE_UNINSTALLED:
+      return "UNINSTALLED";
+    }
+  return "UNKNOWN";
+}
+
 void
 show_help (GOptionContext *context, const char *message)
 {
@@ -66,6 +89,41 @@ get_shell_settings (void)
     return NULL;
 
   return g_settings_new_full (schema, NULL, NULL);
+}
+
+void
+print_extension_info (GVariantDict  *info,
+                      DisplayFormat  format)
+{
+  const char *uuid, *name, *desc, *path, *url, *author;
+  double state, version;
+
+  g_variant_dict_lookup (info, "uuid", "&s", &uuid);
+  g_print ("%s\n", uuid);
+
+  if (format == DISPLAY_ONELINE)
+    return;
+
+  g_variant_dict_lookup (info, "name", "&s", &name);
+  g_print ("  %s: %s\n", _("Name"), name);
+
+  g_variant_dict_lookup (info, "description", "&s", &desc);
+  g_print ("  %s: %s\n", _("Description"), desc);
+
+  g_variant_dict_lookup (info, "path", "&s", &path);
+  g_print ("  %s: %s\n", _("Path"), path);
+
+  if (g_variant_dict_lookup (info, "url", "&s", &url))
+    g_print ("  %s: %s\n", _("URL"), url);
+
+  if (g_variant_dict_lookup (info, "original-author", "&s", &author))
+    g_print ("  %s: %s\n", _("Original author"), author);
+
+  if (g_variant_dict_lookup (info, "version", "d", &version))
+    g_print ("  %s: %.0f\n", _("Version"), version);
+
+  g_variant_dict_lookup (info, "state", "d", &state);
+  g_print ("  %s: %s\n", _("State"), extension_state_to_string (state));
 }
 
 static int
