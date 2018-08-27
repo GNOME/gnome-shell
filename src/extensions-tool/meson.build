@@ -12,6 +12,7 @@ sources = [
   'command-create.c',
   'command-disable.c',
   'command-enable.c',
+  'command-list.c',
   'main.c'
 ]
 
