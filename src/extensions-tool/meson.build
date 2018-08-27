@@ -9,13 +9,19 @@ configure_file(
 )
 
 sources = [
+  'command-create.c',
   'command-disable.c',
   'command-enable.c',
   'main.c'
 ]
 
+resources = gnome.compile_resources('resources',
+  'gnome-extensions-tool.gresource.xml',
+  source_dir: '.'
+)
+
 executable('gnome-extensions',
-  sources,
-  dependencies: gio_dep,
+  sources, resources,
+  dependencies: [gio_dep, gio_unix_dep],
   install: true
 )
