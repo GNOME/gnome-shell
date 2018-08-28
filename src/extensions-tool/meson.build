@@ -26,3 +26,9 @@ executable('gnome-extensions',
   dependencies: [gio_dep, gio_unix_dep],
   install: true
 )
+
+if bash_completion.found()
+  install_data('completion/bash/gnome-extensions',
+    install_dir: bash_completion.get_pkgconfig_variable('completionsdir')
+  )
+endif
