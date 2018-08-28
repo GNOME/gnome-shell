@@ -132,6 +132,8 @@ else
   have_systemd = false
 endif
 
+bash_completion = dependency('bash-completion', required: false)
+
 if get_option('man')
   xsltproc = find_program('xsltproc')
 
