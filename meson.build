@@ -137,6 +137,10 @@ bash_completion = dependency('bash-completion', required: false)
 if get_option('man')
   xsltproc = find_program('xsltproc')
 
+  if get_option('extensions_tool')
+    a2x = find_program('a2x')
+  endif
+
   subdir('man')
 endif
 
