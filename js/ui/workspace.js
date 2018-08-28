@@ -470,7 +470,6 @@ var WindowOverlay = new Lang.Class({
         this._windowAddedId = 0;
 
         button.hide();
-        title.hide();
 
         this.title = title;
         this.closeButton = button;
