@@ -1,0 +1,100 @@
+GNOME-EXTENSIONS(1)
+===================
+:man manual: User Commands
+:man source: GNOME-EXTENSIONS-TOOL
+:doctype: manpage
+:date: August 2018
+
+NAME
+----
+gnome-extensions - Command line tool for managing GNOME extensions
+
+SYNOPSIS
+--------
+*gnome-extensions* help ['COMMAND']
+
+*gnome-extensions* version
+
+*gnome-extensions* enable 'UUID'
+
+*gnome-extensions* disable 'UUID'
+
+*gnome-extensions* list ['OPTION'...]
+
+*gnome-extensions* create ['OPTION'...]
+
+DESCRIPTION
+-----------
+*gnome-extensions* is a utility that makes some common GNOME extensions
+operations available on the command line.
+
+COMMANDS
+--------
+*help* ['COMMAND']::
+Displays a short synopsis of the available commands or provides
+detailed help on a specific command.
+
+*version*::
+Prints the program version.
+
+*enable* 'UUID'::
+Enables the extension identified by 'UUID'.
++
+The command will not detect any errors from the extension itself, use the
+*info* command to confirm that the extension state is *ENABLED*.
++
+If the extension is already enabled, the command will do nothing.
+
+*disable* 'UUID'::
+Disables the extension identified by 'UUID'.
++
+If the extension is not enabled, the command will do nothing.
+
+*list* ['OPTION'...]::
+Displays a list of installed extensions.
++
+.Options
+  *--user*;;
+    Include extensions installed in the user's *$HOME*
+
+  *--system*;;
+    Include extensions installed in the system
+
+  *--enabled*;;
+    Include enabled extensions
+
+  *--disabled*;;
+    Include disabled extensions
+
+  *-d*;;
+  *--details*;;
+    Show some extra information for each extension
+
+*create* ['OPTION'...]::
+Creates a new extension from a template.
++
+.Options
+  *--name*='NAME':::
+    Set the user-visible name in the extension's metadata
+    to 'NAME'
+
+  *--description*='DESC':::
+    Set the description in the extension's metadata to 'DESC'
+
+  *--uuid*='UUID':::
+    Set the unique extension ID in the metadata to 'UUID'
+
+  *-i*:::
+  *--interactive*:::
+    Prompt for any extension metadata that hasn't been provided
+    on the command line
+
+
+EXIT STATUS
+-----------
+On success 0 is returned, a non-zero failure code otherwise.
+
+BUGS
+----
+The tool is part of the gnome-shell project, and bugs should be reported
+in its issue tracker at https://gitlab.gnome.org/GNOME/gnome-shell/issues.

@@ -32,3 +32,7 @@ if bash_completion.found()
     install_dir: bash_completion.get_pkgconfig_variable('completionsdir')
   )
 endif
+
+if get_option('man')
+  subdir('man')
+endif
