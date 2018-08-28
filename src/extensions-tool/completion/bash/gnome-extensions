@@ -1,0 +1,51 @@
+
+# Check for bash
+[ -z "$BASH_VERSION" ] && return
+
+################################################################################
+
+__gnome_extensions() {
+  local commands="version enable disable info list create"
+  local COMMAND=${COMP_WORDS[1]}
+
+  _init_completion -s || return
+
+  case "${COMP_CWORD}" in
+    1)
+      COMPREPLY=($(compgen -W "help $commands" -- "$2"))
+      return 0
+      ;;
+
+    2)
+      case "$COMMAND" in
+        help)
+          COMPREPLY=($(compgen -W "$commands" -- "$2"))
+          return 0
+          ;;
+
+        disable)
+          local list_opt=--enabled
+          ;;&
+        enable)
+          local list_opt=--disabled
+          ;;&
+        enable|disable|info)
+          COMPREPLY=($(compgen -W "`gnome-extensions list $list_opt`" -- "$2"))
+          return 0
+          ;;
+      esac
+      ;;
+  esac
+
+  # Stop if we are currently waiting for an option value
+  $split && return
+
+  # Otherwise, get the supported options for ${COMMAND} (if any)
+  COMPREPLY=($(compgen -W "$(_parse_help $1 "help $COMMAND")" -- "$2"))
+  [[ $COMPREPLY == *= ]] && compopt -o nospace
+  return 0
+}
+
+################################################################################
+
+complete -F __gnome_extensions gnome-extensions
