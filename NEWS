@@ -1,3 +1,17 @@
+3.29.92
+=======
+* Choose some actors to cache on the GPU [Daniel; #792633]
+* inputMethod: Hide preedit text if requested [Takao; #431]
+* Fix forced fallback app-menus on wayland [Jonas; #276]
+
+Contributors:
+  Jonas Ådahl, Takao Fujiwara, Mohammed Sadiq, Marco Trevisan (Treviño),
+  Daniel van Vugt
+
+Translators:
+  Baurzhan Muftakhidinov [kk], Kukuh Syafaat [id], Milo Casagrande [it],
+  Changwoo Ryu [ko], Marek Cernocky [cs]
+
 3.29.91
 =======
 * Fix handling of 0/false options in ShowOSD D-Bus API [Florian; #791669]
