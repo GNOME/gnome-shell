@@ -182,8 +182,10 @@ st_bin_destroy (ClutterActor *actor)
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (actor));
 
   if (priv->child)
-    clutter_actor_destroy (priv->child);
-  g_assert (priv->child == NULL);
+    {
+      clutter_actor_destroy (priv->child);
+      priv->child = NULL;
+    }
 
   CLUTTER_ACTOR_CLASS (st_bin_parent_class)->destroy (actor);
 }
