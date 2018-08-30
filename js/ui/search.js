@@ -227,8 +227,11 @@ var SearchResultsBase = new Lang.Class({
 
             this.provider.getResultMetas(metasNeeded, metas => {
                 if (metas.length != metasNeeded.length) {
-                    log('Wrong number of result metas returned by search provider ' + this.provider.id +
-                        ': expected ' + metasNeeded.length + ' but got ' + metas.length);
+                    if (!this._cancellable.is_cancelled())
+                        log(`Wrong number of result metas returned by search provider ${this.provider.id}` +
+                            `: expected ${metasNeeded.length} but got ${metas.length}`);
+                    else if (metas.length > 0)
+                        log(`Search provider ${this.provider.id} returned results after the request was canceled`);
                     callback(false);
                     return;
                 }
