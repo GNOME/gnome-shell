@@ -4,7 +4,8 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-const OVirtCredentialsIface =`<node>
+const OVirtCredentialsIface = `
+<node>
 <interface name="org.ovirt.vdsm.Credentials">
 <signal name="UserAuthenticated">
     <arg type="s" name="token"/>
