@@ -132,6 +132,11 @@ else
   have_systemd = false
 endif
 
+if get_option('extensions_tool')
+  autoar_dep = dependency('gnome-autoar-0')
+  json_dep = dependency('json-glib-1.0')
+endif
+
 bash_completion = dependency('bash-completion', required: false)
 
 if get_option('man')

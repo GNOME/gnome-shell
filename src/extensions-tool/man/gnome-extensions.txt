@@ -27,6 +27,8 @@ SYNOPSIS
 
 *gnome-extensions* create ['OPTION'...]
 
+*gnome-extensions* pack ['OPTION'...]
+
 DESCRIPTION
 -----------
 *gnome-extensions* is a utility that makes some common GNOME extensions
@@ -99,6 +101,51 @@ Creates a new extension from a template.
   *--interactive*:::
     Prompt for any extension metadata that hasn't been provided
     on the command line
+
+*pack* ['OPTION'...] ['SOURCE-DIRECTORY']::
+Creates an extension bundle that is suitable for publishing.
++
+The bundle will always include the required files extension.js
+and metadata.json, as well as the optional stylesheet.css and
+prefs.js if found. Each additional source that should be included
+must be specified with *--extra-source*.
++
+If the extension includes one or more GSettings schemas, they can
+either be placed in a schemas/ folder to be picked up automatically,
+or be specified with *--schema*.
++
+Similarily, translations are included automatically when they are
+located in a po/ folder, otherwise the *--podir* option can be
+used to point to the correct directory. If no gettext domain is
+provided on the command line, the value of the *gettext-domain*
+metadata field is used if it exists, and the extension UUID
+if not.
++
+All files are searched in 'SOURCE-DIRECTORY' if specified, or
+the current directory otherwise.
++
+.Options
+  *--extra-source*='FILE':::
+    Additional source to include in the bundle
+
+  *--schema*='SCHEMA':::
+    A GSettings schema that should be compiled and
+    included
+
+  *--podir*='PODIR':::
+    A directory with translations that should be
+    compiled and included
+
+  *--gettext-domain*='DOMAIN':::
+    The gettext domain to use for translations
+
+  *-f*:::
+  *--force*:::
+    Overwrite an existing pack
+
+  *-o*:::
+  *--out-dir*='DIRECTORY':::
+    The directory where the pack should be created
 
 
 EXIT STATUS
