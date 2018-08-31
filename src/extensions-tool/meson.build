@@ -14,6 +14,7 @@ sources = [
   'command-enable.c',
   'command-info.c',
   'command-list.c',
+  'command-pack.c',
   'main.c'
 ]
 
@@ -24,7 +25,7 @@ resources = gnome.compile_resources('resources',
 
 executable('gnome-extensions',
   sources, resources,
-  dependencies: [gio_dep, gio_unix_dep],
+  dependencies: [gio_dep, gio_unix_dep, autoar_dep, json_dep],
   install: true
 )
 

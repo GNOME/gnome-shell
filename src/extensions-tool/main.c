@@ -162,6 +162,7 @@ usage (void)
   g_printerr ("  info      %s\n", _("Show extension info"));
   g_printerr ("  show      %s\n", _("Show extension info"));
   g_printerr ("  create    %s\n", _("Create extension"));
+  g_printerr ("  pack      %s\n", _("Package extension"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
 }
@@ -227,6 +228,8 @@ main (int argc, char *argv[])
     return handle_info (argc, argv, do_help);
   else if (g_str_equal (command, "create"))
     return handle_create (argc, argv, do_help);
+  else if (g_str_equal (command, "pack"))
+    return handle_pack (argc, argv, do_help);
   else
     usage ();
 
