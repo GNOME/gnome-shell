@@ -360,6 +360,7 @@ var InputSourceManager = new Lang.Class({
         this._settings.connect('per-window-changed', this._sourcesPerWindowChanged.bind(this));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
+        this._keepFocusOnActivatingInputSource = false;
     },
 
     reload() {
@@ -458,7 +459,15 @@ var InputSourceManager = new Lang.Class({
     },
 
     activateInputSource(is, interactive) {
-        KeyboardManager.holdKeyboard();
+        // The focus changes during holdKeyboard/releaseKeyboard may trick
+        // the client into hiding UI containing the currently focused entry.
+        // So holdKeyboard/releaseKeyboard are not called when
+        // 'set-content-type' signal is received.
+        // E.g. Focusing on a password entry in a popup in Xorg Firefox
+        // will emit 'set-content-type' signal.
+        // https://gitlab.gnome.org/GNOME/gnome-shell/issues/391
+        if (!this._keepFocusOnActivatingInputSource)
+            KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
         // All the "xkb:..." IBus engines simply "echo" back symbols,
@@ -473,7 +482,10 @@ var InputSourceManager = new Lang.Class({
         else
             engine = 'xkb:us::eng';
 
-        this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
+        if (!this._keepFocusOnActivatingInputSource)
+            this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
+        else
+            this._ibusManager.setEngine(engine);
         this._currentInputSourceChanged(is);
 
         if (interactive)
@@ -674,7 +686,9 @@ var InputSourceManager = new Lang.Class({
                 return;
             this._disableIBus = false;
         }
+        this._keepFocusOnActivatingInputSource = true;
         this.reload();
+        this._keepFocusOnActivatingInputSource = false;
     },
 
     _getNewInputSource(current) {
