@@ -5,7 +5,7 @@
 ################################################################################
 
 __gnome_extensions() {
-  local commands="version enable disable info show list create"
+  local commands="version enable disable info show list create pack"
   local COMMAND=${COMP_WORDS[1]}
 
   _init_completion -s || return
@@ -31,6 +31,25 @@ __gnome_extensions() {
           ;;&
         enable|disable|info|show)
           COMPREPLY=($(compgen -W "`gnome-extensions list $list_opt`" -- "$2"))
+          return 0
+          ;;
+      esac
+      ;;
+  esac
+
+  case "$COMMAND" in
+    pack)
+      case "$prev" in
+        --podir|--out-dir|-o)
+          _filedir -d
+          return 0
+          ;;
+        --schema)
+          _filedir gschema.xml
+          return 0
+          ;;
+        --extra-source)
+          _filedir
           return 0
           ;;
       esac
