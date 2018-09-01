@@ -465,6 +465,8 @@ var WindowOverlay = new Lang.Class({
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         windowClone.actor.label_actor = title;
 
+        this._maxTitleWidth = -1;
+
         this._updateCaptionId = metaWindow.connect('notify::title', w => {
             this.title.text = w.title;
             this.title.text = this._getCaption();
@@ -528,6 +530,13 @@ var WindowOverlay = new Lang.Class({
                 Math.max(this.borderSize, this.closeButton.width - this.closeButton._overlap)];
     },
 
+    setMaxChromeWidth(max) {
+        if (this._maxTitleWidth == max)
+            return;
+
+        this._maxTitleWidth = max;
+    },
+
     relayout(animate) {
         let button = this.closeButton;
         let title = this.title;
@@ -554,13 +563,26 @@ var WindowOverlay = new Lang.Class({
         else
             button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
-        let titleX = cloneX + (cloneWidth - title.width) / 2;
+        // Clutter.Actor.get_preferred_width() will return the fixed width if
+        // one is set, so we need to reset the width by calling set_width(-1),
+        // to forward the call down to StLabel.
+        // We also need to save and restore the current width, otherwise the
+        // animation starts from the wrong point.
+        let prevTitleWidth = title.width;
+        title.set_width(-1);
+
+        let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
+        let titleWidth = Math.max(titleMinWidth,
+                                  Math.min(titleNatWidth, this._maxTitleWidth));
+        title.width = prevTitleWidth;
+
+        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
         if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), title.width);
+            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
         } else {
-            title.width = title.width;
+            title.width = titleWidth;
             title.set_position(Math.floor(titleX), Math.floor(titleY));
         }
 
@@ -1305,6 +1327,12 @@ var Workspace = new Lang.Class({
             let cloneWidth = clone.actor.width * scale;
             let cloneHeight = clone.actor.height * scale;
             clone.slot = [x, y, cloneWidth, cloneHeight];
+
+            let cloneCenter = x + cloneWidth / 2;
+            let maxChromeWidth = 2 * Math.min(
+                cloneCenter - area.x,
+                area.x + area.width - cloneCenter);
+            overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
 
             if (overlay && (initialPositioning || !clone.positioned))
                 overlay.hide();
