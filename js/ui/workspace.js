@@ -554,13 +554,25 @@ var WindowOverlay = new Lang.Class({
         else
             button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
-        let titleX = cloneX + (cloneWidth - title.width) / 2;
+        // ClutterActor.get_preferred_width() will return the fixed width if
+        // one is set, so we need to reset the width by calling set_width(-1),
+        // to forward the call down to StLabel.
+        // We also need to save and restore the current width, otherwise the
+        // animation starts from the wrong point.
+        let prevTitleWidth = title.width;
+        title.set_width(-1);
+
+        let titleWidth = title.get_preferred_width(-1)[1];
+
+        title.set_width(prevTitleWidth);
+
+        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
         if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), title.width);
+            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
         } else {
-            title.width = title.width;
+            title.set_width(titleWidth);
             title.set_position(Math.floor(titleX), Math.floor(titleY));
         }
 
