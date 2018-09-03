@@ -5,7 +5,7 @@
 ################################################################################
 
 __gnome_extensions() {
-  local commands="version enable disable info show list create pack"
+  local commands="version enable disable info install show list create pack"
   local COMMAND=${COMP_WORDS[1]}
 
   _init_completion -s || return
@@ -53,6 +53,13 @@ __gnome_extensions() {
           return 0
           ;;
       esac
+      ;;
+    install)
+      if [[ $cur != -* ]]
+      then
+          _filedir zip
+          return 0
+      fi
       ;;
   esac
 
