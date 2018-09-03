@@ -29,6 +29,8 @@ SYNOPSIS
 
 *gnome-extensions* pack ['OPTION'...]
 
+*gnome-extensions* install ['OPTION'...] 'PACK'
+
 DESCRIPTION
 -----------
 *gnome-extensions* is a utility that makes some common GNOME extensions
@@ -147,6 +149,22 @@ the current directory otherwise.
   *--out-dir*='DIRECTORY':::
     The directory where the pack should be created
 
+*install* ['OPTION'...] 'PACK'::
+Installs an extension from the bundle 'PACK'.
++
+The command unpacks the extension files and moves them to
+the expected location in the user's *$HOME*, so that it
+will be loaded in the next session.
++
+It is mainly intended for testing, not as a replacement for
+GNOME Software or the extension website. As extensions have
+privileged access to the user's session, it is advised to
+never load extensions from untrusted sources without carefully
+reviewing their content.
++
+.Options
+  *--force*:::
+    Override an existing extension
 
 EXIT STATUS
 -----------
