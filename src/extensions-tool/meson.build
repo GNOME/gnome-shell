@@ -13,6 +13,7 @@ sources = [
   'command-disable.c',
   'command-enable.c',
   'command-info.c',
+  'command-install.c',
   'command-list.c',
   'command-pack.c',
   'main.c'

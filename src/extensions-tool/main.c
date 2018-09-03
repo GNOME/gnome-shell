@@ -126,6 +126,31 @@ print_extension_info (GVariantDict  *info,
   g_print ("  %s: %s\n", _("State"), extension_state_to_string (state));
 }
 
+gboolean
+file_delete_recursively (GFile   *file,
+                         GError **error)
+{
+  g_autoptr (GFileEnumerator) file_enum = NULL;
+  GFile *child;
+
+  file_enum = g_file_enumerate_children (file, NULL, 0, NULL, NULL);
+  if (file_enum)
+    while (TRUE)
+      {
+        if (!g_file_enumerator_iterate (file_enum, NULL, &child, NULL, error))
+          return FALSE;
+
+        if (child == NULL)
+          break;
+
+        if (!file_delete_recursively (child, error))
+          return FALSE;
+      }
+
+  return g_file_delete (file, NULL, error);
+}
+
+
 static int
 handle_version (int argc, char *argv[], gboolean do_help)
 {
@@ -163,6 +188,7 @@ usage (void)
   g_printerr ("  show      %s\n", _("Show extension info"));
   g_printerr ("  create    %s\n", _("Create extension"));
   g_printerr ("  pack      %s\n", _("Package extension"));
+  g_printerr ("  install   %s\n", _("Install extension bundle"));
   g_printerr ("\n");
   g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
 }
@@ -230,6 +256,8 @@ main (int argc, char *argv[])
     return handle_create (argc, argv, do_help);
   else if (g_str_equal (command, "pack"))
     return handle_pack (argc, argv, do_help);
+  else if (g_str_equal (command, "install"))
+    return handle_install (argc, argv, do_help);
   else
     usage ();
 

@@ -54,4 +54,7 @@ void print_extension_info (GVariantDict  *info,
 GDBusProxy *get_shell_proxy (GError **error);
 GSettings  *get_shell_settings (void);
 
+gboolean file_delete_recursively (GFile   *file,
+                                  GError **error);
+
 G_END_DECLS
