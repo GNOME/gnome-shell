@@ -1,3 +1,14 @@
+3.30.0
+======
+
+Contributors:
+  Harry Mallon, Marco Trevisan (Treviño)
+
+Translators:
+  Fran Dieguez [gl], Trần Ngọc Quân [vi], Balázs Meskó [hu],
+  Rūdolfs Mazurs [lv], Jiri Grönroos [fi], Anders Jonsson [sv], gogo [hr],
+  Ask Hjorth Larsen [da]
+
 3.29.92
 =======
 * Choose some actors to cache on the GPU [Daniel; #792633]
