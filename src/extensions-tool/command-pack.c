@@ -38,28 +38,6 @@ typedef struct _ExtensionPack {
 static void extension_pack_free (ExtensionPack *);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ExtensionPack, extension_pack_free);
 
-static void
-delete_recursively (GFile *file)
-{
-  g_autoptr (GFileEnumerator) file_enum = NULL;
-  GFile *child;
-
-  file_enum = g_file_enumerate_children (file, NULL, 0, NULL, NULL);
-  if (file_enum)
-    while (TRUE)
-      {
-        if (!g_file_enumerator_iterate (file_enum, NULL, &child, NULL, NULL))
-          return;
-
-        if (child == NULL)
-          break;
-
-        delete_recursively (child);
-      }
-
-  g_file_delete (file, NULL, NULL);
-}
-
 static ExtensionPack *
 extension_pack_new (const char *srcdir)
 {
@@ -74,7 +52,7 @@ static void
 extension_pack_free (ExtensionPack *pack)
 {
   if (pack->tmpdir)
-    delete_recursively (pack->tmpdir);
+    file_delete_recursively (pack->tmpdir, NULL);
 
   g_clear_pointer (&pack->files, g_hash_table_destroy);
   g_clear_pointer (&pack->metadata, json_object_unref);
