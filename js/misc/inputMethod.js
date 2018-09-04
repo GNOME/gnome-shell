@@ -16,7 +16,6 @@ var InputMethod = new Lang.Class({
         this._enabled = true;
         this._currentFocus = null;
         this._currentEvent = null;
-        this._doForwardEvent = false;
         this._preeditStr = '';
         this._preeditPos = 0;
         this._ibus = IBus.Bus.new_async();
@@ -28,9 +27,6 @@ var InputMethod = new Lang.Class({
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
                                                                  this._onSourceChanged.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
-
-        let deviceManager = Clutter.DeviceManager.get_default();
-        this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         if (this._ibus.is_connected())
             this._onConnected();
@@ -122,19 +118,25 @@ var InputMethod = new Lang.Class({
     _onForwardKeyEvent(context, keyval, keycode, state) {
         let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
 
-        if (this._currentEvent) {
-            // If we are handling this same event in filter_key_press(),
-            // just let it go through, sending the same event again will
-            // be silenced away because the key counts as pressed.
-            if (this._currentEvent.get_key_symbol() == keyval &&
-                (this._currentEvent.type() == Clutter.EventType.KEY_PRESS) == press) {
-                this._doForwardEvent = true;
-                return;
-            }
+
+        if (!this._currentEvent) {
+            log('Ignore forward-key-event (0x%x, 0x%x, 0x%x)'.format(keyval, keycode, state));
+            return;
         }
 
-        this._virtualDevice.notify_key(Clutter.get_current_event_time(), keycode,
-                                       press ? Clutter.KeyState.PRESSED : Clutter.KeyState.RELEASED);
+        state |= IBus.ModifierType.IGNORED_MASK;
+        let event = this._currentEvent.copy();
+        event.type = press ? Clutter.EventType.KEY_PRESS : Clutter.EventType.KEY_RELEASE;
+        event.set_key_symbol(keyval);
+        event.set_key_code(keycode);
+        event.set_state(state);
+        event.set_time(Clutter.get_current_event_time());
+        event.set_flags(this._currentEvent.get_flags());
+        event.set_stage(this._currentEvent.get_stage());
+        event.set_source(this._currentEvent.get_source());
+        event.set_device(this._currentEvent.get_device());
+        // FIXME: event.set_unicode_value();
+        this.notify_key_event(event, false);
     },
 
     vfunc_focus_in(focus) {
@@ -238,9 +240,8 @@ var InputMethod = new Lang.Class({
 
         if (event.type() == Clutter.EventType.KEY_RELEASE)
             state |= IBus.ModifierType.RELEASE_MASK;
-
-        this._currentEvent = event;
-        this._doForwardEvent = false;
+        else
+            this._currentEvent = event;
 
         this._context.process_key_event_async(event.get_key_symbol(),
                                               event.get_key_code() - 8, // Convert XKB keycodes to evcodes
@@ -249,12 +250,13 @@ var InputMethod = new Lang.Class({
                                                   try {
                                                       let retval = context.process_key_event_async_finish(res);
 
-                                                      if (this._doForwardEvent)
-                                                          retval = false;
+                                                      if (!retval) {
+                                                          state = event.get_state();
+                                                          state |= IBus.ModifierType.IGNORED_MASK;
+                                                          event.set_state(state);
+                                                      }
 
                                                       this.notify_key_event(event, retval);
-                                                      this._doForwardEvent = false;
-                                                      this._currentEvent = null;
                                                   } catch (e) {
                                                       log('Error processing key on IM: ' + e.message);
                                                   }
