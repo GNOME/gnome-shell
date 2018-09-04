@@ -1059,7 +1059,8 @@ var LayoutManager = new Lang.Class({
             }
         }
 
-        global.set_stage_input_region(rects);
+        if (!Meta.is_wayland_compositor())
+            global.set_stage_input_region(rects);
         this._isPopupWindowVisible = isPopupMenuVisible;
 
         let workspaceManager = global.workspace_manager;
