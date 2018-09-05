@@ -1,0 +1,37 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Shell.Introspect:
+      @short_description: Introspection interface
+
+      The interface used to introspect the state of Shell, such as running
+      applications, currently active application, etc.
+  -->
+  <interface name="org.gnome.Shell.Introspect">
+
+    <!--
+        RunningApplicationsChanged:
+        @short_description: Notifies when the running applications changes
+    -->
+    <signal name="RunningApplicationsChanged" />
+
+    <!--
+        GetRunningApplications:
+        @short_description: Retrieves the description of all running applications
+
+        Each application is associated by an application ID. The details of
+        each application consists of a varlist of keys and values. Available
+        keys are listed below.
+
+        'active-on-seats' - (as)   list of seats the application is active on
+                                   (a seat only has at most one active
+                                   application)
+    -->
+    <method name="GetRunningApplications">
+      <arg name="apps" direction="out" type="a{sa{sv}}" />
+    </method>
+  </interface>
+</node>

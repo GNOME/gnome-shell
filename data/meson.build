@@ -46,7 +46,8 @@ dbus_interfaces = [
   'org.gnome.Shell.Screencast.xml',
   'org.gnome.Shell.Screenshot.xml',
   'org.gnome.ShellSearchProvider.xml',
-  'org.gnome.ShellSearchProvider2.xml'
+  'org.gnome.ShellSearchProvider2.xml',
+  'org.gnome.Shell.Introspect.xml'
 ]
 install_data(dbus_interfaces, install_dir: ifacedir)
 
