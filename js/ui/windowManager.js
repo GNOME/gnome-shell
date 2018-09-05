@@ -278,14 +278,21 @@ var WorkspaceTracker = new Lang.Class({
         // If we don't have an empty workspace at the end, add one
         if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
             workspaceManager.append_new_workspace(false, global.get_current_time());
-            emptyWorkspaces.push(false);
+            emptyWorkspaces.push(true);
         }
 
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+        let lastIndex = emptyWorkspaces.length - 1;
+        let removeOffset = 1; // keep the trailing empty workspace ...
+        if (emptyWorkspaces[activeWorkspaceIndex] &&
+            activeWorkspaceIndex == lastIndex - 1)
+            // ... except when we're on an empty workspace right before it
+            removeOffset = 0;
+
         emptyWorkspaces[activeWorkspaceIndex] = false;
 
         // Delete other empty workspaces; do it from the end to avoid index changes
-        for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
+        for (i = lastIndex - removeOffset; i >= 0; i--) {
             if (emptyWorkspaces[i])
                 workspaceManager.remove_workspace(this._workspaces[i], global.get_current_time());
         }
