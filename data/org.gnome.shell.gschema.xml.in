@@ -90,6 +90,14 @@
         adapter is ever seen not to have devices associated to it.
       </description>
     </key>
+    <key name="app-introspection" type="b">
+      <default>false</default>
+      <summary>Enable application introspection API</summary>
+      <description>
+        Enables a D-Bus API that allows to introspect the application state of
+        the shell.
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
