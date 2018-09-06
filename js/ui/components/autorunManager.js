@@ -8,6 +8,8 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_DISABLE_AUTORUN = 'autorun-never';
@@ -74,16 +76,7 @@ function startAppForMount(app, mount) {
 
 /******************************************/
 
-const HotplugSnifferIface = `
-<node>
-<interface name="org.gnome.Shell.HotplugSniffer">
-<method name="SniffURI">
-    <arg type="s" direction="in" />
-    <arg type="as" direction="out" />
-</method>
-</interface>
-</node>`;
-
+const HotplugSnifferIface = loadInterfaceXML('org.gnome.Shell.HotplugSniffer');
 const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
 function HotplugSniffer() {
     return new HotplugSnifferProxy(Gio.DBus.session,

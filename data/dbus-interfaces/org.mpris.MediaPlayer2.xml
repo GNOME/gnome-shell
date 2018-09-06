@@ -1,0 +1,7 @@
+<node>
+  <interface name="org.mpris.MediaPlayer2">
+    <method name="Raise"/>
+    <property name="CanRaise" type="b" access="read"/>
+    <property name="DesktopEntry" type="s" access="read"/>
+  </interface>
+</node>

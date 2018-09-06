@@ -8,18 +8,12 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 
-const RfkillManagerInterface = `
-<node>
-<interface name="org.gnome.SettingsDaemon.Rfkill">
-<property name="AirplaneMode" type="b" access="readwrite" />
-<property name="HardwareAirplaneMode" type="b" access="read" />
-<property name="ShouldShowAirplaneMode" type="b" access="read" />
-</interface>
-</node>`;
-
+const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
 const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 
 var RfkillManager = new Lang.Class({

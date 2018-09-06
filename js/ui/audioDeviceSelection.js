@@ -9,25 +9,15 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 var AudioDevice = {
     HEADPHONES: 1 << 0,
     HEADSET:    1 << 1,
     MICROPHONE: 1 << 2
 };
 
-const AudioDeviceSelectionIface = `
-<node>
-<interface name="org.gnome.Shell.AudioDeviceSelection">
-<method name="Open">
-    <arg name="devices" direction="in" type="as" />
-</method>
-<method name="Close">
-</method>
-<signal name="DeviceSelected">
-    <arg name="device" type="s" />
-</signal>
-</interface>
-</node>`;
+const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
 var AudioDeviceSelectionDialog = new Lang.Class({
     Name: 'AudioDeviceSelectionDialog',

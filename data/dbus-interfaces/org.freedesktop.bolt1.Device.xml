@@ -1,0 +1,18 @@
+<node>
+  <interface name="org.freedesktop.bolt1.Device">
+    <property name="Uid" type="s" access="read"></property>
+    <property name="Name" type="s" access="read"></property>
+    <property name="Vendor" type="s" access="read"></property>
+    <property name="Type" type="s" access="read"></property>
+    <property name="Status" type="s" access="read"></property>
+    <property name="Parent" type="s" access="read"></property>
+    <property name="SysfsPath" type="s" access="read"></property>
+    <property name="Stored" type="b" access="read"></property>
+    <property name="Policy" type="s" access="read"></property>
+    <property name="Key" type="s" access="read"></property>
+    <property name="Label" type="s" access="read"></property>
+    <property name="ConnectTime" type="t" access="read"></property>
+    <property name="AuthorizeTime" type="t" access="read"></property>
+    <property name="StoreTime" type="t" access="read"></property>
+  </interface>
+</node>
