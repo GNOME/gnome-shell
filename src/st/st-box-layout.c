@@ -58,6 +58,7 @@
 
 static void st_box_container_iface_init (ClutterContainerIface *iface);
 static void st_box_scrollable_interface_init (StScrollableInterface *iface);
+static void st_box_layout_update_scroll (StBoxLayout *self);
 
 enum {
   PROP_0,
@@ -90,7 +91,8 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StBoxLayout  *box)
 {
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+  st_box_layout_update_scroll (box);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
 }
 
 static void
@@ -279,15 +281,23 @@ st_box_layout_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
-  ClutterActorBox content_box;
-  gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
-
   CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box, flags);
 
-  st_theme_node_get_content_box (theme_node, box, &content_box);
+  st_box_layout_update_scroll (ST_BOX_LAYOUT (actor));
+}
+
+static void
+st_box_layout_update_scroll (StBoxLayout *self)
+{
+  StBoxLayoutPrivate *priv = self->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
+  ClutterActorBox allocation_box, content_box;
+  gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
+
+  clutter_actor_get_allocation_box (actor, &allocation_box);
+  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
   clutter_actor_box_get_size (&content_box, &avail_width, &avail_height);
 
   clutter_layout_manager_get_preferred_width (layout, CLUTTER_CONTAINER (actor),
