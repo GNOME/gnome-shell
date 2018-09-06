@@ -58,6 +58,7 @@
 
 static void st_box_container_iface_init (ClutterContainerIface *iface);
 static void st_box_scrollable_interface_init (StScrollableInterface *iface);
+static void st_box_layout_update_scroll (StBoxLayout *self);
 
 enum {
   PROP_0,
@@ -90,7 +91,8 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StBoxLayout  *box)
 {
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+  st_box_layout_update_scroll (box);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
 }
 
 static void
@@ -279,15 +281,23 @@ st_box_layout_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
-  ClutterActorBox content_box;
-  gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
-
   CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box, flags);
 
-  st_theme_node_get_content_box (theme_node, box, &content_box);
+  st_box_layout_update_scroll (ST_BOX_LAYOUT (actor));
+}
+
+static void
+st_box_layout_update_scroll (StBoxLayout *self)
+{
+  StBoxLayoutPrivate *priv = self->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
+  ClutterActorBox allocation_box, content_box;
+  gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
+
+  clutter_actor_get_allocation_box (actor, &allocation_box);
+  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
   clutter_actor_box_get_size (&content_box, &avail_width, &avail_height);
 
   clutter_layout_manager_get_preferred_width (layout, CLUTTER_CONTAINER (actor),
@@ -490,12 +500,7 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
                                 ClutterPaintVolume *volume)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
-  gdouble x, y, lower, upper;
   StBoxLayoutPrivate *priv = self->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  ClutterActorBox allocation_box;
-  ClutterActorBox content_box;
-  ClutterVertex origin;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
@@ -506,11 +511,19 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
   if (priv->hadjustment || priv->vadjustment)
     {
       gdouble width, height;
+      gdouble lower, upper;
+      ClutterActorBox allocation_box;
+      ClutterActorBox content_box;
+      ClutterVertex origin;
+      StThemeNode *theme_node;
 
+      theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
-      origin.x = content_box.x1 - allocation_box.x1;
-      origin.y = content_box.y1 - allocation_box.y2;
+
+      /* The content box is relative to the allocation box so add origins... */
+      origin.x = content_box.x1 + allocation_box.x1;
+      origin.y = content_box.y1 + allocation_box.y1;
       origin.z = 0.f;
 
       if (priv->hadjustment)
@@ -541,25 +554,25 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
 
       clutter_paint_volume_set_width (volume, width);
       clutter_paint_volume_set_height (volume, height);
-    }
-  else if (!CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume))
-    return FALSE;
 
-  /* When scrolled, st_box_layout_apply_transform() includes the scroll offset
-   * and affects paint volumes. This is right for our children, but our paint volume
-   * is determined by our allocation and borders and doesn't scroll, so we need
-   * to reverse-compensate here, the same as we do when painting.
-   */
-  get_border_paint_offsets (self, &x, &y);
-  if (x != 0 || y != 0)
-    {
-      clutter_paint_volume_get_origin (volume, &origin);
-      origin.x += x;
-      origin.y += y;
+      /* When scrolled, st_box_layout_apply_transform() includes the scroll
+       * offset and affects paint volumes. But since paint volumes are now
+       * cached (mutter 161d2540e659) _and_ we avoid doing a relayout/allocate
+       * on every frame, we won't get called here on every scroll event. So we
+       * can't safely make paint volume adjustments based on the scroll
+       * position any more.
+       *   The solution now is to just choose the safest most conservative
+       * offset that will work for any possible scroll position given the full
+       * range of movement. Admittedly this will give us sub-optimal clipping,
+       * but being able to retain the paint volume caching and avoid extra
+       * allocate calls turns out to be a noticeable performance benefit...
+       */
       clutter_paint_volume_set_origin (volume, &origin);
+
+      return TRUE;
     }
 
-  return TRUE;
+  return CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume);
 }
 
 static void
