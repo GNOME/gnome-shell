@@ -3,6 +3,7 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Config = imports.misc.config;
 const Params = imports.misc.params;
 
 function collectFromDatadirs(subdir, includeUserDir, processFile) {
@@ -69,4 +70,30 @@ function recursivelyMoveDir(srcDir, destDir) {
         else if (type == Gio.FileType.DIRECTORY)
             recursivelyMoveDir(srcChild, destChild);
     }
+}
+
+let _ifaceResource = null;
+function loadInterfaceXML(iface) {
+    if (!_ifaceResource) {
+        // don't use global.datadir so the method is usable from tools
+        let path = Config.PKGDATADIR + '/gnome-shell-dbus-interfaces.gresource';
+        _ifaceResource = Gio.Resource.load(path);
+        _ifaceResource._register();
+    }
+
+    let xml = null;
+    let uri = 'resource:///org/gnome/shell/dbus-interfaces/' + iface + '.xml';
+    let f = Gio.File.new_for_uri(uri);
+
+    try {
+        let [ok, bytes] = f.load_contents(null);
+        if (bytes instanceof Uint8Array)
+            xml = imports.byteArray.toString(bytes)
+        else
+            xml = bytes;
+    } catch (e) {
+        log('Failed to load D-Bus interface ' + iface);
+    }
+
+    return xml;
 }
