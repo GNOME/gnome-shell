@@ -1,0 +1,36 @@
+<node>
+  <interface name="org.gnome.Shell.Extensions">
+    <method name="ListExtensions">
+      <arg type="a{sa{sv}}" direction="out" name="extensions"/>
+    </method>
+    <method name="GetExtensionInfo">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="a{sv}" direction="out" name="info"/>
+    </method>
+    <method name="GetExtensionErrors">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="as" direction="out" name="errors"/>
+    </method>
+    <method name="InstallRemoteExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="s" direction="out" name="result"/>
+    </method>
+    <method name="UninstallExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="b" direction="out" name="success"/>
+    </method>
+    <method name="ReloadExtension">
+      <arg type="s" direction="in" name="uuid"/>
+    </method>
+    <method name="LaunchExtensionPrefs">
+      <arg type="s" direction="in" name="uuid"/>
+    </method>
+    <method name="CheckForUpdates"/>
+    <signal name="ExtensionStatusChanged">
+      <arg type="s" name="uuid"/>
+      <arg type="i" name="state"/>
+      <arg type="s" name="error"/>
+    </signal>
+    <property name="ShellVersion" type="s" access="read"/>
+  </interface>
+</node>

@@ -1,0 +1,12 @@
+<node>
+  <interface name="org.freedesktop.Application">
+    <method name="ActivateAction">
+      <arg type="s" direction="in"/>
+      <arg type="av" direction="in"/>
+      <arg type="a{sv}" direction="in"/>
+    </method>
+    <method name="Activate">
+      <arg type="a{sv}" direction="in"/>
+    </method>
+  </interface>
+</node>

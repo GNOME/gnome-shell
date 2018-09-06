@@ -25,6 +25,8 @@ const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
 const SwitchMonitor = imports.ui.switchMonitor;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 var SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
 var SHOW_WINDOW_ANIMATION_TIME = 0.15;
@@ -42,21 +44,7 @@ var ONE_SECOND = 1000; // in ms
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
 const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 
-const GsdWacomIface = `
-<node name="/org/gnome/SettingsDaemon/Wacom">
-<interface name="org.gnome.SettingsDaemon.Wacom">
-  <method name="SetGroupModeLED">
-    <arg name="device_path" direction="in" type="s"/>
-    <arg name="group" direction="in" type="u"/>
-    <arg name="mode" direction="in" type="u"/>
-  </method>
-  <method name="SetOLEDLabels">
-    <arg name="device_path" direction="in" type="s"/>
-    <arg name="labels" direction="in" type="as"/>
-  </method>
-  </interface>
-</node>`;
-
+const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
 var DisplayChangeDialog = new Lang.Class({

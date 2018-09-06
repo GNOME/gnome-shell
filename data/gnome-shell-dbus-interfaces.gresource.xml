@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell/dbus-interfaces">
+    <file>net.hadess.SensorProxy.xml</file>
+    <file>net.hadess.SwitcherooControl.xml</file>
+    <file>org.freedesktop.Application.xml</file>
+    <file>org.freedesktop.bolt1.Device.xml</file>
+    <file>org.freedesktop.bolt1.Manager.xml</file>
+    <file>org.freedesktop.DBus.xml</file>
+    <file>org.freedesktop.GeoClue2.Agent.xml</file>
+    <file>org.freedesktop.GeoClue2.Manager.xml</file>
+    <file>org.freedesktop.impl.portal.Access.xml</file>
+    <file>org.freedesktop.impl.portal.PermissionStore.xml</file>
+    <file>org.freedesktop.impl.portal.Request.xml</file>
+    <file>org.freedesktop.login1.Manager.xml</file>
+    <file>org.freedesktop.login1.Session.xml</file>
+    <file>org.freedesktop.login1.User.xml</file>
+    <file>org.freedesktop.ModemManager1.Modem.Modem3gpp.xml</file>
+    <file>org.freedesktop.ModemManager1.Modem.ModemCdma.xml</file>
+    <file>org.freedesktop.ModemManager1.Modem.xml</file>
+    <file>org.freedesktop.ModemManager.Modem.Cdma.xml</file>
+    <file>org.freedesktop.ModemManager.Modem.Gsm.Network.xml</file>
+    <file>org.freedesktop.Notifications.xml</file>
+    <file>org.freedesktop.PackageKit.Offline.xml</file>
+    <file>org.freedesktop.realmd.Provider.xml</file>
+    <file>org.freedesktop.realmd.Realm.xml</file>
+    <file>org.freedesktop.realmd.Service.xml</file>
+    <file>org.freedesktop.UPower.Device.xml</file>
+    <file>org.freedesktop.UPower.xml</file>
+    <file>org.gnome.Magnifier.xml</file>
+    <file>org.gnome.Magnifier.ZoomRegion.xml</file>
+    <file>org.gnome.ScreenSaver.xml</file>
+    <file>org.gnome.SessionManager.EndSessionDialog.xml</file>
+    <file>org.gnome.SessionManager.Inhibitor.xml</file>
+    <file>org.gnome.SessionManager.Presence.xml</file>
+    <file>org.gnome.SessionManager.xml</file>
+    <file>org.gnome.SettingsDaemon.Color.xml</file>
+    <file>org.gnome.SettingsDaemon.Power.Screen.xml</file>
+    <file>org.gnome.SettingsDaemon.Rfkill.xml</file>
+    <file>org.gnome.SettingsDaemon.Wacom.xml</file>
+    <file>org.gnome.Shell.AudioDeviceSelection.xml</file>
+    <file>org.gnome.Shell.Extensions.xml</file>
+    <file>org.gnome.Shell.HotplugSniffer.xml</file>
+    <file>org.gnome.Shell.PerfHelper.xml</file>
+    <file>org.gnome.Shell.PortalHelper.xml</file>
+    <file>org.gnome.Shell.Screencast.xml</file>
+    <file>org.gnome.Shell.Screenshot.xml</file>
+    <file>org.gnome.Shell.Wacom.PadOsd.xml</file>
+    <file>org.gnome.Shell.xml</file>
+    <file>org.Gtk.MountOperationHandler.xml</file>
+    <file>org.gtk.Notifications.xml</file>
+    <file>org.mpris.MediaPlayer2.Player.xml</file>
+    <file>org.mpris.MediaPlayer2.xml</file>
   </gresource>
 </gresources>

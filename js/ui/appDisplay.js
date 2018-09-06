@@ -30,6 +30,8 @@ const Params = imports.misc.params;
 const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 var MAX_APPLICATION_WORK_MILLIS = 75;
 var MENU_POPUP_TIMEOUT = 600;
 var MAX_COLUMNS = 6;
@@ -66,13 +68,7 @@ var PAGE_SWITCH_TIME = 0.3;
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
-const SwitcherooProxyInterface = `
-<node>
-<interface name="net.hadess.SwitcherooControl">
-  <property name="HasDualGpu" type="b" access="read"/>
-</interface>
-</node>`;
-
+const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 let discreteGpuAvailable = false;
 

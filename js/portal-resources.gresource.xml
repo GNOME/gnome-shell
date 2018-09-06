@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/org/gnome/shell">
     <file>misc/config.js</file>
+    <file>misc/fileUtils.js</file>
     <file>portalHelper/main.js</file>
   </gresource>
 </gresources>

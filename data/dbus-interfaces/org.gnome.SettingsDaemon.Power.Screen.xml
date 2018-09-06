@@ -1,0 +1,5 @@
+<node>
+  <interface name="org.gnome.SettingsDaemon.Power.Screen">
+    <property name="Brightness" type="i" access="readwrite"/>
+  </interface>
+</node>

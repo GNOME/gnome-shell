@@ -7,17 +7,12 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const BUS_NAME = 'org.gnome.SettingsDaemon.Color';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Color';
 
-const ColorInterface = `
-<node>
-<interface name="org.gnome.SettingsDaemon.Color">
-  <property name="DisabledUntilTomorrow" type="b" access="readwrite"/>
-  <property name="NightLightActive" type="b" access="read"/>
-</interface>
-</node>`;
-
+const ColorInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Color');
 const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
 
 var Indicator = new Lang.Class({

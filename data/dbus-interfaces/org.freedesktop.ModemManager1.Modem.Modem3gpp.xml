@@ -1,0 +1,6 @@
+<node>
+  <interface name="org.freedesktop.ModemManager1.Modem.Modem3gpp">
+    <property name="OperatorCode" type="s" access="read"/>
+    <property name="OperatorName" type="s" access="read"/>
+  </interface>
+</node>

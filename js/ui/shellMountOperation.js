@@ -18,6 +18,8 @@ const ModalDialog = imports.ui.modalDialog;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 var LIST_ITEM_ICON_SIZE = 48;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
@@ -436,39 +438,7 @@ var ShellProcessesDialog = new Lang.Class({
 });
 Signals.addSignalMethods(ShellProcessesDialog.prototype);
 
-const GnomeShellMountOpIface = `
-<node>
-<interface name="org.Gtk.MountOperationHandler">
-<method name="AskPassword">
-    <arg type="s" direction="in" name="object_id"/>
-    <arg type="s" direction="in" name="message"/>
-    <arg type="s" direction="in" name="icon_name"/>
-    <arg type="s" direction="in" name="default_user"/>
-    <arg type="s" direction="in" name="default_domain"/>
-    <arg type="u" direction="in" name="flags"/>
-    <arg type="u" direction="out" name="response"/>
-    <arg type="a{sv}" direction="out" name="response_details"/>
-</method>
-<method name="AskQuestion">
-    <arg type="s" direction="in" name="object_id"/>
-    <arg type="s" direction="in" name="message"/>
-    <arg type="s" direction="in" name="icon_name"/>
-    <arg type="as" direction="in" name="choices"/>
-    <arg type="u" direction="out" name="response"/>
-    <arg type="a{sv}" direction="out" name="response_details"/>
-</method>
-<method name="ShowProcesses">
-    <arg type="s" direction="in" name="object_id"/>
-    <arg type="s" direction="in" name="message"/>
-    <arg type="s" direction="in" name="icon_name"/>
-    <arg type="ai" direction="in" name="application_pids"/>
-    <arg type="as" direction="in" name="choices"/>
-    <arg type="u" direction="out" name="response"/>
-    <arg type="a{sv}" direction="out" name="response_details"/>
-</method>
-<method name="Close"/>
-</interface>
-</node>`;
+const GnomeShellMountOpIface = loadInterfaceXML('org.Gtk.MountOperationHandler');
 
 var ShellMountOperationType = {
     NONE: 0,
