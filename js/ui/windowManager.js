@@ -1760,6 +1760,14 @@ var WindowManager = new Lang.Class({
             }
         }
 
+        for (let i = 0; i < switchData.windows.length; i++) {
+            let w = switchData.windows[i];
+
+            w.windowDestroyId = w.window.connect('destroy', () => {
+                switchData.windows.splice(switchData.windows.indexOf(w), 1);
+            });
+        }
+
         switchData.inGroup.set_position(-xDest, -yDest);
         switchData.inGroup.raise_top();
 
@@ -1790,8 +1798,8 @@ var WindowManager = new Lang.Class({
 
         for (let i = 0; i < switchData.windows.length; i++) {
                 let w = switchData.windows[i];
-                if (w.window.is_destroyed()) // Window gone
-                    continue;
+                w.window.disconnect(w.windowDestroyId);
+
                 if (w.window.get_parent() == switchData.outGroup) {
                     w.window.reparent(w.parent);
                     w.window.hide();
