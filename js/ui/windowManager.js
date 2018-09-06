@@ -1910,6 +1910,14 @@ var WindowManager = new Lang.Class({
                 actor.visible = visible;
             }
         }
+
+        for (let i = 0; i < switchData.windows.length; i++) {
+            let w = switchData.windows[i];
+
+            w.windowDestroyId = w.window.connect('destroy', () => {
+                switchData.windows.splice(switchData.windows.indexOf(w), 1);
+            });
+        }
     },
 
     _finishWorkspaceSwitch(switchData) {
@@ -1917,9 +1925,8 @@ var WindowManager = new Lang.Class({
 
         for (let i = 0; i < switchData.windows.length; i++) {
             let w = switchData.windows[i];
-            if (w.window.is_destroyed()) // Window gone
-                continue;
 
+            w.window.disconnect(w.windowDestroyId);
             w.window.reparent(w.parent);
 
             if (w.window.get_meta_window().get_workspace() !=
