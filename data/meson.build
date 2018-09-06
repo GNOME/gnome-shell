@@ -44,22 +44,22 @@ endforeach
 subdir('dbus-interfaces')
 subdir('theme')
 
-theme_resources = gnome.compile_resources(
-  'gnome-shell-theme', 'gnome-shell-theme.gresource.xml',
-  source_dir: 'theme',
-  dependencies: theme_deps,
-  gresource_bundle: true,
-  install: true,
-  install_dir: pkgdatadir
-)
-
-osk_layout_resources = gnome.compile_resources(
-  'gnome-shell-osk-layouts', 'gnome-shell-osk-layouts.gresource.xml',
-  source_dir: 'osk-layouts',
-  gresource_bundle: true,
-  install: true,
-  install_dir: pkgdatadir
-)
+data_resources = [
+  ['dbus-interfaces', []],
+  ['osk-layouts', []],
+  ['theme', theme_deps]
+]
+foreach resource : data_resources
+  gnome.compile_resources(
+    'gnome-shell-' + resource[0],
+    'gnome-shell-@0@.gresource.xml'.format(resource[0]),
+    source_dir: resource[0],
+    dependencies: resource[1],
+    gresource_bundle: true,
+    install: true,
+    install_dir: pkgdatadir
+  )
+endforeach
 
 perfconf = configuration_data()
 perfconf.set('datadir', datadir)
