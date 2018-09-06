@@ -1,0 +1,10 @@
+<node>
+  <interface name="org.gnome.SettingsDaemon.Rfkill">
+    <property name="AirplaneMode" type="b" access="readwrite"/>
+    <property name="HardwareAirplaneMode" type="b" access="read"/>
+    <property name="BluetoothAirplaneMode" type="b" access="readwrite"/>
+    <property name="BluetoothHasAirplaneMode" type="b" access="read"/>
+    <property name="BluetoothHardwareAirplaneMode" type="b" access="readwrite"/>
+    <property name="ShouldShowAirplaneMode" type="b" access="read"/>
+  </interface>
+</node>

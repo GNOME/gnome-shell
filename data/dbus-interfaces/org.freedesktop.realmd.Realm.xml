@@ -1,0 +1,20 @@
+<node>
+  <interface name="org.freedesktop.realmd.Realm">
+    <property name="Name" type="s" access="read"/>
+    <property name="Configured" type="s" access="read"/>
+    <property name="Details" type="a(ss)" access="read"/>
+    <property name="LoginFormats" type="as" access="read"/>
+    <property name="LoginPolicy" type="s" access="read"/>
+    <property name="PermittedLogins" type="as" access="read"/>
+    <property name="SupportedInterfaces" type="as" access="read"/>
+    <method name="ChangeLoginPolicy">
+      <arg name="login_policy" type="s" direction="in"/>
+      <arg name="permitted_add" type="as" direction="in"/>
+      <arg name="permitted_remove" type="as" direction="in"/>
+      <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="Deconfigure">
+      <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+  </interface>
+</node>

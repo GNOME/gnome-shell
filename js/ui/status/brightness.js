@@ -8,16 +8,12 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Slider = imports.ui.slider;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 
-const BrightnessInterface = `
-<node>
-<interface name="org.gnome.SettingsDaemon.Power.Screen">
-<property name="Brightness" type="i" access="readwrite"/>
-</interface>
-</node>`;
-
+const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
 var Indicator = new Lang.Class({

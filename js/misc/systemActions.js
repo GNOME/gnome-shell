@@ -11,6 +11,8 @@ const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
@@ -22,12 +24,7 @@ const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 const SENSOR_BUS_NAME = 'net.hadess.SensorProxy';
 const SENSOR_OBJECT_PATH = '/net/hadess/SensorProxy';
 
-const SensorProxyInterface = `
-<node>
-<interface name="net.hadess.SensorProxy">
-  <property name="HasAccelerometer" type="b" access="read"/>
-</interface>
-</node>`;
+const SensorProxyInterface = loadInterfaceXML('net.hadess.SensorProxy');
 
 const POWER_OFF_ACTION_ID        = 'power-off';
 const LOCK_SCREEN_ACTION_ID      = 'lock-screen';

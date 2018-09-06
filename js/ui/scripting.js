@@ -9,6 +9,8 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 // This module provides functionality for driving the shell user interface
 // in an automated fashion. The primary current use case for this is
 // automated performance testing (see runPerfScript()), but it could
@@ -68,21 +70,7 @@ function waitLeisure() {
     return callback => { cb = callback; };
 }
 
-const PerfHelperIface = `
-<node>
-<interface name="org.gnome.Shell.PerfHelper">
-<method name="CreateWindow">
-    <arg type="i" direction="in" />
-    <arg type="i" direction="in" />
-    <arg type="b" direction="in" />
-    <arg type="b" direction="in" />
-    <arg type="b" direction="in" />
-</method>
-<method name="WaitWindows" />
-<method name="DestroyWindows" />
-</interface>
-</node>`;
-
+const PerfHelperIface = loadInterfaceXML('org.gnome.Shell.PerfHelper');
 var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
 function PerfHelper() {
     return new PerfHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');

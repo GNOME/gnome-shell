@@ -12,44 +12,12 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const PanelMenu = imports.ui.panelMenu;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 /* Keep in sync with data/org.freedesktop.bolt.xml */
 
-const BoltClientInterface = `
-<node>
-  <interface name="org.freedesktop.bolt1.Manager">
-    <property name="Probing" type="b" access="read"></property>
-    <property name="AuthMode" type="s" access="readwrite"></property>
-    <method name="EnrollDevice">
-      <arg type="s" name="uid" direction="in"> </arg>
-      <arg type="s" name="policy" direction="in"> </arg>
-      <arg type="s" name="flags" direction="in"> </arg>
-      <arg name="device" direction="out" type="o"> </arg>
-    </method>
-    <signal name="DeviceAdded">
-      <arg name="device" type="o"> </arg>
-    </signal>
-  </interface>
-</node>`;
-
-const BoltDeviceInterface = `
-<node>
-  <interface name="org.freedesktop.bolt1.Device">
-    <property name="Uid" type="s" access="read"></property>
-    <property name="Name" type="s" access="read"></property>
-    <property name="Vendor" type="s" access="read"></property>
-    <property name="Type" type="s" access="read"></property>
-    <property name="Status" type="s" access="read"></property>
-    <property name="Parent" type="s" access="read"></property>
-    <property name="SysfsPath" type="s" access="read"></property>
-    <property name="Stored" type="b" access="read"></property>
-    <property name="Policy" type="s" access="read"></property>
-    <property name="Key" type="s" access="read"></property>
-    <property name="Label" type="s" access="read"></property>
-    <property name="ConnectTime" type="t" access="read"></property>
-    <property name="AuthorizeTime" type="t" access="read"></property>
-    <property name="StoreTime" type="t" access="read"></property>
-  </interface>
-</node>`;
+const BoltClientInterface = loadInterfaceXML('org.freedesktop.bolt1.Manager');
+const BoltDeviceInterface = loadInterfaceXML('org.freedesktop.bolt1.Device');
 
 const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 

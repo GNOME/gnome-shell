@@ -21,6 +21,8 @@ const ModemManager = imports.misc.modemManager;
 const Rfkill = imports.ui.status.rfkill;
 const Util = imports.misc.util;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
@@ -51,26 +53,7 @@ var PortalHelperResult = {
     RECHECK: 2
 };
 
-const PortalHelperIface = `
-<node>
-<interface name="org.gnome.Shell.PortalHelper">
-<method name="Authenticate">
-    <arg type="o" direction="in" name="connection" />
-    <arg type="s" direction="in" name="url" />
-    <arg type="u" direction="in" name="timestamp" />
-</method>
-<method name="Close">
-    <arg type="o" direction="in" name="connection" />
-</method>
-<method name="Refresh">
-    <arg type="o" direction="in" name="connection" />
-</method>
-<signal name="Done">
-    <arg type="o" name="connection" />
-    <arg type="u" name="result" />
-</signal>
-</interface>
-</node>`;
+const PortalHelperIface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 const PortalHelperProxy = Gio.DBusProxy.makeProxyWrapper(PortalHelperIface);
 
 function signalToIcon(value) {
