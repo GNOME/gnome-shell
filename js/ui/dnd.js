@@ -122,7 +122,7 @@ var _Draggable = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         this._buttonDown = true;
-        this._grabActor();
+        this._grabActor(event.get_device());
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
@@ -139,10 +139,8 @@ var _Draggable = new Lang.Class({
         if (Tweener.getTweenCount(actor))
             return Clutter.EVENT_PROPAGATE;
 
-        this._touchSequence = event.get_event_sequence();
-
         this._buttonDown = true;
-        this._grabActor();
+        this._grabActor(event.get_device(), event.get_event_sequence());
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
@@ -151,16 +149,14 @@ var _Draggable = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _grabDevice(actor) {
-        let manager = Clutter.DeviceManager.get_default();
-        let pointer = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
-
-        if (pointer && this._touchSequence)
-            pointer.sequence_grab(this._touchSequence, actor);
+    _grabDevice(actor, pointer, touchSequence) {
+        if (touchSequence)
+            pointer.sequence_grab(touchSequence, actor);
         else if (pointer)
             pointer.grab (actor);
 
         this._grabbedDevice = pointer;
+        this._touchSequence = touchSequence;
     },
 
     _ungrabDevice() {
@@ -173,8 +169,8 @@ var _Draggable = new Lang.Class({
         this._grabbedDevice = null;
     },
 
-    _grabActor() {
-        this._grabDevice(this.actor);
+    _grabActor(device, touchSequence) {
+        this._grabDevice(this.actor, device, touchSequence);
         this._onEventId = this.actor.connect('event',
                                              this._onEvent.bind(this));
     },
@@ -188,11 +184,11 @@ var _Draggable = new Lang.Class({
         this._onEventId = null;
     },
 
-    _grabEvents() {
+    _grabEvents(device, touchSequence) {
         if (!this._eventsGrabbed) {
             this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
             if (this._eventsGrabbed)
-                this._grabDevice(_getEventHandlerActor());
+                this._grabDevice(_getEventHandlerActor(), device, touchSequence);
         }
     },
 
@@ -204,14 +200,29 @@ var _Draggable = new Lang.Class({
         }
     },
 
+    _eventIsRelease(event) {
+        if (event.type() == Clutter.EventType.BUTTON_RELEASE) {
+            let buttonMask = (Clutter.ModifierType.BUTTON1_MASK |
+                              Clutter.ModifierType.BUTTON2_MASK |
+                              Clutter.ModifierType.BUTTON3_MASK);
+            /* We only obey the last button release from the device,
+             * other buttons may get pressed/released during the DnD op.
+             */
+            return (event.get_state() & buttonMask) == 0;
+        } else if (event.type() == Clutter.EventType.TOUCH_END) {
+            /* For touch, we only obey the pointer emulating sequence */
+            return global.display.is_pointer_emulating_sequence(event.get_event_sequence());
+        }
+
+        return false;
+    },
+
     _onEvent(actor, event) {
         // We intercept BUTTON_RELEASE event to know that the button was released in case we
         // didn't start the drag, to drop the draggable in case the drag was in progress, and
         // to complete the drag and ensure that whatever happens to be under the pointer does
         // not get triggered if the drag was cancelled with Esc.
-        if (event.type() == Clutter.EventType.BUTTON_RELEASE ||
-            (event.type() == Clutter.EventType.TOUCH_END &&
-             global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
+        if (this._eventIsRelease(event)) {
             this._buttonDown = false;
             if (this._dragState == DragState.DRAGGING) {
                 return this._dragActorDropped(event);
@@ -271,7 +282,17 @@ var _Draggable = new Lang.Class({
      * This function is useful to call if you've specified manualMode
      * for the draggable.
      */
-    startDrag(stageX, stageY, time, sequence) {
+    startDrag(stageX, stageY, time, sequence, device) {
+        if (device == undefined) {
+            let event = Clutter.get_current_event();
+            device = event.get_device();
+
+            if (!device) {
+                let manager = Clutter.DeviceManager.get_default();
+                device = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
+            }
+        }
+
         currentDraggable = this;
         this._dragState = DragState.DRAGGING;
 
@@ -287,7 +308,7 @@ var _Draggable = new Lang.Class({
             this._ungrabActor();
 
         this._touchSequence = sequence;
-        this._grabEvents();
+        this._grabEvents(device, sequence);
         global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
@@ -404,7 +425,7 @@ var _Draggable = new Lang.Class({
         let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
         if ((Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence);
+            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
             this._updateDragPosition(event);
         }
 
