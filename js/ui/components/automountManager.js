@@ -230,7 +230,7 @@ var AutomountManager = new Lang.Class({
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
                                                         { existingDialog: existingDialog,
-                                                          errorMessage: errorMessage });
+                                                          errorMessage: params.errorMessage });
         this._mountVolume(volume, operation);
     },
 
