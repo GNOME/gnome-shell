@@ -394,7 +394,7 @@ var WindowClone = new Lang.Class({
                     return;
                 let [x, y] = action.get_coords();
                 action.release();
-                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
+                this._draggable._startDrag(x, y, global.get_current_time(), event.get_device(), this._dragTouchSequence);
             });
         } else {
             this.emit('show-chrome');
