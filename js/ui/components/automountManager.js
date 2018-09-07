@@ -198,10 +198,10 @@ var AutomountManager = new Lang.Class({
             // FIXME: we will always get G_IO_ERROR_FAILED from the gvfs udisks
             // backend in this case, see 
             // https://bugs.freedesktop.org/show_bug.cgi?id=51271
-            if (e.message.indexOf('No key available with this passphrase') != -1 ||
-                e.message.indexOf('Failed to load device\'s parameters: Operation not permitted') != -1) {
+            if (e.message.includes('No key available with this passphrase') ||
+                e.message.includes('Failed to load device\'s parameters: Operation not permitted')) {
                 this._reaskPassword(volume);
-            } else if (e.message.indexOf('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting') != -1) {
+            } else if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
                 let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
                 if (existingDialog) {
                     existingDialog._pimEntry.text = "";
