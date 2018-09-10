@@ -109,6 +109,7 @@ var _Draggable = class _Draggable {
         this._dragCancellable = true;
 
         this._eventsGrabbed = false;
+        this._capturedEventId = 0;
     }
 
     _onButtonPress(actor, event) {
@@ -154,9 +155,22 @@ var _Draggable = class _Draggable {
 
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
+
+        this._capturedEventId = global.stage.connect('captured-event', (actor, event) => {
+            let device = event.get_device();
+            if (device != this._grabbedDevice &&
+                device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
+                return Clutter.EVENT_STOP;
+            return Clutter.EVENT_PROPAGATE;
+        });
     }
 
     _ungrabDevice() {
+        if (this._capturedEventId != 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
         if (this._touchSequence)
             this._grabbedDevice.sequence_ungrab (this._touchSequence);
         else
@@ -215,6 +229,13 @@ var _Draggable = class _Draggable {
     },
 
     _onEvent(actor, event) {
+        let device = event.get_device();
+
+        if (this._grabbedDevice &&
+            device != this._grabbedDevice &&
+            device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
+            return Clutter.EVENT_PROPAGATE;
+
         // We intercept BUTTON_RELEASE event to know that the button was released in case we
         // didn't start the drag, to drop the draggable in case the drag was in progress, and
         // to complete the drag and ensure that whatever happens to be under the pointer does
@@ -422,7 +443,8 @@ var _Draggable = class _Draggable {
 
         // See if the user has moved the mouse enough to trigger a drag
         let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
-        if ((Math.abs(stageX - this._dragStartX) > threshold ||
+        if (!currentDraggable &&
+            (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
             this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
             this._updateDragPosition(event);
