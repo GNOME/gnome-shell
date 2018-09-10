@@ -117,18 +117,44 @@ var ScreenshotService = new Lang.Class({
                y + height <= global.screen_height;
     },
 
-    _onScreenshotComplete(result, area, filenameUsed, flash, invocation) {
+    _onScreenshotCaptured(screenshot, result, area, filename, flash, invocation) {
+        let flashComplete = false;
+        let writeComplete = false;
         if (result) {
             if (flash) {
                 let flashspot = new Flashspot(area);
                 flashspot.fire(() => {
-                    this._removeShooterForSender(invocation.get_sender());
+                    flashComplete = true;
+                    if (writeComplete)
+                        this._removeShooterForSender(invocation.get_sender());
                 });
+                global.play_theme_sound(0, 'screen-capture', _('Screenshot taken'), null);
             }
             else
-                this._removeShooterForSender(invocation.get_sender());
-        }
+                flashComplete = true;
 
+            screenshot.write_file(filename, (o, res) => {
+                writeComplete = true;
+                try {
+                    let [result, filenameUsed] =
+                        screenshot.write_file_finish(res);
+                    this._onScreenshotComplete(result, filenameUsed,
+                                               flashComplete, invocation);
+                } catch (e) {
+                    invocation.return_gerror (e);
+                }
+            });
+        }
+        else
+            this._onScreenshotComplete(result, null, true, invocation);
+    },
+
+    _onScreenshotComplete(result, filenameUsed, flashComplete, invocation) {
+        if (result) {
+            if (flashComplete)
+                this._removeShooterForSender(invocation.get_sender());
+        } else
+            global.play_theme_sound(0, 'dialog-error', _('Unable to capture a screenshot'), null);
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
     },
@@ -163,13 +189,13 @@ var ScreenshotService = new Lang.Class({
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_area (x, y, width, height, filename,
+        screenshot.screenshot_area (x, y, width, height,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_area_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotCaptured(screenshot, result, area,
+                                               filename, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -181,13 +207,13 @@ var ScreenshotService = new Lang.Class({
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_window (include_frame, include_cursor, filename,
+        screenshot.screenshot_window (include_frame, include_cursor,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_window_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotCaptured(screenshot, result, area,
+                                               filename, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -199,14 +225,15 @@ var ScreenshotService = new Lang.Class({
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot(include_cursor, filename,
+        screenshot.screenshot(include_cursor,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotCaptured(screenshot, result, area,
+                                               filename, flash, invocation);
                 } catch (e) {
+                    throw e;
                     invocation.return_gerror (e);
                 }
             });
