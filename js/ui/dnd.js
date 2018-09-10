@@ -374,7 +374,8 @@ var _Draggable = class _Draggable {
             this._finishAnimation();
 
             this._dragActor = null;
-            this._dragState = DragState.CANCELLED;
+            if (this._dragState == DragState.DRAGGING)
+                this._dragState = DragState.CANCELLED;
         });
         this._dragOrigOpacity = this._dragActor.opacity;
         if (this._dragActorOpacity != undefined)
