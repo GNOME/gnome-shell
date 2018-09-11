@@ -176,8 +176,11 @@ var InputMethod = new Lang.Class({
     },
 
     vfunc_set_surrounding(text, cursor, anchor) {
-        if (this._context)
-            this._context.set_surrounding_text(text, cursor, anchor);
+        if (!this._context)
+            return;
+
+        let ibusText = IBus.Text.new_from_string(text);
+        this._context.set_surrounding_text(ibusText, cursor, anchor);
     },
 
     vfunc_update_content_hints(hints) {
