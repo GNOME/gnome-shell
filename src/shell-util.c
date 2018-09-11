@@ -235,14 +235,21 @@ shell_util_translate_time_string (const char *str)
   const char *locale = g_getenv ("LC_TIME");
   const char *res;
   char *sep;
+  locale_t old_loc;
+  locale_t loc = (locale_t) 0;
 
   if (locale)
-    setlocale (LC_MESSAGES, locale);
+    loc = newlocale (LC_MESSAGES_MASK, locale, (locale_t) 0);
+
+  old_loc = uselocale (loc);
 
   sep = strchr (str, '\004');
   res = g_dpgettext (NULL, str, sep ? sep - str + 1 : 0);
 
-  setlocale (LC_MESSAGES, "");
+  uselocale (old_loc);
+
+  if (loc != (locale_t) 0)
+    freelocale (loc);
 
   return res;
 }
