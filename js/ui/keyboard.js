@@ -189,16 +189,20 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
         let inputSourceManager = InputSourceManager.getInputSourceManager();
         let inputSources = inputSourceManager.inputSources;
 
+        let item;
         for (let i in inputSources) {
             let is = inputSources[i];
 
-            this.addAction(is.displayName, () => {
+            item = this.addAction(is.displayName, () => {
                 inputSourceManager.activateInputSource(is, true);
             });
+            item.actor.can_focus = false;
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
+        item = this.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
+        item.actor.can_focus = false;
+
         this._capturedEventId = 0;
 
         this._unmapId = actor.connect('notify::mapped', () => {
