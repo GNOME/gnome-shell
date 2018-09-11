@@ -132,7 +132,7 @@ var WindowMenu = new Lang.Class({
         if (nMonitors > 1 && monitorIndex >= 0) {
             this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-            let dir = Meta.ScreenDirection.UP;
+            let dir = Meta.DisplayDirection.UP;
             let upMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (upMonitorIndex != -1) {
@@ -141,7 +141,7 @@ var WindowMenu = new Lang.Class({
                 });
             }
 
-            dir = Meta.ScreenDirection.DOWN;
+            dir = Meta.DisplayDirection.DOWN;
             let downMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (downMonitorIndex != -1) {
@@ -150,7 +150,7 @@ var WindowMenu = new Lang.Class({
                 });
             }
 
-            dir = Meta.ScreenDirection.LEFT;
+            dir = Meta.DisplayDirection.LEFT;
             let leftMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (leftMonitorIndex != -1) {
@@ -159,7 +159,7 @@ var WindowMenu = new Lang.Class({
                 });
             }
 
-            dir = Meta.ScreenDirection.RIGHT;
+            dir = Meta.DisplayDirection.RIGHT;
             let rightMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (rightMonitorIndex != -1) {
