@@ -39,7 +39,9 @@ var DashItemContainer = new Lang.Class({
 
     _init() {
         this.parent({ style_class: 'dash-item-container',
-                      pivot_point: new Clutter.Point({ x: .5, y: .5 }) });
+                      pivot_point: new Clutter.Point({ x: .5, y: .5 }),
+                      x_expand: true,
+                      x_align: Clutter.ActorAlign.CENTER });
 
         this._labelText = "";
         this.label = new St.Label({ style_class: 'dash-label'});
