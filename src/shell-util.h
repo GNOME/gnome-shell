@@ -5,7 +5,6 @@
 
 #include <gio/gio.h>
 #include <clutter/clutter.h>
-#include <libsoup/soup.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/meta-cursor-tracker.h>
 #include <meta/meta-window-actor.h>
