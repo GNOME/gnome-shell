@@ -708,7 +708,6 @@ var Keyboard = new Lang.Class({
         if (this._focusInExtendedKeys || extendedKeysWereFocused)
             return;
 
-        let time = global.get_current_time();
         if (!(focus instanceof Clutter.Text)) {
             this.hide();
             return;
