@@ -225,7 +225,8 @@ libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
   'ClutterX11-@0@'.format(mutter_api_version),
   'Meta-@0@'.format(mutter_api_version),
-  'Soup-2.4'
+  'Gcr-3',
+  'PolkitAgent-1.0'
 ]
 
 if have_networkmanager
