@@ -176,7 +176,7 @@ var InputMethod = new Lang.Class({
     },
 
     vfunc_set_surrounding(text, cursor, anchor) {
-        if (this._context)
+        if (this._context && text)
             this._context.set_surrounding_text(text, cursor, anchor);
     },
 
