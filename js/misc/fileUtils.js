@@ -90,7 +90,7 @@ function loadInterfaceXML(iface) {
         if (bytes instanceof Uint8Array)
             xml = imports.byteArray.toString(bytes)
         else
-            xml = bytes;
+            xml = bytes.toString();
     } catch (e) {
         log('Failed to load D-Bus interface ' + iface);
     }
