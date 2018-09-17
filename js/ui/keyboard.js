@@ -492,6 +492,7 @@ var FocusTracker = new Lang.Class({
 
     _init() {
         this._currentWindow = null;
+        this._rect = null;
 
         global.display.connect('notify::focus-window', () => {
             this._setCurrentWindow(global.display.focus_window);
@@ -534,6 +535,13 @@ var FocusTracker = new Lang.Class({
             rect.x -= frameRect.x;
             rect.y -= frameRect.y;
         }
+
+        if (this._rect &&
+            this._rect.x == rect.x &&
+            this._rect.y == rect.y &&
+            this._rect.width == rect.width &&
+            this._rect.height == rect.height)
+            return;
 
         this._rect = rect;
         this.emit('position-changed');
