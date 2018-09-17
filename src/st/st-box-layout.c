@@ -490,12 +490,7 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
                                 ClutterPaintVolume *volume)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
-  gdouble x, y, lower, upper;
   StBoxLayoutPrivate *priv = self->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  ClutterActorBox allocation_box;
-  ClutterActorBox content_box;
-  ClutterVertex origin;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
@@ -506,11 +501,21 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
   if (priv->hadjustment || priv->vadjustment)
     {
       gdouble width, height;
+      gdouble lower, upper;
+      ClutterActorBox allocation_box;
+      ClutterActorBox content_box;
+      ClutterVertex origin;
+      StThemeNode *theme_node;
 
+      theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
-      origin.x = content_box.x1 - allocation_box.x1;
-      origin.y = content_box.y1 - allocation_box.y2;
+
+      /* The content box is in actor-local coordinates, as is the paint
+       * volume...
+       */
+      origin.x = content_box.x1;
+      origin.y = content_box.y1;
       origin.z = 0.f;
 
       if (priv->hadjustment)
@@ -541,25 +546,12 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
 
       clutter_paint_volume_set_width (volume, width);
       clutter_paint_volume_set_height (volume, height);
-    }
-  else if (!CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume))
-    return FALSE;
-
-  /* When scrolled, st_box_layout_apply_transform() includes the scroll offset
-   * and affects paint volumes. This is right for our children, but our paint volume
-   * is determined by our allocation and borders and doesn't scroll, so we need
-   * to reverse-compensate here, the same as we do when painting.
-   */
-  get_border_paint_offsets (self, &x, &y);
-  if (x != 0 || y != 0)
-    {
-      clutter_paint_volume_get_origin (volume, &origin);
-      origin.x += x;
-      origin.y += y;
       clutter_paint_volume_set_origin (volume, &origin);
+
+      return TRUE;
     }
 
-  return TRUE;
+  return CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume);
 }
 
 static void
