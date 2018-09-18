@@ -198,6 +198,12 @@ var NetworkSecretDialog = new Lang.Class({
 
     _getWirelessSecrets(secrets, wirelessSetting) {
         let wirelessSecuritySetting = this._connection.get_setting_wireless_security();
+
+        if (this._settingName == '802-1x') {
+            this._get8021xSecrets(secrets);
+            return;
+        }
+
         switch (wirelessSecuritySetting.key_mgmt) {
         // First the easy ones
         case 'wpa-none':
@@ -230,6 +236,20 @@ var NetworkSecretDialog = new Lang.Class({
     _get8021xSecrets(secrets) {
         let ieee8021xSetting = this._connection.get_setting_802_1x();
         let phase2method;
+
+        /* If hints were given we know exactly what we need to ask */
+        if (this._settingName == "802-1x" && this._hints.length) {
+            if (this._hints.includes('identity'))
+                secrets.push({ label: _("Username: "), key: 'identity',
+                               value: ieee8021xSetting.identity || '', password: false });
+            if (this._hints.includes('password'))
+                secrets.push({ label: _("Password: "), key: 'password',
+                               value: ieee8021xSetting.password || '', password: true });
+            if (this._hints.includes('private-key-password'))
+                secrets.push({ label: _("Private key password: "), key: 'private-key-password',
+                               value: ieee8021xSetting.private_key_password || '', password: true });
+            return;
+        }
 
         switch (ieee8021xSetting.get_eap_method(0)) {
         case 'md5':
