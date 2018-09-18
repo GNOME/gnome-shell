@@ -921,10 +921,10 @@ var NMWirelessDialog = new Lang.Class({
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
                 Util.spawn(['gnome-control-center', 'wifi', 'connect-8021x-wifi',
-                            this._device.get_path(), accessPoints[0].path]);
+                            this._device.get_path(), accessPoints[0].get_path()]);
             } else {
                 let connection = new NM.SimpleConnection();
-                this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].path, null, null)
+                this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].get_path(), null, null)
             }
         }
 
