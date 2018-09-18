@@ -27,6 +27,9 @@
 #define SIDE_COMPONENT_ROLE "eos-side-component"
 #define SPEEDWAGON_ROLE "eos-speedwagon"
 
+#define OLD_HACK_TOOLBOX_ID "com.endlessm.HackToolbox.Toolbox"
+#define HACK_TOOLBOX_ID "com.hack_computer.HackToolbox.Toolbox"
+
 /**
  * SECTION:shell-window-tracker
  * @short_description: Associate windows with applications
@@ -356,6 +359,90 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
   return result;
 }
 
+static ShellApp *
+maybe_find_target_app_for_toolbox (ShellWindowTracker  *tracker,
+                                   MetaWindow          *window)
+{
+  g_autoptr(GSettingsSchema) schema = NULL;
+  g_autoptr(GError) local_error = NULL;
+  g_autoptr(GDBusProxy) proxy = NULL;
+  g_autoptr(GVariant) target_property_variant = NULL;
+  GSettings *settings;
+  const gchar *window_app_id = NULL;
+  const gchar *window_object_path = NULL;
+  const gchar *target_app_id = NULL;
+  const gchar *target_window_id = NULL;
+  g_autofree gchar *app_id_prefix = NULL;
+  const gchar *hack_toolbox_id = HACK_TOOLBOX_ID;
+
+  /* If code view is disabled globally, do nothing here */
+  settings = shell_global_get_settings (shell_global_get ());
+  g_object_get (settings, "settings-schema", &schema, NULL);
+  if (!g_settings_schema_has_key (schema, "hack-mode-enabled") ||
+      !g_settings_get_boolean (settings, "hack-mode-enabled"))
+    return NULL;
+
+  /* Check if there is a set application id and object path
+   * on this window. If not, then it can't be a toolbox. */
+  window_app_id = meta_window_get_gtk_application_id (window);
+  window_object_path = meta_window_get_gtk_window_object_path (window);
+
+  if (window_app_id == NULL ||
+      window_object_path == NULL)
+    return NULL;
+
+  /* Not a bus name, no way that this could be a toolbox */
+  if (!g_dbus_is_name (window_app_id))
+    return NULL;
+
+  /* Check if the app starts with com.endlessm for old hack apps and in that
+   * case we will use the old toolbox, in other case we'll use the
+   * com.hack_computer.HackToolbox */
+  app_id_prefix = g_strndup (window_app_id, 12);
+  if (g_strcmp0 (app_id_prefix, "com.endlessm") == 0)
+    hack_toolbox_id = OLD_HACK_TOOLBOX_ID;
+
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START |
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
+                                         NULL,
+                                         window_app_id,
+                                         window_object_path,
+                                         hack_toolbox_id,
+                                         NULL,
+                                         &local_error);
+
+  if (proxy == NULL)
+    {
+      if (!g_error_matches (local_error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_INTERFACE))
+        g_warning ("Error in finding candidate app for potential Hack Toolbox: %s",
+                   local_error->message);
+      return NULL;
+    }
+
+  target_property_variant = g_dbus_proxy_get_cached_property (proxy, "Target");
+  if (target_property_variant == NULL)
+    return NULL;
+
+  g_variant_get (target_property_variant, "(&s&s)",
+                 &target_app_id,
+                 &target_window_id);
+
+  if (target_app_id == NULL || target_window_id == NULL)
+    {
+      g_warning ("Invalid Target property on Hack Toolbox: %s %s",
+                 target_app_id, target_window_id);
+      return NULL;
+    }
+
+  g_object_set_data_full (G_OBJECT (window), "hack-toolbox-proxy",
+                          g_object_ref (proxy), g_object_unref);
+
+  /* Now that we have the target app ID, let's look up if we can find
+   * a match. */
+  return get_app_from_id (window, target_app_id);
+}
+
 /**
  * get_app_for_window:
  *
@@ -376,6 +463,15 @@ get_app_for_window (ShellWindowTracker    *tracker,
   /* Side components don't have an associated app */
   if (g_strcmp0 (meta_window_get_role (window), SIDE_COMPONENT_ROLE) == 0)
     return NULL;
+
+  /* Check if the window is a HackToolbox and if so
+   * associate it with the corresponding target application.
+   * It is definitely not ideal that this has to happen
+   * synchronously for each window that gets opened, but
+   * that's just the way that this function happens to work. */
+  result = maybe_find_target_app_for_toolbox (tracker, window);
+  if (result != NULL)
+    return g_object_ref (result);
 
   transient_for = meta_window_get_transient_for (window);
   if (transient_for != NULL)
@@ -852,6 +948,19 @@ gboolean
 shell_window_tracker_is_speedwagon_window (MetaWindow *window)
 {
   return g_strcmp0 (meta_window_get_role (window), SPEEDWAGON_ROLE) == 0;
+}
+
+/**
+ * shell_window_tracker_get_hack_toolbox_proxy:
+ *
+ * Gets the #GDBusProxy for the hack toolbox represented by this window.
+ *
+ * Returns: (transfer none): a #GDBusProxy, or %NULL
+ */
+GDBusProxy *
+shell_window_tracker_get_hack_toolbox_proxy (MetaWindow *window)
+{
+  return g_object_get_data (G_OBJECT (window), "hack-toolbox-proxy");
 }
 
 static ShellApp *

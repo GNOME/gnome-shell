@@ -28,6 +28,8 @@ gboolean shell_window_tracker_is_window_interesting (MetaWindow *window);
 
 gboolean shell_window_tracker_is_speedwagon_window (MetaWindow *window);
 
+GDBusProxy * shell_window_tracker_get_hack_toolbox_proxy (MetaWindow *window);
+
 G_END_DECLS
 
 #endif /* __SHELL_WINDOW_TRACKER_H__ */
