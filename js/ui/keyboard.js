@@ -519,6 +519,12 @@ var FocusTracker = new Lang.Class({
 
             this._setCurrentRect(rect);
         });
+        this._ibusManager.connect('focus-in', () => {
+            this.emit('focus-changed', true);
+        });
+        this._ibusManager.connect('focus-out', () => {
+            this.emit('focus-changed', false);
+        });
     },
 
     get currentWindow() {
@@ -589,6 +595,16 @@ var Keyboard = new Lang.Class({
             this._delayedAnimFocusWindow = null;
             this._animFocusedWindow = null;
             this._oskFocusWindow = null;
+        });
+        this._focusTracker.connect('focus-changed', (tracker, focused) => {
+            // Valid only for X11
+            if (Meta.is_wayland_compositor())
+                return;
+
+            if (focused)
+                this.show(Main.layoutManager.focusIndex);
+            else
+                this.hide();
         });
 
         Meta.get_backend().connect('last-device-changed', 
