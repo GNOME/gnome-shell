@@ -506,6 +506,7 @@ var _Draggable = new Lang.Class({
                             return true;
                         } else
                             this._dragActor.destroy();
+                            this._dragActor = undefined;
                     }
 
                     this._dragInProgress = false;
@@ -565,8 +566,10 @@ var _Draggable = new Lang.Class({
             if (!this._buttonDown)
                 this._dragComplete();
             this.emit('drag-end', eventTime, false);
-            if (!this._dragOrigParent)
+            if (!this._dragOrigParent) {
                 this._dragActor.destroy();
+                this._dragActor = undefined;
+            }
 
             return;
         }
@@ -634,6 +637,7 @@ var _Draggable = new Lang.Class({
             dragActor.set_position(this._dragOrigX, this._dragOrigY);
         } else {
             dragActor.destroy();
+            this._dragActor = undefined;
         }
 
         this.emit('drag-end', eventTime, false);
@@ -641,7 +645,7 @@ var _Draggable = new Lang.Class({
     },
 
     _dragComplete() {
-        if (!this._actorDestroyed)
+        if (this._dragActor)
             Shell.util_set_hidden_from_pick(this._dragActor, false);
 
         this._ungrabEvents();
