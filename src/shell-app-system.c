@@ -33,11 +33,26 @@
  */
 #define SHELL_APP_IS_OPEN_EVENT "b5e11a3d-13f8-4219-84fd-c9ba0bf3d1f0"
 
-/* Additional key used to map a renamed desktop file to its previous name;
- * for instance, org.gnome.Totem.desktop would use this key to point to
- * 'totem.desktop'
+/* Additional key used to map a renamed desktop file to its previous name.
+ * For instance, org.gnome.Totem.desktop contains:
+ *
+ *   X-Endless-Alias=totem
+ *
+ * (without the .desktop suffix).
  */
 #define X_ENDLESS_ALIAS_KEY     "X-Endless-Alias"
+
+/* Additional key listing 0 or more previous names for an application. This is
+ * added by flatpak-builder when the manifest contains a rename-desktop-file
+ * key, and by Endless-specific tools to migrate from an app in our eos-apps
+ * repository to the same app with a different ID on Flathub. For example,
+ * org.inkscape.Inkscape.desktop contains:
+ *
+ *   X-Flatpak-RenamedFrom=inkscape.desktop;
+ *
+ * (with the .desktop suffix).
+ */
+#define X_FLATPAK_RENAMED_FROM_KEY "X-Flatpak-RenamedFrom"
 
 /* Vendor prefixes are something that can be preprended to a .desktop
  * file name.  Undo this.
@@ -126,12 +141,22 @@ add_aliases (ShellAppSystem  *self,
   ShellAppSystemPrivate *priv = self->priv;
   const char *id = g_app_info_get_id (G_APP_INFO (info));
   const char *alias;
+  g_autofree char **renamed_from_list = NULL;
+  size_t i;
 
   alias = g_desktop_app_info_get_string (info, X_ENDLESS_ALIAS_KEY);
   if (alias != NULL)
     {
       char *desktop_alias = g_strconcat (alias, ".desktop", NULL);
       g_hash_table_insert (priv->alias_to_id, desktop_alias, g_strdup (id));
+    }
+
+  renamed_from_list = g_desktop_app_info_get_string_list (info, X_FLATPAK_RENAMED_FROM_KEY, NULL);
+  for (i = 0; renamed_from_list != NULL && renamed_from_list[i] != NULL; i++)
+    {
+      g_hash_table_insert (priv->alias_to_id,
+                           g_steal_pointer (&renamed_from_list[i]),
+                           g_strdup (id));
     }
 }
 
