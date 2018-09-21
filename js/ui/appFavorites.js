@@ -88,6 +88,11 @@ class AppFavorites {
                 updated = true;
                 return newId;
             }
+            let newApp = appSys.lookup_alias(id);
+            if (newApp && newApp.get_id() !== id) {
+                updated = true;
+                return newApp.get_id();
+            }
             return id;
         });
         // ... and write back the updated desktop file names
