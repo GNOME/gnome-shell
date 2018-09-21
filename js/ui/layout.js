@@ -1237,7 +1237,7 @@ var HotCorner = new Lang.Class({
     },
 
     _toggleOverview() {
-        if (this._monitor.inFullscreen)
+        if (this._monitor.inFullscreen && !Main.overview.visible)
             return;
 
         if (Main.overview.shouldToggleByCornerOrButton()) {
