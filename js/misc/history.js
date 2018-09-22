@@ -76,6 +76,7 @@ var HistoryManager = new Lang.Class({
         if (this._history.length == 0 ||
             this._history[this._history.length - 1] != input) {
 
+            this._history = this._history.filter(entry => entry != input);
             this._history.push(input);
             this._save();
         }
