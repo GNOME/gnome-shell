@@ -21,6 +21,7 @@ var HistoryManager = new Lang.Class({
         this._historyIndex = 0;
         if (this._key) {
             this._history = global.settings.get_strv(this._key);
+            this._removeAllDuplicatedEntries();
             global.settings.connect('changed::' + this._key,
                                     this._historyChanged.bind(this));
 
@@ -77,6 +78,25 @@ var HistoryManager = new Lang.Class({
             this._history.splice(this._history.indexOf(text), 1);
             this._historyIndex = this._history.length;
         }
+    },
+
+    _removeAllDuplicatedEntries() {
+        var newHistory = [];
+        var oldLength = this._history.length;
+        var entry;
+
+        while (this._history.length != 0) {
+            entry = this._history[this._history.length -1];
+
+            newHistory.splice(0, 0, entry);
+            this._removeEntriesOf(entry);
+        }
+
+        this._history = newHistory;
+        this._historyIndex = this._history.length;
+
+        if (oldLength != newHistory.length)
+            this._save();
     },
 
     addItem(input) {
