@@ -72,10 +72,18 @@ var HistoryManager = new Lang.Class({
         return this._historyIndex ? this._history[this._historyIndex -1] : null;
     },
 
+    _removeEntriesOf(text) {
+        while (this._history.includes(text)) {
+            this._history.splice(this._history.indexOf(text), 1);
+            this._historyIndex = this._history.length;
+        }
+    },
+
     addItem(input) {
         if (this._history.length == 0 ||
             this._history[this._history.length - 1] != input) {
 
+            this._removeEntriesOf(input);
             this._history.push(input);
             this._save();
         }
