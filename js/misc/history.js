@@ -23,6 +23,7 @@ var HistoryManager = new Lang.Class({
             this._history = global.settings.get_strv(this._key);
             global.settings.connect('changed::' + this._key,
                                     this._historyChanged.bind(this));
+            this._removeAllDuplicatedEntries();
 
         } else {
             this._history = [];
@@ -70,6 +71,13 @@ var HistoryManager = new Lang.Class({
         }
 
         return this._historyIndex ? this._history[this._historyIndex -1] : null;
+    },
+
+    _removeAllDuplicatedEntries() {
+        let newHistory = new Set(this._history.slice().reverse());
+
+        if (this._history.length != newHistory.size)
+            global.settings.set_strv(this._key, [...newHistory].reverse());
     },
 
     addItem(input) {
