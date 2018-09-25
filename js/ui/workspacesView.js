@@ -470,6 +470,7 @@ var WorkspacesDisplay = new Lang.Class({
         this._switchWorkspaceNotifyId = 0;
 
         this._notifyOpacityId = 0;
+        this._restackedNotifyId = 0;
         this._scrollEventId = 0;
         this._keyPressEventId = 0;
 
