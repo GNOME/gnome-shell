@@ -210,7 +210,6 @@ static gboolean
 app_is_stale (ShellApp *app)
 {
   GDesktopAppInfo *info, *old;
-  GAppInfo *old_info, *new_info;
   gboolean is_unchanged;
 
   if (shell_app_is_window_backed (app))
@@ -222,25 +221,8 @@ app_is_stale (ShellApp *app)
     return TRUE;
 
   old = shell_app_get_app_info (app);
-  old_info = G_APP_INFO (old);
-  new_info = G_APP_INFO (info);
 
-  is_unchanged =
-    g_app_info_should_show (old_info) == g_app_info_should_show (new_info) &&
-    strcmp (g_desktop_app_info_get_filename (old),
-            g_desktop_app_info_get_filename (info)) == 0 &&
-    g_strcmp0 (g_app_info_get_executable (old_info),
-               g_app_info_get_executable (new_info)) == 0 &&
-    g_strcmp0 (g_app_info_get_commandline (old_info),
-               g_app_info_get_commandline (new_info)) == 0 &&
-    strcmp (g_app_info_get_name (old_info),
-            g_app_info_get_name (new_info)) == 0 &&
-    g_strcmp0 (g_app_info_get_description (old_info),
-               g_app_info_get_description (new_info)) == 0 &&
-    strcmp (g_app_info_get_display_name (old_info),
-            g_app_info_get_display_name (new_info)) == 0 &&
-    g_icon_equal (g_app_info_get_icon (old_info),
-                  g_app_info_get_icon (new_info));
+  is_unchanged = shell_app_system_app_info_equal (old, info);
 
   return !is_unchanged;
 }
@@ -270,33 +252,12 @@ static gboolean
 app_info_changed (ShellApp        *app,
                   GDesktopAppInfo *desk_new_info)
 {
-  GIcon *app_icon;
-  GIcon *new_icon;
   GDesktopAppInfo *desk_app_info = shell_app_get_app_info (app);
-  GAppInfo *app_info = G_APP_INFO (desk_app_info);
-  GAppInfo *new_info = G_APP_INFO (desk_new_info);
 
-  if (!app_info)
+  if (!desk_app_info)
     return TRUE;
 
-  app_icon = g_app_info_get_icon (app_info);
-  new_icon = g_app_info_get_icon (new_info);
-
-  return !(g_app_info_equal (app_info, new_info) &&
-           g_icon_equal (app_icon, new_icon) &&
-           g_app_info_should_show (app_info) == g_app_info_should_show (new_info) &&
-           strcmp (g_desktop_app_info_get_filename (desk_app_info),
-                   g_desktop_app_info_get_filename (desk_new_info)) == 0 &&
-           g_strcmp0 (g_app_info_get_executable (app_info),
-                      g_app_info_get_executable (new_info)) == 0 &&
-           g_strcmp0 (g_app_info_get_commandline (app_info),
-                      g_app_info_get_commandline (new_info)) == 0 &&
-           strcmp (g_app_info_get_name (app_info),
-                   g_app_info_get_name (new_info)) == 0 &&
-           strcmp (g_app_info_get_display_name (app_info),
-                   g_app_info_get_display_name (new_info)) == 0 &&
-           g_strcmp0 (g_app_info_get_description (app_info),
-                      g_app_info_get_description (new_info)) == 0);
+  return !shell_app_system_app_info_equal (desk_app_info, desk_new_info);
 }
 
 static void
