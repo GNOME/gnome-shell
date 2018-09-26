@@ -206,6 +206,49 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
     }
 }
 
+/**
+ * shell_app_system_app_info_equal:
+ * @one: (transfer none): a #GDesktopAppInfo
+ * @two: (transfer none): a possibly-different #GDesktopAppInfo
+ *
+ * Returns %TRUE if @one and @two can be treated as equal. Compared to
+ * g_app_info_equal(), which just compares app IDs, this function also compares
+ * fields of interest to the shell: icon, name, description, executable, and
+ * should_show().
+ *
+ * Returns: %TRUE if @one and @two are equivalent; %FALSE otherwise
+ */
+gboolean
+shell_app_system_app_info_equal (GDesktopAppInfo *one,
+                                 GDesktopAppInfo *two)
+{
+  GAppInfo *one_info, *two_info;
+
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (one), FALSE);
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (two), FALSE);
+
+  one_info = G_APP_INFO (one);
+  two_info = G_APP_INFO (two);
+
+  return
+    g_app_info_equal (one_info, two_info) &&
+    g_app_info_should_show (one_info) == g_app_info_should_show (two_info) &&
+    g_strcmp0 (g_desktop_app_info_get_filename (one),
+               g_desktop_app_info_get_filename (two)) == 0 &&
+    g_strcmp0 (g_app_info_get_executable (one_info),
+               g_app_info_get_executable (two_info)) == 0 &&
+    g_strcmp0 (g_app_info_get_commandline (one_info),
+               g_app_info_get_commandline (two_info)) == 0 &&
+    g_strcmp0 (g_app_info_get_name (one_info),
+               g_app_info_get_name (two_info)) == 0 &&
+    g_strcmp0 (g_app_info_get_description (one_info),
+               g_app_info_get_description (two_info)) == 0 &&
+    g_strcmp0 (g_app_info_get_display_name (one_info),
+               g_app_info_get_display_name (two_info)) == 0 &&
+    g_icon_equal (g_app_info_get_icon (one_info),
+                  g_app_info_get_icon (two_info));
+}
+
 static gboolean
 app_is_stale (ShellApp *app)
 {

@@ -33,4 +33,6 @@ GList          *shell_app_system_get_installed             (ShellAppSystem  *sel
 
 gboolean        shell_app_system_has_starting_apps         (ShellAppSystem  *self);
 
+gboolean        shell_app_system_app_info_equal            (GDesktopAppInfo *one,
+                                                            GDesktopAppInfo *two);
 #endif /* __SHELL_APP_SYSTEM_H__ */
