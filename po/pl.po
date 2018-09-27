@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-08-01 18:08+0000\n"
-"PO-Revision-Date: 2018-08-04 19:12+0200\n"
+"POT-Creation-Date: 2018-09-26 02:30+0000\n"
+"PO-Revision-Date: 2018-09-26 21:49+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -46,7 +46,7 @@ msgid "Open the application menu"
 msgstr "Otwarcie menu programu"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:142
 msgid "Shell Extensions"
 msgstr "Rozszerzenia powłoki"
 
@@ -334,16 +334,16 @@ msgstr "Logowanie do sieci"
 msgid "network-workgroup"
 msgstr "network-workgroup"
 
-#: js/extensionPrefs/main.js:120
+#: js/extensionPrefs/main.js:112
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Wystąpił błąd podczas wczytywania okna preferencji dla rozszerzenia „%s”:"
 
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
+#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:62
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
-#: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
-#: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
+#: js/ui/endSessionDialog.js:442 js/ui/extensionDownloader.js:197
+#: js/ui/shellMountOperation.js:345 js/ui/status/network.js:905
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -351,7 +351,7 @@ msgstr "Anuluj"
 msgid "Next"
 msgstr "Dalej"
 
-#: js/gdm/authPrompt.js:205 js/ui/shellMountOperation.js:347
+#: js/gdm/authPrompt.js:205 js/ui/shellMountOperation.js:349
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Odblokuj"
@@ -383,7 +383,7 @@ msgstr "(np. użytkownik lub %s)"
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
-#: js/ui/components/networkAgent.js:261
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Nazwa użytkownika: "
 
@@ -405,72 +405,72 @@ msgid "(or swipe finger)"
 msgstr "(lub przeciągnięcie palca)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:100
 msgid "power off;shutdown;reboot;restart"
 msgstr ""
 "wyłącz komputer;wyłączanie komputera;zakończ;power off;shutdown;uruchom "
 "ponownie;restartuj;zrestartuj;reboot;restart"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:104
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:107
 msgid "lock screen"
 msgstr ""
 "zablokuj ekran;zablokowanie ekranu;blokowanie ekranu;blokada ekranu;lock "
 "screen"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:111
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Wyloguj się"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:114
 msgid "logout;sign off"
 msgstr "wyloguj się;wylogowanie;log out;logout;sign off"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Uśpij"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:121
 msgid "suspend;sleep"
 msgstr "uśpij;uśpienie;wstrzymaj;wstrzymanie;suspend;sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:127
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Przełącz użytkownika"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:130
+#: js/misc/systemActions.js:128
 msgid "switch user"
 msgstr "przełącz użytkownika;przełączanie użytkowników;switch user"
 
 #. Translators: The name of the lock orientation action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:132
 msgctxt "search-result"
 msgid "Lock Orientation"
 msgstr "Zablokuj orientację"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:135
 msgid "lock orientation;screen;rotation"
 msgstr ""
 "zablokuj orientację;zablokowanie orientacji;blokowanie orientacji;blokada "
@@ -619,11 +619,11 @@ msgid "%B %d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %-l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:66
+#: js/portalHelper/main.js:49
 msgid "Hotspot Login"
 msgstr "Logowanie do hotspotu"
 
-#: js/portalHelper/main.js:112
+#: js/portalHelper/main.js:95
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -633,43 +633,43 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:63 js/ui/status/location.js:393
+#: js/ui/accessDialog.js:46 js/ui/status/location.js:376
 msgid "Deny Access"
 msgstr "Odmów dostępu"
 
-#: js/ui/accessDialog.js:64 js/ui/status/location.js:396
+#: js/ui/accessDialog.js:47 js/ui/status/location.js:379
 msgid "Grant Access"
 msgstr "Udziel dostępu"
 
-#: js/ui/appDisplay.js:793
+#: js/ui/appDisplay.js:790
 msgid "Frequently used applications will appear here"
 msgstr "W tym miejscu pojawią się często używane programy"
 
-#: js/ui/appDisplay.js:914
+#: js/ui/appDisplay.js:911
 msgid "Frequent"
 msgstr "Często używane"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:918
 msgid "All"
 msgstr "Wszystkie"
 
-#: js/ui/appDisplay.js:1890
+#: js/ui/appDisplay.js:1887
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: js/ui/appDisplay.js:1904
+#: js/ui/appDisplay.js:1901
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Uruchom za pomocą dedykowanej karty graficznej"
 
-#: js/ui/appDisplay.js:1931 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1928 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: js/ui/appDisplay.js:1937
+#: js/ui/appDisplay.js:1934
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
-#: js/ui/appDisplay.js:1947
+#: js/ui/appDisplay.js:1944
 msgid "Show Details"
 msgstr "Wyświetl szczegóły"
 
@@ -683,23 +683,23 @@ msgstr "Dodano program „%s” do ulubionych."
 msgid "%s has been removed from your favorites."
 msgstr "Usunięto program „%s” z ulubionych."
 
-#: js/ui/audioDeviceSelection.js:59
+#: js/ui/audioDeviceSelection.js:50
 msgid "Select Audio Device"
 msgstr "Wybór urządzenia dźwiękowego"
 
-#: js/ui/audioDeviceSelection.js:69
+#: js/ui/audioDeviceSelection.js:60
 msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
 
-#: js/ui/audioDeviceSelection.js:78
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "Słuchawki"
 
-#: js/ui/audioDeviceSelection.js:80
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "Słuchawki z mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:255
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:255
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -707,7 +707,7 @@ msgstr "Mikrofon"
 msgid "Change Background…"
 msgstr "Zmień tło…"
 
-#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:51
+#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:47
 msgid "Display Settings"
 msgstr "Ustawienia ekranu"
 
@@ -773,7 +773,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:379
+#: js/ui/calendar.js:380
 msgid "%OB"
 msgstr "%OB"
 
@@ -786,55 +786,55 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:389
+#: js/ui/calendar.js:390
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:446
+#: js/ui/calendar.js:447
 msgid "Previous month"
 msgstr "Poprzedni miesiąc"
 
-#: js/ui/calendar.js:456
+#: js/ui/calendar.js:457
 msgid "Next month"
 msgstr "Następny miesiąc"
 
-#: js/ui/calendar.js:609
+#: js/ui/calendar.js:610
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:664
+#: js/ui/calendar.js:665
 msgid "Week %V"
 msgstr "%V. tydzień"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:733
+#: js/ui/calendar.js:734
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Cały dzień"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %-d %B"
 
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %-d %B %Y"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1103
 msgid "No Notifications"
 msgstr "Brak powiadomień"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1106
 msgid "No Events"
 msgstr "Brak wydarzeń"
 
-#: js/ui/calendar.js:1131
+#: js/ui/calendar.js:1134
 msgid "Clear All"
 msgstr "Wyczyść wszystko"
 
@@ -866,7 +866,7 @@ msgstr "Podłączono dysk zewnętrzny"
 msgid "External drive disconnected"
 msgstr "Odłączono dysk zewnętrzny"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:348
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otwórz za pomocą „%s”"
@@ -879,40 +879,40 @@ msgstr "Hasło:"
 msgid "Type again:"
 msgstr "Proszę wpisać ponownie:"
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:245
-#: js/ui/status/network.js:336 js/ui/status/network.js:922
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:229
+#: js/ui/status/network.js:320 js/ui/status/network.js:908
 msgid "Connect"
 msgstr "Połącz"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:205 js/ui/components/networkAgent.js:217
-#: js/ui/components/networkAgent.js:245 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:275
+#: js/ui/components/networkAgent.js:211 js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:265
+#: js/ui/components/networkAgent.js:285 js/ui/components/networkAgent.js:295
 msgid "Password: "
 msgstr "Hasło: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:216
 msgid "Key: "
 msgstr "Klucz: "
 
-#: js/ui/components/networkAgent.js:249
-msgid "Identity: "
-msgstr "Tożsamość: "
-
-#: js/ui/components/networkAgent.js:251
+#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:271
 msgid "Private key password: "
 msgstr "Hasło klucza prywatnego: "
 
-#: js/ui/components/networkAgent.js:263
+#: js/ui/components/networkAgent.js:269
+msgid "Identity: "
+msgstr "Tożsamość: "
+
+#: js/ui/components/networkAgent.js:283
 msgid "Service: "
 msgstr "Usługa: "
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:664
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:688
 msgid "Authentication required by wireless network"
 msgstr "Sieć bezprzewodowa wymaga uwierzytelnienia"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:665
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:689
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -921,41 +921,41 @@ msgstr ""
 "Do uzyskania dostępu do sieci bezprzewodowej „%s” wymagane jest hasło lub "
 "klucze szyfrowania."
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:668
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:692
 msgid "Wired 802.1X authentication"
 msgstr "Uwierzytelnianie przewodowe 802.1X"
 
-#: js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:319
 msgid "Network name: "
 msgstr "Nazwa sieci: "
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:696
 msgid "DSL authentication"
 msgstr "Uwierzytelnienie DSL"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:678
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:702
 msgid "PIN code required"
 msgstr "Wymagany jest kod PIN"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:703
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Do korzystania z urządzenia komórkowego wymagane jest podanie kodu PIN"
 
-#: js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:333
 msgid "PIN: "
 msgstr "Kod PIN: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:709
 msgid "Mobile broadband network password"
 msgstr "Hasło sieci komórkowej"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:669
-#: js/ui/components/networkAgent.js:673 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:697 js/ui/components/networkAgent.js:710
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Do połączenia z siecią „%s” wymagane jest hasło."
 
-#: js/ui/components/networkAgent.js:653 js/ui/status/network.js:1704
+#: js/ui/components/networkAgent.js:677 js/ui/status/network.js:1690
 msgid "Network Manager"
 msgstr "Menedżer sieci"
 
@@ -975,7 +975,7 @@ msgstr "Uwierzytelnij"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:329
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
@@ -996,7 +996,7 @@ msgstr "Wyświetl programy"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:443
+#: js/ui/dash.js:444
 msgid "Dash"
 msgstr "Ulubione"
 
@@ -1076,18 +1076,18 @@ msgstr "Prognoza pogody wymaga połączenia z Internetem"
 msgid "Weather information is currently unavailable"
 msgstr "Prognoza pogody jest obecnie niedostępna"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Wylogowanie użytkownika %s"
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:52
 msgctxt "title"
 msgid "Log Out"
 msgstr "Wylogowanie"
 
-#: js/ui/endSessionDialog.js:67
+#: js/ui/endSessionDialog.js:54
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1095,7 +1095,7 @@ msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
 msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
 msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
 
-#: js/ui/endSessionDialog.js:72
+#: js/ui/endSessionDialog.js:59
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1103,22 +1103,22 @@ msgstr[0] "Wylogowanie nastąpi za %d sekundę."
 msgstr[1] "Wylogowanie nastąpi za %d sekundy."
 msgstr[2] "Wylogowanie nastąpi za %d sekund."
 
-#: js/ui/endSessionDialog.js:78
+#: js/ui/endSessionDialog.js:65
 msgctxt "button"
 msgid "Log Out"
 msgstr "Wyloguj"
 
-#: js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Power Off"
 msgstr "Wyłączenie komputera"
 
-#: js/ui/endSessionDialog.js:85
+#: js/ui/endSessionDialog.js:72
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instalacja aktualizacji i wyłączenie komputera"
 
-#: js/ui/endSessionDialog.js:87
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1126,27 +1126,27 @@ msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
 msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
 msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:78
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instalacja oczekujących aktualizacji oprogramowania"
 
-#: js/ui/endSessionDialog.js:94 js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:81 js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:83
 msgctxt "button"
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: js/ui/endSessionDialog.js:103
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Restart"
 msgstr "Ponowne uruchomienie"
 
-#: js/ui/endSessionDialog.js:105
+#: js/ui/endSessionDialog.js:92
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1154,12 +1154,12 @@ msgstr[0] "Ponowne uruchomienie komputera nastąpi za %d sekundę."
 msgstr[1] "Ponowne uruchomienie komputera nastąpi za %d sekundy."
 msgstr[2] "Ponowne uruchomienie komputera nastąpi za %d sekund."
 
-#: js/ui/endSessionDialog.js:119
+#: js/ui/endSessionDialog.js:106
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Ponowne uruchomienie i instalacja aktualizacji"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:108
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1174,22 +1174,22 @@ msgstr[2] ""
 "Ponowne uruchomienie komputera i instalacja aktualizacji nastąpi za %d "
 "sekund."
 
-#: js/ui/endSessionDialog.js:127 js/ui/endSessionDialog.js:147
+#: js/ui/endSessionDialog.js:114 js/ui/endSessionDialog.js:134
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Uruchom ponownie i zainstaluj"
 
-#: js/ui/endSessionDialog.js:128
+#: js/ui/endSessionDialog.js:115
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Zainstaluj i wyłącz komputer"
 
-#: js/ui/endSessionDialog.js:129
+#: js/ui/endSessionDialog.js:116
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Wyłączenie komputera po zainstalowaniu aktualizacji"
 
-#: js/ui/endSessionDialog.js:137
+#: js/ui/endSessionDialog.js:124
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Ponowne uruchomienie i instalacja aktualizacji"
@@ -1197,7 +1197,7 @@ msgstr "Ponowne uruchomienie i instalacja aktualizacji"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:142
+#: js/ui/endSessionDialog.js:129
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1207,28 +1207,28 @@ msgstr ""
 "aktualizacji może zająć dużo czasu. Proszę się upewnić, że wykonano kopię "
 "zapasową danych i podłączono komputer do prądu."
 
-#: js/ui/endSessionDialog.js:361
+#: js/ui/endSessionDialog.js:321
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Działanie na zasilaniu z akumulatora: proszę podłączyć komputer do prądu "
 "przed instalowaniem aktualizacji."
 
-#: js/ui/endSessionDialog.js:378
+#: js/ui/endSessionDialog.js:338
 msgid "Some applications are busy or have unsaved work."
 msgstr "Niektóre programy są używane lub mają niezapisane dane."
 
-#: js/ui/endSessionDialog.js:385
+#: js/ui/endSessionDialog.js:345
 msgid "Other users are logged in."
 msgstr "Inni użytkownicy są zalogowani."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:666
+#: js/ui/endSessionDialog.js:626
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (zdalnie)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:669
+#: js/ui/endSessionDialog.js:629
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsola)"
@@ -1313,16 +1313,16 @@ msgstr ""
 msgid "Leave On"
 msgstr "Pozostaw włączone"
 
-#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
-#: js/ui/status/network.js:1294
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:138
+#: js/ui/status/network.js:1280
 msgid "Turn On"
 msgstr "Włącz"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
-#: js/ui/status/network.js:154 js/ui/status/network.js:337
-#: js/ui/status/network.js:1294 js/ui/status/network.js:1409
-#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
-#: js/ui/status/rfkill.js:117
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:138
+#: js/ui/status/network.js:138 js/ui/status/network.js:321
+#: js/ui/status/network.js:1280 js/ui/status/network.js:1395
+#: js/ui/status/nightLight.js:43 js/ui/status/rfkill.js:85
+#: js/ui/status/rfkill.js:112
 msgid "Turn Off"
 msgstr "Wyłącz"
 
@@ -1386,11 +1386,11 @@ msgstr "Strona WWW"
 msgid "System Information"
 msgstr "Informacje systemowe"
 
-#: js/ui/mpris.js:211
+#: js/ui/mpris.js:185
 msgid "Unknown artist"
 msgstr "Nieznany wykonawca"
 
-#: js/ui/mpris.js:212
+#: js/ui/mpris.js:186
 msgid "Unknown title"
 msgstr "Nieznany tytuł"
 
@@ -1416,66 +1416,66 @@ msgstr "Podgląd"
 msgid "Type to search…"
 msgstr "Wyszukiwanie…"
 
-#: js/ui/padOsd.js:105
+#: js/ui/padOsd.js:107
 msgid "New shortcut…"
 msgstr "Nowy skrót…"
 
-#: js/ui/padOsd.js:156
+#: js/ui/padOsd.js:158
 msgid "Application defined"
 msgstr "Określone przez program"
 
-#: js/ui/padOsd.js:157
+#: js/ui/padOsd.js:159
 msgid "Show on-screen help"
 msgstr "Ekran pomocy"
 
-#: js/ui/padOsd.js:158
+#: js/ui/padOsd.js:160
 msgid "Switch monitor"
 msgstr "Przełączenie monitora"
 
-#: js/ui/padOsd.js:159
+#: js/ui/padOsd.js:161
 msgid "Assign keystroke"
 msgstr "Przydzielenie klawiszy"
 
-#: js/ui/padOsd.js:226
+#: js/ui/padOsd.js:228
 msgid "Done"
 msgstr "Gotowe"
 
-#: js/ui/padOsd.js:742
+#: js/ui/padOsd.js:744
 msgid "Edit…"
 msgstr "Modyfikuj…"
 
-#: js/ui/padOsd.js:784 js/ui/padOsd.js:889
+#: js/ui/padOsd.js:786 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Brak"
 
-#: js/ui/padOsd.js:843
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Naciśnięcie przycisku skonfiguruje"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Klawisz Esc zakończy"
 
-#: js/ui/padOsd.js:847
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Naciśnięcie dowolnego przycisku zakończy"
 
-#: js/ui/panel.js:356
+#: js/ui/panel.js:359
 msgid "Quit"
 msgstr "Zakończ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:412
+#: js/ui/panel.js:415
 msgid "Activities"
 msgstr "Podgląd"
 
-#: js/ui/panel.js:693
+#: js/ui/panel.js:696
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Menu systemowe"
 
-#: js/ui/panel.js:816
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -1496,11 +1496,11 @@ msgstr "Proszę wprowadzić polecenie:"
 msgid "Close"
 msgstr "Zamknij"
 
-#: js/ui/runDialog.js:278
+#: js/ui/runDialog.js:276
 msgid "Restart is not available on Wayland"
 msgstr "Ponowne uruchamianie jest niedostępne w technologii Wayland"
 
-#: js/ui/runDialog.js:283
+#: js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Ponowne uruchamianie…"
 
@@ -1549,15 +1549,15 @@ msgstr "Nie można zablokować"
 msgid "Lock was blocked by an application"
 msgstr "Blokowanie zostało zablokowane przez program"
 
-#: js/ui/search.js:653
+#: js/ui/search.js:660
 msgid "Searching…"
 msgstr "Wyszukiwanie…"
 
-#: js/ui/search.js:655
+#: js/ui/search.js:662
 msgid "No results."
 msgstr "Brak wyników."
 
-#: js/ui/search.js:779
+#: js/ui/search.js:786
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1581,11 +1581,11 @@ msgstr "Wyświetl tekst"
 msgid "Hide Text"
 msgstr "Ukryj tekst"
 
-#: js/ui/shellMountOperation.js:314
+#: js/ui/shellMountOperation.js:316
 msgid "Password"
 msgstr "Hasło"
 
-#: js/ui/shellMountOperation.js:335
+#: js/ui/shellMountOperation.js:337
 msgid "Remember Password"
 msgstr "Zapamiętanie hasła"
 
@@ -1633,16 +1633,16 @@ msgstr "Wysoki kontrast"
 msgid "Large Text"
 msgstr "Duży tekst"
 
-#: js/ui/status/bluetooth.js:48
+#: js/ui/status/bluetooth.js:43
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:614
+#: js/ui/status/bluetooth.js:52 js/ui/status/network.js:600
 msgid "Bluetooth Settings"
 msgstr "Ustawienia Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:137
+#: js/ui/status/bluetooth.js:132
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1650,15 +1650,15 @@ msgstr[0] "%d połączone urządzenie"
 msgstr[1] "%d połączone urządzenia"
 msgstr[2] "%d połączonych urządzeń"
 
-#: js/ui/status/bluetooth.js:139
+#: js/ui/status/bluetooth.js:134
 msgid "Off"
 msgstr "Wyłączone"
 
-#: js/ui/status/bluetooth.js:141
+#: js/ui/status/bluetooth.js:136
 msgid "On"
 msgstr "Włączone"
 
-#: js/ui/status/brightness.js:44
+#: js/ui/status/brightness.js:41
 msgid "Brightness"
 msgstr "Jasność"
 
@@ -1670,53 +1670,53 @@ msgstr "Klawiatura"
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: js/ui/status/location.js:89 js/ui/status/location.js:197
+#: js/ui/status/location.js:72 js/ui/status/location.js:180
 msgid "Location Enabled"
 msgstr "Włączono ustalanie położenia"
 
-#: js/ui/status/location.js:90 js/ui/status/location.js:198
+#: js/ui/status/location.js:73 js/ui/status/location.js:181
 msgid "Disable"
 msgstr "Wyłącz"
 
-#: js/ui/status/location.js:91
+#: js/ui/status/location.js:74
 msgid "Privacy Settings"
 msgstr "Ustawienia prywatności"
 
-#: js/ui/status/location.js:196
+#: js/ui/status/location.js:179
 msgid "Location In Use"
 msgstr "Ustalanie położenia jest używane"
 
-#: js/ui/status/location.js:200
+#: js/ui/status/location.js:183
 msgid "Location Disabled"
 msgstr "Wyłączono ustalanie położenia"
 
-#: js/ui/status/location.js:201
+#: js/ui/status/location.js:184
 msgid "Enable"
 msgstr "Włącz"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:386
+#: js/ui/status/location.js:369
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Udzielić programowi „%s” dostępu do położenia użytkownika?"
 
-#: js/ui/status/location.js:387
+#: js/ui/status/location.js:370
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "W każdej chwili można zmienić dostęp do położenia w ustawieniach prywatności."
 
-#: js/ui/status/network.js:90
+#: js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<nieznane>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:441 js/ui/status/network.js:1323
+#: js/ui/status/network.js:427 js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Off"
 msgstr "Wyłączono sieć %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:444
+#: js/ui/status/network.js:430
 #, javascript-format
 msgid "%s Connected"
 msgstr "Połączono z siecią %s"
@@ -1724,164 +1724,164 @@ msgstr "Połączono z siecią %s"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:435
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "Sieć %s jest niezarządzana"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452
+#: js/ui/status/network.js:438
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "Rozłączanie z sieci %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:459 js/ui/status/network.js:1315
+#: js/ui/status/network.js:445 js/ui/status/network.js:1301
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Łączenie z siecią %s"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:448
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "Sieć %s wymaga uwierzytelnienia"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:470
+#: js/ui/status/network.js:456
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Brak oprogramowania sprzętowego dla sieci %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:474
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "Sieć %s jest niedostępna"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:477
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Połączenie z siecią %s się nie powiodło"
 
-#: js/ui/status/network.js:493
+#: js/ui/status/network.js:479
 msgid "Wired Settings"
 msgstr "Ustawienia sieci przewodowej"
 
-#: js/ui/status/network.js:535
+#: js/ui/status/network.js:521
 msgid "Mobile Broadband Settings"
 msgstr "Ustawienia sieci komórkowej"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:578 js/ui/status/network.js:1320
+#: js/ui/status/network.js:564 js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Wyłączono sprzęt dla sieci %s"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:582
+#: js/ui/status/network.js:568
 #, javascript-format
 msgid "%s Disabled"
 msgstr "Wyłączono sieć %s"
 
-#: js/ui/status/network.js:622
+#: js/ui/status/network.js:608
 msgid "Connect to Internet"
 msgstr "Połącz z Internetem"
 
-#: js/ui/status/network.js:816
+#: js/ui/status/network.js:802
 msgid "Airplane Mode is On"
 msgstr "Tryb samolotowy jest włączony"
 
-#: js/ui/status/network.js:817
+#: js/ui/status/network.js:803
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Sieć Wi-Fi jest wyłączona, kiedy tryb samolotowy jest włączony."
 
-#: js/ui/status/network.js:818
+#: js/ui/status/network.js:804
 msgid "Turn Off Airplane Mode"
 msgstr "Wyłącz tryb samolotowy"
 
-#: js/ui/status/network.js:827
+#: js/ui/status/network.js:813
 msgid "Wi-Fi is Off"
 msgstr "Sieć Wi-Fi jest wyłączona"
 
-#: js/ui/status/network.js:828
+#: js/ui/status/network.js:814
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi musi być włączone, aby połączyć z siecią."
 
-#: js/ui/status/network.js:829
+#: js/ui/status/network.js:815
 msgid "Turn On Wi-Fi"
 msgstr "Włącz sieć Wi-Fi"
 
-#: js/ui/status/network.js:854
+#: js/ui/status/network.js:840
 msgid "Wi-Fi Networks"
 msgstr "Sieci Wi-Fi"
 
-#: js/ui/status/network.js:856
+#: js/ui/status/network.js:842
 msgid "Select a network"
 msgstr "Wybór sieci"
 
-#: js/ui/status/network.js:886
+#: js/ui/status/network.js:872
 msgid "No Networks"
 msgstr "Brak sieci"
 
-#: js/ui/status/network.js:907 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:893 js/ui/status/rfkill.js:110
 msgid "Use hardware switch to turn off"
 msgstr "Należy użyć przełącznika sprzętowego, aby wyłączyć"
 
-#: js/ui/status/network.js:1186
+#: js/ui/status/network.js:1172
 msgid "Select Network"
 msgstr "Wybierz sieć"
 
-#: js/ui/status/network.js:1192
+#: js/ui/status/network.js:1178
 msgid "Wi-Fi Settings"
 msgstr "Ustawienia sieci Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1311
+#: js/ui/status/network.js:1297
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s jest włączony"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1326
+#: js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "Nie połączono z siecią %s"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1412
 msgid "connecting…"
 msgstr "łączenie…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1429
+#: js/ui/status/network.js:1415
 msgid "authentication required"
 msgstr "wymagane jest uwierzytelnienie"
 
-#: js/ui/status/network.js:1431
+#: js/ui/status/network.js:1417
 msgid "connection failed"
 msgstr "połączenie się nie powiodło"
 
-#: js/ui/status/network.js:1485
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "Ustawienia sieci VPN"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1484
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1494
 msgid "VPN Off"
 msgstr "Wyłączono sieć VPN"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1558 js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Ustawienia sieci"
 
-#: js/ui/status/network.js:1601
+#: js/ui/status/network.js:1587
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1889,7 +1889,7 @@ msgstr[0] "%s połączenie przewodowe"
 msgstr[1] "%s połączenia przewodowe"
 msgstr[2] "%s połączeń przewodowych"
 
-#: js/ui/status/network.js:1605
+#: js/ui/status/network.js:1591
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1897,7 +1897,7 @@ msgstr[0] "%s połączenie Wi-Fi"
 msgstr[1] "%s połączenia Wi-Fi"
 msgstr[2] "%s połączeń Wi-Fi"
 
-#: js/ui/status/network.js:1609
+#: js/ui/status/network.js:1595
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1905,57 +1905,57 @@ msgstr[0] "%s połączenie modemowe"
 msgstr[1] "%s połączenia modemowe"
 msgstr[2] "%s połączeń modemowych"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1727
 msgid "Connection failed"
 msgstr "Połączenie się nie powiodło"
 
-#: js/ui/status/network.js:1742
+#: js/ui/status/network.js:1728
 msgid "Activation of network connection failed"
 msgstr "Włączenie połączenia sieciowego się nie powiodło"
 
-#: js/ui/status/nightLight.js:68
+#: js/ui/status/nightLight.js:64
 msgid "Night Light Disabled"
 msgstr "Wyłączono nocne światło"
 
-#: js/ui/status/nightLight.js:69
+#: js/ui/status/nightLight.js:65
 msgid "Night Light On"
 msgstr "Włączono nocne światło"
 
-#: js/ui/status/nightLight.js:70
+#: js/ui/status/nightLight.js:66
 msgid "Resume"
 msgstr "Włącz"
 
-#: js/ui/status/nightLight.js:71
+#: js/ui/status/nightLight.js:67
 msgid "Disable Until Tomorrow"
 msgstr "Wyłącz do jutra"
 
-#: js/ui/status/power.js:61
+#: js/ui/status/power.js:52
 msgid "Power Settings"
 msgstr "Ustawienia zasilania"
 
-#: js/ui/status/power.js:77
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "Naładowane"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:84 js/ui/status/power.js:90
+#: js/ui/status/power.js:75 js/ui/status/power.js:81
 msgid "Estimating…"
 msgstr "Obliczanie…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:98
+#: js/ui/status/power.js:89
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Pozostało: %d∶%02d (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:103
+#: js/ui/status/power.js:94
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "Do naładowania: %d∶%02d (%d%%)"
 
-#: js/ui/status/power.js:131 js/ui/status/power.js:133
+#: js/ui/status/power.js:122 js/ui/status/power.js:124
 #, javascript-format
 msgid "%d %%"
 msgstr "%d%%"
@@ -1971,7 +1971,7 @@ msgstr "Wyłącz"
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
-#: js/ui/status/rfkill.js:88
+#: js/ui/status/rfkill.js:83
 msgid "Airplane Mode On"
 msgstr "Włączono tryb samolotowy"
 
@@ -1999,16 +1999,16 @@ msgstr "Uśpij"
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: js/ui/status/thunderbolt.js:298
+#: js/ui/status/thunderbolt.js:268
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
 #. we are done
-#: js/ui/status/thunderbolt.js:354
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "Nieznane urządzenie Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:355
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2016,11 +2016,11 @@ msgstr ""
 "Podczas nieobecności wykryto nowe urządzenie. Proszę je rozłączyć "
 "i podłączyć ponownie, aby zacząć je używać."
 
-#: js/ui/status/thunderbolt.js:360
+#: js/ui/status/thunderbolt.js:330
 msgid "Thunderbolt authorization error"
 msgstr "Błąd upoważnienia Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:361
+#: js/ui/status/thunderbolt.js:331
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nie można upoważnić urządzenia Thunderbolt: %s"
@@ -2078,22 +2078,22 @@ msgstr "Wyszukiwanie"
 msgid "“%s” is ready"
 msgstr "Okno „%s” jest gotowe"
 
-#: js/ui/windowManager.js:74
+#: js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
 msgstr "Zachować te ustawienia ekranu?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:75
 msgid "Revert Settings"
 msgstr "Przywróć ustawienia"
 
-#: js/ui/windowManager.js:89
+#: js/ui/windowManager.js:78
 msgid "Keep Changes"
 msgstr "Zachowaj zmiany"
 
-#: js/ui/windowManager.js:107
+#: js/ui/windowManager.js:96
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2103,7 +2103,7 @@ msgstr[2] "Zmiany ustawień zostaną przywrócone za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:689
+#: js/ui/windowManager.js:681
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d×%d"
@@ -2242,3 +2242,7 @@ msgstr[2] "%u wejść"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Dźwięki systemowe"
+
+msgctxt "button"
+msgid "Boot Options"
+msgstr "Opcje uruchamiania"
