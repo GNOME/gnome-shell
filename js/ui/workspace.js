@@ -466,7 +466,6 @@ var WindowOverlay = new Lang.Class({
         windowClone.actor.label_actor = title;
 
         this._updateCaptionId = metaWindow.connect('notify::title', w => {
-            this.title.text = w.title;
             this.title.text = this._getCaption();
             this.relayout(false);
         });
