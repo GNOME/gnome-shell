@@ -12,8 +12,6 @@ const ModalDialog = imports.ui.modalDialog;
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
-const APP_WHITELIST = ['gnome-control-center.desktop'];
-
 var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 
 var InhibitShortcutsDialog = new Lang.Class({
@@ -89,8 +87,12 @@ var InhibitShortcutsDialog = new Lang.Class({
         this._dialog.close();
     },
 
+    _getAppWhitelist() {
+        return global.settings.get_strv('inhibit-shortcuts-app-whitelist');
+    },
+
     vfunc_show() {
-        if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1)
+        if (this._app && this._getAppWhitelist().indexOf(this._app.get_id()) != -1)
             this._emitResponse(DialogResponse.ALLOW);
         else
             this._dialog.open();

@@ -38,6 +38,14 @@
         load all extensions regardless of the versions they claim to support.
       </description>
     </key>
+    <key name="inhibit-shortcuts-app-whitelist" type="as">
+      <default>['gnome-control-center.desktop']</default>
+      <summary>List of applications to allow shortcuts</summary>
+      <description>
+        A dialog prompt if an applications is allowed to capture all
+        keyboard events, unless it is listed in this whitelist.
+      </description>
+    </key>
     <key name="favorite-apps" type="as">
       <default>[ 'epiphany.desktop', 'evolution.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
       <summary>List of desktop file IDs for favorite applications</summary>
