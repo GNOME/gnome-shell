@@ -8,6 +8,8 @@ import subprocess
 import sys
 import optparse
 import tempfile
+import shutil
+import zipfile
 try:
     import json
 except ImportError:
@@ -87,6 +89,8 @@ function disable() {
 """,
 }
 
+EXTENSIONS_DIR = os.path.join(os.path.expanduser('~/.local'), 'share', 'gnome-shell', 'extensions')
+
 def create_extension():
     print()
     print('''Name should be a very short (ideally descriptive) string.
@@ -115,7 +119,7 @@ use an extension title clicktofocus@janedoe.example.com.''')
     if uuid == '':
         uuid = sample_uuid
 
-    extension_path = os.path.join(os.path.expanduser('~/.local'), 'share', 'gnome-shell', 'extensions', uuid)
+    extension_path = os.path.join(EXTENSIONS_DIR, uuid)
     if os.path.exists(extension_path):
         print("Extension path %r already exists" % (extension_path, ))
         sys.exit(0)
@@ -141,6 +145,24 @@ use an extension title clicktofocus@janedoe.example.com.''')
     print("Created extension in %r" % (extension_path, ))
     extensionjs_path = os.path.join(extension_path, 'extension.js')
     subprocess.Popen(['xdg-open', extensionjs_path])
+
+
+def install_extension(filename):
+    if zipfile.is_zipfile(filename):
+        temp_dir = tempfile.TemporaryDirectory(prefix='gnome-shell-extension-')
+        with zipfile.ZipFile(filename) as archive:
+            archive.extractall(temp_dir.name)
+        filename = temp_dir.name
+
+    with open(os.path.join(filename, 'metadata.json'), 'r') as metadata_file:
+        metadata_content = metadata_file.read()
+        metadata_json = json.loads(metadata_content)
+        uuid = metadata_json['uuid']
+
+    os.makedirs(EXTENSIONS_DIR, exist_ok=True)
+    extension_path = os.path.join(EXTENSIONS_DIR, uuid)
+    shutil.copytree(filename, extension_path)
+    print("Installed extension %r" % (uuid))
 
 ENABLED_EXTENSIONS_KEY = 'enabled-extensions'
 
@@ -206,6 +228,8 @@ def main():
                       help="Create a new GNOME Shell extension")
     parser.add_option("-r", "--reload-extension", dest="reload",
                       help="Reload a GNOME Shell extension")
+    parser.add_option("-i", "--install-extension", dest="install",
+                      help="Install a GNOME Shell extension from a folder or archive")
     options, args = parser.parse_args()
 
     if args:
@@ -223,6 +247,9 @@ def main():
 
     elif options.reload:
         reload_extension(options.reload)
+
+    elif options.install:
+        install_extension(options.install)
 
     else:
         parser.print_usage()
