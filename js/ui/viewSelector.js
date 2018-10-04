@@ -460,7 +460,11 @@ var ViewSelector = new Lang.Class({
     },
 
     reset() {
-        global.stage.set_key_focus(null);
+        // Don't drop the key focus on Clutter's side if anything but the
+        // overview has pushed a modal (e.g. system modals when activated using
+        // the overview).
+        if (Main.modalCount <= 1)
+            global.stage.set_key_focus(null);
 
         this._entry.text = '';
 
