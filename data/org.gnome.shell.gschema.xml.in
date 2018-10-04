@@ -96,13 +96,6 @@
 
   <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
           gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="open-application-menu" type="as">
-      <default>["&lt;Super&gt;F10"]</default>
-      <summary>Keybinding to open the application menu</summary>
-      <description>
-        Keybinding to open the application menu.
-      </description>
-    </key>
     <key name="toggle-application-view" type="as">
       <default>["&lt;Super&gt;a"]</default>
       <summary>Keybinding to open the “Show Applications” view</summary>
