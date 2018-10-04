@@ -4,12 +4,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
-const Shell = imports.gi.Shell;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
-const RemoteMenu = imports.ui.remoteMenu;
 
 var WindowMenu = new Lang.Class({
     Name: 'WindowMenu',
@@ -179,25 +177,6 @@ var WindowMenu = new Lang.Class({
     }
 });
 
-var AppMenu = new Lang.Class({
-    Name: 'AppMenu',
-    Extends: RemoteMenu.RemoteMenu,
-
-    _init(window, sourceActor) {
-        let app = Shell.WindowTracker.get_default().get_window_app(window);
-
-        this.parent(sourceActor, app.menu, app.action_group);
-
-        this.actor.add_style_class_name('fallback-app-menu');
-        let variant = window.get_gtk_theme_variant();
-        if (variant)
-            this.actor.add_style_class_name(variant);
-
-        Main.layoutManager.uiGroup.add_actor(this.actor);
-        this.actor.hide();
-    }
-});
-
 var WindowMenuManager = new Lang.Class({
     Name: 'WindowMenuManager',
 
@@ -212,8 +191,9 @@ var WindowMenuManager = new Lang.Class({
     },
 
     showWindowMenuForWindow(window, type, rect) {
-        let menuType = (type == Meta.WindowMenuType.WM) ? WindowMenu : AppMenu;
-        let menu = new menuType(window, this._sourceActor);
+        if (type != Meta.WindowMenuType.WM)
+            throw new Error('Unsupported window menu type');
+        let menu = new WindowMenu(window, this._sourceActor);
 
         this._manager.addMenu(menu);
 
