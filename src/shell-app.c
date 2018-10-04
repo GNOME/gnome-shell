@@ -608,6 +608,7 @@ gboolean
 shell_app_can_open_new_window (ShellApp *app)
 {
   ShellAppRunningState *state;
+  MetaWindow *window;
 
   /* Apps that are not running can always open new windows, because
      activating them would open the first one */
@@ -641,11 +642,13 @@ shell_app_can_open_new_window (ShellApp *app)
      Activate() knows nothing about the other instances, so it will show a
      new window.
   */
-  if (state->remote_menu)
+
+  window = g_slist_nth_data (state->windows, 0);
+
+  if (state->unique_bus_name != NULL &&
+      meta_window_get_gtk_application_object_path (window) != NULL)
     {
-      const char *application_id;
-      application_id = meta_window_get_gtk_application_id (state->windows->data);
-      if (application_id != NULL)
+      if (meta_window_get_gtk_application_id (window) != NULL)
         return FALSE;
       else
         return TRUE;
