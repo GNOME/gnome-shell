@@ -67,7 +67,7 @@ int shell_app_compare_by_name (ShellApp *app, ShellApp *other);
 int shell_app_compare (ShellApp *app, ShellApp *other);
 
 void shell_app_update_window_actions (ShellApp *app, MetaWindow *window);
-void shell_app_update_app_menu       (ShellApp *app, MetaWindow *window);
+void shell_app_update_app_actions    (ShellApp *app, MetaWindow *window);
 
 gboolean shell_app_get_busy          (ShellApp *app);
 
