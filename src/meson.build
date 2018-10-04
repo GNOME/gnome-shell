@@ -80,20 +80,6 @@ libshell_menu = library('gnome-shell-menu',
   install: true
 )
 
-libshell_menu_gir = gnome.generate_gir(libshell_menu,
-  sources: libshell_menu_sources,
-  nsversion: '0.1',
-  namespace: 'ShellMenu',
-  identifier_prefix: 'Gtk',
-  symbol_prefix: 'gtk',
-  includes: ['Gio-2.0', libst_gir[0]],
-  dependencies: [mutter_dep],
-  extra_args: ['--quiet'],
-  install_dir_gir: pkgdatadir,
-  install_dir_typelib: pkglibdir,
-  install: true
-)
-
 libshell_menu_dep = declare_dependency(link_with: libshell_menu)
 
 libshell_public_headers = [
@@ -225,7 +211,6 @@ endif
 
 libshell_gir_includes += [
   libgvc_gir[0],
-  libshell_menu_gir[0],
   libst_gir[0]
 ]
 
