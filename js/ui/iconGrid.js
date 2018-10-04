@@ -443,7 +443,6 @@ var IconGrid = new Lang.Class({
 
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
-            actor.reactive = false;
             actor.set_scale(0, 0);
             actor.set_pivot_point(0.5, 0.5);
 
@@ -465,7 +464,6 @@ var IconGrid = new Lang.Class({
                                                      onComplete: () => {
                                                         if (isLastItem)
                                                             this._animationDone();
-                                                        actor.reactive = true;
                                                     }
                                                    });
                               }
@@ -505,7 +503,6 @@ var IconGrid = new Lang.Class({
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
             actor.opacity = 0;
-            actor.reactive = false;
 
             let actorClone = new Clutter.Clone({ source: actor });
             this._clonesAnimating.push(actorClone);
@@ -540,7 +537,6 @@ var IconGrid = new Lang.Class({
                                            this._animationDone();
 
                                        actor.opacity = 255;
-                                       actor.reactive = true;
                                        actorClone.destroy();
                                    }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
@@ -566,7 +562,6 @@ var IconGrid = new Lang.Class({
                                            this._animationDone();
                                            this._restoreItemsOpacity();
                                        }
-                                       actor.reactive = true;
                                        actorClone.destroy();
                                    }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,

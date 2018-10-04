@@ -539,9 +539,7 @@ var AllView = new Lang.Class({
 
     // Overriden from BaseAppView
     animate(animationDirection, onComplete) {
-        this._scrollView.reactive = false;
         let completionFunc = () => {
-            this._scrollView.reactive = true;
             if (onComplete)
                 onComplete();
         };
