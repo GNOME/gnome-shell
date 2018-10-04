@@ -2,6 +2,7 @@
 
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -20,7 +21,6 @@ const DND = imports.ui.dnd;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const RemoteMenu = imports.ui.remoteMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -74,6 +74,116 @@ function _unpremultiply(color) {
                                blue: blue, alpha: color.alpha });
 };
 
+class AppMenu extends PopupMenu.PopupMenu {
+    constructor(sourceActor) {
+        super(sourceActor, 0.0, St.Side.TOP);
+
+        this._app = null;
+        this._appSystem = Shell.AppSystem.get_default();
+
+        this._windowsChangedId = 0;
+
+        this._windowSection = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._windowSection);
+
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._newWindowItem = this.addAction(_("New Window"), () => {
+            this._app.open_new_window(-1);
+        });
+
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._actionSection = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._actionSection);
+
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._detailsItem = this.addAction(_("Show Details"), () => {
+            let id = this._app.get_id();
+            let args = GLib.Variant.new('(ss)', [id, '']);
+            Gio.DBus.get(Gio.BusType.SESSION, null, (o, res) => {
+                let bus = Gio.DBus.get_finish(res);
+                bus.call('org.gnome.Software',
+                         '/org/gnome/Software',
+                         'org.gtk.Actions', 'Activate',
+                         GLib.Variant.new('(sava{sv})',
+                                          ['details', [args], null]),
+                         null, 0, -1, null, null);
+            });
+        });
+
+        this.addAction(_("Quit"), () => {
+            this._app.request_quit();
+        });
+
+        this._appSystem.connect('installed-changed', () => {
+            let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
+            this._detailsItem.actor.visible = (sw != null);
+        });
+    }
+
+    isEmpty() {
+        if (!this._app)
+            return true;
+        return super.isEmpty();
+    }
+
+    setApp(app) {
+        if (this._app == app)
+            return;
+
+        if (this._windowsChangedId)
+            this._app.disconnect(this._windowsChangedId);
+        this._windowsChangedId = 0;
+
+        this._app = app;
+
+        if (app)
+            this._windowsChangedId = app.connect('windows-changed', () => {
+                this._updateWindowsSection();
+            });
+
+        this._updateWindowsSection();
+
+        let appInfo = app ? app.app_info : null;
+        let actions = appInfo ? appInfo.list_actions() : [];
+
+        this._actionSection.removeAll();
+        actions.forEach(action => {
+            let label = appInfo.get_action_name(action);
+            this._actionSection.addAction(label, event => {
+                this._app.launch_action(action, event.get_time(), -1);
+            });
+        });
+
+        this._newWindowItem.actor.visible =
+            app && app.can_open_new_window() && !actions.includes('new-window');
+    }
+
+    _updateWindowsSection() {
+        this._windowSection.removeAll();
+
+        if (!this._app)
+            return;
+
+        let windows = this._app.get_windows();
+        windows.forEach(window => {
+            let title = window.title || this._app.get_name();
+            this._windowSection.addAction(title, event => {
+                Main.activateWindow(window, event.get_time());
+            });
+        });
+
+        // Add separator between windows of the current desktop and other windows.
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let pos = windows.findIndex(w => w.get_workspace() != activeWorkspace);
+        if (pos >= 0)
+            this._windowSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(), pos);
+    }
+}
+
 /**
  * AppMenuButton:
  *
@@ -95,8 +205,6 @@ var AppMenuButton = GObject.registerClass({
         this._menuManager = panel.menuManager;
         this._gtkSettings = Gtk.Settings.get_default();
         this._targetApp = null;
-        this._appMenuNotifyId = 0;
-        this._actionGroupNotifyId = 0;
         this._busyNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
@@ -131,6 +239,10 @@ var AppMenuButton = GObject.registerClass({
         this._stop = true;
 
         this._spinner = null;
+
+        let menu = new AppMenu(this);
+        this.setMenu(menu);
+        this._menuManager.addMenu(menu);
 
         let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
@@ -278,14 +390,6 @@ var AppMenuButton = GObject.registerClass({
         let targetApp = this._findTargetApp();
 
         if (this._targetApp != targetApp) {
-            if (this._appMenuNotifyId) {
-                this._targetApp.disconnect(this._appMenuNotifyId);
-                this._appMenuNotifyId = 0;
-            }
-            if (this._actionGroupNotifyId) {
-                this._targetApp.disconnect(this._actionGroupNotifyId);
-                this._actionGroupNotifyId = 0;
-            }
             if (this._busyNotifyId) {
                 this._targetApp.disconnect(this._busyNotifyId);
                 this._busyNotifyId = 0;
@@ -294,8 +398,6 @@ var AppMenuButton = GObject.registerClass({
             this._targetApp = targetApp;
 
             if (this._targetApp) {
-                this._appMenuNotifyId = this._targetApp.connect('notify::menu', this._sync.bind(this));
-                this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', this._sync.bind(this));
                 this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
                 this._label.set_text(this._targetApp.get_name());
                 this.actor.set_accessible_name(this._targetApp.get_name());
@@ -319,41 +421,8 @@ var AppMenuButton = GObject.registerClass({
         this.actor.reactive = (visible && !isBusy);
 
         this._syncIcon();
-        this._maybeSetMenu();
+        this.menu.setApp(this._targetApp);
         this.emit('changed');
-    }
-
-    _maybeSetMenu() {
-        let menu;
-
-        if (this._targetApp == null) {
-            menu = null;
-        } else if (this._targetApp.action_group && this._targetApp.menu) {
-            if (this.menu instanceof RemoteMenu.RemoteMenu &&
-                this.menu.actionGroup == this._targetApp.action_group)
-                return;
-
-            menu = new RemoteMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
-            menu.connect('activate', () => {
-                let win = this._targetApp.get_windows()[0];
-                win.check_alive(global.get_current_time());
-            });
-
-        } else {
-            if (this.menu && this.menu.isDummyQuitMenu)
-                return;
-
-            // fallback to older menu
-            menu = new PopupMenu.PopupMenu(this.actor, 0.0, St.Side.TOP, 0);
-            menu.isDummyQuitMenu = true;
-            menu.addAction(_("Quit"), () => {
-                this._targetApp.request_quit();
-            });
-        }
-
-        this.setMenu(menu);
-        if (menu)
-            this._menuManager.addMenu(menu);
     }
 
     _onDestroy() {
