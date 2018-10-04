@@ -122,14 +122,11 @@ var AppMenuButton = GObject.registerClass({
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._container.add_actor(this._arrow);
 
-        this._visible = this._gtkSettings.gtk_shell_shows_app_menu &&
-                        !Main.overview.visible;
+        this._visible = !Main.overview.visible;
         if (!this._visible)
             this.hide();
         this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
         this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
-        this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
-                                                         this._sync.bind(this));
 
         this._stop = true;
 
@@ -305,12 +302,7 @@ var AppMenuButton = GObject.registerClass({
             }
         }
 
-        let shellShowsAppMenu = this._gtkSettings.gtk_shell_shows_app_menu;
-        Meta.prefs_set_show_fallback_app_menu(!shellShowsAppMenu);
-
-        let visible = (this._targetApp != null &&
-                       shellShowsAppMenu &&
-                       !Main.overview.visibleTarget);
+        let visible = (this._targetApp != null && !Main.overview.visibleTarget);
         if (visible)
             this.fadeIn();
         else
@@ -382,10 +374,6 @@ var AppMenuButton = GObject.registerClass({
         if (this._overviewShowingId > 0) {
             Main.overview.disconnect(this._overviewShowingId);
             this._overviewShowingId = 0;
-        }
-        if (this._showsAppMenuId > 0) {
-            this._gtkSettings.disconnect(this._showsAppMenuId);
-            this._showsAppMenuId = 0;
         }
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
