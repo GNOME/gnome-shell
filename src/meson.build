@@ -61,24 +61,17 @@ gnome_shell_deps += recorder_deps
 tools_cflags = '-DLOCALEDIR="@0@"'.format(localedir)
 tools_deps = [gio_dep, gjs_dep]
 
-libshell_menu_gir_sources = [
+libshell_menu_sources = [
   'gtkactionmuxer.h',
   'gtkactionmuxer.c',
   'gtkactionobservable.h',
   'gtkactionobservable.c',
   'gtkactionobserver.h',
-  'gtkactionobserver.c',
-  'gtkmenutrackeritem.c',
-  'gtkmenutrackeritem.h'
-]
-
-libshell_menu_no_gir_sources= [
-  'gtkmenutracker.c',
-  'gtkmenutracker.h'
+  'gtkactionobserver.c'
 ]
 
 libshell_menu = library('gnome-shell-menu',
-  sources: libshell_menu_gir_sources + libshell_menu_no_gir_sources,
+  sources: libshell_menu_sources,
   dependencies: [gio_dep, clutter_dep],
   include_directories: conf_inc,
   build_rpath: mutter_typelibdir,
@@ -88,7 +81,7 @@ libshell_menu = library('gnome-shell-menu',
 )
 
 libshell_menu_gir = gnome.generate_gir(libshell_menu,
-  sources: libshell_menu_gir_sources,
+  sources: libshell_menu_sources,
   nsversion: '0.1',
   namespace: 'ShellMenu',
   identifier_prefix: 'Gtk',
@@ -151,8 +144,6 @@ libshell_sources = [
   'shell-invert-lightness-effect.c',
   'shell-keyring-prompt.c',
   'shell-keyring-prompt.h',
-  'shell-menu-tracker.c',
-  'shell-menu-tracker.h',
   'shell-mount-operation.c',
   'shell-perf-log.c',
   'shell-polkit-authentication-agent.c',
