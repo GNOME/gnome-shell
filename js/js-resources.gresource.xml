@@ -81,7 +81,6 @@
     <file>ui/panelMenu.js</file>
     <file>ui/pointerWatcher.js</file>
     <file>ui/popupMenu.js</file>
-    <file>ui/remoteMenu.js</file>
     <file>ui/remoteSearch.js</file>
     <file>ui/runDialog.js</file>
     <file>ui/screenShield.js</file>
