@@ -938,13 +938,6 @@ var WindowManager = new Lang.Class({
                            Shell.ActionMode.ALL,
                            this._toggleTweens.bind(this));
 
-        this.addKeybinding('open-application-menu',
-                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                           Shell.ActionMode.NORMAL |
-                           Shell.ActionMode.POPUP,
-                           this._toggleAppMenu.bind(this));
-
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -2026,10 +2019,6 @@ var WindowManager = new Lang.Class({
 
     _startA11ySwitcher(display, window, binding) {
         Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
-    },
-
-    _toggleAppMenu(display, window, event, binding) {
-        Main.panel.toggleAppMenu();
     },
 
     _toggleCalendar(display, window, event, binding) {

@@ -7,29 +7,19 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
-const Animation = imports.ui.animation;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const RemoteMenu = imports.ui.remoteMenu;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-
-var PANEL_ICON_SIZE = 16;
-var APP_MENU_ICON_MARGIN = 0;
 
 var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
-
-var SPINNER_ANIMATION_TIME = 1.0;
 
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing
@@ -73,330 +63,6 @@ function _unpremultiply(color) {
     return new Clutter.Color({ red: red, green: green,
                                blue: blue, alpha: color.alpha });
 };
-
-/**
- * AppMenuButton:
- *
- * This class manages the "application menu" component.  It tracks the
- * currently focused application.  However, when an app is launched,
- * this menu also handles startup notification for it.  So when we
- * have an active startup notification, we switch modes to display that.
- */
-var AppMenuButton = new Lang.Class({
-    Name: 'AppMenuButton',
-    Extends: PanelMenu.Button,
-    Signals: {'changed': {}},
-
-    _init(panel) {
-        this.parent(0.0, null, true);
-
-        this.actor.accessible_role = Atk.Role.MENU;
-
-        this._startingApps = [];
-
-        this._menuManager = panel.menuManager;
-        this._gtkSettings = Gtk.Settings.get_default();
-        this._targetApp = null;
-        this._appMenuNotifyId = 0;
-        this._actionGroupNotifyId = 0;
-        this._busyNotifyId = 0;
-
-        let bin = new St.Bin({ name: 'appMenu' });
-        bin.connect('style-changed', this._onStyleChanged.bind(this));
-        this.actor.add_actor(bin);
-
-        this.actor.bind_property("reactive", this.actor, "can-focus", 0);
-        this.actor.reactive = false;
-
-        this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        bin.set_child(this._container);
-
-        let textureCache = St.TextureCache.get_default();
-        textureCache.connect('icon-theme-changed',
-                             this._onIconThemeChanged.bind(this));
-
-        this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
-        this._container.add_actor(this._iconBox);
-
-        this._label = new St.Label({ y_expand: true,
-                                     y_align: Clutter.ActorAlign.CENTER });
-        this._container.add_actor(this._label);
-        this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
-        this._container.add_actor(this._arrow);
-
-        this._visible = this._gtkSettings.gtk_shell_shows_app_menu &&
-                        !Main.overview.visible;
-        if (!this._visible)
-            this.hide();
-        this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
-        this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
-        this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
-                                                         this._sync.bind(this));
-
-        this._stop = true;
-
-        this._spinner = null;
-
-        let tracker = Shell.WindowTracker.get_default();
-        let appSys = Shell.AppSystem.get_default();
-        this._focusAppNotifyId =
-            tracker.connect('notify::focus-app', this._focusAppChanged.bind(this));
-        this._appStateChangedSignalId =
-            appSys.connect('app-state-changed', this._onAppStateChanged.bind(this));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace', this._sync.bind(this));
-
-        this._sync();
-    },
-
-    fadeIn() {
-        if (this._visible)
-            return;
-
-        this._visible = true;
-        this.actor.reactive = true;
-        this.show();
-        Tweener.removeTweens(this.actor);
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad' });
-    },
-
-    fadeOut() {
-        if (!this._visible)
-            return;
-
-        this._visible = false;
-        this.actor.reactive = false;
-        Tweener.removeTweens(this.actor);
-        Tweener.addTween(this.actor,
-                         { opacity: 0,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete() {
-                               this.hide();
-                           },
-                           onCompleteScope: this });
-    },
-
-    _onStyleChanged(actor) {
-        let node = actor.get_theme_node();
-        let [success, icon] = node.lookup_url('spinner-image', false);
-        if (!success || (this._spinnerIcon && this._spinnerIcon.equal(icon)))
-            return;
-        this._spinnerIcon = icon;
-        this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
-        this._spinner.actor.hide();
-    },
-
-    _syncIcon() {
-        if (!this._targetApp)
-            return;
-
-        let icon = this._targetApp.create_icon_texture(PANEL_ICON_SIZE - APP_MENU_ICON_MARGIN);
-        this._iconBox.set_child(icon);
-    },
-
-    _onIconThemeChanged() {
-        if (this._iconBox.child == null)
-            return;
-
-        this._syncIcon();
-    },
-
-    stopAnimation() {
-        if (this._stop)
-            return;
-
-        this._stop = true;
-
-        if (this._spinner == null)
-            return;
-
-        Tweener.addTween(this._spinner.actor,
-                         { opacity: 0,
-                           time: SPINNER_ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onCompleteScope: this,
-                           onComplete() {
-                               this._spinner.stop();
-                               this._spinner.actor.opacity = 255;
-                               this._spinner.actor.hide();
-                           }
-                         });
-    },
-
-    startAnimation() {
-        this._stop = false;
-
-        if (this._spinner == null)
-            return;
-
-        this._spinner.play();
-        this._spinner.actor.show();
-    },
-
-    _onAppStateChanged(appSys, app) {
-        let state = app.state;
-        if (state != Shell.AppState.STARTING)
-            this._startingApps = this._startingApps.filter(a => a != app);
-        else if (state == Shell.AppState.STARTING)
-            this._startingApps.push(app);
-        // For now just resync on all running state changes; this is mainly to handle
-        // cases where the focused window's application changes without the focus
-        // changing.  An example case is how we map OpenOffice.org based on the window
-        // title which is a dynamic property.
-        this._sync();
-    },
-
-    _focusAppChanged() {
-        let tracker = Shell.WindowTracker.get_default();
-        let focusedApp = tracker.focus_app;
-        if (!focusedApp) {
-            // If the app has just lost focus to the panel, pretend
-            // nothing happened; otherwise you can't keynav to the
-            // app menu.
-            if (global.stage.key_focus != null)
-                return;
-        }
-        this._sync();
-    },
-
-    _findTargetApp() {
-        let workspaceManager = global.workspace_manager;
-        let workspace = workspaceManager.get_active_workspace();
-        let tracker = Shell.WindowTracker.get_default();
-        let focusedApp = tracker.focus_app;
-        if (focusedApp && focusedApp.is_on_workspace(workspace))
-            return focusedApp;
-
-        for (let i = 0; i < this._startingApps.length; i++)
-            if (this._startingApps[i].is_on_workspace(workspace))
-                return this._startingApps[i];
-
-        return null;
-    },
-
-    _sync() {
-        let targetApp = this._findTargetApp();
-
-        if (this._targetApp != targetApp) {
-            if (this._appMenuNotifyId) {
-                this._targetApp.disconnect(this._appMenuNotifyId);
-                this._appMenuNotifyId = 0;
-            }
-            if (this._actionGroupNotifyId) {
-                this._targetApp.disconnect(this._actionGroupNotifyId);
-                this._actionGroupNotifyId = 0;
-            }
-            if (this._busyNotifyId) {
-                this._targetApp.disconnect(this._busyNotifyId);
-                this._busyNotifyId = 0;
-            }
-
-            this._targetApp = targetApp;
-
-            if (this._targetApp) {
-                this._appMenuNotifyId = this._targetApp.connect('notify::menu', this._sync.bind(this));
-                this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', this._sync.bind(this));
-                this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
-                this._label.set_text(this._targetApp.get_name());
-                this.actor.set_accessible_name(this._targetApp.get_name());
-            }
-        }
-
-        let shellShowsAppMenu = this._gtkSettings.gtk_shell_shows_app_menu;
-        Meta.prefs_set_show_fallback_app_menu(!shellShowsAppMenu);
-
-        let visible = (this._targetApp != null &&
-                       shellShowsAppMenu &&
-                       !Main.overview.visibleTarget);
-        if (visible)
-            this.fadeIn();
-        else
-            this.fadeOut();
-
-        let isBusy = (this._targetApp != null &&
-                      (this._targetApp.get_state() == Shell.AppState.STARTING ||
-                       this._targetApp.get_busy()));
-        if (isBusy)
-            this.startAnimation();
-        else
-            this.stopAnimation();
-
-        this.actor.reactive = (visible && !isBusy);
-
-        this._syncIcon();
-        this._maybeSetMenu();
-        this.emit('changed');
-    },
-
-    _maybeSetMenu() {
-        let menu;
-
-        if (this._targetApp == null) {
-            menu = null;
-        } else if (this._targetApp.action_group && this._targetApp.menu) {
-            if (this.menu instanceof RemoteMenu.RemoteMenu &&
-                this.menu.actionGroup == this._targetApp.action_group)
-                return;
-
-            menu = new RemoteMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
-            menu.connect('activate', () => {
-                let win = this._targetApp.get_windows()[0];
-                win.check_alive(global.get_current_time());
-            });
-
-        } else {
-            if (this.menu && this.menu.isDummyQuitMenu)
-                return;
-
-            // fallback to older menu
-            menu = new PopupMenu.PopupMenu(this.actor, 0.0, St.Side.TOP, 0);
-            menu.isDummyQuitMenu = true;
-            menu.addAction(_("Quit"), () => {
-                this._targetApp.request_quit();
-            });
-        }
-
-        this.setMenu(menu);
-        if (menu)
-            this._menuManager.addMenu(menu);
-    },
-
-    _onDestroy() {
-        if (this._appStateChangedSignalId > 0) {
-            let appSys = Shell.AppSystem.get_default();
-            appSys.disconnect(this._appStateChangedSignalId);
-            this._appStateChangedSignalId = 0;
-        }
-        if (this._focusAppNotifyId > 0) {
-            let tracker = Shell.WindowTracker.get_default();
-            tracker.disconnect(this._focusAppNotifyId);
-            this._focusAppNotifyId = 0;
-        }
-        if (this._overviewHidingId > 0) {
-            Main.overview.disconnect(this._overviewHidingId);
-            this._overviewHidingId = 0;
-        }
-        if (this._overviewShowingId > 0) {
-            Main.overview.disconnect(this._overviewShowingId);
-            this._overviewShowingId = 0;
-        }
-        if (this._showsAppMenuId > 0) {
-            this._gtkSettings.disconnect(this._showsAppMenuId);
-            this._showsAppMenuId = 0;
-        }
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
-        }
-
-        this.parent();
-    }
-});
 
 var ActivitiesButton = new Lang.Class({
     Name: 'ActivitiesButton',
@@ -764,7 +430,6 @@ var AggregateMenu = new Lang.Class({
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'aggregateMenu': AggregateMenu,
-    'appMenu': AppMenuButton,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
@@ -784,6 +449,8 @@ var Panel = new Lang.Class({
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._sessionStyle = null;
+
+        Meta.prefs_set_show_fallback_app_menu(true);
 
         this.statusArea = {};
 
@@ -1001,10 +668,6 @@ var Panel = new Lang.Class({
         menu.toggle();
         if (menu.isOpen)
             menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    },
-
-    toggleAppMenu() {
-        this._toggleMenu(this.statusArea.appMenu);
     },
 
     toggleCalendar() {
