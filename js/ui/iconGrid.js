@@ -418,6 +418,11 @@ var IconGrid = new Lang.Class({
     },
 
     _animationDone() {
+        this._clonesAnimating.forEach(clone => {
+            clone.source.reactive = true;
+            clone.source.opacity = 255;
+            clone.destroy();
+        });
         this._clonesAnimating = [];
         this.emit('animation-done');
     },
@@ -538,10 +543,6 @@ var IconGrid = new Lang.Class({
                                    onComplete: () => {
                                        if (isLastItem)
                                            this._animationDone();
-
-                                       actor.opacity = 255;
-                                       actor.reactive = true;
-                                       actorClone.destroy();
                                    }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
@@ -562,12 +563,8 @@ var IconGrid = new Lang.Class({
                                    scale_x: scaleX,
                                    scale_y: scaleY,
                                    onComplete: () => {
-                                       if (isLastItem) {
+                                       if (isLastItem)
                                            this._animationDone();
-                                           this._restoreItemsOpacity();
-                                       }
-                                       actor.reactive = true;
-                                       actorClone.destroy();
                                    }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
@@ -578,12 +575,6 @@ var IconGrid = new Lang.Class({
 
             Tweener.addTween(actorClone, movementParams);
             Tweener.addTween(actorClone, fadeParams);
-        }
-    },
-
-    _restoreItemsOpacity() {
-        for (let index = 0; index < this._items.length; index++) {
-            this._items[index].actor.opacity = 255;
         }
     },
 
