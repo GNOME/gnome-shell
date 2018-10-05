@@ -25,6 +25,7 @@ var AutomountManager = new Lang.Class({
     _init() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._volumeQueue = [];
+        this._activeOperations = new Map();
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
                                     this._InhibitorsChanged.bind(this));
@@ -182,7 +183,7 @@ var AutomountManager = new Lang.Class({
             this._allowAutorun(volume);
 
         let mountOp = operation ? operation.mountOp : null;
-        volume._operation = operation;
+        this._activeOperations.set(volume, operation);
 
         volume.mount(0, mountOp, null,
                      this._onVolumeMounted.bind(this));
@@ -219,7 +220,8 @@ var AutomountManager = new Lang.Class({
     },
 
     _reaskPassword(volume) {
-        let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
+        let prevOperation = this._activeOperations.get(volume);
+        let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
                                                         { existingDialog: existingDialog });
@@ -227,8 +229,11 @@ var AutomountManager = new Lang.Class({
     },
 
     _closeOperation(volume) {
-        if (volume._operation)
-            volume._operation.close();
+        let operation = this._activeOperations.get(volume);
+        if (!operation)
+            return;
+        operation.close();
+        this._activeOperations.delete(volume);
     },
 
     _allowAutorun(volume) {
