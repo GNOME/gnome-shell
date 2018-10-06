@@ -337,11 +337,11 @@ setup_framebuffers (StThemeNodeTransition *transition,
 
 void
 st_theme_node_transition_paint (StThemeNodeTransition *transition,
+                                CoglFramebuffer       *framebuffer,
                                 ClutterActorBox       *allocation,
                                 guint8                 paint_opacity)
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   CoglColor constant;
   float tex_coords[] = {
@@ -374,7 +374,8 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
                               paint_opacity, paint_opacity,
                               paint_opacity, paint_opacity);
 
-  cogl_framebuffer_draw_multitextured_rectangle (fb, priv->material,
+  cogl_framebuffer_draw_multitextured_rectangle (framebuffer,
+                                                 priv->material,
                                                  priv->offscreen_box.x1,
                                                  priv->offscreen_box.y1,
                                                  priv->offscreen_box.x2,

@@ -414,10 +414,12 @@ void
 st_widget_paint_background (StWidget *widget)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+  CoglFramebuffer *framebuffer;
   StThemeNode *theme_node;
   ClutterActorBox allocation;
   guint8 opacity;
 
+  framebuffer = cogl_get_draw_framebuffer ();
   theme_node = st_widget_get_theme_node (widget);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (widget), &allocation);
@@ -426,12 +428,13 @@ st_widget_paint_background (StWidget *widget)
 
   if (priv->transition_animation)
     st_theme_node_transition_paint (priv->transition_animation,
+                                    framebuffer,
                                     &allocation,
                                     opacity);
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
-                         cogl_get_draw_framebuffer (),
+                         framebuffer,
                          &allocation,
                          opacity);
 }
