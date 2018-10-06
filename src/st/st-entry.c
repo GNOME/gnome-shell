@@ -869,6 +869,7 @@ st_entry_paint (ClutterActor *actor)
 
       if (priv->text_shadow_material != NULL)
         _st_paint_shadow_with_opacity (shadow_spec,
+                                       cogl_get_draw_framebuffer (),
                                        priv->text_shadow_material,
                                        &allocation,
                                        clutter_actor_get_paint_opacity (priv->entry));
