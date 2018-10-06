@@ -288,6 +288,7 @@ st_shadow_helper_paint (StShadowHelper  *helper,
                         guint8           paint_opacity)
 {
   _st_paint_shadow_with_opacity (helper->shadow,
+                                 cogl_get_draw_framebuffer (),
                                  helper->pipeline,
                                  actor_box,
                                  paint_opacity);

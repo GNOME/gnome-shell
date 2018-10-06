@@ -2590,6 +2590,7 @@ st_theme_node_paint (StThemeNode           *node,
       if (state->alloc_width < node->box_shadow_min_width ||
           state->alloc_height < node->box_shadow_min_height)
         _st_paint_shadow_with_opacity (node->box_shadow,
+                                       framebuffer,
                                        state->box_shadow_pipeline,
                                        &allocation,
                                        paint_opacity);
@@ -2663,6 +2664,7 @@ st_theme_node_paint (StThemeNode           *node,
        */
       if (node->background_shadow_pipeline != COGL_INVALID_HANDLE)
         _st_paint_shadow_with_opacity (node->background_image_shadow,
+                                       framebuffer,
                                        node->background_shadow_pipeline,
                                        &background_box,
                                        paint_opacity);
