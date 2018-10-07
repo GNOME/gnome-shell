@@ -1064,7 +1064,7 @@ msgstr "Načítá se…"
 #: js/ui/dateMenu.js:321
 #, javascript-format
 msgid "Feels like %s."
-msgstr "Pocitově jako %s."
+msgstr "Pocitová teplota %s."
 
 #: js/ui/dateMenu.js:324
 msgid "Go online for weather information"
