@@ -1,3 +1,29 @@
+3.30.1
+======
+* Cancel search on overview hiding [Marco; !205]
+* Fix disappearing network icon [Iain; #140]
+* Improve switch-monitor shortcut handling [Daniel; !208]
+* Fix missing key information in keyring dialog [Florian; #574]
+* De-duplicate all entries in run command history [Pascal; #524]
+* Fix frozen disk unlock dialogs [Florian; #565]
+* Fix unresponsive-app dialog blocking input in other windows [Florian; #273]
+* Fix handling of forward-key-event input method signal [Carlos; #531]
+* Misc. bug fixes [Florian, Marco, Carlos, Pascal, Andrea; #520, #791233,
+  !188, #539, !217, #536, #537, #578, !236, #579, !228, #618, #471, !255]
+
+Contributors:
+  Andrea Azzarone, Jürg Billeter, Daniel Drake, Carlos Garnacho, Andre Klapper,
+  Iain Lane, Florian Müllner, Bastien Nocera, Pascal Nowack, Jakub Steiner,
+  Ray Strode, Will Thompson, Marco Trevisan (Treviño), Adam Williamson,
+  Andrew Zaborowski
+
+Translators:
+  Yuras Shumovich [be], Stas Solovey [ru], Justin van Steijn [nl],
+  Dušan Kazik [sk], Khaled Hosny [ar], Madis O [et], Mart Raudsepp [et],
+  Марко Костић [sr], Piotr Drąg [pl], Marek Černocký [cs], Fran Dieguez [gl],
+  Ask Hjorth Larsen [da], Balázs Meskó [hu], Jiri Grönroos [fi],
+  Cheng-Chia Tseng [zh_TW]
+
 3.30.0
 ======
 
