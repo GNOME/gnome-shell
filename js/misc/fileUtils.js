@@ -75,8 +75,9 @@ function recursivelyMoveDir(srcDir, destDir) {
 let _ifaceResource = null;
 function loadInterfaceXML(iface) {
     if (!_ifaceResource) {
-        // don't use global.datadir so the method is usable from tools
-        let path = Config.PKGDATADIR + '/gnome-shell-dbus-interfaces.gresource';
+        // don't use global.datadir so the method is usable from tests/tools
+        let dir = GLib.getenv ('GNOME_SHELL_DATADIR') || Config.PKGDATADIR;
+        let path = dir + '/gnome-shell-dbus-interfaces.gresource';
         _ifaceResource = Gio.Resource.load(path);
         _ifaceResource._register();
     }
