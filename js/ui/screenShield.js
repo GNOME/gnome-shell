@@ -2,6 +2,7 @@
 
 const AccountsService = imports.gi.AccountsService;
 const Cairo = imports.cairo;
+const Cogl = imports.gi.Cogl;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -411,7 +412,9 @@ var Arrow = new Lang.Class({
 
             let allocation = this._drawingArea.get_allocation_box();
             let paintOpacity = this._drawingArea.get_paint_opacity();
-            this._shadowHelper.paint(allocation, paintOpacity);
+            let framebuffer = Cogl.get_draw_framebuffer();
+
+            this._shadowHelper.paint(framebuffer, allocation, paintOpacity);
         }
 
         this._drawingArea.paint();
