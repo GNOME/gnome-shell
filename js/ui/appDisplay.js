@@ -1281,6 +1281,9 @@ var FolderIcon = new Lang.Class({
             if (!this.actor.mapped && this._popup)
                 this._popup.popdown();
         });
+        this.actor.connect('destroy', () => {
+            this.view.actor.destroy();
+        });
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
