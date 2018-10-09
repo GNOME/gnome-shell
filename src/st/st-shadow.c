@@ -276,6 +276,7 @@ st_shadow_helper_free (StShadowHelper *helper)
 /**
  * st_shadow_helper_paint:
  * @helper: a #StShadowHelper
+ * @framebuffer: a #CoglFramebuffer
  * @actor_box: the bounding box of the shadow
  * @paint_opacity: the opacity at which the shadow is painted
  *
@@ -284,11 +285,12 @@ st_shadow_helper_free (StShadowHelper *helper)
  */
 void
 st_shadow_helper_paint (StShadowHelper  *helper,
+                        CoglFramebuffer *framebuffer,
                         ClutterActorBox *actor_box,
                         guint8           paint_opacity)
 {
   _st_paint_shadow_with_opacity (helper->shadow,
-                                 cogl_get_draw_framebuffer (),
+                                 framebuffer,
                                  helper->pipeline,
                                  actor_box,
                                  paint_opacity);
