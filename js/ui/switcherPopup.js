@@ -11,7 +11,6 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -65,7 +64,10 @@ var SwitcherPopup = new Lang.Class({
         this._initialDelayTimeoutId = 0;
         this._noModsTimeoutId = 0;
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
 
         // Initially disable hover so we ignore the enter-event if
         // the switcher appears underneath the current pointer location
