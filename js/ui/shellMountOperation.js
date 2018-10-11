@@ -103,11 +103,13 @@ var ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
     _init(source, params) {
-        params = Params.parse(params, { existingDialog: null });
+        params = Params.parse(params, { existingDialog: null,
+                                        errorMessage: null });
 
         this._dialog = null;
         this._dialogId = 0;
         this._existingDialog = params.existingDialog;
+        this._errorMessage = params.errorMessage;
         this._processesDialog = null;
 
         this.mountOp = new Shell.MountOperation();
@@ -153,7 +155,7 @@ var ShellMountOperation = new Lang.Class({
     _onAskPassword(op, message, defaultUser, defaultDomain, flags) {
         if (this._existingDialog) {
             this._dialog = this._existingDialog;
-            this._dialog.reaskPassword();
+            this._dialog.reaskPassword({ errorMessage: this._errorMessage });
         } else {
             this._dialog = new ShellMountPasswordDialog(message, this._gicon, flags);
         }
@@ -325,8 +327,7 @@ var ShellMountPasswordDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
 
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn’t work. Please try again.") });
+        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label', text: '' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();
@@ -354,8 +355,12 @@ var ShellMountPasswordDialog = new Lang.Class({
         this.setButtons(buttons);
     },
 
-    reaskPassword() {
+    reaskPassword(params) {
+        params = Params.parse(params, { errorMessage: null });
+
         this._passwordEntry.set_text('');
+        this._errorMessageLabel.set_text( _("Sorry, that didn’t work. Please try again.")
+                                         + ` (${params.errorMessage})` );
         this._errorMessageLabel.show();
     },
 

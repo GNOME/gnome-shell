@@ -197,10 +197,15 @@ var AutomountManager = new Lang.Class({
             this._closeOperation(volume);
         } catch (e) {
             // FIXME: we will always get G_IO_ERROR_FAILED from the gvfs udisks
-            // backend in this case, see 
-            // https://bugs.freedesktop.org/show_bug.cgi?id=51271
-            if (e.message.indexOf('No key available with this passphrase') != -1) {
-                this._reaskPassword(volume);
+            // backend, see https://bugs.freedesktop.org/show_bug.cgi?id=51271
+            // To reask the password if the user input was empty or wrong, we
+            // will check for corresponding error messages. However, these
+            // error strings are not unique for the cases in the comments below.
+            // The error message is also displayed in the reask password dialog.
+            if (e.message.includes('No key available with this passphrase') || // cryptsetup
+                e.message.includes('No key available to unlock device') ||     // udisks (no password)
+                e.message.includes('Error unlocking')) {                       // udisks (wrong password)
+                this._reaskPassword(volume, { errorMessage: e.message });
             } else {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
                     log('Unable to mount volume ' + volume.get_name() + ': ' + e.toString());
@@ -219,12 +224,15 @@ var AutomountManager = new Lang.Class({
             this._volumeQueue.filter(element => (element != volume));
     },
 
-    _reaskPassword(volume) {
+    _reaskPassword(volume, params) {
+        params = Params.parse(params, { errorMessage: null });
+
         let prevOperation = this._activeOperations.get(volume);
         let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
-                                                        { existingDialog: existingDialog });
+                                                        { existingDialog: existingDialog,
+                                                          errorMessage: params.errorMessage });
         this._mountVolume(volume, operation);
     },
 
