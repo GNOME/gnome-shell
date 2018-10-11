@@ -50,12 +50,15 @@ var State = {
 // These reasons are useful when we destroy the notifications received through
 // the notification daemon. We use EXPIRED for notifications that we dismiss
 // and the user did not interact with, DISMISSED for all other notifications
-// that were destroyed as a result of a user action, and SOURCE_CLOSED for the
-// notifications that were requested to be destroyed by the associated source.
+// that were destroyed as a result of a user action, SOURCE_CLOSED for the
+// notifications that were requested to be destroyed by the associated source,
+// and REPLACED for notifications that were destroyed as a consequence of a
+// newer version having replaced them.
 var NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
-    SOURCE_CLOSED: 3
+    SOURCE_CLOSED: 3,
+    REPLACED: 4
 };
 
 // Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
