@@ -773,9 +773,11 @@ var NotificationMessage = new Lang.Class({
 
         this.connect('close', () => {
             this._closed = true;
-            this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
+            if (!this._notificationDestroyed)
+                this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
         });
         this._destroyId = notification.connect('destroy', () => {
+            this._notificationDestroyed = true;
             if (!this._closed)
                 this.close();
         });
