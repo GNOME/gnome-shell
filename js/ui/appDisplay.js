@@ -1462,7 +1462,9 @@ var AppFolderPopup = new Lang.Class({
         global.focus_manager.add_group(this.actor);
 
         source.actor.connect('destroy', () => { this.actor.destroy(); });
-        this._grabHelper = new GrabHelper.GrabHelper(this.actor);
+        this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
+            actionMode: Shell.ActionMode.POPUP
+        });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
     },
