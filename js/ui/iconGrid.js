@@ -448,7 +448,6 @@ var IconGrid = new Lang.Class({
 
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
-            actor.reactive = false;
             actor.set_scale(0, 0);
             actor.set_pivot_point(0.5, 0.5);
 
@@ -470,7 +469,6 @@ var IconGrid = new Lang.Class({
                                                      onComplete: () => {
                                                         if (isLastItem)
                                                             this._animationDone();
-                                                        actor.reactive = true;
                                                     }
                                                    });
                               }
