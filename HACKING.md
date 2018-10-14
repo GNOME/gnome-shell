@@ -10,15 +10,15 @@ Life isn't fun if you can't break the rules. If a rule seems unnecessarily
 restrictive while you're coding, ignore it, and let the patch reviewer decide
 what to do.
 
-## Indentation and whitespace
+## Indentation, braces and whitespace
 
-Use four-space indents. Braces are on the same line as their associated
-statements.  You should only omit braces if *both* sides of the statement are
-on one line.
+* Use four-space indents.
+* Braces are on the same line as their associated statements.
+* You should only omit braces if *both* sides of the statement are on one line.
+* One space after the `function` keyword.
+* No space between the function name in a declaration or a call.
+* One space before the parens in the `if` statements, or `while`, or `for` loops.
 
-* One space after the `function` keyword.  No space between the function name
-* in a declaration or a call.  One space before the parens in the `if`
-* statements, or `while`, or `for` loops.
 ```javascript
     function foo(a, b) {
         let bar;
