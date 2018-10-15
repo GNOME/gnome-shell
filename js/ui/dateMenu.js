@@ -73,14 +73,14 @@ var TodayButton = new Lang.Class({
          * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
          * "February 17 2015".
          */
-        let dateFormat = Shell.util_translate_time_string (N_("%B %e %Y"));
+        let dateFormat = Shell.util_translate_time_string (N_("%B %-d %Y"));
         this._dateLabel.set_text(date.toLocaleFormat(dateFormat));
 
         /* Translators: This is the accessible name of the date button shown
          * below the time in the shell; it should combine the weekday and the
          * date, e.g. "Tuesday February 17 2015".
          */
-        dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
+        dateFormat = Shell.util_translate_time_string (N_("%A %B %-d %Y"));
         this.actor.accessible_name = date.toLocaleFormat(dateFormat);
     }
 });
