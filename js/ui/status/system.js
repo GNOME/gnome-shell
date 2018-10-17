@@ -32,7 +32,7 @@ var AltSwitcher = new Lang.Class({
             this._alternate.connect('clicked',
                                     () => { this._clickAction.release(); });
 
-        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+        this._capturedEventId = global.connect('captured-nonmotion-event', this._onCapturedEvent.bind(this));
 
         this._flipped = false;
 
@@ -84,12 +84,12 @@ var AltSwitcher = new Lang.Class({
 
     _onDestroy() {
         if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
+            global.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
     },
 
-    _onCapturedEvent(actor, event) {
+    _onCapturedEvent(global, actor, event) {
         let type = event.type();
         if (type == Clutter.EventType.KEY_PRESS || type == Clutter.EventType.KEY_RELEASE) {
             let key = event.get_key_symbol();

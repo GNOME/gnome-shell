@@ -417,7 +417,7 @@ var ActivitiesButton = new Lang.Class({
 
         this.actor.label_actor = this._label;
 
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+        global.connect('captured-nonmotion-event', this._onCapturedEvent.bind(this));
         this.actor.connect_after('key-release-event', this._onKeyRelease.bind(this));
 
         Main.overview.connect('showing', () => {
@@ -446,7 +446,7 @@ var ActivitiesButton = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
-    _onCapturedEvent(actor, event) {
+    _onCapturedEvent(global, actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS ||
             event.type() == Clutter.EventType.TOUCH_BEGIN) {
             if (!Main.overview.shouldToggleByCornerOrButton())
