@@ -120,6 +120,7 @@ enum {
 enum
 {
  NOTIFY_ERROR,
+ CAPTURED_NONMOTION_EVENT,
  LAST_SIGNAL
 };
 
@@ -365,6 +366,16 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_NONE, 2,
                     G_TYPE_STRING,
                     G_TYPE_STRING);
+
+  shell_global_signals[CAPTURED_NONMOTION_EVENT] =
+      g_signal_new ("captured-nonmotion-event",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_BOOLEAN, 2,
+                    G_TYPE_OBJECT,
+                    G_TYPE_POINTER);
 
   g_object_class_install_property (gobject_class,
                                    PROP_SESSION_MODE,
@@ -792,6 +803,24 @@ global_stage_after_paint (ClutterStage *stage,
 }
 
 static gboolean
+global_stage_captured_event (ClutterActor *actor,
+                             ClutterEvent *event,
+                             gpointer      user_data)
+{
+  gboolean ret = CLUTTER_EVENT_PROPAGATE;
+
+  if (clutter_event_type (event) != CLUTTER_MOTION)
+    {
+      ShellGlobal *global = SHELL_GLOBAL (user_data);
+
+      g_signal_emit_by_name (global, "captured-nonmotion-event",
+                             actor, event, &ret);
+    }
+
+  return ret;
+}
+
+static gboolean
 global_stage_after_swap (gpointer data)
 {
   /* Everything is done, we're ready for a new frame */
@@ -881,6 +910,9 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   g_signal_connect (global->stage, "after-paint",
                     G_CALLBACK (global_stage_after_paint), global);
+
+  g_signal_connect (global->stage, "captured-event",
+                    G_CALLBACK (global_stage_captured_event), global);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
                                          global_stage_after_swap,
