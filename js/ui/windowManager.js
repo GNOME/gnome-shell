@@ -474,10 +474,10 @@ var TilePreview = new Lang.Class({
 var TouchpadWorkspaceSwitchAction = new Lang.Class({
     Name: 'TouchpadWorkspaceSwitchAction',
 
-    _init(actor) {
+    _init() {
         this._dx = 0;
         this._dy = 0;
-        actor.connect('captured-event', this._handleEvent.bind(this));
+        global.connect('captured-nonmotion-event', this._handleEvent.bind(this));
     },
 
     _checkActivated() {
@@ -1008,7 +1008,7 @@ var WindowManager = new Lang.Class({
         global.stage.add_action(gesture);
 
         // This is not a normal Clutter.GestureAction, doesn't need add_action()
-        gesture = new TouchpadWorkspaceSwitchAction(global.stage);
+        gesture = new TouchpadWorkspaceSwitchAction();
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));

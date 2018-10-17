@@ -56,8 +56,8 @@ function getTermsForSearchString(searchString) {
 var TouchpadShowOverviewAction = new Lang.Class({
     Name: 'TouchpadShowOverviewAction',
 
-    _init(actor) {
-        actor.connect('captured-event', this._handleEvent.bind(this));
+    _init() {
+        global.connect('captured-nonmotion-event', this._handleEvent.bind(this));
     },
 
     _handleEvent(actor, event) {
@@ -261,7 +261,7 @@ var ViewSelector = new Lang.Class({
         gesture.connect('activated', this._pinchGestureActivated.bind(this));
         global.stage.add_action(gesture);
 
-        gesture = new TouchpadShowOverviewAction(global.stage);
+        gesture = new TouchpadShowOverviewAction();
         gesture.connect('activated', this._pinchGestureActivated.bind(this));
     },
 

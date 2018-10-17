@@ -638,7 +638,7 @@ var PadOsd = new Lang.Class({
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;
-        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+        this._capturedEventId = global.connect('captured-nonmotion-event', this._onCapturedEvent.bind(this));
         this._padChooser = null;
 
         let deviceManager = Clutter.DeviceManager.get_default();
@@ -954,7 +954,7 @@ var PadOsd = new Lang.Class({
         }
 
         if (this._capturedEventId != 0) {
-            global.stage.disconnect(this._capturedEventId);
+            global.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
 
