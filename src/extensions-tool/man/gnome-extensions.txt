@@ -21,6 +21,8 @@ SYNOPSIS
 
 *gnome-extensions* info 'UUID'
 
+*gnome-extensions* show 'UUID'
+
 *gnome-extensions* list ['OPTION'...]
 
 *gnome-extensions* create ['OPTION'...]
@@ -55,6 +57,9 @@ If the extension is not enabled, the command will do nothing.
 *info* 'UUID'::
 Show details of the extension identified by 'UUID', including name,
 description and state.
+
+*show* 'UUID'::
+Synonym of info.
 
 *list* ['OPTION'...]::
 Displays a list of installed extensions.
