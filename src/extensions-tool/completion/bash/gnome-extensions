@@ -5,7 +5,7 @@
 ################################################################################
 
 __gnome_extensions() {
-  local commands="version enable disable info list create"
+  local commands="version enable disable info show list create"
   local COMMAND=${COMP_WORDS[1]}
 
   _init_completion -s || return
@@ -29,7 +29,7 @@ __gnome_extensions() {
         enable)
           local list_opt=--disabled
           ;;&
-        enable|disable|info)
+        enable|disable|info|show)
           COMPREPLY=($(compgen -W "`gnome-extensions list $list_opt`" -- "$2"))
           return 0
           ;;
