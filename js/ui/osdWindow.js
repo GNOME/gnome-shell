@@ -204,8 +204,8 @@ var OsdWindow = new Lang.Class({
     _reset() {
         this.actor.hide();
         this.setLabel(null);
-        this.setLevel(null);
         this.setMaxLevel(null);
+        this.setLevel(null);
     },
 
     _relayout() {
@@ -253,8 +253,8 @@ var OsdWindowManager = new Lang.Class({
     _showOsdWindow(monitorIndex, icon, label, level, maxLevel) {
         this._osdWindows[monitorIndex].setIcon(icon);
         this._osdWindows[monitorIndex].setLabel(label);
-        this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].setMaxLevel(maxLevel);
+        this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].show();
     },
 
