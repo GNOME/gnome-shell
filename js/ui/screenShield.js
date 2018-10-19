@@ -36,6 +36,8 @@ const LOCK_DELAY_KEY = 'lock-delay';
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
+const LOCKDIALOG_BACKGROUND_SCHEMA = 'org.gnome.desktop.background.lockdialog';
+
 const LOCKED_STATE_STR = 'screenShield.locked';
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
@@ -495,6 +497,16 @@ var ScreenShield = new Lang.Class({
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
 
+        // Add background for this._lockDialogGroup
+        this._bgLockDialogGroup = new Clutter.Actor();
+
+        this._lockDialogGroup.add_actor(this._bgLockDialogGroup);
+        this._bgLockDialogGroup.lower_bottom();
+        this._bgManagersLockDialogGroup = [];
+
+        this._updateBgLockDialogGroup();
+        Main.layoutManager.connect('monitors-changed', this._updateBgLockDialogGroup.bind(this));
+
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
 
@@ -586,6 +598,35 @@ var ScreenShield = new Lang.Class({
             this._loginSession.SetLockedHintRemote(active);
 
         this._syncInhibitor();
+    },
+
+    _createBgLockDialogGroup(monitorIndex) {
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+        let widget = new St.Widget({ style_class: 'screen-shield-background',
+                                     x: monitor.x,
+                                     y: monitor.y,
+                                     width: monitor.width,
+                                     height: monitor.height });
+
+        let bgManager = new Background.BackgroundManager({ container: widget,
+                                                           monitorIndex: monitorIndex,
+                                                           controlPosition: false,
+                                                           settingsSchema: LOCKDIALOG_BACKGROUND_SCHEMA });
+
+        this._bgManagersLockDialogGroup.push(bgManager);
+
+        this._bgLockDialogGroup.add_child(widget);
+    },
+
+    _updateBgLockDialogGroup() {
+        for (let i = 0; i < this._bgManagersLockDialogGroup.length; i++)
+            this._bgManagersLockDialogGroup[i].destroy();
+
+        this._bgManagersLockDialogGroup = [];
+        this._bgLockDialogGroup.destroy_all_children();
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
+            this._createBgLockDialogGroup(i);
     },
 
     _createBackground(monitorIndex) {
