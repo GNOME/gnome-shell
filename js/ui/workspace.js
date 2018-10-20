@@ -714,10 +714,6 @@ var WindowPositionFlags = {
 // which rows, row sizes and other general state tracking that would make
 // calculating window positions from this information fairly easy.
 //
-// We don't compute some global order of windows right now for optimal
-// travel when animating into the overview; windows are assumed to be
-// in some stable order.
-//
 // After a layout is computed that's considered the best layout, we
 // compute the layout scale to fit it in the area, and then compute
 // slots (sizes and positions) for each thumbnail.
@@ -978,8 +974,13 @@ var UnalignedLayoutStrategy = new Lang.Class({
     },
 
     _sortRow(row) {
-        // Sort windows horizontally to minimize travel distance
-        row.windows.sort((a, b) => a.realWindow.x - b.realWindow.x);
+        // Sort windows horizontally to minimize travel distance. This affects
+        // in what order the windows end up in a row.
+        row.windows.sort((a, b) => {
+            let aCenter = a.realWindow.x + a.realWindow.width / 2;
+            let bCenter = b.realWindow.x + b.realWindow.width / 2;
+            return aCenter - bCenter;
+        });
     },
 
     computeLayout(windows, layout) {
@@ -994,14 +995,24 @@ var UnalignedLayoutStrategy = new Lang.Class({
         }
 
         let idealRowWidth = totalWidth / numRows;
+
+        // Sort windows vertically to minimize travel distance. This affects
+        // what rows the windows get placed in.
+        let sortedWindows = windows.slice();
+        sortedWindows.sort((a, b) => {
+            let aCenter = a.realWindow.y + a.realWindow.height / 2;
+            let bCenter = b.realWindow.y + b.realWindow.height / 2;
+            return aCenter - bCenter;
+        });
+
         let windowIdx = 0;
         for (let i = 0; i < numRows; i++) {
             let col = 0;
             let row = this._newRow();
             rows.push(row);
 
-            for (; windowIdx < windows.length; windowIdx++) {
-                let window = windows[windowIdx];
+            for (; windowIdx < sortedWindows.length; windowIdx++) {
+                let window = sortedWindows[windowIdx];
                 let s = this._computeWindowScale(window);
                 let width = window.width * s;
                 let height = window.height * s;
