@@ -1093,6 +1093,7 @@ var Panel = new Lang.Class({
         let windows = activeWorkspace.list_windows().filter(metaWindow => {
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
+                   !metaWindow.is_hidden() &&
                    metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
         });
 
