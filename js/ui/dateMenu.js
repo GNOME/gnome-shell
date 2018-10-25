@@ -80,7 +80,7 @@ var TodayButton = new Lang.Class({
          * below the time in the shell; it should combine the weekday and the
          * date, e.g. "Tuesday February 17 2015".
          */
-        dateFormat = Shell.util_translate_time_string (N_("%A %B %-d %Y"));
+        dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
         this.actor.accessible_name = date.toLocaleFormat(dateFormat);
     }
 });
