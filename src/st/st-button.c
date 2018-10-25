@@ -248,14 +248,17 @@ st_button_touch_event (ClutterActor      *actor,
   if (event->type == CLUTTER_TOUCH_BEGIN && !priv->press_sequence)
     {
       clutter_input_device_sequence_grab (device, sequence, actor);
-      st_button_press (button, device, 0, sequence);
+      if (!clutter_event_is_pointer_emulated ((ClutterEvent*) event))
+        st_button_press (button, device, 0, sequence);
       return CLUTTER_EVENT_STOP;
     }
   else if (event->type == CLUTTER_TOUCH_END &&
            priv->device == device &&
            priv->press_sequence == sequence)
     {
-      st_button_release (button, device, mask, 0, sequence);
+      if (!clutter_event_is_pointer_emulated ((ClutterEvent*) event))
+        st_button_release (button, device, mask, 0, sequence);
+
       clutter_input_device_sequence_ungrab (device, sequence);
       return CLUTTER_EVENT_STOP;
     }
