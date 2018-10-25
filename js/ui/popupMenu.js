@@ -1296,10 +1296,12 @@ var PopupMenuManager = new Lang.Class({
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
-                                    onUngrab: isUser => {
-                                        this._closeMenu(isUser, menu);
-                                    } });
+            if (!this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
+                                         onUngrab: isUser => {
+                                             this._closeMenu(isUser, menu);
+                                         } })) {
+                menu.close(BoxPointer.PopupAnimation.NONE);
+            }
         } else {
             this._grabHelper.ungrab({ actor: menu.actor });
         }
