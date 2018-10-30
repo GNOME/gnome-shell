@@ -804,6 +804,19 @@ var PopupMenu = new Lang.Class({
         if (this._openedSubMenu)
             this._openedSubMenu.close(true);
 
+        // Setting the max-height won't do any good if the minimum height of the
+        // menu is higher then the screen; it's useful if part of the menu is
+        // scrollable so the minimum height is smaller than the natural height
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let verticalMargins = this.actor.margin_top + this.actor.margin_bottom;
+
+        // The workarea and margin dimensions are in physical pixels, but CSS
+        // measures are in logical pixels, so make sure to consider the scale
+        // factor when computing max-height
+        let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
+        this.actor.style = ('max-height: %spx;').format(maxHeight);
+
         this._openedSubMenu = submenu;
     },
 
