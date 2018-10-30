@@ -1855,32 +1855,22 @@ var AppIconMenu = new Lang.Class({
     _redisplay() {
         this.removeAll();
 
+        // Add empty menu item for the window list, but don't populate until we
+        // know how tall the rest of the menu is.
         let windows = this._source.app.get_windows().filter(
             w => !w.skip_taskbar
         );
-
-        // Display the app windows menu items and the separator between windows
-        // of the current desktop and other windows.
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let separatorShown = windows.length > 0 && windows[0].get_workspace() != activeWorkspace;
-
-        for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
-            if (!separatorShown && window.get_workspace() != activeWorkspace) {
-                this._appendSeparator();
-                separatorShown = true;
-            }
-            let title = window.title ? window.title
-                                     : this._source.app.get_name();
-            let item = this._appendMenuItem(title);
-            item.connect('activate', () => {
-                this.emit('activate-window', window);
-            });
+        if ( windows.length > 0 ) {
+            print("winlen > 0");
+            this._allWindowsMenuItem = new PopupMenu.PopupSubMenuMenuItem(_("All Windows"), false);
+            this.addMenuItem(this._allWindowsMenuItem);
+            this._populateAllWindowMenu(windows);
         }
 
         if (!this._source.app.is_window_backed()) {
-            this._appendSeparator();
+            if (windows.length > 0) {
+                this._appendSeparator();
+            }
 
             let appInfo = this._source.app.get_app_info();
             let actions = appInfo.list_actions();
@@ -1960,6 +1950,44 @@ var AppIconMenu = new Lang.Class({
                 });
             }
         }
+    },
+
+    _populateAllWindowMenu: function(windows) {
+        // Display the app windows menu items and the separator between windows
+        // of the current desktop and other windows.
+
+        this._allWindowsMenuItem.menu.removeAll();
+        let menuActor = this._allWindowsMenuItem.menu.actor
+        menuActor.remove_style_class_name('popup-sub-menu');
+
+        if (windows.length > 0) {
+
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
+            let separatorShown =  windows[0].get_workspace() != activeWorkspace;
+
+            for (let i = 0; i < windows.length; i++) {
+                let window = windows[i];
+                if (!separatorShown && window.get_workspace() != activeWorkspace) {
+                    this._allWindowsMenuItem.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+                    separatorShown = true;
+                }
+
+                let item = new PopupMenu.PopupMenuItem(window.title);
+                this._allWindowsMenuItem.menu.addMenuItem(item);
+                item.connect('activate', Lang.bind(this, function() {
+                    this.emit('activate-window', window);
+                }));
+
+                // This is to achieve a more gracefull transition when the last windows is closed.
+                item.connect('destroy', Lang.bind(this, function() {
+                    if(this._allWindowsMenuItem.menu._getMenuItems().length == 1) // It's still counting the item just going to be destroyed
+                        this._allWindowsMenuItem.setSensitive(false);
+                }));
+            }
+        }
+        this._allWindowsMenuItem.actor.hide();
+        this._allWindowsMenuItem.menu.open();
     },
 
     _appendSeparator() {
