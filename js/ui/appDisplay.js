@@ -1857,11 +1857,20 @@ var AppIconMenu = new Lang.Class({
 
         // Add empty menu item for the window list, but don't populate until we
         // know how tall the rest of the menu is.
-        this._allWindowsMenuItem = new PopupMenu.PopupSubMenuMenuItem(_("All Windows"), false);
-        this.addMenuItem(this._allWindowsMenuItem);
+        let windows = this._source.app.get_windows().filter(
+            w => !w.skip_taskbar
+        );
+        if ( windows.length > 0 ) {
+            print("winlen > 0");
+            this._allWindowsMenuItem = new PopupMenu.PopupSubMenuMenuItem(_("All Windows"), false);
+            this.addMenuItem(this._allWindowsMenuItem);
+            this._populateAllWindowMenu(windows);
+        }
 
         if (!this._source.app.is_window_backed()) {
-            this._appendSeparator();
+            if (windows.length > 0) {
+                this._appendSeparator();
+            }
 
             let appInfo = this._source.app.get_app_info();
             let actions = appInfo.list_actions();
@@ -1941,14 +1950,6 @@ var AppIconMenu = new Lang.Class({
                 });
             }
         }
-
-        // The rest of the menu is built. Populate and resize the window
-        // submenu so the entire menu fits within the screen height.
-        let windows = this._source.app.get_windows().filter(
-            w => !w.skip_taskbar
-        );
-        this._populateAllWindowMenu(windows);
-        this._resizeAllWindowMenu();
     },
 
     _populateAllWindowMenu: function(windows) {
@@ -1956,66 +1957,37 @@ var AppIconMenu = new Lang.Class({
         // of the current desktop and other windows.
 
         this._allWindowsMenuItem.menu.removeAll();
+        let menuActor = this._allWindowsMenuItem.menu.actor
+        menuActor.remove_style_class_name('popup-sub-menu');
 
-            if (windows.length > 0) {
+        if (windows.length > 0) {
 
-                let workspaceManager = global.workspace_manager;
-                let activeWorkspace = workspaceManager.get_active_workspace();
-                let separatorShown =  windows[0].get_workspace() != activeWorkspace;
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
+            let separatorShown =  windows[0].get_workspace() != activeWorkspace;
 
-                for (let i = 0; i < windows.length; i++) {
-                    let window = windows[i];
-                    if (!separatorShown && window.get_workspace() != activeWorkspace) {
-                        this._allWindowsMenuItem.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-                        separatorShown = true;
-                    }
-
-                    let item = new PopupMenu.PopupMenuItem(window.title);
-                    this._allWindowsMenuItem.menu.addMenuItem(item);
-                    item.connect('activate', Lang.bind(this, function() {
-                        this.emit('activate-window', window);
-                    }));
-
-                    // This is to achieve a more gracefull transition when the last windows is closed.
-                    item.connect('destroy', Lang.bind(this, function() {
-                        if(this._allWindowsMenuItem.menu._getMenuItems().length == 1) // It's still counting the item just going to be destroyed
-                            this._allWindowsMenuItem.setSensitive(false);
-                    }));
+            for (let i = 0; i < windows.length; i++) {
+                let window = windows[i];
+                if (!separatorShown && window.get_workspace() != activeWorkspace) {
+                    this._allWindowsMenuItem.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+                    separatorShown = true;
                 }
+
+                let item = new PopupMenu.PopupMenuItem(window.title);
+                this._allWindowsMenuItem.menu.addMenuItem(item);
+                item.connect('activate', Lang.bind(this, function() {
+                    this.emit('activate-window', window);
+                }));
+
+                // This is to achieve a more gracefull transition when the last windows is closed.
+                item.connect('destroy', Lang.bind(this, function() {
+                    if(this._allWindowsMenuItem.menu._getMenuItems().length == 1) // It's still counting the item just going to be destroyed
+                        this._allWindowsMenuItem.setSensitive(false);
+                }));
             }
-    },
-
-    _resizeAllWindowMenu: function() {
-        // If the menu is too tall for the screen height, make the window
-        // submenu scrollable and shrink to fit.
-
-        // Get the height of the menu without window submenu.
-        if (this._allWindowsMenuItem._getOpenState()) {
-            this._allWindowsMenuItem.menu.close();
         }
-        let menuHeight = this.actor.get_preferred_height(-1)[1];
         this._allWindowsMenuItem.actor.hide();
         this._allWindowsMenuItem.menu.open();
-
-        let screenHeight = global.stage.get_height() - this.actor.get_margin_top() - this.actor.get_margin_bottom() - Main.panel.actor.get_height();
-
-        let menuActor = this._allWindowsMenuItem.menu.actor
-        let topMenuActor = this._allWindowsMenuItem.menu._getTopMenu().actor;
-        let topMenuHeight = topMenuActor.get_preferred_height(-1);
-        let topMenuMargin = 2 * (topMenuActor.get_margin_top() + topMenuActor.get_margin_bottom());
-
-        if (topMenuHeight[1] > screenHeight) {
-            let newHeight = screenHeight - menuHeight - topMenuMargin;
-            menuActor.set_height(newHeight);
-
-            menuActor.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC
-            menuActor.add_style_pseudo_class('scrolled');
-        }
-        else {
-            menuActor.vscrollbar_policy = Gtk.PolicyType.NEVER
-            menuActor.remove_style_pseudo_class('scrolled');
-        }
-        menuActor.remove_style_class_name('popup-sub-menu');
     },
 
     _appendSeparator() {
