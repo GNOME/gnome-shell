@@ -1959,7 +1959,8 @@ var AppIconMenu = new Lang.Class({
 
             if (windows.length > 0) {
 
-                let activeWorkspace = global.screen.get_active_workspace();
+                let workspaceManager = global.workspace_manager;
+                let activeWorkspace = workspaceManager.get_active_workspace();
                 let separatorShown =  windows[0].get_workspace() != activeWorkspace;
 
                 for (let i = 0; i < windows.length; i++) {
