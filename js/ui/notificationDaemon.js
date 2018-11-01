@@ -396,6 +396,7 @@ var FdoNotificationDaemon = new Lang.Class({
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
         // of the 'transient' hint with hints['transient'] rather than hints.transient
         notification.setTransient(!!hints['transient']);
+        notification.setDetailed(ndata ? ((ndata.hints['x-gnome-privacy-scope'] || 'user') == 'system') : false);
 
         let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);

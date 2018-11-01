@@ -338,6 +338,7 @@ var Notification = new Lang.Class({
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
+        this.detailedHint = false;
         this.forFeedback = false;
         this._acknowledged = false;
         this.bannerBodyText = null;
@@ -432,6 +433,10 @@ var Notification = new Lang.Class({
 
     setForFeedback: function(forFeedback) {
         this.forFeedback = forFeedback;
+    },
+
+    setDetailedHint: function(detailedHint) {
+        this.detailedHint = detailedHint;
     },
 
     playSound: function() {
@@ -737,6 +742,10 @@ var Source = new Lang.Class({
 
     get unseenCount() {
         return this.notifications.filter(function(n) { return !n.acknowledged; }).length;
+    },
+
+    get detailedHintCount() {
+        return this.notifications.filter(function(n) { return n.detailedHint; }).length;
     },
 
     get countVisible() {

@@ -208,7 +208,7 @@ var NotificationsBox = new Lang.Class({
     },
 
     _showSource: function(source, obj, box) {
-        if (obj.detailed) {
+        if (obj.detailed || source.detailedHintCount == source.count) {
             [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
         } else {
             [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
