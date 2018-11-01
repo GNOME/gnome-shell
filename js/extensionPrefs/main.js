@@ -29,59 +29,40 @@ var Application = class {
         this.application.connect('command-line', this._onCommandLine.bind(this));
         this.application.connect('startup', this._onStartup.bind(this));
 
-        this._extensionPrefsModules = {};
-
         this._startupUuid = null;
         this._loaded = false;
         this._skipMainWindow = false;
     }
 
-    _extensionAvailable(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
-
-        if (!extension)
+    _showPrefs(uuid) {
+        let row;
+        for (let item of this._extensionSelector.get_children()) {
+            if (item.uuid === uuid) {
+                if (item.hasPrefs)
+                    row = item;
+                break;
+            }
+        }
+        if (!row)
             return false;
 
-        if (!extension.dir.get_child('prefs.js').query_exists(null))
-            return false;
-
-        return true;
-    }
-
-    _getExtensionPrefsModule(extension) {
-        let uuid = extension.metadata.uuid;
-
-        if (this._extensionPrefsModules.hasOwnProperty(uuid))
-            return this._extensionPrefsModules[uuid];
-
-        ExtensionUtils.installImporter(extension);
-
-        let prefsModule = extension.imports.prefs;
-        prefsModule.init(extension.metadata);
-
-        this._extensionPrefsModules[uuid] = prefsModule;
-        return prefsModule;
-    }
-
-    _selectExtension(uuid) {
-        if (!this._extensionAvailable(uuid))
-            return;
-
-        let extension = ExtensionUtils.extensions[uuid];
         let widget;
 
         try {
-            let prefsModule = this._getExtensionPrefsModule(extension);
-            widget = prefsModule.buildPrefsWidget();
+            widget = row.prefsModule.buildPrefsWidget();
         } catch (e) {
-            widget = this._buildErrorUI(extension, e);
+            widget = this._buildErrorUI(row, e);
         }
 
-        let dialog = new Gtk.Window({ modal: !this._skipMainWindow,
-                                      type_hint: Gdk.WindowTypeHint.DIALOG });
-        dialog.set_titlebar(new Gtk.HeaderBar({ show_close_button: true,
-                                                title: extension.metadata.name,
-                                                visible: true }));
+        let dialog = new Gtk.Window({
+            modal: !this._skipMainWindow,
+            type_hint: Gdk.WindowTypeHint.DIALOG
+        });
+        dialog.set_titlebar(new Gtk.HeaderBar({
+            show_close_button: true,
+            title: row.name,
+            visible: true
+        }));
 
         if (this._skipMainWindow) {
             this.application.add_window(dialog);
@@ -98,7 +79,7 @@ var Application = class {
         dialog.show();
     }
 
-    _buildErrorUI(extension, exc) {
+    _buildErrorUI(row, exc) {
         let scroll = new Gtk.ScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             propagate_natural_height: true
@@ -171,7 +152,7 @@ var Application = class {
             let backticks = '```';
             clipboard.set_text(
                 // markdown for pasting in gitlab issues
-                `The settings of extension ${extension.uuid} had an error:\n${
+                `The settings of extension ${row.uuid} had an error:\n${
                 backticks}\n${exc}\n${backticks}\n\nStack trace:\n${
                 backticks}\n${exc.stack}${backticks}\n`, -1
             );
@@ -185,13 +166,13 @@ var Application = class {
             label: _("Homepage"),
             tooltip_text: _("Visit extension homepage"),
             no_show_all: true,
-            visible: extension.metadata.url != null
+            visible: row.url != null
         });
         toolbar.add(urlButton);
 
         urlButton.connect('clicked', w => {
             let context = w.get_display().get_app_launch_context();
-            Gio.AppInfo.launch_default_for_uri(extension.metadata.url, context);
+            Gio.AppInfo.launch_default_for_uri(row.url, context);
         });
 
         let expandedBox = new Gtk.Box({
@@ -250,9 +231,7 @@ var Application = class {
     }
 
     _sortList(row1, row2) {
-        let name1 = ExtensionUtils.extensions[row1.uuid].metadata.name;
-        let name2 = ExtensionUtils.extensions[row2.uuid].metadata.name;
-        return name1.localeCompare(name2);
+        return row1.name.localeCompare(row2.name);
     }
 
     _updateHeader(row, before) {
@@ -271,11 +250,10 @@ var Application = class {
     }
 
     _extensionFound(finder, extension) {
-        let row = new ExtensionRow(extension.uuid);
+        let row = new ExtensionRow(extension);
 
-        row.prefsButton.visible = this._extensionAvailable(row.uuid);
         row.prefsButton.connect('clicked', () => {
-            this._selectExtension(row.uuid);
+            this._showPrefs(row.uuid);
         });
 
         row.show_all();
@@ -288,8 +266,8 @@ var Application = class {
         else
             this._mainStack.visible_child_name = 'placeholder';
 
-        if (this._startupUuid && this._extensionAvailable(this._startupUuid))
-            this._selectExtension(this._startupUuid);
+        if (this._startupUuid)
+            this._showPrefs(this._startupUuid);
         this._startupUuid = null;
         this._skipMainWindow = false;
         this._loaded = true;
@@ -316,11 +294,9 @@ var Application = class {
             // Strip off "extension:///" prefix which fakes a URI, if it exists
             uuid = stripPrefix(uuid, "extension:///");
 
-            if (this._extensionAvailable(uuid))
-                this._selectExtension(uuid);
-            else if (!this._loaded)
+            if (!this._loaded)
                 this._startupUuid = uuid;
-            else
+            else if (!this._showPrefs(uuid))
                 this._skipMainWindow = false;
         }
         return 0;
@@ -504,10 +480,10 @@ class DescriptionLabel extends Gtk.Label {
 
 var ExtensionRow = GObject.registerClass(
 class ExtensionRow extends Gtk.ListBoxRow {
-    _init(uuid) {
+    _init(extension) {
         super._init();
 
-        this.uuid = uuid;
+        this._extension = extension;
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.connect('changed::enabled-extensions', () => {
@@ -525,9 +501,23 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._buildUI();
     }
 
-    _buildUI() {
-        let extension = ExtensionUtils.extensions[this.uuid];
+    get uuid() {
+        return this._extension.uuid;
+    }
 
+    get name() {
+        return this._extension.metadata.name;
+    }
+
+    get hasPrefs() {
+        return this._extension.hasPrefs;
+    }
+
+    get url() {
+        return this._extension.metadata.url;
+    }
+
+    _buildUI() {
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
                                  hexpand: true, margin_end: 24, spacing: 24,
                                  margin: 12 });
@@ -537,13 +527,13 @@ class ExtensionRow extends Gtk.ListBoxRow {
                                  spacing: 6, hexpand: true });
         hbox.add(vbox);
 
-        let name = GLib.markup_escape_text(extension.metadata.name, -1);
+        let name = GLib.markup_escape_text(this.name, -1);
         let label = new Gtk.Label({ label: '<b>' + name + '</b>',
                                     use_markup: true,
                                     halign: Gtk.Align.START });
         vbox.add(label);
 
-        let desc = extension.metadata.description.split('\n')[0];
+        let desc = this._extension.metadata.description.split('\n')[0];
         label = new DescriptionLabel({ label: desc, wrap: true, lines: 2,
                                        ellipsize: Pango.EllipsizeMode.END,
                                        xalign: 0, yalign: 0 });
@@ -555,6 +545,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
                                          icon_size: Gtk.IconSize.BUTTON,
                                          visible: true }));
         button.get_style_context().add_class('circular');
+        button.visible = this.hasPrefs;
         hbox.add(button);
 
         this.prefsButton = button;
@@ -573,11 +564,10 @@ class ExtensionRow extends Gtk.ListBoxRow {
     }
 
     _canEnable() {
-        let extension = ExtensionUtils.extensions[this.uuid];
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
         return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && ExtensionUtils.isOutOfDate(extension));
+               !(checkVersion && ExtensionUtils.isOutOfDate(this._extension));
     }
 
     _isEnabled() {
@@ -605,6 +595,19 @@ class ExtensionRow extends Gtk.ListBoxRow {
         } while (pos != -1);
         this._settings.set_strv('enabled-extensions', extensions);
     }
+
+    get prefsModule() {
+        ExtensionUtils.installImporter(this._extension);
+
+        // give extension prefs access to their own extension object
+        ExtensionUtils.getCurrentExtension = () => this._extension;
+
+        let prefsModule = this._extension.imports.prefs;
+        prefsModule.init(this._extension.metadata);
+
+        return prefsModule;
+    }
+
 });
 
 function initEnvironment() {
