@@ -69,6 +69,17 @@ var Urgency = {
     CRITICAL: 3
 };
 
+// The privacy of the details of a notification. USER is for notifications which
+// contain private information to the originating user account (for example,
+// details of an e-mail they’ve received). SYSTEM is for notifications which
+// contain information private to the physical system (for example, battery
+// status) and hence the same for every user. This affects whether the content
+// of a notification is shown on the lock screen.
+var PrivacyScope = {
+    USER: 0,
+    SYSTEM: 1,
+};
+
 var FocusGrabber = new Lang.Class({
     Name: 'FocusGrabber',
 
@@ -340,6 +351,7 @@ var Notification = new Lang.Class({
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
+        this.privacyScope = PrivacyScope.USER;
         this.forFeedback = false;
         this._acknowledged = false;
         this.bannerBodyText = null;
@@ -434,6 +446,10 @@ var Notification = new Lang.Class({
 
     setForFeedback(forFeedback) {
         this.forFeedback = forFeedback;
+    },
+
+    setPrivacyScope(privacyScope) {
+        this.privacyScope = privacyScope;
     },
 
     playSound() {
@@ -735,6 +751,11 @@ var Source = new Lang.Class({
 
     _createPolicy() {
         return new NotificationPolicy();
+    },
+
+    get privacyScope() {
+        return this.notifications.every(n => n.privacyScope == PrivacyScope.SYSTEM) ? PrivacyScope.SYSTEM
+                                                                                    : PrivacyScope.USER;
     },
 
     setTitle(newTitle) {
