@@ -352,6 +352,10 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         // of the 'transient' hint with hints['transient'] rather than hints.transient
         notification.setTransient(!!hints['transient']);
 
+        let privacyScope = (hints['x-gnome-privacy-scope'] || 'user');
+        notification.setPrivacyScope(privacyScope == 'system' ? MessageTray.PrivacyScope.SYSTEM
+                                                              : MessageTray.PrivacyScope.USER);
+
         let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);
     }
