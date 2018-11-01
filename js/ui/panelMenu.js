@@ -145,7 +145,10 @@ var Button = new Lang.Class({
     _onEvent(actor, event) {
         if (this.menu &&
             (event.type() == Clutter.EventType.TOUCH_BEGIN ||
-             event.type() == Clutter.EventType.BUTTON_PRESS))
+             event.type() == Clutter.EventType.BUTTON_PRESS ||
+             (event.type() == Clutter.EventType.KEY_PRESS &&
+              (event.get_key_symbol() == Clutter.KEY_space ||
+               event.get_key_symbol() == Clutter.KEY_Return))))
             this.menu.toggle();
 
         return Clutter.EVENT_PROPAGATE;

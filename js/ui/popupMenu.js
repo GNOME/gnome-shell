@@ -790,12 +790,13 @@ var PopupMenu = new Lang.Class({
         this._boxPointer.bin.set_child(this.box);
         this.actor.add_style_class_name('popup-menu');
 
+        // Add a dummy element to catch the focus after the menu is opened
+        this.focusDummy = new St.Widget({ visible: false });
+        this.focusDummy._delegate = this.focusDummy;
+        this.box.add(this.focusDummy);
+
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
-
-        if (this.sourceActor)
-            this._keyPressId = this.sourceActor.connect('key-press-event',
-                                                        this._onKeyPress.bind(this));
 
         this._openedSubMenu = null;
     },
@@ -806,55 +807,6 @@ var PopupMenu = new Lang.Class({
 
         this._openedSubMenu = submenu;
     },
-
-    _onKeyPress(actor, event) {
-        // Disable toggling the menu by keyboard
-        // when it cannot be toggled by pointer
-        if (!actor.reactive)
-            return Clutter.EVENT_PROPAGATE;
-
-        let navKey;
-        switch (this._boxPointer.arrowSide) {
-            case St.Side.TOP:
-                navKey = Clutter.KEY_Down;
-                break;
-            case St.Side.BOTTOM:
-                navKey = Clutter.KEY_Up;
-                break;
-            case St.Side.LEFT:
-                navKey = Clutter.KEY_Right;
-                break;
-            case St.Side.RIGHT:
-                navKey = Clutter.KEY_Left;
-                break;
-        }
-
-        let state = event.get_state();
-
-        // if user has a modifier down (except capslock)
-        // then don't handle the key press here
-        state &= ~Clutter.ModifierType.LOCK_MASK;
-        state &= Clutter.ModifierType.MODIFIER_MASK;
-
-        if (state)
-            return Clutter.EVENT_PROPAGATE;
-
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
-            this.toggle();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Escape && this.isOpen) {
-            this.close();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == navKey) {
-            if (!this.isOpen)
-                this.toggle();
-            this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-            return Clutter.EVENT_STOP;
-        } else
-            return Clutter.EVENT_PROPAGATE;
-    },
-
 
     setArrowOrigin(origin) {
         this._boxPointer.setArrowOrigin(origin);
@@ -1296,7 +1248,7 @@ var PopupMenuManager = new Lang.Class({
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
+            this._grabHelper.grab({ actor: menu.actor, focus: menu.focusDummy,
                                     onUngrab: isUser => {
                                         this._closeMenu(isUser, menu);
                                     } });
