@@ -164,13 +164,17 @@ var Application = new Lang.Class({
     },
 
     _scanExtensions() {
-        let finder = new ExtensionUtils.ExtensionFinder();
-        finder.connect('extension-found', this._extensionFound.bind(this));
-        finder.scanExtensions();
-        this._extensionsLoaded();
+        this._shellProxy.ListExtensionsRemote(([extensionsProxy]) => {
+
+            for (let uuid in extensionsProxy) {
+                let extension = ExtensionUtils.deserializeExtension(extensionsProxy[uuid]);
+                this._extensionFound(extension);
+            }
+            this._extensionsLoaded();
+        });
     },
 
-    _extensionFound(finder, extension) {
+    _extensionFound(extension) {
         let row = new ExtensionRow(extension);
 
         row.prefsButton.connect('clicked', () => {

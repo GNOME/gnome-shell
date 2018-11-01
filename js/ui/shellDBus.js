@@ -256,41 +256,7 @@ var GnomeShellExtensions = new Lang.Class({
     },
 
     GetExtensionInfo(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
-        if (!extension)
-            return {};
-
-        let obj = {};
-        Lang.copyProperties(extension.metadata, obj);
-
-        // Only serialize the properties that we actually need.
-        const serializedProperties = ["type", "state", "path", "error", "hasPrefs"];
-
-        serializedProperties.forEach(prop => {
-            obj[prop] = extension[prop];
-        });
-
-        let out = {};
-        for (let key in obj) {
-            let val = obj[key];
-            let type;
-            switch (typeof val) {
-            case 'string':
-                type = 's';
-                break;
-            case 'number':
-                type = 'd';
-                break;
-            case 'boolean':
-                type = 'b';
-                break;
-            default:
-                continue;
-            }
-            out[key] = GLib.Variant.new(type, val);
-        }
-
-        return out;
+        return ExtensionUtils.serializeExtension(uuid);
     },
 
     GetExtensionErrors(uuid) {
