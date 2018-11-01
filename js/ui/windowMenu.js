@@ -229,7 +229,6 @@ var WindowMenuManager = new Lang.Class({
         this._sourceActor.show();
 
         menu.open(BoxPointer.PopupAnimation.NONE);
-        menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', (menu_, isOpen) => {
             if (isOpen)
                 return;
