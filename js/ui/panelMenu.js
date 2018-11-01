@@ -131,9 +131,15 @@ var Button = GObject.registerClass({
     }
 
     vfunc_event(event) {
+        let keyPressed = event.type() == Clutter.EventType.KEY_PRESS &&
+                         (event.get_key_symbol() == Clutter.KEY_space ||
+                          event.get_key_symbol() == Clutter.KEY_Return ||
+                          event.get_key_symbol() == Clutter.KEY_Down);
+
         if (this.menu &&
             (event.type() == Clutter.EventType.TOUCH_BEGIN ||
-             event.type() == Clutter.EventType.BUTTON_PRESS))
+             event.type() == Clutter.EventType.BUTTON_PRESS ||
+             keyPressed))
             this.menu.toggle();
 
         return Clutter.EVENT_PROPAGATE;
