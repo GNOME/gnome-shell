@@ -346,6 +346,13 @@ var SessionMenuButton = new Lang.Class({
         this._manager.addMenu(this._menu);
 
         this._button.connect('clicked', () => { this._menu.toggle(); });
+        this._button.connect('key-press-event', (event) => {
+            let symbol = event.get_key_symbol();
+            if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return)
+                this._menu.toggle();
+
+            return Clutter.EVENT_PROPAGATE;
+        });
 
         this._items = {};
         this._activeSessionId = null;
