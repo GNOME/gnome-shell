@@ -3,10 +3,11 @@
 // Common utils for the extension system and the extension
 // preferences tool
 
-const Gettext = imports.gettext;
-const Signals = imports.signals;
+const { Gio, GLib } = imports.gi;
 
-const Gio = imports.gi.Gio;
+const Gettext = imports.gettext;
+const Lang = imports.lang;
+const Signals = imports.signals;
 
 const Config = imports.misc.config;
 const FileUtils = imports.misc.fileUtils;
@@ -28,6 +29,8 @@ var ExtensionState = {
     // should never be in a real extensionMeta object.
     UNINSTALLED: 99
 };
+
+const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs'];
 
 // Maps uuid -> metadata object
 var extensions = {};
@@ -220,6 +223,52 @@ function createExtensionObject(uuid, dir, type) {
     extensions[uuid] = extension;
 
     return extension;
+}
+
+function serializeExtension(extension) {
+    let obj = {};
+    Lang.copyProperties(extension.metadata, obj);
+
+    SERIALIZED_PROPERTIES.forEach(prop => {
+        obj[prop] = extension[prop];
+    });
+
+    let res = {};
+    for (let key in obj) {
+        let val = obj[key];
+        let type;
+        switch (typeof val) {
+        case 'string':
+            type = 's';
+            break;
+        case 'number':
+            type = 'd';
+            break;
+        case 'boolean':
+            type = 'b';
+            break;
+        default:
+            continue;
+        }
+        res[key] = GLib.Variant.new(type, val);
+    }
+
+    return res;
+}
+
+function deserializeExtension(variant) {
+    let res = { metadata: {} };
+    for (let prop in variant) {
+        let val = variant[prop].unpack();
+        if (SERIALIZED_PROPERTIES.includes(prop))
+            res[prop] = val;
+        else
+            res.metadata[prop] = val;
+    }
+    // add the 2 additional properties to create a valid extension object, as createExtensionObject()
+    res.uuid = res.metadata.uuid;
+    res.dir = Gio.File.new_for_path(res.path);
+    return res;
 }
 
 function installImporter(extension) {
