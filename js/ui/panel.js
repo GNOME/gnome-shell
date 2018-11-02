@@ -417,7 +417,7 @@ var ActivitiesButton = new Lang.Class({
 
         this.actor.label_actor = this._label;
 
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+        this.actor.connect('captured-event::discrete', this._onCapturedEvent.bind(this));
         this.actor.connect_after('key-release-event', this._onKeyRelease.bind(this));
 
         Main.overview.connect('showing', () => {
