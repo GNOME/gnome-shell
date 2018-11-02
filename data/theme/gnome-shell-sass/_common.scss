@@ -57,8 +57,8 @@ stage {
   border-right-width: 1px;
   @include button(normal);
   &:insensitive { @include button(insensitive); }
-  &:focus { @include button(focus); }
   &:hover { @include button(hover); }
+  &:focus { @include button(focus); }
   &:active { @include button(active); }
   padding: 12px;
 
