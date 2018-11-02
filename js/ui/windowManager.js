@@ -477,7 +477,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
     _init(actor) {
         this._dx = 0;
         this._dy = 0;
-        actor.connect('captured-event', this._handleEvent.bind(this));
+        actor.connect('captured-event::instantaneous', this._handleEvent.bind(this));
     },
 
     _checkActivated() {
