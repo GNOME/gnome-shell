@@ -52,7 +52,7 @@ function getTermsForSearchString(searchString) {
 
 var TouchpadShowOverviewAction = class {
     constructor(actor) {
-        actor.connect('captured-event', this._handleEvent.bind(this));
+        actor.connect('captured-event::nonmotion', this._handleEvent.bind(this));
     }
 
     _handleEvent(actor, event) {

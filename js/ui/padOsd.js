@@ -625,7 +625,7 @@ var PadOsd = class {
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;
-        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+        this._capturedEventId = global.stage.connect('captured-event::nonmotion', this._onCapturedEvent.bind(this));
         this._padChooser = null;
 
         let deviceManager = Clutter.DeviceManager.get_default();

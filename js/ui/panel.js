@@ -413,7 +413,7 @@ class ActivitiesButton extends PanelMenu.Button {
 
         this.actor.label_actor = this._label;
 
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+        this.actor.connect('captured-event::nonmotion', this._onCapturedEvent.bind(this));
         this.actor.connect_after('key-release-event', this._onKeyRelease.bind(this));
 
         Main.overview.connect('showing', () => {

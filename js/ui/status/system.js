@@ -29,7 +29,7 @@ var AltSwitcher = class {
             this._alternate.connect('clicked',
                                     () => { this._clickAction.release(); });
 
-        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+        this._capturedEventId = global.stage.connect('captured-event::nonmotion', this._onCapturedEvent.bind(this));
 
         this._flipped = false;
 
