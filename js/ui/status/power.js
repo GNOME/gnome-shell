@@ -70,7 +70,9 @@ var Indicator = new Lang.Class({
             seconds = this._proxy.TimeToFull;
         else if (this._proxy.State == UPower.DeviceState.DISCHARGING)
             seconds = this._proxy.TimeToEmpty;
-        // state is one of PENDING_CHARGING, PENDING_DISCHARGING
+        else if (this._proxy.State == UPower.DeviceState.PENDING_CHARGE)
+            return _("Not Charging");
+        // state is PENDING_DISCHARGE
         else
             return _("Estimating…");
 
