@@ -543,6 +543,9 @@ var PopupMenuBase = new Lang.Class({
                 this.emit('active-changed', menuItem);
             } else if (!active && this._activeMenuItem == menuItem) {
                 this._activeMenuItem = null;
+                if (this.focusDummy)
+                    this.focusDummy.grab_key_focus();
+
                 this.emit('active-changed', null);
             }
         });
