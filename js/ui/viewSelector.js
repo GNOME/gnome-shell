@@ -57,7 +57,7 @@ var TouchpadShowOverviewAction = new Lang.Class({
     Name: 'TouchpadShowOverviewAction',
 
     _init(actor) {
-        actor.connect('captured-event', this._handleEvent.bind(this));
+        actor.connect('captured-event::discrete', this._handleEvent.bind(this));
     },
 
     _handleEvent(actor, event) {
