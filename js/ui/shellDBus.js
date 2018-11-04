@@ -13,6 +13,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 const ViewSelector = imports.ui.viewSelector;
+const LoginManager = imports.misc.loginManager;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -353,6 +354,27 @@ var ScreenSaverDBus = new Lang.Class({
         });
         screenShield.connect('wake-up-screen', shield => {
             this._dbusImpl.emit_signal('WakeUpScreen', null);
+        });
+        screenShield.connect('locked-changed', shield => {
+            let sessionId = GLib.getenv('XDG_SESSION_ID');
+            let params = GLib.Variant.new('(i)', [sessionId]);
+            let busName = 'org.freedesktop.login1.Manager';
+            this._dbusImpl.call(
+                busName,
+                '/org/freedesktop/login1',
+                'org.freedesktop.login1.Manager',
+                shield.active ? 'LockSession' : 'UnlockSession',
+                params,
+                null, Gio.DBusCallFlags.NONE, -1, null,
+                (conn, result) => {
+                    try {
+                        conn.call_finish(result);
+                    } catch (e) {
+                        let action = shield.active ? 'lock' : 'unlock';
+                        log(`Cannot ${action} the session "${sessionId}" via "${busName}".`);
+                    }
+                }
+            );
         });
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
