@@ -199,7 +199,7 @@ var AutomountManager = new Lang.Class({
             // backend in this case, see 
             // https://bugs.freedesktop.org/show_bug.cgi?id=51271
             if (e.message.includes('No key available with this passphrase') ||
-                e.message.includes('Failed to load device\'s parameters: Operation not permitted')) {
+                e.message.includes('Failed to load device\'s parameters')) {
                 this._reaskPassword(volume);
             } else if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
                 let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
