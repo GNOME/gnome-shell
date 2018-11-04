@@ -261,8 +261,19 @@ var Indicator = new Lang.Class({
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
 
-        this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
-        this._settingsAction.connect('clicked', () => { this._onSettingsClicked(); });
+        let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
+            'gnome-control-center.desktop'
+        );
+        if (app) {
+            let [icon, name] = [app.app_info.get_icon().names[0],
+                                app.get_name()];
+            this._settingsAction = this._createActionButton(icon, name);
+            this._settingsAction.connect('clicked',
+                                         this._onSettingsClicked.bind(this));
+        } else {
+            log('Missing required core component Settings, expect trouble…');
+            this._settingsAction = new St.Widget();
+        }
         item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
         this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
@@ -280,7 +291,7 @@ var Indicator = new Lang.Class({
                                           'icon-name',
                                           bindFlags);
 
-        this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
+        this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"));
         this._lockScreenAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockScreen();
@@ -291,7 +302,7 @@ var Indicator = new Lang.Class({
                                           'visible',
                                           bindFlags);
 
-        this._suspendAction = this._createActionButton('media-playback-pause-symbolic', _("Suspend"));
+        this._suspendAction = this._createActionButton('media-playback-pause', _("Suspend"));
         this._suspendAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateSuspend();
@@ -301,7 +312,7 @@ var Indicator = new Lang.Class({
                                           'visible',
                                           bindFlags);
 
-        this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
+        this._powerOffAction = this._createActionButton('system-shutdown', _("Power Off"));
         this._powerOffAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activatePowerOff();
@@ -330,8 +341,7 @@ var Indicator = new Lang.Class({
 
     _onSettingsClicked() {
         this.menu.itemActivated();
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         Main.overview.hide();
-        app.activate();
+        this._settingsApp.activate();
     }
 });

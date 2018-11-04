@@ -150,7 +150,7 @@ var NotificationsBox = new Lang.Class({
 
     _makeNotificationSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        box.add(sourceActor.actor, { y_fill: true });
+        box.add(sourceActor, { y_fill: true });
 
         let textBox = new St.BoxLayout({ vertical: true });
         box.add(textBox, { y_fill: false, y_align: St.Align.START });
@@ -172,7 +172,7 @@ var NotificationsBox = new Lang.Class({
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
         let sourceBin = new St.Bin({ y_align: St.Align.START,
                                      x_align: St.Align.START,
-                                     child: sourceActor.actor });
+                                     child: sourceActor });
         box.add(sourceBin);
 
         let textBox = new St.BoxLayout({ vertical: true });
@@ -570,7 +570,7 @@ var ScreenShield = new Lang.Class({
         this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
-        this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
+        this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
 
         this._syncInhibitor();
     },

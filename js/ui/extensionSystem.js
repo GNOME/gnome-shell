@@ -76,6 +76,7 @@ function disableExtension(uuid) {
     if (extension.stylesheet) {
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
         theme.unload_stylesheet(extension.stylesheet);
+        delete extension.stylesheet;
     }
 
     try {
@@ -115,13 +116,18 @@ function enableExtension(uuid) {
     extensionOrder.push(uuid);
 
     let stylesheetNames = [global.session_mode + '.css', 'stylesheet.css'];
+    let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
     for (let i = 0; i < stylesheetNames.length; i++) {
-        let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
-        if (stylesheetFile.query_exists(null)) {
-            let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+        try {
+            let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
             theme.load_stylesheet(stylesheetFile);
             extension.stylesheet = stylesheetFile;
             break;
+        } catch (e) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                continue; // not an error
+            log(`Failed to load stylesheet for extension ${uuid}: ${e.message}`);
+            return;
         }
     }
 
@@ -131,6 +137,10 @@ function enableExtension(uuid) {
         _signals.emit('extension-state-changed', extension);
         return;
     } catch(e) {
+        if (extension.stylesheet) {
+            theme.unload_stylesheet(extension.stylesheet);
+            delete extension.stylesheet;
+        }
         logExtensionError(uuid, e);
         return;
     }

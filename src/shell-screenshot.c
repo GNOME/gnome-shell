@@ -38,8 +38,6 @@ struct _ShellScreenshotPrivate
 
   gboolean include_cursor;
   gboolean include_frame;
-
-  ShellScreenshotCallback callback;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
@@ -59,24 +57,22 @@ shell_screenshot_init (ShellScreenshot *screenshot)
 
 static void
 on_screenshot_written (GObject      *source,
-                       GAsyncResult *result,
+                       GAsyncResult *task,
                        gpointer      user_data)
 {
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (source);
   ShellScreenshotPrivate *priv = screenshot->priv;
+  GTask *result = user_data;
 
-  if (priv->callback)
-    priv->callback (screenshot,
-                    g_task_propagate_boolean (G_TASK (result), NULL),
-                    &priv->screenshot_area,
-                    priv->filename_used);
+  g_task_return_boolean (result, g_task_propagate_boolean (G_TASK (task), NULL));
+  g_object_unref (result);
 
   g_clear_pointer (&priv->image, cairo_surface_destroy);
   g_clear_pointer (&priv->filename, g_free);
   g_clear_pointer (&priv->filename_used, g_free);
   g_clear_pointer (&priv->datetime, g_date_time_unref);
 
-  meta_enable_unredirect_for_screen (shell_global_get_screen (priv->global));
+  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
 }
 
 /* called in an I/O thread */
@@ -313,21 +309,22 @@ _draw_cursor_image (MetaCursorTracker     *tracker,
 
 static void
 grab_screenshot (ClutterActor *stage,
-                 ShellScreenshot *screenshot)
+                 GTask        *result)
 {
-  MetaScreen *screen;
+  MetaDisplay *display;
   MetaCursorTracker *tracker;
   int width, height;
-  GTask *result;
   GSettings *settings;
+  ShellScreenshot *screenshot = g_task_get_source_object (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
+  GTask *task;
 
-  screen = shell_global_get_screen (priv->global);
-  meta_screen_get_size (screen, &width, &height);
+  display = shell_global_get_display (priv->global);
+  meta_display_get_size (display, &width, &height);
 
   do_grab_screenshot (screenshot, CLUTTER_STAGE (stage), 0, 0, width, height);
 
-  if (meta_screen_get_n_monitors (screen) > 1)
+  if (meta_display_get_n_monitors (display) > 1)
     {
       cairo_region_t *screen_region = cairo_region_create ();
       cairo_region_t *stage_region;
@@ -336,10 +333,11 @@ grab_screenshot (ClutterActor *stage,
       int i;
       cairo_t *cr;
 
-      for (i = meta_screen_get_n_monitors (screen) - 1; i >= 0; i--)
+      for (i = meta_display_get_n_monitors (display) - 1; i >= 0; i--)
         {
-          meta_screen_get_monitor_geometry (screen, i, &monitor_rect);
-          cairo_region_union_rectangle (screen_region, (const cairo_rectangle_int_t *) &monitor_rect);
+          meta_display_get_monitor_geometry (display, i, &monitor_rect);
+          cairo_region_union_rectangle (screen_region,
+                                        (const cairo_rectangle_int_t *) &monitor_rect);
         }
 
       stage_rect.x = 0;
@@ -374,24 +372,25 @@ grab_screenshot (ClutterActor *stage,
   if (priv->include_cursor &&
       !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
     {
-      tracker = meta_cursor_tracker_get_for_screen (screen);
+      tracker = meta_cursor_tracker_get_for_display (display);
       _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
     }
   g_object_unref (settings);
 
-  g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot);
+  g_signal_handlers_disconnect_by_func (stage, grab_screenshot, result);
 
-  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
-  g_task_run_in_thread (result, write_screenshot_thread);
-  g_object_unref (result);
+  task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+  g_task_run_in_thread (task, write_screenshot_thread);
+  g_object_unref (task);
 }
 
 static void
 grab_area_screenshot (ClutterActor *stage,
-                      ShellScreenshot *screenshot)
+                      GTask        *result)
 {
-  GTask *result;
+  ShellScreenshot *screenshot = g_task_get_source_object (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
+  GTask *task;
 
   do_grab_screenshot (screenshot,
                       CLUTTER_STAGE (stage),
@@ -400,22 +399,22 @@ grab_area_screenshot (ClutterActor *stage,
                       priv->screenshot_area.width,
                       priv->screenshot_area.height);
 
-  g_signal_handlers_disconnect_by_func (stage, (void *)grab_area_screenshot, (gpointer)screenshot);
-  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
-  g_task_run_in_thread (result, write_screenshot_thread);
-  g_object_unref (result);
+  g_signal_handlers_disconnect_by_func (stage, grab_area_screenshot, result);
+  task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+  g_task_run_in_thread (task, write_screenshot_thread);
+  g_object_unref (task);
 }
 
 static void
 grab_window_screenshot (ClutterActor *stage,
-                        ShellScreenshot *screenshot)
+                        GTask        *result)
 {
+  ShellScreenshot *screenshot = g_task_get_source_object (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
-  GTask *result;
+  GTask *task;
   GSettings *settings;
-  MetaScreen *screen = shell_global_get_screen (priv->global);
+  MetaDisplay *display = shell_global_get_display (priv->global);
   MetaCursorTracker *tracker;
-  MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
@@ -446,15 +445,57 @@ grab_window_screenshot (ClutterActor *stage,
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
     {
-      tracker = meta_cursor_tracker_get_for_screen (screen);
+      tracker = meta_cursor_tracker_get_for_display (display);
       _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
     }
   g_object_unref (settings);
 
-  g_signal_handlers_disconnect_by_func (stage, (void *)grab_window_screenshot, (gpointer)screenshot);
-  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
-  g_task_run_in_thread (result, write_screenshot_thread);
+  g_signal_handlers_disconnect_by_func (stage, grab_window_screenshot, result);
+  task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+  g_task_run_in_thread (task, write_screenshot_thread);
+  g_object_unref (task);
+}
+
+static void
+grab_pixel (ClutterActor *stage,
+            GTask        *result)
+{
+  ShellScreenshot *screenshot = g_task_get_source_object (result);
+  ShellScreenshotPrivate *priv = screenshot->priv;
+
+  do_grab_screenshot (screenshot,
+                      CLUTTER_STAGE (stage),
+                      priv->screenshot_area.x,
+                      priv->screenshot_area.y,
+                      1,
+                      1);
+
+  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
+
+  g_signal_handlers_disconnect_by_func (stage, grab_pixel, result);
+  g_task_return_boolean (result, TRUE);
   g_object_unref (result);
+}
+
+static gboolean
+finish_screenshot (ShellScreenshot        *screenshot,
+                   GAsyncResult           *result,
+                   cairo_rectangle_int_t **area,
+                   const char            **filename_used,
+                   GError                **error)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+
+  if (!g_task_propagate_boolean (G_TASK (result), error))
+    return FALSE;
+
+  if (area)
+    *area = &priv->screenshot_area;
+
+  if (filename_used)
+    *filename_used = priv->filename_used;
+
+  return TRUE;
 }
 
 /**
@@ -464,37 +505,77 @@ grab_window_screenshot (ClutterActor *stage,
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
+ * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the whole screen
  * in @filename as png image.
  *
  */
 void
-shell_screenshot_screenshot (ShellScreenshot *screenshot,
-                             gboolean include_cursor,
-                             const char *filename,
-                             ShellScreenshotCallback callback)
+shell_screenshot_screenshot (ShellScreenshot     *screenshot,
+                             gboolean             include_cursor,
+                             const char          *filename,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
 {
   ClutterActor *stage;
   ShellScreenshotPrivate *priv = screenshot->priv;
+  GTask *result;
 
   if (priv->filename != NULL) {
     if (callback)
-      callback (screenshot, FALSE, NULL, "");
+      g_task_report_new_error (screenshot,
+                               callback,
+                               user_data,
+                               shell_screenshot_screenshot,
+                               G_IO_ERROR,
+                               G_IO_ERROR_PENDING,
+                               "Only one screenshot operation at a time "
+                               "is permitted");
     return;
   }
 
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_screenshot);
+
   priv->filename = g_strdup (filename);
-  priv->callback = callback;
   priv->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
-  meta_disable_unredirect_for_screen (shell_global_get_screen (priv->global));
+  meta_disable_unredirect_for_display (shell_global_get_display (priv->global));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_screenshot), (gpointer)screenshot);
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
+}
+
+/**
+ * shell_screenshot_screenshot_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @area: (out) (transfer none): the area that was grabbed in screen coordinates
+ * @filename_used: (out) (transfer none): the name of the file the screenshot
+ * was written to
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by shell_screenshot_screenshot()
+ * and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
+                                    GAsyncResult           *result,
+                                    cairo_rectangle_int_t **area,
+                                    const char            **filename_used,
+                                    GError                **error)
+{
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_screenshot),
+                        FALSE);
+  return finish_screenshot (screenshot, result, area, filename_used, error);
 }
 
 /**
@@ -507,43 +588,83 @@ shell_screenshot_screenshot (ShellScreenshot *screenshot,
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
+ * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the passed in area and saves it
  * in @filename as png image.
  *
  */
 void
-shell_screenshot_screenshot_area (ShellScreenshot *screenshot,
-                                  int x,
-                                  int y,
-                                  int width,
-                                  int height,
-                                  const char *filename,
-                                  ShellScreenshotCallback callback)
+shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
+                                  int                  x,
+                                  int                  y,
+                                  int                  width,
+                                  int                  height,
+                                  const char          *filename,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
   ClutterActor *stage;
   ShellScreenshotPrivate *priv = screenshot->priv;
+  GTask *result;
 
   if (priv->filename != NULL) {
     if (callback)
-      callback (screenshot, FALSE, NULL, "");
+      g_task_report_new_error (screenshot,
+                               callback,
+                               NULL,
+                               shell_screenshot_screenshot_area,
+                               G_IO_ERROR,
+                               G_IO_ERROR_PENDING,
+                               "Only one screenshot operation at a time "
+                               "is permitted");
     return;
   }
+
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_screenshot_area);
 
   priv->filename = g_strdup (filename);
   priv->screenshot_area.x = x;
   priv->screenshot_area.y = y;
   priv->screenshot_area.width = width;
   priv->screenshot_area.height = height;
-  priv->callback = callback;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
-  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+  meta_disable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_area_screenshot), (gpointer)screenshot);
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_area_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
+}
+
+/**
+ * shell_screenshot_screenshot_area_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @area: (out) (transfer none): the area that was grabbed in screen coordinates
+ * @filename_used: (out) (transfer none): the name of the file the screenshot
+ * was written to
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by shell_screenshot_screenshot_area()
+ * and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_screenshot_area_finish (ShellScreenshot        *screenshot,
+                                         GAsyncResult           *result,
+                                         cairo_rectangle_int_t **area,
+                                         const char            **filename_used,
+                                         GError                **error)
+{
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_screenshot_area),
+                        FALSE);
+  return finish_screenshot (screenshot, result, area, filename_used, error);
 }
 
 /**
@@ -554,43 +675,183 @@ shell_screenshot_screenshot_area (ShellScreenshot *screenshot,
  * @filename: The filename for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
+ * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the focused window (optionally omitting the frame)
  * in @filename as png image.
  *
  */
 void
-shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
-                                    gboolean include_frame,
-                                    gboolean include_cursor,
-                                    const char *filename,
-                                    ShellScreenshotCallback callback)
+shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
+                                    gboolean             include_frame,
+                                    gboolean             include_cursor,
+                                    const char          *filename,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
 {
   ShellScreenshotPrivate *priv = screenshot->priv;
-  MetaScreen *screen = shell_global_get_screen (priv->global);
+  MetaDisplay *display = shell_global_get_display (priv->global);
   ClutterActor *stage;
-  MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
+  GTask *result;
 
   if (priv->filename != NULL || !window) {
     if (callback)
-      callback (screenshot, FALSE, NULL, "");
+      g_task_report_new_error (screenshot,
+                               callback,
+                               NULL,
+                               shell_screenshot_screenshot_window,
+                               G_IO_ERROR,
+                               G_IO_ERROR_PENDING,
+                               "Only one screenshot operation at a time "
+                               "is permitted");
     return;
   }
 
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_screenshot_window);
+
   priv->filename = g_strdup (filename);
-  priv->callback = callback;
   priv->include_frame = include_frame;
   priv->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
-  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+  meta_disable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_window_screenshot), (gpointer)screenshot);
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_window_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
 }
+
+/**
+ * shell_screenshot_screenshot_window_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @area: (out) (transfer none): the area that was grabbed in screen coordinates
+ * @filename_used: (out) (transfer none): the name of the file the screenshot
+ * was written to
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by shell_screenshot_screenshot_window()
+ * and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
+                                           GAsyncResult           *result,
+                                           cairo_rectangle_int_t **area,
+                                           const char            **filename_used,
+                                           GError                **error)
+{
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_screenshot_window),
+                        FALSE);
+  return finish_screenshot (screenshot, result, area, filename_used, error);
+}
+
+/**
+ * shell_screenshot_pick_color:
+ * @screenshot: the #ShellScreenshot
+ * @x: The X coordinate to pick
+ * @y: The Y coordinate to pick
+ * @callback: (scope async): function to call returning success or failure
+ * of the async grabbing
+ *
+ * Picks the pixel at @x, @y and returns its color as #ClutterColor.
+ *
+ */
+void
+shell_screenshot_pick_color (ShellScreenshot     *screenshot,
+                             int                  x,
+                             int                  y,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  MetaDisplay *display = shell_global_get_display (priv->global);
+  ClutterActor *stage;
+  GTask *result;
+
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_pick_color);
+
+  priv->screenshot_area.x = x;
+  priv->screenshot_area.y = y;
+  priv->screenshot_area.width = 1;
+  priv->screenshot_area.height = 1;
+
+  stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
+
+  meta_disable_unredirect_for_display (display);
+
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_pixel), result);
+
+  clutter_actor_queue_redraw (stage);
+}
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define INDEX_A 3
+#define INDEX_R 2
+#define INDEX_G 1
+#define INDEX_B 0
+#else
+#define INDEX_A 0
+#define INDEX_R 1
+#define INDEX_G 2
+#define INDEX_B 3
+#endif
+
+/**
+ * shell_screenshot_pick_color_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @color: (out caller-allocates): the picked color
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by shell_screenshot_pick_color()
+ * and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
+                                    GAsyncResult     *result,
+                                    ClutterColor     *color,
+                                    GError          **error)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_pick_color),
+                        FALSE);
+
+  if (!g_task_propagate_boolean (G_TASK (result), error))
+    return FALSE;
+
+  /* protect against mutter changing the format used for stage captures */
+  g_assert (cairo_image_surface_get_format (priv->image) == CAIRO_FORMAT_ARGB32);
+
+  if (color)
+    {
+      uint8_t *data = cairo_image_surface_get_data (priv->image);
+
+      color->alpha = data[INDEX_A];
+      color->red   = data[INDEX_R];
+      color->green = data[INDEX_G];
+      color->blue  = data[INDEX_B];
+    }
+
+  return TRUE;
+}
+
+#undef INDEX_A
+#undef INDEX_R
+#undef INDEX_G
+#undef INDEX_B
 
 ShellScreenshot *
 shell_screenshot_new (void)

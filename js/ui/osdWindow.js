@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
+const BarLevel = imports.ui.barLevel;
 const Lang = imports.lang;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -17,16 +18,18 @@ var LEVEL_ANIMATION_TIME = 0.1;
 
 var LevelBar = new Lang.Class({
     Name: 'LevelBar',
+    Extends: BarLevel.BarLevel,
 
     _init() {
         this._level = 0;
+        this._maxLevel = 100;
 
-        this.actor = new St.Bin({ style_class: 'level',
-                                  x_align: St.Align.START,
-                                  y_fill: true });
-        this._bar = new St.Widget({ style_class: 'level-bar' });
+        let params = {
+            styleClass: 'level',
+        }
+        this.parent(this._level, params);
 
-        this.actor.set_child(this._bar);
+        this.actor.accessible_name = _("Volume");
 
         this.actor.connect('notify::width', () => { this.level = this.level; });
     },
@@ -36,12 +39,19 @@ var LevelBar = new Lang.Class({
     },
 
     set level(value) {
-        this._level = Math.max(0, Math.min(value, 100));
+        this._level = Math.max(0, Math.min(value, this._maxLevel));
 
-        let alloc = this.actor.get_allocation_box();
-        let newWidth = Math.round((alloc.x2 - alloc.x1) * this._level / 100);
-        if (newWidth != this._bar.width)
-            this._bar.width = newWidth;
+        this.setValue(this._level / 100);
+    },
+
+    get maxLevel() {
+        return this._maxLevel;
+    },
+
+    set maxLevel(value) {
+        this._maxLevel = Math.max(100, value);
+
+        this.setMaximumValue(this._maxLevel / 100);
     }
 });
 
@@ -108,13 +118,28 @@ var OsdWindow = new Lang.Class({
         this._hideTimeoutId = 0;
         this._reset();
 
-        Main.layoutManager.connect('monitors-changed',
-                                   this._relayout.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+
+        this._monitorsChangedId =
+            Main.layoutManager.connect('monitors-changed',
+                                       this._relayout.bind(this));
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        themeContext.connect('notify::scale-factor',
-                             this._relayout.bind(this));
+        this._scaleChangedId =
+            themeContext.connect('notify::scale-factor',
+                                 this._relayout.bind(this));
         this._relayout();
         Main.uiGroup.add_child(this.actor);
+    },
+
+    _onDestroy() {
+        if (this._monitorsChangedId)
+            Main.layoutManager.disconnect(this._monitorsChangedId);
+        this._monitorsChangedId = 0;
+
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        if (this._scaleChangedId)
+            themeContext.disconnect(this._scaleChangedId);
+        this._scaleChangedId = 0;
     },
 
     setIcon(icon) {
@@ -140,12 +165,18 @@ var OsdWindow = new Lang.Class({
         }
     },
 
+    setMaxLevel(maxLevel) {
+        if (maxLevel === undefined)
+            maxLevel = 100;
+        this._level.maxLevel = maxLevel;
+    },
+
     show() {
         if (!this._icon.gicon)
             return;
 
         if (!this.actor.visible) {
-            Meta.disable_unredirect_for_screen(global.screen);
+            Meta.disable_unredirect_for_display(global.display);
             this.actor.show();
             this.actor.opacity = 0;
             this.actor.get_parent().set_child_above_sibling(this.actor, null);
@@ -179,7 +210,7 @@ var OsdWindow = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: () => {
                               this._reset();
-                              Meta.enable_unredirect_for_screen(global.screen);
+                              Meta.enable_unredirect_for_display(global.display);
                            }
                          });
         return GLib.SOURCE_REMOVE;
@@ -188,6 +219,7 @@ var OsdWindow = new Lang.Class({
     _reset() {
         this.actor.hide();
         this.setLabel(null);
+        this.setMaxLevel(null);
         this.setLevel(null);
     },
 
@@ -233,24 +265,25 @@ var OsdWindowManager = new Lang.Class({
         this._osdWindows.length = Main.layoutManager.monitors.length;
     },
 
-    _showOsdWindow(monitorIndex, icon, label, level) {
+    _showOsdWindow(monitorIndex, icon, label, level, maxLevel) {
         this._osdWindows[monitorIndex].setIcon(icon);
         this._osdWindows[monitorIndex].setLabel(label);
+        this._osdWindows[monitorIndex].setMaxLevel(maxLevel);
         this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].show();
     },
 
-    show(monitorIndex, icon, label, level) {
+    show(monitorIndex, icon, label, level, maxLevel) {
         if (monitorIndex != -1) {
             for (let i = 0; i < this._osdWindows.length; i++) {
                 if (i == monitorIndex)
-                    this._showOsdWindow(i, icon, label, level);
+                    this._showOsdWindow(i, icon, label, level, maxLevel);
                 else
                     this._osdWindows[i].cancel();
             }
         } else {
             for (let i = 0; i < this._osdWindows.length; i++)
-                this._showOsdWindow(i, icon, label, level);
+                this._showOsdWindow(i, icon, label, level, maxLevel);
         }
     },
 

@@ -41,34 +41,25 @@ foreach service_file : service_files
 endforeach
 
 
-dbus_interfaces = [
-  'org.gnome.Shell.PadOsd.xml',
-  'org.gnome.Shell.Screencast.xml',
-  'org.gnome.Shell.Screenshot.xml',
-  'org.gnome.ShellSearchProvider.xml',
-  'org.gnome.ShellSearchProvider2.xml'
-]
-install_data(dbus_interfaces, install_dir: ifacedir)
-
-
+subdir('dbus-interfaces')
 subdir('theme')
 
-theme_resources = gnome.compile_resources(
-  'gnome-shell-theme', 'gnome-shell-theme.gresource.xml',
-  source_dir: 'theme',
-  dependencies: theme_deps,
-  gresource_bundle: true,
-  install: true,
-  install_dir: pkgdatadir
-)
-
-osk_layout_resources = gnome.compile_resources(
-  'gnome-shell-osk-layouts', 'gnome-shell-osk-layouts.gresource.xml',
-  source_dir: 'osk-layouts',
-  gresource_bundle: true,
-  install: true,
-  install_dir: pkgdatadir
-)
+data_resources = [
+  ['dbus-interfaces', []],
+  ['osk-layouts', []],
+  ['theme', theme_deps]
+]
+foreach resource : data_resources
+  gnome.compile_resources(
+    'gnome-shell-' + resource[0],
+    'gnome-shell-@0@.gresource.xml'.format(resource[0]),
+    source_dir: resource[0],
+    dependencies: resource[1],
+    gresource_bundle: true,
+    install: true,
+    install_dir: pkgdatadir
+  )
+endforeach
 
 perfconf = configuration_data()
 perfconf.set('datadir', datadir)
@@ -92,6 +83,33 @@ schema = configure_file(
   configuration: schemaconf,
   install_dir: schemadir
 )
+install_data('00_org.gnome.shell.gschema.override', install_dir: schemadir)
+
+overrides_migration_conf = configuration_data()
+overrides_migration_conf.set('libexecdir', libexecdir)
+overrides_migration = configure_file(
+  input: 'gnome-shell-overrides-migration.desktop.in',
+  output: 'gnome-shell-overrides-migration.desktop',
+  configuration: overrides_migration_conf,
+  install_dir: autostartdir
+)
+
+if have_systemd
+  unitconf = configuration_data()
+  unitconf.set('bindir', bindir)
+
+  unit = configure_file(
+    input: 'gnome-shell.service.in',
+    output: 'gnome-shell.service',
+    configuration: unitconf,
+    install_dir: systemduserunitdir
+  )
+
+  units = files('gnome-shell-wayland.target',
+                'gnome-shell-x11.target')
+
+  install_data(units, install_dir: systemduserunitdir)
+endif
 
 # for unit tests - gnome.compile_schemas() only looks in srcdir
 custom_target('compile-schemas',

@@ -96,10 +96,10 @@ var URLHighlighter = new Lang.Class({
 
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1 && !this._cursorChanged) {
-                global.screen.set_cursor(Meta.Cursor.POINTING_HAND);
+                global.display.set_cursor(Meta.Cursor.POINTING_HAND);
                 this._cursorChanged = true;
             } else if (urlId == -1) {
-                global.screen.set_cursor(Meta.Cursor.DEFAULT);
+                global.display.set_cursor(Meta.Cursor.DEFAULT);
                 this._cursorChanged = false;
             }
             return Clutter.EVENT_PROPAGATE;
@@ -110,7 +110,7 @@ var URLHighlighter = new Lang.Class({
 
             if (this._cursorChanged) {
                 this._cursorChanged = false;
-                global.screen.set_cursor(Meta.Cursor.DEFAULT);
+                global.display.set_cursor(Meta.Cursor.DEFAULT);
             }
             return Clutter.EVENT_PROPAGATE;
         });
@@ -363,7 +363,8 @@ var Message = new Lang.Class({
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
-        this.actor.connect('notify::hover', this._sync.bind(this));
+        let actorHoverId = this.actor.connect('notify::hover', this._sync.bind(this));
+        this._closeButton.connect('destroy', this.actor.disconnect.bind(this.actor, actorHoverId));
         this.actor.connect('clicked', this._onClicked.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._sync();

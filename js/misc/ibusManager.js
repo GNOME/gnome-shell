@@ -115,6 +115,16 @@ var IBusManager = new Lang.Class({
                                                          object_path: IBus.PATH_PANEL });
             this._candidatePopup.setPanelService(this._panelService);
             this._panelService.connect('update-property', this._updateProperty.bind(this));
+            this._panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
+                let cursorLocation = { x, y, width: w, height: h };
+                this.emit('set-cursor-location', cursorLocation);
+            });
+            this._panelService.connect('focus-in', (panel, path) => {
+                if (!GLib.str_has_suffix(path, '/InputContext_1'))
+                    this.emit ('focus-in');
+            });
+            this._panelService.connect('focus-out', () => { this.emit('focus-out'); });
+
             try {
                 // IBus versions older than 1.5.10 have a bug which
                 // causes spurious set-content-type emissions when

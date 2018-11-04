@@ -44,6 +44,7 @@ const RENAMED_DESKTOP_IDS = {
     'nautilus.desktop': 'org.gnome.Nautilus.desktop',
     'polari.desktop': 'org.gnome.Polari.desktop',
     'totem.desktop': 'org.gnome.Totem.desktop',
+    'evince.desktop': 'org.gnome.Evince.desktop',
 };
 
 var AppFavorites = new Lang.Class({
@@ -127,7 +128,6 @@ var AppFavorites = new Lang.Class({
         else
             ids.splice(pos, 0, appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
-        this._favorites[appId] = app;
         return true;
     },
 

@@ -350,16 +350,19 @@ var ShellUserVerifier = new Lang.Class({
         try {
             this._clearUserVerifier();
             this._userVerifier = client.open_reauthentication_channel_finish(result);
-        } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-            return;
-        } catch(e if e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
-                !this._reauthOnly) {
-            // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there is
-            // no session to reauthenticate. Fall back to performing verification
-            // from this login session
-            client.get_user_verifier(this._cancellable, this._userVerifierGot.bind(this));
-            return;
         } catch(e) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                return;
+            if (e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
+                !this._reauthOnly) {
+                // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there
+                // is no session to reauthenticate. Fall back to performing
+                // verification from this login session
+                client.get_user_verifier(this._cancellable,
+                                         this._userVerifierGot.bind(this));
+                return;
+            }
+
             this._reportInitError('Failed to open reauthentication channel', e);
             return;
         }
@@ -374,9 +377,9 @@ var ShellUserVerifier = new Lang.Class({
         try {
             this._clearUserVerifier();
             this._userVerifier = client.get_user_verifier_finish(result);
-        } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-            return;
         } catch(e) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                return;
             this._reportInitError('Failed to obtain user verifier', e);
             return;
         }
@@ -434,9 +437,9 @@ var ShellUserVerifier = new Lang.Class({
                                                                (obj, result) => {
                try {
                    obj.call_begin_verification_for_user_finish(result);
-               } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                   return;
                } catch(e) {
+                   if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                       return;
                    this._reportInitError('Failed to start verification for user', e);
                    return;
                }
@@ -449,9 +452,9 @@ var ShellUserVerifier = new Lang.Class({
                                                       (obj, result) => {
                try {
                    obj.call_begin_verification_finish(result);
-               } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                   return;
                } catch(e) {
+                   if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                       return;
                    this._reportInitError('Failed to start verification', e);
                    return;
                }
@@ -534,12 +537,13 @@ var ShellUserVerifier = new Lang.Class({
     _verificationFailed(retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
-        // Otherwise, we allow ALLOWED_FAILURES attempts. After that, we
-        // go back to the welcome screen.
+        // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
+        // After that, we go back to the welcome screen.
 
         this._failCounter++;
         let canRetry = retry && this._userName &&
-            this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
+            (this._reauthOnly ||
+             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY));
 
         if (canRetry) {
             if (!this.hasPendingMessages) {
@@ -562,7 +566,7 @@ var ShellUserVerifier = new Lang.Class({
             }
         }
 
-        this.emit('verification-failed');
+        this.emit('verification-failed', canRetry);
     },
 
     _onConversationStopped(client, serviceName) {

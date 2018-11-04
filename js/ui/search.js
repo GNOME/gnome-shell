@@ -147,7 +147,7 @@ var GridSearchResult = new Lang.Class({
 
         this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                           { createIcon: this.metaInfo['createIcon'] });
-        let content = new St.Bin({ child: this.icon.actor });
+        let content = new St.Bin({ child: this.icon });
         this.actor.set_child(content);
         this.actor.label_actor = this.icon.label;
     }
@@ -192,6 +192,7 @@ var SearchResultsBase = new Lang.Class({
     },
 
     clear() {
+        this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
             this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
@@ -225,6 +226,12 @@ var SearchResultsBase = new Lang.Class({
             this._cancellable.reset();
 
             this.provider.getResultMetas(metasNeeded, metas => {
+                if (this._cancellable.is_cancelled()) {
+                    if (metas.length > 0)
+                        log(`Search provider ${this.provider.id} returned results after the request was canceled`);
+                    callback(false);
+                    return;
+                }
                 if (metas.length != metasNeeded.length) {
                     log('Wrong number of result metas returned by search provider ' + this.provider.id +
                         ': expected ' + metasNeeded.length + ' but got ' + metas.length);
@@ -356,8 +363,9 @@ var GridSearchResults = new Lang.Class({
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
+
         this._bin = new St.Bin({ x_align: St.Align.MIDDLE });
-        this._bin.set_child(this._grid.actor);
+        this._bin.set_child(this._grid);
 
         this._resultDisplayBin.set_child(this._bin);
     },

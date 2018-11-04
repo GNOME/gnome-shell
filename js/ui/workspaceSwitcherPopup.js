@@ -15,98 +15,118 @@ const Tweener = imports.ui.tweener;
 var ANIMATION_TIME = 0.1;
 var DISPLAY_TIMEOUT = 600;
 
-var WorkspaceSwitcherPopup = new Lang.Class({
-    Name: 'WorkspaceSwitcherPopup',
+var WorkspaceSwitcherPopupList = new Lang.Class({
+    Name: 'WorkspaceSwitcherPopupList',
+    Extends: St.Widget,
 
     _init() {
-        this.actor = new St.Widget({ x: 0,
-                                     y: 0,
-                                     width: global.screen_width,
-                                     height: global.screen_height,
-                                     style_class: 'workspace-switcher-group' });
-        Main.uiGroup.add_actor(this.actor);
+        this.parent({ style_class: 'workspace-switcher' });
 
-        this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });
-        this._list = new Shell.GenericContainer({ style_class: 'workspace-switcher' });
         this._itemSpacing = 0;
         this._childHeight = 0;
         this._childWidth = 0;
-        this._timeoutId = 0;
-        this._list.connect('style-changed', () => {
-           this._itemSpacing = this._list.get_theme_node().get_length('spacing');
+
+        this.connect('style-changed', () => {
+           this._itemSpacing = this.get_theme_node().get_length('spacing');
         });
-
-        this._list.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this._list.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this._list.connect('allocate', this._allocate.bind(this));
-        this._container.add(this._list);
-
-        this.actor.add_actor(this._container);
-
-        this._redisplay();
-
-        this.actor.hide();
-
-        this._globalSignals = [];
-        this._globalSignals.push(global.screen.connect('workspace-added', this._redisplay.bind(this)));
-        this._globalSignals.push(global.screen.connect('workspace-removed', this._redisplay.bind(this)));
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let children = this._list.get_children();
+    vfunc_get_preferred_height(forWidth) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        let themeNode = this.get_theme_node();
 
         let availHeight = workArea.height;
-        availHeight -= this.actor.get_theme_node().get_vertical_padding();
-        availHeight -= this._container.get_theme_node().get_vertical_padding();
-        availHeight -= this._list.get_theme_node().get_vertical_padding();
+        availHeight -= themeNode.get_vertical_padding();
 
         let height = 0;
-        for (let i = 0; i < children.length; i++) {
-            let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(-1);
-            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(childNaturalHeight);
+        for (let child of this.get_children()) {
+            let [childMinHeight, childNaturalHeight] = child.get_preferred_height(-1);
+            let [childMinWidth, childNaturalWidth] = child.get_preferred_width(childNaturalHeight);
             height += childNaturalHeight * workArea.width / workArea.height;
         }
 
-        let spacing = this._itemSpacing * (global.screen.n_workspaces - 1);
+        let workspaceManager = global.workspace_manager;
+        let spacing = this._itemSpacing * (workspaceManager.n_workspaces - 1);
         height += spacing;
         height = Math.min(height, availHeight);
 
-        this._childHeight = (height - spacing) / global.screen.n_workspaces;
+        this._childHeight = (height - spacing) / workspaceManager.n_workspaces;
 
-        alloc.min_size = height;
-        alloc.natural_size = height;
+        return themeNode.adjust_preferred_height(height, height);
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
+    vfunc_get_preferred_width(forHeight) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
 
-        alloc.min_size = this._childWidth;
-        alloc.natural_size = this._childWidth;
+        return [this._childWidth, this._childWidth];
     },
 
-    _allocate(actor, box, flags) {
-        let children = this._list.get_children();
+    vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
+        let themeNode = this.get_theme_node();
+        box = themeNode.get_content_box(box);
+
         let childBox = new Clutter.ActorBox();
 
         let y = box.y1;
         let prevChildBoxY2 = box.y1 - this._itemSpacing;
-        for (let i = 0; i < children.length; i++) {
+        for (let child of this.get_children()) {
             childBox.x1 = box.x1;
             childBox.x2 = box.x1 + this._childWidth;
             childBox.y1 = prevChildBoxY2 + this._itemSpacing;
             childBox.y2 = Math.round(y + this._childHeight);
             y += this._childHeight + this._itemSpacing;
             prevChildBoxY2 = childBox.y2;
-            children[i].allocate(childBox, flags);
+            child.allocate(childBox, flags);
         }
+    },
+});
+
+var WorkspaceSwitcherPopup = new Lang.Class({
+    Name: 'WorkspaceSwitcherPopup',
+    Extends: St.Widget,
+
+    _init() {
+        this.parent({ x: 0,
+                      y: 0,
+                      width: global.screen_width,
+                      height: global.screen_height,
+                      style_class: 'workspace-switcher-group' });
+
+        this.actor = this;
+
+        Main.uiGroup.add_actor(this);
+
+        this._timeoutId = 0;
+
+        this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });
+        this.add_child(this._container);
+
+        this._list = new WorkspaceSwitcherPopupList();
+        this._container.add_child(this._list);
+
+        this._redisplay();
+
+        this.hide();
+
+        let workspaceManager = global.workspace_manager;
+        this._workspaceManagerSignals = [];
+        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-added',
+                                                                    this._redisplay.bind(this)));
+        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-removed',
+                                                                    this._redisplay.bind(this)));
+
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _redisplay() {
+        let workspaceManager = global.workspace_manager;
+
         this._list.destroy_all_children();
 
-        for (let i = 0; i < global.screen.n_workspaces; i++) {
+        for (let i = 0; i < workspaceManager.n_workspaces; i++) {
             let indicator = null;
 
            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
@@ -159,17 +179,15 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    destroy() {
+    _onDestroy() {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;
 
-        for (let i = 0; i < this._globalSignals.length; i++)
-            global.screen.disconnect(this._globalSignals[i]);
+        let workspaceManager = global.workspace_manager;
+        for (let i = 0; i < this._workspaceManagerSignals.length; i++)
+            workspaceManager.disconnect(this._workspaceManagerSignals[i]);
 
-        this.actor.destroy();
-
-        this.emit('destroy');
+        this._workspaceManagerSignals = [];
     }
 });
-Signals.addSignalMethods(WorkspaceSwitcherPopup.prototype);

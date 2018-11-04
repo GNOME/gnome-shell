@@ -9,8 +9,6 @@
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
 
-    <file>extensionPrefs/main.js</file>
-
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
@@ -33,8 +31,6 @@
     <file>perf/core.js</file>
     <file>perf/hwtest.js</file>
 
-    <file>portalHelper/main.js</file>
-
     <file>ui/accessDialog.js</file>
     <file>ui/altTab.js</file>
     <file>ui/animation.js</file>
@@ -43,6 +39,7 @@
     <file>ui/audioDeviceSelection.js</file>
     <file>ui/backgroundMenu.js</file>
     <file>ui/background.js</file>
+    <file>ui/barLevel.js</file>
     <file>ui/boxpointer.js</file>
     <file>ui/calendar.js</file>
     <file>ui/checkBox.js</file>
@@ -130,6 +127,7 @@
     <file>ui/status/rfkill.js</file>
     <file>ui/status/volume.js</file>
     <file>ui/status/bluetooth.js</file>
+    <file>ui/status/remoteAccess.js</file>
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>

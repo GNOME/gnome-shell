@@ -31,8 +31,6 @@ extern GType gnome_shell_plugin_get_type (void);
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
-#define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
-
 #define WM_NAME "GNOME Shell"
 #define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
 
@@ -170,26 +168,6 @@ shell_dbus_init (gboolean replace)
                             NULL);
   g_object_unref (bus);
   g_object_unref (session);
-}
-
-static void
-shell_prefs_init (void)
-{
-  ShellGlobal *global = shell_global_get ();
-  GSettings *settings = shell_global_get_overrides_settings (global);
-  GSettingsSchema *schema;
-  char **keys, **k;
-
-  if (!settings)
-    return;
-
-  g_object_get (G_OBJECT (settings), "settings-schema", &schema, NULL);
-
-  for (keys = k = g_settings_schema_list_keys (schema); *k; k++)
-    meta_prefs_override_preference_schema (*k, g_settings_schema_get_id (schema));
-
-  g_strfreev (keys);
-  g_settings_schema_unref (schema);
 }
 
 static void
@@ -508,8 +486,6 @@ main (int argc, char **argv)
     session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
   _shell_global_init ("session-mode", session_mode, NULL);
-
-  shell_prefs_init ();
 
   dump_gjs_stack_on_signal (SIGABRT);
   dump_gjs_stack_on_signal (SIGFPE);

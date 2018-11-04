@@ -7,7 +7,7 @@ easy to use experience.
 
 For more information about GNOME Shell, including instructions on how
 to build GNOME Shell from source and how to get involved with the project,
-see the [project wiki][wiki]
+see the [project wiki][project-wiki].
 
 Bugs should be reported to the GNOME [bug tracking system][bug-tracker].
 

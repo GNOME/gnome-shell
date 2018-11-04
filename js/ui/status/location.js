@@ -15,6 +15,8 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
@@ -40,29 +42,10 @@ function accuracyLevelToString(accuracyLevel) {
     return 'NONE';
 }
 
-var GeoclueIface = '<node> \
-  <interface name="org.freedesktop.GeoClue2.Manager"> \
-    <property name="InUse" type="b" access="read"/> \
-    <property name="AvailableAccuracyLevel" type="u" access="read"/> \
-    <method name="AddAgent"> \
-      <arg name="id" type="s" direction="in"/> \
-    </method> \
-  </interface> \
-</node>';
-
+var GeoclueIface = loadInterfaceXML('org.freedesktop.GeoClue2.Manager');
 const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
-var AgentIface = '<node> \
-  <interface name="org.freedesktop.GeoClue2.Agent"> \
-    <property name="MaxAccuracyLevel" type="u" access="read"/> \
-    <method name="AuthorizeApp"> \
-      <arg name="desktop_id" type="s" direction="in"/> \
-      <arg name="req_accuracy_level" type="u" direction="in"/> \
-      <arg name="authorized" type="b" direction="out"/> \
-      <arg name="allowed_accuracy_level" type="u" direction="out"/> \
-    </method> \
-  </interface> \
-</node>';
+var AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
 
 var Indicator = new Lang.Class({
     Name: 'LocationIndicator',

@@ -8,21 +8,22 @@ const Signals = imports.signals;
 
 // Specified in the D-Bus specification here:
 // http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
-const ObjectManagerIface = '<node> \
-<interface name="org.freedesktop.DBus.ObjectManager"> \
-  <method name="GetManagedObjects"> \
-    <arg name="objects" type="a{oa{sa{sv}}}" direction="out"/> \
-  </method> \
-  <signal name="InterfacesAdded"> \
-    <arg name="objectPath" type="o"/> \
-    <arg name="interfaces" type="a{sa{sv}}" /> \
-  </signal> \
-  <signal name="InterfacesRemoved"> \
-    <arg name="objectPath" type="o"/> \
-    <arg name="interfaces" type="as" /> \
-  </signal> \
-</interface> \
-</node>';
+const ObjectManagerIface = `
+<node>
+<interface name="org.freedesktop.DBus.ObjectManager">
+  <method name="GetManagedObjects">
+    <arg name="objects" type="a{oa{sa{sv}}}" direction="out"/>
+  </method>
+  <signal name="InterfacesAdded">
+    <arg name="objectPath" type="o"/>
+    <arg name="interfaces" type="a{sa{sv}}" />
+  </signal>
+  <signal name="InterfacesRemoved">
+    <arg name="objectPath" type="o"/>
+    <arg name="interfaces" type="as" />
+  </signal>
+</interface>
+</node>`;
 
 const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 
@@ -236,11 +237,12 @@ var ObjectManager = new Lang.Class({
     _onNameVanished() {
         let objectPaths = Object.keys(this._objects);
         for (let i = 0; i < objectPaths.length; i++) {
-            let object = this._objects[objectPaths];
+            let objectPath = objectPaths[i];
+            let object = this._objects[objectPath];
 
             let interfaceNames = Object.keys(object);
-            for (let j = 0; i < interfaceNames.length; i++) {
-                let interfaceName = interfaceNames[i];
+            for (let j = 0; j < interfaceNames.length; j++) {
+                let interfaceName = interfaceNames[j];
 
                 if (object[interfaceName])
                     this._removeInterface(objectPath, interfaceName);

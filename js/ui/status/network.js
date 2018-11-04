@@ -21,6 +21,8 @@ const ModemManager = imports.misc.modemManager;
 const Rfkill = imports.ui.status.rfkill;
 const Util = imports.misc.util;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
@@ -51,25 +53,7 @@ var PortalHelperResult = {
     RECHECK: 2
 };
 
-const PortalHelperIface = '<node> \
-<interface name="org.gnome.Shell.PortalHelper"> \
-<method name="Authenticate"> \
-    <arg type="o" direction="in" name="connection" /> \
-    <arg type="s" direction="in" name="url" /> \
-    <arg type="u" direction="in" name="timestamp" /> \
-</method> \
-<method name="Close"> \
-    <arg type="o" direction="in" name="connection" /> \
-</method> \
-<method name="Refresh"> \
-    <arg type="o" direction="in" name="connection" /> \
-</method> \
-<signal name="Done"> \
-    <arg type="o" name="connection" /> \
-    <arg type="u" name="result" /> \
-</signal> \
-</interface> \
-</node>';
+const PortalHelperIface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 const PortalHelperProxy = Gio.DBusProxy.makeProxyWrapper(PortalHelperIface);
 
 function signalToIcon(value) {
@@ -419,12 +403,14 @@ var NMConnectionDevice = new Lang.Class({
         this._deactivateItem.actor.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
-            this._activeConnection = this._device.active_connection;
-
-            if (this._activeConnection) {
-                ensureActiveConnectionProps(this._activeConnection, this._client);
-                let item = this._connectionItems.get(this._activeConnection.connection.get_uuid());
-                item.setActiveConnection(this._activeConnection);
+            let activeConnection = this._device.active_connection;
+            if (activeConnection && activeConnection.connection) {
+                let item = this._connectionItems.get(activeConnection.connection.get_uuid());
+                if (item) {
+                    this._activeConnection = activeConnection;
+                    ensureActiveConnectionProps(this._activeConnection, this._client);
+                    item.setActiveConnection(this._activeConnection);
+                }
             }
         }
 
@@ -935,10 +921,10 @@ var NMWirelessDialog = new Lang.Class({
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
                 Util.spawn(['gnome-control-center', 'wifi', 'connect-8021x-wifi',
-                            this._device.get_path(), accessPoints[0].path]);
+                            this._device.get_path(), accessPoints[0].get_path()]);
             } else {
                 let connection = new NM.SimpleConnection();
-                this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].path, null, null)
+                this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].get_path(), null, null)
             }
         }
 

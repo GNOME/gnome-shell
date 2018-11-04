@@ -49,8 +49,8 @@ var SwitchMonitorPopup = new Lang.Class({
 
     _initialSelection() {
         let currentConfig = Meta.MonitorManager.get().get_switch_config();
-        currentConfig %= Meta.MonitorSwitchConfigType.UNKNOWN;
-        this._select(currentConfig);
+        let selectConfig = (currentConfig + 1) % Meta.MonitorSwitchConfigType.UNKNOWN;
+        this._select(selectConfig);
     },
 
     _keyPressHandler(keysym, action) {

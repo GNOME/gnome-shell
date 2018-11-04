@@ -25,6 +25,7 @@ var AutomountManager = new Lang.Class({
     _init() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._volumeQueue = [];
+        this._activeOperations = new Map();
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
                                     this._InhibitorsChanged.bind(this));
@@ -182,7 +183,7 @@ var AutomountManager = new Lang.Class({
             this._allowAutorun(volume);
 
         let mountOp = operation ? operation.mountOp : null;
-        volume._operation = operation;
+        this._activeOperations.set(volume, operation);
 
         volume.mount(0, mountOp, null,
                      this._onVolumeMounted.bind(this));
@@ -196,10 +197,14 @@ var AutomountManager = new Lang.Class({
             this._closeOperation(volume);
         } catch (e) {
             // FIXME: we will always get G_IO_ERROR_FAILED from the gvfs udisks
-            // backend in this case, see 
-            // https://bugs.freedesktop.org/show_bug.cgi?id=51271
-            if (e.message.includes('No key available with this passphrase') ||
-                e.message.includes('Failed to load device\'s parameters')) {
+            // backend, see https://bugs.freedesktop.org/show_bug.cgi?id=51271
+            // To reask the password if the user input was empty or wrong, we
+            // will check for corresponding error messages. However, these
+            // error strings are not unique for the cases in the comments below.
+            if (e.message.includes('No key available with this passphrase') || // cryptsetup
+                e.message.includes('Failed to load device\'s parameters') ||   // libblockdev (crypt_load failed)
+                e.message.includes('No key available to unlock device') ||     // udisks (no password)
+                e.message.includes('Error unlocking')) {                       // udisks (wrong password)
                 this._reaskPassword(volume);
             } else if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
                 let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
@@ -220,13 +225,18 @@ var AutomountManager = new Lang.Class({
     },
 
     _onVolumeRemoved(monitor, volume) {
+        if (volume._allowAutorunExpireId && volume._allowAutorunExpireId > 0) {
+            Mainloop.source_remove(volume._allowAutorunExpireId);
+            delete volume._allowAutorunExpireId;
+        }
         this._volumeQueue = 
             this._volumeQueue.filter(element => (element != volume));
     },
 
     _reaskPassword(volume, params) {
         params = Params.parse(params, { errorMessage: null });
-        let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
+        let prevOperation = this._activeOperations.get(volume);
+        let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
                                                         { existingDialog: existingDialog,
@@ -235,8 +245,11 @@ var AutomountManager = new Lang.Class({
     },
 
     _closeOperation(volume) {
-        if (volume._operation)
-            volume._operation.close();
+        let operation = this._activeOperations.get(volume);
+        if (!operation)
+            return;
+        operation.close();
+        this._activeOperations.delete(volume);
     },
 
     _allowAutorun(volume) {
@@ -246,8 +259,10 @@ var AutomountManager = new Lang.Class({
     _allowAutorunExpire(volume) {
         let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
             volume.allowAutorun = false;
+            delete volume._allowAutorunExpireId;
             return GLib.SOURCE_REMOVE;
         });
+        volume._allowAutorunExpireId = id;
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
 });

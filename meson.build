@@ -1,12 +1,12 @@
 project('gnome-shell', 'c',
-  version: '3.29.2',
-  meson_version: '>= 0.42.0',
+  version: '3.30.1',
+  meson_version: '>= 0.47.0',
   license: 'GPLv2+'
 )
 
 # We depend on a specific version of the libmutter API. The mutter variants of
 # the Cogl and Clutter libraries also use this API version.
-mutter_api_version = '2'
+mutter_api_version = '3'
 
 clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
@@ -23,9 +23,9 @@ gi_req = '>= 1.49.1'
 gjs_req = '>= 1.47.0'
 gtk_req = '>= 3.15.0'
 json_glib_req = '>= 0.13.2'
-mutter_req = '>= 3.29.2'
+mutter_req = '>= 3.30.1'
 polkit_req = '>= 0.100'
-schemas_req = '>= 3.21.3'
+schemas_req = '>= 3.27.90'
 startup_req = '>= 0.11'
 ibus_req = '>= 1.5.2'
 
@@ -44,10 +44,12 @@ datadir = join_paths(prefix, get_option('datadir'))
 libdir = join_paths(prefix, get_option('libdir'))
 libexecdir = join_paths(prefix, get_option('libexecdir'))
 mandir = join_paths(prefix, get_option('mandir'))
+sysconfdir = join_paths(prefix, get_option('sysconfdir'))
 
 pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
 
+autostartdir = join_paths(sysconfdir, 'xdg', 'autostart')
 convertdir = join_paths(datadir, 'GConf', 'gsettings')
 desktopdir = join_paths(datadir, 'applications')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')
@@ -58,6 +60,13 @@ schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
+
+# XXX: Once https://github.com/systemd/systemd/issues/9595 is fixed and we can
+# depend on this version, replace with something like:
+# systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
+#                                                         define_variable: ['prefix', prefix])
+# and uncomment systemd_dep below
+systemduserunitdir = join_paths(prefix, 'lib', 'systemd', 'user')
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
@@ -86,7 +95,6 @@ cogl_dep = dependency(cogl_pc, version: mutter_req)
 cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
-soup_dep = dependency('libsoup-2.4')
 startup_dep = dependency('libstartup-notification-1.0', version: startup_req)
 ibus_dep = dependency('ibus-1.0', version: ibus_req)
 x11_dep = dependency('x11')
@@ -117,10 +125,12 @@ else
 endif
 
 if get_option('systemd')
-  systemd_dep = dependency('libsystemd')
-  have_systemd = systemd_dep.found()
+  libsystemd_dep = dependency('libsystemd')
+  # XXX: see systemduserunitdir
+  # systemd_dep = dependency('systemd')
+  have_systemd = true
 else
-  systemd_dep = []
+  libsystemd_dep = []
   have_systemd = false
 endif
 
@@ -152,11 +162,20 @@ cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_SYSTEMD', have_systemd)
 
+# New API added in glib-2.57.2
+cdata.set('HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS',
+          cc.has_function('g_desktop_app_info_launch_uris_as_manager_with_fds',
+                          dependencies : gio_dep)
+)
 cdata.set('HAVE_FDWALK', cc.has_function('fdwalk'))
 cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))
 cdata.set('HAVE_SYS_RESOURCE_H', cc.has_header('sys/resource.h'))
 cdata.set('HAVE__NL_TIME_FIRST_WEEKDAY',
   cc.has_header_symbol('langinfo.h', '_NL_TIME_FIRST_WEEKDAY')
+)
+
+cdata.set('HAVE_FDWALK',
+          cc.has_function('fdwalk')
 )
 
 config_h = configure_file(
@@ -185,6 +204,7 @@ subdir('src')
 subdir('po')
 subdir('data')
 subdir('tests')
+subdir('tools')
 
 if get_option('gtk_doc')
   subdir('docs/reference')

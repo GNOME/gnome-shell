@@ -15,6 +15,8 @@ var InputMethod = new Lang.Class({
         this._purpose = 0;
         this._enabled = true;
         this._currentFocus = null;
+        this._preeditStr = '';
+        this._preeditPos = 0;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -64,6 +66,9 @@ var InputMethod = new Lang.Class({
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
+        this._context.connect('show-preedit-text', this._onShowPreeditText.bind(this));
+        this._context.connect('hide-preedit-text', this._onHidePreeditText.bind(this));
+        this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
 
         this._updateCapabilities();
     },
@@ -73,6 +78,8 @@ var InputMethod = new Lang.Class({
         this._hints = 0;
         this._purpose = 0;
         this._enabled = false;
+        this._preeditStr = ''
+        this._preeditPos = 0;
     },
 
     _emitRequestSurrounding() {
@@ -89,11 +96,36 @@ var InputMethod = new Lang.Class({
     },
 
     _onUpdatePreeditText(context, text, pos, visible) {
-        let str = null;
-        if (visible && text != null)
-            str = text.get_text();
+        if (text == null)
+            return;
+        this._preeditStr = text.get_text();
+        this._preeditPos = pos;
+        if (visible)
+            this.set_preedit_text(this._preeditStr, pos);
+        else
+            this.set_preedit_text(null, pos);
+    },
 
-        this.set_preedit_text(str, pos);
+    _onShowPreeditText(context) {
+        this.set_preedit_text(this._preeditStr, this._preeditPos);
+    },
+
+    _onHidePreeditText(context) {
+        this.set_preedit_text(null, this._preeditPos);
+    },
+
+    _onForwardKeyEvent(context, keyval, keycode, state) {
+        let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
+        state &= ~(IBus.ModifierType.RELEASE_MASK);
+
+        let curEvent = Clutter.get_current_event();
+        let time;
+        if (curEvent)
+            time = curEvent.get_time();
+        else
+            time = global.display.get_current_time_roundtrip();
+
+        this.forward_key(keyval, keycode + 8, state & Clutter.ModifierType.MODIFIER_MASK, time, press);
     },
 
     vfunc_focus_in(focus) {
@@ -135,8 +167,11 @@ var InputMethod = new Lang.Class({
     },
 
     vfunc_set_surrounding(text, cursor, anchor) {
-        if (this._context)
-            this._context.set_surrounding_text(text, cursor, anchor);
+        if (!this._context || !text)
+            return;
+
+        let ibusText = IBus.Text.new_from_string(text);
+        this._context.set_surrounding_text(ibusText, cursor, anchor);
     },
 
     vfunc_update_content_hints(hints) {
@@ -197,6 +232,7 @@ var InputMethod = new Lang.Class({
 
         if (event.type() == Clutter.EventType.KEY_RELEASE)
             state |= IBus.ModifierType.RELEASE_MASK;
+
         this._context.process_key_event_async(event.get_key_symbol(),
                                               event.get_key_code() - 8, // Convert XKB keycodes to evcodes
                                               state, -1, null,

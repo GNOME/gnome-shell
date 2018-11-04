@@ -1,0 +1,205 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Shell.Extensions:
+      @short_description: Extensions interface
+
+      The interface used to query and manage extensions.
+  -->
+  <interface name="org.gnome.Shell.Extensions">
+
+    <!--
+        ListExtensions:
+        @extensions: A dictionary of extension infos
+
+        Get a list of installed extensions. The returned @extensions
+        dictionary maps extension UUIDs to info vardicts. See
+        GetExtensionInfo() for documentation on possible keys.
+    -->
+    <method name="ListExtensions">
+      <arg type="a{sa{sv}}" direction="out" name="extensions"/>
+    </method>
+
+    <!--
+        GetExtensionInfo:
+        @uuid: The UUID of the extension
+        @info: The returned extension info
+
+        The information returned in the @info vardict depends on the
+        metadata the extension provides, however it is guaranteed to
+        contain the following keys:
+
+        <variablelist>
+          <varlistentry>
+            <term>uuid s</term>
+            <listitem><para>The UUID of the extension</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>name s</term>
+            <listitem><para>The name of the extension</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>description s</term>
+            <listitem><para>
+              A short summary that describes what the extension does
+            </para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>shell-version as</term>
+            <listitem><para>An array of support shell versions</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>type d</term>
+            <listitem><para>
+              The type of extension:
+              <simplelist>
+                <member>1: SYSTEM</member>
+                <member>2: PER_USER</member>
+              </simplelist>
+            </para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>state d</term>
+            <listitem><para>
+              The state the extension is in:
+              <simplelist>
+                <member>1: ENABLED</member>
+                <member>2: DISABLED</member>
+                <member>3: ERROR</member>
+                <member>4: OUT_OF_DATE</member>
+                <member>5: DOWNLOADING</member>
+                <member>6: INITIALIZED</member>
+                <member>99: UNINSTALLED</member>
+              </simplelist>
+            </para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>path s</term>
+            <listitem><para>The extension directory</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>error s</term>
+            <listitem><para>The most recent error caught in init(), enable() or disable()</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>hasPrefs b</term>
+            <listitem><para>Whether the extension includes preference UI</para></listitem>
+          </varlistentry>
+        </variablelist>
+
+        By convention, many extensions will also include the following keys:
+        <variablelist>
+          <varlistentry>
+            <term>version d</term>
+            <listitem><para>The extension version</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>url s</term>
+            <listitem><para>The URL to the extension homepage or repository</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>settings-schema s</term>
+            <listitem><para>The ID of a bundled GSettings schema</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>gettext-domain s</term>
+            <listitem><para>The domain used for translations</para></listitem>
+          </varlistentry>
+        </variablelist>
+    -->
+    <method name="GetExtensionInfo">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="a{sv}" direction="out" name="info"/>
+    </method>
+
+    <!--
+        GetExtensionErrors:
+        @uuid: The UUID of the extension
+        @errors: The returned errors
+
+        Get the list of errors that caused the extension
+        to be in ERROR state.
+    -->
+    <method name="GetExtensionErrors">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="as" direction="out" name="errors"/>
+    </method>
+
+    <!--
+        InstallRemoteExtension:
+        @uuid: The UUID of the extension
+        @result: The result of the operation
+
+        Download and install an extension.
+    -->
+    <method name="InstallRemoteExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="s" direction="out" name="result"/>
+    </method>
+
+    <!--
+        UninstallExtension:
+        @uuid: The UUID of the extension
+        @success: Whether the operation was successful
+
+        Uninstall an extension.
+    -->
+    <method name="UninstallExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="b" direction="out" name="success"/>
+    </method>
+
+    <!--
+        ReloadExtension:
+        @uuid: The UUID of the extension
+
+        Reload an extension.
+    -->
+    <method name="ReloadExtension">
+      <arg type="s" direction="in" name="uuid"/>
+    </method>
+
+    <!--
+        LaunchExtensionPrefs:
+        @uuid: The UUID of the extension
+
+        Launch preferences of an extension.
+    -->
+    <method name="LaunchExtensionPrefs">
+      <arg type="s" direction="in" name="uuid"/>
+    </method>
+
+    <!--
+        CheckForUpdates:
+        Update all extensions for which updates are available
+    -->
+    <method name="CheckForUpdates"/>
+
+    <signal name="ExtensionStatusChanged">
+      <arg type="s" name="uuid"/>
+      <arg type="i" name="state"/>
+      <arg type="s" name="error"/>
+    </signal>
+
+    <!--
+        ShellVersion:
+        The GNOME Shell version
+    -->
+    <property name="ShellVersion" type="s" access="read"/>
+
+  </interface>
+</node>

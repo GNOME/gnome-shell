@@ -24,7 +24,7 @@ ifaces = [
 ]
 foreach iface : ifaces
   custom_target(iface[0] + ' docs',
-    input: '../../../data/@0@.xml'.format(iface[0]),
+    input: '../../../data/dbus-interfaces/@0@.xml'.format(iface[0]),
     output: 'doc-gen-' + iface[1],
     command: [
       'gdbus-codegen',
@@ -50,8 +50,7 @@ gnome.gtkdoc('shell',
     join_paths(meson.build_root(), 'src')
   ],
   scan_args: [
-    '--ignore-headers=' + ' '.join(private_headers + exclude_directories),
-    '--rebuild-types'
+    '--ignore-headers=' + ' '.join(private_headers + exclude_directories)
   ],
   install: true
 )

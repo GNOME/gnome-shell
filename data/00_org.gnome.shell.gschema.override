@@ -1,0 +1,6 @@
+[org.gnome.mutter:GNOME]
+attach-modal-dialogs=true
+edge-tiling=true
+dynamic-workspaces=true
+workspaces-only-on-primary=true
+focus-change-on-pointer-rest=true

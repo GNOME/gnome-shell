@@ -86,6 +86,7 @@ function _unpremultiply(color) {
 var AppMenuButton = new Lang.Class({
     Name: 'AppMenuButton',
     Extends: PanelMenu.Button,
+    Signals: {'changed': {}},
 
     _init(panel) {
         this.parent(0.0, null, true);
@@ -127,7 +128,7 @@ var AppMenuButton = new Lang.Class({
         this._visible = this._gtkSettings.gtk_shell_shows_app_menu &&
                         !Main.overview.visible;
         if (!this._visible)
-            this.actor.hide();
+            this.hide();
         this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
         this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
         this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
@@ -149,13 +150,13 @@ var AppMenuButton = new Lang.Class({
         this._sync();
     },
 
-    show() {
+    fadeIn() {
         if (this._visible)
             return;
 
         this._visible = true;
         this.actor.reactive = true;
-        this.actor.show();
+        this.show();
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
@@ -163,7 +164,7 @@ var AppMenuButton = new Lang.Class({
                            transition: 'easeOutQuad' });
     },
 
-    hide() {
+    fadeOut() {
         if (!this._visible)
             return;
 
@@ -175,7 +176,7 @@ var AppMenuButton = new Lang.Class({
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete() {
-                               this.actor.hide();
+                               this.hide();
                            },
                            onCompleteScope: this });
     },
@@ -265,7 +266,8 @@ var AppMenuButton = new Lang.Class({
     },
 
     _findTargetApp() {
-        let workspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let workspace = workspaceManager.get_active_workspace();
         let tracker = Shell.WindowTracker.get_default();
         let focusedApp = tracker.focus_app;
         if (focusedApp && focusedApp.is_on_workspace(workspace))
@@ -306,13 +308,16 @@ var AppMenuButton = new Lang.Class({
             }
         }
 
+        let shellShowsAppMenu = this._gtkSettings.gtk_shell_shows_app_menu;
+        Meta.prefs_set_show_fallback_app_menu(!shellShowsAppMenu);
+
         let visible = (this._targetApp != null &&
-                       this._gtkSettings.gtk_shell_shows_app_menu &&
+                       shellShowsAppMenu &&
                        !Main.overview.visibleTarget);
         if (visible)
-            this.show();
+            this.fadeIn();
         else
-            this.hide();
+            this.fadeOut();
 
         let isBusy = (this._targetApp != null &&
                       (this._targetApp.get_state() == Shell.AppState.STARTING ||
@@ -362,7 +367,7 @@ var AppMenuButton = new Lang.Class({
             this._menuManager.addMenu(menu);
     },
 
-    destroy() {
+    _onDestroy() {
         if (this._appStateChangedSignalId > 0) {
             let appSys = Shell.AppSystem.get_default();
             appSys.disconnect(this._appStateChangedSignalId);
@@ -393,8 +398,6 @@ var AppMenuButton = new Lang.Class({
         this.parent();
     }
 });
-
-Signals.addSignalMethods(AppMenuButton.prototype);
 
 var ActivitiesButton = new Lang.Class({
     Name: 'ActivitiesButton',
@@ -709,6 +712,7 @@ var AggregateMenu = new Lang.Class({
             this._bluetooth = null;
         }
 
+        this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._power = new imports.ui.status.power.Indicator();
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
@@ -729,6 +733,7 @@ var AggregateMenu = new Lang.Class({
         if (this._bluetooth) {
             this._indicators.add_child(this._bluetooth.indicators);
         }
+        this._indicators.add_child(this._remoteAccess.indicators);
         this._indicators.add_child(this._rfkill.indicators);
         this._indicators.add_child(this._volume.indicators);
         this._indicators.add_child(this._power.indicators);
@@ -743,6 +748,7 @@ var AggregateMenu = new Lang.Class({
         if (this._bluetooth) {
             this.menu.addMenuItem(this._bluetooth.menu);
         }
+        this.menu.addMenuItem(this._remoteAccess.menu);
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
@@ -767,11 +773,16 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
 
 var Panel = new Lang.Class({
     Name: 'Panel',
+    Extends: St.Widget,
 
     _init() {
-        this.actor = new Shell.GenericContainer({ name: 'panel',
-                                                  reactive: true });
-        this.actor._delegate = this;
+        this.parent({ name: 'panel',
+                      reactive: true });
+
+        // For compatibility with extensions that still use the
+        // this.actor field
+        this.actor = this;
+        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._sessionStyle = null;
 
@@ -780,35 +791,33 @@ var Panel = new Lang.Class({
         this.menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
-        this.actor.add_actor(this._leftBox);
+        this.add_child(this._leftBox);
         this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
-        this.actor.add_actor(this._centerBox);
+        this.add_child(this._centerBox);
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
-        this.actor.add_actor(this._rightBox);
+        this.add_child(this._rightBox);
 
         this._leftCorner = new PanelCorner(St.Side.LEFT);
-        this.actor.add_actor(this._leftCorner.actor);
+        this.add_child(this._leftCorner.actor);
 
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
-        this.actor.add_actor(this._rightCorner.actor);
+        this.add_child(this._rightCorner.actor);
 
-        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
-        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
-        this.actor.connect('allocate', this._allocate.bind(this));
-        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
-        this.actor.connect('key-press-event', this._onKeyPress.bind(this));
+        this.connect('button-press-event', this._onButtonPress.bind(this));
+        this.connect('touch-event', this._onButtonPress.bind(this));
+        this.connect('key-press-event', this._onKeyPress.bind(this));
 
         Main.overview.connect('showing', () => {
-            this.actor.add_style_pseudo_class('overview');
+            this.add_style_pseudo_class('overview');
             this._updateSolidStyle();
         });
         Main.overview.connect('hiding', () => {
-            this.actor.remove_style_pseudo_class('overview');
+            this.remove_style_pseudo_class('overview');
             this._updateSolidStyle();
         });
 
-        Main.layoutManager.panelBox.add(this.actor);
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'focus-top-bar-symbolic',
+        Main.layoutManager.panelBox.add(this);
+        Main.ctrlAltTabManager.addGroup(this, _("Top Bar"), 'focus-top-bar-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
@@ -818,7 +827,7 @@ var Panel = new Lang.Class({
         global.window_group.connect('actor-removed', this._onWindowActorRemoved.bind(this));
         global.window_manager.connect('switch-workspace', this._updateSolidStyle.bind(this));
 
-        global.screen.connect('workareas-changed', () => { this.actor.queue_relayout(); });
+        global.display.connect('workareas-changed', () => { this.queue_relayout(); });
         this._updatePanel();
     },
 
@@ -838,24 +847,18 @@ var Panel = new Lang.Class({
         this._updateSolidStyle();
     },
 
-    _getPreferredWidth(actor, forHeight, alloc) {
+    vfunc_get_preferred_width(actor, forHeight) {
         let primaryMonitor = Main.layoutManager.primaryMonitor;
 
-        alloc.min_size = -1;
-
         if (primaryMonitor)
-            alloc.natural_size = primaryMonitor.width;
-        else
-            alloc.natural_size = -1;
+            return [0, primaryMonitor.width];
+
+        return [0,  0];
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
-        // We don't need to implement this; it's forced by the CSS
-        alloc.min_size = -1;
-        alloc.natural_size = -1;
-    },
+    vfunc_allocate(box, flags) {
+        this.parent(box, flags);
 
-    _allocate(actor, box, flags) {
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
 
@@ -867,7 +870,7 @@ var Panel = new Lang.Class({
         centerWidth = centerNaturalWidth;
 
         // get workspace area and center date entry relative to it
-        let monitor = Main.layoutManager.findMonitorForActor(actor);
+        let monitor = Main.layoutManager.findMonitorForActor(this);
         let centerOffset = 0;
         if (monitor) {
             let workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
@@ -880,7 +883,7 @@ var Panel = new Lang.Class({
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+        if (this.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = Math.max(allocWidth - Math.min(Math.floor(sideWidth),
                                                          leftNaturalWidth),
                                    0);
@@ -900,7 +903,7 @@ var Panel = new Lang.Class({
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+        if (this.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = 0;
             childBox.x2 = Math.min(Math.floor(sideWidth),
                                    rightNaturalWidth);
@@ -939,8 +942,13 @@ var Panel = new Lang.Class({
         if (event.get_source() != actor)
             return Clutter.EVENT_PROPAGATE;
 
-        let button = event.get_button();
-        if (button != 1)
+        let type = event.type();
+        let isPress = type == Clutter.EventType.BUTTON_PRESS;
+        if (!isPress && type != Clutter.EventType.TOUCH_BEGIN)
+            return Clutter.EVENT_PROPAGATE;
+
+        let button = isPress ? event.get_button() : -1;
+        if (isPress && button != 1)
             return Clutter.EVENT_PROPAGATE;
 
         let focusWindow = global.display.focus_window;
@@ -961,8 +969,7 @@ var Panel = new Lang.Class({
         if (!allowDrag)
             return Clutter.EVENT_PROPAGATE;
 
-        global.display.begin_grab_op(global.screen,
-                                     dragWindow,
+        global.display.begin_grab_op(dragWindow,
                                      Meta.GrabOp.MOVING,
                                      false, /* pointer grab */
                                      true, /* frame action */
@@ -977,7 +984,7 @@ var Panel = new Lang.Class({
     _onKeyPress(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Escape) {
-            global.screen.focus_default_window(event.get_time());
+            global.display.focus_default_window(event.get_time());
             return Clutter.EVENT_STOP;
         }
 
@@ -1056,7 +1063,7 @@ var Panel = new Lang.Class({
         if (this._sessionStyle)
             this._addStyleClassName(this._sessionStyle);
 
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+        if (this.get_text_direction() == Clutter.TextDirection.RTL) {
             this._leftCorner.setStyleParent(this._rightBox);
             this._rightCorner.setStyleParent(this._leftBox);
         } else {
@@ -1066,7 +1073,7 @@ var Panel = new Lang.Class({
     },
 
     _updateSolidStyle() {
-        if (this.actor.has_style_pseudo_class('overview') || !Main.sessionMode.hasWindows) {
+        if (this.has_style_pseudo_class('overview') || !Main.sessionMode.hasWindows) {
             this._removeStyleClassName('solid');
             return;
         }
@@ -1075,16 +1082,18 @@ var Panel = new Lang.Class({
             return;
 
         /* Get all the windows in the active workspace that are in the primary monitor and visible */
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
         let windows = activeWorkspace.list_windows().filter(metaWindow => {
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
+                   !metaWindow.is_hidden() &&
                    metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
         });
 
         /* Check if at least one window is near enough to the panel */
-        let [, panelTop] = this.actor.get_transformed_position();
-        let panelBottom = panelTop + this.actor.get_height();
+        let [, panelTop] = this.get_transformed_position();
+        let panelBottom = panelTop + this.get_height();
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let isNearEnough = windows.some(metaWindow => {
             let verticalPosition = metaWindow.get_frame_rect().y;
@@ -1150,7 +1159,6 @@ var Panel = new Lang.Class({
         let destroyId = indicator.connect('destroy', emitter => {
             delete this.statusArea[role];
             emitter.disconnect(destroyId);
-            container.destroy();
         });
         indicator.connect('menu-set', this._onMenuSet.bind(this));
         this._onMenuSet(indicator);
@@ -1176,13 +1184,13 @@ var Panel = new Lang.Class({
     },
 
     _addStyleClassName(className) {
-        this.actor.add_style_class_name(className);
+        this.add_style_class_name(className);
         this._rightCorner.actor.add_style_class_name(className);
         this._leftCorner.actor.add_style_class_name(className);
     },
 
     _removeStyleClassName(className) {
-        this.actor.remove_style_class_name(className);
+        this.remove_style_class_name(className);
         this._rightCorner.actor.remove_style_class_name(className);
         this._leftCorner.actor.remove_style_class_name(className);
     },

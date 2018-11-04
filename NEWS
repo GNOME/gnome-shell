@@ -1,3 +1,125 @@
+3.30.1
+======
+* Cancel search on overview hiding [Marco; !205]
+* Fix disappearing network icon [Iain; #140]
+* Improve switch-monitor shortcut handling [Daniel; !208]
+* Fix missing key information in keyring dialog [Florian; #574]
+* De-duplicate all entries in run command history [Pascal; #524]
+* Fix frozen disk unlock dialogs [Florian; #565]
+* Fix unresponsive-app dialog blocking input in other windows [Florian; #273]
+* Fix handling of forward-key-event input method signal [Carlos; #531]
+* Misc. bug fixes [Florian, Marco, Carlos, Pascal, Andrea; #520, #791233,
+  !188, #539, !217, #536, #537, #578, !236, #579, !228, #618, #471, !255]
+
+Contributors:
+  Andrea Azzarone, Jürg Billeter, Daniel Drake, Carlos Garnacho, Andre Klapper,
+  Iain Lane, Florian Müllner, Bastien Nocera, Pascal Nowack, Jakub Steiner,
+  Ray Strode, Will Thompson, Marco Trevisan (Treviño), Adam Williamson,
+  Andrew Zaborowski
+
+Translators:
+  Yuras Shumovich [be], Stas Solovey [ru], Justin van Steijn [nl],
+  Dušan Kazik [sk], Khaled Hosny [ar], Madis O [et], Mart Raudsepp [et],
+  Марко Костић [sr], Piotr Drąg [pl], Marek Černocký [cs], Fran Dieguez [gl],
+  Ask Hjorth Larsen [da], Balázs Meskó [hu], Jiri Grönroos [fi],
+  Cheng-Chia Tseng [zh_TW]
+
+3.30.0
+======
+
+Contributors:
+  Harry Mallon, Marco Trevisan (Treviño)
+
+Translators:
+  Fran Dieguez [gl], Trần Ngọc Quân [vi], Balázs Meskó [hu],
+  Rūdolfs Mazurs [lv], Jiri Grönroos [fi], Anders Jonsson [sv], gogo [hr],
+  Ask Hjorth Larsen [da]
+
+3.29.92
+=======
+* Choose some actors to cache on the GPU [Daniel; #792633]
+* inputMethod: Hide preedit text if requested [Takao; #431]
+* Fix forced fallback app-menus on wayland [Jonas; #276]
+
+Contributors:
+  Jonas Ådahl, Takao Fujiwara, Mohammed Sadiq, Marco Trevisan (Treviño),
+  Daniel van Vugt
+
+Translators:
+  Baurzhan Muftakhidinov [kk], Kukuh Syafaat [id], Milo Casagrande [it],
+  Changwoo Ryu [ko], Marek Cernocky [cs]
+
+3.29.91
+=======
+* Fix handling of 0/false options in ShowOSD D-Bus API [Florian; #791669]
+* overview: Fix handling of confirmation dialogs on wayland [verdre; !180]
+* Avoid some full relayout/redraws [Carlos; !197]
+* Keep workspace switcher slid out when workspaces are in use [Florian; !161]
+* Ignore auto-repeat for some keybindings [Andrea; #373]
+* Misc. bug fixes [Carlos, Florian, Pascal; #464, !189, !191, !192, !162]
+
+Contributors:
+  Andrea Azzarone, Olivier Blin, Carlos Garnacho, Florian Müllner,
+  Pascal Nowack, verdre
+
+Translators:
+  Bruno Lopes da Silva [pt_BR], Matej Urbančič [sl], Piotr Drąg [pl],
+  Aurimas Černius [lt], Emin Tufan Çetin [tr], Fabio Tomat [fur],
+  Alexandre Franke [fr], Yi-Jyun Pan [zh_TW], Bernd Homuth [de],
+  Andre Klapper [cs], Jordi Mas [ca], Daniel Șerbănescu [ro],
+  Bruce Cowan [en_GB]
+
+3.29.90
+=======
+* Add remote access indication on wayland [Jonas; !160]
+* Fix wrong window positions in overview on wayland [Marco; #776588]
+* Add gesture to unfullscreen a window [Jan-Michael; !123]
+* Add PickColor method to screenshot D-Bus interface [Florian; #286]
+* Consider "new-window" action when opening new windows [Florian; #756844]
+* Make workspace switching gestures follow motion [Carlos; #788994]
+* Support audio volumes above 100% [Didier; #790280]
+* Misc. bug fixes [Florian, Daniel; #424, !132, !182, #433, !179, #786496]
+
+Contributors:
+  Jonas Ådahl, Jan-Michael Brummer, Piotr Drąg, Daniel Drake, Carlos Garnacho,
+  Florian Müllner, Georges Basile Stavracas Neto, Didier Roche, Jakub Steiner,
+  Marco Trevisan (Treviño)
+
+Translators:
+  Charles Monzat [fr], Daniel Mustieles [es]
+
+3.29.4
+======
+* Fix "Clear All" for calendar events [Florian; #325]
+* Allow cancelling direct switch operations [Xavier; #315]
+* Support being started by systemd --user [Iain; !137, !138]
+* Support key event forwarding required by some input methods [Carlos; #275]
+* Misc. bug fixes and cleanups [Jasper, Andrea, Florian; #663461, #372, !112,
+  #414, !151]
+
+Contributors:
+  Andrea Azzarone, Carlos Garnacho, Xavier Johnson, Iain Lane, Florian Müllner,
+  Jasper St. Pierre
+
+Translators:
+  Stas Solovey [ru]
+
+3.29.3
+======
+* Save creation time in screenshot metadata [Florian; #790481]
+* Improve consistency between ctrl- and middle-click on app icons [Xavier; #316]
+* Add support for font-feature-settings CSS property [Ryan; #34]
+* Adjust to MetaScreen removal [Jonas; #759538]
+* Misc. bug fixes [Florian, Marco, Sam; #298, #788931, #26, #76, !54, #788882,
+  #791233]
+
+Contributors:
+  Jonas Ådahl, Ryan Hendrickson, Xavier Johnson, Florian Müllner, Joe Rabinoff,
+  Sam Spilsbury, Marco Trevisan (Treviño)
+
+Translators:
+  Gun Chleoc [gd], Yi-Jyun Pan [zh_TW], Cédric Valmary [oc], Jordi Mas [ca]
+
 3.29.2
 ======
 * Guard against untimely keyboard map changes [Carlos; #240]

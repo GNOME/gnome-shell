@@ -16,56 +16,16 @@ const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 
-// Should really be defined in Gio.js
-const BusIface = '<node> \
-<interface name="org.freedesktop.DBus"> \
-<method name="GetConnectionUnixProcessID"> \
-    <arg type="s" direction="in" /> \
-    <arg type="u" direction="out" /> \
-</method> \
-</interface> \
-</node>';
+const { loadInterfaceXML } = imports.misc.fileUtils;
 
+// Should really be defined in Gio.js
+const BusIface = loadInterfaceXML('org.freedesktop.DBus');
 var BusProxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
 function Bus() {
     return new BusProxy(Gio.DBus.session, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
 }
 
-const FdoNotificationsIface = '<node> \
-<interface name="org.freedesktop.Notifications"> \
-<method name="Notify"> \
-    <arg type="s" direction="in"/> \
-    <arg type="u" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="as" direction="in"/> \
-    <arg type="a{sv}" direction="in"/> \
-    <arg type="i" direction="in"/> \
-    <arg type="u" direction="out"/> \
-</method> \
-<method name="CloseNotification"> \
-    <arg type="u" direction="in"/> \
-</method> \
-<method name="GetCapabilities"> \
-    <arg type="as" direction="out"/> \
-</method> \
-<method name="GetServerInformation"> \
-    <arg type="s" direction="out"/> \
-    <arg type="s" direction="out"/> \
-    <arg type="s" direction="out"/> \
-    <arg type="s" direction="out"/> \
-</method> \
-<signal name="NotificationClosed"> \
-    <arg type="u"/> \
-    <arg type="u"/> \
-</signal> \
-<signal name="ActionInvoked"> \
-    <arg type="u"/> \
-    <arg type="s"/> \
-</signal> \
-</interface> \
-</node>';
+const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
 var NotificationClosedReason = {
     EXPIRED: 1,
@@ -654,18 +614,7 @@ var GtkNotificationDaemonNotification = new Lang.Class({
     },
 });
 
-const FdoApplicationIface = '<node> \
-<interface name="org.freedesktop.Application"> \
-<method name="ActivateAction"> \
-    <arg type="s" direction="in" /> \
-    <arg type="av" direction="in" /> \
-    <arg type="a{sv}" direction="in" /> \
-</method> \
-<method name="Activate"> \
-    <arg type="a{sv}" direction="in" /> \
-</method> \
-</interface> \
-</node>';
+const FdoApplicationIface = loadInterfaceXML('org.freedesktop.Application');
 const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
 
 function objectPathFromAppId(appId) {
@@ -774,19 +723,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
     },
 });
 
-const GtkNotificationsIface = '<node> \
-<interface name="org.gtk.Notifications"> \
-<method name="AddNotification"> \
-    <arg type="s" direction="in" /> \
-    <arg type="s" direction="in" /> \
-    <arg type="a{sv}" direction="in" /> \
-</method> \
-<method name="RemoveNotification"> \
-    <arg type="s" direction="in" /> \
-    <arg type="s" direction="in" /> \
-</method> \
-</interface> \
-</node>';
+const GtkNotificationsIface = loadInterfaceXML('org.gtk.Notifications');
 
 var GtkNotificationDaemon = new Lang.Class({
     Name: 'GtkNotificationDaemon',
@@ -831,8 +768,10 @@ var GtkNotificationDaemon = new Lang.Class({
                 let source;
                 try {
                     source = this._ensureAppSource(appId);
-                } catch(e if e instanceof InvalidAppError) {
-                    return;
+                } catch(e) {
+                    if (e instanceof InvalidAppError)
+                        return;
+                    throw e;
                 }
 
                 notifications.forEach(([notificationId, notification]) => {
@@ -863,9 +802,12 @@ var GtkNotificationDaemon = new Lang.Class({
         let source;
         try {
             source = this._ensureAppSource(appId);
-        } catch(e if e instanceof InvalidAppError) {
-            invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
-            return;
+        } catch(e) {
+            if (e instanceof InvalidAppError) {
+                invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
+                return;
+            }
+            throw e;
         }
 
         let timestamp = GLib.DateTime.new_now_local().to_unix();

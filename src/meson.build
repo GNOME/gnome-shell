@@ -45,7 +45,6 @@ gnome_shell_deps = [
   atk_bridge_dep,
   gjs_dep,
   gdk_x11_dep,
-  soup_dep,
   clutter_dep,
   cogl_pango_dep,
   startup_dep,
@@ -53,11 +52,14 @@ gnome_shell_deps = [
   canberra_dep, canberra_gtk_dep,
   polkit_dep,
   gcr_dep,
-  systemd_dep
+  libsystemd_dep
 ]
 
 gnome_shell_deps += nm_deps
 gnome_shell_deps += recorder_deps
+
+tools_cflags = '-DLOCALEDIR="@0@"'.format(localedir)
+tools_deps = [gio_dep, gjs_dep]
 
 libshell_menu_gir_sources = [
   'gtkactionmuxer.h',
@@ -106,7 +108,6 @@ libshell_public_headers = [
   'shell-app-system.h',
   'shell-app-usage.h',
   'shell-embedded-window.h',
-  'shell-generic-container.h',
   'shell-glsl-quad.h',
   'shell-gtk-embed.h',
   'shell-global.h',
@@ -142,7 +143,6 @@ libshell_sources = [
   'shell-app-usage.c',
   'shell-embedded-window.c',
   'shell-embedded-window-private.h',
-  'shell-generic-container.c',
   'shell-global.c',
   'shell-glsl-quad.c',
   'shell-gtk-embed.c',
@@ -222,7 +222,8 @@ libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
   'ClutterX11-@0@'.format(mutter_api_version),
   'Meta-@0@'.format(mutter_api_version),
-  'Soup-2.4'
+  'Gcr-3',
+  'PolkitAgent-1.0'
 ]
 
 if have_networkmanager
@@ -258,24 +259,20 @@ executable('gnome-shell', 'main.c',
 )
 
 executable('gnome-shell-extension-prefs',
-  'gnome-shell-extension-prefs.c', js_resources,
-  c_args: gnome_shell_cflags,
-  dependencies: gnome_shell_deps,
+  'gnome-shell-extension-prefs.c', prefs_resources,
+  c_args: tools_cflags,
+  dependencies: tools_deps,
   include_directories: [conf_inc],
-  build_rpath: mutter_typelibdir,
-  install_rpath: install_rpath,
   install: true
 )
 
 
 if have_networkmanager
   executable('gnome-shell-portal-helper',
-    'gnome-shell-portal-helper.c', js_resources,
-    c_args: gnome_shell_cflags,
-    dependencies: gnome_shell_deps,
+    'gnome-shell-portal-helper.c', portal_resources,
+    c_args: tools_cflags,
+    dependencies: tools_deps,
     include_directories: [conf_inc],
-    build_rpath: mutter_typelibdir,
-    install_rpath: install_rpath,
     install_dir: libexecdir,
     install: true
   )
@@ -284,8 +281,6 @@ endif
 executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
   dependencies: [gtk_dep, gio_dep, m_dep],
   include_directories: [conf_inc],
-  build_rpath: mutter_typelibdir,
-  install_rpath: install_rpath,
   install_dir: libexecdir,
   install: true
 )

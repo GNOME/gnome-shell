@@ -243,13 +243,13 @@ function formatTime(time, params) {
              followed by a time string in 24h format.
              i.e. "May 25, 14:30" */
             // xgettext:no-c-format
-            format = N_("%B %d, %H\u2236%M");
+            format = N_("%B %-d, %H\u2236%M");
         else
             /* Translators: this is the month name, day number, year
              number followed by a time string in 24h format.
              i.e. "May 25 2012, 14:30" */
             // xgettext:no-c-format
-            format = N_("%B %d %Y, %H\u2236%M");
+            format = N_("%B %-d %Y, %H\u2236%M");
     } else {
         // Show only the time if date is on today
         if (daysAgo < 1 || params.timeOnly)
@@ -272,13 +272,13 @@ function formatTime(time, params) {
              followed by a time string in 12h format.
              i.e. "May 25, 2:30 pm" */
             // xgettext:no-c-format
-            format = N_("%B %d, %l\u2236%M %p");
+            format = N_("%B %-d, %l\u2236%M %p");
         else
             /* Translators: this is the month name, day number, year
              number followed by a time string in 12h format.
              i.e. "May 25 2012, 2:30 pm"*/
             // xgettext:no-c-format
-            format = N_("%B %d %Y, %l\u2236%M %p");
+            format = N_("%B %-d %Y, %l\u2236%M %p");
     }
 
     let formattedTime = date.format(Shell.util_translate_time_string(format));

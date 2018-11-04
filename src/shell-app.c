@@ -7,6 +7,8 @@
 #include <glib/gi18n-lib.h>
 
 #include <meta/display.h>
+#include <meta/meta-workspace-manager.h>
+#include <meta/meta-x11-display.h>
 
 #include "shell-app-private.h"
 #include "shell-enum-types.h"
@@ -358,6 +360,17 @@ find_most_recent_transient_on_same_workspace (MetaDisplay *display,
   return result;
 }
 
+static MetaWorkspace *
+get_active_workspace (void)
+{
+  ShellGlobal *global = shell_global_get ();
+  MetaDisplay *display = shell_global_get_display (global);
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
+
+  return meta_workspace_manager_get_active_workspace (workspace_manager);
+}
+
 /**
  * shell_app_activate_window:
  * @app: a #ShellApp
@@ -391,9 +404,8 @@ shell_app_activate_window (ShellApp     *app,
     {
       GSList *windows_reversed, *iter;
       ShellGlobal *global = shell_global_get ();
-      MetaScreen *screen = shell_global_get_screen (global);
-      MetaDisplay *display = meta_screen_get_display (screen);
-      MetaWorkspace *active = meta_screen_get_active_workspace (screen);
+      MetaDisplay *display = shell_global_get_display (global);
+      MetaWorkspace *active = get_active_workspace ();
       MetaWorkspace *workspace = meta_window_get_workspace (window);
       guint32 last_user_timestamp = meta_display_get_last_user_time (display);
       MetaWindow *most_recent_transient;
@@ -539,15 +551,46 @@ void
 shell_app_open_new_window (ShellApp      *app,
                            int            workspace)
 {
+  GActionGroup *group = NULL;
+  const char * const *actions;
+
   g_return_if_fail (app->info != NULL);
 
-  /* Here we just always launch the application again, even if we know
+  /* First check whether the application provides a "new-window" desktop
+   * action - it is a safe bet that it will open a new window, and activating
+   * it will trigger startup notification if necessary
+   */
+  actions = g_desktop_app_info_list_actions (G_DESKTOP_APP_INFO (app->info));
+
+  if (g_strv_contains (actions, "new-window"))
+    {
+      shell_app_launch_action (app, "new-window", 0, workspace);
+      return;
+    }
+
+  /* Next, check whether the app exports an explicit "new-window" action
+   * that we can activate on the bus - the muxer will add startup notification
+   * information to the platform data, so this should work just as well as
+   * desktop actions.
+   */
+  group = app->running_state ? G_ACTION_GROUP (app->running_state->muxer)
+                             : NULL;
+
+  if (group &&
+      g_action_group_has_action (group, "app.new-window") &&
+      g_action_group_get_action_parameter_type (group, "app.new-window") == NULL)
+    {
+      g_action_group_activate_action (group, "app.new-window", NULL);
+
+      return;
+    }
+
+  /* Lastly, just always launch the application again, even if we know
    * it was already running.  For most applications this
    * should have the effect of creating a new window, whether that's
    * a second process (in the case of Calculator) or IPC to existing
    * instance (Firefox).  There are a few less-sensical cases such
-   * as say Pidgin.  Ideally, we have the application express to us
-   * that it supports an explicit new-window action.
+   * as say Pidgin.
    */
   shell_app_launch (app, 0, workspace, FALSE, NULL);
 }
@@ -574,10 +617,7 @@ shell_app_can_open_new_window (ShellApp *app)
   state = app->running_state;
 
   /* If the app has an explicit new-window action, then it can
-
-     (or it should be able to - we don't actually call the action
-     because we need to trigger startup notification, so it still
-     depends on what the app decides to do for Activate vs ActivateAction)
+     (or it should be able to) ...
   */
   if (g_action_group_has_action (G_ACTION_GROUP (state->muxer), "app.new-window"))
     return TRUE;
@@ -686,7 +726,7 @@ shell_app_get_windows (ShellApp *app)
     {
       CompareWindowsData data;
       data.app = app;
-      data.active_workspace = meta_screen_get_active_workspace (shell_global_get_screen (shell_global_get ()));
+      data.active_workspace = get_active_workspace ();
       app->running_state->windows = g_slist_sort_with_data (app->running_state->windows, shell_app_compare_windows, &data);
       app->running_state->window_sort_stale = FALSE;
     }
@@ -922,11 +962,11 @@ shell_app_on_skip_taskbar_changed (MetaWindow *window,
 }
 
 static void
-shell_app_on_ws_switch (MetaScreen         *screen,
-                        int                 from,
-                        int                 to,
-                        MetaMotionDirection direction,
-                        gpointer            data)
+shell_app_on_ws_switch (MetaWorkspaceManager *workspace_manager,
+                        int                   from,
+                        int                   to,
+                        MetaMotionDirection   direction,
+                        gpointer              data)
 {
   ShellApp *app = SHELL_APP (data);
 
@@ -1115,12 +1155,12 @@ _shell_app_handle_startup_sequence (ShellApp          *app,
    */
   if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
     {
-      MetaScreen *screen = shell_global_get_screen (shell_global_get ());
-      MetaDisplay *display = meta_screen_get_display (screen);
+      MetaDisplay *display = shell_global_get_display (shell_global_get ());
+      MetaX11Display *x11_display = meta_display_get_x11_display (display);
 
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
-      meta_display_focus_the_no_focus_window (display, screen,
-                                              sn_startup_sequence_get_timestamp (sequence));
+      meta_x11_display_focus_the_no_focus_window (x11_display,
+                                                  sn_startup_sequence_get_timestamp (sequence));
       app->started_on_workspace = sn_startup_sequence_get_workspace (sequence);
     }
 
@@ -1159,7 +1199,7 @@ shell_app_request_quit (ShellApp   *app)
     {
       MetaWindow *win = iter->data;
 
-      if (meta_window_is_skip_taskbar (win))
+      if (!meta_window_can_close (win))
         continue;
 
       meta_window_delete (win, shell_global_get_current_time (shell_global_get ()));
@@ -1167,7 +1207,7 @@ shell_app_request_quit (ShellApp   *app)
   return TRUE;
 }
 
-#ifdef HAVE_SYSTEMD
+#if !defined(HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS) && defined(HAVE_SYSTEMD)
 /* This sets up the launched application to log to the journal
  * using its own identifier, instead of just "gnome-session".
  */
@@ -1215,6 +1255,7 @@ shell_app_launch (ShellApp     *app,
   ShellGlobal *global;
   GAppLaunchContext *context;
   gboolean ret;
+  GSpawnFlags flags;
 
   if (app->info == NULL)
     {
@@ -1234,9 +1275,39 @@ shell_app_launch (ShellApp     *app,
   if (discrete_gpu)
     g_app_launch_context_setenv (context, "DRI_PRIME", "1");
 
+  /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
+   * codepath. The shell's open file descriptors should be marked CLOEXEC
+   * so that they are automatically closed even with this flag set.
+   */
+  flags = G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD |
+          G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
+
+#ifdef HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS
+  /* Optimized spawn path, avoiding a child_setup function */
+  {
+    int journalfd = -1;
+
+#ifdef HAVE_SYSTEMD
+    journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
+#endif /* HAVE_SYSTEMD */
+
+    ret = g_desktop_app_info_launch_uris_as_manager_with_fds (app->info, NULL,
+                                                              context,
+                                                              flags,
+                                                              NULL, NULL,
+                                                              wait_pid, NULL,
+                                                              -1,
+                                                              journalfd,
+                                                              journalfd,
+                                                              error);
+
+    if (journalfd >= 0)
+      (void) close (journalfd);
+  }
+#else /* !HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS */
   ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
                                                    context,
-                                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                   flags,
 #ifdef HAVE_SYSTEMD
                                                    app_child_setup, (gpointer)shell_app_get_id (app),
 #else
@@ -1244,6 +1315,7 @@ shell_app_launch (ShellApp     *app,
 #endif
                                                    wait_pid, NULL,
                                                    error);
+#endif /* HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS */
   g_object_unref (context);
 
   return ret;
@@ -1290,15 +1362,17 @@ shell_app_get_app_info (ShellApp *app)
 static void
 create_running_state (ShellApp *app)
 {
-  MetaScreen *screen;
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
   g_assert (app->running_state == NULL);
 
-  screen = shell_global_get_screen (shell_global_get ());
   app->running_state = g_slice_new0 (ShellAppRunningState);
   app->running_state->refcount = 1;
   app->running_state->workspace_switch_id =
-    g_signal_connect (screen, "workspace-switched", G_CALLBACK(shell_app_on_ws_switch), app);
+    g_signal_connect (workspace_manager, "workspace-switched",
+                      G_CALLBACK (shell_app_on_ws_switch), app);
 
   app->running_state->session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   g_assert (app->running_state->session != NULL);
@@ -1349,7 +1423,9 @@ shell_app_update_app_menu (ShellApp   *app,
 static void
 unref_running_state (ShellAppRunningState *state)
 {
-  MetaScreen *screen;
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
   g_assert (state->refcount > 0);
 
@@ -1357,8 +1433,7 @@ unref_running_state (ShellAppRunningState *state)
   if (state->refcount > 0)
     return;
 
-  screen = shell_global_get_screen (shell_global_get ());
-  g_signal_handler_disconnect (screen, state->workspace_switch_id);
+  g_signal_handler_disconnect (workspace_manager, state->workspace_switch_id);
 
   g_clear_object (&state->application_proxy);
 

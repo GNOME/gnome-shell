@@ -133,9 +133,9 @@ var CandidatePopup = new Lang.Class({
 
     _init() {
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
-        this._boxPointer.actor.visible = false;
-        this._boxPointer.actor.style_class = 'candidate-popup-boxpointer';
-        Main.layoutManager.addChrome(this._boxPointer.actor);
+        this._boxPointer.visible = false;
+        this._boxPointer.style_class = 'candidate-popup-boxpointer';
+        Main.layoutManager.addChrome(this._boxPointer);
 
         let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
                                      vertical: true });
@@ -272,7 +272,7 @@ var CandidatePopup = new Lang.Class({
             this._updateVisibility();
         });
         panelService.connect('focus-out', ps => {
-            this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
+            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
             Main.keyboard.resetSuggestions();
         });
     },
@@ -291,10 +291,10 @@ var CandidatePopup = new Lang.Class({
 
         if (isVisible) {
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
-            this._boxPointer.show(BoxPointer.PopupAnimation.NONE);
+            this._boxPointer.open(BoxPointer.PopupAnimation.NONE);
             this._boxPointer.actor.raise_top();
         } else {
-            this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
+            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
         }
     },
 

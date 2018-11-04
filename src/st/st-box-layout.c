@@ -90,7 +90,7 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StBoxLayout  *box)
 {
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
 }
 
 static void
@@ -282,13 +282,12 @@ st_box_layout_allocate (ClutterActor          *actor,
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
+  ClutterActorBox viewport_content_box;
   ClutterActorBox content_box;
   gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
 
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box, flags);
-
-  st_theme_node_get_content_box (theme_node, box, &content_box);
-  clutter_actor_box_get_size (&content_box, &avail_width, &avail_height);
+  st_theme_node_get_content_box (theme_node, box, &viewport_content_box);
+  clutter_actor_box_get_size (&viewport_content_box, &avail_width, &avail_height);
 
   clutter_layout_manager_get_preferred_width (layout, CLUTTER_CONTAINER (actor),
                                               avail_height,
@@ -297,6 +296,18 @@ st_box_layout_allocate (ClutterActor          *actor,
                                                MAX (avail_width, min_width),
                                                &min_height, &natural_height);
 
+  /* Because StBoxLayout implements StScrollable, the allocation box passed here
+   * may not match the minimum sizes reported by the layout manager. When that
+   * happens, the content box needs to be adjusted to match the reported minimum
+   * sizes before being passed to clutter_layout_manager_allocate() */
+  clutter_actor_set_allocation (actor, box, flags);
+
+  content_box = viewport_content_box;
+  content_box.x2 += MAX (0, min_width - avail_width);
+  content_box.y2 += MAX (0, min_height - avail_height);
+
+  clutter_layout_manager_allocate (layout, CLUTTER_CONTAINER (actor),
+                                   &content_box, flags);
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
@@ -490,7 +501,7 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
                                 ClutterPaintVolume *volume)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
-  gdouble x, y;
+  gdouble x, y, lower, upper;
   StBoxLayoutPrivate *priv = self->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
@@ -505,13 +516,42 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
    * our paint volume on that. */
   if (priv->hadjustment || priv->vadjustment)
     {
+      gdouble width, height;
+
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
       origin.x = content_box.x1 - allocation_box.x1;
       origin.y = content_box.y1 - allocation_box.y2;
       origin.z = 0.f;
-      clutter_paint_volume_set_width (volume, content_box.x2 - content_box.x1);
-      clutter_paint_volume_set_height (volume, content_box.y2 - content_box.y1);
+
+      if (priv->hadjustment)
+        {
+          g_object_get (priv->hadjustment,
+                        "lower", &lower,
+                        "upper", &upper,
+                        NULL);
+          width = upper - lower;
+        }
+      else
+        {
+          width = content_box.x2 - content_box.x1;
+        }
+
+      if (priv->vadjustment)
+        {
+          g_object_get (priv->vadjustment,
+                        "lower", &lower,
+                        "upper", &upper,
+                        NULL);
+          height = upper - lower;
+        }
+      else
+        {
+          height = content_box.y2 - content_box.y1;
+        }
+
+      clutter_paint_volume_set_width (volume, width);
+      clutter_paint_volume_set_height (volume, height);
     }
   else if (!CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->get_paint_volume (actor, volume))
     return FALSE;

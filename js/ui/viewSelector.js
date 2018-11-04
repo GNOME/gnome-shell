@@ -230,14 +230,14 @@ var ViewSelector = new Lang.Class({
 
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
+                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
                               this._toggleAppsPage.bind(this));
 
         Main.wm.addKeybinding('toggle-overview',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
+                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
                               Main.overview.toggle.bind(Main.overview));
@@ -311,6 +311,7 @@ var ViewSelector = new Lang.Class({
     },
 
     hide() {
+        this.reset();
         this._workspacesDisplay.hide();
     },
 
@@ -459,7 +460,11 @@ var ViewSelector = new Lang.Class({
     },
 
     reset() {
-        global.stage.set_key_focus(null);
+        // Don't drop the key focus on Clutter's side if anything but the
+        // overview has pushed a modal (e.g. system modals when activated using
+        // the overview).
+        if (Main.modalCount <= 1)
+            global.stage.set_key_focus(null);
 
         this._entry.text = '';
 

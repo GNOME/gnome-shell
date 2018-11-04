@@ -17,8 +17,7 @@ gnome.gtkdoc('st',
   ],
   scan_args: [
     '--ignore-headers=' + ' '.join(private_headers),
-    '--rebuild-sections',
-    '--rebuild-types'
+    '--rebuild-sections'
   ],
   install: true
 )

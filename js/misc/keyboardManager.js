@@ -52,11 +52,20 @@ var KeyboardManager = new Lang.Class({
         this._current = null;
         this._localeLayoutInfo = this._getLocaleLayout();
         this._layoutInfos = {};
+        this._currentKeymap = null;
     },
 
     _applyLayoutGroup(group) {
         let options = this._buildOptionsString();
         let [layouts, variants] = this._buildGroupStrings(group);
+
+        if (this._currentKeymap &&
+            this._currentKeymap.layouts == layouts &&
+            this._currentKeymap.variants == variants &&
+            this._currentKeymap.options == options)
+            return;
+
+        this._currentKeymap = {layouts, variants, options};
         Meta.get_backend().set_keymap(layouts, variants, options);
     },
 
@@ -89,8 +98,6 @@ var KeyboardManager = new Lang.Class({
     },
 
     setUserLayouts(ids) {
-        let currentId = this._current ? this._current.id : null;
-        let currentGroupIndex = this._current ? this._current.groupIndex : null;
         this._current = null;
         this._layoutInfos = {};
 
@@ -116,9 +123,6 @@ var KeyboardManager = new Lang.Class({
             group[groupIndex] = info;
             info.group = group;
             info.groupIndex = groupIndex;
-
-            if (currentId == id && currentGroupIndex == groupIndex)
-                this._current = info;
 
             i += 1;
         }

@@ -69,9 +69,11 @@ var TodayButton = new Lang.Class({
         this._dayLabel.set_text(date.toLocaleFormat('%A'));
 
         /* Translators: This is the date format to use when the calendar popup is
-         * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+         * shown - it is shown just below the time in the top bar (e.g.,
+         * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+         * "February 17 2015".
          */
-        let dateFormat = Shell.util_translate_time_string (N_("%B %e %Y"));
+        let dateFormat = Shell.util_translate_time_string (N_("%B %-d %Y"));
         this._dateLabel.set_text(date.toLocaleFormat(dateFormat));
 
         /* Translators: This is the accessible name of the date button shown

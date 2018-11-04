@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -24,6 +25,8 @@ const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
 const SwitchMonitor = imports.ui.switchMonitor;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 var SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
 var SHOW_WINDOW_ANIMATION_TIME = 0.15;
@@ -34,26 +37,14 @@ var WINDOW_ANIMATION_TIME = 0.25;
 var DIM_BRIGHTNESS = -0.3;
 var DIM_TIME = 0.500;
 var UNDIM_TIME = 0.250;
+var MOTION_THRESHOLD = 100;
 
 var ONE_SECOND = 1000; // in ms
 
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
 const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 
-const GsdWacomIface = '<node name="/org/gnome/SettingsDaemon/Wacom"> \
-<interface name="org.gnome.SettingsDaemon.Wacom"> \
-  <method name="SetGroupModeLED"> \
-    <arg name="device_path" direction="in" type="s"/> \
-    <arg name="group" direction="in" type="u"/> \
-    <arg name="mode" direction="in" type="u"/> \
-  </method> \
-  <method name="SetOLEDLabels"> \
-    <arg name="device_path" direction="in" type="s"/> \
-    <arg name="labels" direction="in" type="as"/> \
-  </method> \
-  </interface> \
-</node>';
-
+const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
 var DisplayChangeDialog = new Lang.Class({
@@ -200,25 +191,23 @@ var WorkspaceTracker = new Lang.Class({
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('startup-sequence-changed', this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('notify::n-workspaces', this._nWorkspacesChanged.bind(this));
-        global.window_manager.connect('switch-workspace', this._queueCheckWorkspaces.bind(this));
+        let workspaceManager = global.workspace_manager;
+        workspaceManager.connect('notify::n-workspaces',
+                                 this._nWorkspacesChanged.bind(this));
+        global.window_manager.connect('switch-workspace',
+                                      this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('window-entered-monitor', this._windowEnteredMonitor.bind(this));
-        global.screen.connect('window-left-monitor', this._windowLeftMonitor.bind(this));
-        global.screen.connect('restacked', this._windowsRestacked.bind(this));
+        global.display.connect('window-entered-monitor',
+                               this._windowEnteredMonitor.bind(this));
+        global.display.connect('window-left-monitor',
+                               this._windowLeftMonitor.bind(this));
+        global.display.connect('restacked',
+                               this._windowsRestacked.bind(this));
 
-        this._workspaceSettings = this._getWorkspaceSettings();
+        this._workspaceSettings = new Gio.Settings({ schema_id: 'org.gnome.mutter' });
         this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
 
         this._nWorkspacesChanged();
-    },
-
-    _getWorkspaceSettings() {
-        let settings = global.get_overrides_settings();
-        if (settings &&
-            settings.settings_schema.list_keys().indexOf('dynamic-workspaces') > -1)
-            return settings;
-        return new Gio.Settings({ schema_id: 'org.gnome.mutter' });
     },
 
     blockUpdates() {
@@ -230,6 +219,7 @@ var WorkspaceTracker = new Lang.Class({
     },
 
     _checkWorkspaces() {
+        let workspaceManager = global.workspace_manager;
         let i;
         let emptyWorkspaces = [];
 
@@ -257,7 +247,7 @@ var WorkspaceTracker = new Lang.Class({
         let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
         for (i = 0; i < sequences.length; i++) {
             let index = sequences[i].get_workspace();
-            if (index >= 0 && index <= global.screen.n_workspaces)
+            if (index >= 0 && index <= workspaceManager.n_workspaces)
                 emptyWorkspaces[index] = false;
         }
 
@@ -275,17 +265,20 @@ var WorkspaceTracker = new Lang.Class({
 
         // If we don't have an empty workspace at the end, add one
         if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
-            global.screen.append_new_workspace(false, global.get_current_time());
-            emptyWorkspaces.push(false);
+            workspaceManager.append_new_workspace(false, global.get_current_time());
+            emptyWorkspaces.push(true);
         }
 
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let lastIndex = emptyWorkspaces.length - 1;
+        let lastEmptyIndex = emptyWorkspaces.lastIndexOf(false) + 1;
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
         emptyWorkspaces[activeWorkspaceIndex] = false;
 
-        // Delete other empty workspaces; do it from the end to avoid index changes
-        for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
-            if (emptyWorkspaces[i])
-                global.screen.remove_workspace(this._workspaces[i], global.get_current_time());
+        // Delete empty workspaces except for the last one; do it from the end
+        // to avoid index changes
+        for (i = lastIndex; i >= 0; i--) {
+            if (emptyWorkspaces[i] && i != lastEmptyIndex)
+                workspaceManager.remove_workspace(this._workspaces[i], global.get_current_time());
         }
 
         this._checkWorkspacesId = 0;
@@ -317,14 +310,14 @@ var WorkspaceTracker = new Lang.Class({
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
-    _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
+    _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
         // If the window left the primary monitor, that
         // might make that workspace empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
     },
 
-    _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
+    _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
         // If the window entered the primary monitor, that
         // might make that workspace non-empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
@@ -344,8 +337,9 @@ var WorkspaceTracker = new Lang.Class({
     },
 
     _nWorkspacesChanged() {
+        let workspaceManager = global.workspace_manager;
         let oldNumWorkspaces = this._workspaces.length;
-        let newNumWorkspaces = global.screen.n_workspaces;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
 
         if (oldNumWorkspaces == newNumWorkspaces)
             return false;
@@ -356,7 +350,7 @@ var WorkspaceTracker = new Lang.Class({
 
             // Assume workspaces are only added at the end
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-                this._workspaces[w] = global.screen.get_workspace_by_index(w);
+                this._workspaces[w] = workspaceManager.get_workspace_by_index(w);
 
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let workspace = this._workspaces[w];
@@ -370,7 +364,7 @@ var WorkspaceTracker = new Lang.Class({
             let removedIndex;
             let removedNum = oldNumWorkspaces - newNumWorkspaces;
             for (let w = 0; w < oldNumWorkspaces; w++) {
-                let workspace = global.screen.get_workspace_by_index(w);
+                let workspace = workspaceManager.get_workspace_by_index(w);
                 if (this._workspaces[w] != workspace) {
                     removedIndex = w;
                     break;
@@ -487,12 +481,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
     },
 
     _checkActivated() {
-        const MOTION_THRESHOLD = 50;
-        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
         let dir;
-
-        if ((allowedModes & Main.actionMode) == 0)
-            return;
 
         if (this._dy < -MOTION_THRESHOLD)
             dir = Meta.MotionDirection.DOWN;
@@ -503,26 +492,35 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
         else if (this._dx > MOTION_THRESHOLD)
             dir = Meta.MotionDirection.LEFT;
         else
-            return;
+            return false;
 
         this.emit('activated', dir);
+        return true;
     },
 
     _handleEvent(actor, event) {
+        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
+
         if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
+        if ((allowedModes & Main.actionMode) == 0)
+            return Clutter.EVENT_PROPAGATE;
+
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
             let [dx, dy] = event.get_gesture_motion_delta();
 
-            this._dx += dx;
-            this._dy += dy;
+            // Scale deltas up a bit to make it feel snappier
+            this._dx += dx * 2;
+            this._dy += dy * 2;
+            this.emit('motion', this._dx, this._dy);
         } else {
-            if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-                this._checkActivated();
+            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && ! this._checkActivated()) ||
+                event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
+                this.emit('cancel');
 
             this._dx = 0;
             this._dy = 0;
@@ -536,14 +534,14 @@ Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
 var WorkspaceSwitchAction = new Lang.Class({
     Name: 'WorkspaceSwitchAction',
     Extends: Clutter.SwipeAction,
-    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] } },
+    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
+               'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
+               'cancel':    { param_types: [] }},
 
     _init() {
-        const MOTION_THRESHOLD = 50;
-
         this.parent();
         this.set_n_touch_points(4);
-        this.set_threshold_trigger_distance(MOTION_THRESHOLD, MOTION_THRESHOLD);
+        this._swept = false;
 
         global.display.connect('grab-op-begin', () => {
             this.cancel();
@@ -553,13 +551,35 @@ var WorkspaceSwitchAction = new Lang.Class({
     vfunc_gesture_prepare(actor) {
         let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
 
+        this._swept = false;
+
         if (!this.parent(actor))
             return false;
 
         return (allowedModes & Main.actionMode);
     },
 
-    vfunc_swept(actor, direction) {
+    vfunc_gesture_progress(actor) {
+        let [x, y] = this.get_motion_coords(0);
+        let [xPress, yPress] = this.get_press_coords(0);
+        this.emit('motion', x - xPress, y - yPress);
+        return true;
+    },
+
+    vfunc_gesture_cancel(actor) {
+        if (!this._swept)
+            this.emit('cancel');
+    },
+
+    vfunc_swipe(actor, direction) {
+        let [x, y] = this.get_motion_coords(0);
+        let [xPress, yPress] = this.get_press_coords(0);
+        if (Math.abs(x - xPress) < MOTION_THRESHOLD &&
+            Math.abs(y - yPress) < MOTION_THRESHOLD) {
+            this.emit('cancel');
+            return;
+        }
+
         let dir;
 
         if (direction & Clutter.SwipeDirection.UP)
@@ -571,6 +591,7 @@ var WorkspaceSwitchAction = new Lang.Class({
         else if (direction & Clutter.SwipeDirection.RIGHT)
             dir = Meta.MotionDirection.LEFT;
 
+        this._swept = true;
         this.emit('activated', dir);
     }
 });
@@ -627,8 +648,8 @@ var AppSwitchAction = new Lang.Class({
 
         if (this.get_n_current_points() == 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
-                [startX, startY] = this.get_press_coords(i);
-                [x, y] = this.get_motion_coords(i);
+                let [startX, startY] = this.get_press_coords(i);
+                let [x, y] = this.get_motion_coords(i);
 
                 if (Math.abs(x - startX) > MOTION_THRESHOLD ||
                     Math.abs(y - startY) > MOTION_THRESHOLD)
@@ -692,7 +713,14 @@ var WindowManager = new Lang.Class({
         this._isWorkspacePrepended = false;
 
         this._switchData = null;
-        this._shellwm.connect('kill-switch-workspace', this._switchWorkspaceDone.bind(this));
+        this._shellwm.connect('kill-switch-workspace', (shellwm) => {
+            if (this._switchData) {
+                if (this._switchData.inProgress)
+                    this._switchWorkspaceDone(shellwm);
+                else if (!this._switchData.gestureActivated)
+                    this._finishWorkspaceSwitch(this._switchData);
+            }
+        });
         this._shellwm.connect('kill-window-effects', (shellwm, actor) => {
             this._minimizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
@@ -714,7 +742,7 @@ var WindowManager = new Lang.Class({
         this._shellwm.connect('confirm-display-change', this._confirmDisplayChange.bind(this));
         this._shellwm.connect('create-close-dialog', this._createCloseDialog.bind(this));
         this._shellwm.connect('create-inhibit-shortcuts-dialog', this._createInhibitShortcutsDialog.bind(this));
-        global.screen.connect('restacked', this._syncStacking.bind(this));
+        global.display.connect('restacked', this._syncStacking.bind(this));
 
         this._workspaceSwitcherPopup = null;
         this._tilePreview = null;
@@ -912,14 +940,14 @@ var WindowManager = new Lang.Class({
 
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.NONE,
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.POPUP,
                            this._toggleAppMenu.bind(this));
 
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.NONE,
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.OVERVIEW |
                            Shell.ActionMode.POPUP,
@@ -970,16 +998,20 @@ var WindowManager = new Lang.Class({
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
 
-        global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
-                                                false, -1, 1);
+        global.workspace_manager.override_workspace_layout(Meta.DisplayCorner.TOPLEFT,
+                                                           false, -1, 1);
 
         let gesture = new WorkspaceSwitchAction();
+        gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
+        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
         global.stage.add_action(gesture);
 
         // This is not a normal Clutter.GestureAction, doesn't need add_action()
         gesture = new TouchpadWorkspaceSwitchAction(global.stage);
+        gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
+        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
 
         gesture = new AppSwitchAction();
         gesture.connect('activated', this._switchApp.bind(this));
@@ -991,6 +1023,14 @@ var WindowManager = new Lang.Class({
             Main.keyboard.show(Main.layoutManager.bottomIndex);
         });
         global.stage.add_action(gesture);
+
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
+        gesture.connect('activated',  () => {
+            let currentWindow = global.display.focus_window;
+            if (currentWindow)
+                currentWindow.unmake_fullscreen();
+        });
+        global.stage.add_action(gesture);
     },
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
@@ -1000,9 +1040,52 @@ var WindowManager = new Lang.Class({
         return this._currentPadOsd.actor;
     },
 
+    _switchWorkspaceMotion(action, xRel, yRel) {
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+
+        if (!this._switchData)
+            this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
+
+        if (yRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.DOWN])
+            yRel = 0;
+        if (yRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.UP])
+            yRel = 0;
+        if (xRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.RIGHT])
+            xRel = 0;
+        if (xRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.LEFT])
+            xRel = 0;
+
+        this._switchData.container.set_position(xRel, yRel);
+    },
+
+    _switchWorkspaceCancel() {
+        if (!this._switchData || this._switchData.inProgress)
+            return;
+        let switchData = this._switchData;
+        this._switchData = null;
+        Tweener.addTween(switchData.container,
+                         { x: 0,
+                           y: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._finishWorkspaceSwitch,
+                           onCompleteScope: this,
+                           onCompleteParams: [switchData],
+                         });
+    },
+
     _actionSwitchWorkspace(action, direction) {
-            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let newWs = activeWorkspace.get_neighbor(direction);
+
+        if (newWs == activeWorkspace) {
+            this._switchWorkspaceCancel();
+        } else {
+            this._switchData.gestureActivated = true;
             this.actionMoveWorkspace(newWs);
+        }
     },
 
     _lookupIndex(windows, metaWindow) {
@@ -1017,8 +1100,10 @@ var WindowManager = new Lang.Class({
     _switchApp() {
         let windows = global.get_window_actors().filter(actor => {
             let win = actor.metaWindow;
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
             return (!win.is_override_redirect() &&
-                    win.located_on_workspace(global.screen.get_active_workspace()));
+                    win.located_on_workspace(activeWorkspace));
         });
 
         if (windows.length == 0)
@@ -1042,10 +1127,12 @@ var WindowManager = new Lang.Class({
     },
 
     insertWorkspace(pos) {
+        let workspaceManager = global.workspace_manager;
+
         if (!Meta.prefs_get_dynamic_workspaces())
             return;
 
-        global.screen.append_new_workspace(false, global.get_current_time());
+        workspaceManager.append_new_workspace(false, global.get_current_time());
 
         let windows = global.get_window_actors().map(a => a.meta_window);
 
@@ -1069,9 +1156,9 @@ var WindowManager = new Lang.Class({
 
         // If the new workspace was inserted before the active workspace,
         // activate the workspace to which its windows went
-        let activeIndex = global.screen.get_active_workspace_index();
+        let activeIndex = workspaceManager.get_active_workspace_index();
         if (activeIndex >= pos) {
-            let newWs = global.screen.get_workspace_by_index(activeIndex + 1);
+            let newWs = workspaceManager.get_workspace_by_index(activeIndex + 1);
             this._blockAnimations = true;
             newWs.activate(global.get_current_time());
             this._blockAnimations = false;
@@ -1678,63 +1765,104 @@ var WindowManager = new Lang.Class({
         if (this._switchData == null)
             return;
 
-        // Update stacking of windows in inGroup (aka the workspace we are
-        // switching to). Windows in outGroup are about to be hidden anyway,
-        // so we just ignore them here.
         let windows = global.get_window_actors();
-        let sibling = null;
+        let lastCurSibling = null;
+        let lastDirSibling = [];
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() != this._switchData.inGroup)
-                continue;
+            if (windows[i].get_parent() == this._switchData.curGroup) {
+                this._switchData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
+                lastCurSibling = windows[i];
+            } else {
+                for (let dir of Object.values(Meta.MotionDirection)) {
+                    let info = this._switchData.surroundings[dir];
+                    if (!info || windows[i].get_parent() != info.actor)
+                        continue;
 
-            this._switchData.inGroup.set_child_above_sibling(windows[i], sibling);
-            sibling = windows[i];
+                    let sibling = lastDirSibling[dir];
+                    if (sibling == undefined)
+                        sibling = null;
+
+                    info.actor.set_child_above_sibling(windows[i], sibling);
+                    lastDirSibling[dir] = windows[i];
+                    break;
+                }
+            }
         }
     },
 
-    _switchWorkspace(shellwm, from, to, direction) {
-        if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
-            shellwm.completed_switch_workspace();
-            return;
-        }
-
-        let windows = global.get_window_actors();
-
-        /* @direction is the direction that the "camera" moves, so the
-         * screen contents have to move one screen's worth in the
-         * opposite direction.
-         */
+    _getPositionForDirection(direction) {
         let xDest = 0, yDest = 0;
 
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-                yDest = global.screen_height - Main.panel.actor.height;
+            yDest = -global.screen_height + Main.panel.height;
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-                yDest = -global.screen_height + Main.panel.actor.height;
+            yDest = global.screen_height - Main.panel.height;
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.DOWN_LEFT)
-                xDest = global.screen_width;
+            xDest = -global.screen_width;
         else if (direction == Meta.MotionDirection.RIGHT ||
                  direction == Meta.MotionDirection.UP_RIGHT ||
                  direction == Meta.MotionDirection.DOWN_RIGHT)
-                xDest = -global.screen_width;
+            xDest = global.screen_width;
 
-        let switchData = {};
-        this._switchData = switchData;
-        switchData.inGroup = new Clutter.Actor();
-        switchData.outGroup = new Clutter.Actor();
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.windows = [];
+        return [xDest, yDest];
+    },
+
+    _prepareWorkspaceSwitch(from, to, direction) {
+        if (this._switchData)
+            return;
 
         let wgroup = global.window_group;
-        wgroup.add_actor(switchData.inGroup);
-        wgroup.add_actor(switchData.outGroup);
+        let windows = global.get_window_actors();
+        let switchData = {};
+
+        this._switchData = switchData;
+        switchData.curGroup = new Clutter.Actor();
+        switchData.movingWindowBin = new Clutter.Actor();
+        switchData.windows = [];
+        switchData.surroundings = {};
+        switchData.gestureActivated = false;
+        switchData.inProgress = false;
+
+        switchData.container = new Clutter.Actor();
+        switchData.container.add_actor(switchData.curGroup);
+
         wgroup.add_actor(switchData.movingWindowBin);
+        wgroup.add_actor(switchData.container);
+
+        let workspaceManager = global.workspace_manager;
+        let curWs = workspaceManager.get_workspace_by_index (from);
+
+        for (let dir of Object.values(Meta.MotionDirection)) {
+            let ws = null;
+
+            if (to < 0)
+                ws = curWs.get_neighbor(dir);
+            else if (dir == direction)
+                ws = workspaceManager.get_workspace_by_index(to);
+
+            if (ws == null || ws == curWs) {
+                switchData.surroundings[dir] = null;
+                continue;
+            }
+
+            let info = { index: ws.index(),
+                         actor: new Clutter.Actor() };
+            switchData.surroundings[dir] = info;
+            switchData.container.add_actor(info.actor);
+            info.actor.raise_top();
+
+            let [x, y] = this._getPositionForDirection(dir);
+            info.actor.set_position(x, y);
+        }
+
+        switchData.movingWindowBin.raise_top();
 
         for (let i = 0; i < windows.length; i++) {
             let actor = windows[i];
@@ -1755,20 +1883,77 @@ var WindowManager = new Lang.Class({
                 actor.reparent(switchData.movingWindowBin);
             } else if (window.get_workspace().index() == from) {
                 switchData.windows.push(record);
-                actor.reparent(switchData.outGroup);
-            } else if (window.get_workspace().index() == to) {
-                switchData.windows.push(record);
-                actor.reparent(switchData.inGroup);
-                actor.show();
+                actor.reparent(switchData.curGroup);
+            } else {
+                let visible = false;
+                for (let dir of Object.values(Meta.MotionDirection)) {
+                    let info = switchData.surroundings[dir];
+
+                    if (!info || info.index != window.get_workspace().index())
+                        continue;
+
+                    switchData.windows.push(record);
+                    actor.reparent(info.actor);
+                    visible = true;
+                    break;
+                }
+
+                actor.visible = visible;
             }
         }
 
-        switchData.inGroup.set_position(-xDest, -yDest);
-        switchData.inGroup.raise_top();
+        for (let i = 0; i < switchData.windows.length; i++) {
+            let w = switchData.windows[i];
 
-        switchData.movingWindowBin.raise_top();
+            w.windowDestroyId = w.window.connect('destroy', () => {
+                switchData.windows.splice(switchData.windows.indexOf(w), 1);
+            });
+        }
+    },
 
-        Tweener.addTween(switchData.outGroup,
+    _finishWorkspaceSwitch(switchData) {
+        this._switchData = null;
+
+        for (let i = 0; i < switchData.windows.length; i++) {
+            let w = switchData.windows[i];
+
+            w.window.disconnect(w.windowDestroyId);
+            w.window.reparent(w.parent);
+
+            if (w.window.get_meta_window().get_workspace() !=
+                global.workspace_manager.get_active_workspace())
+                w.window.hide();
+        }
+        Tweener.removeTweens(switchData.container);
+        switchData.container.destroy();
+        switchData.movingWindowBin.destroy();
+
+        this._movingWindow = null;
+    },
+
+    _switchWorkspace(shellwm, from, to, direction) {
+        if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
+            shellwm.completed_switch_workspace();
+            return;
+        }
+
+        // If we come from a gesture, switchData will already be set,
+        // and we don't want to overwrite it.
+        if (!this._switchData)
+            this._prepareWorkspaceSwitch(from, to, direction);
+
+        this._switchData.inProgress = true;
+
+        let [xDest, yDest] = this._getPositionForDirection(direction);
+
+        /* @direction is the direction that the "camera" moves, so the
+         * screen contents have to move one screen's worth in the
+         * opposite direction.
+         */
+        xDest = -xDest;
+        yDest = -yDest;
+
+        Tweener.addTween(this._switchData.container,
                          { x: xDest,
                            y: yDest,
                            time: WINDOW_ANIMATION_TIME,
@@ -1777,39 +1962,10 @@ var WindowManager = new Lang.Class({
                            onCompleteScope: this,
                            onCompleteParams: [shellwm]
                          });
-        Tweener.addTween(switchData.inGroup,
-                         { x: 0,
-                           y: 0,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
     },
 
     _switchWorkspaceDone(shellwm) {
-        let switchData = this._switchData;
-        if (!switchData)
-            return;
-        this._switchData = null;
-
-        for (let i = 0; i < switchData.windows.length; i++) {
-                let w = switchData.windows[i];
-                if (w.window.is_destroyed()) // Window gone
-                    continue;
-                if (w.window.get_parent() == switchData.outGroup) {
-                    w.window.reparent(w.parent);
-                    w.window.hide();
-                } else
-                    w.window.reparent(w.parent);
-        }
-        Tweener.removeTweens(switchData.inGroup);
-        Tweener.removeTweens(switchData.outGroup);
-        switchData.inGroup.destroy();
-        switchData.outGroup.destroy();
-        switchData.movingWindowBin.destroy();
-
-        if (this._movingWindow)
-            this._movingWindow = null;
-
+        this._finishWorkspaceSwitch(this._switchData);
         shellwm.completed_switch_workspace();
     },
 
@@ -1829,7 +1985,7 @@ var WindowManager = new Lang.Class({
         this._windowMenuManager.showWindowMenuForWindow(window, menu, rect);
     },
 
-    _startSwitcher(display, screen, window, binding) {
+    _startSwitcher(display, window, binding) {
         let constructor = null;
         switch (binding.get_name()) {
             case 'switch-applications':
@@ -1868,15 +2024,15 @@ var WindowManager = new Lang.Class({
             tabPopup.destroy();
     },
 
-    _startA11ySwitcher(display, screen, window, binding) {
+    _startA11ySwitcher(display, window, binding) {
         Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
     },
 
-    _toggleAppMenu(display, screen, window, event, binding) {
+    _toggleAppMenu(display, window, event, binding) {
         Main.panel.toggleAppMenu();
     },
 
-    _toggleCalendar(display, screen, window, event, binding) {
+    _toggleCalendar(display, window, event, binding) {
         Main.panel.toggleCalendar();
     },
 
@@ -1889,11 +2045,13 @@ var WindowManager = new Lang.Class({
             OrigTweener.resumeAllTweens();
     },
 
-    _showWorkspaceSwitcher(display, screen, window, binding) {
+    _showWorkspaceSwitcher(display, window, binding) {
+        let workspaceManager = display.get_workspace_manager();
+
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        if (screen.n_workspaces == 1)
+        if (workspaceManager.n_workspaces == 1)
             return;
 
         let [action,,,target] = binding.get_name().split('-');
@@ -1912,22 +2070,22 @@ var WindowManager = new Lang.Class({
 
         if (target == 'last') {
             direction = Meta.MotionDirection.DOWN;
-            newWs = screen.get_workspace_by_index(screen.n_workspaces - 1);
+            newWs = workspaceManager.get_workspace_by_index(workspaceManager.n_workspaces - 1);
         } else if (isNaN(target)) {
             // Prepend a new workspace dynamically
-            if (screen.get_active_workspace_index() == 0 &&
+            if (workspaceManager.get_active_workspace_index() == 0 &&
                 action == 'move' && target == 'up' && this._isWorkspacePrepended == false) {
                 this.insertWorkspace(0);
                 this._isWorkspacePrepended = true;
             }
 
             direction = Meta.MotionDirection[target.toUpperCase()];
-            newWs = screen.get_active_workspace().get_neighbor(direction);
+            newWs = workspaceManager.get_active_workspace().get_neighbor(direction);
         } else if (target > 0) {
             target--;
-            newWs = screen.get_workspace_by_index(target);
+            newWs = workspaceManager.get_workspace_by_index(target);
 
-            if (screen.get_active_workspace().index() > target)
+            if (workspaceManager.get_active_workspace().index() > target)
                 direction = Meta.MotionDirection.UP;
             else
                 direction = Meta.MotionDirection.DOWN;
@@ -1960,7 +2118,8 @@ var WindowManager = new Lang.Class({
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (activeWorkspace != workspace)
             workspace.activate(global.get_current_time());
@@ -1970,7 +2129,8 @@ var WindowManager = new Lang.Class({
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (activeWorkspace != workspace) {
             // This won't have any effect for "always sticky" windows

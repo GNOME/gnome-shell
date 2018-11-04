@@ -1,0 +1,5 @@
+<node>
+  <interface name="net.hadess.SwitcherooControl">
+    <property name="HasDualGpu" type="b" access="read"/>
+  </interface>
+</node>

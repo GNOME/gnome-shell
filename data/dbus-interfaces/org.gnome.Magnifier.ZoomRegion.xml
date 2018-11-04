@@ -1,0 +1,26 @@
+<node>
+  <interface name="org.gnome.Magnifier.ZoomRegion">
+    <method name="setMagFactor">
+      <arg type="d" direction="in"/>
+      <arg type="d" direction="in"/>
+    </method>
+    <method name="getMagFactor">
+      <arg type="d" direction="out"/>
+      <arg type="d" direction="out"/>
+    </method>
+    <method name="setRoi">
+      <arg type="ai" direction="in"/>
+    </method>
+    <method name="getRoi">
+      <arg type="ai" direction="out"/>
+    </method>
+    <method name="shiftContentsTo">
+      <arg type="i" direction="in"/>
+      <arg type="i" direction="in"/>
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="moveResize">
+      <arg type="ai" direction="in"/>
+    </method>
+  </interface>
+</node>

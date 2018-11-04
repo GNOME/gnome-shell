@@ -134,18 +134,19 @@ var EmptyEventSource = new Lang.Class({
 });
 Signals.addSignalMethods(EmptyEventSource.prototype);
 
-const CalendarServerIface = '<node> \
-<interface name="org.gnome.Shell.CalendarServer"> \
-<method name="GetEvents"> \
-    <arg type="x" direction="in" /> \
-    <arg type="x" direction="in" /> \
-    <arg type="b" direction="in" /> \
-    <arg type="a(sssbxxa{sv})" direction="out" /> \
-</method> \
-<property name="HasCalendars" type="b" access="read" /> \
-<signal name="Changed" /> \
-</interface> \
-</node>';
+const CalendarServerIface = `
+<node>
+<interface name="org.gnome.Shell.CalendarServer">
+<method name="GetEvents">
+    <arg type="x" direction="in" />
+    <arg type="x" direction="in" />
+    <arg type="b" direction="in" />
+    <arg type="a(sssbxxa{sv})" direction="out" />
+</method>
+<property name="HasCalendars" type="b" access="read" />
+<signal name="Changed" />
+</interface>
+</node>`;
 
 const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIface);
 
@@ -802,6 +803,8 @@ var NotificationMessage = new Lang.Class({
     },
 
     _onDestroy() {
+        this.parent();
+
         if (this._updatedId)
             this.notification.disconnect(this._updatedId);
         this._updatedId = 0;
@@ -820,6 +823,8 @@ var EventsSection = new Lang.Class({
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
         this._eventSource = new EmptyEventSource();
+
+        this._messageById = new Map();
 
         this.parent();
 
@@ -861,11 +866,11 @@ var EventsSection = new Lang.Class({
         if (sameYear(this._date, now))
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
-                                                             "%A, %B %d"));
+                                                             "%A, %B %-d"));
         else
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
-                                                             "%A, %B %d, %Y"));
+                                                             "%A, %B %-d, %Y"));
         this._title.label = this._date.toLocaleFormat(dayFormat);
     },
 
@@ -875,20 +880,32 @@ var EventsSection = new Lang.Class({
 
         this._reloading = true;
 
-        this._list.destroy_all_children();
-
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
         let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
+        let ids = events.map(e => e.id);
+        this._messageById.forEach((message, id) => {
+            if (ids.includes(id))
+                return;
+            this._messageById.delete(id);
+            this.removeMessage(message);
+        });
+
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
 
-            let message = new EventMessage(event, this._date);
-            message.connect('close', () => {
-                this._ignoreEvent(event);
-            });
-            this.addMessage(message, false);
+            let message = this._messageById.get(event.id);
+            if (!message) {
+                message = new EventMessage(event, this._date);
+                message.connect('close', () => {
+                    this._ignoreEvent(event);
+                });
+                this._messageById.set(event.id, message);
+                this.addMessage(message, false);
+            } else {
+                this.moveMessage(message, i, false);
+            }
         }
 
         this._reloading = false;

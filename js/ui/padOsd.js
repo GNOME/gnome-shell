@@ -19,6 +19,8 @@ const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Layout = imports.ui.layout;
 
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const ACTIVE_COLOR = "#729fcf";
 
 const LTR = 0;
@@ -313,6 +315,8 @@ var PadDiagram = new Lang.Class({
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success, css, etag] = file.load_contents(null);
+        if (css instanceof Uint8Array)
+            css = imports.byteArray.toString(css);
         this._curEdited = null;
         this._prevEdited = null;
         this._css = css;
@@ -960,14 +964,7 @@ var PadOsd = new Lang.Class({
 });
 Signals.addSignalMethods(PadOsd.prototype);
 
-const PadOsdIface = '<node> \
-<interface name="org.gnome.Shell.Wacom.PadOsd"> \
-<method name="Show"> \
-    <arg name="device_node" direction="in" type="o"/> \
-    <arg name="edition_mode" direction="in" type="b"/> \
-</method> \
-</interface> \
-</node>';
+const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
 var PadOsdService = new Lang.Class({
     Name: 'PadOsdService',

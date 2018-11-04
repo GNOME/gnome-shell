@@ -157,7 +157,7 @@ var Overview = new Lang.Class({
         Main.xdndHandler.connect('drag-begin', this._onDragBegin.bind(this));
         Main.xdndHandler.connect('drag-end', this._onDragEnd.bind(this));
 
-        global.screen.connect('restacked', this._onRestacked.bind(this));
+        global.display.connect('restacked', this._onRestacked.bind(this));
 
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
@@ -226,7 +226,7 @@ var Overview = new Lang.Class({
 
         // Add a clone of the panel to the overview so spacing and such is
         // automatic
-        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel.actor }),
+        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel }),
                                         reactive: false,
                                         opacity: 0 });
         this._overview.add_actor(this._panelGhost);
@@ -286,7 +286,8 @@ var Overview = new Lang.Class({
 
         DND.addDragMonitor(this._dragMonitor);
         // Remember the workspace we started from
-        this._lastActiveWorkspaceIndex = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        this._lastActiveWorkspaceIndex = workspaceManager.get_active_workspace_index();
     },
 
     _onDragEnd(time) {
@@ -296,7 +297,8 @@ var Overview = new Lang.Class({
         // we have to go back to where we started and hide
         // the overview
         if (this._shown) {
-            global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
+            let workspaceManager = global.workspace_manager;
+            workspaceManager.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
             this.hide();
         }
         this._resetWindowSwitchTimeout();
@@ -317,9 +319,9 @@ var Overview = new Lang.Class({
         let display = Gdk.Display.get_default();
         let deviceManager = display.get_device_manager();
         let pointer = deviceManager.get_client_pointer();
-        let [screen, pointerX, pointerY] = pointer.get_position();
+        let [gdkScreen, pointerX, pointerY] = pointer.get_position();
 
-        pointer.warp(screen, pointerX, pointerY);
+        pointer.warp(gdkScreen, pointerX, pointerY);
     },
 
     _onDragMotion(dragEvent) {
@@ -393,10 +395,8 @@ var Overview = new Lang.Class({
         if (!Main.layoutManager.primaryMonitor)
             return;
 
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-
-        this._coverPane.set_position(0, workArea.y);
-        this._coverPane.set_size(workArea.width, workArea.height);
+        this._coverPane.set_position(0, 0);
+        this._coverPane.set_size(global.screen_width, global.screen_height);
 
         this._updateBackgrounds();
     },
@@ -550,7 +550,7 @@ var Overview = new Lang.Class({
         this.visibleTarget = true;
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
-        Meta.disable_unredirect_for_screen(global.screen);
+        Meta.disable_unredirect_for_display(global.display);
         this.viewSelector.show();
 
         this._overview.opacity = 0;
@@ -635,7 +635,7 @@ var Overview = new Lang.Class({
 
     _hideDone() {
         // Re-enable unredirection
-        Meta.enable_unredirect_for_screen(global.screen);
+        Meta.enable_unredirect_for_display(global.display);
 
         this.viewSelector.hide();
         this._desktopFade.hide();

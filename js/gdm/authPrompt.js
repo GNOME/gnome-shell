@@ -242,11 +242,11 @@ var AuthPrompt = new Lang.Class({
         this.emit('prompted');
     },
 
-    _onVerificationFailed() {
+    _onVerificationFailed(userVerifier, canRetry) {
         this._queryingService = null;
         this.clear();
 
-        this.updateSensitivity(true);
+        this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
     },
@@ -439,6 +439,7 @@ var AuthPrompt = new Lang.Class({
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
         this.nextButton.label = _("Next");
+        this._preemptiveAnswer = null;
 
         if (this._userVerifier)
             this._userVerifier.cancel();

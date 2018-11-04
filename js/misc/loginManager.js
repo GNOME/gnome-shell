@@ -7,47 +7,15 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const SystemdLoginManagerIface = '<node> \
-<interface name="org.freedesktop.login1.Manager"> \
-<method name="Suspend"> \
-    <arg type="b" direction="in"/> \
-</method> \
-<method name="CanSuspend"> \
-    <arg type="s" direction="out"/> \
-</method> \
-<method name="Inhibit"> \
-    <arg type="s" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="s" direction="in"/> \
-    <arg type="h" direction="out"/> \
-</method> \
-<method name="GetSession"> \
-    <arg type="s" direction="in"/> \
-    <arg type="o" direction="out"/> \
-</method> \
-<method name="ListSessions"> \
-    <arg name="sessions" type="a(susso)" direction="out"/> \
-</method> \
-<signal name="PrepareForSleep"> \
-    <arg type="b" direction="out"/> \
-</signal> \
-</interface> \
-</node>';
+const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const SystemdLoginSessionIface = '<node> \
-<interface name="org.freedesktop.login1.Session"> \
-<signal name="Lock" /> \
-<signal name="Unlock" /> \
-<property name="Active" type="b" access="read" /> \
-<method name="SetLockedHint"> \
-    <arg type="b" direction="in"/> \
-</method> \
-</interface> \
-</node>';
+const SystemdLoginManagerIface = loadInterfaceXML('org.freedesktop.login1.Manager');
+const SystemdLoginSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
+const SystemdLoginUserIface = loadInterfaceXML('org.freedesktop.login1.User');
 
 const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
+const SystemdLoginUser = Gio.DBusProxy.makeProxyWrapper(SystemdLoginUserIface);
 
 function haveSystemd() {
     return GLib.access("/run/systemd/seats", 0) >= 0;
@@ -109,6 +77,9 @@ var LoginManagerSystemd = new Lang.Class({
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
+        this._userProxy = new SystemdLoginUser(Gio.DBus.system,
+                                               'org.freedesktop.login1',
+                                               '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
                                   this._prepareForSleep.bind(this));
     },
@@ -121,8 +92,31 @@ var LoginManagerSystemd = new Lang.Class({
 
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
-            log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session.');
-            return;
+            log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
+            let [session, objectPath] = this._userProxy.Display;
+            if (session) {
+                log(`Will monitor session ${session}`);
+                sessionId = session;
+            } else {
+                log('Failed to find "Display" session; are we the greeter?');
+
+                for (let [session, objectPath] of this._userProxy.Sessions) {
+                    let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
+                                                               'org.freedesktop.login1',
+                                                               objectPath);
+                    log(`Considering ${session}, class=${sessionProxy.Class}`);
+                    if (sessionProxy.Class == 'greeter') {
+                        log(`Yes, will monitor session ${session}`);
+                        sessionId = session;
+                        break;
+                    }
+                }
+
+                if (!sessionId) {
+                    log('No, failed to get session from logind.');
+                    return;
+                }
+            }
         }
 
         this._proxy.GetSessionRemote(sessionId, (result, error) => {
