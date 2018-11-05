@@ -499,6 +499,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
     },
 
     _handleEvent(actor, event) {
+	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
         let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
 
         if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
@@ -515,7 +516,11 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
 
             // Scale deltas up a bit to make it feel snappier
             this._dx += dx * 2;
-            this._dy += dy * 2;
+	    if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
+		this._dy += -dy * 2;
+	    } else {
+		this._dy += dy * 2;
+            }
             this.emit('motion', this._dx, this._dy);
         } else {
             if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && ! this._checkActivated()) ||
