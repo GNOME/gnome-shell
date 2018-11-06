@@ -54,25 +54,22 @@ stage {
 }
 
 .modal-dialog-linked-button {
+	padding: 12px;
   border-right-width: 1px;
   @include button(normal);
-  &:insensitive { @include button(insensitive); }
   &:hover { @include button(hover); }
   &:focus { @include button(focus); }
   &:active { @include button(active); }
-  padding: 12px;
+  &:insensitive { @include button(insensitive); }
 
   &:first-child {
-    border-radius: 0px 0px 0px 6px;
-  }
+    border-radius: 0px 0px 0px 6px; }
   &:last-child {
     border-right-width: 0px;
-    border-radius: 0px 0px 6px 0px;
-  }
+    border-radius: 0px 0px 6px 0px; }
   &:first-child:last-child {
     border-right-width: 0px;
-    border-radius: 0px 0px 6px 6px;
-  }
+    border-radius: 0px 0px 6px 6px; }
 }
 
 /* Entries */
