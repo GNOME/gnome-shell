@@ -478,6 +478,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
         this._dx = 0;
         this._dy = 0;
         actor.connect('captured-event', this._handleEvent.bind(this));
+	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
     },
 
     _checkActivated() {
@@ -499,7 +500,6 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
     },
 
     _handleEvent(actor, event) {
-	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
         let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
 
         if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
