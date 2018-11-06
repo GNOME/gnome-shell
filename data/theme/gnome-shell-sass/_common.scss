@@ -201,17 +201,27 @@ StScrollBar {
   .modal-dialog-content-box {
     padding: 24px;
   }
-  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
+  .run-dialog-entry {
+  	@include fontsize($font-size * 1.8);
+  	width: 14em;
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    margin-bottom: 6px;
+    color: $fg_color;
+  }
+
   .run-dialog-error-box {
     padding-top: 16px;
     spacing: 6px;
   }
-  .run-dialog-button-box { padding-top: 1em; }
+  .run-dialog-button-box {
+  	padding-top: 1em; }
   .run-dialog-label {
     @include fontsize($font-size + 1.1);
     font-weight: bold;
     color: darken($osd_fg_color,10%);
-    padding-bottom: .4em;
+    padding-bottom: .8em;
   }
 
 }
@@ -1215,7 +1225,7 @@ StScrollBar {
 /* OVERVIEW */
 
 #overview {
-  spacing: 24px; //
+  spacing: 24px;
 }
 
 .overview-controls {
