@@ -181,6 +181,18 @@ StScrollBar {
 .lightbox { background-color: black; }
 .flashspot { background-color: white; }
 
+%dialog-icon {
+	border-radius: 50px;
+	min-width: 22px; min-height: 22px;
+	width: 22px; height: 22px;
+	icon-size: 20px;
+	padding: 12px;
+	color: $osd_fg_color;
+	background-color: $osd_bg_color;
+	border: 1px solid $osd_borders_color;
+	background-size: contain;
+}
+
 .modal-dialog {
   border-radius: 9px;
   color: $osd_fg_color;
@@ -220,10 +232,7 @@ StScrollBar {
     spacing: 20px;
   }
 
-  .message-dialog-icon {
-    min-width: 48px;
-    icon-size: 48px;
-  }
+  .message-dialog-icon { @extend %dialog-icon; }
 
   .message-dialog-title {
     font-weight: bold;
@@ -266,19 +275,9 @@ StScrollBar {
     }
   }
 
-  .end-session-dialog-logout-icon {
-    //border: 2px solid #8b8b8b;
-    border-radius: 5px;
-    width: 48px;
-    height: 48px;
-    background-size: contain;
-  }
+  .end-session-dialog-logout-icon { @extend %dialog-icon; }
 
-  .end-session-dialog-shutdown-icon {
-    color: $fg_color;
-    width: 48px;
-    height: 48px;
-  }
+  .end-session-dialog-shutdown-icon { @extend %dialog-icon; }
 
   .end-session-dialog-inhibitor-layout {
     spacing: 16px;
@@ -1192,7 +1191,7 @@ StScrollBar {
   }
 
   .nm-dialog-airplane-text { color: $fg_color; }
-  .nm-dialog-header-icon { icon-size: 32px; }
+  .nm-dialog-header-icon { @extend %dialog-icon; }
   .nm-dialog-scroll-view { border: 2px solid $borders_color; }
   .nm-dialog-header { font-weight: bold; }
 
