@@ -202,9 +202,9 @@ StScrollBar {
     padding: 24px;
   }
   .run-dialog-entry {
-  	@include fontsize($font-size * 1.8);
-  	width: 14em;
-    border-color: transparent;
+    @include fontsize($font-size * 1.8);
+    width: 14em;
+  	border-color: transparent;
     background-color: transparent;
     box-shadow: none;
     margin-bottom: 6px;
@@ -216,7 +216,7 @@ StScrollBar {
     spacing: 6px;
   }
   .run-dialog-button-box {
-  	padding-top: 1em; }
+    padding-top: 1em; }
   .run-dialog-label {
     @include fontsize($font-size + 1.1);
     font-weight: bold;
