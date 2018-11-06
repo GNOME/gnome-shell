@@ -1635,7 +1635,7 @@ msgstr "Desconectado"
 
 #: js/ui/status/bluetooth.js:141
 msgid "On"
-msgstr "Encender"
+msgstr "Encendido"
 
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
