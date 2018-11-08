@@ -31,7 +31,7 @@ var WORKSPACE_CUT_SIZE = 10;
 
 var WORKSPACE_KEEP_ALIVE_TIME = 100;
 
-var OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
+var MUTTER_SCHEMA = 'org.gnome.mutter';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
@@ -674,7 +674,7 @@ var ThumbnailsBox = new Lang.Class({
         Main.overview.connect('window-drag-cancelled',
                               this._onDragCancelled.bind(this));
 
-        this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             this._updateSwitcherVisibility.bind(this));
 
