@@ -24,7 +24,7 @@ var AnimationType = {
     FADE: 1
 };
 
-const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
+const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 var WorkspacesViewBase = new Lang.Class({
     Name: 'WorkspacesViewBase',
@@ -473,7 +473,7 @@ var WorkspacesDisplay = new Lang.Class({
         this._workspacesViews = [];
         this._primaryScrollAdjustment = null;
 
-        this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
                                this._workspacesOnlyOnPrimaryChanged.bind(this));
         this._workspacesOnlyOnPrimaryChanged();
