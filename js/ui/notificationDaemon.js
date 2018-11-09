@@ -292,7 +292,7 @@ var FdoNotificationDaemon = new Lang.Class({
             });
         }
 
-        let gicon = this._iconForNotificationData(icon, hints);
+        let gicon = this._iconForNotificationData(icon);
         let gimage = this._imageForNotificationData(hints);
 
         // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
