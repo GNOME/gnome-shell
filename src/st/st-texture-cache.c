@@ -984,7 +984,7 @@ file_changed_cb (GFileMonitor      *monitor,
   char *key;
   guint file_hash;
 
-  if (event_type != G_FILE_MONITOR_EVENT_CHANGED)
+  if (event_type != G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
     return;
 
   file_hash = g_file_hash (file);
