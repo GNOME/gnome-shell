@@ -77,10 +77,8 @@ var FdoNotificationDaemon = new Lang.Class({
                  bitsPerSample, nChannels, data] = hints['image-data'];
             return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
                                                       bitsPerSample, width, height, rowStride);
-        } else if (hints['image-path']) {
-            return new Gio.FileIcon({ file: Gio.File.new_for_path(hints['image-path']) });
         }
-        return null;
+        return this._iconForNotificationData(hints['image-path']);
     },
 
     _fallbackIconForNotificationData(hints) {
