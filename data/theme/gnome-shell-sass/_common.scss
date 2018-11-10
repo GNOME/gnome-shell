@@ -1174,8 +1174,8 @@ StScrollBar {
 /* NETWORK DIALOGS */
 
 .nm-dialog {
-  max-height: 34em;
-  min-height: 31em;
+  max-height: 21em;
+  min-height: 21em;
   min-width: 32em;
 }
 
@@ -1199,7 +1199,7 @@ StScrollBar {
   .nm-dialog-item {
     font-size: 110%;
     border-bottom: 1px solid $borders_color;
-    padding: 12px;
+    padding: 8px;
     spacing: 20px;
   }
 
