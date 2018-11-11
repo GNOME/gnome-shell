@@ -240,12 +240,14 @@ setup_framebuffers (StThemeNodeTransition *transition,
                     const ClutterActorBox *allocation)
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
+  CoglContext *ctx;
   guint width, height;
   CoglError *catch_error = NULL;
 
   /* template material to avoid unnecessary shader compilation */
   static CoglHandle material_template = COGL_INVALID_HANDLE;
 
+  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   width  = priv->offscreen_box.x2 - priv->offscreen_box.x1;
   height = priv->offscreen_box.y2 - priv->offscreen_box.y1;
 
@@ -254,15 +256,11 @@ setup_framebuffers (StThemeNodeTransition *transition,
 
   if (priv->old_texture)
     cogl_handle_unref (priv->old_texture);
-  priv->old_texture = cogl_texture_new_with_size (width, height,
-                                                  COGL_TEXTURE_NO_SLICING,
-                                                  COGL_PIXEL_FORMAT_ANY);
+  priv->old_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
   if (priv->new_texture)
     cogl_handle_unref (priv->new_texture);
-  priv->new_texture = cogl_texture_new_with_size (width, height,
-                                                  COGL_TEXTURE_NO_SLICING,
-                                                  COGL_PIXEL_FORMAT_ANY);
+  priv->new_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
   if (priv->old_texture == COGL_INVALID_HANDLE)
     return FALSE;

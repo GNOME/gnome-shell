@@ -2220,11 +2220,14 @@ static void
 st_theme_node_prerender_shadow (StThemeNodePaintState *state)
 {
   StThemeNode *node = state->node;
+  CoglContext *ctx;
   guint border_radius[4];
   int max_borders[4];
   int center_radius, corner_id;
   CoglHandle buffer, offscreen = COGL_INVALID_HANDLE;
   CoglError *error = NULL;
+
+  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
   /* Get infos from the node */
   if (state->alloc_width < node->box_shadow_min_width ||
@@ -2261,10 +2264,9 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
     }
 
   /* Render offscreen */
-  buffer = cogl_texture_new_with_size (state->box_shadow_width,
-                                       state->box_shadow_height,
-                                       COGL_TEXTURE_NO_SLICING,
-                                       COGL_PIXEL_FORMAT_ANY);
+  buffer = cogl_texture_2d_new_with_size (ctx,
+                                          state->box_shadow_width,
+                                          state->box_shadow_height);
   if (buffer == NULL)
     return;
 

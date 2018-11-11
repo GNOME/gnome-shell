@@ -455,14 +455,13 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       CoglTexture *buffer;
       CoglOffscreen *offscreen;
       CoglFramebuffer *fb;
+      CoglContext *ctx;
       CoglColor clear_color;
       CoglError *catch_error = NULL;
       float x, y;
 
-      buffer = cogl_texture_new_with_size (width,
-                                           height,
-                                           COGL_TEXTURE_NO_SLICING,
-                                           COGL_PIXEL_FORMAT_ANY);
+      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      buffer = cogl_texture_2d_new_with_size (ctx, width, height);
 
       if (buffer == NULL)
         return NULL;
