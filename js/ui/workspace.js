@@ -127,6 +127,7 @@ var WindowClone = new Lang.Class({
                                      can_focus: true,
                                      accessible_role: Atk.Role.PUSH_BUTTON,
                                      layout_manager: new WindowCloneLayout() });
+        this.actor.set_offscreen_redirect (Clutter.OffscreenRedirect.ALWAYS);
 
         this.actor.add_child(this._windowClone);
 
