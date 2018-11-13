@@ -17,6 +17,7 @@ var InputMethod = new Lang.Class({
         this._currentFocus = null;
         this._preeditStr = '';
         this._preeditPos = 0;
+        this._preeditVisible = false;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -80,6 +81,7 @@ var InputMethod = new Lang.Class({
         this._enabled = false;
         this._preeditStr = ''
         this._preeditPos = 0;
+        this._preeditVisible = false;
     },
 
     _emitRequestSurrounding() {
@@ -98,20 +100,27 @@ var InputMethod = new Lang.Class({
     _onUpdatePreeditText(context, text, pos, visible) {
         if (text == null)
             return;
-        this._preeditStr = text.get_text();
-        this._preeditPos = pos;
+
+        let preedit = text.get_text();
+
         if (visible)
-            this.set_preedit_text(this._preeditStr, pos);
-        else
+            this.set_preedit_text(preedit, pos);
+        else if (this._preeditVisible)
             this.set_preedit_text(null, pos);
+
+        this._preeditStr = preedit;
+        this._preeditPos = pos;
+        this._preeditVisible = visible;
     },
 
     _onShowPreeditText(context) {
+        this._preeditVisible = true;
         this.set_preedit_text(this._preeditStr, this._preeditPos);
     },
 
     _onHidePreeditText(context) {
         this.set_preedit_text(null, this._preeditPos);
+        this._preeditVisible = false;
     },
 
     _onForwardKeyEvent(context, keyval, keycode, state) {
