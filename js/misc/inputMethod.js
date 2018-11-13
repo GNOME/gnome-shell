@@ -144,8 +144,11 @@ var InputMethod = new Lang.Class({
             this._updateCapabilities();
         }
 
-        // Unset any preedit text
-        this.set_preedit_text(null, 0);
+        if (this._preeditStr) {
+            // Unset any preedit text
+            this.set_preedit_text(null, 0);
+            this._preeditStr = null;
+        }
     },
 
     vfunc_reset() {
@@ -154,8 +157,11 @@ var InputMethod = new Lang.Class({
             this._emitRequestSurrounding();
         }
 
-        // Unset any preedit text
-        this.set_preedit_text(null, 0);
+        if (this._preeditStr) {
+            // Unset any preedit text
+            this.set_preedit_text(null, 0);
+            this._preeditStr = null;
+        }
     },
 
     vfunc_set_cursor_location(rect) {
