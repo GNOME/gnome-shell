@@ -140,6 +140,8 @@ var WindowClone = new Lang.Class({
                       layout_manager: new WindowCloneLayout() });
         this.actor = this;
 
+        this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
+
         this.add_child(this._windowClone);
 
         this._delegate = this;
@@ -192,6 +194,10 @@ var WindowClone = new Lang.Class({
 
         this._selected = false;
         this._closeRequested = false;
+    },
+
+    vfunc_has_overlaps() {
+        return this.hasAttachedDialogs();
     },
 
     set slot(slot) {
