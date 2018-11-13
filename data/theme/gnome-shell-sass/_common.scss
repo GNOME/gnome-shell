@@ -1287,7 +1287,7 @@ StScrollBar {
   }
   .list-search-results { spacing: 3px; }
 
-  .search-section-separator { height: 2px; background-color: rgba(255, 255, 255, 0.2); }
+  .search-section-separator { margin-top: 16px; height: 2px; background-color: rgba(255, 255, 255, 0.2); }
 
   .list-search-result-content { spacing: 30px; }
   .list-search-result-title { color: darken($osd_fg_color,5%); spacing: 12px; }
@@ -1344,7 +1344,7 @@ StScrollBar {
     -shell-grid-horizontal-item-size: 136px;
     -shell-grid-vertical-item-size: 136px;
 
-    .overview-icon { icon-size: 96px; }
+    .overview-icon { icon-size: 128px; }
   }
   //.app-display { spacing: 20px; }
 

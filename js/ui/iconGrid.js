@@ -12,8 +12,8 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
-var ICON_SIZE = 96;
-var MIN_ICON_SIZE = 16;
+var ICON_SIZE = 128;
+var MIN_ICON_SIZE = 32;
 
 var EXTRA_SPACE_ANIMATION_TIME = 0.25;
 

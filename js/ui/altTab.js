@@ -22,10 +22,10 @@ var THUMBNAIL_POPUP_TIME = 500; // milliseconds
 var THUMBNAIL_FADE_TIME = 0.1; // seconds
 
 var WINDOW_PREVIEW_SIZE = 128;
-var APP_ICON_SIZE = 96;
+var APP_ICON_SIZE = 128;
 var APP_ICON_SIZE_SMALL = 48;
 
-const baseIconSizes = [96, 64, 48, 32, 22];
+const baseIconSizes = [128, 64, 48, 32, 22];
 
 var AppIconMode = {
     THUMBNAIL_ONLY: 1,
