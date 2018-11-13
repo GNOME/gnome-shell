@@ -1,3 +1,24 @@
+3.30.2
+======
+* popupMenu: Fix keyboard activation when numlock is active [Andrea; #550]
+* Do not block all shortcuts while app folders are expanded [Florian; #648]
+* Fix regression in handling new input sources [Carlos; #691]
+* Improve performance of app icon animations [Daniel; !253, !261]
+* Respect natural-scroll setting for workspace swipe gesture [Erik; #516]
+* notifications: Support icon theme names in 'image-path' hint [Marco; !285]
+* Confine window preview titles to workspace area [Florian; !214]
+* Misc. bug fixes [Florian, Cosimo; #602, #693, #768, #430, !286]
+
+Contributors:
+  Andrea Azzarone, Cosimo Cecchi, Erik Duxstad, Carlos Garnacho,
+  Florian Müllner, Didier Roche, Marco Trevisan (Treviño), verdre,
+  Daniel van Vugt
+
+Translators:
+  Rūdolfs Mazurs [lv], Kristjan SCHMIDT [eo], Milo Casagrande [it],
+  Dušan Kazik [sk], gogo [hr], Anish Sheela [ml], Rafael Fontenelle [pt_BR],
+  Daniel Mustieles [es]
+
 3.30.1
 ======
 * Cancel search on overview hiding [Marco; !205]
