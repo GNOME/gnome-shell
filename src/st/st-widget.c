@@ -275,6 +275,15 @@ swap_paint_state (StWidget *widget)
 }
 
 static StThemeNodePaintState *
+next_paint_state (StWidget *widget)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+  gint idx = (priv->current_paint_state + 1) % G_N_ELEMENTS (priv->paint_states);
+
+  return &priv->paint_states[idx];
+}
+
+static StThemeNodePaintState *
 current_paint_state (StWidget *widget)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
@@ -314,27 +323,25 @@ st_widget_texture_cache_changed (StTextureCache *cache,
                                  gpointer        user_data)
 {
   StWidget *actor = ST_WIDGET (user_data);
-  StWidgetPrivate *priv = st_widget_get_instance_private (actor);
-  StThemeNode *node = priv->theme_node;
+  StThemeNodePaintState *paint_state;
+  gboolean changed = FALSE;
 
-  if (node == NULL)
-    return;
-
-  if (invalidate_node_for_file (node, file))
+  paint_state = current_paint_state (actor);
+  if (paint_state->node != NULL && invalidate_node_for_file (paint_state->node, file))
     {
-      /* If we prerender the background / border, we need to update
-       * the paint state. We should probably implement a method to
-       * the theme node to determine this, but for now, just wipe
-       * the entire paint state.
-       *
-       * Use the existing state instead of a new one because it's
-       * assumed the rest of the state will stay the same.
-       */
-      st_theme_node_paint_state_invalidate (current_paint_state (actor));
-
-      if (clutter_actor_is_mapped (CLUTTER_ACTOR (actor)))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
+      st_theme_node_paint_state_invalidate (paint_state);
+      changed = TRUE;
     }
+
+  paint_state = next_paint_state (actor);
+  if (paint_state->node != NULL && invalidate_node_for_file (paint_state->node, file))
+    {
+      st_theme_node_paint_state_invalidate (paint_state);
+      changed = TRUE;
+    }
+
+  if (changed && clutter_actor_is_mapped (CLUTTER_ACTOR (actor)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
 }
 
 static void
