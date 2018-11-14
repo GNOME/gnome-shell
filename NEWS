@@ -1,3 +1,28 @@
+3.31.2
+======
+* Port away from and remove ShellGenericContainer [Georges; !153]
+* popupMenu: Fix keyboard activation when numlock is active [Andrea; #550]
+* Do not block all shortcuts while app folders are expanded [Florian; #648]
+* Fix regression in handling new input sources [Carlos; #691]
+* Reask password after udisk errors for no/wrong passwords [Sebastian; #640]
+* Improve performance of app icon animations [Daniel; !253, !261]
+* Avoid focus changes when updating keyboard options [Takao; #391]
+* notifications: Support icon theme names in 'image-path' hint [Marco; !285]
+* Respect natural-scroll setting for workspace swipe gesture [Erik; #516]
+* Confine window preview titles to workspace area [Florian; !214]
+* Misc. bug fixes [Florian, Carmen, Georges, Cosimo, Carlos; #602, #693,
+  #666, #647, !66, #768, #430, !286, !258, !287, gtk#1447]
+
+Contributors:
+  Andrea Azzarone, Carmen Bianca Bakker, Cosimo Cecchi, Sergio Costas,
+  Erik Duxstad, Takao Fujiwara, Carlos Garnacho, Florian Müllner,
+  Georges Basile Stavracas Neto, Sebastian Pinnau, Didier Roche, Jakub Steiner,
+  Marco Trevisan (Treviño), verdre, Daniel van Vugt
+
+Translators:
+  Kristjan SCHMIDT [eo], Dušan Kazik [sk], Matej Urbančič [sl],
+  Anish Sheela [ml], Rafael Fontenelle [pt_BR], Daniel Mustieles [es]
+
 3.30.1
 ======
 * Cancel search on overview hiding [Marco; !205]
