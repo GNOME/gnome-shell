@@ -68,9 +68,9 @@ var Source = new Lang.Class({
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention',
-                                                 this._sync.bind(this));
+                                                 this._sync.bind(this)));
         this.signalIDs.push(this._window.connect('notify::urgent',
-                                                 this._sync.bind(this));
+                                                 this._sync.bind(this)));
         this.signalIDs.push(this._window.connect('focus',
                                                  () => { this.destroy(); }));
         this.signalIDs.push(this._window.connect('unmanaged',
