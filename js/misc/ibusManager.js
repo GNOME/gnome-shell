@@ -210,7 +210,7 @@ var IBusManager = new Lang.Class({
         }
 
         this._ibus.set_global_engine_async(id, this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
-                                           null, callback);
+                                           null, callback || null);
     },
 
     preloadEngines(ids) {
