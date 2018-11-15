@@ -195,18 +195,13 @@ var LanguageSelectionPopup = new Lang.Class({
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.addAction(_("Region & Language Settings"), this._launchSettings.bind(this));
+        this.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
         this._capturedEventId = 0;
 
         this._unmapId = actor.connect('notify::mapped', () => {
             if (!actor.is_mapped())
                 this.close(true);
         });
-    },
-
-    _launchSettings() {
-        Util.spawn(['gnome-control-center', 'region']);
-        this.close(true);
     },
 
     _onCapturedEvent(actor, event) {
