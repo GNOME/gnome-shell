@@ -1161,14 +1161,24 @@ StScrollBar {
 //close buttons
 
 .window-close {
-  background-image: url("resource:///org/gnome/shell/theme/close-window.svg");
-  background-size: 32px;
-  height: 32px;
-  width: 32px;
+  color: #2975c4;
+  background-color: white;
+  border: 5px solid #2975c4;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
   -shell-close-overlap: 16px;
 
-  &:hover { background-image: url("resource:///org/gnome/shell/theme/close-window-hover.svg"); }
-  &:active { background-image: url("resource:///org/gnome/shell/theme/close-window-active.svg"); }
+  &:hover {
+    background-color: #2975c4;
+    color: white;
+    border-color: white;
+  }
+  &:active {
+    background-color: #a5c8ec;
+    color: #2975c4;
+    border-color: #2975c4;
+  }
 }
 
 /* NETWORK DIALOGS */
