@@ -471,16 +471,19 @@ var Dash = new Lang.Class({
     },
 
     _hookUpLabel(item, appIcon) {
-        item.child.connect('notify::hover', () => {
+        let idHover = item.child.connect('notify::hover', () => {
             this._syncLabel(item, appIcon);
         });
+        item.label_actor.connect('destroy', () => {
+            item.child.disconnect(idHover);
+        });
 
-        let id = Main.overview.connect('hiding', () => {
+        let idHiding = Main.overview.connect('hiding', () => {
             this._labelShowing = false;
             item.hideLabel();
         });
         item.child.connect('destroy', () => {
-            Main.overview.disconnect(id);
+            Main.overview.disconnect(idHiding);
         });
 
         if (appIcon) {
