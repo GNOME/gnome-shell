@@ -58,6 +58,9 @@ var AltSwitcher = new Lang.Class({
             childToShow = this._standard;
         } else if (this._alternate.visible) {
             childToShow = this._alternate;
+        } else {
+            this.actor.hide();
+            return;
         }
 
         let childShown = this.actor.get_child();
@@ -79,7 +82,7 @@ var AltSwitcher = new Lang.Class({
             global.sync_pointer();
         }
 
-        this.actor.visible = (childToShow != null);
+        this.actor.show();
     },
 
     _onDestroy() {
