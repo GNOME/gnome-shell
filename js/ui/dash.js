@@ -52,6 +52,8 @@ var DashItemContainer = new Lang.Class({
         this.animatingOut = false;
 
         this.connect('destroy', () => {
+            if (this.child != null)
+                this.child.destroy();
             this.label.destroy();
         });
     },
