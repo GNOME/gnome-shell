@@ -473,6 +473,7 @@ var WindowOverlay = new Lang.Class({
         });
 
         let button = new St.Button({ style_class: 'window-close' });
+        button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
         button._overlap = 0;
 
         this._idleToggleCloseId = 0;
