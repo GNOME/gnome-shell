@@ -1161,23 +1161,25 @@ StScrollBar {
 //close buttons
 
 .window-close {
-  color: #2975c4;
   background-color: white;
-  border: 5px solid #2975c4;
-  border-radius: 20px;
-  height: 20px;
-  width: 20px;
-  -shell-close-overlap: 16px;
+  border-radius: 24px;
+  border: 4px solid $selected_bg_color;
+  box-shadow: inset 0 -4px 0 0 transparentize($selected_bg_color, 0.5);
+  color: $selected_bg_color;
+  height: 24px;
+  width: 24px;
+  -shell-close-overlap: 14px;
 
   &:hover {
-    background-color: #2975c4;
-    color: white;
+    background-color: $selected_bg_color;
     border-color: white;
+    color: white;
   }
+
   &:active {
-    background-color: #a5c8ec;
-    color: #2975c4;
-    border-color: #2975c4;
+    background-color: mix(white, $selected_bg_color, 75%);
+    border-color: $selected_bg_color;
+    color: $selected_bg_color;
   }
 }
 
