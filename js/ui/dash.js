@@ -55,7 +55,10 @@ var DashItemContainer = new Lang.Class({
         this.animatingOut = false;
 
         this.connect('destroy', () => {
+            this.child.destroy();
+            this.child = null;
             this.label.destroy();
+            this.label = null;
         });
     },
 
@@ -110,6 +113,9 @@ var DashItemContainer = new Lang.Class({
     },
 
     setLabelText(text) {
+        if (this.child == null)
+            return;
+
         this._labelText = text;
         this.child.accessible_name = text;
     },
