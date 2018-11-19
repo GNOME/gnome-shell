@@ -17,7 +17,7 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 var ExtensionManager = class {
     constructor() {
-        this._initted = false;
+        this._initialized = false;
         this._enabled = false;
 
         this._extensions = new Map();
@@ -98,6 +98,9 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
         if (!extension)
             return;
@@ -302,6 +305,9 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
         if (!extension)
             throw new Error("Extension was not properly created. Call createExtensionObject first");
@@ -385,9 +391,6 @@ var ExtensionManager = class {
     _onEnabledExtensionsChanged() {
         let newEnabledExtensions = this._getEnabledExtensions();
 
-        if (!this._enabled)
-            return;
-
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
         newEnabledExtensions.filter(
@@ -426,11 +429,9 @@ var ExtensionManager = class {
             this.reloadExtension(extension);
         this._enabledExtensions = this._getEnabledExtensions();
 
-        if (Main.sessionMode.allowExtensions) {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
+        this._enabledExtensions.forEach(uuid => {
+            this._callExtensionEnable(uuid);
+        });
     }
 
     _loadExtensions() {
@@ -475,45 +476,37 @@ var ExtensionManager = class {
         });
     }
 
-    _enableAllExtensions() {
-        if (this._enabled)
-            return;
-
-        if (!this._initted) {
-            this._loadExtensions();
-            this._initted = true;
-        } else {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
-        this._enabled = true;
-    }
-
-    _disableAllExtensions() {
-        if (!this._enabled)
-            return;
-
-        if (this._initted) {
-            this._extensionOrder.slice().reverse().forEach(uuid => {
-                this._callExtensionDisable(uuid);
-            });
-        }
-
-        this._enabled = false;
-    }
-
     _sessionUpdated() {
         // For now sessionMode.allowExtensions controls extensions from both the
         // 'enabled-extensions' preference and the sessionMode.enabledExtensions
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initted)
-                this._enabledExtensions = this._getEnabledExtensions();
-            this._enableAllExtensions();
+            if (!this._initialized) {
+                this._loadExtensions();
+                this._initialized = true;
+                this._enabled = true;
+                return;
+            }
+
+            // Take care of added or removed sessionMode extensions
+            this._onEnabledExtensionsChanged();
+
+            if (!this._enabled) {
+                this._enabledExtensions.forEach(uuid => {
+                    this._callExtensionEnable(uuid);
+                });
+
+                this._enabled = true;
+            }
         } else {
-            this._disableAllExtensions();
+            if (this._enabled) {
+                this._extensionOrder.slice().reverse().forEach(uuid => {
+                    this._callExtensionDisable(uuid);
+                });
+
+                this._enabled = false;
+            }
         }
     }
 };
