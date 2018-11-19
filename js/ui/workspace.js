@@ -459,6 +459,8 @@ var WindowOverlay = new Lang.Class({
         this._windowClone = windowClone;
         this._parentActor = parentActor;
         this._hidden = false;
+        this._forceHidden = false;
+        this._forceHiddenDragging = false;
 
         this._idleHideOverlayId = 0;
 
@@ -484,11 +486,8 @@ var WindowOverlay = new Lang.Class({
         this.closeButton.connect('clicked', () => this._windowClone.deleteAll());
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
-        windowClone.connect('show-chrome', this._onShowChrome.bind(this));
+        windowClone.connect('show-chrome', () => this.show(true));
         windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
-
-        this.title.hide();
-        this.closeButton.hide();
 
         // Don't block drop targets
         Shell.util_set_hidden_from_pick(this.title, true);
@@ -510,17 +509,86 @@ var WindowOverlay = new Lang.Class({
             this._onStyleChanged();
     },
 
-    hide() {
-        this._hidden = true;
+    show(animate) {
+        if (!this._hidden || this._forceHidden || this._forceHiddenDragging)
+            return;
 
-        this.hideCloseButton();
-    },
+        this._parentActor.raise_top();
 
-    show() {
+        let toShow = [this.border, this.title];
+        if (this._windowCanClose())
+            toShow.push(this.closeButton);
+
         this._hidden = false;
 
-        if (this._windowClone.actor['has-pointer'])
-            this._animateVisible();
+        if (animate) {
+            toShow.forEach(e => {
+                e.opacity = 0;
+                e.show();
+                Tweener.addTween(e,
+                                 { opacity: 255,
+                                   time: WINDOW_OVERLAY_FADE_TIME,
+                                   transition: 'easeOutQuad' });
+            });
+        } else {
+            toShow.forEach(e => {
+                e.opacity = 255;
+                e.show();
+            });
+        }
+
+        this.emit('overlay-visible');
+    },
+
+    hide(animate) {
+        if (this._hidden)
+            return;
+
+        if (this._idleHideOverlayId > 0) {
+            Mainloop.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
+        }
+
+        let toHide = [this.closeButton, this.border, this.title];
+
+        if (animate) {
+            toHide.forEach(e => {
+                e.opacity = 255;
+                Tweener.addTween(e,
+                                 { opacity: 0,
+                                   time: WINDOW_OVERLAY_FADE_TIME,
+                                   transition: 'easeInQuad',
+                                   onComplete: () => {
+                                       e.hide();
+                                       this._hidden = true;
+                                   }
+                                 });
+            });
+        } else {
+            toHide.forEach(e => {
+                e.opacity = 0;
+                e.hide();
+            });
+            this._hidden = true;
+        }
+    },
+
+    forceHide(hide) {
+        if (hide) {
+            this._forceHidden = true;
+            this.hide();
+        } else {
+            this._forceHidden = false;
+        }
+    },
+
+    forceHideDragging(hide) {
+        if (hide) {
+            this._forceHiddenDragging = true;
+            this.hide();
+        } else {
+            this._forceHiddenDragging = false;
+        }
     },
 
     chromeHeights() {
@@ -643,72 +711,22 @@ var WindowOverlay = new Lang.Class({
         this.border.destroy();
     },
 
-    _animateVisible() {
-        this._parentActor.raise_top();
-
-        let toAnimate = [this.border, this.title];
-        if (this._windowCanClose())
-            toAnimate.push(this.closeButton);
-
-        toAnimate.forEach(a => {
-            a.show();
-            a.opacity = 0;
-            Tweener.addTween(a,
-                             { opacity: 255,
-                               time: WINDOW_OVERLAY_FADE_TIME,
-                               transition: 'easeOutQuad' });
-        });
-    },
-
-    _animateInvisible() {
-        [this.closeButton, this.border, this.title].forEach(a => {
-            a.opacity = 255;
-            Tweener.addTween(a,
-                             { opacity: 0,
-                               time: WINDOW_OVERLAY_FADE_TIME,
-                               transition: 'easeInQuad' });
-        });
-    },
-
-    _onShowChrome() {
-        // We might get enter events on the clone while the overlay is
-        // hidden, e.g. during animations, we ignore these events,
-        // as the close button will be shown as needed when the overlays
-        // are shown again
-        if (this._hidden)
-            return;
-
-        this._animateVisible();
-        this.emit('overlay-visible');
-    },
-
     _onHideChrome() {
         if (this._idleHideOverlayId == 0) {
-            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleToggleCloseButton.bind(this));
-            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleToggleCloseButton');
+            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
+                if (this.closeButton['has-pointer'])
+                    return GLib.SOURCE_CONTINUE;
+
+                this._idleHideOverlayId = 0;
+
+                if (!this._windowClone.actor['has-pointer'])
+                    this.hide(true);
+
+                return GLib.SOURCE_REMOVE;
+            });
+
+            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
         }
-    },
-
-    _idleToggleCloseButton() {
-        if (this.closeButton['has-pointer'])
-            return GLib.SOURCE_CONTINUE;
-
-        this._idleHideOverlayId = 0;
-
-        if (!this._windowClone.actor['has-pointer'])
-            this._animateInvisible();
-
-        return GLib.SOURCE_REMOVE;
-    },
-
-    hideCloseButton() {
-        if (this._idleHideOverlayId > 0) {
-            Mainloop.source_remove(this._idleHideOverlayId);
-            this._idleHideOverlayId = 0;
-        }
-        this.closeButton.hide();
-        this.border.hide();
-        this.title.hide();
     },
 
     _onStyleChanged() {
@@ -1169,6 +1187,15 @@ var Workspace = new Lang.Class({
                                                               this._windowEnteredMonitor.bind(this));
         this._windowLeftMonitorId = global.display.connect('window-left-monitor',
                                                            this._windowLeftMonitor.bind(this));
+
+        let disableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(true));
+        let enableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(false));
+
+        this._windowDragBeginId = Main.overview.connect('window-drag-begin', disableOverlays);
+        this._windowDragEndId = Main.overview.connect('window-drag-end', enableOverlays);
+        this._itemDragBeginId = Main.overview.connect('item-drag-begin', disableOverlays);
+        this._itemDragEndId = Main.overview.connect('item-drag-end', enableOverlays);
+
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
@@ -1340,7 +1367,7 @@ var Workspace = new Lang.Class({
             clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
 
             if (clone.overlay && (initialPositioning || !clone.positioned))
-                clone.overlay.hide();
+                clone.overlay.forceHide(true);
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1380,7 +1407,7 @@ var Workspace = new Lang.Class({
                 clone.actor.set_scale(scale, scale);
                 clone.actor.set_opacity(255);
                 clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, clone.overlay);
+                clone.overlay.forceHide(false);
             }
         }
     },
@@ -1413,20 +1440,10 @@ var Workspace = new Lang.Class({
                            scale_y: scale,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._showWindowOverlay(clone, overlay);
-                           }
+                           onComplete: () => overlay.forceHide(false)
                          });
 
         clone.overlay.relayout(true);
-    },
-
-    _showWindowOverlay(clone, overlay) {
-        if (clone.inDrag)
-            return;
-
-        if (overlay && overlay._hidden)
-                overlay.show();
     },
 
     _delayedWindowRepositioning() {
@@ -1804,6 +1821,11 @@ var Workspace = new Lang.Class({
         global.display.disconnect(this._windowEnteredMonitorId);
         global.display.disconnect(this._windowLeftMonitorId);
 
+        Main.overview.disconnect(this._windowDragBeginId);
+        Main.overview.disconnect(this._windowDragEndId);
+        Main.overview.disconnect(this._itemDragBeginId);
+        Main.overview.disconnect(this._itemDragEndId);
+
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
@@ -1855,7 +1877,6 @@ var Workspace = new Lang.Class({
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(clone.metaWindow);
-            overlay.hide();
         });
         clone.connect('drag-cancelled', () => {
             Main.overview.cancelledWindowDrag(clone.metaWindow);
@@ -1880,7 +1901,7 @@ var Workspace = new Lang.Class({
 
             this._windowOverlays.forEach(o => {
                 if (o != overlay)
-                    o.hideCloseButton();
+                    o.hide();
             });
         });
 
