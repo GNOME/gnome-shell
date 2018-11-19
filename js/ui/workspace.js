@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -7,10 +8,8 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Atk = imports.gi.Atk;
-
 const Signals = imports.signals;
+const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -296,8 +295,7 @@ var WindowClone = new Lang.Class({
         this.actor.layout_manager.boundingBox = rect;
     },
 
-    // Find the actor just below us, respecting reparenting done
-    // by DND code
+    // Find the actor just below us, respecting reparenting done by DND code
     getActualStackAbove() {
         if (this._stackAbove == null)
             return null;
@@ -1147,9 +1145,8 @@ var Workspace = new Lang.Class({
         this._windows = [];
         this._windowOverlays = [];
         for (let i = 0; i < windows.length; i++) {
-            if (this._isOverviewWindow(windows[i])) {
+            if (this._isOverviewWindow(windows[i]))
                 this._addWindowClone(windows[i], true);
-            }
         }
 
         // Track window changes
@@ -1516,7 +1513,7 @@ var Workspace = new Lang.Class({
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
-        if (this._lookupIndex (metaWin) != -1)
+        if (this._lookupIndex(metaWin) != -1)
             return;
 
         if (!this._isMyWindow(win))
@@ -1548,8 +1545,8 @@ var Workspace = new Lang.Class({
 
             clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
             clone.positioned = true;
-            clone.actor.set_position (x, y);
-            clone.actor.set_scale (scale, scale);
+            clone.actor.set_position(x, y);
+            clone.actor.set_scale(scale, scale);
             clone.overlay.relayout();
         }
 
@@ -1894,7 +1891,7 @@ var Workspace = new Lang.Class({
 
     _removeWindowClone(metaWin) {
         // find the position of the window in our list
-        let index = this._lookupIndex (metaWin);
+        let index = this._lookupIndex(metaWin);
 
         if (index == -1)
             return null;
