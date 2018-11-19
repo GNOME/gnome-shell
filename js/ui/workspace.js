@@ -670,7 +670,7 @@ var WindowOverlay = class {
             return;
 
         this._animateVisible();
-        this.emit('show-close-button');
+        this.emit('chrome-visible');
     }
 
     _onHideChrome() {
@@ -1855,7 +1855,7 @@ var Workspace = class {
 
         this.actor.add_actor(clone.actor);
 
-        overlay.connect('show-close-button', () => {
+        overlay.connect('chrome-visible', () => {
             let focus = global.stage.key_focus;
             if (focus == null || this.actor.contains(focus))
                 clone.actor.grab_key_focus();
