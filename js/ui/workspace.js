@@ -454,13 +454,15 @@ var WindowOverlay = class {
         this._parentActor = parentActor;
         this._hidden = false;
 
+        this._idleHideOverlayId = 0;
+
         this.borderSize = 0;
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
-        let title = new St.Label({ style_class: 'window-caption',
-                                   text: this._getCaption() });
-        title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        windowClone.actor.label_actor = title;
+        this.title = new St.Label({ style_class: 'window-caption',
+                                    text: this._getCaption() });
+        this.title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        windowClone.actor.label_actor = this.title;
 
         this._maxTitleWidth = -1;
 
@@ -469,22 +471,18 @@ var WindowOverlay = class {
             this.relayout(false);
         });
 
-        let button = new St.Button({ style_class: 'window-close' });
-        button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
-        button._overlap = 0;
+        this.closeButton = new St.Button({ style_class: 'window-close' });
+        this.closeButton.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
+        this.closeButton._overlap = 0;
 
-        this._idleHideOverlayId = 0;
-        button.connect('clicked', () => this._windowClone.deleteAll());
+        this.closeButton.connect('clicked', () => this._windowClone.deleteAll());
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
         windowClone.connect('show-chrome', this._onShowChrome.bind(this));
         windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
 
-        button.hide();
-        title.hide();
-
-        this.title = title;
-        this.closeButton = button;
+        this.title.hide();
+        this.closeButton.hide();
 
         // Don't block drop targets
         Shell.util_set_hidden_from_pick(this.title, true);
@@ -493,12 +491,14 @@ var WindowOverlay = class {
         parentActor.add_actor(this.border);
         parentActor.add_actor(this.title);
         parentActor.add_actor(this.closeButton);
-        title.connect('style-changed',
-                      this._onStyleChanged.bind(this));
-        button.connect('style-changed',
-                       this._onStyleChanged.bind(this));
-        this.border.connect('style-changed', this._onStyleChanged.bind(this));
-        // force a style change if we are already on a stage - otherwise
+        this.title.connect('style-changed',
+                           this._onStyleChanged.bind(this));
+        this.closeButton.connect('style-changed',
+                                 this._onStyleChanged.bind(this));
+        this.border.connect('style-changed',
+                            this._onStyleChanged.bind(this));
+
+        // Force a style change if we are already on a stage - otherwise
         // the signal will be emitted normally when we are added
         if (parentActor.get_stage())
             this._onStyleChanged();
@@ -1305,8 +1305,7 @@ var Workspace = class {
         for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
             let [x, y, scale, clone] = slot;
-            let metaWindow = clone.metaWindow;
-            let overlay = clone.overlay;
+
             clone.slotId = i;
 
             // Positioning a window currently being dragged must be avoided;
@@ -1322,10 +1321,10 @@ var Workspace = class {
             let maxChromeWidth = 2 * Math.min(
                 cloneCenter - area.x,
                 area.x + area.width - cloneCenter);
-            overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
+            clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
 
-            if (overlay && (initialPositioning || !clone.positioned))
-                overlay.hide();
+            if (clone.overlay && (initialPositioning || !clone.positioned))
+                clone.overlay.hide();
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1338,7 +1337,7 @@ var Workspace = class {
             }
 
             if (animate && isOnCurrentWorkspace) {
-                if (!metaWindow.showing_on_its_workspace()) {
+                if (!clone.metaWindow.showing_on_its_workspace()) {
                     /* Hidden windows should fade in and grow
                      * therefore we need to resize them now so they
                      * can be scaled up later */
@@ -1357,7 +1356,7 @@ var Workspace = class {
                                      });
                 }
 
-                this._animateClone(clone, overlay, x, y, scale);
+                this._animateClone(clone, clone.overlay, x, y, scale);
             } else {
                 // cancel any active tweens (otherwise they might override our changes)
                 Tweener.removeTweens(clone.actor);
@@ -1365,7 +1364,7 @@ var Workspace = class {
                 clone.actor.set_scale(scale, scale);
                 clone.actor.set_opacity(255);
                 clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, overlay);
+                this._showWindowOverlay(clone, clone.overlay);
             }
         }
     }
@@ -1862,7 +1861,11 @@ var Workspace = class {
             let focus = global.stage.key_focus;
             if (focus == null || this.actor.contains(focus))
                 clone.actor.grab_key_focus();
-            this._onShowOverlayClose(overlay);
+
+            this._windowOverlays.forEach(o => {
+                if (o != overlay)
+                    o.hideOverlay();
+            });
         });
 
         if (this._windows.length == 0)
@@ -1885,15 +1888,6 @@ var Workspace = class {
 
         this._windowOverlays.splice(index, 1);
         return this._windows.splice(index, 1).pop();
-    }
-
-    _onShowOverlayClose(windowOverlay) {
-        for (let i = 0; i < this._windowOverlays.length; i++) {
-            let overlay = this._windowOverlays[i];
-            if (overlay == windowOverlay)
-                continue;
-            overlay.hideOverlay();
-        }
     }
 
     _isBetterLayout(oldLayout, newLayout) {
