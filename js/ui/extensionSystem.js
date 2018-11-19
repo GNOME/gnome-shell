@@ -19,9 +19,9 @@ var ExtensionState = {
     UNINSTALLED: 99
 };
 
-// Arrays of uuids
+// Array of UUIDs
 var _enabledExtensions = [];
-// Contains the order that extensions were enabled in.
+// Array of UUIDs in order that extensions were enabled in
 var _extensionOrder = [];
 // Array with IDs of signals connected to
 var _settingsConnections = [];
@@ -93,7 +93,7 @@ function _disableExtension(uuid) {
 
     _extensionOrder.splice(orderIdx, 1);
 
-    if ( extension.state != ExtensionState.ERROR ) {
+    if (extension.state != ExtensionState.ERROR) {
         extension.state = ExtensionState.DISABLED;
         _signals.emit('extension-state-changed', extension);
     }
@@ -222,7 +222,7 @@ function _initExtension(uuid) {
     let dir = extension.dir;
 
     if (!extension)
-        throw new Error("Extension was not properly created. Call loadExtension first");
+        throw new Error("Extension was not properly created. Call ExtensionUtils.createExtensionObject first");
 
     let extensionJs = dir.get_child('extension.js');
     if (!extensionJs.query_exists(null)) {
