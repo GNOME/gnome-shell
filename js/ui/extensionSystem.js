@@ -398,9 +398,9 @@ var ExtensionManager = class {
 
         // Find and disable all the newly disabled extensions: UUIDs found in the
         // old setting, but not in the new one.
-        this._enabledExtensions.filter(
-            item => !newEnabledExtensions.includes(item)
-        ).forEach(uuid => {
+        this._extensionOrder.filter(
+            uuid => !newEnabledExtensions.includes(uuid)
+        ).slice().reverse().forEach(uuid => {
             this._callExtensionDisable(uuid);
         });
 
@@ -415,20 +415,22 @@ var ExtensionManager = class {
     }
 
     _onVersionValidationChanged() {
-        // we want to reload all extensions, but only enable
-        // extensions when allowed by the sessionMode, so
-        // temporarily disable them all
-        this._enabledExtensions = [];
+        // Because reloadExtension disables and enables extension which are
+        // already enabled, reload those extensions in the reverse order first
+        // to avoid the "rebasing" done in _callExtensionDisable...
+        this._extensionOrder.slice().reverse().forEach(uuid => {
+            let extension = this._extensions.get(uuid);
+            this.reloadExtension(extension);
+        });
 
         // The loop modifies the extensions map, so iterate over a copy
         let extensions = [...this._extensions.values()];
-        for (let extension of extensions)
-            this.reloadExtension(extension);
-        this._enabledExtensions = this._getEnabledExtensions();
 
-        this._enabledExtensions.forEach(uuid => {
-            this._callExtensionEnable(uuid);
-        });
+        // ...and then reload all the remaining, disabled extensions.
+        for (let extension of extensions)
+            if (!this._extensionOrder.includes(extension.uuid))
+                this.reloadExtension(extension);
+
     }
 
     _loadExtensions() {
