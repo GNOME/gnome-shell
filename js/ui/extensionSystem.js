@@ -17,12 +17,13 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 var ExtensionManager = class {
     constructor() {
-        this._initted = false;
-        this._enabled = false;
+        this._initialized = false;
 
         this._extensions = new Map();
         this._enabledExtensions = [];
         this._extensionOrder = [];
+
+        this._settingsConnections = [];
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
     }
@@ -388,9 +389,6 @@ var ExtensionManager = class {
     _onEnabledExtensionsChanged() {
         let newEnabledExtensions = this._getEnabledExtensions();
 
-        if (!this._enabled)
-            return;
-
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
         newEnabledExtensions.filter(
@@ -429,27 +427,12 @@ var ExtensionManager = class {
             this.reloadExtension(extension);
         this._enabledExtensions = this._getEnabledExtensions();
 
-        if (Main.sessionMode.allowExtensions) {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
+        this._enabledExtensions.forEach(uuid => {
+            this._callExtensionEnable(uuid);
+        });
     }
 
     _loadExtensions() {
-        global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`,
-            this._onEnabledExtensionsChanged.bind(this));
-        global.settings.connect(`changed::${DISABLED_EXTENSIONS_KEY}`,
-            this._onEnabledExtensionsChanged.bind(this));
-        global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`,
-            this._onUserExtensionsEnabledChanged.bind(this));
-        global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`,
-            this._onVersionValidationChanged.bind(this));
-        global.settings.connect(`writable-changed::${ENABLED_EXTENSIONS_KEY}`,
-            this._onSettingsWritableChanged.bind(this));
-        global.settings.connect(`writable-changed::${DISABLED_EXTENSIONS_KEY}`,
-            this._onSettingsWritableChanged.bind(this));
-
         this._enabledExtensions = this._getEnabledExtensions();
 
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
@@ -478,32 +461,32 @@ var ExtensionManager = class {
         });
     }
 
-    _enableAllExtensions() {
-        if (this._enabled)
+    _connectSettingsChanged() {
+        if (this._settingsConnections.length > 0)
             return;
 
-        if (!this._initted) {
-            this._loadExtensions();
-            this._initted = true;
-        } else {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
-        this._enabled = true;
+        this._settingsConnections = [
+            global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`,
+                this._onEnabledExtensionsChanged.bind(this)),
+            global.settings.connect(`changed::${DISABLED_EXTENSIONS_KEY}`,
+                this._onEnabledExtensionsChanged.bind(this)),
+            global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`,
+                this._onUserExtensionsEnabledChanged.bind(this)),
+            global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`,
+                this._onVersionValidationChanged.bind(this)),
+            global.settings.connect(`writable-changed::${ENABLED_EXTENSIONS_KEY}`,
+                this._onSettingsWritableChanged.bind(this)),
+            global.settings.connect(`writable-changed::${DISABLED_EXTENSIONS_KEY}`,
+                this._onSettingsWritableChanged.bind(this)),
+        ];
     }
 
-    _disableAllExtensions() {
-        if (!this._enabled)
-            return;
+    _disconnectSettingsChanged() {
+        this._settingsConnections.forEach(id => {
+            global.settings.disconnect(id);
+        });
 
-        if (this._initted) {
-            this._extensionOrder.slice().reverse().forEach(uuid => {
-                this._callExtensionDisable(uuid);
-            });
-        }
-
-        this._enabled = false;
+        this._settingsConnections = [];
     }
 
     _sessionUpdated() {
@@ -512,11 +495,21 @@ var ExtensionManager = class {
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initted)
-                this._enabledExtensions = this._getEnabledExtensions();
-            this._enableAllExtensions();
+            if (!this._initialized) {
+                this._loadExtensions();
+                this._initialized = true;
+            } else {
+                this._onEnabledExtensionsChanged();
+            }
+
+            this._connectSettingsChanged();
         } else {
-            this._disableAllExtensions();
+            this._disconnectSettingsChanged();
+
+            this._extensionOrder.slice().reverse().forEach(uuid => {
+                this._callExtensionDisable(uuid);
+            });
+            this._enabledExtensions = [];
         }
     }
 };
