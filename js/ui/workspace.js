@@ -22,7 +22,10 @@ var WINDOW_DND_SIZE = 256;
 
 var WINDOW_CLONE_MAXIMUM_SCALE = 1.0;
 
+var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
 var CLOSE_BUTTON_FADE_TIME = 0.1;
+
+var WINDOW_REPOSITIONING_DELAY = 750;
 
 var DRAGGING_WINDOW_OPACITY = 100;
 
@@ -674,7 +677,7 @@ var WindowOverlay = class {
 
     _onHideChrome() {
         if (this._idleToggleCloseId == 0) {
-            this._idleToggleCloseId = Mainloop.timeout_add(750, this._idleToggleCloseButton.bind(this));
+            this._idleToggleCloseId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleToggleCloseButton.bind(this));
             GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
         }
     }
@@ -1477,7 +1480,7 @@ var Workspace = class {
         this._cursorY = y;
 
         this._currentLayout = null;
-        this._repositionWindowsId = Mainloop.timeout_add(750,
+        this._repositionWindowsId = Mainloop.timeout_add(WINDOW_REPOSITIONING_DELAY,
             this._delayedWindowRepositioning.bind(this));
         GLib.Source.set_name_by_id(this._repositionWindowsId, '[gnome-shell] this._delayedWindowRepositioning');
     }
