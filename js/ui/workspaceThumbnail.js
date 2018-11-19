@@ -399,7 +399,7 @@ var WorkspaceThumbnail = class {
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
-        if (this._lookupIndex (metaWin) != -1)
+        if (this._lookupIndex(metaWin) != -1)
             return;
 
         if (!this._isMyWindow(win))
@@ -412,7 +412,7 @@ var WorkspaceThumbnail = class {
             while (parent.is_attached_dialog())
                 parent = parent.get_transient_for();
 
-            let idx = this._lookupIndex (parent);
+            let idx = this._lookupIndex(parent);
             if (idx < 0) {
                 // parent was not created yet, it will take care
                 // of the dialog when created
@@ -536,7 +536,7 @@ var WorkspaceThumbnail = class {
 
     _removeWindowClone(metaWin) {
         // find the position of the window in our list
-        let index = this._lookupIndex (metaWin);
+        let index = this._lookupIndex(metaWin);
 
         if (index == -1)
             return null;
