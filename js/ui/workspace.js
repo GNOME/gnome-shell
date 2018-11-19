@@ -679,7 +679,7 @@ var WindowOverlay = new Lang.Class({
             return;
 
         this._animateVisible();
-        this.emit('show-close-button');
+        this.emit('overlay-visible');
     },
 
     _onHideChrome() {
@@ -1871,7 +1871,7 @@ var Workspace = new Lang.Class({
 
         this.actor.add_actor(clone.actor);
 
-        overlay.connect('show-close-button', () => {
+        overlay.connect('overlay-visible', () => {
             let focus = global.stage.key_focus;
             if (focus == null || this.actor.contains(focus))
                 clone.actor.grab_key_focus();
