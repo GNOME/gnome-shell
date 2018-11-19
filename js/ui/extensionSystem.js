@@ -23,10 +23,14 @@ var ExtensionState = {
     UNINSTALLED: 99
 };
 
-// Arrays of uuids
-var enabledExtensions;
-// Contains the order that extensions were enabled in.
+// Array of uuids
+var enabledExtensions = [];
+// Array of uuids in order that extensions were enabled
 var extensionOrder = [];
+// Array with IDs of signals connected to
+var settingsConnections = null;
+
+var initialized = false;
 
 // We don't really have a class to add signals on. So, create
 // a simple dummy object, add the signal methods, and export those
@@ -40,9 +44,6 @@ var disconnect = _signals.disconnect.bind(_signals);
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
-
-var initted = false;
-var enabled;
 
 function disableExtension(uuid) {
     let extension = ExtensionUtils.extensions[uuid];
@@ -278,9 +279,6 @@ function getEnabledExtensions() {
 function onEnabledExtensionsChanged() {
     let newEnabledExtensions = getEnabledExtensions();
 
-    if (!enabled)
-        return;
-
     // Find and enable all the newly enabled extensions: UUIDs found in the
     // new setting, but not in the old one.
     newEnabledExtensions.filter(
@@ -309,49 +307,31 @@ function _onVersionValidationChanged() {
         reloadExtension(ExtensionUtils.extensions[uuid]);
     enabledExtensions = getEnabledExtensions();
 
-    if (Main.sessionMode.allowExtensions) {
-        enabledExtensions.forEach(uuid => {
-            enableExtension(uuid);
-        });
-    }
+    enabledExtensions.forEach(uuid => {
+        enableExtension(uuid);
+    });
 }
 
 function _loadExtensions() {
-    global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
-
     enabledExtensions = getEnabledExtensions();
-
     ExtensionUtils.scanExtensions((extension) => loadExtension(extension));
+
+    initialized = true;
 }
 
-function enableAllExtensions() {
-    if (enabled)
-        return;
+function _enableEvents() {
+    settingsConnections = [];
 
-    if (!initted) {
-        _loadExtensions();
-        initted = true;
-    } else {
-        enabledExtensions.forEach(uuid => {
-            enableExtension(uuid);
-        });
-    }
-    enabled = true;
+    settingsConnections.push(global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged));
+    settingsConnections.push(global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged));
+    settingsConnections.push(global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged));
 }
 
-function disableAllExtensions() {
-    if (!enabled)
-        return;
-
-    if (initted) {
-        extensionOrder.slice().reverse().forEach(uuid => {
-            disableExtension(uuid);
-        });
-    }
-
-    enabled = false;
+function _disableEvents() {
+    settingsConnections.forEach(id => {
+        global.settings.disconnect(id);
+    });
+    settingsConnections = null;
 }
 
 function _sessionUpdated() {
@@ -360,11 +340,21 @@ function _sessionUpdated() {
     // property; it might make sense to make enabledExtensions independent
     // from allowExtensions in the future
     if (Main.sessionMode.allowExtensions) {
-        if (initted)
-            enabledExtensions = getEnabledExtensions();
-        enableAllExtensions();
-    } else {
-        disableAllExtensions();
+        if (!initialized)
+            _loadExtensions();
+        else
+            onEnabledExtensionsChanged();
+
+        if (!settingsConnections)
+            _enableEvents();
+    } else if (settingsConnections) {
+        _disableEvents();
+
+        extensionOrder.slice().reverse().forEach(uuid => {
+            disableExtension(uuid);
+        });
+
+        enabledExtensions = [];
     }
 }
 
