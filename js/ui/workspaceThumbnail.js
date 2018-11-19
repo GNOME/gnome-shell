@@ -319,6 +319,7 @@ var WorkspaceThumbnail = class {
     }
 
     _lookupIndex(metaWindow) {
+<<<<<<< HEAD
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].metaWindow == metaWindow) {
                 return i;
@@ -326,6 +327,12 @@ var WorkspaceThumbnail = class {
         }
         return -1;
     }
+=======
+        return this._windows.findIndex(window => {
+            return window.metaWindow == metaWindow;
+        });
+    },
+>>>>>>> workspace: Use ES6 findIndex() method for getting window index
 
     syncStacking(stackIndices) {
         this._windows.sort((a, b) => {
