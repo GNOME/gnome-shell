@@ -1206,12 +1206,9 @@ var Workspace = class {
     }
 
     _lookupIndex(metaWindow) {
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
+        return this._windows.findIndex(window => {
+            return window.metaWindow == metaWindow;
+        });
     }
 
     containsMetaWindow(metaWindow) {
