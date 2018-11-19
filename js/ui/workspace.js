@@ -457,7 +457,7 @@ var WindowOverlay = new Lang.Class({
         this._windowClone = windowClone;
         this._parentActor = parentActor;
         this._hidden = false;
-        this._forceHidden = false;
+        this._forceHiddenAnimating = false;
         this._forceHiddenDragging = false;
 
         this._idleHideOverlayId = 0;
@@ -474,7 +474,7 @@ var WindowOverlay = new Lang.Class({
 
         this._updateTitleId = metaWindow.connect('notify::title', w => {
             this.title.text = this._getTitle();
-            this.relayout(false);
+            this.relayout();
         });
 
         this.closeButton = new St.Button({ style_class: 'window-close' });
@@ -508,7 +508,7 @@ var WindowOverlay = new Lang.Class({
     },
 
     show(animate) {
-        if (!this._hidden || this._forceHidden || this._forceHiddenDragging)
+        if (!this._hidden || this._forceHiddenAnimating || this._forceHiddenDragging)
             return;
 
         this._parentActor.raise_top();
@@ -571,12 +571,12 @@ var WindowOverlay = new Lang.Class({
         }
     },
 
-    forceHide(hide) {
+    forceHideAnimating(hide) {
         if (hide) {
-            this._forceHidden = true;
+            this._forceHiddenAnimating = true;
             this.hide();
         } else {
-            this._forceHidden = false;
+            this._forceHiddenAnimating = false;
         }
     },
 
@@ -1359,9 +1359,6 @@ var Workspace = new Lang.Class({
                 area.x + area.width - cloneCenter);
             clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
 
-            if (clone.overlay && (initialPositioning || !clone.positioned))
-                clone.overlay.forceHide(true);
-
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
                 // Grow the clone from the center of the slot
@@ -1394,13 +1391,15 @@ var Workspace = new Lang.Class({
 
                 this._animateClone(clone, clone.overlay, x, y, scale);
             } else {
+                clone.overlay.forceHideAnimating(true);
+
                 // cancel any active tweens (otherwise they might override our changes)
                 Tweener.removeTweens(clone.actor);
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
                 clone.actor.set_opacity(255);
-                clone.overlay.relayout(false);
-                clone.overlay.forceHide(false);
+                clone.overlay.relayout();
+                clone.overlay.forceHideAnimating(false);
             }
         }
     },
@@ -1426,6 +1425,8 @@ var Workspace = new Lang.Class({
     },
 
     _animateClone(clone, overlay, x, y, scale) {
+        overlay.forceHideAnimating(true);
+
         Tweener.addTween(clone.actor,
                          { x: x,
                            y: y,
@@ -1433,10 +1434,10 @@ var Workspace = new Lang.Class({
                            scale_y: scale,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: () => overlay.forceHide(false)
+                           onComplete: () => overlay.forceHideAnimating(false)
                          });
 
-        clone.overlay.relayout(true);
+        clone.overlay.relayout();
     },
 
     _delayedWindowRepositioning() {
@@ -1567,7 +1568,7 @@ var Workspace = new Lang.Class({
 
             clone.actor.set_position(x, y);
             clone.actor.set_scale(scale, scale);
-            clone.overlay.relayout(false);
+            clone.overlay.relayout();
         }
 
         this._currentLayout = null;
