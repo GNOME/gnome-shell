@@ -174,8 +174,7 @@ function loadExtension(extension) {
     if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
         extension.state = ExtensionState.OUT_OF_DATE;
     } else {
-        let enabled = _enabledExtensions.indexOf(extension.uuid) != -1;
-        if (enabled) {
+        if (_enabledExtensions.includes(extension.uuid)) {
             if (!_initExtension(extension.uuid))
                 return;
             if (extension.state == ExtensionState.DISABLED)
