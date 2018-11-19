@@ -23,6 +23,10 @@ var ExtensionState = {
 var enabledExtensions;
 // Contains the order that extensions were enabled in.
 var extensionOrder = [];
+// Array with IDs of signals connected to
+var _settingsConnections = [];
+
+var _initialized = false;
 
 // We don't really have a class to add signals on. So, create
 // a simple dummy object, add the signal methods, and export those
@@ -36,9 +40,6 @@ var disconnect = _signals.disconnect.bind(_signals);
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
-
-var initted = false;
-var enabled;
 
 function disableExtension(uuid) {
     let extension = ExtensionUtils.extensions[uuid];
@@ -274,9 +275,6 @@ function getEnabledExtensions() {
 function onEnabledExtensionsChanged() {
     let newEnabledExtensions = getEnabledExtensions();
 
-    if (!enabled)
-        return;
-
     // Find and enable all the newly enabled extensions: UUIDs found in the
     // new setting, but not in the old one.
     newEnabledExtensions.filter(
@@ -305,49 +303,33 @@ function _onVersionValidationChanged() {
         reloadExtension(ExtensionUtils.extensions[uuid]);
     enabledExtensions = getEnabledExtensions();
 
-    if (Main.sessionMode.allowExtensions) {
-        enabledExtensions.forEach(uuid => {
-            enableExtension(uuid);
-        });
-    }
+    enabledExtensions.forEach(uuid => {
+        enableExtension(uuid);
+    });
 }
 
 function _loadExtensions() {
-    global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
-
     enabledExtensions = getEnabledExtensions();
 
     ExtensionUtils.scanExtensions((extension) => loadExtension(extension));
+    _initialized = true;
 }
 
-function enableAllExtensions() {
-    if (enabled)
+function _connectSettingsChanged() {
+    if (_settingsConnections.length > 0)
         return;
 
-    if (!initted) {
-        _loadExtensions();
-        initted = true;
-    } else {
-        enabledExtensions.forEach(uuid => {
-            enableExtension(uuid);
-        });
-    }
-    enabled = true;
+    _settingsConnections.push(global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged));
+    _settingsConnections.push(global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged));
+    _settingsConnections.push(global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged));
 }
 
-function disableAllExtensions() {
-    if (!enabled)
-        return;
+function _disconnectSettingsChanged() {
+    _settingsConnections.forEach(id => {
+        global.settings.disconnect(id);
+    });
 
-    if (initted) {
-        extensionOrder.slice().reverse().forEach(uuid => {
-            disableExtension(uuid);
-        });
-    }
-
-    enabled = false;
+    _settingsConnections = [];
 }
 
 function _sessionUpdated() {
@@ -356,11 +338,17 @@ function _sessionUpdated() {
     // property; it might make sense to make enabledExtensions independent
     // from allowExtensions in the future
     if (Main.sessionMode.allowExtensions) {
-        if (initted)
-            enabledExtensions = getEnabledExtensions();
-        enableAllExtensions();
+        if (!_initialized)
+            _loadExtensions();
+        else
+            onEnabledExtensionsChanged();
+
+        _connectSettingsChanged();
     } else {
-        disableAllExtensions();
+        _disconnectSettingsChanged();
+
+        extensionOrder.slice().reverse().forEach(uuid => disableExtension(uuid));
+        enabledExtensions = [];
     }
 }
 
