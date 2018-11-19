@@ -579,6 +579,8 @@ var WindowOverlay = new Lang.Class({
             this.hide();
         } else {
             this._forceHiddenAnimating = false;
+            if (this._windowClone.actor['has-pointer'])
+                this.show();
         }
     },
 
@@ -588,6 +590,8 @@ var WindowOverlay = new Lang.Class({
             this.hide();
         } else {
             this._forceHiddenDragging = false;
+            if (this._windowClone.actor['has-pointer'])
+                this.show();
         }
     },
 
