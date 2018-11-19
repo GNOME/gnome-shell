@@ -288,9 +288,9 @@ function _onEnabledExtensionsChanged() {
 
     // Find and disable all the newly disabled extensions: UUIDs found in the
     // old setting, but not in the new one.
-    _enabledExtensions.filter(
-        item => !newEnabledExtensions.includes(item)
-    ).forEach(uuid => {
+    _extensionOrder.filter(
+        uuid => !newEnabledExtensions.includes(uuid)
+    ).slice().reverse().forEach(uuid => {
         _disableExtension(uuid);
     });
 
@@ -298,17 +298,17 @@ function _onEnabledExtensionsChanged() {
 }
 
 function _onVersionValidationChanged() {
-    // we want to reload all extensions, but only enable
-    // extensions when allowed by the sessionMode, so
-    // temporarily disable them all
-    _enabledExtensions = [];
+    // Disable the extensions in a fast way before reloading
+    // them. While reloadExtension would also disable them,
+    // it can't be called using the reversed _extensionOrder
+    // array, which avoids disabling and re-enabling a lot
+    // extensions during the process.
+    _extensionOrder.slice().reverse().forEach(uuid => {
+        _disableExtension(uuid);
+    });
+
     for (let uuid in ExtensionUtils.extensions)
         reloadExtension(ExtensionUtils.extensions[uuid]);
-    _enabledExtensions = getEnabledExtensions();
-
-    _enabledExtensions.forEach(uuid => {
-        _enableExtension(uuid);
-    });
 }
 
 function _loadExtensions() {
