@@ -325,12 +325,9 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     _lookupIndex(metaWindow) {
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
+        return this._windows.findIndex(window => {
+            return window.metaWindow == metaWindow;
+        });
     },
 
     syncStacking(stackIndices) {
@@ -405,7 +402,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
-        if (this._lookupIndex (metaWin) != -1)
+        if (this._lookupIndex(metaWin) != -1)
             return;
 
         if (!this._isMyWindow(win))
@@ -418,7 +415,7 @@ var WorkspaceThumbnail = new Lang.Class({
             while (parent.is_attached_dialog())
                 parent = parent.get_transient_for();
 
-            let idx = this._lookupIndex (parent);
+            let idx = this._lookupIndex(parent);
             if (idx < 0) {
                 // parent was not created yet, it will take care
                 // of the dialog when created
@@ -542,7 +539,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
     _removeWindowClone(metaWin) {
         // find the position of the window in our list
-        let index = this._lookupIndex (metaWin);
+        let index = this._lookupIndex(metaWin);
 
         if (index == -1)
             return null;

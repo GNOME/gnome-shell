@@ -1250,7 +1250,7 @@ StScrollBar {
     // to fix that case
     box-shadow: inset 0px 0px 0px 1px $selected_bg_color;
   }
-  .window-caption {
+  .window-title {
     spacing: 25px;
     color: $selected_fg_color;
     background-color: $selected_bg_color;
