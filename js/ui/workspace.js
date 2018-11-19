@@ -681,10 +681,12 @@ var WindowOverlay = class {
     }
 
     _idleHideOverlay() {
+        if (this.closeButton['has-pointer'])
+            return GLib.SOURCE_CONTINUE;
+
         this._idleHideOverlayId = 0;
 
-        if (!this._windowClone.actor['has-pointer'] &&
-            !this.closeButton['has-pointer'])
+        if (!this._windowClone.actor['has-pointer'])
             this._animateInvisible();
 
         return GLib.SOURCE_REMOVE;
