@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell/theme">
-    <file>calendar-arrow-left.svg</file>
-    <file>calendar-arrow-right.svg</file>
     <file>calendar-today.svg</file>
     <file>checkbox-focused.svg</file>
     <file>checkbox-off-focused.svg</file>
     <file>checkbox-off.svg</file>
     <file>checkbox.svg</file>
-    <file>close-window.svg</file>
-    <file>close-window-active.svg</file>
-    <file>close-window-hover.svg</file>
-    <file>corner-ripple-ltr.png</file>
-    <file>corner-ripple-rtl.png</file>
     <file>dash-placeholder.svg</file>
     <file>gnome-shell.css</file>
     <file>gnome-shell-high-contrast.css</file>
@@ -27,10 +20,6 @@
     <file>no-notifications.svg</file>
     <file>noise-texture.png</file>
     <file>pad-osd.css</file>
-    <file>page-indicator-active.svg</file>
-    <file>page-indicator-inactive.svg</file>
-    <file>page-indicator-checked.svg</file>
-    <file>page-indicator-hover.svg</file>
     <file>process-working.svg</file>
     <file>toggle-off-us.svg</file>
     <file>toggle-off-intl.svg</file>

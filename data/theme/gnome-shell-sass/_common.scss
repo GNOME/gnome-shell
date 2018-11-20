@@ -938,7 +938,6 @@ StScrollBar {
     }
 
     .pager-button {
-      color: white;
       background-color: transparent;
       width: 32px;
       border-radius: 4px;
@@ -946,13 +945,8 @@ StScrollBar {
       &:active { background-color: transparentize($bg_color,0.95); }
     }
 
-      .calendar-change-month-back { //arrow back
-        background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-left.svg");
-        &:rtl { background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-right.svg"); }
-      }
-      .calendar-change-month-forward { //arrow foreward
-        background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-right.svg");
-        &:rtl { background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-left.svg"); }
+      .calendar-change-month-back StIcon, .calendar-change-month-forward StIcon { //arrows
+        icon-size: 14px;
       }
 
     .calendar-day-base {
@@ -1143,16 +1137,17 @@ StScrollBar {
   }
 
 //Activities Ripples
+// Activities Ripples
 .ripple-box {
   width: 52px;
   height: 52px;
-  background-image: url("resource:///org/gnome/shell/theme/corner-ripple-ltr.png");
-  background-size: contain;
+  border-radius: 0 0 52px 0; // radius the size of the box give us the curve
+  background-color: lighten(transparentize($selected_bg_color, 0.7), 40%);
+  box-shadow: 0 0 2px 2px lighten($selected_bg_color, 20%);
 }
 
-.ripple-box:rtl {
-  background-image: url("resource:///org/gnome/shell/theme/corner-ripple-rtl.png");
-}
+.ripple-box:rtl { border-radius: 0 0 0 52px; } // just a simple change to the border radius position
+
 
 // not really top bar only
 .popup-menu-arrow { width: 16px; height: 16px; }
@@ -1161,14 +1156,27 @@ StScrollBar {
 //close buttons
 
 .window-close {
-  background-image: url("resource:///org/gnome/shell/theme/close-window.svg");
-  background-size: 32px;
-  height: 32px;
-  width: 32px;
+  height: 27px;
+  width: 27px;
+  margin: 2px;
+  border-radius: 27px;
   -shell-close-overlap: 16px;
-
-  &:hover { background-image: url("resource:///org/gnome/shell/theme/close-window-hover.svg"); }
-  &:active { background-image: url("resource:///org/gnome/shell/theme/close-window-active.svg"); }
+  border: 2px solid #2975c4;
+  background-color: #FFF;
+  color: #2975c4;
+  box-shadow: inset 0 -2px 0 rgba(#2975c4, .4);
+  &:hover {
+    border-color: #FFF;
+    background-color: #2975c4;
+    color: #FFF;
+    box-shadow: none;
+  }
+  &:active {
+    border-color: #2975c4;
+    background-color: #a5c8ec;
+    color: #2975c4;
+    box-shadow: none;
+  }
 }
 
 /* NETWORK DIALOGS */
@@ -1447,15 +1455,25 @@ StScrollBar {
     padding: 15px 20px;
 
     .page-indicator-icon {
-      width: 18px;
-      height: 18px;
-      background-image: url(resource:///org/gnome/shell/theme/page-indicator-inactive.svg);
+      width: 12px;
+      height: 12px;
+      background-color: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
     }
 
-    &:hover .page-indicator-icon { background-image: url(resource:///org/gnome/shell/theme/page-indicator-hover.svg); }
-    &:active .page-indicator-icon { background-image: url(resource:///org/gnome/shell/theme/page-indicator-active.svg); }
+    &:hover .page-indicator-icon { border-color: #FFF }
+    &:active .page-indicator-icon {
+      width: 8px;
+      height: 8px;
+      margin: 2px;
+      background-color: #FFF;
+    }
     &:checked .page-indicator-icon,
-    &:checked:active { background-image: url(resource:///org/gnome/shell/theme/page-indicator-checked.svg); }
+    &:checked:active .page-indicator-icon {
+      border-color: #FFF;
+      background-color: #FFF;
+    }
   }
 
   .no-frequent-applications-label { @extend %status_text; }
@@ -1480,6 +1498,7 @@ StScrollBar {
       background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
       background-size: contain;
       height: 24px;
+
     }
   }
   .workspace-thumbnail-indicator {
