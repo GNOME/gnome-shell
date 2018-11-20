@@ -63,12 +63,23 @@ var IBusManager = new Lang.Class({
     },
 
     _spawn() {
-        try {
-            Gio.Subprocess.new(['ibus-daemon', '--xim', '--panel', 'disable'],
-                               Gio.SubprocessFlags.NONE);
-        } catch(e) {
-            log('Failed to launch ibus-daemon: ' + e.message);
-        }
+        // Create and initialize a proxy. Because we did not specify
+        // Gio.DBusProxyFlags.DO_NOT_AUTO_START, calling init_async() will
+        // cause StartServiceByName() to be called to launch it if it's not
+        // already running.
+        let proxy = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
+                                        g_name: 'org.freedesktop.IBus',
+                                        g_object_path: '/',
+                                        g_interface_name: 'org.freedesktop.DBus.Peer',
+                                        g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES |
+                                                 Gio.DBusProxyFlags.DO_NOT_CONNECT_SIGNALS });
+        proxy.init_async(GLib.PRIORITY_DEFAULT, null, (object, result) => {
+            try {
+                object.init_finish(result);
+            } catch(e) {
+                logError(e, 'Failed to launch ibus-daemon');
+            }
+        });
     },
 
     _clear() {
