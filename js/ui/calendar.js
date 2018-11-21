@@ -443,11 +443,10 @@ var Calendar = new Lang.Class({
         layout.pack(this._topBox, 0, 0);
         layout.set_span(this._topBox, offsetCols + 7, 1);
 
-        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         this._backButton = new St.Button({ style_class: 'calendar-change-month-back pager-button',
                                            accessible_name: _("Previous month"),
                                            can_focus: true });
-        this._backButton.add_actor(new St.Icon({ icon_name: rtl ? 'pan-end-symbolic' : 'pan-start-symbolic' }));
+        this._backButton.add_actor(new St.Icon({ icon_name: 'pan-start-symbolic' }));
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
@@ -458,7 +457,7 @@ var Calendar = new Lang.Class({
         this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward pager-button',
                                               accessible_name: _("Next month"),
                                               can_focus: true });
-        this._forwardButton.add_actor(new St.Icon({ icon_name: rtl ? 'pan-start-symbolic' : 'pan-end-symbolic' }));
+        this._forwardButton.add_actor(new St.Icon({ icon_name: 'pan-end-symbolic' }));
         this._topBox.add(this._forwardButton);
         this._forwardButton.connect('clicked', this._onNextMonthButtonClicked.bind(this));
 
@@ -479,7 +478,7 @@ var Calendar = new Lang.Class({
                                        can_focus: true });
             label.accessible_name = iter.toLocaleFormat('%A');
             let col;
-            if (rtl)
+            if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
