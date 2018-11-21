@@ -287,6 +287,9 @@ void st_theme_node_paint_state_free (StThemeNodePaintState *state);
 void st_theme_node_paint_state_copy (StThemeNodePaintState *state,
                                      StThemeNodePaintState *other);
 void st_theme_node_paint_state_invalidate (StThemeNodePaintState *state);
+gboolean st_theme_node_paint_state_invalidate_for_file (StThemeNodePaintState *state,
+                                                        GFile                 *file);
+
 void st_theme_node_paint_state_set_node (StThemeNodePaintState *state,
                                          StThemeNode           *node);
 
