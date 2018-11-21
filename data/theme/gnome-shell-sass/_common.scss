@@ -78,7 +78,7 @@ stage {
 /* Entries */
 StEntry {
   border-radius: 3px;
-  padding: 4px;
+  padding: .25em;
   border-width: 1px;
   color: $fg_color;
   @include entry(normal);
@@ -88,9 +88,9 @@ StEntry {
   selection-background-color: $selected_bg_color;
   selected-color: $selected_fg_color;
   StIcon.capslock-warning {
-    icon-size: 16px;
+    icon-size: 1em;
     warning-color: $warning_color;
-    padding: 0 4px;
+    padding: 0 .25em;
   }
 }
 
@@ -98,16 +98,16 @@ StEntry {
 /* Scrollbars */
 
 StScrollView {
-  &.vfade { -st-vfade-offset: 68px; }
-  &.hfade { -st-hfade-offset: 68px; }
+  &.vfade { -st-vfade-offset: 4.25em; }
+  &.hfade { -st-hfade-offset: 4.25em; }
 }
 
 StScrollBar {
   padding: 0;
 
   StScrollView & {
-    min-width: 14px;
-    min-height: 14px;
+    min-width: .875em;
+    min-height: .875em;
   }
 
   StBin#trough {
@@ -116,10 +116,10 @@ StScrollBar {
   }
 
   StButton#vhandle, StButton#hhandle {
-    border-radius: 8px;
+    border-radius: 100px;
     background-color: mix($fg_color, $bg_color, 60%);
     //border: 3px solid transparent; //would be nice to margin or at least to transparent
-    margin: 3px;
+    margin: .19em;
     &:hover { background-color: mix($fg_color, $bg_color, 80%); }
     &:active { background-color: $selected_bg_color; }
   }
@@ -138,7 +138,7 @@ StScrollBar {
   -barlevel-overdrive-border-color: darken($destructive_color,10%);
   -barlevel-overdrive-separator-width: 0.2em;
   -barlevel-border-width: 1px;
-  -slider-handle-radius: 6px;
+  -slider-handle-radius: .375em;
 }
 
 /* Check Boxes */
@@ -146,9 +146,10 @@ StScrollBar {
 .check-box {
   StBoxLayout { spacing: .8em; }
   StBin {
-    width: 24px;
-    height: 22px;
+    width: 1.35em;
+    height: 1.35em;
     background-image: url("resource:///org/gnome/shell/theme/checkbox-off.svg");
+    background-size: contain;
   }
   &:focus StBin { background-image: url("resource:///org/gnome/shell/theme/checkbox-off-focused.svg"); }
   &:checked StBin { background-image: url("resource:///org/gnome/shell/theme/checkbox.svg"); }
@@ -157,8 +158,8 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
-  width: 65px;
-  height: 22px;
+  width: 4.65em;
+  height: 1.6em;
   background-size: contain;
 }
 
@@ -221,8 +222,8 @@ StScrollBar {
   }
 
   .message-dialog-icon {
-    min-width: 48px;
-    icon-size: 48px;
+    min-width: 3.2em;
+    icon-size: 3.2em;
   }
 
   .message-dialog-title {
@@ -514,7 +515,7 @@ StScrollBar {
 
   .popup-menu-content { padding: 1em 0em; }
   .popup-menu-item {
-    spacing: 12px;
+    spacing: 1.2em;
 
     &:ltr { padding: .4em 1.75em .4em 0em; }
     &:rtl { padding: .4em 0em .4em 1.75em; }
@@ -773,8 +774,8 @@ StScrollBar {
 
     .app-menu-icon {
       -st-icon-style: symbolic;
-      margin-left: 4px;
-      margin-right: 4px;
+      margin-left: .4em;
+      margin-right: .4em;
       //dimensions of the icon are hardcoded
     }
 
@@ -940,7 +941,7 @@ StScrollBar {
     .pager-button {
       color: white;
       background-color: transparent;
-      width: 32px;
+      width: 2em;
       border-radius: 4px;
       &:hover, &:focus { background-color: transparentize($fg_color,0.95); }
       &:active { background-color: transparentize($bg_color,0.95); }
@@ -1021,6 +1022,7 @@ StScrollBar {
           background-color: transparent;
           &:hover,&:focus { background-color: lighten($bg_color,5%); }
           margin: 1.5em 1.5em 0;
+          padding: .3em 2em;
         }
 
         .message-list-sections {
@@ -1049,7 +1051,7 @@ StScrollBar {
           }
 
           .message-secondary-bin {
-            padding: 0 0.82em;;
+            padding: 0 0.82em;
           }
 
           .message-secondary-bin > .event-time {
@@ -1071,39 +1073,45 @@ StScrollBar {
           .message-content {
             color: darken($fg_color,20%);
             padding: 10px;
+            
+            & .message-close-button > StIcon {
+              icon-size: 1.07em;
+            }
           }
 
           .message-media-control {
-            padding: 12px;
+            padding: .8em;
             color: darken($fg_color, 20%);
 
-            &:last-child:ltr { padding-right: 18px; }
-            &:last-child:rtl { padding-left: 18px; }
+            &:last-child:ltr { padding-right: 1.2em; }
+            &:last-child:rtl { padding-left: 1.2em; }
             &:hover { color: $fg_color; }
             &:insensitive { color: darken($fg_color,40%); }
+            & StIcon { icon-size: 1.06em; }
           }
 
           .media-message-cover-icon {
-            icon-size: 48px !important;
+            icon-size: 3.2em !important;
             &.fallback {
               color: lighten($bg_color,10%);
               background-color: $bg_color;
-              border: 2px solid $bg_color;
-              border-radius: 2px;
-              icon-size: 16px;
-              padding: 8px; }
+              border: .13em solid $bg_color;
+              border-radius: .13em;
+              icon-size: 1.06em;
+              padding: .53em; }
           }
 
 
   // a little unstructured mess:
 
   .system-switch-user-submenu-icon.user-icon {
-    icon-size: 20px;
-    padding: 0 2px;
+    icon-size: 1.81em;
+    padding: 0 .18em;
   }
+
   .system-switch-user-submenu-icon.default-icon {
-    icon-size: 16px;
-    padding: 0 4px;
+    icon-size: 1em;
+    padding: 0 .36em;
   }
 
   #appMenu {
@@ -1115,31 +1123,31 @@ StScrollBar {
 
   .aggregate-menu {
     min-width: 21em;
-    .popup-menu-icon { padding: 0 4px; }
+    .popup-menu-icon { padding: 0 .36em; }
     .popup-sub-menu .popup-menu-item > :first-child {
       &:ltr { /* 12px spacing + 2*4px padding */
-              padding-left: 20px; margin-left: 1.09em; }
+              padding-left: 1.81em; margin-left: 1.09em; }
       &:rtl { /* 12px spacing + 2*4px padding */
-              padding-right: 20px; margin-right: 1.09em; }
+              padding-right: 1.81em; margin-right: 1.09em; }
     }
   }
 
   .system-menu-action {
     -st-icon-style: symbolic;
     color: $fg_color;
-    border-radius: 32px; /* wish we could do 50% */
-    padding: 13px;
-    border: 1px solid lighten($borders_color,5%);
+    border-radius: 100px; /* wish we could do 50% */
+    padding: .81em;
+    border: .06em solid lighten($borders_color,5%);
 
     &:hover, &:focus {
       background-color: transparentize($fg_color,0.9);
       color: $fg_color;
-      border: none;
-      padding: 14px;
+      border-color: transparentize($fg_color,0.9);
+      padding: .81em;
     }
     &:active { background-color: $selected_bg_color; color: $selected_fg_color; }
 
-    & > StIcon { icon-size: 16px; }
+    & > StIcon { icon-size: 1em; }
   }
 
 //Activities Ripples
@@ -1155,7 +1163,7 @@ StScrollBar {
 }
 
 // not really top bar only
-.popup-menu-arrow { width: 16px; height: 16px; }
+.popup-menu-arrow { width: 1em; height: 1em; }
 .popup-menu-icon { icon-size: 1.09em; }
 
 //close buttons
@@ -1180,11 +1188,11 @@ StScrollBar {
 }
 
   .nm-dialog-content {
-    spacing: 20px;
-    padding: 24px;
+    spacing: 1.81em;
+    padding: 2.18em;
   }
-  .nm-dialog-header-hbox { spacing: 10px; }
-  .nm-dialog-airplane-box { spacing: 12px; }
+  .nm-dialog-header-hbox { spacing: .9em; }
+  .nm-dialog-airplane-box { spacing: 1.09em; }
 
   .nm-dialog-airplane-headline {
     font-weight: bold;
@@ -1192,15 +1200,15 @@ StScrollBar {
   }
 
   .nm-dialog-airplane-text { color: $fg_color; }
-  .nm-dialog-header-icon { icon-size: 32px; }
-  .nm-dialog-scroll-view { border: 2px solid $borders_color; }
+  .nm-dialog-header-icon { icon-size: 2.9em; }
+  .nm-dialog-scroll-view { border: .18em solid $borders_color; }
   .nm-dialog-header { font-weight: bold; }
 
   .nm-dialog-item {
     font-size: 110%;
     border-bottom: 1px solid $borders_color;
-    padding: 12px;
-    spacing: 20px;
+    padding: 1.09em;
+    spacing: 1.82em;
   }
 
   .nm-dialog-item:selected {
@@ -1209,9 +1217,9 @@ StScrollBar {
   }
 
   .nm-dialog-icons { spacing: .5em; }
-  .nm-dialog-icon { icon-size: 16px; }
+  .nm-dialog-icon { icon-size: 1.45em; }
   .no-networks-label { color: #999999; }
-  .no-networks-box { spacing: 12px; }
+  .no-networks-box { spacing: 1.1em; }
 
 /* OVERVIEW */
 
@@ -1249,19 +1257,19 @@ StScrollBar {
 
   //search entry
   .search-entry {
-    width: 320px;
-    padding: 7px 9px;
-    border-radius: 6px;
+    width: 21.85em;
+    padding: .5em .6em;
+    border-radius: .41em;
     border-color: darken($osd_fg_color,50%);
     color: $osd_fg_color;
     background-color: $osd_bg_color;
     &:focus {
-      padding: 6px 8px;
-      border-width: 2px;
+      padding: .41em .54em;
+      border-width: .14em;
       border-color: $selected_bg_color;
     }
 
-    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: transparentize($fg_color,.3); }
+    .search-entry-icon { icon-size: 1em; padding: 0 .27em; color: transparentize($fg_color,.3); }
 
     &:hover, &:focus {
       .search-entry-icon { color: $fg_color; }
@@ -1359,7 +1367,7 @@ StScrollBar {
     padding-bottom: 32px;
   }
   .app-view-control { //favorties | all toggle button
-    padding: 4px 32px;
+    padding: .27em 2.13em;
     &:checked { @include button(active); }
     &:first-child {
       border-right-width: 0;
@@ -1515,8 +1523,8 @@ StScrollBar {
   .notification-banner {
     font-size: 11pt;
     width: 34em;
-    margin: 5px;
-    border-radius: 6px;
+    margin: .45em;
+    border-radius: .54em;
     color: $_bubble_fg_color;
     background-color: $_bubble_bg_color;
     border: 1px solid $borders_color;
@@ -1524,19 +1532,19 @@ StScrollBar {
     &:hover { background-color: $_bubble_bg_color; }
     &:focus { background-color: $_bubble_bg_color; }
 
-    .notification-icon { padding: 5px; }
-    .notification-content { padding: 5px; spacing: 5px; }
+    .notification-icon { padding: .45em; }
+    .notification-content { padding: .45em; spacing: .45em; }
     .secondary-icon { icon-size: 1.09em; }
     .notification-actions {
       background-color: $borders_color;
-      padding-top: 2px;
-      spacing: 1px;
+      padding-top: .18em;
+      spacing: .09em;
     }
     .notification-button {
-      padding: 4px 4px 5px;
+      padding: .36em .36em .45em;
       background-color: darken($_bubble_bg_color,5%);
-      &:first-child { border-radius: 0 0 0 6px; }
-      &:last-child { border-radius: 0 0 6px 0; }
+      &:first-child { border-radius: 0 0 0 .54em; }
+      &:last-child { border-radius: 0 0 .54em 0; }
       &:hover, &focus { background-color: darken($_bubble_bg_color,2%); }
     }
   }

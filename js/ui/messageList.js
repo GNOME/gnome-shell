@@ -348,9 +348,9 @@ var Message = new Lang.Class({
                                           x_fill: true, y_fill: true });
         titleBox.add_actor(this._secondaryBin);
 
-        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
-                                      icon_size: 16 });
-        this._closeButton = new St.Button({ child: closeIcon, opacity: 0 });
+        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic' });
+        this._closeButton = new St.Button({ style_class: 'message-close-button',
+                                            child: closeIcon, opacity: 0 });
         titleBox.add_actor(this._closeButton);
 
         this._bodyStack = new St.Widget({ x_expand: true });
@@ -419,7 +419,7 @@ var Message = new Lang.Class({
     },
 
     addMediaControl(iconName, callback) {
-        let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
+        let icon = new St.Icon({ icon_name: iconName });
         let button = new St.Button({ style_class: 'message-media-control',
                                      child: icon });
         button.connect('clicked', callback);
