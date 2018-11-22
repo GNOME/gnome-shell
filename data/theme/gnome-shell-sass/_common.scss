@@ -157,17 +157,51 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
-  width: 65px;
-  height: 22px;
-  background-size: contain;
-}
+  width: 4.57em;
+  height: 1.42em;
+  border-radius: .21em;
+  background: #2c2c2c;
+  box-shadow:  inset 0 .7em .7em -.7em rgba(0, 0, 0, .3);
+  border: .07em solid $borders_color;
+  
+  > StBin {
+    width: 2.43em;
+    height: 1.28em;
+    border: 0 solid lighten($borders_color, 10%);
+    font-weight: bold;
+    border-radius: .21em;
+    color: white;
+    &:first-child {
+      width: 2em;
+      background: $bg_color;
+      border-width: .07em;
+      box-shadow: inset 0 .7em .7em -.7em rgba(255, 255, 255, .2);
+      color: transparent;
+    }
 
-  @each $v in us, intl {
-    .toggle-switch-#{$v} {
-      background-image: url("resource:///org/gnome/shell/theme/toggle-off-#{$v}.svg");
-      &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-#{$v}.svg"); }
+    > StLabel { font-size: .7em; }
+  }
+  
+  &:checked {
+    background: $selected_bg_color;
+
+    > StBin {
+      &:first-child {
+        width: 2.43em;
+        color: white;
+        background: transparent;
+        border: 0;
+      }
+      &:last-child {
+        width: 2em;
+        background: $bg_color;
+        border-width: .07em;
+        box-shadow: inset 0 .7em .7em -.7em rgba(255, 255, 255, .2);
+        color: transparent;
+      }
     }
   }
+}
 
 /* links */
 .shell-link {
