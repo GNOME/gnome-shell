@@ -1309,10 +1309,8 @@ var MessageTray = new Lang.Class({
         }
 
         this._banner = this._notification.createBanner();
-        this._bannerClickedId = this._banner.connect('done-displaying', () => {
-            Meta.enable_unredirect_for_display(global.display);
-            this._escapeTray();
-        });
+        this._bannerClickedId = this._banner.connect('done-displaying',
+                                                     this._escapeTray.bind(this));
         this._bannerUnfocusedId = this._banner.connect('unfocused', () => {
             this._updateState();
         });
@@ -1462,6 +1460,7 @@ var MessageTray = new Lang.Class({
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;
+        Meta.enable_unredirect_for_display(global.display);
 
         this._banner.actor.destroy();
         this._banner = null;
