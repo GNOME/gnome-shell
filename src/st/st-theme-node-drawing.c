@@ -229,9 +229,9 @@ unpremultiply (ClutterColor *color)
 {
   if (color->alpha != 0)
     {
-      color->red = (color->red * 255 + 127) / color->alpha;
-      color->green = (color->green * 255 + 127) / color->alpha;
-      color->blue = (color->blue * 255 + 127) / color->alpha;
+      color->red = MIN((color->red * 255 + 127) / color->alpha, 255);
+      color->green = MIN((color->green * 255 + 127) / color->alpha, 255);
+      color->blue = MIN((color->blue * 255 + 127) / color->alpha, 255);
     }
 }
 
