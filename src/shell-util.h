@@ -78,6 +78,8 @@ gboolean shell_util_has_x11_display_extension (MetaDisplay *display,
 
 char *shell_util_get_translated_folder_name (const char *name);
 
+gint shell_util_get_uid (void);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
