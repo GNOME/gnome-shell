@@ -13,6 +13,7 @@ const IconGrid = imports.ui.iconGrid;
 const IconGridLayout = imports.ui.iconGridLayout;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
@@ -1049,6 +1050,7 @@ var AppSearchProvider = class AppSearchProvider {
         let usage = Shell.AppUsage.get_default();
         let results = [];
         let replacementMap = {};
+        let parentalControlsManager = ParentalControlsManager.getDefault();
 
         groups.forEach(group => {
             group = group.filter(appID => {
@@ -1060,6 +1062,10 @@ var AppSearchProvider = class AppSearchProvider {
                     return false;
 
                 const app = this._appSys.lookup_app(appID);
+
+                if (!parentalControlsManager.shouldShowApp(app.app_info))
+                    return false;
+
                 if (app && app.app_info.should_show()) {
                     let replacedByID = app.app_info.get_string(EOS_REPLACED_BY_KEY);
                     if (replacedByID)

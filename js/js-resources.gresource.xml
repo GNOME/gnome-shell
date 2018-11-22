@@ -141,6 +141,7 @@
 
     <!-- Endless-specific files beyond this point -->
 
+    <file>misc/parentalControlsManager.js</file>
     <file>ui/appActivation.js</file>
     <file>ui/appIconBar.js</file>
     <file>ui/components/appStore.js</file>
