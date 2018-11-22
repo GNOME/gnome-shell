@@ -7,8 +7,6 @@ stage {
   -st-icon-style: symbolic;
 }
 
-.toggle-switch { width: 48px; }
-.toggle-switch-us, .toggle-switch-intl {
-  background-image: url("resource:///org/gnome/shell/theme/toggle-off-hc.svg");
-  &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-hc.svg"); }
+.toggle-switch {
+  > StBin:first-child, &:checked > StBin:last-child { background-color: white; }
 }
