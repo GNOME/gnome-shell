@@ -244,6 +244,13 @@ over (const ClutterColor *source,
   ClutterColor src = *source;
   ClutterColor dst = *destination;
 
+  /* If the destination has value of "transparent", leave source unmodified */
+  if (dst.red == 0 && dst.green == 0 && dst.blue == 0 && dst.alpha == 0)
+    {
+      *result = *source;
+      return;
+    }
+
   premultiply (&src);
   premultiply (&dst);
 
