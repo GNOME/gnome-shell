@@ -11,6 +11,7 @@ const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 const Search = imports.ui.search;
@@ -377,7 +378,7 @@ var AllView = class AllView extends BaseAppView {
             } catch(e) {
                 return false;
             }
-            return appInfo.should_show();
+            return this._parentalControlsManager.shouldShowApp(appInfo);
         });
 
         let apps = this._appInfoList.map(app => app.get_id());
@@ -676,6 +677,11 @@ var FrequentView = class FrequentView extends BaseAppView {
             if (this.actor.mapped)
                 this._redisplay();
         });
+
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('initialized', () => {
+            this._redisplay();
+        });
     }
 
     hasUsefulData() {
@@ -698,7 +704,7 @@ var FrequentView = class FrequentView extends BaseAppView {
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         for (let i = 0; i < mostUsed.length; i++) {
-            if (!mostUsed[i].get_app_info().should_show())
+            if (!this._parentalControlsManager.shouldShowApp(mostUsed[i].get_app_info()))
                 continue;
             let appIcon = new AppIcon(mostUsed[i],
                                       { isDraggable: favoritesWritable });
@@ -968,10 +974,15 @@ var AppSearchProvider = class AppSearchProvider {
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
         let results = [];
+
+        // FIXME: Technically we should yield until parentalControlsManager.initialized
+        // but in practice this works.
+        let parentalControlsManager = ParentalControlsManager.getDefault();
+
         groups.forEach(group => {
             group = group.filter(appID => {
                 let app = Gio.DesktopAppInfo.new(appID);
-                return app && app.should_show();
+                return app && parentalControlsManager.shouldShowApp(app);
             });
             results = results.concat(group.sort(
                 (a, b) => usage.compare(a, b)
@@ -1172,7 +1183,7 @@ var FolderIcon = class FolderIcon {
             if (!app)
                 return;
 
-            if (!app.get_app_info().should_show())
+            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
                 return;
 
             let icon = new AppIcon(app);
