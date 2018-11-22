@@ -32,11 +32,5 @@
     <file>page-indicator-checked.svg</file>
     <file>page-indicator-hover.svg</file>
     <file>process-working.svg</file>
-    <file>toggle-off-us.svg</file>
-    <file>toggle-off-intl.svg</file>
-    <file>toggle-off-hc.svg</file>
-    <file>toggle-on-us.svg</file>
-    <file>toggle-on-intl.svg</file>
-    <file>toggle-on-hc.svg</file>
   </gresource>
 </gresources>
