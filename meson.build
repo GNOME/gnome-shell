@@ -6,7 +6,7 @@ project('gnome-shell', 'c',
 
 # We depend on a specific version of the libmutter API. The mutter variants of
 # the Cogl and Clutter libraries also use this API version.
-mutter_api_version = '3'
+mutter_api_version = '4'
 
 clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
