@@ -779,6 +779,7 @@ var NotificationMessage = new Lang.Class({
                 this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
         });
         this._destroyId = notification.connect('destroy', () => {
+            this._disconnectNotificationSignals();
             this.notification = null;
             if (!this._closed)
                 this.close();
@@ -808,7 +809,10 @@ var NotificationMessage = new Lang.Class({
 
     _onDestroy() {
         this.parent();
+        this._disconnectNotificationSignals();
+    },
 
+    _disconnectNotificationSignals() {
         if (this._updatedId)
             this.notification.disconnect(this._updatedId);
         this._updatedId = 0;
