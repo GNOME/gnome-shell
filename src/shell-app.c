@@ -184,16 +184,24 @@ window_backed_app_get_icon (ShellApp *app,
                             int       size)
 {
   MetaWindow *window = NULL;
+  ClutterStage *stage;
   ClutterActor *actor;
   gint scale;
+  float scaled_size;
+  float stage_resource_scale;
   ShellGlobal *global;
   StThemeContext *context;
 
   global = shell_global_get ();
-  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
+  stage =  shell_global_get_stage (global);
+  context = st_theme_context_get_for_stage (stage);
   g_object_get (context, "scale-factor", &scale, NULL);
 
-  size *= scale;
+  scaled_size = size * scale;
+
+  if (clutter_actor_get_resource_scale (CLUTTER_ACTOR (stage),
+                                        &stage_resource_scale))
+    scaled_size *= stage_resource_scale;
 
   /* During a state transition from running to not-running for
    * window-backend apps, it's possible we get a request for the icon.
@@ -205,14 +213,21 @@ window_backed_app_get_icon (ShellApp *app,
   if (window == NULL)
     {
       actor = clutter_actor_new ();
-      g_object_set (actor, "opacity", 0, "width", (float) size, "height", (float) size, NULL);
+      g_object_set (actor,
+                    "opacity", 0,
+                    "width", scaled_size,
+                    "height", scaled_size,
+                    NULL);
       return actor;
     }
 
   actor = st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
                                                         G_OBJECT (window),
                                                         "icon");
-  g_object_set (actor, "width", (float) size, "height", (float) size, NULL);
+  g_object_set (actor,
+                "width", scaled_size,
+                "height", scaled_size,
+                NULL);
   return actor;
 }
 
