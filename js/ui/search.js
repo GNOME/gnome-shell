@@ -390,7 +390,7 @@ var GridSearchResults = new Lang.Class({
     },
 
     getFirstResult() {
-        if (this._grid.visibleItemsCount() > 0)
+        if (this._grid.itemCount() > 0)
             return this._grid.getItemAtIndex(0)._delegate;
         else
             return null;
