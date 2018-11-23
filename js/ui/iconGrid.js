@@ -344,10 +344,10 @@ var IconGrid = new Lang.Class({
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
-                children[i]._skipPaint = true;
+                children[i].hide();
             } else {
                 children[i].allocate(childBox, flags);
-                children[i]._skipPaint = false;
+                children[i].show();
             }
 
             columnIndex++;
@@ -363,24 +363,6 @@ var IconGrid = new Lang.Class({
                 x += this._getHItemSize() + spacing;
             }
         }
-    },
-
-    vfunc_paint() {
-        this.paint_background();
-
-        this.get_children().forEach(c => {
-            if (!c._skipPaint)
-                c.paint();
-        });
-    },
-
-    vfunc_pick(color) {
-        this.parent(color);
-
-        this.get_children().forEach(c => {
-            if (!c._skipPaint)
-                c.paint();
-        });
     },
 
     vfunc_get_paint_volume(paintVolume) {
@@ -410,9 +392,6 @@ var IconGrid = new Lang.Class({
              child = child.get_next_sibling()) {
 
             if (!child.visible)
-                continue;
-
-            if (child._skipPaint)
                 continue;
 
             let childVolume = child.get_transformed_paint_volume(this);
@@ -714,7 +693,7 @@ var IconGrid = new Lang.Class({
     },
 
     visibleItemsCount() {
-        return this.get_children().filter(c => !c._skipPaint).length;
+        return this.get_children().filter(c => c.is_visible()).length;
     },
 
     setSpacing(spacing) {
@@ -859,7 +838,7 @@ var PaginatedIconGrid = new Lang.Class({
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
             children[i].allocate(childBox, flags);
-            children[i]._skipPaint = false;
+            children[i].show();
 
             columnIndex++;
             if (columnIndex == nColumns) {
