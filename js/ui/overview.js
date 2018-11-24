@@ -670,6 +670,10 @@ var Overview = new Lang.Class({
             this.show();
     },
 
+    getWidth() {
+        return this._controls.actor.width;
+    },
+
     getShowAppsButton() {
         return this._dash.showAppsButton;
     }
