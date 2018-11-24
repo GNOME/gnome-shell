@@ -108,7 +108,7 @@ struct _StEntryPrivate
   gboolean      capslock_warning_shown;
   gboolean      has_ibeam;
 
-  CoglHandle    text_shadow_material;
+  CoglPipeline *text_shadow_material;
   gfloat        shadow_width;
   gfloat        shadow_height;
 };
@@ -261,11 +261,7 @@ st_entry_dispose (GObject *object)
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
-  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->text_shadow_material);
-      priv->text_shadow_material = COGL_INVALID_HANDLE;
-    }
+  cogl_clear_object (&priv->text_shadow_material);
 
   keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
@@ -301,11 +297,7 @@ st_entry_style_changed (StWidget *self)
   gchar *font_string, *font_name;
   gdouble size;
 
-  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->text_shadow_material);
-      priv->text_shadow_material = COGL_INVALID_HANDLE;
-    }
+  cogl_clear_object (&priv->text_shadow_material);
 
   theme_node = st_widget_get_theme_node (self);
 
@@ -623,11 +615,7 @@ clutter_text_changed_cb (GObject    *object,
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
   /* Since the text changed, force a regen of the shadow texture */
-  if (priv->text_shadow_material != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->text_shadow_material);
-      priv->text_shadow_material = COGL_INVALID_HANDLE;
-    }
+  cogl_clear_object (&priv->text_shadow_material);
 }
 
 static void
@@ -863,14 +851,13 @@ st_entry_paint (ClutterActor *actor)
       clutter_actor_get_allocation_box (priv->entry, &allocation);
       clutter_actor_box_get_size (&allocation, &width, &height);
 
-      if (priv->text_shadow_material == COGL_INVALID_HANDLE ||
+      if (priv->text_shadow_material == NULL ||
           width != priv->shadow_width ||
           height != priv->shadow_height)
         {
-          CoglHandle material;
+          CoglPipeline *material;
 
-          if (priv->text_shadow_material != COGL_INVALID_HANDLE)
-            cogl_handle_unref (priv->text_shadow_material);
+          cogl_clear_object (&priv->text_shadow_material);
 
           material = _st_create_shadow_pipeline_from_actor (shadow_spec,
                                                             priv->entry);
@@ -880,7 +867,7 @@ st_entry_paint (ClutterActor *actor)
           priv->text_shadow_material = material;
         }
 
-      if (priv->text_shadow_material != COGL_INVALID_HANDLE)
+      if (priv->text_shadow_material != NULL)
         _st_paint_shadow_with_opacity (shadow_spec,
                                        priv->text_shadow_material,
                                        &allocation,
@@ -1063,7 +1050,7 @@ st_entry_init (StEntry *entry)
 
   priv->spacing = 6.0f;
 
-  priv->text_shadow_material = COGL_INVALID_HANDLE;
+  priv->text_shadow_material = NULL;
   priv->shadow_width = -1.;
   priv->shadow_height = -1.;
 

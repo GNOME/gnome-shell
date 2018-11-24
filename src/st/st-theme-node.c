@@ -47,12 +47,6 @@ static void
 st_theme_node_init (StThemeNode *node)
 {
   node->transition_duration = -1;
-  node->background_texture = COGL_INVALID_HANDLE;
-  node->background_pipeline = COGL_INVALID_HANDLE;
-  node->background_shadow_pipeline = COGL_INVALID_HANDLE;
-  node->border_slices_texture = COGL_INVALID_HANDLE;
-  node->border_slices_pipeline = COGL_INVALID_HANDLE;
-  node->color_pipeline = COGL_INVALID_HANDLE;
 
   st_theme_node_paint_state_init (&node->cached_state);
 }
@@ -140,48 +134,20 @@ st_theme_node_finalize (GObject *object)
 
   maybe_free_properties (node);
 
-  if (node->font_desc)
-    {
-      pango_font_description_free (node->font_desc);
-      node->font_desc = NULL;
-    }
+  g_clear_pointer (&node->font_desc, pango_font_description_free);
 
-  if (node->box_shadow)
-    {
-      st_shadow_unref (node->box_shadow);
-      node->box_shadow = NULL;
-    }
+  g_clear_pointer (&node->box_shadow, st_shadow_unref);
+  g_clear_pointer (&node->background_image_shadow, st_shadow_unref);
+  g_clear_pointer (&node->text_shadow, st_shadow_unref);
 
-  if (node->background_image_shadow)
-    {
-      st_shadow_unref (node->background_image_shadow);
-      node->background_image_shadow = NULL;
-    }
+  g_clear_object (&node->background_image);
 
-  if (node->text_shadow)
-    {
-      st_shadow_unref (node->text_shadow);
-      node->text_shadow = NULL;
-    }
-
-  if (node->background_image)
-    {
-      g_object_unref (node->background_image);
-      node->background_image = NULL;
-    }
-
-  if (node->background_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->background_texture);
-  if (node->background_pipeline != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->background_pipeline);
-  if (node->background_shadow_pipeline != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->background_shadow_pipeline);
-  if (node->border_slices_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_slices_texture);
-  if (node->border_slices_pipeline != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_slices_pipeline);
-  if (node->color_pipeline != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->color_pipeline);
+  cogl_clear_object (&node->background_texture);
+  cogl_clear_object (&node->background_pipeline);
+  cogl_clear_object (&node->background_shadow_pipeline);
+  cogl_clear_object (&node->border_slices_texture);
+  cogl_clear_object (&node->border_slices_pipeline);
+  cogl_clear_object (&node->color_pipeline);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
 }
