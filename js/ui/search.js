@@ -169,8 +169,8 @@ var SearchResultsBase = new Lang.Class({
                                               y_fill: true });
         this.actor.add(this._resultDisplayBin, { expand: true });
 
-        let separator = new St.Widget({ style_class: 'search-section-separator' });
-        this.actor.add(separator);
+        this._separator = new St.Widget({ style_class: 'search-section-separator' });
+        this.actor.add(this._separator);
 
         this._resultDisplays = {};
 
@@ -189,6 +189,13 @@ var SearchResultsBase = new Lang.Class({
             return this.provider.createResultObject(meta, this._resultsView);
 
         return null;
+    },
+
+    showSeparator(show) {
+        if (show)
+            this._separator.opacity = 255;
+        else
+            this._separator.opacity = 0;
     },
 
     clear() {
@@ -671,6 +678,19 @@ var SearchResults = new Lang.Class({
 
         display.updateSearch(results, terms, () => {
             provider.searchInProgress = false;
+
+            // Even if this is the last set of results we get, it might not be
+            // placed at the bottom of the list. So get the bottommost visible
+            // result and hide its separator while showing all the other ones.
+            let lastVisibleIndex = 0;
+            this._providers.forEach((p, i) => {
+                if (p.display.actor.visible) {
+                    p.display.showSeparator(true);
+                    lastVisibleIndex = i;
+                }
+            });
+
+            this._providers[lastVisibleIndex].display.showSeparator(false);
 
             this._maybeSetInitialSelection();
             this._updateSearchProgress();
