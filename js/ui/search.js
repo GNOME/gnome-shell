@@ -24,23 +24,29 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 var MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
-var MaxWidthBin = new Lang.Class({
-    Name: 'MaxWidthBin',
-    Extends: St.Bin,
+var MaxWidthBox = new Lang.Class({
+    Name: 'MaxWidthBox',
+    Extends: St.BoxLayout,
+
+    vfunc_style_changed() {
+        let node = this.get_theme_node();
+        this._maxWidth = node.get_max_width();
+
+        this.parent();
+    },
 
     vfunc_allocate(box, flags) {
-        let themeNode = this.get_theme_node();
-        let maxWidth = themeNode.get_max_width();
-        let availWidth = box.x2 - box.x1;
-        let adjustedBox = box;
+        if (!this._maxWidth)
+            return this.parent(box, flags);
 
-        if (availWidth > maxWidth) {
-            let excessWidth = availWidth - maxWidth;
-            adjustedBox.x1 += Math.floor(excessWidth / 2);
-            adjustedBox.x2 -= Math.floor(excessWidth / 2);
+        let usedWidth = box.x2 - box.x1;
+        if (usedWidth > this._maxWidth) {
+            let excessWidth = usedWidth - this._maxWidth;
+            box.x1 += Math.floor(excessWidth / 2);
+            box.x2 -= Math.floor(excessWidth / 2);
         }
 
-        this.parent(adjustedBox, flags);
+        this.parent(box, flags);
     }
 });
 
@@ -405,15 +411,11 @@ var SearchResults = new Lang.Class({
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
 
-        this._content = new St.BoxLayout({ name: 'searchResultsContent',
-                                           vertical: true });
-        this._contentBin = new MaxWidthBin({ name: 'searchResultsBin',
-                                             x_fill: true,
-                                             y_fill: true,
-                                             child: this._content });
+        this._content = new MaxWidthBox({ name: 'searchResultsContent',
+                                          vertical: true });
 
         let scrollChild = new St.BoxLayout();
-        scrollChild.add(this._contentBin, { expand: true });
+        scrollChild.add(this._content, { expand: true });
 
         this._scrollView = new St.ScrollView({ x_fill: true,
                                                y_fill: false,
