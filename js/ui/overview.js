@@ -636,6 +636,10 @@ var Overview = class {
             this.show();
     }
 
+    getWidth() {
+        return this._controls.actor.width;
+    }
+
     getShowAppsButton() {
         return this._dash.showAppsButton;
     }
