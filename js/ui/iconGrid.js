@@ -633,6 +633,8 @@ var IconGrid = new Lang.Class({
     },
 
     _computeLayout(forWidth) {
+        this.actor.ensure_style();
+
         let nColumns = 0;
         let usedWidth = this.leftPadding + this.rightPadding;
         let spacing = this._getSpacing();
