@@ -329,12 +329,6 @@ Signals.addSignalMethods(ListSearchResults.prototype);
 var GridSearchResults = class extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
-        // We need to use the parent container to know how much results we can show.
-        // None of the actors in this class can be used for that, since the main actor
-        // goes hidden when no results are displayed, and then it lost its allocation.
-        // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
-        // it doesn't show any result although we have some.
-        this._parentContainer = resultsView.actor;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -346,9 +340,10 @@ var GridSearchResults = class extends SearchResultsBase {
     }
 
     _getMaxDisplayedResults() {
-        let parentThemeNode = this._parentContainer.get_theme_node();
-        let availableWidth = parentThemeNode.adjust_for_width(this._parentContainer.width);
-        return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
+        let maxGridWidth = this._resultsView.getContentWidth();
+        let nCols = this._grid.columnsForWidth(maxGridWidth);
+
+        return nCols * this._grid.getRowLimit();
     }
 
     _clearResultDisplay() {
@@ -479,6 +474,24 @@ var SearchResults = class {
         this._startingSearch = false;
 
         this._updateSearchProgress();
+    }
+
+    getContentWidth() {
+        let contentThemeNode = this._content.get_theme_node();
+
+        let maxContentWidth = contentThemeNode.get_max_width();
+        maxContentWidth = contentThemeNode.adjust_for_width(maxContentWidth);
+
+        // We can't use the width of our own actor here because the dash and
+        // workspace thumbnails might still be visible (eg. while animating out),
+        // making the actor smaller than it actually is when showing the results.
+        let overviewWidth = Main.overview.viewSelector.actor.width;
+        let availableWidth = contentThemeNode.adjust_for_width(overviewWidth);
+
+        if (availableWidth < maxContentWidth)
+            return availableWidth;
+        else
+            return maxContentWidth;
     }
 
     _doSearch() {
