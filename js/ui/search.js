@@ -360,12 +360,6 @@ var GridSearchResults = new Lang.Class({
 
     _init(provider, resultsView) {
         this.parent(provider, resultsView);
-        // We need to use the parent container to know how much results we can show.
-        // None of the actors in this class can be used for that, since the main actor
-        // goes hidden when no results are displayed, and then it lost its allocation.
-        // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
-        // it doesn't show any result although we have some.
-        this._parentContainer = resultsView.actor;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -377,9 +371,7 @@ var GridSearchResults = new Lang.Class({
     },
 
     _getMaxDisplayedResults() {
-        let parentThemeNode = this._parentContainer.get_theme_node();
-        let availableWidth = parentThemeNode.adjust_for_width(this._parentContainer.width);
-        return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
+        return this._grid.columnsForWidth(this._resultsView.maxContentWidth) * this._grid.getRowLimit();
     },
 
     _clearResultDisplay() {
@@ -515,6 +507,18 @@ var SearchResults = new Lang.Class({
 
         let previousResults = this._results;
         this._results = {};
+
+        let contentThemeNode = this._content.get_theme_node();
+
+        let maxContentWidth = contentThemeNode.get_max_width();
+        maxContentWidth = contentThemeNode.adjust_for_width(maxContentWidth);
+
+        // We can't use our own actors width here because the dash and workspace thumbnails might be still
+        // visible at this point, making the actor smaller than it actually is when showing the results.
+        let overviewWidth = Main.overview.getWidth();
+        let availableWidth = contentThemeNode.adjust_for_width(overviewWidth);
+
+        this.maxContentWidth = (availableWidth < maxContentWidth) ? availableWidth : maxContentWidth;
 
         this._providers.forEach(provider => {
             provider.searchInProgress = true;
