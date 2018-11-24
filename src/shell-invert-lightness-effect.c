@@ -102,7 +102,7 @@ shell_invert_lightness_effect_pre_paint (ClutterEffect *effect)
     {
       ClutterOffscreenEffect *offscreen_effect =
         CLUTTER_OFFSCREEN_EFFECT (effect);
-      CoglHandle texture;
+      CoglTexture *texture;
 
       texture = clutter_offscreen_effect_get_texture (offscreen_effect);
       self->tex_width = cogl_texture_get_width (texture);
