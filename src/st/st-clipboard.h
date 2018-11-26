@@ -25,6 +25,7 @@
 #define _ST_CLIPBOARD_H
 
 #include <glib-object.h>
+#include <meta/meta-selection.h>
 
 G_BEGIN_DECLS
 
@@ -32,7 +33,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (StClipboard, st_clipboard, ST, CLIPBOARD, GObject)
 
 typedef struct _StClipboard StClipboard;
-typedef struct _StClipboardPrivate StClipboardPrivate;
 
 /**
  * StClipboard:
@@ -44,7 +44,6 @@ struct _StClipboard
 {
   /*< private >*/
   GObject parent;
-  StClipboardPrivate *priv;
 };
 
 typedef enum {
@@ -73,6 +72,8 @@ void st_clipboard_get_text (StClipboard             *clipboard,
 void st_clipboard_set_text (StClipboard             *clipboard,
                             StClipboardType          type,
                             const gchar             *text);
+
+void st_clipboard_set_selection (MetaSelection *selection);
 
 G_END_DECLS
 
