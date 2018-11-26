@@ -32,7 +32,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (StClipboard, st_clipboard, ST, CLIPBOARD, GObject)
 
 typedef struct _StClipboard StClipboard;
-typedef struct _StClipboardPrivate StClipboardPrivate;
 
 /**
  * StClipboard:
@@ -44,7 +43,6 @@ struct _StClipboard
 {
   /*< private >*/
   GObject parent;
-  StClipboardPrivate *priv;
 };
 
 typedef enum {
