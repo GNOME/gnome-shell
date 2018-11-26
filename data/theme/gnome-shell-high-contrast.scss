@@ -7,6 +7,4 @@ stage {
   -st-icon-style: symbolic;
 }
 
-.toggle-switch {
-  > StBin:first-child, &:checked > StBin:last-child { background-color: white; }
-}
+.toggle-switch .switch-handle { background-color: #FFF; }
