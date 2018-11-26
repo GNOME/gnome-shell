@@ -278,18 +278,56 @@ var Switch = class {
                                         vertical: false,
                                         accessible_role: Atk.Role.CHECK_BOX,
                                         can_focus: true });
-        this._labelOn = new St.Bin({ child: new St.Label({ text: _("ON") }) });
-        this._labelOff = new St.Bin({ child: new St.Label({ text: _("OFF") }) });
+
+        this._handle = new St.Bin({ style_class: 'switch-handle' });
         this.actor.add_child(this._labelOn);
         this.actor.add_child(this._labelOff);
+        this.actor.add_child(this._handle);
         this.setToggleState(state);
     }
 
+    _getSwitchOffHandleTranslationX() {
+        let switchWidth = this.actor.width;
+        let switchThemeNode = this.actor.get_theme_node();
+        let switchRightBorderWidth = switchThemeNode.get_border_width(St.Side.RIGHT);
+        let switchLeftBorderWidth = switchThemeNode.get_border_width(St.Side.LEFT);
+        let switchRightPadding = switchThemeNode.get_padding(St.Side.RIGHT);
+        let switchleftPadding = switchThemeNode.get_padding(St.Side.LEFT);
+        return -switchWidth + switchRightBorderWidth + switchLeftBorderWidth +
+                switchRightPadding + switchleftPadding;
+    }
+
+    _getSwitchOnHandleTranslationX() {
+        return -this._handle.width;
+    }
+
     setToggleState(state) {
-        if (state)
+        let themeNode = this.actor.get_theme_node();
+        let transitionMs = themeNode.get_transition_duration() || 1;
+        let transitionDuration = transitionMs / 1000;
+        if (state) {
             this.actor.add_style_pseudo_class('checked');
-        else
+            Tweener.addTween(this._handle,
+                             { translation_x: this._getSwitchOnHandleTranslationX(),
+                               time: transitionDuration,
+                               onCompleteScope: this,
+                               onComplete() {
+                                   this._handle.translation_x =
+                                           this._getSwitchOnHandleTranslationX();
+                               }
+                             });
+        } else {
             this.actor.remove_style_pseudo_class('checked');
+            Tweener.addTween(this._handle,
+                             { translation_x: this._getSwitchOffHandleTranslationX(),
+                               time: transitionDuration,
+                               onCompleteScope: this,
+                               onComplete() {
+                                   this._handle.translation_x =
+                                           this._getSwitchOffHandleTranslationX();
+                               }
+                             });
+        }
         this.state = state;
     }
 
