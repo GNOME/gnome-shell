@@ -2,7 +2,6 @@
 
 const Atspi = imports.gi.Atspi;
 const Clutter = imports.gi.Clutter;
-const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -294,7 +293,7 @@ var Key = new Lang.Class({
 
     _getKeyval(key) {
         let unicode = String.charCodeAt(key, 0);
-        return Gdk.unicode_to_keyval(unicode);
+        return Clutter.unicode_to_keysym(unicode);
     },
 
     _press(key) {
