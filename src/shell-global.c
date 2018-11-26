@@ -863,6 +863,7 @@ _shell_global_set_plugin (ShellGlobal *global,
     }
 
   st_entry_set_cursor_func (entry_cursor_func, global);
+  st_clipboard_set_selection (meta_display_get_selection (display));
 
   g_signal_connect (global->stage, "notify::width",
                     G_CALLBACK (global_stage_notify_width), global);
