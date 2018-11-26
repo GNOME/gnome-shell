@@ -100,31 +100,7 @@ var ParentalControlsManager = new Lang.Class({
             return false;
         }
 
-        let flatpakApp = appInfo.get_string('X-Flatpak');  /* gives org.gnome.Builder */
-        let absPath = GLib.find_program_in_path(appInfo.get_executable());
-
-        if (!this._appFilter.is_path_allowed(absPath) ||
-            (flatpakApp && !this._appFilter.is_flatpak_app_allowed(flatpakApp.trim())))
-            return false;
-
-        // FIXME: This could do with the Gio.AppInfo.get_string_list() API from GLib 2.60.
-        // Gives `gnome-builder.desktop;`
-        let oldFlatpakApps = appInfo.get_string('X-Flatpak-RenamedFrom');
-        if (oldFlatpakApps) {
-            for (let oldFlatpakApp of oldFlatpakApps.split(';')) {
-                oldFlatpakApp = oldFlatpakApp.trim();
-
-                if (GLib.str_has_suffix(oldFlatpakApp, '.desktop'))
-                    oldFlatpakApp = oldFlatpakApp.slice(0, -8).trim();
-                if (!oldFlatpakApp)
-                    continue;
-
-                if (!this._appFilter.is_flatpak_app_allowed(oldFlatpakApp))
-                    return false;
-            }
-        }
-
-        return true;
+        return this._appFilter.is_appinfo_allowed(appInfo);
     },
 
 });
