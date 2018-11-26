@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
