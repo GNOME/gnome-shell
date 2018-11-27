@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -821,8 +820,8 @@ var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
         });
 
         this._scrollArea = new St.ScrollView({ style_class: 'chat-scrollview vfade',
-                                               vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                               vscrollbar_policy: St.PolicyType.AUTOMATIC,
+                                               hscrollbar_policy: St.PolicyType.NEVER,
                                                visible: this.expanded });
         this._contentArea = new St.BoxLayout({ style_class: 'chat-body',
                                                vertical: true });
