@@ -273,7 +273,7 @@ var PopupSeparatorMenuItem = class extends PopupBaseMenuItem {
 };
 
 var Switch = class {
-    constructor(state) {
+    constructor(state, reactive) {
         this.actor = new St.BoxLayout({ style_class: 'toggle-switch',
                                         vertical: false,
                                         accessible_role: Atk.Role.CHECK_BOX,
@@ -288,10 +288,15 @@ var Switch = class {
         this._labelOff = new St.Bin({ style_class: 'switch-label',
                                       child: new St.Label({ text: _("OFF") }) });
         this._handle = new St.Bin({ style_class: 'switch-handle' });
+        this._handle.reactive = reactive;
         this.actor.add_child(this._labelOn);
         this.actor.add_child(this._labelOff);
         this.actor.add_child(this._handle);
-        this.setToggleState(state);
+        this.state = state;
+
+        this._handle.connect('button-press-event', this._startDragging.bind(this));
+        this._handle.connect('touch-event', this._touchDragging.bind(this));
+        this._dragging = false;
     }
 
     _getSwitchOffHandleTranslationX() {
@@ -310,6 +315,9 @@ var Switch = class {
     }
 
     setToggleState(state) {
+        this.state = state;
+        this.emit('toggled', this.state);
+
         let themeNode = this.actor.get_theme_node();
         let transitionMs = themeNode.get_transition_duration() || 1;
         let transitionDuration = transitionMs / 1000;
@@ -336,20 +344,134 @@ var Switch = class {
                                }
                              });
         }
-        this.state = state;
     }
 
     toggle() {
         this.setToggleState(!this.state);
     }
+
+    _startDragging(actor, event) {
+        return this.startDragging(event);
+    }
+
+    startDragging(event) {
+        if (this._dragging)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._dragging = true;
+
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (sequence != null)
+            device.sequence_grab(sequence, this.actor);
+        else
+            device.grab(this.actor);
+
+        this._grabbedDevice = device;
+        this._grabbedSequence = sequence;
+
+        if (sequence == null) {
+            this._releaseId = this.actor.connect('button-release-event',
+                    this._endDragging.bind(this));
+            this._motionId = this.actor.connect('motion-event',
+                    this._motionEvent.bind(this));
+        }
+
+        this._initialHandleTranslationX = this._handle.translation_x;
+        [this._initialGrabX] = event.get_coords();
+        return Clutter.EVENT_STOP;
+    }
+
+    _endDragging() {
+        if (this._dragging) {
+            if (this._releaseId) {
+                this.actor.disconnect(this._releaseId);
+                this._releaseId = null;
+            }
+            if (this._motionId) {
+                this.actor.disconnect(this._motionId);
+                this._motionId = null;
+            }
+
+            if (this._grabbedSequence != null)
+                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
+            else
+                this._grabbedDevice.ungrab();
+
+            if (!this._dragDiffX) {
+                this.toggle();
+                this.emit('activated');
+            } else {
+                let onX = this._getSwitchOnHandleTranslationX();
+                let offX = this._getSwitchOffHandleTranslationX();
+                let medX = (onX + (offX - onX)/2);
+                let state = medX < this._handle.translation_x;
+                this.setToggleState(state);
+            }
+
+            this._initialHandleTranslationX = null;
+            this._initialGrabX = null;
+            this._dragDiffX = null;
+            this._grabbedSequence = null;
+            this._grabbedDevice = null;
+            this._dragging = false;
+        }
+        return Clutter.EVENT_STOP;
+    }
+
+    _touchDragging(actor, event) {
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (!this._dragging &&
+            event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            this.startDragging(event);
+            return Clutter.EVENT_STOP;
+        } else if (device.sequence_get_grabbed_actor(sequence) == actor) {
+            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+                return this._motionEvent(actor, event);
+            else if (event.type() == Clutter.EventType.TOUCH_END)
+                return this._endDragging();
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _motionEvent(actor, event) {
+        let [absX] = event.get_coords();
+        this._dragDiffX = this._initialGrabX - absX;
+        this._moveHandle(this._dragDiffX);
+        return Clutter.EVENT_STOP;
+    }
+
+    _moveHandle(diffX) {
+        let minTranslationX = this._getSwitchOffHandleTranslationX();
+        let maxTranslationX = this._getSwitchOnHandleTranslationX();
+        let handleNewTranslationX = this._initialHandleTranslationX - diffX;
+        handleNewTranslationX = Math.max(handleNewTranslationX, minTranslationX);
+        handleNewTranslationX = Math.min(handleNewTranslationX, maxTranslationX);
+        this._handle.translation_x = handleNewTranslationX;
+    }
 };
+Signals.addSignalMethods(Switch.prototype);
 
 var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
     constructor(text, active, params) {
         super(params);
 
         this.label = new St.Label({ text: text });
-        this._switch = new Switch(active);
+        let switchReactive;
+        if (params !== undefined && params.reactive === false)
+            switchReactive = false;
+        else
+            switchReactive = true;
+        this._switch = new Switch(active, switchReactive);
+
+        this._switch.connect('toggled', this._onToggled.bind(this));
+        this._switch.connect('activated', (event) => {
+            this.emit('activate', event);
+        });
 
         this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this.checkAccessibleState();
@@ -396,8 +518,6 @@ var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
 
     toggle() {
         this._switch.toggle();
-        this.emit('toggled', this._switch.state);
-        this.checkAccessibleState();
     }
 
     get state() {
@@ -405,7 +525,14 @@ var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
     }
 
     setToggleState(state) {
+        this._omitSignal = true;
         this._switch.setToggleState(state);
+        this._omitSignal = false;
+    }
+
+    _onToggled(sw, state) {
+        if (!this._omitSignal)
+            this.emit('toggled', state);
         this.checkAccessibleState();
     }
 
