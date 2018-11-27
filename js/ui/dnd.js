@@ -703,6 +703,9 @@ var _Draggable = class _Draggable {
     }
 
     _onAnimationComplete(dragActor, eventTime) {
+        this.emit('drag-end', eventTime, false);
+        this._finishAnimation();
+
         if (this._dragOrigParent) {
             Main.uiGroup.remove_child(dragActor);
             this._dragOrigParent.add_actor(dragActor);
@@ -711,9 +714,6 @@ var _Draggable = class _Draggable {
         } else {
             dragActor.destroy();
         }
-
-        this.emit('drag-end', eventTime, false);
-        this._finishAnimation();
     }
 
     _dragComplete() {
