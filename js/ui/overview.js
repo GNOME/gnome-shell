@@ -2,13 +2,11 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
-const Gdk = imports.gi.Gdk;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -158,7 +156,6 @@ var Overview = class {
         this._windowSwitchTimestamp = 0;
         this._lastActiveWorkspaceIndex = -1;
         this._lastHoveredWindow = null;
-        this._needsFakePointerEvent = false;
 
         if (this._initCalled)
             this.init();
@@ -306,17 +303,7 @@ var Overview = class {
         if (this._windowSwitchTimeoutId != 0) {
             Mainloop.source_remove(this._windowSwitchTimeoutId);
             this._windowSwitchTimeoutId = 0;
-            this._needsFakePointerEvent = false;
         }
-    }
-
-    _fakePointerEvent() {
-        let display = Gdk.Display.get_default();
-        let deviceManager = display.get_device_manager();
-        let pointer = deviceManager.get_client_pointer();
-        let [gdkScreen, pointerX, pointerY] = pointer.get_position();
-
-        pointer.warp(gdkScreen, pointerX, pointerY);
     }
 
     _onDragMotion(dragEvent) {
@@ -340,7 +327,6 @@ var Overview = class {
             this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
                 () => {
                     this._windowSwitchTimeoutId = 0;
-                    this._needsFakePointerEvent = true;
                     Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
                                         this._windowSwitchTimestamp);
                     this.hide();
@@ -643,12 +629,6 @@ var Overview = class {
             Main.layoutManager.hideOverview();
 
         this._syncGrab();
-
-        // Fake a pointer event if requested
-        if (this._needsFakePointerEvent) {
-            this._fakePointerEvent();
-            this._needsFakePointerEvent = false;
-        }
     }
 
     toggle() {
