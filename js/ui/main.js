@@ -87,6 +87,7 @@ let _cssStylesheet = null;
 let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
+let _interfaceSettings = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -126,8 +127,9 @@ function start() {
 
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
-    Gtk.Settings.get_default().connect('notify::gtk-theme-name',
-                                       _loadDefaultStylesheet);
+
+    _interfaceSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
+    _interfaceSettings.connect('changed::gtk-theme', _loadDefaultStylesheet);
     Gtk.IconTheme.get_default().add_resource_path('/org/gnome/shell/theme/icons');
     _initializeUI();
 
@@ -276,7 +278,7 @@ function _getDefaultStylesheet() {
 
     // Look for a high-contrast variant first when using GTK+'s HighContrast
     // theme
-    if (Gtk.Settings.get_default().gtk_theme_name == 'HighContrast')
+    if (_interfaceSettings.get_string('gtk-theme') == 'HighContrast')
         stylesheet = _getStylesheet(name.replace('.css', '-high-contrast.css'));
 
     if (stylesheet == null)
