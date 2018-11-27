@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Meta = imports.gi.Meta;
@@ -197,7 +196,6 @@ var ModalDialog = class {
         else
             this._savedKeyFocus = null;
         Main.popModal(this._group, timestamp);
-        Gdk.Display.get_default().sync();
         this._hasModal = false;
 
         if (!this._shellReactive)
