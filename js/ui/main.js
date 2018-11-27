@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -129,7 +128,6 @@ function start() {
     sessionMode.connect('updated', _sessionUpdated);
 
     St.Settings.get().connect('notify::gtk-theme', _loadDefaultStylesheet);
-    Gtk.IconTheme.get_default().add_resource_path('/org/gnome/shell/theme/icons');
     _initializeUI();
 
     shellAccessDialogDBusService = new AccessDialog.AccessDialogDBus();
