@@ -3,7 +3,6 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const NM = imports.gi.NM;
 const Signals = imports.signals;
@@ -846,8 +845,8 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
         this._scrollView = new St.ScrollView({ style_class: 'nm-dialog-scroll-view' });
         this._scrollView.set_x_expand(true);
         this._scrollView.set_y_expand(true);
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER,
-                                    Gtk.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER,
+                                    St.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(this._itemBox);
         this._stack.add_child(this._scrollView);
 

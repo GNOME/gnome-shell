@@ -4,7 +4,6 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const GWeather = imports.gi.GWeather;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
@@ -515,7 +514,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
                                                     x_expand: true, x_fill: true,
                                                     overlay_scrollbars: true });
-        this._displaysSection.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._displaysSection.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         vbox.add_actor(this._displaysSection);
 
         let displaysBox = new St.BoxLayout({ vertical: true,
