@@ -1,14 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
+
+var _animSettings = null;
+var _animationsEnabled = true;
 
 // This is a wrapper around imports.tweener.tweener that adds a bit of
 // Clutter integration. If the tweening target is a Clutter.Actor, then
@@ -53,7 +56,15 @@ function _wrapTweening(target, tweeningParameters) {
         }
     }
 
-    if (!Gtk.Settings.get_default().gtk_enable_animations) {
+    if (_animSettings == null) {
+        _animSettings = new Gio.Settings ({ schema_id: 'org.gnome.desktop.interface' });
+        _animSettings.connect('changed::enable-animations', () => {
+            _animationsEnabled = _animSettings.get_boolean('enable-animations');
+        });
+        _animationsEnabled = _animSettings.get_boolean('enable-animations');
+    }
+
+    if (!_animationsEnabled) {
         tweeningParameters['time'] = 0.000001;
         tweeningParameters['delay'] = 0.000001;
     }
