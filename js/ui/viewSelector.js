@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
@@ -34,8 +33,8 @@ var ViewPage = {
 var FocusTrap = GObject.registerClass(
 class FocusTrap extends St.Widget {
     vfunc_navigate_focus(from, direction) {
-        if (direction == Gtk.DirectionType.TAB_FORWARD ||
-            direction == Gtk.DirectionType.TAB_BACKWARD)
+        if (direction == St.DirectionType.TAB_FORWARD ||
+            direction == St.DirectionType.TAB_BACKWARD)
             return super.vfunc_navigate_focus(from, direction);
         return false;
     }
@@ -397,7 +396,7 @@ var ViewSelector = class {
 
     _a11yFocusPage(page) {
         this._showAppsButton.checked = page == this._appsPage;
-        page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     _onShowAppsButtonToggled() {
@@ -426,10 +425,10 @@ var ViewSelector = class {
             this.startSearch(event);
         } else if (!this._searchActive && !global.stage.key_focus) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
-                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+                this._activePage.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                 return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.ISO_Left_Tab) {
-                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
+                this._activePage.navigate_focus(null, St.DirectionType.TAB_BACKWARD, false);
                 return Clutter.EVENT_STOP;
             }
         }
@@ -557,22 +556,22 @@ var ViewSelector = class {
             let arrowNext, nextDirection;
             if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
                 arrowNext = Clutter.Left;
-                nextDirection = Gtk.DirectionType.LEFT;
+                nextDirection = St.DirectionType.LEFT;
             } else {
                 arrowNext = Clutter.Right;
-                nextDirection = Gtk.DirectionType.RIGHT;
+                nextDirection = St.DirectionType.RIGHT;
             }
 
             if (symbol == Clutter.Tab) {
-                this._searchResults.navigateFocus(Gtk.DirectionType.TAB_FORWARD);
+                this._searchResults.navigateFocus(St.DirectionType.TAB_FORWARD);
                 return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.ISO_Left_Tab) {
                 this._focusTrap.can_focus = false;
-                this._searchResults.navigateFocus(Gtk.DirectionType.TAB_BACKWARD);
+                this._searchResults.navigateFocus(St.DirectionType.TAB_BACKWARD);
                 this._focusTrap.can_focus = true;
                 return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.Down) {
-                this._searchResults.navigateFocus(Gtk.DirectionType.DOWN);
+                this._searchResults.navigateFocus(St.DirectionType.DOWN);
                 return Clutter.EVENT_STOP;
             } else if (symbol == arrowNext && this._text.position == -1) {
                 this._searchResults.navigateFocus(nextDirection);
