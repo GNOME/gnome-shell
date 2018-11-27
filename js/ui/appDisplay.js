@@ -370,8 +370,8 @@ var AllView = class AllView extends BaseAppView {
                                      x_expand:true, y_expand:true });
         this.actor.add_actor(this._scrollView);
 
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER,
-                                    Gtk.PolicyType.EXTERNAL);
+        this._scrollView.set_policy(St.PolicyType.NEVER,
+                                    St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
 
         this._pageIndicators = new PageIndicators();
@@ -1124,7 +1124,7 @@ var FolderView = class FolderView extends BaseAppView {
         this._grid.x_expand = true;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
-        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
         this.actor.add_actor(scrollableContainer);
