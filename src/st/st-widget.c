@@ -80,11 +80,8 @@ struct _StWidgetPrivate
   ClutterActor *label_actor;
   gchar        *accessible_name;
 
-  /* Even though Clutter has first_child/last_child properties,
-   * we need to keep track of the old first/last children so
-   * that we can remove the pseudo classes on them. */
-  StWidget *prev_last_child;
-  StWidget *prev_first_child;
+  StWidget *last_visible_child;
+  StWidget *first_visible_child;
 
   StThemeNodePaintState paint_states[2];
   int current_paint_state : 2;
@@ -322,8 +319,8 @@ st_widget_dispose (GObject *gobject)
       priv->texture_file_changed_id = 0;
     }
 
-  g_clear_object (&priv->prev_first_child);
-  g_clear_object (&priv->prev_last_child);
+  g_clear_object (&priv->first_visible_child);
+  g_clear_object (&priv->last_visible_child);
 
   G_OBJECT_CLASS (st_widget_parent_class)->dispose (gobject);
 }
@@ -1489,6 +1486,64 @@ st_widget_get_resource_scale (StWidget *widget,
 }
 
 static void
+st_widget_set_first_visible_child (StWidget     *widget,
+                                   ClutterActor *actor)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->first_visible_child == NULL && actor == NULL)
+    return;
+
+  if (priv->first_visible_child != NULL &&
+      CLUTTER_ACTOR (priv->first_visible_child) == actor)
+    return;
+
+  if (priv->first_visible_child != NULL)
+    {
+      st_widget_remove_style_pseudo_class (priv->first_visible_child, "first-child");
+      g_clear_object (&priv->first_visible_child);
+    }
+
+  if (actor == NULL)
+    return;
+
+  if (ST_IS_WIDGET (actor))
+    {
+      st_widget_add_style_pseudo_class (ST_WIDGET (actor), "first-child");
+      priv->first_visible_child = g_object_ref (ST_WIDGET (actor));
+    }
+}
+
+static void
+st_widget_set_last_visible_child (StWidget     *widget,
+                                  ClutterActor *actor)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->last_visible_child == NULL && actor == NULL)
+    return;
+
+  if (priv->last_visible_child != NULL &&
+      CLUTTER_ACTOR (priv->last_visible_child) == actor)
+    return;
+
+  if (priv->last_visible_child != NULL)
+    {
+      st_widget_remove_style_pseudo_class (priv->last_visible_child, "last-child");
+      g_clear_object (&priv->last_visible_child);
+    }
+
+  if (actor == NULL)
+    return;
+
+  if (ST_IS_WIDGET (actor))
+    {
+      st_widget_add_style_pseudo_class (ST_WIDGET (actor), "last-child");
+      priv->last_visible_child = g_object_ref (ST_WIDGET (actor));
+    }
+}
+
+static void
 st_widget_name_notify (StWidget   *widget,
                        GParamSpec *pspec,
                        gpointer    data)
@@ -1529,30 +1584,78 @@ st_widget_reactive_notify (StWidget   *widget,
     st_widget_sync_hover(widget);
 }
 
+static ClutterActor *
+find_nearest_visible_backwards (ClutterActor *actor)
+{
+  ClutterActor *prev = actor;
+
+  while (prev != NULL && !clutter_actor_is_visible (prev))
+    prev = clutter_actor_get_previous_sibling (prev);
+  return prev;
+}
+
+static ClutterActor *
+find_nearest_visible_forward (ClutterActor *actor)
+{
+  ClutterActor *next = actor;
+
+  while (next != NULL && !clutter_actor_is_visible (next))
+    next = clutter_actor_get_next_sibling (next);
+  return next;
+}
+
+static void
+st_widget_visible_notify (StWidget   *widget,
+                          GParamSpec *pspec,
+                          gpointer    data)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (widget);
+  ClutterActor *parent = clutter_actor_get_parent (actor);
+
+  if (parent == NULL || !ST_IS_WIDGET (parent))
+    return;
+
+  if (clutter_actor_is_visible (actor))
+    {
+      ClutterActor *before, *after;
+
+      before = clutter_actor_get_previous_sibling (actor);
+      if (find_nearest_visible_backwards (before) == NULL)
+        st_widget_set_first_visible_child (ST_WIDGET (parent), actor);
+
+      after = clutter_actor_get_next_sibling (actor);
+      if (find_nearest_visible_forward (after) == NULL)
+        st_widget_set_last_visible_child (ST_WIDGET (parent), actor);
+    }
+  else
+    {
+      if (st_widget_has_style_pseudo_class (widget, "first-child"))
+        {
+          ClutterActor *new_first;
+
+          new_first = find_nearest_visible_forward (CLUTTER_ACTOR (widget));
+          st_widget_set_first_visible_child (ST_WIDGET (parent), new_first);
+        }
+
+      if (st_widget_has_style_pseudo_class (widget, "last-child"))
+        {
+          ClutterActor *new_last;
+
+          new_last = find_nearest_visible_backwards (CLUTTER_ACTOR (widget));
+          st_widget_set_last_visible_child (ST_WIDGET (parent), new_last);
+        }
+    }
+}
+
 static void
 st_widget_first_child_notify (StWidget   *widget,
                               GParamSpec *pspec,
                               gpointer    data)
 {
-  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *first_child;
 
-  if (priv->prev_first_child != NULL)
-    {
-      st_widget_remove_style_pseudo_class (priv->prev_first_child, "first-child");
-      g_clear_object (&priv->prev_first_child);
-    }
-
   first_child = clutter_actor_get_first_child (CLUTTER_ACTOR (widget));
-
-  if (first_child == NULL)
-    return;
-
-  if (ST_IS_WIDGET (first_child))
-    {
-      st_widget_add_style_pseudo_class (ST_WIDGET (first_child), "first-child");
-      priv->prev_first_child = g_object_ref (ST_WIDGET (first_child));
-    }
+  st_widget_set_first_visible_child (widget, find_nearest_visible_forward (first_child));
 }
 
 static void
@@ -1560,25 +1663,10 @@ st_widget_last_child_notify (StWidget   *widget,
                              GParamSpec *pspec,
                              gpointer    data)
 {
-  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *last_child;
 
-  if (priv->prev_last_child != NULL)
-    {
-      st_widget_remove_style_pseudo_class (priv->prev_last_child, "last-child");
-      g_clear_object (&priv->prev_last_child);
-    }
-
   last_child = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));
-
-  if (last_child == NULL)
-    return;
-
-  if (ST_IS_WIDGET (last_child))
-    {
-      st_widget_add_style_pseudo_class (ST_WIDGET (last_child), "last-child");
-      priv->prev_last_child = g_object_ref (ST_WIDGET (last_child));
-    }
+  st_widget_set_last_visible_child (widget, find_nearest_visible_backwards (last_child));
 }
 
 static void
@@ -1596,6 +1684,7 @@ st_widget_init (StWidget *actor)
   g_signal_connect (actor, "notify::resource-scale", G_CALLBACK (st_widget_resource_scale_notify), NULL);
   g_signal_connect (actor, "notify::reactive", G_CALLBACK (st_widget_reactive_notify), NULL);
 
+  g_signal_connect (actor, "notify::visible", G_CALLBACK (st_widget_visible_notify), NULL);
   g_signal_connect (actor, "notify::first-child", G_CALLBACK (st_widget_first_child_notify), NULL);
   g_signal_connect (actor, "notify::last-child", G_CALLBACK (st_widget_last_child_notify), NULL);
   priv->texture_file_changed_id = g_signal_connect (st_texture_cache_get_default (), "texture-file-changed",
