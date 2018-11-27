@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -110,6 +110,12 @@ var _Draggable = class _Draggable {
 
         this._eventsGrabbed = false;
         this._capturedEventId = 0;
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.mouse' });
+        this._settings.connect ('changed::drag-threshold', () => {
+            this._dragThreshold = this._settings.get_int('drag-threshold');
+        });
+        this._dragThreshold = this._settings.get_int('drag-threshold');
     }
 
     _onButtonPress(actor, event) {
@@ -442,10 +448,9 @@ var _Draggable = class _Draggable {
         let [stageX, stageY] = event.get_coords();
 
         // See if the user has moved the mouse enough to trigger a drag
-        let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
         if (!currentDraggable &&
-            (Math.abs(stageX - this._dragStartX) > threshold ||
-             Math.abs(stageY - this._dragStartY) > threshold)) {
+            (Math.abs(stageX - this._dragStartX) > this._dragThreshold ||
+             Math.abs(stageY - this._dragStartY) > this._dragThreshold)) {
             this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
             this._updateDragPosition(event);
         }
