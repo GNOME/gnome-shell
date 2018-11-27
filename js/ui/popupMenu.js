@@ -289,11 +289,14 @@ var PopupSeparatorMenuItem = new Lang.Class({
 var Switch = new Lang.Class({
     Name: 'Switch',
 
-    _init(state) {
+    _init(state, reactive, popupSwitchMenuItem) {
         this.actor = new St.BoxLayout({ style_class: 'toggle-switch',
                                         vertical: false,
                                         accessible_role: Atk.Role.CHECK_BOX,
                                         can_focus: true });
+
+        this._popupSwitchMenuItem = popupSwitchMenuItem;
+
         // Translators: this MUST be either "toggle-switch-us"
         // (for toggle switches containing the English words
         // "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -304,10 +307,15 @@ var Switch = new Lang.Class({
         this._labelOff = new St.Bin({ style_class: 'switch-label',
                                       child: new St.Label({ text: _("OFF") }) });
         this._handle = new St.Bin({ style_class: 'switch-handle' });
+        this._handle.reactive = reactive;
         this.actor.add_child(this._labelOn);
         this.actor.add_child(this._labelOff);
         this.actor.add_child(this._handle);
         this.setToggleState(state);
+
+        this._handle.connect('button-press-event', this._startDragging.bind(this));
+        this._handle.connect('touch-event', this._touchDragging.bind(this));
+        this._dragging = false;
     },
 
     _getSwitchOffHandleTranslationX() {
@@ -354,6 +362,105 @@ var Switch = new Lang.Class({
 
     toggle() {
         this.setToggleState(!this.state);
+    },
+
+    _startDragging(actor, event) {
+        return this.startDragging(event);
+    },
+
+    startDragging(event) {
+        if (this._dragging)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._dragging = true;
+
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (sequence != null)
+            device.sequence_grab(sequence, this.actor);
+        else
+            device.grab(this.actor);
+
+        this._grabbedDevice = device;
+        this._grabbedSequence = sequence;
+
+        if (sequence == null) {
+            this._releaseId = this.actor.connect('button-release-event',
+                    this._endDragging.bind(this));
+            this._motionId = this.actor.connect('motion-event',
+                    this._motionEvent.bind(this));
+        }
+
+        this._initialHandleTranslationX = this._handle.translation_x;
+        this._initialGrabX = event.get_coords()[0];
+        return Clutter.EVENT_STOP;
+    },
+
+    _endDragging() {
+        if (this._dragging) {
+            if (this._releaseId)
+                this.actor.disconnect(this._releaseId);
+            if (this._motionId)
+                this.actor.disconnect(this._motionId);
+
+            if (this._grabbedSequence != null)
+                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
+            else
+                this._grabbedDevice.ungrab();
+
+            if (!this._dragDifX)
+                this.toggle();
+            else {
+                let onX = this._getSwitchOnHandleTranslationX();
+                let offX = this._getSwitchOffHandleTranslationX();
+                let medX = (onX + (offX - onX)/2);
+                this.setToggleState(medX < this._handle.translation_x);
+            }
+            this._popupSwitchMenuItem.emit('toggled', this.state);
+
+            this._initialHandleTranslationX = null;
+            this._initialGrabX = null;
+            this._dragDifX = null;
+            this._grabbedSequence = null;
+            this._grabbedDevice = null;
+            this._dragging = false;
+        }
+        return Clutter.EVENT_STOP;
+    },
+
+    _touchDragging(actor, event) {
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (!this._dragging &&
+            event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            this.startDragging(event);
+            return Clutter.EVENT_STOP;
+        } else if (device.sequence_get_grabbed_actor(sequence) == actor) {
+            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+                return this._motionEvent(actor, event);
+            else if (event.type() == Clutter.EventType.TOUCH_END)
+                return this._endDragging();
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    },
+
+    _motionEvent(actor, event) {
+        let absX = event.get_coords()[0];
+        this._dragDifX = this._initialGrabX - absX;
+        this._moveHandle(this._dragDifX);
+        return Clutter.EVENT_STOP;
+    },
+
+    _moveHandle(difX) {
+        let minTranslationX = this._getSwitchOffHandleTranslationX();
+        let maxTranslationX = this._getSwitchOnHandleTranslationX();
+        let handleNewTranslationX = this._initialHandleTranslationX - difX;
+        handleNewTranslationX = Math.max(handleNewTranslationX, minTranslationX);
+        handleNewTranslationX = Math.min(handleNewTranslationX, maxTranslationX);
+        this._handle.translation_x = handleNewTranslationX;
     }
 });
 
@@ -365,7 +472,12 @@ var PopupSwitchMenuItem = new Lang.Class({
         this.parent(params);
 
         this.label = new St.Label({ text: text });
-        this._switch = new Switch(active);
+        let switchReactive;
+        if (params !== undefined && params.reactive === false)
+            switchReactive = false;
+        else
+            switchReactive = true;
+        this._switch = new Switch(active, switchReactive, this);
 
         this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this.checkAccessibleState();
