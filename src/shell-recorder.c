@@ -12,7 +12,6 @@
 #include <gst/gst.h>
 
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
 
 #include <cogl/cogl.h>
 #include <meta/meta-cursor-tracker.h>
@@ -51,8 +50,6 @@ struct _ShellRecorder {
   cairo_rectangle_int_t area;
   int stage_width;
   int stage_height;
-
-  GdkScreen *gdk_screen;
 
   int pointer_x;
   int pointer_y;
@@ -209,8 +206,6 @@ shell_recorder_init (ShellRecorder *recorder)
   gst_init (NULL, NULL);
 
   shell_recorder_src_register ();
-
-  recorder->gdk_screen = gdk_screen_get_default ();
 
   recorder->memory_target = get_memory_target();
 

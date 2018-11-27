@@ -19,7 +19,6 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk/gdkx.h>
 #include <meta/meta-shaped-texture.h>
 
 #include <locale.h>
