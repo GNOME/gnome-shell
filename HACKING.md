@@ -82,7 +82,6 @@ don't use.
 ```javascript
     const GLib = imports.gi.GLib;
     const Gio = imports.gi.Gio;
-    const Lang = imports.lang;
     const St = imports.gi.St;
 
     const Main = imports.ui.main;
@@ -246,8 +245,6 @@ variable that can be captured in closures.
 All closures should be wrapped with Function.prototype.bind or use arrow
 notation.
 ```javascript
-    const Lang = imports.lang;
-
     let closure1 = () => { this._fnorbate(); };
     let closure2 = this._fnorbate.bind(this);
 ```
