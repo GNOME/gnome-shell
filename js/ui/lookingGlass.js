@@ -34,7 +34,6 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const Meta = imports.gi.Meta; ' +
                     'const Shell = imports.gi.Shell; ' +
                     'const Main = imports.ui.main; ' +
-                    'const Lang = imports.lang; ' +
                     'const Tweener = imports.ui.tweener; ' +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */
