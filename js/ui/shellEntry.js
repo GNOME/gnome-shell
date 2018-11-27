@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
@@ -68,7 +67,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         super.open(animate);
         this._entry.add_style_pseudo_class('focus');
 
-        let direction = Gtk.DirectionType.TAB_FORWARD;
+        let direction = St.DirectionType.TAB_FORWARD;
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
     }

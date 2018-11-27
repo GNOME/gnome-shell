@@ -5,7 +5,6 @@ const Cogl = imports.gi.Cogl;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
@@ -187,7 +186,7 @@ var Notebook = class Notebook {
 
         // Focus the new tab before unmapping the old one
         let tabData = this._tabs[index];
-        if (!tabData.scrollView.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+        if (!tabData.scrollView.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
             this.actor.grab_key_focus();
 
         this._unselect();

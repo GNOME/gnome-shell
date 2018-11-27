@@ -989,7 +989,7 @@ class Panel extends St.Widget {
 
         menu.toggle();
         if (menu.isOpen)
-            menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+            menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     toggleAppMenu() {

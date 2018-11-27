@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Meta = imports.gi.Meta;
@@ -175,7 +174,7 @@ class BaseAppView {
 
     _selectAppInternal(id) {
         if (this._items[id])
-            this._items[id].actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+            this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log('No such application ' + id);
     }
@@ -1468,18 +1467,18 @@ var AppFolderPopup = class AppFolderPopup {
         let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
         switch (event.get_key_symbol()) {
             case Clutter.Down:
-                direction = Gtk.DirectionType.TAB_FORWARD;
+                direction = St.DirectionType.TAB_FORWARD;
                 break;
             case Clutter.Right:
-                direction = isLtr ? Gtk.DirectionType.TAB_FORWARD :
-                                    Gtk.DirectionType.TAB_BACKWARD;
+                direction = isLtr ? St.DirectionType.TAB_FORWARD :
+                                    St.DirectionType.TAB_BACKWARD;
                 break;
             case Clutter.Up:
-                direction = Gtk.DirectionType.TAB_BACKWARD;
+                direction = St.DirectionType.TAB_BACKWARD;
                 break;
             case Clutter.Left:
-                direction = isLtr ? Gtk.DirectionType.TAB_BACKWARD :
-                                    Gtk.DirectionType.TAB_FORWARD;
+                direction = isLtr ? St.DirectionType.TAB_BACKWARD :
+                                    St.DirectionType.TAB_FORWARD;
                 break;
             default:
                 return Clutter.EVENT_PROPAGATE;
@@ -1690,7 +1689,7 @@ var AppIcon = class AppIcon {
 
     _onKeyboardPopupMenu() {
         this.popupMenu();
-        this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        this._menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     getId() {
