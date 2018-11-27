@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -167,7 +166,7 @@ var Button = new Lang.Class({
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
             let group = global.focus_manager.get_group(this.actor);
             if (group) {
-                let direction = (symbol == Clutter.KEY_Left) ? Gtk.DirectionType.LEFT : Gtk.DirectionType.RIGHT;
+                let direction = (symbol == Clutter.KEY_Left) ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
                 group.navigate_focus(this.actor, direction, false);
                 return Clutter.EVENT_STOP;
             }

@@ -146,7 +146,7 @@ shell_stack_get_preferred_width (ClutterActor *actor,
 static gboolean
 shell_stack_navigate_focus (StWidget         *widget,
                             ClutterActor     *from,
-                            GtkDirectionType  direction)
+                            StDirectionType   direction)
 {
   ClutterActor *top_actor;
 

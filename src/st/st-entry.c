@@ -338,7 +338,7 @@ st_entry_style_changed (StWidget *self)
 static gboolean
 st_entry_navigate_focus (StWidget         *widget,
                          ClutterActor     *from,
-                         GtkDirectionType  direction)
+                         StDirectionType   direction)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (widget);
 

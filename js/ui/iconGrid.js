@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -965,8 +964,8 @@ var PaginatedIconGrid = new Lang.Class({
             this._translatedChildren = [];
             this.emit('space-opened');
         } else {
-            this._translateChildren(childrenUp, Gtk.DirectionType.UP, nRowsUp);
-            this._translateChildren(childrenDown, Gtk.DirectionType.DOWN, nRowsDown);
+            this._translateChildren(childrenUp, St.DirectionType.UP, nRowsUp);
+            this._translateChildren(childrenDown, St.DirectionType.DOWN, nRowsDown);
             this._translatedChildren = childrenUp.concat(childrenDown);
         }
     },
@@ -976,7 +975,7 @@ var PaginatedIconGrid = new Lang.Class({
         if (translationY == 0)
             return;
 
-        if (direction == Gtk.DirectionType.UP)
+        if (direction == St.DirectionType.UP)
             translationY *= -1;
 
         for (let i = 0; i < children.length; i++) {

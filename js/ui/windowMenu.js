@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
 
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
@@ -229,7 +228,7 @@ var WindowMenuManager = new Lang.Class({
         this._sourceActor.show();
 
         menu.open(BoxPointer.PopupAnimation.NONE);
-        menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', (menu_, isOpen) => {
             if (isOpen)
                 return;

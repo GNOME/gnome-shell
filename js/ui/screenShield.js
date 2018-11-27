@@ -6,7 +6,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -926,7 +925,7 @@ var ScreenShield = new Lang.Class({
 
         if (this._dialog) {
             this._dialog.actor.grab_key_focus();
-            this._dialog.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+            this._dialog.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         }
     },
 

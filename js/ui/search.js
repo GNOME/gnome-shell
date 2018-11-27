@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -702,10 +701,10 @@ var SearchResults = new Lang.Class({
 
     navigateFocus(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
-        if (direction == Gtk.DirectionType.TAB_BACKWARD ||
-            direction == (rtl ? Gtk.DirectionType.RIGHT
-                              : Gtk.DirectionType.LEFT) ||
-            direction == Gtk.DirectionType.UP) {
+        if (direction == St.DirectionType.TAB_BACKWARD ||
+            direction == (rtl ? St.DirectionType.RIGHT
+                              : St.DirectionType.LEFT) ||
+            direction == St.DirectionType.UP) {
             this.actor.navigate_focus(null, direction, false);
             return;
         }

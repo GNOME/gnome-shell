@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Atk = imports.gi.Atk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -90,7 +89,7 @@ var FocusGrabber = new Lang.Class({
 
         this._focusActorChangedId = global.stage.connect('notify::key-focus', this._focusActorChanged.bind(this));
 
-        if (!this._actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+        if (!this._actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
             this._actor.grab_key_focus();
 
         this._focused = true;

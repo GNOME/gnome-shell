@@ -200,7 +200,7 @@ st_bin_popup_menu (StWidget *widget)
 static gboolean
 st_bin_navigate_focus (StWidget         *widget,
                        ClutterActor     *from,
-                       GtkDirectionType  direction)
+                       StDirectionType   direction)
 {
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (widget));
   ClutterActor *bin_actor = CLUTTER_ACTOR (widget);

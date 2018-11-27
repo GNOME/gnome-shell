@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -560,7 +559,7 @@ var PopupMenuBase = new Lang.Class({
             let sensitive = menuItem.getSensitive();
             if (!sensitive && this._activeMenuItem == menuItem) {
                 if (!this.actor.navigate_focus(menuItem.actor,
-                                               Gtk.DirectionType.TAB_FORWARD,
+                                               St.DirectionType.TAB_FORWARD,
                                                true))
                     this.actor.grab_key_focus();
             } else if (sensitive && this._activeMenuItem == null) {
@@ -849,7 +848,7 @@ var PopupMenu = new Lang.Class({
         } else if (symbol == navKey) {
             if (!this.isOpen)
                 this.toggle();
-            this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+            this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
             return Clutter.EVENT_STOP;
         } else
             return Clutter.EVENT_PROPAGATE;
@@ -1182,7 +1181,7 @@ var PopupSubMenuMenuItem = new Lang.Class({
 
         if (symbol == Clutter.KEY_Right) {
             this._setOpenState(true);
-            this.menu.actor.navigate_focus(null, Gtk.DirectionType.DOWN, false);
+            this.menu.actor.navigate_focus(null, St.DirectionType.DOWN, false);
             return Clutter.EVENT_STOP;
         } else if (symbol == Clutter.KEY_Left && this._getOpenState()) {
             this._setOpenState(false);

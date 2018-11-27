@@ -23,7 +23,6 @@ const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
@@ -188,7 +187,7 @@ var UserList = new Lang.Class({
         if (global.stage.get_key_focus() != this.actor)
             return;
 
-        let focusSet = this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        let focusSet = this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
