@@ -127,8 +127,8 @@ function start() {
 
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
-    Gtk.Settings.get_default().connect('notify::gtk-theme-name',
-                                       _loadDefaultStylesheet);
+
+    St.Settings.get().connect('notify::gtk-theme', _loadDefaultStylesheet);
     Gtk.IconTheme.get_default().add_resource_path('/org/gnome/shell/theme/icons');
     _initializeUI();
 
@@ -279,7 +279,7 @@ function _getDefaultStylesheet() {
 
     // Look for a high-contrast variant first when using GTK+'s HighContrast
     // theme
-    if (Gtk.Settings.get_default().gtk_theme_name == 'HighContrast')
+    if (St.Settings.get().gtk_theme == 'HighContrast')
         stylesheet = _getStylesheet(name.replace('.css', '-high-contrast.css'));
 
     if (stylesheet == null)
