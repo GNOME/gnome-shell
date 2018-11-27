@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -187,7 +186,7 @@ var GrabHelper = class GrabHelper {
         if (params.focus) {
             params.focus.grab_key_focus();
         } else if (newFocus && hadFocus) {
-            if (!newFocus.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+            if (!newFocus.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
                 newFocus.grab_key_focus();
         }
 

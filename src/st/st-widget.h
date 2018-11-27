@@ -38,6 +38,16 @@ G_BEGIN_DECLS
 #define ST_TYPE_WIDGET                 (st_widget_get_type ())
 G_DECLARE_DERIVABLE_TYPE (StWidget, st_widget, ST, WIDGET, ClutterActor)
 
+typedef enum
+{
+  ST_DIR_TAB_FORWARD,
+  ST_DIR_TAB_BACKWARD,
+  ST_DIR_UP,
+  ST_DIR_DOWN,
+  ST_DIR_LEFT,
+  ST_DIR_RIGHT,
+} StDirectionType;
+
 typedef struct _StWidgetClass          StWidgetClass;
 
 /**
@@ -64,7 +74,7 @@ struct _StWidgetClass
    */
   gboolean (* navigate_focus)      (StWidget         *self,
                                     ClutterActor     *from,
-                                    GtkDirectionType  direction);
+                                    StDirectionType   direction);
   GType    (* get_accessible_type) (void);
 
   GList *  (* get_focus_chain)     (StWidget         *widget);
@@ -113,7 +123,7 @@ void                  st_widget_set_can_focus             (StWidget        *widg
 gboolean              st_widget_get_can_focus             (StWidget        *widget);
 gboolean              st_widget_navigate_focus            (StWidget        *widget,
                                                            ClutterActor    *from,
-                                                           GtkDirectionType direction,
+                                                           StDirectionType  direction,
                                                            gboolean         wrap_around);
 
 ClutterActor *        st_widget_get_label_actor           (StWidget        *widget);
