@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -365,7 +364,7 @@ var SwitcherList = GObject.registerClass({
 
         this._scrollView = new St.ScrollView({ style_class: 'hfade',
                                                enable_mouse_scrolling: false });
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.NEVER);
 
         this._scrollView.add_actor(this._list);
         this.add_actor(this._scrollView);
