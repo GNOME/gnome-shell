@@ -120,40 +120,34 @@ See [What's new in JavaScript 1.7](https://developer.mozilla.org/en/JavaScript/N
 
 ## Classes
 
-There are many approaches to classes in JavaScript. We use our own class framework
-(sigh), which is built in gjs. The advantage is that it supports inheriting from
-GObjects, although this feature isn't used very often in the Shell itself.
+There are many approaches to classes in JavaScript. We use standard ES6 classes
+whenever possible, that is when not inheriting from GObjects.
 ```javascript
-    var IconLabelMenuItem = new Lang.Class({
-        Name: 'IconLabelMenuItem',
-        Extends: PopupMenu.PopupMenuBaseItem,
-
-        _init(icon, label) {
-            this.parent({ reactive: false });
+    var IconLabelMenuItem = class extends PopupMenu.PopupMenuBaseItem {
+        constructor(icon, label) {
+            super({ reactive: false });
             this.actor.add_child(icon);
             this.actor.add_child(label);
-        },
+        }
 
         open() {
             log("menu opened!");
         }
-    });
+    };
 ```
 
-* 'Name' is required. 'Extends' is optional. If you leave it out, you will
-  automatically inherit from Object.
+For GObject inheritence, we use the GObject.registerClass() function provided
+by gjs.
+```javascript
+    var MyActor = GObject.registerClass(
+    class MyActor extends Clutter.Actor {
+        _init(params) {
+            super._init(params);
 
-* Leave a blank line between the "class header" (Name, Extends, and other
-  things)  and the "class body" (methods). Leave a blank line between each
-  method.
-
-* No space before the colon, one space after.
-
-* No trailing comma after the last item.
-
-* Make sure to use a semicolon after the closing paren to the class. It's
-  still a giant function call, even though it may resemble a more
-  conventional syntax.
+            this.name = 'MyCustomActor';
+        }
+    });
+```
 
 ## GObject Introspection
 
@@ -161,17 +155,16 @@ GObject Introspection is a powerful feature that allows us to have native
 bindings for almost any library built around GObject. If a library requires
 you to inherit from a type to use it, you can do so:
 ```javascript
-    var MyClutterActor = new Lang.Class({
-        Name: 'MyClutterActor',
-        Extends: Clutter.Actor,
+    var MyClutterActor = GObject.registerClass(
+    class MyClutterActor extends Clutter.Actor {
 
         vfunc_get_preferred_width(actor, forHeight) {
              return [100, 100];
-        },
+        }
 
         vfunc_get_preferred_height(actor, forWidth) {
              return [100, 100];
-        },
+        }
 
         vfunc_paint(actor) {
              let alloc = this.get_allocation_box();
@@ -206,20 +199,18 @@ that has a property called `actor`. We call this wrapper class the "delegate".
 We sometimes use expando properties to set a property called `_delegate` on
 the actor itself:
 ```javascript
-    var MyClass = new Lang.Class({
-        Name: 'MyClass',
-
-        _init() {
+    var MyClass = class {
+        constructor() {
             this.actor = new St.Button({ text: "This is a button" });
             this.actor._delegate = this;
 
             this.actor.connect('clicked', this._onClicked.bind(this));
-        },
+        }
 
         _onClicked(actor) {
             actor.set_label("You clicked the button!");
         }
-    });
+    };
 ```
 
 The 'delegate' property is important for anything which trying to get the
@@ -252,19 +243,18 @@ notation.
 A more realistic example would be connecting to a signal on a method of a
 prototype:
 ```javascript
-    const Lang = imports.lang;
     const FnorbLib = imports.fborbLib;
 
-    var MyClass = new Lang.Class({
+    var MyClass = class {
         _init() {
             let fnorb = new FnorbLib.Fnorb();
             fnorb.connect('frobate', this._onFnorbFrobate.bind(this));
-        },
+        }
 
         _onFnorbFrobate(fnorb) {
             this._updateFnorb();
         }
-    });
+    };
 ```
 
 ## Object literal syntax
@@ -298,23 +288,21 @@ property.
 ```javascript
     var ANIMATION_TIME = 2000;
 
-    var MyClass = new Lang.Class({
-        Name: 'MyClass',
-
-        _init() {
+    var MyClass = class {
+        constructor() {
             this.actor = new St.BoxLayout();
             this._position = 0;
-        },
+        }
 
         get position() {
             return this._position;
-        },
+        }
 
         set position(value) {
             this._position = value;
             this.actor.set_position(value, value);
         }
-    });
+    };
 
     let myThing = new MyClass();
     Tweener.addTween(myThing,
