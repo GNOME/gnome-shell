@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -58,7 +57,7 @@ var CtrlAltTabManager = class CtrlAltTabManager {
         if (item.focusCallback)
             item.focusCallback(timestamp);
         else
-            item.root.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+            item.root.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     // Sort the items into a consistent order; panel first, tray last,

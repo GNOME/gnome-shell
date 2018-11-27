@@ -136,7 +136,7 @@ static void st_widget_recompute_style (StWidget    *widget,
                                        StThemeNode *old_theme_node);
 static gboolean st_widget_real_navigate_focus (StWidget         *widget,
                                                ClutterActor     *from,
-                                               GtkDirectionType  direction);
+                                               StDirectionType   direction);
 
 static AtkObject * st_widget_get_accessible (ClutterActor *actor);
 
@@ -1848,7 +1848,7 @@ st_widget_popup_menu (StWidget *self)
 static GList *
 filter_by_position (GList            *children,
                     ClutterActorBox  *rbox,
-                    GtkDirectionType  direction)
+                    StDirectionType   direction)
 {
   ClutterActorBox cbox;
   ClutterVertex abs_vertices[4];
@@ -1868,28 +1868,28 @@ filter_by_position (GList            *children,
        */
       switch (direction)
         {
-        case GTK_DIR_UP:
+        case ST_DIR_UP:
           if (cbox.y2 > rbox->y1 + 0.1)
             continue;
           break;
 
-        case GTK_DIR_DOWN:
+        case ST_DIR_DOWN:
           if (cbox.y1 < rbox->y2 - 0.1)
             continue;
           break;
 
-        case GTK_DIR_LEFT:
+        case ST_DIR_LEFT:
           if (cbox.x2 > rbox->x1 + 0.1)
             continue;
           break;
 
-        case GTK_DIR_RIGHT:
+        case ST_DIR_RIGHT:
           if (cbox.x1 < rbox->x2 - 0.1)
             continue;
           break;
 
-        case GTK_DIR_TAB_BACKWARD:
-        case GTK_DIR_TAB_FORWARD:
+        case ST_DIR_TAB_BACKWARD:
+        case ST_DIR_TAB_FORWARD:
         default:
           g_return_val_if_reached (NULL);
         }
@@ -1946,7 +1946,7 @@ sort_by_distance (gconstpointer  a,
 static gboolean
 st_widget_real_navigate_focus (StWidget         *widget,
                                ClutterActor     *from,
-                               GtkDirectionType  direction)
+                               StDirectionType   direction)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *widget_actor, *focus_child;
@@ -1998,15 +1998,15 @@ st_widget_real_navigate_focus (StWidget         *widget,
     }
 
   children = st_widget_get_focus_chain (widget);
-  if (direction == GTK_DIR_TAB_FORWARD ||
-      direction == GTK_DIR_TAB_BACKWARD)
+  if (direction == ST_DIR_TAB_FORWARD ||
+      direction == ST_DIR_TAB_BACKWARD)
     {
       /* At this point we know that we want to navigate focus to one of
        * @widget's immediate children; the next one after @focus_child, or the
        * first one if @focus_child is %NULL. (With "next" and "first" being
        * determined by @direction.)
        */
-      if (direction == GTK_DIR_TAB_BACKWARD)
+      if (direction == ST_DIR_TAB_BACKWARD)
         children = g_list_reverse (children);
 
       if (focus_child)
@@ -2044,20 +2044,20 @@ st_widget_real_navigate_focus (StWidget         *widget,
           clutter_actor_box_from_vertices (&sort_box, abs_vertices);
           switch (direction)
             {
-            case GTK_DIR_UP:
+            case ST_DIR_UP:
               sort_box.y1 = sort_box.y2;
               break;
-            case GTK_DIR_DOWN:
+            case ST_DIR_DOWN:
               sort_box.y2 = sort_box.y1;
               break;
-            case GTK_DIR_LEFT:
+            case ST_DIR_LEFT:
               sort_box.x1 = sort_box.x2;
               break;
-            case GTK_DIR_RIGHT:
+            case ST_DIR_RIGHT:
               sort_box.x2 = sort_box.x1;
               break;
-            case GTK_DIR_TAB_FORWARD:
-            case GTK_DIR_TAB_BACKWARD:
+            case ST_DIR_TAB_FORWARD:
+            case ST_DIR_TAB_BACKWARD:
             default:
               g_warn_if_reached ();
             }
@@ -2127,7 +2127,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
 gboolean
 st_widget_navigate_focus (StWidget         *widget,
                           ClutterActor     *from,
-                          GtkDirectionType  direction,
+                          StDirectionType   direction,
                           gboolean          wrap_around)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
