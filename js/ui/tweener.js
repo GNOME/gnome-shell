@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -52,7 +51,7 @@ function _wrapTweening(target, tweeningParameters) {
         }
     }
 
-    if (!Gtk.Settings.get_default().gtk_enable_animations) {
+    if (!St.Settings.get().enable_animations) {
         tweeningParameters['time'] = 0.000001;
         tweeningParameters['delay'] = 0.000001;
     }
