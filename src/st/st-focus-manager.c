@@ -75,7 +75,7 @@ st_focus_manager_stage_event (ClutterActor *stage,
 			      gpointer      user_data)
 {
   StFocusManager *manager = user_data;
-  GtkDirectionType direction;
+  StDirectionType direction;
   gboolean wrap_around = FALSE;
   ClutterActor *focused, *group;
 
@@ -85,26 +85,26 @@ st_focus_manager_stage_event (ClutterActor *stage,
   switch (event->key.keyval)
     {
     case CLUTTER_KEY_Up:
-      direction = GTK_DIR_UP;
+      direction = ST_DIR_UP;
       break;
     case CLUTTER_KEY_Down:
-      direction = GTK_DIR_DOWN;
+      direction = ST_DIR_DOWN;
       break;
     case CLUTTER_KEY_Left:
-      direction = GTK_DIR_LEFT;
+      direction = ST_DIR_LEFT;
       break;
     case CLUTTER_KEY_Right:
-      direction = GTK_DIR_RIGHT;
+      direction = ST_DIR_RIGHT;
       break;
     case CLUTTER_KEY_Tab:
       if (event->key.modifier_state & CLUTTER_SHIFT_MASK)
-        direction = GTK_DIR_TAB_BACKWARD;
+        direction = ST_DIR_TAB_BACKWARD;
       else
-        direction = GTK_DIR_TAB_FORWARD;
+        direction = ST_DIR_TAB_FORWARD;
       wrap_around = TRUE;
       break;
     case CLUTTER_KEY_ISO_Left_Tab:
-      direction = GTK_DIR_TAB_BACKWARD;
+      direction = ST_DIR_TAB_BACKWARD;
       wrap_around = TRUE;
       break;
 
