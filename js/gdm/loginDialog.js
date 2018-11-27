@@ -166,8 +166,8 @@ var UserList = new Lang.Class({
 
     _init() {
         this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
-        this.actor.set_policy(Gtk.PolicyType.NEVER,
-                              Gtk.PolicyType.AUTOMATIC);
+        this.actor.set_policy(St.PolicyType.NEVER,
+                              St.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({ vertical: true,
                                        style_class: 'login-dialog-user-list',
@@ -482,8 +482,8 @@ var LoginDialog = new Lang.Class({
 
         this._bannerView = new St.ScrollView({ style_class: 'login-dialog-banner-view',
                                                opacity: 0,
-                                               vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER });
+                                               vscrollbar_policy: St.PolicyType.AUTOMATIC,
+                                               hscrollbar_policy: St.PolicyType.NEVER });
         this.add_child(this._bannerView);
 
         let bannerBox = new St.BoxLayout({ vertical: true });

@@ -23,7 +23,6 @@ const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
 const Polkit = imports.gi.Polkit;
 const St = imports.gi.St;
@@ -324,7 +323,7 @@ var EndSessionDialog = new Lang.Class({
         messageLayout.add(this._batteryWarning);
 
         this._scrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this.contentLayout.add(this._scrollView,
                                { x_fill: true,
                                  y_fill: true });

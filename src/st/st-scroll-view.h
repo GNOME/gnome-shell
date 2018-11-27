@@ -34,6 +34,14 @@ G_BEGIN_DECLS
 #define ST_TYPE_SCROLL_VIEW            (st_scroll_view_get_type())
 G_DECLARE_FINAL_TYPE (StScrollView, st_scroll_view, ST, SCROLL_VIEW, StBin)
 
+typedef enum
+{
+  ST_POLICY_ALWAYS,
+  ST_POLICY_AUTOMATIC,
+  ST_POLICY_NEVER,
+  ST_POLICY_EXTERNAL,
+} StPolicyType;
+
 typedef struct _StScrollViewPrivate   StScrollViewPrivate;
 
 /**
@@ -72,8 +80,8 @@ void          st_scroll_view_set_overlay_scrollbars (StScrollView *scroll,
 gboolean      st_scroll_view_get_overlay_scrollbars (StScrollView *scroll);
 
 void          st_scroll_view_set_policy          (StScrollView   *scroll,
-                                                  GtkPolicyType   hscroll,
-                                                  GtkPolicyType   vscroll);
+                                                  StPolicyType    hscroll,
+                                                  StPolicyType    vscroll);
 void          st_scroll_view_update_fade_effect  (StScrollView *scroll,
                                                   float vfade_offset,
                                                   float hfade_offset);

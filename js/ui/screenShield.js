@@ -104,7 +104,7 @@ var NotificationsBox = new Lang.Class({
                                         style_class: 'screen-shield-notifications-container' });
 
         this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER });
+                                               hscrollbar_policy: St.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
                                                    style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
@@ -256,7 +256,7 @@ var NotificationsBox = new Lang.Class({
             // block scrollbars while animating, if they're not needed now
             let boxHeight = this._notificationBox.height;
             if (this._scrollView.height >= boxHeight)
-                this._scrollView.vscrollbar_policy = Gtk.PolicyType.NEVER;
+                this._scrollView.vscrollbar_policy = St.PolicyType.NEVER;
 
             let widget = obj.sourceBox;
             let [, natHeight] = widget.get_preferred_height(-1);
@@ -266,7 +266,7 @@ var NotificationsBox = new Lang.Class({
                                transition: 'easeOutQuad',
                                time: 0.25,
                                onComplete() {
-                                   this._scrollView.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+                                   this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
                                    widget.set_height(-1);
                                },
                                onCompleteScope: this

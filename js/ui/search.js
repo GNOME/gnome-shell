@@ -419,7 +419,7 @@ var SearchResults = new Lang.Class({
                                                y_fill: false,
                                                overlay_scrollbars: true,
                                                style_class: 'search-display vfade' });
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(scrollChild);
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));

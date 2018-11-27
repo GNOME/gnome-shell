@@ -5,7 +5,6 @@ const Lang = imports.lang;
 const Signals = imports.signals;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -388,8 +387,8 @@ var ShellProcessesDialog = new Lang.Class({
         this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
 
         let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list'});
-        scrollView.set_policy(Gtk.PolicyType.NEVER,
-                              Gtk.PolicyType.AUTOMATIC);
+        scrollView.set_policy(St.PolicyType.NEVER,
+                              St.PolicyType.AUTOMATIC);
         this.contentLayout.add(scrollView,
                                { x_fill: true,
                                  y_fill: true });

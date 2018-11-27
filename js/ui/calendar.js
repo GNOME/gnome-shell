@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
@@ -1131,7 +1130,7 @@ var CalendarMessageList = new Lang.Class({
                                                overlay_scrollbars: true,
                                                x_expand: true, y_expand: true,
                                                x_fill: true, y_fill: true });
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
         this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
