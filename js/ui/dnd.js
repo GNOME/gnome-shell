@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -442,7 +441,7 @@ var _Draggable = class _Draggable {
         let [stageX, stageY] = event.get_coords();
 
         // See if the user has moved the mouse enough to trigger a drag
-        let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
+        let threshold = St.Settings.get().drag_threshold;
         if (!currentDraggable &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
