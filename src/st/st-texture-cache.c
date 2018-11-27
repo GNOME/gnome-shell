@@ -34,6 +34,7 @@
 struct _StTextureCachePrivate
 {
   GtkIconTheme *icon_theme;
+  GSettings *settings;
 
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> CoglTexture* */
@@ -128,10 +129,18 @@ st_texture_cache_evict_icons (StTextureCache *cache)
 }
 
 static void
-on_icon_theme_changed (GtkIconTheme   *icon_theme,
+on_icon_theme_changed (GSettings      *settings,
+                       const gchar    *key,
                        StTextureCache *cache)
 {
+  gchar *theme;
+
   st_texture_cache_evict_icons (cache);
+
+  theme = g_settings_get_string (settings, "gtk-icon-theme");
+  gtk_icon_theme_set_custom_theme (cache->priv->icon_theme, theme);
+  g_free (theme);
+
   g_signal_emit (cache, signals[ICON_THEME_CHANGED], 0);
 }
 
@@ -140,8 +149,12 @@ st_texture_cache_init (StTextureCache *self)
 {
   self->priv = g_new0 (StTextureCachePrivate, 1);
 
-  self->priv->icon_theme = gtk_icon_theme_get_default ();
-  g_signal_connect (self->priv->icon_theme, "changed",
+  self->priv->icon_theme = gtk_icon_theme_new ();
+  gtk_icon_theme_add_resource_path (self->priv->icon_theme,
+                                    "/org/gnome/shell/theme/icons");
+
+  self->priv->settings = g_settings_new ("org.gnome.desktop.interface");
+  g_signal_connect (self->priv->settings, "changed::gtk-icon-theme",
                     G_CALLBACK (on_icon_theme_changed), self);
 
   self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -162,13 +175,8 @@ st_texture_cache_dispose (GObject *object)
 {
   StTextureCache *self = (StTextureCache*)object;
 
-  if (self->priv->icon_theme)
-    {
-      g_signal_handlers_disconnect_by_func (self->priv->icon_theme,
-                                            (gpointer) on_icon_theme_changed,
-                                            self);
-      self->priv->icon_theme = NULL;
-    }
+  g_clear_object (&self->priv->settings);
+  g_clear_object (&self->priv->icon_theme);
 
   g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
   g_clear_pointer (&self->priv->keyed_surface_cache, g_hash_table_destroy);
