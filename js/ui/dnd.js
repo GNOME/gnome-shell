@@ -642,12 +642,13 @@ var _Draggable = class _Draggable {
         this._dragState = DragState.CANCELLED;
 
         if (this._actorDestroyed || wasCancelled) {
+            let dragActor = this._dragActor;
             global.display.set_cursor(Meta.Cursor.DEFAULT);
             if (!this._buttonDown)
                 this._dragComplete();
             this.emit('drag-end', eventTime, false);
-            if (!this._dragOrigParent && this._dragActor)
-                this._dragActor.destroy();
+            if (!this._dragOrigParent && dragActor)
+                dragActor.destroy();
 
             return;
         }
