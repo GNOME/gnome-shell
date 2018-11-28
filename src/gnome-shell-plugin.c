@@ -21,6 +21,20 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:gnome-shell-plugin
+ * @title: GnomeShellPlugin
+ * @short_description: GNOME Shell's Mutter plugin
+ *
+ * GnomeShellPlugin is the entry point for for GNOME Shell into and out of
+ * Mutter. By registering itself into Mutter using
+ * meta_plugin_manager_set_plugin_type(), Mutter will call the vfuncs of the
+ * plugin at the appropriate time.
+ *
+ * The funcions in in #GnomeShellPlugin are all just stubs, which just call the
+ * similar methods in #GnomeShellWm.
+ */
+
 #include "config.h"
 
 #include <stdlib.h>
@@ -37,72 +51,10 @@
 #include "shell-perf-log.h"
 #include "shell-wm-private.h"
 
-static void gnome_shell_plugin_start            (MetaPlugin          *plugin);
-static void gnome_shell_plugin_minimize         (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor);
-static void gnome_shell_plugin_unminimize       (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor);
-static void gnome_shell_plugin_size_changed     (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor);
-static void gnome_shell_plugin_size_change      (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor,
-                                                 MetaSizeChange       which_change,
-                                                 MetaRectangle       *old_frame_rect,
-                                                 MetaRectangle       *old_buffer_rect);
-static void gnome_shell_plugin_map              (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor);
-static void gnome_shell_plugin_destroy          (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor);
-
-static void gnome_shell_plugin_switch_workspace (MetaPlugin          *plugin,
-                                                 gint                 from,
-                                                 gint                 to,
-                                                 MetaMotionDirection  direction);
-
-static void gnome_shell_plugin_kill_window_effects   (MetaPlugin      *plugin,
-                                                      MetaWindowActor *actor);
-static void gnome_shell_plugin_kill_switch_workspace (MetaPlugin      *plugin);
-
-static void gnome_shell_plugin_show_tile_preview (MetaPlugin      *plugin,
-                                                  MetaWindow      *window,
-                                                  MetaRectangle   *tile_rect,
-                                                  int              tile_monitor);
-static void gnome_shell_plugin_hide_tile_preview (MetaPlugin *plugin);
-static void gnome_shell_plugin_show_window_menu  (MetaPlugin         *plugin,
-                                                  MetaWindow         *window,
-                                                  MetaWindowMenuType  menu,
-                                                  int                 x,
-                                                  int                 y);
-static void gnome_shell_plugin_show_window_menu_for_rect (MetaPlugin         *plugin,
-                                                          MetaWindow         *window,
-                                                          MetaWindowMenuType  menu,
-                                                          MetaRectangle      *rect);
-
-static gboolean              gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
-                                                               XEvent     *event);
-
-static gboolean              gnome_shell_plugin_keybinding_filter (MetaPlugin *plugin,
-                                                                   MetaKeyBinding *binding);
-
-static void gnome_shell_plugin_confirm_display_change (MetaPlugin *plugin);
-
-static const MetaPluginInfo *gnome_shell_plugin_plugin_info   (MetaPlugin *plugin);
-
-static MetaCloseDialog * gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
-                                                              MetaWindow *window);
-
-static MetaInhibitShortcutsDialog * gnome_shell_plugin_create_inhibit_shortcuts_dialog (MetaPlugin *plugin,
-                                                                                        MetaWindow *window);
-
-#define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
-#define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
-#define GNOME_SHELL_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
-#define GNOME_IS_SHELL_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GNOME_SHELL_PLUGIN_TYPE))
-#define GNOME_IS_SHELL_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GNOME_TYPE_SHELL_PLUGIN))
-#define GNOME_SHELL_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
-
-typedef struct _GnomeShellPlugin        GnomeShellPlugin;
-typedef struct _GnomeShellPluginClass   GnomeShellPluginClass;
+#define GNOME_TYPE_SHELL_PLUGIN (gnome_shell_plugin_get_type ())
+G_DECLARE_FINAL_TYPE (GnomeShellPlugin, gnome_shell_plugin,
+                      GNOME, SHELL_PLUGIN,
+                      MetaPlugin)
 
 struct _GnomeShellPlugin
 {
@@ -116,53 +68,7 @@ struct _GnomeShellPlugin
   ShellGlobal *global;
 };
 
-struct _GnomeShellPluginClass
-{
-  MetaPluginClass parent_class;
-};
-
-GType gnome_shell_plugin_get_type (void);
-
 G_DEFINE_TYPE (GnomeShellPlugin, gnome_shell_plugin, META_TYPE_PLUGIN)
-
-static void
-gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
-{
-  MetaPluginClass *plugin_class  = META_PLUGIN_CLASS (klass);
-
-  plugin_class->start            = gnome_shell_plugin_start;
-  plugin_class->map              = gnome_shell_plugin_map;
-  plugin_class->minimize         = gnome_shell_plugin_minimize;
-  plugin_class->unminimize       = gnome_shell_plugin_unminimize;
-  plugin_class->size_changed     = gnome_shell_plugin_size_changed;
-  plugin_class->size_change      = gnome_shell_plugin_size_change;
-  plugin_class->destroy          = gnome_shell_plugin_destroy;
-
-  plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
-
-  plugin_class->kill_window_effects   = gnome_shell_plugin_kill_window_effects;
-  plugin_class->kill_switch_workspace = gnome_shell_plugin_kill_switch_workspace;
-
-  plugin_class->show_tile_preview = gnome_shell_plugin_show_tile_preview;
-  plugin_class->hide_tile_preview = gnome_shell_plugin_hide_tile_preview;
-  plugin_class->show_window_menu = gnome_shell_plugin_show_window_menu;
-  plugin_class->show_window_menu_for_rect = gnome_shell_plugin_show_window_menu_for_rect;
-
-  plugin_class->xevent_filter     = gnome_shell_plugin_xevent_filter;
-  plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
-
-  plugin_class->confirm_display_change = gnome_shell_plugin_confirm_display_change;
-
-  plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
-
-  plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
-  plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
-}
-
-static void
-gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
-{
-}
 
 static gboolean
 gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
@@ -416,8 +322,8 @@ gnome_shell_plugin_confirm_display_change (MetaPlugin *plugin)
   _shell_wm_confirm_display_change (get_shell_wm ());
 }
 
-static const
-MetaPluginInfo *gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
+static const MetaPluginInfo *
+gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
 {
   static const MetaPluginInfo info = {
     .name = "GNOME Shell",
@@ -442,4 +348,43 @@ gnome_shell_plugin_create_inhibit_shortcuts_dialog (MetaPlugin *plugin,
                                                     MetaWindow *window)
 {
   return _shell_wm_create_inhibit_shortcuts_dialog (get_shell_wm (), window);
+}
+
+static void
+gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
+{
+  MetaPluginClass *plugin_class  = META_PLUGIN_CLASS (klass);
+
+  plugin_class->start            = gnome_shell_plugin_start;
+  plugin_class->map              = gnome_shell_plugin_map;
+  plugin_class->minimize         = gnome_shell_plugin_minimize;
+  plugin_class->unminimize       = gnome_shell_plugin_unminimize;
+  plugin_class->size_changed     = gnome_shell_plugin_size_changed;
+  plugin_class->size_change      = gnome_shell_plugin_size_change;
+  plugin_class->destroy          = gnome_shell_plugin_destroy;
+
+  plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
+
+  plugin_class->kill_window_effects   = gnome_shell_plugin_kill_window_effects;
+  plugin_class->kill_switch_workspace = gnome_shell_plugin_kill_switch_workspace;
+
+  plugin_class->show_tile_preview = gnome_shell_plugin_show_tile_preview;
+  plugin_class->hide_tile_preview = gnome_shell_plugin_hide_tile_preview;
+  plugin_class->show_window_menu = gnome_shell_plugin_show_window_menu;
+  plugin_class->show_window_menu_for_rect = gnome_shell_plugin_show_window_menu_for_rect;
+
+  plugin_class->xevent_filter     = gnome_shell_plugin_xevent_filter;
+  plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
+
+  plugin_class->confirm_display_change = gnome_shell_plugin_confirm_display_change;
+
+  plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
+
+  plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
+  plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
+}
+
+static void
+gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
+{
 }
