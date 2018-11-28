@@ -865,8 +865,7 @@ var NMWirelessDialog = new Lang.Class({
                                                  x_align: Clutter.ActorAlign.CENTER,
                                                  y_align: Clutter.ActorAlign.CENTER });
 
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
-        this._noNetworksSpinner = new Animation.AnimatedIcon(file, 16, 16);
+        this._noNetworksSpinner = new Animation.Spinner(16);
         this._noNetworksBox.add_actor(this._noNetworksSpinner.actor);
         this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
                                                      text: _("No Networks") }));
