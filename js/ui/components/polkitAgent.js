@@ -25,8 +25,6 @@ const Tweener = imports.ui.tweener;
 var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
-var WORK_SPINNER_ANIMATION_DELAY = 1.0;
-var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 var AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
@@ -117,9 +115,7 @@ var AuthenticationDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
 
-        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner.actor);
 
         this.setInitialKeyFocus(this._passwordEntry);
@@ -163,27 +159,10 @@ var AuthenticationDialog = new Lang.Class({
     },
 
     _setWorking(working) {
-        Tweener.removeTweens(this._workSpinner.actor);
-        if (working) {
+        if (working)
             this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: WORK_SPINNER_ANIMATION_DELAY,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete() {
-                                   if (this._workSpinner)
-                                       this._workSpinner.stop();
-                               }
-                             });
-        }
+        else
+            this._workSpinner.stop();
     },
 
     performAuthentication() {

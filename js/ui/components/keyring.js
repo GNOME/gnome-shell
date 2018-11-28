@@ -17,8 +17,6 @@ const CheckBox = imports.ui.checkBox;
 const Tweener = imports.ui.tweener;
 
 var WORK_SPINNER_ICON_SIZE = 16;
-var WORK_SPINNER_ANIMATION_DELAY = 1.0;
-var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 var KeyringDialog = new Lang.Class({
     Name: 'KeyringDialog',
@@ -69,27 +67,10 @@ var KeyringDialog = new Lang.Class({
         if (!this._workSpinner)
             return;
 
-        Tweener.removeTweens(this._workSpinner.actor);
-        if (working) {
+        if (working)
             this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: WORK_SPINNER_ANIMATION_DELAY,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete() {
-                                   if (this._workSpinner)
-                                       this._workSpinner.stop();
-                               }
-                             });
-        }
+        else
+            this._workSpinner.stop();
     },
 
     _buildControlTable() {
@@ -114,8 +95,7 @@ var KeyringDialog = new Lang.Class({
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
             this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
 
-            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE);
-            this._workSpinner.actor.opacity = 0;
+            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
 
             if (rtl) {
                 layout.attach(this._workSpinner.actor, 0, row, 1, 1);
