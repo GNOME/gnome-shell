@@ -8,7 +8,11 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
+const Tweener = imports.ui.tweener;
+
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
+var SPINNER_ANIMATION_TIME = 0.3;
+var SPINNER_ANIMATION_DELAY = 1.0;
 
 var Animation = new Lang.Class({
     Name: 'Animation',
@@ -95,5 +99,42 @@ var Spinner = new Lang.Class({
     _init(size) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         this.parent(file, size);
+
+        this.actor.opacity = 0;
+    },
+
+    play(animate) {
+        Tweener.removeTweens(this.actor);
+
+        if (animate) {
+            this.parent();
+            Tweener.addTween(this.actor, {
+                opacity: 255,
+                delay: SPINNER_ANIMATION_DELAY,
+                time: SPINNER_ANIMATION_TIME,
+                transition: 'linear'
+            });
+        } else {
+            this.actor.opacity = 255;
+            this.parent();
+        }
+    },
+
+    stop(animate) {
+        Tweener.removeTweens(this.actor);
+
+        if (animate) {
+            Tweener.addTween(this.actor, {
+                opacity: 0,
+                time: SPINNER_ANIMATION_TIME,
+                transition: 'linear',
+                onComplete: () => {
+                    this.stop(false);
+                }
+            });
+        } else {
+            this.actor.opacity = 0;
+            this.parent();
+        }
     }
 });
