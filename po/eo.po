@@ -6,20 +6,22 @@
 # Daniel PUENTES <blatberk@openmailbox.org>, 2015.
 # Nicolas MAIA < >, 2015.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2012, 2015, 2016, 2018.
+# Carmen Bianca Bakker <carmen@carmenbianca.eu>, 2018.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-10-10 19:07+0000\n"
-"PO-Revision-Date: 2018-10-16 23:00+0200\n"
-"Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
+"POT-Creation-Date: 2018-11-26 21:23+0000\n"
+"PO-Revision-Date: 2018-11-27 13:32+0100\n"
+"Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 3.30.1\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -33,7 +35,7 @@ msgstr "Montri la sciig-liston"
 
 #: data/50-gnome-shell-system.xml:12
 msgid "Focus the active notification"
-msgstr "Enfokusigi la aktivan sciigon"
+msgstr "Fokusi la aktivan sciigon"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Show the overview"
@@ -204,11 +206,11 @@ msgstr "Klavkombino por baskuligi la videblecon de la sciigolisto."
 
 #: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to focus the active notification"
-msgstr "Klavkombino por enfokusigi la aktivan sciigon"
+msgstr "Klavkombino por fokusi la aktivan sciigon"
 
 #: data/org.gnome.shell.gschema.xml.in:131
 msgid "Keybinding to focus the active notification."
-msgstr "Klavkombino por enfokusigi la aktivan sciigon."
+msgstr "Klavkombino por fokusi la aktivan sciigon."
 
 #: data/org.gnome.shell.gschema.xml.in:137
 msgid ""
@@ -607,23 +609,23 @@ msgstr "Oftaj"
 msgid "All"
 msgstr "Ĉiuj"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1889
 msgid "New Window"
 msgstr "Nova fenestro"
 
-#: js/ui/appDisplay.js:1901
+#: js/ui/appDisplay.js:1903
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanĉi uzante dediĉitan vidkarton"
 
-#: js/ui/appDisplay.js:1928 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:287
 msgid "Remove from Favorites"
 msgstr "Forigi el preferataj"
 
-#: js/ui/appDisplay.js:1934
+#: js/ui/appDisplay.js:1936
 msgid "Add to Favorites"
 msgstr "Aldoni al preferataj"
 
-#: js/ui/appDisplay.js:1944
+#: js/ui/appDisplay.js:1946
 msgid "Show Details"
 msgstr "Montri detalojn"
 
@@ -943,14 +945,14 @@ msgstr "%s estas nun konata kiel %s"
 msgid "Windows"
 msgstr "Fenestroj"
 
-#: js/ui/dash.js:246 js/ui/dash.js:287
+#: js/ui/dash.js:248 js/ui/dash.js:289
 msgid "Show Applications"
 msgstr "Montri aplikaĵojn"
 
 # Kiel macOS «dock”.  --Carmen
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:444
+#: js/ui/dash.js:446
 msgid "Dash"
 msgstr "Doko"
 
@@ -1324,7 +1326,7 @@ msgstr "Montri fonton"
 msgid "Web Page"
 msgstr "Retpaĝo"
 
-#: js/ui/messageTray.js:1495
+#: js/ui/messageTray.js:1498
 msgid "System Information"
 msgstr "Sisteminformoj"
 
@@ -1426,7 +1428,7 @@ msgstr "Supra breto"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:300
+#: js/ui/popupMenu.js:301
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1466,7 +1468,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nova sciigo"
 msgstr[1] "%d novaj sciigoj"
 
-#: js/ui/screenShield.js:451 js/ui/status/system.js:294
+#: js/ui/screenShield.js:451 js/ui/status/system.js:297
 msgid "Lock"
 msgstr "Ŝlosi"
 
@@ -1909,27 +1911,27 @@ msgstr "Malŝalti"
 msgid "Airplane Mode On"
 msgstr "Aviadila reĝimo estas ŝaltita"
 
-#: js/ui/status/system.js:227
+#: js/ui/status/system.js:230
 msgid "Switch User"
 msgstr "Ŝanĝi uzanton"
 
-#: js/ui/status/system.js:239
+#: js/ui/status/system.js:242
 msgid "Log Out"
 msgstr "Adiaŭi"
 
-#: js/ui/status/system.js:251
+#: js/ui/status/system.js:254
 msgid "Account Settings"
 msgstr "Kontoagordoj"
 
-#: js/ui/status/system.js:279
+#: js/ui/status/system.js:282
 msgid "Orientation Lock"
 msgstr "Orientiĝa ŝloso"
 
-#: js/ui/status/system.js:305
+#: js/ui/status/system.js:308
 msgid "Suspend"
 msgstr "Dormeti"
 
-#: js/ui/status/system.js:315
+#: js/ui/status/system.js:318
 msgid "Power Off"
 msgstr "Malŝalti"
 
@@ -2036,7 +2038,7 @@ msgstr[1] "Agordaj ŝanĝoj malfaritos post %d sekundoj"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:681
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
