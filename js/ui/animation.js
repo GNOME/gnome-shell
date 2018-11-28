@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
@@ -84,5 +85,15 @@ var AnimatedIcon = new Lang.Class({
 
     _init(file, size) {
         this.parent(file, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
+    }
+});
+
+var Spinner = new Lang.Class({
+    Name: 'Spinner',
+    Extends: AnimatedIcon,
+
+    _init(size) {
+        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+        this.parent(file, size);
     }
 });

@@ -117,8 +117,7 @@ var AuthenticationDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
 
-        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
-        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
 
         this._passwordBox.add(this._workSpinner.actor);

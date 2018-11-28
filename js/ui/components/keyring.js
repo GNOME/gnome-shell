@@ -114,8 +114,7 @@ var KeyringDialog = new Lang.Class({
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
             this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
 
-            let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
-            this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE);
             this._workSpinner.actor.opacity = 0;
 
             if (rtl) {
