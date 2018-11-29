@@ -154,6 +154,7 @@
     <file>ui/hotCorner.js</file>
     <file>ui/iconGridLayout.js</file>
     <file>ui/internetSearch.js</file>
+    <file>ui/payg.js</file>
     <file>ui/paygUnlockDialog.js</file>
     <file>ui/sideComponent.js</file>
     <file>ui/status/automaticUpdates.js</file>
