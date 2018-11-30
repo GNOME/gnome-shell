@@ -1003,11 +1003,14 @@ var LookingGlass = new Lang.Class({
     _evaluate(command) {
         this._history.addItem(command);
 
-        let fullCmd = commandHeader + command;
+        let lines = command.split(';');
+        lines.push(`return ${lines.pop()}`);
+
+        let fullCmd = commandHeader + lines.join(';');
 
         let resultObj;
         try {
-            resultObj = eval(fullCmd);
+            resultObj = Function(fullCmd)();
         } catch (e) {
             resultObj = '<exception ' + e + '>';
         }
