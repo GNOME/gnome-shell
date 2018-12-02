@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-10-25 16:21+0000\n"
-"PO-Revision-Date: 2018-10-25 19:58+0200\n"
+"POT-Creation-Date: 2018-11-28 09:06+0000\n"
+"PO-Revision-Date: 2018-12-01 21:50+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -651,7 +651,7 @@ msgstr "Novo okno"
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Zaženi z uporabo določene grafične kartice"
 
-#: js/ui/appDisplay.js:1930 js/ui/dash.js:248
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:250
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
@@ -784,47 +784,47 @@ msgstr "%OB %Y"
 msgid "Previous month"
 msgstr "Predhodni mesec"
 
-#: js/ui/calendar.js:457
+#: js/ui/calendar.js:458
 msgid "Next month"
 msgstr "Naslednji mesec"
 
-#: js/ui/calendar.js:610
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:665
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Teden %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:734
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celodnevno"
 
-#: js/ui/calendar.js:869
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d. %B"
 
-#: js/ui/calendar.js:873
+#: js/ui/calendar.js:877
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1107
 msgid "No Notifications"
 msgstr "Ni obvestil"
 
-#: js/ui/calendar.js:1106
+#: js/ui/calendar.js:1110
 msgid "No Events"
 msgstr "Ni dogodkov"
 
-#: js/ui/calendar.js:1134
+#: js/ui/calendar.js:1138
 msgid "Clear All"
 msgstr "Počisti vse"
 
@@ -982,13 +982,13 @@ msgstr "%s je sedaj znan kot v %s"
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:209 js/ui/dash.js:250
+#: js/ui/dash.js:211 js/ui/dash.js:252
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:407
+#: js/ui/dash.js:409
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -1379,7 +1379,7 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/messageTray.js:1481
+#: js/ui/messageTray.js:1487
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1525,7 +1525,7 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: js/ui/screenShield.js:451 js/ui/status/system.js:294
+#: js/ui/screenShield.js:451 js/ui/status/system.js:297
 msgid "Lock"
 msgstr "Zakleni"
 
@@ -1663,11 +1663,11 @@ msgstr "Povezano"
 msgid "Brightness"
 msgstr "Svetlost"
 
-#: js/ui/status/keyboard.js:819
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: js/ui/status/keyboard.js:839
+#: js/ui/status/keyboard.js:853
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
@@ -1942,25 +1942,29 @@ msgstr "Upravljanje napajanja"
 msgid "Fully Charged"
 msgstr "Polno napolnjeno"
 
+#: js/ui/status/power.js:74
+msgid "Not Charging"
+msgstr "Naprava se ne polni"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:75 js/ui/status/power.js:81
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Ocenjevanje …"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:89
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Preostaja %d∶%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:94
+#: js/ui/status/power.js:96
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d do polnosti (%d %%)"
 
-#: js/ui/status/power.js:122 js/ui/status/power.js:124
+#: js/ui/status/power.js:124 js/ui/status/power.js:126
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -1980,27 +1984,27 @@ msgstr "Izklopi"
 msgid "Airplane Mode On"
 msgstr "Letalski način je omogočen"
 
-#: js/ui/status/system.js:227
+#: js/ui/status/system.js:230
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: js/ui/status/system.js:239
+#: js/ui/status/system.js:242
 msgid "Log Out"
 msgstr "Odjava"
 
-#: js/ui/status/system.js:251
+#: js/ui/status/system.js:254
 msgid "Account Settings"
 msgstr "Nastavitve računa"
 
-#: js/ui/status/system.js:279
+#: js/ui/status/system.js:282
 msgid "Orientation Lock"
 msgstr "Zaklep položaja"
 
-#: js/ui/status/system.js:305
+#: js/ui/status/system.js:308
 msgid "Suspend"
 msgstr "V pripravljenost"
 
-#: js/ui/status/system.js:315
+#: js/ui/status/system.js:318
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -2078,7 +2082,7 @@ msgstr "Programi"
 msgid "Search"
 msgstr "Poišči"
 
-#: js/ui/windowAttentionHandler.js:20
+#: js/ui/windowAttentionHandler.js:22
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "Storitev “%s” je pripravljena"
@@ -2109,7 +2113,7 @@ msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:681
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2221,7 +2225,7 @@ msgstr "Gesli nista skladni!"
 msgid "Password cannot be blank"
 msgstr "Geslo ne more biti prazna vrednost"
 
-#: src/shell-polkit-authentication-agent.c:353
+#: src/shell-polkit-authentication-agent.c:348
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je preklical pogovorno okno overitve"
 
