@@ -1,3 +1,5 @@
+Gnome Too SLOWWWWWWWWWWWWW! Fix mouse click to react with onclick not onrelease, wttttttttttttttttttttttttttttttttppppppppp!
+
 # GNOME Shell
 GNOME Shell provides core user interface functions for the GNOME 3 desktop,
 like switching to windows and launching applications. GNOME Shell takes
