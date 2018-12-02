@@ -1,3 +1,5 @@
+WTTTTTTTTTTTTTTTTTTTTTTTPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP! STOP MAKING USERS RIGHT CLICK TWICE JUST TO CHANGE THE RIGHT CLICK AREA
+
 # GNOME Shell
 GNOME Shell provides core user interface functions for the GNOME 3 desktop,
 like switching to windows and launching applications. GNOME Shell takes
