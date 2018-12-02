@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-10-10 19:07+0000\n"
-"PO-Revision-Date: 2018-09-16 08:42+0200\n"
+"POT-Creation-Date: 2018-11-28 09:05+0000\n"
+"PO-Revision-Date: 2018-12-02 21:01+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -666,23 +666,23 @@ msgstr "Často používané"
 msgid "All"
 msgstr "Všetky"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1889
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:1901
+#: js/ui/appDisplay.js:1903
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Spustiť pomocou prídavnej grafickej karty"
 
-#: js/ui/appDisplay.js:1928 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:287
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: js/ui/appDisplay.js:1934
+#: js/ui/appDisplay.js:1936
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
-#: js/ui/appDisplay.js:1944
+#: js/ui/appDisplay.js:1946
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
@@ -1011,13 +1011,13 @@ msgid "Windows"
 msgstr "Okná"
 
 # tooltip
-#: js/ui/dash.js:246 js/ui/dash.js:287
+#: js/ui/dash.js:248 js/ui/dash.js:289
 msgid "Show Applications"
 msgstr "Zobrazí aplikácie"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:444
+#: js/ui/dash.js:446
 msgid "Dash"
 msgstr "Dok"
 
@@ -1404,7 +1404,7 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/messageTray.js:1495
+#: js/ui/messageTray.js:1498
 msgid "System Information"
 msgstr "Informácie o systéme"
 
@@ -1507,7 +1507,7 @@ msgstr "Horná lišta"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:300
+#: js/ui/popupMenu.js:301
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1552,7 +1552,7 @@ msgstr[0] "%d nové oznámenie"
 msgstr[1] "%d nové oznámenia"
 msgstr[2] "%d nových oznámení"
 
-#: js/ui/screenShield.js:451 js/ui/status/system.js:294
+#: js/ui/screenShield.js:451 js/ui/status/system.js:297
 msgid "Lock"
 msgstr "Uzamknúť"
 
@@ -1948,11 +1948,11 @@ msgstr "Aktivácia pripojenia k sieti zlyhala"
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light Disabled"
-msgstr "Nočné svetlo zakázané"
+msgstr "Nočné osvetlenie zakázané"
 
 #: js/ui/status/nightLight.js:65
 msgid "Night Light On"
-msgstr "Nočné svetlo zapnuté"
+msgstr "Nočné osvetlenie zapnuté"
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
@@ -2008,28 +2008,28 @@ msgstr "Vypnúť"
 msgid "Airplane Mode On"
 msgstr "Režim v lietadle zapnutý"
 
-#: js/ui/status/system.js:227
+#: js/ui/status/system.js:230
 msgid "Switch User"
 msgstr "Prepnúť používateľa"
 
-#: js/ui/status/system.js:239
+#: js/ui/status/system.js:242
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
-#: js/ui/status/system.js:251
+#: js/ui/status/system.js:254
 msgid "Account Settings"
 msgstr "Nastavenia účtu"
 
 # action button
-#: js/ui/status/system.js:279
+#: js/ui/status/system.js:282
 msgid "Orientation Lock"
 msgstr "Uzamknutie orientácie"
 
-#: js/ui/status/system.js:305
+#: js/ui/status/system.js:308
 msgid "Suspend"
 msgstr "Uspať"
 
-#: js/ui/status/system.js:315
+#: js/ui/status/system.js:318
 msgid "Power Off"
 msgstr "Vypnúť"
 
@@ -2139,7 +2139,7 @@ msgstr[2] "Zmeny nastavení budú vrátené za %d sekúnd"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:681
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
