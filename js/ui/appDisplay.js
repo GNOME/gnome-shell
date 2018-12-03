@@ -487,15 +487,21 @@ var AllView = class AllView extends BaseAppView {
         });
     }
 
+    getAppInfos() {
+        return this._appInfoList;
+    }
+
     _loadApps() {
-        let apps = Gio.AppInfo.get_all().filter(appInfo => {
+        this._appInfoList = Gio.AppInfo.get_all().filter(appInfo => {
             try {
                 let id = appInfo.get_id(); // catch invalid file encodings
             } catch(e) {
                 return false;
             }
             return appInfo.should_show();
-        }).map(app => app.get_id());
+        });
+
+        let apps = this._appInfoList.map(app => app.get_id());
 
         let appSys = Shell.AppSystem.get_default();
 
@@ -1298,15 +1304,13 @@ var FolderIcon = class FolderIcon {
         folderApps.forEach(addAppId);
 
         let folderCategories = this._folder.get_strv('categories');
-        Gio.AppInfo.get_all().forEach(appInfo => {
+        let appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
             let appCategories = _getCategories(appInfo);
             if (!_listsIntersect(folderCategories, appCategories))
                 return;
 
-            try {
-                addAppId(appInfo.get_id()); // catch invalid file encodings
-            } catch(e) {
-            }
+            addAppId(appInfo.get_id());
         });
 
         this.actor.visible = this.view.getAllItems().length > 0;
