@@ -225,7 +225,6 @@ var Application = class {
         this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
 
         this.shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-
         this.shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
             // we only deal with new and deleted extensions here
             let row = null;
@@ -271,7 +270,15 @@ var Application = class {
     }
 
     _scanExtensions() {
-        this.shellProxy.ListExtensionsRemote(([extensionsProxy]) => {
+        this.shellProxy.ListExtensionsRemote(([extensionsProxy], e) => {
+            if (e) {
+                if (e instanceof Gio.DBusError) {
+                    this._mainStack.add_named(new NoShellPlaceholder(e), 'noshell');
+                    this._mainStack.visible_child_name = 'noshell';
+                } else
+                    throw e;
+                return;
+            }
 
             for (let uuid in extensionsProxy) {
                 let extension = ExtensionUtils.deserializeExtension(extensionsProxy[uuid]);
@@ -497,6 +504,62 @@ class EmptyPlaceholder extends Gtk.Box {
                 appInfo.launch([], context);
             });
         }
+    }
+});
+
+var NoShellPlaceholder = GObject.registerClass(
+    class NoShellPlaceholder extends Gtk.Box {
+    _init(dbusError) {
+        super._init({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 12,
+            margin: 100,
+            margin_bottom: 60
+        });
+
+        let label = new Gtk.Label({
+            label: '<span size="x-large">%s</span>'.format(_("Can't connect to the Shell")),
+            use_markup: true
+        });
+        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
+        this.add(label);
+
+        label = new Gtk.Label({
+            label: _("We’re very sorry, but we can't find any compatible Shell running in the current user session."),
+            justify: Gtk.Justification.CENTER,
+            wrap: true
+        });
+        this.add(label);
+
+        let expander = new Expander({
+            label: _("Technical Details"),
+            margin_top: 12
+        });
+        this.add(expander);
+
+        let errortext = `${dbusError}   \n\nStack trace:\n${
+            // Ident error message.
+            dbusError.stack.split('\n').map(line => `  ${line}`).join('\n')
+            }`;
+
+        let buffer = new Gtk.TextBuffer({ text: errortext });
+        let textview = new Gtk.TextView({
+            buffer: buffer,
+            wrap_mode: Gtk.WrapMode.WORD,
+            monospace: true,
+            editable: false,
+            top_margin: 12,
+            bottom_margin: 12,
+            left_margin: 12,
+            right_margin: 12
+        });
+        let expandedBox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        expandedBox.add(textview);
+        expander.add(expandedBox);
+
+        this.show_all();
     }
 });
 
