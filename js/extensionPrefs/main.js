@@ -130,13 +130,17 @@ var Application = new Lang.Class({
         let killSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
         this._titlebar.pack_end(killSwitch);
 
+        this._UISwitch = new Gtk.Notebook();
+        this._UISwitch.set_show_tabs(false);
+        this._window.add(this._UISwitch);
+
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.bind('disable-user-extensions', killSwitch, 'active',
                             Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
-        this._window.add(scroll);
+        this._UISwitch.append_page(scroll, null);
 
         this._extensionSelector = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
         this._extensionSelector.set_sort_func(this._sortList.bind(this));
@@ -144,8 +148,14 @@ var Application = new Lang.Class({
 
         scroll.add(this._extensionSelector);
 
-        this.shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
+        this._globalerror = new Gtk.Label({
+            use_markup: true,
+            wrap: true,
+            halign: Gtk.Align.FILL
+        });
+        this._UISwitch.append_page(this._globalerror, null);
 
+        this.shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
         this.shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
             // we only deal with new and deleted extensions here
             let row = null;
@@ -178,6 +188,11 @@ var Application = new Lang.Class({
         this._window.show_all();
     },
 
+    _showErrorUI(text) {
+        this._globalerror.set_markup(text);
+        this._UISwitch.set_current_page(1);
+    },
+
     _sortList(row1, row2) {
         return row1.name.localeCompare(row2.name);
     },
@@ -191,7 +206,14 @@ var Application = new Lang.Class({
     },
 
     _scanExtensions() {
-        this.shellProxy.ListExtensionsRemote(([extensionsProxy]) => {
+        this.shellProxy.ListExtensionsRemote(([extensionsProxy], e) => {
+            if (e) {
+                if (e instanceof Gio.DBusError)
+                    this._showErrorUI("<b>" + _("Can't connect to the Shell: are you running this tool in the correct session?") + "</b>");
+                else
+                    throw e;
+                return;
+            }
 
             for (let uuid in extensionsProxy) {
                 let extension = ExtensionUtils.deserializeExtension(extensionsProxy[uuid]);
@@ -227,7 +249,7 @@ var Application = new Lang.Class({
     _onStartup(app) {
         this._buildUI(app);
         this._scanExtensions();
-    },
+        },
 
     _onCommandLine(app, commandLine) {
         app.activate();
