@@ -23,6 +23,10 @@ class PaygIndicator extends PanelMenu.SystemIndicator {
         this._paygManager = new PaygManager.PaygManager();
         this._indicator = this._addIndicator();
         this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._paygNotifier = new Payg.PaygNotifier();
+        this._item.menu.addAction(_('Enter unlock code…'), () => {
+            this._paygNotifier.notify(-1);
+        });
         this.menu.addMenuItem(this._item);
 
         // show this status applet if PAYG is enabled and fill in

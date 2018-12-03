@@ -465,3 +465,67 @@ function timeToString(seconds) {
     let hoursStr = Gettext.ngettext('%s hour', '%s hours', hoursPast).format(hoursPast);
     return '%s %s'.format(daysStr, hoursStr);
 }
+
+var PaygNotifier = GObject.registerClass(
+class PaygNotifier extends GObject.Object {
+    _init() {
+        super._init();
+
+        this._notification = null;
+    }
+
+    notify(secondsLeft) {
+        // Only notify when in an regular session, not in GDM or initial-setup.
+        if (Main.sessionMode.currentMode !== 'user' &&
+            Main.sessionMode.currentMode !== 'endless')
+            return;
+
+        // Clear previous notification
+        this.clearNotification();
+
+        let source = new MessageTray.SystemNotificationSource();
+        Main.messageTray.add(source);
+
+        // by default, this notification is for early entry of an unlock code
+        let messageText = NOTIFICATION_EARLY_CODE_ENTRY_TEXT;
+        let urgency = MessageTray.Urgency.NORMAL;
+        let userInitiated = false;
+
+        // in case this is a "only X time left" warning notification
+        if (secondsLeft >= 0) {
+            let timeLeft = timeToString(secondsLeft);
+            messageText = NOTIFICATION_DETAILED_FORMAT_STRING.format(timeLeft);
+            urgency = MessageTray.Urgency.HIGH;
+        } else {
+            userInitiated = true;
+        }
+
+        this._notification = new ApplyCodeNotification(
+            source,
+            NOTIFICATION_TITLE_TEXT,
+            messageText);
+
+        if (userInitiated)
+            this._notification.setResident(true);
+
+        this._notification.setTransient(false);
+        this._notification.setUrgency(urgency);
+        source.notify(this._notification);
+
+        // if the user triggered this notification, immediately expand so the
+        // user sees the input field
+        if (userInitiated)
+            Main.messageTray._expandActiveNotification();
+
+        this._notification.connect('destroy', () => {
+            this._notification = null;
+        });
+    }
+
+    clearNotification() {
+        if (this._notification) {
+            this._notification.destroy();
+            this._notification = null;
+        }
+    }
+});
