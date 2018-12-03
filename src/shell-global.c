@@ -85,6 +85,8 @@ struct _ShellGlobal {
   GSList *leisure_closures;
   guint leisure_function_id;
 
+  GHashTable *save_ops;
+
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
@@ -311,6 +313,10 @@ shell_global_init (ShellGlobal *global)
                                      NULL);
 
   g_strfreev (search_path);
+
+  global->save_ops = g_hash_table_new_full (g_file_hash,
+                                            (GEqualFunc) g_file_equal,
+                                            g_object_unref, g_object_unref);
 }
 
 static void
@@ -329,6 +335,8 @@ shell_global_finalize (GObject *object)
   g_free (global->session_mode);
   g_free (global->imagedir);
   g_free (global->userdatadir);
+
+  g_hash_table_unref (global->save_ops);
 
   G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
 }
@@ -1541,20 +1549,77 @@ shell_global_get_session_mode (ShellGlobal *global)
 }
 
 static void
-save_variant (GFile      *dir,
-              const char *property_name,
-              GVariant   *variant)
+delete_variant_cb (GObject      *object,
+                   GAsyncResult *result,
+                   gpointer      user_data)
+{
+  ShellGlobal *global = user_data;
+  GError *error = NULL;
+
+  if (!g_file_delete_finish (G_FILE (object), result, &error))
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("Could not delete runtime/persistent state file: %s\n",
+                     error->message);
+        }
+
+      g_error_free (error);
+    }
+
+  g_hash_table_remove (global->save_ops, object);
+}
+
+static void
+replace_variant_cb (GObject      *object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  ShellGlobal *global = user_data;
+  GError *error = NULL;
+
+  if (!g_file_replace_contents_finish (G_FILE (object), result, NULL, &error))
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("Could not replace runtime/persistent state file: %s\n",
+                     error->message);
+        }
+
+      g_error_free (error);
+    }
+
+  g_hash_table_remove (global->save_ops, object);
+}
+
+static void
+save_variant (ShellGlobal *global,
+              GFile       *dir,
+              const char  *property_name,
+              GVariant    *variant)
 {
   GFile *path = g_file_get_child (dir, property_name);
+  GCancellable *cancellable;
+
+  cancellable = g_hash_table_lookup (global->save_ops, path);
+  g_cancellable_cancel (cancellable);
+
+  cancellable = g_cancellable_new ();
+  g_hash_table_insert (global->save_ops, g_object_ref (path), cancellable);
 
   if (variant == NULL || g_variant_get_data (variant) == NULL)
-    (void) g_file_delete (path, NULL, NULL);
+    {
+      g_file_delete_async (path, G_PRIORITY_DEFAULT, cancellable,
+                           delete_variant_cb, global);
+    }
   else
     {
-      gsize size = g_variant_get_size (variant);
-      g_file_replace_contents (path, g_variant_get_data (variant), size,
-                               NULL, FALSE, G_FILE_CREATE_REPLACE_DESTINATION,
-                               NULL, NULL, NULL);
+      g_file_replace_contents_async (path,
+                                     g_variant_get_data (variant),
+                                     g_variant_get_size (variant),
+                                     NULL, FALSE,
+                                     G_FILE_CREATE_REPLACE_DESTINATION,
+                                     cancellable, replace_variant_cb, global);
     }
 
   g_object_unref (path);
@@ -1608,7 +1673,7 @@ shell_global_set_runtime_state (ShellGlobal  *global,
                                 const char   *property_name,
                                 GVariant     *variant)
 {
-  save_variant (global->runtime_state_path, property_name, variant);
+  save_variant (global, global->runtime_state_path, property_name, variant);
 }
 
 /**
@@ -1643,7 +1708,7 @@ shell_global_set_persistent_state (ShellGlobal *global,
                                    const char  *property_name,
                                    GVariant    *variant)
 {
-  save_variant (global->userdatadir_path, property_name, variant);
+  save_variant (global, global->userdatadir_path, property_name, variant);
 }
 
 /**
