@@ -17,6 +17,8 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
+let app;
+
 var Application = class {
     constructor() {
         GLib.set_prgname('gnome-shell-extension-prefs');
@@ -32,6 +34,7 @@ var Application = class {
         this._startupUuid = null;
         this._loaded = false;
         this._skipMainWindow = false;
+        this.shellProxy = null;
     }
 
     _showPrefs(uuid) {
@@ -221,10 +224,35 @@ var Application = class {
         this._mainStack.add_named(scroll, 'listing');
         this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
 
-        this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-        this._shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
-            if (ExtensionUtils.extensions[uuid] !== undefined)
-                this._scanExtensions();
+        this.shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
+
+        this.shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
+            // we only deal with new and deleted extensions here
+            let row = null;
+            for (let item of this._extensionSelector.get_children()) {
+                if (item.uuid === uuid) {
+                    row = item;
+                    break;
+                }
+            }
+
+            if (row && (state === ExtensionUtils.ExtensionState.UNINSTALLED)) {
+                row.disconnectSignals();
+                row.destroy();
+                return;
+            } else if (!row) {
+                this.shellProxy.GetExtensionInfoRemote(uuid, ([extensionProxy]) => {
+                    let extension = ExtensionUtils.deserializeExtension(extensionProxy);
+                    if (!extension)
+                        return;
+                    // check the extension wasn't added in between (due to asyncness)
+                    for (let item of this._extensionSelector.get_children()) {
+                        if (item.uuid === extension.uuid)
+                            return;
+                    }
+                    this._extensionFound(extension);
+                });
+            }
         });
 
         this._window.show_all();
@@ -243,7 +271,7 @@ var Application = class {
     }
 
     _scanExtensions() {
-        this._shellProxy.ListExtensionsRemote(([extensionsProxy]) => {
+        this.shellProxy.ListExtensionsRemote(([extensionsProxy]) => {
 
             for (let uuid in extensionsProxy) {
                 let extension = ExtensionUtils.deserializeExtension(extensionsProxy[uuid]);
@@ -489,10 +517,18 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
         this._extension = extension;
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.connect('changed::enabled-extensions', () => {
-            this._switch.state = this._isEnabled();
+        this._extensionStatusChangedId = app.shellProxy.connectSignal('ExtensionStatusChanged',
+            (proxy, senderName, [uuid, state, error]) => {
+                if (this.uuid !== uuid) {
+                    return;
+                }
+
+                this._extension.state = state;
+                this._toggleSwitch(state === ExtensionUtils.ExtensionState.ENABLED);
         });
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+
         this._settings.connect('changed::disable-extension-version-validation',
             () => {
                 this._switch.sensitive = this._canEnable();
@@ -519,6 +555,15 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
     get url() {
         return this._extension.metadata.url;
+    }
+
+    disconnectSignals() {
+        if (!app.shellProxy)
+            return;
+
+        if (this._extensionStatusChangedId)
+            app.shellProxy.disconnectSignal(this._extensionStatusChangedId);
+        this._extensionStatusChangedId = null;
     }
 
     _buildUI() {
@@ -555,49 +600,30 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this.prefsButton = button;
 
         this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
-                                        sensitive: this._canEnable(),
-                                        state: this._isEnabled() });
-        this._switch.connect('notify::active', () => {
-            if (this._switch.active)
-                this._enable();
-            else
-                this._disable();
-        });
-        this._switch.connect('state-set', () => true);
+                                        sensitive: this._canToggle(),
+                                        state: this._extension.state === ExtensionUtils.ExtensionState.ENABLED });
+        this._switch.connect('notify::active', () => { this._switchToggled() });
         hbox.add(this._switch);
     }
 
-    _canEnable() {
+    _toggleSwitch(enabled) {
+        if (enabled !== this._switch.active)
+            this._switch.active = enabled;
+    }
+
+    _switchToggled() {
+        let enabled = this._switch.active;
+        if (enabled && (this._extension.state !== ExtensionUtils.ExtensionState.ENABLED))
+            app.shellProxy.EnableExtensionRemote(this.uuid);
+        else if (!enabled && (this._extension.state === ExtensionUtils.ExtensionState.ENABLED))
+            app.shellProxy.DisableExtensionRemote(this.uuid);
+    }
+
+    _canToggle() {
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
         return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && ExtensionUtils.isOutOfDate(this._extension));
-    }
-
-    _isEnabled() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        return extensions.indexOf(this.uuid) != -1;
-    }
-
-    _enable() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        if (extensions.indexOf(this.uuid) != -1)
-            return;
-
-        extensions.push(this.uuid);
-        this._settings.set_strv('enabled-extensions', extensions);
-    }
-
-    _disable() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        let pos = extensions.indexOf(this.uuid);
-        if (pos == -1)
-            return;
-        do {
-            extensions.splice(pos, 1);
-            pos = extensions.indexOf(this.uuid);
-        } while (pos != -1);
-        this._settings.set_strv('enabled-extensions', extensions);
+               !(checkVersion && this._extension.state === ExtensionUtils.ExtensionState.OUT_OF_DATE);
     }
 
     get prefsModule() {
@@ -638,6 +664,6 @@ function main(argv) {
     Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
     Gettext.textdomain(Config.GETTEXT_PACKAGE);
 
-    let app = new Application();
+    app = new Application();
     app.application.run(argv);
 }
