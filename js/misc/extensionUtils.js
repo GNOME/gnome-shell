@@ -17,6 +17,19 @@ var ExtensionType = {
     PER_USER: 2
 };
 
+var ExtensionState = {
+    ENABLED: 1,
+    DISABLED: 2,
+    ERROR: 3,
+    OUT_OF_DATE: 4,
+    DOWNLOADING: 5,
+    INITIALIZED: 6,
+
+    // Used as an error state for operations on unknown extensions,
+    // should never be in a real extensionMeta object.
+    UNINSTALLED: 99
+};
+
 const SERIALIZED_PROPERTIES = ["type", "state", "path", "error", "hasPrefs"];
 
 // Maps uuid -> metadata object
