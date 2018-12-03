@@ -487,15 +487,21 @@ var AllView = class AllView extends BaseAppView {
         });
     }
 
+    _getAppInfoList() {
+        return this._appInfoList;
+    },
+
     _loadApps() {
-        let apps = Gio.AppInfo.get_all().filter(appInfo => {
+        this._appInfoList = Gio.AppInfo.get_all().filter(appInfo => {
             try {
                 let id = appInfo.get_id(); // catch invalid file encodings
             } catch(e) {
                 return false;
             }
             return appInfo.should_show();
-        }).map(app => app.get_id());
+        });
+
+        let apps = this._appInfoList.map(app => app.get_id());
 
         let appSys = Shell.AppSystem.get_default();
 
@@ -1254,8 +1260,10 @@ var FolderIcon = class FolderIcon {
                 this._popup.popdown();
         });
 
-        this._folder.connect('changed', this._redisplay.bind(this));
-        this._redisplay();
+        this._folder.connect('changed', () => {
+            this._redisplay(this._parentView._getAppInfoList());
+        });
+        this._redisplay(this._parentView._getAppInfoList());
     }
 
     getAppIds() {
@@ -1272,7 +1280,7 @@ var FolderIcon = class FolderIcon {
         this.emit('name-changed');
     }
 
-    _redisplay() {
+    _redisplay(appInfoList) {
         this._updateName();
 
         this.view.removeAll();
@@ -1298,15 +1306,12 @@ var FolderIcon = class FolderIcon {
         folderApps.forEach(addAppId);
 
         let folderCategories = this._folder.get_strv('categories');
-        Gio.AppInfo.get_all().forEach(appInfo => {
+        appInfoList.forEach(appInfo => {
             let appCategories = _getCategories(appInfo);
             if (!_listsIntersect(folderCategories, appCategories))
                 return;
 
-            try {
-                addAppId(appInfo.get_id()); // catch invalid file encodings
-            } catch(e) {
-            }
+            addAppId(appInfo.get_id());
         });
 
         this.actor.visible = this.view.getAllItems().length > 0;
