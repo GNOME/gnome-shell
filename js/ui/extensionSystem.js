@@ -210,6 +210,7 @@ function loadExtension(extension) {
         }
     }
 
+    _updateCanChange(extension);
     _signals.emit('extension-state-changed', extension);
 }
 
@@ -305,6 +306,21 @@ function _getModeExtensions() {
     return [];
 }
 
+function _updateCanChange(extension) {
+    let changeKey;
+    if (_getModeExtensions().includes(extension.uuid))
+        changeKey = DISABLED_EXTENSIONS_KEY;
+    else
+        changeKey = ENABLED_EXTENSIONS_KEY;
+
+    let userExtensionsDisabled = global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY);
+
+    extension.canChange =
+        global.settings.is_writable(changeKey) &&
+        ![ExtensionState.ERROR, ExtensionState.OUT_OF_DATE].includes(extension.state) &&
+        (extension.type === ExtensionUtils.ExtensionType.SYSTEM || !userExtensionsDisabled);
+}
+
 function onEnabledExtensionsChanged() {
     let newEnabledExtensions = getEnabledExtensions();
 
@@ -330,6 +346,13 @@ function onEnabledExtensionsChanged() {
     enabledExtensions = newEnabledExtensions;
 }
 
+function updateExtensionsCanChange() {
+    for (let uuid in ExtensionUtils.extensions) {
+        let extension = ExtensionUtils.extensions[uuid];
+        _updateCanChange(extension);
+    };
+}
+
 function _onVersionValidationChanged() {
     // we want to reload all extensions, but only enable
     // extensions when allowed by the sessionMode, so
@@ -350,7 +373,11 @@ function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, updateExtensionsCanChange);
     global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
+    global.settings.connect('writable-changed::' + ENABLED_EXTENSIONS_KEY, updateExtensionsCanChange);
+    global.settings.connect('writable-changed::' + DISABLED_EXTENSIONS_KEY, updateExtensionsCanChange);
+
 
     enabledExtensions = getEnabledExtensions();
 
