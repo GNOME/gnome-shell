@@ -252,6 +252,8 @@ var GnomeShellExtensions = class {
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
         ExtensionSystem.connect('extension-state-changed',
                                 this._extensionStateChanged.bind(this));
+        ExtensionSystem.connect('extension-can-change-updated',
+                                this._extensionCanChangeUpdated.bind(this));
     }
 
     ListExtensions() {
@@ -322,6 +324,11 @@ var GnomeShellExtensions = class {
     _extensionStateChanged(_, newState) {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+    }
+
+    _extensionCanChangeUpdated(_, newState) {
+        this._dbusImpl.emit_signal('ExtensionCanChangeUpdated',
+                                   GLib.Variant.new('(sb)', [newState.uuid, newState.canChange]));
     }
 };
 

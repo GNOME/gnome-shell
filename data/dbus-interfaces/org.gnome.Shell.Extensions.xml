@@ -219,6 +219,11 @@
       <arg type="s" name="error"/>
     </signal>
 
+    <signal name="ExtensionCanChangeUpdated">
+      <arg type="s" name="uuid"/>
+      <arg type="b" name="canChange"/>
+    </signal>
+
     <!--
         ShellVersion:
         The GNOME Shell version
