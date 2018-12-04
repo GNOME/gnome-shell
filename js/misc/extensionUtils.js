@@ -30,7 +30,7 @@ var ExtensionState = {
     UNINSTALLED: 99
 };
 
-const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs'];
+const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'canChange'];
 
 // Maps uuid -> metadata object
 var extensions = {};
@@ -219,6 +219,7 @@ function createExtensionObject(uuid, dir, type) {
     extension.path = dir.get_path();
     extension.error = '';
     extension.hasPrefs = dir.get_child('prefs.js').query_exists(null);
+    extension.canChange = false;
 
     extensions[uuid] = extension;
 
