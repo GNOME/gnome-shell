@@ -27,9 +27,7 @@ const { Gio, GLib, GnomeDesktop, GObject, Shell } = imports.gi;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const Gettext = imports.gettext;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+const Payg = imports.ui.payg;
 
 const EOS_PAYG_NAME = 'com.endlessm.Payg1';
 const EOS_PAYG_PATH = '/com/endlessm/Payg1';
@@ -52,10 +50,6 @@ const DBusErrorsMapping = {
     DISABLED: 'com.endlessm.Payg1.Error.Disabled',
 };
 
-// Title and description text to be shown in the periodic reminders.
-const NOTIFICATION_TITLE_TEXT = _('Pay as You Go');
-const NOTIFICATION_DETAILED_FORMAT_STRING = _('Subscription runs out in %s.');
-
 // This list defines the different instants in time where we would
 // want to show notifications to the user reminding that the payg
 // subscription will be expiring soon, up to a max GLib.MAXUINT32.
@@ -72,57 +66,6 @@ const notificationAlertTimesSecs = [
     60 * 2,       // 2 minutes
     30,           // 30 seconds
 ];
-
-// Takes an UNIX timestamp (in seconds) and returns a string
-// with a precision level appropriate to show to the user.
-//
-// The returned string will be formatted just in seconds for times
-// under 1 minute, in minutes for times under 2 hours, in hours and
-// minutes (if applicable) for times under 1 day, and then in days
-// and hours (if applicable) for anything longer than that in days.
-//
-// Some examples:
-//   - 45 seconds => "45 seconds"
-//   - 60 seconds => "1 minute"
-//   - 95 seconds => "1 minute"
-//   - 120 seconds => "2 minutes"
-//   - 3600 seconds => "60 minutes"
-//   - 4500 seconds => "75 minutes"
-//   - 7200 seconds => "2 hours"
-//   - 8640 seconds => "2 hours 24 minutes"
-//   - 86400 seconds => "1 day"
-//   - 115200 seconds => "1 day 8 hours"
-//   - 172800 seconds => "2 days"
-function timeToString(seconds) {
-    if (seconds < 60)
-        return Gettext.ngettext('%s second', '%s seconds', seconds).format(Math.floor(seconds));
-
-    let minutes = Math.floor(seconds / 60);
-    if (minutes < 120)
-        return Gettext.ngettext('%s minute', '%s minutes', minutes).format(minutes);
-
-    let hours = Math.floor(minutes / 60);
-    if (hours < 24) {
-        let hoursStr = Gettext.ngettext('%s hour', '%s hours', hours).format(hours);
-
-        let minutesPast = minutes % 60;
-        if (minutesPast == 0)
-            return hoursStr;
-
-        let minutesStr = Gettext.ngettext('%s minute', '%s minutes', minutesPast).format(minutesPast);
-        return ("%s %s").format(hoursStr, minutesStr);
-    }
-
-    let days = Math.floor(hours / 24);
-    let daysStr = Gettext.ngettext('%s day', '%s days', days).format(days);
-
-    let hoursPast = hours % 24;
-    if (hoursPast == 0)
-        return daysStr;
-
-    let hoursStr = Gettext.ngettext('%s hour', '%s hours', hoursPast).format(hoursPast);
-    return ("%s %s").format(daysStr, hoursStr);
-}
 
 var PaygManager = GObject.registerClass({
     Signals: {
@@ -145,7 +88,7 @@ var PaygManager = GObject.registerClass({
         this._rateLimitEndTime = 0;
         this._codeFormat = '';
         this._codeFormatRegex = null;
-        this._notification = null;
+        this._paygNotifier = new Payg.PaygNotifier();
 
         // Keep track of clock changes to update notifications.
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
@@ -269,31 +212,6 @@ var PaygManager = GObject.registerClass({
         this._updateExpirationReminders();
     }
 
-    _notifyPaygReminder(secondsLeft) {
-        // Only notify when in an regular session, not in GDM or initial-setup.
-        if (Main.sessionMode.currentMode != 'user' &&
-            Main.sessionMode.currentMode != 'endless' &&
-            Main.sessionMode.currentMode != 'user-coding')
-            return;
-
-        if (this._notification)
-            this._notification.destroy();
-
-        let source = new MessageTray.SystemNotificationSource();
-        Main.messageTray.add(source);
-
-        let timeLeft = timeToString(secondsLeft);
-        this._notification = new MessageTray.Notification(
-            source,
-            NOTIFICATION_TITLE_TEXT,
-            NOTIFICATION_DETAILED_FORMAT_STRING.format(timeLeft));
-        this._notification.setUrgency(MessageTray.Urgency.HIGH);
-        this._notification.setTransient(false);
-        source.notify(this._notification);
-
-        this._notification.connect('destroy', () => this._notification = null);
-    }
-
     _maybeNotifyUser() {
         // Sanity check.
         if (notificationAlertTimesSecs.length === 0)
@@ -301,7 +219,7 @@ var PaygManager = GObject.registerClass({
 
         let secondsLeft = this.timeRemainingSecs();
         if (secondsLeft > 0 && secondsLeft <= notificationAlertTimesSecs[0])
-            this._notifyPaygReminder(secondsLeft);
+            this._paygNotifier.notify(secondsLeft);
     }
 
     _updateExpirationReminders() {
@@ -336,7 +254,7 @@ var PaygManager = GObject.registerClass({
             () => {
                 // We want to show "round" numbers in the notification, matching
                 // whatever is specified in the notificationAlertTimeSecs array.
-                this._notifyPaygReminder(targetAlertTime);
+                this._paygNotifier.notify(targetAlertTime);
 
                 // Reset _expirationReminderId before _updateExpirationReminders()
                 // to prevent an attempt to remove the same GSourceFunc twice.
