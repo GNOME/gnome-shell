@@ -589,16 +589,14 @@ class ExtensionRow extends Gtk.ListBoxRow {
                 this._extension.state = state;
                 this._toggleSwitch(state === ExtensionUtils.ExtensionState.ENABLED);
         });
+        this._extensionCanChangeUpdatedId = app.shellProxy.connectSignal('ExtensionCanChangeUpdated',
+            (proxy, senderName, [uuid, canChange]) => {
+                if (this.uuid !== uuid) {
+                    return;
+                }
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-
-        this._settings.connect('changed::disable-extension-version-validation',
-            () => {
-                this._switch.sensitive = this._canEnable();
-            });
-        this._settings.connect('changed::disable-user-extensions',
-            () => {
-                this._switch.sensitive = this._canEnable();
+                this._extension.canChange = canChange;
+                this._switch.sensitive = this._canToggle();
             });
 
         this._buildUI();
@@ -627,6 +625,9 @@ class ExtensionRow extends Gtk.ListBoxRow {
         if (this._extensionStatusChangedId)
             app.shellProxy.disconnectSignal(this._extensionStatusChangedId);
         this._extensionStatusChangedId = null;
+        if (this._extensionCanChangeUpdatedId)
+            app.shellProxy.disconnectSignal(this._extensionCanChangeUpdatedId);
+        this._extensionCanChangeUpdatedId = null;
     }
 
     _buildUI() {
@@ -683,10 +684,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
     }
 
     _canToggle() {
-        let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
-
-        return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && this._extension.state === ExtensionUtils.ExtensionState.OUT_OF_DATE);
+        return this._extension.canChange;
     }
 
     get prefsModule() {

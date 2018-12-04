@@ -350,6 +350,7 @@ function updateExtensionsCanChange() {
     for (let uuid in ExtensionUtils.extensions) {
         let extension = ExtensionUtils.extensions[uuid];
         _updateCanChange(extension);
+        _signals.emit('extension-can-change-updated', extension);
     };
 }
 
