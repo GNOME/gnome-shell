@@ -190,6 +190,7 @@ var ExtensionManager = class {
             }
         }
 
+        this._updateCanChange(extension);
         this.emit('extension-state-changed', extension);
     }
 
@@ -268,17 +269,38 @@ var ExtensionManager = class {
         return true;
     }
 
-    _getEnabledExtensions() {
-        let extensions;
+    _getModeExtensions() {
         if (Array.isArray(Main.sessionMode.enabledExtensions))
-            extensions = Main.sessionMode.enabledExtensions;
-        else
-            extensions = [];
+            return Main.sessionMode.enabledExtensions;
+        return [];
+    }
+
+    _updateCanChange(extension) {
+        let hasError =
+            extension.state == ExtensionState.ERROR ||
+            extension.state == ExtensionState.OUT_OF_DATE;
+
+        let isMode = this._getModeExtensions().includes(extension.uuid);
+        let modeOnly = global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY);
+
+        extension.canChange =
+            !hasError &&
+            global.settings.is_writable(ENABLED_EXTENSIONS_KEY) &&
+            (isMode || !modeOnly);
+    }
+
+    _getEnabledExtensions() {
+        let extensions = this._getModeExtensions();
 
         if (global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
             return extensions;
 
         return extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
+    }
+
+    _onUserExtensionsEnabledChanged() {
+        this._onEnabledExtensionsChanged();
+        this._onSettingsWritableChanged();
     }
 
     _onEnabledExtensionsChanged() {
@@ -306,6 +328,14 @@ var ExtensionManager = class {
         this._enabledExtensions = newEnabledExtensions;
     }
 
+    _onSettingsWritableChanged() {
+        for (let uuid in ExtensionUtils.extensions) {
+            let extension = ExtensionUtils.extensions[uuid];
+            this._updateCanChange(extension);
+            this.emit('extension-state-changed', extension);
+        }
+    }
+
     _onVersionValidationChanged() {
         // we want to reload all extensions, but only enable
         // extensions when allowed by the sessionMode, so
@@ -326,9 +356,11 @@ var ExtensionManager = class {
         global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`,
             this._onEnabledExtensionsChanged.bind(this));
         global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`,
-            this._onEnabledExtensionsChanged.bind(this));
+            this._onUserExtensionsEnabledChanged.bind(this));
         global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`,
             this._onVersionValidationChanged.bind(this));
+        global.settings.connect(`writable-changed::${ENABLED_EXTENSIONS_KEY}`,
+            this._onSettingsWritableChanged.bind(this));
 
         this._enabledExtensions = this._getEnabledExtensions();
 
