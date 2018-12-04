@@ -138,6 +138,7 @@
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
+    <file>ui/status/payg.js</file>
 
     <!-- Endless-specific files beyond this point -->
 
