@@ -301,15 +301,10 @@ var Switch = new Lang.Class({
             this.setToggleState(this.state);
         }).bind(this));
 
-        // Translators: this MUST be either "toggle-switch-us"
-        // (for toggle switches containing the English words
-        // "ON" and "OFF") or "toggle-switch-intl" (for toggle
-        // switches containing "◯" and "|"). Other values will
-        // simply result in invisible toggle switches.
         this._labelOn = new St.Bin({ style_class: 'switch-label',
-                                     child: new St.Label({ text: _("ON") }) });
+                                     child: new St.Label({ text: _("❙") }) });
         this._labelOff = new St.Bin({ style_class: 'switch-label',
-                                      child: new St.Label({ text: _("OFF") }) });
+                                      child: new St.Label({ text: _("○") }) });
         this._handle = new St.Bin({ style_class: 'switch-handle' });
         this._handle.reactive = reactive;
         this.actor.add_child(this._labelOn);
