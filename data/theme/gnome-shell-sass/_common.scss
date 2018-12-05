@@ -157,34 +157,35 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
-  width: 4.64em;
-  height: 1.42em;
-  border-radius: .21em;
-  background: #2c2c2c;
-  box-shadow:  inset 0 .7em .7em -.7em rgba(0, 0, 0, .3);
-  border: .07em solid $borders_color;
+  width: 2.86em;
+  height: 1.36em;
+  border-radius: 1.36em;
+  background: darken($bg_color, 7%);
+  box-shadow:  inset 0 10px 10px -10px rgba(0, 0, 0, .3);
+  border: 1px solid $borders_color;
   transition-duration: 250ms;
 
   .switch-handle {
-    width: 2em;
+    width: 1.36em;
     height: 1.29em;
-    border: .07em solid lighten($borders_color, 10%);
-    border-radius: .21em;
+    border-bottom: .07em solid $borders_color;
+    border-radius: 1.36em;
     background: $bg_color;
-    box-shadow: inset 0 .7em .7em -.7em rgba(255, 255, 255, .2);
+    box-shadow: 0 0 0 .07em $borders_color;
   }
 
   .switch-label {
-    width: 2.32em; // wish we could do 50% */
-    height: 1.28em;
+    width: 1.43em; // wish we could do 50%
+    height: 1.36em;
     font-weight: bold;
     color: #FFF;
 
-    > StLabel { font-size: .7em; }
+    > StLabel { font-size: .6em; }
   }
 
   &:checked {
     background: $selected_bg_color;
+    border-color: darken($selected_bg_color, 20%);
   }
 }
 
