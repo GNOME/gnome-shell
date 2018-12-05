@@ -275,7 +275,6 @@ var PopupSeparatorMenuItem = class extends PopupBaseMenuItem {
 var Switch = class {
     constructor(state, reactive) {
         this.actor = new St.BoxLayout({ style_class: 'toggle-switch',
-                                        vertical: false,
                                         accessible_role: Atk.Role.CHECK_BOX,
                                         can_focus: true });
 
@@ -283,14 +282,8 @@ var Switch = class {
             this.setToggleState(this.state);
         }));
 
-        this._labelOn = new St.Bin({ style_class: 'switch-label',
-                                     child: new St.Label({ text: _("ON") }) });
-        this._labelOff = new St.Bin({ style_class: 'switch-label',
-                                      child: new St.Label({ text: _("OFF") }) });
         this._handle = new St.Bin({ style_class: 'switch-handle' });
         this._handle.reactive = reactive;
-        this.actor.add_child(this._labelOn);
-        this.actor.add_child(this._labelOff);
         this.actor.add_child(this._handle);
         this.state = state;
 
@@ -299,19 +292,17 @@ var Switch = class {
         this._dragging = false;
     }
 
-    _getSwitchOffHandleTranslationX() {
+    _getSwitchOnHandleTranslationX() {
         let switchWidth = this.actor.width;
+        let handleWidth = this._handle.width;
         let switchThemeNode = this.actor.get_theme_node();
         let switchRightBorderWidth = switchThemeNode.get_border_width(St.Side.RIGHT);
         let switchLeftBorderWidth = switchThemeNode.get_border_width(St.Side.LEFT);
         let switchRightPadding = switchThemeNode.get_padding(St.Side.RIGHT);
-        let switchleftPadding = switchThemeNode.get_padding(St.Side.LEFT);
-        return -switchWidth + switchRightBorderWidth + switchLeftBorderWidth +
-                switchRightPadding + switchleftPadding;
-    }
-
-    _getSwitchOnHandleTranslationX() {
-        return -this._handle.width;
+        let switchLeftPadding = switchThemeNode.get_padding(St.Side.LEFT);
+        return switchWidth - handleWidth
+               - switchLeftBorderWidth - switchRightBorderWidth
+               - switchLeftPadding - switchRightPadding;
     }
 
     setToggleState(state) {
@@ -335,12 +326,11 @@ var Switch = class {
         } else {
             this.actor.remove_style_pseudo_class('checked');
             Tweener.addTween(this._handle,
-                             { translation_x: this._getSwitchOffHandleTranslationX(),
+                             { translation_x: 0,
                                time: transitionDuration,
                                onCompleteScope: this,
                                onComplete() {
-                                   this._handle.translation_x =
-                                           this._getSwitchOffHandleTranslationX();
+                                   this._handle.translation_x = 0;
                                }
                              });
         }
@@ -403,9 +393,7 @@ var Switch = class {
                 this.toggle();
                 this.emit('activated');
             } else {
-                let onX = this._getSwitchOnHandleTranslationX();
-                let offX = this._getSwitchOffHandleTranslationX();
-                let medX = (onX + (offX - onX)/2);
+                let medX = this._getSwitchOnHandleTranslationX() / 2;
                 let state = medX < this._handle.translation_x;
                 this.setToggleState(state);
             }
@@ -446,10 +434,9 @@ var Switch = class {
     }
 
     _moveHandle(diffX) {
-        let minTranslationX = this._getSwitchOffHandleTranslationX();
         let maxTranslationX = this._getSwitchOnHandleTranslationX();
         let handleNewTranslationX = this._initialHandleTranslationX - diffX;
-        handleNewTranslationX = Math.max(handleNewTranslationX, minTranslationX);
+        handleNewTranslationX = Math.max(handleNewTranslationX, 0);
         handleNewTranslationX = Math.min(handleNewTranslationX, maxTranslationX);
         this._handle.translation_x = handleNewTranslationX;
     }

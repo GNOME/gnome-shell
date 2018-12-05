@@ -7,4 +7,7 @@ stage {
   -st-icon-style: symbolic;
 }
 
-.toggle-switch .switch-handle { background-color: #FFF; }
+.toggle-switch {
+  background: lighten($bg_color, 30%);
+  .switch-handle { background-color: #FFF; }
+}
