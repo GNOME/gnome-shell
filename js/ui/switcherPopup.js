@@ -311,7 +311,10 @@ var SwitcherPopup = new Lang.Class({
 
     fadeAndDestroy() {
         this._popModal();
-        if (this.visible) {
+
+        // We also need to check for opacity here, otherwise we'll try to fade out before the
+        // initialDelayTimeout is finished and at this point the popup is visible, but transparent.
+        if (this.visible && this.opacity == 255) {
             Tweener.addTween(this,
                              { opacity: 0,
                                time: POPUP_FADE_OUT_TIME,
