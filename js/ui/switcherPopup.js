@@ -147,7 +147,7 @@ var SwitcherPopup = new Lang.Class({
             let [x, y, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
                 this._finish(global.get_current_time());
-                return false;
+                return true;
             }
         } else {
             this._resetNoModsTimeout();
