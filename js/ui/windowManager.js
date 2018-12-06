@@ -1795,17 +1795,27 @@ var WindowManager = new Lang.Class({
         }
     },
 
-    _getPositionForDirection(direction) {
+    _getPositionForDirection(direction, fromWs, toWs) {
         let xDest = 0, yDest = 0;
+
+        let oldWsIsFullscreen = fromWs.list_windows().some(w => w.is_fullscreen());
+        let newWsIsFullscreen = toWs.list_windows().some(w => w.is_fullscreen());
+
+        // We have to shift windows up or down by the height of the panel to prevent having a
+        // visible gap between the windows while switching workspaces. Since fullscreen windows
+        // hide the panel, they don't need to be shifted up or down.
+        let shiftHeight = Main.panel.actor.height;
+
+        let panelIsTransparent = !Main.panel.has_style_class_name('solid');
 
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-            yDest = -global.screen_height + Main.panel.height;
+            yDest = -global.screen_height + (oldWsIsFullscreen || panelIsTransparent ? 0 : shiftHeight);
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-            yDest = global.screen_height - Main.panel.height;
+            yDest = global.screen_height - (newWsIsFullscreen ? 0 : shiftHeight);
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
@@ -1863,7 +1873,7 @@ var WindowManager = new Lang.Class({
             switchData.container.add_actor(info.actor);
             info.actor.raise_top();
 
-            let [x, y] = this._getPositionForDirection(dir);
+            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             info.actor.set_position(x, y);
         }
 
@@ -1949,7 +1959,11 @@ var WindowManager = new Lang.Class({
 
         this._switchData.inProgress = true;
 
-        let [xDest, yDest] = this._getPositionForDirection(direction);
+        let workspaceManager = global.workspace_manager;
+        let fromWs = workspaceManager.get_workspace_by_index(from);
+        let toWs = workspaceManager.get_workspace_by_index(to);
+
+        let [xDest, yDest] = this._getPositionForDirection(direction, fromWs, toWs);
 
         /* @direction is the direction that the "camera" moves, so the
          * screen contents have to move one screen's worth in the
