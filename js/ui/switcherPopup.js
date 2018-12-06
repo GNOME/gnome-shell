@@ -130,7 +130,7 @@ var SwitcherPopup = GObject.registerClass({
             let [x_, y_, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
                 this._finish(global.get_current_time());
-                return false;
+                return true;
             }
         } else {
             this._resetNoModsTimeout();
