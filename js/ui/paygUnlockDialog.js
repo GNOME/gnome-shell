@@ -179,7 +179,9 @@ var PaygUnlockCodeEntry = GObject.registerClass({
 
 var PaygUnlockDialog = GObject.registerClass({
     Signals: {
+        'code-added': {},
         'failed': {},
+        'success-message-shown': {},
         'wake-up-screen': {},
     },
 }, class PaygUnlockDialog extends Payg.PaygUnlockUi {
@@ -323,6 +325,17 @@ var PaygUnlockDialog = GObject.registerClass({
             this.startVerifyingCode();
         });
 
+        this.connect('code-added', () => {
+            this.actor.remove_child(mainBox);
+            this._successScreen();
+        });
+
+        this.connect('code-reset', () => {
+            this._paygUnlockDialog = mainBox;
+            this.actor.remove_child(mainBox);
+            this._resetScreen();
+        });
+
         this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT_SECS * MSEC_PER_SEC, this._onCancelled.bind(this));
 
@@ -394,6 +407,114 @@ var PaygUnlockDialog = GObject.registerClass({
         return buttonsBox;
     }
 
+    _createMessageBox() {
+        let messageBox = new St.BoxLayout({
+            vertical: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+            style_class: 'unlock-dialog-payg-layout',
+        });
+
+        return messageBox;
+    }
+
+    _createMessageButtonArea(buttonLabel) {
+        let messageButtonBox = new St.BoxLayout({
+            style_class: 'unlock-dialog-payg-button-box',
+            vertical: false,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.END,
+        });
+
+        this._messageButton = new St.Button({
+            style_class: 'modal-dialog-button button',
+            button_mask: St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            label: buttonLabel,
+            x_align: St.Align.MIDDLE,
+            y_align: St.Align.END,
+        });
+
+        this._messageButton.add_style_pseudo_class('default');
+        messageButtonBox.add_child(this._messageButton);
+
+        return messageButtonBox;
+    }
+
+    _createMessageString(string) {
+        let messageString = new St.Label({
+            style_class: 'unlock-dialog-payg-success',
+            text: string,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        return messageString;
+    }
+
+    _successScreen() {
+        let messageBox = this._createMessageBox();
+        this.add_child(messageBox);
+
+        // successMessage will handle the formatting of the string
+        messageBox.add_child(this._createMessageString(Payg.successMessage()));
+        messageBox.add_child(this._createMessageButtonArea(_('Success!')));
+        this._messageButton.grab_key_focus();
+
+        this._timeoutId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            3,
+            () => {
+                this.emit('success-message-shown');
+                return GLib.SOURCE_REMOVE;
+            });
+        this._messageButton.connect('button-press-event', () => {
+            GLib.source_remove(this._timeoutId);
+            this.emit('success-message-shown');
+        });
+        this._messageButton.connect('key-press-event', () => {
+            GLib.source_remove(this._timeoutId);
+            this.emit('success-message-shown');
+        });
+    }
+
+    _resetScreen() {
+        let messageBox = this._createMessageBox();
+        this.add_child(messageBox);
+
+        messageBox.add_child(this._createMessageString(_('Remaining time cleared!')));
+        messageBox.add_child(this._createMessageButtonArea(_('OK!')));
+        this._messageButton.grab_key_focus();
+
+        this._timeoutId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            3,
+            () => {
+                this.add_child(this._paygUnlockDialog);
+                this.remove_child(messageBox);
+                return GLib.SOURCE_REMOVE;
+            });
+        this._messageButton.connect('button-press-event', () => {
+            this._restorePaygUnlockCodeEntry();
+            this.actor.remove_child(messageBox);
+        });
+        this._messageButton.connect('key-press-event', () => {
+            this._restorePaygUnlockCodeEntry();
+            this.actor.remove_child(messageBox);
+        });
+    }
+
+    _restorePaygUnlockCodeEntry() {
+        GLib.source_remove(this._timeoutId);
+        this.actor.add_child(this._paygUnlockDialog);
+        this.updateSensitivity();
+        this._entry.grab_key_focus();
+    }
+
     _onCancelled() {
         this._cancelled = true;
         this.reset();
@@ -413,6 +534,7 @@ var PaygUnlockDialog = GObject.registerClass({
     }
 
     onCodeAdded() {
+        this.emit('code-added');
         this.clearError();
     }
 

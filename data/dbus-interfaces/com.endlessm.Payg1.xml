@@ -2,6 +2,7 @@
   <interface name="com.endlessm.Payg1">
     <method name="AddCode">
       <arg type="s" direction="in" name="code"/>
+      <arg type="x" direction="out" name="time_added"/>
     </method>
     <method name="ClearCode" />
     <signal name="Expired" />

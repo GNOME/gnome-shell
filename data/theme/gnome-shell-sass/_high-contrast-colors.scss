@@ -27,6 +27,8 @@ $osd_outer_borders_color: rgba(255,255,255, 0.1);
 
 $shadow_color: rgba(0,0,0, 0.1);
 
+$success_time_payg_color: #02b842;
+
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);
 $insensitive_bg_color: mix($bg_color, $base_color, 60%);

@@ -8,9 +8,9 @@ const GnomeSession = imports.misc.gnomeSession;
 const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
+const MessageTray = imports.ui.messageTray;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
-const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const SmartcardManager = imports.misc.smartcardManager;
 
@@ -155,27 +155,30 @@ var ScreenShield = class {
                 return;
             }
 
-            // A new valid code unlocked the machine and user has no
-            // password set -> Go straight to the user's session.
-            if (user.password_mode == AccountsService.UserPasswordMode.NONE) {
-                this.deactivate(false);
-                return;
-            }
+            // Take the dialog instance and wait for the success message to be shown
+            this._dialog.connect('success-message-shown', () => {
+                // A new valid code unlocked the machine and user has no
+                // password set -> Go straight to the user's session.
+                if (user.password_mode == AccountsService.UserPasswordMode.NONE) {
+                    this.deactivate(false);
+                    return;
+                }
 
-            let paygExpectedMode = this._isGreeter ? 'gdm-unlock-dialog-payg' : 'unlock-dialog-payg';
-            if (Main.sessionMode.currentMode === 'unlock-dialog-payg') {
-                // This is the most common case.
-                Main.sessionMode.popMode(paygExpectedMode);
-            }
+                let paygExpectedMode = this._isGreeter ? 'gdm-unlock-dialog-payg' : 'unlock-dialog-payg';
+                if (Main.sessionMode.currentMode === paygExpectedMode) {
+                    // This is the most common case.
+                    Main.sessionMode.popMode(paygExpectedMode);
+                }
 
-            // The machine is unlocked but we still need to unlock the
-            // user's session with the password, so don't deactivate yet.
-            if (this._dialog) {
-                this._dialog.destroy();
-                this._dialog = null;
-            }
+                // The machine is unlocked but we still need to unlock the
+                // user's session with the password, so don't deactivate yet.
+                if (this._dialog) {
+                    this._dialog.destroy();
+                    this._dialog = null;
+                }
 
-            this.showDialog();
+                this.showDialog();
+            });
         });
     }
 
