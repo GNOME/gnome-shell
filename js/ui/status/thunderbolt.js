@@ -195,7 +195,7 @@ var AuthRobot = new Lang.Class({
 	if (this._enrolling)
 	    return;
 
-	this.enrolling = true;
+	this._enrolling = true;
 	GLib.idle_add(GLib.PRIORITY_DEFAULT,
 		      this._enrollDevicesIdle.bind(this));
     },
