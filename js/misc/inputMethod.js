@@ -37,15 +37,7 @@ var InputMethod = new Lang.Class({
     },
 
     _updateCapabilities() {
-        let caps = 0;
-
-        if (this.can_show_preedit)
-            caps |= IBus.Capabilite.PREEDIT_TEXT;
-
-        if (this._currentFocus)
-            caps |= IBus.Capabilite.FOCUS | IBus.Capabilite.SURROUNDING_TEXT;
-        else
-            caps |= IBus.Capabilite.PREEDIT_TEXT | IBus.Capabilite.AUXILIARY_TEXT | IBus.Capabilite.LOOKUP_TABLE | IBus.Capabilite.PROPERTY;
+        let caps = IBus.Capabilite.PREEDIT_TEXT | IBus.Capabilite.FOCUS | IBus.Capabilite.SURROUNDING_TEXT;
 
         if (this._context)
             this._context.set_capabilities(caps);
@@ -141,7 +133,6 @@ var InputMethod = new Lang.Class({
         this._currentFocus = focus;
         if (this._context) {
             this._context.focus_in();
-            this._updateCapabilities();
             this._emitRequestSurrounding();
         }
     },
@@ -150,7 +141,6 @@ var InputMethod = new Lang.Class({
         this._currentFocus = null;
         if (this._context) {
             this._context.focus_out();
-            this._updateCapabilities();
         }
 
         if (this._preeditStr) {
