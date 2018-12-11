@@ -146,13 +146,40 @@ var NotificationPolicy = new Lang.Class({
                                         showInLockScreen: true,
                                         detailsInLockScreen: false
                                       });
-        Lang.copyProperties(params, this);
+        Object.getOwnPropertyNames(params).forEach(key => {
+            let desc = Object.getOwnPropertyDescriptor(params, key);
+            Object.defineProperty(this, `_${key}`, desc);
+        });
     },
 
     // Do nothing for the default policy. These methods are only useful for the
     // GSettings policy.
     store() { },
-    destroy() { }
+    destroy() { },
+
+    get enable() {
+        return this._enable;
+    },
+
+    get enableSound() {
+        return this._enableSound;
+    },
+
+    get showBanners() {
+        return this._showBanners;
+    },
+
+    get forceExpanded() {
+        return this._forceExpanded;
+    },
+
+    get showInLockScreen() {
+        return this._showInLockScreen;
+    },
+
+    get detailsInLockScreen() {
+        return this._detailsInLockScreen;
+    }
 });
 Signals.addSignalMethods(NotificationPolicy.prototype);
 
@@ -161,8 +188,7 @@ var NotificationGenericPolicy = new Lang.Class({
     Extends: NotificationPolicy,
 
     _init() {
-        // Don't chain to parent, it would try setting
-        // our properties to the defaults
+        this.parent();
 
         this.id = 'generic';
 
@@ -180,28 +206,12 @@ var NotificationGenericPolicy = new Lang.Class({
         this.emit('policy-changed', key);
     },
 
-    get enable() {
-        return true;
-    },
-
-    get enableSound() {
-        return true;
-    },
-
     get showBanners() {
         return this._masterSettings.get_boolean('show-banners');
     },
 
-    get forceExpanded() {
-        return false;
-    },
-
     get showInLockScreen() {
         return this._masterSettings.get_boolean('show-in-lock-screen');
-    },
-
-    get detailsInLockScreen() {
-        return false;
     }
 });
 
@@ -210,8 +220,7 @@ var NotificationApplicationPolicy = new Lang.Class({
     Extends: NotificationPolicy,
 
     _init(id) {
-        // Don't chain to parent, it would try setting
-        // our properties to the defaults
+        this.parent();
 
         this.id = id;
         this._canonicalId = this._canonicalizeId(id);
