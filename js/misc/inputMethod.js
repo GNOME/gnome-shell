@@ -13,7 +13,6 @@ var InputMethod = new Lang.Class({
         this.parent();
         this._hints = 0;
         this._purpose = 0;
-        this._enabled = true;
         this._currentFocus = null;
         this._preeditStr = '';
         this._preeditPos = 0;
@@ -62,8 +61,6 @@ var InputMethod = new Lang.Class({
 
     _setContext(bus, res) {
         this._context = this._ibus.create_input_context_async_finish(res);
-        this._context.connect('enabled', () => { this._enabled = true });
-        this._context.connect('disabled', () => { this._enabled = false });
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
@@ -78,7 +75,6 @@ var InputMethod = new Lang.Class({
         this._context = null;
         this._hints = 0;
         this._purpose = 0;
-        this._enabled = false;
         this._preeditStr = ''
         this._preeditPos = 0;
         this._preeditVisible = false;
@@ -236,7 +232,7 @@ var InputMethod = new Lang.Class({
     },
 
     vfunc_filter_key_event(event) {
-        if (!this._context || !this._enabled)
+        if (!this._context)
             return false;
         if (!this._currentSource)
             return false;
