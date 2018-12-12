@@ -14,6 +14,9 @@ const IntrospectDBusIface = '<node> \
     <method name="GetRunningApplications"> \
       <arg name="apps" direction="out" type="a{sa{sv}}" /> \
     </method> \
+    <method name="GetWindows"> \
+      <arg name="windows" direction="out" type="a{ta{sv}}" /> \
+    </method> \
   </interface> \
 </node>';
 
@@ -102,6 +105,17 @@ var IntrospectService = new Lang.Class({
         this._activeApplicationDirty = false;
     },
 
+    _isEligibleWindow(window) {
+        if (window.is_override_redirect())
+            return false;
+
+        let type = window.get_window_type();
+        return (type == Meta.WindowType.NORMAL ||
+                type == Meta.WindowType.DIALOG ||
+                type == Meta.WindowType.MODAL_DIALOG ||
+                type == Meta.WindowType.UTILITY);
+    },
+
     GetRunningApplicationsAsync(params, invocation) {
         if (!this._isIntrospectEnabled() &&
             !this._isSenderWhitelisted(invocation.get_sender())) {
@@ -112,5 +126,49 @@ var IntrospectService = new Lang.Class({
         }
 
         invocation.return_value(new GLib.Variant('(a{sa{sv}})', [this._runningApplications]));
+    },
+
+    GetWindowsAsync(params, invocation) {
+        let focusWindow = global.display.get_focus_window();
+        let apps = this._appSystem.get_running();
+        let windowsList = {};
+
+        if (!this._isIntrospectEnabled()) {
+            invocation.return_error_literal(Gio.DBusError,
+                                            Gio.DBusError.ACCESS_DENIED,
+                                            'App introspection not allowed');
+            return;
+        }
+
+        for (let app of apps) {
+            let windows = app.get_windows();
+            for (let window of windows) {
+
+                if (!this._isEligibleWindow(window))
+                    continue;
+
+                let windowId = window.get_id();
+                let frameRect = window.get_frame_rect();
+                let title = window.get_title();
+                let wmClass = window.get_wm_class();
+
+                windowsList[windowId] = {
+                    'app-id': GLib.Variant.new('s', app.get_id()),
+                    'client-type': GLib.Variant.new('u', window.get_client_type()),
+                    'is-hidden': GLib.Variant.new('b', window.is_hidden()),
+                    'has-focus': GLib.Variant.new('b', (window == focusWindow)),
+                    'width': GLib.Variant.new('u', frameRect.width),
+                    'height': GLib.Variant.new('u', frameRect.height)
+                };
+
+                // These properties may not be available for all windows:
+                if (title != null)
+                    windowsList[windowId]['title'] = GLib.Variant.new('s', title);
+
+                if (wmClass != null)
+                    windowsList[windowId]['wm-class'] = GLib.Variant.new('s', wmClass);
+            }
+        }
+        invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
     }
 });
