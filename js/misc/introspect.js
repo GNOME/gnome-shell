@@ -103,5 +103,30 @@ var IntrospectService = new Lang.Class({
 
     get RunningApplications() {
         return this._runningApplications;
+    },
+
+    GetWindows() {
+        let focusWindow = global.display.get_focus_window();
+        let apps = this._appSystem.get_running();
+        let windowsList = {};
+
+        for (var app of apps) {
+            let windows = app.get_windows();
+            for (var window of windows) {
+                let frameRect = window.get_frame_rect();
+
+                windowsList[window.get_id()] =
+                    { 'title': GLib.Variant.new('s', window.get_title()),
+                      'app-id': GLib.Variant.new('s', app.get_id()),
+                      'wm-class': GLib.Variant.new('s', window.get_wm_class()),
+                      'client-type': GLib.Variant.new('u', window.get_client_type()),
+                      'is-hidden': GLib.Variant.new('b', window.is_hidden()),
+                      'has-focus': GLib.Variant.new('b', (window == focusWindow)),
+                      'width': GLib.Variant.new('u', frameRect.width),
+                      'height': GLib.Variant.new('u', frameRect.height) };
+            }
+        }
+
+        return windowsList;
     }
 });
