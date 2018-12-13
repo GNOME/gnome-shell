@@ -1382,24 +1382,26 @@ shell_global_create_app_launch_context (ShellGlobal *global,
                                         guint32      timestamp,
                                         int          workspace)
 {
-  GdkAppLaunchContext *context;
+  MetaWorkspaceManager *workspace_manager = global->workspace_manager;
+  MetaStartupNotification *sn;
+  MetaLaunchContext *context;
+  MetaWorkspace *ws = NULL;
 
-  context = gdk_display_get_app_launch_context (global->gdk_display);
+  sn = meta_display_get_startup_notification (global->meta_display);
+  context = meta_startup_notification_create_launcher (sn);
 
   if (timestamp == 0)
     timestamp = shell_global_get_current_time (global);
-  gdk_app_launch_context_set_timestamp (context, timestamp);
+  meta_launch_context_set_timestamp (context, timestamp);
 
   if (workspace < 0)
-    {
-      MetaWorkspaceManager *workspace_manager = global->workspace_manager;
+    ws = meta_workspace_manager_get_active_workspace (workspace_manager);
+  else
+    ws = meta_workspace_manager_get_workspace_by_index (workspace_manager, workspace);
 
-      workspace =
-        meta_workspace_manager_get_active_workspace_index (workspace_manager);
-    }
-  gdk_app_launch_context_set_desktop (context, workspace);
+  meta_launch_context_set_workspace (context, ws);
 
-  return (GAppLaunchContext *)context;
+  return (GAppLaunchContext *) context;
 }
 
 typedef struct
