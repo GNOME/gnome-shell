@@ -157,18 +157,27 @@ var WorldClocksSection = class WorldClocksSection {
             let label = new St.Label({ style_class: 'world-clocks-city',
                                        text: name,
                                        x_align: Clutter.ActorAlign.START,
+                                       y_align: Clutter.ActorAlign.CENTER,
                                        x_expand: true });
 
-            let time = new St.Label({ style_class: 'world-clocks-time',
-                                      x_align: Clutter.ActorAlign.END,
-                                      x_expand: true });
+            let time = new St.Label({ style_class: 'world-clocks-time' });
+
+            let offset = l.get_timezone().get_offset() / 60.;
+            let fmt = (Math.trunc(offset) == offset) ? '%s%.0f' : '%s%.1f';
+            let prefix = (offset >= 0) ? '+' : '-';
+            let tz = new St.Label({ style_class: 'world-clocks-timezone',
+                                    text: fmt.format(prefix, Math.abs(offset)),
+                                    x_align: Clutter.ActorAlign.END,
+                                    y_align: Clutter.ActorAlign.CENTER });
 
             if (this._grid.text_direction == Clutter.TextDirection.RTL) {
-                layout.attach(time, 0, i + 1, 1, 1);
-                layout.attach(label, 1, i + 1, 1, 1);
+                layout.attach(tz, 0, i + 1, 1, 1);
+                layout.attach(time, 1, i + 1, 1, 1);
+                layout.attach(label, 2, i + 1, 1, 1);
             } else {
                 layout.attach(label, 0, i + 1, 1, 1);
                 layout.attach(time, 1, i + 1, 1, 1);
+                layout.attach(tz, 2, i + 1, 1, 1);
             }
 
             this._locations[i].actor = time;
