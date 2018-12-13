@@ -57,6 +57,7 @@ var StreamSlider = new Lang.Class({
         });
 
         this._stream = null;
+        this._volumeCancellable = null;
     },
 
     get stream() {
@@ -129,11 +130,14 @@ var StreamSlider = new Lang.Class({
     },
 
     _notifyVolumeChange() {
-        global.cancel_theme_sound(VOLUME_NOTIFY_ID);
-        global.play_theme_sound(VOLUME_NOTIFY_ID,
-                                'audio-volume-change',
-                                _("Volume changed"),
-                                Clutter.get_current_event ());
+        if (this._volumeCancellable)
+            this._volumeCancellable.cancel();
+
+        this._volumeCancellable = new Gio.Cancellable();
+        let sound = global.display.get_sound();
+        sound.play_from_theme('audio-volume-change',
+                              _("Volume changed"),
+                              this._volumeCancellable);
     },
 
     _updateVolume() {
