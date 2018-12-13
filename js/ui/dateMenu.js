@@ -24,6 +24,8 @@ const Calendar = imports.ui.calendar;
 const Weather = imports.misc.weather;
 const System = imports.system;
 
+const MAX_FORECASTS = 5;
+
 function _isToday(date) {
     let now = new Date();
     return now.getYear() == date.getYear() &&
@@ -228,106 +230,101 @@ var WeatherSection = new Lang.Class({
                                      x_align: Clutter.ActorAlign.START,
                                      text: _("Weather") }));
 
-        this._conditionsLabel = new St.Label({ style_class: 'weather-conditions',
-                                               x_align: Clutter.ActorAlign.START });
-        this._conditionsLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._conditionsLabel.clutter_text.line_wrap = true;
-        box.add_child(this._conditionsLabel);
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
+        this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
+                                             layout_manager: layout });
+        layout.hookup_style(this._forecastGrid);
+        box.add_child(this._forecastGrid);
 
         this._weatherClient.connect('changed', this._sync.bind(this));
         this._sync();
     },
 
-    _getSummary(info, capitalize=false) {
-        let options = capitalize ? GWeather.FormatOptions.SENTENCE_CAPITALIZATION
-                                 : GWeather.FormatOptions.NO_CAPITALIZATION;
-
-        let [ok, phenomenon, qualifier] = info.get_value_conditions();
-        if (ok)
-            return new GWeather.Conditions({ significant: true,
-                                             phenomenon,
-                                             qualifier }).to_string_full(options);
-
-        let [, sky] = info.get_value_sky();
-        return GWeather.Sky.to_string_full(sky, options);
-    },
-
-    _sameSummary(info1, info2) {
-        let [ok1, phenom1, qualifier1] = info1.get_value_conditions();
-        let [ok2, phenom2, qualifier2] = info2.get_value_conditions();
-        if (ok1 || ok2)
-            return ok1 == ok2 && phenom1 == phenom2 && qualifier1 == qualifier2;
-
-        let [, sky1] = info1.get_value_sky();
-        let [, sky2] = info2.get_value_sky();
-        return sky1 == sky2;
-    },
-
-    _getSummaryText() {
+    _getInfos() {
         let info = this._weatherClient.info;
         let forecasts = info.get_forecast_list();
-        if (forecasts.length == 0) // No forecasts, just current conditions
-            return '%s.'.format(this._getSummary(info, true));
 
         let current = info;
         let infos = [info];
         for (let i = 0; i < forecasts.length; i++) {
             let [ok, timestamp] = forecasts[i].get_value_update();
-            if (!_isToday(new Date(timestamp * 1000)))
+            let datetime = new Date(timestamp * 1000);
+            if (!_isToday(datetime))
                 continue; // Ignore forecasts from other days
 
-            if (this._sameSummary(current, forecasts[i]))
-                continue; // Ignore consecutive runs of equal summaries
+            [ok, timestamp] = current.get_value_update();
+            let currenttime = new Date(timestamp * 1000);
+            if (currenttime.getHours() == datetime.getHours())
+                continue; // Enforce a minimum interval of 1h
 
             current = forecasts[i];
-            if (infos.push(current) == 3)
-                break; // Use a maximum of three summaries
+            if (infos.push(current) == MAX_FORECASTS)
+                break; // Use a maximum of five forecasts
         }
-
-        let fmt;
-        switch(infos.length) {
-            /* Translators: %s is a weather condition like "Clear sky"; see
-               libgweather for the possible condition strings. If at all
-               possible, the sentence should match the grammatical case etc. of
-               the inserted conditions. */
-            case 1: fmt = _("%s all day."); break;
-
-            /* Translators: %s is a weather condition like "Clear sky"; see
-               libgweather for the possible condition strings. If at all
-               possible, the sentence should match the grammatical case etc. of
-               the inserted conditions. */
-            case 2: fmt = _("%s, then %s later."); break;
-
-            /* Translators: %s is a weather condition like "Clear sky"; see
-               libgweather for the possible condition strings. If at all
-               possible, the sentence should match the grammatical case etc. of
-               the inserted conditions. */
-            case 3: fmt = _("%s, then %s, followed by %s later."); break;
-        }
-        let summaries = infos.map((info, i) => {
-            let capitalize = i == 0 && fmt.startsWith('%s');
-            return this._getSummary(info, capitalize);
-        });
-        return String.prototype.format.apply(fmt, summaries);
+        return infos;
     },
 
-    _getLabelText() {
-        if (!this._weatherClient.hasLocation)
-            return _("Select a location…");
+    _addForecasts() {
+        let layout = this._forecastGrid.layout_manager;
 
-        if (this._weatherClient.loading)
-            return _("Loading…");
+        let infos = this._getInfos();
+        if (this._forecastGrid.text_direction == Clutter.TextDirection.RTL)
+            infos.reverse();
+
+        let col = 0;
+        infos.forEach(fc => {
+            let [ok, timestamp] = fc.get_value_update();
+            let timeStr = Util.formatTime(new Date(timestamp * 1000), {
+                timeOnly: true
+            });
+
+            let icon = new St.Icon({ style_class: 'weather-forecast-icon',
+                                     icon_name: fc.get_symbolic_icon_name(),
+                                     x_align: Clutter.ActorAlign.CENTER,
+                                     x_expand: true });
+            let temp = new St.Label({ style_class: 'weather-forecast-temp',
+                                      text: fc.get_temp_summary(),
+                                      x_align: Clutter.ActorAlign.CENTER });
+            let time = new St.Label({ style_class: 'weather-forecast-time',
+                                      text: timeStr,
+                                      x_align: Clutter.ActorAlign.CENTER });
+
+            layout.attach(icon, col, 0, 1, 1);
+            layout.attach(temp, col, 1, 1, 1);
+            layout.attach(time, col, 2, 1, 1);
+            col++;
+        });
+    },
+
+    _addStatusLabel(text) {
+        let layout = this._forecastGrid.layout_manager;
+        let label = new St.Label({ text });
+        layout.attach(label, 0, 0, 1, 1);
+    },
+
+    _updateForecasts() {
+        this._forecastGrid.destroy_all_children();
+
+        if (!this._weatherClient.hasLocation) {
+            this._addStatusLabel(_("Select a location…"));
+            return;
+        }
+
+        if (this._weatherClient.loading) {
+            this._addStatusLabel(_("Loading…"));
+            return;
+        }
 
         let info = this._weatherClient.info;
-        if (info.is_valid())
-            return this._getSummaryText() + ' ' +
-                   /* Translators: %s is a temperature with unit, e.g. "23℃" */
-                   _("Feels like %s.").format(info.get_apparent());
+        if (info.is_valid()) {
+            this._addForecasts();
+            return;
+        }
 
         if (info.network_error())
-            return _("Go online for weather information");
-
-        return _("Weather information is currently unavailable");
+            this._addStatusLabel(_("Go online for weather information"));
+        else
+            this._addStatusLabel(_("Weather information is currently unavailable"));
     },
 
     _sync() {
@@ -336,7 +333,7 @@ var WeatherSection = new Lang.Class({
         if (!this.actor.visible)
             return;
 
-        this._conditionsLabel.text = this._getLabelText();
+        this._updateForecasts();
     }
 });
 
