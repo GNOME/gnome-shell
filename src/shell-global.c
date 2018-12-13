@@ -16,8 +16,6 @@
 #include <locale.h>
 
 #include <X11/extensions/Xfixes.h>
-#include <canberra.h>
-#include <canberra-gtk.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
@@ -86,9 +84,6 @@ struct _ShellGlobal {
   guint work_count;
   GSList *leisure_closures;
   guint leisure_function_id;
-
-  /* For sound notifications */
-  ca_context *sound_context;
 
   gboolean has_modal;
   gboolean frame_timestamps;
@@ -274,15 +269,6 @@ shell_global_init (ShellGlobal *global)
   g_free (path);
 
   global->settings = g_settings_new ("org.gnome.shell");
-
-  global->sound_context = ca_gtk_context_get ();
-  ca_context_change_props (global->sound_context,
-                           CA_PROP_APPLICATION_NAME, "GNOME Shell",
-                           CA_PROP_APPLICATION_ID, "org.gnome.Shell",
-                           CA_PROP_APPLICATION_ICON_NAME, "start-here",
-                           CA_PROP_APPLICATION_LANGUAGE, setlocale (LC_MESSAGES, NULL),
-                           NULL);
-  ca_context_open (global->sound_context);
 
   if (shell_js)
     {
@@ -1544,178 +1530,6 @@ shell_global_run_at_leisure (ShellGlobal         *global,
 
   if (global->work_count == 0)
     schedule_leisure_functions (global);
-}
-
-static void
-build_ca_proplist_for_event (ca_proplist  *props,
-                             const char   *event_property,
-                             const char   *event_id,
-                             const char   *event_description,
-                             ClutterEvent *for_event)
-{
-  ca_proplist_sets (props, event_property, event_id);
-  ca_proplist_sets (props, CA_PROP_EVENT_DESCRIPTION, event_description);
-  ca_proplist_sets (props, CA_PROP_CANBERRA_CACHE_CONTROL, "volatile");
-
-  if (for_event)
-    {
-      if (clutter_event_type (for_event) != CLUTTER_KEY_PRESS &&
-          clutter_event_type (for_event) != CLUTTER_KEY_RELEASE)
-        {
-          ClutterPoint point;
-
-          clutter_event_get_position (for_event, &point);
-
-          ca_proplist_setf (props, CA_PROP_EVENT_MOUSE_X, "%d", (int)point.x);
-          ca_proplist_setf (props, CA_PROP_EVENT_MOUSE_Y, "%d", (int)point.y);
-        }
-
-      if (clutter_event_type (for_event) == CLUTTER_BUTTON_PRESS ||
-          clutter_event_type (for_event) == CLUTTER_BUTTON_RELEASE)
-        {
-          gint button;
-
-          button = clutter_event_get_button (for_event);
-          ca_proplist_setf (props, CA_PROP_EVENT_MOUSE_BUTTON, "%d", button);
-        }
-    }
-}
-
-/**
- * shell_global_play_theme_sound:
- * @global: the #ShellGlobal
- * @id: an id, used to cancel later (0 if not needed)
- * @name: the sound name
- * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
- *
- * Plays a simple sound picked according to Freedesktop sound theme.
- * Really just a workaround for libcanberra not being introspected.
- */
-void
-shell_global_play_theme_sound (ShellGlobal  *global,
-                               guint         id,
-                               const char   *name,
-                               const char   *description,
-                               ClutterEvent *for_event)
-{
-  ca_proplist *props;
-
-  ca_proplist_create (&props);
-  build_ca_proplist_for_event (props, CA_PROP_EVENT_ID, name, description, for_event);
-
-  ca_context_play_full (global->sound_context, id, props, NULL, NULL);
-
-  ca_proplist_destroy (props);
-}
-
-/**
- * shell_global_play_theme_sound_full:
- * @global: the #ShellGlobal
- * @id: an id, used to cancel later (0 if not needed)
- * @name: the sound name
- * @description: the localized description of the event that triggered this alert
- * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
- * @application_id: application on behalf of which the sound is played
- * @application_name:
- *
- * Plays a simple sound picked according to Freedesktop sound theme.
- * Really just a workaround for libcanberra not being introspected.
- */
-void
-shell_global_play_theme_sound_full (ShellGlobal  *global,
-                                    guint         id,
-                                    const char   *name,
-                                    const char   *description,
-                                    ClutterEvent *for_event,
-                                    const char   *application_id,
-                                    const char   *application_name)
-{
-  ca_proplist *props;
-
-  ca_proplist_create (&props);
-  build_ca_proplist_for_event (props, CA_PROP_EVENT_ID, name, description, for_event);
-  ca_proplist_sets (props, CA_PROP_APPLICATION_ID, application_id);
-  ca_proplist_sets (props, CA_PROP_APPLICATION_NAME, application_name);
-
-  ca_context_play_full (global->sound_context, id, props, NULL, NULL);
-
-  ca_proplist_destroy (props);
-}
-
-/**
- * shell_global_play_sound_file_full:
- * @global: the #ShellGlobal
- * @id: an id, used to cancel later (0 if not needed)
- * @file_name: the file name to play
- * @description: the localized description of the event that triggered this alert
- * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
- * @application_id: application on behalf of which the sound is played
- * @application_name:
- *
- * Like shell_global_play_theme_sound_full(), but with an explicit path
- * instead of a themed sound.
- */
-void
-shell_global_play_sound_file_full  (ShellGlobal  *global,
-                                    guint         id,
-                                    const char   *file_name,
-                                    const char   *description,
-                                    ClutterEvent *for_event,
-                                    const char   *application_id,
-                                    const char   *application_name)
-{
-  ca_proplist *props;
-
-  ca_proplist_create (&props);
-  build_ca_proplist_for_event (props, CA_PROP_MEDIA_FILENAME, file_name, description, for_event);
-  ca_proplist_sets (props, CA_PROP_APPLICATION_ID, application_id);
-  ca_proplist_sets (props, CA_PROP_APPLICATION_NAME, application_name);
-
-  ca_context_play_full (global->sound_context, id, props, NULL, NULL);
-
-  ca_proplist_destroy (props);
-}
-
-/**
- * shell_global_play_sound_file:
- * @global: the #ShellGlobal
- * @id: an id, used to cancel later (0 if not needed)
- * @file_name: the file name to play
- * @description: the localized description of the event that triggered this alert
- * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
- *
- * Like shell_global_play_theme_sound(), but with an explicit path
- * instead of a themed sound.
- */
-void
-shell_global_play_sound_file (ShellGlobal  *global,
-                              guint         id,
-                              const char   *file_name,
-                              const char   *description,
-                              ClutterEvent *for_event)
-{
-  ca_proplist *props;
-
-  ca_proplist_create (&props);
-  build_ca_proplist_for_event (props, CA_PROP_MEDIA_FILENAME, file_name, description, for_event);
-
-  ca_context_play_full (global->sound_context, id, props, NULL, NULL);
-
-  ca_proplist_destroy (props);
-}
-
-/**
- * shell_global_cancel_theme_sound:
- * @global: the #ShellGlobal
- * @id: the id previously passed to shell_global_play_theme_sound()
- *
- * Cancels a sound notification.
- */
-void
-shell_global_cancel_theme_sound (ShellGlobal *global,
-                                 guint id)
-{
-  ca_context_cancel (global->sound_context, id);
 }
 
 const char *
