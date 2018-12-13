@@ -448,27 +448,11 @@ var Notification = new Lang.Class({
             return;
         }
 
-        if (this._soundName) {
-            if (this.source.app) {
-                let app = this.source.app;
-
-                global.play_theme_sound_full(0, this._soundName,
-                                             this.title, null,
-                                             app.get_id(), app.get_name());
-            } else {
-                global.play_theme_sound(0, this._soundName, this.title, null);
-            }
-        } else if (this._soundFile) {
-            if (this.source.app) {
-                let app = this.source.app;
-
-                global.play_sound_file_full(0, this._soundFile,
-                                            this.title, null,
-                                            app.get_id(), app.get_name());
-            } else {
-                global.play_sound_file(0, this._soundFile, this.title, null);
-            }
-        }
+        let player = global.display.get_sound_player();
+        if (this._soundName)
+            player.play_from_theme(this._soundName, this.title, null);
+        else if (this._soundFile)
+            player.play_from_file(this._soundFile, this.title, null);
     },
 
     // Allow customizing the banner UI:
