@@ -922,12 +922,26 @@ StScrollBar {
       font-weight: bold;
     }
 
-    .world-clocks-grid {
+    .world-clocks-grid,
+    .weather-grid {
       spacing-rows: 0.4em;
     }
 
     .weather-box {
       spacing: 0.4em;
+    }
+
+    .weather-grid {
+      spacing-columns: 0.8em;
+    }
+
+    .weather-forecast-icon {
+      icon-size: 2.18em;
+    }
+
+    .weather-forecast-time {
+      color: darken($fg_color,40%);
+      font-size: 0.8em;
     }
 
     .calendar-month-label {
