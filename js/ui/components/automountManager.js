@@ -87,9 +87,10 @@ var AutomountManager = new Lang.Class({
         if (!this._session.SessionIsActive)
             return;
 
-        global.play_theme_sound(0, 'device-added-media',
-                                _("External drive connected"),
-                                null);
+        let player = global.display.get_sound_player();
+        player.play_from_theme('device-added-media',
+                               _("External drive connected"),
+                               null);
     },
 
     _onDriveDisconnected() {
@@ -98,9 +99,10 @@ var AutomountManager = new Lang.Class({
         if (!this._session.SessionIsActive)
             return;
 
-        global.play_theme_sound(0, 'device-removed-media',
-                                _("External drive disconnected"),
-                                null);
+        let sound = global.display.get_sound();
+        sound.play_from_theme('device-removed-media',
+                              _("External drive disconnected"),
+                              null);
     },
 
     _onDriveEjectButton(monitor, drive) {
