@@ -117,9 +117,6 @@ var EmptyEventSource = new Lang.Class({
     destroy() {
     },
 
-    ignoreEvent(event) {
-    },
-
     requestRange(begin, end) {
     },
 
@@ -184,14 +181,6 @@ var DBusEventSource = new Lang.Class({
         this._resetCache();
         this.isLoading = false;
         this.isDummy = false;
-
-        this._ignoredEvents = new Map();
-
-        let savedState = global.get_persistent_state('as', 'ignored_events');
-        if (savedState)
-            savedState.deep_unpack().forEach(eventId => {
-                this._ignoredEvents.set(eventId, true);
-            });
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
@@ -305,16 +294,6 @@ var DBusEventSource = new Lang.Class({
         }
     },
 
-    ignoreEvent(event) {
-        if (this._ignoredEvents.get(event.id))
-            return;
-
-        this._ignoredEvents.set(event.id, true);
-        let savedState = new GLib.Variant('as', [...this._ignoredEvents.keys()]);
-        global.set_persistent_state('ignored_events', savedState);
-        this.emit('changed');
-    },
-
     requestRange(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
             this.isLoading = true;
@@ -330,9 +309,6 @@ var DBusEventSource = new Lang.Class({
         let result = [];
         for(let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
-
-            if (this._ignoredEvents.has(event.id))
-                continue;
 
             if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
                 result.push(event);
