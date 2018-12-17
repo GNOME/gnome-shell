@@ -697,7 +697,6 @@ class DateMenuButton extends PanelMenu.Button {
             this._eventSource.destroy();
 
         this._calendar.setEventSource(eventSource);
-        this._messageList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
     }

@@ -14,7 +14,6 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 var SHOW_WEEKDATE_KEY = 'show-weekdate';
-var ELLIPSIS_CHAR = '\u2026';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
@@ -723,67 +722,6 @@ var Calendar = GObject.registerClass({
     }
 });
 
-var EventMessage = GObject.registerClass(
-class EventMessage extends MessageList.Message {
-    _init(event, date) {
-        super._init('', '');
-
-        this._date = date;
-
-        this.update(event);
-
-        this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
-        this.setIcon(this._icon);
-    }
-
-    vfunc_style_changed() {
-        let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
-        this._icon.opacity = iconVisible ? 255 : 0;
-        super.vfunc_style_changed();
-    }
-
-    update(event) {
-        this._event = event;
-
-        this.setTitle(this._formatEventTime());
-        this.setBody(event.summary);
-    }
-
-    _formatEventTime() {
-        let periodBegin = _getBeginningOfDay(this._date);
-        let periodEnd = _getEndOfDay(this._date);
-        let allDay = this._event.allDay || (this._event.date <= periodBegin &&
-                                             this._event.end >= periodEnd);
-        let title;
-        if (allDay) {
-            /* Translators: Shown in calendar event list for all day events
-             * Keep it short, best if you can use less then 10 characters
-             */
-            title = C_("event list time", "All Day");
-        } else {
-            let date = this._event.date >= periodBegin
-                ? this._event.date
-                : this._event.end;
-            title = Util.formatTime(date, { timeOnly: true });
-        }
-
-        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
-        if (this._event.date < periodBegin && !this._event.allDay) {
-            if (rtl)
-                title = '%s%s'.format(title, ELLIPSIS_CHAR);
-            else
-                title = '%s%s'.format(ELLIPSIS_CHAR, title);
-        }
-        if (this._event.end > periodEnd && !this._event.allDay) {
-            if (rtl)
-                title = '%s%s'.format(ELLIPSIS_CHAR, title);
-            else
-                title = '%s%s'.format(title, ELLIPSIS_CHAR);
-        }
-        return title;
-    }
-});
-
 var NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
     _init(notification) {
@@ -846,149 +784,6 @@ class NotificationMessage extends MessageList.Message {
 
     canClose() {
         return true;
-    }
-});
-
-var EventsSection = GObject.registerClass(
-class EventsSection extends MessageList.MessageListSection {
-    _init() {
-        super._init();
-
-        this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
-        this._eventSource = new EmptyEventSource();
-
-        this._messageById = new Map();
-
-        this._title = new St.Button({ style_class: 'events-section-title',
-                                      label: '',
-                                      can_focus: true });
-        this._title.child.x_align = Clutter.ActorAlign.START;
-        this.insert_child_below(this._title, null);
-
-        this._title.connect('clicked', this._onTitleClicked.bind(this));
-        this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
-
-        this._appSys = Shell.AppSystem.get_default();
-        this._appSys.connect('installed-changed',
-            this._appInstalledChanged.bind(this));
-        this._appInstalledChanged();
-    }
-
-    setEventSource(eventSource) {
-        if (!(eventSource instanceof EventSourceBase))
-            throw new Error('Event source is not valid type');
-
-        this._eventSource = eventSource;
-        this._eventSource.connect('changed', this._reloadEvents.bind(this));
-    }
-
-    get allowed() {
-        return Main.sessionMode.showCalendarEvents;
-    }
-
-    _updateTitle() {
-        this._title.visible = !isToday(this._date);
-
-        if (!this._title.visible)
-            return;
-
-        let dayFormat;
-        let now = new Date();
-        if (sameYear(this._date, now)) {
-            /* Translators: Shown on calendar heading when selected day occurs on current year */
-            dayFormat = Shell.util_translate_time_string(NC_("calendar heading", "%A, %B %-d"));
-        } else {
-            /* Translators: Shown on calendar heading when selected day occurs on different year */
-            dayFormat = Shell.util_translate_time_string(NC_("calendar heading", "%A, %B %-d, %Y"));
-        }
-        this._title.label = this._date.toLocaleFormat(dayFormat);
-    }
-
-    _reloadEvents() {
-        if (this._eventSource.isLoading || this._reloading)
-            return;
-
-        this._reloading = true;
-
-        let periodBegin = _getBeginningOfDay(this._date);
-        let periodEnd = _getEndOfDay(this._date);
-        let events = this._eventSource.getEvents(periodBegin, periodEnd);
-
-        let ids = events.map(e => e.id);
-        this._messageById.forEach((message, id) => {
-            if (ids.includes(id))
-                return;
-            this._messageById.delete(id);
-            this.removeMessage(message);
-        });
-
-        for (let i = 0; i < events.length; i++) {
-            let event = events[i];
-
-            let message = this._messageById.get(event.id);
-            if (!message) {
-                message = new EventMessage(event, this._date);
-                this._messageById.set(event.id, message);
-                this.addMessage(message, false);
-            } else {
-                message.update(event);
-                this.moveMessage(message, i, false);
-            }
-        }
-
-        this._reloading = false;
-        this._sync();
-    }
-
-    _appInstalledChanged() {
-        this._calendarApp = undefined;
-        this._title.reactive = this._getCalendarApp() != null;
-    }
-
-    _getCalendarApp() {
-        if (this._calendarApp !== undefined)
-            return this._calendarApp;
-
-        let apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
-        if (apps && (apps.length > 0)) {
-            let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
-            let defaultInRecommended = apps.some(a => a.equal(app));
-            this._calendarApp = defaultInRecommended ? app : apps[0];
-        } else {
-            this._calendarApp = null;
-        }
-        return this._calendarApp;
-    }
-
-    _onTitleClicked() {
-        Main.overview.hide();
-        Main.panel.closeCalendar();
-
-        let appInfo = this._getCalendarApp();
-        if (appInfo.get_id() === 'org.gnome.Evolution.desktop') {
-            let app = this._appSys.lookup_app('evolution-calendar.desktop');
-            if (app)
-                appInfo = app.app_info;
-        }
-        appInfo.launch([], global.create_app_launch_context(0, -1));
-    }
-
-    setDate(date) {
-        super.setDate(date);
-        this._updateTitle();
-        this._reloadEvents();
-    }
-
-    _shouldShow() {
-        return !this.empty || !isToday(this._date);
-    }
-
-    _sync() {
-        if (this._reloading)
-            return;
-
-        super._sync();
     }
 });
 
@@ -1235,9 +1030,6 @@ class CalendarMessageList extends St.Widget {
         this._notificationSection = new NotificationSection();
         this._addSection(this._notificationSection);
 
-        this._eventsSection = new EventsSection();
-        this._addSection(this._eventsSection);
-
         Main.sessionMode.connect('updated', this._sync.bind(this));
     }
 
@@ -1272,10 +1064,6 @@ class CalendarMessageList extends St.Widget {
 
         let canClear = sections.some(s => s.canClear && s.visible);
         this._clearButton.reactive = canClear;
-    }
-
-    setEventSource(eventSource) {
-        this._eventsSection.setEventSource(eventSource);
     }
 
     setDate(date) {
