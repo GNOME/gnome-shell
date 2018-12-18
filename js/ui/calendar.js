@@ -883,10 +883,6 @@ class NotificationSection extends MessageList.MessageListSection {
         });
         super.vfunc_map();
     }
-
-    _shouldShow() {
-        return !this.empty && isToday(this._date);
-    }
 });
 
 var Placeholder = GObject.registerClass(
