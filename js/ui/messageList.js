@@ -4,7 +4,6 @@ const { Atk, Clutter, Gio, GLib,
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
-const Calendar = imports.ui.calendar;
 const Util = imports.misc.util;
 
 var MESSAGE_ANIMATION_TIME = 100;
@@ -572,7 +571,6 @@ var MessageListSection = GObject.registerClass({
             Main.sessionMode.disconnect(id);
         });
 
-        this._date = new Date();
         this._empty = true;
         this._canClear = false;
         this._sync();
@@ -596,13 +594,6 @@ var MessageListSection = GObject.registerClass({
 
     get allowed() {
         return true;
-    }
-
-    setDate(date) {
-        if (Calendar.sameDay(date, this._date))
-            return;
-        this._date = date;
-        this._sync();
     }
 
     addMessage(message, animate) {
