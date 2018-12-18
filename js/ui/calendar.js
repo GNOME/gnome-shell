@@ -1029,8 +1029,4 @@ class CalendarMessageList extends St.Widget {
         let canClear = sections.some(s => s.canClear && s.visible);
         this._clearButton.reactive = canClear;
     }
-
-    setDate(date) {
-        this._sectionList.get_children().forEach(s => s.setDate(date));
-    }
 });
