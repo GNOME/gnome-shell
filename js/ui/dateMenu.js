@@ -632,7 +632,6 @@ class DateMenuButton extends PanelMenu.Button {
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
             let date = _gDateTimeToDate(datetime);
             layout.frozen = !_isToday(date);
-            this._messageList.setDate(date);
         });
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
@@ -641,7 +640,6 @@ class DateMenuButton extends PanelMenu.Button {
                 let now = new Date();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
-                this._messageList.setDate(now);
             }
         });
 
