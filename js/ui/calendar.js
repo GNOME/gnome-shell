@@ -31,10 +31,6 @@ function sameDay(dateA, dateB) {
     return sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
 }
 
-function isToday(date) {
-    return sameDay(new Date(), date);
-}
-
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
     let days = C_('calendar-no-work', "06");
@@ -891,41 +887,13 @@ class Placeholder extends St.BoxLayout {
         super._init({ style_class: 'message-list-placeholder', vertical: true });
         this._date = new Date();
 
-        let todayFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-notifications.svg');
-        let otherFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-events.svg');
-        this._todayIcon = new Gio.FileIcon({ file: todayFile });
-        this._otherIcon = new Gio.FileIcon({ file: otherFile });
-
-        this._icon = new St.Icon();
+        const file = Gio.File.new_for_uri(
+            'resource:///org/gnome/shell/theme/no-notifications.svg');
+        this._icon = new St.Icon({ gicon: new Gio.FileIcon({ file }) });
         this.add_actor(this._icon);
 
-        this._label = new St.Label();
+        this._label = new St.Label({ text: _('No Notifications') });
         this.add_actor(this._label);
-
-        this._sync();
-    }
-
-    setDate(date) {
-        if (sameDay(this._date, date))
-            return;
-        this._date = date;
-        this._sync();
-    }
-
-    _sync() {
-        let today = isToday(this._date);
-        if (today && this._icon.gicon == this._todayIcon)
-            return;
-        if (!today && this._icon.gicon == this._otherIcon)
-            return;
-
-        if (today) {
-            this._icon.gicon = this._todayIcon;
-            this._label.text = _("No Notifications");
-        } else {
-            this._icon.gicon = this._otherIcon;
-            this._label.text = _("No Events");
-        }
     }
 });
 
@@ -1064,6 +1032,5 @@ class CalendarMessageList extends St.Widget {
 
     setDate(date) {
         this._sectionList.get_children().forEach(s => s.setDate(date));
-        this._placeholder.setDate(date);
     }
 });
