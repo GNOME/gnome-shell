@@ -492,7 +492,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
-        this._appInfoList = Gio.AppInfo.get_all().filter(appInfo => {
+        this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 let id = appInfo.get_id(); // catch invalid file encodings
             } catch(e) {
