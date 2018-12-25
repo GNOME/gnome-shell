@@ -9,14 +9,14 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-08-01 18:08+0000\n"
-"PO-Revision-Date: 2018-08-05 01:24+0300\n"
+"POT-Creation-Date: 2018-11-27 13:26+0000\n"
+"PO-Revision-Date: 2018-12-25 19:46+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Gtranslator 3.30.1\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -52,7 +52,7 @@ msgid "Open the application menu"
 msgstr "Uygulama menüsünü aç"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:142
 msgid "Shell Extensions"
 msgstr "Kabuk Uzantıları"
 
@@ -339,15 +339,15 @@ msgstr "Ağ Girişi"
 msgid "network-workgroup"
 msgstr "network-workgroup"
 
-#: js/extensionPrefs/main.js:120
+#: js/extensionPrefs/main.js:112
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s için tercihler iletişim penceresi yüklenirken hata oluştu:"
 
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
+#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:62
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
-#: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
-#: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
+#: js/ui/endSessionDialog.js:442 js/ui/extensionDownloader.js:197
+#: js/ui/shellMountOperation.js:345 js/ui/status/network.js:905
 msgid "Cancel"
 msgstr "İptal"
 
@@ -355,7 +355,7 @@ msgstr "İptal"
 msgid "Next"
 msgstr "Sonraki"
 
-#: js/gdm/authPrompt.js:205 js/ui/shellMountOperation.js:347
+#: js/gdm/authPrompt.js:205 js/ui/shellMountOperation.js:349
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Kilit Aç"
@@ -372,13 +372,13 @@ msgstr "Oturum Seç"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:462
+#: js/gdm/loginDialog.js:464
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:891
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
@@ -386,12 +386,12 @@ msgstr "(örneğin, kullanıcı veya %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
-#: js/ui/components/networkAgent.js:261
+#: js/gdm/loginDialog.js:903 js/ui/components/networkAgent.js:243
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Kullanıcı Adı: "
 
-#: js/gdm/loginDialog.js:1234
+#: js/gdm/loginDialog.js:1241
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -409,68 +409,68 @@ msgid "(or swipe finger)"
 msgstr "(ya da parmak izi okut)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Bilgisayarı Kapat"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:100
 msgid "power off;shutdown;reboot;restart"
 msgstr "gücü kapat;bilgisayarı kapat;yeniden başlat"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:104
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Ekranı Kilitle"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:107
 msgid "lock screen"
 msgstr "ekranı kilitle"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:111
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:114
 msgid "logout;sign off"
 msgstr "çıkış;oturumu kapat"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Bilgisayarı beklet"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:121
 msgid "suspend;sleep"
 msgstr "beklet;uyku;duraklat"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:127
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:130
+#: js/misc/systemActions.js:128
 msgid "switch user"
 msgstr "kullanıcı değiştir"
 
 #. Translators: The name of the lock orientation action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:132
 msgctxt "search-result"
 msgid "Lock Orientation"
 msgstr "Yönelimi Kilitle"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:135
 msgid "lock orientation;screen;rotation"
 msgstr "yönelimi kilitle;ekran;döndürme kilidi;döndürme"
 
@@ -557,16 +557,18 @@ msgstr "%A, %H∶%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:246
 #, no-c-format
-msgid "%B %d, %H∶%M"
-msgstr "%d %B, %H∶%M"
+#| msgid "%B %d, %H∶%M"
+msgid "%B %-d, %H∶%M"
+msgstr "%-d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:252
 #, no-c-format
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d %B %Y, %H∶%M"
+#| msgid "%B %d %Y, %H∶%M"
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:257
@@ -592,23 +594,25 @@ msgstr "%A, %l∶%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:275
 #, no-c-format
-msgid "%B %d, %l∶%M %p"
-msgstr "%d %B, %l∶%M %p"
+#| msgid "%B %d, %l∶%M %p"
+msgid "%B %-d, %l∶%M %p"
+msgstr "%-d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:281
 #, no-c-format
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d %B %Y, %l∶%M %p"
+#| msgid "%B %d %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:66
+#: js/portalHelper/main.js:49
 msgid "Hotspot Login"
 msgstr "Erişim Noktası Girişi"
 
-#: js/portalHelper/main.js:112
+#: js/portalHelper/main.js:95
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -619,43 +623,43 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:63 js/ui/status/location.js:393
+#: js/ui/accessDialog.js:46 js/ui/status/location.js:376
 msgid "Deny Access"
 msgstr "Erişimi Reddet"
 
-#: js/ui/accessDialog.js:64 js/ui/status/location.js:396
+#: js/ui/accessDialog.js:47 js/ui/status/location.js:379
 msgid "Grant Access"
 msgstr "Erişime İzin Ver"
 
-#: js/ui/appDisplay.js:793
+#: js/ui/appDisplay.js:790
 msgid "Frequently used applications will appear here"
 msgstr "Sık kullanılan uygulamalar burada yer alacak"
 
-#: js/ui/appDisplay.js:914
+#: js/ui/appDisplay.js:911
 msgid "Frequent"
 msgstr "Sık Sık"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:918
 msgid "All"
 msgstr "Tümü"
 
-#: js/ui/appDisplay.js:1890
+#: js/ui/appDisplay.js:1889
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: js/ui/appDisplay.js:1904
+#: js/ui/appDisplay.js:1903
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Adanmış Ekran Kartıyla Başlat"
 
-#: js/ui/appDisplay.js:1931 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:250
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: js/ui/appDisplay.js:1937
+#: js/ui/appDisplay.js:1936
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: js/ui/appDisplay.js:1947
+#: js/ui/appDisplay.js:1946
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -669,23 +673,23 @@ msgstr "%s sık kullanılanlarınıza eklendi."
 msgid "%s has been removed from your favorites."
 msgstr "%s sık kullanılanlarınızdan çıkarıldı."
 
-#: js/ui/audioDeviceSelection.js:59
+#: js/ui/audioDeviceSelection.js:50
 msgid "Select Audio Device"
 msgstr "Ses Aygıtı Seç"
 
-#: js/ui/audioDeviceSelection.js:69
+#: js/ui/audioDeviceSelection.js:60
 msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
-#: js/ui/audioDeviceSelection.js:78
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "Kulaklıklar"
 
-#: js/ui/audioDeviceSelection.js:80
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "Kulaklıklı Mikrofon"
 
-#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:255
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:255
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -693,7 +697,7 @@ msgstr "Mikrofon"
 msgid "Change Background…"
 msgstr "Arka Planı Değiştir…"
 
-#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:51
+#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:47
 msgid "Display Settings"
 msgstr "Görüntü Ayarları"
 
@@ -759,7 +763,7 @@ msgstr "C"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:379
+#: js/ui/calendar.js:380
 msgid "%OB"
 msgstr "%OB"
 
@@ -772,65 +776,69 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:389
+#: js/ui/calendar.js:390
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:446
+#: js/ui/calendar.js:447
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:456
+#: js/ui/calendar.js:458
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:609
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:664
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "%V. Hafta"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:733
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
+#| msgctxt "calendar heading"
+#| msgid "%A, %B %d"
 msgctxt "calendar heading"
-msgid "%A, %B %d"
-msgstr "%A, %d %B"
+msgid "%A, %B %-d"
+msgstr "%A, %-d %B"
 
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:877
+#| msgctxt "calendar heading"
+#| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
-msgid "%A, %B %d, %Y"
-msgstr "%A, %d %B, %Y"
+msgid "%A, %B %-d, %Y"
+msgstr "%A, %-d %B, %Y"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1107
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1110
 msgid "No Events"
 msgstr "Olay Yok"
 
-#: js/ui/calendar.js:1131
+#: js/ui/calendar.js:1138
 msgid "Clear All"
 msgstr "Tümünü Temizle"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:47
+#: js/ui/closeDialog.js:50
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "“%s” yanıt vermiyor."
 
-#: js/ui/closeDialog.js:48
+#: js/ui/closeDialog.js:51
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -838,23 +846,23 @@ msgstr ""
 "Devam etmesi için bir süre bekleyebilir ya da uygulamayı tümüyle kapanmaya "
 "zorlayabilirsiniz."
 
-#: js/ui/closeDialog.js:64
+#: js/ui/closeDialog.js:67
 msgid "Force Quit"
 msgstr "Kapanmaya Zorla"
 
-#: js/ui/closeDialog.js:67
+#: js/ui/closeDialog.js:70
 msgid "Wait"
 msgstr "Bekle"
 
-#: js/ui/components/automountManager.js:90
+#: js/ui/components/automountManager.js:91
 msgid "External drive connected"
 msgstr "Dış sürücü bağlandı"
 
-#: js/ui/components/automountManager.js:101
+#: js/ui/components/automountManager.js:102
 msgid "External drive disconnected"
 msgstr "Dış sürücü ayrıldı"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:348
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s ile Aç"
@@ -867,40 +875,40 @@ msgstr "Parola:"
 msgid "Type again:"
 msgstr "Yeniden yaz:"
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:245
-#: js/ui/status/network.js:336 js/ui/status/network.js:922
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:229
+#: js/ui/status/network.js:320 js/ui/status/network.js:908
 msgid "Connect"
 msgstr "Bağlan"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:205 js/ui/components/networkAgent.js:217
-#: js/ui/components/networkAgent.js:245 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:275
+#: js/ui/components/networkAgent.js:211 js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:265
+#: js/ui/components/networkAgent.js:285 js/ui/components/networkAgent.js:295
 msgid "Password: "
 msgstr "Parola: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:216
 msgid "Key: "
 msgstr "Anahtar: "
 
-#: js/ui/components/networkAgent.js:249
-msgid "Identity: "
-msgstr "Kimlik: "
-
-#: js/ui/components/networkAgent.js:251
+#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:271
 msgid "Private key password: "
 msgstr "Özel anahtar parolası: "
 
-#: js/ui/components/networkAgent.js:263
+#: js/ui/components/networkAgent.js:269
+msgid "Identity: "
+msgstr "Kimlik: "
+
+#: js/ui/components/networkAgent.js:283
 msgid "Service: "
 msgstr "Hizmet: "
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:664
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:688
 msgid "Authentication required by wireless network"
 msgstr "Kablosuz ağ için kimlik doğrulama gerekiyor"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:665
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:689
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -908,41 +916,41 @@ msgid ""
 msgstr ""
 "“%s” kablosuz ağına erişmek için parola veya şifreleme anahtarları gerekiyor."
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:668
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:692
 msgid "Wired 802.1X authentication"
 msgstr "Kablolu 802.1X kimlik doğrulaması"
 
-#: js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:319
 msgid "Network name: "
 msgstr "Ağ adı: "
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:696
 msgid "DSL authentication"
 msgstr "DSL kimlik doğrulama"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:678
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:702
 msgid "PIN code required"
 msgstr "PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:703
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobil geniş bant aygıtı için PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:333
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:709
 msgid "Mobile broadband network password"
 msgstr "Mobil geniş bant ağ parolası"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:669
-#: js/ui/components/networkAgent.js:673 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:697 js/ui/components/networkAgent.js:710
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: js/ui/components/networkAgent.js:653 js/ui/status/network.js:1704
+#: js/ui/components/networkAgent.js:677 js/ui/status/network.js:1690
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
@@ -962,7 +970,7 @@ msgstr "Doğrula"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:283 js/ui/shellMountOperation.js:329
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 
@@ -977,40 +985,43 @@ msgstr "%s, şimdi %s olarak biliniyor"
 msgid "Windows"
 msgstr "Pencereler"
 
-#: js/ui/dash.js:246 js/ui/dash.js:287
+#: js/ui/dash.js:211 js/ui/dash.js:252
 msgid "Show Applications"
 msgstr "Uygulamaları Göster"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:443
+#: js/ui/dash.js:409
 msgid "Dash"
 msgstr "Konsol"
 
 #. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:74
-msgid "%B %e %Y"
-msgstr "%e %B %Y"
+#: js/ui/dateMenu.js:76
+#| msgid "%B %e %Y"
+msgid "%B %-d %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:81
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%e %B %Y %A"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:147
 msgid "Add world clocks…"
 msgstr "Dünya saatlerini ekle…"
 
-#: js/ui/dateMenu.js:146
+#: js/ui/dateMenu.js:148
 msgid "World Clocks"
 msgstr "Dünya Saatleri"
 
-#: js/ui/dateMenu.js:227
+#: js/ui/dateMenu.js:229
 msgid "Weather"
 msgstr "Hava Durumu"
 
@@ -1018,7 +1029,7 @@ msgstr "Hava Durumu"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:291
+#: js/ui/dateMenu.js:293
 #, javascript-format
 msgid "%s all day."
 msgstr "Gün boyu %s."
@@ -1027,7 +1038,7 @@ msgstr "Gün boyu %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:297
+#: js/ui/dateMenu.js:299
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, daha sonra %s."
@@ -1036,109 +1047,109 @@ msgstr "%s, daha sonra %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:303
+#: js/ui/dateMenu.js:305
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, daha sonra %s, ardından %s."
 
-#: js/ui/dateMenu.js:314
+#: js/ui/dateMenu.js:316
 msgid "Select a location…"
 msgstr "Konum seç…"
 
-#: js/ui/dateMenu.js:317
+#: js/ui/dateMenu.js:319
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:325
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Hissedilen %s."
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Go online for weather information"
 msgstr "Hava durumu bilgisi için çevrim içi olun"
 
-#: js/ui/dateMenu.js:328
+#: js/ui/dateMenu.js:330
 msgid "Weather information is currently unavailable"
 msgstr "Hava durumu bilgisi şu anda kullanılabilir değil "
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s Oturumunu Kapat"
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:52
 msgctxt "title"
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: js/ui/endSessionDialog.js:67
+#: js/ui/endSessionDialog.js:54
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s oturumu %d saniye içinde kendiliğinden kapatılacak."
 
-#: js/ui/endSessionDialog.js:72
+#: js/ui/endSessionDialog.js:59
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "%d saniye içinde oturumunuz kendiliğinden kapatılacak."
 
-#: js/ui/endSessionDialog.js:78
+#: js/ui/endSessionDialog.js:65
 msgctxt "button"
 msgid "Log Out"
 msgstr "Çıkış"
 
-#: js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Power Off"
 msgstr "Bilgisayarı Kapat"
 
-#: js/ui/endSessionDialog.js:85
+#: js/ui/endSessionDialog.js:72
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Güncelleştirmeleri Kur ve Kapat"
 
-#: js/ui/endSessionDialog.js:87
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden kapanacak."
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:78
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Beklemede olan yazılım güncelleştirmelerini kur"
 
-#: js/ui/endSessionDialog.js:94 js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:81 js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Restart"
 msgstr "Yeniden Başlat"
 
-#: js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:83
 msgctxt "button"
 msgid "Power Off"
 msgstr "Kapat"
 
-#: js/ui/endSessionDialog.js:103
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Restart"
 msgstr "Bilgisayarı Yeniden Başlat"
 
-#: js/ui/endSessionDialog.js:105
+#: js/ui/endSessionDialog.js:92
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden yeniden başlayacak."
 
-#: js/ui/endSessionDialog.js:119
+#: js/ui/endSessionDialog.js:106
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Yeniden Başlat ve Güncelleştirmeleri Kur"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:108
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1147,22 +1158,22 @@ msgstr[0] ""
 "Sistem %d saniye içinde kendiliğinden yeniden başlayacak ve "
 "güncelleştirmeleri kuracak."
 
-#: js/ui/endSessionDialog.js:127 js/ui/endSessionDialog.js:147
+#: js/ui/endSessionDialog.js:114 js/ui/endSessionDialog.js:134
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Yeniden Başlat ve Kur"
 
-#: js/ui/endSessionDialog.js:128
+#: js/ui/endSessionDialog.js:115
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Kur ve Kapat"
 
-#: js/ui/endSessionDialog.js:129
+#: js/ui/endSessionDialog.js:116
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Güncelleştirmeler kurulduktan sonra kapat"
 
-#: js/ui/endSessionDialog.js:137
+#: js/ui/endSessionDialog.js:124
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Yeniden Başlat ve Yükseltmeyi Kur"
@@ -1170,7 +1181,7 @@ msgstr "Yeniden Başlat ve Yükseltmeyi Kur"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:142
+#: js/ui/endSessionDialog.js:129
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1180,27 +1191,27 @@ msgstr ""
 "uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize "
 "takılı olduğundan emin olun."
 
-#: js/ui/endSessionDialog.js:361
+#: js/ui/endSessionDialog.js:321
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Pil gücünde çalışıyor: Lütfen güncelleştirmeleri kurmadan önce fişi takın."
 
-#: js/ui/endSessionDialog.js:378
+#: js/ui/endSessionDialog.js:338
 msgid "Some applications are busy or have unsaved work."
 msgstr "Bazı uygulamalar meşgul ya da kaydedilmemiş veriye sahip."
 
-#: js/ui/endSessionDialog.js:385
+#: js/ui/endSessionDialog.js:345
 msgid "Other users are logged in."
 msgstr "Diğer kullanıcılar oturum açmış."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:666
+#: js/ui/endSessionDialog.js:626
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (uzak)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:669
+#: js/ui/endSessionDialog.js:629
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (uçbirim)"
@@ -1283,16 +1294,16 @@ msgstr ""
 msgid "Leave On"
 msgstr "Açık Bırak"
 
-#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
-#: js/ui/status/network.js:1294
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:138
+#: js/ui/status/network.js:1280
 msgid "Turn On"
 msgstr "Aç"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
-#: js/ui/status/network.js:154 js/ui/status/network.js:337
-#: js/ui/status/network.js:1294 js/ui/status/network.js:1409
-#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
-#: js/ui/status/rfkill.js:117
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:138
+#: js/ui/status/network.js:138 js/ui/status/network.js:321
+#: js/ui/status/network.js:1280 js/ui/status/network.js:1395
+#: js/ui/status/nightLight.js:43 js/ui/status/rfkill.js:85
+#: js/ui/status/rfkill.js:112
 msgid "Turn Off"
 msgstr "Kapat"
 
@@ -1304,63 +1315,63 @@ msgstr "Kapalı Bırak"
 msgid "Region & Language Settings"
 msgstr "Bölge ve Dil Ayarları"
 
-#: js/ui/lookingGlass.js:644
+#: js/ui/lookingGlass.js:648
 msgid "No extensions installed"
 msgstr "Herhangi bir uzantı kurulu değil"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:698
+#: js/ui/lookingGlass.js:702
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s, herhangi bir hata vermedi."
 
-#: js/ui/lookingGlass.js:704
+#: js/ui/lookingGlass.js:708
 msgid "Hide Errors"
 msgstr "Hataları Gizle"
 
-#: js/ui/lookingGlass.js:708 js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:712 js/ui/lookingGlass.js:772
 msgid "Show Errors"
 msgstr "Hataları Göster"
 
-#: js/ui/lookingGlass.js:717
+#: js/ui/lookingGlass.js:721
 msgid "Enabled"
 msgstr "Etkin"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:720 subprojects/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:724 subprojects/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Devre dışı"
 
-#: js/ui/lookingGlass.js:722
+#: js/ui/lookingGlass.js:726
 msgid "Error"
 msgstr "Hata"
 
-#: js/ui/lookingGlass.js:724
+#: js/ui/lookingGlass.js:728
 msgid "Out of date"
 msgstr "Güncel değil"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:730
 msgid "Downloading"
 msgstr "İndiriliyor"
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:754
 msgid "View Source"
 msgstr "Kaynağı Görüntüle"
 
-#: js/ui/lookingGlass.js:759
+#: js/ui/lookingGlass.js:763
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/messageTray.js:1495
+#: js/ui/messageTray.js:1487
 msgid "System Information"
 msgstr "Sistem Bilgisi"
 
-#: js/ui/mpris.js:211
+#: js/ui/mpris.js:185
 msgid "Unknown artist"
 msgstr "Bilinmeyen sanatçı"
 
-#: js/ui/mpris.js:212
+#: js/ui/mpris.js:186
 msgid "Unknown title"
 msgstr "Bilinmeyen başlık"
 
@@ -1386,66 +1397,66 @@ msgstr "Genel Görünüm"
 msgid "Type to search…"
 msgstr "Aramak için yaz…"
 
-#: js/ui/padOsd.js:105
+#: js/ui/padOsd.js:107
 msgid "New shortcut…"
 msgstr "Yeni kısayol…"
 
-#: js/ui/padOsd.js:156
+#: js/ui/padOsd.js:158
 msgid "Application defined"
 msgstr "Uygulama tanımlı"
 
-#: js/ui/padOsd.js:157
+#: js/ui/padOsd.js:159
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: js/ui/padOsd.js:158
+#: js/ui/padOsd.js:160
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: js/ui/padOsd.js:159
+#: js/ui/padOsd.js:161
 msgid "Assign keystroke"
 msgstr "Tuş vuruşu ata"
 
-#: js/ui/padOsd.js:226
+#: js/ui/padOsd.js:228
 msgid "Done"
 msgstr "Bitti"
 
-#: js/ui/padOsd.js:742
+#: js/ui/padOsd.js:744
 msgid "Edit…"
 msgstr "Düzenle…"
 
-#: js/ui/padOsd.js:784 js/ui/padOsd.js:889
+#: js/ui/padOsd.js:786 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Yok"
 
-#: js/ui/padOsd.js:843
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Yapılandırmak için bir düğmeye bas"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Çıkmak için Esc’ye bas"
 
-#: js/ui/padOsd.js:847
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Çıkmak için herhangi bir tuşa bas"
 
-#: js/ui/panel.js:356
+#: js/ui/panel.js:360
 msgid "Quit"
 msgstr "Kapat"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:412
+#: js/ui/panel.js:414
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: js/ui/panel.js:693
+#: js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:816
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -1454,7 +1465,7 @@ msgstr "Tepe Çubuğu"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:300
+#: js/ui/popupMenu.js:301
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1466,11 +1477,11 @@ msgstr "Komut Gir"
 msgid "Close"
 msgstr "Kapat"
 
-#: js/ui/runDialog.js:278
+#: js/ui/runDialog.js:276
 msgid "Restart is not available on Wayland"
 msgstr "Wayland’de yeniden başlatma kullanılabilir değil"
 
-#: js/ui/runDialog.js:283
+#: js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Yeniden başlatılıyor…"
 
@@ -1492,7 +1503,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: js/ui/screenShield.js:451 js/ui/status/system.js:294
+#: js/ui/screenShield.js:451 js/ui/status/system.js:297
 msgid "Lock"
 msgstr "Kilitle"
 
@@ -1515,15 +1526,15 @@ msgstr "Kilitlenemedi"
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
-#: js/ui/search.js:653
+#: js/ui/search.js:661
 msgid "Searching…"
 msgstr "Aranıyor…"
 
-#: js/ui/search.js:655
+#: js/ui/search.js:663
 msgid "No results."
 msgstr "Sonuç yok."
 
-#: js/ui/search.js:779
+#: js/ui/search.js:787
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1545,11 +1556,11 @@ msgstr "Metni Göster"
 msgid "Hide Text"
 msgstr "Metni Gizle"
 
-#: js/ui/shellMountOperation.js:314
+#: js/ui/shellMountOperation.js:316
 msgid "Password"
 msgstr "Parola"
 
-#: js/ui/shellMountOperation.js:335
+#: js/ui/shellMountOperation.js:337
 msgid "Remember Password"
 msgstr "Parolayı Anımsa"
 
@@ -1597,87 +1608,87 @@ msgstr "Yüksek Karşıtlık"
 msgid "Large Text"
 msgstr "Büyük Yazı"
 
-#: js/ui/status/bluetooth.js:48
+#: js/ui/status/bluetooth.js:43
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:614
+#: js/ui/status/bluetooth.js:52 js/ui/status/network.js:600
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:137
+#: js/ui/status/bluetooth.js:132
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d Aygıt Bağlandı"
 
-#: js/ui/status/bluetooth.js:139
+#: js/ui/status/bluetooth.js:134
 msgid "Off"
 msgstr "Kapalı"
 
-#: js/ui/status/bluetooth.js:141
+#: js/ui/status/bluetooth.js:136
 msgid "On"
 msgstr "Açık"
 
-#: js/ui/status/brightness.js:44
+#: js/ui/status/brightness.js:41
 msgid "Brightness"
 msgstr "Parlaklık"
 
-#: js/ui/status/keyboard.js:781
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "Klavye"
 
-#: js/ui/status/keyboard.js:804
+#: js/ui/status/keyboard.js:853
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
-#: js/ui/status/location.js:89 js/ui/status/location.js:197
+#: js/ui/status/location.js:72 js/ui/status/location.js:180
 msgid "Location Enabled"
 msgstr "Konum Etkinleştirildi"
 
-#: js/ui/status/location.js:90 js/ui/status/location.js:198
+#: js/ui/status/location.js:73 js/ui/status/location.js:181
 msgid "Disable"
 msgstr "Devre Dışı Bırak"
 
-#: js/ui/status/location.js:91
+#: js/ui/status/location.js:74
 msgid "Privacy Settings"
 msgstr "Gizlilik Ayarları"
 
-#: js/ui/status/location.js:196
+#: js/ui/status/location.js:179
 msgid "Location In Use"
 msgstr "Konum Kullanımda"
 
-#: js/ui/status/location.js:200
+#: js/ui/status/location.js:183
 msgid "Location Disabled"
 msgstr "Konum Devre Dışı"
 
-#: js/ui/status/location.js:201
+#: js/ui/status/location.js:184
 msgid "Enable"
 msgstr "Etkinleştir"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:386
+#: js/ui/status/location.js:369
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "%s uygulaması konumunuza erişebilsin mi?"
 
-#: js/ui/status/location.js:387
+#: js/ui/status/location.js:370
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Konum erişimi, gizlilik ayarlarından her zaman değiştirilebilir."
 
-#: js/ui/status/network.js:90
+#: js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<bilinmeyen>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:441 js/ui/status/network.js:1323
+#: js/ui/status/network.js:427 js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Kapalı"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:444
+#: js/ui/status/network.js:430
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s Bağlandı"
@@ -1685,232 +1696,236 @@ msgstr "%s Bağlandı"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:435
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s Yönetilmiyor"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452
+#: js/ui/status/network.js:438
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s Bağlantısı Kesiliyor"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:459 js/ui/status/network.js:1315
+#: js/ui/status/network.js:445 js/ui/status/network.js:1301
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Bağlanıyor"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:448
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s Kimlik Doğrulaması Gerektiriyor"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:470
+#: js/ui/status/network.js:456
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s İçin Ürün Bilgisi Eksik"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:474
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s Kullanılamaz"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:477
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s Bağlantısı Başarısız Oldu"
 
-#: js/ui/status/network.js:493
+#: js/ui/status/network.js:479
 msgid "Wired Settings"
 msgstr "Kablolu Ağ Ayarları"
 
-#: js/ui/status/network.js:535
+#: js/ui/status/network.js:521
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:578 js/ui/status/network.js:1320
+#: js/ui/status/network.js:564 js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Donanımı Devre Dışı"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:582
+#: js/ui/status/network.js:568
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s Devre Dışı"
 
-#: js/ui/status/network.js:622
+#: js/ui/status/network.js:608
 msgid "Connect to Internet"
 msgstr "İnternet’e Bağlan"
 
-#: js/ui/status/network.js:816
+#: js/ui/status/network.js:802
 msgid "Airplane Mode is On"
 msgstr "Uçak Kipi Açık"
 
-#: js/ui/status/network.js:817
+#: js/ui/status/network.js:803
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Uçak kipi açıldığında kablosuz ağ devre dışı kalır."
 
-#: js/ui/status/network.js:818
+#: js/ui/status/network.js:804
 msgid "Turn Off Airplane Mode"
 msgstr "Uçak Kipini Kapat"
 
-#: js/ui/status/network.js:827
+#: js/ui/status/network.js:813
 msgid "Wi-Fi is Off"
 msgstr "Kablosuz Ağ Kapalı"
 
-#: js/ui/status/network.js:828
+#: js/ui/status/network.js:814
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Bir ağa bağlanmak için kablosuz ağın açık olması gerekir."
 
-#: js/ui/status/network.js:829
+#: js/ui/status/network.js:815
 msgid "Turn On Wi-Fi"
 msgstr "Kablosuz Ağı Aç"
 
-#: js/ui/status/network.js:854
+#: js/ui/status/network.js:840
 msgid "Wi-Fi Networks"
 msgstr "Kablosuz Ağlar"
 
-#: js/ui/status/network.js:856
+#: js/ui/status/network.js:842
 msgid "Select a network"
 msgstr "Ağ seç"
 
-#: js/ui/status/network.js:886
+#: js/ui/status/network.js:872
 msgid "No Networks"
 msgstr "Ağ Yok"
 
-#: js/ui/status/network.js:907 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:893 js/ui/status/rfkill.js:110
 msgid "Use hardware switch to turn off"
 msgstr "Kapatmak için donanım anahtarını kullan"
 
-#: js/ui/status/network.js:1186
+#: js/ui/status/network.js:1172
 msgid "Select Network"
 msgstr "Ağ Seç"
 
-#: js/ui/status/network.js:1192
+#: js/ui/status/network.js:1178
 msgid "Wi-Fi Settings"
 msgstr "Kablosuz Ağ Ayarları"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1311
+#: js/ui/status/network.js:1297
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Erişim Noktası Etkin"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1326
+#: js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Bağlı Değil"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1412
 msgid "connecting…"
 msgstr "bağlanıyor…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1429
+#: js/ui/status/network.js:1415
 msgid "authentication required"
 msgstr "kimlik doğrulaması gerekli"
 
-#: js/ui/status/network.js:1431
+#: js/ui/status/network.js:1417
 msgid "connection failed"
 msgstr "bağlantı başarısız"
 
-#: js/ui/status/network.js:1485
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1484
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1494
 msgid "VPN Off"
 msgstr "VPN Kapalı"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1558 js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Ağ Ayarları"
 
-#: js/ui/status/network.js:1601
+#: js/ui/status/network.js:1587
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Kablolu Bağlantı"
 
-#: js/ui/status/network.js:1605
+#: js/ui/status/network.js:1591
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Kablosuz Ağ Bağlantısı"
 
-#: js/ui/status/network.js:1609
+#: js/ui/status/network.js:1595
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Modem Bağlantısı"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1727
 msgid "Connection failed"
 msgstr "Bağlantı başarısız oldu"
 
-#: js/ui/status/network.js:1742
+#: js/ui/status/network.js:1728
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleştirilmesi başarısız oldu"
 
-#: js/ui/status/nightLight.js:68
+#: js/ui/status/nightLight.js:64
 msgid "Night Light Disabled"
 msgstr "Gece Işığı Devre Dışı"
 
-#: js/ui/status/nightLight.js:69
+#: js/ui/status/nightLight.js:65
 msgid "Night Light On"
 msgstr "Gece Işığı Açık"
 
-#: js/ui/status/nightLight.js:70
+#: js/ui/status/nightLight.js:66
 msgid "Resume"
 msgstr "Sürdür"
 
-#: js/ui/status/nightLight.js:71
+#: js/ui/status/nightLight.js:67
 msgid "Disable Until Tomorrow"
 msgstr "Yarına Dek Devre Dışı Bırak"
 
-#: js/ui/status/power.js:61
+#: js/ui/status/power.js:52
 msgid "Power Settings"
 msgstr "Güç Ayarları"
 
-#: js/ui/status/power.js:77
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "Tümüyle Dolu"
 
+#: js/ui/status/power.js:74
+msgid "Not Charging"
+msgstr "Şarj Olmuyor"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:84 js/ui/status/power.js:90
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Öngörülüyor…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:98
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d Kaldı (%% %d)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:103
+#: js/ui/status/power.js:96
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "Tümüyle Dolmasına %d.%02d Kaldı (%% %d)"
 
-#: js/ui/status/power.js:131 js/ui/status/power.js:133
+#: js/ui/status/power.js:124 js/ui/status/power.js:126
 #, javascript-format
 msgid "%d %%"
 msgstr "%% %d"
@@ -1920,51 +1935,50 @@ msgid "Screen is Being Shared"
 msgstr "Ekran Paylaşılıyor"
 
 #: js/ui/status/remoteAccess.js:48
-#| msgid "Turn Off"
 msgid "Turn off"
 msgstr "Kapat"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
-#: js/ui/status/rfkill.js:88
+#: js/ui/status/rfkill.js:83
 msgid "Airplane Mode On"
 msgstr "Uçak Kipi Açık"
 
-#: js/ui/status/system.js:227
+#: js/ui/status/system.js:230
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
-#: js/ui/status/system.js:239
+#: js/ui/status/system.js:242
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: js/ui/status/system.js:251
+#: js/ui/status/system.js:254
 msgid "Account Settings"
 msgstr "Hesap Ayarları"
 
-#: js/ui/status/system.js:279
+#: js/ui/status/system.js:282
 msgid "Orientation Lock"
 msgstr "Yönelim Kilidi"
 
-#: js/ui/status/system.js:305
+#: js/ui/status/system.js:308
 msgid "Suspend"
 msgstr "Beklet"
 
-#: js/ui/status/system.js:315
+#: js/ui/status/system.js:318
 msgid "Power Off"
 msgstr "Kapat"
 
-#: js/ui/status/thunderbolt.js:298
+#: js/ui/status/thunderbolt.js:268
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
 #. we are done
-#: js/ui/status/thunderbolt.js:354
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "Bilinmeyen Thunderbolt aygıtı"
 
-#: js/ui/status/thunderbolt.js:355
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -1972,13 +1986,12 @@ msgstr ""
 "Siz uzaktayken yeni aygıt saptandı. Kullanmaya başlamadan önce aygıtın "
 "bağlantısını kesin ve yeniden bağlayın."
 
-#: js/ui/status/thunderbolt.js:360
+#: js/ui/status/thunderbolt.js:330
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt yetkilendirme hatası"
 
-#: js/ui/status/thunderbolt.js:361
+#: js/ui/status/thunderbolt.js:331
 #, javascript-format
-#| msgid "Could not authorize the thunderbolt device: %s"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt aygıtı yetkilendirilemedi: %s"
 
@@ -2030,27 +2043,27 @@ msgstr "Uygulamalar"
 msgid "Search"
 msgstr "Ara"
 
-#: js/ui/windowAttentionHandler.js:20
+#: js/ui/windowAttentionHandler.js:22
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "“%s” hazır"
 
-#: js/ui/windowManager.js:74
+#: js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
 msgstr "Bu görüntü ayarlarını saklamak istiyor musunuz?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:75
 msgid "Revert Settings"
 msgstr "Ayarları Eski Haline Getir"
 
-#: js/ui/windowManager.js:89
+#: js/ui/windowManager.js:78
 msgid "Keep Changes"
 msgstr "Değişiklikleri Sakla"
 
-#: js/ui/windowManager.js:107
+#: js/ui/windowManager.js:96
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2058,7 +2071,7 @@ msgstr[0] "Ayarlardaki değişiklikler %d saniye içinde eski haline döndürül
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:689
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2170,7 +2183,7 @@ msgstr "Parolalar eşleşmiyor."
 msgid "Password cannot be blank"
 msgstr "Parola boş bırakılamaz"
 
-#: src/shell-polkit-authentication-agent.c:353
+#: src/shell-polkit-authentication-agent.c:348
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kimlik doğrulama penceresi kullanıcı tarafından kapatıldı"
 
