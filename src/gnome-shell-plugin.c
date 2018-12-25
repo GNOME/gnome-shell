@@ -47,15 +47,10 @@
 #include "shell-perf-log.h"
 #include "shell-wm-private.h"
 
-#define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
-#define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
-#define GNOME_SHELL_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
-#define GNOME_IS_SHELL_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GNOME_SHELL_PLUGIN_TYPE))
-#define GNOME_IS_SHELL_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GNOME_TYPE_SHELL_PLUGIN))
-#define GNOME_SHELL_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
-
-typedef struct _GnomeShellPlugin        GnomeShellPlugin;
-typedef struct _GnomeShellPluginClass   GnomeShellPluginClass;
+#define GNOME_TYPE_SHELL_PLUGIN (gnome_shell_plugin_get_type ())
+G_DECLARE_FINAL_TYPE (GnomeShellPlugin, gnome_shell_plugin,
+                      GNOME, SHELL_PLUGIN,
+                      MetaPlugin)
 
 struct _GnomeShellPlugin
 {
@@ -68,13 +63,6 @@ struct _GnomeShellPlugin
 
   ShellGlobal *global;
 };
-
-struct _GnomeShellPluginClass
-{
-  MetaPluginClass parent_class;
-};
-
-GType gnome_shell_plugin_get_type (void);
 
 G_DEFINE_TYPE (GnomeShellPlugin, gnome_shell_plugin, META_TYPE_PLUGIN)
 
