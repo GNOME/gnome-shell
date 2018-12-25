@@ -318,8 +318,8 @@ gnome_shell_plugin_confirm_display_change (MetaPlugin *plugin)
   _shell_wm_confirm_display_change (get_shell_wm ());
 }
 
-static const
-MetaPluginInfo *gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
+static const MetaPluginInfo *
+gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
 {
   static const MetaPluginInfo info = {
     .name = "GNOME Shell",
