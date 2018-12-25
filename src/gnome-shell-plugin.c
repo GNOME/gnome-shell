@@ -21,6 +21,16 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * GnomeShellPlugin is the entry point for for GNOME Shell into and out of
+ * Mutter. By registering itself into Mutter using
+ * meta_plugin_manager_set_plugin_type(), Mutter will call the vfuncs of the
+ * plugin at the appropriate time.
+ *
+ * The funcions in in GnomeShellPlugin are all just stubs, which just call the
+ * similar methods in GnomeShellWm.
+ */
+
 #include "config.h"
 
 #include <stdlib.h>
