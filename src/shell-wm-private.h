@@ -58,6 +58,8 @@ MetaCloseDialog * _shell_wm_create_close_dialog (ShellWM     *wm,
 MetaInhibitShortcutsDialog * _shell_wm_create_inhibit_shortcuts_dialog (ShellWM     *wm,
                                                                         MetaWindow  *window);
 
+void _shell_wm_stop (ShellWM *wm);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_PRIVATE_H__ */
