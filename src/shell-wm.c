@@ -35,6 +35,7 @@ enum
   CONFIRM_DISPLAY_CHANGE,
   CREATE_CLOSE_DIALOG,
   CREATE_INHIBIT_SHORTCUTS_DIALOG,
+  STOP,
 
   LAST_SIGNAL
 };
@@ -165,6 +166,13 @@ shell_wm_class_init (ShellWMClass *klass)
                   META_TYPE_KEY_BINDING);
   shell_wm_signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+  shell_wm_signals[STOP] =
+    g_signal_new ("stop",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -440,6 +448,12 @@ _shell_wm_create_inhibit_shortcuts_dialog (ShellWM    *wm,
   g_signal_emit (wm, shell_wm_signals[CREATE_INHIBIT_SHORTCUTS_DIALOG], 0, window, &dialog);
 
   return dialog;
+}
+
+void
+_shell_wm_stop (ShellWM *wm)
+{
+  g_signal_emit (wm, shell_wm_signals[STOP], 0);
 }
 
 /**
