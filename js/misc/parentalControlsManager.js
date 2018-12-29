@@ -48,37 +48,18 @@ function getDefault() {
 var ParentalControlsManager = new Lang.Class({
     Name: 'ParentalControlsManager',
     Extends: GObject.Object,
-    Signals: { 'initialized': {} },
 
     _init: function() {
         this.parent();
 
-        this._initialized = false;
-        this._appFilter = null;
-
         log('Getting parental controls for user ' + Shell.util_get_uid ());
-        EosParentalControls.get_app_filter_async(null, Shell.util_get_uid (),
-                                                 false, null,
-                                                 this._onGetAppFilter.bind(this));
-    },
-
-    _onGetAppFilter: function(object, res) {
         try {
-            this._appFilter = EosParentalControls.get_app_filter_finish (res);
+            this._appFilter = EosParentalControls.get_app_filter(null,
+                                                                 Shell.util_get_uid (),
+                                                                 false, null);
         } catch (e) {
             logError(e, 'Failed to get parental controls settings');
         }
-
-        this._initialized = true;
-        this.emit('initialized');
-    },
-
-    get initialized() {
-        return this._initialized;
-    },
-
-    get appFilter() {
-        return this._appFilter;
     },
 
     // Calculate whether the given app (a Gio.DesktopAppInfo) should be shown
