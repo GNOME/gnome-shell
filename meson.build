@@ -54,12 +54,9 @@ convertdir = join_paths(datadir, 'GConf', 'gsettings')
 desktopdir = join_paths(datadir, 'applications')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')
 localedir = join_paths(datadir, 'locale')
-mozplugindir = join_paths(libdir, 'mozilla', 'plugins')
 portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
-
-plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 
 # XXX: Once https://github.com/systemd/systemd/issues/9595 is fixed and we can
 # depend on this version, replace with something like:
@@ -132,12 +129,6 @@ if get_option('systemd')
 else
   libsystemd_dep = []
   have_systemd = false
-endif
-
-if get_option('browser_plugin')
-  json_glib_dep = dependency('json-glib-1.0', version: json_glib_req)
-
-  subdir('browser-plugin')
 endif
 
 if get_option('man')
