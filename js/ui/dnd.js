@@ -411,10 +411,15 @@ var _Draggable = new Lang.Class({
         return true;
     },
 
+    _pickTargetActor() {
+        return this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
+                                                            this._dragX, this._dragY);
+    },
+
     _updateDragHover() {
         this._updateHoverId = 0;
-        let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                  this._dragX, this._dragY);
+        let target = this._pickTargetActor();
+
         let dragEvent = {
             x: this._dragX,
             y: this._dragY,
@@ -422,6 +427,20 @@ var _Draggable = new Lang.Class({
             source: this.actor._delegate,
             targetActor: target
         };
+
+        let targetActorDestroyHandlerId;
+        let handleTargetActorDestroyClosure;
+        handleTargetActorDestroyClosure = () => {
+            target = this._pickTargetActor();
+            dragEvent.targetActor = target;
+            targetActorDestroyHandlerId =
+                target.connect('destroy',
+                               handleTargetActorDestroyClosure.bind(this));
+        };
+        targetActorDestroyHandlerId =
+            target.connect('destroy',
+                           handleTargetActorDestroyClosure.bind(this));
+
         for (let i = 0; i < dragMonitors.length; i++) {
             let motionFunc = dragMonitors[i].dragMotion;
             if (motionFunc) {
@@ -432,6 +451,7 @@ var _Draggable = new Lang.Class({
                 }
             }
         }
+        dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
 
         while (target) {
             if (target._delegate && target._delegate.handleDragOver) {
