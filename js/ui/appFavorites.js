@@ -41,6 +41,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnotravex.desktop': 'gnome-tetravex.desktop',
     'gnotski.desktop': 'gnome-klotski.desktop',
     'gtali.desktop': 'tali.desktop',
+    'iagno.desktop': 'org.gnome.Iagno.desktop',
     'nautilus.desktop': 'org.gnome.Nautilus.desktop',
     'polari.desktop': 'org.gnome.Polari.desktop',
     'totem.desktop': 'org.gnome.Totem.desktop',
