@@ -106,7 +106,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     });
 }
 
-function updateExtension(uuid) {
+function updateExtension(uuid, invocation) {
     // This gets a bit tricky. We want the update to be seamless -
     // if we have any error during downloading or extracting, we
     // want to not unload the current version.
@@ -124,8 +124,13 @@ function updateExtension(uuid) {
             let oldExtension = ExtensionUtils.extensions[uuid];
             let extensionDir = oldExtension.dir;
 
-            if (!ExtensionSystem.unloadExtension(oldExtension))
+            if (!ExtensionSystem.unloadExtension(oldExtension)) {
+                if (invocation) {
+                    invocation.return_dbus_error('org.gnome.Shell.UpdateError', 'Unable to unload extension');
+                }
+
                 return;
+            }
 
             FileUtils.recursivelyMoveDir(extensionDir, oldExtensionTmpDir);
             FileUtils.recursivelyMoveDir(newExtensionTmpDir, extensionDir);
@@ -135,6 +140,9 @@ function updateExtension(uuid) {
             try {
                 extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
                 ExtensionSystem.loadExtension(extension);
+                if (invocation) {
+                    invocation.return_value(GLib.Variant.new('(s)', ['successful']));
+                }
             } catch(e) {
                 if (extension)
                     ExtensionSystem.unloadExtension(extension);
@@ -147,12 +155,21 @@ function updateExtension(uuid) {
                 // Restore what was there before. We can't do much if we
                 // fail here.
                 ExtensionSystem.loadExtension(oldExtension);
+
+                if (invocation) {
+                    invocation.return_dbus_error('org.gnome.Shell.UpdateError', 'Unable to update extension');
+                }
+
                 return;
             }
 
             FileUtils.recursivelyDeleteDir(oldExtensionTmpDir, true);
         }, (code, message) => {
             log('Error while updating extension %s: %s (%s)'.format(uuid, code, message ? message : ''));
+
+            if (invocation) {
+                invocation.return_dbus_error('org.gnome.Shell.UpdateError', message ? message : 'Unable to unpack extension');
+            }
         });
     });
 }
