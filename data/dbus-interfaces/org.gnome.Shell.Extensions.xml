@@ -189,6 +189,18 @@
     -->
     <method name="CheckForUpdates"/>
 
+    <!--
+        UpdateRemoteExtension:
+        @uuid: The UUID of the extension
+        @result: The result of the operation
+
+        Download and install an new extension version if available.
+    -->
+    <method name="UpdateRemoteExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="s" direction="out" name="result"/>
+    </method>
+
     <signal name="ExtensionStatusChanged">
       <arg type="s" name="uuid"/>
       <arg type="i" name="state"/>
