@@ -111,8 +111,8 @@ function updateExtension(uuid) {
     // if we have any error during downloading or extracting, we
     // want to not unload the current version.
 
-    let oldExtensionTmpDir = GLib.Dir.make_tmp('XXXXXX-shell-extension');
-    let newExtensionTmpDir = GLib.Dir.make_tmp('XXXXXX-shell-extension');
+    let oldExtensionTmpDir = Gio.File.new_for_path(GLib.Dir.make_tmp('XXXXXX-shell-extension'));
+    let newExtensionTmpDir = Gio.File.new_for_path(GLib.Dir.make_tmp('XXXXXX-shell-extension'));
 
     let params = { shell_version: Config.PACKAGE_VERSION };
 
