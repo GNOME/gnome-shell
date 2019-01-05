@@ -30,6 +30,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnome-documents.desktop': 'org.gnome.Documents.desktop',
     'gnome-font-viewer.desktop': 'org.gnome.font-viewer.desktop',
     'gnome-nibbles.desktop': 'org.gnome.Nibbles.desktop',
+    'gnome-mahjongg.desktop': 'org.gnome.Mahjongg.desktop',
     'gnome-music.desktop': 'org.gnome.Music.desktop',
     'gnome-photos.desktop': 'org.gnome.Photos.desktop',
     'gnome-screenshot.desktop': 'org.gnome.Screenshot.desktop',
