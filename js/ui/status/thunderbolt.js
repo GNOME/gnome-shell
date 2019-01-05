@@ -21,6 +21,8 @@ const BoltDeviceInterface = loadInterfaceXML('org.freedesktop.bolt1.Device');
 
 const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 
+let _thunderboltSettings = null;
+
 /*  */
 
 var Status = {
@@ -314,7 +316,10 @@ var Indicator = new Lang.Class({
 
     /* AuthRobot callbacks */
     _onEnrollDevice(obj, device, policy) {
-	let auth = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+    if (_thunderboltSettings == null)
+        _thunderboltSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.thunderbolt' });
+    let autoEnroll = _thunderboltSettings.get_boolean('autoenroll');
+    let auth = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter && autoEnroll;
 	policy[0] = auth;
 
 	log("thunderbolt: [%s] auto enrollment: %s".format(device.Name, auth ? 'yes' : 'no'));
