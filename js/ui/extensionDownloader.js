@@ -77,7 +77,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
         if (!dir.query_exists(null))
             dir.make_directory_with_parents(null);
     } catch (e) {
-        errback('CreateExtensionDirectoryError', e);
+        errback('CreateExtensionDirectoryError', e.message ? e.message : '');
         return;
     }
 
