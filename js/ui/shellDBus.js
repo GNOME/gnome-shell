@@ -333,6 +333,10 @@ var GnomeShellExtensions = new Lang.Class({
         ExtensionDownloader.checkForUpdates();
     },
 
+    UpdateRemoteExtensionAsync([uuid], invocation) {
+        return ExtensionDownloader.updateExtension(uuid, invocation);
+    },
+
     ShellVersion: Config.PACKAGE_VERSION,
 
     _extensionStateChanged(_, newState) {
