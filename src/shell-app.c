@@ -1151,11 +1151,10 @@ _shell_app_handle_startup_sequence (ShellApp            *app,
   if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
     {
       MetaDisplay *display = shell_global_get_display (shell_global_get ());
-      MetaX11Display *x11_display = meta_display_get_x11_display (display);
 
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
-      meta_x11_display_focus_the_no_focus_window (x11_display,
-                                                  meta_startup_sequence_get_timestamp (sequence));
+      meta_display_unset_input_focus (display,
+                                      meta_startup_sequence_get_timestamp (sequence));
       app->started_on_workspace = meta_startup_sequence_get_workspace (sequence);
     }
 
