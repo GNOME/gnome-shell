@@ -73,8 +73,6 @@ else
 endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
-canberra_dep = dependency('libcanberra')
-canberra_gtk_dep = dependency('libcanberra-gtk3')
 ecal_dep = dependency('libecal-1.2', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-base-3', version: gcr_req)
