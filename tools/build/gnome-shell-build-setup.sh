@@ -104,7 +104,6 @@ libacl: f:libacl-devel d:libacl1-dev # gudev
 libcurl: f:libcurl-devel # liboauth. See below for Debian
 libffi: fs:libffi-devel d:libffi-dev # gobject-introspection
 libsystemd-login: fs:systemd-devel # gnome-session gnome-settings-daemon polkit PackageKit
-libtool-ltdl: f:libtool-ltdl-devel d:libltdl-dev # libcanberra
 libusb: f:libusb1-devel d:libusb-1.0-0-dev # upower
 openssl: f:openssl-devel d:libssl-dev # liboauth
 pam: f:pam-devel d:libpam-dev # polkit
@@ -115,7 +114,6 @@ sane: f:sane-backends-devel d:libsane-dev # colord
 sqlite: d:libsqlite3-dev f:sqlite-devel # libsoup
 udev: f:libudev-devel d:libudev-dev # gudev
 uuid: f:libuuid-devel d:uuid-dev # Networkmanager
-vorbis: f:libvorbis-devel d:libvorbis-dev # libcanberra
 wireless-tools: f:wireless-tools-devel d:libiw-dev s:libiw-devel # NetworkManager
 
 # python libraries used by gnome-shell wrapper script
