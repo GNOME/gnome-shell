@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta } = imports.gi;
+const { Gio, GLib, Meta, Shell } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -150,6 +150,15 @@ var GnomeShell = class {
             await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
+            return;
+        }
+
+        const appSys = Shell.AppSystem.get_default();
+        if (appSys.lookup_app(id) === null) {
+            invocation.return_error_literal(
+                Gio.DBusError,
+                Gio.DBusError.FILE_NOT_FOUND,
+                `No application with ID ${id}`);
             return;
         }
 
