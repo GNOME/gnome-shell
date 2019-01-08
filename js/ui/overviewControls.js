@@ -308,6 +308,7 @@ var ThumbnailsSlider = new Lang.Class({
             return 1;
 
         let child = this.actor.get_first_child();
+        child.queue_relayout()
         let preferredHeight = child.get_preferred_height(-1)[1];
         let expandedWidth = child.get_preferred_width(preferredHeight)[1];
 
