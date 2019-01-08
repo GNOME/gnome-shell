@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta } = imports.gi;
+const { Gio, GLib, Meta, Shell } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -99,7 +99,24 @@ var GnomeShell = class {
         Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
     }
 
-    FocusApp(id) {
+    /**
+     * Focus specified app in the overview's app grid
+     *
+     * @async
+     * @param {string} id - an application ID
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
+     */
+    FocusAppAsync([id], invocation) {
+        const appSys = Shell.AppSystem.get_default();
+        if (appSys.lookup_app(id) === null) {
+            invocation.return_error_literal(
+                Gio.DBusError,
+                Gio.DBusError.FILE_NOT_FOUND,
+                `No application with ID ${id}`);
+            return;
+        }
+
         Main.overview.selectApp(id);
     }
 
