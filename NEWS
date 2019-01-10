@@ -1,3 +1,24 @@
+3.31.4
+======
+* Improve icon grid performance [Daniel; #174]
+* Remove browser plugin [Michael; #766776]
+* Add DBus API for introspecting the application state [Jonas, Olivier; !326]
+* Always allow leaving the overview via the hot-corner [Pascal; #429]
+* Misc. bug fixes [Florian, Jasper, Andrea, Sam, Dani, Cosimo, Jonas, Carlos;
+  #643595, #673767, !293, #783, #781, !298, !297, #782, !301, !314, !305, #799,
+  #632, !327]
+
+Contributors:
+  Jonas Ådahl, Andrea Azzarone, Michael Catanzaro, Cosimo Cecchi, daniruiz,
+  Olivier Fourdan, Carlos Garnacho, Sam Hewitt, Andre Klapper, Florian Müllner,
+  Pascal Nowack, Jasper St. Pierre, RyuzakiKK, Marco Trevisan (Treviño),
+  João Paulo Rechi Vita, Daniel van Vugt
+
+Translators:
+  Kristjan SCHMIDT [eo], Matej Urbančič [sl], Daniel Mustieles [es],
+  Fabio Tomat [fur], Emin Tufan Çetin [tr], Anders Jonsson [sv],
+  Ryuta Fujii [ja]
+
 3.31.2
 ======
 * Port away from and remove ShellGenericContainer [Georges; !153]
