@@ -415,15 +415,8 @@ grab_window_screenshot (ClutterActor *stage,
   GSettings *settings;
   MetaDisplay *display = shell_global_get_display (priv->global);
   MetaCursorTracker *tracker;
-  MetaWindow *window = meta_display_get_focus_window (display);
-  ClutterActor *window_actor;
-  gfloat actor_x, actor_y;
-  MetaShapedTexture *stex;
   MetaRectangle rect;
-  cairo_rectangle_int_t clip;
-
-  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
+  MetaWindow *window = meta_display_get_focus_window (display);
 
   meta_window_get_frame_rect (window, &rect);
 
@@ -432,14 +425,10 @@ grab_window_screenshot (ClutterActor *stage,
 
   priv->screenshot_area.x = rect.x;
   priv->screenshot_area.y = rect.y;
-  clip.x = rect.x - (gint) actor_x;
-  clip.y = rect.y - (gint) actor_y;
+  priv->screenshot_area.width = rect.width;
+  priv->screenshot_area.height = rect.height;
 
-  clip.width = priv->screenshot_area.width = rect.width;
-  clip.height = priv->screenshot_area.height = rect.height;
-
-  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  priv->image = meta_shaped_texture_get_image (stex, &clip);
+  priv->image = meta_window_get_image (window, priv->include_frame);
   priv->datetime = g_date_time_new_now_local ();
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
