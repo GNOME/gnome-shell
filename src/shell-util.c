@@ -441,22 +441,21 @@ ClutterContent *
 shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                          MetaRectangle   *window_rect)
 {
-  ClutterActor *texture;
   ClutterContent *content;
   cairo_surface_t *surface;
   cairo_rectangle_int_t clip;
   gfloat actor_x, actor_y;
+  MetaWindow *window;
 
-  texture = meta_window_actor_get_texture (window_actor);
+  window = meta_window_actor_get_meta_window (window_actor);
+  surface = meta_window_get_image (window, TRUE);
+
   clutter_actor_get_position (CLUTTER_ACTOR (window_actor), &actor_x, &actor_y);
 
   clip.x = window_rect->x - (gint) actor_x;
   clip.y = window_rect->y - (gint) actor_y;
   clip.width = window_rect->width;
   clip.height = window_rect->height;
-
-  surface = meta_shaped_texture_get_image (META_SHAPED_TEXTURE (texture),
-                                           &clip);
 
   content = clutter_canvas_new ();
   clutter_canvas_set_size (CLUTTER_CANVAS (content),
