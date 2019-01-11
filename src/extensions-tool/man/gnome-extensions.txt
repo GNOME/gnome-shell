@@ -81,6 +81,9 @@ Displays a list of installed extensions.
   *--disabled*;;
     Include disabled extensions
 
+  *--prefs*;;
+    Only include extensions with preferences
+
   *-d*;;
   *--details*;;
     Show some extra information for each extension
