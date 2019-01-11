@@ -25,6 +25,8 @@ SYNOPSIS
 
 *gnome-extensions* list ['OPTION'...]
 
+*gnome-extensions* prefs 'UUID'
+
 *gnome-extensions* create ['OPTION'...]
 
 *gnome-extensions* pack ['OPTION'...]
@@ -87,6 +89,10 @@ Displays a list of installed extensions.
   *-d*;;
   *--details*;;
     Show some extra information for each extension
+
+*prefs* 'UUID'::
+Open the preference dialog of the extension identified by 'UUID'.
+
 
 *create* ['OPTION'...]::
 Creates a new extension from a template.
