@@ -186,6 +186,7 @@ usage (void)
   g_printerr ("  list      %s\n", _("List extensions"));
   g_printerr ("  info      %s\n", _("Show extension info"));
   g_printerr ("  show      %s\n", _("Show extension info"));
+  g_printerr ("  prefs     %s\n", _("Open extension preferences"));
   g_printerr ("  create    %s\n", _("Create extension"));
   g_printerr ("  pack      %s\n", _("Package extension"));
   g_printerr ("  install   %s\n", _("Install extension bundle"));
@@ -252,6 +253,8 @@ main (int argc, char *argv[])
     return handle_info (argc, argv, do_help);
   else if (g_str_equal (command, "show"))
     return handle_info (argc, argv, do_help);
+  else if (g_str_equal (command, "prefs"))
+    return handle_prefs (argc, argv, do_help);
   else if (g_str_equal (command, "create"))
     return handle_create (argc, argv, do_help);
   else if (g_str_equal (command, "pack"))
