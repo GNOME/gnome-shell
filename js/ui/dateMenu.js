@@ -218,9 +218,16 @@ var WeatherSection = class WeatherSection {
 
         this.actor.child = box;
 
-        box.add_child(new St.Label({ style_class: 'weather-header',
-                                     x_align: Clutter.ActorAlign.START,
-                                     text: _("Weather") }));
+        let titleBox = new St.BoxLayout();
+        titleBox.add_child(new St.Label({ style_class: 'weather-header',
+                                          x_align: Clutter.ActorAlign.START,
+                                          x_expand: true,
+                                          text: _("Weather") }));
+        box.add_child(titleBox);
+
+        this._titleLocation = new St.Label({ style_class: 'weather-header location',
+                                             x_align: Clutter.ActorAlign.END });
+        titleBox.add_child(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
@@ -302,12 +309,14 @@ var WeatherSection = class WeatherSection {
             return;
         }
 
+        let info = this._weatherClient.info;
+        this._titleLocation.text = info.get_location().get_name();
+
         if (this._weatherClient.loading) {
             this._setStatusLabel(_("Loading…"));
             return;
         }
 
-        let info = this._weatherClient.info;
         if (info.is_valid()) {
             this._addForecasts();
             return;
@@ -324,6 +333,8 @@ var WeatherSection = class WeatherSection {
 
         if (!this.actor.visible)
             return;
+
+        this._titleLocation.visible = this._weatherClient.hasLocation;
 
         this._updateForecasts();
     }
