@@ -922,6 +922,11 @@ StScrollBar {
       font-weight: bold;
     }
 
+    .weather-header.location {
+      font-weight: normal;
+      font-size: 0.9em;
+    }
+
     .world-clocks-grid,
     .weather-grid {
       spacing-rows: 0.4em;
