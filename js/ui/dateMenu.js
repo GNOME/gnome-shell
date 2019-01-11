@@ -226,9 +226,17 @@ var WeatherSection = new Lang.Class({
 
         this.actor.child = box;
 
-        box.add_child(new St.Label({ style_class: 'weather-header',
-                                     x_align: Clutter.ActorAlign.START,
-                                     text: _("Weather") }));
+        let titleBox = new St.BoxLayout();
+        box.add_actor(titleBox);
+
+        titleBox.add_actor(new St.Label({ style_class: 'weather-header',
+                                          x_align: Clutter.ActorAlign.START,
+                                          x_expand: true,
+                                          text: _("Weather") }));
+
+        this._titleLocation = new St.Label({ style_class: 'weather-header location',
+                                             x_align: Clutter.ActorAlign.END });
+        titleBox.add_actor(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
@@ -310,12 +318,14 @@ var WeatherSection = new Lang.Class({
             return;
         }
 
+        let info = this._weatherClient.info;
+        this._titleLocation.text = info.get_location().get_name();
+
         if (this._weatherClient.loading) {
             this._addStatusLabel(_("Loading…"));
             return;
         }
 
-        let info = this._weatherClient.info;
         if (info.is_valid()) {
             this._addForecasts();
             return;
@@ -329,6 +339,8 @@ var WeatherSection = new Lang.Class({
 
     _sync() {
         this.actor.visible = this._weatherClient.available;
+        this._titleLocation.visible = this._weatherClient.available &&
+                                      this._weatherClient.hasLocation;
 
         if (!this.actor.visible)
             return;
