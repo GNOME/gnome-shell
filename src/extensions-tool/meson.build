@@ -16,6 +16,7 @@ sources = [
   'command-install.c',
   'command-list.c',
   'command-pack.c',
+  'command-prefs.c',
   'main.c'
 ]
 
