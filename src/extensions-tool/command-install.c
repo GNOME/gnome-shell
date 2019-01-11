@@ -121,7 +121,12 @@ install_extension (const char *bundle,
                                       "gnome-shell", "extensions", NULL);
 
   if (!g_file_make_directory_with_parents (dstdir, NULL, &error))
-    goto err;
+    {
+      if (error->code == G_IO_ERROR_EXISTS)
+        g_clear_error (&error);
+      else
+        goto err;
+    }
 
   uuid = json_object_get_string_member (metadata, "uuid");
   dst = g_file_get_child (dstdir, uuid);
