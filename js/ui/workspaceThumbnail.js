@@ -624,6 +624,10 @@ class ThumbnailsBox extends St.Widget {
         this._indicator = indicator;
         this.add_actor(indicator);
 
+        // The porthole is the part of the screen we're showing in the thumbnails
+        this._porthole = { width: global.stage.width, height: global.stage.height,
+                           x: global.stage.x, y: global.stage.y };
+
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
         this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
@@ -674,6 +678,9 @@ class ThumbnailsBox extends St.Widget {
             if (Main.overview.visible)
                 this._createThumbnails();
         });
+
+        global.display.connect('workareas-changed',
+                               this._updatePorthole.bind(this));
 
         this._switchWorkspaceNotifyId = 0;
         this._nWorkspacesNotifyId = 0;
@@ -912,7 +919,6 @@ class ThumbnailsBox extends St.Widget {
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
-        this._porthole = null;
     }
 
     _workspacesChanged() {
@@ -945,8 +951,6 @@ class ThumbnailsBox extends St.Widget {
     addThumbnails(start, count) {
         let workspaceManager = global.workspace_manager;
 
-        if (!this._ensurePorthole())
-            return;
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = workspaceManager.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace);
@@ -1126,10 +1130,6 @@ class ThumbnailsBox extends St.Widget {
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
-
-        if (!this._ensurePorthole())
-            return [0, 0];
-
         let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
 
@@ -1143,9 +1143,6 @@ class ThumbnailsBox extends St.Widget {
     }
 
     vfunc_get_preferred_width(forHeight) {
-        if (!this._ensurePorthole())
-            return [0, 0];
-
         let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
 
@@ -1165,16 +1162,14 @@ class ThumbnailsBox extends St.Widget {
         return themeNode.adjust_preferred_width(width, width);
     }
 
-    // The "porthole" is the portion of the screen that we show in the
-    // workspaces
-    _ensurePorthole() {
-        if (!Main.layoutManager.primaryMonitor || !Main.overview.visible)
-            return false;
-
-        if (!this._porthole)
+    _updatePorthole() {
+        if (!Main.layoutManager.primaryMonitor)
+            this._porthole = { width: global.stage.width, height: global.stage.height,
+                               x: global.stage.x, y: global.stage.y };
+        else
             this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
-        return true;
+        this.queue_relayout();
     }
 
     vfunc_allocate(box, flags) {
