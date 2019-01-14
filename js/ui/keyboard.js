@@ -640,7 +640,7 @@ var Keyboard = new Lang.Class({
         this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
     },
 
-    _lastDeviceIsTouchscreen() {
+    lastDeviceIsTouchscreen() {
         if (!this._lastDeviceId)
             return false;
 
@@ -656,7 +656,7 @@ var Keyboard = new Lang.Class({
     _syncEnabled() {
         let wasEnabled = this._enabled;
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
-        this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
+        this._enabled = this._enableKeyboard || this.lastDeviceIsTouchscreen();
         if (!this._enabled && !this._keyboardController)
             return;
 
