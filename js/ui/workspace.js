@@ -397,9 +397,8 @@ var WindowClone = new Lang.Class({
                 action.release();
                 this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
             });
-        } else {
-            this.emit('show-chrome');
         }
+
         return true;
     },
 
