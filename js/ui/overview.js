@@ -536,6 +536,8 @@ var Overview = new Lang.Class({
         if (!this._syncGrab())
             return;
 
+        this.usingTouchscreen = Main.keyboard._lastDeviceIsTouchscreen();
+
         Main.layoutManager.showOverview();
         this._animateVisible();
     },
