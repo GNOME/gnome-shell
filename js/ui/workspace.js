@@ -640,8 +640,6 @@ var WindowOverlay = new Lang.Class({
     },
 
     _animateVisible() {
-        this._parentActor.raise_top();
-
         let toAnimate = [this.border, this.title];
         if (this._windowCanClose())
             toAnimate.push(this.closeButton);
@@ -1123,9 +1121,6 @@ var Workspace = new Lang.Class({
 
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
-        this._windowOverlaysGroup = new Clutter.Actor();
-        // Without this the drop area will be overlapped.
-        this._windowOverlaysGroup.set_size(0, 0);
 
         this.actor = new WorkspaceActor({ style_class: 'window-picker' });
         if (monitorIndex != Main.layoutManager.primaryIndex)
@@ -1134,9 +1129,7 @@ var Workspace = new Lang.Class({
 
         this._dropRect = new Clutter.Actor({ opacity: 0 });
         this._dropRect._delegate = this;
-
         this.actor.add_actor(this._dropRect);
-        this.actor.add_actor(this._windowOverlaysGroup);
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
 
@@ -1393,9 +1386,15 @@ var Workspace = new Lang.Class({
             let metaWindow = clone.metaWindow;
             if (i == 0) {
                 clone.setStackAbove(this._dropRect);
+                this.actor.set_child_above_sibling(clone.overlay.border, clone.actor);
+                this.actor.set_child_above_sibling(clone.overlay.title, clone.overlay.border);
+                this.actor.set_child_above_sibling(clone.overlay.closeButton, clone.overlay.title);
             } else {
                 let previousClone = clones[i - 1];
-                clone.setStackAbove(previousClone.actor);
+                clone.setStackAbove(previousClone.overlay.closeButton);
+                this.actor.set_child_above_sibling(clone.overlay.border, clone.actor);
+                this.actor.set_child_above_sibling(clone.overlay.title, clone.overlay.border);
+                this.actor.set_child_above_sibling(clone.overlay.closeButton, clone.overlay.title);
             }
         }
     },
@@ -1842,7 +1841,7 @@ var Workspace = new Lang.Class({
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone(win, positioned) {
         let clone = new WindowClone(win, this);
-        let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
+        let overlay = new WindowOverlay(clone, this.actor);
         clone.overlay = overlay;
         clone.positioned = positioned;
 
@@ -1875,10 +1874,17 @@ var Workspace = new Lang.Class({
             this._onShowOverlayClose(overlay);
         });
 
-        if (this._windows.length == 0)
+        if (this._windows.length == 0) {
             clone.setStackAbove(null);
-        else
-            clone.setStackAbove(this._windows[this._windows.length - 1].actor);
+            this.actor.set_child_above_sibling(overlay.border, clone.actor);
+            this.actor.set_child_above_sibling(overlay.title, overlay.border);
+            this.actor.set_child_above_sibling(overlay.closeButton, overlay.title);
+        } else {
+            clone.setStackAbove(this._windows[this._windows.length - 1].overlay.closeButton);
+            this.actor.set_child_above_sibling(overlay.border, clone.actor);
+            this.actor.set_child_above_sibling(overlay.title, overlay.border);
+            this.actor.set_child_above_sibling(overlay.closeButton, overlay.title);
+        }
 
         this._windows.push(clone);
         this._windowOverlays.push(overlay);
