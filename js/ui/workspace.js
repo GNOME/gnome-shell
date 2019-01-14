@@ -1859,7 +1859,7 @@ var Workspace = new Lang.Class({
             overlay.show();
         });
         clone.connect('size-changed', () => {
-            this._recalculateWindowPositions(WindowPositionFlags.NONE);
+            this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
         });
         clone.actor.connect('destroy', () => {
             this._removeWindowClone(clone.metaWindow);
