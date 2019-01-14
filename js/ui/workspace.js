@@ -446,7 +446,7 @@ Signals.addSignalMethods(WindowClone.prototype);
 /**
  * @windowClone: Corresponding window clone
  * @parentActor: The actor which will be the parent of all overlay items
- *               such as app icon and window caption
+ *               such as close button and window title
  */
 var WindowOverlay = new Lang.Class({
     Name: 'WindowOverlay',
@@ -463,15 +463,15 @@ var WindowOverlay = new Lang.Class({
         this.borderSize = 0;
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
-        this.title = new St.Label({ style_class: 'window-caption',
-                                    text: this._getCaption() });
+        this.title = new St.Label({ style_class: 'window-title',
+                                    text: this._getTitle() });
         this.title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         windowClone.actor.label_actor = this.title;
 
         this._maxTitleWidth = -1;
 
-        this._updateCaptionId = metaWindow.connect('notify::title', w => {
-            this.title.text = this._getCaption();
+        this._updateTitleId = metaWindow.connect('notify::title', w => {
+            this.title.text = this._getTitle();
             this.relayout(false);
         });
 
@@ -601,7 +601,7 @@ var WindowOverlay = new Lang.Class({
         }
     },
 
-    _getCaption() {
+    _getTitle() {
         let metaWindow = this._windowClone.metaWindow;
         if (metaWindow.title)
             return metaWindow.title;
@@ -634,8 +634,7 @@ var WindowOverlay = new Lang.Class({
             Mainloop.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
         }
-
-        this._windowClone.metaWindow.disconnect(this._updateCaptionId);
+        this._windowClone.metaWindow.disconnect(this._updateTitleId);
         this.title.destroy();
         this.closeButton.destroy();
         this.border.destroy();
