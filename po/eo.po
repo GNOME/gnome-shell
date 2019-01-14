@@ -6,22 +6,22 @@
 # Daniel PUENTES <blatberk@openmailbox.org>, 2015.
 # Nicolas MAIA < >, 2015.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2012, 2015, 2016, 2018.
-# Carmen Bianca Bakker <carmen@carmenbianca.eu>, 2018.
+# Carmen Bianca BAKKER <carmen@carmenbianca.eu>, 2018, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-11-26 21:23+0000\n"
-"PO-Revision-Date: 2018-11-27 13:32+0100\n"
-"Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
+"POT-Creation-Date: 2019-01-11 18:03+0000\n"
+"PO-Revision-Date: 2019-01-14 12:24+0100\n"
+"Last-Translator: Carmen Bianca BAKKER <carmen@carmenbianca.eu>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.30.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -169,70 +169,70 @@ msgstr ""
 "markobutono montritos. Ĉi ŝlosilo agordas la implicitan staton de la "
 "markobutono."
 
-#: data/org.gnome.shell.gschema.xml.in:101
+#: data/org.gnome.shell.gschema.xml.in:109
 msgid "Keybinding to open the application menu"
 msgstr "Klavkombino por malfermi la aplikaĵo-menuon"
 
-#: data/org.gnome.shell.gschema.xml.in:102
+#: data/org.gnome.shell.gschema.xml.in:110
 msgid "Keybinding to open the application menu."
 msgstr "Klavkombino por malfermi la aplikaĵo-menuon."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:116
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klavkombino por malfermi la “Montri aplikaĵojn”-vidon"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:117
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klavkombino por malfermi la “Montri aplikaĵojn” vidon de la aktivecoj "
 "superrigardo."
 
-#: data/org.gnome.shell.gschema.xml.in:116
+#: data/org.gnome.shell.gschema.xml.in:124
 msgid "Keybinding to open the overview"
 msgstr "Klavkombino por malfermi la superrigardon"
 
-#: data/org.gnome.shell.gschema.xml.in:117
+#: data/org.gnome.shell.gschema.xml.in:125
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klavkombino por malfermi la aktivecoj superrigardon."
 
-#: data/org.gnome.shell.gschema.xml.in:123
+#: data/org.gnome.shell.gschema.xml.in:131
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klavkombino por baskuligi la videblecon de la sciigolisto"
 
-#: data/org.gnome.shell.gschema.xml.in:124
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klavkombino por baskuligi la videblecon de la sciigolisto."
 
-#: data/org.gnome.shell.gschema.xml.in:130
+#: data/org.gnome.shell.gschema.xml.in:138
 msgid "Keybinding to focus the active notification"
 msgstr "Klavkombino por fokusi la aktivan sciigon"
 
-#: data/org.gnome.shell.gschema.xml.in:131
+#: data/org.gnome.shell.gschema.xml.in:139
 msgid "Keybinding to focus the active notification."
 msgstr "Klavkombino por fokusi la aktivan sciigon."
 
-#: data/org.gnome.shell.gschema.xml.in:137
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "Klavkombino, kiu paŭzigas kaj malpaŭzigas ĉiujn rulantajn “tween”-oj, por "
 "sencimigaj aferoj"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:154
 msgid "Which keyboard to use"
 msgstr "Uzenda klavaro"
 
-#: data/org.gnome.shell.gschema.xml.in:147
+#: data/org.gnome.shell.gschema.xml.in:155
 msgid "The type of keyboard to use."
 msgstr "La uzenda klavarspeco."
 
-#: data/org.gnome.shell.gschema.xml.in:158
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:193
 msgid "Limit switcher to current workspace."
 msgstr "Limigi ŝaltilon al aktuala laborspaco."
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -240,11 +240,11 @@ msgstr ""
 "Se vera, nur aplikaĵoj, kiuj havas fenestrojn en la aktuala laborspaco, "
 "estas montritaj en la ŝaltilo. Alimaniere, ĉiuj aplikaĵoj estas inkluzivitaj."
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "The application icon mode."
 msgstr "La aplikaĵo bildsimbola reĝimo."
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -254,7 +254,7 @@ msgstr ""
 "“thumbnail-only” (nur bildeto), “app-icon-only” (nur aplikaĵa bildsimbolo) "
 "aŭ “both” (ambaŭ)."
 
-#: data/org.gnome.shell.gschema.xml.in:186
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -262,41 +262,41 @@ msgstr ""
 "Se vera, nur fenestroj de la nuna laborspaco estas montrataj en la ŝaltilo. "
 "Alimaniere, ĉiuj fenestroj estas inkluzivitaj."
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Attach modal dialog to the parent window"
 msgstr "Kunligi modalan dialogon al la patra fenestro"
 
-#: data/org.gnome.shell.gschema.xml.in:199
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:207
 #: data/org.gnome.shell.gschema.xml.in:216
 #: data/org.gnome.shell.gschema.xml.in:224
 #: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:240
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ĉi ŝlosilo transpasas la ŝlosilon en org.gnome.mutter kiam uzanta GNOME-"
 "ŝelon."
 
-#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Aktivigi kahelan aranĝon kiam demetante fenestrojn sur ekranaj borderoj"
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Workspaces are managed dynamically"
 msgstr "Laborspacoj administratas dinamike"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Workspaces only on primary monitor"
 msgstr "Laborspacoj nur sur la ĉefa ekrano"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "En musa reĝimo, prokrasti ŝanĝi fokuson ĝis la musmontrilo haltas"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
-msgstr "Reta ensaluto"
+msgstr "Reta saluto"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
@@ -327,7 +327,7 @@ msgstr "Malŝlosi"
 #: js/gdm/authPrompt.js:207
 msgctxt "button"
 msgid "Sign In"
-msgstr "Ensaluti"
+msgstr "Saluti"
 
 #: js/gdm/loginDialog.js:319
 msgid "Choose Session"
@@ -336,13 +336,13 @@ msgstr "Elekti seancon"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:462
+#: js/gdm/loginDialog.js:464
 msgid "Not listed?"
 msgstr "Ĉu ne en listo?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:891
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ekzemple, uzanto aŭ %s)"
@@ -350,12 +350,12 @@ msgstr "(ekzemple, uzanto aŭ %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:903 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Uzantonomo: "
 
-#: js/gdm/loginDialog.js:1234
+#: js/gdm/loginDialog.js:1241
 msgid "Login Window"
 msgstr "Salutfenestro"
 
@@ -527,7 +527,7 @@ msgstr "%A, %H∶%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:246
 #, no-c-format
-msgid "%B %d, %H∶%M"
+msgid "%B %-d, %H∶%M"
 msgstr "%-d-a de %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
@@ -535,7 +535,7 @@ msgstr "%-d-a de %B, %H∶%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:252
 #, no-c-format
-msgid "%B %d %Y, %H∶%M"
+msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d-a de %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
@@ -562,7 +562,7 @@ msgstr "%A, %l∶%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:275
 #, no-c-format
-msgid "%B %d, %l∶%M %p"
+msgid "%B %-d, %l∶%M %p"
 msgstr "%-d-a de %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
@@ -570,7 +570,7 @@ msgstr "%-d-a de %B, %l∶%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:281
 #, no-c-format
-msgid "%B %d %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d-a de %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
@@ -617,7 +617,7 @@ msgstr "Nova fenestro"
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanĉi uzante dediĉitan vidkarton"
 
-#: js/ui/appDisplay.js:1930 js/ui/dash.js:287
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:250
 msgid "Remove from Favorites"
 msgstr "Forigi el preferataj"
 
@@ -655,7 +655,7 @@ msgstr "Kapaŭskultilo"
 msgid "Headset"
 msgstr "Kaptelefono"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:255
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:259
 msgid "Microphone"
 msgstr "Mikrofono"
 
@@ -750,47 +750,47 @@ msgstr "%OB %Y"
 msgid "Previous month"
 msgstr "Antaŭa monato"
 
-#: js/ui/calendar.js:457
+#: js/ui/calendar.js:458
 msgid "Next month"
 msgstr "Sekva monato"
 
-#: js/ui/calendar.js:610
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%-d"
 
-#: js/ui/calendar.js:665
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Semajno %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:734
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tuttaga"
 
-#: js/ui/calendar.js:869
-msgctxt "calendar heading"
-msgid "%A, %B %d"
-msgstr "%A, %-d-a de %B"
-
 #: js/ui/calendar.js:873
 msgctxt "calendar heading"
-msgid "%A, %B %d, %Y"
+msgid "%A, %B %-d"
+msgstr "%A, %-d-a de %B"
+
+#: js/ui/calendar.js:877
+msgctxt "calendar heading"
+msgid "%A, %B %-d, %Y"
 msgstr "%A, %-d-a de %B %Y"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1107
 msgid "No Notifications"
 msgstr "Neniu sciigo"
 
-#: js/ui/calendar.js:1106
+#: js/ui/calendar.js:1110
 msgid "No Events"
 msgstr "Neniu evento"
 
-#: js/ui/calendar.js:1134
+#: js/ui/calendar.js:1138
 msgid "Clear All"
 msgstr "Vakigi ĉion"
 
@@ -814,11 +814,11 @@ msgstr "Devige ĉesigi"
 msgid "Wait"
 msgstr "Atendi"
 
-#: js/ui/components/automountManager.js:91
+#: js/ui/components/automountManager.js:92
 msgid "External drive connected"
 msgstr "Ekstera disko konektitas"
 
-#: js/ui/components/automountManager.js:102
+#: js/ui/components/automountManager.js:104
 msgid "External drive disconnected"
 msgstr "Ekstera disko malkonektitas"
 
@@ -945,42 +945,44 @@ msgstr "%s estas nun konata kiel %s"
 msgid "Windows"
 msgstr "Fenestroj"
 
-#: js/ui/dash.js:248 js/ui/dash.js:289
+#: js/ui/dash.js:211 js/ui/dash.js:252
 msgid "Show Applications"
 msgstr "Montri aplikaĵojn"
 
 # Kiel macOS «dock”.  --Carmen
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:446
+#: js/ui/dash.js:409
 msgid "Dash"
 msgstr "Doko"
 
 # Komento por tradukantoj estas neĝusta? --Carmen
 #. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:74
-msgid "%B %e %Y"
+#: js/ui/dateMenu.js:76
+msgid "%B %-d %Y"
 msgstr "%-d-a de %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:81
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A, %-d-a de %B %Y"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:147
 msgid "Add world clocks…"
 msgstr "Aldoni mondajn horloĝojn…"
 
-#: js/ui/dateMenu.js:146
+#: js/ui/dateMenu.js:148
 msgid "World Clocks"
 msgstr "Mondaj horloĝoj"
 
-#: js/ui/dateMenu.js:227
+#: js/ui/dateMenu.js:229
 msgid "Weather"
 msgstr "Vetero"
 
@@ -988,7 +990,7 @@ msgstr "Vetero"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:291
+#: js/ui/dateMenu.js:293
 #, javascript-format
 msgid "%s all day."
 msgstr "%s tuttage."
@@ -997,7 +999,7 @@ msgstr "%s tuttage."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:297
+#: js/ui/dateMenu.js:299
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, tiam %s."
@@ -1006,30 +1008,30 @@ msgstr "%s, tiam %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:303
+#: js/ui/dateMenu.js:305
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, tiam %s, sekve %s."
 
-#: js/ui/dateMenu.js:314
+#: js/ui/dateMenu.js:316
 msgid "Select a location…"
 msgstr "Elekti lokon…"
 
-#: js/ui/dateMenu.js:317
+#: js/ui/dateMenu.js:319
 msgid "Loading…"
 msgstr "Ŝargante…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:325
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Sentas kiel %s."
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Go online for weather information"
 msgstr "Enretigi por veterinformoj"
 
-#: js/ui/dateMenu.js:328
+#: js/ui/dateMenu.js:330
 msgid "Weather information is currently unavailable"
 msgstr "Veterinformoj ĉimomente nehaveblas"
 
@@ -1278,55 +1280,55 @@ msgstr "Lasi malŝaltita"
 msgid "Region & Language Settings"
 msgstr "Regiono & lingvo agordoj"
 
-#: js/ui/lookingGlass.js:644
+#: js/ui/lookingGlass.js:648
 msgid "No extensions installed"
 msgstr "Neniu kromprogramo instalita"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:698
+#: js/ui/lookingGlass.js:702
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s ne eligintaj ajnaj eraroj."
 
-#: js/ui/lookingGlass.js:704
+#: js/ui/lookingGlass.js:708
 msgid "Hide Errors"
 msgstr "Kaŝi erarojn"
 
-#: js/ui/lookingGlass.js:708 js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:712 js/ui/lookingGlass.js:772
 msgid "Show Errors"
 msgstr "Montri erarojn"
 
-#: js/ui/lookingGlass.js:717
+#: js/ui/lookingGlass.js:721
 msgid "Enabled"
 msgstr "Enŝaltita"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:720 subprojects/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:724 subprojects/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Elŝaltita"
 
-#: js/ui/lookingGlass.js:722
+#: js/ui/lookingGlass.js:726
 msgid "Error"
 msgstr "Eraro"
 
-#: js/ui/lookingGlass.js:724
+#: js/ui/lookingGlass.js:728
 msgid "Out of date"
 msgstr "Neaktuala"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:730
 msgid "Downloading"
 msgstr "Elŝutante"
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:754
 msgid "View Source"
 msgstr "Montri fonton"
 
-#: js/ui/lookingGlass.js:759
+#: js/ui/lookingGlass.js:763
 msgid "Web Page"
 msgstr "Retpaĝo"
 
-#: js/ui/messageTray.js:1498
+#: js/ui/messageTray.js:1470
 msgid "System Information"
 msgstr "Sisteminformoj"
 
@@ -1338,7 +1340,7 @@ msgstr "Nekonata artisto"
 msgid "Unknown title"
 msgstr "Nekonata titolo"
 
-#: js/ui/osdWindow.js:32 js/ui/status/volume.js:204
+#: js/ui/osdWindow.js:32 js/ui/status/volume.js:208
 msgid "Volume"
 msgstr "Laŭteco"
 
@@ -1404,17 +1406,17 @@ msgstr "Premu Esk-klavon por ĉesi"
 msgid "Press any key to exit"
 msgstr "Premu iun ajn klavon por ĉesi"
 
-#: js/ui/panel.js:359
+#: js/ui/panel.js:360
 msgid "Quit"
 msgstr "Ĉesi"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:415
+#: js/ui/panel.js:414
 msgid "Activities"
 msgstr "Aktivecoj"
 
-#: js/ui/panel.js:696
+#: js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistemo"
@@ -1491,15 +1493,15 @@ msgstr "Ne eblas ŝlosi"
 msgid "Lock was blocked by an application"
 msgstr "Ŝloso estis blokita de aplikaĵo"
 
-#: js/ui/search.js:660
+#: js/ui/search.js:661
 msgid "Searching…"
 msgstr "Serĉante…"
 
-#: js/ui/search.js:662
+#: js/ui/search.js:663
 msgid "No results."
 msgstr "Neniuj rezultoj."
 
-#: js/ui/search.js:786
+#: js/ui/search.js:787
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1602,11 +1604,11 @@ msgstr "Ŝaltita"
 msgid "Brightness"
 msgstr "Brileco"
 
-#: js/ui/status/keyboard.js:781
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "Klavaro"
 
-#: js/ui/status/keyboard.js:804
+#: js/ui/status/keyboard.js:853
 msgid "Show Keyboard Layout"
 msgstr "Montri klavararanĝon"
 
@@ -1624,7 +1626,7 @@ msgstr "Privatecaj agordoj"
 
 #: js/ui/status/location.js:179
 msgid "Location In Use"
-msgstr "Loko estas uzata"
+msgstr "Loko uzata"
 
 #: js/ui/status/location.js:183
 msgid "Location Disabled"
@@ -1733,7 +1735,7 @@ msgstr "Konekti al interreto"
 
 #: js/ui/status/network.js:802
 msgid "Airplane Mode is On"
-msgstr "Aviadila reĝimo estas ŝaltita"
+msgstr "Aviadila reĝimo ŝaltita"
 
 #: js/ui/status/network.js:803
 msgid "Wi-Fi is disabled when airplane mode is on."
@@ -1745,7 +1747,7 @@ msgstr "Malŝalti aviadilan reĝimon"
 
 #: js/ui/status/network.js:813
 msgid "Wi-Fi is Off"
-msgstr "Vifio estas malŝaltita"
+msgstr "Vifio malŝaltita"
 
 #: js/ui/status/network.js:814
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
@@ -1814,7 +1816,7 @@ msgstr "VPR"
 
 #: js/ui/status/network.js:1494
 msgid "VPN Off"
-msgstr "VPR estas malŝaltita"
+msgstr "VPR malŝaltita"
 
 #: js/ui/status/network.js:1558 js/ui/status/rfkill.js:88
 msgid "Network Settings"
@@ -1873,25 +1875,29 @@ msgstr "Elektro-agordoj"
 msgid "Fully Charged"
 msgstr "Plene ŝargita"
 
+#: js/ui/status/power.js:74
+msgid "Not Charging"
+msgstr "Ne ŝargante"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:75 js/ui/status/power.js:81
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Taksante…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:89
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Restas %d:%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:94
+#: js/ui/status/power.js:96
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d ĝis plena (%d %%)"
 
-#: js/ui/status/power.js:122 js/ui/status/power.js:124
+#: js/ui/status/power.js:124 js/ui/status/power.js:126
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -1909,7 +1915,7 @@ msgstr "Malŝalti"
 #. changing the menu contents.
 #: js/ui/status/rfkill.js:83
 msgid "Airplane Mode On"
-msgstr "Aviadila reĝimo estas ŝaltita"
+msgstr "Aviadila reĝimo ŝaltita"
 
 #: js/ui/status/system.js:230
 msgid "Switch User"
@@ -1961,7 +1967,7 @@ msgstr "Thunderbolt aŭtentiga eraro"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Ne povis aŭtentigi la Thunderbolt aparaton: %s"
 
-#: js/ui/status/volume.js:135
+#: js/ui/status/volume.js:139
 msgid "Volume changed"
 msgstr "Laŭteco ŝanĝita"
 
@@ -2009,7 +2015,7 @@ msgstr "Aplikaĵoj"
 msgid "Search"
 msgstr "Serĉi"
 
-#: js/ui/windowAttentionHandler.js:20
+#: js/ui/windowAttentionHandler.js:22
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "“%s” pretas"
@@ -2150,7 +2156,7 @@ msgstr "Pasvortoj ne kongruas."
 msgid "Password cannot be blank"
 msgstr "Pasvorto ne povas esti malplena"
 
-#: src/shell-polkit-authentication-agent.c:353
+#: src/shell-polkit-authentication-agent.c:348
 msgid "Authentication dialog was dismissed by the user"
 msgstr "La uzanto malakceptis la aŭtentigan dialogon"
 
