@@ -456,6 +456,7 @@ var WindowOverlay = new Lang.Class({
 
         this._windowClone = windowClone;
         this._parentActor = parentActor;
+        this.initialized = false;
         this._hidden = false;
         this._forceHiddenAnimating = false;
         this._forceHiddenDragging = false;
@@ -483,6 +484,11 @@ var WindowOverlay = new Lang.Class({
         this.closeButton._overlap = 0;
 
         this.closeButton.connect('clicked', () => this._windowClone.deleteAll());
+
+        if (Main.overview.usingTouchscreen) {
+            this.title.add_style_class_name('window-title-touch');
+            this.closeButton.add_style_class_name('window-close-touch');
+        }
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
         windowClone.connect('show-chrome', () => this.show(true));
@@ -513,7 +519,9 @@ var WindowOverlay = new Lang.Class({
 
         this._parentActor.raise_top();
 
-        let toShow = [this.border, this.title];
+        let toShow = [this.title];
+        if (!Main.overview.usingTouchscreen)
+            toShow.push(this.border);
         if (this._windowCanClose())
             toShow.push(this.closeButton);
 
@@ -577,7 +585,7 @@ var WindowOverlay = new Lang.Class({
             this.hide();
         } else {
             this._forceHiddenAnimating = false;
-            if (this._windowClone.actor['has-pointer'])
+            if (this._windowClone.actor['has-pointer'] || Main.overview.usingTouchscreen)
                 this.show();
         }
     },
@@ -588,7 +596,7 @@ var WindowOverlay = new Lang.Class({
             this.hide();
         } else {
             this._forceHiddenDragging = false;
-            if (this._windowClone.actor['has-pointer'])
+            if (this._windowClone.actor['has-pointer'] || Main.overview.usingTouchscreen)
                 this.show();
         }
     },
@@ -714,6 +722,9 @@ var WindowOverlay = new Lang.Class({
     },
 
     _onHideChrome() {
+        if (Main.overview.usingTouchscreen)
+            return;
+
         if (this._idleHideOverlayId > 0)
             Mainloop.source_remove(this._idleHideOverlayId);
 
@@ -1160,6 +1171,9 @@ var Workspace = new Lang.Class({
             this.actor.add_style_class_name('external-monitor');
         this.actor.set_size(0, 0);
 
+        if (Main.overview.usingTouchscreen)
+            this.actor.add_style_class_name('window-picker-touch');
+
         this._dropRect = new Clutter.Actor({ opacity: 0 });
         this._dropRect._delegate = this;
 
@@ -1191,13 +1205,15 @@ var Workspace = new Lang.Class({
         this._windowLeftMonitorId = global.display.connect('window-left-monitor',
                                                            this._windowLeftMonitor.bind(this));
 
-        let disableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(true));
-        let enableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(false));
+        if (!Main.overview.usingTouchscreen) {
+            let disableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(true));
+            let enableOverlays = () => this._windowOverlays.forEach(o => o.forceHideDragging(false));
 
-        this._windowDragBeginId = Main.overview.connect('window-drag-begin', disableOverlays);
-        this._windowDragEndId = Main.overview.connect('window-drag-end', enableOverlays);
-        this._itemDragBeginId = Main.overview.connect('item-drag-begin', disableOverlays);
-        this._itemDragEndId = Main.overview.connect('item-drag-end', enableOverlays);
+            this._windowDragBeginId = Main.overview.connect('window-drag-begin', disableOverlays);
+            this._windowDragEndId = Main.overview.connect('window-drag-end', enableOverlays);
+            this._itemDragBeginId = Main.overview.connect('item-drag-begin', disableOverlays);
+            this._itemDragEndId = Main.overview.connect('item-drag-end', enableOverlays);
+        }
 
         this._repositionWindowsId = 0;
 
@@ -1360,11 +1376,17 @@ var Workspace = new Lang.Class({
             let cloneHeight = clone.actor.height * scale;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
-            let cloneCenter = x + cloneWidth / 2;
-            let maxChromeWidth = 2 * Math.min(
-                cloneCenter - area.x,
-                area.x + area.width - cloneCenter);
-            clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
+            let maxChromeWidth;
+            if (Main.overview.usingTouchscreen) {
+                maxChromeWidth = cloneWidth;
+            } else {
+                let cloneCenter = x + cloneWidth / 2;
+                maxChromeWidth = 2 * Math.min(
+                    cloneCenter - area.x,
+                    area.x + area.width - cloneCenter);
+            }
+
+             clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1399,6 +1421,7 @@ var Workspace = new Lang.Class({
                 this._animateClone(clone, clone.overlay, x, y, scale);
             } else {
                 clone.overlay.forceHideAnimating(true);
+                clone.overlay.initialized = true;
 
                 // cancel any active tweens (otherwise they might override our changes)
                 Tweener.removeTweens(clone.actor);
@@ -1432,7 +1455,12 @@ var Workspace = new Lang.Class({
     },
 
     _animateClone(clone, overlay, x, y, scale) {
-        overlay.forceHideAnimating(true);
+        // Every overlay has to be hidden once after its been created.
+        // So generally don't hide the overlay when we're in touch mode but hide it after its been created.
+        if (!Main.overview.usingTouchscreen || !overlay.initialized)
+            overlay.forceHideAnimating(true);
+
+        overlay.initialized = true;
 
         Tweener.addTween(clone.actor,
                          { x: x,
@@ -1444,7 +1472,7 @@ var Workspace = new Lang.Class({
                            onComplete: () => overlay.forceHideAnimating(false)
                          });
 
-        clone.overlay.relayout();
+        overlay.relayout(Main.overview.usingTouchscreen);
     },
 
     _delayedWindowRepositioning() {
@@ -1823,10 +1851,12 @@ var Workspace = new Lang.Class({
         global.display.disconnect(this._windowEnteredMonitorId);
         global.display.disconnect(this._windowLeftMonitorId);
 
-        Main.overview.disconnect(this._windowDragBeginId);
-        Main.overview.disconnect(this._windowDragEndId);
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
+        if (!Main.overview.usingTouchscreen) {
+            Main.overview.disconnect(this._windowDragBeginId);
+            Main.overview.disconnect(this._windowDragEndId);
+            Main.overview.disconnect(this._itemDragBeginId);
+            Main.overview.disconnect(this._itemDragEndId);
+        }
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
@@ -1879,12 +1909,14 @@ var Workspace = new Lang.Class({
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(clone.metaWindow);
+            overlay.forceHideDragging(true);
         });
         clone.connect('drag-cancelled', () => {
             Main.overview.cancelledWindowDrag(clone.metaWindow);
         });
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
+            overlay.forceHideDragging(false);
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
@@ -1895,16 +1927,18 @@ var Workspace = new Lang.Class({
 
         this.actor.add_actor(clone.actor);
 
-        overlay.connect('overlay-visible', () => {
-            let focus = global.stage.key_focus;
-            if (focus == null || this.actor.contains(focus))
-                clone.actor.grab_key_focus();
+        if (!Main.overview.usingTouchscreen) {
+            overlay.connect('overlay-visible', () => {
+                let focus = global.stage.key_focus;
+                if (focus == null || this.actor.contains(focus))
+                    clone.actor.grab_key_focus();
 
-            this._windowOverlays.forEach(o => {
-                if (o != overlay)
-                    o.hide();
+                this._windowOverlays.forEach(o => {
+                    if (o != overlay)
+                        o.hide();
+                });
             });
-        });
+        }
 
         if (this._windows.length == 0)
             clone.setStackAbove(null);
