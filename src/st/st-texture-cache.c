@@ -105,6 +105,18 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
                   G_TYPE_NONE, 1, G_TYPE_FILE);
 }
 
+/* Evicts all cached textures */
+void
+st_texture_cache_clear (StTextureCache *cache)
+{
+  GHashTableIter iter;
+  gpointer key;
+  gpointer value;
+
+  g_hash_table_remove_all (cache->priv->keyed_cache);
+  g_signal_emit (cache, signals[ICON_THEME_CHANGED], 0);
+}
+
 /* Evicts all cached textures for named icons */
 static void
 st_texture_cache_evict_icons (StTextureCache *cache)

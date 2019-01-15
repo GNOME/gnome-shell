@@ -52,6 +52,7 @@ typedef enum {
 } StTextureCachePolicy;
 
 StTextureCache* st_texture_cache_get_default (void);
+void st_texture_cache_clear (StTextureCache *cache);
 
 ClutterActor *
 st_texture_cache_load_sliced_image (StTextureCache *cache,
