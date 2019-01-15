@@ -1104,7 +1104,7 @@ var CalendarMessageList = new Lang.Class({
         box.add_actor(this._scrollView);
 
         this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
-                                            label: _("Clear All"),
+                                            label: _("Clear"),
                                             can_focus: true });
         this._clearButton.set_x_align(Clutter.ActorAlign.END);
         this._clearButton.connect('clicked', () => {
