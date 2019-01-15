@@ -56,8 +56,9 @@ var AudioDeviceSelectionDialog = new Lang.Class({
         this._selectionBox = new St.BoxLayout({ style_class: 'audio-selection-box' });
         this.contentLayout.add(this._selectionBox, { expand: true });
 
-        this.addButton({ action: this._openSettings.bind(this),
-                         label: _("Sound Settings") });
+        if (Main.sessionMode.allowSettings)
+            this.addButton({ action: this._openSettings.bind(this),
+                             label: _("Sound Settings") });
         this.addButton({ action: this.close.bind(this),
                          label: _("Cancel"),
                          key: Clutter.Escape });
