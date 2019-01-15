@@ -264,7 +264,7 @@ var Background = new Lang.Class({
             (lm, aboutToSuspend) => {
                 if (aboutToSuspend)
                     return;
-                this._refreshAnimation();
+                this.emit('changed');
             });
 
         this._settingsChangedSignalId = this._settings.connect('changed', () => {
