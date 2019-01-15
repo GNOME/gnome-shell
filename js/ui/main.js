@@ -211,7 +211,11 @@ function _initializeUI() {
         return true;
     });
 
-    global.display.connect('gl-video-memory-purged', loadTheme);
+    global.display.connect('gl-video-memory-purged', () => {
+        let cache = St.TextureCache.get_default();
+        cache.clear();
+        loadTheme();
+    });
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
