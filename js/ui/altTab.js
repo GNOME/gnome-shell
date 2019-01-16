@@ -727,6 +727,7 @@ var AppSwitcher = new Lang.Class({
                 this._addIcon(appIcon);
         }
 
+        this._timeoutItemEntered = -1;
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
 
@@ -816,12 +817,13 @@ var AppSwitcher = new Lang.Class({
     _onItemEnter(index) {
         // Check for mouseActive here to catch the case where mouse usage is allowed after the app
         // icon hover timeout finished, but forbidden now (when the actual mouse movement happened).
-        if (!this._altTabPopup.mouseActive || index == this._highlighted)
+        if (!this._altTabPopup.mouseActive || index == this._highlighted || index == this._timeoutItemEntered)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._mouseTimeOutId != 0)
             Mainloop.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
+            this._timeoutItemEntered = index;
             this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
                                                         () => {
                                                             this._enterItem(index);
@@ -858,6 +860,8 @@ var AppSwitcher = new Lang.Class({
         }
 
         this.parent(n, justOutline);
+
+        this._timeoutItemEntered = -1;
 
         if (this._highlighted != -1) {
             if (justOutline && this.icons[this._highlighted].cachedWindows.length == 1)
