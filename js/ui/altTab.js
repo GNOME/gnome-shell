@@ -695,6 +695,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                 this._addIcon(appIcon);
         }
 
+        this._itemEnteredDuringTimeout = -1;
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
 
@@ -786,17 +787,25 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         // Check for mouseActive here to catch the case where mouse usage is
         // going to be allowed when the app icon hover timeout finishes, but
         // forbidden now (when the actual mouse movement happened).
-        if (!this._altTabPopup.mouseActive || index == this._highlighted)
+        if (!this._altTabPopup.mouseActive ||
+            index == this._highlighted ||
+            index == this._itemEnteredDuringTimeout)
             return Clutter.EVENT_PROPAGATE;
 
-        if (this._mouseTimeOutId != 0)
+        if (this._mouseTimeOutId != 0) {
             GLib.source_remove(this._mouseTimeOutId);
+            this._itemEnteredDuringTimeout = -1;
+            this._mouseTimeOutId = 0;
+        }
+
         if (this._altTabPopup.thumbnailsVisible) {
+            this._itemEnteredDuringTimeout = index;
             this._mouseTimeOutId = GLib.timeout_add(
                 GLib.PRIORITY_DEFAULT,
                 APP_ICON_HOVER_TIMEOUT,
                 () => {
                     this._enterItem(index);
+                    this._itemEnteredDuringTimeout = -1;
                     this._mouseTimeOutId = 0;
                     return GLib.SOURCE_REMOVE;
                 });
