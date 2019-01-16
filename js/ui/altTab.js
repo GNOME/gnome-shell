@@ -820,8 +820,11 @@ var AppSwitcher = new Lang.Class({
         if (!this._altTabPopup.mouseActive || index == this._highlighted || index == this._timeoutItemEntered)
             return Clutter.EVENT_PROPAGATE;
 
-        if (this._mouseTimeOutId != 0)
+        if (this._mouseTimeOutId != 0) {
             Mainloop.source_remove(this._mouseTimeOutId);
+            this._mouseTimeOutId = 0;
+        }
+
         if (this._altTabPopup.thumbnailsVisible) {
             this._timeoutItemEntered = index;
             this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
