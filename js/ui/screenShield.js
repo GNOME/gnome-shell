@@ -468,6 +468,7 @@ var ScreenShield = new Lang.Class({
         this._arrowAnimationId = 0;
         this._arrowWatchId = 0;
         this._arrowActiveWatchId = 0;
+        this._lockScreenIdleWatchId = 0;
         this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
                                                   vertical: true,
                                                   x_align: Clutter.ActorAlign.CENTER,
@@ -893,6 +894,17 @@ var ScreenShield = new Lang.Class({
         } else {
             this.deactivate(false);
         }
+
+        if (!this._lockScreenIdleWatchId)
+            this._lockScreenIdleWatchId = this.idleMonitor.add_idle_watch(STANDARD_FADE_TIME * 1000,
+                                                                          this._fadeLockScreen.bind(this))
+    },
+
+    _fadeLockScreen() {
+        this.idleMonitor.remove_watch(this._lockScreenIdleWatchId);
+        this._lockScreenIdleWatchId = 0;
+
+        this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
     },
 
     _onLongLightboxShown() {
@@ -1207,6 +1219,11 @@ var ScreenShield = new Lang.Class({
             Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
+
+        if (this._lockScreenIdleWatchId) {
+            this.idleMonitor.remove_watch(this._lockScreenIdleWatchId);
+            this._lockScreenIdleWatchId = 0;
+        }
 
         if (this._isGreeter) {
             // We don't want to "deactivate" any more than
