@@ -78,7 +78,7 @@ var FdoNotificationDaemon = new Lang.Class({
             return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
                                                       bitsPerSample, width, height, rowStride);
         } else if (hints['image-path']) {
-            return this._iconForNotificationData(hints['image-path'];
+            return this._iconForNotificationData(hints['image-path']);
         }
         return null;
     },
