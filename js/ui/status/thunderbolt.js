@@ -5,6 +5,7 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Polkit = imports.gi.Polkit;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -256,6 +257,15 @@ var Indicator = new Lang.Class({
         this._sync();
 
 	this._source = null;
+        this._perm = null;
+
+        Polkit.Permission.new('org.freedesktop.bolt.enroll', null, null, (source, res) => {
+            try {
+                this._perm = Polkit.Permission.new_finish(res);
+            } catch (e) {
+                log('Failed to get PolKit permission: %s'.format(e.toString()));
+            }
+        });
     },
 
     _onDestroy() {
@@ -314,21 +324,33 @@ var Indicator = new Lang.Class({
 
     /* AuthRobot callbacks */
     _onEnrollDevice(obj, device, policy) {
-	let auth = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        /* only authorize new devices when in an unlocked user session */
+	let unlocked = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        /* and if we have the permission to do so, otherwise we trigger a PolKit dialog */
+        let allowed = this._perm && this._perm.allowed;
+
+        let auth = unlocked && allowed;
 	policy[0] = auth;
 
-	log("thunderbolt: [%s] auto enrollment: %s".format(device.Name, auth ? 'yes' : 'no'));
+        log(`thunderbolt: [${device.Name}] auto enrollment: ${auth ? 'yes' : 'no'} (allowed: ${allowed ? 'yes' : 'no'})`);
+
 	if (auth)
 	    return; /* we are done */
 
-	const title = _('Unknown Thunderbolt device');
-	const body = _('New device has been detected while you were away. Please disconnect and reconnect the device to start using it.');
-	this._notify(title, body);
+        if (!unlocked) {
+	    const title = _("Unknown Thunderbolt device");
+	    const body = _("New device has been detected while you were away. Please disconnect and reconnect the device to start using it.");
+	    this._notify(title, body);
+        } else {
+            const title = _("Unauthorized Thunderbolt device");
+	    const body = _("New device has been detected and needs to be authorized by an administrator.");
+	    this._notify(title, body);
+        }
     },
 
     _onEnrollFailed(obj, device, error) {
-	const title = _('Thunderbolt authorization error');
-	const body = _('Could not authorize the Thunderbolt device: %s'.format(error.message));
+	const title = _("Thunderbolt authorization error");
+	const body = _("Could not authorize the Thunderbolt device: %s".format(error.message));
 	this._notify(title, body);
     }
 
