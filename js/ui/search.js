@@ -473,6 +473,7 @@ var SearchResults = new Lang.Class({
     },
 
     _registerProvider(provider) {
+        provider.searchInProgress = false;
         this._providers.push(provider);
         this._ensureProviderDisplay(provider);
     },
