@@ -332,6 +332,12 @@ var AuthenticationDialog = new Lang.Class({
             Main.sessionMode.disconnect(this._sessionUpdatedId);
         this._sessionUpdatedId = 0;
 
+        if (this._user) {
+            this._user.disconnect(this._userLoadedId);
+            this._user.disconnect(this._userChangedId);
+            this._user = null;
+        }
+
         this._destroySession();
     },
 });
