@@ -178,14 +178,6 @@ var AuthenticationDialog = new Lang.Class({
         this._session.initiate();
     },
 
-    close(timestamp) {
-        this.parent(timestamp);
-
-        if (this._sessionUpdatedId)
-            Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
-    },
-
     _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
         // already open - it just returns true without side-effects
@@ -336,6 +328,10 @@ var AuthenticationDialog = new Lang.Class({
     },
 
     _onDialogClosed() {
+        if (this._sessionUpdatedId)
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
+
         this._destroySession();
     },
 });
