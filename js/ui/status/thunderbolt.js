@@ -330,7 +330,7 @@ var Indicator = new Lang.Class({
         const auth = unlocked && allowed;
 	policy[0] = auth;
 
-	log(`thunderbolt: [${device.Name}] auto enrollment: ${auth ? 'yes' : 'no'} (allowed: ${allowed ? 'yes' : 'no'})`;
+	log("thunderbolt: [%s] auto enrollment: %s (allowed: %s)".format(device.Name, auth ? 'yes' : 'no', allowed ? 'yes' : 'no'));
 	if (auth)
 	    return; /* we are done */
 
@@ -340,7 +340,7 @@ var Indicator = new Lang.Class({
 	    this._notify(title, body);
         } else {
             const title = _('Unauthorized Thunderbolt device');
-	    const body = _('New device has been detected and needs to be authorized by a administrator.');
+	    const body = _('New device has been detected and needs to be authorized by an administrator.');
 	    this._notify(title, body);
         }
     },
