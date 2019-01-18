@@ -169,10 +169,10 @@ var AuthenticationDialog = new Lang.Class({
         this.destroySession();
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
-        this._session.connect('completed', this._onSessionCompleted.bind(this));
-        this._session.connect('request', this._onSessionRequest.bind(this));
-        this._session.connect('show-error', this._onSessionShowError.bind(this));
-        this._session.connect('show-info', this._onSessionShowInfo.bind(this));
+        this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
+        this._sessionRequestId = this._session.connect('request', this._onSessionRequest.bind(this));
+        this._sessionShowErrorId = this._session.connect('show-error', this._onSessionShowError.bind(this));
+        this._sessionShowInfoId = this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
     },
 
@@ -311,6 +311,11 @@ var AuthenticationDialog = new Lang.Class({
             if (!this._completed)
                 this._session.cancel();
             this._completed = false;
+
+            this._session.disconnect(this._sessionCompletedId);
+            this._session.disconnect(this._sessionRequestId);
+            this._session.disconnect(this._sessionShowErrorId);
+            this._session.disconnect(this._sessionShowInfoId);
             this._session = null;
         }
     },
