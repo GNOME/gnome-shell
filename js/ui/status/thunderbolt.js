@@ -330,7 +330,7 @@ var Indicator = new Lang.Class({
         const auth = unlocked && allowed;
 	policy[0] = auth;
 
-	log("thunderbolt: [%s] auto enrollment: %s (allowed: %s)".format(device.Name, auth ? 'yes' : 'no', allowed ? 'yes' : 'no'));
+	log(`thunderbolt: [${device.Name}] auto enrollment: ${auth ? 'yes' : 'no'} (allowed: ${allowed ? 'yes' : 'no'})`;
 	if (auth)
 	    return; /* we are done */
 
