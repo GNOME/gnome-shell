@@ -262,6 +262,10 @@ st_button_touch_event (ClutterActor      *actor,
       clutter_input_device_sequence_ungrab (device, sequence);
       return CLUTTER_EVENT_STOP;
     }
+  else if (event->type == CLUTTER_TOUCH_CANCEL)
+    {
+      st_button_fake_release (button);
+    }
 
   return CLUTTER_EVENT_PROPAGATE;
 }
