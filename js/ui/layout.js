@@ -216,6 +216,9 @@ var LayoutManager = GObject.registerClass({
 
         global.stage.add_child(this.uiGroup);
 
+        global.stage.remove_actor(global.top_window_group);
+        this.uiGroup.add_actor(global.top_window_group);
+
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
                                              visible: false,
                                              reactive: true });
@@ -226,7 +229,7 @@ var LayoutManager = GObject.registerClass({
                                                  clip_to_allocation: true,
                                                  layout_manager: new Clutter.BinLayout(),
                                                });
-        this.addChrome(this.screenShieldGroup);
+        this.addChrome(this.screenShieldGroup, { aboveTopWindows: true });
 
         this.panelBox = new St.BoxLayout({ name: 'panelBox',
                                            vertical: true });
@@ -242,16 +245,13 @@ var LayoutManager = GObject.registerClass({
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
                                               track_hover: true });
-        this.addChrome(this.keyboardBox);
+        this.addChrome(this.keyboardBox, { aboveTopWindows: true });
         this._keyboardHeightNotifyId = 0;
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
         this.dummyCursor = new St.Widget({ width: 0, height: 0, visible: false });
         this.uiGroup.add_actor(this.dummyCursor);
-
-        global.stage.remove_actor(global.top_window_group);
-        this.uiGroup.add_actor(global.top_window_group);
 
         let feedbackGroup = Meta.get_feedback_group_for_display(global.display);
         global.stage.remove_actor(feedbackGroup);
@@ -789,9 +789,14 @@ var LayoutManager = GObject.registerClass({
     // monitor (it will be hidden whenever a fullscreen window is visible,
     // and shown otherwise)
     addChrome(actor, params) {
+        let chromeParams = Params.parse(params, { aboveTopWindows: false }, true);
+        if (params && params.aboveTopWindows !== undefined)
+            delete params.aboveTopWindows;
+
         this.uiGroup.add_actor(actor);
-        if (this.uiGroup.contains(global.top_window_group))
+        if (!chromeParams.aboveTopWindows && this.uiGroup.contains(global.top_window_group))
             this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
+
         this._trackActor(actor, params);
     }
 
