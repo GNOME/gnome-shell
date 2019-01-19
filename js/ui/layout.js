@@ -242,6 +242,9 @@ var LayoutManager = new Lang.Class({
         this.panelBox.connect('allocation-changed',
                               this._panelBoxChanged.bind(this));
 
+        global.stage.remove_actor(global.top_window_group);
+        this.uiGroup.add_actor(global.top_window_group);
+
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
         this.uiGroup.add_actor(this.modalDialogGroup);
@@ -256,9 +259,6 @@ var LayoutManager = new Lang.Class({
         // position and size set in setDummyCursorGeometry.
         this.dummyCursor = new St.Widget({ width: 0, height: 0, visible: false });
         this.uiGroup.add_actor(this.dummyCursor);
-
-        global.stage.remove_actor(global.top_window_group);
-        this.uiGroup.add_actor(global.top_window_group);
 
         let feedbackGroup = Meta.get_feedback_group_for_display(global.display);
         global.stage.remove_actor(feedbackGroup);
@@ -797,8 +797,6 @@ var LayoutManager = new Lang.Class({
     // and shown otherwise)
     addChrome(actor, params) {
         this.uiGroup.add_actor(actor);
-        if (this.uiGroup.contains(global.top_window_group))
-            this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
         this._trackActor(actor, params);
     },
 
