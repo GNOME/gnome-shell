@@ -982,6 +982,52 @@ var EmojiSelection = class EmojiSelection {
 };
 Signals.addSignalMethods(EmojiSelection.prototype);
 
+var Keypad = class Keypad {
+    constructor() {
+        let keys = [
+            { label: '1', keyval: Clutter.KEY_1, left: 0, top: 0 },
+            { label: '2', keyval: Clutter.KEY_2, left: 1, top: 0 },
+            { label: '3', keyval: Clutter.KEY_3, left: 2, top: 0 },
+            { label: '4', keyval: Clutter.KEY_4, left: 0, top: 1 },
+            { label: '5', keyval: Clutter.KEY_5, left: 1, top: 1 },
+            { label: '6', keyval: Clutter.KEY_6, left: 2, top: 1 },
+            { label: '7', keyval: Clutter.KEY_7, left: 0, top: 2 },
+            { label: '8', keyval: Clutter.KEY_8, left: 1, top: 2 },
+            { label: '9', keyval: Clutter.KEY_9, left: 2, top: 2 },
+            { label: '0', keyval: Clutter.KEY_0, left: 1, top: 3 },
+            { label: '⌫', keyval: Clutter.KEY_BackSpace, left: 3, top: 0 },
+            { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', left: 3, top: 1, height: 2 },
+        ];
+
+        this.actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
+                                           x_expand: true, y_expand: true });
+
+        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
+                                                  column_homogeneous: true,
+                                                  row_homogeneous: true });
+        this._box = new St.Widget({ layout_manager: gridLayout, x_expand: true, y_expand: true });
+        this.actor.add_child(this._box);
+
+        for (let i = 0; i < keys.length; i++) {
+            let cur = keys[i];
+            let key = new Key(cur.label || "", []);
+
+            if (keys[i].extraClassName)
+                key.keyButton.add_style_class_name(cur.extraClassName);
+
+            let w, h;
+            w = cur.width || 1;
+            h = cur.height || 1;
+            gridLayout.attach(key.actor, cur.left, cur.top, w, h);
+
+            key.connect('released', () => {
+                this.emit('keyval', cur.keyval);
+            });
+        }
+    }
+};
+Signals.addSignalMethods(Keypad.prototype);
+
 var Keyboard = class Keyboard {
     constructor() {
         this.actor = null;
@@ -1092,6 +1138,8 @@ var Keyboard = class Keyboard {
             this._keyboardController.disconnect(this._keyboardStateId);
         if (this._emojiKeyVisibleId)
             this._keyboardController.disconnect(this._emojiKeyVisibleId);
+        if (this._keypadVisibleId)
+            this._keyboardController.disconnect(this._keypadVisibleId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._keyboard = null;
@@ -1132,6 +1180,15 @@ var Keyboard = class Keyboard {
         this._aspectContainer.add_child(this._emojiSelection.actor);
         this._emojiSelection.actor.hide();
 
+        this._keypad = new Keypad();
+        this._keypad.connect('keyval', (keypad, keyval) => {
+            this._keyboardController.keyvalPress(keyval);
+            this._keyboardController.keyvalRelease(keyval);
+        });
+        this._aspectContainer.add_child(this._keypad.actor);
+        this._keypad.actor.hide();
+        this._keypadVisible = false;
+
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
 
@@ -1144,6 +1201,7 @@ var Keyboard = class Keyboard {
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', this._onKeyboardGroupsChanged.bind(this));
         this._keyboardStateId = this._keyboardController.connect('panel-state', this._onKeyboardStateChanged.bind(this));
         this._emojiKeyVisibleId = this._keyboardController.connect('emoji-visible', this._onEmojiKeyVisible.bind(this));
+        this._keypadVisibleId = this._keyboardController.connect('keypad-visible', this._onKeypadVisible.bind(this));
         this._focusNotifyId = global.stage.connect('notify::key-focus', this._onKeyFocusChanged.bind(this));
 
         this._relayout();
@@ -1319,11 +1377,15 @@ var Keyboard = class Keyboard {
         }
     }
 
+    _updateCurrentPageVisible() {
+        if (this._current_page)
+            this._current_page.visible = !this._emojiActive && !this._keypadVisible;
+    }
+
     _setEmojiActive(active) {
         this._emojiActive = active;
         this._emojiSelection.actor.visible = this._emojiActive;
-        if (this._current_page)
-            this._current_page.visible = !this._emojiActive;
+        this._updateCurrentPageVisible();
     }
 
     _toggleEmoji() {
@@ -1410,6 +1472,15 @@ var Keyboard = class Keyboard {
         this._onGroupChanged();
     }
 
+    _onKeypadVisible(controller, visible) {
+        if (visible == this._keypadVisible)
+            return;
+
+        this._keypadVisible = visible;
+        this._keypad.actor.visible = this._keypadVisible;
+        this._updateCurrentPageVisible();
+    }
+
     _onEmojiKeyVisible(controller, visible) {
         if (visible == this._emojiKeyVisible)
             return;
@@ -1446,7 +1517,7 @@ var Keyboard = class Keyboard {
         }
 
         this._current_page = layers[activeLevel];
-        this._current_page.show();
+        this._updateCurrentPageVisible();
     }
 
     shouldTakeEvent(event) {
@@ -1666,16 +1737,20 @@ var KeyboardController = class {
         let hints = method.content_hints;
         let purpose = method.content_purpose;
         let emojiVisible = false;
+        let keypadVisible = false;
 
         if (purpose == Clutter.InputContentPurpose.NORMAL ||
             purpose == Clutter.InputContentPurpose.ALPHA ||
             purpose == Clutter.InputContentPurpose.PASSWORD ||
             purpose == Clutter.InputContentPurpose.TERMINAL)
             emojiVisible = true;
+        if (purpose == Clutter.InputContentPurpose.DIGITS ||
+            purpose == Clutter.InputContentPurpose.NUMBER ||
+            purpose == Clutter.InputContentPurpose.PHONE)
+            keypadVisible = true;
 
         this.emit('emoji-visible', emojiVisible)
-
-        // XXX: hook numeric/emoji/etc special keyboards
+        this.emit('keypad-visible', keypadVisible);
     }
 
     getGroups() {
