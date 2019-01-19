@@ -413,34 +413,19 @@ grab_window_screenshot (ClutterActor *stage,
   ShellScreenshotPrivate *priv = screenshot->priv;
   GTask *task;
   GSettings *settings;
-  MetaDisplay *display = shell_global_get_display (priv->global);
+  MetaDisplay *display;
   MetaCursorTracker *tracker;
-  MetaWindow *window = meta_display_get_focus_window (display);
-  ClutterActor *window_actor;
-  gfloat actor_x, actor_y;
-  MetaShapedTexture *stex;
-  MetaRectangle rect;
-  cairo_rectangle_int_t clip;
+  MetaWindow *window;
+  MetaWindowActor *window_actor;
 
-  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
+  display = shell_global_get_display (priv->global);
+  window = meta_display_get_focus_window (display);
+  window_actor = meta_window_actor_from_window (window);
 
-  meta_window_get_frame_rect (window, &rect);
-
-  if (!priv->include_frame)
-    meta_window_frame_rect_to_client_rect (window, &rect, &rect);
-
-  priv->screenshot_area.x = rect.x;
-  priv->screenshot_area.y = rect.y;
-  clip.x = rect.x - (gint) actor_x;
-  clip.y = rect.y - (gint) actor_y;
-
-  clip.width = priv->screenshot_area.width = rect.width;
-  clip.height = priv->screenshot_area.height = rect.height;
-
-  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  priv->image = meta_shaped_texture_get_image (stex, &clip);
+  priv->image = meta_window_actor_get_image (window_actor);
   priv->datetime = g_date_time_new_now_local ();
+
+  meta_window_get_frame_rect (window, &priv->screenshot_area);
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
