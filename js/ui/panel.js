@@ -30,6 +30,7 @@ var APP_MENU_ICON_MARGIN = 0;
 
 var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
+var PANEL_ANIMATION_TIME = 0.25;
 var SPINNER_ANIMATION_TIME = 1.0;
 
 // To make sure the panel corners blend nicely with the panel,
@@ -805,6 +806,7 @@ class Panel extends St.Widget {
         });
 
         Main.layoutManager.panelBox.add(this);
+        Main.layoutManager.panelBox.transition = this._animateVisible.bind(this);
         Main.ctrlAltTabManager.addGroup(this, _("Top Bar"), 'focus-top-bar-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
@@ -1027,6 +1029,24 @@ class Panel extends St.Widget {
         return this._leftBox.opacity;
     }
 
+    _animateVisible(visible) {
+        Tweener.removeTweens(this);
+
+        if (visible) {
+            Main.layoutManager.panelBox.visible = true;
+            Tweener.addTween(this,
+                             { translation_y: 0,
+                               time: PANEL_ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        } else {
+            Tweener.addTween(this,
+                             { translation_y: -this.height,
+                               time: PANEL_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: () => { Main.layoutManager.panelBox.visible = false; }});
+        }
+    }
+
     _updatePanel() {
         let panel = Main.sessionMode.panel;
         this._hideIndicators();
@@ -1080,7 +1100,7 @@ class Panel extends St.Widget {
         });
 
         /* Check if at least one window is near enough to the panel */
-        let [, panelTop] = this.get_transformed_position();
+        let panelTop = this.get_transformed_position()[1] - this.translation_y;
         let panelBottom = panelTop + this.get_height();
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let isNearEnough = windows.some(metaWindow => {

@@ -893,9 +893,15 @@ var LayoutManager = GObject.registerClass({
             return;
 
         let monitor = this.findMonitorForActor(actorData.actor);
-        actorData.actor.visible = !(global.window_group.visible &&
-                                    monitor &&
-                                    monitor.inFullscreen);
+        let actorVisible = !(global.window_group.visible &&
+                             monitor &&
+                             monitor.inFullscreen);
+
+        if (actorData.actor.transition)
+            actorData.actor.transition(actorVisible);
+        else
+            actorData.actor.visible = actorVisible;
+
     }
 
     _updateVisibility() {
