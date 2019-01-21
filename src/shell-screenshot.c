@@ -413,34 +413,36 @@ grab_window_screenshot (ClutterActor *stage,
   ShellScreenshotPrivate *priv = screenshot->priv;
   GTask *task;
   GSettings *settings;
-  MetaDisplay *display = shell_global_get_display (priv->global);
+  MetaDisplay *display;
   MetaCursorTracker *tracker;
-  MetaWindow *window = meta_display_get_focus_window (display);
-  ClutterActor *window_actor;
-  gfloat actor_x, actor_y;
-  MetaShapedTexture *stex;
-  MetaRectangle rect;
-  cairo_rectangle_int_t clip;
+  MetaWindow *window;
+  MetaWindowActor *window_actor;
+  cairo_surface_t *surface;
+  ClutterContent *image;
+  CoglTexture *texture;
 
-  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
+  display = shell_global_get_display (priv->global);
+  window = meta_display_get_focus_window (display);
+  window_actor = meta_window_actor_from_window (window);
 
-  meta_window_get_frame_rect (window, &rect);
+  image = meta_window_actor_get_image (window_actor);
+  g_return_if_fail (CLUTTER_IS_IMAGE_TEXTURE (image));
+  texture = clutter_image_texture_get_texture (CLUTTER_IMAGE_TEXTURE (image));
 
-  if (!priv->include_frame)
-    meta_window_frame_rect_to_client_rect (window, &rect, &rect);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        cogl_texture_get_width (texture),
+                                        cogl_texture_get_height (texture));
 
-  priv->screenshot_area.x = rect.x;
-  priv->screenshot_area.y = rect.y;
-  clip.x = rect.x - (gint) actor_x;
-  clip.y = rect.y - (gint) actor_y;
+  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32,
+                         cairo_image_surface_get_stride (surface),
+                         cairo_image_surface_get_data (surface));
 
-  clip.width = priv->screenshot_area.width = rect.width;
-  clip.height = priv->screenshot_area.height = rect.height;
+  cairo_surface_mark_dirty (surface);
 
-  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  priv->image = meta_shaped_texture_get_image (stex, &clip);
+  priv->image = surface;
   priv->datetime = g_date_time_new_now_local ();
+
+  meta_window_get_frame_rect (window, &priv->screenshot_area);
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
