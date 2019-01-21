@@ -55,6 +55,43 @@ const defaultKeysPost = [
       [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
 ];
 
+var AspectContainer = new GObject.registerClass(
+class AspectContainer extends St.Widget {
+    _init(params) {
+        super._init(params);
+        this._ratio = 1;
+    }
+
+    setRatio(relWidth, relHeight) {
+        this._ratio = relWidth / relHeight;
+        this.queue_relayout();
+    }
+
+    vfunc_allocate(box, flags) {
+        if (box.get_width() > 0 && box.get_height() > 0) {
+            let sizeRatio = box.get_width() / box.get_height();
+
+            if (sizeRatio >= this._ratio) {
+                /* Restrict horizontally */
+                let width = box.get_height() * this._ratio;
+                let diff = box.get_width() - width;
+
+                box.x1 += Math.floor(diff / 2);
+                box.x2 -= Math.ceil(diff / 2);
+            } else {
+                /* Restrict vertically */
+                let height = box.get_width() / this._ratio;
+                let diff = box.get_height() - height;
+
+                box.y1 += Math.floor(diff / 2);
+                box.y2 -= Math.floor(diff / 2);
+            }
+        }
+
+        super.vfunc_allocate(box, flags);
+    }
+});
+
 var KeyContainer = new GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
@@ -98,32 +135,7 @@ class KeyContainer extends St.Widget {
         this._maxCols = Math.max(this._currentCol, this._maxCols);
     }
 
-    vfunc_allocate(box, flags) {
-        if (box.get_width() > 0 && box.get_height() > 0 && this._maxCols > 0) {
-            let keyboardRatio = this._maxCols / this._rows.length;
-            let sizeRatio = box.get_width() / box.get_height();
-
-            if (sizeRatio >= keyboardRatio) {
-                /* Restrict horizontally */
-                let width = box.get_height() * keyboardRatio;
-                let diff = box.get_width() - width;
-
-                box.x1 += Math.floor(diff / 2);
-                box.x2 -= Math.ceil(diff / 2);
-            } else {
-                /* Restrict vertically */
-                let height = box.get_width() / keyboardRatio;
-                let diff = box.get_height() - height;
-
-                box.y1 += Math.floor(diff / 2);
-                box.y2 -= Math.floor(diff / 2);
-            }
-        }
-
-        super.vfunc_allocate(box, flags);
-    }
-
-    layoutButtons() {
+    layoutButtons(container) {
         let nCol = 0, nRow = 0;
 
         for (let i = 0; i < this._rows.length; i++) {
@@ -150,6 +162,9 @@ class KeyContainer extends St.Widget {
             nRow += KEY_SIZE;
             nCol = 0;
         }
+
+        if (container)
+            container.setRatio(this._maxCols, this._rows.length);
     }
 });
 
@@ -680,6 +695,9 @@ var Keyboard = class Keyboard {
                        { x_align: St.Align.MIDDLE,
                          x_fill: false });
 
+        this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
+        this.actor.add(this._aspectContainer, { expand: true, x_fill: true, y_fill: true });
+
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
 
@@ -737,8 +755,8 @@ var Keyboard = class Keyboard {
 
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
-            this.actor.add(layout, { expand: true });
-            layout.layoutButtons();
+            this._aspectContainer.add_child(layout);
+            layout.layoutButtons(this._aspectContainer);
 
             layout.hide();
         }
