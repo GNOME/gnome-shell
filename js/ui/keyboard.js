@@ -278,7 +278,7 @@ var Key = class Key {
     }
 
     _getKeyval(key) {
-        let unicode = String.charCodeAt(key, 0);
+        let unicode = key.charCodeAt(0);
         return Clutter.unicode_to_keysym(unicode);
     }
 
