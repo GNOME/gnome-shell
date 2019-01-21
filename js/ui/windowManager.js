@@ -1071,6 +1071,10 @@ var WindowManager = class {
         gesture.connect('activated', () => {
             Main.keyboard.show(Main.layoutManager.bottomIndex);
         });
+        Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
+            gesture.cancel();
+            gesture.set_enabled(!visible);
+        });
         global.stage.add_action(gesture);
 
         gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
