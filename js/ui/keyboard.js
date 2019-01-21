@@ -802,7 +802,7 @@ var Keyboard = class Keyboard {
             let switchToLevel = key.level;
             let action = key.action;
 
-            extraButton = new Key(key.label, []);
+            extraButton = new Key(key.label || '', []);
 
             extraButton.keyButton.add_style_class_name('default-key');
             if (key.extraClassName != null)
