@@ -278,18 +278,6 @@ var LayoutManager = new Lang.Class({
         global.screen.connect('in-fullscreen-changed',
                               this._updateFullscreen.bind(this));
         this._monitorsChanged();
-
-        // NVIDIA drivers don't preserve FBO contents across
-        // suspend/resume, see
-        // https://bugzilla.gnome.org/show_bug.cgi?id=739178
-        if (Shell.util_need_background_refresh()) {
-            LoginManager.getLoginManager().connect('prepare-for-sleep',
-                (lm, suspending) => {
-                    if (suspending)
-                        return;
-                    Meta.Background.refresh_all();
-                });
-        }
     },
 
     // This is called by Main after everything else is constructed

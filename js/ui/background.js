@@ -539,10 +539,15 @@ var BackgroundSource = new Lang.Class({
         this._backgrounds = [];
 
         this._monitorsChangedId = global.screen.connect('monitors-changed',
-                                                        this._onMonitorsChanged.bind(this));
+                                                        this._refresh.bind(this));
+
+        global.display.connect('gl-video-memory-purged', () => {
+                                   Meta.Background.refresh_all();
+                                   this._refresh();
+                               });
     },
 
-    _onMonitorsChanged() {
+    _refresh() {
         for (let monitorIndex in this._backgrounds) {
             let background = this._backgrounds[monitorIndex];
 

@@ -396,15 +396,6 @@ get_gl_vendor (void)
   return vendor;
 }
 
-gboolean
-shell_util_need_background_refresh (void)
-{
-  if (g_strcmp0 (get_gl_vendor (), "NVIDIA Corporation") == 0)
-    return TRUE;
-
-  return FALSE;
-}
-
 static gboolean
 canvas_draw_cb (ClutterContent *content,
                 cairo_t        *cr,
