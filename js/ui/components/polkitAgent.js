@@ -42,6 +42,8 @@ var AuthenticationDialog = new Lang.Class({
             this._group.visible = !Main.sessionMode.isLocked;
         });
 
+        this.connect('closed', this._onDialogClosed.bind(this));
+
         let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
 
@@ -174,14 +176,6 @@ var AuthenticationDialog = new Lang.Class({
         this._sessionShowErrorId = this._session.connect('show-error', this._onSessionShowError.bind(this));
         this._sessionShowInfoId = this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
-    },
-
-    close(timestamp) {
-        this.parent(timestamp);
-
-        if (this._sessionUpdatedId)
-            Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
     },
 
     _ensureOpen() {
@@ -331,6 +325,12 @@ var AuthenticationDialog = new Lang.Class({
         this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
+    },
+
+    _onDialogClosed() {
+        if (this._sessionUpdatedId)
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
     },
 });
 Signals.addSignalMethods(AuthenticationDialog.prototype);
