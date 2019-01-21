@@ -288,7 +288,7 @@ var Key = new Lang.Class({
     },
 
     _getKeyval(key) {
-        let unicode = String.charCodeAt(key, 0);
+        let unicode = String.prototype.charCodeAt(key, 0);
         return Gdk.unicode_to_keyval(unicode);
     },
 
