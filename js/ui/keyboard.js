@@ -691,9 +691,6 @@ var Keyboard = new Lang.Class({
         this._current_page = null;
 
         this._suggestions = new Suggestions();
-        this._suggestions.connect('suggestion-clicked', (suggestions, str) => {
-            this._keyboardController.commitString(str);
-        });
         this.actor.add(this._suggestions.actor,
                        { x_align: St.Align.MIDDLE,
                          x_fill: false });
