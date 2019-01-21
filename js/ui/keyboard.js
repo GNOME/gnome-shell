@@ -861,7 +861,7 @@ var Keyboard = class Keyboard {
     }
 
     _setCurrentLevelLatched(layout, latched) {
-        for (let i = 0; layout.shiftKeys[i]; i++) {
+        for (let i = 0; i < layout.shiftKeys.length; i++) {
             let key = layout.shiftKeys[i];
             key.setLatched(latched);
         }
