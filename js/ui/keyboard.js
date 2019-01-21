@@ -404,13 +404,10 @@ var Key = new Lang.Class({
 
             if (!this._touchPressed &&
                 event.type() == Clutter.EventType.TOUCH_BEGIN) {
-                device.sequence_grab(sequence, actor);
                 this._touchPressed = true;
                 this._press(key);
             } else if (this._touchPressed &&
-                       event.type() == Clutter.EventType.TOUCH_END &&
-                       device.sequence_get_grabbed_actor(sequence) == actor) {
-                device.sequence_ungrab(sequence);
+                       event.type() == Clutter.EventType.TOUCH_END) {
                 this._touchPressed = false;
                 this._release(key);
             }
