@@ -689,6 +689,11 @@ var ThumbnailsBox = new Lang.Class({
                 this._createThumbnails();
         });
 
+        // Update the porthole after the workarea is setup
+        Main.layoutManager.connect('startup-complete', () => {
+            this._updatePorthole();
+        });
+
         this._switchWorkspaceNotifyId = 0;
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
