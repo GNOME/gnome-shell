@@ -19,6 +19,7 @@ const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const OverviewControls = imports.ui.overviewControls;
+const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
@@ -245,116 +246,6 @@ class BaseAppView {
 };
 Signals.addSignalMethods(BaseAppView.prototype);
 
-var PageIndicatorsActor = GObject.registerClass(
-class PageIndicatorsActor extends St.BoxLayout {
-    _init() {
-        super._init({ style_class: 'page-indicators',
-                      vertical: true,
-                      x_expand: true, y_expand: true,
-                      x_align: Clutter.ActorAlign.END,
-                      y_align: Clutter.ActorAlign.CENTER,
-                      reactive: true,
-                      clip_to_allocation: true });
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        // We want to request the natural height of all our children as our
-        // natural height, so we chain up to St.BoxLayout, but we only request 0
-        // as minimum height, since it's not that important if some indicators
-        // are not shown
-        let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
-        return [0, natHeight];
-    }
-});
-
-class PageIndicators {
-    constructor() {
-        this.actor = new PageIndicatorsActor();
-        this._nPages = 0;
-        this._currentPage = undefined;
-
-        this.actor.connect('notify::mapped', () => {
-            this.animateIndicators(IconGrid.AnimationDirection.IN);
-        });
-    }
-
-    setNPages(nPages) {
-        if (this._nPages == nPages)
-            return;
-
-        let diff = nPages - this._nPages;
-        if (diff > 0) {
-            for (let i = 0; i < diff; i++) {
-                let pageIndex = this._nPages + i;
-                let indicator = new St.Button({ style_class: 'page-indicator',
-                                                button_mask: St.ButtonMask.ONE |
-                                                             St.ButtonMask.TWO |
-                                                             St.ButtonMask.THREE,
-                                                toggle_mode: true,
-                                                checked: pageIndex == this._currentPage });
-                indicator.child = new St.Widget({ style_class: 'page-indicator-icon' });
-                indicator.connect('clicked', () => {
-                    this.emit('page-activated', pageIndex);
-                });
-                this.actor.add_actor(indicator);
-            }
-        } else {
-            let children = this.actor.get_children().splice(diff);
-            for (let i = 0; i < children.length; i++)
-                children[i].destroy();
-        }
-        this._nPages = nPages;
-        this.actor.visible = (this._nPages > 1);
-    }
-
-    setCurrentPage(currentPage) {
-        this._currentPage = currentPage;
-
-        let children = this.actor.get_children();
-        for (let i = 0; i < children.length; i++)
-            children[i].set_checked(i == this._currentPage);
-    }
-
-    animateIndicators(animationDirection) {
-        if (!this.actor.mapped)
-            return;
-
-        let children = this.actor.get_children();
-        if (children.length == 0)
-            return;
-
-        for (let i = 0; i < this._nPages; i++)
-            Tweener.removeTweens(children[i]);
-
-        let offset;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
-            offset = -children[0].width;
-        else
-            offset = children[0].width;
-
-        let isAnimationIn = animationDirection == IconGrid.AnimationDirection.IN;
-        let delay = isAnimationIn ? INDICATORS_ANIMATION_DELAY :
-                                    INDICATORS_ANIMATION_DELAY_OUT;
-        let baseTime = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
-        let totalAnimationTime = baseTime + delay * this._nPages;
-        let maxTime = isAnimationIn ? INDICATORS_ANIMATION_MAX_TIME :
-                                      INDICATORS_ANIMATION_MAX_TIME_OUT;
-        if (totalAnimationTime > maxTime)
-            delay -= (totalAnimationTime - maxTime) / this._nPages;
-
-        for (let i = 0; i < this._nPages; i++) {
-            children[i].translation_x = isAnimationIn ? offset : 0;
-            Tweener.addTween(children[i],
-                             { translation_x: isAnimationIn ? 0 : offset,
-                               time: baseTime + delay * i,
-                               transition: 'easeInOutQuad',
-                               delay: isAnimationIn ? VIEWS_SWITCH_ANIMATION_DELAY : 0
-                             });
-        }
-    }
-};
-Signals.addSignalMethods(PageIndicators.prototype);
-
 var AllView = class AllView extends BaseAppView {
     constructor() {
         super({ usePagination: true }, null);
@@ -373,13 +264,13 @@ var AllView = class AllView extends BaseAppView {
                                     St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
 
-        this._pageIndicators = new PageIndicators();
+        this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
         this._pageIndicators.connect('page-activated',
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
             });
-        this._pageIndicators.actor.connect('scroll-event', this._onScroll.bind(this));
-        this.actor.add_actor(this._pageIndicators.actor);
+        this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
+        this.actor.add_actor(this._pageIndicators);
 
         this.folderIcons = [];
 
