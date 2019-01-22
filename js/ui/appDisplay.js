@@ -247,12 +247,12 @@ Signals.addSignalMethods(BaseAppView.prototype);
 
 var PageIndicatorsActor = GObject.registerClass(
 class PageIndicatorsActor extends St.BoxLayout {
-    _init() {
+    _init(vertical) {
         super._init({ style_class: 'page-indicators',
-                      vertical: true,
+                      vertical,
                       x_expand: true, y_expand: true,
-                      x_align: Clutter.ActorAlign.END,
-                      y_align: Clutter.ActorAlign.CENTER,
+                      x_align: vertical ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER,
+                      y_align: vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.END,
                       reactive: true,
                       clip_to_allocation: true });
     }
@@ -267,15 +267,28 @@ class PageIndicatorsActor extends St.BoxLayout {
     }
 });
 
-class PageIndicators {
-    constructor() {
-        this.actor = new PageIndicatorsActor();
+var PageIndicators = class PageIndicators {
+    constructor(vertical = true, animated = true) {
+        this.actor = new PageIndicatorsActor(vertical);
         this._nPages = 0;
         this._currentPage = undefined;
+        this._reactive = true;
+        this._animated = animated;
+        this._reactive = true;
 
-        this.actor.connect('notify::mapped', () => {
-            this.animateIndicators(IconGrid.AnimationDirection.IN);
-        });
+        if (this._animated) {
+            this.actor.connect('notify::mapped', () => {
+                this.animateIndicators(IconGrid.AnimationDirection.IN);
+            });
+        }
+    }
+
+    setReactive(reactive) {
+        let children = this.actor.get_children();
+        for (let i = 0; i < children.length; i++)
+            children[i].reactive = reactive;
+
+        this._reactive = reactive;
     }
 
     setNPages(nPages) {
@@ -291,6 +304,7 @@ class PageIndicators {
                                                              St.ButtonMask.TWO |
                                                              St.ButtonMask.THREE,
                                                 toggle_mode: true,
+                                                reactive: this._reactive,
                                                 checked: pageIndex == this._currentPage });
                 indicator.child = new St.Widget({ style_class: 'page-indicator-icon' });
                 indicator.connect('clicked', () => {
