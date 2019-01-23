@@ -11,6 +11,7 @@ const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const Params = imports.misc.params;
+const Shell = imports.gi.Shell;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
@@ -99,7 +100,7 @@ var AuthPrompt = new Lang.Class({
                          x_align: St.Align.START });
         this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                      can_focus: true });
-        ShellEntry.addContextMenu(this._entry, { isPassword: true });
+        ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
         this.actor.add(this._entry,
                        { expand: true,

@@ -9,6 +9,7 @@ const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
+const Shell = imports.gi.Shell;
 
 var EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
@@ -150,11 +151,12 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse (params, { isPassword: false });
+    params = Params.parse (params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
     entry.menu.isPassword = params.isPassword;
-    entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry });
+    entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry },
+                                                        { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);
 
     // Add an event handler to both the entry and its clutter_text; the former
