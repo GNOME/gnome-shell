@@ -104,6 +104,11 @@ var Spinner = new Lang.Class({
         this._animate = animate;
     },
 
+    _onDestroy() {
+        this._animate = false;
+        this.parent();
+    },
+
     play() {
         Tweener.removeTweens(this.actor);
 
