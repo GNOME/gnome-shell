@@ -658,8 +658,8 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
       (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
        cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
     {
-      ClutterContent *image;
-      GError *error = NULL;
+      g_autoptr(ClutterContent) image = NULL;
+      g_autoptr(GError) error = NULL;
 
       image = clutter_actor_get_content (bind->actor);
       if (!image || !CLUTTER_IS_IMAGE (image))
@@ -677,15 +677,9 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
                               &error);
 
       if (image)
-        {
-          clutter_actor_set_content (bind->actor, image);
-          g_object_unref (image);
-        }
+        clutter_actor_set_content (bind->actor, image);
       else if (error)
-        {
-          g_warning ("Failed to allocate texture: %s", error->message);
-          g_error_free (error);
-        }
+        g_warning ("Failed to allocate texture: %s", error->message);
 
       clutter_actor_set_opacity (bind->actor, 255);
     }
