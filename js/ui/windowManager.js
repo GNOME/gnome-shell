@@ -2089,6 +2089,8 @@ var WindowManager = new Lang.Class({
         } else if (target > 0) {
             target--;
             newWs = workspaceManager.get_workspace_by_index(target);
+            if (!newWs)
+                return;
 
             if (workspaceManager.get_active_workspace().index() > target)
                 direction = Meta.MotionDirection.UP;
