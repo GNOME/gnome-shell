@@ -36,7 +36,7 @@ struct _StTextureCachePrivate
   GtkIconTheme *icon_theme;
 
   /* Things that were loaded with a cache policy != NONE */
-  GHashTable *keyed_cache; /* char * -> CoglTexture* */
+  GHashTable *keyed_cache; /* char * -> ClutterImage* */
   GHashTable *keyed_surface_cache; /* char * -> cairo_surface_t* */
 
   /* Presently this is used to de-duplicate requests for GIcons and async URIs. */
@@ -64,20 +64,23 @@ G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
  * pipeline for an empty texture is full opacity white, which we
  * definitely don't want.  Skip that by setting 0 opacity.
  */
-static ClutterTexture *
-create_default_texture (void)
+static ClutterActor *
+create_invisible_actor (void)
 {
-  ClutterTexture * texture = CLUTTER_TEXTURE (clutter_texture_new ());
-  g_object_set (texture, "keep-aspect-ratio", TRUE, "opacity", 0, NULL);
-  return texture;
+  return g_object_new (CLUTTER_TYPE_ACTOR,
+                       "opacity", 0,
+                       NULL);
 }
 
 /* Reverse the opacity we added while loading */
 static void
-set_texture_cogl_texture (ClutterTexture *clutter_texture, CoglTexture *cogl_texture)
+set_content_from_image (ClutterActor   *actor,
+                        ClutterContent *image)
 {
-  clutter_texture_set_cogl_texture (clutter_texture, cogl_texture);
-  g_object_set (clutter_texture, "opacity", 255, NULL);
+  g_assert (image && CLUTTER_IS_IMAGE (image));
+
+  clutter_actor_set_content (actor, image);
+  clutter_actor_set_opacity (actor, 255);
 }
 
 static void
@@ -145,7 +148,7 @@ st_texture_cache_init (StTextureCache *self)
                     G_CALLBACK (on_icon_theme_changed), self);
 
   self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                   g_free, cogl_object_unref);
+                                                   g_free, g_object_unref);
   self->priv->keyed_surface_cache = g_hash_table_new_full (g_str_hash,
                                                            g_str_equal,
                                                            g_free,
@@ -270,7 +273,7 @@ typedef struct {
   guint width;
   guint height;
   guint scale;
-  GSList *textures;
+  GSList *actors;
 
   GtkIconInfo *icon_info;
   StIconColors *colors;
@@ -294,8 +297,8 @@ texture_load_data_free (gpointer p)
   if (data->key)
     g_free (data->key);
 
-  if (data->textures)
-    g_slist_free_full (data->textures, (GDestroyNotify) g_object_unref);
+  if (data->actors)
+    g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
 
   g_free (data);
 }
@@ -464,29 +467,29 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
   return g_task_propagate_pointer (G_TASK (result), error);
 }
 
-static CoglTexture *
-pixbuf_to_cogl_texture (GdkPixbuf *pixbuf)
+static ClutterContent *
+pixbuf_to_clutter_image (GdkPixbuf *pixbuf)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-  CoglError *error = NULL;
-  CoglTexture2D *texture;
+  ClutterContent *image;
+  g_autoptr(GError) error = NULL;
 
-  texture = cogl_texture_2d_new_from_data (ctx,
-                                           gdk_pixbuf_get_width (pixbuf),
-                                           gdk_pixbuf_get_height (pixbuf),
-                                           gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
-                                           gdk_pixbuf_get_rowstride (pixbuf),
-                                           gdk_pixbuf_get_pixels (pixbuf),
-                                           &error);
+  image = clutter_image_new ();
+  clutter_image_set_data (CLUTTER_IMAGE (image),
+                          gdk_pixbuf_get_pixels (pixbuf),
+                          gdk_pixbuf_get_has_alpha (pixbuf) ?
+                            COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                          gdk_pixbuf_get_width (pixbuf),
+                          gdk_pixbuf_get_height (pixbuf),
+                          gdk_pixbuf_get_rowstride (pixbuf),
+                          &error);
 
   if (error)
     {
       g_warning ("Failed to allocate texture: %s", error->message);
-      cogl_error_free (error);
+      g_clear_object (&image);
     }
 
-  return texture ? COGL_TEXTURE (texture) : NULL;
+  return image;
 }
 
 static cairo_surface_t *
@@ -514,9 +517,9 @@ static void
 finish_texture_load (AsyncTextureLoadData *data,
                      GdkPixbuf            *pixbuf)
 {
+  g_autoptr(ClutterContent) image = NULL;
   GSList *iter;
   StTextureCache *cache;
-  CoglTexture *texdata = NULL;
 
   cache = data->cache;
 
@@ -525,8 +528,8 @@ finish_texture_load (AsyncTextureLoadData *data,
   if (pixbuf == NULL)
     goto out;
 
-  texdata = pixbuf_to_cogl_texture (pixbuf);
-  if (!texdata)
+  image = pixbuf_to_clutter_image (pixbuf);
+  if (!image)
     goto out;
 
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
@@ -536,22 +539,18 @@ finish_texture_load (AsyncTextureLoadData *data,
       if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
                                          &orig_key, &value))
         {
-          cogl_object_ref (texdata);
           g_hash_table_insert (cache->priv->keyed_cache, g_strdup (data->key),
-                               texdata);
+                               g_object_ref (image));
         }
     }
 
-  for (iter = data->textures; iter; iter = iter->next)
+  for (iter = data->actors; iter; iter = iter->next)
     {
-      ClutterTexture *texture = iter->data;
-      set_texture_cogl_texture (texture, texdata);
+      ClutterActor *actor = iter->data;
+      set_content_from_image (actor, image);
     }
 
 out:
-  if (texdata)
-    cogl_object_unref (texdata);
-
   texture_load_data_free (data);
 }
 
@@ -630,7 +629,7 @@ load_texture_async (StTextureCache       *cache,
 
 typedef struct {
   StTextureCache *cache;
-  ClutterTexture *texture;
+  ClutterActor *actor;
   GObject *source;
   guint notify_signal_id;
   gboolean weakref_active;
@@ -641,9 +640,6 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
                                 const char                 *propname)
 {
   cairo_surface_t *surface;
-  CoglTexture *texdata;
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
 
   g_object_get (bind->source, propname, &surface, NULL);
 
@@ -652,32 +648,39 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
       (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
        cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
     {
-      CoglError *error = NULL;
+      ClutterContent *image;
+      GError *error = NULL;
 
-      texdata = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
-                                                             cairo_image_surface_get_width (surface),
-                                                             cairo_image_surface_get_height (surface),
-                                                             cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
-                                                             COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
-                                                             cairo_image_surface_get_stride (surface),
-                                                             cairo_image_surface_get_data (surface),
-                                                             &error));
+      image = clutter_actor_get_content (bind->actor);
+      if (!image || !CLUTTER_IS_IMAGE (image))
+        image = clutter_image_new ();
+      else
+        g_object_ref (image);
 
-      if (texdata)
+      clutter_image_set_data (CLUTTER_IMAGE (image),
+                              cairo_image_surface_get_data (surface),
+                              cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
+                              COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
+                              cairo_image_surface_get_width (surface),
+                              cairo_image_surface_get_height (surface),
+                              cairo_image_surface_get_stride (surface),
+                              &error);
+
+      if (image)
         {
-          clutter_texture_set_cogl_texture (bind->texture, texdata);
-          cogl_object_unref (texdata);
+          clutter_actor_set_content (bind->actor, image);
+          g_object_unref (image);
         }
       else if (error)
         {
           g_warning ("Failed to allocate texture: %s", error->message);
-          cogl_error_free (error);
+          g_error_free (error);
         }
 
-      clutter_actor_set_opacity (CLUTTER_ACTOR (bind->texture), 255);
+      clutter_actor_set_opacity (bind->actor, 255);
     }
   else
-    clutter_actor_set_opacity (CLUTTER_ACTOR (bind->texture), 0);
+    clutter_actor_set_opacity (bind->actor, 0);
 }
 
 static void
@@ -703,7 +706,7 @@ st_texture_cache_free_bind (gpointer data)
 {
   StTextureCachePropertyBind *bind = data;
   if (bind->weakref_active)
-    g_object_weak_unref (G_OBJECT(bind->texture), st_texture_cache_bind_weak_notify, bind);
+    g_object_weak_unref (G_OBJECT (bind->actor), st_texture_cache_bind_weak_notify, bind);
   g_free (bind);
 }
 
@@ -727,17 +730,17 @@ st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                               GObject           *object,
                                               const char        *property_name)
 {
-  ClutterTexture *texture;
+  ClutterActor *actor;
   gchar *notify_key;
   StTextureCachePropertyBind *bind;
 
-  texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  actor = clutter_actor_new ();
 
   bind = g_new0 (StTextureCachePropertyBind, 1);
   bind->cache = cache;
-  bind->texture = texture;
+  bind->actor = actor;
   bind->source = object;
-  g_object_weak_ref (G_OBJECT (texture), st_texture_cache_bind_weak_notify, bind);
+  g_object_weak_ref (G_OBJECT (actor), st_texture_cache_bind_weak_notify, bind);
   bind->weakref_active = TRUE;
 
   st_texture_cache_reset_texture (bind, property_name);
@@ -747,7 +750,7 @@ st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                                   bind, (GClosureNotify)st_texture_cache_free_bind, 0);
   g_free (notify_key);
 
-  return CLUTTER_ACTOR(texture);
+  return actor;
 }
 
 /**
@@ -802,25 +805,25 @@ st_texture_cache_load (StTextureCache       *cache,
  * is already a request pending, append it to that request to avoid loading
  * the data multiple times.
  *
- * Returns: %TRUE iff there is already a request pending
+ * Returns: %TRUE if there is already a request pending
  */
 static gboolean
 ensure_request (StTextureCache        *cache,
                 const char            *key,
                 StTextureCachePolicy   policy,
                 AsyncTextureLoadData **request,
-                ClutterActor          *texture)
+                ClutterActor          *actor)
 {
-  CoglTexture *texdata;
+  ClutterContent *image;
   AsyncTextureLoadData *pending;
   gboolean had_pending;
 
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  image = g_hash_table_lookup (cache->priv->keyed_cache, key);
 
-  if (texdata != NULL)
+  if (image != NULL)
     {
       /* We had this cached already, just set the texture and we're done. */
-      set_texture_cogl_texture (CLUTTER_TEXTURE (texture), texdata);
+      set_content_from_image (actor, image);
       return TRUE;
     }
 
@@ -838,7 +841,7 @@ ensure_request (StTextureCache        *cache,
    *request = pending;
 
   /* Regardless of whether there was a pending request, prepend our texture here. */
-  (*request)->textures = g_slist_prepend ((*request)->textures, g_object_ref (texture));
+  (*request)->actors = g_slist_prepend ((*request)->actors, g_object_ref (actor));
 
   return had_pending;
 }
@@ -866,7 +869,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                              gint               scale)
 {
   AsyncTextureLoadData *request;
-  ClutterActor *texture;
+  ClutterActor *actor;
   char *gicon_string;
   char *key;
   GtkIconTheme *theme;
@@ -925,10 +928,10 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     }
   g_free (gicon_string);
 
-  texture = (ClutterActor *) create_default_texture ();
-  clutter_actor_set_size (texture, size * scale, size * scale);
+  actor = create_invisible_actor ();
+  clutter_actor_set_size (actor, size * scale, size * scale);
 
-  if (ensure_request (cache, key, policy, &request, texture))
+  if (ensure_request (cache, key, policy, &request, actor))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
       g_object_unref (info);
@@ -950,27 +953,24 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       load_texture_async (cache, request);
     }
 
-  return CLUTTER_ACTOR (texture);
+  return actor;
 }
 
 static ClutterActor *
 load_from_pixbuf (GdkPixbuf *pixbuf)
 {
-  ClutterTexture *texture;
-  CoglTexture *texdata;
+  g_autoptr(ClutterContent) image = NULL;
+  ClutterActor *actor;
   int width = gdk_pixbuf_get_width (pixbuf);
   int height = gdk_pixbuf_get_height (pixbuf);
 
-  texture = create_default_texture ();
+  image = pixbuf_to_clutter_image (pixbuf);
 
-  clutter_actor_set_size (CLUTTER_ACTOR (texture), width, height);
+  actor = clutter_actor_new ();
+  clutter_actor_set_size (actor, width, height);
+  clutter_actor_set_content (actor, image);
 
-  texdata = pixbuf_to_cogl_texture (pixbuf);
-
-  set_texture_cogl_texture (texture, texdata);
-
-  cogl_object_unref (texdata);
-  return CLUTTER_ACTOR (texture);
+  return actor;
 }
 
 static void
@@ -1218,7 +1218,7 @@ st_texture_cache_load_file_async (StTextureCache *cache,
                                   int             available_height,
                                   int             scale)
 {
-  ClutterActor *texture;
+  ClutterActor *actor;
   AsyncTextureLoadData *request;
   StTextureCachePolicy policy;
   gchar *key;
@@ -1227,9 +1227,9 @@ st_texture_cache_load_file_async (StTextureCache *cache,
 
   policy = ST_TEXTURE_CACHE_POLICY_NONE; /* XXX */
 
-  texture = (ClutterActor *) create_default_texture ();
+  actor = create_invisible_actor ();
 
-  if (ensure_request (cache, key, policy, &request, texture))
+  if (ensure_request (cache, key, policy, &request, actor))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
       g_free (key);
@@ -1252,7 +1252,7 @@ st_texture_cache_load_file_async (StTextureCache *cache,
 
   ensure_monitor_for_file (cache, file);
 
-  return CLUTTER_ACTOR (texture);
+  return actor;
 }
 
 static CoglTexture *
@@ -1264,34 +1264,37 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
                                                  int             scale,
                                                  GError         **error)
 {
+  ClutterContent *image;
   CoglTexture *texdata;
   GdkPixbuf *pixbuf;
   char *key;
 
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u", g_file_hash (file));
 
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  texdata = NULL;
+  image = g_hash_table_lookup (cache->priv->keyed_cache, key);
 
-  if (texdata == NULL)
+  if (image == NULL)
     {
       pixbuf = impl_load_pixbuf_file (file, available_width, available_height, scale, error);
       if (!pixbuf)
         goto out;
 
-      texdata = pixbuf_to_cogl_texture (pixbuf);
+      image = pixbuf_to_clutter_image (pixbuf);
       g_object_unref (pixbuf);
 
-      if (!texdata)
+      if (!image)
         goto out;
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-        {
-          cogl_object_ref (texdata);
-          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
-        }
+        g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
     }
-  else
-    cogl_object_ref (texdata);
+
+  /* Because the texture is loaded synchronously, we won't call
+   * clutter_image_set_data(), so it's safe to use the texture
+   * of ClutterImage here. */
+  texdata = clutter_image_get_texture (CLUTTER_IMAGE (image));
+  cogl_object_ref (texdata);
 
   ensure_monitor_for_file (cache, file);
 
