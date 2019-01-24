@@ -528,20 +528,30 @@ finish_texture_load (AsyncTextureLoadData *data,
   if (pixbuf == NULL)
     goto out;
 
-  image = pixbuf_to_clutter_image (pixbuf);
-  if (!image)
-    goto out;
-
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
     {
-      gpointer orig_key, value;
+      gpointer orig_key = NULL, value = NULL;
 
       if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
                                          &orig_key, &value))
         {
+          image = pixbuf_to_clutter_image (pixbuf);
+          if (!image)
+            goto out;
+
           g_hash_table_insert (cache->priv->keyed_cache, g_strdup (data->key),
                                g_object_ref (image));
         }
+      else
+        {
+          image = g_object_ref (value);
+        }
+    }
+  else
+    {
+      image = pixbuf_to_clutter_image (pixbuf);
+      if (!image)
+        goto out;
     }
 
   for (iter = data->actors; iter; iter = iter->next)
