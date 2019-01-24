@@ -7,6 +7,7 @@ const AppDisplay = imports.ui.appDisplay;
 const IconGrid = imports.ui.iconGrid;
 const InternetSearch = imports.ui.internetSearch;
 const Main = imports.ui.main;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const RemoteSearch = imports.ui.remoteSearch;
 const Util = imports.misc.util;
 
@@ -451,6 +452,12 @@ var SearchResultsView = GObject.registerClass({
     _init() {
         super._init({ name: 'searchResults', vertical: true });
 
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('app-filter-changed', () => {
+            this._reloadInternetProviders();
+            this._reloadRemoteProviders();
+        });
+
         let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic' });
         let closeButton = new St.Button({
             name: 'searchResultsCloseButton',
@@ -548,6 +555,16 @@ var SearchResultsView = GObject.registerClass({
         return this._terms;
     }
 
+    _reloadInternetProviders() {
+        if (this._internetProvider)
+            this._unregisterProvider(this._internetProvider);
+
+        this._internetProvider = InternetSearch.getInternetSearchProvider();
+
+        if (this._internetProvider)
+            this._registerProvider(this._internetProvider);
+    }
+
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
         remoteProviders.forEach(provider => {
@@ -561,6 +578,12 @@ var SearchResultsView = GObject.registerClass({
 
     _registerProvider(provider) {
         provider.searchInProgress = false;
+
+        // Filter out unwanted providers.
+        if (provider.appInfo &&
+            !this._parentalControlsManager.shouldShowApp(provider.appInfo))
+            return;
+
         this._providers.push(provider);
         this._ensureProviderDisplay(provider);
     }
