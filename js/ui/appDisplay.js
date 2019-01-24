@@ -679,9 +679,6 @@ var FrequentView = class FrequentView extends BaseAppView {
         });
 
         this._parentalControlsManager = ParentalControlsManager.getDefault();
-        this._parentalControlsManager.connect('initialized', () => {
-            this._redisplay();
-        });
     }
 
     hasUsefulData() {
@@ -974,9 +971,6 @@ var AppSearchProvider = class AppSearchProvider {
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
         let results = [];
-
-        // FIXME: Technically we should yield until parentalControlsManager.initialized
-        // but in practice this works.
         let parentalControlsManager = ParentalControlsManager.getDefault();
 
         groups.forEach(group => {
