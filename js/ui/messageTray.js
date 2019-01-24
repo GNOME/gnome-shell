@@ -1320,7 +1320,7 @@ var MessageTray = new Lang.Class({
         this._bannerBin.y = -this._banner.actor.height;
         this.actor.show();
 
-        Meta.disable_unredirect_for_display(global.display);
+        Meta.disable_unredirect_for_screen(global.screen);
         this._updateShowingNotification();
 
         let [x, y, mods] = global.get_pointer();
@@ -1458,7 +1458,7 @@ var MessageTray = new Lang.Class({
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;
-        Meta.enable_unredirect_for_display(global.display);
+        Meta.enable_unredirect_for_screen(global.screen);
 
         this._banner.actor.destroy();
         this._banner = null;
