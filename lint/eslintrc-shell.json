@@ -1,0 +1,15 @@
+{
+    "overrides": [
+        {
+            "files": "js/**",
+            "excludedFiles": ["js/extensionPrefs/*", "js/portalHelper/*"],
+            "globals": {
+                "global": false,
+                "_": false,
+                "C_": false,
+                "N_": false,
+                "ngettext": false
+            }
+        }
+    ]
+}

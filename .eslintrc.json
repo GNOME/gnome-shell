@@ -1,5 +1,6 @@
 {
     "extends": [
-        "./lint/eslintrc-gjs.json"
+        "./lint/eslintrc-gjs.json",
+        "./lint/eslintrc-shell.json"
     ]
 }
