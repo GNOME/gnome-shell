@@ -52,5 +52,6 @@
     <file preprocess="xml-stripblanks">org.gtk.Notifications.xml</file>
     <file preprocess="xml-stripblanks">org.mpris.MediaPlayer2.Player.xml</file>
     <file preprocess="xml-stripblanks">org.mpris.MediaPlayer2.xml</file>
+    <file preprocess="xml-stripblanks">org.usbguard.xml</file>
   </gresource>
 </gresources>

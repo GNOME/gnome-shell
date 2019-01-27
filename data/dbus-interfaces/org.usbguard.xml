@@ -1,0 +1,23 @@
+<node>
+  <interface name="org.usbguard">
+    <method name="getParameter">
+      <arg name="name" direction="in" type="s"/>
+      <arg name="value" direction="out" type="s"/>
+    </method>
+    <method name="setParameter">
+      <arg name="name" direction="in" type="s"/>
+      <arg name="value" direction="in" type="s"/>
+      <arg name="previous_value" direction="out" type="s"/>
+    </method>
+    <signal name="PropertyParameterChanged">
+      <arg name="name" direction="out" type="s"/>
+      <arg name="value_old" direction="out" type="s"/>
+      <arg name="value_new" direction="out" type="s"/>
+    </signal>
+    <signal name="ExceptionMessage">
+      <arg name="context" direction="out" type="s"/>
+      <arg name="object" direction="out" type="s"/>
+      <arg name="reason" direction="out" type="s"/>
+    </signal>
+  </interface>
+</node>
