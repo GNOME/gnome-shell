@@ -1,0 +1,16 @@
+stages:
+ - source_check
+
+variables:
+    JS_LOG: "js-report.txt"
+
+js_check:
+    image: registry.gitlab.gnome.org/gnome/gjs:fedora.static-analysis
+    stage: source_check
+    script:
+        - find js -name '*.js' -exec js -c -s '{}' ';' 2>&1 | tee $JS_LOG
+        - ! grep -q . $JS_LOG
+    artifacts:
+        paths:
+            - ${JS_LOG}
+        when: on_failure
