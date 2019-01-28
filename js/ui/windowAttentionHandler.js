@@ -66,9 +66,9 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
         this.signalIDs.push(this._window.connect('notify::urgent',
                                                  this._sync.bind(this)));
         this.signalIDs.push(this._window.connect('focus',
-                                                 () => { this.destroy(); }));
+                                                 () => this.destroy()));
         this.signalIDs.push(this._window.connect('unmanaged',
-                                                 () => { this.destroy(); }));
+                                                 () => this.destroy()));
     }
 
     _sync() {

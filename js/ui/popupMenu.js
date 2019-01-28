@@ -1134,7 +1134,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
 
         this.menu = new PopupSubMenu(this, this._triangle);
         this.menu.connect('open-state-changed', this._subMenuOpenStateChanged.bind(this));
-        this.connect('destroy', () => { this.menu.destroy(); });
+        this.connect('destroy', () => this.menu.destroy());
     }
 
     _setParent(parent) {

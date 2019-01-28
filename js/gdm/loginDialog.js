@@ -259,7 +259,7 @@ var UserList = class {
         item.connect('activate', this._onItemActivated.bind(this));
 
         // Try to keep the focused item front-and-center
-        item.actor.connect('key-focus-in', () => { this.scrollToItem(item); });
+        item.actor.connect('key-focus-in', () => this.scrollToItem(item));
 
         this._moveFocusToItems();
 
@@ -327,7 +327,7 @@ var SessionMenuButton = class {
                                                        { actionMode: Shell.ActionMode.NONE });
         this._manager.addMenu(this._menu);
 
-        this._button.connect('clicked', () => { this._menu.toggle(); });
+        this._button.connect('clicked', () => this._menu.toggle());
 
         this._items = {};
         this._activeSessionId = null;
@@ -955,7 +955,7 @@ var LoginDialog = GObject.registerClass({
     }
 
     _onSessionOpened(client, serviceName) {
-        this._authPrompt.finish(() => { this._startSession(serviceName); });
+        this._authPrompt.finish(() => this._startSession(serviceName));
     }
 
     _waitForItemForUser(userName) {
@@ -973,7 +973,7 @@ var LoginDialog = GObject.registerClass({
                     hold.release();
             });
 
-        hold.connect('release', () => { this._userList.disconnect(signalId); });
+        hold.connect('release', () => this._userList.disconnect(signalId));
 
         return hold;
     }

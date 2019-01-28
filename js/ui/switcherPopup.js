@@ -392,7 +392,7 @@ var SwitcherList = GObject.registerClass({
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('clicked', () => { this._onItemClicked(n); });
+        bbox.connect('clicked', () => this._onItemClicked(n));
         bbox.connect('motion-event', () => this._onItemEnter(n));
 
         bbox.label_actor = label;

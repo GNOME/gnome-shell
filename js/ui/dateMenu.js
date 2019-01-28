@@ -357,7 +357,7 @@ var MessagesIndicator = class MessagesIndicator {
         Main.messageTray.connect('queue-changed', this._updateCount.bind(this));
 
         let sources = Main.messageTray.getSources();
-        sources.forEach(source => { this._onSourceAdded(null, source); });
+        sources.forEach(source => this._onSourceAdded(null, source));
     }
 
     _onSourceAdded(tray, source) {
@@ -373,7 +373,7 @@ var MessagesIndicator = class MessagesIndicator {
 
     _updateCount() {
         let count = 0;
-        this._sources.forEach(source => { count += source.unseenCount; });
+        this._sources.forEach(source => count += source.unseenCount);
         count -= Main.messageTray.queueCount;
 
         this.actor.visible = (count > 0);
@@ -384,8 +384,8 @@ var IndicatorPad = GObject.registerClass(
 class IndicatorPad extends St.Widget {
     _init(actor) {
         this._source = actor;
-        this._source.connect('notify::visible', () => { this.queue_relayout(); });
-        this._source.connect('notify::size', () => { this.queue_relayout(); });
+        this._source.connect('notify::visible', () => this.queue_relayout());
+        this._source.connect('notify::size', () => this.queue_relayout());
         super._init();
     }
 

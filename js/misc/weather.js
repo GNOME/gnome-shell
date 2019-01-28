@@ -68,7 +68,7 @@ var WeatherClient = class {
 
         this._weatherAppMon = new Util.AppSettingsMonitor('org.gnome.Weather.desktop',
                                                           'org.gnome.Weather');
-        this._weatherAppMon.connect('available-changed', () => { this.emit('changed'); });
+        this._weatherAppMon.connect('available-changed', () => this.emit('changed'));
         this._weatherAppMon.watchSetting('automatic-location',
                                          this._onAutomaticLocationChanged.bind(this));
         this._weatherAppMon.watchSetting('locations',

@@ -264,7 +264,7 @@ class WebPortalHelper extends Gtk.Application {
         this._queue = [];
 
         let action = new Gio.SimpleAction({ name: 'quit' });
-        action.connect('activate', () => { this.active_window.destroyWindow(); });
+        action.connect('activate', () => this.active_window.destroyWindow());
         this.add_action(action);
     }
 

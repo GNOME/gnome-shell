@@ -119,7 +119,7 @@ var IBusManager = class {
                 if (!GLib.str_has_suffix(path, '/InputContext_1'))
                     this.emit ('focus-in');
             });
-            this._panelService.connect('focus-out', () => { this.emit('focus-out'); });
+            this._panelService.connect('focus-out', () => this.emit('focus-out'));
 
             try {
                 // IBus versions older than 1.5.10 have a bug which
