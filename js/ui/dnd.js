@@ -226,7 +226,7 @@ var _Draggable = class _Draggable {
         }
 
         return false;
-    },
+    }
 
     _onEvent(actor, event) {
         let device = event.get_device();
