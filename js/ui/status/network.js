@@ -270,7 +270,7 @@ var NMConnectionSection = class NMConnectionSection {
         if (!item)
             return;
 
-        item.connect('icon-changed', () => { this._iconChanged(); });
+        item.connect('icon-changed', () => this._iconChanged());
         item.connect('activation-failed', (item, reason) => {
             this.emit('activation-failed', reason);
         });
@@ -630,9 +630,9 @@ var NMWirelessDialogItem = GObject.registerClass({
                       can_focus: true,
                       reactive: true });
 
-        this.connect('key-focus-in', () => { this.emit('selected'); });
+        this.connect('key-focus-in', () => this.emit('selected'));
         let action = new Clutter.ClickAction();
-        action.connect('clicked', () => { this.grab_key_focus(); });
+        action.connect('clicked', () => this.grab_key_focus());
         this.add_action(action);
 
         let title = ssidToLabel(this._ap.get_ssid());
@@ -1675,7 +1675,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                                                   'network-transmit-receive');
             this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
-            this._source.connect('destroy', () => { this._source = null; });
+            this._source.connect('destroy', () => this._source = null);
             Main.messageTray.add(this._source);
         }
     }

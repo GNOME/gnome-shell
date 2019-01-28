@@ -146,7 +146,7 @@ var AccessDialogDBus = class {
                                       subtitle, body, options);
         dialog.open();
 
-        dialog.connect('closed', () => { this._accessDialog = null; });
+        dialog.connect('closed', () => this._accessDialog = null);
 
         this._accessDialog = dialog;
     }

@@ -26,7 +26,7 @@ function _setButtonsForChoices(dialog, choices) {
     for (let idx = 0; idx < choices.length; idx++) {
         let button = idx;
         buttons.unshift({ label: choices[idx],
-                          action: () => { dialog.emit('response', button); }
+                          action: () => dialog.emit('response', button)
                         });
     }
 

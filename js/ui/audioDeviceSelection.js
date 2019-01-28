@@ -159,7 +159,7 @@ var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
 
         let [deviceNames] = params;
         let devices = 0;
-        deviceNames.forEach(n => { devices |= AudioDevice[n.toUpperCase()]; });
+        deviceNames.forEach(n => devices |= AudioDevice[n.toUpperCase()]);
 
         let dialog;
         try {

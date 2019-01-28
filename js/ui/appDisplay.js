@@ -143,7 +143,7 @@ class BaseAppView {
 
     loadGrid() {
         this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => { this._grid.addItem(item); });
+        this._allItems.forEach(item => this._grid.addItem(item));
         this.emit('view-loaded');
     }
 
@@ -212,7 +212,7 @@ class BaseAppView {
         } else {
             params.opacity = 0;
             params.delay = 0;
-            params.onComplete = () => { this.actor.hide(); };
+            params.onComplete = () => this.actor.hide();
         }
 
         Tweener.addTween(this._grid, params);
@@ -285,7 +285,7 @@ var AllView = class AllView extends BaseAppView {
         this._availWidth = 0;
         this._availHeight = 0;
 
-        Main.overview.connect('hidden', () => { this.goToPage(0); });
+        Main.overview.connect('hidden', () => this.goToPage(0));
         this._grid.connect('space-opened', () => {
             let fadeEffect = this._scrollView.get_effect('fade');
             if (fadeEffect)
@@ -1299,7 +1299,7 @@ var AppFolderPopup = class AppFolderPopup {
 
         global.focus_manager.add_group(this.actor);
 
-        source.actor.connect('destroy', () => { this.actor.destroy(); });
+        source.actor.connect('destroy', () => this.actor.destroy());
         this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
             actionMode: Shell.ActionMode.POPUP
         });

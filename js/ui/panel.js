@@ -862,7 +862,7 @@ class Panel extends St.Widget {
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
-        global.display.connect('workareas-changed', () => { this.queue_relayout(); });
+        global.display.connect('workareas-changed', () => this.queue_relayout());
         this._updatePanel();
     }
 

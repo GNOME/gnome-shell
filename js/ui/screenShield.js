@@ -529,9 +529,9 @@ var ScreenShield = class {
         this._loginManager.getCurrentSessionProxy(sessionProxy => {
             this._loginSession = sessionProxy;
             this._loginSession.connectSignal('Lock',
-                                             () => { this.lock(false); });
+                                             () => this.lock(false));
             this._loginSession.connectSignal('Unlock',
-                                             () => { this.deactivate(false); });
+                                             () => this.deactivate(false));
             this._loginSession.connect('g-properties-changed', this._syncInhibitor.bind(this));
             this._syncInhibitor();
         });
@@ -1177,7 +1177,7 @@ var ScreenShield = class {
 
     deactivate(animate) {
         if (this._dialog)
-            this._dialog.finish(() => { this._continueDeactivate(animate); });
+            this._dialog.finish(() => this._continueDeactivate(animate));
         else
             this._continueDeactivate(animate);
     }

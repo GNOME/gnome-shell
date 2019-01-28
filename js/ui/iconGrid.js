@@ -402,7 +402,7 @@ var IconGrid = GObject.registerClass({
     }
 
     _cancelAnimation() {
-        this._clonesAnimating.forEach(clone => { clone.destroy(); });
+        this._clonesAnimating.forEach(clone => clone.destroy());
         this._clonesAnimating = [];
     }
 
@@ -967,7 +967,7 @@ var PaginatedIconGrid = GObject.registerClass({
                            transition: 'easeInOutQuad'
                          };
             if (i == (children.length - 1))
-                params.onComplete = () => { this.emit('space-opened'); };
+                params.onComplete = () => this.emit('space-opened');
             Tweener.addTween(children[i], params);
         }
     }
@@ -985,7 +985,7 @@ var PaginatedIconGrid = GObject.registerClass({
                              { translation_y: 0,
                                time: EXTRA_SPACE_ANIMATION_TIME,
                                transition: 'easeInOutQuad',
-                               onComplete: () => { this.emit('space-closed'); }
+                               onComplete: () => this.emit('space-closed')
                              });
         }
     }
