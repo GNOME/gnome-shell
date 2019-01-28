@@ -3,7 +3,8 @@
         "object-curly-spacing": [
             "error",
             "always"
-        ]
+        ],
+        "prefer-arrow-callback": "error"
     },
 
     "overrides": [
