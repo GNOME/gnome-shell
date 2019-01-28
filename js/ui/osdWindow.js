@@ -21,7 +21,7 @@ var LevelBar = class extends BarLevel.BarLevel {
 
         this.actor.accessible_name = _("Volume");
 
-        this.actor.connect('notify::width', () => { this.level = this.level; });
+        this.actor.connect('notify::width', () => this.level = this.level);
     }
 
     get level() {

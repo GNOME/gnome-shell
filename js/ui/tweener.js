@@ -43,7 +43,7 @@ function _wrapTweening(target, tweeningParameters) {
             state.destroyedId = target.connect('destroy', _actorDestroyed);
         } else if (target.actor && target.actor instanceof Clutter.Actor) {
             state.actor = target.actor;
-            state.destroyedId = target.actor.connect('destroy', () => { _actorDestroyed(target); });
+            state.destroyedId = target.actor.connect('destroy', () => _actorDestroyed(target));
         }
     }
 
@@ -86,7 +86,7 @@ function _addHandler(target, params, name, handler) {
             handler(target);
         };
     } else {
-        params[name] = () => { handler(target); };
+        params[name] = () => handler(target);
     }
 }
 

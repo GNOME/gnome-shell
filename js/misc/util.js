@@ -288,7 +288,7 @@ function createTimeLabel(date, params) {
     let id = _desktopSettings.connect('changed::clock-format', () => {
         label.text = formatTime(date, params);
     });
-    label.connect('destroy', () => { _desktopSettings.disconnect(id); });
+    label.connect('destroy', () => _desktopSettings.disconnect(id));
     return label;
 }
 
@@ -492,13 +492,13 @@ var AppSettingsMonitor = class {
     }
 
     _setSettings(settings) {
-        this._handlers.forEach((handler) => { this._disconnectHandler(handler); });
+        this._handlers.forEach((handler) => this._disconnectHandler(handler));
 
         let hadSettings = (this._settings != null);
         this._settings = settings;
         let haveSettings = (this._settings != null);
 
-        this._handlers.forEach((handler) => { this._connectHandler(handler); });
+        this._handlers.forEach((handler) => this._connectHandler(handler));
 
         if (hadSettings != haveSettings)
             this.emit('available-changed');

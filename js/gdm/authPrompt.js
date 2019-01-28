@@ -138,7 +138,7 @@ var AuthPrompt = class {
                                             reactive: true,
                                             can_focus: true,
                                             label: _("Cancel") });
-        this.cancelButton.connect('clicked', () => { this.cancel(); });
+        this.cancelButton.connect('clicked', () => this.cancel());
         this._buttonBox.add(this.cancelButton,
                             { expand: false,
                               x_fill: false,
@@ -157,7 +157,7 @@ var AuthPrompt = class {
                                           reactive: true,
                                           can_focus: true,
                                           label: _("Next") });
-        this.nextButton.connect('clicked', () => { this.emit('next'); });
+        this.nextButton.connect('clicked', () => this.emit('next'));
         this.nextButton.add_style_pseudo_class('default');
         this._buttonBox.add(this.nextButton,
                             { expand: false,

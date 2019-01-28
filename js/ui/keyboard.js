@@ -862,7 +862,7 @@ var EmojiSelection = class EmojiSelection {
                                         x_expand: true,
                                         y_expand: true,
                                         vertical: true });
-        this.actor.connect('notify::mapped', () => { this._emojiPager.setCurrentPage(0); });
+        this.actor.connect('notify::mapped', () => this._emojiPager.setCurrentPage(0));
 
         this._emojiPager = new EmojiPager(this._sections, 11, 3);
         this._emojiPager.connect('page-changed', (pager, section, page, nPages) => {
@@ -944,14 +944,14 @@ var EmojiSelection = class EmojiSelection {
 
         key = new Key('ABC', []);
         key.keyButton.add_style_class_name('default-key');
-        key.connect('released', () => { this.emit('toggle'); });
+        key.connect('released', () => this.emit('toggle'));
         row.appendKey(key.actor, 1.5);
 
         for (let i = 0; i < this._sections.length; i++) {
             let section = this._sections[i];
 
             key = new Key(section.label, []);
-            key.connect('released', () => { this._emojiPager.setCurrentSection(section, 0); });
+            key.connect('released', () => this._emojiPager.setCurrentSection(section, 0));
             row.appendKey(key.actor);
 
             section.button = key;
@@ -1171,7 +1171,7 @@ var Keyboard = class Keyboard {
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('hide', (selection) => { this.hide(); });
+        this._emojiSelection.connect('hide', (selection) => this.hide());
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });

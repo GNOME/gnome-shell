@@ -98,7 +98,7 @@ var Manager = class {
         Service(Gio.DBus.system,
                 'org.freedesktop.realmd',
                 '/org/freedesktop/realmd',
-                service => { service.ReleaseRemote(); });
+                service => service.ReleaseRemote());
         this._aggregateProvider.disconnect(this._signalId);
         this._realms = { };
         this._updateLoginFormat();
