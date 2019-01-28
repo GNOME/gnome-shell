@@ -146,8 +146,8 @@ var Notebook = class Notebook {
         this.actor.add(scrollview, { expand: true });
 
         let vAdjust = scrollview.vscroll.adjustment;
-        vAdjust.connect('changed', () => { this._onAdjustScopeChanged(tabData); });
-        vAdjust.connect('notify::value', () => { this._onAdjustValueChanged(tabData); });
+        vAdjust.connect('changed', () => this._onAdjustScopeChanged(tabData));
+        vAdjust.connect('notify::value', () => this._onAdjustValueChanged(tabData));
 
         if (this._selectedIndex == -1)
             this.selectIndex(0);
@@ -1007,7 +1007,7 @@ var LookingGlass = class LookingGlass {
     }
 
     _queueResize() {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => { this._resize(); });
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => this._resize());
     }
 
     _resize() {

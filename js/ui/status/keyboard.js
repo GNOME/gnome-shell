@@ -875,7 +875,7 @@ class InputSourceIndicator extends PanelMenu.Button {
             let is = this._inputSourceManager.inputSources[i];
 
             let menuItem = new LayoutMenuItem(is.displayName, is.shortName);
-            menuItem.connect('activate', () => { is.activate(true); });
+            menuItem.connect('activate', () => is.activate(true));
 
             let indicatorLabel = new St.Label({ text: is.shortName,
                                                 visible: false });

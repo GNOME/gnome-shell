@@ -34,14 +34,14 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._enableInternalCommands = global.settings.get_boolean('development-tools');
 
         this._internalCommands = {
-            'lg': () => { Main.createLookingGlass().open(); },
+            'lg': () => Main.createLookingGlass().open(),
 
             'r': this._restart.bind(this),
 
             // Developer brain backwards compatibility
             'restart': this._restart.bind(this),
 
-            'debugexit': () => { Meta.quit(Meta.ExitCode.ERROR); },
+            'debugexit': () => Meta.quit(Meta.ExitCode.ERROR),
 
             // rt is short for "reload theme"
             'rt': () => {

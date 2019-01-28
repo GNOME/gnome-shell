@@ -143,26 +143,26 @@ const SystemActions = GObject.registerClass({
         this._userManager = AccountsService.UserManager.get_default();
 
         this._userManager.connect('notify::is-loaded',
-                                  () => { this._updateMultiUser(); });
+                                  () => this._updateMultiUser());
         this._userManager.connect('notify::has-multiple-users',
-                                  () => { this._updateMultiUser(); });
+                                  () => this._updateMultiUser());
         this._userManager.connect('user-added',
-                                  () => { this._updateMultiUser(); });
+                                  () => this._updateMultiUser());
         this._userManager.connect('user-removed',
-                                  () => { this._updateMultiUser(); });
+                                  () => this._updateMultiUser());
 
         this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
-                                       () => { this._updateSwitchUser(); });
+                                       () => this._updateSwitchUser());
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
-                                       () => { this._updateLogout(); });
+                                       () => this._updateLogout());
         global.settings.connect('changed::' + ALWAYS_SHOW_LOG_OUT_KEY,
-                                () => { this._updateLogout(); });
+                                () => this._updateLogout());
 
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
-                                       () => { this._updateLockScreen(); });
+                                       () => this._updateLockScreen());
 
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
-                                       () => { this._updateHaveShutdown(); });
+                                       () => this._updateHaveShutdown());
 
         this.forceUpdate();
 
@@ -172,10 +172,10 @@ const SystemActions = GObject.registerClass({
                                               this._updateOrientationLockIcon();
                                           });
         Main.layoutManager.connect('monitors-changed',
-                                   () => { this._updateOrientationLock(); });
+                                   () => this._updateOrientationLock());
         Gio.DBus.system.watch_name(SENSOR_BUS_NAME,
                                    Gio.BusNameWatcherFlags.NONE,
-                                   () => { this._sensorProxyAppeared(); },
+                                   () => this._sensorProxyAppeared(),
                                    () => {
                                        this._sensorProxy = null;
                                        this._updateOrientationLock();
@@ -183,7 +183,7 @@ const SystemActions = GObject.registerClass({
         this._updateOrientationLock();
         this._updateOrientationLockIcon();
 
-        Main.sessionMode.connect('updated', () => { this._sessionUpdated(); });
+        Main.sessionMode.connect('updated', () => this._sessionUpdated());
         this._sessionUpdated();
     }
 
@@ -223,7 +223,7 @@ const SystemActions = GObject.registerClass({
                     return;
                 }
                 this._sensorProxy.connect('g-properties-changed',
-                                          () => { this._updateOrientationLock(); });
+                                          () => this._updateOrientationLock());
                 this._updateOrientationLock();
             });
     }
@@ -265,7 +265,7 @@ const SystemActions = GObject.registerClass({
 
     getMatchingActions(terms) {
         // terms is a list of strings
-        terms = terms.map((term) => { return term.toLowerCase(); });
+        terms = terms.map((term) => term.toLowerCase());
 
         let results = [];
 

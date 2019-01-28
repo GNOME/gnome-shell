@@ -15,13 +15,13 @@ var AltSwitcher = class {
         this._standard.connect('notify::visible', this._sync.bind(this));
         if (this._standard instanceof St.Button)
             this._standard.connect('clicked',
-                                   () => { this._clickAction.release(); });
+                                   () => this._clickAction.release());
 
         this._alternate = alternate;
         this._alternate.connect('notify::visible', this._sync.bind(this));
         if (this._alternate instanceof St.Button)
             this._alternate.connect('clicked',
-                                    () => { this._clickAction.release(); });
+                                    () => this._clickAction.release());
 
         this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
 
@@ -32,7 +32,7 @@ var AltSwitcher = class {
 
         this.actor = new St.Bin();
         this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('notify::mapped', () => { this._flipped = false; });
+        this.actor.connect('notify::mapped', () => this._flipped = false);
     }
 
     _sync() {
@@ -117,9 +117,9 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._createSubMenu();
 
         this._loginScreenItem.connect('notify::visible',
-                                      () => { this._updateMultiUser(); });
+                                      () => this._updateMultiUser());
         this._logoutItem.connect('notify::visible',
-                                 () => { this._updateMultiUser(); });
+                                 () => this._updateMultiUser());
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
@@ -303,13 +303,13 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
 
         this._settingsAction.connect('notify::visible',
-                                     () => { this._updateActionsVisibility(); });
+                                     () => this._updateActionsVisibility());
         this._orientationLockAction.connect('notify::visible',
-                                            () => { this._updateActionsVisibility(); });
+                                            () => this._updateActionsVisibility());
         this._lockScreenAction.connect('notify::visible',
-                                       () => { this._updateActionsVisibility(); });
+                                       () => this._updateActionsVisibility());
         this._altSwitcher.actor.connect('notify::visible',
-                                        () => { this._updateActionsVisibility(); });
+                                        () => this._updateActionsVisibility());
     }
 
     _onSettingsClicked() {

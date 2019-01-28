@@ -32,7 +32,7 @@ var CtrlAltTabManager = class CtrlAltTabManager {
         item.iconName = icon;
 
         this._items.push(item);
-        root.connect('destroy', () => { this.removeGroup(root); });
+        root.connect('destroy', () => this.removeGroup(root));
         if (root instanceof St.Widget)
             global.focus_manager.add_group(root);
     }

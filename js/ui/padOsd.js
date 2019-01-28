@@ -186,7 +186,7 @@ var ActionComboBox = class {
     }
 
     setButtonActionsActive(active) {
-        this._buttonItems.forEach(item => { item.setSensitive(active); });
+        this._buttonItems.forEach(item => item.setSensitive(active));
     }
 };
 Signals.addSignalMethods(ActionComboBox.prototype);

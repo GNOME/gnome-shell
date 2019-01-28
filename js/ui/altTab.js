@@ -395,7 +395,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: () => { this.thumbnailsVisible = true; }
+                           onComplete: () => this.thumbnailsVisible = true
                          });
 
         this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
@@ -843,7 +843,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         });
 
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
-        arrow.connect('repaint', () => { SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM); });
+        arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
         this.add_actor(arrow);
         this._arrows.push(arrow);
 

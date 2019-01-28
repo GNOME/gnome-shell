@@ -16,7 +16,7 @@ var EdgeDragAction = GObject.registerClass({
         this._allowedModes = allowedModes;
         this.set_n_touch_points(1);
 
-        global.display.connect('grab-op-begin', () => { this.cancel(); });
+        global.display.connect('grab-op-begin', () => this.cancel());
     }
 
     _getMonitorRect(x, y) {

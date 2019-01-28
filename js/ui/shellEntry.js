@@ -162,7 +162,7 @@ function addContextMenu(entry, params) {
         _onButtonPressEvent(actor, event, entry);
     });
 
-    entry.connect('popup-menu', actor => { _onPopup(actor, entry); });
+    entry.connect('popup-menu', actor => _onPopup(actor, entry));
 
     entry.connect('destroy', () => {
         entry.menu.destroy();
