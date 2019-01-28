@@ -15,6 +15,13 @@
                 "afterColon": true
             }
         ],
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "_$"
+            }
+        ],
         "object-curly-spacing": [
             "error",
             "always"
