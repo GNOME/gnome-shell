@@ -197,12 +197,14 @@ class ScaleLayout extends Clutter.BinLayout {
 });
 
 var LabelExpanderLayout = GObject.registerClass({
-    Properties: { 'expansion': GObject.ParamSpec.double('expansion',
-                                                        'Expansion',
-                                                        'Expansion of the layout, between 0 (collapsed) ' +
-                                                        'and 1 (fully expanded',
-                                                         GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                         0, 1, 0) },
+    Properties: {
+        'expansion': GObject.ParamSpec.double('expansion',
+                                              'Expansion',
+                                              'Expansion of the layout, between 0 (collapsed) ' +
+                                              'and 1 (fully expanded',
+                                              GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                              0, 1, 0)
+    },
 }, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
         this._expansion = 0;
