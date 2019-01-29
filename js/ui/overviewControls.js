@@ -410,7 +410,7 @@ var ControlsManager = class {
                                      x_expand: true, y_expand: true,
                                      clip_to_allocation: true });
         this._group = new St.BoxLayout({ name: 'overview-group',
-                                        x_expand: true, y_expand: true });
+                                         x_expand: true, y_expand: true });
         this.actor.add_actor(this._group);
 
         this.actor.add_actor(this._dashSlider.actor);

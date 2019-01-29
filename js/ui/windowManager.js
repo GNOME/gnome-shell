@@ -1314,16 +1314,16 @@ var WindowManager = class {
 
         if (actor.meta_window.is_monitor_sized()) {
             Tweener.addTween(actor,
-                         { opacity: 0,
-                           time: MINIMIZE_WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._minimizeWindowDone,
-                           onCompleteScope: this,
-                           onCompleteParams: [shellwm, actor],
-                           onOverwrite: this._minimizeWindowOverwritten,
-                           onOverwriteScope: this,
-                           onOverwriteParams: [shellwm, actor]
-                         });
+                             { opacity: 0,
+                               time: MINIMIZE_WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._minimizeWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._minimizeWindowOverwritten,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
         } else {
             let xDest, yDest, xScale, yScale;
             let [success, geom] = actor.meta_window.get_icon_geometry();
@@ -1395,16 +1395,16 @@ var WindowManager = class {
             actor.opacity = 0;
             actor.set_scale(1.0, 1.0);
             Tweener.addTween(actor,
-                         { opacity: 255,
-                           time: MINIMIZE_WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._unminimizeWindowDone,
-                           onCompleteScope: this,
-                           onCompleteParams: [shellwm, actor],
-                           onOverwrite: this._unminimizeWindowOverwritten,
-                           onOverwriteScope: this,
-                           onOverwriteParams: [shellwm, actor]
-                         });
+                             { opacity: 255,
+                               time: MINIMIZE_WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._unminimizeWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._unminimizeWindowOverwritten,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
         } else {
             let [success, geom] = actor.meta_window.get_icon_geometry();
             if (success) {
@@ -2172,7 +2172,7 @@ var WindowManager = class {
             if (window.is_always_on_all_workspaces() ||
                 (Meta.prefs_get_workspaces_only_on_primary() &&
                  window.get_monitor() != Main.layoutManager.primaryIndex))
-              return;
+                return;
         }
 
         if (target == 'last') {

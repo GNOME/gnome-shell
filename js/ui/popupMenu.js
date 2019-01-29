@@ -636,16 +636,16 @@ var PopupMenuBase = class {
         let i = 0;
 
         while (i < items.length && position > 0) {
-                if (items[i] != menuItem)
-                        position--;
-                i++;
+            if (items[i] != menuItem)
+                position--;
+            i++;
         }
 
         if (i < items.length) {
-                if (items[i] != menuItem)
-                        this.box.set_child_below_sibling(menuItem.actor, items[i].actor);
+            if (items[i] != menuItem)
+                this.box.set_child_below_sibling(menuItem.actor, items[i].actor);
         } else {
-                this.box.set_child_above_sibling(menuItem.actor, null);
+            this.box.set_child_above_sibling(menuItem.actor, null);
         }
     }
 

@@ -167,8 +167,10 @@ const SystemActions = GObject.registerClass({
         this.forceUpdate();
 
         this._orientationSettings.connect('changed::orientation-lock',
-                                          () => { this._updateOrientationLock();
-                                                  this._updateOrientationLockIcon(); });
+                                          () => {
+                                              this._updateOrientationLock();
+                                              this._updateOrientationLockIcon();
+                                          });
         Main.layoutManager.connect('monitors-changed',
                                    () => { this._updateOrientationLock(); });
         Gio.DBus.system.watch_name(SENSOR_BUS_NAME,

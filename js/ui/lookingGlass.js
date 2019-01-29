@@ -616,7 +616,7 @@ var Extensions = class Extensions {
         this.actor = new St.BoxLayout({ vertical: true,
                                         name: 'lookingGlassExtensions' });
         this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
-                                             text: _("No extensions installed") });
+                                            text: _("No extensions installed") });
         this._numExtensions = 0;
         this._extensionsList = new St.BoxLayout({ vertical: true,
                                                   style_class: 'lg-extensions-list' });
@@ -706,7 +706,7 @@ var Extensions = class Extensions {
     _createExtensionDisplay(extension) {
         let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
         let name = new St.Label({ style_class: 'lg-extension-name',
-                                   text: extension.metadata.name });
+                                  text: extension.metadata.name });
         box.add(name, { expand: true });
         let description = new St.Label({ style_class: 'lg-extension-description',
                                          text: extension.metadata.description || 'No description' });
@@ -813,15 +813,15 @@ var LookingGlass = class LookingGlass {
         toolbar.add_actor(gcIcon);
         gcIcon.reactive = true;
         gcIcon.connect('button-press-event', () => {
-           gcIcon.icon_name = 'user-trash';
-           System.gc();
-           this._timeoutId = Mainloop.timeout_add(500, () => {
+            gcIcon.icon_name = 'user-trash';
+            System.gc();
+            this._timeoutId = Mainloop.timeout_add(500, () => {
                 gcIcon.icon_name = 'user-trash-full';
                 this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
-           });
-           GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'user-trash-full\'');
-           return Clutter.EVENT_PROPAGATE;
+            });
+            GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'user-trash-full\'');
+            return Clutter.EVENT_PROPAGATE;
         });
 
         let notebook = new Notebook();

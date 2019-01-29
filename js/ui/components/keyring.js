@@ -162,7 +162,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
         // already open - it just returns true without side-effects
         if (this.open())
-          return true;
+            return true;
 
         // The above fail if e.g. unable to get input grab
         //

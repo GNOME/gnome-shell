@@ -469,14 +469,14 @@ var Magnifier = class Magnifier {
      * Get whether the crosshairs are clipped by the mouse image.
      * @return:   Whether the crosshairs are clipped.
      */
-     getCrosshairsClip() {
+    getCrosshairsClip() {
         if (this._crossHairs) {
             let [clipWidth, clipHeight] = this._crossHairs.getClip();
             return (clipWidth > 0 && clipHeight > 0);
         } else {
             return false;
         }
-     }
+    }
 
     //// Private methods ////
 
@@ -606,7 +606,7 @@ var Magnifier = class Magnifier {
         let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
         this.addCrosshairs();
         this.setCrosshairsVisible(showCrosshairs);
-   }
+    }
 
     _updateScreenPosition() {
         // Applies only to the first zoom region.
@@ -1628,7 +1628,7 @@ var Crosshairs = class Crosshairs {
         this.reCenter();
     }
 
-   /**
+    /**
     * addToZoomRegion
     * Either add the crosshairs actor to the given ZoomRegion, or, if it is
     * already part of some other ZoomRegion, create a clone of the crosshairs
@@ -1777,7 +1777,7 @@ var Crosshairs = class Crosshairs {
             this._clipSize = [0, 0];
             this.reCenter();
         }
-     }
+    }
 
     /**
      * show:
@@ -1918,8 +1918,8 @@ var MagShaderEffects = class MagShaderEffects {
         // a null first argument.
         let [bRed, bGreen, bBlue] = this._brightnessContrast.get_brightness();
         this._brightnessContrast.set_enabled(
-             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE ||
-             bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE
+            cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE ||
+            bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE
         );
     }
 };

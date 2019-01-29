@@ -46,11 +46,11 @@ var IntrospectService = class {
     }
 
     _isIntrospectEnabled() {
-       return this._settings.get_boolean(INTROSPECT_KEY);
+        return this._settings.get_boolean(INTROSPECT_KEY);
     }
 
     _isSenderWhitelisted(sender) {
-       return APP_WHITELIST.includes(sender);
+        return APP_WHITELIST.includes(sender);
     }
 
     _getSandboxedAppId(app) {

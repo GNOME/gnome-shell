@@ -186,8 +186,8 @@ for (let i = 0; i < testsModifyScope.length; i++) {
                         JsUnit.assertNotEquals("Code '" + base + "' is valid code", e.constructor, SyntaxError);
                     }
                 }
-           }
-       }
+            }
+        }
     }
     let propertyNames = Object.getOwnPropertyNames(obj);
     JsUnit.assertEquals("The context '" + JSON.stringify(obj) + "' was not modified", propertyNames.length, 0);

@@ -198,9 +198,9 @@ class ShowAppsIcon extends DashItemContainer {
                                             toggle_mode: true });
         this._iconActor = null;
         this.icon = new IconGrid.BaseIcon(_("Show Applications"),
-                                           { setSizeManually: true,
-                                             showLabel: false,
-                                             createIcon: this._createIcon.bind(this) });
+                                          { setSizeManually: true,
+                                            showLabel: false,
+                                            createIcon: this._createIcon.bind(this) });
         this.toggleButton.add_actor(this.icon);
         this.toggleButton._delegate = this;
 
@@ -648,10 +648,10 @@ var Dash = class Dash {
         let running = this._appSystem.get_running();
 
         let children = this._box.get_children().filter(actor => {
-                return actor.child &&
-                       actor.child._delegate &&
-                       actor.child._delegate.app;
-            });
+            return actor.child &&
+                   actor.child._delegate &&
+                   actor.child._delegate.app;
+        });
         // Apps currently in the dash
         let oldApps = children.map(actor => actor.child._delegate.app);
         // Apps supposed to be in the dash

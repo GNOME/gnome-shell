@@ -114,9 +114,9 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         // The icon label
         let label;
         if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
-          label = _("%d\u2009%%").format(100);
+            label = _("%d\u2009%%").format(100);
         else
-          label = _("%d\u2009%%").format(this._proxy.Percentage);
+            label = _("%d\u2009%%").format(this._proxy.Percentage);
         this._percentageLabel.clutter_text.set_markup('<span size="smaller">' + label + '</span>');
 
         // The status label

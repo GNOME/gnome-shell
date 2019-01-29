@@ -144,9 +144,9 @@ var URLHighlighter = class URLHighlighter {
         }
         if (findPos != -1) {
             for (let i = 0; i < this._urls.length; i++)
-            if (findPos >= this._urls[i].pos &&
-                this._urls[i].pos + this._urls[i].url.length > findPos)
-                return i;
+                if (findPos >= this._urls[i].pos &&
+                    this._urls[i].pos + this._urls[i].url.length > findPos)
+                    return i;
         }
         return -1;
     }

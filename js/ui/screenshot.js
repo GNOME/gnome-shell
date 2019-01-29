@@ -166,12 +166,12 @@ var ScreenshotService = class {
         selectArea.connect('finished', (selectArea, areaRectangle) => {
             if (areaRectangle) {
                 let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
-                    areaRectangle.width, areaRectangle.height);
+                                                     areaRectangle.width, areaRectangle.height);
                 let retval = GLib.Variant.new('(iiii)', retRectangle);
                 invocation.return_value(retval);
             } else {
                 invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                    "Operation was cancelled");
+                                                "Operation was cancelled");
             }
         });
     }
@@ -213,7 +213,7 @@ var ScreenshotService = class {
                 });
             } else {
                 invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                    "Operation was cancelled");
+                                                "Operation was cancelled");
             }
         });
     }

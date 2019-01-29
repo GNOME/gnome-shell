@@ -109,25 +109,23 @@ var AutomountManager = class {
         // we force stop/eject in this case, so we don't have to pass a
         // mount operation object
         if (drive.can_stop()) {
-            drive.stop
-                (Gio.MountUnmountFlags.FORCE, null, null,
-                 (drive, res) => {
-                     try {
-                         drive.stop_finish(res);
-                     } catch (e) {
-                         log("Unable to stop the drive after drive-eject-button " + e.toString());
-                     }
-                 });
+            drive.stop(Gio.MountUnmountFlags.FORCE, null, null,
+                (drive, res) => {
+                    try {
+                        drive.stop_finish(res);
+                    } catch (e) {
+                        log("Unable to stop the drive after drive-eject-button " + e.toString());
+                    }
+                });
         } else if (drive.can_eject()) {
-            drive.eject_with_operation 
-                (Gio.MountUnmountFlags.FORCE, null, null,
-                 (drive, res) => {
-                     try {
-                         drive.eject_with_operation_finish(res);
-                     } catch (e) {
-                         log("Unable to eject the drive after drive-eject-button " + e.toString());
-                     }
-                 });
+            drive.eject_with_operation(Gio.MountUnmountFlags.FORCE, null, null,
+                (drive, res) => {
+                    try {
+                        drive.eject_with_operation_finish(res);
+                    } catch (e) {
+                        log("Unable to eject the drive after drive-eject-button " + e.toString());
+                    }
+                });
         }
     }
 
