@@ -142,7 +142,7 @@ var Slider = class extends BarLevel.BarLevel {
         if (direction == Clutter.ScrollDirection.DOWN) {
             delta = -SLIDER_SCROLL_STEP;
         } else if (direction == Clutter.ScrollDirection.UP) {
-            delta = +SLIDER_SCROLL_STEP;
+            delta = SLIDER_SCROLL_STEP;
         } else if (direction == Clutter.ScrollDirection.SMOOTH) {
             let [dx, dy] = event.get_scroll_delta();
             // Even though the slider is horizontal, use dy to match

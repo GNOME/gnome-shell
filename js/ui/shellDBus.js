@@ -65,7 +65,7 @@ var GnomeShell = class {
                 returnValue = '';
             success = true;
         } catch (e) {
-            returnValue = '' + e;
+            returnValue = `${e}`;
             success = false;
         }
         return [success, returnValue];

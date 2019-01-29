@@ -658,7 +658,7 @@ function _queueBeforeRedraw(workId) {
  */
 function initializeDeferredWork(actor, callback, props) {
     // Turn into a string so we can use as an object property
-    let workId = '' + (++_deferredWorkSequence);
+    let workId = `${(++_deferredWorkSequence)}`;
     _deferredWorkData[workId] = { 'actor': actor,
                                   'callback': callback };
     actor.connect('notify::mapped', () => {

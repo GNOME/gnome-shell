@@ -105,7 +105,7 @@ var BarLevel = class {
             overdriveSeparatorWidth = themeNode.get_length('-barlevel-overdrive-separator-width');
 
         /* background bar */
-        cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
+        cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
         cr.lineTo(endX, (height + barLevelHeight) / 2);
         cr.lineTo(endX, (height - barLevelHeight) / 2);
         cr.lineTo(width - barLevelBorderRadius - barLevelBorderWidth, (height - barLevelHeight) / 2);
@@ -117,7 +117,7 @@ var BarLevel = class {
 
         /* normal progress bar */
         let x = Math.min(endX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
-        cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * 1 / 4, TAU * 3 / 4);
+        cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
         cr.lineTo(x, (height - barLevelHeight) / 2);
         cr.lineTo(x, (height + barLevelHeight) / 2);
         cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
@@ -149,7 +149,7 @@ var BarLevel = class {
               Clutter.cairo_set_source_color(cr, barLevelActiveColor);
           else
               Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
-          cr.arc(endX, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
+          cr.arc(endX, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
           cr.lineTo(Math.floor(endX), (height + barLevelHeight) / 2);
           cr.lineTo(Math.floor(endX), (height - barLevelHeight) / 2);
           cr.lineTo(endX, (height - barLevelHeight) / 2);

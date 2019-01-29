@@ -147,7 +147,7 @@ function logExtensionError(uuid, error) {
     if (!extension)
         return;
 
-    let message = '' + error;
+    let message = `${error}`;
 
     extension.state = ExtensionState.ERROR;
     if (!extension.errors)
