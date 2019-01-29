@@ -343,7 +343,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             break;
         default:
             log('Invalid connection type: ' + connectionType);
-        };
+        }
 
         return content;
     }

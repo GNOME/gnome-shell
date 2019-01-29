@@ -172,7 +172,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
         log('keyringPrompt: Failed to show modal dialog.' +
             ' Dismissing prompt request');
-        this.prompt.cancel()
+        this.prompt.cancel();
         return false;
     }
 

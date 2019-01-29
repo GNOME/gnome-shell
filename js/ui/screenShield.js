@@ -1288,7 +1288,7 @@ var ScreenShield = class {
 
     lock(animate) {
         if (this._lockSettings.get_boolean(DISABLE_LOCK_KEY)) {
-            log('Screen lock is locked down, not locking') // lock, lock - who's there?
+            log('Screen lock is locked down, not locking'); // lock, lock - who's there?
             return;
         }
 

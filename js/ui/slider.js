@@ -14,8 +14,8 @@ var Slider = class extends BarLevel.BarLevel {
             canFocus: true,
             reactive: true,
             accessibleRole: Atk.Role.SLIDER,
-        }
-        super(value, params)
+        };
+        super(value, params);
 
         this.actor.connect('button-press-event', this._startDragging.bind(this));
         this.actor.connect('touch-event', this._touchDragging.bind(this));

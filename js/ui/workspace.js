@@ -903,7 +903,7 @@ var LayoutStrategy = class {
 
         // keep track how much smaller the grid becomes due to scaling
         // so it can be centered again
-        let compensation = 0
+        let compensation = 0;
         let y = 0;
 
         for (let i = 0; i < rows.length; i++) {
@@ -925,7 +925,7 @@ var LayoutStrategy = class {
                 // height would undo what vertical scaling is trying to achieve.
             }
 
-            row.x = area.x + (Math.max(area.width - (widthWithoutSpacing * row.additionalScale + horizontalSpacing), 0) / 2)
+            row.x = area.x + (Math.max(area.width - (widthWithoutSpacing * row.additionalScale + horizontalSpacing), 0) / 2);
             row.y = area.y + (Math.max(area.height - (heightWithoutSpacing + verticalSpacing), 0) / 2) + y;
             y += row.height * row.additionalScale + this._rowSpacing;
         }

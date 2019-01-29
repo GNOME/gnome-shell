@@ -141,7 +141,7 @@ class BaseIcon extends St.Bin {
 
 function clamp(value, min, max) {
     return Math.max(Math.min(value, max), min);
-};
+}
 
 function zoomOutActor(actor) {
     let actorClone = new Clutter.Clone({ source: actor,
@@ -385,7 +385,7 @@ var IconGrid = GObject.registerClass({
 
             let childVolume = child.get_transformed_paint_volume(this);
             if (!childVolume)
-                return false
+                return false;
 
             paintVolume.union(childVolume);
         }
@@ -887,7 +887,7 @@ var PaginatedIconGrid = GObject.registerClass({
         if (!this._nPages)
             return 0;
 
-        let firstPageItem = pageNumber * this._childrenPerPage
+        let firstPageItem = pageNumber * this._childrenPerPage;
         let childBox = this._getVisibleChildren()[firstPageItem].get_allocation_box();
         return childBox.y1 - this.topPadding;
     }

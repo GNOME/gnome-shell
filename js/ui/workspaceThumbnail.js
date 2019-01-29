@@ -686,7 +686,7 @@ class ThumbnailsBox extends St.Widget {
         let [r, x, y] = this.transform_stage_point(stageX, stageY);
 
         for (let i = 0; i < this._thumbnails.length; i++) {
-            let thumbnail = this._thumbnails[i]
+            let thumbnail = this._thumbnails[i];
             let [w, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
                 thumbnail.activate(time);
@@ -789,7 +789,7 @@ class ThumbnailsBox extends St.Widget {
                 break;
             } else if (y > targetBottom && y <= nextTargetTop) {
                 this._dropWorkspace = i;
-                break
+                break;
             }
 
             targetBase = nextTargetBase;

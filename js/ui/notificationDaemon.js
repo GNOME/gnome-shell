@@ -231,7 +231,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             // There's already a pending call to GetConnectionUnixProcessID,
             // which will see the new notification data when it finishes,
             // so we don't have to do anything.
-            return invocation.return_value(GLib.Variant.new('(u)', [id]));;
+            return invocation.return_value(GLib.Variant.new('(u)', [id]));
         }
 
         this._busProxy.GetConnectionUnixProcessIDRemote(sender, (result, excp) => {

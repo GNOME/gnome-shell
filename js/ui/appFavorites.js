@@ -187,7 +187,7 @@ class AppFavorites {
                                    }
                                  });
     }
-};
+}
 Signals.addSignalMethods(AppFavorites.prototype);
 
 var appFavoritesInstance = null;

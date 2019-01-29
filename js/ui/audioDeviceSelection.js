@@ -110,7 +110,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 
     _openSettings() {
-        let desktopFile = 'gnome-sound-panel.desktop'
+        let desktopFile = 'gnome-sound-panel.desktop';
         let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
         if (!app) {

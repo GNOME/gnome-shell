@@ -380,7 +380,7 @@ class CloseButton extends St.Button {
         let themeNode = this.get_theme_node();
 
         let offY = this._computeBoxPointerOffset();
-        this.translation_x = themeNode.get_length('-shell-close-overlap-x')
+        this.translation_x = themeNode.get_length('-shell-close-overlap-x');
         this.translation_y = themeNode.get_length('-shell-close-overlap-y') + offY;
     }
 

@@ -74,7 +74,7 @@ class InputMethod extends Clutter.InputMethod {
         this._context = null;
         this._hints = 0;
         this._purpose = 0;
-        this._preeditStr = ''
+        this._preeditStr = '';
         this._preeditPos = 0;
         this._preeditVisible = false;
     }

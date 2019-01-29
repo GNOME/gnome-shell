@@ -47,7 +47,7 @@ var TodayButton = class TodayButton {
         this._calendar.connect('selected-date-changed', (calendar, date) => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.actor.reactive = !_isToday(date)
+            this.actor.reactive = !_isToday(date);
         });
     }
 

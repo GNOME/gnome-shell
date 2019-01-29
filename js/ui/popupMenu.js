@@ -261,7 +261,7 @@ class PopupMenuItem extends PopupBaseMenuItem {
 
         this.label = new St.Label({ text: text });
         this.add_child(this.label);
-        this.label_actor = this.label
+        this.label_actor = this.label;
     }
 });
 

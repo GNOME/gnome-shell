@@ -112,7 +112,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._item.icon.icon_name = icon;
 
         // The icon label
-        let label
+        let label;
         if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
           label = _("%d\u2009%%").format(100);
         else

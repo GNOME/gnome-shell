@@ -173,7 +173,7 @@ var ModemCdma = class {
             } else {
                 let [bandClass, band, sid] = result;
 
-                this.operator_name = _findProviderForSid(sid)
+                this.operator_name = _findProviderForSid(sid);
             }
             this.emit('notify::operator-name');
         });

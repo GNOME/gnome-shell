@@ -297,7 +297,7 @@ var Key = class Key {
     }
 
     _press(key) {
-        this.emit('activated')
+        this.emit('activated');
 
         if (key != this.key || this._extended_keys.length == 0) {
             this.emit('pressed', this._getKeyval(key), key);
@@ -680,7 +680,7 @@ var EmojiPager = class EmojiPager {
 
     _onPanEnd() {
         if (Math.abs(this._delta) < this.actor.width * PANEL_SWITCH_RELATIVE_DISTANCE) {
-            this._onPanCancel()
+            this._onPanCancel();
         } else {
             let value;
             if (this._delta > 0)
@@ -951,7 +951,7 @@ var EmojiSelection = class EmojiSelection {
             let section = this._sections[i];
 
             key = new Key(section.label, []);
-            key.connect('released', () => { this._emojiPager.setCurrentSection(section, 0) });
+            key.connect('released', () => { this._emojiPager.setCurrentSection(section, 0); });
             row.appendKey(key.actor);
 
             section.button = key;
@@ -1750,13 +1750,13 @@ var KeyboardController = class {
             purpose == Clutter.InputContentPurpose.PHONE)
             keypadVisible = true;
 
-        this.emit('emoji-visible', emojiVisible)
+        this.emit('emoji-visible', emojiVisible);
         this.emit('keypad-visible', keypadVisible);
     }
 
     getGroups() {
         let inputSources = this._inputSourceManager.inputSources;
-        let groups = []
+        let groups = [];
 
         for (let i in inputSources) {
             let is = inputSources[i];

@@ -1096,7 +1096,7 @@ var WindowManager = class {
         let updateUnfullscreenGesture = () => {
             let currentWindow = global.display.focus_window;
             topDragAction.enabled = currentWindow && currentWindow.is_fullscreen();
-        }
+        };
 
         global.display.connect('notify::focus-window', updateUnfullscreenGesture);
         global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
@@ -1106,7 +1106,7 @@ var WindowManager = class {
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
         this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
-        this._currentPadOsd.connect('closed', () => { this._currentPadOsd = null });
+        this._currentPadOsd.connect('closed', () => { this._currentPadOsd = null; });
 
         return this._currentPadOsd.actor;
     }

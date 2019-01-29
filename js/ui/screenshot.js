@@ -27,7 +27,7 @@ var ScreenshotService = class {
     _createScreenshot(invocation, needsDisk=true) {
         let lockedDown = false;
         if (needsDisk)
-            lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk')
+            lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
 
         let sender = invocation.get_sender();
         if (this._screenShooter.has(sender) || lockedDown) {

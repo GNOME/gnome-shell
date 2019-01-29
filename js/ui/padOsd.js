@@ -121,7 +121,7 @@ var ActionComboBox = class {
         this.actor.set_child(box);
 
         this._label = new St.Label({ style_class: 'combo-box-label' });
-        box.add_child(this._label)
+        box.add_child(this._label);
 
         let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
                                   icon_name: 'pan-down-symbolic',
@@ -457,7 +457,7 @@ var PadDiagram = GObject.registerClass({
         // I miss Cairo.Matrix
         let dimensions = this._handle.get_dimensions();
         x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
-        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;;
+        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
         return [Math.round(x), Math.round(y)];
     }
 
@@ -488,7 +488,7 @@ var PadDiagram = GObject.registerClass({
             pos.y = this._imageHeight - pos.y;
         }
 
-        let [x, y] = this._transformPoint(pos.x, pos.y)
+        let [x, y] = this._transformPoint(pos.x, pos.y);
 
         return [true, x, y, direction];
     }
@@ -734,7 +734,7 @@ var PadOsd = class {
     _updatePadChooser() {
         if (this._groupPads.length > 1) {
             if (this._padChooser == null) {
-                this._padChooser = new PadChooser(this.padDevice, this._groupPads)
+                this._padChooser = new PadChooser(this.padDevice, this._groupPads);
                 this._padChooser.connect('pad-selected', (chooser, pad) => {
                     this._requestForOtherPad(pad);
                 });
@@ -864,7 +864,7 @@ var PadOsd = class {
             if (this._followUpActionEdition(str))
                 return;
 
-            this._padDiagram.stopEdition(false, str ? str : _("None"))
+            this._padDiagram.stopEdition(false, str ? str : _("None"));
             this._editedAction = null;
         }
 

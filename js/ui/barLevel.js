@@ -14,7 +14,7 @@ var BarLevel = class {
         this._barLevelWidth = 0;
 
         if (params == undefined)
-            params = {}
+            params = {};
 
         this.actor = new St.DrawingArea({ styleClass: params['styleClass'] || 'barlevel',
                                           can_focus: params['canFocus'] || false,

@@ -81,7 +81,7 @@ class DashItemContainer extends St.Widget {
         let itemHeight = this.allocation.y2 - this.allocation.y1;
 
         let labelHeight = this.label.get_height();
-        let yOffset = Math.floor((itemHeight - labelHeight) / 2)
+        let yOffset = Math.floor((itemHeight - labelHeight) / 2);
 
         let y = stageY + yOffset;
 

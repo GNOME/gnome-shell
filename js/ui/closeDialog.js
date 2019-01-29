@@ -6,8 +6,8 @@ const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-var FROZEN_WINDOW_BRIGHTNESS = -0.3
-var DIALOG_TRANSITION_TIME = 0.15
+var FROZEN_WINDOW_BRIGHTNESS = -0.3;
+var DIALOG_TRANSITION_TIME = 0.15;
 var ALIVE_TIMEOUT = 5000;
 
 var CloseDialog = GObject.registerClass({
@@ -165,7 +165,7 @@ var CloseDialog = GObject.registerClass({
         GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
 
-        global.display.disconnect(this._windowFocusChangedId)
+        global.display.disconnect(this._windowFocusChangedId);
         this._windowFocusChangedId = 0;
 
         global.stage.disconnect(this._keyFocusChangedId);

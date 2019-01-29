@@ -19,7 +19,7 @@ var Manager = class {
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',
-                                           this._reloadRealms.bind(this))
+                                           this._reloadRealms.bind(this));
         this._realms = {};
 
         this._signalId = this._aggregateProvider.connect('g-properties-changed',
@@ -104,4 +104,4 @@ var Manager = class {
         this._updateLoginFormat();
     }
 };
-Signals.addSignalMethods(Manager.prototype)
+Signals.addSignalMethods(Manager.prototype);

@@ -314,7 +314,7 @@ var ViewSelector = class {
                                               focusCallback: () => {
                                                   this._a11yFocusPage(page);
                                               }
-                                            });;
+                                            });
         page.hide();
         this.actor.add_actor(page);
         return page;
@@ -363,7 +363,7 @@ var ViewSelector = class {
             this._activePage == this._workspacesPage &&
             !Main.overview.animationInProgress) {
             this.appDisplay.animate(IconGrid.AnimationDirection.OUT, () => {
-                this._animateIn(oldPage)
+                this._animateIn(oldPage);
             });
         } else {
             this._fadePageOut(page);
@@ -382,7 +382,7 @@ var ViewSelector = class {
         this.emit('page-changed');
 
         if (oldPage)
-            this._animateOut(oldPage)
+            this._animateOut(oldPage);
         else
             this._animateIn();
     }

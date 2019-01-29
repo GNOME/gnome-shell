@@ -118,7 +118,7 @@ function _setMenuAlignment(entry, stageX) {
     let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);
     if (success)
         entry.menu.setSourceAlignment(entryX / entry.width);
-};
+}
 
 function _onButtonPressEvent(actor, event, entry) {
     if (entry.menu.isOpen) {
@@ -131,14 +131,14 @@ function _onButtonPressEvent(actor, event, entry) {
         return Clutter.EVENT_STOP;
     }
     return Clutter.EVENT_PROPAGATE;
-};
+}
 
 function _onPopup(actor, entry) {
     let [success, textX, textY, lineHeight] = entry.clutter_text.position_to_coords(-1);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
     entry.menu.open(BoxPointer.PopupAnimation.FULL);
-};
+}
 
 function addContextMenu(entry, params) {
     if (entry.menu)

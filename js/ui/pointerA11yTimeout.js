@@ -67,7 +67,7 @@ class PieTimer extends St.DrawingArea {
                            time: duration / 1000,
                            transition: 'easeOutQuad',
                            onUpdateScope: this,
-                           onUpdate() { this.queue_repaint() },
+                           onUpdate() { this.queue_repaint(); },
                            onCompleteScope: this,
                            onComplete() { this.stop(); }
                           });

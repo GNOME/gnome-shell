@@ -689,12 +689,12 @@ var _Draggable = class _Draggable {
         params['onCompleteParams'] = [this._dragActor, eventTime];
 
         // start the animation
-        Tweener.addTween(this._dragActor, params)
+        Tweener.addTween(this._dragActor, params);
     }
 
     _finishAnimation() {
         if (!this._animationInProgress)
-            return
+            return;
 
         this._animationInProgress = false;
         if (!this._buttonDown)

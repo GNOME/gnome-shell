@@ -50,7 +50,7 @@ var AuthenticationDialog = GObject.registerClass({
             userName = userNames[0];
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
-        let userRealName = this._user.get_real_name()
+        let userRealName = this._user.get_real_name();
         this._userLoadedId = this._user.connect('notify::is_loaded',
                                                 this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed',

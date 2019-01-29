@@ -86,7 +86,7 @@ function loadInterfaceXML(iface) {
     try {
         let [ok, bytes] = f.load_contents(null);
         if (bytes instanceof Uint8Array)
-            xml = imports.byteArray.toString(bytes)
+            xml = imports.byteArray.toString(bytes);
         else
             xml = bytes.toString();
     } catch (e) {

@@ -30,7 +30,7 @@ var METRICS = {
     geditStartTime:
     { description: "Time from gedit launch to window drawn",
       units: "us" },
-}
+};
 
 function waitAndDraw(milliseconds) {
     let cb;

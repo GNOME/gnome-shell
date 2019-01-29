@@ -401,7 +401,7 @@ var LoginDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
         parentActor.add_child(this);
 
-        this._userManager = AccountsService.UserManager.get_default()
+        this._userManager = AccountsService.UserManager.get_default();
         this._gdmClient = new Gdm.Client();
 
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });

@@ -30,7 +30,7 @@ var LOGO_KEY = 'logo';
 var DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
-var USER_READ_TIME = 48
+var USER_READ_TIME = 48;
 
 var MessageType = {
     NONE: 0,

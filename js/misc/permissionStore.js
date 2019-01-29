@@ -12,4 +12,4 @@ function PermissionStore(initCallback, cancellable) {
                                     'org.freedesktop.impl.portal.PermissionStore',
                                     '/org/freedesktop/impl/portal/PermissionStore',
                                     initCallback, cancellable);
-};
+}

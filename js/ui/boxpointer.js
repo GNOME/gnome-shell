@@ -396,7 +396,7 @@ var BoxPointer = GObject.registerClass({
                 cr.lineTo(x1 - rise, y1);
                 cr.lineTo(x1 + borderRadius, y1);
             } else if (skipBottomLeft) {
-                cr.lineTo(x1 - rise, y2)
+                cr.lineTo(x1 - rise, y2);
                 cr.lineTo(x1 - rise, y2 - halfBase);
             } else {
                 cr.lineTo(x1, this._arrowOrigin + halfBase);
@@ -437,7 +437,7 @@ var BoxPointer = GObject.registerClass({
                 this._sourceActorDestroyId = this._sourceActor.connect('destroy', () => {
                     this._sourceActor = null;
                     delete this._sourceActorDestroyId;
-                })
+                });
             }
         }
 

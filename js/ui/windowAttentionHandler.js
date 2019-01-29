@@ -17,7 +17,7 @@ var WindowAttentionHandler = class {
     _getTitleAndBanner(app, window) {
         let title = app.get_name();
         let banner = _("“%s” is ready").format(window.get_title());
-        return [title, banner]
+        return [title, banner];
     }
 
     _onWindowDemandsAttention(display, window) {

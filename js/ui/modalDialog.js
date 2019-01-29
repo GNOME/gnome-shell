@@ -179,7 +179,7 @@ var ModalDialog = GObject.registerClass({
                                time: OPEN_AND_CLOSE_TIME,
                                transition: 'easeOutQuad',
                                onComplete: this._closeComplete.bind(this)
-                             })
+                             });
         else
             this._closeComplete();
     }

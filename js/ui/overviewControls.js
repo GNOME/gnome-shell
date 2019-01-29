@@ -18,7 +18,7 @@ function getRtlSlideDirection(direction, actor) {
             SlideDirection.RIGHT : SlideDirection.LEFT;
 
     return direction;
-};
+}
 
 var SlideDirection = {
     LEFT: 0,

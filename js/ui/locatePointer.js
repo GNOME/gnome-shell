@@ -5,7 +5,7 @@ const Ripples = imports.ui.ripples;
 const Main = imports.ui.main;
 
 const LOCATE_POINTER_KEY = "locate-pointer";
-const LOCATE_POINTER_SCHEMA = "org.gnome.desktop.interface"
+const LOCATE_POINTER_SCHEMA = "org.gnome.desktop.interface";
 
 var LocatePointer = class {
     constructor() {

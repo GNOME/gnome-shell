@@ -44,7 +44,7 @@ var CandidateArea = class CandidateArea {
             case Clutter.ScrollDirection.DOWN:
                 this.emit('cursor-down');
                 break;
-            };
+            }
             return Clutter.EVENT_PROPAGATE;
         });
 

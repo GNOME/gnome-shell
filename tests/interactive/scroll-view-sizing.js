@@ -35,7 +35,7 @@ class FlowedBoxes extends St.Widget {
 
 	for (let i = 0; i < BOX_WIDTHS.length; i++) {
 	    let child = new St.Bin({ width: BOX_WIDTHS[i], height: BOX_HEIGHT,
-	                             style: 'border: 1px solid #444444; background: #00aa44' })
+	                             style: 'border: 1px solid #444444; background: #00aa44' });
 	    this.add_actor(child);
 	}
     }

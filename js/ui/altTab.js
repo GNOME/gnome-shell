@@ -36,7 +36,7 @@ function _createWindowClone(window, size) {
                                // usual hack for the usual bug in ClutterBinLayout...
                                x_expand: true,
                                y_expand: true });
-};
+}
 
 function getWindows(workspace) {
     // We ignore skip-taskbar windows in switchers, but if they are attached
@@ -459,7 +459,7 @@ class CyclerHighlight {
     _onDestroy() {
         this.window = null;
     }
-};
+}
 
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList
@@ -1036,7 +1036,7 @@ class WindowList extends SwitcherPopup.SwitcherList {
             this.icons.push(icon);
 
             icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
-                this._removeWindow(window)
+                this._removeWindow(window);
             });
         }
 
@@ -1072,7 +1072,7 @@ class WindowList extends SwitcherPopup.SwitcherList {
         childBox.y1 = childBox.y2 - this._label.height;
         this._label.allocate(childBox, flags);
 
-        let totalLabelHeight = this._label.height + themeNode.get_padding(St.Side.BOTTOM)
+        let totalLabelHeight = this._label.height + themeNode.get_padding(St.Side.BOTTOM);
         childBox.x1 = box.x1;
         childBox.x2 = box.x2;
         childBox.y1 = box.y1;
