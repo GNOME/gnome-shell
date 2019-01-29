@@ -5,6 +5,7 @@ const Clutter = imports.gi.Clutter;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
@@ -52,6 +53,51 @@ const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
 let magDBusService = null;
 
+var MouseSpriteContent = GObject.registerClass({
+    Implements: [ Clutter.Content ],
+}, class MouseSpriteContent extends GObject.Object {
+    _init() {
+        super._init();
+        this._texture = null;
+    }
+
+    vfunc_get_preferred_size(content) {
+        if (!this._texture)
+            return [0, 0];
+
+        return [this._texture.get_width(), this._texture.get_height()];
+    }
+
+    vfunc_paint_content(content, actor, node) {
+        if (!this._texture)
+            return;
+
+        let color = new Cogl.Color();
+        color.init_from_4ub(0, 0, 0, 0);
+
+        let textureNode = new Clutter.TextureNode(this._texture,
+                                                  color,
+                                                  Clutter.ScalingFilter.NEAREST,
+                                                  Clutter.ScalingFilter.NEAREST);
+        textureNode.set_name('MouseSpriteContent');
+        node.add_child(textureNode);
+
+        textureNode.add_rectangle(actor.get_content_box());
+    }
+
+    get texture() {
+        return this._texture;
+    }
+
+    set texture(coglTexture) {
+        if (this._texture == coglTexture)
+            return;
+
+        this._texture = coglTexture;
+        this.invalidate();
+    }
+});
+
 var Magnifier = class Magnifier {
     constructor() {
         // Magnifier is a manager of ZoomRegions.
@@ -59,8 +105,12 @@ var Magnifier = class Magnifier {
 
         // Create small clutter tree for the magnified mouse.
         let cursorTracker = Meta.CursorTracker.get_for_display(global.display);
-        this._mouseSprite = new Clutter.Texture();
-        Shell.util_cursor_tracker_to_clutter(cursorTracker, this._mouseSprite);
+        this._cursorTracker = cursorTracker;
+
+        this._mouseSprite = new Clutter.Actor({ request_mode: Clutter.RequestMode.CONTENT_SIZE });
+        this._mouseSprite.content = new MouseSpriteContent();
+        this._updateSpriteTexture();
+
         this._cursorRoot = new Clutter.Actor();
         this._cursorRoot.add_actor(this._mouseSprite);
 
@@ -76,7 +126,6 @@ var Magnifier = class Magnifier {
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
         cursorTracker.connect('cursor-changed', this._updateMouseSprite.bind(this));
-        this._cursorTracker = cursorTracker;
 
         // Export to dbus.
         magDBusService = new MagnifierDBus.ShellMagnifier();
@@ -436,9 +485,20 @@ var Magnifier = class Magnifier {
     //// Private methods ////
 
     _updateMouseSprite() {
-        Shell.util_cursor_tracker_to_clutter(this._cursorTracker, this._mouseSprite);
+        this._updateSpriteTexture();
         let [xHot, yHot] = this._cursorTracker.get_hot();
         this._mouseSprite.set_anchor_point(xHot, yHot);
+    }
+
+    _updateSpriteTexture() {
+        let sprite = this._cursorTracker.get_sprite();
+
+        if (sprite) {
+            this._mouseSprite.content.texture = sprite;
+            this._mouseSprite.show();
+        } else {
+            this._mouseSprite.hide();
+        }
     }
 
     _settingsInit(zoomRegion) {

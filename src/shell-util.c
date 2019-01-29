@@ -367,24 +367,6 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
                                    (GdkPixbufDestroyNotify) g_free, NULL);
 }
 
-void
-shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
-                                      ClutterTexture    *texture)
-{
-  CoglTexture *sprite;
-
-  sprite = meta_cursor_tracker_get_sprite (tracker);
-  if (sprite)
-    {
-      clutter_actor_show (CLUTTER_ACTOR (texture));
-      clutter_texture_set_cogl_texture (texture, sprite);
-    }
-  else
-    {
-      clutter_actor_hide (CLUTTER_ACTOR (texture));
-    }
-}
-
 typedef const gchar *(*ShellGLGetString) (GLenum);
 
 static const gchar *
