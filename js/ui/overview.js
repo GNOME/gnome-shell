@@ -392,9 +392,6 @@ var Overview = new Lang.Class({
         // when it is next shown.
         this.hide();
 
-        if (!Main.layoutManager.primaryMonitor)
-            return;
-
         this._coverPane.set_position(0, 0);
         this._coverPane.set_size(global.screen_width, global.screen_height);
 
