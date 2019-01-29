@@ -471,7 +471,7 @@ var ViewSelector = class {
         if (this._entry.mapped) {
             // Enable 'find-as-you-type'
             this._capturedEventId = global.stage.connect('captured-event',
-                                 this._onCapturedEvent.bind(this));
+                                                         this._onCapturedEvent.bind(this));
             this._text.set_cursor_visible(true);
             this._text.set_selection(0, 0);
         } else {
@@ -525,7 +525,7 @@ var ViewSelector = class {
 
             if (this._iconClickedId == 0)
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
-                    this.reset.bind(this));
+                                                          this.reset.bind(this));
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);

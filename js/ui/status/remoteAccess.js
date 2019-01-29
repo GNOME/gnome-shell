@@ -44,7 +44,7 @@ var RemoteAccessApplet = class extends PanelMenu.SystemIndicator {
         this._item.menu.addAction(_("Turn off"),
                                   () => {
                                       for (let handle of this._handles)
-                                            handle.stop();
+                                          handle.stop();
                                   });
         this._item.icon.icon_name = 'screen-shared-symbolic';
         this.menu.addMenuItem(this._item);

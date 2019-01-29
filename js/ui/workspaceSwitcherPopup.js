@@ -19,7 +19,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         this._childWidth = 0;
 
         this.connect('style-changed', () => {
-           this._itemSpacing = this.get_theme_node().get_length('spacing');
+            this._itemSpacing = this.get_theme_node().get_length('spacing');
         });
     }
 
@@ -117,14 +117,14 @@ class WorkspaceSwitcherPopup extends St.Widget {
         for (let i = 0; i < workspaceManager.n_workspaces; i++) {
             let indicator = null;
 
-           if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
-               indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-           else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
-               indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
-           else
-               indicator = new St.Bin({ style_class: 'ws-switcher-box' });
+            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
+                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
+            else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
+                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
+            else
+                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
 
-           this._list.add_actor(indicator);
+            this._list.add_actor(indicator);
 
         }
 

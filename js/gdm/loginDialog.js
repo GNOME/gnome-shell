@@ -43,7 +43,7 @@ var UserListItem = class {
     constructor(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
-                                                 this._onUserChanged.bind(this));
+                                                this._onUserChanged.bind(this));
 
         let layout = new St.BoxLayout({ vertical: true });
         this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
@@ -242,7 +242,7 @@ var UserList = class {
             return;
 
         if (user.locked)
-           return;
+            return;
 
         let userName = user.get_user_name();
 
@@ -317,10 +317,10 @@ var SessionMenuButton = class {
         this._menu.actor.hide();
 
         this._menu.connect('open-state-changed', (menu, isOpen) => {
-             if (isOpen)
-                 this._button.add_style_pseudo_class('active');
-             else
-                 this._button.remove_style_pseudo_class('active');
+            if (isOpen)
+                this._button.add_style_pseudo_class('active');
+            else
+                this._button.remove_style_pseudo_class('active');
         });
 
         this._manager = new PopupMenu.PopupMenuManager(this._button,
@@ -351,11 +351,11 @@ var SessionMenuButton = class {
     }
 
     setActiveSession(sessionId) {
-         if (sessionId == this._activeSessionId)
-             return;
+        if (sessionId == this._activeSessionId)
+            return;
 
-         this._activeSessionId = sessionId;
-         this._updateOrnament();
+        this._activeSessionId = sessionId;
+        this._updateOrnament();
     }
 
     close() {
@@ -613,64 +613,64 @@ var LoginDialog = GObject.registerClass({
             let leftOverYSpace = bannerSpace - bannerHeight;
 
             if (leftOverYSpace > 0) {
-                 // First figure out how much left over space is up top
-                 let leftOverTopSpace = leftOverYSpace / 2;
+                // First figure out how much left over space is up top
+                let leftOverTopSpace = leftOverYSpace / 2;
 
-                 // Then, shift the banner into the middle of that extra space
-                 let yShift = Math.floor(leftOverTopSpace / 2);
+                // Then, shift the banner into the middle of that extra space
+                let yShift = Math.floor(leftOverTopSpace / 2);
 
-                 bannerAllocation.y1 += yShift;
-                 bannerAllocation.y2 += yShift;
+                bannerAllocation.y1 += yShift;
+                bannerAllocation.y2 += yShift;
             } else {
-                 // Then figure out how much space there would be if we switched to a
-                 // wide layout with banner on one side and authprompt on the other.
-                 let leftOverXSpace = dialogWidth - authPromptWidth;
+                // Then figure out how much space there would be if we switched to a
+                // wide layout with banner on one side and authprompt on the other.
+                let leftOverXSpace = dialogWidth - authPromptWidth;
 
-                 // In a wide view, half of the available space goes to the banner,
-                 // and the other half goes to the margins.
-                 let wideBannerWidth = leftOverXSpace / 2;
-                 let wideSpacing  = leftOverXSpace - wideBannerWidth;
+                // In a wide view, half of the available space goes to the banner,
+                // and the other half goes to the margins.
+                let wideBannerWidth = leftOverXSpace / 2;
+                let wideSpacing  = leftOverXSpace - wideBannerWidth;
 
-                 // If we do go with a wide layout, we need there to be at least enough
-                 // space for the banner and the auth prompt to be the same width,
-                 // so it doesn't look unbalanced.
-                 if (authPromptWidth > 0 && wideBannerWidth > authPromptWidth) {
-                     let centerX = dialogBox.x1 + dialogWidth / 2;
-                     let centerY = dialogBox.y1 + dialogHeight / 2;
+                // If we do go with a wide layout, we need there to be at least enough
+                // space for the banner and the auth prompt to be the same width,
+                // so it doesn't look unbalanced.
+                if (authPromptWidth > 0 && wideBannerWidth > authPromptWidth) {
+                    let centerX = dialogBox.x1 + dialogWidth / 2;
+                    let centerY = dialogBox.y1 + dialogHeight / 2;
 
-                     // A small portion of the spacing goes down the center of the
-                     // screen to help delimit the two columns of the wide view
-                     let centerGap = wideSpacing / 8;
+                    // A small portion of the spacing goes down the center of the
+                    // screen to help delimit the two columns of the wide view
+                    let centerGap = wideSpacing / 8;
 
-                     // place the banner along the left edge of the center margin
-                     bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
-                     bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
+                    // place the banner along the left edge of the center margin
+                    bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
+                    bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
 
-                     // figure out how tall it would like to be and try to accommodate
-                     // but don't let it get too close to the logo
-                     let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
+                    // figure out how tall it would like to be and try to accommodate
+                    // but don't let it get too close to the logo
+                    let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 
-                     let maxWideHeight = dialogHeight - 3 * logoHeight;
-                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
-                     bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
-                     bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
+                    let maxWideHeight = dialogHeight - 3 * logoHeight;
+                    wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
+                    bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
+                    bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
 
-                     // place the auth prompt along the right edge of the center margin
-                     authPromptAllocation.x1 = Math.floor(centerX + centerGap / 2);
-                     authPromptAllocation.x2 = authPromptAllocation.x1 + authPromptWidth;
-                 } else {
-                     // If we aren't going to do a wide view, then we need to limit
-                     // the height of the banner so it will present scrollbars
+                    // place the auth prompt along the right edge of the center margin
+                    authPromptAllocation.x1 = Math.floor(centerX + centerGap / 2);
+                    authPromptAllocation.x2 = authPromptAllocation.x1 + authPromptWidth;
+                } else {
+                    // If we aren't going to do a wide view, then we need to limit
+                    // the height of the banner so it will present scrollbars
 
-                     // First figure out how much space there is without the banner
-                     leftOverYSpace += bannerHeight;
+                    // First figure out how much space there is without the banner
+                    leftOverYSpace += bannerHeight;
 
-                     // Then figure out how much of that space is up top
-                     let availableTopSpace = Math.floor(leftOverYSpace / 2);
+                    // Then figure out how much of that space is up top
+                    let availableTopSpace = Math.floor(leftOverYSpace / 2);
 
-                     // Then give all of that space to the banner
-                     bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
-                 }
+                    // Then give all of that space to the banner
+                    bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
+                }
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
@@ -845,10 +845,10 @@ var LoginDialog = GObject.registerClass({
     _shouldShowSessionMenuButton() {
         if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
             this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
-          return false;
+            return false;
 
         if (this._user && this._user.is_loaded && this._user.is_logged_in())
-          return false;
+            return false;
 
         return true;
     }
@@ -962,7 +962,7 @@ var LoginDialog = GObject.registerClass({
         let item = this._userList.getItemFromUserName(userName);
 
         if (item)
-          return null;
+            return null;
 
         let hold = new Batch.Hold();
         let signalId = this._userList.connect('item-added',
@@ -1073,12 +1073,12 @@ var LoginDialog = GObject.registerClass({
 
         // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
-           if (event.type() == Clutter.EventType.KEY_PRESS ||
+            if (event.type() == Clutter.EventType.KEY_PRESS ||
                event.type() == Clutter.EventType.BUTTON_PRESS) {
-               this._startTimedLogin(userName, seconds);
-           }
+                this._startTimedLogin(userName, seconds);
+            }
 
-           return Clutter.EVENT_PROPAGATE;
+            return Clutter.EVENT_PROPAGATE;
         });
     }
 

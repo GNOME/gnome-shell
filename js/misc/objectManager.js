@@ -77,53 +77,51 @@ var ObjectManager = class {
         let info = this._interfaceInfos[interfaceName];
 
         if (!info) {
-           if (onFinished)
-               onFinished();
-           return;
+            if (onFinished)
+                onFinished();
+            return;
         }
 
         let proxy = new Gio.DBusProxy({ g_connection: this._connection,
-                                       g_name: this._serviceName,
-                                       g_object_path: objectPath,
-                                       g_interface_name: interfaceName,
-                                       g_interface_info: info,
-                                       g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
+                                        g_name: this._serviceName,
+                                        g_object_path: objectPath,
+                                        g_interface_name: interfaceName,
+                                        g_interface_info: info,
+                                        g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
 
-        proxy.init_async(GLib.PRIORITY_DEFAULT,
-                         this._cancellable,
-                         (initable, result) => {
-               try {
-                   initable.init_finish(result);
-               } catch (e) {
-                   logError(e, 'could not initialize proxy for interface ' + interfaceName);
+        proxy.init_async(GLib.PRIORITY_DEFAULT, this._cancellable, (initable, result) => {
+            try {
+                initable.init_finish(result);
+            } catch (e) {
+                logError(e, 'could not initialize proxy for interface ' + interfaceName);
 
-                   if (onFinished)
-                       onFinished();
-                   return;
-               }
+                if (onFinished)
+                    onFinished();
+                return;
+            }
 
-               let isNewObject;
-               if (!this._objects[objectPath]) {
-                   this._objects[objectPath] = {};
-                   isNewObject = true;
-               } else {
-                   isNewObject = false;
-               }
+            let isNewObject;
+            if (!this._objects[objectPath]) {
+                this._objects[objectPath] = {};
+                isNewObject = true;
+            } else {
+                isNewObject = false;
+            }
 
-               this._objects[objectPath][interfaceName] = proxy;
+            this._objects[objectPath][interfaceName] = proxy;
 
-               if (!this._interfaces[interfaceName])
-                   this._interfaces[interfaceName] = [];
+            if (!this._interfaces[interfaceName])
+                this._interfaces[interfaceName] = [];
 
-               this._interfaces[interfaceName].push(proxy);
+            this._interfaces[interfaceName].push(proxy);
 
-               if (isNewObject)
-                   this.emit('object-added', objectPath);
+            if (isNewObject)
+                this.emit('object-added', objectPath);
 
-               this.emit('interface-added', interfaceName, proxy);
+            this.emit('interface-added', interfaceName, proxy);
 
-               if (onFinished)
-                   onFinished();
+            if (onFinished)
+                onFinished();
         });
     }
 
@@ -195,7 +193,7 @@ var ObjectManager = class {
         this._managerProxy.GetManagedObjectsRemote((result, error) => {
             if (!result) {
                 if (error) {
-                   logError(error, 'could not get remote objects for service ' + this._serviceName + ' path ' + this._managerPath);
+                    logError(error, 'could not get remote objects for service ' + this._serviceName + ' path ' + this._managerPath);
                 }
 
                 this._tryToCompleteLoad();

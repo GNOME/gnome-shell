@@ -716,9 +716,9 @@ var PadOsd = class {
         }
 
         let buttonBox = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                         x_expand: true,
-                                         x_align: Clutter.ActorAlign.CENTER,
-                                         y_align: Clutter.ActorAlign.CENTER });
+                                        x_expand: true,
+                                        x_align: Clutter.ActorAlign.CENTER,
+                                        y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_actor(buttonBox);
         this._editButton = new St.Button({ label: _("Edit…"),
                                            style_class: 'button',

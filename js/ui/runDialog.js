@@ -33,30 +33,26 @@ class RunDialog extends ModalDialog.ModalDialog {
         });
         this._enableInternalCommands = global.settings.get_boolean('development-tools');
 
-        this._internalCommands = { 'lg': () => {
-                                       Main.createLookingGlass().open();
-                                   },
+        this._internalCommands = {
+            'lg': () => { Main.createLookingGlass().open(); },
 
-                                   'r': this._restart.bind(this),
+            'r': this._restart.bind(this),
 
-                                   // Developer brain backwards compatibility
-                                   'restart': this._restart.bind(this),
+            // Developer brain backwards compatibility
+            'restart': this._restart.bind(this),
 
-                                   'debugexit': () => {
-                                       Meta.quit(Meta.ExitCode.ERROR);
-                                   },
+            'debugexit': () => { Meta.quit(Meta.ExitCode.ERROR); },
 
-                                   // rt is short for "reload theme"
-                                   'rt': () => {
-                                       Main.reloadThemeResource();
-                                       Main.loadTheme();
-                                   },
+            // rt is short for "reload theme"
+            'rt': () => {
+                Main.reloadThemeResource();
+                Main.loadTheme();
+            },
 
-                                   'check_cloexec_fds': () => {
-                                       Shell.util_check_cloexec_fds();
-                                   },
-                                 };
-
+            'check_cloexec_fds': () => {
+                Shell.util_check_cloexec_fds();
+            },
+        };
 
         let label = new St.Label({ style_class: 'run-dialog-label',
                                    text: _("Enter a Command") });

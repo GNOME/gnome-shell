@@ -11,7 +11,7 @@ var WindowAttentionHandler = class {
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
                                                                 this._onWindowDemandsAttention.bind(this));
         this._windowMarkedUrgentId = global.display.connect('window-marked-urgent',
-                                                                this._onWindowDemandsAttention.bind(this));
+                                                            this._onWindowDemandsAttention.bind(this));
     }
 
     _getTitleAndBanner(app, window) {
