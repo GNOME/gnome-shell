@@ -51,7 +51,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
 // if we encounter anything that isn't a letter, '.', ')', or ']',
 // we should stop parsing.
 function isStopChar(c) {
-    return !c.match(/[\w\.\)\]]/);
+    return !c.match(/[\w.)\]]/);
 }
 
 // Given the ending position of a quoted string, find where it starts
@@ -121,7 +121,7 @@ function getExpressionOffset(expr, offset) {
             return offset + 1;
         }
 
-        if (currChar.match(/[\)\]]/)) {
+        if (currChar.match(/[)\]]/)) {
             offset = findMatchingBrace(expr, offset);
         }
 

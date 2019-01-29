@@ -248,7 +248,7 @@ class NotificationApplicationPolicy extends NotificationPolicy {
     _canonicalizeId(id) {
         // Keys are restricted to lowercase alphanumeric characters and dash,
         // and two dashes cannot be in succession
-        return id.toLowerCase().replace(/[^a-z0-9\-]/g, '-').replace(/--+/g, '-');
+        return id.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/--+/g, '-');
     }
 
     get enable() {
