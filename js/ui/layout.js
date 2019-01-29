@@ -32,18 +32,20 @@ function isPopupMetaWindow(actor) {
 }
 
 var MonitorConstraint = GObject.registerClass({
-    Properties: {'primary': GObject.ParamSpec.boolean('primary', 
-                                                      'Primary', 'Track primary monitor',
-                                                      GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                      false),
-                 'index': GObject.ParamSpec.int('index',
-                                                'Monitor index', 'Track specific monitor',
-                                                GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                -1, 64, -1),
-                 'work-area': GObject.ParamSpec.boolean('work-area',
-                                                        'Work-area', 'Track monitor\'s work-area',
-                                                        GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                        false)},
+    Properties: {
+        'primary': GObject.ParamSpec.boolean('primary',
+                                             'Primary', 'Track primary monitor',
+                                             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                             false),
+        'index': GObject.ParamSpec.int('index',
+                                       'Monitor index', 'Track specific monitor',
+                                       GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                       -1, 64, -1),
+        'work-area': GObject.ParamSpec.boolean('work-area',
+                                               'Work-area', 'Track monitor\'s work-area',
+                                               GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                               false)
+    },
 }, class MonitorConstraint extends Clutter.Constraint {
     _init(props) {
         this._primary = false;
