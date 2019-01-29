@@ -943,14 +943,14 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         if (rsnFlags != NM80211ApSecurityFlags.NONE) {
             /* RSN check first so that WPA+WPA2 APs are treated as RSN/WPA2 */
             if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
-	        type = NMAccessPointSecurity.WPA2_ENT;
-	    else if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-	        type = NMAccessPointSecurity.WPA2_PSK;
+                type = NMAccessPointSecurity.WPA2_ENT;
+            else if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
+                type = NMAccessPointSecurity.WPA2_PSK;
         } else if (wpaFlags != NM80211ApSecurityFlags.NONE) {
             if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
                 type = NMAccessPointSecurity.WPA_ENT;
             else if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-	        type = NMAccessPointSecurity.WPA_PSK;
+                type = NMAccessPointSecurity.WPA_PSK;
         } else {
             if (flags & NM80211ApFlags.PRIVACY)
                 type = NMAccessPointSecurity.WEP;
