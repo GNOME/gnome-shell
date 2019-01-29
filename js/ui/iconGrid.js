@@ -276,7 +276,7 @@ var IconGrid = GObject.registerClass({
         if (forWidth < 0)
             nColumns = children.length;
         else
-            [nColumns, ] = this._computeLayout(forWidth);
+            [nColumns] = this._computeLayout(forWidth);
 
         let nRows;
         if (nColumns > 0)
@@ -504,7 +504,7 @@ var IconGrid = GObject.registerClass({
             this._clonesAnimating.push(actorClone);
             Main.uiGroup.add_actor(actorClone);
 
-            let [width, height,,] = this._getAllocatedChildSizeAndSpacing(actor);
+            let [width, height] = this._getAllocatedChildSizeAndSpacing(actor);
             actorClone.set_size(width, height);
             let scaleX = sourceScaledWidth / width;
             let scaleY = sourceScaledHeight / height;

@@ -133,7 +133,7 @@ var SlidingControl = class {
 
     getVisibleWidth() {
         let child = this.actor.get_first_child();
-        let [, , natWidth, ] = child.get_preferred_size();
+        let [, , natWidth] = child.get_preferred_size();
         return natWidth;
     }
 

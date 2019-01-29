@@ -525,8 +525,8 @@ var SwitcherList = GObject.registerClass({
 
     vfunc_get_preferred_width(forHeight) {
         let themeNode = this.get_theme_node();
-        let [maxChildMin, ] = this._maxChildWidth(forHeight);
-        let [minListWidth, ] = this._list.get_preferred_width(forHeight);
+        let [maxChildMin] = this._maxChildWidth(forHeight);
+        let [minListWidth] = this._list.get_preferred_width(forHeight);
 
         return themeNode.adjust_preferred_width(maxChildMin, minListWidth);
     }

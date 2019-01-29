@@ -321,8 +321,8 @@ class DashActor extends St.Widget {
         let themeNode = this.get_theme_node();
         let adjustedForWidth = themeNode.adjust_for_width(forWidth);
         let [, showAppsButton] = this.get_children();
-        let [minHeight, ] = showAppsButton.get_preferred_height(adjustedForWidth);
-        [minHeight, ] = themeNode.adjust_preferred_height(minHeight, natHeight);
+        let [minHeight] = showAppsButton.get_preferred_height(adjustedForWidth);
+        [minHeight] = themeNode.adjust_preferred_height(minHeight, natHeight);
 
         return [minHeight, natHeight];
     }
