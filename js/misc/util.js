@@ -103,8 +103,7 @@ function spawnApp(argv) {
 //
 // Runs @argv in the background. If launching @argv fails,
 // this will throw an error.
-function trySpawn(argv)
-{
+function trySpawn(argv) {
     var success, pid;
     try {
         [success, pid] = GLib.spawn_async(null, argv, null,

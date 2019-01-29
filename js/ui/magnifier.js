@@ -347,8 +347,7 @@ var Magnifier = class Magnifier {
             if (!this._crossHairs)
                 this.addCrosshairs();
             this._crossHairs.show();
-        }
-        else {
+        } else {
             if (this._crossHairs)
                 this._crossHairs.hide();
         }
@@ -375,9 +374,9 @@ var Magnifier = class Magnifier {
         if (this._crossHairs) {
             let clutterColor = this._crossHairs.getColor();
             return clutterColor.to_string();
-        }
-        else
+        } else {
             return '#00000000';
+        }
     }
 
     /**
@@ -457,8 +456,7 @@ var Magnifier = class Magnifier {
         if (clip) {
             if (this._crossHairs)
                 this._crossHairs.setClip(CROSSHAIRS_CLIP_SIZE);
-        }
-        else {
+        } else {
             // Setting no clipping on crosshairs means a zero sized clip
             // rectangle.
             if (this._crossHairs)
@@ -475,9 +473,9 @@ var Magnifier = class Magnifier {
         if (this._crossHairs) {
             let [clipWidth, clipHeight] = this._crossHairs.getClip();
             return (clipWidth > 0 && clipHeight > 0);
-        }
-        else
+        } else {
             return false;
+        }
      }
 
     //// Private methods ////
@@ -1458,11 +1456,9 @@ var ZoomRegion = class ZoomRegion {
 
         if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL) {
             return this._centerFromPointProportional(xMouse, yMouse);
-        }
-        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH) {
+        } else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH) {
             return this._centerFromPointPush(xMouse, yMouse);
-        }
-        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED) {
+        } else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED) {
             return this._centerFromPointCentered(xMouse, yMouse);
         }
 
@@ -1776,8 +1772,7 @@ var Crosshairs = class Crosshairs {
             // mouse.
             this._clipSize = size;
             this.reCenter();
-        }
-        else {
+        } else {
             // Restore the missing chunk.
             this._clipSize = [0, 0];
             this.reCenter();

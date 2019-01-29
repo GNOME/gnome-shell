@@ -106,9 +106,9 @@ var ShellMagnifier = class ShellMagnifier {
         if (proxyAndZoomRegion && proxyAndZoomRegion.zoomRegion) {
             Main.magnifier.addZoomRegion(proxyAndZoomRegion.zoomRegion);
             return true;
-        }
-        else
+        } else {
             return false;
+        }
     }
 
     /**

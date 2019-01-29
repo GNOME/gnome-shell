@@ -85,8 +85,9 @@ function _addHandler(target, params, name, handler) {
             oldHandler.apply(eventScope, oldParams);
             handler(target);
         };
-    } else
+    } else {
         params[name] = () => { handler(target); };
+    }
 }
 
 function _actorDestroyed(target) {
@@ -116,8 +117,9 @@ function removeTweens(...args) {
         if (Tweener.getTweenCount(scope) == 0)
             _tweenCompleted(scope);
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 function pauseTweens(...args) {

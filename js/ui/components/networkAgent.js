@@ -80,8 +80,9 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                         secret.valid = secret.value.length > 0;
                     this._updateOkButton();
                 });
-            } else
+            } else {
                 secret.valid = true;
+            }
 
             if (rtl) {
                 layout.attach(secret.entry, 0, pos, 1, 1);
@@ -188,8 +189,9 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                           || (value[i] >= 'A' && value[i] <= 'Z')))
                         return false;
                 }
-            } else
+            } else {
                 return false;
+            }
 	} else if (secret.wep_key_type == NM.WepKeyType.PASSPHRASE) {
 	    if (value.length < 0 || value.length > 64)
 	        return false;
@@ -458,8 +460,9 @@ var VPNRequestHandler = class {
                 this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
             else
                 this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
-        } else
+        } else {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+        }
 
         this.destroy();
     }

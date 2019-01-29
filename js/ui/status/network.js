@@ -498,8 +498,9 @@ var NMDeviceWired = class extends NMConnectionDevice {
             } else {
                 return 'network-wired-disconnected-symbolic';
             }
-        } else
+        } else {
             return 'network-wired-disconnected-symbolic';
+        }
     }
 };
 

@@ -834,8 +834,9 @@ var PaginatedIconGrid = GObject.registerClass({
                 if ((i + 1) % this._childrenPerPage == 0)
                     y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
-            } else
+            } else {
                 x += this._getHItemSize() + spacing;
+            }
         }
     }
 

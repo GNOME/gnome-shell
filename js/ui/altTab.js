@@ -795,8 +795,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                                                             return GLib.SOURCE_REMOVE;
                                                         });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
-        } else
+        } else {
            this._itemEntered(index);
+        }
     }
 
     _enterItem(index) {

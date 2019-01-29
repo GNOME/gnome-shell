@@ -72,9 +72,9 @@ var ScreenshotService = class {
                 flashspot.fire(() => {
                     this._removeShooterForSender(invocation.get_sender());
                 });
-            }
-            else
+            } else {
                 this._removeShooterForSender(invocation.get_sender());
+            }
         }
 
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);

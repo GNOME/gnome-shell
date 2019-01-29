@@ -143,8 +143,7 @@ function _datesEqual(a, b) {
     return true;
 }
 
-function _dateIntervalsOverlap(a0, a1, b0, b1)
-{
+function _dateIntervalsOverlap(a0, a1, b0, b1) {
     if (a1 <= b0)
         return false;
     else if (b1 <= a0)
@@ -466,8 +465,7 @@ var Calendar = class Calendar {
                 let day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
                 newDate = new Date(newDate.getFullYear() - 1, 11, day);
             }
-        }
-        else {
+        } else {
             newDate.setMonth(oldMonth - 1);
             if (newDate.getMonth() != oldMonth - 1) {
                 let day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
@@ -490,8 +488,7 @@ var Calendar = class Calendar {
                 let day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
                 newDate = new Date(newDate.getFullYear() + 1, 0, day);
             }
-        }
-        else {
+        } else {
             newDate.setMonth(oldMonth + 1);
             if (newDate.getMonth() != oldMonth + 1) {
                 let day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
@@ -646,9 +643,9 @@ var Calendar = class Calendar {
                 button.add_style_pseudo_class('selected');
                 if (this._shouldDateGrabFocus)
                     button.grab_key_focus();
-            }
-            else
+            } else {
                 button.remove_style_pseudo_class('selected');
+            }
         });
     }
 };

@@ -464,9 +464,9 @@ var Background = class Background {
 
         let cache = Meta.BackgroundImageCache.get_default();
         let image = cache.load(file);
-        if (image.is_loaded())
+        if (image.is_loaded()) {
             this._setLoaded();
-        else {
+        } else {
             let id = image.connect('loaded', () => {
                 this._setLoaded();
                 image.disconnect(id);

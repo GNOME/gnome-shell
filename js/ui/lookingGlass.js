@@ -185,9 +185,9 @@ var Notebook = class Notebook {
     }
 
     selectChild(child) {
-        if (child == null)
+        if (child == null) {
             this.selectIndex(-1);
-        else {
+        } else {
             for (let i = 0; i < this._tabs.length; i++) {
                 let tabData = this._tabs[i];
                 if (tabData.child == child) {

@@ -588,8 +588,9 @@ var _Draggable = class _Draggable {
                         if (this._restoreOnSuccess) {
                             this._restoreDragActor(event.get_time());
                             return true;
-                        } else
+                        } else {
                             this._dragActor.destroy();
+                        }
                     }
 
                     this._dragState = DragState.INIT;

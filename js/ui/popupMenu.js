@@ -851,8 +851,9 @@ var PopupMenu = class extends PopupMenuBase {
                 this.toggle();
             this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
             return Clutter.EVENT_STOP;
-        } else
+        } else {
             return Clutter.EVENT_PROPAGATE;
+        }
     }
 
     setArrowOrigin(origin) {

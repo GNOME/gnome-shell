@@ -630,9 +630,9 @@ var AppSwitchAction = GObject.registerClass({
             // Check whether the 4th finger press happens after a 3-finger long press,
             // this only needs to be checked on the first 4th finger press
             if (this._longPressStartTime != null &&
-                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT)
+                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT) {
                 this.cancel();
-            else {
+            } else {
                 this._longPressStartTime = null;
                 this.emit('activated');
             }
@@ -1183,9 +1183,9 @@ var WindowManager = class {
         let focusWindow = global.display.focus_window;
         let nextWindow;
 
-        if (focusWindow == null)
+        if (focusWindow == null) {
             nextWindow = windows[0].metaWindow;
-        else {
+        } else {
             let index = this._lookupIndex (windows, focusWindow) + 1;
 
             if (index >= windows.length)
