@@ -720,7 +720,7 @@ st_texture_cache_free_bind (gpointer data)
  * @object: A #GObject with a property @property_name of type #GdkPixbuf
  * @property_name: Name of a property
  *
- * Create a #ClutterTexture which tracks the #cairo_surface_t value of a GObject property
+ * Create a #ClutterActor which tracks the #cairo_surface_t value of a GObject property
  * named by @property_name.  Unlike other methods in StTextureCache, the underlying
  * #CoglTexture is not shared by default with other invocations to this method.
  *
