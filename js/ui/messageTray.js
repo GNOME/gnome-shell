@@ -497,9 +497,12 @@ class NotificationBanner extends Calendar.NotificationMessage {
         });
     }
 
-    _onDestroy() {
-        super._onDestroy();
-        this.notification.disconnect(this._activatedId);
+    _disconnectNotificationSignals() {
+        super._disconnectNotificationSignals();
+
+        if (this._activatedId)
+            this.notification.disconnect(this._activatedId);
+        this._activatedId = 0;
     }
 
     _onUpdated(n, clear) {
