@@ -62,7 +62,7 @@ var IBusManager = class {
         try {
             Gio.Subprocess.new(['ibus-daemon', '--xim', '--panel', 'disable'],
                                Gio.SubprocessFlags.NONE);
-        } catch(e) {
+        } catch (e) {
             log('Failed to launch ibus-daemon: ' + e.message);
         }
     }
@@ -138,7 +138,7 @@ var IBusManager = class {
                     engine = this._ibus.get_global_engine_async_finish(result);
                     if (!engine)
                         return;
-                } catch(e) {
+                } catch (e) {
                     return;
                 }
                 this._engineChanged(this._ibus, engine.get_name());

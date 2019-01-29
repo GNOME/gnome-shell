@@ -8,7 +8,7 @@ var Tpl = null;
 var Tp = null;
 try {
     ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
-} catch(e) {
+} catch (e) {
     log('Telepathy is not available, chat integration will be disabled.');
 }
 

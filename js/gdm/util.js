@@ -342,7 +342,7 @@ var ShellUserVerifier = class {
         try {
             this._clearUserVerifier();
             this._userVerifier = client.open_reauthentication_channel_finish(result);
-        } catch(e) {
+        } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
             if (e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
@@ -369,7 +369,7 @@ var ShellUserVerifier = class {
         try {
             this._clearUserVerifier();
             this._userVerifier = client.get_user_verifier_finish(result);
-        } catch(e) {
+        } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
             this._reportInitError('Failed to obtain user verifier', e);
@@ -429,7 +429,7 @@ var ShellUserVerifier = class {
                                                                (obj, result) => {
                try {
                    obj.call_begin_verification_for_user_finish(result);
-               } catch(e) {
+               } catch (e) {
                    if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                        return;
                    this._reportInitError('Failed to start verification for user', e);
@@ -444,7 +444,7 @@ var ShellUserVerifier = class {
                                                       (obj, result) => {
                try {
                    obj.call_begin_verification_finish(result);
-               } catch(e) {
+               } catch (e) {
                    if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                        return;
                    this._reportInitError('Failed to start verification', e);

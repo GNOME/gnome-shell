@@ -168,7 +168,7 @@ var DBusEventSource = class DBusEventSource {
             try {
                 this._dbusProxy.init_finish(result);
                 loaded = true;
-            } catch(e) {
+            } catch (e) {
                 if (e.matches(Gio.DBusError, Gio.DBusError.TIMED_OUT)) {
                     // Ignore timeouts and install signals as normal, because with high
                     // probability the service will appear later on, and we will get a

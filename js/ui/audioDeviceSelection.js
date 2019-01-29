@@ -164,7 +164,7 @@ var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
         let dialog;
         try {
             dialog = new AudioDeviceSelectionDialog(devices);
-        } catch(e) {
+        } catch (e) {
             invocation.return_value(null);
             return;
         }

@@ -342,7 +342,7 @@ var AuthenticationAgent = class {
     enable() {
         try {
             this._native.register();
-        } catch(e) {
+        } catch (e) {
             log('Failed to register AuthenticationAgent');
         }
     }
@@ -350,7 +350,7 @@ var AuthenticationAgent = class {
     disable() {
         try {
             this._native.unregister();
-        } catch(e) {
+        } catch (e) {
             log('Failed to unregister AuthenticationAgent');
         }
     }

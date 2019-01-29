@@ -93,7 +93,7 @@ function spawnApp(argv) {
 
         let context = global.create_app_launch_context(0, -1);
         app.launch([], context);
-    } catch(err) {
+    } catch (err) {
         _handleSpawnError(argv[0], err);
     }
 }

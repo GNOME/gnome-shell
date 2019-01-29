@@ -69,7 +69,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
 
         try {
             keyfile.load_from_file(path, 0);
-        } catch(e) {
+        } catch (e) {
             return;
         }
 
@@ -99,7 +99,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             let autoStart = true;
             try {
                 autoStart = keyfile.get_boolean(group, 'AutoStart');
-            } catch(e) {
+            } catch (e) {
                 // ignore error
             }
 
@@ -118,13 +118,13 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             remoteProvider.defaultEnabled = true;
             try {
                 remoteProvider.defaultEnabled = !keyfile.get_boolean(group, 'DefaultDisabled');
-            } catch(e) {
+            } catch (e) {
                 // ignore error
             }
 
             objectPaths[objectPath] = remoteProvider;
             loadedProviders.push(remoteProvider);
-        } catch(e) {
+        } catch (e) {
             log('Failed to add search provider %s: %s'.format(path, e.toString()));
         }
     }

@@ -67,7 +67,7 @@ var Client = class {
     _onProxyReady(o, res) {
         try {
 	    this._proxy = Gio.DBusProxy.new_finish(res);
-        } catch(e) {
+        } catch (e) {
 	    log('error creating bolt proxy: %s'.format(e.message));
             return;
         }

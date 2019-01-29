@@ -127,7 +127,7 @@ function updateExtension(uuid) {
             try {
                 extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
                 ExtensionSystem.loadExtension(extension);
-            } catch(e) {
+            } catch (e) {
                 if (extension)
                     ExtensionSystem.unloadExtension(extension);
 
@@ -234,7 +234,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
             try {
                 let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 ExtensionSystem.loadExtension(extension);
-            } catch(e) {
+            } catch (e) {
                 uninstallExtension(uuid);
                 errback('LoadExtensionError', e);
                 return;

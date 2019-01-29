@@ -94,7 +94,7 @@ var ObjectManager = class {
                          (initable, result) => {
                try {
                    initable.init_finish(result);
-               } catch(e) {
+               } catch (e) {
                    logError(e, 'could not initialize proxy for interface ' + interfaceName);
 
                    if (onFinished)
@@ -156,7 +156,7 @@ var ObjectManager = class {
     _onManagerProxyLoaded(initable, result) {
         try {
             initable.init_finish(result);
-        } catch(e) {
+        } catch (e) {
             logError(e, 'could not initialize object manager for object ' + this._serviceName);
 
             this._tryToCompleteLoad();

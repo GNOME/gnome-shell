@@ -23,7 +23,7 @@ function FprintManager() {
 
     try {
         self.init(null);
-    } catch(e) {
+    } catch (e) {
         log('Failed to connect to Fprint service: ' + e.message);
         return null;
     }

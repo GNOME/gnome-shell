@@ -64,7 +64,7 @@ function disableExtension(uuid) {
         let uuid = orderReversed[i];
         try {
             ExtensionUtils.extensions[uuid].stateObj.disable();
-        } catch(e) {
+        } catch (e) {
             logExtensionError(uuid, e);
         }
     }
@@ -77,7 +77,7 @@ function disableExtension(uuid) {
 
     try {
         extension.stateObj.disable();
-    } catch(e) {
+    } catch (e) {
         logExtensionError(uuid, e);
     }
 
@@ -85,7 +85,7 @@ function disableExtension(uuid) {
         let uuid = order[i];
         try {
             ExtensionUtils.extensions[uuid].stateObj.enable();
-        } catch(e) {
+        } catch (e) {
             logExtensionError(uuid, e);
         }
     }
@@ -132,7 +132,7 @@ function enableExtension(uuid) {
         extension.state = ExtensionState.ENABLED;
         _signals.emit('extension-state-changed', extension);
         return;
-    } catch(e) {
+    } catch (e) {
         if (extension.stylesheet) {
             theme.unload_stylesheet(extension.stylesheet);
             delete extension.stylesheet;
@@ -208,7 +208,7 @@ function reloadExtension(oldExtension) {
     let newExtension;
     try {
         newExtension = ExtensionUtils.createExtensionObject(uuid, dir, type);
-    } catch(e) {
+    } catch (e) {
         logExtensionError(uuid, e);
         return;
     }
@@ -235,7 +235,7 @@ function initExtension(uuid) {
     ExtensionUtils.installImporter(extension);
     try {
         extensionModule = extension.imports.extension;
-    } catch(e) {
+    } catch (e) {
         logExtensionError(uuid, e);
         return false;
     }
@@ -243,7 +243,7 @@ function initExtension(uuid) {
     if (extensionModule.init) {
         try {
             extensionState = extensionModule.init(extension);
-        } catch(e) {
+        } catch (e) {
             logExtensionError(uuid, e);
             return false;
         }

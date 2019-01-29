@@ -69,7 +69,7 @@ function _getFolderName(folder) {
         try {
             keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
             name = keyfile.get_locale_string('Desktop Entry', 'Name', null);
-        } catch(e) {
+        } catch (e) {
             return name;
         }
     }
@@ -359,7 +359,7 @@ var AllView = class AllView extends BaseAppView {
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
-            } catch(e) {
+            } catch (e) {
                 return false;
             }
             return appInfo.should_show();

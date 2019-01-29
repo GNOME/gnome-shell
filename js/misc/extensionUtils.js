@@ -235,7 +235,7 @@ var ExtensionFinder = class {
                                                        : ExtensionType.SYSTEM;
         try {
             extension = createExtensionObject(uuid, extensionDir, type);
-        } catch(e) {
+        } catch (e) {
             logError(e, 'Could not load extension %s'.format(uuid));
             return;
         }

@@ -759,7 +759,7 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
                 let source;
                 try {
                     source = this._ensureAppSource(appId);
-                } catch(e) {
+                } catch (e) {
                     if (e instanceof InvalidAppError)
                         return;
                     throw e;
@@ -793,7 +793,7 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
         let source;
         try {
             source = this._ensureAppSource(appId);
-        } catch(e) {
+        } catch (e) {
             if (e instanceof InvalidAppError) {
                 invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
                 return;

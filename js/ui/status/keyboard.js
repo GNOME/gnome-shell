@@ -199,7 +199,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
                                  let props;
                                  try {
                                      props = conn.call_finish(result).deep_unpack()[0];
-                                 } catch(e) {
+                                 } catch (e) {
                                      log('Could not get properties from ' + this._BUS_NAME);
                                      return;
                                  }

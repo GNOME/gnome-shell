@@ -1981,7 +1981,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                     let state = client.check_connectivity_finish(result);
                     if (state >= NM.ConnectivityState.FULL)
                         this._closeConnectivityCheck(path);
-                } catch(e) { }
+                } catch (e) { }
             });
         } else {
             log('Invalid result from portal helper: ' + result);

@@ -181,7 +181,7 @@ var CandidatePopup = class CandidatePopup {
                 let window = global.display.focus_window.get_compositor_private();
                 this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
             });
-        } catch(e) {
+        } catch (e) {
             // Only recent IBus versions have support for this signal
             // which is used for wayland clients. In order to work
             // with older IBus versions we can silently ignore the

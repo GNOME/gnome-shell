@@ -178,7 +178,7 @@ var WeatherClient = class {
             (o, res) => {
                 try {
                     this._gclueService = Geoclue.Simple.new_finish(res);
-                } catch(e) {
+                } catch (e) {
                     log('Failed to connect to Geoclue2 service: ' + e.message);
                     this._setLocation(this._mostRecentLocation);
                     return;

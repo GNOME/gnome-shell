@@ -798,7 +798,7 @@ var ZoomRegion = class ZoomRegion {
         let extents;
         try {
             extents = component.get_extents(Atspi.CoordType.SCREEN);
-        } catch(e) {
+        } catch (e) {
             log('Failed to read extents of focused component: ' + e.message);
             return;
         }
@@ -815,7 +815,7 @@ var ZoomRegion = class ZoomRegion {
         let extents;
         try {
             extents = text.get_character_extents(text.get_caret_offset(), 0);
-        } catch(e) {
+        } catch (e) {
             log('Failed to read extents of text caret: ' + e.message);
             return;
         }

@@ -114,7 +114,7 @@ function init() {
                 return base.replace(/\]$/, ' delegate for ' + this.actor.toString().substring(1));
             else
                 return base;
-        } catch(e) {
+        } catch (e) {
             return base;
         }
     };

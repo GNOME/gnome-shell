@@ -43,7 +43,7 @@ function canLock() {
 
         let version = result.deep_unpack()[0].deep_unpack();
         return haveSystemd() && versionCompare('3.5.91', version);
-    } catch(e) {
+    } catch (e) {
         return false;
     }
 }
@@ -185,7 +185,7 @@ var LoginManagerSystemd = class {
                     let [outVariant, fdList] = proxy.call_with_unix_fd_list_finish(result);
                     fd = fdList.steal_fds()[0];
                     callback(new Gio.UnixInputStream({ fd: fd }));
-                } catch(e) {
+                } catch (e) {
                     logError(e, "Error getting systemd inhibitor");
                     callback(null);
                 }

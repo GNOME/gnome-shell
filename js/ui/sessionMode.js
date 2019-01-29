@@ -120,7 +120,7 @@ function _loadMode(file, info) {
         if (fileContent instanceof Uint8Array)
             fileContent = imports.byteArray.toString(fileContent);
         newMode = JSON.parse(fileContent);
-    } catch(e) {
+    } catch (e) {
         return;
     }
 
