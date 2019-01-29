@@ -549,7 +549,7 @@ var Inspector = GObject.registerClass({
 
     _onScrollEvent(actor, event) {
         switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP:
+        case Clutter.ScrollDirection.UP: {
             // select parent
             let parent = this._target.get_parent();
             if (parent != null) {
@@ -557,6 +557,7 @@ var Inspector = GObject.registerClass({
                 this._update(event);
             }
             break;
+        }
 
         case Clutter.ScrollDirection.DOWN:
             // select child
