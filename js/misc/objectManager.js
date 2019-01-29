@@ -161,7 +161,7 @@ var ObjectManager = new Lang.Class({
         try {
             initable.init_finish(result);
         } catch(e) {
-            logError(e, 'could not initialize object manager for object ' + params.name);
+            logError(e, 'could not initialize object manager for object ' + this._serviceName);
 
             this._tryToCompleteLoad();
             return;
