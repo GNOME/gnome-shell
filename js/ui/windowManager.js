@@ -587,70 +587,6 @@ var WorkspaceSwitchAction = GObject.registerClass({
     }
 });
 
-var AppSwitchAction = GObject.registerClass({
-    Signals: { 'activated': {} },
-}, class AppSwitchAction extends Clutter.GestureAction {
-    _init() {
-        super._init();
-        this.set_n_touch_points(3);
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
-    }
-
-    vfunc_gesture_prepare(action, actor) {
-        if (Main.actionMode != Shell.ActionMode.NORMAL) {
-            this.cancel();
-            return false;
-        }
-
-        return this.get_n_current_points() <= 4;
-    }
-
-    vfunc_gesture_begin(action, actor) {
-        // in milliseconds
-        const LONG_PRESS_TIMEOUT = 250;
-
-        let nPoints = this.get_n_current_points();
-        let event = this.get_last_event (nPoints - 1);
-
-        if (nPoints == 3)
-            this._longPressStartTime = event.get_time();
-        else if (nPoints == 4) {
-            // Check whether the 4th finger press happens after a 3-finger long press,
-            // this only needs to be checked on the first 4th finger press
-            if (this._longPressStartTime != null &&
-                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT)
-                this.cancel();
-            else {
-                this._longPressStartTime = null;
-                this.emit('activated');
-            }
-        }
-
-        return this.get_n_current_points() <= 4;
-    }
-
-    vfunc_gesture_progress(action, actor) {
-        const MOTION_THRESHOLD = 30;
-
-        if (this.get_n_current_points() == 3) {
-            for (let i = 0; i < this.get_n_current_points(); i++) {
-                let [startX, startY] = this.get_press_coords(i);
-                let [x, y] = this.get_motion_coords(i);
-
-                if (Math.abs(x - startX) > MOTION_THRESHOLD ||
-                    Math.abs(y - startY) > MOTION_THRESHOLD)
-                    return false;
-            }
-
-        }
-
-        return true;
-    }
-});
-
 var ResizePopup = class {
     constructor() {
         this._widget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
@@ -997,10 +933,6 @@ var WindowManager = class {
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
-
-        gesture = new AppSwitchAction();
-        gesture.connect('activated', this._switchApp.bind(this));
-        global.stage.add_action(gesture);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
