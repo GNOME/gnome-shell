@@ -21,11 +21,13 @@ var State = {
 };
 
 var ModalDialog = GObject.registerClass({
-    Properties: { 'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
-                                                 GObject.ParamFlags.READABLE,
-                                                 Math.min(...Object.values(State)),
-                                                 Math.max(...Object.values(State)),
-                                                 State.CLOSED) },
+    Properties: {
+        'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
+                                       GObject.ParamFlags.READABLE,
+                                       Math.min(...Object.values(State)),
+                                       Math.max(...Object.values(State)),
+                                       State.CLOSED)
+    },
     Signals: { 'opened': {}, 'closed': {} }
 }, class ModalDialog extends St.Widget {
     _init(params) {

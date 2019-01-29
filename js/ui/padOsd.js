@@ -275,21 +275,23 @@ var ActionEditor = class {
 Signals.addSignalMethods(ActionEditor.prototype);
 
 var PadDiagram = GObject.registerClass({
-    Properties: { 'left-handed': GObject.ParamSpec.boolean('left-handed',
-                                                           'left-handed', 'Left handed',
-                                                           GObject.ParamFlags.READWRITE |
-                                                           GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                           false),
-                  'image': GObject.ParamSpec.string('image', 'image', 'Image',
-                                                    GObject.ParamFlags.READWRITE |
-                                                    GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                    null),
-                  'editor-actor': GObject.ParamSpec.object('editor-actor',
-                                                           'editor-actor',
-                                                           'Editor actor',
-                                                           GObject.ParamFlags.READWRITE |
-                                                           GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                           Clutter.Actor.$gtype) },
+    Properties: {
+        'left-handed': GObject.ParamSpec.boolean('left-handed',
+                                                 'left-handed', 'Left handed',
+                                                 GObject.ParamFlags.READWRITE |
+                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                 false),
+        'image': GObject.ParamSpec.string('image', 'image', 'Image',
+                                          GObject.ParamFlags.READWRITE |
+                                          GObject.ParamFlags.CONSTRUCT_ONLY,
+                                          null),
+        'editor-actor': GObject.ParamSpec.object('editor-actor',
+                                                 'editor-actor',
+                                                 'Editor actor',
+                                                 GObject.ParamFlags.READWRITE |
+                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                 Clutter.Actor.$gtype)
+    },
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
