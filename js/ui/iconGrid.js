@@ -670,7 +670,7 @@ var IconGrid = GObject.registerClass({
     }
 
     addItem(item, index) {
-        if (!item.icon instanceof BaseIcon)
+        if (!(item.icon instanceof BaseIcon))
             throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
 
         this._items.push(item);
