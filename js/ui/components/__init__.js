@@ -37,8 +37,8 @@ var ComponentManager = class {
         if (component)
             return component;
 
-	if (Main.sessionMode.isLocked)
-	    return null;
+        if (Main.sessionMode.isLocked)
+            return null;
 
         let constructor = this._importComponent(name);
         component = new constructor();
@@ -48,7 +48,7 @@ var ComponentManager = class {
 
     _enableComponent(name) {
         let component = this._ensureComponent(name);
-	if (component)
+        if (component)
             component.enable();
     }
 
