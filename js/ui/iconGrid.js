@@ -906,10 +906,8 @@ var PaginatedIconGrid = GObject.registerClass({
     getItemPage(item) {
         let children = this._getVisibleChildren();
         let index = children.indexOf(item);
-        if (index == -1) {
+        if (index == -1)
             throw new Error('Item not found.');
-            return 0;
-        }
         return Math.floor(index / this._childrenPerPage);
     }
 
@@ -924,10 +922,9 @@ var PaginatedIconGrid = GObject.registerClass({
     openExtraSpace(sourceItem, side, nRows) {
         let children = this._getVisibleChildren();
         let index = children.indexOf(sourceItem.actor);
-        if (index == -1) {
+        if (index == -1)
             throw new Error('Item not found.');
-            return;
-        }
+
         let pageIndex = Math.floor(index / this._childrenPerPage);
         let pageOffset = pageIndex * this._childrenPerPage;
 
