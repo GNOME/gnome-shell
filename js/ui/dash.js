@@ -35,7 +35,7 @@ class DashItemContainer extends St.Widget {
                       x_align: Clutter.ActorAlign.CENTER });
 
         this._labelText = "";
-        this.label = new St.Label({ style_class: 'dash-label'});
+        this.label = new St.Label({ style_class: 'dash-label' });
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
         this.label_actor = this.label;
@@ -328,7 +328,7 @@ class DashActor extends St.Widget {
     }
 });
 
-const baseIconSizes = [ 16, 22, 24, 32, 48, 64 ];
+const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 var Dash = class Dash {
     constructor() {

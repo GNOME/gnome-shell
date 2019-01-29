@@ -68,10 +68,10 @@ var AutoComplete = class AutoComplete {
             if (commonPrefix.length > 0) {
                 this.additionalCompletionText(commonPrefix, event.attrHead);
                 this.emit('completion', { completion: commonPrefix, type: 'prefix' });
-                this.emit('suggest', { completions: event.completions});
+                this.emit('suggest', { completions: event.completions });
             }
         } else if (event.completions.length > 1 && event.tabType === 'double') {
-            this.emit('suggest', { completions: event.completions});
+            this.emit('suggest', { completions: event.completions });
         }
     }
 

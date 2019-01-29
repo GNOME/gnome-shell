@@ -582,7 +582,7 @@ var WorkspacesDisplay = class {
     }
 
     hide() {
-        if (this._restackedNotifyId > 0){
+        if (this._restackedNotifyId > 0) {
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
         }

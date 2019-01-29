@@ -261,7 +261,7 @@ const SystemActions = GObject.registerClass({
 
         let results = [];
 
-        for (let [key, {available, keywords}] of this._actions)
+        for (let [key, { available, keywords }] of this._actions)
             if (available && terms.every(t => keywords.some(k => k.startsWith(t))))
                 results.push(key);
 

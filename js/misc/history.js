@@ -66,7 +66,7 @@ var HistoryManager = class {
             this._indexChanged();
         }
 
-        return this._historyIndex ? this._history[this._historyIndex -1] : null;
+        return this._historyIndex ? this._history[this._historyIndex - 1] : null;
     }
 
     addItem(input) {

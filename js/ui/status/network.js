@@ -414,7 +414,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         if (!this._device)
             return '';
 
-        switch(this._device.state) {
+        switch (this._device.state) {
         case NM.DeviceState.DISCONNECTED:
             /* Translators: %s is a network identifier */
             return _("%s Off").format(this._getDescription());
@@ -707,7 +707,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         this._activeApChangedId = device.connect('notify::active-access-point', this._activeApChanged.bind(this));
 
         // accessPointAdded will also create dialog items
-        let accessPoints = device.get_access_points() || [ ];
+        let accessPoints = device.get_access_points() || [];
         accessPoints.forEach(ap => {
             this._accessPointAdded(this._device, ap);
         });
@@ -1075,9 +1075,9 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             network = { ssid: accessPoint.get_ssid(),
                         mode: accessPoint.mode,
                         security: this._getApSecurityType(accessPoint),
-                        connections: [ ],
+                        connections: [],
                         item: null,
-                        accessPoints: [ accessPoint ]
+                        accessPoints: [accessPoint]
                       };
             network.ssidText = ssidToLabel(network.ssid);
             this._checkConnections(network, accessPoint);
@@ -1391,7 +1391,7 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
         if (this._activeConnection == null)
             return null;
 
-        switch(this._activeConnection.vpn_state) {
+        switch (this._activeConnection.vpn_state) {
         case NM.VpnConnectionState.DISCONNECTED:
         case NM.VpnConnectionState.ACTIVATED:
             return null;
@@ -1557,7 +1557,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 
     _getSummaryIcon() {
-        switch(this._category) {
+        switch (this._category) {
             case NMConnectionCategory.WIRED:
                 return 'network-wired-symbolic';
             case NMConnectionCategory.WIRELESS:
@@ -1568,7 +1568,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 
     _getSummaryLabel(nDevices) {
-        switch(this._category) {
+        switch (this._category) {
             case NMConnectionCategory.WIRED:
                 return ngettext("%s Wired Connection",
                                 "%s Wired Connections",
@@ -1615,9 +1615,9 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
     _clientGot(obj, result) {
         this._client = NM.Client.new_finish(result);
 
-        this._activeConnections = [ ];
-        this._connections = [ ];
-        this._connectivityQueue = [ ];
+        this._activeConnections = [];
+        this._connections = [];
+        this._connectivityQueue = [];
 
         this._mainConnection = null;
         this._mainConnectionIconChangedId = 0;
@@ -1680,7 +1680,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
     }
 
     _readDevices() {
-        let devices = this._client.get_devices() || [ ];
+        let devices = this._client.get_devices() || [];
         for (let i = 0; i < devices.length; ++i) {
             try {
                 this._deviceAdded(this._client, devices[i], true);

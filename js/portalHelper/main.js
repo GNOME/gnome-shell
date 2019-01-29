@@ -58,7 +58,7 @@ class PortalHeaderBar extends Gtk.HeaderBar {
                                              single_line_mode: true,
                                              ellipsize: Pango.EllipsizeMode.END,
                                              valign: Gtk.Align.BASELINE,
-                                             selectable: true});
+                                             selectable: true });
         this.subtitleLabel.get_style_context().add_class('subtitle');
         hbox.add(this.subtitleLabel);
 

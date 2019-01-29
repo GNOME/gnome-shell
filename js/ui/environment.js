@@ -58,7 +58,7 @@ function _patchLayoutClass(layoutClass, styleProps) {
 }
 
 function _loggingFunc(...args) {
-    let fields = {'MESSAGE': args.join(', ')};
+    let fields = { 'MESSAGE': args.join(', ') };
     let domain = "GNOME Shell";
 
     // If the caller is an extension, add it as metadata

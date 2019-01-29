@@ -162,7 +162,7 @@ var ClutterFrameTicker = class {
         // set the timeline to loop. Doing this means we have to track
         // time ourselves, since clutter timeline's time will cycle
         // instead of strictly increase.
-        this._timeline = new Clutter.Timeline({ duration: 1000*1000 });
+        this._timeline = new Clutter.Timeline({ duration: 1000 * 1000 });
         this._timeline.set_loop(true);
         this._startTime = -1;
         this._currentTime = -1;

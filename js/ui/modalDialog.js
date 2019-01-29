@@ -248,7 +248,7 @@ var ModalDialog = GObject.registerClass({
         this.popModal(timestamp);
         Tweener.addTween(this.dialogLayout,
                          { opacity: 0,
-                           time:    FADE_OUT_DIALOG_TIME,
+                           time: FADE_OUT_DIALOG_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._setState(State.FADED_OUT);

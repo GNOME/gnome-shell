@@ -208,7 +208,7 @@ var ActionEditor = class {
 
         this._doneButton = new St.Button({ label: _("Done"),
                                            style_class: 'button',
-                                           x_expand: false});
+                                           x_expand: false });
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
         this.actor.add_actor(this._doneButton);
     }
@@ -440,11 +440,11 @@ var PadDiagram = GObject.registerClass({
         let cr = this.get_context();
 
         cr.save();
-        cr.translate(width/2, height/2);
+        cr.translate(width / 2, height / 2);
         cr.scale(this._scale, this._scale);
         if (this._leftHanded)
             cr.rotate(Math.PI);
-        cr.translate(-dimensions.width/2, -dimensions.height/2);
+        cr.translate(-dimensions.width / 2, -dimensions.height / 2);
         this._handle.render_cairo(cr);
         cr.restore();
         cr.$dispose();
@@ -611,7 +611,7 @@ var PadDiagram = GObject.registerClass({
 var PadOsd = class {
     constructor(padDevice, settings, imagePath, editionMode, monitorIndex) {
         this.padDevice = padDevice;
-        this._groupPads = [ padDevice ];
+        this._groupPads = [padDevice];
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;

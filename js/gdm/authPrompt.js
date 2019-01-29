@@ -112,7 +112,7 @@ var AuthPrompt = class {
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
         this.actor.add(this._buttonBox,
-                       { expand:  true,
+                       { expand: true,
                          x_align: St.Align.MIDDLE,
                          y_align: St.Align.END });
 

@@ -264,7 +264,7 @@ var BoxPointer = GObject.registerClass({
         let borderRadius = themeNode.get_length('-arrow-border-radius');
 
         let halfBorder = borderWidth / 2;
-        let halfBase = Math.floor(base/2);
+        let halfBase = Math.floor(base / 2);
 
         let backgroundColor = themeNode.get_color('-arrow-background-color');
 
@@ -345,7 +345,7 @@ var BoxPointer = GObject.registerClass({
         if (!skipTopRight) {
             cr.lineTo(x2 - borderRadius, y1);
             cr.arc(x2 - borderRadius, y1 + borderRadius, borderRadius,
-                   3*Math.PI/2, Math.PI*2);
+                   3 * Math.PI / 2, Math.PI * 2);
         }
 
         if (this._arrowSide == St.Side.RIGHT && rise) {
@@ -366,7 +366,7 @@ var BoxPointer = GObject.registerClass({
         if (!skipBottomRight) {
             cr.lineTo(x2, y2 - borderRadius);
             cr.arc(x2 - borderRadius, y2 - borderRadius, borderRadius,
-                   0, Math.PI/2);
+                   0, Math.PI / 2);
         }
 
         if (this._arrowSide == St.Side.BOTTOM && rise) {
@@ -387,7 +387,7 @@ var BoxPointer = GObject.registerClass({
         if (!skipBottomLeft) {
             cr.lineTo(x1 + borderRadius, y2);
             cr.arc(x1 + borderRadius, y2 - borderRadius, borderRadius,
-                   Math.PI/2, Math.PI);
+                   Math.PI / 2, Math.PI);
         }
 
         if (this._arrowSide == St.Side.LEFT && rise) {
@@ -408,7 +408,7 @@ var BoxPointer = GObject.registerClass({
         if (!skipTopLeft) {
             cr.lineTo(x1, y1 + borderRadius);
             cr.arc(x1 + borderRadius, y1 + borderRadius, borderRadius,
-                   Math.PI, 3*Math.PI/2);
+                   Math.PI, 3 * Math.PI / 2);
         }
 
         Clutter.cairo_set_source_color(cr, backgroundColor);
@@ -513,7 +513,7 @@ var BoxPointer = GObject.registerClass({
         //     of the box to maintain the arrow's accuracy.
 
         let arrowOrigin;
-        let halfBase = Math.floor(arrowBase/2);
+        let halfBase = Math.floor(arrowBase / 2);
         let halfBorder = borderWidth / 2;
         let halfMargin = margin / 2;
         let [x1, y1] = [halfBorder, halfBorder];

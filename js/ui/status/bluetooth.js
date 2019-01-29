@@ -80,7 +80,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
     _getNDevices() {
         let adapter = this._getDefaultAdapter();
         if (!adapter)
-            return [ this._hadSetupDevices ? 1 : -1, -1 ];
+            return [this._hadSetupDevices ? 1 : -1, -1];
 
         let nConnectedDevices = 0;
         let nDevices = 0;
@@ -105,11 +105,11 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             global.settings.set_boolean(HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
         }
 
-        return [ nDevices, nConnectedDevices];
+        return [nDevices, nConnectedDevices];
     }
 
     _sync() {
-        let [ nDevices, nConnectedDevices ] = this._getNDevices();
+        let [nDevices, nConnectedDevices] = this._getNDevices();
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
         this.menu.setSensitive(sensitive);

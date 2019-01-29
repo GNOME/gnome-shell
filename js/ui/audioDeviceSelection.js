@@ -54,7 +54,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 
     _getDeviceLabel(device) {
-        switch(device) {
+        switch (device) {
             case AudioDevice.HEADPHONES:
                 return _("Headphones");
             case AudioDevice.HEADSET:
@@ -67,7 +67,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 
     _getDeviceIcon(device) {
-        switch(device) {
+        switch (device) {
             case AudioDevice.HEADPHONES:
                 return 'audio-headphones-symbolic';
             case AudioDevice.HEADSET:

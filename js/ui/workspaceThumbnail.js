@@ -12,7 +12,7 @@ const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 
 // The maximum size of a thumbnail is 1/10 the width and height of the screen
-let MAX_THUMBNAIL_SCALE = 1/10.;
+let MAX_THUMBNAIL_SCALE = 1 / 10.;
 
 var RESCALE_ANIMATION_TIME = 0.2;
 var SLIDE_ANIMATION_TIME = 0.2;
@@ -230,14 +230,14 @@ Signals.addSignalMethods(WindowClone.prototype);
 
 
 var ThumbnailState = {
-    NEW   :         0,
-    ANIMATING_IN :  1,
+    NEW:            0,
+    ANIMATING_IN:   1,
     NORMAL:         2,
-    REMOVING :      3,
-    ANIMATING_OUT : 4,
-    ANIMATED_OUT :  5,
-    COLLAPSING :    6,
-    DESTROYED :     7
+    REMOVING:       3,
+    ANIMATING_OUT:  4,
+    ANIMATED_OUT:   5,
+    COLLAPSING:     6,
+    DESTROYED:      7
 };
 
 /**
@@ -778,7 +778,7 @@ class ThumbnailsBox extends St.Widget {
             let [w, h] = this._thumbnails[i].actor.get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
-            let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0: WORKSPACE_CUT_SIZE);
+            let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
 
             // Expand the target to include the placeholder, if it exists.
             if (i == this._dropPlaceholderPos)

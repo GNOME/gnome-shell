@@ -9,22 +9,22 @@ var APP_ICON_SIZE = 96;
 var SwitchMonitorPopup = GObject.registerClass(
 class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
-        let items = [{ icon:  'view-mirror-symbolic',
+        let items = [{ icon: 'view-mirror-symbolic',
                        /* Translators: this is for display mirroring i.e. cloning.
                         * Try to keep it under around 15 characters.
                         */
                        label: _('Mirror') },
-                     { icon:  'video-joined-displays-symbolic',
+                     { icon: 'video-joined-displays-symbolic',
                        /* Translators: this is for the desktop spanning displays.
                         * Try to keep it under around 15 characters.
                         */
                        label: _('Join Displays') },
-                     { icon:  'video-single-display-symbolic',
+                     { icon: 'video-single-display-symbolic',
                        /* Translators: this is for using only an external display.
                         * Try to keep it under around 15 characters.
                         */
                        label: _('External Only') },
-                     { icon:  'computer-symbolic',
+                     { icon: 'computer-symbolic',
                        /* Translators: this is for using only the laptop display.
                         * Try to keep it under around 15 characters.
                         */

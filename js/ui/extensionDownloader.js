@@ -186,9 +186,9 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
 
         this.setButtons([{ label: _("Cancel"),
                            action: this._onCancelButtonPressed.bind(this),
-                           key:    Clutter.Escape
+                           key: Clutter.Escape
                          },
-                         { label:  _("Install"),
+                         { label: _("Install"),
                            action: this._onInstallButtonPressed.bind(this),
                            default: true
                          }]);

@@ -58,7 +58,7 @@ function isStopChar(c) {
 function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == quoteChar && expr.charAt(i-1) != '\\'){
+        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\') {
             return i;
         }
     }
@@ -68,7 +68,7 @@ function findMatchingQuote(expr, offset) {
 // Given the ending position of a regex, find where it starts
 function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == '/' && expr.charAt(i-1) != '\\'){
+        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\') {
             return i;
         }
     }
@@ -81,7 +81,7 @@ function findMatchingSlash(expr, offset) {
 // findMatchingBrace("[(])", 3) returns 1.
 function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
-    let openBrace = ({')': '(', ']': '['})[closeBrace];
+    let openBrace = ({ ')': '(', ']': '[' })[closeBrace];
 
     function findTheBrace(expr, offset) {
         if (offset < 0) {
@@ -117,7 +117,7 @@ function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
 
-        if (isStopChar(currChar)){
+        if (isStopChar(currChar)) {
             return offset + 1;
         }
 
@@ -168,7 +168,7 @@ function getPropertyNamesFromExpression(expr, commandHeader) {
     }
 
     let propsUnique = {};
-    if (typeof obj === 'object'){
+    if (typeof obj === 'object') {
         let allProps = getAllProps(obj);
         // Get only things we are allowed to complete following a '.'
         allProps = allProps.filter( isValidPropertyName );

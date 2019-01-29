@@ -91,7 +91,7 @@ class ButtonBox extends St.Widget {
 });
 
 var Button = GObject.registerClass({
-    Signals: {'menu-set': {} },
+    Signals: { 'menu-set': {} },
 }, class PanelMenuButton extends ButtonBox {
     _init(menuAlignment, nameText, dontCreateMenu) {
         super._init({ reactive: true,

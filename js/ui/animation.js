@@ -123,7 +123,7 @@ var AnimatedIcon = class extends Animation {
 };
 
 var Spinner = class extends AnimatedIcon {
-    constructor(size, animate=false) {
+    constructor(size, animate = false) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         super(file, size);
 

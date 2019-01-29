@@ -77,15 +77,15 @@ var AuthenticationDialog = GObject.registerClass({
                                                        styleClass: 'polkit-dialog-user-icon' });
             this._userAvatar.actor.hide();
             userBox.add(this._userAvatar.actor,
-                        { x_fill:  true,
-                          y_fill:  false,
+                        { x_fill: true,
+                          y_fill: false,
                           x_align: St.Align.END,
                           y_align: St.Align.START });
             let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-label',
                                             text: userRealName }));
             userBox.add(userLabel,
-                        { x_fill:  true,
-                          y_fill:  false,
+                        { x_fill: true,
+                          y_fill: false,
                           x_align: St.Align.END,
                           y_align: St.Align.MIDDLE });
         }
@@ -98,7 +98,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                              text: "",
-                                             can_focus: true});
+                                             can_focus: true });
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordBox.add(this._passwordEntry,
@@ -127,7 +127,7 @@ var AuthenticationDialog = GObject.registerClass({
          * gnome-shell.css sets the color to be transparent
          */
         this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label',
-                                                text: 'abc'});
+                                                text: 'abc' });
         this._nullMessageLabel.add_style_class_name('hidden');
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
@@ -137,7 +137,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._cancelButton = this.addButton({ label: _("Cancel"),
                                               action: this.cancel.bind(this),
                                               key: Clutter.Escape });
-        this._okButton = this.addButton({ label:  _("Authenticate"),
+        this._okButton = this.addButton({ label: _("Authenticate"),
                                           action: this._onAuthenticateButtonPressed.bind(this),
                                           default: true });
 

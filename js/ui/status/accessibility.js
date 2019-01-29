@@ -140,7 +140,7 @@ class ATIndicator extends PanelMenu.Button {
                 if (enabled) {
                     interfaceSettings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
                     interfaceSettings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
-                } else if(!hasHC) {
+                } else if (!hasHC) {
                     interfaceSettings.set_string(KEY_GTK_THEME, gtkTheme);
                     interfaceSettings.set_string(KEY_ICON_THEME, iconTheme);
                 } else {

@@ -60,7 +60,7 @@ var KeyboardManager = class {
             this._currentKeymap.options == options)
             return;
 
-        this._currentKeymap = {layouts, variants, options};
+        this._currentKeymap = { layouts, variants, options };
         Meta.get_backend().set_keymap(layouts, variants, options);
     }
 

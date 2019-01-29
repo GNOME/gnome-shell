@@ -202,7 +202,7 @@ var LabelExpanderLayout = GObject.registerClass({
                                                         'Expansion of the layout, between 0 (collapsed) ' +
                                                         'and 1 (fully expanded',
                                                          GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                         0, 1, 0)},
+                                                         0, 1, 0) },
 }, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
         this._expansion = 0;
@@ -471,7 +471,7 @@ var Message = class Message {
                                onComplete() {
                                    this._actionBin.hide();
                                    this.expanded = false;
-                               }});
+                               } });
         } else {
             this._bodyStack.layout_manager.expansion = 0;
             this._actionBin.scale_y = 0;
@@ -626,7 +626,7 @@ var MessageListSection = class MessageListSection {
                                               onComplete() {
                                                   obj.container.destroy();
                                                   global.sync_pointer();
-                                              }});
+                                              } });
         } else {
             obj.container.destroy();
             global.sync_pointer();
@@ -656,7 +656,7 @@ var MessageListSection = class MessageListSection {
                                    transition: 'easeOutQuad',
                                    onComplete() {
                                        message.close();
-                                   }});
+                                   } });
             }
         }
     }

@@ -11,7 +11,7 @@ var DIALOG_TRANSITION_TIME = 0.15;
 var ALIVE_TIMEOUT = 5000;
 
 var CloseDialog = GObject.registerClass({
-    Implements: [ Meta.CloseDialog ],
+    Implements: [Meta.CloseDialog],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.CloseDialog)
     },
@@ -56,12 +56,12 @@ var CloseDialog = GObject.registerClass({
         this._dialog.height = windowActor.height;
 
         this._dialog.addContent(this._createDialogContent());
-        this._dialog.addButton({ label:   _('Force Quit'),
-                                 action:  this._onClose.bind(this),
+        this._dialog.addButton({ label: _('Force Quit'),
+                                 action: this._onClose.bind(this),
                                  default: true });
-        this._dialog.addButton({ label:  _('Wait'),
+        this._dialog.addButton({ label: _('Wait'),
                                  action: this._onWait.bind(this),
-                                 key:    Clutter.Escape });
+                                 key: Clutter.Escape });
 
         global.focus_manager.add_group(this._dialog);
     }

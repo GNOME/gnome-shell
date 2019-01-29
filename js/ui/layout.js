@@ -21,7 +21,7 @@ var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
 function isPopupMetaWindow(actor) {
-    switch(actor.meta_window.get_window_type()) {
+    switch (actor.meta_window.get_window_type()) {
     case Meta.WindowType.DROPDOWN_MENU:
     case Meta.WindowType.POPUP_MENU:
     case Meta.WindowType.COMBO:
@@ -1067,7 +1067,7 @@ var LayoutManager = GObject.registerClass({
                 else
                     continue;
 
-                let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+                let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1 });
                 let strut = new Meta.Strut({ rect: strutRect, side: side });
                 struts.push(strut);
             }

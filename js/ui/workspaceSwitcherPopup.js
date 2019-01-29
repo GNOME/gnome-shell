@@ -119,7 +119,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
 
            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-           else if(i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
+           else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
            else
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });

@@ -1065,9 +1065,9 @@ function rectEqual(one, two) {
 const WorkspaceActor = GObject.registerClass(
 class WorkspaceActor extends St.Widget {
     vfunc_get_focus_chain() {
-        return this.get_children().filter(c => c.visible).sort((a,b) => {
-            let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate: null;
-            let cloneB = (b._delegate && b._delegate instanceof WindowClone) ? b._delegate: null;
+        return this.get_children().filter(c => c.visible).sort((a, b) => {
+            let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate : null;
+            let cloneB = (b._delegate && b._delegate instanceof WindowClone) ? b._delegate : null;
             if (cloneA && cloneB)
                 return cloneA.slotId - cloneB.slotId;
 

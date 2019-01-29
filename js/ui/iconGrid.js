@@ -12,11 +12,11 @@ var MIN_ICON_SIZE = 16;
 var EXTRA_SPACE_ANIMATION_TIME = 0.25;
 
 var ANIMATION_TIME_IN = 0.350;
-var ANIMATION_TIME_OUT = 1/2 * ANIMATION_TIME_IN;
-var ANIMATION_MAX_DELAY_FOR_ITEM = 2/3 * ANIMATION_TIME_IN;
-var ANIMATION_BASE_DELAY_FOR_ITEM = 1/4 * ANIMATION_MAX_DELAY_FOR_ITEM;
-var ANIMATION_MAX_DELAY_OUT_FOR_ITEM = 2/3 * ANIMATION_TIME_OUT;
-var ANIMATION_FADE_IN_TIME_FOR_ITEM = 1/4 * ANIMATION_TIME_IN;
+var ANIMATION_TIME_OUT = 1 / 2 * ANIMATION_TIME_IN;
+var ANIMATION_MAX_DELAY_FOR_ITEM = 2 / 3 * ANIMATION_TIME_IN;
+var ANIMATION_BASE_DELAY_FOR_ITEM = 1 / 4 * ANIMATION_MAX_DELAY_FOR_ITEM;
+var ANIMATION_MAX_DELAY_OUT_FOR_ITEM = 2 / 3 * ANIMATION_TIME_OUT;
+var ANIMATION_FADE_IN_TIME_FOR_ITEM = 1 / 4 * ANIMATION_TIME_IN;
 
 var ANIMATION_BOUNCE_ICON_SCALE = 1.1;
 
@@ -179,8 +179,8 @@ function zoomOutActor(actor) {
 }
 
 var IconGrid = GObject.registerClass({
-    Signals: {'animation-done': {},
-              'child-focused': { param_types: [Clutter.Actor.$gtype]} },
+    Signals: { 'animation-done': {},
+               'child-focused': { param_types: [Clutter.Actor.$gtype] } },
 }, class IconGrid extends St.Widget {
     _init(params) {
         super._init({ style_class: 'icon-grid',
@@ -311,7 +311,7 @@ var IconGrid = GObject.registerClass({
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
         let leftEmptySpace;
-        switch(this._xAlign) {
+        switch (this._xAlign) {
             case St.Align.START:
                 leftEmptySpace = 0;
                 break;
@@ -531,7 +531,7 @@ var IconGrid = GObject.registerClass({
                                    onComplete: () => {
                                        if (isLastItem)
                                            this._animationDone();
-                                   }};
+                                   } };
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
                                delay: delay,
@@ -553,7 +553,7 @@ var IconGrid = GObject.registerClass({
                                    onComplete: () => {
                                        if (isLastItem)
                                            this._animationDone();
-                                   }};
+                                   } };
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
                                delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
@@ -710,8 +710,8 @@ var IconGrid = GObject.registerClass({
         if (this._padWithSpacing) {
             // minRows + 1 because we want to put spacing before the first row, so it is like we have one more row
             // to divide the empty space
-            maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows +1));
-            maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns +1));
+            maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows + 1));
+            maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns + 1));
         } else {
             if (this._minRows <=  1)
                 maxVSpacing = maxEmptyVArea;
@@ -745,8 +745,8 @@ var IconGrid = GObject.registerClass({
         this._updateSpacingForSize(availWidth, availHeight);
 
         if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
-            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth ;
-            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight ;
+            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
+            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
 
             let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this._minColumns)
                                                                   : Math.ceil(neededHeight / this._minRows);
@@ -770,8 +770,8 @@ var IconGrid = GObject.registerClass({
 });
 
 var PaginatedIconGrid = GObject.registerClass({
-    Signals: {'space-opened': {},
-              'space-closed': {} },
+    Signals: { 'space-opened': {},
+               'space-closed': {} },
 }, class PaginatedIconGrid extends IconGrid {
     _init(params) {
         super._init(params);
@@ -805,7 +805,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
         let leftEmptySpace;
-        switch(this._xAlign) {
+        switch (this._xAlign) {
             case St.Align.START:
                 leftEmptySpace = 0;
                 break;

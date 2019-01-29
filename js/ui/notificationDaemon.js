@@ -309,7 +309,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
 
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2) {
-                let [actionId, label] = [actions[i], actions[i+1]];
+                let [actionId, label] = [actions[i], actions[i + 1]];
                 if (actionId == 'default')
                     hasDefaultAction = true;
                 else
@@ -437,7 +437,7 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
 
     _createPolicy() {
         if (this.app && this.app.get_app_info()) {
-            let id = this.app.get_id().replace(/\.desktop$/,'');
+            let id = this.app.get_id().replace(/\.desktop$/, '');
             return new MessageTray.NotificationApplicationPolicy(id);
         } else {
             return new MessageTray.NotificationGenericPolicy();
@@ -573,7 +573,7 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
 
         this.update(title.unpack(), body ? body.unpack() : null,
                     { gicon: gicon ? Gio.icon_deserialize(gicon) : null,
-                      datetime : time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
+                      datetime: time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
     }
 
     _activateAction(namespacedActionId, target) {

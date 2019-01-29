@@ -66,7 +66,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
                                               action: this._onFailure.bind(this),
                                               key: Clutter.Escape });
-        this._okButton = this.addButton({ label:  _("Keep Changes"),
+        this._okButton = this.addButton({ label: _("Keep Changes"),
                                           action: this._onSuccess.bind(this),
                                           default: true });
 
@@ -251,7 +251,7 @@ var WorkspaceTracker = class {
         }
 
         // If we don't have an empty workspace at the end, add one
-        if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
+        if (!emptyWorkspaces[emptyWorkspaces.length - 1]) {
             workspaceManager.append_new_workspace(false, global.get_current_time());
             emptyWorkspaces.push(true);
         }
@@ -462,7 +462,7 @@ var TouchpadWorkspaceSwitchAction = class {
         this._dy = 0;
         this._enabled = true;
         actor.connect('captured-event', this._handleEvent.bind(this));
-	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
+	this._touchpadSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.peripherals.touchpad' });
     }
 
     get enabled() {
@@ -514,7 +514,7 @@ var TouchpadWorkspaceSwitchAction = class {
 
             // Scale deltas up a bit to make it feel snappier
             this._dx += dx * 2;
-	    if(!(this._touchpadSettings.get_boolean('natural-scroll'))) 
+            if (!(this._touchpadSettings.get_boolean('natural-scroll')))
 		this._dy -= dy * 2;
 	    else
 		this._dy += dy * 2;
@@ -537,7 +537,7 @@ Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
 var WorkspaceSwitchAction = GObject.registerClass({
     Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
                'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-               'cancel':    { param_types: [] }},
+               'cancel':    { param_types: [] } },
 }, class WorkspaceSwitchAction extends Clutter.SwipeAction {
     _init(allowedModes) {
         super._init();
@@ -1032,7 +1032,7 @@ var WindowManager = class {
             //FIXME: Fix num buttons
             for (let i = 0; i < 50; i++) {
                 let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
-                labels.push(str ? str: '');
+                labels.push(str ? str : '');
             }
 
             if (this._gsdWacomProxy) {
@@ -2128,7 +2128,7 @@ var WindowManager = class {
         if (!this._allowFavoriteShortcuts())
             return;
 
-        let [,,,target] = binding.get_name().split('-');
+        let [, , , target] = binding.get_name().split('-');
         let apps = AppFavorites.getAppFavorites().getFavorites();
         let app = apps[target - 1];
         if (app)
@@ -2161,7 +2161,7 @@ var WindowManager = class {
         if (workspaceManager.n_workspaces == 1)
             return;
 
-        let [action,,,target] = binding.get_name().split('-');
+        let [action,,, target] = binding.get_name().split('-');
         let newWs;
         let direction;
 

@@ -157,7 +157,7 @@ function *run() {
     Main.overview.hide();
 
     yield Scripting.createTestWindow({ maximized: true,
-                                       redraws: true});
+                                       redraws: true });
     yield Scripting.waitTestWindows();
 
     yield Scripting.sleep(1000);
@@ -269,7 +269,7 @@ function script_collectTimings(time) {
         if (len == 0)
             median = -1;
         else if (len % 2 == 1)
-            median = times[(len - 1)/ 2];
+            median = times[(len - 1) / 2];
         else
             median = Math.round((times[len / 2 - 1] + times[len / 2]) / 2);
 

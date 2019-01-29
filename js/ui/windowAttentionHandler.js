@@ -79,7 +79,7 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
 
     _createPolicy() {
         if (this._app && this._app.get_app_info()) {
-            let id = this._app.get_id().replace(/\.desktop$/,'');
+            let id = this._app.get_id().replace(/\.desktop$/, '');
             return new MessageTray.NotificationApplicationPolicy(id);
         } else {
             return new MessageTray.NotificationGenericPolicy();

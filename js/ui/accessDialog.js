@@ -69,7 +69,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         this.addButton({ label: grantLabel,
                          action: () => {
                              this._sendResponse(DialogResponse.OK);
-                         }});
+                         } });
     }
 
     open() {

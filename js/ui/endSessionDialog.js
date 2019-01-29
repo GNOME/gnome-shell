@@ -49,7 +49,7 @@ const logoutDialogContent = {
     },
     showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedLogout',
-                       label:  C_("button", "Log Out") }],
+                       label: C_("button", "Log Out") }],
     iconStyleClass: 'end-session-dialog-logout-icon',
     showOtherSessions: false,
 };
@@ -65,9 +65,9 @@ const shutdownDialogContent = {
     checkBoxText: C_("checkbox", "Install pending software updates"),
     showBatteryWarning: true,
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  C_("button", "Restart") },
+                       label: C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
-                       label:  C_("button", "Power Off") }],
+                       label: C_("button", "Power Off") }],
     iconName: 'system-shutdown-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
@@ -82,7 +82,7 @@ const restartDialogContent = {
     },
     showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  C_("button", "Restart") }],
+                       label: C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
@@ -98,7 +98,7 @@ const restartUpdateDialogContent = {
     },
     showBatteryWarning: true,
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  C_("button", "Restart &amp; Install") }],
+                       label: C_("button", "Restart &amp; Install") }],
     unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
     unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
     iconName: 'view-refresh-symbolic',
@@ -118,7 +118,7 @@ const restartUpgradeDialogContent = {
     disableTimer: true,
     showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  C_("button", "Restart &amp; Install") }],
+                       label: C_("button", "Restart &amp; Install") }],
     iconName: 'view-refresh-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
@@ -272,8 +272,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._iconBin = new St.Bin();
         mainContentLayout.add(this._iconBin,
-                              { x_fill:  true,
-                                y_fill:  false,
+                              { x_fill: true,
+                                y_fill: false,
                                 x_align: St.Align.END,
                                 y_align: St.Align.START });
 
@@ -286,7 +286,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         messageLayout.add(this._subjectLabel,
                           { x_fill: false,
-                            y_fill:  false,
+                            y_fill: false,
                             x_align: St.Align.START,
                             y_align: St.Align.START });
 
@@ -295,7 +295,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._descriptionLabel.clutter_text.line_wrap = true;
 
         messageLayout.add(this._descriptionLabel,
-                          { y_fill:  true,
+                          { y_fill: true,
                             y_align: St.Align.START });
 
         this._checkBox = new CheckBox.CheckBox();
@@ -424,8 +424,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     _updateButtons() {
         let dialogContent = DialogContent[this._type];
         let buttons = [{ action: this.cancel.bind(this),
-                         label:  _("Cancel"),
-                         key:    Clutter.Escape }];
+                         label: _("Cancel"),
+                         key: Clutter.Escape }];
 
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;
@@ -633,7 +633,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._loginManager.listSessions(result => {
             let n = 0;
             for (let i = 0; i < result.length; i++) {
-                let[id, uid, userName, seat, sessionPath] = result[i];
+                let [id, uid, userName, seat, sessionPath] = result[i];
                 let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
                 if (proxy.Class != 'user')

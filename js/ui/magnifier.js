@@ -42,7 +42,7 @@ const CROSS_HAIRS_LENGTH_KEY    = 'cross-hairs-length';
 const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
 var MouseSpriteContent = GObject.registerClass({
-    Implements: [ Clutter.Content ],
+    Implements: [Clutter.Content],
 }, class MouseSpriteContent extends GObject.Object {
     _init() {
         super._init();
@@ -148,7 +148,7 @@ var Magnifier = class Magnifier {
     setActive(activate) {
         let isActive = this.isActive();
 
-        this._zoomRegions.forEach ((zoomRegion, index, array) => {
+        this._zoomRegions.forEach((zoomRegion, index, array) => {
             zoomRegion.setActive(activate);
         });
 
@@ -282,7 +282,7 @@ var Magnifier = class Magnifier {
      * @zoomRegion:     The zoomRegion to add.
      */
     addZoomRegion(zoomRegion) {
-        if(zoomRegion) {
+        if (zoomRegion) {
             this._zoomRegions.push(zoomRegion);
             if (!this.isTrackingMouse())
                 this.startTrackingMouse();
@@ -1028,7 +1028,7 @@ var ZoomRegion = class ZoomRegion {
         viewPort.x = 0;
         viewPort.y = 0;
         viewPort.width = global.screen_width;
-        viewPort.height = global.screen_height/2;
+        viewPort.height = global.screen_height / 2;
         this._setViewPort(viewPort);
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.TOP_HALF;
     }
@@ -1040,9 +1040,9 @@ var ZoomRegion = class ZoomRegion {
     setBottomHalf() {
         let viewPort = {};
         viewPort.x = 0;
-        viewPort.y = global.screen_height/2;
+        viewPort.y = global.screen_height / 2;
         viewPort.width = global.screen_width;
-        viewPort.height = global.screen_height/2;
+        viewPort.height = global.screen_height / 2;
         this._setViewPort(viewPort);
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.BOTTOM_HALF;
     }
@@ -1055,7 +1055,7 @@ var ZoomRegion = class ZoomRegion {
         let viewPort = {};
         viewPort.x = 0;
         viewPort.y = 0;
-        viewPort.width = global.screen_width/2;
+        viewPort.width = global.screen_width / 2;
         viewPort.height = global.screen_height;
         this._setViewPort(viewPort);
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.LEFT_HALF;
@@ -1067,9 +1067,9 @@ var ZoomRegion = class ZoomRegion {
      */
     setRightHalf() {
         let viewPort = {};
-        viewPort.x = global.screen_width/2;
+        viewPort.x = global.screen_width / 2;
         viewPort.y = 0;
-        viewPort.width = global.screen_width/2;
+        viewPort.width = global.screen_width / 2;
         viewPort.height = global.screen_height;
         this._setViewPort(viewPort);
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.RIGHT_HALF;
@@ -1530,7 +1530,7 @@ var ZoomRegion = class ZoomRegion {
         let xProportion = (xPoint - halfScreenWidth) / halfScreenWidth;   // -1 ... 1
         let yProportion = (yPoint - halfScreenHeight) / halfScreenHeight; // -1 ... 1
         let xPos = xPoint - xProportion * (widthRoi / 2 - xPadding);
-        let yPos = yPoint - yProportion * (heightRoi /2 - yPadding);
+        let yPos = yPoint - yProportion * (heightRoi / 2 - yPadding);
 
         return [xPos, yPos];
     }
@@ -1660,7 +1660,7 @@ var Crosshairs = class Crosshairs {
                 container.raise_child(magnifiedMouse, crosshairsActor);
                 let [xMouse, yMouse] = magnifiedMouse.get_position();
                 let [crosshairsWidth, crosshairsHeight] = crosshairsActor.get_size();
-                crosshairsActor.set_position(xMouse - crosshairsWidth / 2 , yMouse - crosshairsHeight / 2);
+                crosshairsActor.set_position(xMouse - crosshairsWidth / 2, yMouse - crosshairsHeight / 2);
             }
         }
         return crosshairsActor;

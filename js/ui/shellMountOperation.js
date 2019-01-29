@@ -46,7 +46,7 @@ var ListItem = class {
     constructor(app) {
         this._app = app;
 
-        let layout = new St.BoxLayout({ vertical: false});
+        let layout = new St.BoxLayout({ vertical: false });
 
         this.actor = new St.Button({ style_class: 'mount-dialog-app-list-item',
                                      can_focus: true,
@@ -388,7 +388,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         this._defaultButtons = [{ label: _("Cancel"),
                                   action: this._onCancelButton.bind(this),
-                                  key:    Clutter.Escape
+                                  key: Clutter.Escape
                                 },
                                 { label: _("Unlock"),
                                   action: this._onUnlockButton.bind(this),
@@ -397,7 +397,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         this._usesKeyfilesButtons = [{ label: _("Cancel"),
                                        action: this._onCancelButton.bind(this),
-                                       key:    Clutter.Escape
+                                       key: Clutter.Escape
                                      },
                                      { /* Translators: %s is the Disks application */
                                        label: _("Open %s").format(disksApp.get_name()),
@@ -489,7 +489,7 @@ var ShellProcessesDialog = GObject.registerClass({
         this._content = new Dialog.MessageDialogContent({ icon });
         this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
 
-        let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list'});
+        let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list' });
         scrollView.set_policy(St.PolicyType.NEVER,
                               St.PolicyType.AUTOMATIC);
         this.contentLayout.add(scrollView,

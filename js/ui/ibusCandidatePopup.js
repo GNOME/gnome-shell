@@ -8,8 +8,8 @@ const Main = imports.ui.main;
 
 var MAX_CANDIDATES_PER_PAGE = 16;
 
-var DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
-                             '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ];
+var DEFAULT_INDEX_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8',
+                            '9', '0', 'a', 'b', 'c', 'd', 'e', 'f'];
 
 var CandidateArea = class CandidateArea {
     constructor() {
@@ -37,7 +37,7 @@ var CandidateArea = class CandidateArea {
 
         this.actor.connect('scroll-event', (actor, event) => {
             let direction = event.get_scroll_direction();
-            switch(direction) {
+            switch (direction) {
             case Clutter.ScrollDirection.UP:
                 this.emit('cursor-up');
                 break;

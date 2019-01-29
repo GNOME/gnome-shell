@@ -189,7 +189,7 @@ class AppMenu extends PopupMenu.PopupMenu {
  * have an active startup notification, we switch modes to display that.
  */
 var AppMenuButton = GObject.registerClass({
-    Signals: {'changed': {}},
+    Signals: { 'changed': {} },
 }, class AppMenuButton extends PanelMenu.Button {
     _init(panel) {
         super._init(0.0, null, true);

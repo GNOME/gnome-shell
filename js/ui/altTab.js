@@ -716,7 +716,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _setIconSize() {
         let j = 0;
-        while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
+        while (this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
         }
         let themeNode = this._items[j].get_theme_node();
@@ -738,7 +738,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         let iconSize = baseIconSizes[0];
 
         if (this._items.length > 1) {
-            for(let i =  0; i < baseIconSizes.length; i++) {
+            for (let i =  0; i < baseIconSizes.length; i++) {
                 iconSize = baseIconSizes[i];
                 let height = iconSizes[i] + iconSpacing;
                 let w = height * this._items.length + totalSpacing;
@@ -749,7 +749,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
         this._iconSize = iconSize;
 
-        for(let i = 0; i < this.icons.length; i++) {
+        for (let i = 0; i < this.icons.length; i++) {
             if (this.icons[i].icon != null)
                 break;
             this.icons[i].set_size(iconSize);

@@ -150,7 +150,7 @@ Signals.addSignalMethods(UserListItem.prototype);
 
 var UserList = class {
     constructor() {
-        this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
+        this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view' });
         this.actor.set_policy(St.PolicyType.NEVER,
                               St.PolicyType.AUTOMATIC);
 

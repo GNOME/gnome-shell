@@ -105,19 +105,19 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             contentBox.messageBox.add(descriptionLabel,
-                                      { y_fill:  true,
+                                      { y_fill: true,
                                         y_align: St.Align.START,
                                         expand: true });
         }
 
-        this._okButton = { label:  _("Connect"),
+        this._okButton = { label: _("Connect"),
                            action: this._onOk.bind(this),
                            default: true
                          };
 
         this.setButtons([{ label: _("Cancel"),
                            action: this.cancel.bind(this),
-                           key:    Clutter.KEY_Escape,
+                           key: Clutter.KEY_Escape,
                          },
                          this._okButton]);
 
@@ -303,7 +303,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let ssid;
 
         let content = { };
-        content.secrets = [ ];
+        content.secrets = [];
 
         switch (connectionType) {
         case '802-11-wireless':
@@ -358,12 +358,12 @@ var VPNRequestHandler = class {
         this._pluginOutBuffer = [];
         this._title = null;
         this._description = null;
-        this._content = [ ];
+        this._content = [];
         this._shellDialog = null;
 
         let connectionSetting = connection.get_setting_connection();
 
-        let argv = [ authHelper.fileName,
+        let argv = [authHelper.fileName,
                      '-u', connectionSetting.uuid,
                      '-n', connectionSetting.id,
                      '-s', serviceType

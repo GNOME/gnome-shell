@@ -94,7 +94,7 @@ class BaseAppView {
                                                 padWithSpacing: true });
         params = Params.parse(params, { usePagination: false });
 
-        if(params.usePagination)
+        if (params.usePagination)
             this._grid = new IconGrid.PaginatedIconGrid(gridParams);
         else
             this._grid = new IconGrid.IconGrid(gridParams);
@@ -231,7 +231,7 @@ var AllView = class AllView extends BaseAppView {
                                                reactive: true,
                                                y_align: St.Align.START });
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                     x_expand:true, y_expand:true });
+                                     x_expand: true, y_expand: true });
         this.actor.add_actor(this._scrollView);
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
@@ -570,7 +570,7 @@ var AllView = class AllView extends BaseAppView {
             this._eventBlocker.reactive = isOpen;
             this._currentPopup = isOpen ? popup : null;
             this._updateIconOpacities(isOpen);
-            if(!isOpen)
+            if (!isOpen)
                 this._closeSpaceForPopup();
         });
     }
@@ -671,7 +671,7 @@ var FrequentView = class FrequentView extends BaseAppView {
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
-        if(!hasUsefulData)
+        if (!hasUsefulData)
             return;
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -895,7 +895,7 @@ var AppDisplay = class AppDisplay {
 
     _onAllocatedSizeChanged(actor, width, height) {
         let box = new Clutter.ActorBox();
-        box.x1 = box.y1 =0;
+        box.x1 = box.y1 = 0;
         box.x2 = width;
         box.y2 = height;
         box = this._viewStack.get_theme_node().get_content_box(box);
@@ -1251,7 +1251,7 @@ var FolderIcon = class FolderIcon {
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
-        if(this._popup)
+        if (this._popup)
             this.view.adaptToSize(width, height);
         this._popupInvalidated = true;
     }

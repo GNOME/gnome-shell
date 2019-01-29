@@ -222,7 +222,7 @@ function formatTime(time, params) {
             /* Translators: Time in 24h format */
             format = N_("%H\u2236%M");
         // Show the word "Yesterday" and time if date is on yesterday
-        else if (daysAgo <2)
+        else if (daysAgo < 2)
             /* Translators: this is the word "Yesterday" followed by a
              time string in 24h format. i.e. "Yesterday, 14:30" */
             // xgettext:no-c-format
@@ -251,7 +251,7 @@ function formatTime(time, params) {
             /* Translators: Time in 12h format */
             format = N_("%l\u2236%M %p");
         // Show the word "Yesterday" and time if date is on yesterday
-        else if (daysAgo <2)
+        else if (daysAgo < 2)
             /* Translators: this is the word "Yesterday" followed by a
              time string in 12h format. i.e. "Yesterday, 2:30 pm" */
             // xgettext:no-c-format
@@ -346,7 +346,7 @@ function insertSorted(array, val, cmp) {
 var CloseButton = GObject.registerClass(
 class CloseButton extends St.Button {
     _init(boxpointer) {
-        super._init({ style_class: 'notification-close'});
+        super._init({ style_class: 'notification-close' });
 
         // This is a bit tricky. St.Bin has its own x-align/y-align properties
         // that compete with Clutter's properties. This should be fixed for

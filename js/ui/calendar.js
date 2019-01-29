@@ -263,7 +263,7 @@ var DBusEventSource = class DBusEventSource {
         if (!this._initialized)
             return;
 
-        if (this._curRequestBegin && this._curRequestEnd){
+        if (this._curRequestBegin && this._curRequestEnd) {
             this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
                                             this._curRequestEnd.getTime() / 1000,
                                             forceReload,
@@ -285,7 +285,7 @@ var DBusEventSource = class DBusEventSource {
 
     getEvents(begin, end) {
         let result = [];
-        for(let n = 0; n < this._events.length; n++) {
+        for (let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
 
             if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
@@ -402,8 +402,8 @@ var Calendar = class Calendar {
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
-        this._monthLabel = new St.Label({style_class: 'calendar-month-label',
-                                         can_focus: true });
+        this._monthLabel = new St.Label({ style_class: 'calendar-month-label',
+                                          can_focus: true });
         this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward pager-button',
@@ -1101,7 +1101,7 @@ var CalendarMessageList = class CalendarMessageList {
     _addSection(section) {
         let obj = {
             destroyId: 0,
-            visibleId:  0,
+            visibleId: 0,
             emptyChangedId: 0,
             canClearChangedId: 0,
             keyFocusId: 0

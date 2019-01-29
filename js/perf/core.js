@@ -19,7 +19,7 @@ var METRICS = {
       units: "frames / s" },
     overviewLatencySubsequent:
     { description: "Time to first frame after triggering overview, second time",
-      units: "us"},
+      units: "us" },
     overviewFpsSubsequent:
     { description: "Frames rate when going to the overview, second time",
       units: "frames / s" },
@@ -52,7 +52,7 @@ var METRICS = {
       units: "us" },
     applicationsShowTimeSubsequent:
     { description: "Time to switch to applications view, second time",
-      units: "us"}
+      units: "us" }
 };
 
 let WINDOW_CONFIGS = [

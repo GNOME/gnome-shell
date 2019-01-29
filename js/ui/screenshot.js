@@ -24,7 +24,7 @@ var ScreenshotService = class {
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
 
-    _createScreenshot(invocation, needsDisk=true) {
+    _createScreenshot(invocation, needsDisk = true) {
         let lockedDown = false;
         if (needsDisk)
             lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
@@ -185,7 +185,7 @@ var ScreenshotService = class {
                                             "Invalid params");
             return;
         }
-        let flashspot = new Flashspot({ x : x, y : y, width: width, height: height});
+        let flashspot = new Flashspot({ x: x, y: y, width: width, height: height });
         flashspot.fire();
         invocation.return_value(null);
     }
