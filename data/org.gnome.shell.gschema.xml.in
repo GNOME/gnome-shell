@@ -145,6 +145,42 @@
       <summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</summary>
       <description></description>
     </key>
+    <key name="switch-to-application-1" type="as">
+      <default>["&lt;Super&gt;1"]</default>
+      <summary>Switch to application 1</summary>
+    </key>
+    <key name="switch-to-application-2" type="as">
+      <default>["&lt;Super&gt;2"]</default>
+      <summary>Switch to application 2</summary>
+    </key>
+    <key name="switch-to-application-3" type="as">
+      <default>["&lt;Super&gt;3"]</default>
+      <summary>Switch to application 3</summary>
+    </key>
+    <key name="switch-to-application-4" type="as">
+      <default>["&lt;Super&gt;4"]</default>
+      <summary>Switch to application 4</summary>
+    </key>
+    <key name="switch-to-application-5" type="as">
+      <default>["&lt;Super&gt;5"]</default>
+      <summary>Switch to application 5</summary>
+    </key>
+    <key name="switch-to-application-6" type="as">
+      <default>["&lt;Super&gt;6"]</default>
+      <summary>Switch to application 6</summary>
+    </key>
+    <key name="switch-to-application-7" type="as">
+      <default>["&lt;Super&gt;7"]</default>
+      <summary>Switch to application 7</summary>
+    </key>
+    <key name="switch-to-application-8" type="as">
+      <default>["&lt;Super&gt;8"]</default>
+      <summary>Switch to application 8</summary>
+    </key>
+    <key name="switch-to-application-9" type="as">
+      <default>["&lt;Super&gt;9"]</default>
+      <summary>Switch to application 9</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
