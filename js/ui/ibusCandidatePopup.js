@@ -236,7 +236,7 @@ var CandidatePopup = class CandidatePopup {
 
             let indexes = [];
             let indexLabel;
-            for (let i = 0; indexLabel = lookupTable.get_label(i); ++i)
+            for (let i = 0; (indexLabel = lookupTable.get_label(i)); ++i)
                  indexes.push(indexLabel.get_text());
 
             Main.keyboard.resetSuggestions();
@@ -295,7 +295,7 @@ var CandidatePopup = class CandidatePopup {
 
     _setTextAttributes(clutterText, ibusAttrList) {
         let attr;
-        for (let i = 0; attr = ibusAttrList.get(i); ++i)
+        for (let i = 0; (attr = ibusAttrList.get(i)); ++i)
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
     }
