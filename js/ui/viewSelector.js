@@ -2,8 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;

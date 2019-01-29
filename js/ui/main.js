@@ -13,7 +13,6 @@ const AudioDeviceSelection = imports.ui.audioDeviceSelection;
 const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
-const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const InputMethod = imports.misc.inputMethod;
@@ -42,7 +41,6 @@ const ShellMountOperation = imports.ui.shellMountOperation;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
-const Util = imports.misc.util;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';

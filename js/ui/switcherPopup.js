@@ -5,8 +5,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;

@@ -4,10 +4,8 @@ const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Params = imports.misc.params;
-const Shell = imports.gi.Shell;
 
 const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 
 var GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;

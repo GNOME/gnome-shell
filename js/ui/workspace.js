@@ -15,7 +15,6 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
-const WindowManager = imports.ui.windowManager;
 
 var WINDOW_DND_SIZE = 256;
 

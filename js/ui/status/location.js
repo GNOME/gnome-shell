@@ -12,7 +12,6 @@ const ModalDialog = imports.ui.modalDialog;
 const PermissionStore = imports.misc.permissionStore;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 

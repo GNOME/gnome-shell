@@ -6,7 +6,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 const St = imports.gi.St;
 
 var Tpl = null;
@@ -23,7 +22,6 @@ const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
-const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
 const HAVE_TP = (Tp != null && Tpl != null);

@@ -4,17 +4,13 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Atk = imports.gi.Atk;
 
 const AppDisplay = imports.ui.appDisplay;
-const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
-const Overview = imports.ui.overview;
 const RemoteSearch = imports.ui.remoteSearch;
 const Util = imports.misc.util;
 

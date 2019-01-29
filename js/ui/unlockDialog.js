@@ -6,7 +6,6 @@ const Clutter = imports.gi.Clutter;
 const Gdm  = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -14,14 +13,8 @@ const St = imports.gi.St;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const Panel = imports.ui.panel;
-const Tweener = imports.ui.tweener;
-const UserWidget = imports.ui.userWidget;
 
 const AuthPrompt = imports.gdm.authPrompt;
-const Batch = imports.gdm.batch;
-const GdmUtil = imports.gdm.util;
-const LoginDialog = imports.gdm.loginDialog;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;

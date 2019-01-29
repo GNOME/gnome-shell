@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
 const NM = imports.gi.NM;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
@@ -15,7 +14,6 @@ const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
-const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
 
 const VPN_UI_GROUP = 'VPN Plugin UI';

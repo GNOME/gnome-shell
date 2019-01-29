@@ -14,7 +14,6 @@ const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
-const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 

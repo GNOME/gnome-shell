@@ -1,7 +1,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 const Shell = imports.gi.Shell;

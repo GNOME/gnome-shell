@@ -4,8 +4,6 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
-const Signals = imports.signals;
-const Atk = imports.gi.Atk;
 
 const Tweener = imports.ui.tweener;
 

@@ -8,10 +8,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
 const Animation = imports.ui.animation;

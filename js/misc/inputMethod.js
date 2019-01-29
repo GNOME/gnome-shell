@@ -3,7 +3,6 @@ const Clutter = imports.gi.Clutter;
 const GObject = imports.gi.GObject;
 const IBus = imports.gi.IBus;
 const Keyboard = imports.ui.status.keyboard;
-const Signals = imports.signals;
 
 var InputMethod = GObject.registerClass(
 class InputMethod extends Clutter.InputMethod {

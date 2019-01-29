@@ -15,7 +15,6 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
-const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;

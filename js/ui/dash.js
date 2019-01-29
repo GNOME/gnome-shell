@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Signals = imports.signals;
@@ -16,7 +15,6 @@ const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
-const Workspace = imports.ui.workspace;
 
 var DASH_ANIMATION_TIME = 0.2;
 var DASH_ITEM_LABEL_SHOW_TIME = 0.15;

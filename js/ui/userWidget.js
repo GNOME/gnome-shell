@@ -3,9 +3,7 @@
 // A widget showing the user avatar and name
 
 const Clutter = imports.gi.Clutter;
-const AccountsService = imports.gi.AccountsService;
 const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 

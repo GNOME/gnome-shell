@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
-const Shell = imports.gi.Shell;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;

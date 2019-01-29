@@ -7,7 +7,6 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const FileUtils = imports.misc.fileUtils;
-const Search = imports.ui.search;
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
 

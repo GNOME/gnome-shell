@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const Meta = imports.gi.Meta;
 
 var FADE_TIME = 0.1;

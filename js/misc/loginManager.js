@@ -2,8 +2,6 @@
 
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;

@@ -13,7 +13,6 @@ const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
-const Tweener = imports.ui.tweener;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 

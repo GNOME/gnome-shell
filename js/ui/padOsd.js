@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Rsvg = imports.gi.Rsvg;
@@ -11,7 +10,6 @@ const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Atk = imports.gi.Atk;
-const Cairo = imports.cairo;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;

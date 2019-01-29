@@ -1,12 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Atspi = imports.gi.Atspi;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const InputSourceManager = imports.ui.status.keyboard;
@@ -18,7 +16,6 @@ const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
-const Util = imports.misc.util;
 
 var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 var KEY_LONG_PRESS_TIME = 250;

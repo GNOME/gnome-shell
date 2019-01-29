@@ -4,7 +4,6 @@ const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
-const Shell = imports.gi.Shell;
 
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;

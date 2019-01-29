@@ -2,7 +2,6 @@
 
 const Signals = imports.signals;
 
-const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 

@@ -4,7 +4,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
-const St = imports.gi.St;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

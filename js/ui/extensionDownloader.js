@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 const St = imports.gi.St;
-const Shell = imports.gi.Shell;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;

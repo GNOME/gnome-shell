@@ -6,7 +6,6 @@ const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const NM = imports.gi.NM;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const Animation = imports.ui.animation;

@@ -12,7 +12,6 @@ const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
-const ViewSelector = imports.ui.viewSelector;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 

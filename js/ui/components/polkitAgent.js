@@ -8,18 +8,15 @@ const St = imports.gi.St;
 const Pango = imports.gi.Pango;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const Mainloop = imports.mainloop;
 const Polkit = imports.gi.Polkit;
 const PolkitAgent = imports.gi.PolkitAgent;
 
 const Animation = imports.ui.animation;
-const Components = imports.ui.components;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
-const Tweener = imports.ui.tweener;
 
 var DIALOG_ICON_SIZE = 48;
 

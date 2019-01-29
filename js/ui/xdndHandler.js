@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const DND = imports.ui.dnd;
 

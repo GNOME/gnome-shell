@@ -3,8 +3,6 @@
 const GLib = imports.gi.GLib;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const Shell = imports.gi.Shell;
 
 // We stop polling if the user is idle for more than this amount of time
 var IDLE_TIME = 1000;

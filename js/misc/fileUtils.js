@@ -3,7 +3,6 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Config = imports.misc.config;
-const Params = imports.misc.params;
 
 function collectFromDatadirs(subdir, includeUserDir, processFile) {
     let dataDirs = GLib.get_system_data_dirs();

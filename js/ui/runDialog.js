@@ -8,7 +8,6 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;

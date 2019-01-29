@@ -6,7 +6,6 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;

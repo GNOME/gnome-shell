@@ -12,7 +12,6 @@ imports.gi.versions.TelepathyLogger = '0.2';
 const Clutter = imports.gi.Clutter;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 

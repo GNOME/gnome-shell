@@ -31,7 +31,6 @@ const CheckBox = imports.ui.checkBox;
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const ModalDialog = imports.ui.modalDialog;
-const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
