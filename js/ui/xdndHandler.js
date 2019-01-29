@@ -44,8 +44,8 @@ var XdndHandler = class {
 
     _onEnter() {
         this._windowGroupVisibilityHandlerId =
-                global.window_group.connect('notify::visible',
-                    this._onWindowGroupVisibilityChanged.bind(this));
+            global.window_group.connect('notify::visible',
+                this._onWindowGroupVisibilityChanged.bind(this));
 
         this.emit('drag-begin', global.get_current_time());
     }
@@ -83,7 +83,7 @@ var XdndHandler = class {
 
         // Make sure that the cursor window is on top
         if (this._cursorWindowClone)
-             this._cursorWindowClone.raise_top();
+            this._cursorWindowClone.raise_top();
 
         let dragEvent = {
             x: x,
@@ -103,17 +103,17 @@ var XdndHandler = class {
         }
 
         while (pickedActor) {
-                if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
-                    let [r, targX, targY] = pickedActor.transform_stage_point(x, y);
-                    let result = pickedActor._delegate.handleDragOver(this,
-                                                                      dragEvent.dragActor,
-                                                                      targX,
-                                                                      targY,
-                                                                      global.get_current_time());
-                    if (result != DND.DragMotionResult.CONTINUE)
-                        return;
-                }
-                pickedActor = pickedActor.get_parent();
+            if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
+                let [r, targX, targY] = pickedActor.transform_stage_point(x, y);
+                let result = pickedActor._delegate.handleDragOver(this,
+                                                                  dragEvent.dragActor,
+                                                                  targX,
+                                                                  targY,
+                                                                  global.get_current_time());
+                if (result != DND.DragMotionResult.CONTINUE)
+                    return;
+            }
+            pickedActor = pickedActor.get_parent();
         }
     }
 };

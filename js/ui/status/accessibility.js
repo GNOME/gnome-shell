@@ -48,18 +48,18 @@ class ATIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(highContrast);
 
         let magnifier = this._buildItem(_("Zoom"), APPLICATIONS_SCHEMA,
-                                                   'screen-magnifier-enabled');
+                                        'screen-magnifier-enabled');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
         let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
-                                                               'screen-reader-enabled');
+                                           'screen-reader-enabled');
         this.menu.addMenuItem(screenReader);
 
         let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-                                                                   'screen-keyboard-enabled');
+                                             'screen-keyboard-enabled');
         this.menu.addMenuItem(screenKeyboard);
 
         let visualBell = this._buildItem(_("Visual Alerts"), WM_SCHEMA, KEY_VISUAL_BELL);

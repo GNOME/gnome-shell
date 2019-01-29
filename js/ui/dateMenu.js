@@ -217,7 +217,7 @@ var WeatherSection = class WeatherSection {
         });
 
         let box = new St.BoxLayout({ style_class: 'weather-box',
-                                      vertical: true });
+                                     vertical: true });
 
         this.actor.child = box;
 

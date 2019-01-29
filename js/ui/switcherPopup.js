@@ -465,11 +465,11 @@ var SwitcherList = GObject.registerClass({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                                if (this._highlighted == 0)
-                                    this._scrollableLeft = false;
-                                this.queue_relayout();
+                               if (this._highlighted == 0)
+                                   this._scrollableLeft = false;
+                               this.queue_relayout();
                            }
-                          });
+                         });
     }
 
     _scrollToRight() {
@@ -489,11 +489,11 @@ var SwitcherList = GObject.registerClass({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                                if (this._highlighted == this._items.length - 1)
-                                    this._scrollableRight = false;
-                                this.queue_relayout();
-                            }
-                          });
+                               if (this._highlighted == this._items.length - 1)
+                                   this._scrollableRight = false;
+                               this.queue_relayout();
+                           }
+                         });
     }
 
     _itemActivated(n) {

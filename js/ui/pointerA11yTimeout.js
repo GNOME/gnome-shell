@@ -88,13 +88,13 @@ var PointerA11yTimeout = class PointerA11yTimeout {
             let [x, y, mods] = global.get_pointer();
             pieTimer.start(x, y, timeout);
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
-              global.display.set_cursor(Meta.Cursor.CROSSHAIR);
+                global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
         manager.connect('ptr-a11y-timeout-stopped', (manager, device, type) => {
             pieTimer.stop();
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
-              global.display.set_cursor(Meta.Cursor.DEFAULT);
+                global.display.set_cursor(Meta.Cursor.DEFAULT);
         });
     }
 };

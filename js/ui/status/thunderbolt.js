@@ -108,8 +108,7 @@ var Client = class {
     }
 
     enrollDevice(id, policy, callback) {
-        this._proxy.EnrollDeviceRemote(id, policy, AuthCtrl.NONE,
-                                       (res, error) => {
+        this._proxy.EnrollDeviceRemote(id, policy, AuthCtrl.NONE, (res, error) => {
             if (error) {
                 Gio.DBusError.strip_remote_error(error);
                 callback(null, error);

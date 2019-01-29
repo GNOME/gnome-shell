@@ -717,7 +717,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     _setIconSize() {
         let j = 0;
         while (this._items.length > 1 && this._items[j].style_class != 'item-box') {
-                j++;
+            j++;
         }
         let themeNode = this._items[j].get_theme_node();
         this._list.ensure_style();
@@ -796,7 +796,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                                                         });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else {
-           this._itemEntered(index);
+            this._itemEntered(index);
         }
     }
 

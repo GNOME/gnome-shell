@@ -1392,7 +1392,7 @@ var Workspace = class {
             return;
 
         if (overlay && overlay._hidden)
-                overlay.show();
+            overlay.show();
     }
 
     _delayedWindowRepositioning() {
@@ -1720,7 +1720,7 @@ var Workspace = class {
 
         // Position and scale the windows.
         for (let i = 0; i < this._windows.length; i++)
-           this._zoomWindowFromOverview(i);
+            this._zoomWindowFromOverview(i);
     }
 
     _zoomWindowFromOverview(index) {

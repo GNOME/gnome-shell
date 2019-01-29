@@ -432,7 +432,7 @@ var AllView = class AllView extends BaseAppView {
                                transition: 'easeOutQuad',
                                opacity: 0,
                                onComplete() {
-                                  this.opacity = 255;
+                                   this.opacity = 255;
                                } });
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
@@ -531,7 +531,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _onPanEnd(action) {
-         if (this._displayingPopup)
+        if (this._displayingPopup)
             return;
 
         let pageHeight = this._grid.getPageHeight();
@@ -720,11 +720,11 @@ class ControlsBoxLayout extends Clutter.BoxLayout {
         let maxMinWidth = 0;
         let maxNaturalWidth = 0;
         for (let child = container.get_first_child();
-             child;
-             child = child.get_next_sibling()) {
-             let [minWidth, natWidth] = child.get_preferred_width(forHeight);
-             maxMinWidth = Math.max(maxMinWidth, minWidth);
-             maxNaturalWidth = Math.max(maxNaturalWidth, natWidth);
+            child;
+            child = child.get_next_sibling()) {
+            let [minWidth, natWidth] = child.get_preferred_width(forHeight);
+            maxMinWidth = Math.max(maxMinWidth, minWidth);
+            maxNaturalWidth = Math.max(maxNaturalWidth, natWidth);
         }
         let childrenCount = container.get_n_children();
         let totalSpacing = this.spacing * (childrenCount - 1);
@@ -787,7 +787,7 @@ var AppDisplay = class AppDisplay {
             // shown next, so make sure to restore their opacity
             // when they are hidden
             if (this._controls.mapped)
-              return;
+                return;
 
             Tweener.removeTweens(this._controls);
             this._controls.opacity = 255;
@@ -859,7 +859,7 @@ var AppDisplay = class AppDisplay {
                          { time: IconGrid.ANIMATION_TIME_IN,
                            transition: 'easeInOutQuad',
                            opacity: finalOpacity,
-                          });
+                         });
 
         currentView.animate(animationDirection, onComplete);
     }
@@ -926,7 +926,7 @@ var AppSearchProvider = class AppSearchProvider {
                              'name': app.get_name(),
                              'createIcon'(size) {
                                  return app.create_icon_texture(size);
-                           }
+                             }
                 });
             } else {
                 let name = this._systemActions.getName(id);
@@ -1378,9 +1378,9 @@ var AppFolderPopup = class AppFolderPopup {
         this._boxPointer.open(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE,
                               () => {
-                this._view.actor.opacity = 255;
-                this._view.animate(IconGrid.AnimationDirection.IN);
-            });
+                                  this._view.actor.opacity = 255;
+                                  this._view.animate(IconGrid.AnimationDirection.IN);
+                              });
 
         this.emit('open-state-changed', true);
     }
@@ -1476,7 +1476,7 @@ var AppIcon = class AppIcon {
                 Main.overview.cancelledItemDrag(this);
             });
             this._draggable.connect('drag-end', () => {
-               Main.overview.endItemDrag(this);
+                Main.overview.endItemDrag(this);
             });
         }
 

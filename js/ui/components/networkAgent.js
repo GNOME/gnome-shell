@@ -366,10 +366,9 @@ var VPNRequestHandler = class {
         let connectionSetting = connection.get_setting_connection();
 
         let argv = [authHelper.fileName,
-                     '-u', connectionSetting.uuid,
-                     '-n', connectionSetting.id,
-                     '-s', serviceType
-                   ];
+                    '-u', connectionSetting.uuid,
+                    '-n', connectionSetting.id,
+                    '-s', serviceType];
         if (authHelper.externalUIMode)
             argv.push('--external-ui-mode');
         if (flags & NM.SecretAgentGetSecretsFlags.ALLOW_INTERACTION)
