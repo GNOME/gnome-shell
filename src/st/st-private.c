@@ -429,6 +429,7 @@ CoglPipeline *
 _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
                                        ClutterActor *actor)
 {
+  ClutterContent *image = NULL;
   CoglPipeline *shadow_pipeline = NULL;
   float width, height;
 
@@ -439,11 +440,12 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   if (width == 0 || height == 0)
     return NULL;
 
-  if (CLUTTER_IS_TEXTURE (actor))
+  image = clutter_actor_get_content (actor);
+  if (image && CLUTTER_IS_IMAGE (image))
     {
       CoglTexture *texture;
 
-      texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
+      texture = clutter_image_get_texture (CLUTTER_IMAGE (image));
       if (texture &&
           cogl_texture_get_width (texture) == width &&
           cogl_texture_get_height (texture) == height)
