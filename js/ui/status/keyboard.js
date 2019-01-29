@@ -969,7 +969,8 @@ class InputSourceIndicator extends PanelMenu.Button {
             }
 
             let item;
-            switch (prop.get_prop_type()) {
+            let type = prop.get_prop_type();
+            switch (type) {
             case IBus.PropType.MENU:
                 item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
                 this._buildPropSubMenu(item.menu, prop.get_sub_props());
