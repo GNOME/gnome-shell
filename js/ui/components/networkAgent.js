@@ -705,14 +705,14 @@ var NetworkAgent = class {
             if (hints.indexOf('pin') != -1) {
                 let gsmSetting = connection.get_setting_gsm();
                 title = _("PIN code required");
-                message = _("PIN code is needed for the mobile broadband device");
+                body = _("PIN code is needed for the mobile broadband device");
                 break;
             }
             // fall through
         case 'cdma':
         case 'bluetooth':
             title = _("Mobile broadband network password");
-            message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
+            body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
         default:
             log('Invalid connection type: ' + connectionType);
