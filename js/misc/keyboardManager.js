@@ -2,7 +2,6 @@
 
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 
 const Main = imports.ui.main;
@@ -38,22 +37,20 @@ function holdKeyboard() {
     global.display.freeze_keyboard(global.get_current_time());
 }
 
-var KeyboardManager = new Lang.Class({
-    Name: 'KeyboardManager',
+var KeyboardManager = class {
+    constructor() {
+        // The XKB protocol doesn't allow for more that 4 layouts in a
+        // keymap. Wayland doesn't impose this limit and libxkbcommon can
+        // handle up to 32 layouts but since we need to support X clients
+        // even as a Wayland compositor, we can't bump this.
+        this.MAX_LAYOUTS_PER_GROUP = 4;
 
-    // The XKB protocol doesn't allow for more that 4 layouts in a
-    // keymap. Wayland doesn't impose this limit and libxkbcommon can
-    // handle up to 32 layouts but since we need to support X clients
-    // even as a Wayland compositor, we can't bump this.
-    MAX_LAYOUTS_PER_GROUP: 4,
-
-    _init() {
         this._xkbInfo = getXkbInfo();
         this._current = null;
         this._localeLayoutInfo = this._getLocaleLayout();
         this._layoutInfos = {};
         this._currentKeymap = null;
-    },
+    }
 
     _applyLayoutGroup(group) {
         let options = this._buildOptionsString();
@@ -67,11 +64,11 @@ var KeyboardManager = new Lang.Class({
 
         this._currentKeymap = {layouts, variants, options};
         Meta.get_backend().set_keymap(layouts, variants, options);
-    },
+    }
 
     _applyLayoutGroupIndex(idx) {
         Meta.get_backend().lock_layout_group(idx);
-    },
+    }
 
     apply(id) {
         let info = this._layoutInfos[id];
@@ -87,7 +84,7 @@ var KeyboardManager = new Lang.Class({
         }
 
         this._current = info;
-    },
+    }
 
     reapply() {
         if (!this._current)
@@ -95,7 +92,7 @@ var KeyboardManager = new Lang.Class({
 
         this._applyLayoutGroup(this._current.group);
         this._applyLayoutGroupIndex(this._current.groupIndex);
-    },
+    }
 
     setUserLayouts(ids) {
         this._current = null;
@@ -126,7 +123,7 @@ var KeyboardManager = new Lang.Class({
 
             i += 1;
         }
-    },
+    }
 
     _getLocaleLayout() {
         let locale = GLib.get_language_names()[0];
@@ -143,21 +140,21 @@ var KeyboardManager = new Lang.Class({
             return { layout: _layout, variant: _variant };
         else
             return { layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT };
-    },
+    }
 
     _buildGroupStrings(_group) {
         let group = _group.concat(this._localeLayoutInfo);
         let layouts = group.map(g => g.layout).join(',');
         let variants = group.map(g => g.variant).join(',');
         return [layouts, variants];
-    },
+    }
 
     setKeyboardOptions(options) {
         this._xkbOptions = options;
-    },
+    }
 
     _buildOptionsString() {
         let options = this._xkbOptions.join(',');
         return options;
     }
-});
+};

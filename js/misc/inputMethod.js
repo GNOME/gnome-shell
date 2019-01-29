@@ -1,19 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
 const IBus = imports.gi.IBus;
 const Keyboard = imports.ui.status.keyboard;
-const Lang = imports.lang;
 const Signals = imports.signals;
 
-var InputMethod = new Lang.Class({
-    Name: 'InputMethod',
-    Extends: Clutter.InputMethod,
-
+var InputMethod = GObject.registerClass(
+class InputMethod extends Clutter.InputMethod {
     _init() {
-        this.parent();
+        super._init();
         this._hints = 0;
         this._purpose = 0;
-        this._enabled = true;
         this._currentFocus = null;
         this._preeditStr = '';
         this._preeditPos = 0;
@@ -30,11 +27,11 @@ var InputMethod = new Lang.Class({
 
         if (this._ibus.is_connected())
             this._onConnected();
-    },
+    }
 
     get currentFocus() {
         return this._currentFocus;
-    },
+    }
 
     _updateCapabilities() {
         let caps = 0;
@@ -49,21 +46,19 @@ var InputMethod = new Lang.Class({
 
         if (this._context)
             this._context.set_capabilities(caps);
-    },
+    }
 
     _onSourceChanged() {
         this._currentSource = this._inputSourceManager.currentSource;
-    },
+    }
 
     _onConnected() {
         this._ibus.create_input_context_async ('gnome-shell', -1, null,
                                                this._setContext.bind(this));
-    },
+    }
 
     _setContext(bus, res) {
         this._context = this._ibus.create_input_context_async_finish(res);
-        this._context.connect('enabled', () => { this._enabled = true });
-        this._context.connect('disabled', () => { this._enabled = false });
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
@@ -72,30 +67,29 @@ var InputMethod = new Lang.Class({
         this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
 
         this._updateCapabilities();
-    },
+    }
 
     _clear() {
         this._context = null;
         this._hints = 0;
         this._purpose = 0;
-        this._enabled = false;
         this._preeditStr = ''
         this._preeditPos = 0;
         this._preeditVisible = false;
-    },
+    }
 
     _emitRequestSurrounding() {
         if (this._context.needs_surrounding_text())
             this.emit('request-surrounding');
-    },
+    }
 
     _onCommitText(context, text) {
         this.commit(text.get_text());
-    },
+    }
 
     _onDeleteSurroundingText(context) {
         this.delete_surrounding();
-    },
+    }
 
     _onUpdatePreeditText(context, text, pos, visible) {
         if (text == null)
@@ -111,17 +105,17 @@ var InputMethod = new Lang.Class({
         this._preeditStr = preedit;
         this._preeditPos = pos;
         this._preeditVisible = visible;
-    },
+    }
 
     _onShowPreeditText(context) {
         this._preeditVisible = true;
         this.set_preedit_text(this._preeditStr, this._preeditPos);
-    },
+    }
 
     _onHidePreeditText(context) {
         this.set_preedit_text(null, this._preeditPos);
         this._preeditVisible = false;
-    },
+    }
 
     _onForwardKeyEvent(context, keyval, keycode, state) {
         let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
@@ -135,7 +129,7 @@ var InputMethod = new Lang.Class({
             time = global.display.get_current_time_roundtrip();
 
         this.forward_key(keyval, keycode + 8, state & Clutter.ModifierType.MODIFIER_MASK, time, press);
-    },
+    }
 
     vfunc_focus_in(focus) {
         this._currentFocus = focus;
@@ -144,7 +138,7 @@ var InputMethod = new Lang.Class({
             this._updateCapabilities();
             this._emitRequestSurrounding();
         }
-    },
+    }
 
     vfunc_focus_out() {
         this._currentFocus = null;
@@ -158,7 +152,7 @@ var InputMethod = new Lang.Class({
             this.set_preedit_text(null, 0);
             this._preeditStr = null;
         }
-    },
+    }
 
     vfunc_reset() {
         if (this._context) {
@@ -171,7 +165,7 @@ var InputMethod = new Lang.Class({
             this.set_preedit_text(null, 0);
             this._preeditStr = null;
         }
-    },
+    }
 
     vfunc_set_cursor_location(rect) {
         if (this._context) {
@@ -179,7 +173,7 @@ var InputMethod = new Lang.Class({
                                               rect.get_width(), rect.get_height());
             this._emitRequestSurrounding();
         }
-    },
+    }
 
     vfunc_set_surrounding(text, cursor, anchor) {
         if (!this._context || !text)
@@ -187,7 +181,7 @@ var InputMethod = new Lang.Class({
 
         let ibusText = IBus.Text.new_from_string(text);
         this._context.set_surrounding_text(ibusText, cursor, anchor);
-    },
+    }
 
     vfunc_update_content_hints(hints) {
         let ibusHints = 0;
@@ -207,7 +201,7 @@ var InputMethod = new Lang.Class({
         this._hints = ibusHints;
         if (this._context)
             this._context.set_content_type(this._purpose, this._hints);
-    },
+    }
 
     vfunc_update_content_purpose(purpose) {
         let ibusPurpose = 0;
@@ -233,10 +227,10 @@ var InputMethod = new Lang.Class({
         this._purpose = ibusPurpose;
         if (this._context)
             this._context.set_content_type(this._purpose, this._hints);
-    },
+    }
 
     vfunc_filter_key_event(event) {
-        if (!this._context || !this._enabled)
+        if (!this._context)
             return false;
         if (!this._currentSource)
             return false;
@@ -260,5 +254,5 @@ var InputMethod = new Lang.Class({
                                                   }
                                               });
         return true;
-    },
+    }
 });

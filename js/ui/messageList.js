@@ -3,7 +3,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Meta = imports.gi.Meta;
@@ -40,10 +39,8 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = new Lang.Class({
-    Name: 'URLHighlighter',
-
-    _init(text, lineWrap, allowMarkup) {
+var URLHighlighter = class URLHighlighter {
+    constructor(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
@@ -114,7 +111,7 @@ var URLHighlighter = new Lang.Class({
             }
             return Clutter.EVENT_PROPAGATE;
         });
-    },
+    }
 
     setMarkup(text, allowMarkup) {
         text = text ? _fixMarkup(text, allowMarkup) : '';
@@ -124,7 +121,7 @@ var URLHighlighter = new Lang.Class({
         /* clutter_text.text contain text without markup */
         this._urls = Util.findUrls(this.actor.clutter_text.text);
         this._highlightUrls();
-    },
+    }
 
     _highlightUrls() {
         // text here contain markup
@@ -139,7 +136,7 @@ var URLHighlighter = new Lang.Class({
         }
         markup += this._text.substr(pos);
         this.actor.clutter_text.set_markup(markup);
-    },
+    }
 
     _findUrlAtPos(event) {
         let success;
@@ -160,16 +157,14 @@ var URLHighlighter = new Lang.Class({
         }
         return -1;
     }
-});
+};
 
-var ScaleLayout = new Lang.Class({
-    Name: 'ScaleLayout',
-    Extends: Clutter.BinLayout,
-
+var ScaleLayout = new GObject.registerClass(
+class ScaleLayout extends Clutter.BinLayout {
     _init(params) {
         this._container = null;
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     _connectContainer(container) {
         if (this._container == container)
@@ -189,45 +184,43 @@ var ScaleLayout = new Lang.Class({
                 });
                 this._signals.push(id);
             }
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         this._connectContainer(container);
 
-        let [min, nat] = this.parent(container, forHeight);
+        let [min, nat] = super.vfunc_get_preferred_width(container, forHeight);
         return [Math.floor(min * container.scale_x),
                 Math.floor(nat * container.scale_x)];
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         this._connectContainer(container);
 
-        let [min, nat] = this.parent(container, forWidth);
+        let [min, nat] = super.vfunc_get_preferred_height(container, forWidth);
         return [Math.floor(min * container.scale_y),
                 Math.floor(nat * container.scale_y)];
     }
 });
 
-var LabelExpanderLayout = new Lang.Class({
-    Name: 'LabelExpanderLayout',
-    Extends: Clutter.LayoutManager,
+var LabelExpanderLayout = GObject.registerClass({
     Properties: { 'expansion': GObject.ParamSpec.double('expansion',
                                                         'Expansion',
                                                         'Expansion of the layout, between 0 (collapsed) ' +
                                                         'and 1 (fully expanded',
                                                          GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
                                                          0, 1, 0)},
-
+}, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
         this._expansion = 0;
         this._expandLines = DEFAULT_EXPAND_LINES;
 
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     get expansion() {
         return this._expansion;
-    },
+    }
 
     set expansion(v) {
         if (v == this._expansion)
@@ -240,7 +233,7 @@ var LabelExpanderLayout = new Lang.Class({
             this._container.get_child_at_index(i).visible = (i == visibleIndex);
 
         this.layout_changed();
-    },
+    }
 
     set expandLines(v) {
         if (v == this._expandLines)
@@ -248,11 +241,11 @@ var LabelExpanderLayout = new Lang.Class({
         this._expandLines = v;
         if (this._expansion > 0)
             this.layout_changed();
-    },
+    }
 
     vfunc_set_container(container) {
         this._container = container;
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         let [min, nat] = [0, 0];
@@ -267,7 +260,7 @@ var LabelExpanderLayout = new Lang.Class({
         }
 
         return [min, nat];
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         let [min, nat] = [0, 0];
@@ -285,7 +278,7 @@ var LabelExpanderLayout = new Lang.Class({
         }
 
         return [min, nat];
-    },
+    }
 
     vfunc_allocate(container, box, flags) {
         for (let i = 0; i < container.get_n_children(); i++) {
@@ -298,10 +291,8 @@ var LabelExpanderLayout = new Lang.Class({
     }
 });
 
-var Message = new Lang.Class({
-    Name: 'Message',
-
-    _init(title, body) {
+var Message = class Message {
+    constructor(title, body) {
         this.expanded = false;
 
         this._useBodyMarkup = false;
@@ -368,25 +359,25 @@ var Message = new Lang.Class({
         this.actor.connect('clicked', this._onClicked.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._sync();
-    },
+    }
 
     close() {
         this.emit('close');
-    },
+    }
 
     setIcon(actor) {
         this._iconBin.child = actor;
         this._iconBin.visible = (actor != null);
-    },
+    }
 
     setSecondaryActor(actor) {
         this._secondaryBin.child = actor;
-    },
+    }
 
     setTitle(text) {
         let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
-    },
+    }
 
     setBody(text) {
         this._bodyText = text;
@@ -394,7 +385,7 @@ var Message = new Lang.Class({
                                  this._useBodyMarkup);
         if (this._expandedLabel)
             this._expandedLabel.setMarkup(text, this._useBodyMarkup);
-    },
+    }
 
     setUseBodyMarkup(enable) {
         if (this._useBodyMarkup === enable)
@@ -402,7 +393,7 @@ var Message = new Lang.Class({
         this._useBodyMarkup = enable;
         if (this.bodyLabel)
             this.setBody(this._bodyText);
-    },
+    }
 
     setActionArea(actor) {
         if (actor == null) {
@@ -416,7 +407,7 @@ var Message = new Lang.Class({
 
         this._actionBin.add_actor(actor);
         this._actionBin.visible = this.expanded;
-    },
+    }
 
     addMediaControl(iconName, callback) {
         let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
@@ -425,7 +416,7 @@ var Message = new Lang.Class({
         button.connect('clicked', callback);
         this._mediaControls.add_actor(button);
         return button;
-    },
+    }
 
     setExpandedBody(actor) {
         if (actor == null) {
@@ -438,11 +429,11 @@ var Message = new Lang.Class({
             throw new Error('Message already has an expanded body actor');
 
         this._bodyStack.insert_child_at_index(actor, 1);
-    },
+    }
 
     setExpandedLines(nLines) {
         this._bodyStack.layout_manager.expandLines = nLines;
-    },
+    }
 
     expand(animate) {
         this.expanded = true;
@@ -471,7 +462,7 @@ var Message = new Lang.Class({
         }
 
         this.emit('expanded');
-    },
+    }
 
     unexpand(animate) {
         if (animate) {
@@ -495,23 +486,23 @@ var Message = new Lang.Class({
         }
 
         this.emit('unexpanded');
-    },
+    }
 
     canClose() {
-        return this._mediaControls.get_n_children() == 0;
-    },
+        return false;
+    }
 
     _sync() {
         let visible = this.actor.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
         this._closeButton.reactive = visible;
-    },
+    }
 
     _onClicked() {
-    },
+    }
 
     _onDestroy() {
-    },
+    }
 
     _onKeyPressed(a, event) {
         let keysym = event.get_key_symbol();
@@ -523,13 +514,11 @@ var Message = new Lang.Class({
         }
         return Clutter.EVENT_PROPAGATE;
     }
-});
+};
 Signals.addSignalMethods(Message.prototype);
 
-var MessageListSection = new Lang.Class({
-    Name: 'MessageListSection',
-
-    _init() {
+var MessageListSection = class MessageListSection {
+    constructor() {
         this.actor = new St.BoxLayout({ style_class: 'message-list-section',
                                         clip_to_allocation: true,
                                         x_expand: true, vertical: true });
@@ -552,26 +541,26 @@ var MessageListSection = new Lang.Class({
         this.empty = true;
         this.canClear = false;
         this._sync();
-    },
+    }
 
     _onKeyFocusIn(actor) {
         this.emit('key-focus-in', actor);
-    },
+    }
 
     get allowed() {
         return true;
-    },
+    }
 
     setDate(date) {
         if (Calendar.sameDay(date, this._date))
             return;
         this._date = date;
         this._sync();
-    },
+    }
 
     addMessage(message, animate) {
         this.addMessageAtIndex(message, -1, animate);
-    },
+    }
 
     addMessageAtIndex(message, index, animate) {
         let obj = {
@@ -604,7 +593,7 @@ var MessageListSection = new Lang.Class({
                                               scale_y: 1,
                                               time: MESSAGE_ANIMATION_TIME,
                                               transition: 'easeOutQuad' });
-    },
+    }
 
     moveMessage(message, index, animate) {
         let obj = this._messages.get(message);
@@ -626,7 +615,7 @@ var MessageListSection = new Lang.Class({
                                           time: MESSAGE_ANIMATION_TIME,
                                           transition: 'easeOutQuad',
                                           onComplete: onComplete });
-    },
+    }
 
     removeMessage(message, animate) {
         let obj = this._messages.get(message);
@@ -649,7 +638,7 @@ var MessageListSection = new Lang.Class({
             obj.container.destroy();
             global.sync_pointer();
         }
-    },
+    }
 
     clear() {
         let messages = [...this._messages.keys()].filter(msg => msg.canClose());
@@ -677,18 +666,18 @@ var MessageListSection = new Lang.Class({
                                    }});
             }
         }
-    },
+    }
 
     _canClear() {
         for (let message of this._messages.keys())
             if (message.canClose())
                 return true;
         return false;
-    },
+    }
 
     _shouldShow() {
         return !this.empty;
-    },
+    }
 
     _sync() {
         let empty = this._list.get_n_children() == 0;
@@ -707,5 +696,5 @@ var MessageListSection = new Lang.Class({
 
         this.actor.visible = this.allowed && this._shouldShow();
     }
-});
+};
 Signals.addSignalMethods(MessageListSection.prototype);

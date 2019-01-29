@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -74,10 +73,8 @@ function removeDragMonitor(monitor) {
         }
 }
 
-var _Draggable = new Lang.Class({
-    Name: 'Draggable',
-
-    _init(actor, params) {
+var _Draggable = class _Draggable {
+    constructor(actor, params) {
         params = Params.parse(params, { manualMode: false,
                                         restoreOnSuccess: false,
                                         dragActorMaxSize: undefined,
@@ -112,7 +109,8 @@ var _Draggable = new Lang.Class({
         this._dragCancellable = true;
 
         this._eventsGrabbed = false;
-    },
+        this._capturedEventId = 0;
+    }
 
     _onButtonPress(actor, event) {
         if (event.get_button() != 1)
@@ -122,14 +120,14 @@ var _Draggable = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         this._buttonDown = true;
-        this._grabActor();
+        this._grabActor(event.get_device());
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onTouchEvent(actor, event) {
         if (event.type() != Clutter.EventType.TOUCH_BEGIN ||
@@ -139,31 +137,40 @@ var _Draggable = new Lang.Class({
         if (Tweener.getTweenCount(actor))
             return Clutter.EVENT_PROPAGATE;
 
-        this._touchSequence = event.get_event_sequence();
-
         this._buttonDown = true;
-        this._grabActor();
+        this._grabActor(event.get_device(), event.get_event_sequence());
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
-    _grabDevice(actor) {
-        let manager = Clutter.DeviceManager.get_default();
-        let pointer = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
-
-        if (pointer && this._touchSequence)
-            pointer.sequence_grab(this._touchSequence, actor);
+    _grabDevice(actor, pointer, touchSequence) {
+        if (touchSequence)
+            pointer.sequence_grab(touchSequence, actor);
         else if (pointer)
             pointer.grab (actor);
 
         this._grabbedDevice = pointer;
-    },
+        this._touchSequence = touchSequence;
+
+        this._capturedEventId = global.stage.connect('captured-event', (actor, event) => {
+            let device = event.get_device();
+            if (device != this._grabbedDevice &&
+                device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
+                return Clutter.EVENT_STOP;
+            return Clutter.EVENT_PROPAGATE;
+        });
+    }
 
     _ungrabDevice() {
+        if (this._capturedEventId != 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
         if (this._touchSequence)
             this._grabbedDevice.sequence_ungrab (this._touchSequence);
         else
@@ -171,13 +178,13 @@ var _Draggable = new Lang.Class({
 
         this._touchSequence = null;
         this._grabbedDevice = null;
-    },
+    }
 
-    _grabActor() {
-        this._grabDevice(this.actor);
+    _grabActor(device, touchSequence) {
+        this._grabDevice(this.actor, device, touchSequence);
         this._onEventId = this.actor.connect('event',
                                              this._onEvent.bind(this));
-    },
+    }
 
     _ungrabActor() {
         if (!this._onEventId)
@@ -186,15 +193,15 @@ var _Draggable = new Lang.Class({
         this._ungrabDevice();
         this.actor.disconnect(this._onEventId);
         this._onEventId = null;
-    },
+    }
 
-    _grabEvents() {
+    _grabEvents(device, touchSequence) {
         if (!this._eventsGrabbed) {
             this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
             if (this._eventsGrabbed)
-                this._grabDevice(_getEventHandlerActor());
+                this._grabDevice(_getEventHandlerActor(), device, touchSequence);
         }
-    },
+    }
 
     _ungrabEvents() {
         if (this._eventsGrabbed) {
@@ -202,16 +209,38 @@ var _Draggable = new Lang.Class({
             Main.popModal(_getEventHandlerActor());
             this._eventsGrabbed = false;
         }
-    },
+    }
+
+    _eventIsRelease(event) {
+        if (event.type() == Clutter.EventType.BUTTON_RELEASE) {
+            let buttonMask = (Clutter.ModifierType.BUTTON1_MASK |
+                              Clutter.ModifierType.BUTTON2_MASK |
+                              Clutter.ModifierType.BUTTON3_MASK);
+            /* We only obey the last button release from the device,
+             * other buttons may get pressed/released during the DnD op.
+             */
+            return (event.get_state() & buttonMask) == 0;
+        } else if (event.type() == Clutter.EventType.TOUCH_END) {
+            /* For touch, we only obey the pointer emulating sequence */
+            return global.display.is_pointer_emulating_sequence(event.get_event_sequence());
+        }
+
+        return false;
+    }
 
     _onEvent(actor, event) {
+        let device = event.get_device();
+
+        if (this._grabbedDevice &&
+            device != this._grabbedDevice &&
+            device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
+            return Clutter.EVENT_PROPAGATE;
+
         // We intercept BUTTON_RELEASE event to know that the button was released in case we
         // didn't start the drag, to drop the draggable in case the drag was in progress, and
         // to complete the drag and ensure that whatever happens to be under the pointer does
         // not get triggered if the drag was cancelled with Esc.
-        if (event.type() == Clutter.EventType.BUTTON_RELEASE ||
-            (event.type() == Clutter.EventType.TOUCH_END &&
-             global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
+        if (this._eventIsRelease(event)) {
             this._buttonDown = false;
             if (this._dragState == DragState.DRAGGING) {
                 return this._dragActorDropped(event);
@@ -246,7 +275,7 @@ var _Draggable = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     /**
      * fakeRelease:
@@ -259,7 +288,7 @@ var _Draggable = new Lang.Class({
     fakeRelease() {
         this._buttonDown = false;
         this._ungrabActor();
-    },
+    }
 
     /**
      * startDrag:
@@ -271,7 +300,19 @@ var _Draggable = new Lang.Class({
      * This function is useful to call if you've specified manualMode
      * for the draggable.
      */
-    startDrag(stageX, stageY, time, sequence) {
+    startDrag(stageX, stageY, time, sequence, device) {
+        if (device == undefined) {
+            let event = Clutter.get_current_event();
+
+            if (event)
+                device = event.get_device();
+
+            if (device == undefined) {
+                let manager = Clutter.DeviceManager.get_default();
+                device = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
+            }
+        }
+
         currentDraggable = this;
         this._dragState = DragState.DRAGGING;
 
@@ -286,8 +327,7 @@ var _Draggable = new Lang.Class({
         if (this._onEventId)
             this._ungrabActor();
 
-        this._touchSequence = sequence;
-        this._grabEvents();
+        this._grabEvents(device, sequence);
         global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
@@ -355,7 +395,8 @@ var _Draggable = new Lang.Class({
             this._finishAnimation();
 
             this._dragActor = null;
-            this._dragState = DragState.CANCELLED;
+            if (this._dragState == DragState.DRAGGING)
+                this._dragState = DragState.CANCELLED;
         });
         this._dragOrigOpacity = this._dragActor.opacity;
         if (this._dragActorOpacity != undefined)
@@ -395,26 +436,32 @@ var _Draggable = new Lang.Class({
                                    onUpdateScope: this });
             }
         }
-    },
+    }
 
     _maybeStartDrag(event) {
         let [stageX, stageY] = event.get_coords();
 
         // See if the user has moved the mouse enough to trigger a drag
         let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
-        if ((Math.abs(stageX - this._dragStartX) > threshold ||
+        if (!currentDraggable &&
+            (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence);
+            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
             this._updateDragPosition(event);
         }
 
         return true;
-    },
+    }
+
+    _pickTargetActor() {
+        return this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
+                                                            this._dragX, this._dragY);
+    }
 
     _updateDragHover() {
         this._updateHoverId = 0;
-        let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                  this._dragX, this._dragY);
+        let target = this._pickTargetActor();
+
         let dragEvent = {
             x: this._dragX,
             y: this._dragY,
@@ -422,6 +469,18 @@ var _Draggable = new Lang.Class({
             source: this.actor._delegate,
             targetActor: target
         };
+
+        let targetActorDestroyHandlerId;
+        let handleTargetActorDestroyClosure;
+        handleTargetActorDestroyClosure = () => {
+            target = this._pickTargetActor();
+            dragEvent.targetActor = target;
+            targetActorDestroyHandlerId =
+                target.connect('destroy', handleTargetActorDestroyClosure);
+        };
+        targetActorDestroyHandlerId =
+            target.connect('destroy', handleTargetActorDestroyClosure);
+
         for (let i = 0; i < dragMonitors.length; i++) {
             let motionFunc = dragMonitors[i].dragMotion;
             if (motionFunc) {
@@ -432,6 +491,7 @@ var _Draggable = new Lang.Class({
                 }
             }
         }
+        dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
 
         while (target) {
             if (target._delegate && target._delegate.handleDragOver) {
@@ -453,7 +513,7 @@ var _Draggable = new Lang.Class({
         }
         global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     _queueUpdateDragHover() {
         if (this._updateHoverId)
@@ -462,7 +522,7 @@ var _Draggable = new Lang.Class({
         this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
                                             this._updateDragHover.bind(this));
         GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
-    },
+    }
 
     _updateDragPosition(event) {
         let [stageX, stageY] = event.get_coords();
@@ -473,7 +533,7 @@ var _Draggable = new Lang.Class({
 
         this._queueUpdateDragHover();
         return true;
-    },
+    }
 
     _dragActorDropped(event) {
         let [dropX, dropY] = event.get_coords();
@@ -536,7 +596,7 @@ var _Draggable = new Lang.Class({
         this._cancelDrag(event.get_time());
 
         return true;
-    },
+    }
 
     _getRestoreLocation() {
         let x, y, scale;
@@ -568,7 +628,7 @@ var _Draggable = new Lang.Class({
         }
 
         return [x, y, scale];
-    },
+    }
 
     _cancelDrag(eventTime) {
         this.emit('drag-cancelled', eventTime);
@@ -595,7 +655,7 @@ var _Draggable = new Lang.Class({
                                scale_y: snapBackScale,
                                time: SNAP_BACK_ANIMATION_TIME,
                              });
-    },
+    }
 
     _restoreDragActor(eventTime) {
         this._dragState = DragState.INIT;
@@ -608,7 +668,7 @@ var _Draggable = new Lang.Class({
 
         this._animateDragEnd(eventTime,
                              { time: REVERT_ANIMATION_TIME });
-    },
+    }
 
     _animateDragEnd(eventTime, params) {
         this._animationInProgress = true;
@@ -621,7 +681,7 @@ var _Draggable = new Lang.Class({
 
         // start the animation
         Tweener.addTween(this._dragActor, params)
-    },
+    }
 
     _finishAnimation() {
         if (!this._animationInProgress)
@@ -632,7 +692,7 @@ var _Draggable = new Lang.Class({
             this._dragComplete();
 
         global.display.set_cursor(Meta.Cursor.DEFAULT);
-    },
+    }
 
     _onAnimationComplete(dragActor, eventTime) {
         if (this._dragOrigParent) {
@@ -646,7 +706,7 @@ var _Draggable = new Lang.Class({
 
         this.emit('drag-end', eventTime, false);
         this._finishAnimation();
-    },
+    }
 
     _dragComplete() {
         if (!this._actorDestroyed && this._dragActor)
@@ -668,8 +728,7 @@ var _Draggable = new Lang.Class({
         this._dragState = DragState.INIT;
         currentDraggable = null;
     }
-});
-
+};
 Signals.addSignalMethods(_Draggable.prototype);
 
 /**

@@ -2,7 +2,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -16,41 +15,39 @@ const APP_WHITELIST = ['gnome-control-center.desktop'];
 
 var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 
-var InhibitShortcutsDialog = new Lang.Class({
-    Name: 'InhibitShortcutsDialog',
-    Extends: GObject.Object,
+var InhibitShortcutsDialog = GObject.registerClass({
     Implements: [Meta.InhibitShortcutsDialog],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog)
-    },
-
+    }
+}, class InhibitShortcutsDialog extends GObject.Object {
     _init(window) {
-        this.parent();
+        super._init();
         this._window = window;
 
         this._dialog = new ModalDialog.ModalDialog();
         this._buildLayout();
-    },
+    }
 
     get window() {
         return this._window;
-    },
+    }
 
     set window(window) {
         this._window = window;
-    },
+    }
 
     get _app() {
         let windowTracker = Shell.WindowTracker.get_default();
         return windowTracker.get_window_app(this._window);
-    },
+    }
 
     _getRestoreAccel() {
         let settings = new Gio.Settings({ schema_id: WAYLAND_KEYBINDINGS_SCHEMA });
         let accel = settings.get_strv('restore-shortcuts')[0] || '';
         return Gtk.accelerator_get_label.apply(null,
                                                Gtk.accelerator_parse(accel));
-    },
+    }
 
     _buildLayout() {
         let name = this._app ? this._app.get_name() : this._window.title;
@@ -82,19 +79,19 @@ var InhibitShortcutsDialog = new Lang.Class({
                                      this._emitResponse(DialogResponse.ALLOW);
                                  },
                                  default: true });
-    },
+    }
 
     _emitResponse(response) {
         this.emit('response', response);
         this._dialog.close();
-    },
+    }
 
     vfunc_show() {
         if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1)
             this._emitResponse(DialogResponse.ALLOW);
         else
             this._dialog.open();
-    },
+    }
 
     vfunc_hide() {
         this._dialog.close();

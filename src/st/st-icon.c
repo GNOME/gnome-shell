@@ -176,6 +176,7 @@ st_icon_paint (ClutterActor *actor)
 
           clutter_actor_get_allocation_box (priv->icon_texture, &allocation);
           _st_paint_shadow_with_opacity (priv->shadow_spec,
+                                         cogl_get_draw_framebuffer (),
                                          priv->shadow_pipeline,
                                          &allocation,
                                          clutter_actor_get_paint_opacity (priv->icon_texture));
@@ -309,11 +310,11 @@ st_icon_update_shadow_pipeline (StIcon *icon)
 }
 
 static void
-on_pixbuf_changed (ClutterTexture *texture,
-                   StIcon         *icon)
+on_content_changed (ClutterActor *actor,
+                    GParamSpec   *pspec,
+                    StIcon       *icon)
 {
   st_icon_clear_shadow_pipeline (icon);
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (icon));
 }
 
 static void
@@ -340,9 +341,8 @@ st_icon_finish_update (StIcon *icon)
 
       st_icon_clear_shadow_pipeline (icon);
 
-      /* "pixbuf-change" is actually a misnomer for "texture-changed" */
-      g_signal_connect_object (priv->icon_texture, "pixbuf-change",
-                               G_CALLBACK (on_pixbuf_changed), icon, 0);
+      g_signal_connect_object (priv->icon_texture, "notify::content",
+                               G_CALLBACK (on_content_changed), icon, 0);
     }
 }
 

@@ -24,7 +24,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
@@ -50,10 +49,8 @@ const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
-var UserListItem = new Lang.Class({
-    Name: 'UserListItem',
-
-    _init(user) {
+var UserListItem = class {
+    constructor(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
                                                  this._onUserChanged.bind(this));
@@ -91,26 +88,26 @@ var UserListItem = new Lang.Class({
 
         this.actor.connect('clicked', this._onClicked.bind(this));
         this._onUserChanged();
-    },
+    }
 
     _onUserChanged() {
         this._updateLoggedIn();
-    },
+    }
 
     _updateLoggedIn() {
         if (this.user.is_logged_in())
             this.actor.add_style_pseudo_class('logged-in');
         else
             this.actor.remove_style_pseudo_class('logged-in');
-    },
+    }
 
     _onDestroy() {
         this.user.disconnect(this._userChangedId);
-    },
+    }
 
     _onClicked() {
         this.emit('activate');
-    },
+    }
 
     _setSelected(selected) {
         if (selected) {
@@ -119,7 +116,7 @@ var UserListItem = new Lang.Class({
         } else {
             this.actor.remove_style_pseudo_class('selected');
         }
-    },
+    }
 
     showTimedLoginIndicator(time) {
         let hold = new Batch.Hold();
@@ -147,7 +144,7 @@ var UserListItem = new Lang.Class({
         GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
 
         return hold;
-    },
+    }
 
     hideTimedLoginIndicator() {
         if (this._timedLoginTimeoutId) {
@@ -158,13 +155,11 @@ var UserListItem = new Lang.Class({
         this._timedLoginIndicator.visible = false;
         this._timedLoginIndicator.scale_x = 0.;
     }
-});
+};
 Signals.addSignalMethods(UserListItem.prototype);
 
-var UserList = new Lang.Class({
-    Name: 'UserList',
-
-    _init() {
+var UserList = class {
+    constructor() {
         this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
         this.actor.set_policy(Gtk.PolicyType.NEVER,
                               Gtk.PolicyType.AUTOMATIC);
@@ -177,7 +172,7 @@ var UserList = new Lang.Class({
         this._items = {};
 
         this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
-    },
+    }
 
     _moveFocusToItems() {
         let hasItems = Object.keys(this._items).length > 0;
@@ -195,11 +190,11 @@ var UserList = new Lang.Class({
                 return false;
             });
         }
-    },
+    }
 
     _onItemActivated(activatedItem) {
         this.emit('activate', activatedItem);
-    },
+    }
 
     updateStyle(isExpanded) {
         let tasks = [];
@@ -213,7 +208,7 @@ var UserList = new Lang.Class({
             let item = this._items[userName];
             item.actor.sync_hover();
         }
-    },
+    }
 
     scrollToItem(item) {
         let box = item.actor.get_allocation_box();
@@ -226,7 +221,7 @@ var UserList = new Lang.Class({
                           { value: value,
                             time: _SCROLL_ANIMATION_TIME,
                             transition: 'easeOutQuad' });
-    },
+    }
 
     jumpToItem(item) {
         let box = item.actor.get_allocation_box();
@@ -236,7 +231,7 @@ var UserList = new Lang.Class({
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
         adjustment.set_value(value);
-    },
+    }
 
     getItemFromUserName(userName) {
         let item = this._items[userName];
@@ -245,11 +240,11 @@ var UserList = new Lang.Class({
             return null;
 
         return item;
-    },
+    }
 
     containsUser(user) {
         return this._items[user.get_user_name()] != null;
-    },
+    }
 
     addUser(user) {
         if (!user.is_loaded)
@@ -281,7 +276,7 @@ var UserList = new Lang.Class({
         this._moveFocusToItems();
 
         this.emit('item-added', item);
-    },
+    }
 
     removeUser(user) {
         if (!user.is_loaded)
@@ -299,18 +294,16 @@ var UserList = new Lang.Class({
 
         item.actor.destroy();
         delete this._items[userName];
-    },
+    }
 
     numItems() {
         return Object.keys(this._items).length;
     }
-});
+};
 Signals.addSignalMethods(UserList.prototype);
 
-var SessionMenuButton = new Lang.Class({
-    Name: 'SessionMenuButton',
-
-    _init() {
+var SessionMenuButton = class {
+    constructor() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
                                        reactive: true,
@@ -350,13 +343,13 @@ var SessionMenuButton = new Lang.Class({
         this._items = {};
         this._activeSessionId = null;
         this._populate();
-    },
+    }
 
     updateSensitivity(sensitive) {
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
         this._menu.close(BoxPointer.PopupAnimation.NONE);
-    },
+    }
 
     _updateOrnament() {
         let itemIds = Object.keys(this._items);
@@ -366,7 +359,7 @@ var SessionMenuButton = new Lang.Class({
             else
                 this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
         }
-    },
+    }
 
     setActiveSession(sessionId) {
          if (sessionId == this._activeSessionId)
@@ -374,11 +367,11 @@ var SessionMenuButton = new Lang.Class({
 
          this._activeSessionId = sessionId;
          this._updateOrnament();
-    },
+    }
 
     close() {
         this._menu.close();
-    },
+    }
 
     _populate() {
         let ids = Gdm.get_session_ids();
@@ -403,16 +396,14 @@ var SessionMenuButton = new Lang.Class({
             });
         }
     }
-});
+};
 Signals.addSignalMethods(SessionMenuButton.prototype);
 
-var LoginDialog = new Lang.Class({
-    Name: 'LoginDialog',
-    Extends: St.Widget,
+var LoginDialog = GObject.registerClass({
     Signals: { 'failed': {} },
-
+}, class LoginDialog extends St.Widget {
     _init(parentActor) {
-        this.parent({ style_class: 'login-dialog',
+        super._init({ style_class: 'login-dialog',
                       visible: false });
 
         this.get_accessible().set_role(Atk.Role.WINDOW);
@@ -530,7 +521,7 @@ var LoginDialog = new Lang.Class({
         // focus later
         this._startupCompleteId = Main.layoutManager.connect('startup-complete',
                                                              this._updateDisableUserList.bind(this));
-    },
+    }
 
     _getBannerAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
@@ -544,7 +535,7 @@ var LoginDialog = new Lang.Class({
         actorBox.y2 = actorBox.y1 + natHeight;
 
         return actorBox;
-    },
+    }
 
     _getLogoBinAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
@@ -558,7 +549,7 @@ var LoginDialog = new Lang.Class({
         actorBox.y2 = actorBox.y1 + natHeight;
 
         return actorBox;
-    },
+    }
 
     _getCenterActorAllocation(dialogBox, actor) {
         let actorBox = new Clutter.ActorBox();
@@ -576,7 +567,7 @@ var LoginDialog = new Lang.Class({
         actorBox.y2 = actorBox.y1 + natHeight;
 
         return actorBox;
-    },
+    }
 
     vfunc_allocate(dialogBox, flags) {
         this.set_allocation(dialogBox, flags);
@@ -719,7 +710,7 @@ var LoginDialog = new Lang.Class({
 
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation, flags);
-    },
+    }
 
     _ensureUserListLoaded() {
         if (!this._userManager.is_loaded) {
@@ -735,7 +726,7 @@ var LoginDialog = new Lang.Class({
             let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
         }
-    },
+    }
 
     _updateDisableUserList() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
@@ -750,7 +741,7 @@ var LoginDialog = new Lang.Class({
             if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
         }
-    },
+    }
 
     _updateCancelButton() {
         let cancelVisible;
@@ -763,7 +754,7 @@ var LoginDialog = new Lang.Class({
             cancelVisible = true;
 
         this._authPrompt.cancelButton.visible = cancelVisible;
-    },
+    }
 
     _updateBanner() {
         let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
@@ -775,7 +766,7 @@ var LoginDialog = new Lang.Class({
         } else {
             this._bannerLabel.hide();
         }
-    },
+    }
 
     _fadeInBannerView() {
         this._bannerView.show();
@@ -783,13 +774,13 @@ var LoginDialog = new Lang.Class({
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
-    },
+    }
 
     _hideBannerView() {
         Tweener.removeTweens(this._bannerView);
         this._bannerView.opacity = 0;
         this._bannerView.hide();
-    },
+    }
 
     _updateLogoTexture(cache, file) {
         if (this._logoFile && !this._logoFile.equal(file))
@@ -802,14 +793,14 @@ var LoginDialog = new Lang.Class({
                                                                        -1, _LOGO_ICON_HEIGHT,
                                                                        scaleFactor));
         }
-    },
+    }
 
     _updateLogo() {
         let path = this._settings.get_string(GdmUtil.LOGO_KEY);
 
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
-    },
+    }
 
     _onPrompted() {
         if (this._shouldShowSessionMenuButton()) {
@@ -819,7 +810,7 @@ var LoginDialog = new Lang.Class({
             this._sessionMenuButton.updateSensitivity(false);
         }
         this._showPrompt();
-    },
+    }
 
     _resetGreeterProxy() {
         if (GLib.getenv('GDM_GREETER_TEST') != '1') {
@@ -835,7 +826,7 @@ var LoginDialog = new Lang.Class({
             this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
                                                                 this._onTimedLoginRequested.bind(this));
         }
-    },
+    }
 
     _onReset(authPrompt, beginRequest) {
         this._resetGreeterProxy();
@@ -856,11 +847,11 @@ var LoginDialog = new Lang.Class({
         } else {
             this._hideUserListAndBeginVerification();
         }
-    },
+    }
 
     _onDefaultSessionChanged(client, sessionId) {
         this._sessionMenuButton.setActiveSession(sessionId);
-    },
+    }
 
     _shouldShowSessionMenuButton() {
         if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
@@ -871,7 +862,7 @@ var LoginDialog = new Lang.Class({
           return false;
 
         return true;
-    },
+    }
 
     _showPrompt() {
         if (this._authPrompt.actor.visible)
@@ -883,7 +874,7 @@ var LoginDialog = new Lang.Class({
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
         this._fadeInBannerView();
-    },
+    }
 
     _showRealmLoginHint(realmManager, hint) {
         if (!hint)
@@ -896,7 +887,7 @@ var LoginDialog = new Lang.Class({
         // Translators: this message is shown below the username entry field
         // to clue the user in on how to login to the local network realm
         this._authPrompt.setMessage(_("(e.g., user or %s)").format(hint), GdmUtil.MessageType.HINT);
-    },
+    }
 
     _askForUsernameAndBeginVerification() {
         this._authPrompt.setPasswordChar('');
@@ -923,7 +914,7 @@ var LoginDialog = new Lang.Class({
         this._sessionMenuButton.updateSensitivity(false);
         this._authPrompt.updateSensitivity(true);
         this._showPrompt();
-    },
+    }
 
     _loginScreenSessionActivated() {
         if (this.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
@@ -947,7 +938,7 @@ var LoginDialog = new Lang.Class({
                                    this._authPrompt.reset();
                            },
                            onCompleteScope: this });
-    },
+    }
 
     _gotGreeterSessionProxy(proxy) {
         this._greeterSessionProxy = proxy;
@@ -956,7 +947,7 @@ var LoginDialog = new Lang.Class({
                 if (proxy.Active)
                     this._loginScreenSessionActivated();
             });
-    },
+    }
 
     _startSession(serviceName) {
         Tweener.addTween(this,
@@ -976,11 +967,11 @@ var LoginDialog = new Lang.Class({
                                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
                            },
                            onCompleteScope: this });
-    },
+    }
 
     _onSessionOpened(client, serviceName) {
         this._authPrompt.finish(() => { this._startSession(serviceName); });
-    },
+    }
 
     _waitForItemForUser(userName) {
         let item = this._userList.getItemFromUserName(userName);
@@ -1000,7 +991,7 @@ var LoginDialog = new Lang.Class({
         hold.connect('release', () => { this._userList.disconnect(signalId); });
 
         return hold;
-    },
+    }
 
     _blockTimedLoginUntilIdle() {
         let hold = new Batch.Hold();
@@ -1013,7 +1004,7 @@ var LoginDialog = new Lang.Class({
             });
         GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginIdleTimeOutId');
         return hold;
-    },
+    }
 
     _startTimedLogin(userName, delay) {
         let firstRun = true;
@@ -1086,7 +1077,7 @@ var LoginDialog = new Lang.Class({
         this._timedLoginBatch = new Batch.ConsecutiveBatch(this, tasks);
 
         return this._timedLoginBatch.run();
-    },
+    }
 
     _onTimedLoginRequested(client, userName, seconds) {
         if (this._timedLoginBatch)
@@ -1103,28 +1094,28 @@ var LoginDialog = new Lang.Class({
 
            return Clutter.EVENT_PROPAGATE;
         });
-    },
+    }
 
     _setUserListExpanded(expanded) {
         this._userList.updateStyle(expanded);
         this._userSelectionBox.visible = expanded;
-    },
+    }
 
     _hideUserList() {
         this._setUserListExpanded(false);
         if (this._userSelectionBox.visible)
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
-    },
+    }
 
     _hideUserListAskForUsernameAndBeginVerification() {
         this._hideUserList();
         this._askForUsernameAndBeginVerification();
-    },
+    }
 
     _hideUserListAndBeginVerification() {
         this._hideUserList();
         this._authPrompt.begin();
-    },
+    }
 
     _showUserList() {
         this._ensureUserListLoaded();
@@ -1134,7 +1125,7 @@ var LoginDialog = new Lang.Class({
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.actor.grab_key_focus();
-    },
+    }
 
     _beginVerificationForItem(item) {
         this._authPrompt.setUser(item.user);
@@ -1145,7 +1136,7 @@ var LoginDialog = new Lang.Class({
         this._authPrompt.begin({ userName: userName,
                                  hold: hold });
         return hold;
-    },
+    }
 
     _onUserListActivated(activatedItem) {
         this._user = activatedItem.user;
@@ -1155,7 +1146,7 @@ var LoginDialog = new Lang.Class({
         let batch = new Batch.ConcurrentBatch(this, [GdmUtil.cloneAndFadeOutActor(this._userSelectionBox),
                                                      this._beginVerificationForItem(activatedItem)]);
         batch.run();
-    },
+    }
 
     _onDestroy() {
         if (this._userManagerLoadedId) {
@@ -1196,7 +1187,7 @@ var LoginDialog = new Lang.Class({
             this._realmManager.release();
             this._realmManager = null;
         }
-    },
+    }
 
     _loadUserList() {
         if (this._userListLoaded)
@@ -1234,7 +1225,7 @@ var LoginDialog = new Lang.Class({
             });
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     open() {
         Main.ctrlAltTabManager.addGroup(this,
@@ -1253,22 +1244,22 @@ var LoginDialog = new Lang.Class({
                            transition: 'easeInQuad' });
 
         return true;
-    },
+    }
 
     close() {
         Main.popModal(this);
         Main.ctrlAltTabManager.removeGroup(this);
-    },
+    }
 
     cancel() {
         this._authPrompt.cancel();
-    },
+    }
 
     addCharacter(unichar) {
         // Don't allow type ahead at the login screen
-    },
+    }
 
     finish(onComplete) {
         this._authPrompt.finish(onComplete);
-    },
+    }
 });

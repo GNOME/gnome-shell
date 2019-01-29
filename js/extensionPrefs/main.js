@@ -1,5 +1,3 @@
-
-const Lang = imports.lang;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -24,9 +22,8 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
-var Application = new Lang.Class({
-    Name: 'Application',
-    _init() {
+var Application = class {
+    constructor() {
         GLib.set_prgname('gnome-shell-extension-prefs');
         this.application = new Gtk.Application({
             application_id: 'org.gnome.shell.ExtensionPrefs',
@@ -42,7 +39,7 @@ var Application = new Lang.Class({
         this._startupUuid = null;
         this._loaded = false;
         this._skipMainWindow = false;
-    },
+    }
 
     _extensionAvailable(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
@@ -54,7 +51,7 @@ var Application = new Lang.Class({
             return false;
 
         return true;
-    },
+    }
 
     _getExtensionPrefsModule(extension) {
         let uuid = extension.metadata.uuid;
@@ -69,7 +66,7 @@ var Application = new Lang.Class({
 
         this._extensionPrefsModules[uuid] = prefsModule;
         return prefsModule;
-    },
+    }
 
     _selectExtension(uuid) {
         if (!this._extensionAvailable(uuid))
@@ -104,7 +101,7 @@ var Application = new Lang.Class({
         dialog.set_default_size(600, 400);
         dialog.add(widget);
         dialog.show();
-    },
+    }
 
     _buildErrorUI(extension, exc) {
         let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
@@ -130,7 +127,7 @@ var Application = new Lang.Class({
 
         box.show_all();
         return box;
-    },
+    }
 
     _buildUI(app) {
         this._window = new Gtk.ApplicationWindow({ application: app,
@@ -167,13 +164,13 @@ var Application = new Lang.Class({
         });
 
         this._window.show_all();
-    },
+    }
 
     _sortList(row1, row2) {
         let name1 = ExtensionUtils.extensions[row1.uuid].metadata.name;
         let name2 = ExtensionUtils.extensions[row2.uuid].metadata.name;
         return name1.localeCompare(name2);
-    },
+    }
 
     _updateHeader(row, before) {
         if (!before || row.get_header())
@@ -181,14 +178,14 @@ var Application = new Lang.Class({
 
         let sep = new Gtk.Separator({ orientation: Gtk.Orientation.HORIZONTAL });
         row.set_header(sep);
-    },
+    }
 
     _scanExtensions() {
         let finder = new ExtensionUtils.ExtensionFinder();
         finder.connect('extension-found', this._extensionFound.bind(this));
         finder.scanExtensions();
         this._extensionsLoaded();
-    },
+    }
 
     _extensionFound(finder, extension) {
         let row = new ExtensionRow(extension.uuid);
@@ -200,7 +197,7 @@ var Application = new Lang.Class({
 
         row.show_all();
         this._extensionSelector.add(row);
-    },
+    }
 
     _extensionsLoaded() {
         if (this._startupUuid && this._extensionAvailable(this._startupUuid))
@@ -208,16 +205,16 @@ var Application = new Lang.Class({
         this._startupUuid = null;
         this._skipMainWindow = false;
         this._loaded = true;
-    },
+    }
 
     _onActivate() {
         this._window.present();
-    },
+    }
 
     _onStartup(app) {
         this._buildUI(app);
         this._scanExtensions();
-    },
+    }
 
     _onCommandLine(app, commandLine) {
         app.activate();
@@ -240,26 +237,22 @@ var Application = new Lang.Class({
         }
         return 0;
     }
-});
+};
 
-var DescriptionLabel = new Lang.Class({
-    Name: 'DescriptionLabel',
-    Extends: Gtk.Label,
-
+var DescriptionLabel = GObject.registerClass(
+class DescriptionLabel extends Gtk.Label {
     vfunc_get_preferred_height_for_width(width) {
         // Hack: Request the maximum height allowed by the line limit
         if (this.lines > 0)
-            return this.parent(0);
-        return this.parent(width);
+            return super.vfunc_get_preferred_height_for_width(0);
+        return super.vfunc_get_preferred_height_for_width(width);
     }
 });
 
-var ExtensionRow = new Lang.Class({
-    Name: 'ExtensionRow',
-    Extends: Gtk.ListBoxRow,
-
+var ExtensionRow = GObject.registerClass(
+class ExtensionRow extends Gtk.ListBoxRow {
     _init(uuid) {
-        this.parent();
+        super._init();
 
         this.uuid = uuid;
 
@@ -277,7 +270,7 @@ var ExtensionRow = new Lang.Class({
             });
 
         this._buildUI();
-    },
+    }
 
     _buildUI() {
         let extension = ExtensionUtils.extensions[this.uuid];
@@ -324,7 +317,7 @@ var ExtensionRow = new Lang.Class({
         });
         this._switch.connect('state-set', () => true);
         hbox.add(this._switch);
-    },
+    }
 
     _canEnable() {
         let extension = ExtensionUtils.extensions[this.uuid];
@@ -332,12 +325,12 @@ var ExtensionRow = new Lang.Class({
 
         return !this._settings.get_boolean('disable-user-extensions') &&
                !(checkVersion && ExtensionUtils.isOutOfDate(extension));
-    },
+    }
 
     _isEnabled() {
         let extensions = this._settings.get_strv('enabled-extensions');
         return extensions.indexOf(this.uuid) != -1;
-    },
+    }
 
     _enable() {
         let extensions = this._settings.get_strv('enabled-extensions');
@@ -346,7 +339,7 @@ var ExtensionRow = new Lang.Class({
 
         extensions.push(this.uuid);
         this._settings.set_strv('enabled-extensions', extensions);
-    },
+    }
 
     _disable() {
         let extensions = this._settings.get_strv('enabled-extensions');

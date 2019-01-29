@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const GnomeDesktop = imports.gi.GnomeDesktop;
@@ -22,14 +21,12 @@ function getPointerWatcher() {
     return _pointerWatcher;
 }
 
-var PointerWatch = new Lang.Class({
-    Name: 'PointerWatch',
-
-    _init(watcher, interval, callback) {
+var PointerWatch = class {
+    constructor(watcher, interval, callback) {
         this.watcher = watcher;
         this.interval = interval;
         this.callback = callback;
-    },
+    }
 
     // remove:
     // remove this watch. This function may safely be called
@@ -37,19 +34,17 @@ var PointerWatch = new Lang.Class({
     remove() {
         this.watcher._removeWatch(this);
     }
-});
+};
 
-var PointerWatcher = new Lang.Class({
-    Name: 'PointerWatcher',
-
-    _init() {
+var PointerWatcher = class {
+    constructor() {
         this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleMonitor.add_idle_watch(IDLE_TIME, this._onIdleMonitorBecameIdle.bind(this));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];
         this.pointerX = null;
         this.pointerY = null;
-    },
+    }
 
     // addWatch:
     // @interval: hint as to the time resolution needed. When the user is
@@ -68,7 +63,7 @@ var PointerWatcher = new Lang.Class({
         this._watches.push(watch);
         this._updateTimeout();
         return watch;
-    },
+    }
 
     _removeWatch(watch) {
         for (let i = 0; i < this._watches.length; i++) {
@@ -78,19 +73,19 @@ var PointerWatcher = new Lang.Class({
                 return;
             }
         }
-    },
+    }
 
     _onIdleMonitorBecameActive(monitor) {
         this._idle = false;
         this._updatePointer();
         this._updateTimeout();
-    },
+    }
 
     _onIdleMonitorBecameIdle(monitor) {
         this._idle = true;
         this._idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         this._updateTimeout();
-    },
+    }
 
     _updateTimeout() {
         if (this._timeoutId) {
@@ -108,12 +103,12 @@ var PointerWatcher = new Lang.Class({
         this._timeoutId = Mainloop.timeout_add(minInterval,
                                                this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
-    },
+    }
 
     _onTimeout() {
         this._updatePointer();
         return GLib.SOURCE_CONTINUE;
-    },
+    }
 
     _updatePointer() {
         let [x, y, mods] = global.get_pointer();
@@ -130,4 +125,4 @@ var PointerWatcher = new Lang.Class({
                 i++;
         }
     }
-});
+};

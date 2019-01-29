@@ -1142,10 +1142,10 @@ shell_app_get_pids (ShellApp *app)
 }
 
 void
-_shell_app_handle_startup_sequence (ShellApp          *app,
-                                    SnStartupSequence *sequence)
+_shell_app_handle_startup_sequence (ShellApp            *app,
+                                    MetaStartupSequence *sequence)
 {
-  gboolean starting = !sn_startup_sequence_get_completed (sequence);
+  gboolean starting = !meta_startup_sequence_get_completed (sequence);
 
   /* The Shell design calls for on application launch, the app title
    * appears at top, and no X window is focused.  So when we get
@@ -1160,8 +1160,8 @@ _shell_app_handle_startup_sequence (ShellApp          *app,
 
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
       meta_x11_display_focus_the_no_focus_window (x11_display,
-                                                  sn_startup_sequence_get_timestamp (sequence));
-      app->started_on_workspace = sn_startup_sequence_get_workspace (sequence);
+                                                  meta_startup_sequence_get_timestamp (sequence));
+      app->started_on_workspace = meta_startup_sequence_get_workspace (sequence);
     }
 
   if (!starting)
