@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -27,38 +27,36 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-var RadialShaderQuad = new Lang.Class({
-    Name: 'RadialShaderQuad',
-    Extends: Shell.GLSLQuad,
-
+var RadialShaderQuad = GObject.registerClass(
+class RadialShaderQuad extends Shell.GLSLQuad {
     _init(params) {
-        this.parent(params);
+        super._init(params);
 
         this._brightnessLocation = this.get_uniform_location('brightness');
         this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
 
         this.brightness = 1.0;
         this.vignetteSharpness = 0.0;
-    },
+    }
 
     vfunc_build_pipeline() {
         this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT,
                               VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
-    },
+    }
 
     get brightness() {
         return this._brightness;
-    },
+    }
 
     set brightness(v) {
         this._brightness = v;
         this.set_uniform_float(this._brightnessLocation,
                                1, [this._brightness]);
-    },
+    }
 
     get vignetteSharpness() {
         return this._sharpness;
-    },
+    }
 
     set vignetteSharpness(v) {
         this._sharpness = v;
@@ -91,10 +89,8 @@ var RadialShaderQuad = new Lang.Class({
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-var Lightbox = new Lang.Class({
-    Name: 'Lightbox',
-
-    _init(container, params) {
+var Lightbox = class Lightbox {
+    constructor(container, params) {
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
                                         height: null,
@@ -137,7 +133,7 @@ var Lightbox = new Lang.Class({
         this._actorRemovedSignalId = container.connect('actor-removed', this._actorRemoved.bind(this));
 
         this._highlighted = null;
-    },
+    }
 
     _actorAdded(container, newChild) {
         let children = this._container.get_children();
@@ -159,7 +155,7 @@ var Lightbox = new Lang.Class({
             if (prevChild != -1) // paranoia
                 this._children.splice(prevChild + 1, 0, newChild);
         }
-    },
+    }
 
     show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
@@ -189,7 +185,7 @@ var Lightbox = new Lang.Class({
         }
 
         this.actor.show();
-    },
+    }
 
     hide(fadeOutTime) {
         fadeOutTime = fadeOutTime || 0;
@@ -217,7 +213,7 @@ var Lightbox = new Lang.Class({
                                }
                              });
         }
-    },
+    }
 
     _actorRemoved(container, child) {
         let index = this._children.indexOf(child);
@@ -226,7 +222,7 @@ var Lightbox = new Lang.Class({
 
         if (child == this._highlighted)
             this._highlighted = null;
-    },
+    }
 
     /**
      * highlight:
@@ -257,7 +253,7 @@ var Lightbox = new Lang.Class({
         }
 
         this._highlighted = window;
-    },
+    }
 
     /**
      * destroy:
@@ -266,7 +262,7 @@ var Lightbox = new Lang.Class({
      */
     destroy() {
         this.actor.destroy();
-    },
+    }
 
     /**
      * _onDestroy:
@@ -280,5 +276,5 @@ var Lightbox = new Lang.Class({
 
         this.highlight(null);
     }
-});
+};
 Signals.addSignalMethods(Lightbox.prototype);

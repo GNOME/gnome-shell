@@ -3,7 +3,6 @@
 const UI = imports.testcommon.ui;
 
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
 

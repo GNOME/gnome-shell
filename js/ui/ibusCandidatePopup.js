@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const IBus = imports.gi.IBus;
-const Lang = imports.lang;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
@@ -14,10 +13,8 @@ var MAX_CANDIDATES_PER_PAGE = 16;
 var DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
                              '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ];
 
-var CandidateArea = new Lang.Class({
-    Name: 'CandidateArea',
-
-    _init() {
+var CandidateArea = class CandidateArea {
+    constructor() {
         this.actor = new St.BoxLayout({ vertical: true,
                                         reactive: true,
                                         visible: false });
@@ -74,7 +71,7 @@ var CandidateArea = new Lang.Class({
 
         this._orientation = -1;
         this._cursorPosition = 0;
-    },
+    }
 
     setOrientation(orientation) {
         if (this._orientation == orientation)
@@ -95,7 +92,7 @@ var CandidateArea = new Lang.Class({
             this._previousButton.child.icon_name = 'go-up-symbolic';
             this._nextButton.child.icon_name = 'go-down-symbolic';
         }
-    },
+    }
 
     setCandidates(indexes, candidates, cursorPosition, cursorVisible) {
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
@@ -114,7 +111,7 @@ var CandidateArea = new Lang.Class({
         this._cursorPosition = cursorPosition;
         if (cursorVisible)
             this._candidateBoxes[cursorPosition].add_style_pseudo_class('selected');
-    },
+    }
 
     updateButtons(wrapsAround, page, nPages) {
         if (nPages < 2) {
@@ -124,14 +121,12 @@ var CandidateArea = new Lang.Class({
         this._buttonBox.show();
         this._previousButton.reactive = wrapsAround || page > 0;
         this._nextButton.reactive = wrapsAround || page < nPages - 1;
-    },
-});
+    }
+};
 Signals.addSignalMethods(CandidateArea.prototype);
 
-var CandidatePopup = new Lang.Class({
-    Name: 'CandidatePopup',
-
-    _init() {
+var CandidatePopup = class CandidatePopup {
+    constructor() {
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
         this._boxPointer.visible = false;
         this._boxPointer.style_class = 'candidate-popup-boxpointer';
@@ -171,7 +166,7 @@ var CandidatePopup = new Lang.Class({
         });
 
         this._panelService = null;
-    },
+    }
 
     setPanelService(panelService) {
         this._panelService = panelService;
@@ -275,13 +270,13 @@ var CandidatePopup = new Lang.Class({
             this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
             Main.keyboard.resetSuggestions();
         });
-    },
+    }
 
     _setDummyCursorGeometry(x, y, w, h) {
         Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
         if (this._boxPointer.actor.visible)
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
-    },
+    }
 
     _updateVisibility() {
         let isVisible = (!Main.keyboard.visible &&
@@ -296,7 +291,7 @@ var CandidatePopup = new Lang.Class({
         } else {
             this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
         }
-    },
+    }
 
     _setTextAttributes(clutterText, ibusAttrList) {
         let attr;
@@ -304,4 +299,4 @@ var CandidatePopup = new Lang.Class({
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
     }
-});
+};

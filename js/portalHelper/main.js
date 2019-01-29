@@ -4,7 +4,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Soup = imports.gi.Soup;
 const WebKit = imports.gi.WebKit2;
@@ -33,12 +32,10 @@ const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
 const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 
-var PortalHeaderBar = new Lang.Class({
-    Name: 'PortalHeaderBar',
-    Extends: Gtk.HeaderBar,
-
+var PortalHeaderBar = GObject.registerClass(
+class PortalHeaderBar extends Gtk.HeaderBar {
     _init() {
-        this.parent({ show_close_button: true });
+        super._init({ show_close_button: true });
 
         // See ephy-title-box.c in epiphany for the layout
         let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
@@ -73,11 +70,11 @@ var PortalHeaderBar = new Lang.Class({
         hbox.add(this.subtitleLabel);
 
         vbox.show_all();
-    },
+    }
 
     setSubtitle(label) {
         this.subtitleLabel.set_text(label);
-    },
+    }
 
     setSecurityIcon(securityLevel) {
         switch (securityLevel) {
@@ -95,15 +92,13 @@ var PortalHeaderBar = new Lang.Class({
             this._lockImage.set_tooltip_text(_('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.'));
             break;
         }
-    },
+    }
 });
 
-var PortalWindow = new Lang.Class({
-    Name: 'PortalWindow',
-    Extends: Gtk.ApplicationWindow,
-
+var PortalWindow = GObject.registerClass(
+class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
-        this.parent({ application: application });
+        super._init({ application: application });
 
         this.connect('delete-event', this.destroyWindow.bind(this));
         this._headerBar = new PortalHeaderBar();
@@ -144,11 +139,11 @@ var PortalWindow = new Lang.Class({
         this.present_with_time(timestamp);
 
         this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
-    },
+    }
 
     destroyWindow() {
         this.destroy();
-    },
+    }
 
     _syncUri() {
         let uri = this._webView.uri;
@@ -156,12 +151,12 @@ var PortalWindow = new Lang.Class({
             this._headerBar.setSubtitle(GLib.uri_unescape_string(uri, null));
         else
             this._headerBar.setSubtitle('');
-    },
+    }
 
     refresh() {
         this._everSeenRedirect = false;
         this._webView.load_uri(this._originalUrl);
-    },
+    }
 
     vfunc_delete_event(event) {
         if (this._recheckAtExit)
@@ -169,7 +164,7 @@ var PortalWindow = new Lang.Class({
         else
             this._doneCallback(PortalHelperResult.CANCELLED);
         return false;
-    },
+    }
 
     _onLoadChanged(view, loadEvent) {
         if (loadEvent == WebKit.LoadEvent.STARTED) {
@@ -183,11 +178,11 @@ var PortalWindow = new Lang.Class({
             else
                 this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         }
-    },
+    }
 
     _onInsecureContentDetected() {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
-    },
+    }
 
     _onLoadFailedWithTlsErrors(view, failingURI, certificate, errors) {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
@@ -195,7 +190,7 @@ var PortalWindow = new Lang.Class({
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
         this._webView.load_uri(failingURI);
         return true;
-    },
+    }
 
     _onDecidePolicy(view, decision, type) {
         if (type == WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
@@ -262,15 +257,13 @@ var PortalWindow = new Lang.Class({
 
         decision.use();
         return true;
-    },
+    }
 });
 
-var WebPortalHelper = new Lang.Class({
-    Name: 'WebPortalHelper',
-    Extends: Gtk.Application,
-
+var WebPortalHelper = GObject.registerClass(
+class WebPortalHelper extends Gtk.Application {
     _init() {
-        this.parent({ application_id: 'org.gnome.Shell.PortalHelper',
+        super._init({ application_id: 'org.gnome.Shell.PortalHelper',
                       flags: Gio.ApplicationFlags.IS_SERVICE,
                       inactivity_timeout: 30000 });
 
@@ -280,30 +273,30 @@ var WebPortalHelper = new Lang.Class({
         let action = new Gio.SimpleAction({ name: 'quit' });
         action.connect('activate', () => { this.active_window.destroyWindow(); });
         this.add_action(action);
-    },
+    }
 
     vfunc_dbus_register(connection, path) {
         this._dbusImpl.export(connection, path);
-        this.parent(connection, path);
+        super.vfunc_dbus_register(connection, path);
         return true;
-    },
+    }
 
     vfunc_dbus_unregister(connection, path) {
         this._dbusImpl.unexport_from_connection(connection);
-        this.parent(connection, path);
-    },
+        super.vfunc_dbus_unregister(connection, path);
+    }
 
     vfunc_activate() {
         // If launched manually (for example for testing), force a dummy authentication
         // session with the default url
         this.Authenticate('/org/gnome/dummy', '', 0);
-    },
+    }
 
     Authenticate(connection, url, timestamp) {
         this._queue.push({ connection: connection, url: url, timestamp: timestamp });
 
         this._processQueue();
-    },
+    }
 
     Close(connection) {
         for (let i = 0; i < this._queue.length; i++) {
@@ -318,7 +311,7 @@ var WebPortalHelper = new Lang.Class({
         }
 
         this._processQueue();
-    },
+    }
 
     Refresh(connection) {
         for (let i = 0; i < this._queue.length; i++) {
@@ -330,7 +323,7 @@ var WebPortalHelper = new Lang.Class({
                 break;
             }
         }
-    },
+    }
 
     _processQueue() {
         if (this._queue.length == 0)
@@ -343,7 +336,7 @@ var WebPortalHelper = new Lang.Class({
         top.window = new PortalWindow(this, top.url, top.timestamp, result => {
             this._dbusImpl.emit_signal('Done', new GLib.Variant('(ou)', [top.connection, result]));
         });
-    },
+    }
 });
 
 function initEnvironment() {

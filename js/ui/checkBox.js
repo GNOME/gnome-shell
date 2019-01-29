@@ -2,12 +2,8 @@ const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 
-const Lang = imports.lang;
-
-var CheckBox = new Lang.Class({
-    Name: 'CheckBox',
-
-    _init(label) {
+var CheckBox = class CheckBox {
+    constructor(label) {
         let container = new St.BoxLayout();
         this.actor = new St.Button({ style_class: 'check-box',
                                      child: container,
@@ -28,13 +24,13 @@ var CheckBox = new Lang.Class({
 
         if (label)
             this.setLabel(label);
-    },
+    }
 
     setLabel(label) {
         this._label.set_text(label);
-    },
+    }
 
     getLabelActor() {
         return this._label;
     }
-});
+};

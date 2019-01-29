@@ -1,9 +1,3 @@
-option('browser_plugin',
-  type: 'boolean',
-  value: true,
-  description: 'Enable extensions.gnome.org browser plugin'
-)
-
 option('gtk_doc',
   type: 'boolean',
   value: false,

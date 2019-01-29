@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -36,9 +35,7 @@ function isPopupMetaWindow(actor) {
     }
 }
 
-var MonitorConstraint = new Lang.Class({
-    Name: 'MonitorConstraint',
-    Extends: Clutter.Constraint,
+var MonitorConstraint = GObject.registerClass({
     Properties: {'primary': GObject.ParamSpec.boolean('primary', 
                                                       'Primary', 'Track primary monitor',
                                                       GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
@@ -51,18 +48,18 @@ var MonitorConstraint = new Lang.Class({
                                                         'Work-area', 'Track monitor\'s work-area',
                                                         GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
                                                         false)},
-
+}, class MonitorConstraint extends Clutter.Constraint {
     _init(props) {
         this._primary = false;
         this._index = -1;
         this._workArea = false;
 
-        this.parent(props);
-    },
+        super._init(props);
+    }
 
     get primary() {
         return this._primary;
-    },
+    }
 
     set primary(v) {
         if (v)
@@ -71,11 +68,11 @@ var MonitorConstraint = new Lang.Class({
         if (this.actor)
             this.actor.queue_relayout();
         this.notify('primary');
-    },
+    }
 
     get index() {
         return this._index;
-    },
+    }
 
     set index(v) {
         this._primary = false;
@@ -83,11 +80,11 @@ var MonitorConstraint = new Lang.Class({
         if (this.actor)
             this.actor.queue_relayout();
         this.notify('index');
-    },
+    }
 
     get work_area() {
         return this._workArea;
-    },
+    }
 
     set work_area(v) {
         if (v == this._workArea)
@@ -96,7 +93,7 @@ var MonitorConstraint = new Lang.Class({
         if (this.actor)
             this.actor.queue_relayout();
         this.notify('work-area');
-    },
+    }
 
     vfunc_set_actor(actor) {
         if (actor) {
@@ -124,8 +121,8 @@ var MonitorConstraint = new Lang.Class({
             this._workareasChangedId = 0;
         }
 
-        this.parent(actor);
-    },
+        super.vfunc_set_actor(actor);
+    }
 
     vfunc_update_allocation(actor, actorBox) {
         if (!this._primary && this._index < 0)
@@ -153,21 +150,19 @@ var MonitorConstraint = new Lang.Class({
     }
 });
 
-var Monitor = new Lang.Class({
-    Name: 'Monitor',
-
-    _init(index, geometry) {
+var Monitor = class Monitor {
+    constructor(index, geometry) {
         this.index = index;
         this.x = geometry.x;
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
-    },
+    }
 
     get inFullscreen() {
         return global.display.get_monitor_in_fullscreen(this.index);
     }
-})
+};
 
 const defaultParams = {
     trackFullscreen: false,
@@ -175,17 +170,15 @@ const defaultParams = {
     affectsInputRegion: true
 };
 
-var LayoutManager = new Lang.Class({
-    Name: 'LayoutManager',
-    Extends: GObject.Object,
+var LayoutManager = GObject.registerClass({
     Signals: { 'hot-corners-changed': {},
                'startup-complete': {},
                'startup-prepared': {},
                'monitors-changed': {},
                'keyboard-visible-changed': { param_types: [GObject.TYPE_BOOLEAN] } },
-
+}, class LayoutManager extends GObject.Object {
     _init() {
-        this.parent();
+        super._init();
 
         this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
         this.monitors = [];
@@ -296,33 +289,33 @@ var LayoutManager = new Lang.Class({
                     Meta.Background.refresh_all();
                 });
         }
-    },
+    }
 
     // This is called by Main after everything else is constructed
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
         this._loadBackground();
-    },
+    }
 
     showOverview() {
         this.overviewGroup.show();
 
         this._inOverview = true;
         this._updateVisibility();
-    },
+    }
 
     hideOverview() {
         this.overviewGroup.hide();
 
         this._inOverview = false;
         this._updateVisibility();
-    },
+    }
 
     _sessionUpdated() {
         this._updateVisibility();
         this._queueUpdateRegions();
-    },
+    }
 
     _updateMonitors() {
         let display = global.display;
@@ -360,7 +353,7 @@ var LayoutManager = new Lang.Class({
             this.primaryMonitor = null;
             this.bottomMonitor = null;
         }
-    },
+    }
 
     _updateHotCorners() {
         // destroy old hot corners
@@ -419,11 +412,11 @@ var LayoutManager = new Lang.Class({
         }
 
         this.emit('hot-corners-changed');
-    },
+    }
 
     _addBackgroundMenu(bgManager) {
         BackgroundMenu.addBackgroundMenu(bgManager.backgroundActor, this);
-    },
+    }
 
     _createBackgroundManager(monitorIndex) {
         let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
@@ -434,7 +427,7 @@ var LayoutManager = new Lang.Class({
         this._addBackgroundMenu(bgManager);
 
         return bgManager;
-    },
+    }
 
     _showSecondaryBackgrounds() {
         for (let i = 0; i < this.monitors.length; i++) {
@@ -448,7 +441,7 @@ var LayoutManager = new Lang.Class({
                                    transition: 'easeOutQuad' });
             }
         }
-    },
+    }
 
     _updateBackgrounds() {
         let i;
@@ -467,13 +460,13 @@ var LayoutManager = new Lang.Class({
             if (i != this.primaryIndex && this._startingUp)
                 bgManager.backgroundActor.hide();
         }
-    },
+    }
 
     _updateKeyboardBox() {
         this.keyboardBox.set_position(this.keyboardMonitor.x,
                                       this.keyboardMonitor.y + this.keyboardMonitor.height);
         this.keyboardBox.set_size(this.keyboardMonitor.width, -1);
-    },
+    }
 
     _updateBoxes() {
         this.screenShieldGroup.set_position(0, 0);
@@ -486,7 +479,7 @@ var LayoutManager = new Lang.Class({
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
         this.keyboardIndex = this.primaryIndex;
-    },
+    }
 
     _panelBoxChanged() {
         this._updatePanelBarrier();
@@ -496,7 +489,7 @@ var LayoutManager = new Lang.Class({
             if (corner)
                 corner.setBarrierSize(size);
         });
-    },
+    }
 
     _updatePanelBarrier() {
         if (this._rightPanelBarrier) {
@@ -515,7 +508,7 @@ var LayoutManager = new Lang.Class({
                                                          x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
                                                          directions: Meta.BarrierDirection.NEGATIVE_X });
         }
-    },
+    }
 
     _monitorsChanged() {
         this._updateMonitors();
@@ -527,7 +520,7 @@ var LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
 
         this.emit('monitors-changed');
-    },
+    }
 
     _isAboveOrBelowPrimary(monitor) {
         let primary = this.monitors[this.primaryIndex];
@@ -541,16 +534,16 @@ var LayoutManager = new Lang.Class({
             return true;
 
         return false;
-    },
+    }
 
     get currentMonitor() {
         let index = global.display.get_current_monitor();
         return this.monitors[index];
-    },
+    }
 
     get keyboardMonitor() {
         return this.monitors[this.keyboardIndex];
-    },
+    }
 
     get focusIndex() {
         let i = Main.layoutManager.primaryIndex;
@@ -560,22 +553,22 @@ var LayoutManager = new Lang.Class({
         else if (global.display.focus_window != null)
             i = global.display.focus_window.get_monitor();
         return i;
-    },
+    }
 
     get focusMonitor() {
         if (this.focusIndex < 0)
             return null;
         return this.monitors[this.focusIndex];
-    },
+    }
 
     set keyboardIndex(v) {
         this._keyboardIndex = v;
         this._updateKeyboardBox();
-    },
+    }
 
     get keyboardIndex() {
         return this._keyboardIndex;
-    },
+    }
 
     _loadBackground() {
         if (!this.primaryMonitor) {
@@ -598,7 +591,7 @@ var LayoutManager = new Lang.Class({
 
             this._prepareStartupAnimation();
         });
-    },
+    }
 
     // Startup Animations
     //
@@ -664,7 +657,7 @@ var LayoutManager = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._startupAnimation');
-    },
+    }
 
     _startupAnimation() {
         if (Meta.is_restart())
@@ -673,7 +666,7 @@ var LayoutManager = new Lang.Class({
             this._startupAnimationGreeter();
         else
             this._startupAnimationSession();
-    },
+    }
 
     _startupAnimationGreeter() {
         Tweener.addTween(this.panelBox,
@@ -682,7 +675,7 @@ var LayoutManager = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
                            onCompleteScope: this });
-    },
+    }
 
     _startupAnimationSession() {
         Tweener.addTween(this.uiGroup,
@@ -693,7 +686,7 @@ var LayoutManager = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
                            onCompleteScope: this });
-    },
+    }
 
     _startupAnimationComplete() {
         this._coverPane.destroy();
@@ -714,7 +707,7 @@ var LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
 
         this.emit('startup-complete');
-    },
+    }
 
     showKeyboard() {
         this.keyboardBox.show();
@@ -727,7 +720,7 @@ var LayoutManager = new Lang.Class({
                            onCompleteScope: this
                          });
         this.emit('keyboard-visible-changed', true);
-    },
+    }
 
     _showKeyboardComplete() {
         // Poke Chrome to update the input shape; it doesn't notice
@@ -737,7 +730,7 @@ var LayoutManager = new Lang.Class({
         this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', () => {
             this.keyboardBox.anchor_y = this.keyboardBox.height;
         });
-    },
+    }
 
     hideKeyboard(immediate) {
         if (this._keyboardHeightNotifyId) {
@@ -754,12 +747,12 @@ var LayoutManager = new Lang.Class({
                          });
 
         this.emit('keyboard-visible-changed', false);
-    },
+    }
 
     _hideKeyboardComplete() {
         this.keyboardBox.hide();
         this._updateRegions();
-    },
+    }
 
     // setDummyCursorGeometry:
     //
@@ -774,7 +767,7 @@ var LayoutManager = new Lang.Class({
     setDummyCursorGeometry(x, y, w, h) {
         this.dummyCursor.set_position(Math.round(x), Math.round(y));
         this.dummyCursor.set_size(Math.round(w), Math.round(h));
-    },
+    }
 
     // addChrome:
     // @actor: an actor to add to the chrome
@@ -800,7 +793,7 @@ var LayoutManager = new Lang.Class({
         if (this.uiGroup.contains(global.top_window_group))
             this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
         this._trackActor(actor, params);
-    },
+    }
 
     // trackChrome:
     // @actor: a descendant of the chrome to begin tracking
@@ -832,7 +825,7 @@ var LayoutManager = new Lang.Class({
         }
 
         this._trackActor(actor, params);
-    },
+    }
 
     // untrackChrome:
     // @actor: an actor previously tracked via trackChrome()
@@ -840,7 +833,7 @@ var LayoutManager = new Lang.Class({
     // Undoes the effect of trackChrome()
     untrackChrome(actor) {
         this._untrackActor(actor);
-    },
+    }
 
     // removeChrome:
     // @actor: a chrome actor
@@ -849,7 +842,7 @@ var LayoutManager = new Lang.Class({
     removeChrome(actor) {
         this.uiGroup.remove_actor(actor);
         this._untrackActor(actor);
-    },
+    }
 
     _findActor(actor) {
         for (let i = 0; i < this._trackedActors.length; i++) {
@@ -858,7 +851,7 @@ var LayoutManager = new Lang.Class({
                 return i;
         }
         return -1;
-    },
+    }
 
     _trackActor(actor, params) {
         if (this._findActor(actor) != -1)
@@ -878,7 +871,7 @@ var LayoutManager = new Lang.Class({
         this._trackedActors.push(actorData);
         this._updateActorVisibility(actorData);
         this._queueUpdateRegions();
-    },
+    }
 
     _untrackActor(actor) {
         let i = this._findActor(actor);
@@ -893,7 +886,7 @@ var LayoutManager = new Lang.Class({
         actor.disconnect(actorData.destroyId);
 
         this._queueUpdateRegions();
-    },
+    }
 
     _updateActorVisibility(actorData) {
         if (!actorData.trackFullscreen)
@@ -903,7 +896,7 @@ var LayoutManager = new Lang.Class({
         actorData.actor.visible = !(global.window_group.visible &&
                                     monitor &&
                                     monitor.inFullscreen);
-    },
+    }
 
     _updateVisibility() {
         let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
@@ -912,7 +905,7 @@ var LayoutManager = new Lang.Class({
         global.top_window_group.visible = windowsVisible;
 
         this._trackedActors.forEach(this._updateActorVisibility.bind(this));
-    },
+    }
 
     getWorkAreaForMonitor(monitorIndex) {
         // Assume that all workspaces will have the same
@@ -920,7 +913,7 @@ var LayoutManager = new Lang.Class({
         let workspaceManager = global.workspace_manager;
         let ws = workspaceManager.get_workspace_by_index(0);
         return ws.get_work_area_for_monitor(monitorIndex);
-    },
+    }
 
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
@@ -929,14 +922,14 @@ var LayoutManager = new Lang.Class({
         let [w, h] = actor.get_transformed_size();
         let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h });
         return global.display.get_monitor_index_for_rect(rect);
-    },
+    }
 
     findMonitorForActor(actor) {
         let index = this.findIndexForActor(actor);
         if (index >= 0 && index < this.monitors.length)
             return this.monitors[index];
         return null;
-    },
+    }
 
     _queueUpdateRegions() {
         if (this._startingUp)
@@ -945,19 +938,19 @@ var LayoutManager = new Lang.Class({
         if (!this._updateRegionIdle)
             this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                     this._updateRegions.bind(this));
-    },
+    }
 
     _getWindowActorsForWorkspace(workspace) {
         return global.get_window_actors().filter(actor => {
             let win = actor.meta_window;
             return win.located_on_workspace(workspace);
         });
-    },
+    }
 
     _updateFullscreen() {
         this._updateVisibility();
         this._queueUpdateRegions();
-    },
+    }
 
     _windowsRestacked() {
         let changed = false;
@@ -969,7 +962,7 @@ var LayoutManager = new Lang.Class({
             this._updateVisibility();
             this._queueUpdateRegions();
         }
-    },
+    }
 
     _updateRegions() {
         if (this._updateRegionIdle) {
@@ -1069,13 +1062,13 @@ var LayoutManager = new Lang.Class({
         }
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     modalEnded() {
         // We don't update the stage input region while in a modal,
         // so queue an update now.
         this._queueUpdateRegions();
-    },
+    }
 });
 
 
@@ -1083,10 +1076,8 @@ var LayoutManager = new Lang.Class({
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-var HotCorner = new Lang.Class({
-    Name: 'HotCorner',
-
-    _init(layoutManager, monitor, x, y) {
+var HotCorner = class HotCorner {
+    constructor(layoutManager, monitor, x, y) {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -1114,7 +1105,7 @@ var HotCorner = new Lang.Class({
         layoutManager.uiGroup.add_actor(this._ripple1);
         layoutManager.uiGroup.add_actor(this._ripple2);
         layoutManager.uiGroup.add_actor(this._ripple3);
-    },
+    }
 
     setBarrierSize(size) {
         if (this._verticalBarrier) {
@@ -1149,7 +1140,7 @@ var HotCorner = new Lang.Class({
             this._pressureBarrier.addBarrier(this._verticalBarrier);
             this._pressureBarrier.addBarrier(this._horizontalBarrier);
         }
-    },
+    }
 
     _setupFallbackCornerIfNeeded(layoutManager) {
         if (!global.display.supports_extended_barriers()) {
@@ -1184,7 +1175,7 @@ var HotCorner = new Lang.Class({
             this._corner.connect('leave-event',
                                  this._onCornerLeft.bind(this));
         }
-    },
+    }
 
     destroy() {
         this.setBarrierSize(0);
@@ -1193,7 +1184,7 @@ var HotCorner = new Lang.Class({
 
         if (this.actor)
             this.actor.destroy();
-    },
+    }
 
     _animRipple(ripple, delay, time, startScale, startOpacity, finalScale) {
         // We draw a ripple by using a source image and animating it scaling
@@ -1223,7 +1214,7 @@ var HotCorner = new Lang.Class({
                                    transition: 'linear',
                                    onUpdate() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
                                    onComplete() { ripple.visible = false; } });
-    },
+    }
 
     _rippleAnimation() {
         // Show three concentric ripples expanding outwards; the exact
@@ -1234,17 +1225,17 @@ var HotCorner = new Lang.Class({
         this._animRipple(this._ripple1, 0.0,   0.83,  0.25,  1.0,     1.5);
         this._animRipple(this._ripple2, 0.05,  1.0,   0.0,   0.7,     1.25);
         this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
-    },
+    }
 
     _toggleOverview() {
-        if (this._monitor.inFullscreen)
+        if (this._monitor.inFullscreen && !Main.overview.visible)
             return;
 
         if (Main.overview.shouldToggleByCornerOrButton()) {
             this._rippleAnimation();
             Main.overview.toggle();
         }
-    },
+    }
 
     handleDragOver(source, actor, x, y, time) {
         if (source != Main.xdndHandler)
@@ -1253,7 +1244,7 @@ var HotCorner = new Lang.Class({
         this._toggleOverview();
 
         return DND.DragMotionResult.CONTINUE;
-    },
+    }
 
     _onCornerEntered() {
         if (!this._entered) {
@@ -1261,26 +1252,24 @@ var HotCorner = new Lang.Class({
             this._toggleOverview();
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onCornerLeft(actor, event) {
         if (event.get_related() != this.actor)
             this._entered = false;
         // Consume event, otherwise this will confuse onEnvironsLeft
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onEnvironsLeft(actor, event) {
         if (event.get_related() != this._corner)
             this._entered = false;
         return Clutter.EVENT_PROPAGATE;
     }
-});
+};
 
-var PressureBarrier = new Lang.Class({
-    Name: 'PressureBarrier',
-
-    _init(threshold, timeout, actionMode) {
+var PressureBarrier = class PressureBarrier {
+    constructor(threshold, timeout, actionMode) {
         this._threshold = threshold;
         this._timeout = timeout;
         this._actionMode = actionMode;
@@ -1289,57 +1278,57 @@ var PressureBarrier = new Lang.Class({
 
         this._isTriggered = false;
         this._reset();
-    },
+    }
 
     addBarrier(barrier) {
         barrier._pressureHitId = barrier.connect('hit', this._onBarrierHit.bind(this));
         barrier._pressureLeftId = barrier.connect('left', this._onBarrierLeft.bind(this));
 
         this._barriers.push(barrier);
-    },
+    }
 
     _disconnectBarrier(barrier) {
         barrier.disconnect(barrier._pressureHitId);
         barrier.disconnect(barrier._pressureLeftId);
-    },
+    }
 
     removeBarrier(barrier) {
         this._disconnectBarrier(barrier);
         this._barriers.splice(this._barriers.indexOf(barrier), 1);
-    },
+    }
 
     destroy() {
         this._barriers.forEach(this._disconnectBarrier.bind(this));
         this._barriers = [];
-    },
+    }
 
     setEventFilter(filter) {
         this._eventFilter = filter;
-    },
+    }
 
     _reset() {
         this._barrierEvents = [];
         this._currentPressure = 0;
         this._lastTime = 0;
-    },
+    }
 
     _isHorizontal(barrier) {
         return barrier.y1 == barrier.y2;
-    },
+    }
 
     _getDistanceAcrossBarrier(barrier, event) {
         if (this._isHorizontal(barrier))
             return Math.abs(event.dy);
         else
             return Math.abs(event.dx);
-    },
+    }
 
     _getDistanceAlongBarrier(barrier, event) {
         if (this._isHorizontal(barrier))
             return Math.abs(event.dx);
         else
             return Math.abs(event.dy);
-    },
+    }
 
     _trimBarrierEvents() {
         // Events are guaranteed to be sorted in time order from
@@ -1363,7 +1352,7 @@ var PressureBarrier = new Lang.Class({
         }
 
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
-    },
+    }
 
     _onBarrierLeft(barrier, event) {
         barrier._isHit = false;
@@ -1371,13 +1360,13 @@ var PressureBarrier = new Lang.Class({
             this._reset();
             this._isTriggered = false;
         }
-    },
+    }
 
     _trigger() {
         this._isTriggered = true;
         this.emit('trigger');
         this._reset();
-    },
+    }
 
     _onBarrierHit(barrier, event) {
         barrier._isHit = true;
@@ -1419,5 +1408,5 @@ var PressureBarrier = new Lang.Class({
         if (this._currentPressure >= this._threshold)
             this._trigger();
     }
-});
+};
 Signals.addSignalMethods(PressureBarrier.prototype);

@@ -19,10 +19,8 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 
-var GnomeShell = new Lang.Class({
-    Name: 'GnomeShellDBus',
-
-    _init() {
+var GnomeShell = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
 
@@ -42,7 +40,7 @@ var GnomeShell = new Lang.Class({
                               this._checkOverviewVisibleChanged.bind(this));
         Main.overview.connect('hidden',
                               this._checkOverviewVisibleChanged.bind(this));
-    },
+    }
 
     /**
      * Eval:
@@ -75,11 +73,11 @@ var GnomeShell = new Lang.Class({
             success = false;
         }
         return [success, returnValue];
-    },
+    }
 
     FocusSearch() {
         Main.overview.focusSearch();
-    },
+    }
 
     ShowOSD(params) {
         for (let param in params)
@@ -99,23 +97,23 @@ var GnomeShell = new Lang.Class({
             icon = Gio.Icon.new_for_string(serializedIcon);
 
         Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
-    },
+    }
 
     FocusApp(id) {
         this.ShowApplications();
         Main.overview.viewSelector.appDisplay.selectApp(id);
-    },
+    }
 
     ShowApplications() {
         Main.overview.viewSelector.showApps();
-    },
+    }
 
     GrabAcceleratorAsync(params, invocation) {
         let [accel, flags] = params;
         let sender = invocation.get_sender();
         let bindingAction = this._grabAcceleratorForSender(accel, flags, sender);
         return invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
-    },
+    }
 
     GrabAcceleratorsAsync(params, invocation) {
         let [accels] = params;
@@ -126,7 +124,7 @@ var GnomeShell = new Lang.Class({
             bindingActions.push(this._grabAcceleratorForSender(accel, flags, sender));
         }
         return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
-    },
+    }
 
     UngrabAcceleratorAsync(params, invocation) {
         let [action] = params;
@@ -138,7 +136,7 @@ var GnomeShell = new Lang.Class({
         if (ungrabSucceeded)
             this._grabbedAccelerators.delete(action);
         return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
-    },
+    }
 
     _emitAcceleratorActivated(action, deviceid, timestamp) {
         let destination = this._grabbedAccelerators.get(action);
@@ -155,7 +153,7 @@ var GnomeShell = new Lang.Class({
                                info ? info.name : null,
                                'AcceleratorActivated',
                                GLib.Variant.new('(ua{sv})', [action, params]));
-    },
+    }
 
     _grabAcceleratorForSender(accelerator, flags, sender) {
         let bindingAction = global.display.grab_accelerator(accelerator);
@@ -174,13 +172,13 @@ var GnomeShell = new Lang.Class({
         }
 
         return bindingAction;
-    },
+    }
 
     _ungrabAccelerator(action) {
         let ungrabSucceeded = global.display.ungrab_accelerator(action);
         if (ungrabSucceeded)
             this._grabbedAccelerators.delete(action);
-    },
+    }
 
     _onGrabberBusNameVanished(connection, name) {
         let grabs = this._grabbedAccelerators.entries();
@@ -190,61 +188,61 @@ var GnomeShell = new Lang.Class({
         }
         Gio.bus_unwatch_name(this._grabbers.get(name));
         this._grabbers.delete(name);
-    },
+    }
 
     ShowMonitorLabelsAsync(params, invocation) {
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
-    },
+    }
 
     ShowMonitorLabels2Async(params, invocation) {
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show2(sender, dict);
-    },
+    }
 
     HideMonitorLabelsAsync(params, invocation) {
         let sender = invocation.get_sender();
         Main.osdMonitorLabeler.hide(sender);
-    },
-
-
-    Mode: global.session_mode,
+    }
 
     _checkOverviewVisibleChanged() {
         if (Main.overview.visible !== this._cachedOverviewVisible) {
             this._cachedOverviewVisible = Main.overview.visible;
             this._dbusImpl.emit_property_changed('OverviewActive', new GLib.Variant('b', this._cachedOverviewVisible));
         }
-    },
+    }
+
+    get Mode() {
+        return global.session_mode;
+    }
 
     get OverviewActive() {
         return this._cachedOverviewVisible;
-    },
+    }
 
     set OverviewActive(visible) {
         if (visible)
             Main.overview.show();
         else
             Main.overview.hide();
-    },
+    }
 
-    ShellVersion: Config.PACKAGE_VERSION
-});
+    get ShellVersion() {
+        return Config.PACKAGE_VERSION;
+    }
+};
 
 const GnomeShellExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 
-var GnomeShellExtensions = new Lang.Class({
-    Name: 'GnomeShellExtensionsDBus',
-
-    _init() {
+var GnomeShellExtensions = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
         ExtensionSystem.connect('extension-state-changed',
                                 this._extensionStateChanged.bind(this));
-    },
-
+    }
 
     ListExtensions() {
         let out = {};
@@ -253,7 +251,7 @@ var GnomeShellExtensions = new Lang.Class({
             out[uuid] = dbusObj;
         }
         return out;
-    },
+    }
 
     GetExtensionInfo(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
@@ -291,7 +289,7 @@ var GnomeShellExtensions = new Lang.Class({
         }
 
         return out;
-    },
+    }
 
     GetExtensionErrors(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
@@ -302,15 +300,15 @@ var GnomeShellExtensions = new Lang.Class({
             return [];
 
         return extension.errors;
-    },
+    }
 
     InstallRemoteExtensionAsync([uuid], invocation) {
         return ExtensionDownloader.installExtension(uuid, invocation);
-    },
+    }
 
     UninstallExtension(uuid) {
         return ExtensionDownloader.uninstallExtension(uuid);
-    },
+    }
 
     LaunchExtensionPrefs(uuid) {
         let appSys = Shell.AppSystem.get_default();
@@ -319,7 +317,7 @@ var GnomeShellExtensions = new Lang.Class({
         let timestamp = global.display.get_current_time_roundtrip();
         info.launch_uris(['extension:///' + uuid],
                          global.create_app_launch_context(timestamp, -1));
-    },
+    }
 
     ReloadExtension(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
@@ -327,26 +325,24 @@ var GnomeShellExtensions = new Lang.Class({
             return;
 
         ExtensionSystem.reloadExtension(extension);
-    },
+    }
 
     CheckForUpdates() {
         ExtensionDownloader.checkForUpdates();
-    },
+    }
 
-    ShellVersion: Config.PACKAGE_VERSION,
+    get ShellVersion() {
+        return Config.PACKAGE_VERSION;
+    }
 
     _extensionStateChanged(_, newState) {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }
-});
+};
 
-var ScreenSaverDBus = new Lang.Class({
-    Name: 'ScreenSaverDBus',
-
-    _init(screenShield) {
-        this.parent();
-
+var ScreenSaverDBus = class {
+    constructor(screenShield) {
         this._screenShield = screenShield;
         screenShield.connect('active-changed', shield => {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
@@ -359,7 +355,7 @@ var ScreenSaverDBus = new Lang.Class({
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
 
         Gio.DBus.session.own_name('org.gnome.ScreenSaver', Gio.BusNameOwnerFlags.REPLACE, null, null);
-    },
+    }
 
     LockAsync(parameters, invocation) {
         let tmpId = this._screenShield.connect('lock-screen-shown', () => {
@@ -369,18 +365,18 @@ var ScreenSaverDBus = new Lang.Class({
         });
 
         this._screenShield.lock(true);
-    },
+    }
 
     SetActive(active) {
         if (active)
             this._screenShield.activate(true);
         else
             this._screenShield.deactivate(false);
-    },
+    }
 
     GetActive() {
         return this._screenShield.active;
-    },
+    }
 
     GetActiveTime() {
         let started = this._screenShield.activationTime;
@@ -388,5 +384,5 @@ var ScreenSaverDBus = new Lang.Class({
             return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
         else
             return 0;
-    },
-});
+    }
+};

@@ -107,7 +107,7 @@ struct _StThemeNodePaintState {
   CoglPipeline *box_shadow_pipeline;
   CoglPipeline *prerendered_texture;
   CoglPipeline *prerendered_pipeline;
-  CoglHandle corner_material[4];
+  CoglPipeline *corner_material[4];
 };
 
 StThemeNode *st_theme_node_new (StThemeContext *context,
@@ -291,6 +291,9 @@ void st_theme_node_paint_state_free (StThemeNodePaintState *state);
 void st_theme_node_paint_state_copy (StThemeNodePaintState *state,
                                      StThemeNodePaintState *other);
 void st_theme_node_paint_state_invalidate (StThemeNodePaintState *state);
+gboolean st_theme_node_paint_state_invalidate_for_file (StThemeNodePaintState *state,
+                                                        GFile                 *file);
+
 void st_theme_node_paint_state_set_node (StThemeNodePaintState *state,
                                          StThemeNode           *node);
 

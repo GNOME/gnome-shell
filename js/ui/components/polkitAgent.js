@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const AccountsService = imports.gi.AccountsService;
@@ -25,15 +24,10 @@ const Tweener = imports.ui.tweener;
 var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
-var WORK_SPINNER_ANIMATION_DELAY = 1.0;
-var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
-var AuthenticationDialog = new Lang.Class({
-    Name: 'AuthenticationDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init(actionId, body, cookie, userNames) {
-        this.parent({ styleClass: 'prompt-dialog' });
+var AuthenticationDialog = class extends ModalDialog.ModalDialog {
+    constructor(actionId, body, cookie, userNames) {
+        super({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
         this.message = body;
@@ -43,6 +37,8 @@ var AuthenticationDialog = new Lang.Class({
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
             this._group.visible = !Main.sessionMode.isLocked;
         });
+
+        this.connect('closed', this._onDialogClosed.bind(this));
 
         let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
@@ -117,10 +113,7 @@ var AuthenticationDialog = new Lang.Class({
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
 
-        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
-        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner.actor);
 
         this.setInitialKeyFocus(this._passwordEntry);
@@ -161,50 +154,25 @@ var AuthenticationDialog = new Lang.Class({
 
         this._identityToAuth = Polkit.UnixUser.new_for_name(userName);
         this._cookie = cookie;
-    },
+    }
 
     _setWorking(working) {
-        Tweener.removeTweens(this._workSpinner.actor);
-        if (working) {
+        if (working)
             this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: WORK_SPINNER_ANIMATION_DELAY,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete() {
-                                   if (this._workSpinner)
-                                       this._workSpinner.stop();
-                               }
-                             });
-        }
-    },
+        else
+            this._workSpinner.stop();
+    }
 
     performAuthentication() {
-        this.destroySession();
+        this._destroySession();
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
-        this._session.connect('completed', this._onSessionCompleted.bind(this));
-        this._session.connect('request', this._onSessionRequest.bind(this));
-        this._session.connect('show-error', this._onSessionShowError.bind(this));
-        this._session.connect('show-info', this._onSessionShowInfo.bind(this));
+        this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
+        this._sessionRequestId = this._session.connect('request', this._onSessionRequest.bind(this));
+        this._sessionShowErrorId = this._session.connect('show-error', this._onSessionShowError.bind(this));
+        this._sessionShowInfoId = this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
-    },
-
-    close(timestamp) {
-        this.parent(timestamp);
-
-        if (this._sessionUpdatedId)
-            Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
-    },
+    }
 
     _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
@@ -226,14 +194,14 @@ var AuthenticationDialog = new Lang.Class({
                 ' cookie ' + this._cookie);
             this._emitDone(true);
         }
-    },
+    }
 
     _emitDone(dismissed) {
         if (!this._doneEmitted) {
             this._doneEmitted = true;
             this.emit('done', dismissed);
         }
-    },
+    }
 
     _updateSensitivity(sensitive) {
         this._passwordEntry.reactive = sensitive;
@@ -242,7 +210,7 @@ var AuthenticationDialog = new Lang.Class({
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
         this._setWorking(!sensitive);
-    },
+    }
 
     _onEntryActivate() {
         let response = this._passwordEntry.get_text();
@@ -253,11 +221,11 @@ var AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel.hide();
         this._infoMessageLabel.hide();
         this._nullMessageLabel.show();
-    },
+    }
 
     _onAuthenticateButtonPressed() {
         this._onEntryActivate();
-    },
+    }
 
     _onSessionCompleted(session, gainedAuthorization) {
         if (this._completed || this._doneEmitted)
@@ -289,7 +257,7 @@ var AuthenticationDialog = new Lang.Class({
             /* Try and authenticate again */
             this.performAuthentication();
         }
-    },
+    }
 
     _onSessionRequest(session, request, echo_on) {
         // Cheap localization trick
@@ -308,7 +276,7 @@ var AuthenticationDialog = new Lang.Class({
         this._passwordEntry.grab_key_focus();
         this._updateSensitivity(true);
         this._ensureOpen();
-    },
+    }
 
     _onSessionShowError(session, text) {
         this._passwordEntry.set_text('');
@@ -317,7 +285,7 @@ var AuthenticationDialog = new Lang.Class({
         this._infoMessageLabel.hide();
         this._nullMessageLabel.hide();
         this._ensureOpen();
-    },
+    }
 
     _onSessionShowInfo(session, text) {
         this._passwordEntry.set_text('');
@@ -326,43 +294,60 @@ var AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel.hide();
         this._nullMessageLabel.hide();
         this._ensureOpen();
-    },
+    }
 
-    destroySession() {
+    _destroySession() {
         if (this._session) {
             if (!this._completed)
                 this._session.cancel();
             this._completed = false;
+
+            this._session.disconnect(this._sessionCompletedId);
+            this._session.disconnect(this._sessionRequestId);
+            this._session.disconnect(this._sessionShowErrorId);
+            this._session.disconnect(this._sessionShowInfoId);
             this._session = null;
         }
-    },
+    }
 
     _onUserChanged() {
         if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
-    },
+    }
 
     cancel() {
         this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
-    },
-});
+    }
+
+    _onDialogClosed() {
+        if (this._sessionUpdatedId)
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
+
+        if (this._user) {
+            this._user.disconnect(this._userLoadedId);
+            this._user.disconnect(this._userChangedId);
+            this._user = null;
+        }
+
+        this._destroySession();
+    }
+};
 Signals.addSignalMethods(AuthenticationDialog.prototype);
 
-var AuthenticationAgent = new Lang.Class({
-    Name: 'AuthenticationAgent',
-
-    _init() {
+var AuthenticationAgent = class {
+    constructor() {
         this._currentDialog = null;
         this._handle = null;
         this._native = new Shell.PolkitAuthenticationAgent();
         this._native.connect('initiate', this._onInitiate.bind(this));
         this._native.connect('cancel', this._onCancel.bind(this));
         this._sessionUpdatedId = 0;
-    },
+    }
 
     enable() {
         try {
@@ -370,7 +355,7 @@ var AuthenticationAgent = new Lang.Class({
         } catch(e) {
             log('Failed to register AuthenticationAgent');
         }
-    },
+    }
 
     disable() {
         try {
@@ -378,7 +363,7 @@ var AuthenticationAgent = new Lang.Class({
         } catch(e) {
             log('Failed to unregister AuthenticationAgent');
         }
-    },
+    }
 
     _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
         // Don't pop up a dialog while locked
@@ -406,19 +391,18 @@ var AuthenticationAgent = new Lang.Class({
 
         this._currentDialog.connect('done', this._onDialogDone.bind(this));
         this._currentDialog.performAuthentication();
-    },
+    }
 
     _onCancel(nativeAgent) {
         this._completeRequest(false);
-    },
+    }
 
     _onDialogDone(dialog, dismissed) {
         this._completeRequest(dismissed);
-    },
+    }
 
     _completeRequest(dismissed) {
         this._currentDialog.close();
-        this._currentDialog.destroySession();
         this._currentDialog = null;
 
         if (this._sessionUpdatedId)
@@ -426,7 +410,7 @@ var AuthenticationAgent = new Lang.Class({
         this._sessionUpdatedId = 0;
 
         this._native.complete(dismissed);
-    },
-});
+    }
+};
 
 var Component = AuthenticationAgent;

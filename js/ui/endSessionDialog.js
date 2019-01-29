@@ -16,7 +16,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const AccountsService = imports.gi.AccountsService;
@@ -235,13 +234,10 @@ function init() {
     _endSessionDialog = new EndSessionDialog();
 }
 
-var EndSessionDialog = new Lang.Class({
-    Name: 'EndSessionDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init() {
-        this.parent({ styleClass: 'end-session-dialog',
-                      destroyOnClose: false });
+var EndSessionDialog = class EndSessionDialog extends ModalDialog.ModalDialog {
+    constructor() {
+        super({ styleClass: 'end-session-dialog',
+                destroyOnClose: false });
 
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
@@ -356,12 +352,12 @@ var EndSessionDialog = new Lang.Class({
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
-    },
+    }
 
     _onDestroy() {
         this._user.disconnect(this._userLoadedId);
         this._user.disconnect(this._userChangedId);
-    },
+    }
 
     _sync() {
         let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
@@ -434,7 +430,7 @@ var EndSessionDialog = new Lang.Class({
         this._scrollView.visible = hasApplications || hasSessions;
         this._applicationHeader.visible = hasApplications;
         this._sessionHeader.visible = hasSessions;
-    },
+    }
 
     _updateButtons() {
         let dialogContent = DialogContent[this._type];
@@ -456,20 +452,20 @@ var EndSessionDialog = new Lang.Class({
         }
 
         this.setButtons(buttons);
-    },
+    }
 
     close(skipSignal) {
-        this.parent();
+        super.close();
 
         if (!skipSignal)
             this._dbusImpl.emit_signal('Closed', null);
-    },
+    }
 
     cancel() {
         this._stopTimer();
         this._dbusImpl.emit_signal('Canceled', null);
         this.close();
-    },
+    }
 
     _confirm(signal) {
         let callback = () => {
@@ -504,11 +500,11 @@ var EndSessionDialog = new Lang.Class({
         } else {
             this._triggerOfflineUpdateCancel(callback);
         }
-    },
+    }
 
     _onOpened() {
         this._sync();
-    },
+    }
 
     _triggerOfflineUpdateReboot(callback) {
         this._pkOfflineProxy.TriggerRemote('reboot', (result, error) => {
@@ -517,7 +513,7 @@ var EndSessionDialog = new Lang.Class({
 
             callback();
         });
-    },
+    }
 
     _triggerOfflineUpdateShutdown(callback) {
         this._pkOfflineProxy.TriggerRemote('power-off', (result, error) => {
@@ -526,7 +522,7 @@ var EndSessionDialog = new Lang.Class({
 
             callback();
         });
-    },
+    }
 
     _triggerOfflineUpdateCancel(callback) {
         this._pkOfflineProxy.CancelRemote((result, error) => {
@@ -535,7 +531,7 @@ var EndSessionDialog = new Lang.Class({
 
             callback();
         });
-    },
+    }
 
     _startTimer() {
         let startTime = GLib.get_monotonic_time();
@@ -559,7 +555,7 @@ var EndSessionDialog = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(this._timerId, '[gnome-shell] this._confirm');
-    },
+    }
 
     _stopTimer() {
         if (this._timerId > 0) {
@@ -568,7 +564,7 @@ var EndSessionDialog = new Lang.Class({
         }
 
         this._secondsLeft = 0;
-    },
+    }
 
     _constructListItemForApp(inhibitor, app) {
         let actor = new St.BoxLayout({ style_class: 'end-session-dialog-app-list-item',
@@ -593,7 +589,7 @@ var EndSessionDialog = new Lang.Class({
         }
 
         return actor;
-    },
+    }
 
     _onInhibitorLoaded(inhibitor) {
         if (this._applications.indexOf(inhibitor) < 0) {
@@ -612,7 +608,7 @@ var EndSessionDialog = new Lang.Class({
         }
 
         this._sync();
-    },
+    }
 
     _constructListItemForSession(session) {
         let avatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
@@ -642,7 +638,7 @@ var EndSessionDialog = new Lang.Class({
         actor.label_actor = nameLabel;
 
         return actor;
-    },
+    }
 
     _loadSessions() {
         this._loginManager.listSessions(result => {
@@ -684,7 +680,7 @@ var EndSessionDialog = new Lang.Class({
 
             this._sync();
         });
-    },
+    }
 
     OpenAsync(parameters, invocation) {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
@@ -754,9 +750,9 @@ var EndSessionDialog = new Lang.Class({
             invocation.return_value(null);
             this.disconnect(signalId);
         });
-    },
+    }
 
     Close(parameters, invocation) {
         this.close();
     }
-});
+};

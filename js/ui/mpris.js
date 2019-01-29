@@ -1,5 +1,4 @@
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -21,14 +20,11 @@ const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
-var MediaMessage = new Lang.Class({
-    Name: 'MediaMessage',
-    Extends: MessageList.Message,
+var MediaMessage = class MediaMessage extends MessageList.Message {
+    constructor(player) {
+        super('', '');
 
-    _init(player) {
         this._player = player;
-
-        this.parent('', '');
 
         this._icon = new St.Icon({ style_class: 'media-message-cover-icon' });
         this.setIcon(this._icon);
@@ -51,16 +47,16 @@ var MediaMessage = new Lang.Class({
         this._player.connect('changed', this._update.bind(this));
         this._player.connect('closed', this.close.bind(this));
         this._update();
-    },
+    }
 
     _onClicked() {
         this._player.raise();
         Main.panel.closeCalendar();
-    },
+    }
 
     _updateNavButton(button, sensitive) {
         button.reactive = sensitive;
-    },
+    }
 
     _update() {
         this.setTitle(this._player.trackArtists.join(', '));
@@ -83,12 +79,10 @@ var MediaMessage = new Lang.Class({
         this._updateNavButton(this._prevButton, this._player.canGoPrevious);
         this._updateNavButton(this._nextButton, this._player.canGoNext);
     }
-});
+};
 
-var MprisPlayer = new Lang.Class({
-    Name: 'MprisPlayer',
-
-    _init(busName) {
+var MprisPlayer = class MprisPlayer {
+    constructor(busName) {
         this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
                                           '/org/mpris/MediaPlayer2',
                                           this._onMprisProxyReady.bind(this));
@@ -100,43 +94,43 @@ var MprisPlayer = new Lang.Class({
         this._trackArtists = [];
         this._trackTitle = '';
         this._trackCoverUrl = '';
-    },
+    }
 
     get status() {
         return this._playerProxy.PlaybackStatus;
-    },
+    }
 
     get trackArtists() {
         return this._trackArtists;
-    },
+    }
 
     get trackTitle() {
         return this._trackTitle;
-    },
+    }
 
     get trackCoverUrl() {
         return this._trackCoverUrl;
-    },
+    }
 
     playPause() {
         this._playerProxy.PlayPauseRemote();
-    },
+    }
 
     get canGoNext() {
         return this._playerProxy.CanGoNext;
-    },
+    }
 
     next() {
         this._playerProxy.NextRemote();
-    },
+    }
 
     get canGoPrevious() {
         return this._playerProxy.CanGoPrevious;
-    },
+    }
 
     previous() {
         this._playerProxy.PreviousRemote();
-    },
+    }
 
     raise() {
         // The remote Raise() method may run into focus stealing prevention,
@@ -151,7 +145,7 @@ var MprisPlayer = new Lang.Class({
             app.activate();
         else if (this._mprisProxy.CanRaise)
             this._mprisProxy.RaiseRemote();
-    },
+    }
 
     _close() {
         this._mprisProxy.disconnect(this._ownerNotifyId);
@@ -161,7 +155,7 @@ var MprisPlayer = new Lang.Class({
         this._playerProxy = null;
 
         this.emit('closed');
-    },
+    }
 
     _onMprisProxyReady() {
         this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
@@ -169,13 +163,13 @@ var MprisPlayer = new Lang.Class({
                 if (!this._mprisProxy.g_name_owner)
                     this._close();
             });
-    },
+    }
 
     _onPlayerProxyReady() {
         this._propsChangedId = this._playerProxy.connect('g-properties-changed',
                                                          this._updateState.bind(this));
         this._updateState();
-    },
+    }
 
     _updateState() {
         let metadata = {};
@@ -197,15 +191,12 @@ var MprisPlayer = new Lang.Class({
                 this._close();
         }
     }
-});
+};
 Signals.addSignalMethods(MprisPlayer.prototype);
 
-var MediaSection = new Lang.Class({
-    Name: 'MediaSection',
-    Extends: MessageList.MessageListSection,
-
-    _init() {
-        this.parent();
+var MediaSection = class MediaSection extends MessageList.MessageListSection {
+    constructor() {
+        super();
 
         this._players = new Map();
 
@@ -213,11 +204,11 @@ var MediaSection = new Lang.Class({
                                     'org.freedesktop.DBus',
                                     '/org/freedesktop/DBus',
                                     this._onProxyReady.bind(this));
-    },
+    }
 
     _shouldShow() {
         return !this.empty && Calendar.isToday(this._date);
-    },
+    }
 
     _addPlayer(busName) {
         if (this._players.get(busName))
@@ -234,7 +225,7 @@ var MediaSection = new Lang.Class({
                 this.addMessage(message, true);
             });
         this._players.set(busName, player);
-    },
+    }
 
     _onProxyReady() {
         this._proxy.ListNamesRemote(([names]) => {
@@ -247,7 +238,7 @@ var MediaSection = new Lang.Class({
         });
         this._proxy.connectSignal('NameOwnerChanged',
                                   this._onNameOwnerChanged.bind(this));
-    },
+    }
 
     _onNameOwnerChanged(proxy, sender, [name, oldOwner, newOwner]) {
         if (!name.startsWith(MPRIS_PLAYER_PREFIX))
@@ -256,4 +247,4 @@ var MediaSection = new Lang.Class({
         if (newOwner && !oldOwner)
             this._addPlayer(name);
     }
-});
+};

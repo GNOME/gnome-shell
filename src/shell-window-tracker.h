@@ -5,6 +5,7 @@
 #include <glib-object.h>
 #include <glib.h>
 #include <meta/window.h>
+#include <meta/meta-startup-notification.h>
 
 #include "shell-app.h"
 #include "shell-app-system.h"
@@ -22,18 +23,6 @@ ShellApp *shell_window_tracker_get_window_app (ShellWindowTracker *tracker, Meta
 ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, int pid);
 
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
-
-/* Hidden typedef for SnStartupSequence */
-typedef struct _ShellStartupSequence ShellStartupSequence;
-#define SHELL_TYPE_STARTUP_SEQUENCE (shell_startup_sequence_get_type ())
-GType shell_startup_sequence_get_type (void);
-
-const char *shell_startup_sequence_get_id (ShellStartupSequence *sequence);
-ShellApp *shell_startup_sequence_get_app (ShellStartupSequence *sequence);
-const char *shell_startup_sequence_get_name (ShellStartupSequence *sequence);
-gboolean shell_startup_sequence_get_completed (ShellStartupSequence *sequence);
-int shell_startup_sequence_get_workspace (ShellStartupSequence *sequence);
-ClutterActor *shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size);
 
 G_END_DECLS
 

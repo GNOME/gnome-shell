@@ -1,12 +1,12 @@
 project('gnome-shell', 'c',
-  version: '3.31.2',
+  version: '3.31.4',
   meson_version: '>= 0.47.0',
   license: 'GPLv2+'
 )
 
 # We depend on a specific version of the libmutter API. The mutter variants of
 # the Cogl and Clutter libraries also use this API version.
-mutter_api_version = '3'
+mutter_api_version = '4'
 
 clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
@@ -23,7 +23,7 @@ gi_req = '>= 1.49.1'
 gjs_req = '>= 1.47.0'
 gtk_req = '>= 3.15.0'
 json_glib_req = '>= 0.13.2'
-mutter_req = '>= 3.31.2'
+mutter_req = '>= 3.31.4'
 polkit_req = '>= 0.100'
 schemas_req = '>= 3.27.90'
 startup_req = '>= 0.11'
@@ -54,12 +54,9 @@ convertdir = join_paths(datadir, 'GConf', 'gsettings')
 desktopdir = join_paths(datadir, 'applications')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')
 localedir = join_paths(datadir, 'locale')
-mozplugindir = join_paths(libdir, 'mozilla', 'plugins')
 portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
-
-plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 
 # XXX: Once https://github.com/systemd/systemd/issues/9595 is fixed and we can
 # depend on this version, replace with something like:
@@ -76,8 +73,6 @@ else
 endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
-canberra_dep = dependency('libcanberra')
-canberra_gtk_dep = dependency('libcanberra-gtk3')
 ecal_dep = dependency('libecal-1.2', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-base-3', version: gcr_req)
@@ -132,12 +127,6 @@ if get_option('systemd')
 else
   libsystemd_dep = []
   have_systemd = false
-endif
-
-if get_option('browser_plugin')
-  json_glib_dep = dependency('json-glib-1.0', version: json_glib_req)
-
-  subdir('browser-plugin')
 endif
 
 if get_option('man')

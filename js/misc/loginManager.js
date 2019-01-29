@@ -2,7 +2,6 @@
 
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -70,10 +69,8 @@ function getLoginManager() {
     return _loginManager;
 }
 
-var LoginManagerSystemd = new Lang.Class({
-    Name: 'LoginManagerSystemd',
-
-    _init() {
+var LoginManagerSystemd = class {
+    constructor() {
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
@@ -82,7 +79,7 @@ var LoginManagerSystemd = new Lang.Class({
                                                '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
                                   this._prepareForSleep.bind(this));
-    },
+    }
 
     getCurrentSessionProxy(callback) {
         if (this._currentSession) {
@@ -129,7 +126,7 @@ var LoginManagerSystemd = new Lang.Class({
                 callback(this._currentSession);
             }
         });
-    },
+    }
 
     canSuspend(asyncCallback) {
         this._proxy.CanSuspendRemote((result, error) => {
@@ -141,7 +138,7 @@ var LoginManagerSystemd = new Lang.Class({
                 asyncCallback(canSuspend, needsAuth);
             }
         });
-    },
+    }
 
     listSessions(asyncCallback) {
         this._proxy.ListSessionsRemote((result, error) => {
@@ -150,11 +147,11 @@ var LoginManagerSystemd = new Lang.Class({
             else
                 asyncCallback(result[0]);
         });
-    },
+    }
 
     suspend() {
         this._proxy.SuspendRemote(true);
-    },
+    }
 
     inhibit(reason, callback) {
         let inVariant = GLib.Variant.new('(ssss)',
@@ -174,38 +171,36 @@ var LoginManagerSystemd = new Lang.Class({
                     callback(null);
                 }
             });
-    },
+    }
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {
         this.emit('prepare-for-sleep', aboutToSuspend);
     }
-});
+};
 Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
-var LoginManagerDummy = new Lang.Class({
-    Name: 'LoginManagerDummy',
-
+var LoginManagerDummy = class {
     getCurrentSessionProxy(callback) {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()
         // methods), but just never calling the callback should be safer
-    },
+    }
 
     canSuspend(asyncCallback) {
         asyncCallback(false, false);
-    },
+    }
 
     listSessions(asyncCallback) {
         asyncCallback([]);
-    },
+    }
 
     suspend() {
         this.emit('prepare-for-sleep', true);
         this.emit('prepare-for-sleep', false);
-    },
+    }
 
     inhibit(reason, callback) {
         callback(null);
     }
-});
+};
 Signals.addSignalMethods(LoginManagerDummy.prototype);

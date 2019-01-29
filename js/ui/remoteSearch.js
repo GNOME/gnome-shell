@@ -3,7 +3,6 @@
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
@@ -190,10 +189,8 @@ function loadRemoteSearchProviders(searchSettings, callback) {
     callback(loadedProviders);
 }
 
-var RemoteSearchProvider = new Lang.Class({
-    Name: 'RemoteSearchProvider',
-
-    _init(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
+var RemoteSearchProvider = class {
+    constructor(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
 
@@ -215,7 +212,7 @@ var RemoteSearchProvider = new Lang.Class({
         this.id = appInfo.get_id();
         this.isRemoteProvider = true;
         this.canLaunchSearch = false;
-    },
+    }
 
     createIcon(size, meta) {
         let gicon = null;
@@ -236,7 +233,7 @@ var RemoteSearchProvider = new Lang.Class({
             icon = new St.Icon({ gicon: gicon,
                                  icon_size: size });
         return icon;
-    },
+    }
 
     filterResults(results, maxNumber) {
         if (results.length <= maxNumber)
@@ -246,7 +243,7 @@ var RemoteSearchProvider = new Lang.Class({
         let specialResults = results.filter(r => r.startsWith('special:'));
 
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
-    },
+    }
 
     _getResultsFinished(results, error, callback) {
         if (error) {
@@ -259,7 +256,7 @@ var RemoteSearchProvider = new Lang.Class({
         }
 
         callback(results[0]);
-    },
+    }
 
     getInitialResultSet(terms, callback, cancellable) {
         this.proxy.GetInitialResultSetRemote(terms,
@@ -267,7 +264,7 @@ var RemoteSearchProvider = new Lang.Class({
                                                  this._getResultsFinished(results, error, callback);
                                              },
                                              cancellable);
-    },
+    }
 
     getSubsearchResultSet(previousResults, newTerms, callback, cancellable) {
         this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
@@ -275,7 +272,7 @@ var RemoteSearchProvider = new Lang.Class({
                                                    this._getResultsFinished(results, error, callback);
                                                },
                                                cancellable);
-    },
+    }
 
     _getResultMetasFinished(results, error, callback) {
         if (error) {
@@ -302,7 +299,7 @@ var RemoteSearchProvider = new Lang.Class({
                                clipboardText: metas[i]['clipboardText'] });
         }
         callback(resultMetas);
-    },
+    }
 
     getResultMetas(ids, callback, cancellable) {
         this.proxy.GetResultMetasRemote(ids,
@@ -310,11 +307,11 @@ var RemoteSearchProvider = new Lang.Class({
                                             this._getResultMetasFinished(results, error, callback);
                                         },
                                         cancellable);
-    },
+    }
 
     activateResult(id) {
         this.proxy.ActivateResultRemote(id);
-    },
+    }
 
     launchSearch(terms) {
         // the provider is not compatible with the new version of the interface, launch
@@ -322,23 +319,20 @@ var RemoteSearchProvider = new Lang.Class({
         log('Search provider ' + this.appInfo.get_id() + ' does not implement LaunchSearch');
         this.appInfo.launch([], global.create_app_launch_context(0, -1));
     }
-});
+};
 
-var RemoteSearchProvider2 = new Lang.Class({
-    Name: 'RemoteSearchProvider2',
-    Extends: RemoteSearchProvider,
-
-    _init(appInfo, dbusName, dbusPath, autoStart) {
-        this.parent(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
+var RemoteSearchProvider2 = class extends RemoteSearchProvider {
+    constructor(appInfo, dbusName, dbusPath, autoStart) {
+        super(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 
         this.canLaunchSearch = true;
-    },
+    }
 
     activateResult(id, terms) {
         this.proxy.ActivateResultRemote(id, terms, global.get_current_time());
-    },
+    }
 
     launchSearch(terms) {
         this.proxy.LaunchSearchRemote(terms, global.get_current_time());
     }
-});
+};

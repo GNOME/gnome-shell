@@ -65,7 +65,7 @@ let WINDOW_CONFIGS = [
     { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' }
 ];
 
-function run() {
+function *run() {
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
     Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");
     Scripting.defineScriptEvent("afterShowHide", "After a show/hide cycle for the overview");

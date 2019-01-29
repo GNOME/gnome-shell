@@ -4,7 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -348,12 +348,10 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
-var CloseButton = new Lang.Class({
-    Name: 'CloseButton',
-    Extends: St.Button,
-
+var CloseButton = GObject.registerClass(
+class CloseButton extends St.Button {
     _init(boxpointer) {
-        this.parent({ style_class: 'notification-close'});
+        super._init({ style_class: 'notification-close'});
 
         // This is a bit tricky. St.Bin has its own x-align/y-align properties
         // that compete with Clutter's properties. This should be fixed for
@@ -370,7 +368,7 @@ var CloseButton = new Lang.Class({
         this._boxPointer = boxpointer;
         if (boxpointer)
             this._boxPointer.connect('arrow-side-changed', this._sync.bind(this));
-    },
+    }
 
     _computeBoxPointerOffset() {
         if (!this._boxPointer || !this._boxPointer.actor.get_stage())
@@ -381,7 +379,7 @@ var CloseButton = new Lang.Class({
             return this._boxPointer.getArrowHeight();
         else
             return 0;
-    },
+    }
 
     _sync() {
         let themeNode = this.get_theme_node();
@@ -389,12 +387,12 @@ var CloseButton = new Lang.Class({
         let offY = this._computeBoxPointerOffset();
         this.translation_x = themeNode.get_length('-shell-close-overlap-x')
         this.translation_y = themeNode.get_length('-shell-close-overlap-y') + offY;
-    },
+    }
 
     vfunc_style_changed() {
         this._sync();
-        this.parent();
-    },
+        super.vfunc_style_changed();
+    }
 });
 
 function makeCloseButton(boxpointer) {
@@ -437,10 +435,8 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
                        transition: 'easeOutQuad' });
 }
 
-var AppSettingsMonitor = new Lang.Class({
-    Name: 'AppSettingsMonitor',
-
-    _init(appId, schemaId) {
+var AppSettingsMonitor = class {
+    constructor(appId, schemaId) {
         this._appId = appId;
         this._schemaId = schemaId;
 
@@ -454,23 +450,23 @@ var AppSettingsMonitor = new Lang.Class({
         this._appSystem.connect('installed-changed',
                                 this._onInstalledChanged.bind(this));
         this._onInstalledChanged();
-    },
+    }
 
     get available() {
         return this._app != null && this._settings != null;
-    },
+    }
 
     activateApp() {
         if (this._app)
             this._app.activate();
-    },
+    }
 
     watchSetting(key, callback) {
         let handler = { id: 0, key: key, callback: callback };
         this._handlers.push(handler);
 
         this._connectHandler(handler);
-    },
+    }
 
     _connectHandler(handler) {
         if (!this._settings || handler.id > 0)
@@ -479,13 +475,13 @@ var AppSettingsMonitor = new Lang.Class({
         handler.id = this._settings.connect('changed::' + handler.key,
                                             handler.callback);
         handler.callback(this._settings, handler.key);
-    },
+    }
 
     _disconnectHandler(handler) {
         if (this._settings && handler.id > 0)
             this._settings.disconnect(handler.id);
         handler.id = 0;
-    },
+    }
 
     _onInstalledChanged() {
         let hadApp = (this._app != null);
@@ -499,7 +495,7 @@ var AppSettingsMonitor = new Lang.Class({
             this._checkSettings();
         else
             this._setSettings(null);
-    },
+    }
 
     _setSettings(settings) {
         this._handlers.forEach((handler) => { this._disconnectHandler(handler); });
@@ -512,7 +508,7 @@ var AppSettingsMonitor = new Lang.Class({
 
         if (hadSettings != haveSettings)
             this.emit('available-changed');
-    },
+    }
 
     _checkSettings() {
         let schema = this._schemaSource.lookup(this._schemaId, true);
@@ -525,5 +521,5 @@ var AppSettingsMonitor = new Lang.Class({
             });
         }
     }
-});
+};
 Signals.addSignalMethods(AppSettingsMonitor.prototype);

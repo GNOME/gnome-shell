@@ -50,6 +50,7 @@ struct _ShellAppSystemPrivate {
   GHashTable *running_apps;
   GHashTable *id_to_app;
   GHashTable *startup_wm_class_to_id;
+  GList *installed_apps;
 };
 
 static void shell_app_system_finalize (GObject *object);
@@ -82,12 +83,14 @@ static void
 scan_startup_wm_class_to_id (ShellAppSystem *self)
 {
   ShellAppSystemPrivate *priv = self->priv;
-  GList *apps, *l;
+  GList *l;
 
   g_hash_table_remove_all (priv->startup_wm_class_to_id);
 
-  apps = g_app_info_get_all ();
-  for (l = apps; l != NULL; l = l->next)
+  g_list_free_full (priv->installed_apps, g_object_unref);
+  priv->installed_apps = g_app_info_get_all ();
+
+  for (l = priv->installed_apps; l != NULL; l = l->next)
     {
       GAppInfo *info = l->data;
       const char *startup_wm_class, *id, *old_id;
@@ -105,8 +108,6 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
         g_hash_table_insert (priv->startup_wm_class_to_id,
                              g_strdup (startup_wm_class), g_strdup (id));
     }
-
-  g_list_free_full (apps, g_object_unref);
 }
 
 static gboolean
@@ -198,6 +199,7 @@ shell_app_system_finalize (GObject *object)
   g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->id_to_app);
   g_hash_table_destroy (priv->startup_wm_class_to_id);
+  g_list_free_full (priv->installed_apps, g_object_unref);
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize (object);
 }
@@ -435,4 +437,22 @@ shell_app_system_search (const char *search_string)
         **ids = '\0';
 
   return results;
+}
+
+/**
+ * shell_app_system_get_installed:
+ * @self: the #ShellAppSystem
+ *
+ * Returns all installed apps, as a list of #GAppInfo
+ *
+ * Returns: (transfer none) (element-type GAppInfo): a list of #GAppInfo
+ *   describing all known applications. This memory is owned by the
+ *   #ShellAppSystem and should not be freed.
+ **/
+GList *
+shell_app_system_get_installed (ShellAppSystem *self)
+{
+  ShellAppSystemPrivate *priv = self->priv;
+
+  return priv->installed_apps;
 }

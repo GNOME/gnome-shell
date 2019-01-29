@@ -4,7 +4,6 @@ const Geoclue = imports.gi.Geoclue;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GWeather = imports.gi.GWeather;
-const Lang = imports.lang;
 const Signals = imports.signals;
 
 const PermissionStore = imports.misc.permissionStore;
@@ -13,10 +12,8 @@ const Util = imports.misc.util;
 // Minimum time between updates to show loading indication
 var UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
 
-var WeatherClient = new Lang.Class({
-    Name: 'WeatherClient',
-
-    _init() {
+var WeatherClient = class {
+    constructor() {
         this._loading = false;
         this._locationValid = false;
         this._lastUpdate = GLib.DateTime.new_from_unix_local(0);
@@ -71,27 +68,27 @@ var WeatherClient = new Lang.Class({
                                          this._onAutomaticLocationChanged.bind(this));
         this._weatherAppMon.watchSetting('locations',
                                          this._onLocationsChanged.bind(this));
-    },
+    }
 
     get available() {
         return this._weatherAppMon.available;
-    },
+    }
 
     get loading() {
         return this._loading;
-    },
+    }
 
     get hasLocation() {
         return this._locationValid;
-    },
+    }
 
     get info() {
         return this._weatherInfo;
-    },
+    }
 
     activateApp() {
         this._weatherAppMon.activateApp();
-    },
+    }
 
     update() {
         if (!this._locationValid)
@@ -104,13 +101,13 @@ var WeatherClient = new Lang.Class({
             this._weatherInfo.update();
         else
             this._loadInfo();
-    },
+    }
 
     get _useAutoLocation() {
         return this._autoLocationRequested &&
                this._locationSettings.get_boolean('enabled') &&
                this._weatherAuthorized;
-    },
+    }
 
     _loadInfo() {
         let id = this._weatherInfo.connect('updated', () => {
@@ -122,7 +119,7 @@ var WeatherClient = new Lang.Class({
         this.emit('changed');
 
         this._weatherInfo.update();
-    },
+    }
 
     _locationsEqual(loc1, loc2) {
         if (loc1 == loc2)
@@ -132,7 +129,7 @@ var WeatherClient = new Lang.Class({
             return false;
 
         return loc1.equal(loc2);
-    },
+    }
 
     _setLocation(location) {
         if (this._locationsEqual(this._weatherInfo.location, location))
@@ -148,7 +145,7 @@ var WeatherClient = new Lang.Class({
             this._loadInfo();
         else
             this.emit('changed');
-    },
+    }
 
     _updateLocationMonitoring() {
         if (this._useAutoLocation) {
@@ -164,7 +161,7 @@ var WeatherClient = new Lang.Class({
                 this._gclueService.disconnect(this._gclueLocationChangedId);
             this._gclueLocationChangedId = 0;
         }
-    },
+    }
 
     _startGClueService() {
         if (this._gclueStarting)
@@ -185,7 +182,7 @@ var WeatherClient = new Lang.Class({
                 this._gclueService.get_client().distance_threshold = 100;
                 this._updateLocationMonitoring();
             });
-    },
+    }
 
     _onGClueLocationChanged() {
         let geoLocation = this._gclueService.location;
@@ -194,7 +191,7 @@ var WeatherClient = new Lang.Class({
                                                       geoLocation.latitude,
                                                       geoLocation.longitude);
         this._setLocation(location);
-    },
+    }
 
     _onAutomaticLocationChanged(settings, key) {
         let useAutoLocation = settings.get_boolean(key);
@@ -204,7 +201,7 @@ var WeatherClient = new Lang.Class({
         this._autoLocationRequested = useAutoLocation;
 
         this._updateAutoLocation();
-    },
+    }
 
     _updateAutoLocation() {
         this._updateLocationMonitoring();
@@ -213,7 +210,7 @@ var WeatherClient = new Lang.Class({
             this._startGClueService();
         else
             this._setLocation(this._mostRecentLocation);
-    },
+    }
 
     _onLocationsChanged(settings, key) {
         let serialized = settings.get_value(key).deep_unpack().shift();
@@ -229,7 +226,7 @@ var WeatherClient = new Lang.Class({
 
         if (!this._useAutoLocation || !this._gclueStarted)
             this._setLocation(this._mostRecentLocation);
-    },
+    }
 
     _onPermStoreChanged(proxy, sender, params) {
         let [table, id, deleted, data, perms] = params;
@@ -243,5 +240,5 @@ var WeatherClient = new Lang.Class({
 
         this._updateAutoLocation();
     }
-});
+};
 Signals.addSignalMethods(WeatherClient.prototype);

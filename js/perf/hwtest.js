@@ -89,7 +89,7 @@ function extractBootTimestamp() {
     return result;
 }
 
-function run() {
+function *run() {
     Scripting.defineScriptEvent("desktopShown", "Finished initial animation");
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
     Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");

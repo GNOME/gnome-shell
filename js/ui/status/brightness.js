@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
@@ -16,12 +15,9 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
-var Indicator = new Lang.Class({
-    Name: 'BrightnessIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent('display-brightness-symbolic');
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super('display-brightness-symbolic');
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                           (proxy, error) => {
                                               if (error) {
@@ -51,17 +47,17 @@ var Indicator = new Lang.Class({
             return this._slider.onKeyPressEvent(actor, event);
         });
 
-    },
+    }
 
     _sliderChanged(slider, value) {
         let percent = value * 100;
         this._proxy.Brightness = percent;
-    },
+    }
 
     _sync() {
         let visible = this._proxy.Brightness >= 0;
         this._item.actor.visible = visible;
         if (visible)
             this._slider.setValue(this._proxy.Brightness / 100.0);
-    },
-});
+    }
+};
