@@ -439,17 +439,6 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   if (width == 0 || height == 0)
     return NULL;
 
-  if (CLUTTER_IS_TEXTURE (actor))
-    {
-      CoglTexture *texture;
-
-      texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
-      if (texture &&
-          cogl_texture_get_width (texture) == width &&
-          cogl_texture_get_height (texture) == height)
-        shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, texture);
-    }
-
   if (shadow_pipeline == NULL)
     {
       CoglTexture *buffer;
