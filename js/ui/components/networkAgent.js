@@ -177,14 +177,14 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let value = secret.value;
         if (secret.wep_key_type == NM.WepKeyType.KEY) {
             if (value.length == 10 || value.length == 26) {
-		for (let i = 0; i < value.length; i++) {
+                for (let i = 0; i < value.length; i++) {
                     if (!((value[i] >= 'a' && value[i] <= 'f')
                           || (value[i] >= 'A' && value[i] <= 'F')
                           || (value[i] >= '0' && value[i] <= '9')))
                         return false;
-		}
-	    } else if (value.length == 5 || value.length == 13) {
-		for (let i = 0; i < value.length; i++) {
+                }
+            } else if (value.length == 5 || value.length == 13) {
+                for (let i = 0; i < value.length; i++) {
                     if (!((value[i] >= 'a' && value[i] <= 'z')
                           || (value[i] >= 'A' && value[i] <= 'Z')))
                         return false;
@@ -192,10 +192,10 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             } else {
                 return false;
             }
-	} else if (secret.wep_key_type == NM.WepKeyType.PASSPHRASE) {
-	    if (value.length < 0 || value.length > 64)
-	        return false;
-	}
+        } else if (secret.wep_key_type == NM.WepKeyType.PASSPHRASE) {
+            if (value.length < 0 || value.length > 64)
+                return false;
+        }
         return true;
     }
 

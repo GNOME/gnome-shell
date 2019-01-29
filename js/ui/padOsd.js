@@ -358,7 +358,7 @@ var PadDiagram = GObject.registerClass({
         for (let i = 0; i < this._activeButtons.length; i++) {
             let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
             css += ('.' + ch + ' { ' +
-	            '  stroke: ' + ACTIVE_COLOR + ' !important; ' +
+                    '  stroke: ' + ACTIVE_COLOR + ' !important; ' +
                     '  fill: ' + ACTIVE_COLOR + ' !important; ' +
                     '} ');
         }

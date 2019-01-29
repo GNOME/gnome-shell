@@ -49,7 +49,7 @@ var FocusCaretTracker = class FocusCaretTracker {
             this._atspiInited = true;
         }
 
-	return this._atspiInited;
+        return this._atspiInited;
     }
 
     registerFocusListener() {
