@@ -235,7 +235,7 @@ var CandidatePopup = class CandidatePopup {
             let indexes = [];
             let indexLabel;
             for (let i = 0; (indexLabel = lookupTable.get_label(i)); ++i)
-                 indexes.push(indexLabel.get_text());
+                indexes.push(indexLabel.get_text());
 
             Main.keyboard.resetSuggestions();
 

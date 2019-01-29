@@ -740,10 +740,10 @@ var ScreenShield = class {
                                delay: unitaryDelay * (N_ARROWS - (i + 1)),
                                time: ARROW_ANIMATION_TIME,
                                transition(t, b, c, d) {
-                                 if (t < d / 2)
-                                     return TweenerEquations.easeOutQuad(t, 0, maxOpacity, d / 2);
-                                 else
-                                     return TweenerEquations.easeInQuad(t - d / 2, maxOpacity, -maxOpacity, d / 2);
+                                   if (t < d / 2)
+                                       return TweenerEquations.easeOutQuad(t, 0, maxOpacity, d / 2);
+                                   else
+                                       return TweenerEquations.easeInQuad(t - d / 2, maxOpacity, -maxOpacity, d / 2);
                                }
                              });
         }

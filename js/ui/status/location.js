@@ -130,7 +130,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._managerProxy = proxy;
         this._propertiesChangedId = this._managerProxy.connect('g-properties-changed',
-                                                        this._onGeocluePropsChanged.bind(this));
+                                                               this._onGeocluePropsChanged.bind(this));
 
         this._syncIndicator();
 
@@ -334,10 +334,10 @@ var AppAuthorizer = class {
                                        APP_PERMISSIONS_ID,
                                        this._permissions,
                                        data,
-                                       (result, error) => {
-            if (error != null)
-                log(error.message);
-        });
+            (result, error) => {
+                if (error != null)
+                    log(error.message);
+            });
     }
 };
 

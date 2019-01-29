@@ -32,21 +32,21 @@ const defaultKeysPre = [
 
 const defaultKeysPost = [
     [[{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase' }],
-      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
+     [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+     [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase' }],
+     [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
     [[{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase' }],
-      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
+     [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+     [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase' }],
+     [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
     [[{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ label: '=/<', width: 3, level: 3, right: true }],
-      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
+     [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+     [{ label: '=/<', width: 3, level: 3, right: true }],
+     [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
     [[{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ label: '?123', width: 3, level: 2, right: true }],
-      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
+     [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+     [{ label: '?123', width: 3, level: 2, right: true }],
+     [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }]],
 ];
 
 var AspectContainer = GObject.registerClass(
@@ -1224,12 +1224,12 @@ var Keyboard = class Keyboard {
         }
 
         if (!this._showIdleId) {
-          this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-              this.show(Main.layoutManager.focusIndex);
-              this._showIdleId = 0;
-              return GLib.SOURCE_REMOVE;
-          });
-          GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.show');
+            this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                this.show(Main.layoutManager.focusIndex);
+                this._showIdleId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.show');
         }
     }
 

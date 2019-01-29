@@ -1167,7 +1167,7 @@ var MessageTray = class MessageTray {
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
             this._notificationLeftMouseX = -1;
             this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
-                                                             this._onNotificationLeftTimeout.bind(this));
+                                                                   this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         } else {
             this._notificationLeftTimeoutId = 0;

@@ -155,12 +155,12 @@ class TelepathyClient extends Tp.BaseClient {
             let [targetHandle, targetHandleType] = channel.get_handle();
 
             if (channel.get_invalidated())
-              continue;
+                continue;
 
             /* Only observe contact text channels */
             if ((!(channel instanceof Tp.TextChannel)) ||
                targetHandleType != Tp.HandleType.CONTACT)
-               continue;
+                continue;
 
             this._createChatSource(account, conn, channel, channel.get_target_contact());
         }
@@ -198,7 +198,7 @@ class TelepathyClient extends Tp.BaseClient {
             }
 
             if (channel.get_invalidated())
-              continue;
+                continue;
 
             // 'notify' will be true when coming from an actual HandleChannels
             // call, and not when from a successful Claim call. The point is
@@ -595,8 +595,8 @@ var ChatSource = class extends MessageTray.Source {
         // keep track of it with the ChatStateChanged signal but it is good
         // enough right now.
         if (state != this._chatState) {
-          this._chatState = state;
-          this._channel.set_chat_state_async(state, null);
+            this._chatState = state;
+            this._channel.set_chat_state_async(state, null);
         }
     }
 

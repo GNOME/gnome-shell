@@ -51,7 +51,7 @@ var OsdMonitorLabeler = class {
         this._osdLabels = [];
         this._monitorLabels = null;
         Main.layoutManager.connect('monitors-changed',
-                                    this._reset.bind(this));
+                                   this._reset.bind(this));
         this._reset();
     }
 

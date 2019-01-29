@@ -159,7 +159,7 @@ function getPropertyNamesFromExpression(expr, commandHeader) {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {
-                obj = eval(commandHeader + expr);
+            obj = eval(commandHeader + expr);
         } catch (e) {
             return [];
         }

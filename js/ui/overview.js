@@ -424,12 +424,12 @@ var Overview = class {
     }
 
     fadeInDesktop() {
-            this._desktopFade.opacity = 0;
-            this._desktopFade.show();
-            Tweener.addTween(this._desktopFade,
-                             { opacity: 255,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
+        this._desktopFade.opacity = 0;
+        this._desktopFade.show();
+        Tweener.addTween(this._desktopFade,
+                         { opacity: 255,
+                           time: ANIMATION_TIME,
+                           transition: 'easeOutQuad' });
     }
 
     fadeOutDesktop() {

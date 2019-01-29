@@ -377,8 +377,8 @@ var IconGrid = GObject.registerClass({
             return true;
 
         for (let child = this.get_first_child();
-             child != null;
-             child = child.get_next_sibling()) {
+            child != null;
+            child = child.get_next_sibling()) {
 
             if (!child.visible || !child.opacity)
                 continue;
@@ -445,24 +445,24 @@ var IconGrid = GObject.registerClass({
             let bounceUpTime = ANIMATION_TIME_IN / 4;
             let isLastItem = index == actors.length - 1;
             Tweener.addTween(actor,
-                            { time: bounceUpTime,
-                              transition: 'easeInOutQuad',
-                              delay: delay,
-                              scale_x: ANIMATION_BOUNCE_ICON_SCALE,
-                              scale_y: ANIMATION_BOUNCE_ICON_SCALE,
-                              onComplete: () => {
-                                  Tweener.addTween(actor,
-                                                   { time: ANIMATION_TIME_IN - bounceUpTime,
-                                                     transition: 'easeInOutQuad',
-                                                     scale_x: 1,
-                                                     scale_y: 1,
-                                                     onComplete: () => {
-                                                        if (isLastItem)
-                                                            this._animationDone();
-                                                    }
-                                                   });
-                              }
-                            });
+                             { time: bounceUpTime,
+                               transition: 'easeInOutQuad',
+                               delay: delay,
+                               scale_x: ANIMATION_BOUNCE_ICON_SCALE,
+                               scale_y: ANIMATION_BOUNCE_ICON_SCALE,
+                               onComplete: () => {
+                                   Tweener.addTween(actor,
+                                                    { time: ANIMATION_TIME_IN - bounceUpTime,
+                                                      transition: 'easeInOutQuad',
+                                                      scale_x: 1,
+                                                      scale_y: 1,
+                                                      onComplete: () => {
+                                                          if (isLastItem)
+                                                              this._animationDone();
+                                                      }
+                                                    });
+                               }
+                             });
         }
     }
 
@@ -788,7 +788,7 @@ var PaginatedIconGrid = GObject.registerClass({
     }
 
     vfunc_allocate(box, flags) {
-         if (this._childrenPerPage == 0)
+        if (this._childrenPerPage == 0)
             log('computePages() must be called before allocate(); pagination will not work.');
 
         this.set_allocation(box, flags);

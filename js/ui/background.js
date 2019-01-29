@@ -432,12 +432,12 @@ var Background = class Background {
             return;
 
         this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                      interval,
-                                                      () => {
-                                                          this._updateAnimationTimeoutId = 0;
-                                                          this._updateAnimation();
-                                                          return GLib.SOURCE_REMOVE;
-                                                      });
+                                                          interval,
+                                                          () => {
+                                                              this._updateAnimationTimeoutId = 0;
+                                                              this._updateAnimation();
+                                                              return GLib.SOURCE_REMOVE;
+                                                          });
         GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     }
 

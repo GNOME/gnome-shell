@@ -287,7 +287,7 @@ var WorkspaceThumbnail = class {
 
         // Track window changes
         this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                          this._windowAdded.bind(this));
+                                                         this._windowAdded.bind(this));
         this._windowRemovedId = this.metaWorkspace.connect('window-removed',
                                                            this._windowRemoved.bind(this));
         this._windowEnteredMonitorId = global.display.connect('window-entered-monitor',
@@ -447,7 +447,7 @@ var WorkspaceThumbnail = class {
 
     destroy() {
         if (this.actor)
-          this.actor.destroy();
+            this.actor.destroy();
     }
 
     workspaceRemoved() {
@@ -469,8 +469,8 @@ var WorkspaceThumbnail = class {
         this.workspaceRemoved();
 
         if (this._bgManager) {
-          this._bgManager.destroy();
-          this._bgManager = null;
+            this._bgManager.destroy();
+            this._bgManager = null;
         }
 
         this._windows = [];
