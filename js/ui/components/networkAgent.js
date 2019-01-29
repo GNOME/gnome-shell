@@ -111,10 +111,10 @@ var NetworkSecretDialog = class extends ModalDialog.ModalDialog {
             descriptionLabel.clutter_text.line_wrap = true;
             descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
-            messageBox.add(descriptionLabel,
-                           { y_fill:  true,
-                             y_align: St.Align.START,
-                             expand: true });
+            contentBox.messageBox.add(descriptionLabel,
+                                      { y_fill:  true,
+                                        y_align: St.Align.START,
+                                        expand: true });
         }
 
         this._okButton = { label:  _("Connect"),
