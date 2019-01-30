@@ -85,7 +85,7 @@ var ShellMagnifier = class ShellMagnifier {
         let ROI = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
         let viewBox = { x: viewPort[0], y: viewPort[1], width: viewPort[2] - viewPort[0], height: viewPort[3] - viewPort[1] };
         let realZoomRegion = Main.magnifier.createZoomRegion(xMagFactor, yMagFactor, ROI, viewBox);
-        let objectPath = ZOOM_SERVICE_PATH + '/zoomer' + _zoomRegionInstanceCount;
+        let objectPath = `${ZOOM_SERVICE_PATH}/zoomer${_zoomRegionInstanceCount}`;
         _zoomRegionInstanceCount++;
 
         let zoomRegionProxy = new ShellMagnifierZoomRegion(objectPath, realZoomRegion);

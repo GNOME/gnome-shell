@@ -342,7 +342,7 @@ var PadDiagram = GObject.registerClass({
         return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
                 '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
                 'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
-                'width="' + this._imageWidth + '" height="' + this._imageHeight + '"> ' +
+                `width="${this._imageWidth}" height="${this._imageHeight}"> ` +
                 '<style type="text/css">');
     }
 
@@ -357,10 +357,10 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._activeButtons.length; i++) {
             let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
-            css += ('.' + ch + ' { ' +
-                    '  stroke: ' + ACTIVE_COLOR + ' !important; ' +
-                    '  fill: ' + ACTIVE_COLOR + ' !important; ' +
-                    '} ');
+            css += `.${ch} {
+                stroke: ${ACTIVE_COLOR} !important;
+                fill: ${ACTIVE_COLOR} !important;
+            }`;
         }
 
         return css;
@@ -470,12 +470,12 @@ var PadDiagram = GObject.registerClass({
         let leaderPos, leaderSize, pos;
         let found, direction;
 
-        [found, pos] = this._handle.get_position_sub('#' + labelName);
+        [found, pos] = this._handle.get_position_sub(`#${labelName}`);
         if (!found)
             return [false];
 
-        [found, leaderPos] = this._handle.get_position_sub('#' + leaderName);
-        [found, leaderSize] = this._handle.get_dimensions_sub('#' + leaderName);
+        [found, leaderPos] = this._handle.get_position_sub(`#${leaderName}`);
+        [found, leaderSize] = this._handle.get_dimensions_sub(`#${leaderName}`);
         if (!found)
             return [false];
 
@@ -497,8 +497,8 @@ var PadDiagram = GObject.registerClass({
 
     getButtonLabelCoords(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
-        let labelName = 'Label' + ch;
-        let leaderName = 'Leader' + ch;
+        let labelName = `Label${ch}`;
+        let leaderName = `Leader${ch}`;
 
         return this._getItemLabelCoords(labelName, leaderName);
     }
@@ -506,8 +506,8 @@ var PadDiagram = GObject.registerClass({
     getRingLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == CW ? 'CW' : 'CCW';
-        let labelName = 'LabelRing' + numStr + dirStr;
-        let leaderName = 'LeaderRing' + numStr + dirStr;
+        let labelName = `LabelRing${numStr}${dirStr}`;
+        let leaderName = `LeaderRing${numStr}${dirStr}`;
 
         return this._getItemLabelCoords(labelName, leaderName);
     }
@@ -515,8 +515,8 @@ var PadDiagram = GObject.registerClass({
     getStripLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == UP ? 'Up' : 'Down';
-        let labelName = 'LabelStrip' + numStr + dirStr;
-        let leaderName = 'LeaderStrip' + numStr + dirStr;
+        let labelName = `LabelStrip${numStr}${dirStr}`;
+        let leaderName = `LeaderStrip${numStr}${dirStr}`;
 
         return this._getItemLabelCoords(labelName, leaderName);
     }
@@ -889,7 +889,7 @@ var PadOsd = class {
 
     _startButtonActionEdition(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
-        let key = 'button' + ch;
+        let key = `button${ch}`;
         this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
     }
 

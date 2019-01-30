@@ -17,7 +17,7 @@ var ELLIPSIS_CHAR = '\u2026';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-var NC_ = (context, str) => context + '\u0004' + str;
+var NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
     return (dateA.getYear() == dateB.getYear());
@@ -177,7 +177,7 @@ var DBusEventSource = class DBusEventSource {
                     // about the HasCalendars property and would cause an exception trying
                     // to read it)
                 } else {
-                    log('Error loading calendars: ' + e.message);
+                    log(`Error loading calendars: ${e.message}`);
                     return;
                 }
             }
@@ -319,7 +319,7 @@ var Calendar = class Calendar {
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
-        this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, this._onSettingsChange.bind(this));
+        this._settings.connect(`changed::${SHOW_WEEKDATE_KEY}`, this._onSettingsChange.bind(this));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
         /**
@@ -580,12 +580,12 @@ var Calendar = class Calendar {
 
             // Hack used in lieu of border-collapse - see gnome-shell.css
             if (row == 2)
-                styleClass = 'calendar-day-top ' + styleClass;
+                styleClass = `calendar-day-top ${styleClass}`;
 
             let leftMost = rtl ? iter.getDay() == (this._weekStart + 6) % 7
                                : iter.getDay() == this._weekStart;
             if (leftMost)
-                styleClass = 'calendar-day-left ' + styleClass;
+                styleClass = `calendar-day-left ${styleClass}`;
 
             if (sameDay(now, iter))
                 styleClass += ' calendar-today';

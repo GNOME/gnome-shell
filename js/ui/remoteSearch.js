@@ -92,7 +92,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
                 if (!appInfo.should_show())
                     return;
             } catch (e) {
-                log('Ignoring search provider ' + path + ': missing DesktopId');
+                log(`Ignoring search provider ${path}: missing DesktopId`);
                 return;
             }
 
@@ -313,7 +313,7 @@ var RemoteSearchProvider = class {
     launchSearch(terms) {
         // the provider is not compatible with the new version of the interface, launch
         // the app itself but warn so we can catch the error in logs
-        log('Search provider ' + this.appInfo.get_id() + ' does not implement LaunchSearch');
+        log(`Search provider ${this.appInfo.get_id()} does not implement LaunchSearch`);
         this.appInfo.launch([], global.create_app_launch_context(0, -1));
     }
 };

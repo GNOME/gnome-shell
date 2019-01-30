@@ -623,7 +623,7 @@ function initEnvironment() {
         },
 
         logError(s) {
-            log('ERROR: ' + s);
+            log(`ERROR: ${s}`);
         },
 
         userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell'])

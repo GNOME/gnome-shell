@@ -262,7 +262,7 @@ class InputMethod extends Clutter.InputMethod {
                                                       let retval = context.process_key_event_async_finish(res);
                                                       this.notify_key_event(event, retval);
                                                   } catch (e) {
-                                                      log('Error processing key on IM: ' + e.message);
+                                                      log(`Error processing key on IM: ${e.message}`);
                                                   }
                                               });
         return true;

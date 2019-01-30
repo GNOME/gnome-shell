@@ -111,7 +111,7 @@ function init() {
         let base = origToString.call(this);
         try {
             if ('actor' in this && this.actor instanceof Clutter.Actor)
-                return base.replace(/\]$/, ' delegate for ' + this.actor.toString().substring(1));
+                return base.replace(/\]$/, ` delegate for ${this.actor.toString().substring(1)}`);
             else
                 return base;
         } catch (e) {

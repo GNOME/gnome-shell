@@ -273,7 +273,7 @@ function script_collectTimings(time) {
         else
             median = Math.round((times[len / 2 - 1] + times[len / 2]) / 2);
 
-        METRICS[timing + 'RedrawTime'].value = median;
+        METRICS[`${timing}RedrawTime`].value = median;
     }
 }
 

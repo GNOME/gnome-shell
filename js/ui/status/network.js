@@ -579,7 +579,7 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 
     _getSignalIcon() {
-        return 'network-cellular-signal-' + signalToIcon(this._mobileDevice.signal_quality) + '-symbolic';
+        return `network-cellular-signal-${signalToIcon(this._mobileDevice.signal_quality)}-symbolic`;
     }
 };
 
@@ -676,7 +676,7 @@ var NMWirelessDialogItem = GObject.registerClass({
         if (this._ap.mode == NM80211Mode.ADHOC)
             return 'network-workgroup-symbolic';
         else
-            return 'network-wireless-signal-' + signalToIcon(this._ap.strength) + '-symbolic';
+            return `network-wireless-signal-${signalToIcon(this._ap.strength)}-symbolic`;
     }
 });
 
@@ -1357,7 +1357,7 @@ var NMDeviceWireless = class {
         }
 
         if (this._canReachInternet())
-            return 'network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic';
+            return `network-wireless-signal-${signalToIcon(ap.strength)}-symbolic`;
         else
             return 'network-wireless-no-route-symbolic';
     }
@@ -1985,7 +1985,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                 } catch (e) { }
             });
         } else {
-            log('Invalid result from portal helper: ' + result);
+            log(`Invalid result from portal helper: ${result}`);
         }
     }
 
@@ -2020,7 +2020,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             new PortalHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PortalHelper',
                                   '/org/gnome/Shell/PortalHelper', (proxy, error) => {
                                       if (error) {
-                                          log('Error launching the portal helper: ' + error);
+                                          log(`Error launching the portal helper: ${error}`);
                                           return;
                                       }
 

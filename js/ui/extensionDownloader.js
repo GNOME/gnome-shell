@@ -10,9 +10,9 @@ const FileUtils = imports.misc.fileUtils;
 const ModalDialog = imports.ui.modalDialog;
 
 var REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
-var REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
-var REPOSITORY_URL_INFO     = REPOSITORY_URL_BASE + '/extension-info/';
-var REPOSITORY_URL_UPDATE   = REPOSITORY_URL_BASE + '/update-info/';
+var REPOSITORY_URL_DOWNLOAD = `${REPOSITORY_URL_BASE}/download-extension/%s.shell-extension.zip`;
+var REPOSITORY_URL_INFO     = `${REPOSITORY_URL_BASE}/extension-info/`;
+var REPOSITORY_URL_UPDATE   = `${REPOSITORY_URL_BASE}/update-info/`;
 
 let _httpSession;
 
@@ -24,7 +24,7 @@ function installExtension(uuid, invocation) {
 
     _httpSession.queue_message(message, (session, message) => {
         if (message.status_code != Soup.KnownStatusCode.OK) {
-            ExtensionSystem.logExtensionError(uuid, 'downloading info: ' + message.status_code);
+            ExtensionSystem.logExtensionError(uuid, `downloading info: ${message.status_code}`);
             invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
             return;
         }
@@ -33,7 +33,7 @@ function installExtension(uuid, invocation) {
         try {
             info = JSON.parse(message.response_body.data);
         } catch (e) {
-            ExtensionSystem.logExtensionError(uuid, 'parsing info: ' + e);
+            ExtensionSystem.logExtensionError(uuid, `parsing info: ${e}`);
             invocation.return_dbus_error('org.gnome.Shell.ParseInfoError', e.toString());
             return;
         }
@@ -220,7 +220,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         function errback(code, message) {
             let msg = message ? message.toString() : '';
             log('Error while installing %s: %s (%s)'.format(uuid, code, msg));
-            invocation.return_dbus_error('org.gnome.Shell.' + code, msg);
+            invocation.return_dbus_error(`org.gnome.Shell.${code}`, msg);
         }
 
         function callback() {

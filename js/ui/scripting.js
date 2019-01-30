@@ -150,7 +150,7 @@ function destroyTestWindows() {
  * within a performance automation script
  */
 function defineScriptEvent(name, description) {
-    Shell.PerfLog.get_default().define_event("script." + name,
+    Shell.PerfLog.get_default().define_event(`script.${name}`,
                                              description,
                                              "");
 }
@@ -163,7 +163,7 @@ function defineScriptEvent(name, description) {
  * previously defined with defineScriptEvent
  */
 function scriptEvent(name) {
-    Shell.PerfLog.get_default().event("script." + name);
+    Shell.PerfLog.get_default().event(`script.${name}`);
 }
 
 /**
@@ -181,7 +181,7 @@ function _collect(scriptModule, outputFile) {
     for (let f in scriptModule) {
         let m = /([A-Za-z]+)_([A-Za-z]+)/.exec(f);
         if (m)
-            eventHandlers[m[1] + "." + m[2]] = scriptModule[f];
+            eventHandlers[`${m[1]}.${m[2]}`] = scriptModule[f];
     }
 
     Shell.PerfLog.get_default().replay(
@@ -224,15 +224,15 @@ function _collect(scriptModule, outputFile) {
             // Extra checks here because JSON.stringify generates
             // invalid JSON for undefined values
             if (metric.description == null) {
-                log("Error: No description found for metric " + name);
+                log(`Error: No description found for metric ${name}`);
                 continue;
             }
             if (metric.units == null) {
-                log("Error: No units found for metric " + name);
+                log(`Error: No units found for metric ${name}`);
                 continue;
             }
             if (metric.value == null) {
-                log("Error: No value found for metric " + name);
+                log(`Error: No value found for metric ${name}`);
                 continue;
             }
 
@@ -241,10 +241,10 @@ function _collect(scriptModule, outputFile) {
             first = false;
 
             Shell.write_string_to_stream(out,
-                                         '{ "name": ' + JSON.stringify(name) + ',\n' +
-                                         '    "description": ' + JSON.stringify(metric.description) + ',\n' +
-                                         '    "units": ' + JSON.stringify(metric.units) + ',\n' +
-                                         '    "value": ' + JSON.stringify(metric.value) + ' }');
+                                         `{ "name": ${JSON.stringify(name)},\n` +
+                                         `    "description": ${JSON.stringify(metric.description)},\n` +
+                                         `    "units": ${JSON.stringify(metric.units)},\n` +
+                                         `    "value": ${JSON.stringify(metric.value)} }`);
         }
         Shell.write_string_to_stream(out, ' ]');
 
@@ -263,8 +263,8 @@ function _collect(scriptModule, outputFile) {
         print ('------------------------------------------------------------');
         for (let i = 0; i < metrics.length; i++) {
             let metric = metrics[i];
-            print ('# ' + scriptModule.METRICS[metric].description);
-            print (metric + ': ' +  scriptModule.METRICS[metric].value + scriptModule.METRICS[metric].units);
+            print (`# ${scriptModule.METRICS[metric].description}`);
+            print (`${metric}: ${scriptModule.METRICS[metric].value}${scriptModule.METRICS[metric].units}`);
         }
         print ('------------------------------------------------------------');
     }

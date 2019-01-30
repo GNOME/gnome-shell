@@ -284,7 +284,7 @@ var Result = class Result {
         this.actor.add(cmdTxt);
         let box = new St.BoxLayout({});
         this.actor.add(box);
-        let resultTxt = new St.Label({ text: 'r(' + index + ') = ' });
+        let resultTxt = new St.Label({ text: `r(${index}) = ` });
         resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         box.add(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
@@ -320,7 +320,7 @@ var WindowList = class WindowList {
             box.add(windowLink.actor, { x_align: St.Align.START, x_fill: false });
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
-            propsBox.add(new St.Label({ text: 'wmclass: ' + metaWindow.get_wm_class() }));
+            propsBox.add(new St.Label({ text: `wmclass: ${metaWindow.get_wm_class()}` }));
             let app = tracker.get_window_app(metaWindow);
             if (app != null && !app.is_window_backed()) {
                 let icon = app.create_icon_texture(22);
@@ -402,7 +402,7 @@ var ObjInspector = class ObjInspector {
                     link = new St.Label({ text: '<error>' });
                 }
                 let hbox = new St.BoxLayout();
-                hbox.add(new St.Label({ text: propName + ': ' }));
+                hbox.add(new St.Label({ text: `${propName}: ` }));
                 hbox.add(link);
                 this._container.add_actor(hbox);
             }
@@ -602,9 +602,9 @@ var Inspector = GObject.registerClass({
             this._target = target;
         this._pointerTarget = target;
 
-        let position = '[inspect x: ' + stageX + ' y: ' + stageY + ']';
+        let position = `[inspect x: ${stageX} y: ${stageY}]`;
         this._displayText.text = '';
-        this._displayText.text = position + ' ' + this._target;
+        this._displayText.text = `${position} ${this._target}`;
 
         this._lookingGlass.setBorderPaintTarget(this._target);
     }
@@ -798,7 +798,7 @@ var LookingGlass = class LookingGlass {
         inspectIcon.connect('button-press-event', () => {
             let inspector = new Inspector(this);
             inspector.connect('target', (i, target, stageX, stageY) => {
-                this._pushResult('inspect(' + Math.round(stageX) + ', ' + Math.round(stageY) + ')', target);
+                this._pushResult(`inspect(${Math.round(stageX)}, ${Math.round(stageY)})`, target);
             });
             inspector.connect('closed', () => {
                 this.actor.show();
@@ -892,9 +892,11 @@ var LookingGlass = class LookingGlass {
         let fontDesc = Pango.FontDescription.from_string(fontName);
         // We ignore everything but size and style; you'd be crazy to set your system-wide
         // monospace font to be bold/oblique/etc. Could easily be added here.
-        this.actor.style =
-            'font-size: ' + fontDesc.get_size() / 1024. + (fontDesc.get_size_is_absolute() ? 'px' : 'pt') + ';'
-            + 'font-family: "' + fontDesc.get_family() + '";';
+        let size = fontDesc.get_size() / 1024.;
+        let unit = fontDesc.get_size_is_absolute() ? 'px' : 'pt';
+        this.actor.style = `
+            font-size: ${size}${unit};
+            font-family: "${fontDesc.get_family()}";`;
     }
 
     setBorderPaintTarget(obj) {
@@ -980,7 +982,7 @@ var LookingGlass = class LookingGlass {
         try {
             resultObj = Function(fullCmd)();
         } catch (e) {
-            resultObj = '<exception ' + e + '>';
+            resultObj = `<exception ${e}>`;
         }
 
         this._pushResult(command, resultObj);

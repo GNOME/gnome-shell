@@ -38,8 +38,8 @@ var AuthenticationDialog = GObject.registerClass({
         this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {
-            log('polkitAuthenticationAgent: Received ' + userNames.length +
-                ' identities that can be used for authentication. Only ' +
+            log(`polkitAuthenticationAgent: Received ${userNames.length} ` +
+                'identities that can be used for authentication. Only ' +
                 'considering one.');
         }
 
@@ -180,9 +180,9 @@ var AuthenticationDialog = GObject.registerClass({
             //
             // We could add retrying if this turns out to be a problem
 
-            log('polkitAuthenticationAgent: Failed to show modal dialog.' +
-                ' Dismissing authentication request for action-id ' + this.actionId +
-                ' cookie ' + this._cookie);
+            log('polkitAuthenticationAgent: Failed to show modal dialog. ' +
+                `Dismissing authentication request for action-id ${this.actionId} ` +
+                `cookie ${this._cookie}`);
             this._emitDone(true);
         }
     }

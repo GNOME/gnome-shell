@@ -114,7 +114,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
         let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
         if (!app) {
-            log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
+            log(`Settings panel for desktop file ${desktopFile} could not be loaded!`);
             return;
         }
 

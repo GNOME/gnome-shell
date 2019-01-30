@@ -56,8 +56,8 @@ var FocusCaretTracker = class FocusCaretTracker {
         if (!this._initAtspi() || this._focusListenerRegistered)
             return;
 
-        this._atspiListener.register(STATECHANGED + ':focused');
-        this._atspiListener.register(STATECHANGED + ':selected');
+        this._atspiListener.register(`${STATECHANGED}:focused`);
+        this._atspiListener.register(`${STATECHANGED}:selected`);
         this._focusListenerRegistered = true;
     }
 
@@ -73,8 +73,8 @@ var FocusCaretTracker = class FocusCaretTracker {
         if (!this._focusListenerRegistered)
             return;
 
-        this._atspiListener.deregister(STATECHANGED + ':focused');
-        this._atspiListener.deregister(STATECHANGED + ':selected');
+        this._atspiListener.deregister(`${STATECHANGED}:focused`);
+        this._atspiListener.deregister(`${STATECHANGED}:selected`);
         this._focusListenerRegistered = false;
     }
 

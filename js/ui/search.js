@@ -214,13 +214,13 @@ var SearchResultsBase = class {
                     return;
                 }
                 if (metas.length != metasNeeded.length) {
-                    log('Wrong number of result metas returned by search provider ' + this.provider.id +
-                        ': expected ' + metasNeeded.length + ' but got ' + metas.length);
+                    log(`Wrong number of result metas returned by search provider ${this.provider.id}: ` +
+                        `expected ${metasNeeded.length} but got ${metas.length}`);
                     callback(false);
                     return;
                 }
                 if (metas.some(meta => !meta.name || !meta.id)) {
-                    log('Invalid result meta returned from search provider ' + this.provider.id);
+                    log(`Invalid result meta returned from search provider ${this.provider.id}`);
                     callback(false);
                     return;
                 }

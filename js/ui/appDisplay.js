@@ -151,7 +151,7 @@ class BaseAppView {
         if (this._items[id])
             this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
-            log('No such application ' + id);
+            log(`No such application ${id}`);
     }
 
     selectApp(id) {

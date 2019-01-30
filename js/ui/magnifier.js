@@ -500,61 +500,61 @@ var Magnifier = class Magnifier {
     _settingsInit(zoomRegion) {
         this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
 
-        this._settings.connect('changed::' + SCREEN_POSITION_KEY,
+        this._settings.connect(`changed::${SCREEN_POSITION_KEY}`,
                                this._updateScreenPosition.bind(this));
-        this._settings.connect('changed::' + MAG_FACTOR_KEY,
+        this._settings.connect(`changed::${MAG_FACTOR_KEY}`,
                                this._updateMagFactor.bind(this));
-        this._settings.connect('changed::' + LENS_MODE_KEY,
+        this._settings.connect(`changed::${LENS_MODE_KEY}`,
                                this._updateLensMode.bind(this));
-        this._settings.connect('changed::' + CLAMP_MODE_KEY,
+        this._settings.connect(`changed::${CLAMP_MODE_KEY}`,
                                this._updateClampMode.bind(this));
-        this._settings.connect('changed::' + MOUSE_TRACKING_KEY,
+        this._settings.connect(`changed::${MOUSE_TRACKING_KEY}`,
                                this._updateMouseTrackingMode.bind(this));
-        this._settings.connect('changed::' + FOCUS_TRACKING_KEY,
+        this._settings.connect(`changed::${FOCUS_TRACKING_KEY}`,
                                this._updateFocusTrackingMode.bind(this));
-        this._settings.connect('changed::' + CARET_TRACKING_KEY,
+        this._settings.connect(`changed::${CARET_TRACKING_KEY}`,
                                this._updateCaretTrackingMode.bind(this));
 
-        this._settings.connect('changed::' + INVERT_LIGHTNESS_KEY,
+        this._settings.connect(`changed::${INVERT_LIGHTNESS_KEY}`,
                                this._updateInvertLightness.bind(this));
-        this._settings.connect('changed::' + COLOR_SATURATION_KEY,
+        this._settings.connect(`changed::${COLOR_SATURATION_KEY}`,
                                this._updateColorSaturation.bind(this));
 
-        this._settings.connect('changed::' + BRIGHT_RED_KEY,
+        this._settings.connect(`changed::${BRIGHT_RED_KEY}`,
                                this._updateBrightness.bind(this));
-        this._settings.connect('changed::' + BRIGHT_GREEN_KEY,
+        this._settings.connect(`changed::${BRIGHT_GREEN_KEY}`,
                                this._updateBrightness.bind(this));
-        this._settings.connect('changed::' + BRIGHT_BLUE_KEY,
+        this._settings.connect(`changed::${BRIGHT_BLUE_KEY}`,
                                this._updateBrightness.bind(this));
 
-        this._settings.connect('changed::' + CONTRAST_RED_KEY,
+        this._settings.connect(`changed::${CONTRAST_RED_KEY}`,
                                this._updateContrast.bind(this));
-        this._settings.connect('changed::' + CONTRAST_GREEN_KEY,
+        this._settings.connect(`changed::${CONTRAST_GREEN_KEY}`,
                                this._updateContrast.bind(this));
-        this._settings.connect('changed::' + CONTRAST_BLUE_KEY,
+        this._settings.connect(`changed::${CONTRAST_BLUE_KEY}`,
                                this._updateContrast.bind(this));
 
-        this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY, () => {
+        this._settings.connect(`changed::${SHOW_CROSS_HAIRS_KEY}`, () => {
             this.setCrosshairsVisible(this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY));
         });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_THICKNESS_KEY, () => {
+        this._settings.connect(`changed::${CROSS_HAIRS_THICKNESS_KEY}`, () => {
             this.setCrosshairsThickness(this._settings.get_int(CROSS_HAIRS_THICKNESS_KEY));
         });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_COLOR_KEY, () => {
+        this._settings.connect(`changed::${CROSS_HAIRS_COLOR_KEY}`, () => {
             this.setCrosshairsColor(this._settings.get_string(CROSS_HAIRS_COLOR_KEY));
         });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_OPACITY_KEY, () => {
+        this._settings.connect(`changed::${CROSS_HAIRS_OPACITY_KEY}`, () => {
             this.setCrosshairsOpacity(this._settings.get_double(CROSS_HAIRS_OPACITY_KEY));
         });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_LENGTH_KEY, () => {
+        this._settings.connect(`changed::${CROSS_HAIRS_LENGTH_KEY}`, () => {
             this.setCrosshairsLength(this._settings.get_int(CROSS_HAIRS_LENGTH_KEY));
         });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_CLIP_KEY, () => {
+        this._settings.connect(`changed::${CROSS_HAIRS_CLIP_KEY}`, () => {
             this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
         });
 
@@ -797,7 +797,7 @@ var ZoomRegion = class ZoomRegion {
         try {
             extents = component.get_extents(Atspi.CoordType.SCREEN);
         } catch (e) {
-            log('Failed to read extents of focused component: ' + e.message);
+            log(`Failed to read extents of focused component: ${e.message}`);
             return;
         }
 
@@ -814,7 +814,7 @@ var ZoomRegion = class ZoomRegion {
         try {
             extents = text.get_character_extents(text.get_caret_offset(), 0);
         } catch (e) {
-            log('Failed to read extents of text caret: ' + e.message);
+            log(`Failed to read extents of text caret: ${e.message}`);
             return;
         }
 

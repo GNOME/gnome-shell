@@ -18,7 +18,7 @@ var HistoryManager = class {
         this._historyIndex = 0;
         if (this._key) {
             this._history = global.settings.get_strv(this._key);
-            global.settings.connect('changed::' + this._key,
+            global.settings.connect(`changed::${this._key}`,
                                     this._historyChanged.bind(this));
 
         } else {
