@@ -37,6 +37,7 @@
 
 #include "st-label.h"
 #include "st-private.h"
+#include "st-settings.h"
 #include "st-texture-cache.h"
 #include "st-theme-context.h"
 #include "st-theme-node-transition.h"
@@ -44,7 +45,6 @@
 
 #include "st-widget-accessible.h"
 
-#include <gtk/gtk.h>
 #include <atk/atk-enum-types.h>
 
 /* This is set in stone and also hard-coded in GDK. */
@@ -814,7 +814,6 @@ st_widget_real_get_focus_chain (StWidget *widget)
   return g_list_reverse (visible);
 }
 
-
 static void
 st_widget_class_init (StWidgetClass *klass)
 {
@@ -1567,6 +1566,7 @@ st_widget_recompute_style (StWidget    *widget,
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
+  StSettings *settings;
   gboolean paint_equal;
   gboolean animations_enabled;
 
@@ -1586,9 +1586,8 @@ st_widget_recompute_style (StWidget    *widget,
 
   paint_equal = st_theme_node_paint_equal (old_theme_node, new_theme_node);
 
-  g_object_get (gtk_settings_get_default (),
-                "gtk-enable-animations", &animations_enabled,
-                NULL);
+  settings = st_settings_get ();
+  g_object_get (settings, "enable-animations", &animations_enabled, NULL);
 
   if (animations_enabled && transition_duration > 0)
     {
