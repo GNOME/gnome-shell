@@ -93,7 +93,7 @@ var ObjectManager = class {
             try {
                 initable.init_finish(result);
             } catch (e) {
-                logError(e, 'could not initialize proxy for interface ' + interfaceName);
+                logError(e, `could not initialize proxy for interface ${interfaceName}`);
 
                 if (onFinished)
                     onFinished();
@@ -155,7 +155,7 @@ var ObjectManager = class {
         try {
             initable.init_finish(result);
         } catch (e) {
-            logError(e, 'could not initialize object manager for object ' + this._serviceName);
+            logError(e, `could not initialize object manager for object ${this._serviceName}`);
 
             this._tryToCompleteLoad();
             return;
@@ -193,7 +193,7 @@ var ObjectManager = class {
         this._managerProxy.GetManagedObjectsRemote((result, error) => {
             if (!result) {
                 if (error) {
-                    logError(error, 'could not get remote objects for service ' + this._serviceName + ' path ' + this._managerPath);
+                    logError(error, `could not get remote objects for service ${this._serviceName} path ${this._managerPath}`);
                 }
 
                 this._tryToCompleteLoad();

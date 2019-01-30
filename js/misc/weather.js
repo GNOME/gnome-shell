@@ -26,7 +26,7 @@ var WeatherClient = class {
         this._weatherAuthorized = false;
         this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
             if (error) {
-                log('Failed to connect to permissionStore: ' + error.message);
+                log(`Failed to connect to permissionStore: ${error.message}`);
                 return;
             }
 
@@ -40,7 +40,7 @@ var WeatherClient = class {
 
             this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
                 if (error)
-                    log('Error looking up permission: ' + error.message);
+                    log(`Error looking up permission: ${error.message}`);
 
                 let [perms, data] = error ? [{}, null] : res;
                 let  params = ['gnome', 'geolocation', false, data, perms];
@@ -179,7 +179,7 @@ var WeatherClient = class {
                 try {
                     this._gclueService = Geoclue.Simple.new_finish(res);
                 } catch (e) {
-                    log('Failed to connect to Geoclue2 service: ' + e.message);
+                    log(`Failed to connect to Geoclue2 service: ${e.message}`);
                     this._setLocation(this._mostRecentLocation);
                     return;
                 }

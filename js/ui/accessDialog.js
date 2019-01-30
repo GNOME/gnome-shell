@@ -135,7 +135,7 @@ var AccessDialogDBus = class {
         let [handle, appId, parentWindow, title, subtitle, body, options] = params;
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
-        if (appId && appId + '.desktop' != this._windowTracker.focus_app.id) {
+        if (appId && `${appId}.desktop` != this._windowTracker.focus_app.id) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'Only the focused app is allowed to show a system access dialog');

@@ -87,7 +87,7 @@ var TelepathyComponent = class {
         try {
             this._client.register();
         } catch (e) {
-            throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
+            throw new Error(`Could not register Telepathy client. Error: ${e}`);
         }
 
         if (!this._client.account_manager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
@@ -253,7 +253,7 @@ class TelepathyClient extends Tp.BaseClient {
                 dispatchOp.claim_with_finish(result);
                 this._handlingChannels(account, conn, [channel], false);
             } catch (err) {
-                log('Failed to Claim channel: ' + err);
+                log(`Failed to Claim channel: ${err}`);
             }
         });
 

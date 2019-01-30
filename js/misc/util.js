@@ -17,7 +17,7 @@ const _leadingJunk = '[\\s`(\\[{\'\\"<\u00AB\u201C\u2018]';
 const _notTrailingJunk = '[^\\s`!()\\[\\]{};:\'\\".,<>?\u00AB\u00BB\u201C\u201D\u2018\u2019]';
 
 const _urlRegexp = new RegExp(
-    '(^|' + _leadingJunk + ')' +
+    `(^|${_leadingJunk})` +
     '(' +
         '(?:' +
             '(?:http|https|ftp)://' +             // scheme://
@@ -29,12 +29,12 @@ const _urlRegexp = new RegExp(
         '(?:' +                                   // one or more:
             '[^\\s()<>]+' +                       // run of non-space non-()
             '|' +                                 // or
-            _balancedParens +                     // balanced parens
+            `${_balancedParens}` +                // balanced parens
         ')+' +
         '(?:' +                                   // end with:
-            _balancedParens +                     // balanced parens
+            `${_balancedParens}` +                // balanced parens
             '|' +                                 // or
-            _notTrailingJunk +                    // last non-junk char
+            `${_notTrailingJunk}` +               // last non-junk char
         ')' +
     ')', 'gi');
 
@@ -146,7 +146,7 @@ function trySpawnCommandLine(commandLine) {
     } catch (err) {
         // Replace "Error invoking GLib.shell_parse_argv: " with
         // something nicer
-        err.message = err.message.replace(/[^:]*: /, _("Could not parse command:") + "\n");
+        err.message = err.message.replace(/[^:]*: /, `${_("Could not parse command:")}\n`);
         throw err;
     }
 
@@ -466,7 +466,7 @@ var AppSettingsMonitor = class {
         if (!this._settings || handler.id > 0)
             return;
 
-        handler.id = this._settings.connect('changed::' + handler.key,
+        handler.id = this._settings.connect(`changed::${handler.key}`,
                                             handler.callback);
         handler.callback(this._settings, handler.key);
     }

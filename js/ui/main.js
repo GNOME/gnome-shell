@@ -254,7 +254,7 @@ function _initializeUI() {
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
         if (perfModuleName) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
-            let module = eval('imports.perf.' + perfModuleName + ';');
+            let module = eval(`imports.perf.${perfModuleName};`);
             Scripting.runPerfScript(module, perfOutput);
         }
     });
@@ -390,9 +390,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log('error: ' + msg + ': ' + details);
+        log(`error: ${msg}: ${details}`);
     else
-        log('error: ' + msg);
+        log(`error: ${msg}`);
 
     notify(msg, details);
 }

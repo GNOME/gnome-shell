@@ -90,7 +90,7 @@ function loadInterfaceXML(iface) {
         else
             xml = bytes.toString();
     } catch (e) {
-        log('Failed to load D-Bus interface ' + iface);
+        log(`Failed to load D-Bus interface ${iface}`);
     }
 
     return xml;

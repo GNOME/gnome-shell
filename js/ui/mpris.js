@@ -135,7 +135,7 @@ var MprisPlayer = class MprisPlayer {
         // so prefer activating the app via .desktop file if possible
         let app = null;
         if (this._mprisProxy.DesktopEntry) {
-            let desktopId = this._mprisProxy.DesktopEntry + '.desktop';
+            let desktopId = `${this._mprisProxy.DesktopEntry}.desktop`;
             app = Shell.AppSystem.get_default().lookup_app(desktopId);
         }
 

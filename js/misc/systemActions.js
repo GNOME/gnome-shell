@@ -151,17 +151,17 @@ const SystemActions = GObject.registerClass({
         this._userManager.connect('user-removed',
                                   () => this._updateMultiUser());
 
-        this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
+        this._lockdownSettings.connect(`changed::${DISABLE_USER_SWITCH_KEY}`,
                                        () => this._updateSwitchUser());
-        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
+        this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
                                        () => this._updateLogout());
-        global.settings.connect('changed::' + ALWAYS_SHOW_LOG_OUT_KEY,
+        global.settings.connect(`changed::${ALWAYS_SHOW_LOG_OUT_KEY}`,
                                 () => this._updateLogout());
 
-        this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
+        this._lockdownSettings.connect(`changed::${DISABLE_LOCK_SCREEN_KEY}`,
                                        () => this._updateLockScreen());
 
-        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
+        this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
                                        () => this._updateHaveShutdown());
 
         this.forceUpdate();

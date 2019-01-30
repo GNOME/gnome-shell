@@ -21,7 +21,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         super();
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
+        this._desktopSettings.connect(`changed::${SHOW_BATTERY_PERCENTAGE}`,
                                       this._sync.bind(this));
 
         this._indicator = this._addIndicator();

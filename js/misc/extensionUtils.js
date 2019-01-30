@@ -173,25 +173,25 @@ function createExtensionObject(uuid, dir, type) {
         if (metadataContents instanceof Uint8Array)
             metadataContents = imports.byteArray.toString(metadataContents);
     } catch (e) {
-        throw new Error('Failed to load metadata.json: ' + e);
+        throw new Error(`Failed to load metadata.json: ${e}`);
     }
     let meta;
     try {
         meta = JSON.parse(metadataContents);
     } catch (e) {
-        throw new Error('Failed to parse metadata.json: ' + e);
+        throw new Error(`Failed to parse metadata.json: ${e}`);
     }
 
     let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
     for (let i = 0; i < requiredProperties.length; i++) {
         let prop = requiredProperties[i];
         if (!meta[prop]) {
-            throw new Error('missing "' + prop + '" property in metadata.json');
+            throw new Error(`missing "${prop}" property in metadata.json`);
         }
     }
 
     if (uuid != meta.uuid) {
-        throw new Error('uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
+        throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
     }
 
     let extension = {};

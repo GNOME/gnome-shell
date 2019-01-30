@@ -406,13 +406,13 @@ var LoginDialog = GObject.registerClass({
 
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
-        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
+        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_KEY}`,
                                this._updateBanner.bind(this));
-        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
+        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_TEXT_KEY}`,
                                this._updateBanner.bind(this));
-        this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
+        this._settings.connect(`changed::${GdmUtil.DISABLE_USER_LIST_KEY}`,
                                this._updateDisableUserList.bind(this));
-        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
+        this._settings.connect(`changed::${GdmUtil.LOGO_KEY}`,
                                this._updateLogo.bind(this));
 
         this._textureCache = St.TextureCache.get_default();

@@ -77,8 +77,8 @@ function _resetTweenState(target) {
 function _addHandler(target, params, name, handler) {
     if (params[name]) {
         let oldHandler = params[name];
-        let oldScope = params[name + 'Scope'];
-        let oldParams = params[name + 'Params'];
+        let oldScope = params[`${name}Scope`];
+        let oldParams = params[`${name}Params`];
         let eventScope = oldScope ? oldScope : target;
 
         params[name] = () => {

@@ -60,7 +60,7 @@ var InputSource = class {
             return this.id;
 
         if (engineDesc.variant && engineDesc.variant.length > 0)
-            return engineDesc.layout + '+' + engineDesc.variant;
+            return `${engineDesc.layout}+${engineDesc.variant}`;
         else
             return engineDesc.layout;
     }
@@ -200,7 +200,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
                                  try {
                                      props = conn.call_finish(result).deep_unpack()[0];
                                  } catch (e) {
-                                     log('Could not get properties from ' + this._BUS_NAME);
+                                     log(`Could not get properties from ${this._BUS_NAME}`);
                                      return;
                                  }
                                  let layouts = props['X11Layout'].unpack();
@@ -228,7 +228,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
         for (let i = 0; i < layouts.length && !!layouts[i]; i++) {
             let id = layouts[i];
             if (variants[i])
-                id += '+' + variants[i];
+                id += `+${variants[i]}`;
             sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id: id });
         }
         return sourcesList;
@@ -250,9 +250,9 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
         this._KEY_PER_WINDOW = 'per-window';
 
         this._settings = new Gio.Settings({ schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA });
-        this._settings.connect('changed::' + this._KEY_INPUT_SOURCES, this._emitInputSourcesChanged.bind(this));
-        this._settings.connect('changed::' + this._KEY_KEYBOARD_OPTIONS, this._emitKeyboardOptionsChanged.bind(this));
-        this._settings.connect('changed::' + this._KEY_PER_WINDOW, this._emitPerWindowChanged.bind(this));
+        this._settings.connect(`changed::${this._KEY_INPUT_SOURCES}`, this._emitInputSourcesChanged.bind(this));
+        this._settings.connect(`changed::${this._KEY_KEYBOARD_OPTIONS}`, this._emitKeyboardOptionsChanged.bind(this));
+        this._settings.connect(`changed::${this._KEY_PER_WINDOW}`, this._emitPerWindowChanged.bind(this));
     }
 
     _getSourcesList(key) {
@@ -1059,7 +1059,7 @@ class InputSourceIndicator extends PanelMenu.Button {
 
         let description = xkbLayout;
         if (xkbVariant.length > 0)
-            description = description + '\t' + xkbVariant;
+            description = `${description}\t${xkbVariant}`;
 
         Util.spawn(['gkbd-keyboard-display', '-l', description]);
     }

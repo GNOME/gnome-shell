@@ -32,7 +32,7 @@ var StreamSlider = class {
         this._slider = new Slider.Slider(0);
 
         this._soundSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.sound' });
-        this._soundSettings.connect('changed::' + ALLOW_AMPLIFIED_VOLUME_KEY, this._amplifySettingsChanged.bind(this));
+        this._soundSettings.connect(`changed::${ALLOW_AMPLIFIED_VOLUME_KEY}`, this._amplifySettingsChanged.bind(this));
         this._amplifySettingsChanged();
 
         this._slider.connect('value-changed', this._sliderChanged.bind(this));

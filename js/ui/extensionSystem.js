@@ -111,7 +111,7 @@ function enableExtension(uuid) {
 
     extensionOrder.push(uuid);
 
-    let stylesheetNames = [global.session_mode + '.css', 'stylesheet.css'];
+    let stylesheetNames = [`${global.session_mode}.css`, 'stylesheet.css'];
     let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
     for (let i = 0; i < stylesheetNames.length; i++) {
         try {
@@ -313,9 +313,9 @@ function _onVersionValidationChanged() {
 }
 
 function _loadExtensions() {
-    global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
+    global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`, onEnabledExtensionsChanged);
+    global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`, onEnabledExtensionsChanged);
+    global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`, _onVersionValidationChanged);
 
     enabledExtensions = getEnabledExtensions();
 
