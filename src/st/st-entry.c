@@ -644,29 +644,35 @@ clutter_text_button_press_event (ClutterActor       *actor,
                                  gpointer            user_data)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (user_data);
-  GtkSettings *settings = gtk_settings_get_default ();
-  gboolean primary_paste_enabled;
 
-  g_object_get (settings,
-                "gtk-enable-primary-paste", &primary_paste_enabled,
-                NULL);
-
-  if (primary_paste_enabled && event->button == 2
-      && clutter_text_get_editable (CLUTTER_TEXT (priv->entry)))
+  if (event->button == 2 &&
+      clutter_text_get_editable (CLUTTER_TEXT (priv->entry)))
     {
-      StClipboard *clipboard;
+      GSettings *settings;
+      gboolean primary_paste_enabled;
 
-      clipboard = st_clipboard_get_default ();
+      settings = g_settings_new ("org.gnome.desktop.interface");
+      primary_paste_enabled =
+        g_settings_get_boolean (settings, "gtk-enable-primary-paste");
 
-      /* By the time the clipboard callback is called,
-       * the rest of the signal handlers will have
-       * run, making the text cursor to be in the correct
-       * place.
-       */
-      st_clipboard_get_text (clipboard,
-                             ST_CLIPBOARD_TYPE_PRIMARY,
-                             st_entry_clipboard_callback,
-                             user_data);
+      if (primary_paste_enabled)
+        {
+          StClipboard *clipboard;
+
+          clipboard = st_clipboard_get_default ();
+
+          /* By the time the clipboard callback is called,
+           * the rest of the signal handlers will have
+           * run, making the text cursor to be in the correct
+           * place.
+           */
+          st_clipboard_get_text (clipboard,
+                                 ST_CLIPBOARD_TYPE_PRIMARY,
+                                 st_entry_clipboard_callback,
+                                 user_data);
+        }
+
+      g_object_unref (settings);
     }
 
   return FALSE;
