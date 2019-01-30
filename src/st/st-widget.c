@@ -44,7 +44,6 @@
 
 #include "st-widget-accessible.h"
 
-#include <gtk/gtk.h>
 #include <atk/atk-enum-types.h>
 
 /* This is set in stone and also hard-coded in GDK. */
@@ -128,6 +127,7 @@ enum
 static guint signals[LAST_SIGNAL] = { 0, };
 
 gfloat st_slow_down_factor = 1.0;
+gboolean animations_enabled = TRUE;
 
 G_DEFINE_TYPE_WITH_PRIVATE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 #define ST_WIDGET_PRIVATE(w) ((StWidgetPrivate *)st_widget_get_instance_private (w))
@@ -814,6 +814,30 @@ st_widget_real_get_focus_chain (StWidget *widget)
   return g_list_reverse (visible);
 }
 
+static void
+on_enable_animations_changed (GSettings   *settings,
+                              const gchar *key,
+                              gpointer     user_data)
+{
+  animations_enabled = g_settings_get_boolean (settings, "enable-animations");
+}
+
+static void
+init_settings (void)
+{
+  static GSettings *settings = NULL;
+
+  if (settings == NULL)
+    {
+      settings = g_settings_new ("org.gnome.desktop.interface");
+      g_signal_connect (settings, "changed::enable-animations",
+                        G_CALLBACK (on_enable_animations_changed),
+                        NULL);
+      animations_enabled = g_settings_get_boolean (settings,
+                                                   "enable-animations");
+    }
+}
+
 
 static void
 st_widget_class_init (StWidgetClass *klass)
@@ -1020,6 +1044,8 @@ st_widget_class_init (StWidgetClass *klass)
                   G_STRUCT_OFFSET (StWidgetClass, popup_menu),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  init_settings ();
 }
 
 /**
@@ -1568,7 +1594,6 @@ st_widget_recompute_style (StWidget    *widget,
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
   gboolean paint_equal;
-  gboolean animations_enabled;
 
   if (new_theme_node == old_theme_node)
     {
@@ -1585,10 +1610,6 @@ st_widget_recompute_style (StWidget    *widget,
   transition_duration = st_theme_node_get_transition_duration (new_theme_node);
 
   paint_equal = st_theme_node_paint_equal (old_theme_node, new_theme_node);
-
-  g_object_get (gtk_settings_get_default (),
-                "gtk-enable-animations", &animations_enabled,
-                NULL);
 
   if (animations_enabled && transition_duration > 0)
     {
