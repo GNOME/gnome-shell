@@ -442,7 +442,7 @@ Signals.addSignalMethods(WindowClone.prototype);
 /**
  * @windowClone: Corresponding window clone
  * @parentActor: The actor which will be the parent of all overlay items
- *               such as app icon and window caption
+ *               such as the close button and window caption
  */
 var WindowOverlay = class {
     constructor(windowClone, parentActor) {
