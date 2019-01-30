@@ -157,7 +157,7 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
-  width: 3.12em;
+  width: 2.72em;
   height: 1.36em;
   border-radius: 1.36em;
   background: darken($bg_color, 7%);
@@ -179,25 +179,9 @@ StScrollBar {
     border-bottom: .07em solid $borders_color;
   }
 
-  .switch-label {
-    width: 1.08em;
-    font-weight: bold;
-    margin-right: .48em;
-    &:first-child {
-      margin-right: 0;
-      margin-left: .48em;
-    }
-
-    > StLabel { font-size: .6em; }
-  }
-
   &:checked {
     background: $selected_bg_color;
     border-color: darken($selected_bg_color, 20%);
-
-    .switch-label {
-      color: $selected_fg_color;
-    }
   }
 }
 
