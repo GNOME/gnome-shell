@@ -288,7 +288,7 @@ var Switch = class {
 
         this.actor.connect('style_changed', (() => {
             this.setToggleState(this.state);
-        }).bind(this));
+        }));
 
         this._labelOn = new St.Bin({ style_class: 'switch-label',
                                      child: new St.Label({ text: _("❙") }) });
@@ -385,7 +385,7 @@ var Switch = class {
         }
 
         this._initialHandleTranslationX = this._handle.translation_x;
-        this._initialGrabX = event.get_coords()[0];
+        [this._initialGrabX] = event.get_coords();
         return Clutter.EVENT_STOP;
     }
 
@@ -401,7 +401,7 @@ var Switch = class {
             else
                 this._grabbedDevice.ungrab();
 
-            if (!this._dragDifX) {
+            if (!this._dragDiffX) {
                 this.toggle();
                 this._parent.emit('activate');
             } else {
@@ -416,7 +416,7 @@ var Switch = class {
 
             this._initialHandleTranslationX = null;
             this._initialGrabX = null;
-            this._dragDifX = null;
+            this._dragDiffX = null;
             this._grabbedSequence = null;
             this._grabbedDevice = null;
             this._dragging = false;
@@ -443,16 +443,16 @@ var Switch = class {
     }
 
     _motionEvent(actor, event) {
-        let absX = event.get_coords()[0];
-        this._dragDifX = this._initialGrabX - absX;
-        this._moveHandle(this._dragDifX);
+        let [absX] = event.get_coords();
+        this._dragDiffX = this._initialGrabX - absX;
+        this._moveHandle(this._dragDiffX);
         return Clutter.EVENT_STOP;
     }
 
-    _moveHandle(difX) {
+    _moveHandle(diffX) {
         let minTranslationX = this._getSwitchOffHandleTranslationX();
         let maxTranslationX = this._getSwitchOnHandleTranslationX();
-        let handleNewTranslationX = this._initialHandleTranslationX - difX;
+        let handleNewTranslationX = this._initialHandleTranslationX - diffX;
         handleNewTranslationX = Math.max(handleNewTranslationX, minTranslationX);
         handleNewTranslationX = Math.min(handleNewTranslationX, maxTranslationX);
         this._handle.translation_x = handleNewTranslationX;
