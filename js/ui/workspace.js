@@ -23,7 +23,7 @@ var WINDOW_DND_SIZE = 256;
 var WINDOW_CLONE_MAXIMUM_SCALE = 1.0;
 
 var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
-var CLOSE_BUTTON_FADE_TIME = 0.1;
+var WINDOW_OVERLAY_FADE_TIME = 0.1;
 
 var WINDOW_REPOSITIONING_DELAY = 750;
 
@@ -473,7 +473,7 @@ var WindowOverlay = class {
         button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
         button._overlap = 0;
 
-        this._idleToggleCloseId = 0;
+        this._idleHideOverlayId = 0;
         button.connect('clicked', () => this._windowClone.deleteAll());
 
         windowClone.actor.connect('destroy', this._onDestroy.bind(this));
@@ -507,7 +507,7 @@ var WindowOverlay = class {
     hide() {
         this._hidden = true;
 
-        this.hideCloseButton();
+        this.hideOverlay();
     }
 
     show() {
@@ -626,9 +626,9 @@ var WindowOverlay = class {
     }
 
     _onDestroy() {
-        if (this._idleToggleCloseId > 0) {
-            Mainloop.source_remove(this._idleToggleCloseId);
-            this._idleToggleCloseId = 0;
+        if (this._idleHideOverlayId > 0) {
+            Mainloop.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
         }
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
         this.title.destroy();
@@ -648,7 +648,7 @@ var WindowOverlay = class {
             a.opacity = 0;
             Tweener.addTween(a,
                              { opacity: 255,
-                               time: CLOSE_BUTTON_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME,
                                transition: 'easeOutQuad' });
         });
     }
@@ -658,7 +658,7 @@ var WindowOverlay = class {
             a.opacity = 255;
             Tweener.addTween(a,
                              { opacity: 0,
-                               time: CLOSE_BUTTON_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME,
                                transition: 'easeInQuad' });
         });
     }
@@ -676,14 +676,14 @@ var WindowOverlay = class {
     }
 
     _onHideChrome() {
-        if (this._idleToggleCloseId == 0) {
-            this._idleToggleCloseId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleToggleCloseButton.bind(this));
-            GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
+        if (this._idleHideOverlayId == 0) {
+            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
+            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
         }
     }
 
-    _idleToggleCloseButton() {
-        this._idleToggleCloseId = 0;
+    _idleHideOverlay() {
+        this._idleHideOverlayId = 0;
 
         if (!this._windowClone.actor['has-pointer'] &&
             !this.closeButton['has-pointer'])
@@ -692,10 +692,10 @@ var WindowOverlay = class {
         return GLib.SOURCE_REMOVE;
     }
 
-    hideCloseButton() {
-        if (this._idleToggleCloseId > 0) {
-            Mainloop.source_remove(this._idleToggleCloseId);
-            this._idleToggleCloseId = 0;
+    hideOverlay() {
+        if (this._idleHideOverlayId > 0) {
+            Mainloop.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
         }
         this.closeButton.hide();
         this.border.hide();
@@ -1892,7 +1892,7 @@ var Workspace = class {
             let overlay = this._windowOverlays[i];
             if (overlay == windowOverlay)
                 continue;
-            overlay.hideCloseButton();
+            overlay.hideOverlay();
         }
     }
 
