@@ -797,11 +797,9 @@ class Panel extends St.Widget {
 
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
-            this._updateSolidStyle();
         });
         Main.overview.connect('hiding', () => {
             this.remove_style_pseudo_class('overview');
-            this._updateSolidStyle();
         });
 
         Main.layoutManager.panelBox.add(this);
@@ -810,29 +808,8 @@ class Panel extends St.Widget {
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
-        this._trackedWindows = new Map();
-        global.window_group.connect('actor-added', this._onWindowActorAdded.bind(this));
-        global.window_group.connect('actor-removed', this._onWindowActorRemoved.bind(this));
-        global.window_manager.connect('switch-workspace', this._updateSolidStyle.bind(this));
-
         global.display.connect('workareas-changed', () => { this.queue_relayout(); });
         this._updatePanel();
-    }
-
-    _onWindowActorAdded(container, metaWindowActor) {
-        let signalIds = [];
-        ['allocation-changed', 'notify::visible'].forEach(s => {
-            signalIds.push(metaWindowActor.connect(s, this._updateSolidStyle.bind(this)));
-        });
-        this._trackedWindows.set(metaWindowActor, signalIds);
-    }
-
-    _onWindowActorRemoved(container, metaWindowActor) {
-        this._trackedWindows.get(metaWindowActor).forEach(id => {
-            metaWindowActor.disconnect(id);
-        });
-        this._trackedWindows.delete(metaWindowActor);
-        this._updateSolidStyle();
     }
 
     vfunc_get_preferred_width(forHeight) {
@@ -1042,8 +1019,6 @@ class Panel extends St.Widget {
         else
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.CENTER;
 
-        this._updateSolidStyle();
-
         if (this._sessionStyle)
             this._removeStyleClassName(this._sessionStyle);
 
@@ -1058,41 +1033,6 @@ class Panel extends St.Widget {
             this._leftCorner.setStyleParent(this._leftBox);
             this._rightCorner.setStyleParent(this._rightBox);
         }
-    }
-
-    _updateSolidStyle() {
-        if (this.has_style_pseudo_class('overview') || !Main.sessionMode.hasWindows) {
-            this._removeStyleClassName('solid');
-            return;
-        }
-
-        if (!Main.layoutManager.primaryMonitor)
-            return;
-
-        /* Get all the windows in the active workspace that are in the primary monitor and visible */
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let windows = activeWorkspace.list_windows().filter(metaWindow => {
-            return metaWindow.is_on_primary_monitor() &&
-                   metaWindow.showing_on_its_workspace() &&
-                   !metaWindow.is_hidden() &&
-                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
-        });
-
-        /* Check if at least one window is near enough to the panel */
-        let [, panelTop] = this.get_transformed_position();
-        let panelBottom = panelTop + this.get_height();
-        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let isNearEnough = windows.some(metaWindow => {
-            let verticalPosition = metaWindow.get_frame_rect().y;
-            return verticalPosition < panelBottom + 5 * scale;
-        });
-
-        if (isNearEnough)
-            this._addStyleClassName('solid');
-        else
-            this._removeStyleClassName('solid');
-
     }
 
     _hideIndicators() {
