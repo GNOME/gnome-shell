@@ -149,7 +149,7 @@ var NMConnectionItem = class {
         this._sync();
     }
 
-    _connectionStateChanged(ac, newstate, reason) {
+    _connectionStateChanged(_ac, _newstate, _reason) {
         this._sync();
     }
 
@@ -222,7 +222,7 @@ var NMConnectionSection = class NMConnectionSection {
         return _("Connect");
     }
 
-    _connectionValid(connection) {
+    _connectionValid(_connection) {
         return true;
     }
 
@@ -377,7 +377,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         this._client.activate_connection_async(connection, this._device, null, null, null);
     }
 
-    deactivateConnection(activeConnection) {
+    deactivateConnection(_activeConnection) {
         this._device.disconnect(null);
     }
 
@@ -1708,7 +1708,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
         this._source.notify(this._notification);
     }
 
-    _onActivationFailed(device, reason) {
+    _onActivationFailed(_device, _reason) {
         // XXX: nm-applet has no special text depending on reason
         // but I'm not sure of this generic message
         this._notify('network-error-symbolic',

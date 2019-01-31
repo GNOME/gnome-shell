@@ -192,7 +192,7 @@ var SearchResultsBase = class {
         Main.overview.toggle();
     }
 
-    _setMoreCount(count) {
+    _setMoreCount(_count) {
     }
 
     _ensureResultActors(results, callback) {

@@ -55,7 +55,7 @@ var AutomountManager = class {
         }
     }
 
-    _InhibitorsChanged(object, senderName, [inhibtor]) {
+    _InhibitorsChanged(_object, _senderName, [_inhibitor]) {
         this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
             (result, error) => {
                 if (!error) {

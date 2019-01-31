@@ -188,7 +188,7 @@ var BarLevel = class {
         return this._maxValue;
     }
 
-    _setCurrentValue(actor, value) {
+    _setCurrentValue(_actor, value) {
         this._value = value;
     }
 

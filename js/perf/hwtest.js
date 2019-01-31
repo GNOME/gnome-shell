@@ -234,31 +234,31 @@ function script_applicationsShowDone(time) {
     METRICS.applicationsShowTime.value = time - applicationsShowStart;
 }
 
-function script_mainViewDrawStart(time) {
+function script_mainViewDrawStart(_time) {
     redrawTiming = 'mainView';
 }
 
-function script_mainViewDrawDone(time) {
+function script_mainViewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_overviewDrawStart(time) {
+function script_overviewDrawStart(_time) {
     redrawTiming = 'overview';
 }
 
-function script_overviewDrawDone(time) {
+function script_overviewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_redrawTestStart(time) {
+function script_redrawTestStart(_time) {
     redrawTiming = 'application';
 }
 
-function script_redrawTestDone(time) {
+function script_redrawTestDone(_time) {
     redrawTiming = null;
 }
 
-function script_collectTimings(time) {
+function script_collectTimings(_time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
         times.sort((a, b) => a - b);

@@ -147,7 +147,7 @@ function script_overviewShowStart(time) {
     overviewFrames = 0;
 }
 
-function script_overviewShowDone(time) {
+function script_overviewShowDone(_time) {
     // We've set up the state at the end of the zoom out, but we
     // need to wait for one more frame to paint before we count
     // ourselves as done.
@@ -166,7 +166,7 @@ function script_applicationsShowDone(time) {
         METRICS.applicationsShowTimeSubsequent.value = time - applicationsShowStart;
 }
 
-function script_afterShowHide(time) {
+function script_afterShowHide(_time) {
     if (overviewShowCount == 1) {
         METRICS.usedAfterOverview.value = mallocUsedSize;
     } else {

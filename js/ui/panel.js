@@ -484,14 +484,14 @@ class ActivitiesButton extends PanelMenu.Button {
         this._xdndTimeOut = 0;
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         if (this._xdndTimeOut != 0)
             Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT, () => {
-            this._xdndToggleOverview(actor);
+            this._xdndToggleOverview();
         });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
 
@@ -864,7 +864,7 @@ class Panel extends St.Widget {
         this._updatePanel();
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let primaryMonitor = Main.layoutManager.primaryMonitor;
 
         if (primaryMonitor)

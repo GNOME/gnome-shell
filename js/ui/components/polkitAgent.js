@@ -383,11 +383,11 @@ var AuthenticationAgent = class {
         this._currentDialog.performAuthentication();
     }
 
-    _onCancel(nativeAgent) {
+    _onCancel(_nativeAgent) {
         this._completeRequest(false);
     }
 
-    _onDialogDone(dialog, dismissed) {
+    _onDialogDone(_dialog, dismissed) {
         this._completeRequest(dismissed);
     }
 

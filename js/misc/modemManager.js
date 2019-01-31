@@ -110,7 +110,7 @@ var ModemGsm = class {
             this.signal_quality = quality;
             this.emit('notify::signal-quality');
         });
-        this._proxy.connectSignal('RegistrationInfo', (proxy, sender, [status, code, name]) => {
+        this._proxy.connectSignal('RegistrationInfo', (proxy, sender, [_status, code, name]) => {
             this.operator_name = _findProviderForMccMnc(name, code);
             this.emit('notify::operator-name');
         });

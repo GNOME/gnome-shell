@@ -386,16 +386,16 @@ var Overview = class {
         this.emit('windows-restacked', stackIndices);
     }
 
-    beginItemDrag(source) {
+    beginItemDrag(_source) {
         this.emit('item-drag-begin');
         this._inItemDrag = true;
     }
 
-    cancelledItemDrag(source) {
+    cancelledItemDrag(_source) {
         this.emit('item-drag-cancelled');
     }
 
-    endItemDrag(source) {
+    endItemDrag(_source) {
         if (!this._inItemDrag)
             return;
         this.emit('item-drag-end');

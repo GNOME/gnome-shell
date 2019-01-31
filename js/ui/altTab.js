@@ -469,7 +469,7 @@ var CyclerList = GObject.registerClass({
                'item-removed': { param_types: [GObject.TYPE_INT] },
                'item-highlighted': { param_types: [GObject.TYPE_INT] } },
 }, class CyclerList extends St.Widget {
-    highlight(index, justOutline) {
+    highlight(index, _justOutline) {
         this.emit('item-highlighted', index);
     }
 });
@@ -494,7 +494,7 @@ var CyclerPopup = GObject.registerClass({
         });
     }
 
-    _highlightItem(index, justOutline) {
+    _highlightItem(index, _justOutline) {
         this._highlight.window = this._items[index];
         global.window_group.set_child_above_sibling(this._highlight.actor, null);
     }
