@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Animation, AnimatedIcon, Spinner */
 
 const { GLib, Gio, St } = imports.gi;
 const Mainloop = imports.mainloop;

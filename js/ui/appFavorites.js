@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported getAppFavorites */
 
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;

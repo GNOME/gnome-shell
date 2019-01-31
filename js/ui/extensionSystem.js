@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init connect disconnect */
 
 const { Gio, St } = imports.gi;
 const Signals = imports.signals;

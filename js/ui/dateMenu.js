@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported DateMenuButton */
 
 const { Clutter, GLib, GnomeDesktop,
         GObject, GWeather, Shell, St } = imports.gi;

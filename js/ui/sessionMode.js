@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported SessionMode, listModes */
 
 const GLib = imports.gi.GLib;
 const Mainloop = imports.mainloop;

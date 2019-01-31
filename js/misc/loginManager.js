@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported canLock, getLoginManager, registerSessionWithGDM */
 
 const { GLib, Gio } = imports.gi;
 const Signals = imports.signals;

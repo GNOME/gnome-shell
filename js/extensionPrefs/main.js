@@ -1,3 +1,4 @@
+/* exported main */
 const Gettext = imports.gettext;
 const { Gdk, GLib, Gio, GObject, Gtk, Pango } = imports.gi;
 const Format = imports.format;

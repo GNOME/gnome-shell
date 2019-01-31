@@ -1,4 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+/* exported BarLevel */
 
 const { Atk, Clutter, St } = imports.gi;
 const Signals = imports.signals;

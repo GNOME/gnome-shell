@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported SwitcherPopup, SwitcherList */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Mainloop = imports.mainloop;

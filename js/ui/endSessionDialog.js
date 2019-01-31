@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init, EndSessionDialog */
 /*
  * Copyright 2010-2016 Red Hat, Inc
  *

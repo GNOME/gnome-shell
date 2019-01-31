@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { AccountsService, Clutter, Gio, GLib,
         GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;

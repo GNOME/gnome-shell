@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 //
 // A widget showing the user avatar and name
+/* exported UserWidget */
 
 const { Clutter, GLib, GObject, St } = imports.gi;
 

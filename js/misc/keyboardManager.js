@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported getKeyboardManager, holdKeyboard, releaseKeyboard */
 
 const { GLib, GnomeDesktop, Meta } = imports.gi;
 

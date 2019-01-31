@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported getOVirtCredentialsManager */
 
 const Gio = imports.gi.Gio;
 const Signals = imports.signals;

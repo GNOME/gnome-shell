@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported PresenceStatus, Presence, Inhibitor, SessionManager */
 
 const Gio = imports.gi.Gio;
 

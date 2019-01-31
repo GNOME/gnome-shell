@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported NMApplet */
 const { Clutter, Gio, GLib, GObject, NM, St } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;

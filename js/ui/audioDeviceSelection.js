@@ -1,3 +1,4 @@
+/* exported AudioDeviceSelectionDBus */
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;

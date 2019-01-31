@@ -1,3 +1,4 @@
+/* exported DwellClickIndicator */
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 
 const PanelMenu = imports.ui.panelMenu;

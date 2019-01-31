@@ -1,3 +1,11 @@
+/* exported run, script_desktopShown, script_overviewShowStart,
+            script_overviewShowDone, script_applicationsShowStart,
+            script_applicationsShowDone, script_mainViewDrawStart,
+            script_mainViewDrawDone, script_overviewDrawStart,
+            script_overviewDrawDone, script_redrawTestStart,
+            script_redrawTestDone, script_collectTimings,
+            script_geditLaunch, script_geditFirstFrame,
+            clutter_stagePaintStart, clutter_paintCompletedTimestamp */
 const { Clutter, Gio, Shell } = imports.gi;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;

@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported getCurrentExtension, getSettings, initTranslations,
+   isOutOfDate, installImporter */
 
 // Common utils for the extension system and the extension
 // preferences tool

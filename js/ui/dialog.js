@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Dialog, MessageDialogContent */
 
 const { Clutter, Gio, GObject, Pango, St } = imports.gi;
 

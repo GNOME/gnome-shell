@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported InputSourceIndicator */
 
 const { Clutter, Gio, GLib, GObject, IBus, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;

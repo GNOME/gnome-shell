@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Panel */
 
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
