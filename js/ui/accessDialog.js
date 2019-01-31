@@ -1,3 +1,4 @@
+/* exported AccessDialogDBus */
 const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;

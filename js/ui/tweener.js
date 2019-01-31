@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init, addCaller, addTween, getTweenCount, removeTweens,
+            pauseTweens, resumeTweens, registerSpecialProperty,
+            registerSpecialPropertyModifier, registerSpecialPropertySplitter */
 
 const { Clutter, GLib, Shell, St } = imports.gi;
 const Signals = imports.signals;

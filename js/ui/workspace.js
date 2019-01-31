@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Workspace */
 
 const { Atk, Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;

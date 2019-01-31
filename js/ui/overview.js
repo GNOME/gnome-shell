@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Overview */
 
 const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;

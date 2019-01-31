@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init, installExtension, uninstallExtension,
+            checkForUpdates, updateExtension */
 
 const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 

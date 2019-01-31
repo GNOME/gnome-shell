@@ -1,4 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+/* exported getCompletions, getCommonPrefix, getDeclaredConstants */
 
 // Returns a list of potential completions for text. Completions either
 // follow a dot (e.g. foo.ba -> bar) or they are picked from globalCompletionList (e.g. fo -> foo)

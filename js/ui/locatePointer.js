@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported LocatePointer */
 
 const { Gio } = imports.gi;
 const Ripples = imports.ui.ripples;

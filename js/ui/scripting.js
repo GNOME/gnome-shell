@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported sleep, waitLeisure, createTestWindow, waitTestWindows,
+            destroyTestWindows, defineScriptEvent, scriptEvent,
+            collectStatistics, runPerfScript */
 
 const { Gio, GLib, Meta, Shell } = imports.gi;
 const Mainloop = imports.mainloop;

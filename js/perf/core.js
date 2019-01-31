@@ -1,4 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported run, script_overviewShowStart, script_overviewShowDone,
+            script_applicationsShowStart, script_applicationsShowDone,
+            script_afterShowHide, malloc_usedSize, glx_swapComplete,
+            clutter_stagePaintDone */
 
 const System = imports.system;
 

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported EdgeDragAction */
 
 const { Clutter, GObject, Meta, St } = imports.gi;
 

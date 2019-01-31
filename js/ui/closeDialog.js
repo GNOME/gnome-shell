@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported CloseDialog */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell } = imports.gi;
 

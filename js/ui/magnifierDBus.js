@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported ShellMagnifier */
 
 const Gio = imports.gi.Gio;
 const Main = imports.ui.main;

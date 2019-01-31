@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported InputMethod */
 const { Clutter, GLib, GObject, IBus } = imports.gi;
 
 const Keyboard = imports.ui.status.keyboard;

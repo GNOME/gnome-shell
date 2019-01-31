@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Indicator */
 
 const { Clutter, Gio, St, UPowerGlib: UPower } = imports.gi;
 
