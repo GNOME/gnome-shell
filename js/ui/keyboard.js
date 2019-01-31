@@ -1282,7 +1282,7 @@ var Keyboard = class Keyboard {
                     }
                 }
             });
-            button.connect('released', (actor, keyval, str) => {
+            button.connect('released', (actor, keyval, _str) => {
                 if (keyval != 0) {
                     if (button._keyvalPress)
                         this._keyboardController.keyvalRelease(keyval);
@@ -1729,7 +1729,7 @@ var KeyboardController = class {
         this.emit('groups-changed');
     }
 
-    _onSourceChanged(inputSourceManager, oldSource) {
+    _onSourceChanged(inputSourceManager, _oldSource) {
         let source = inputSourceManager.currentSource;
         this._currentSource = source;
         this.emit('active-group', source.id);

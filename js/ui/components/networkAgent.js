@@ -199,7 +199,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         return true;
     }
 
-    _getWirelessSecrets(secrets, wirelessSetting) {
+    _getWirelessSecrets(secrets, _wirelessSetting) {
         let wirelessSecuritySetting = this._connection.get_setting_wireless_security();
 
         if (this._settingName == '802-1x') {
@@ -444,7 +444,7 @@ var VPNRequestHandler = class {
         this._destroyed = true;
     }
 
-    _vpnChildFinished(pid, status, requestObj) {
+    _vpnChildFinished(pid, status, _requestObj) {
         this._childWatch = 0;
         if (this._newStylePlugin) {
             // For new style plugin, all work is done in the async reading functions

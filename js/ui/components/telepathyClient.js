@@ -260,7 +260,7 @@ class TelepathyClient extends Tp.BaseClient {
         context.accept();
     }
 
-    _delegatedChannelsCb(client, channels) {
+    _delegatedChannelsCb(_client, _channels) {
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
     }
@@ -562,7 +562,7 @@ var ChatSource = class extends MessageTray.Source {
 
     // This is called for both messages we send from
     // our client and other clients as well.
-    _messageSent(channel, message, flags, token) {
+    _messageSent(channel, message, _flags, _token) {
         this._ensureNotification();
         message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
         this._notification.appendMessage(message);
@@ -600,7 +600,7 @@ var ChatSource = class extends MessageTray.Source {
         }
     }
 
-    _presenceChanged(contact, presence, status, message) {
+    _presenceChanged(_contact, _presence, _status, _message) {
         if (this._notification)
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,

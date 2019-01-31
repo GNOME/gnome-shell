@@ -571,7 +571,7 @@ var PopupMenuBase = class {
                     menuItem.actor.grab_key_focus();
             }
         });
-        menuItem._activateId = menuItem.connect_after('activate', (menuItem, event) => {
+        menuItem._activateId = menuItem.connect_after('activate', (menuItem, _event) => {
             this.emit('activate', menuItem);
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
         });

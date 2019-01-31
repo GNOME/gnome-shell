@@ -286,7 +286,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
             this._syncActualGeometry();
     }
 
-    _activeWorkspaceChanged(wm, from, to, direction) {
+    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         if (this._scrolling)
             return;
 
