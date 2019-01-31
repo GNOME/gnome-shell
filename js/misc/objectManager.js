@@ -281,8 +281,8 @@ var ObjectManager = class {
             let object = this._objects[objectPaths];
 
             let interfaceNames = Object.keys(object);
-            for (let j = 0; i < interfaceNames.length; i++) {
-                let interfaceName = interfaceNames[i];
+            for (let j = 0; j < interfaceNames.length; j++) {
+                let interfaceName = interfaceNames[j];
                 if (object[interfaceName])
                     proxies.push(object(interfaceName));
             }
