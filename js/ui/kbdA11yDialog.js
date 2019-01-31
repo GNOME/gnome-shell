@@ -8,7 +8,7 @@ const KEYBOARD_A11Y_SCHEMA    = 'org.gnome.desktop.a11y.keyboard';
 const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
 const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 
-var KbdA11yDialog = new GObject.registerClass(
+var KbdA11yDialog = GObject.registerClass(
 class KbdA11yDialog extends GObject.Object {
     _init() {
         super._init();

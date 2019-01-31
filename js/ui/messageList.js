@@ -159,7 +159,7 @@ var URLHighlighter = class URLHighlighter {
     }
 };
 
-var ScaleLayout = new GObject.registerClass(
+var ScaleLayout = GObject.registerClass(
 class ScaleLayout extends Clutter.BinLayout {
     _init(params) {
         this._container = null;
