@@ -1521,7 +1521,7 @@ var Workspace = class {
             return;
         }
 
-        let [clone, overlay] = this._addWindowClone(win, false);
+        let [clone, overlay_] = this._addWindowClone(win, false);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.actor.x;

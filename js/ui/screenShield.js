@@ -778,7 +778,7 @@ var ScreenShield = class {
             return;
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
-            let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
+            let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
             this._liftShield(true, -velocityY);
         } else {
             // restore the lock screen to its original place

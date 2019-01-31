@@ -865,7 +865,7 @@ var PaginatedIconGrid = GObject.registerClass({
     }
 
     _computePages(availWidthPerPage, availHeightPerPage) {
-        let [nColumns, usedWidth] = this._computeLayout(availWidthPerPage);
+        let [nColumns, usedWidth_] = this._computeLayout(availWidthPerPage);
         let nRows;
         let children = this._getVisibleChildren();
         if (nColumns > 0)
