@@ -657,7 +657,7 @@ var InputSourceManager = class {
         return false;
     }
 
-    _ibusSetContentType(im, purpose, hints) {
+    _ibusSetContentType(im, purpose, _hints) {
         if (purpose == IBus.InputPurpose.PASSWORD) {
             if (Object.keys(this._inputSources).length == Object.keys(this._ibusSources).length)
                 return;

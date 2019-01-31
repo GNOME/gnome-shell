@@ -200,16 +200,16 @@ var WindowClone = class {
         return Clutter.EVENT_STOP;
     }
 
-    _onDragBegin(draggable, time) {
+    _onDragBegin(_draggable, _time) {
         this.inDrag = true;
         this.emit('drag-begin');
     }
 
-    _onDragCancelled(draggable, time) {
+    _onDragCancelled(_draggable, _time) {
         this.emit('drag-cancelled');
     }
 
-    _onDragEnd(draggable, time, snapback) {
+    _onDragEnd(_draggable, _time, _snapback) {
         this.inDrag = false;
 
         // We may not have a parent if DnD completed successfully, in
@@ -1123,7 +1123,7 @@ class ThumbnailsBox extends St.Widget {
         this._stateUpdateQueued = true;
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
@@ -1311,7 +1311,7 @@ class ThumbnailsBox extends St.Widget {
         this._indicator.allocate(childBox, flags);
     }
 
-    _activeWorkspaceChanged(wm, from, to, direction) {
+    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();

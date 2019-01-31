@@ -109,7 +109,7 @@ class BaseAppView {
         this._allItems = [];
     }
 
-    _childFocused(actor) {
+    _childFocused(_actor) {
         // Nothing by default
     }
 
@@ -986,7 +986,7 @@ var AppSearchProvider = class AppSearchProvider {
         return results.slice(0, maxNumber);
     }
 
-    getInitialResultSet(terms, callback, cancellable) {
+    getInitialResultSet(terms, callback, _cancellable) {
         let query = terms.join(' ');
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
@@ -1864,7 +1864,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         return item;
     }
 
-    popup(activatingButton) {
+    popup(_activatingButton) {
         this._redisplay();
         this.open();
     }

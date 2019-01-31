@@ -856,7 +856,7 @@ var LookingGlass = class LookingGlass {
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
 
-        this._entry.clutter_text.connect('activate', (o, e) => {
+        this._entry.clutter_text.connect('activate', (o, _e) => {
             // Hide any completions we are currently showing
             this._hideCompletions();
 
