@@ -26,7 +26,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         });
     }
 
-    _getPreferredSizeForOrientation(forSize) {
+    _getPreferredSizeForOrientation(_forSize) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let themeNode = this.get_theme_node();
 

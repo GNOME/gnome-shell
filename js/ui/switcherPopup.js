@@ -85,7 +85,7 @@ var SwitcherPopup = GObject.registerClass({
         this._switcherList.allocate(childBox, flags);
     }
 
-    _initialSelection(backward, binding) {
+    _initialSelection(backward, _binding) {
         if (backward)
             this._select(this._items.length - 1);
         else if (this._items.length == 1)
@@ -161,7 +161,7 @@ var SwitcherPopup = GObject.registerClass({
         return mod(this._selectedIndex - 1, this._items.length);
     }
 
-    _keyPressHandler(keysym, action) {
+    _keyPressHandler(_keysym, _action) {
         throw new GObject.NotImplementedError(`_keyPressHandler in ${this.constructor.name}`);
     }
 
@@ -296,7 +296,7 @@ var SwitcherPopup = GObject.registerClass({
         }
     }
 
-    _finish(timestamp) {
+    _finish(_timestamp) {
         this.fadeAndDestroy();
     }
 
@@ -531,7 +531,7 @@ var SwitcherList = GObject.registerClass({
         return themeNode.adjust_preferred_width(maxChildMin, minListWidth);
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let maxChildMin = 0;
         let maxChildNat = 0;
 

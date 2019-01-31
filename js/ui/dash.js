@@ -241,14 +241,14 @@ class ShowAppsIcon extends DashItemContainer {
             this.setLabelText(_("Show Applications"));
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (!this._canRemoveApp(getAppFromSource(source)))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source, actor, x, y, time) {
+    acceptDrop(source, _actor, _x, _y, _time) {
         let app = getAppFromSource(source);
         if (!this._canRemoveApp(app))
             return false;
@@ -790,7 +790,7 @@ var Dash = class Dash {
         }
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, actor, x, y, _time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
@@ -868,7 +868,7 @@ var Dash = class Dash {
     }
 
     // Draggable target interface
-    acceptDrop(source, actor, x, y, time) {
+    acceptDrop(source, _actor, _x, _y, _time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps

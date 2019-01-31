@@ -827,7 +827,7 @@ Signals.addSignalMethods(Source.prototype);
 
 var MessageTray = class MessageTray {
     constructor() {
-        this._presence = new GnomeSession.Presence((proxy, error) => {
+        this._presence = new GnomeSession.Presence((proxy, _error) => {
             this._onStatusChanged(proxy.status);
         });
         this._busy = false;

@@ -303,7 +303,7 @@ var ShellUserVerifier = class {
             });
     }
 
-    _oVirtUserAuthenticated(token) {
+    _oVirtUserAuthenticated(_token) {
         this._preemptingService = OVIRT_SERVICE_NAME;
         this.emit('ovirt-user-authenticated');
     }

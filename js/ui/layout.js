@@ -165,12 +165,12 @@ var Monitor = class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
-    vfunc_get_preferred_width (forHeight) {
+    vfunc_get_preferred_width (_forHeight) {
         let width = global.stage.width;
         return [width, width];
     }
 
-    vfunc_get_preferred_height (forWidth) {
+    vfunc_get_preferred_height (_forWidth) {
         let height = global.stage.height;
         return [height, height];
     }
@@ -1230,7 +1230,7 @@ var HotCorner = class HotCorner {
         }
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
@@ -1347,7 +1347,7 @@ var PressureBarrier = class PressureBarrier {
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
     }
 
-    _onBarrierLeft(barrier, event) {
+    _onBarrierLeft(barrier, _event) {
         barrier._isHit = false;
         if (this._barriers.every(b => !b._isHit)) {
             this._reset();
