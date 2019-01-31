@@ -61,8 +61,6 @@ struct _ShellGlobal {
 
   MetaDisplay *meta_display;
   MetaWorkspaceManager *workspace_manager;
-  GdkDisplay *gdk_display;
-  MetaX11Display *x11_display;
   Display *xdisplay;
 
   char *session_mode;
@@ -849,10 +847,6 @@ _shell_global_set_plugin (ShellGlobal *global,
   display = meta_plugin_get_display (plugin);
   global->meta_display = display;
   global->workspace_manager = meta_display_get_workspace_manager (display);
-  global->x11_display = meta_display_get_x11_display (display);
-  global->xdisplay = meta_x11_display_get_xdisplay (global->x11_display);
-
-  global->gdk_display = gdk_x11_lookup_xdisplay (global->xdisplay);
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
 
@@ -862,6 +856,8 @@ _shell_global_set_plugin (ShellGlobal *global,
     }
   else
     {
+      MetaX11Display *x11_display = meta_display_get_x11_display (display);
+      global->xdisplay = meta_x11_display_get_xdisplay (x11_display);
       global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
     }
 
