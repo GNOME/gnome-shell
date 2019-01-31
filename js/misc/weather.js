@@ -61,8 +61,8 @@ var WeatherClient = class {
             this.emit('changed');
         });
 
-        this._weatherAppMon = new Util.AppSettingsMonitor('org.gnome.Weather.Application.desktop',
-                                                          'org.gnome.Weather.Application');
+        this._weatherAppMon = new Util.AppSettingsMonitor('org.gnome.Weather.desktop',
+                                                          'org.gnome.Weather');
         this._weatherAppMon.connect('available-changed', () => { this.emit('changed'); });
         this._weatherAppMon.watchSetting('automatic-location',
                                          this._onAutomaticLocationChanged.bind(this));
@@ -234,7 +234,7 @@ var WeatherClient = class {
         if (table != 'gnome' || id != 'geolocation')
             return;
 
-        let permission = perms['org.gnome.Weather.Application'] || ['NONE'];
+        let permission = perms['org.gnome.Weather'] || ['NONE'];
         let [accuracy] = permission;
         this._weatherAuthorized = accuracy != 'NONE';
 
