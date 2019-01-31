@@ -23,7 +23,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         });
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let themeNode = this.get_theme_node();
 
@@ -47,7 +47,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         return themeNode.adjust_preferred_height(height, height);
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
 

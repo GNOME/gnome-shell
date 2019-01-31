@@ -177,7 +177,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     }
 
-    _onLoadFailedWithTlsErrors(view, failingURI, certificate, errors) {
+    _onLoadFailedWithTlsErrors(view, failingURI, certificate, _errors) {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         let uri = new Soup.URI(failingURI);
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());

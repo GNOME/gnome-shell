@@ -154,7 +154,7 @@ var ShellMountOperation = class {
         this._dialog.open();
     }
 
-    close(op) {
+    close(_op) {
         this._closeExistingDialog();
         this._processesDialog = null;
 
@@ -753,7 +753,7 @@ var GnomeShellMountOpHandler = class {
      * Closes a dialog previously opened by AskPassword, AskQuestion or ShowProcesses.
      * If no dialog is open, does nothing.
      */
-    Close(params, invocation) {
+    Close(_params, _invocation) {
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
         this._closeDialog();
     }

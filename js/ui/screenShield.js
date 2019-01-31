@@ -773,7 +773,7 @@ var ScreenShield = class {
         return true;
     }
 
-    _onDragEnd(action, actor, eventX, eventY, modifiers) {
+    _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
         if (this._lockScreenState != MessageTray.State.HIDING)
             return;
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {

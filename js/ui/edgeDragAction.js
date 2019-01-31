@@ -26,7 +26,7 @@ var EdgeDragAction = GObject.registerClass({
         return global.display.get_monitor_geometry(monitorIndex);
     }
 
-    vfunc_gesture_prepare(actor) {
+    vfunc_gesture_prepare(_actor) {
         if (this.get_n_current_points() == 0)
             return false;
 
@@ -42,7 +42,7 @@ var EdgeDragAction = GObject.registerClass({
                 (this._side == St.Side.BOTTOM && y > monitorRect.y + monitorRect.height - EDGE_THRESHOLD));
     }
 
-    vfunc_gesture_progress(actor) {
+    vfunc_gesture_progress(_actor) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let offsetX = Math.abs (x - startX);
@@ -62,7 +62,7 @@ var EdgeDragAction = GObject.registerClass({
         return true;
     }
 
-    vfunc_gesture_end(actor) {
+    vfunc_gesture_end(_actor) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let monitorRect = this._getMonitorRect(startX, startY);

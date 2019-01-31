@@ -182,7 +182,7 @@ var Slider = class extends BarLevel.BarLevel {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _moveHandle(absX, absY) {
+    _moveHandle(absX, _absY) {
         let relX, sliderX;
         [sliderX] = this.actor.get_transformed_position();
         relX = absX - sliderX;

@@ -79,7 +79,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         this._requestExported = this._request.export(connection, this._handle);
     }
 
-    CloseAsync(invocation, params) {
+    CloseAsync(invocation, _params) {
         if (this._invocation.get_sender() != invocation.get_sender()) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,

@@ -199,7 +199,7 @@ var LoginManagerSystemd = class {
 Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
 var LoginManagerDummy = class {
-    getCurrentSessionProxy(callback) {
+    getCurrentSessionProxy(_callback) {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()
         // methods), but just never calling the callback should be safer
