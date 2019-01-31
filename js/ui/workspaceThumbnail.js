@@ -683,7 +683,7 @@ class ThumbnailsBox extends St.Widget {
     }
 
     _activateThumbnailAtPoint(stageX, stageY, time) {
-        let [r, x, y] = this.transform_stage_point(stageX, stageY);
+        let [r_, x_, y] = this.transform_stage_point(stageX, stageY);
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];

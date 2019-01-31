@@ -131,7 +131,7 @@ var SwitcherPopup = GObject.registerClass({
         // details.) So we check now. (Have to do this after updating
         // selection.)
         if (this._modifierMask) {
-            let [x, y, mods] = global.get_pointer();
+            let [x_, y_, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
                 this._finish(global.get_current_time());
                 return false;
@@ -184,7 +184,7 @@ var SwitcherPopup = GObject.registerClass({
 
     _keyReleaseEvent(actor, event) {
         if (this._modifierMask) {
-            let [x, y, mods] = global.get_pointer();
+            let [x_, y_, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
 
             if (state == 0)
@@ -439,7 +439,7 @@ var SwitcherList = GObject.registerClass({
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value] = adjustment.get_values();
         let [absItemX] = this._items[index].get_transformed_position();
-        let [result, posX, posY] = this.transform_stage_point(absItemX, 0);
+        let [result_, posX, posY_] = this.transform_stage_point(absItemX, 0);
         let [containerWidth] = this.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
@@ -450,7 +450,7 @@ var SwitcherList = GObject.registerClass({
 
     _scrollToLeft() {
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+        let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[this._highlighted];
 
@@ -474,7 +474,7 @@ var SwitcherList = GObject.registerClass({
 
     _scrollToRight() {
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+        let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[this._highlighted];
 

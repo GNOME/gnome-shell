@@ -372,7 +372,7 @@ var SessionMenuButton = class {
         }
 
         for (let i = 0; i < ids.length; i++) {
-            let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
+            let [sessionName, sessionDescription_] = Gdm.get_session_name_and_description(ids[i]);
 
             let id = ids[i];
             let item = new PopupMenu.PopupMenuItem(sessionName);

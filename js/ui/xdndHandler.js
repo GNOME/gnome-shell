@@ -101,7 +101,7 @@ var XdndHandler = class {
 
         while (pickedActor) {
             if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
-                let [r, targX, targY] = pickedActor.transform_stage_point(x, y);
+                let [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
                 let result = pickedActor._delegate.handleDragOver(this,
                                                                   dragEvent.dragActor,
                                                                   targX,

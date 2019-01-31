@@ -109,7 +109,7 @@ var LoginManagerSystemd = class {
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
-            let [session, objectPath] = this._userProxy.Display;
+            let [session, objectPath_] = this._userProxy.Display;
             if (session) {
                 log(`Will monitor session ${session}`);
                 sessionId = session;
@@ -182,7 +182,7 @@ var LoginManagerSystemd = class {
             (proxy, result) => {
                 let fd = -1;
                 try {
-                    let [outVariant, fdList] = proxy.call_with_unix_fd_list_finish(result);
+                    let [outVariant_, fdList] = proxy.call_with_unix_fd_list_finish(result);
                     fd = fdList.steal_fds()[0];
                     callback(new Gio.UnixInputStream({ fd: fd }));
                 } catch (e) {

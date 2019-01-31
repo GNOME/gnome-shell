@@ -132,7 +132,7 @@ var AccessDialogDBus = class {
             return;
         }
 
-        let [handle, appId, parentWindow, title, subtitle, body, options] = params;
+        let [handle, appId, parentWindow_, title, subtitle, body, options] = params;
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
         if (appId && `${appId}.desktop` != this._windowTracker.focus_app.id) {

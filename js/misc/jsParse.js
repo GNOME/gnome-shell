@@ -8,7 +8,7 @@
 // This function is likely the one you want to call from external modules
 function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
-    let expr, base;
+    let expr_, base;
     let attrHead = '';
     if (globalCompletionList == null) {
         globalCompletionList = [];
@@ -21,7 +21,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         // Look for expressions like "Main.panel.foo" and match Main.panel and foo
         let matches = text.match(/(.*)\.(.*)/);
         if (matches) {
-            [expr, base, attrHead] = matches;
+            [expr_, base, attrHead] = matches;
 
             methods = getPropertyNamesFromExpression(base, commandHeader).filter(
                 attr => attr.slice(0, attrHead.length) == attrHead
@@ -32,7 +32,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         // not proceeded by a dot and match them against global constants
         matches = text.match(/^(\w*)$/);
         if (text == '' || matches) {
-            [expr, attrHead] = matches;
+            [expr_, attrHead] = matches;
             methods = globalCompletionList.filter(
                 attr => attr.slice(0, attrHead.length) == attrHead
             );
@@ -230,10 +230,10 @@ function isUnsafeExpression(str) {
 function getDeclaredConstants(str) {
     let ret = [];
     str.split(';').forEach(s => {
-        let base, keyword;
+        let base_, keyword;
         let match = s.match(/const\s+(\w+)\s*=/);
         if (match) {
-            [base, keyword] = match;
+            [base_, keyword] = match;
             ret.push(keyword);
         }
     });

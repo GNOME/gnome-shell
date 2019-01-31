@@ -84,7 +84,7 @@ function loadInterfaceXML(iface) {
     let f = Gio.File.new_for_uri(uri);
 
     try {
-        let [ok, bytes] = f.load_contents(null);
+        let [ok_, bytes] = f.load_contents(null);
         if (bytes instanceof Uint8Array)
             xml = imports.byteArray.toString(bytes);
         else

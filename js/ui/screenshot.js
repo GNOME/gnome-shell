@@ -199,7 +199,7 @@ var ScreenshotService = class {
                 if (!screenshot)
                     return;
                 screenshot.pick_color(...coords, (o, res) => {
-                    let [success, color] = screenshot.pick_color_finish(res);
+                    let [success_, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
                         color: GLib.Variant.new('(ddd)', [
