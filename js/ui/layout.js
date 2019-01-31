@@ -1058,8 +1058,7 @@ var LayoutManager = GObject.registerClass({
             }
         }
 
-        if (!Meta.is_wayland_compositor())
-            global.set_stage_input_region(rects);
+        global.set_stage_input_region(rects);
         this._isPopupWindowVisible = isPopupMenuVisible;
 
         let workspaceManager = global.workspace_manager;
