@@ -54,7 +54,7 @@ const defaultKeysPost = [
       [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
 ];
 
-var KeyContainer = new GObject.registerClass(
+var KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
