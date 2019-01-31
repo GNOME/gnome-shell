@@ -1,3 +1,4 @@
+/* exported getDefault */
 const { AccountsService, Clutter, Gdm, Gio, GLib, GObject, Meta } = imports.gi;
 
 const GnomeSession = imports.misc.gnomeSession;

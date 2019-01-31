@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Button, SystemIndicator */
 
 const { Atk, Clutter, GObject, St } = imports.gi;
 const Signals = imports.signals;

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Indicator */
 
 const { AccountsService, Clutter, GLib, GObject, Shell, St } = imports.gi;
 

@@ -1,3 +1,4 @@
+/* exported main */
 const Format = imports.format;
 const Gettext = imports.gettext;
 const { Gio, GLib, GObject, Gtk, Pango, Soup, WebKit2: WebKit } = imports.gi;

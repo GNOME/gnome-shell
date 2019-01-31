@@ -1,3 +1,4 @@
+/* exported IntrospectService */
 const { Gio, GLib, Meta, Shell } = imports.gi;
 
 const INTROSPECT_SCHEMA = 'org.gnome.shell';

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported GnomeShell, ScreenSaverDBus */
 
 const { Gio, GLib, Meta, Shell } = imports.gi;
 

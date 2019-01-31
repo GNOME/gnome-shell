@@ -1,3 +1,4 @@
+/* exported InhibitShortcutsDialog */
 const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell } = imports.gi;
 
 const Dialog = imports.ui.dialog;
