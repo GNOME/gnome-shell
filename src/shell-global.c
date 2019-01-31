@@ -642,6 +642,9 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
+  if (meta_is_wayland_compositor ())
+    return;
+
   nrects = g_slist_length (rectangles);
   rects = g_new (XRectangle, nrects);
   for (r = rectangles, i = 0; r; r = r->next, i++)
