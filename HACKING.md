@@ -158,15 +158,15 @@ you to inherit from a type to use it, you can do so:
     var MyClutterActor = GObject.registerClass(
     class MyClutterActor extends Clutter.Actor {
 
-        vfunc_get_preferred_width(actor, forHeight) {
+        vfunc_get_preferred_width(forHeight) {
              return [100, 100];
         }
 
-        vfunc_get_preferred_height(actor, forWidth) {
+        vfunc_get_preferred_height(forWidth) {
              return [100, 100];
         }
 
-        vfunc_paint(actor) {
+        vfunc_paint() {
              let alloc = this.get_allocation_box();
              Cogl.set_source_color4ub(255, 0, 0, 255);
              Cogl.rectangle(alloc.x1, alloc.y1,

@@ -835,7 +835,7 @@ class Panel extends St.Widget {
         this._updateSolidStyle();
     }
 
-    vfunc_get_preferred_width(actor, forHeight) {
+    vfunc_get_preferred_width(forHeight) {
         let primaryMonitor = Main.layoutManager.primaryMonitor;
 
         if (primaryMonitor)

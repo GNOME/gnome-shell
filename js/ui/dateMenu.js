@@ -377,13 +377,13 @@ class IndicatorPad extends St.Widget {
         super._init();
     }
 
-    vfunc_get_preferred_width(container, forHeight) {
+    vfunc_get_preferred_width(forHeight) {
         if (this._source.visible)
             return this._source.get_preferred_width(forHeight);
         return [0, 0];
     }
 
-    vfunc_get_preferred_height(container, forWidth) {
+    vfunc_get_preferred_height(forWidth) {
         if (this._source.visible)
             return this._source.get_preferred_height(forWidth);
         return [0, 0];
