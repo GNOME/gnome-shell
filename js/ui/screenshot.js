@@ -125,11 +125,11 @@ var ScreenshotService = class {
     }
 
     ScreenshotWindowAsync(params, invocation) {
-        let [include_frame, include_cursor, flash, filename] = params;
+        let [includeFrame, includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_window (include_frame, include_cursor, filename,
+        screenshot.screenshot_window (includeFrame, includeCursor, filename,
             (o, res) => {
                 try {
                     let [result, area, filenameUsed] =
@@ -143,11 +143,11 @@ var ScreenshotService = class {
     }
 
     ScreenshotAsync(params, invocation) {
-        let [include_cursor, flash, filename] = params;
+        let [includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot(include_cursor, filename,
+        screenshot.screenshot(includeCursor, filename,
             (o, res) => {
                 try {
                     let [result, area, filenameUsed] =

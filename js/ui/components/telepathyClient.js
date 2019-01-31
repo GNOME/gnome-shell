@@ -181,7 +181,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     vfunc_handle_channels(...args) {
-        let [account, conn, channels, requests, user_action_time, context] = args;
+        let [account, conn, channels, requests, userActionTime, context] = args;
         this._handlingChannels(account, conn, channels, true);
         context.accept();
     }

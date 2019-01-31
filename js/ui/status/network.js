@@ -937,19 +937,19 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             return accessPoint._secType;
 
         let flags = accessPoint.flags;
-        let wpa_flags = accessPoint.wpa_flags;
-        let rsn_flags = accessPoint.rsn_flags;
+        let wpaFlags = accessPoint.wpa_flags;
+        let rsnFlags = accessPoint.rsn_flags;
         let type;
-        if (rsn_flags != NM80211ApSecurityFlags.NONE) {
+        if (rsnFlags != NM80211ApSecurityFlags.NONE) {
             /* RSN check first so that WPA+WPA2 APs are treated as RSN/WPA2 */
-            if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
+            if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
 	        type = NMAccessPointSecurity.WPA2_ENT;
-	    else if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
+	    else if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
 	        type = NMAccessPointSecurity.WPA2_PSK;
-        } else if (wpa_flags != NM80211ApSecurityFlags.NONE) {
-            if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
+        } else if (wpaFlags != NM80211ApSecurityFlags.NONE) {
+            if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
                 type = NMAccessPointSecurity.WPA_ENT;
-            else if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
+            else if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
 	        type = NMAccessPointSecurity.WPA_PSK;
         } else {
             if (flags & NM80211ApFlags.PRIVACY)

@@ -99,13 +99,13 @@ class ATIndicator extends PanelMenu.Button {
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
     }
 
-    _buildItemExtended(string, initial_value, writable, on_set) {
-        let widget = new PopupMenu.PopupSwitchMenuItem(string, initial_value);
+    _buildItemExtended(string, initialValue, writable, onSet) {
+        let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
         if (!writable)
             widget.actor.reactive = false;
         else
             widget.connect('toggled', item => {
-                on_set(item.state);
+                onSet(item.state);
             });
         return widget;
     }
@@ -173,9 +173,9 @@ class ATIndicator extends PanelMenu.Button {
     _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-        let initial_setting = (factor > 1.0);
+        let initialSetting = (factor > 1.0);
         let widget = this._buildItemExtended(_("Large Text"),
-            initial_setting,
+            initialSetting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             enabled => {
                 if (enabled)

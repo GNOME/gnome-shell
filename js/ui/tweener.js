@@ -173,13 +173,13 @@ var ClutterFrameTicker = class {
             this._onNewFrame(frame);
         });
 
-        let perf_log = Shell.PerfLog.get_default();
-        perf_log.define_event("tweener.framePrepareStart",
-                              "Start of a new animation frame",
-                              "");
-        perf_log.define_event("tweener.framePrepareDone",
-                              "Finished preparing frame",
-                              "");
+        let perfLog = Shell.PerfLog.get_default();
+        perfLog.define_event("tweener.framePrepareStart",
+                             "Start of a new animation frame",
+                             "");
+        perfLog.define_event("tweener.framePrepareDone",
+                             "Finished preparing frame",
+                             "");
     }
 
     get FRAME_RATE() {
@@ -196,11 +196,11 @@ var ClutterFrameTicker = class {
             this._startTime = GLib.get_monotonic_time() / 1000.0;
 
         // currentTime is in milliseconds
-        let perf_log = Shell.PerfLog.get_default();
+        let perfLog = Shell.PerfLog.get_default();
         this._currentTime = GLib.get_monotonic_time() / 1000.0 - this._startTime;
-        perf_log.event("tweener.framePrepareStart");
+        perfLog.event("tweener.framePrepareStart");
         this.emit('prepare-frame');
-        perf_log.event("tweener.framePrepareDone");
+        perfLog.event("tweener.framePrepareDone");
     }
 
     getTime() {

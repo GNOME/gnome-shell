@@ -135,17 +135,17 @@ var URLHighlighter = class URLHighlighter {
         let success;
         let [x, y] = event.get_coords();
         [success, x, y] = this.actor.transform_stage_point(x, y);
-        let find_pos = -1;
+        let findPos = -1;
         for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
-            let [success, px, py, line_height] = this.actor.clutter_text.position_to_coords(i);
-            if (py > y || py + line_height < y || x < px)
+            let [success, px, py, lineHeight] = this.actor.clutter_text.position_to_coords(i);
+            if (py > y || py + lineHeight < y || x < px)
                 continue;
-            find_pos = i;
+            findPos = i;
         }
-        if (find_pos != -1) {
+        if (findPos != -1) {
             for (let i = 0; i < this._urls.length; i++)
-            if (find_pos >= this._urls[i].pos &&
-                this._urls[i].pos + this._urls[i].url.length > find_pos)
+            if (findPos >= this._urls[i].pos &&
+                this._urls[i].pos + this._urls[i].url.length > findPos)
                 return i;
         }
         return -1;

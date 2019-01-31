@@ -69,16 +69,16 @@ function spawn(argv) {
 }
 
 // spawnCommandLine:
-// @command_line: a command line
+// @commandLine: a command line
 //
-// Runs @command_line in the background, handling any errors that
+// Runs @commandLine in the background, handling any errors that
 // occur when trying to parse or start the program.
-function spawnCommandLine(command_line) {
+function spawnCommandLine(commandLine) {
     try {
-        let [success, argv] = GLib.shell_parse_argv(command_line);
+        let [success, argv] = GLib.shell_parse_argv(commandLine);
         trySpawn(argv);
     } catch (err) {
-        _handleSpawnError(command_line, err);
+        _handleSpawnError(commandLine, err);
     }
 }
 
@@ -134,15 +134,15 @@ function trySpawn(argv) {
 }
 
 // trySpawnCommandLine:
-// @command_line: a command line
+// @commandLine: a command line
 //
-// Runs @command_line in the background. If launching @command_line
+// Runs @commandLine in the background. If launching @commandLine
 // fails, this will throw an error.
-function trySpawnCommandLine(command_line) {
+function trySpawnCommandLine(commandLine) {
     let success, argv;
 
     try {
-        [success, argv] = GLib.shell_parse_argv(command_line);
+        [success, argv] = GLib.shell_parse_argv(commandLine);
     } catch (err) {
         // Replace "Error invoking GLib.shell_parse_argv: " with
         // something nicer

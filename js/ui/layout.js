@@ -147,13 +147,13 @@ var MonitorConstraint = GObject.registerClass({
 });
 
 var Monitor = class Monitor {
-    constructor(index, geometry, geometry_scale) {
+    constructor(index, geometry, geometryScale) {
         this.index = index;
         this.x = geometry.x;
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
-        this.geometry_scale = geometry_scale;
+        this.geometry_scale = geometryScale;
     }
 
     get inFullscreen() {

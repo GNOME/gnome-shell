@@ -250,14 +250,14 @@ var AuthenticationDialog = GObject.registerClass({
         }
     }
 
-    _onSessionRequest(session, request, echo_on) {
+    _onSessionRequest(session, request, echoOn) {
         // Cheap localization trick
         if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
         else
             this._passwordLabel.set_text(request);
 
-        if (echo_on)
+        if (echoOn)
             this._passwordEntry.clutter_text.set_password_char('');
         else
             this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE

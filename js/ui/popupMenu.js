@@ -650,14 +650,14 @@ var PopupMenuBase = class {
     }
 
     addMenuItem(menuItem, position) {
-        let before_item = null;
+        let beforeItem = null;
         if (position == undefined) {
             this.box.add(menuItem.actor);
         } else {
             let items = this._getMenuItems();
             if (position < items.length) {
-                before_item = items[position].actor;
-                this.box.insert_child_below(menuItem.actor, before_item);
+                beforeItem = items[position].actor;
+                this.box.insert_child_below(menuItem.actor, beforeItem);
             } else {
                 this.box.add(menuItem.actor);
             }
@@ -687,10 +687,10 @@ var PopupMenuBase = class {
                 this.length--;
             });
         } else if (menuItem instanceof PopupSubMenuMenuItem) {
-            if (before_item == null)
+            if (beforeItem == null)
                 this.box.add(menuItem.menu.actor);
             else
-                this.box.insert_child_below(menuItem.menu.actor, before_item);
+                this.box.insert_child_below(menuItem.menu.actor, beforeItem);
 
             this._connectItemSignals(menuItem);
             let subMenuActiveChangeId = menuItem.menu.connect('active-changed', this._subMenuActiveChanged.bind(this));

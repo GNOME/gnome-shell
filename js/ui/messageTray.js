@@ -590,11 +590,11 @@ class SourceActor extends St.Widget {
         });
         this._actorDestroyed = false;
 
-        let scale_factor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._iconBin = new St.Bin({ x_fill: true,
                                      x_expand: true,
-                                     height: size * scale_factor,
-                                     width: size * scale_factor });
+                                     height: size * scaleFactor,
+                                     width: size * scaleFactor });
 
         this.add_actor(this._iconBin);
 

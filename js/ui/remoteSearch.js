@@ -191,18 +191,18 @@ var RemoteSearchProvider = class {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
 
-        let g_flags = Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES;
+        let gFlags = Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES;
         if (autoStart)
-            g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION;
+            gFlags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION;
         else
-            g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START;
+            gFlags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START;
 
         this.proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
                                          g_name: dbusName,
                                          g_object_path: dbusPath,
                                          g_interface_info: proxyInfo,
                                          g_interface_name: proxyInfo.name,
-                                         g_flags });
+                                         gFlags });
         this.proxy.init_async(GLib.PRIORITY_DEFAULT, null, null);
 
         this.appInfo = appInfo;

@@ -170,11 +170,11 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
-            let idle_id = Mainloop.idle_add(() => {
+            let idleId = Mainloop.idle_add(() => {
                 this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 return GLib.SOURCE_REMOVE;
             });
-            GLib.Source.set_name_by_id(idle_id, '[gnome-shell] this._emitNotificationClosed');
+            GLib.Source.set_name_by_id(idleId, '[gnome-shell] this._emitNotificationClosed');
             return invocation.return_value(GLib.Variant.new('(u)', [id]));
         }
 

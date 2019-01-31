@@ -62,11 +62,11 @@ var Animation = class {
         if (!validResourceScale)
             return;
 
-        let texture_cache = St.TextureCache.get_default();
+        let textureCache = St.TextureCache.get_default();
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._animations = texture_cache.load_sliced_image(file, width, height,
-                                                           scaleFactor, resourceScale,
-                                                           this._animationsLoaded.bind(this));
+        this._animations = textureCache.load_sliced_image(file, width, height,
+                                                          scaleFactor, resourceScale,
+                                                          this._animationsLoaded.bind(this));
         this.actor.set_child(this._animations);
     }
 

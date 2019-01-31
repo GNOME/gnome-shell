@@ -1442,8 +1442,8 @@ var Keyboard = class Keyboard {
         numOfVertSlots = rows.length;
 
         for (let i = 0; i < rows.length; ++i) {
-            let keyboard_row = rows[i];
-            let keys = keyboard_row.get_children();
+            let keyboardRow = rows[i];
+            let keys = keyboardRow.get_children();
 
             numOfHorizSlots = Math.max(numOfHorizSlots, keys.length);
         }

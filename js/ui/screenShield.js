@@ -381,11 +381,11 @@ class ScreenShieldArrow extends St.Bin {
         if (!this._shadow)
             return true;
 
-        let shadow_box = new Clutter.ActorBox();
-        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadow_box);
+        let shadowBox = new Clutter.ActorBox();
+        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadowBox);
 
-        volume.set_width(Math.max(shadow_box.x2 - shadow_box.x1, volume.get_width()));
-        volume.set_height(Math.max(shadow_box.y2 - shadow_box.y1, volume.get_height()));
+        volume.set_width(Math.max(shadowBox.x2 - shadowBox.x1, volume.get_width()));
+        volume.set_height(Math.max(shadowBox.y2 - shadowBox.y1, volume.get_height()));
 
         return true;
     }
@@ -933,9 +933,9 @@ var ScreenShield = class {
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
             let delta = (h + this._lockScreenGroup.y);
-            let min_velocity = global.stage.height / (CURTAIN_SLIDE_TIME * 1000);
+            let minVelocity = global.stage.height / (CURTAIN_SLIDE_TIME * 1000);
 
-            velocity = Math.max(min_velocity, velocity);
+            velocity = Math.max(minVelocity, velocity);
             let time = (delta / velocity) / 1000;
 
             Tweener.addTween(this._lockScreenGroup,

@@ -202,8 +202,8 @@ class RunDialog extends ModalDialog.ModalDialog {
             try {
                 if (inTerminal) {
                     let exec = this._terminalSettings.get_string(EXEC_KEY);
-                    let exec_arg = this._terminalSettings.get_string(EXEC_ARG_KEY);
-                    command = exec + ' ' + exec_arg + ' ' + input;
+                    let execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
+                    command = exec + ' ' + execArg + ' ' + input;
                 }
                 Util.trySpawnCommandLine(command);
             } catch (e) {
