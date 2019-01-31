@@ -41,8 +41,6 @@ const CROSS_HAIRS_OPACITY_KEY   = 'cross-hairs-opacity';
 const CROSS_HAIRS_LENGTH_KEY    = 'cross-hairs-length';
 const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
-let magDBusService = null;
-
 var MouseSpriteContent = GObject.registerClass({
     Implements: [ Clutter.Content ],
 }, class MouseSpriteContent extends GObject.Object {
@@ -122,7 +120,7 @@ var Magnifier = class Magnifier {
         });
 
         // Export to dbus.
-        magDBusService = new MagnifierDBus.ShellMagnifier();
+        (new MagnifierDBus.ShellMagnifier());
         this.setActive(St.Settings.get().magnifier_active);
     }
 
@@ -1818,9 +1816,7 @@ var Crosshairs = class Crosshairs {
     reCenter(clipSize) {
         let [groupWidth, groupHeight] = this._actor.get_size();
         let leftLength = this._horizLeftHair.get_width();
-        let rightLength = this._horizRightHair.get_width();
         let topLength = this._vertTopHair.get_height();
-        let bottomLength = this._vertBottomHair.get_height();
         let thickness = this._horizLeftHair.get_height();
 
         // Deal with clip rectangle.

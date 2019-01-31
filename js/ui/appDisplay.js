@@ -20,7 +20,6 @@ const SystemActions = imports.misc.systemActions;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-var MAX_APPLICATION_WORK_MILLIS = 75;
 var MENU_POPUP_TIMEOUT = 600;
 var MAX_COLUMNS = 6;
 var MIN_COLUMNS = 4;
@@ -34,22 +33,8 @@ var FOLDER_SUBICON_FRACTION = .4;
 
 var MIN_FREQUENT_APPS_COUNT = 3;
 
-var INDICATORS_BASE_TIME = 0.25;
-var INDICATORS_ANIMATION_DELAY = 0.125;
-var INDICATORS_ANIMATION_MAX_TIME = 0.75;
-
 var VIEWS_SWITCH_TIME = 0.4;
 var VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
-
-// Follow iconGrid animations approach and divide by 2 to animate out to
-// not annoy the user when the user wants to quit appDisplay.
-// Also, make sure we don't exceed iconGrid animation total time or
-// views switch time.
-var INDICATORS_BASE_TIME_OUT = 0.125;
-var INDICATORS_ANIMATION_DELAY_OUT = 0.0625;
-var INDICATORS_ANIMATION_MAX_TIME_OUT =
-    Math.min (VIEWS_SWITCH_TIME,
-              IconGrid.ANIMATION_TIME_OUT + IconGrid.ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
 var PAGE_SWITCH_TIME = 0.3;
 
@@ -373,7 +358,7 @@ var AllView = class AllView extends BaseAppView {
     _loadApps() {
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
-                let id = appInfo.get_id(); // catch invalid file encodings
+                (appInfo.get_id()); // catch invalid file encodings
             } catch(e) {
                 return false;
             }

@@ -44,11 +44,9 @@ var SUMMARY_ICON_SIZE = 48;
 // - STANDARD_FADE_TIME is used when the session goes idle
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
 //   or when cancelling the dialog
-// - BACKGROUND_FADE_TIME is used when the background changes to crossfade to new background
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
 var STANDARD_FADE_TIME = 10;
 var MANUAL_FADE_TIME = 0.3;
-var BACKGROUND_FADE_TIME = 1.0;
 var CURTAIN_SLIDE_TIME = 0.3;
 
 var Clock = class {

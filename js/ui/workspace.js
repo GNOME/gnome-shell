@@ -1002,7 +1002,6 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         let idealRowWidth = totalWidth / numRows;
         let windowIdx = 0;
         for (let i = 0; i < numRows; i++) {
-            let col = 0;
             let row = this._newRow();
             rows.push(row);
 
@@ -1363,7 +1362,6 @@ var Workspace = class {
 
         for (let i = 0; i < clones.length; i++) {
             let clone = clones[i];
-            let metaWindow = clone.metaWindow;
             if (i == 0) {
                 clone.setStackAbove(this._dropRect);
             } else {

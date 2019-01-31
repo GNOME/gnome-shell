@@ -4,8 +4,6 @@ const { Clutter, Gio, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
 
-var FADE_TIME = 0.1;
-
 var OsdMonitorLabel = class {
     constructor(monitor, label) {
         this._actor = new St.Widget({ x_expand: true,

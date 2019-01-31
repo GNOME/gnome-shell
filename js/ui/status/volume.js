@@ -10,8 +10,6 @@ const Slider = imports.ui.slider;
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 
-var VOLUME_NOTIFY_ID = 1;
-
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;

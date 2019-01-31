@@ -9,8 +9,6 @@ const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const History = imports.misc.history;
 
-var MAX_FILE_DELETED_BEFORE_INVALID = 10;
-
 const HISTORY_KEY = 'command-history';
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';

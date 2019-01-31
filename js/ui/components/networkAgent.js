@@ -236,7 +236,6 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
     _get8021xSecrets(secrets) {
         let ieee8021xSetting = this._connection.get_setting_802_1x();
-        let phase2method;
 
         /* If hints were given we know exactly what we need to ask */
         if (this._settingName == "802-1x" && this._hints.length) {
@@ -696,7 +695,6 @@ var NetworkAgent = class {
             break;
         case 'gsm':
             if (hints.includes('pin')) {
-                let gsmSetting = connection.get_setting_gsm();
                 title = _("PIN code required");
                 body = _("PIN code is needed for the mobile broadband device");
                 break;

@@ -841,7 +841,6 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                 this._removeIcon(app);
         });
 
-        let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', () => { SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM); });
         this.add_actor(arrow);

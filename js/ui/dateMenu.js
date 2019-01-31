@@ -459,7 +459,6 @@ class CalendarColumnLayout extends Clutter.BoxLayout {
 var DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
-        let item;
         let hbox;
         let vbox;
 

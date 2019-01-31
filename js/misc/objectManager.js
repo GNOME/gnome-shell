@@ -92,7 +92,6 @@ var ObjectManager = class {
         proxy.init_async(GLib.PRIORITY_DEFAULT,
                          this._cancellable,
                          (initable, result) => {
-               let error = null;
                try {
                    initable.init_finish(result);
                } catch(e) {
@@ -155,7 +154,6 @@ var ObjectManager = class {
     }
 
     _onManagerProxyLoaded(initable, result) {
-        let error = null;
         try {
             initable.init_finish(result);
         } catch(e) {

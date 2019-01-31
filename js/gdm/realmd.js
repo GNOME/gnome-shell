@@ -36,10 +36,10 @@ var Manager = class {
             return;
 
         for (let i = 0; i < realmPaths.length; i++) {
-            let realm = Realm(Gio.DBus.system,
-                              'org.freedesktop.realmd',
-                              realmPaths[i],
-                              this._onRealmLoaded.bind(this));
+            Realm(Gio.DBus.system,
+                  'org.freedesktop.realmd',
+                  realmPaths[i],
+                  this._onRealmLoaded.bind(this));
         }
     }
 

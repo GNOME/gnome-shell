@@ -36,7 +36,7 @@ function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
                                           Gio.FileQueryInfoFlags.NONE, null);
 
-    let info, child;
+    let info;
     while ((info = children.next_file(null)) != null) {
         let type = info.get_file_type();
         let child = dir.get_child(info.get_name());
@@ -57,7 +57,7 @@ function recursivelyMoveDir(srcDir, destDir) {
     if (!destDir.query_exists(null))
         destDir.make_directory_with_parents(null);
 
-    let info, child;
+    let info;
     while ((info = children.next_file(null)) != null) {
         let type = info.get_file_type();
         let srcChild = srcDir.get_child(info.get_name());

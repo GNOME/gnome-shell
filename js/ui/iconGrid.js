@@ -743,7 +743,6 @@ var IconGrid = GObject.registerClass({
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
         this._updateSpacingForSize(availWidth, availHeight);
-        let spacing = this._getSpacing();
 
         if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
             let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth ;
@@ -802,7 +801,6 @@ var PaginatedIconGrid = GObject.registerClass({
         }
         let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
         let spacing = this._getSpacing();
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
@@ -821,7 +819,6 @@ var PaginatedIconGrid = GObject.registerClass({
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
-        let rowIndex = 0;
 
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
@@ -831,7 +828,6 @@ var PaginatedIconGrid = GObject.registerClass({
             columnIndex++;
             if (columnIndex == nColumns) {
                 columnIndex = 0;
-                rowIndex++;
             }
             if (columnIndex == 0) {
                 y += this._getVItemSize() + spacing;
@@ -863,7 +859,6 @@ var PaginatedIconGrid = GObject.registerClass({
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
 
-        let spacing = this._getSpacing();
         // We want to contain the grid inside the parent box with padding
         this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
         this._nPages = Math.ceil(nRows / this._rowsPerPage);

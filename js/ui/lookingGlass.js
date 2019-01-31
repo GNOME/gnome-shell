@@ -394,7 +394,6 @@ var ObjInspector = class ObjInspector {
 
             for (let i = 0; i < properties.length; i++) {
                 let propName = properties[i];
-                let valueStr;
                 let link;
                 try {
                     let prop = obj[propName];
@@ -403,7 +402,6 @@ var ObjInspector = class ObjInspector {
                     link = new St.Label({ text: '<error>' });
                 }
                 let hbox = new St.BoxLayout();
-                let propText = propName + ': ' + valueStr;
                 hbox.add(new St.Label({ text: propName + ': ' }));
                 hbox.add(link);
                 this._container.add_actor(hbox);
@@ -710,7 +708,6 @@ var Extensions = class Extensions {
 
         let metaBox = new St.BoxLayout({ style_class: 'lg-extension-meta' });
         box.add(metaBox);
-        let stateString = this._stateToString(extension.state);
         let state = new St.Label({ style_class: 'lg-extension-state',
                                    text: this._stateToString(extension.state) });
         metaBox.add(state);

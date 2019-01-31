@@ -546,8 +546,6 @@ var Calendar = class Calendar {
         this._calendarBegin = new Date(beginDate);
         this._markedAsToday = now;
 
-        let year = beginDate.getYear();
-
         let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
         let startsOnWeekStart = daysToWeekStart == 0;
         let weekPadding = startsOnWeekStart ? 7 : 0;
@@ -559,7 +557,7 @@ var Calendar = class Calendar {
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
         let nRows = 8;
-        while (row < 8) {
+        while (row < nRows) {
             // xgettext:no-javascript-format
             let button = new St.Button({ label: iter.toLocaleFormat(C_("date day number format", "%d")),
                                          can_focus: true });

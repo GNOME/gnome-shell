@@ -9,8 +9,6 @@ const ExtensionSystem = imports.ui.extensionSystem;
 const FileUtils = imports.misc.fileUtils;
 const ModalDialog = imports.ui.modalDialog;
 
-const _signals = ExtensionSystem._signals;
-
 var REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
 var REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
 var REPOSITORY_URL_INFO     = REPOSITORY_URL_BASE + '/extension-info/';

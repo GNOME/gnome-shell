@@ -403,7 +403,6 @@ var ViewSelector = class {
         if (Main.modalCount > 1)
             return Clutter.EVENT_PROPAGATE;
 
-        let modifiers = event.get_state();
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.Escape) {

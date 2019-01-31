@@ -331,7 +331,6 @@ var WorkspaceTracker = class {
         if (oldNumWorkspaces == newNumWorkspaces)
             return false;
 
-        let lostWorkspaces = [];
         if (newNumWorkspaces > oldNumWorkspaces) {
             let w;
 

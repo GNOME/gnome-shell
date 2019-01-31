@@ -162,8 +162,6 @@ function isOutOfDate(extension) {
 }
 
 function createExtensionObject(uuid, dir, type) {
-    let info;
-
     let metadataFile = dir.get_child('metadata.json');
     if (!metadataFile.query_exists(null)) {
         throw new Error('Missing metadata.json');

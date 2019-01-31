@@ -84,7 +84,6 @@ let _cssStylesheet = null;
 let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
-let pointerA11yTimeout = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -192,7 +191,7 @@ function _initializeUI() {
     layoutManager.init();
     overview.init();
 
-    pointerA11yTimeout = new PointerA11yTimeout.PointerA11yTimeout();
+    (new PointerA11yTimeout.PointerA11yTimeout());
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 

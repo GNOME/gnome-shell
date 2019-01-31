@@ -29,12 +29,8 @@ const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-let _endSessionDialog = null;
-
 const _ITEM_ICON_SIZE = 48;
 const _DIALOG_ICON_SIZE = 48;
-
-var GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
 
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
 
@@ -223,7 +219,7 @@ function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
     // bus object, etc.
-    _endSessionDialog = new EndSessionDialog();
+    (new EndSessionDialog());
 }
 
 var EndSessionDialog = GObject.registerClass(

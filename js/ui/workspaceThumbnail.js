@@ -324,7 +324,6 @@ var WorkspaceThumbnail = class {
 
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            let metaWindow = clone.metaWindow;
             if (i == 0) {
                 clone.setStackAbove(this._bgManager.backgroundActor);
             } else {
@@ -914,7 +913,6 @@ class ThumbnailsBox extends St.Widget {
         let workspaceManager = global.workspace_manager;
         let oldNumWorkspaces = validThumbnails.length;
         let newNumWorkspaces = workspaceManager.n_workspaces;
-        let active = workspaceManager.get_active_workspace_index();
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             this.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
@@ -1248,7 +1246,7 @@ class ThumbnailsBox extends St.Widget {
             if (i == this._dropPlaceholderPos) {
                 let [minHeight, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
                 childBox.x1 = x1;
-                childBox.x2 = x1 + thumbnailWidth;
+                childBox.x2 = x2;
                 childBox.y1 = Math.round(y);
                 childBox.y2 = Math.round(y + placeholderHeight);
                 this._dropPlaceholder.allocate(childBox, flags);

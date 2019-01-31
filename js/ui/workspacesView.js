@@ -246,7 +246,6 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         this.scrollAdjustment.upper = newNumWorkspaces;
 
-        let needsUpdate = false;
         for (let j = 0; j < newNumWorkspaces; j++) {
             let metaWorkspace = workspaceManager.get_workspace_by_index(j);
             let workspace;

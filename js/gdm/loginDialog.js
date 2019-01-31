@@ -187,8 +187,6 @@ var UserList = class {
     }
 
     updateStyle(isExpanded) {
-        let tasks = [];
-
         if (isExpanded)
             this._box.add_style_pseudo_class('expanded');
         else
@@ -575,19 +573,15 @@ var LoginDialog = GObject.registerClass({
         // First find out what space the children require
         let bannerAllocation = null;
         let bannerHeight = 0;
-        let bannerWidth = 0;
         if (this._bannerView.visible) {
             bannerAllocation = this._getBannerAllocation(dialogBox, this._bannerView);
             bannerHeight = bannerAllocation.y2 - bannerAllocation.y1;
-            bannerWidth = bannerAllocation.x2 - bannerAllocation.x1;
         }
 
         let authPromptAllocation = null;
-        let authPromptHeight = 0;
         let authPromptWidth = 0;
         if (this._authPrompt.actor.visible) {
             authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt.actor);
-            authPromptHeight = authPromptAllocation.y2 - authPromptAllocation.y1;
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 

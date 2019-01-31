@@ -136,7 +136,6 @@ let overviewFrames;
 let overviewLatency;
 let mallocUsedSize = 0;
 let overviewShowCount = 0;
-let firstOverviewUsedSize;
 let haveSwapComplete = false;
 let applicationsShowStart;
 let applicationsShowCount = 0;

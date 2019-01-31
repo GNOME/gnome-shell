@@ -2,7 +2,7 @@
 //
 // A widget showing the user avatar and name
 
-const { Clutter, Gio, GLib, GObject, St } = imports.gi;
+const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
@@ -44,7 +44,6 @@ var Avatar = class {
             iconFile = null;
 
         if (iconFile) {
-            let file = Gio.File.new_for_path(iconFile);
             this.actor.child = null;
             this.actor.style = `
                 background-image: url("${iconFile}");
@@ -106,9 +105,6 @@ class UserWidgetLabel extends St.Widget {
 
         let [minRealNameWidth, minRealNameHeight,
              natRealNameWidth, natRealNameHeight] = this._realNameLabel.get_preferred_size();
-
-        let [minUserNameWidth, minUserNameHeight,
-             natUserNameWidth, natUserNameHeight] = this._userNameLabel.get_preferred_size();
 
         if (natRealNameWidth <= availWidth)
             this._currentLabel = this._realNameLabel;

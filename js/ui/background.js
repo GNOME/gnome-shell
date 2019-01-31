@@ -108,7 +108,6 @@ const PRIMARY_COLOR_KEY = 'primary-color';
 const SECONDARY_COLOR_KEY = 'secondary-color';
 const COLOR_SHADING_TYPE_KEY = 'color-shading-type';
 const BACKGROUND_STYLE_KEY = 'picture-options';
-const PICTURE_OPACITY_KEY = 'picture-opacity';
 const PICTURE_URI_KEY = 'picture-uri';
 
 var FADE_ANIMATION_TIME = 1.0;

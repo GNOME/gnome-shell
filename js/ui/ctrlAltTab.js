@@ -7,7 +7,6 @@ const SwitcherPopup = imports.ui.switcherPopup;
 const Params = imports.misc.params;
 
 var POPUP_APPICON_SIZE = 96;
-var POPUP_FADE_TIME = 0.1; // seconds
 
 var SortGroup = {
     TOP:    0,

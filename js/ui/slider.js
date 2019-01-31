@@ -42,8 +42,6 @@ var Slider = class extends BarLevel.BarLevel {
         let [hasHandleColor, handleBorderColor] =
             themeNode.lookup_color('-slider-handle-border-color', false);
 
-        const TAU = Math.PI * 2;
-
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value / this._maxValue;
         let handleY = height / 2;
 
@@ -185,10 +183,9 @@ var Slider = class extends BarLevel.BarLevel {
     }
 
     _moveHandle(absX, absY) {
-        let relX, relY, sliderX, sliderY;
-        [sliderX, sliderY] = this.actor.get_transformed_position();
+        let relX, sliderX;
+        [sliderX] = this.actor.get_transformed_position();
         relX = absX - sliderX;
-        relY = absY - sliderY;
 
         let width = this._barLevelWidth;
         let handleRadius = this.actor.get_theme_node().get_length('-slider-handle-radius');

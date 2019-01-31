@@ -3,8 +3,6 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const Cairo = imports.cairo;
 
-const ANIMATION_STEPS = 36.;
-
 var PieTimer = GObject.registerClass(
 class PieTimer extends St.DrawingArea {
     _init() {
