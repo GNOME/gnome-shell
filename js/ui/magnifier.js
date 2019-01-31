@@ -2,6 +2,7 @@
 
 const Atspi = imports.gi.Atspi;
 const Clutter = imports.gi.Clutter;
+const Cogl = imports.gi.Cogl;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
