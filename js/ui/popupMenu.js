@@ -278,12 +278,10 @@ var PopupSeparatorMenuItem = class extends PopupBaseMenuItem {
 };
 
 var Switch = class {
-    constructor(state, reactive, parent) {
+    constructor(state, reactive) {
         this.actor = new St.BoxLayout({ style_class: 'toggle-switch',
                                         accessible_role: Atk.Role.CHECK_BOX,
                                         can_focus: true });
-
-        this._parent = parent;
 
         this.actor.connect('style_changed', (() => {
             this.setToggleState(this.state);
@@ -314,6 +312,7 @@ var Switch = class {
 
     setToggleState(state) {
         this.state = state;
+        this.emit('toggled', this.state);
 
         let themeNode = this.actor.get_theme_node();
         let transitionMs = themeNode.get_transition_duration() || 1;
@@ -393,14 +392,12 @@ var Switch = class {
 
             if (!this._dragDiffX) {
                 this.toggle();
-                this._parent.emit('activate');
+                this.emit('activated');
             } else {
                 let medX = this._getSwitchOnHandleTranslationX() / 2;
                 let state = medX < this._handle.translation_x;
                 this.setToggleState(state);
             }
-            this._parent.emit('toggled', this.state);
-            this._parent.checkAccessibleState();
 
             this._initialHandleTranslationX = null;
             this._initialGrabX = null;
@@ -445,6 +442,7 @@ var Switch = class {
         this._handle.translation_x = handleNewTranslationX;
     }
 };
+Signals.addSignalMethods(Switch.prototype);
 
 var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
     constructor(text, active, params) {
@@ -456,7 +454,12 @@ var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
             switchReactive = false;
         else
             switchReactive = true;
-        this._switch = new Switch(active, switchReactive, this);
+        this._switch = new Switch(active, switchReactive);
+
+        this._switch.connect('toggled', this._onToggled.bind(this));
+        this._switch.connect('activated', (event) => {
+            this.emit('activate', event);
+        });
 
         this.actor.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this.checkAccessibleState();
@@ -503,8 +506,6 @@ var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
 
     toggle() {
         this._switch.toggle();
-        this.emit('toggled', this._switch.state);
-        this.checkAccessibleState();
     }
 
     get state() {
@@ -512,7 +513,14 @@ var PopupSwitchMenuItem = class extends PopupBaseMenuItem {
     }
 
     setToggleState(state) {
+        this._omitSignal = true;
         this._switch.setToggleState(state);
+        this._omitSignal = false;
+    }
+
+    _onToggled(sw, state) {
+        if (!this._omitSignal)
+            this.emit('toggled', state);
         this.checkAccessibleState();
     }
 
