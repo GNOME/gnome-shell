@@ -20,16 +20,6 @@ var WORK_SPINNER_ICON_SIZE = 16;
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
 /* ------ Common Utils ------- */
-function _setLabelText(label, text) {
-    if (text) {
-        label.set_text(text);
-        label.show();
-    } else {
-        label.set_text('');
-        label.hide();
-    }
-}
-
 function _setButtonsForChoices(dialog, choices) {
     let buttons = [];
 
@@ -48,11 +38,6 @@ function _setLabelsForMessage(content, message) {
 
     content.title = labels.shift();
     content.body = labels.join('\n');
-}
-
-function _createIcon(gicon) {
-    return new St.Icon({ gicon: gicon,
-                         style_class: 'shell-mount-operation-icon' })
 }
 
 /* -------------------------------------------------------- */
