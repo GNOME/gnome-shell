@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported OsdMonitorLabeler */
 
 const { Clutter, Gio, Meta, St } = imports.gi;
 

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 const Lang = imports.lang;

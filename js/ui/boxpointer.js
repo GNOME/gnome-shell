@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported BoxPointer */
 
 const { Clutter, GObject, Shell, St } = imports.gi;
 

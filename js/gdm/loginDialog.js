@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported LoginDialog */
 /*
  * Copyright 2011 Red Hat, Inc
  *

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported addBackgroundMenu */
 
 const { Clutter, St } = imports.gi;
 

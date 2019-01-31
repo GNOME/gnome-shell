@@ -1,3 +1,4 @@
+/* exported PointerA11yTimeout */
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;

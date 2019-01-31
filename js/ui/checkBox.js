@@ -1,3 +1,4 @@
+/* exported CheckBox */
 const { Clutter, Pango, St } = imports.gi;
 
 var CheckBox = class CheckBox {

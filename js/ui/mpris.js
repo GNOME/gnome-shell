@@ -1,3 +1,4 @@
+/* exported MediaSection */
 const { Gio, Shell, St } = imports.gi;
 const Signals = imports.signals;
 

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Ripples */
 
 const { St } = imports.gi;
 const Tweener = imports.ui.tweener;
