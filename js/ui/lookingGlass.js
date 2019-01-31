@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported LookingGlass */
 
 const { Clutter, Cogl, Gio, GLib,
         GObject, Meta, Pango, Shell, St } = imports.gi;

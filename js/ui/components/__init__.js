@@ -1,3 +1,4 @@
+/* exported ComponentManager */
 const Main = imports.ui.main;
 
 var ComponentManager = class {

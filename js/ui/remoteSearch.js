@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported loadRemoteSearchProviders */
 
 const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
 

@@ -1,4 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported componentManager, notificationDaemon, windowAttentionHandler,
+            ctrlAltTabManager, padOsdService, osdWindowManager,
+            osdMonitorLabeler, shellMountOpDBusService, shellDBusService,
+            shellAccessDialogDBusService, shellAudioSelectionDBusService,
+            screenSaverDBus, screencastService, uiGroup, magnifier,
+            xdndHandler, keyboard, kbdA11yDialog, introspectService,
+            start, pushModal, popModal, activateWindow, createLookingGlass,
+            initializeDeferredWork, getThemeStylesheet, setThemeStylesheet */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;

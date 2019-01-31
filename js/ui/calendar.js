@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Calendar, CalendarMessageList */
 
 const { Clutter, Gio, GLib, Shell, St } = imports.gi;
 const Signals = imports.signals;

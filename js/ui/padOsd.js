@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported PadOsdService */
 
 const { Atk, Clutter, GDesktopEnums, Gio,
         GLib, GObject, Gtk, Meta, Rsvg, St } = imports.gi;

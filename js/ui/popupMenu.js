@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported PopupMenuItem, PopupSeparatorMenuItem, Switch, PopupSwitchMenuItem,
+            PopupImageMenuItem, PopupMenu, PopupDummyMenu, PopupSubMenu,
+            PopupMenuSection, PopupSubMenuMenuItem, PopupMenuManager */
 
 const { Atk, Clutter, Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;

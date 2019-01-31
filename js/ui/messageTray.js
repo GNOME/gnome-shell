@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported NotificationPolicy, NotificationGenericPolicy,
+   NotificationApplicationPolicy, Source, SourceActor, SourceActorWithLabel,
+   SystemNotificationSource, MessageTray */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;

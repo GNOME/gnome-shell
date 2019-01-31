@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
+            formatTime, formatTimeSpan, createTimeLabel, insertSorted,
+            makeCloseButton, ensureActorVisibleInScrollView */
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
