@@ -668,7 +668,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._loginManager.listSessions(result => {
             let n = 0;
             for (let i = 0; i < result.length; i++) {
-                let [id, uid, userName, seat, sessionPath] = result[i];
+                let [id_, uid_, userName, seat_, sessionPath] = result[i];
                 let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
                 if (proxy.Class != 'user')

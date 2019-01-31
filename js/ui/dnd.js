@@ -503,7 +503,7 @@ var _Draggable = class _Draggable {
 
         while (target) {
             if (target._delegate && target._delegate.handleDragOver) {
-                let [r, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
+                let [r_, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
                 // We currently loop through all parents on drag-over even if one of the children has handled it.
                 // We can check the return value of the function and break the loop if it's true if we don't want
                 // to continue checking the parents.
@@ -575,7 +575,7 @@ var _Draggable = class _Draggable {
 
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
-                let [r, targX, targY] = target.transform_stage_point(dropX, dropY);
+                let [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
                 if (target._delegate.acceptDrop(this.actor._delegate,
                                                 this._dragActor,
                                                 targX,

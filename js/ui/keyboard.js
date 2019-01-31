@@ -474,7 +474,7 @@ var KeyboardModel = class {
 
     _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
-        let [success, contents] = file.load_contents(null);
+        let [success_, contents] = file.load_contents(null);
         if (contents instanceof Uint8Array)
             contents = imports.byteArray.toString(contents);
 
@@ -662,7 +662,7 @@ var EmojiPager = class EmojiPager {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx, dy_] = action.get_motion_delta(0);
         this.delta = this.delta + dx;
 
         if (this._currentKey != null) {
@@ -904,7 +904,7 @@ var EmojiSelection = class EmojiSelection {
 
     _populateSections() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/emoji.json');
-        let [success, contents] = file.load_contents(null);
+        let [success_, contents] = file.load_contents(null);
 
         if (contents instanceof Uint8Array)
             contents = imports.byteArray.toString(contents);

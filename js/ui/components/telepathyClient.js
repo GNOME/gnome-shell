@@ -41,7 +41,7 @@ var NotificationDirection = {
 };
 
 function makeMessageFromTpMessage(tpMessage, direction) {
-    let [text, flags] = tpMessage.to_text();
+    let [text, flags_] = tpMessage.to_text();
 
     let timestamp = tpMessage.get_sent_timestamp();
     if (timestamp == 0)
@@ -148,11 +148,11 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     vfunc_observe_channels(...args) {
-        let [account, conn, channels, dispatchOp, requests, context] = args;
+        let [account, conn, channels, dispatchOp_, requests_, context] = args;
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
-            let [targetHandle, targetHandleType] = channel.get_handle();
+            let [targetHandle_, targetHandleType] = channel.get_handle();
 
             if (channel.get_invalidated())
                 continue;
@@ -181,7 +181,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     vfunc_handle_channels(...args) {
-        let [account, conn, channels, requests, userActionTime, context] = args;
+        let [account, conn, channels, requests_, userActionTime_, context] = args;
         this._handlingChannels(account, conn, channels, true);
         context.accept();
     }
@@ -239,7 +239,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     _approveTextChannel(account, conn, channel, dispatchOp, context) {
-        let [targetHandle, targetHandleType] = channel.get_handle();
+        let [targetHandle_, targetHandleType] = channel.get_handle();
 
         if (targetHandleType != Tp.HandleType.CONTACT) {
             context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
@@ -427,7 +427,7 @@ var ChatSource = class extends MessageTray.Source {
     }
 
     _displayPendingMessages(logManager, result) {
-        let [success, events] = logManager.get_filtered_events_finish(result);
+        let [success_, events] = logManager.get_filtered_events_finish(result);
 
         let logMessages = events.map(makeMessageFromTplEvent);
         this._ensureNotification();

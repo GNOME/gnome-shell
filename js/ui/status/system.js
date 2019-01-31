@@ -39,7 +39,7 @@ var AltSwitcher = class {
         let childToShow = null;
 
         if (this._standard.visible && this._alternate.visible) {
-            let [x, y, mods] = global.get_pointer();
+            let [x_, y_, mods] = global.get_pointer();
             let altPressed = (mods & Clutter.ModifierType.MOD1_MASK) != 0;
             if (this._flipped)
                 childToShow = altPressed ? this._standard : this._alternate;

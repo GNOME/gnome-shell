@@ -628,7 +628,7 @@ var GnomeShellMountOpHandler = class {
      * attempt went wrong.
      */
     AskPasswordAsync(params, invocation) {
-        let [id, message, iconName, defaultUser, defaultDomain, flags] = params;
+        let [id, message, iconName, defaultUser_, defaultDomain_, flags] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD)) {
             this._dialog.reaskPassword();
