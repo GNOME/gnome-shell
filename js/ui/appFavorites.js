@@ -36,7 +36,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnome-software.desktop': 'org.gnome.Software.desktop',
     'gnome-terminal.desktop': 'org.gnome.Terminal.desktop',
     'gnome-tweaks.desktop': 'org.gnome.tweaks.desktop',
-    'gnome-weather.desktop': 'org.gnome.Weather.Application.desktop',
+    'gnome-weather.desktop': 'org.gnome.Weather.desktop',
     'gnomine.desktop': 'gnome-mines.desktop',
     'gnotravex.desktop': 'gnome-tetravex.desktop',
     'gnotski.desktop': 'gnome-klotski.desktop',
