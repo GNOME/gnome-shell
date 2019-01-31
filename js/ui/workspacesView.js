@@ -530,7 +530,7 @@ var WorkspacesDisplay = class {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
         if (global.workspace_manager.layout_rows == -1)
             adjustment.value -= (dy / this.actor.height) * adjustment.page_size;

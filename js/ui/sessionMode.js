@@ -114,9 +114,9 @@ function _loadMode(file, info) {
     if (_modes.hasOwnProperty(modeName))
         return;
 
-    let fileContent, success, newMode;
+    let fileContent, success_, newMode;
     try {
-        [success, fileContent] = file.load_contents(null);
+        [success_, fileContent] = file.load_contents(null);
         if (fileContent instanceof Uint8Array)
             fileContent = imports.byteArray.toString(fileContent);
         newMode = JSON.parse(fileContent);

@@ -295,7 +295,7 @@ var PadDiagram = GObject.registerClass({
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
-        let [success, css, etag] = file.load_contents(null);
+        let [success_, css] = file.load_contents(null);
         if (css instanceof Uint8Array)
             css = imports.byteArray.toString(css);
         this._curEdited = null;
@@ -419,13 +419,13 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._labels.length; i++) {
             let [label, action, idx, dir] = this._labels[i];
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
-            let [label, action, idx, dir] = this._curEdited;
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [label_, action, idx, dir] = this._curEdited;
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -561,7 +561,7 @@ var PadDiagram = GObject.registerClass({
         if (str != null) {
             label.set_text(str);
 
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
         label.show();
@@ -789,13 +789,13 @@ var PadOsd = class {
         } else if (event.get_source_device() == this.padDevice &&
                    event.type() == Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
-                let [retval, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_event_details();
                 this._startStripActionEdition(number, UP, mode);
             }
         } else if (event.get_source_device() == this.padDevice &&
                    event.type() == Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
-                let [retval, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_event_details();
                 this._startRingActionEdition(number, CCW, mode);
             }
         }

@@ -333,12 +333,12 @@ var Background = class Background {
     }
 
     _loadPattern() {
-        let colorString, res, color, secondColor;
+        let colorString, res_, color, secondColor;
 
         colorString = this._settings.get_string(PRIMARY_COLOR_KEY);
-        [res, color] = Clutter.Color.from_string(colorString);
+        [res_, color] = Clutter.Color.from_string(colorString);
         colorString = this._settings.get_string(SECONDARY_COLOR_KEY);
-        [res, secondColor] = Clutter.Color.from_string(colorString);
+        [res_, secondColor] = Clutter.Color.from_string(colorString);
 
         let shadingType = this._settings.get_enum(COLOR_SHADING_TYPE_KEY);
 
@@ -651,7 +651,7 @@ var Animation = class Animation {
         if (this._show.get_num_slides() < 1)
             return;
 
-        let [progress, duration, isFixed, filename1, filename2] = this._show.get_current_slide(monitor.width, monitor.height);
+        let [progress, duration, isFixed_, filename1, filename2] = this._show.get_current_slide(monitor.width, monitor.height);
 
         this.transitionDuration = duration;
         this.transitionProgress = progress;

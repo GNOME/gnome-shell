@@ -120,7 +120,7 @@ var ModemGsm = class {
                 return;
             }
 
-            let [status, code, name] = result;
+            let [status_, code, name] = result;
             this.operator_name = _findProviderForMccMnc(name, code);
             this.emit('notify::operator-name');
         });
@@ -171,7 +171,7 @@ var ModemCdma = class {
                 // it will return an error if the device is not connected
                 this.operator_name = null;
             } else {
-                let [bandClass, band, sid] = result;
+                let [bandClass_, band_, sid] = result;
 
                 this.operator_name = _findProviderForSid(sid);
             }
@@ -224,7 +224,7 @@ var BroadbandModem = class {
     }
 
     _reloadSignalQuality() {
-        let [quality, recent] = this._proxy.SignalQuality;
+        let [quality, recent_] = this._proxy.SignalQuality;
         this.signal_quality = quality;
         this.emit('notify::signal-quality');
     }

@@ -1331,7 +1331,7 @@ var PressureBarrier = class PressureBarrier {
         let threshold = this._lastTime - this._timeout;
 
         while (i < this._barrierEvents.length) {
-            let [time, distance] = this._barrierEvents[i];
+            let [time, distance_] = this._barrierEvents[i];
             if (time >= threshold)
                 break;
             i++;
@@ -1340,7 +1340,7 @@ var PressureBarrier = class PressureBarrier {
         let firstNewEvent = i;
 
         for (i = 0; i < firstNewEvent; i++) {
-            let [time, distance] = this._barrierEvents[i];
+            let [time_, distance] = this._barrierEvents[i];
             this._currentPressure -= distance;
         }
 
