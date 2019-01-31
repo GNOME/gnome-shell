@@ -81,7 +81,7 @@ var ShowOverviewAction = GObject.registerClass({
         });
     }
 
-    vfunc_gesture_prepare(action, actor) {
+    vfunc_gesture_prepare(actor) {
         return Main.actionMode == Shell.ActionMode.NORMAL &&
                this.get_n_current_points() == this.get_n_touch_points();
     }
@@ -115,12 +115,12 @@ var ShowOverviewAction = GObject.registerClass({
                                     height: maxY - minY });
     }
 
-    vfunc_gesture_begin(action, actor) {
+    vfunc_gesture_begin(actor) {
         this._initialRect = this._getBoundingRect(false);
         return true;
     }
 
-    vfunc_gesture_end(action, actor) {
+    vfunc_gesture_end(actor) {
         let rect = this._getBoundingRect(true);
         let oldArea = this._initialRect.width * this._initialRect.height;
         let newArea = rect.width * rect.height;
