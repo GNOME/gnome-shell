@@ -359,7 +359,7 @@ var Magnifier = class Magnifier {
      */
     setCrosshairsColor(color) {
         if (this._crossHairs) {
-            let [res, clutterColor] = Clutter.Color.from_string(color);
+            let [res_, clutterColor] = Clutter.Color.from_string(color);
             this._crossHairs.setColor(clutterColor);
         }
     }
@@ -1514,7 +1514,7 @@ var ZoomRegion = class ZoomRegion {
     }
 
     _centerFromPointProportional(xPoint, yPoint) {
-        let [xRoi, yRoi, widthRoi, heightRoi] = this.getROI();
+        let [xRoi_, yRoi_, widthRoi, heightRoi] = this.getROI();
         let halfScreenWidth = global.screen_width / 2;
         let halfScreenHeight = global.screen_height / 2;
         // We want to pad with a constant distance after zooming, so divide

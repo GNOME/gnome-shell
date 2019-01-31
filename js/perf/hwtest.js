@@ -74,7 +74,7 @@ function extractBootTimestamp() {
 
     let datastream = Gio.DataInputStream.new(sp.get_stdout_pipe());
     while (true) {
-        let [line, length] = datastream.read_line_utf8(null);
+        let [line, length_] = datastream.read_line_utf8(null);
         if (line === null)
             break;
 

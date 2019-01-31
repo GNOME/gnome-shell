@@ -130,12 +130,12 @@ var URLHighlighter = class URLHighlighter {
     }
 
     _findUrlAtPos(event) {
-        let success;
+        let success_;
         let [x, y] = event.get_coords();
-        [success, x, y] = this.actor.transform_stage_point(x, y);
+        [success_, x, y] = this.actor.transform_stage_point(x, y);
         let findPos = -1;
         for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
-            let [success, px, py, lineHeight] = this.actor.clutter_text.position_to_coords(i);
+            let [success_, px, py, lineHeight] = this.actor.clutter_text.position_to_coords(i);
             if (py > y || py + lineHeight < y || x < px)
                 continue;
             findPos = i;

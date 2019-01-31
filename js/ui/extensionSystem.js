@@ -203,9 +203,9 @@ var ExtensionManager = class {
             throw new Error('Missing metadata.json');
         }
 
-        let metadataContents, success;
+        let metadataContents, success_;
         try {
-            [success, metadataContents] = metadataFile.load_contents(null);
+            [success_, metadataContents] = metadataFile.load_contents(null);
             if (metadataContents instanceof Uint8Array)
                 metadataContents = imports.byteArray.toString(metadataContents);
         } catch (e) {

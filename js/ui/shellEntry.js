@@ -134,7 +134,7 @@ function _onButtonPressEvent(actor, event, entry) {
 }
 
 function _onPopup(actor, entry) {
-    let [success, textX, textY, lineHeight] = entry.clutter_text.position_to_coords(-1);
+    let [success, textX, textY_, lineHeight_] = entry.clutter_text.position_to_coords(-1);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
     entry.menu.open(BoxPointer.PopupAnimation.FULL);

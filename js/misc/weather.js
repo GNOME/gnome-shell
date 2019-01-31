@@ -234,7 +234,7 @@ var WeatherClient = class {
     }
 
     _onPermStoreChanged(proxy, sender, params) {
-        let [table, id, deleted, data, perms] = params;
+        let [table, id, deleted_, data_, perms] = params;
 
         if (table != 'gnome' || id != 'geolocation')
             return;
