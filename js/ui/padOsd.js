@@ -396,8 +396,8 @@ var PadDiagram = GObject.registerClass({
     }
 
     _allocateChild(child, x, y, direction) {
-        let [prefHeight, natHeight] = child.get_preferred_height(-1);
-        let [prefWidth, natWidth] = child.get_preferred_width(natHeight);
+        let [, natHeight] = child.get_preferred_height(-1);
+        let [, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
 
         if (direction == LTR) {

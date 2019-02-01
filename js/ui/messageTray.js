@@ -650,7 +650,7 @@ class SourceActorWithLabel extends SourceActor {
 
         let childBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._counterBin.get_preferred_size();
+        let [, , naturalWidth, naturalHeight] = this._counterBin.get_preferred_size();
         let direction = this.get_text_direction();
 
         if (direction == Clutter.TextDirection.LTR) {
@@ -1127,7 +1127,7 @@ var MessageTray = class MessageTray {
             // this._onNotificationLeftTimeout() to determine if the mouse has moved far enough during the initial timeout for us
             // to consider that the user intended to leave the tray and therefore hide the tray. If the mouse is still
             // close to its previous position, we extend the timeout once.
-            let [x, y, mods] = global.get_pointer();
+            let [x, y] = global.get_pointer();
             this._notificationLeftMouseX = x;
             this._notificationLeftMouseY = y;
 
@@ -1156,7 +1156,7 @@ var MessageTray = class MessageTray {
     }
 
     _onNotificationLeftTimeout() {
-        let [x, y, mods] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side.
         if (this._notificationLeftMouseX > -1 &&
             y < this._notificationLeftMouseY + MOUSE_LEFT_ACTOR_THRESHOLD &&
@@ -1308,7 +1308,7 @@ var MessageTray = class MessageTray {
         Meta.disable_unredirect_for_display(global.display);
         this._updateShowingNotification();
 
-        let [x, y, mods] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         // We save the position of the mouse at the time when we started showing the notification
         // in order to determine if the notification popped up under it. We make that check if
         // the user starts moving the mouse and _onNotificationHoverChanged() gets called. We don't
@@ -1378,7 +1378,7 @@ var MessageTray = class MessageTray {
     }
 
     _notificationTimeout() {
-        let [x, y, mods] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         if (y < this._lastSeenMouseY - 10 && !this._notificationHovered) {
             // The mouse is moving towards the notification, so don't
             // hide it yet. (We just create a new timeout (and destroy
