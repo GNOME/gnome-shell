@@ -118,7 +118,7 @@ var Application = class {
         scroll.add(box);
 
         let label = new Gtk.Label({
-            label: `<span size="x-large">${_("Something’s gone wrong")}</span>`,
+            label: '<span size="x-large">%s</span>'.format(_("Something’s gone wrong")),
             use_markup: true
         });
         label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
