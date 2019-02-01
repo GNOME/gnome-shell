@@ -528,7 +528,7 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 
     _xdndToggleOverview() {
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
         if (pickedActor == this && Main.overview.shouldToggleByCornerOrButton())
@@ -879,9 +879,9 @@ class Panel extends St.Widget {
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
 
-        let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
-        let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
-        let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
+        let [, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
+        let [, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
+        let [, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
 
         let sideWidth, centerWidth;
         centerWidth = centerNaturalWidth;
@@ -932,19 +932,18 @@ class Panel extends St.Widget {
         }
         this._rightBox.allocate(childBox, flags);
 
-        let cornerMinWidth, cornerMinHeight;
         let cornerWidth, cornerHeight;
 
-        [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
+        [, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
+        [, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
         childBox.x1 = 0;
         childBox.x2 = cornerWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
         this._leftCorner.actor.allocate(childBox, flags);
 
-        [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
+        [, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
+        [, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
         childBox.x1 = allocWidth - cornerWidth;
         childBox.x2 = allocWidth;
         childBox.y1 = allocHeight;
