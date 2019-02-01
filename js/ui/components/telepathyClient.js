@@ -147,8 +147,8 @@ class TelepathyClient extends Tp.BaseClient {
             this._delegatedChannelsCb.bind(this));
     }
 
-    vfunc_observe_channels(account, conn, channels,
-                                     dispatchOp, requests, context) {
+    vfunc_observe_channels(...args) {
+        let [account, conn, channels, dispatchOp, requests, context] = args;
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -180,8 +180,8 @@ class TelepathyClient extends Tp.BaseClient {
         });
     }
 
-    vfunc_handle_channels(account, conn, channels, requests,
-                                    user_action_time, context) {
+    vfunc_handle_channels(...args) {
+        let [account, conn, channels, requests, user_action_time, context] = args;
         this._handlingChannels(account, conn, channels, true);
         context.accept();
     }
@@ -220,8 +220,8 @@ class TelepathyClient extends Tp.BaseClient {
         }
     }
 
-    vfunc_add_dispatch_operation(account, conn, channels,
-                                           dispatchOp, context) {
+    vfunc_add_dispatch_operation(...args) {
+        let [account, conn, channels, dispatchOp, context] = args;
         let channel = channels[0];
         let chanType = channel.get_channel_type();
 
