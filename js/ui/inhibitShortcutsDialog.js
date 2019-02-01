@@ -1,11 +1,16 @@
-const { Clutter, Gio, GObject, Gtk, Meta, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
+const PermissionStore = imports.misc.permissionStore;
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
 const APP_WHITELIST = ['gnome-control-center.desktop'];
+const APP_PERMISSIONS_TABLE = 'gnome';
+const APP_PERMISSIONS_ID = 'shortcuts-inhibitor';
+const GRANTED = 'GRANTED';
+const DENIED = 'DENIED';
 
 var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 
@@ -36,11 +41,42 @@ var InhibitShortcutsDialog = GObject.registerClass({
         return windowTracker.get_window_app(this._window);
     }
 
+    get _appId() {
+        let app = this._app;
+        if (!app)
+            return null;
+
+        let appInfo = app.get_app_info();
+        if (!appInfo)
+            return null;
+
+        return appInfo.get_id();
+    }
+
     _getRestoreAccel() {
         let settings = new Gio.Settings({ schema_id: WAYLAND_KEYBINDINGS_SCHEMA });
         let accel = settings.get_strv('restore-shortcuts')[0] || '';
         return Gtk.accelerator_get_label.apply(null,
                                                Gtk.accelerator_parse(accel));
+    }
+
+    _saveToPermissionStore(grant) {
+        if (this._appId == null || this._permStore == null)
+            return;
+
+        let permissions = {};
+        permissions[this._appId] = [grant];
+        let data = GLib.Variant.new('av', {});
+
+        this._permStore.SetRemote(APP_PERMISSIONS_TABLE,
+                                  true,
+                                  APP_PERMISSIONS_ID,
+                                  permissions,
+                                  data,
+                                  (result, error) => {
+            if (error != null)
+                log(error.message);
+        });
     }
 
     _buildLayout() {
@@ -64,12 +100,14 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         this._dialog.addButton({ label: _("Deny"),
                                  action: () => {
+                                     this._saveToPermissionStore(DENIED);
                                      this._emitResponse(DialogResponse.DENY);
                                  },
                                  key: Clutter.KEY_Escape });
 
         this._dialog.addButton({ label: _("Allow"),
                                  action: () => {
+                                     this._saveToPermissionStore(GRANTED);
                                      this._emitResponse(DialogResponse.ALLOW);
                                  },
                                  default: true });
@@ -81,10 +119,45 @@ var InhibitShortcutsDialog = GObject.registerClass({
     }
 
     vfunc_show() {
-        if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1)
+        if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1) {
             this._emitResponse(DialogResponse.ALLOW);
-        else
+            return;
+        }
+
+        /* Without an application Id, always ask */
+        if (this._appId == null) {
             this._dialog.open();
+            return;
+        }
+
+        /* Otherwise check with the permission store */
+        this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
+            if (error) {
+                log(error.message);
+                this._dialog.open();
+                return;
+            }
+
+            if (this._appId) {
+                this._permStore.LookupRemote(APP_PERMISSIONS_TABLE,
+                                             APP_PERMISSIONS_ID,
+                                             (res, error) => {
+                    if (error) {
+                        this._dialog.open();
+                        log(error.message);
+                        return;
+                    }
+
+                    let [permissions, data] = res;
+                    if (permissions[this._appId] === undefined) // Not found
+                        this._dialog.open();
+                    else if (permissions[this._appId] == GRANTED)
+                        this._emitResponse(DialogResponse.ALLOW);
+                    else
+                        this._emitResponse(DialogResponse.DENY);
+               });
+            }
+        });
     }
 
     vfunc_hide() {
