@@ -28,18 +28,18 @@ function isPopupMenuItemVisible(child) {
 function arrowIcon(side) {
     let iconName;
     switch (side) {
-        case St.Side.TOP:
-            iconName = 'pan-up-symbolic';
-            break;
-        case St.Side.RIGHT:
-            iconName = 'pan-end-symbolic';
-            break;
-        case St.Side.BOTTOM:
-            iconName = 'pan-down-symbolic';
-            break;
-        case St.Side.LEFT:
-            iconName = 'pan-start-symbolic';
-            break;
+    case St.Side.TOP:
+        iconName = 'pan-up-symbolic';
+        break;
+    case St.Side.RIGHT:
+        iconName = 'pan-end-symbolic';
+        break;
+    case St.Side.BOTTOM:
+        iconName = 'pan-down-symbolic';
+        break;
+    case St.Side.LEFT:
+        iconName = 'pan-start-symbolic';
+        break;
     }
 
     let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
@@ -815,18 +815,18 @@ var PopupMenu = class extends PopupMenuBase {
 
         let navKey;
         switch (this._boxPointer.arrowSide) {
-            case St.Side.TOP:
-                navKey = Clutter.KEY_Down;
-                break;
-            case St.Side.BOTTOM:
-                navKey = Clutter.KEY_Up;
-                break;
-            case St.Side.LEFT:
-                navKey = Clutter.KEY_Right;
-                break;
-            case St.Side.RIGHT:
-                navKey = Clutter.KEY_Left;
-                break;
+        case St.Side.TOP:
+            navKey = Clutter.KEY_Down;
+            break;
+        case St.Side.BOTTOM:
+            navKey = Clutter.KEY_Up;
+            break;
+        case St.Side.LEFT:
+            navKey = Clutter.KEY_Right;
+            break;
+        case St.Side.RIGHT:
+            navKey = Clutter.KEY_Left;
+            break;
         }
 
         let state = event.get_state();

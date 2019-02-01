@@ -561,11 +561,11 @@ var _Draggable = class _Draggable {
             let dropFunc = dragMonitors[i].dragDrop;
             if (dropFunc)
                 switch (dropFunc(dropEvent)) {
-                    case DragDropResult.FAILURE:
-                    case DragDropResult.SUCCESS:
-                        return true;
-                    case DragDropResult.CONTINUE:
-                        continue;
+                case DragDropResult.FAILURE:
+                case DragDropResult.SUCCESS:
+                    return true;
+                case DragDropResult.CONTINUE:
+                    continue;
                 }
         }
 

@@ -90,18 +90,18 @@ var BoxPointer = GObject.registerClass({
 
         if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
-                case St.Side.TOP:
-                    this.translation_y = -rise;
-                    break;
-                case St.Side.BOTTOM:
-                    this.translation_y = rise;
-                    break;
-                case St.Side.LEFT:
-                    this.translation_x = -rise;
-                    break;
-                case St.Side.RIGHT:
-                    this.translation_x = rise;
-                    break;
+            case St.Side.TOP:
+                this.translation_y = -rise;
+                break;
+            case St.Side.BOTTOM:
+                this.translation_y = rise;
+                break;
+            case St.Side.LEFT:
+                this.translation_x = -rise;
+                break;
+            case St.Side.RIGHT:
+                this.translation_x = rise;
+                break;
             }
         }
 
@@ -130,18 +130,18 @@ var BoxPointer = GObject.registerClass({
 
         if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
-                case St.Side.TOP:
-                    translationY = rise;
-                    break;
-                case St.Side.BOTTOM:
-                    translationY = -rise;
-                    break;
-                case St.Side.LEFT:
-                    translationX = rise;
-                    break;
-                case St.Side.RIGHT:
-                    translationX = -rise;
-                    break;
+            case St.Side.TOP:
+                translationY = rise;
+                break;
+            case St.Side.BOTTOM:
+                translationY = -rise;
+                break;
+            case St.Side.LEFT:
+                translationX = rise;
+                break;
+            case St.Side.RIGHT:
+                translationX = -rise;
+                break;
             }
         }
 
@@ -220,18 +220,18 @@ var BoxPointer = GObject.registerClass({
         childBox.x2 = availWidth - borderWidth;
         childBox.y2 = availHeight - borderWidth;
         switch (this._arrowSide) {
-            case St.Side.TOP:
-                childBox.y1 += rise;
-                break;
-            case St.Side.BOTTOM:
-                childBox.y2 -= rise;
-                break;
-            case St.Side.LEFT:
-                childBox.x1 += rise;
-                break;
-            case St.Side.RIGHT:
-                childBox.x2 -= rise;
-                break;
+        case St.Side.TOP:
+            childBox.y1 += rise;
+            break;
+        case St.Side.BOTTOM:
+            childBox.y2 -= rise;
+            break;
+        case St.Side.LEFT:
+            childBox.x1 += rise;
+            break;
+        case St.Side.RIGHT:
+            childBox.x2 -= rise;
+            break;
         }
         this.bin.allocate(childBox, flags);
 

@@ -1099,21 +1099,21 @@ var ZoomRegion = class ZoomRegion {
      */
     setScreenPosition(inPosition) {
         switch (inPosition) {
-            case GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN:
-                this.setFullScreenMode();
-                break;
-            case GDesktopEnums.MagnifierScreenPosition.TOP_HALF:
-                this.setTopHalf();
-                break;
-            case GDesktopEnums.MagnifierScreenPosition.BOTTOM_HALF:
-                this.setBottomHalf();
-                break;
-            case GDesktopEnums.MagnifierScreenPosition.LEFT_HALF:
-                this.setLeftHalf();
-                break;
-            case GDesktopEnums.MagnifierScreenPosition.RIGHT_HALF:
-                this.setRightHalf();
-                break;
+        case GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN:
+            this.setFullScreenMode();
+            break;
+        case GDesktopEnums.MagnifierScreenPosition.TOP_HALF:
+            this.setTopHalf();
+            break;
+        case GDesktopEnums.MagnifierScreenPosition.BOTTOM_HALF:
+            this.setBottomHalf();
+            break;
+        case GDesktopEnums.MagnifierScreenPosition.LEFT_HALF:
+            this.setLeftHalf();
+            break;
+        case GDesktopEnums.MagnifierScreenPosition.RIGHT_HALF:
+            this.setRightHalf();
+            break;
         }
     }
 

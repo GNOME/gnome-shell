@@ -1331,22 +1331,22 @@ var AppFolderPopup = class AppFolderPopup {
         let direction;
         let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
         switch (event.get_key_symbol()) {
-            case Clutter.Down:
-                direction = St.DirectionType.TAB_FORWARD;
-                break;
-            case Clutter.Right:
-                direction = isLtr ? St.DirectionType.TAB_FORWARD :
+        case Clutter.Down:
+            direction = St.DirectionType.TAB_FORWARD;
+            break;
+        case Clutter.Right:
+            direction = isLtr ? St.DirectionType.TAB_FORWARD :
                                     St.DirectionType.TAB_BACKWARD;
-                break;
-            case Clutter.Up:
-                direction = St.DirectionType.TAB_BACKWARD;
-                break;
-            case Clutter.Left:
-                direction = isLtr ? St.DirectionType.TAB_BACKWARD :
+            break;
+        case Clutter.Up:
+            direction = St.DirectionType.TAB_BACKWARD;
+            break;
+        case Clutter.Left:
+            direction = isLtr ? St.DirectionType.TAB_BACKWARD :
                                     St.DirectionType.TAB_FORWARD;
-                break;
-            default:
-                return Clutter.EVENT_PROPAGATE;
+            break;
+        default:
+            return Clutter.EVENT_PROPAGATE;
         }
         return actor.navigate_focus(null, direction, false);
     }

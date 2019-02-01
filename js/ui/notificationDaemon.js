@@ -76,13 +76,13 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
     _fallbackIconForNotificationData(hints) {
         let stockIcon;
         switch (hints.urgency) {
-            case Urgency.LOW:
-            case Urgency.NORMAL:
-                stockIcon = 'dialog-information';
-                break;
-            case Urgency.CRITICAL:
-                stockIcon = 'dialog-error';
-                break;
+        case Urgency.LOW:
+        case Urgency.NORMAL:
+            stockIcon = 'dialog-information';
+            break;
+        case Urgency.CRITICAL:
+            stockIcon = 'dialog-error';
+            break;
         }
         return new Gio.ThemedIcon({ name: stockIcon });
     }
@@ -270,15 +270,15 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 delete this._notifications[ndata.id];
                 let notificationClosedReason;
                 switch (reason) {
-                    case MessageTray.NotificationDestroyedReason.EXPIRED:
-                        notificationClosedReason = NotificationClosedReason.EXPIRED;
-                        break;
-                    case MessageTray.NotificationDestroyedReason.DISMISSED:
-                        notificationClosedReason = NotificationClosedReason.DISMISSED;
-                        break;
-                    case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
-                        notificationClosedReason = NotificationClosedReason.APP_CLOSED;
-                        break;
+                case MessageTray.NotificationDestroyedReason.EXPIRED:
+                    notificationClosedReason = NotificationClosedReason.EXPIRED;
+                    break;
+                case MessageTray.NotificationDestroyedReason.DISMISSED:
+                    notificationClosedReason = NotificationClosedReason.DISMISSED;
+                    break;
+                case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
+                    notificationClosedReason = NotificationClosedReason.APP_CLOSED;
+                    break;
                 }
                 this._emitNotificationClosed(ndata.id, notificationClosedReason);
             });
@@ -330,15 +330,15 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         }
 
         switch (hints.urgency) {
-            case Urgency.LOW:
-                notification.setUrgency(MessageTray.Urgency.LOW);
-                break;
-            case Urgency.NORMAL:
-                notification.setUrgency(MessageTray.Urgency.NORMAL);
-                break;
-            case Urgency.CRITICAL:
-                notification.setUrgency(MessageTray.Urgency.CRITICAL);
-                break;
+        case Urgency.LOW:
+            notification.setUrgency(MessageTray.Urgency.LOW);
+            break;
+        case Urgency.NORMAL:
+            notification.setUrgency(MessageTray.Urgency.NORMAL);
+            break;
+        case Urgency.CRITICAL:
+            notification.setUrgency(MessageTray.Urgency.CRITICAL);
+            break;
         }
         notification.setResident(!!hints.resident);
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
