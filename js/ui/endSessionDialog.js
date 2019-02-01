@@ -472,19 +472,19 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         // Trigger the offline update as requested
         if (this._checkBox.actor.checked) {
             switch (signal) {
-                case "ConfirmedReboot":
-                    this._triggerOfflineUpdateReboot(callback);
-                    break;
-                case "ConfirmedShutdown":
-                    // To actually trigger the offline update, we need to
-                    // reboot to do the upgrade. When the upgrade is complete,
-                    // the computer will shut down automatically.
-                    signal = "ConfirmedReboot";
-                    this._triggerOfflineUpdateShutdown(callback);
-                    break;
-                default:
-                    callback();
-                    break;
+            case "ConfirmedReboot":
+                this._triggerOfflineUpdateReboot(callback);
+                break;
+            case "ConfirmedShutdown":
+                // To actually trigger the offline update, we need to
+                // reboot to do the upgrade. When the upgrade is complete,
+                // the computer will shut down automatically.
+                signal = "ConfirmedReboot";
+                this._triggerOfflineUpdateShutdown(callback);
+                break;
+            default:
+                callback();
+                break;
             }
         } else {
             this._triggerOfflineUpdateCancel(callback);

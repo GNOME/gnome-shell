@@ -2080,27 +2080,27 @@ var WindowManager = class {
     _startSwitcher(display, window, binding) {
         let constructor = null;
         switch (binding.get_name()) {
-            case 'switch-applications':
-            case 'switch-applications-backward':
-            case 'switch-group':
-            case 'switch-group-backward':
-                constructor = AltTab.AppSwitcherPopup;
-                break;
-            case 'switch-windows':
-            case 'switch-windows-backward':
-                constructor = AltTab.WindowSwitcherPopup;
-                break;
-            case 'cycle-windows':
-            case 'cycle-windows-backward':
-                constructor = AltTab.WindowCyclerPopup;
-                break;
-            case 'cycle-group':
-            case 'cycle-group-backward':
-                constructor = AltTab.GroupCyclerPopup;
-                break;
-            case 'switch-monitor':
-                constructor = SwitchMonitor.SwitchMonitorPopup;
-                break;
+        case 'switch-applications':
+        case 'switch-applications-backward':
+        case 'switch-group':
+        case 'switch-group-backward':
+            constructor = AltTab.AppSwitcherPopup;
+            break;
+        case 'switch-windows':
+        case 'switch-windows-backward':
+            constructor = AltTab.WindowSwitcherPopup;
+            break;
+        case 'cycle-windows':
+        case 'cycle-windows-backward':
+            constructor = AltTab.WindowCyclerPopup;
+            break;
+        case 'cycle-group':
+        case 'cycle-group-backward':
+            constructor = AltTab.GroupCyclerPopup;
+            break;
+        case 'switch-monitor':
+            constructor = SwitchMonitor.SwitchMonitorPopup;
+            break;
         }
 
         if (!constructor)

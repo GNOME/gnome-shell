@@ -360,28 +360,28 @@ var ChatSource = class extends MessageTray.Source {
         let presenceType = this._contact.get_presence_type();
 
         switch (presenceType) {
-            case Tp.ConnectionPresenceType.AVAILABLE:
-                iconName = 'user-available';
-                break;
-            case Tp.ConnectionPresenceType.BUSY:
-                iconName = 'user-busy';
-                break;
-            case Tp.ConnectionPresenceType.OFFLINE:
-                iconName = 'user-offline';
-                break;
-            case Tp.ConnectionPresenceType.HIDDEN:
-                iconName = 'user-invisible';
-                break;
-            case Tp.ConnectionPresenceType.AWAY:
-                iconName = 'user-away';
-                break;
-            case Tp.ConnectionPresenceType.EXTENDED_AWAY:
-                iconName = 'user-idle';
-                break;
-            default:
-                iconName = 'user-offline';
-       }
-       return new Gio.ThemedIcon({ name: iconName });
+        case Tp.ConnectionPresenceType.AVAILABLE:
+            iconName = 'user-available';
+            break;
+        case Tp.ConnectionPresenceType.BUSY:
+            iconName = 'user-busy';
+            break;
+        case Tp.ConnectionPresenceType.OFFLINE:
+            iconName = 'user-offline';
+            break;
+        case Tp.ConnectionPresenceType.HIDDEN:
+            iconName = 'user-invisible';
+            break;
+        case Tp.ConnectionPresenceType.AWAY:
+            iconName = 'user-away';
+            break;
+        case Tp.ConnectionPresenceType.EXTENDED_AWAY:
+            iconName = 'user-idle';
+            break;
+        default:
+            iconName = 'user-offline';
+        }
+        return new Gio.ThemedIcon({ name: iconName });
     }
 
     _updateAvatarIcon() {

@@ -284,24 +284,24 @@ const SystemActions = GObject.registerClass({
 
     activateAction(id) {
         switch (id) {
-            case POWER_OFF_ACTION_ID:
-                this.activatePowerOff();
-                break;
-            case LOCK_SCREEN_ACTION_ID:
-                this.activateLockScreen();
-                break;
-            case LOGOUT_ACTION_ID:
-                this.activateLogout();
-                break;
-            case SUSPEND_ACTION_ID:
-                this.activateSuspend();
-                break;
-            case SWITCH_USER_ACTION_ID:
-                this.activateSwitchUser();
-                break;
-            case LOCK_ORIENTATION_ACTION_ID:
-                this.activateLockOrientation();
-                break;
+        case POWER_OFF_ACTION_ID:
+            this.activatePowerOff();
+            break;
+        case LOCK_SCREEN_ACTION_ID:
+            this.activateLockScreen();
+            break;
+        case LOGOUT_ACTION_ID:
+            this.activateLogout();
+            break;
+        case SUSPEND_ACTION_ID:
+            this.activateSuspend();
+            break;
+        case SWITCH_USER_ACTION_ID:
+            this.activateSwitchUser();
+            break;
+        case LOCK_ORIENTATION_ACTION_ID:
+            this.activateLockOrientation();
+            break;
         }
     }
 

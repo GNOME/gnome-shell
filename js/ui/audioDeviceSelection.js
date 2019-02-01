@@ -55,27 +55,27 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
 
     _getDeviceLabel(device) {
         switch (device) {
-            case AudioDevice.HEADPHONES:
-                return _("Headphones");
-            case AudioDevice.HEADSET:
-                return _("Headset");
-            case AudioDevice.MICROPHONE:
-                return _("Microphone");
-            default:
-                return null;
+        case AudioDevice.HEADPHONES:
+            return _("Headphones");
+        case AudioDevice.HEADSET:
+            return _("Headset");
+        case AudioDevice.MICROPHONE:
+            return _("Microphone");
+        default:
+            return null;
         }
     }
 
     _getDeviceIcon(device) {
         switch (device) {
-            case AudioDevice.HEADPHONES:
-                return 'audio-headphones-symbolic';
-            case AudioDevice.HEADSET:
-                return 'audio-headset-symbolic';
-            case AudioDevice.MICROPHONE:
-                return 'audio-input-microphone-symbolic';
-            default:
-                return null;
+        case AudioDevice.HEADPHONES:
+            return 'audio-headphones-symbolic';
+        case AudioDevice.HEADSET:
+            return 'audio-headset-symbolic';
+        case AudioDevice.MICROPHONE:
+            return 'audio-input-microphone-symbolic';
+        default:
+            return null;
         }
     }
 
