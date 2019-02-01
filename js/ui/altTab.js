@@ -984,23 +984,23 @@ class WindowIcon extends St.BoxLayout {
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
         switch (mode) {
-            case AppIconMode.THUMBNAIL_ONLY:
-                size = WINDOW_PREVIEW_SIZE;
-                this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
-                break;
+        case AppIconMode.THUMBNAIL_ONLY:
+            size = WINDOW_PREVIEW_SIZE;
+            this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
+            break;
 
-            case AppIconMode.BOTH:
-                size = WINDOW_PREVIEW_SIZE;
-                this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
+        case AppIconMode.BOTH:
+            size = WINDOW_PREVIEW_SIZE;
+            this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
 
-                if (this.app)
-                    this._icon.add_actor(this._createAppIcon(this.app,
-                                                             APP_ICON_SIZE_SMALL));
-                break;
+            if (this.app)
+                this._icon.add_actor(this._createAppIcon(this.app,
+                                                         APP_ICON_SIZE_SMALL));
+            break;
 
-            case AppIconMode.APP_ICON_ONLY:
-                size = APP_ICON_SIZE;
-                this._icon.add_actor(this._createAppIcon(this.app, size));
+        case AppIconMode.APP_ICON_ONLY:
+            size = APP_ICON_SIZE;
+            this._icon.add_actor(this._createAppIcon(this.app, size));
         }
 
         this._icon.set_size(size * scaleFactor, size * scaleFactor);

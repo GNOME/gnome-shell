@@ -1559,29 +1559,29 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
 
     _getSummaryIcon() {
         switch (this._category) {
-            case NMConnectionCategory.WIRED:
-                return 'network-wired-symbolic';
-            case NMConnectionCategory.WIRELESS:
-            case NMConnectionCategory.WWAN:
-                return 'network-wireless-symbolic';
+        case NMConnectionCategory.WIRED:
+            return 'network-wired-symbolic';
+        case NMConnectionCategory.WIRELESS:
+        case NMConnectionCategory.WWAN:
+            return 'network-wireless-symbolic';
         }
         return '';
     }
 
     _getSummaryLabel(nDevices) {
         switch (this._category) {
-            case NMConnectionCategory.WIRED:
-                return ngettext("%s Wired Connection",
-                                "%s Wired Connections",
-                                nDevices).format(nDevices);
-            case NMConnectionCategory.WIRELESS:
-                return ngettext("%s Wi-Fi Connection",
-                                "%s Wi-Fi Connections",
-                                nDevices).format(nDevices);
-            case NMConnectionCategory.WWAN:
-                return ngettext("%s Modem Connection",
-                                "%s Modem Connections",
-                                nDevices).format(nDevices);
+        case NMConnectionCategory.WIRED:
+            return ngettext("%s Wired Connection",
+                            "%s Wired Connections",
+                            nDevices).format(nDevices);
+        case NMConnectionCategory.WIRELESS:
+            return ngettext("%s Wi-Fi Connection",
+                            "%s Wi-Fi Connections",
+                            nDevices).format(nDevices);
+        case NMConnectionCategory.WWAN:
+            return ngettext("%s Modem Connection",
+                            "%s Modem Connections",
+                            nDevices).format(nDevices);
         }
         return '';
     }

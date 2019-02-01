@@ -688,17 +688,17 @@ var Extensions = class Extensions {
 
     _stateToString(extensionState) {
         switch (extensionState) {
-            case ExtensionSystem.ExtensionState.ENABLED:
-                return _("Enabled");
-            case ExtensionSystem.ExtensionState.DISABLED:
-            case ExtensionSystem.ExtensionState.INITIALIZED:
-                return _("Disabled");
-            case ExtensionSystem.ExtensionState.ERROR:
-                return _("Error");
-            case ExtensionSystem.ExtensionState.OUT_OF_DATE:
-                return _("Out of date");
-            case ExtensionSystem.ExtensionState.DOWNLOADING:
-                return _("Downloading");
+        case ExtensionSystem.ExtensionState.ENABLED:
+            return _("Enabled");
+        case ExtensionSystem.ExtensionState.DISABLED:
+        case ExtensionSystem.ExtensionState.INITIALIZED:
+            return _("Disabled");
+        case ExtensionSystem.ExtensionState.ERROR:
+            return _("Error");
+        case ExtensionSystem.ExtensionState.OUT_OF_DATE:
+            return _("Out of date");
+        case ExtensionSystem.ExtensionState.DOWNLOADING:
+            return _("Downloading");
         }
         return 'Unknown'; // Not translated, shouldn't appear
     }

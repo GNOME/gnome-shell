@@ -312,14 +312,14 @@ var IconGrid = GObject.registerClass({
 
         let leftEmptySpace;
         switch (this._xAlign) {
-            case St.Align.START:
-                leftEmptySpace = 0;
-                break;
-            case St.Align.MIDDLE:
-                leftEmptySpace = Math.floor((availWidth - usedWidth) / 2);
-                break;
-            case St.Align.END:
-                leftEmptySpace = availWidth - usedWidth;
+        case St.Align.START:
+            leftEmptySpace = 0;
+            break;
+        case St.Align.MIDDLE:
+            leftEmptySpace = Math.floor((availWidth - usedWidth) / 2);
+            break;
+        case St.Align.END:
+            leftEmptySpace = availWidth - usedWidth;
         }
 
         let animating = this._clonesAnimating.length > 0;
@@ -806,14 +806,14 @@ var PaginatedIconGrid = GObject.registerClass({
 
         let leftEmptySpace;
         switch (this._xAlign) {
-            case St.Align.START:
-                leftEmptySpace = 0;
-                break;
-            case St.Align.MIDDLE:
-                leftEmptySpace = Math.floor((availWidth - usedWidth) / 2);
-                break;
-            case St.Align.END:
-                leftEmptySpace = availWidth - usedWidth;
+        case St.Align.START:
+            leftEmptySpace = 0;
+            break;
+        case St.Align.MIDDLE:
+            leftEmptySpace = Math.floor((availWidth - usedWidth) / 2);
+            break;
+        case St.Align.END:
+            leftEmptySpace = availWidth - usedWidth;
         }
 
         let x = box.x1 + leftEmptySpace + this.leftPadding;
