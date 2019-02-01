@@ -107,8 +107,7 @@ var Magnifier = class Magnifier {
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
 
-        let mask;
-        [this.xMouse, this.yMouse, mask] = global.get_pointer();
+        [this.xMouse, this.yMouse] = global.get_pointer();
 
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
@@ -227,7 +226,7 @@ var Magnifier = class Magnifier {
      * @return      true.
      */
     scrollToMousePos() {
-        let [xMouse, yMouse, mask] = global.get_pointer();
+        let [xMouse, yMouse] = global.get_pointer();
 
         if (xMouse != this.xMouse || yMouse != this.yMouse) {
             this.xMouse = xMouse;

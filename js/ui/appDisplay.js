@@ -1109,7 +1109,7 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     usedWidth() {
-        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
+        let [availWidthPerPage] = this._getPageAvailableSize();
         return this._grid.usedWidth(availWidthPerPage);
     }
 

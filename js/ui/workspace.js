@@ -1407,7 +1407,7 @@ var Workspace = class {
     }
 
     _delayedWindowRepositioning() {
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
         let inWorkspace = (this._fullGeometry.x < x && x < this._fullGeometry.x + this._fullGeometry.width &&
@@ -1445,7 +1445,7 @@ var Workspace = class {
             // this point.)
             if (win) {
                 let [stageX, stageY] = clone.get_transformed_position();
-                let [stageWidth, stageHeight] = clone.get_transformed_size();
+                let [stageWidth] = clone.get_transformed_size();
                 win._overviewHint = {
                     x: stageX,
                     y: stageY,
@@ -1467,7 +1467,7 @@ var Workspace = class {
         }
 
         // setup new handler
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         this._cursorX = x;
         this._cursorY = y;
 

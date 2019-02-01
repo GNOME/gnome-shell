@@ -762,8 +762,8 @@ var ScreenShield = class {
     }
 
     _onDragMotion() {
-        let [origX, origY] = this._dragAction.get_press_coords(0);
-        let [currentX, currentY] = this._dragAction.get_motion_coords(0);
+        let [, origY] = this._dragAction.get_press_coords(0);
+        let [, currentY] = this._dragAction.get_motion_coords(0);
 
         let newY = currentY - origY;
         newY = clamp(newY, -global.stage.height, 0);

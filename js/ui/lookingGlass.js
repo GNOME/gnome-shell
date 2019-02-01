@@ -519,7 +519,7 @@ var Inspector = GObject.registerClass({
 
         let primary = Main.layoutManager.primaryMonitor;
 
-        let [minWidth, minHeight, natWidth, natHeight] =
+        let [, , natWidth, natHeight] =
             this._eventHandler.get_preferred_size();
 
         let childBox = new Clutter.ActorBox();
@@ -942,7 +942,7 @@ var LookingGlass = class LookingGlass {
         // Setting the height to -1 allows us to get its actual preferred height rather than
         // whatever was last given in set_height by Tweener.
         this._completionActor.set_height(-1);
-        let [minHeight, naturalHeight] = this._completionActor.get_preferred_height(this._resultsArea.get_width());
+        let [, naturalHeight] = this._completionActor.get_preferred_height(this._resultsArea.get_width());
 
         // Don't reanimate if we are already visible
         if (this._completionActor.visible) {

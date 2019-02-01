@@ -958,7 +958,7 @@ var PopupSubMenu = class extends PopupMenuBase {
 
     _needsScrollbar() {
         let topMenu = this._getTopMenu();
-        let [topMinHeight, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
+        let [, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
         let topThemeNode = topMenu.actor.get_theme_node();
 
         let topMaxHeight = topThemeNode.get_max_height();
@@ -1008,7 +1008,7 @@ var PopupSubMenu = class extends PopupMenuBase {
         let targetAngle = this.actor.text_direction == Clutter.TextDirection.RTL ? -90 : 90;
 
         if (animate) {
-            let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
+            let [, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
