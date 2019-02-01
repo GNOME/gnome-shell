@@ -98,6 +98,22 @@
         the shell.
       </description>
     </key>
+    <key name="inhibit-shortcuts-granted" type="as">
+      <default>[]</default>
+      <summary>Applications granted shortcuts</summary>
+      <description>
+        List of applications which will be granted shortcuts automatically
+        without the user being prompted.
+      </description>
+    </key>
+    <key name="inhibit-shortcuts-denied" type="as">
+      <default>[]</default>
+      <summary>Applications denied shortcuts</summary>
+      <description>
+        List of applications which will be denied shortcuts automatically
+        without the user being prompted.
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
