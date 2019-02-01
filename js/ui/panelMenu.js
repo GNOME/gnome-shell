@@ -64,7 +64,7 @@ class ButtonBox extends St.Widget {
         if (!child)
             return;
 
-        let [minWidth, natWidth] = child.get_preferred_width(-1);
+        let [, natWidth] = child.get_preferred_width(-1);
 
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;

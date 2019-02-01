@@ -518,7 +518,7 @@ var LoginDialog = GObject.registerClass({
     _getBannerAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = this._bannerView.get_preferred_size();
+        let [, , natWidth, natHeight] = this._bannerView.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -532,7 +532,7 @@ var LoginDialog = GObject.registerClass({
     _getLogoBinAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = this._logoBin.get_preferred_size();
+        let [, , natWidth, natHeight] = this._logoBin.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -546,7 +546,7 @@ var LoginDialog = GObject.registerClass({
     _getCenterActorAllocation(dialogBox, actor) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = actor.get_preferred_size();
+        let [, , natWidth, natHeight] = actor.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
         let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
 
@@ -648,7 +648,7 @@ var LoginDialog = GObject.registerClass({
 
                     // figure out how tall it would like to be and try to accommodate
                     // but don't let it get too close to the logo
-                    let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
+                    let [, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 
                     let maxWideHeight = dialogHeight - 3 * logoHeight;
                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);

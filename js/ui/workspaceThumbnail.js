@@ -687,7 +687,7 @@ class ThumbnailsBox extends St.Widget {
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
-            let [w, h] = thumbnail.actor.get_transformed_size();
+            let [, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
                 thumbnail.activate(time);
                 break;
@@ -775,7 +775,7 @@ class ThumbnailsBox extends St.Widget {
             // Allow the reorder target to have a 10px "cut" into
             // each side of the thumbnail, to make dragging onto the
             // placeholder easier
-            let [w, h] = this._thumbnails[i].actor.get_transformed_size();
+            let [, h] = this._thumbnails[i].actor.get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
             let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
@@ -1256,7 +1256,7 @@ class ThumbnailsBox extends St.Widget {
             }
 
             if (i == this._dropPlaceholderPos) {
-                let [minHeight, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
+                let [, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
                 childBox.x1 = x1;
                 childBox.x2 = x2;
                 childBox.y1 = Math.round(y);

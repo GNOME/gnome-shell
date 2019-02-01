@@ -167,9 +167,9 @@ function createExtensionObject(uuid, dir, type) {
         throw new Error('Missing metadata.json');
     }
 
-    let metadataContents, success, tag;
+    let metadataContents, success;
     try {
-        [success, metadataContents, tag] = metadataFile.load_contents(null);
+        [success, metadataContents] = metadataFile.load_contents(null);
         if (metadataContents instanceof Uint8Array)
             metadataContents = imports.byteArray.toString(metadataContents);
     } catch (e) {
