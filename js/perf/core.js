@@ -3,6 +3,7 @@
             script_applicationsShowStart, script_applicationsShowDone,
             script_afterShowHide, malloc_usedSize, glx_swapComplete,
             clutter_stagePaintDone */
+/* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
 const System = imports.system;
 

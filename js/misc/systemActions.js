@@ -188,30 +188,37 @@ const SystemActions = GObject.registerClass({
         this._sessionUpdated();
     }
 
+    // eslint-disable-next-line camelcase
     get can_power_off() {
         return this._actions.get(POWER_OFF_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get can_suspend() {
         return this._actions.get(SUSPEND_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get can_lock_screen() {
         return this._actions.get(LOCK_SCREEN_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get can_switch_user() {
         return this._actions.get(SWITCH_USER_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get can_logout() {
         return this._actions.get(LOGOUT_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get can_lock_orientation() {
         return this._actions.get(LOCK_ORIENTATION_ACTION_ID).available;
     }
 
+    // eslint-disable-next-line camelcase
     get orientation_lock_icon() {
         return this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName;
     }
