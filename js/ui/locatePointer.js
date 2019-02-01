@@ -18,7 +18,7 @@ var LocatePointer = class {
         if (!this._settings.get_boolean(LOCATE_POINTER_KEY))
             return;
 
-        let [x, y, mods] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         this._ripples.playAnimation(x, y);
     }
 };

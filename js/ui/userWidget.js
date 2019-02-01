@@ -103,8 +103,7 @@ class UserWidgetLabel extends St.Widget {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        let [minRealNameWidth, minRealNameHeight,
-             natRealNameWidth, natRealNameHeight] = this._realNameLabel.get_preferred_size();
+        let [, , natRealNameWidth] = this._realNameLabel.get_preferred_size();
 
         if (natRealNameWidth <= availWidth)
             this._currentLabel = this._realNameLabel;

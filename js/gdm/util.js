@@ -45,7 +45,7 @@ function fadeInActor(actor) {
 
     let hold = new Batch.Hold();
     actor.show();
-    let [minHeight, naturalHeight] = actor.get_preferred_height(-1);
+    let [, naturalHeight] = actor.get_preferred_height(-1);
 
     actor.opacity = 0;
     actor.set_height(0);

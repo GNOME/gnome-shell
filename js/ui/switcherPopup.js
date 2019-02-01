@@ -76,8 +76,8 @@ var SwitcherPopup = GObject.registerClass({
 
         // Allocate the switcherList
         // We select a size based on an icon size that does not overflow the screen
-        let [childMinHeight, childNaturalHeight] = this._switcherList.get_preferred_height(primary.width - hPadding);
-        let [childMinWidth, childNaturalWidth] = this._switcherList.get_preferred_width(childNaturalHeight);
+        let [, childNaturalHeight] = this._switcherList.get_preferred_height(primary.width - hPadding);
+        let [, childNaturalWidth] = this._switcherList.get_preferred_width(childNaturalHeight);
         childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
         childBox.x2 = Math.min(primary.x + primary.width - rightPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
@@ -437,10 +437,10 @@ var SwitcherList = GObject.registerClass({
         this._highlighted = index;
 
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
-        let [absItemX, absItemY] = this._items[index].get_transformed_position();
+        let [value] = adjustment.get_values();
+        let [absItemX] = this._items[index].get_transformed_position();
         let [result, posX, posY] = this.transform_stage_point(absItemX, 0);
-        let [containerWidth, containerHeight] = this.get_transformed_size();
+        let [containerWidth] = this.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
         else if (this._items[index].allocation.x1 - value < 0)
@@ -542,7 +542,7 @@ var SwitcherList = GObject.registerClass({
         }
 
         if (this._squareItems) {
-            let [childMin, childNat] = this._maxChildWidth(-1);
+            let [childMin] = this._maxChildWidth(-1);
             maxChildMin = Math.max(childMin, maxChildMin);
             maxChildNat = maxChildMin;
         }

@@ -613,15 +613,15 @@ var _Draggable = class _Draggable {
         if (this._dragActorSource && this._dragActorSource.visible) {
             // Snap the clone back to its source
             [x, y] = this._dragActorSource.get_transformed_position();
-            let [sourceScaledWidth, sourceScaledHeight] = this._dragActorSource.get_transformed_size();
+            let [sourceScaledWidth] = this._dragActorSource.get_transformed_size();
             scale = sourceScaledWidth ? this._dragActor.width / sourceScaledWidth : 0;
         } else if (this._dragOrigParent) {
             // Snap the actor back to its original position within
             // its parent, adjusting for the fact that the parent
             // may have been moved or scaled
             let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
-            let [parentWidth, parentHeight] = this._dragOrigParent.get_size();
-            let [parentScaledWidth, parentScaledHeight] = this._dragOrigParent.get_transformed_size();
+            let [parentWidth] = this._dragOrigParent.get_size();
+            let [parentScaledWidth] = this._dragOrigParent.get_transformed_size();
             let parentScale = 1.0;
             if (parentWidth != 0)
                 parentScale = parentScaledWidth / parentWidth;

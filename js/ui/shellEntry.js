@@ -115,7 +115,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
 };
 
 function _setMenuAlignment(entry, stageX) {
-    let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);
+    let [success, entryX] = entry.transform_stage_point(stageX, 0);
     if (success)
         entry.menu.setSourceAlignment(entryX / entry.width);
 }
@@ -125,7 +125,7 @@ function _onButtonPressEvent(actor, event, entry) {
         entry.menu.close(BoxPointer.PopupAnimation.FULL);
         return Clutter.EVENT_STOP;
     } else if (event.get_button() == 3) {
-        let [stageX, stageY] = event.get_coords();
+        let [stageX] = event.get_coords();
         _setMenuAlignment(entry, stageX);
         entry.menu.open(BoxPointer.PopupAnimation.FULL);
         return Clutter.EVENT_STOP;
