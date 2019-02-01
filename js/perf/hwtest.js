@@ -6,6 +6,7 @@
             script_redrawTestDone, script_collectTimings,
             script_geditLaunch, script_geditFirstFrame,
             clutter_stagePaintStart, clutter_paintCompletedTimestamp */
+/* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^clutter"] }] */
 const { Clutter, Gio, Shell } = imports.gi;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;

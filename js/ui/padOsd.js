@@ -307,10 +307,12 @@ var PadDiagram = GObject.registerClass({
         super._init(params);
     }
 
+    // eslint-disable-next-line camelcase
     get left_handed() {
         return this._leftHanded;
     }
 
+    // eslint-disable-next-line camelcase
     set left_handed(leftHanded) {
         this._leftHanded = leftHanded;
     }
@@ -329,10 +331,12 @@ var PadDiagram = GObject.registerClass({
         this._handle = this._composeStyledDiagram();
     }
 
+    // eslint-disable-next-line camelcase
     get editor_actor() {
         return this._editorActor;
     }
 
+    // eslint-disable-next-line camelcase
     set editor_actor(actor) {
         actor.hide();
         this._editorActor = actor;
