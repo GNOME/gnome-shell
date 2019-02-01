@@ -380,10 +380,14 @@ var Switch = class {
 
     _endDragging() {
         if (this._dragging) {
-            if (this._releaseId)
+            if (this._releaseId) {
                 this.actor.disconnect(this._releaseId);
-            if (this._motionId)
+                this._releaseId = null;
+            }
+            if (this._motionId) {
                 this.actor.disconnect(this._motionId);
+                this._motionId = null;
+            }
 
             if (this._grabbedSequence != null)
                 this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
