@@ -13,39 +13,6 @@ var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 0.1;
 var LEVEL_ANIMATION_TIME = 0.1;
 
-var LevelBar = class extends BarLevel.BarLevel {
-    constructor() {
-        super(0, { styleClass: 'level' });
-
-        this._level = 0;
-        this._maxLevel = 1;
-
-        this.actor.accessible_name = _("Volume");
-
-        this.actor.connect('notify::width', () => this.level = this.level);
-    }
-
-    get level() {
-        return this._level;
-    }
-
-    set level(value) {
-        this._level = Math.max(0, Math.min(value, this._maxLevel));
-
-        this.value = this._level;
-    }
-
-    get maxLevel() {
-        return this._maxLevel;
-    }
-
-    set maxLevel(value) {
-        this._maxLevel = Math.max(1, value);
-
-        this.maximum_level = this._maxLevel;
-    }
-};
-
 var OsdWindowConstraint = GObject.registerClass(
 class OsdWindowConstraint extends Clutter.Constraint {
     _init(props) {
@@ -99,7 +66,7 @@ var OsdWindow = class {
         this._label = new St.Label();
         this._box.add(this._label);
 
-        this._level = new LevelBar();
+        this._level = new BarLevel.BarLevel(0, { styleClass: 'level' });
         this._box.add(this._level.actor);
 
         this._hideTimeoutId = 0;
@@ -139,21 +106,21 @@ var OsdWindow = class {
             this._label.text = label;
     }
 
-    setLevel(level) {
-        this._level.actor.visible = (level != undefined);
-        if (level != undefined) {
+    setLevel(value) {
+        this._level.actor.visible = (value != undefined);
+        if (value != undefined) {
             if (this.actor.visible)
                 Tweener.addTween(this._level,
-                                 { level: level,
+                                 { value: value,
                                    time: LEVEL_ANIMATION_TIME,
                                    transition: 'easeOutQuad' });
             else
-                this._level.level = level;
+                this._level.value = value;
         }
     }
 
     setMaxLevel(maxLevel = 1) {
-        this._level.maxLevel = maxLevel;
+        this._level.maximum_value = maxLevel;
     }
 
     show() {
