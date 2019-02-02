@@ -145,7 +145,9 @@ var OsdWindow = class {
     setLevel(level) {
         this._level.actor.visible = (level != undefined);
         if (level != undefined) {
-            if (this.actor.visible)
+            /* Don't animate value changes <= 5% */
+            if (this.actor.visible &&
+                Math.abs(this._level.level - level) > 5)
                 Tweener.addTween(this._level,
                                  { level: level,
                                    time: LEVEL_ANIMATION_TIME,
