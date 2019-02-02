@@ -103,11 +103,6 @@ var StreamSlider = class {
         return this._slider.scroll(event);
     }
 
-    setValue(value) {
-        // piggy-back off of sliderChanged
-        this._slider.setValue(value);
-    }
-
     _sliderChanged(slider, value, property) {
         if (!this._stream)
             return;
