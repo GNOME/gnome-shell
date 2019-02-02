@@ -142,7 +142,7 @@ var StreamSlider = class {
         this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
 
         if (this._allowAmplified)
-            this._slider.setMaximumValue(this.getMaxLevel() / 100);
+            this._slider.setMaximumValue(this.getMaxLevel());
         else
             this._slider.setMaximumValue(1);
 
@@ -178,7 +178,7 @@ var StreamSlider = class {
         if (!this._stream)
             return null;
 
-        return 100 * this._stream.volume / this._control.get_vol_max_norm();
+        return this._stream.volume / this._control.get_vol_max_norm();
     }
 
     getMaxLevel() {
@@ -186,7 +186,7 @@ var StreamSlider = class {
         if (this._allowAmplified)
             maxVolume = this._control.get_vol_max_amplified();
 
-        return 100 * maxVolume / this._control.get_vol_max_norm();
+        return maxVolume / this._control.get_vol_max_norm();
     }
 };
 Signals.addSignalMethods(StreamSlider.prototype);
@@ -368,8 +368,8 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             return result;
 
         let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
-        let level = parseInt(this._volumeMenu.getLevel());
-        let maxLevel = parseInt(this._volumeMenu.getMaxLevel());
+        let level = this._volumeMenu.getLevel();
+        let maxLevel = this._volumeMenu.getMaxLevel();
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
