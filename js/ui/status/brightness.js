@@ -50,14 +50,13 @@ var Indicator = class extends PanelMenu.SystemIndicator {
     }
 
     _sliderChanged(slider, value) {
-        let percent = value * 100;
-        this._proxy.Brightness = percent;
+        this._proxy.Brightness = value;
     }
 
     _sync() {
         let visible = this._proxy.Brightness >= 0;
         this._item.actor.visible = visible;
         if (visible)
-            this._slider.setValue(this._proxy.Brightness / 100.0);
+            this._slider.setValue(this._proxy.Brightness);
     }
 };
