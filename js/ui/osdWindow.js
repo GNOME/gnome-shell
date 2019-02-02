@@ -18,7 +18,7 @@ var LevelBar = class extends BarLevel.BarLevel {
         super(0, { styleClass: 'level' });
 
         this._level = 0;
-        this._maxLevel = 100;
+        this._maxLevel = 1;
 
         this.actor.accessible_name = _("Volume");
 
@@ -32,7 +32,7 @@ var LevelBar = class extends BarLevel.BarLevel {
     set level(value) {
         this._level = Math.max(0, Math.min(value, this._maxLevel));
 
-        this.value = this._level / 100;
+        this.value = this._level;
     }
 
     get maxLevel() {
@@ -40,9 +40,9 @@ var LevelBar = class extends BarLevel.BarLevel {
     }
 
     set maxLevel(value) {
-        this._maxLevel = Math.max(100, value);
+        this._maxLevel = Math.max(1, value);
 
-        this.maximum_level = this._maxLevel / 100;
+        this.maximum_level = this._maxLevel;
     }
 };
 
@@ -152,7 +152,7 @@ var OsdWindow = class {
         }
     }
 
-    setMaxLevel(maxLevel = 100) {
+    setMaxLevel(maxLevel = 1) {
         this._level.maxLevel = maxLevel;
     }
 
