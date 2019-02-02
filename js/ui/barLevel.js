@@ -121,7 +121,8 @@ var BarLevel = class {
         cr.lineTo(x, (height - barLevelHeight) / 2);
         cr.lineTo(x, (height + barLevelHeight) / 2);
         cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
-        Clutter.cairo_set_source_color(cr, barLevelActiveColor);
+        if (this._value > 0)
+          Clutter.cairo_set_source_color(cr, barLevelActiveColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, barLevelActiveBorderColor);
         cr.setLineWidth(barLevelBorderWidth);
@@ -143,17 +144,19 @@ var BarLevel = class {
         }
 
         /* end progress bar arc */
-        if (this._value <= this._overdriveStart)
-            Clutter.cairo_set_source_color(cr, barLevelActiveColor);
-        else
-            Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
-        cr.arc(endX, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
-        cr.lineTo(Math.floor(endX), (height + barLevelHeight) / 2);
-        cr.lineTo(Math.floor(endX), (height - barLevelHeight) / 2);
-        cr.lineTo(endX, (height - barLevelHeight) / 2);
-        cr.fillPreserve();
-        cr.setLineWidth(barLevelBorderWidth);
-        cr.stroke();
+        if (this._value > 0) {
+          if (this._value <= this._overdriveStart)
+              Clutter.cairo_set_source_color(cr, barLevelActiveColor);
+          else
+              Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
+          cr.arc(endX, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
+          cr.lineTo(Math.floor(endX), (height + barLevelHeight) / 2);
+          cr.lineTo(Math.floor(endX), (height - barLevelHeight) / 2);
+          cr.lineTo(endX, (height - barLevelHeight) / 2);
+          cr.fillPreserve();
+          cr.setLineWidth(barLevelBorderWidth);
+          cr.stroke();
+        }
 
         /* draw overdrive separator */
         if (overdriveActive) {
