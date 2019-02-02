@@ -1535,7 +1535,7 @@ msgstr "S'està reiniciant…"
 #. long format
 #: js/ui/screenShield.js:86
 msgid "%A, %B %d"
-msgstr "%A %d %B"
+msgstr "%A %-d %B"
 
 #: js/ui/screenShield.js:142
 #, javascript-format
