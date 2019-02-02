@@ -42,6 +42,9 @@ var BarLevel = class {
         if (isNaN(value))
             throw TypeError('The bar level value must be a number');
 
+        if (this._value == value)
+            return;
+
         this._value = Math.max(Math.min(value, this._maxValue), 0);
         this.actor.queue_repaint();
     }
@@ -55,6 +58,9 @@ var BarLevel = class {
     set maximum_value(value) {
         if (isNaN(value))
             throw TypeError('The bar level max value must be a number');
+
+        if (this._maxValue == value)
+            return;
 
         this._maxValue = Math.max(value, 1);
         this._overdriveStart = Math.min(this._overdriveStart, this._maxValue);
@@ -70,6 +76,10 @@ var BarLevel = class {
     set overdrive_start(value) {
         if (isNaN(value))
             throw TypeError('The overdrive limit value must be a number');
+
+        if (this._overdriveStart == value)
+            return;
+
         if (value > this._maxValue)
             throw new Error(`Tried to set overdrive value to ${value}, ` +
                 `which is a number greater than the maximum allowed value ${this._maxValue}`);
