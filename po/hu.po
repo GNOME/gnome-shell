@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-01 17:08+0000\n"
-"PO-Revision-Date: 2019-02-02 08:55+0100\n"
+"POT-Creation-Date: 2019-02-02 07:56+0000\n"
+"PO-Revision-Date: 2019-02-03 15:27+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -559,21 +559,21 @@ msgstr[1] "%d éve"
 #. Translators: Time in 24h format
 #: js/misc/util.js:228
 msgid "%H∶%M"
-msgstr "%k∶%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/util.js:234
 #, no-c-format
 msgid "Yesterday, %H∶%M"
-msgstr "Tegnap, %k∶%M"
+msgstr "Tegnap %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/util.js:240
 #, no-c-format
 msgid "%A, %H∶%M"
-msgstr "%A %k∶%M"
+msgstr "%A %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -581,7 +581,7 @@ msgstr "%A %k∶%M"
 #: js/misc/util.js:246
 #, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%B %-d., %k∶%M"
+msgstr "%B %-d. %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -589,26 +589,26 @@ msgstr "%B %-d., %k∶%M"
 #: js/misc/util.js:252
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%Y. %B %-d., %k∶%M"
+msgstr "%Y. %B %-d. %H:%M"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:257
 msgid "%l∶%M %p"
-msgstr "%p %l∶%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/util.js:263
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "Tegnap %p %l∶%M"
+msgstr "Tegnap %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:269
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A, %p %l∶%M"
+msgstr "%A %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -616,7 +616,7 @@ msgstr "%A, %p %l∶%M"
 #: js/misc/util.js:275
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%B %-d., %p %l∶%M"
+msgstr "%B %-d. %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -624,7 +624,7 @@ msgstr "%B %-d., %p %l∶%M"
 #: js/misc/util.js:281
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%Y. %B %-d., %p %l∶%M"
+msgstr "%Y. %B %-d. %H:%M"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:46
@@ -797,7 +797,7 @@ msgstr "%OB"
 #.
 #: js/ui/calendar.js:356
 msgid "%OB %Y"
-msgstr "%Y %OB"
+msgstr "%Y. %OB"
 
 #: js/ui/calendar.js:413
 msgid "Previous month"
@@ -828,12 +828,12 @@ msgstr "Egész nap"
 #: js/ui/calendar.js:833
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, %B %-d."
+msgstr "%B %-d. %A"
 
 #: js/ui/calendar.js:837
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, %Y. %B %-d."
+msgstr "%Y. %B %-d. %A"
 
 #: js/ui/calendar.js:1060
 msgid "No Notifications"
@@ -1032,7 +1032,7 @@ msgstr "%Y. %B %-d."
 #.
 #: js/ui/dateMenu.js:79
 msgid "%A %B %e %Y"
-msgstr "%A, %Y. %B %e."
+msgstr "%Y. %B %-e. %A"
 
 #: js/ui/dateMenu.js:141
 msgid "Add world clocks…"
@@ -1520,7 +1520,7 @@ msgstr "Újraindítás…"
 #. long format
 #: js/ui/screenShield.js:86
 msgid "%A, %B %d"
-msgstr "%A, %B %d."
+msgstr "%B %-d. %A"
 
 #: js/ui/screenShield.js:142
 #, javascript-format
