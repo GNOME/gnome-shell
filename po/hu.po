@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-02 07:56+0000\n"
-"PO-Revision-Date: 2019-02-03 15:27+0100\n"
+"POT-Creation-Date: 2019-02-03 16:13+0000\n"
+"PO-Revision-Date: 2019-02-03 18:09+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -46,6 +46,7 @@ msgid "Open the application menu"
 msgstr "Az alkalmazásmenü megnyitása"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
+#: js/extensionPrefs/main.js:221
 msgid "Shell Extensions"
 msgstr "Shell kiterjesztések"
 
@@ -344,6 +345,31 @@ msgstr "network-workgroup"
 #: js/extensionPrefs/main.js:121
 msgid "Something’s gone wrong"
 msgstr "Valami elromlott"
+
+#: js/extensionPrefs/main.js:128
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+"Nagyon sajnáljuk, de probléma történt: a kiterjesztés beállításait nem lehet "
+"megjeleníteni. Azt ajánljuk, hogy jelentse a hibát a kiterjesztés szerzőinek."
+
+#: js/extensionPrefs/main.js:135
+msgid "Technical Details"
+msgstr "Technikai részletek"
+
+#: js/extensionPrefs/main.js:170
+msgid "Copy Error"
+msgstr "Hiba másolása"
+
+#: js/extensionPrefs/main.js:190
+msgid "Homepage"
+msgstr "Honlap"
+
+#: js/extensionPrefs/main.js:191
+msgid "Visit extension homepage"
+msgstr "A kiterjesztés honlapjának megtekintése"
 
 #: js/extensionPrefs/main.js:454
 msgid "No Extensions Installed"
