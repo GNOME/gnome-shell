@@ -734,7 +734,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let dialogContent = DialogContent[this._type];
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], (proxy, error) => {
+            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
                 this._onInhibitorLoaded(proxy);
             });
 

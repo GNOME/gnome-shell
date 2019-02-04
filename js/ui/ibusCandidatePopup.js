@@ -198,11 +198,11 @@ var CandidatePopup = class CandidatePopup {
                 this._setTextAttributes(this._preeditText.clutter_text,
                                         attrs);
         });
-        panelService.connect('show-preedit-text', ps => {
+        panelService.connect('show-preedit-text', () => {
             this._preeditText.show();
             this._updateVisibility();
         });
-        panelService.connect('hide-preedit-text', ps => {
+        panelService.connect('hide-preedit-text', () => {
             this._preeditText.hide();
             this._updateVisibility();
         });
@@ -212,11 +212,11 @@ var CandidatePopup = class CandidatePopup {
 
             this._auxText.text = text.get_text();
         });
-        panelService.connect('show-auxiliary-text', ps => {
+        panelService.connect('show-auxiliary-text', () => {
             this._auxText.show();
             this._updateVisibility();
         });
-        panelService.connect('hide-auxiliary-text', ps => {
+        panelService.connect('hide-auxiliary-text', () => {
             this._auxText.hide();
             this._updateVisibility();
         });
@@ -256,15 +256,15 @@ var CandidatePopup = class CandidatePopup {
             this._candidateArea.setOrientation(lookupTable.get_orientation());
             this._candidateArea.updateButtons(lookupTable.is_round(), page, nPages);
         });
-        panelService.connect('show-lookup-table', ps => {
+        panelService.connect('show-lookup-table', () => {
             this._candidateArea.actor.show();
             this._updateVisibility();
         });
-        panelService.connect('hide-lookup-table', ps => {
+        panelService.connect('hide-lookup-table', () => {
             this._candidateArea.actor.hide();
             this._updateVisibility();
         });
-        panelService.connect('focus-out', ps => {
+        panelService.connect('focus-out', () => {
             this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
             Main.keyboard.resetSuggestions();
         });

@@ -122,7 +122,7 @@ var PopupBaseMenuItem = GObject.registerClass({
         this._parent = parent;
     }
 
-    _onButtonPressEvent(actor, event) {
+    _onButtonPressEvent() {
         // This is the CSS active state
         this.add_style_pseudo_class('active');
         return Clutter.EVENT_PROPAGATE;
@@ -1193,11 +1193,11 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         return super._onKeyPressEvent(actor, event);
     }
 
-    activate(event) {
+    activate(_event) {
         this._setOpenState(true);
     }
 
-    _onButtonReleaseEvent(actor) {
+    _onButtonReleaseEvent() {
         // Since we override the parent, we need to manage what the parent does
         // with the active style class
         this.remove_style_pseudo_class('active');

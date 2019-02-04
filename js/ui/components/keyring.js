@@ -176,21 +176,21 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         return false;
     }
 
-    _onShowPassword(prompt) {
+    _onShowPassword() {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._passwordEntry.grab_key_focus();
     }
 
-    _onShowConfirm(prompt) {
+    _onShowConfirm() {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._continueButton.grab_key_focus();
     }
 
-    _onHidePrompt(prompt) {
+    _onHidePrompt() {
         this.close();
     }
 

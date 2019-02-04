@@ -172,19 +172,19 @@ var BarLevel = class {
         cr.$dispose();
     }
 
-    _getCurrentValue(actor) {
+    _getCurrentValue() {
         return this._value;
     }
 
-    _getOverdriveStart(actor) {
+    _getOverdriveStart() {
         return this._overdriveStart;
     }
 
-    _getMinimumValue(actor) {
+    _getMinimumValue() {
         return 0;
     }
 
-    _getMaximumValue(actor) {
+    _getMaximumValue() {
         return this._maxValue;
     }
 
@@ -192,7 +192,7 @@ var BarLevel = class {
         this._value = value;
     }
 
-    _valueChanged(barLevel, value, property) {
+    _valueChanged() {
         this._customAccessible.notify("accessible-value");
     }
 

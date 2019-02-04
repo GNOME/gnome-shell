@@ -196,7 +196,7 @@ var SwitcherPopup = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    _clickedOutside(actor, event) {
+    _clickedOutside() {
         this.fadeAndDestroy();
         return Clutter.EVENT_PROPAGATE;
     }
