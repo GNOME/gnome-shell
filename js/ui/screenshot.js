@@ -106,7 +106,7 @@ var ScreenshotService = class {
     }
 
     ScreenshotAreaAsync(params, invocation) {
-        let [x, y, width, height, flash, filename, callback] = params;
+        let [x, y, width, height, flash, filename] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
             invocation.return_error_literal(Gio.IOErrorEnum,
