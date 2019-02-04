@@ -88,7 +88,7 @@ class InputMethod extends Clutter.InputMethod {
         this.commit(text.get_text());
     }
 
-    _onDeleteSurroundingText(context) {
+    _onDeleteSurroundingText() {
         this.delete_surrounding();
     }
 
@@ -108,12 +108,12 @@ class InputMethod extends Clutter.InputMethod {
         this._preeditVisible = visible;
     }
 
-    _onShowPreeditText(context) {
+    _onShowPreeditText() {
         this._preeditVisible = true;
         this.set_preedit_text(this._preeditStr, this._preeditPos);
     }
 
-    _onHidePreeditText(context) {
+    _onHidePreeditText() {
         this.set_preedit_text(null, this._preeditPos);
         this._preeditVisible = false;
     }

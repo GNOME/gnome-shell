@@ -202,7 +202,7 @@ var Slider = class extends BarLevel.BarLevel {
         this.emit('value-changed', this._value);
     }
 
-    _getMinimumIncrement(actor) {
+    _getMinimumIncrement() {
         return 0.1;
     }
 };

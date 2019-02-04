@@ -148,7 +148,7 @@ var Magnifier = class Magnifier {
     setActive(activate) {
         let isActive = this.isActive();
 
-        this._zoomRegions.forEach((zoomRegion, index, array) => {
+        this._zoomRegions.forEach(zoomRegion => {
             zoomRegion.setActive(activate);
         });
 
@@ -234,7 +234,7 @@ var Magnifier = class Magnifier {
             this.yMouse = yMouse;
 
             let sysMouseOverAny = false;
-            this._zoomRegions.forEach((zoomRegion, index, array) => {
+            this._zoomRegions.forEach(zoomRegion => {
                 if (zoomRegion.scrollToMousePos())
                     sysMouseOverAny = true;
             });
@@ -332,7 +332,7 @@ var Magnifier = class Magnifier {
         this.setCrosshairsClip(clip);
 
         let theCrossHairs = this._crossHairs;
-        this._zoomRegions.forEach ((zoomRegion, index, array) => {
+        this._zoomRegions.forEach (zoomRegion => {
             zoomRegion.addCrosshairs(theCrossHairs);
         });
     }

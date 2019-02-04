@@ -220,13 +220,13 @@ var DBusEventSource = class DBusEventSource {
         this._lastRequestEnd = null;
     }
 
-    _onNameAppeared(owner) {
+    _onNameAppeared() {
         this._initialized = true;
         this._resetCache();
         this._loadEvents(true);
     }
 
-    _onNameVanished(oldOwner) {
+    _onNameVanished() {
         this._resetCache();
         this.emit('changed');
     }

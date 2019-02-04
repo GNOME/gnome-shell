@@ -100,7 +100,7 @@ class KeyContainer extends St.Widget {
         this._rows = [];
     }
 
-    appendRow(length) {
+    appendRow() {
         this._currentRow++;
         this._currentCol = 0;
 
@@ -1171,7 +1171,7 @@ var Keyboard = class Keyboard {
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('hide', (selection) => this.hide());
+        this._emojiSelection.connect('hide', () => this.hide());
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });
@@ -1467,7 +1467,7 @@ var Keyboard = class Keyboard {
         this._setActiveLayer(0);
     }
 
-    _onKeyboardGroupsChanged(keyboard) {
+    _onKeyboardGroupsChanged() {
         let nonGroupActors = [this._emojiSelection.actor, this._keypad.actor];
         this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
             c.destroy();

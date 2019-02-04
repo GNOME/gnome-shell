@@ -67,7 +67,7 @@ function ssidToLabel(ssid) {
     return label;
 }
 
-function ensureActiveConnectionProps(active, client) {
+function ensureActiveConnectionProps(active) {
     if (!active._primaryDevice) {
         let devices = active.get_devices();
         if (devices.length > 0) {
@@ -401,7 +401,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
                 let item = this._connectionItems.get(activeConnection.connection.get_uuid());
                 if (item) {
                     this._activeConnection = activeConnection;
-                    ensureActiveConnectionProps(this._activeConnection, this._client);
+                    ensureActiveConnectionProps(this._activeConnection);
                     item.setActiveConnection(this._activeConnection);
                 }
             }
@@ -1802,13 +1802,13 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
 
         connection = this._client.get_primary_connection();
         if (connection) {
-            ensureActiveConnectionProps(connection, this._client);
+            ensureActiveConnectionProps(connection);
             return connection;
         }
 
         connection = this._client.get_activating_connection();
         if (connection) {
-            ensureActiveConnectionProps(connection, this._client);
+            ensureActiveConnectionProps(connection);
             return connection;
         }
 
@@ -1845,7 +1845,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             a => (a instanceof NM.VpnConnection)
         );
         vpnConnections.forEach(a => {
-            ensureActiveConnectionProps(a, this._client);
+            ensureActiveConnectionProps(a);
         });
         this._vpnSection.setActiveConnections(vpnConnections);
 

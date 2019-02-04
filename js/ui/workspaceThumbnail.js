@@ -465,7 +465,7 @@ var WorkspaceThumbnail = class {
             this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
     }
 
-    _onDestroy(actor) {
+    _onDestroy() {
         this.workspaceRemoved();
 
         if (this._bgManager) {

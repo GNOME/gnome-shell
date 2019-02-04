@@ -103,7 +103,7 @@ var StreamSlider = class {
         this._slider.setValue(value);
     }
 
-    _sliderChanged(slider, value, property) {
+    _sliderChanged(slider, value) {
         if (!this._stream)
             return;
 
@@ -346,7 +346,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('icon-changed', menu => {
+        this._volumeMenu.connect('icon-changed', () => {
             let icon = this._volumeMenu.getIcon();
 
             if (icon != null) {
