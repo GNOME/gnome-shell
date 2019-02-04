@@ -839,7 +839,7 @@ var AppDisplay = class AppDisplay {
             this._controls.add_actor(this._views[i].control);
 
             let viewIndex = i;
-            this._views[i].control.connect('clicked', actor => {
+            this._views[i].control.connect('clicked', () => {
                 this._showView(viewIndex);
                 global.settings.set_uint('app-picker-view', viewIndex);
             });
@@ -1586,12 +1586,12 @@ var AppIcon = class AppIcon {
         GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
     }
 
-    _onLeaveEvent(actor, event) {
+    _onLeaveEvent(_actor, _event) {
         this.actor.fake_release();
         this._removeMenuTimeout();
     }
 
-    _onButtonPress(actor, event) {
+    _onButtonPress(_actor, event) {
         let button = event.get_button();
         if (button == 1) {
             this._setPopupTimeout();

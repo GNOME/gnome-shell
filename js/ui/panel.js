@@ -489,7 +489,7 @@ class ActivitiesButton extends PanelMenu.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _xdndToggleOverview(actor) {
+    _xdndToggleOverview() {
         let [x, y, mask] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
@@ -596,7 +596,7 @@ var PanelCorner = class {
 
             // Synchronize the locate button's pseudo classes with this corner
             this._buttonStyleChangedSignalId = button.connect('style-changed',
-                actor => {
+                () => {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.actor.set_style_pseudo_class(pseudoClass);
                 });

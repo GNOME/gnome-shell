@@ -34,7 +34,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
             throw new Error('Too few devices for a selection');
     }
 
-    _buildLayout(devices) {
+    _buildLayout() {
         let title = new St.Label({ style_class: 'audio-selection-title',
                                    text: _("Select Audio Device"),
                                    x_align: Clutter.ActorAlign.CENTER });

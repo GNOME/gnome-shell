@@ -124,7 +124,7 @@ var ShellMagnifier = class ShellMagnifier {
         let zoomRegions = Main.magnifier.getZoomRegions();
         let objectPaths = [];
         let thoseZoomers = this._zoomers;
-        zoomRegions.forEach ((aZoomRegion, index, array) => {
+        zoomRegions.forEach (aZoomRegion => {
             let found = false;
             for (let objectPath in thoseZoomers) {
                 let proxyAndZoomRegion = thoseZoomers[objectPath];

@@ -335,7 +335,7 @@ var ScreenSaverDBus = class {
         screenShield.connect('active-changed', shield => {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
         });
-        screenShield.connect('wake-up-screen', shield => {
+        screenShield.connect('wake-up-screen', () => {
             this._dbusImpl.emit_signal('WakeUpScreen', null);
         });
 
