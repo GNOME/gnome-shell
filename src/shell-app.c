@@ -224,7 +224,11 @@ window_backed_app_get_icon (ShellApp *app,
   if (window == NULL)
     {
       actor = clutter_actor_new ();
-      g_object_set (actor, "opacity", 0, "width", scaled_size, "height", scaled_size, NULL);
+      g_object_set (actor,
+                    "opacity", 0,
+                    "width", scaled_size,
+                    "height", scaled_size,
+                    NULL);
       return actor;
     }
 
