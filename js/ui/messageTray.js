@@ -838,17 +838,6 @@ var MessageTray = class MessageTray {
             this._onStatusChanged(status);
         });
 
-        global.stage.connect('enter-event', (a, ev) => {
-            // HACK: St uses ClutterInputDevice for hover tracking, which
-            // misses relevant X11 events when untracked actors are
-            // involved (read: the notification banner in normal mode),
-            // so fix up Clutter's view of the pointer position in
-            // that case.
-            let related = ev.get_related();
-            if (!related || this.actor.contains(related))
-                global.sync_pointer();
-        });
-
         this.actor = new St.Widget({ visible: false,
                                      clip_to_allocation: true,
                                      layout_manager: new Clutter.BinLayout() });

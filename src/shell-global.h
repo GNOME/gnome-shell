@@ -64,8 +64,6 @@ void shell_global_run_at_leisure (ShellGlobal          *global,
 
 
 /* Misc utilities / Shell API */
-void     shell_global_sync_pointer              (ShellGlobal  *global);
-
 GAppLaunchContext *
          shell_global_create_app_launch_context (ShellGlobal  *global,
                                                  guint32       timestamp,
