@@ -227,8 +227,15 @@ var AppMenuButton = GObject.registerClass({
         textureCache.connect('icon-theme-changed',
                              this._onIconThemeChanged.bind(this));
 
+        let iconEffect = new Clutter.DesaturateEffect();
         this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
+        this._iconBox.add_effect(iconEffect);
         this._container.add_actor(this._iconBox);
+
+        this._iconBox.connect('style-changed', () => {
+            let themeNode = this._iconBox.get_theme_node();
+            iconEffect.enabled = themeNode.get_icon_style() == St.IconStyle.SYMBOLIC;
+        });
 
         this._label = new St.Label({ y_expand: true,
                                      y_align: Clutter.ActorAlign.CENTER });
