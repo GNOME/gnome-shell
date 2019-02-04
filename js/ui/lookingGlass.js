@@ -266,7 +266,7 @@ var ObjLink = class ObjLink {
         this._lookingGlass = lookingGlass;
     }
 
-    _onClicked(link) {
+    _onClicked() {
         this._lookingGlass.inspectObject(this._obj, this.actor);
     }
 };

@@ -295,7 +295,7 @@ var SelectArea = class {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onButtonRelease(actor, event) {
+    _onButtonRelease() {
         this._result = this._getGeometry();
         Tweener.addTween(this._group,
                          { opacity: 0,

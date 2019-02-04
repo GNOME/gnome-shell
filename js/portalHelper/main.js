@@ -151,7 +151,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._webView.load_uri(this._originalUrl);
     }
 
-    vfunc_delete_event(event) {
+    vfunc_delete_event(_event) {
         if (this._recheckAtExit)
             this._doneCallback(PortalHelperResult.RECHECK);
         else

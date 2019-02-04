@@ -656,7 +656,7 @@ function _queueBeforeRedraw(workId) {
  *
  * Returns: A string work identifier
  */
-function initializeDeferredWork(actor, callback, props) {
+function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
     let workId = `${(++_deferredWorkSequence)}`;
     _deferredWorkData[workId] = { 'actor': actor,
