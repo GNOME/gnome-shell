@@ -207,6 +207,8 @@ st_settings_init (StSettings *settings)
                                                     KEY_PRIMARY_PASTE);
   settings->gtk_theme = g_settings_get_string (settings->interface_settings,
                                                KEY_GTK_THEME);
+  settings->gtk_icon_theme = g_settings_get_string (settings->interface_settings,
+                                                    KEY_GTK_ICON_THEME);
   settings->drag_threshold = g_settings_get_int (settings->mouse_settings,
                                                  KEY_DRAG_THRESHOLD);
 }
