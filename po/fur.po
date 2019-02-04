@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-01 17:08+0000\n"
-"PO-Revision-Date: 2019-02-02 10:42+0100\n"
+"POT-Creation-Date: 2019-02-03 16:13+0000\n"
+"PO-Revision-Date: 2019-02-04 16:54+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -43,6 +43,7 @@ msgid "Open the application menu"
 msgstr "Vierç il menù aplicazions"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
+#: js/extensionPrefs/main.js:221
 msgid "Shell Extensions"
 msgstr "Estensions Shell"
 
@@ -344,6 +345,32 @@ msgstr "network-workgroup"
 #: js/extensionPrefs/main.js:121
 msgid "Something’s gone wrong"
 msgstr "Alc al è lât stuart"
+
+#: js/extensionPrefs/main.js:128
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+"Si scusin, ma si à vût un probleme: lis impostazions par cheste estension no "
+"puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
+"estension."
+
+#: js/extensionPrefs/main.js:135
+msgid "Technical Details"
+msgstr "Detais tecnics"
+
+#: js/extensionPrefs/main.js:170
+msgid "Copy Error"
+msgstr "Copie erôr"
+
+#: js/extensionPrefs/main.js:190
+msgid "Homepage"
+msgstr "Pagjine principâl"
+
+#: js/extensionPrefs/main.js:191
+msgid "Visit extension homepage"
+msgstr "Visite la pagjine principâl de estension"
 
 #: js/extensionPrefs/main.js:454
 msgid "No Extensions Installed"
