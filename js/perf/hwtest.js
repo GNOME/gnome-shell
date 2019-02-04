@@ -82,7 +82,7 @@ function extractBootTimestamp() {
     let result = null;
 
     let datastream = Gio.DataInputStream.new(sp.get_stdout_pipe());
-    while (true) {
+    while (true) { // eslint-disable-line no-constant-condition
         let [line, length_] = datastream.read_line_utf8(null);
         if (line === null)
             break;
