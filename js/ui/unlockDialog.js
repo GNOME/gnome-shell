@@ -99,7 +99,7 @@ var UnlockDialog = class {
             this._authPrompt.cancel();
     }
 
-    _otherUserClicked(button, event) {
+    _otherUserClicked() {
         Gdm.goto_login_session_sync(null);
 
         this._authPrompt.cancel();

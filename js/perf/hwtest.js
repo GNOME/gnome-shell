@@ -38,7 +38,7 @@ function waitAndDraw(milliseconds) {
     let timeline = new Clutter.Timeline({ duration: milliseconds });
     timeline.start();
 
-    timeline.connect('new-frame', (timeline, frame) => {
+    timeline.connect('new-frame', (_timeline, _frame) => {
         global.stage.queue_redraw();
     });
 

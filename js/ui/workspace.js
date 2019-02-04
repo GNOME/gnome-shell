@@ -376,7 +376,7 @@ var WindowClone = GObject.registerClass({
         return false;
     }
 
-    _onClicked(action, actor) {
+    _onClicked() {
         this._activate();
     }
 
@@ -467,7 +467,7 @@ var WindowOverlay = class {
 
         this._maxTitleWidth = -1;
 
-        this._updateCaptionId = metaWindow.connect('notify::title', w => {
+        this._updateCaptionId = metaWindow.connect('notify::title', () => {
             this.title.text = this._getCaption();
             this.relayout(false);
         });

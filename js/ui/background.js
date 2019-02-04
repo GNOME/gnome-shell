@@ -635,7 +635,7 @@ var Animation = class Animation {
     load(callback) {
         this._show = new GnomeDesktop.BGSlideShow({ filename: this.file.get_path() });
 
-        this._show.load_async(null, (object, result) => {
+        this._show.load_async(null, () => {
             this.loaded = true;
             if (callback)
                 callback();

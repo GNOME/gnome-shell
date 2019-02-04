@@ -512,7 +512,7 @@ var ViewSelector = class {
         return this._text.text == this._entry.get_text();
     }
 
-    _onTextChanged(se, prop) {
+    _onTextChanged() {
         let terms = getTermsForSearchString(this._entry.get_text());
 
         this._searchActive = (terms.length > 0);

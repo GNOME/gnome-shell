@@ -169,8 +169,8 @@ var ClutterFrameTicker = class {
         this._startTime = -1;
         this._currentTime = -1;
 
-        this._timeline.connect('new-frame', (timeline, frame) => {
-            this._onNewFrame(frame);
+        this._timeline.connect('new-frame', () => {
+            this._onNewFrame();
         });
 
         let perfLog = Shell.PerfLog.get_default();
@@ -186,7 +186,7 @@ var ClutterFrameTicker = class {
         return 60;
     }
 
-    _onNewFrame(frame) {
+    _onNewFrame() {
         // If there is a lot of setup to start the animation, then
         // first frame number we get from clutter might be a long ways
         // into the animation (or the animation might even be done).
