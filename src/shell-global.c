@@ -1281,44 +1281,6 @@ shell_global_get_pointer (ShellGlobal         *global,
 }
 
 /**
- * shell_global_sync_pointer:
- * @global: the #ShellGlobal
- *
- * Ensures that clutter is aware of the current pointer position,
- * causing enter and leave events to be emitted if the pointer moved
- * behind our back (ie, during a pointer grab).
- */
-void
-shell_global_sync_pointer (ShellGlobal *global)
-{
-  int x, y;
-  ClutterModifierType mods;
-  ClutterMotionEvent event;
-
-  shell_global_get_pointer (global, &x, &y, &mods);
-
-  event.type = CLUTTER_MOTION;
-  event.time = shell_global_get_current_time (global);
-  event.flags = CLUTTER_EVENT_FLAG_SYNTHETIC;
-  event.stage = global->stage;
-  event.x = x;
-  event.y = y;
-  event.modifier_state = mods;
-  event.axes = NULL;
-  event.device = clutter_device_manager_get_device (clutter_device_manager_get_default (),
-                                                    META_VIRTUAL_CORE_POINTER_ID);
-
-  /* Leaving event.source NULL will force clutter to look it up, which
-   * will generate enter/leave events as a side effect, if they are
-   * needed. We need a better way to do this though... see
-   * http://bugzilla.clutter-project.org/show_bug.cgi?id=2615.
-   */
-  event.source = NULL;
-
-  clutter_event_put ((ClutterEvent *)&event);
-}
-
-/**
  * shell_global_get_settings:
  * @global: A #ShellGlobal
  *

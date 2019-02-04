@@ -625,11 +625,9 @@ var MessageListSection = class MessageListSection {
                                               transition: 'easeOutQuad',
                                               onComplete() {
                                                   obj.container.destroy();
-                                                  global.sync_pointer();
                                               }});
         } else {
             obj.container.destroy();
-            global.sync_pointer();
         }
     }
 

@@ -67,10 +67,6 @@ var AltSwitcher = class {
             this.actor.set_child(childToShow);
             if (hasFocus)
                 childToShow.grab_key_focus();
-
-            // The actors might respond to hover, so
-            // sync the pointer to make sure they update.
-            global.sync_pointer();
         }
 
         this.actor.show();
