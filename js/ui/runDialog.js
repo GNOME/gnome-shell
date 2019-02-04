@@ -169,9 +169,8 @@ class RunDialog extends ModalDialog.ModalDialog {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
                     !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_DIRECTORY))
                     log(e);
-            } finally {
-                return results;
             }
+            return results;
         });
         let results = someResults.reduce((a, b) => a.concat(b), []);
 
