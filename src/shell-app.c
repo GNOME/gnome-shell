@@ -26,12 +26,6 @@
 #include <unistd.h>
 #endif
 
-typedef enum {
-  MATCH_NONE,
-  MATCH_SUBSTRING, /* Not prefix, substring */
-  MATCH_PREFIX, /* Strict prefix */
-} ShellAppSearchMatch;
-
 /* This is mainly a memory usage optimization - the user is going to
  * be running far fewer of the applications at one time than they have
  * installed.  But it also just helps keep the code more logically
