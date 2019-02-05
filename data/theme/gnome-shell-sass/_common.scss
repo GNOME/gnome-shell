@@ -267,8 +267,7 @@ StScrollBar {
   }
 
   .end-session-dialog-logout-icon {
-    //border: 2px solid #8b8b8b;
-    border-radius: 5px;
+    border-radius: 99px;
     width: 48px;
     height: 48px;
     background-size: contain;
@@ -428,7 +427,7 @@ StScrollBar {
   }
 
   .polkit-dialog-user-icon {
-    border-radius: 5px;
+    border-radius: 99px;
     background-size: contain;
     width: 48px;
     height: 48px;
@@ -1757,13 +1756,11 @@ StScrollBar {
 
 /* Auth Dialogs & Screen Shield */
 
-.framed-user-icon {
+.user-icon {
   background-size: contain;
-  border: 2px solid $osd_fg_color;
   color: $osd_fg_color;
-  border-radius: 3px;
+  border-radius: 99px;
   &:hover {
-    border-color: lighten($osd_fg_color,30%);
     color: lighten($osd_fg_color,30%);
   }
 }
