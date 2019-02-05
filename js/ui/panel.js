@@ -78,6 +78,8 @@ class AppMenu extends PopupMenu.PopupMenu {
     constructor(sourceActor) {
         super(sourceActor, 0.0, St.Side.TOP);
 
+        this.actor.add_style_class_name('app-menu');
+
         this._app = null;
         this._appSystem = Shell.AppSystem.get_default();
 
