@@ -18,7 +18,7 @@ var Avatar = class {
         this._user = user;
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'framed-user-icon' });
+                                        styleClass: 'user-icon' });
         this._iconSize = params.iconSize;
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
