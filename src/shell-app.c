@@ -1183,13 +1183,26 @@ _shell_app_handle_startup_sequence (ShellApp            *app,
 gboolean
 shell_app_request_quit (ShellApp   *app)
 {
+  GActionGroup *group = NULL;
   GSList *iter;
 
   if (shell_app_get_state (app) != SHELL_APP_STATE_RUNNING)
     return FALSE;
 
-  /* TODO - check for an XSMP connection; we could probably use that */
+  /* First, check whether the app exports an explicit "quit" action
+   * that we can activate on the bus
+   */
+  group = G_ACTION_GROUP (app->running_state->muxer);
 
+  if (g_action_group_has_action (group, "app.quit") &&
+      g_action_group_get_action_parameter_type (group, "app.quit") == NULL)
+    {
+      g_action_group_activate_action (group, "app.quit", NULL);
+
+      return TRUE;
+    }
+
+  /* Otherwise, fall back to closing all the app's windows */
   for (iter = app->running_state->windows; iter; iter = iter->next)
     {
       MetaWindow *win = iter->data;
