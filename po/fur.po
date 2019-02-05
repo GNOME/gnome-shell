@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-03 16:13+0000\n"
-"PO-Revision-Date: 2019-02-04 16:54+0100\n"
+"POT-Creation-Date: 2019-02-05 11:40+0000\n"
+"PO-Revision-Date: 2019-02-05 15:59+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -254,20 +254,56 @@ msgstr ""
 "Associazion di tascj par meti in pause e ripiâ ducj i tween in esecuzion, "
 "par motîfs di debug"
 
+#: data/org.gnome.shell.gschema.xml.in:150
+msgid "Switch to application 1"
+msgstr "Passe ae aplicazion 1"
+
 #: data/org.gnome.shell.gschema.xml.in:154
+msgid "Switch to application 2"
+msgstr "Passe ae aplicazion 2"
+
+#: data/org.gnome.shell.gschema.xml.in:158
+msgid "Switch to application 3"
+msgstr "Passe ae aplicazion 3"
+
+#: data/org.gnome.shell.gschema.xml.in:162
+msgid "Switch to application 4"
+msgstr "Passe ae aplicazion 4"
+
+#: data/org.gnome.shell.gschema.xml.in:166
+msgid "Switch to application 5"
+msgstr "Passe ae aplicazion 5"
+
+#: data/org.gnome.shell.gschema.xml.in:170
+msgid "Switch to application 6"
+msgstr "Passe ae aplicazion 6"
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Switch to application 7"
+msgstr "Passe ae aplicazion 7"
+
+#: data/org.gnome.shell.gschema.xml.in:178
+msgid "Switch to application 8"
+msgstr "Passe ae aplicazion 8"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Switch to application 9"
+msgstr "Passe ae aplicazion 9"
+
+#: data/org.gnome.shell.gschema.xml.in:190
 msgid "Which keyboard to use"
 msgstr "Cuale tastiere doprâ"
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "The type of keyboard to use."
 msgstr "Il stamp di tastiere di doprâ."
 
-#: data/org.gnome.shell.gschema.xml.in:166
-#: data/org.gnome.shell.gschema.xml.in:193
+#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:229
 msgid "Limit switcher to current workspace."
 msgstr "Limite il seletôr al spazi di lavôr in ûs."
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -275,11 +311,11 @@ msgstr ""
 "Se vêr, nome lis aplicazions che a àn barcons tal spazi di lavôr curint a "
 "son mostrâts tal seletôr. Se no, dutis lis aplicazions a vegnin includudis."
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:220
 msgid "The application icon mode."
 msgstr "La modalitât de icone de aplicazion."
 
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:221
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -290,7 +326,7 @@ msgstr ""
 "barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o "
 "“both” (al mostre ducj e doi)."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -298,36 +334,36 @@ msgstr ""
 "Se vêr, nome i barcons dal spazi di lavôr curint a vegnin mostrâts intal "
 "seletôr. Se no, ducj i barcons a vegnin includûts."
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Attach modal dialog to the parent window"
 msgstr "Lee il barcon modâl al barcon gjenitôr"
 
-#: data/org.gnome.shell.gschema.xml.in:207
-#: data/org.gnome.shell.gschema.xml.in:216
-#: data/org.gnome.shell.gschema.xml.in:224
-#: data/org.gnome.shell.gschema.xml.in:232
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:243
+#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:276
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Cheste clâf e sorplante chê in org.gnome.mutter cuant che al è in esecuzion "
 "GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Abilite la tasseladure sul ôr cuant che si strissine i barcons tal ôr dal "
 "visôr"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Workspaces are managed dynamically"
 msgstr "I spazis di vore a son ministrât in maniere dinamiche"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Workspaces only on primary monitor"
 msgstr "Spazis di lavôr dome sul visôr principâl"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Tardâ il cambiament dal focus te modalitât mouse fintant che il pontadôr no "
@@ -1049,7 +1085,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:72
+#: js/ui/dateMenu.js:74
 msgid "%B %-d %Y"
 msgstr "%-d di %B dal %Y"
 
@@ -1057,68 +1093,35 @@ msgstr "%-d di %B dal %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:79
+#: js/ui/dateMenu.js:81
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#: js/ui/dateMenu.js:141
+#: js/ui/dateMenu.js:143
 msgid "Add world clocks…"
 msgstr "Zonte orlois mondiâi…"
 
-#: js/ui/dateMenu.js:142
+#: js/ui/dateMenu.js:144
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:221
+#: js/ui/dateMenu.js:234
 msgid "Weather"
 msgstr "Timp"
 
-#. Translators: %s is a weather condition like "Clear sky"; see
-#. libgweather for the possible condition strings. If at all
-#. possible, the sentence should match the grammatical case etc. of
-#. the inserted conditions.
-#: js/ui/dateMenu.js:285
-#, javascript-format
-msgid "%s all day."
-msgstr "%s dut il dì."
-
-#. Translators: %s is a weather condition like "Clear sky"; see
-#. libgweather for the possible condition strings. If at all
-#. possible, the sentence should match the grammatical case etc. of
-#. the inserted conditions.
-#: js/ui/dateMenu.js:291
-#, javascript-format
-msgid "%s, then %s later."
-msgstr "%s, plui tart %s."
-
-#. Translators: %s is a weather condition like "Clear sky"; see
-#. libgweather for the possible condition strings. If at all
-#. possible, the sentence should match the grammatical case etc. of
-#. the inserted conditions.
-#: js/ui/dateMenu.js:297
-#, javascript-format
-msgid "%s, then %s, followed by %s later."
-msgstr "%s, chi di un pôc %s, e plui tart %s."
-
-#: js/ui/dateMenu.js:308
+#: js/ui/dateMenu.js:317
 msgid "Select a location…"
 msgstr "Selezione une posizion…"
 
-#: js/ui/dateMenu.js:311
+#: js/ui/dateMenu.js:325
 msgid "Loading…"
 msgstr "Daûr a cjariâ…"
 
-#. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:317
-#, javascript-format
-msgid "Feels like %s."
-msgstr "Si sintin %s."
-
-#: js/ui/dateMenu.js:320
+#: js/ui/dateMenu.js:335
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:322
+#: js/ui/dateMenu.js:337
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -2128,22 +2131,22 @@ msgstr "Cîr"
 msgid "“%s” is ready"
 msgstr "“%s” al è pront"
 
-#: js/ui/windowManager.js:59
+#: js/ui/windowManager.js:60
 msgid "Do you want to keep these display settings?"
 msgstr "Vûstu tignî chestis impostazions di visôr?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:71
+#: js/ui/windowManager.js:72
 msgid "Revert Settings"
 msgstr "Ripristine impostazions"
 
-#: js/ui/windowManager.js:74
+#: js/ui/windowManager.js:75
 msgid "Keep Changes"
 msgstr "Ten lis modifichis"
 
-#: js/ui/windowManager.js:92
+#: js/ui/windowManager.js:93
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2154,7 +2157,7 @@ msgstr[1] ""
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:668
+#: js/ui/windowManager.js:669
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2248,12 +2251,12 @@ msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di ac�
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
-#: src/shell-app.c:272
+#: src/shell-app.c:266
 msgctxt "program"
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/shell-app.c:523
+#: src/shell-app.c:517
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "No soi rivât a eseguî '%s'"
@@ -2291,6 +2294,18 @@ msgstr[1] "%u jentradis"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Suns di sisteme"
+
+#~ msgid "%s all day."
+#~ msgstr "%s dut il dì."
+
+#~ msgid "%s, then %s later."
+#~ msgstr "%s, plui tart %s."
+
+#~ msgid "%s, then %s, followed by %s later."
+#~ msgstr "%s, chi di un pôc %s, e plui tart %s."
+
+#~ msgid "Feels like %s."
+#~ msgstr "Si sintin %s."
 
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr ""
