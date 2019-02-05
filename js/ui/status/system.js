@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { AccountsService, Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+const { AccountsService, Clutter, GLib, GObject, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const SystemActions = imports.misc.systemActions;
@@ -169,24 +169,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         let layout = clutterText.get_layout();
         if (layout.is_ellipsized())
             this._switchUserSubMenu.label.text = this._user.get_user_name();
-
-        let iconFile = this._user.get_icon_file();
-        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-            iconFile = null;
-
-        if (iconFile) {
-            let file = Gio.File.new_for_path(iconFile);
-            let gicon = new Gio.FileIcon({ file: file });
-            this._switchUserSubMenu.icon.gicon = gicon;
-
-            this._switchUserSubMenu.icon.add_style_class_name('user-icon');
-            this._switchUserSubMenu.icon.remove_style_class_name('default-icon');
-        } else {
-            this._switchUserSubMenu.icon.icon_name = 'avatar-default-symbolic';
-
-            this._switchUserSubMenu.icon.add_style_class_name('default-icon');
-            this._switchUserSubMenu.icon.remove_style_class_name('user-icon');
-        }
     }
 
     _createActionButton(iconName, accessibleName) {
@@ -204,7 +186,10 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         let item;
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._switchUserSubMenu.icon.style_class = 'system-switch-user-submenu-icon';
+        this._switchUserSubMenu.icon.set({
+            icon_name: 'avatar-default-symbolic',
+            style_class: 'system-switch-user-submenu-icon'
+        });
 
         // Since the label of the switch user submenu depends on the width of
         // the popup menu, and we can't easily connect on allocation-changed
