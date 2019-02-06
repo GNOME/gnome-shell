@@ -937,6 +937,8 @@ var LoginDialog = GObject.registerClass({
     }
 
     _loginScreenSessionDeactivated() {
+        this._stopTimedLogin();
+
         if (this._greeter) {
             this._greeter.run_dispose();
             this._greeter = null;
@@ -978,6 +980,8 @@ var LoginDialog = GObject.registerClass({
     }
 
     _onSessionOpened(client, serviceName) {
+        this._stopTimedLogin();
+
         this._authPrompt.finish(() => { this._startSession(serviceName); });
     }
 
@@ -1014,20 +1018,25 @@ var LoginDialog = GObject.registerClass({
         return hold;
     }
 
+    _stopTimedLogin() {
+        if (this._timedLoginBatch) {
+            this._timedLoginBatch.cancel();
+            this._timedLoginBatch = null;
+	}
+
+        if (this._timedLoginIdleTimeOutId) {
+            GLib.source_remove(this._timedLoginIdleTimeOutId);
+            this._timedLoginIdleTimeOutId = 0;
+        }
+    }
+
     _startTimedLogin(userName, delay) {
         let firstRun = true;
 
         // Cancel execution of old batch
         if (this._timedLoginBatch) {
-            this._timedLoginBatch.cancel();
-            this._timedLoginBatch = null;
+            this._stopTimedLogin();
             firstRun = false;
-        }
-
-        // Reset previous idle-timeout
-        if (this._timedLoginIdleTimeOutId) {
-            GLib.source_remove(this._timedLoginIdleTimeOutId);
-            this._timedLoginIdleTimeOutId = 0;
         }
 
         let loginItem = null;
