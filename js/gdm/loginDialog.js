@@ -1045,14 +1045,9 @@ var LoginDialog = GObject.registerClass({
         let tasks = [() => this._waitForItemForUser(userName),
 
                      () => {
+                         // If we're just starting out, start on the right item.
                          loginItem = this._userList.getItemFromUserName(userName);
 
-                         // If there is an animation running on the item, reset it.
-                         loginItem.hideTimedLoginIndicator();
-                     },
-
-                     () => {
-                         // If we're just starting out, start on the right item.
                          if (!this._userManager.is_loaded) {
                              this._userList.jumpToItem(loginItem);
                          }
@@ -1093,7 +1088,14 @@ var LoginDialog = GObject.registerClass({
 
         this._timedLoginBatch = new Batch.ConsecutiveBatch(this, tasks);
 
-        return this._timedLoginBatch.run();
+        let hold = this._timedLoginBatch.run();
+
+        hold.connect('release', () => {
+            if (loginItem)
+                loginItem.hideTimedLoginIndicator();
+        });
+
+        return hold;
     }
 
     _onTimedLoginRequested(client, userName, seconds) {
