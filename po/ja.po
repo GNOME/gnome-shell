@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-05 17:26+0000\n"
-"PO-Revision-Date: 2019-02-06 20:53+0900\n"
+"POT-Creation-Date: 2019-02-06 12:00+0000\n"
+"PO-Revision-Date: 2019-02-06 23:17+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -384,8 +384,8 @@ msgid ""
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr ""
-"大変申し訳ないのですが、拡張機能の設定が表示されない問題が発生しました。"
-"拡張機能の作者に問題を報告することをお勧めします。"
+"大変申し訳ありませんが、拡張機能の設定を表示できない問題が発生しました。拡張"
+"機能の作者に問題を報告することをお勧めします。"
 
 #: js/extensionPrefs/main.js:135
 msgid "Technical Details"
@@ -945,8 +945,7 @@ msgstr "再入力:"
 #: js/ui/components/networkAgent.js:110
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"または、ルーターの“WPS”ボタンを押して接続する方法もあります。"
+msgstr "または、ルーターの“WPS”ボタンを押して接続する方法もあります。"
 
 #: js/ui/components/networkAgent.js:120 js/ui/status/network.js:225
 #: js/ui/status/network.js:315 js/ui/status/network.js:897
@@ -987,8 +986,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"無線ネットワーク”%s”にアクセスするにはパスワードか、または暗号化キーが必要"
-"です。"
+"無線ネットワーク”%s”にアクセスするにはパスワードか、または暗号化キーが必要で"
+"す。"
 
 #: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:697
 msgid "Wired 802.1X authentication"
@@ -2031,8 +2030,7 @@ msgstr "認証されていない Thunderbolt デバイス"
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
-"新しいデバイスを検出しました。管理者による認証が必要です。"
+msgstr "新しいデバイスを検出しました。管理者による認証が必要です。"
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
