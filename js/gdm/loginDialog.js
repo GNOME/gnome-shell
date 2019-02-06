@@ -943,7 +943,10 @@ var LoginDialog = GObject.registerClass({
     _gotGreeterSessionProxy(proxy) {
         this._greeterSessionProxy = proxy;
         this._greeterSessionProxyChangedId =
-            proxy.connect('g-properties-changed', () => {
+            proxy.connect('g-properties-changed', (proxy, properties) => {
+                if (!('Active' in properties.deep_unpack()))
+                    return;
+
                 if (proxy.Active)
                     this._loginScreenSessionActivated();
             });
