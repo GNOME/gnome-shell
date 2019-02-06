@@ -920,9 +920,6 @@ var LoginDialog = new Lang.Class({
     },
 
     _loginScreenSessionActivated() {
-        if (this.actor.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
-            return;
-
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
@@ -937,10 +934,16 @@ var LoginDialog = new Lang.Class({
                            },
                            onUpdateScope: this,
                            onComplete() {
-                               if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
-                                   this._authPrompt.reset();
+                               this._authPrompt.reset();
                            },
                            onCompleteScope: this });
+    },
+
+    _loginScreenSessionDeactivated() {
+        if (this._greeter) {
+            this._greeter.run_dispose();
+            this._greeter = null;
+        }
     },
 
     _gotGreeterSessionProxy(proxy) {
@@ -952,6 +955,8 @@ var LoginDialog = new Lang.Class({
 
                 if (proxy.Active)
                     this._loginScreenSessionActivated();
+                else
+                    this._loginScreenSessionDeactivated();
             });
     },
 
