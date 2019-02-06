@@ -1,3 +1,38 @@
+3.31.90
+=======
+* Fix input methods after ibus restarts [Takao; #295]
+* Refresh world clocks and weather sections [Florian; #262]
+* Port to ES6 classes (update your extensions!) [Florian; !361]
+* networkAgent: Advise users when WPS support is available [Lubomir; !329]
+* Performance improvements [Carlos; #832, #815]
+* Fix drag-and-drop with wacom pens [Carlos; #540]
+* Fix CAPS LOCK indication on wayland [Carlos; #762881]
+* Show details of non-sensitive notifications on lock screen [Philip; #726]
+* Refine extension-prefs' error UI [Florian; !193]
+* Add switch-to-application-n keybindings [Florian; #648000]
+* Remove top bar translucency [Florian; #408]
+* Support emojis and keypads in on-screen keyboard [Carlos; #675]
+* Don't allow popups to re-enable keyboard shortcuts on lock screen
+  (CVE-2019-3820) [Florian, Ray; #851]
+* Replace app menu [Florian; #624]
+* Include commonly copied+pasted extension helpers [Florian; !150]
+* Misc. bug fixes and cleanups [Florian, Daniel, Philip, Sergio, Pascal,
+  Georges, verdre, Carlos, Christopher; #780, #909, !316, !308, !309, #915,
+  !350, !362, !357, !365, !366, !283, !367, #942, !371, !373, !374, !343,
+  !375, !292, !317, !377, !379, !346, !383, #953, !388]
+
+Contributors:
+  Sergio Costas, Christopher Davis, Bilal Elmoussaoui, Takao Fujiwara,
+  Carlos Garnacho, Niels De Graef, Christian Kellner, Ignat Loskutov,
+  Florian Müllner, Georges Basile Stavracas Neto, Pascal Nowack, Lubomir Rintel,
+  Jakub Steiner, Ray Strode, verdre, Daniel van Vugt, Philip Withnall
+
+Translators:
+  Daniel Mustieles [es], Carmen Bianca BAKKER [eo], Charles Monzat [fr],
+  Pieter Schalk Schoeman [af], Jordi Mas [ca], Matej Urbančič [sl],
+  Fran Dieguez [gl], Balázs Úr [hu], A S Alam [pa], Fabio Tomat [fur],
+  Aurimas Černius [lt], Piotr Drąg [pl], Marek Cernocky [cs], Ryuta Fujii [ja]
+
 3.31.4
 ======
 * Improve icon grid performance [Daniel; #174]
