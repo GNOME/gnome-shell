@@ -8,6 +8,7 @@ const Pango = imports.gi.Pango;
 const Environment = imports.ui.environment;
 Environment.init();
 
+const Main = imports.ui.main; // unused, but needed to break dependency loop
 const MessageList = imports.ui.messageList;
 
 // Assert that @input, assumed to be markup, gets "fixed" to @output,
