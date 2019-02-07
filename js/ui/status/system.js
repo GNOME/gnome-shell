@@ -164,18 +164,15 @@ var Indicator = class extends PanelMenu.SystemIndicator {
     }
 
     _updateSwitchUserSubMenu() {
-        this._switchUserSubMenu.label.text = this._user.get_real_name();
-        let clutterText = this._switchUserSubMenu.label.clutter_text;
+        let realName = this._user.get_real_name();
 
-        // XXX -- for some reason, the ClutterText's width changes
-        // rapidly unless we force a relayout of the actor. Probably
-        // a size cache issue or something. Moving this to be a layout
-        // manager would be a much better idea.
-        clutterText.get_allocation_box();
-
-        let layout = clutterText.get_layout();
-        if (layout.is_ellipsized())
+        // In theory, GNOME allows creating users with names up to 255
+        // characters, but such long names look terribly bad, so limit
+        // to 100 and it should fit the vast majority of screen sizes.
+        if (realName.length > 100)
             this._switchUserSubMenu.label.text = this._user.get_user_name();
+        else
+            this._switchUserSubMenu.label.text = realName;
 
         let iconFile = this._user.get_icon_file();
         if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
