@@ -917,6 +917,7 @@ var LoginDialog = GObject.registerClass({
     }
 
     _loginScreenSessionActivated() {
+        this._authPrompt.reset();
         Tweener.addTween(this,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
@@ -929,11 +930,7 @@ var LoginDialog = GObject.registerClass({
                                        children[i].opacity = this.opacity;
                                }
                            },
-                           onUpdateScope: this,
-                           onComplete() {
-                               this._authPrompt.reset();
-                           },
-                           onCompleteScope: this });
+                           onUpdateScope: this });
     }
 
     _loginScreenSessionDeactivated() {
