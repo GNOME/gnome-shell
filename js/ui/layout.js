@@ -637,8 +637,8 @@ var LayoutManager = GObject.registerClass({
             this.keyboardBox.hide();
 
             let monitor = this.primaryMonitor;
-            let x = monitor.x + monitor.width / 2.0;
-            let y = monitor.y + monitor.height / 2.0;
+            let x = (monitor.x + monitor.width / 2.0) / monitor.scale;
+            let y = (monitor.y + monitor.height / 2.0) / monitor.scale;
 
             this.uiGroup.set_pivot_point(x / global.screen_width,
                                          y / global.screen_height);
