@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-06 12:00+0000\n"
-"PO-Revision-Date: 2019-02-06 23:17+0900\n"
+"POT-Creation-Date: 2019-02-06 14:21+0000\n"
+"PO-Revision-Date: 2019-02-07 21:40+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -199,13 +199,14 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid "Enable introspection API"
-msgstr ""
+msgstr "イントロスペクション API を有効にする"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
 msgstr ""
+"Shell のアプリケーション状態をイントロスペクトできる D-Bus API を有効にします。"
 
 #: data/org.gnome.shell.gschema.xml.in:109
 msgid "Keybinding to open the application menu"
@@ -413,7 +414,7 @@ msgid ""
 "gnome.org\">extensions.gnome.org</a>."
 msgstr ""
 "拡張機能は <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> "
-"またはソフトウェアからインストールできます。"
+"またはソフトウェアでインストールできます。"
 
 #: js/extensionPrefs/main.js:479
 msgid "Browse in Software"
@@ -1970,7 +1971,7 @@ msgstr "%d %%"
 
 #: js/ui/status/remoteAccess.js:42
 msgid "Screen is Being Shared"
-msgstr "画面共有されています"
+msgstr "画面を共有しています"
 
 #: js/ui/status/remoteAccess.js:44
 msgid "Turn off"
@@ -2025,12 +2026,12 @@ msgstr ""
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
-msgstr "認証されていない Thunderbolt デバイス"
+msgstr "認証していない Thunderbolt デバイス"
 
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr "新しいデバイスを検出しました。管理者による認証が必要です。"
+msgstr "新しいデバイスを検出しました。管理者の認証が必要です。"
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
