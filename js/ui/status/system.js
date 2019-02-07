@@ -4,6 +4,7 @@ const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const GObject = imports.gi.GObject;
@@ -211,6 +212,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._switchUserSubMenu.icon.style_class = 'system-switch-user-submenu-icon';
+        this._switchUserSubMenu.label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
 
         // Since the label of the switch user submenu depends on the width of
         // the popup menu, and we can't easily connect on allocation-changed
