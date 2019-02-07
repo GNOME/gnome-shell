@@ -940,6 +940,9 @@ var LoginDialog = GObject.registerClass({
             this._greeter.run_dispose();
             this._greeter = null;
         }
+
+	this._authPrompt.hide();
+	this.actor.opacity = 0;
     }
 
     _gotGreeterSessionProxy(proxy) {
