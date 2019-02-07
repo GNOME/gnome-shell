@@ -7,6 +7,7 @@ const AccountsService = imports.gi.AccountsService;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 
 const Params = imports.misc.params;
@@ -72,6 +73,7 @@ class UserWidgetLabel extends St.Widget {
 
         this._realNameLabel = new St.Label({ style_class: 'user-widget-label',
                                              y_align: Clutter.ActorAlign.CENTER });
+        this._realNameLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         this.add_child(this._realNameLabel);
 
         this._userNameLabel = new St.Label({ style_class: 'user-widget-label',
