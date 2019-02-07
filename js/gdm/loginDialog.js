@@ -1083,6 +1083,7 @@ var LoginDialog = GObject.registerClass({
 
                      () => {
                          this._timedLoginBatch = null;
+                         this._hideUserList();
                          this._greeter.call_begin_auto_login_sync(userName, null);
                      }];
 
