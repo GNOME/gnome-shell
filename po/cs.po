@@ -384,7 +384,7 @@ msgid ""
 "extension authors."
 msgstr ""
 "Omlouváme se, ale vyskytl se problém: nastavení pro toto rozšíření nelze "
-"zobrazit. Doporučuje problém nahlásit autorovi rozšíření."
+"zobrazit. Doporučujeme problém nahlásit autorovi rozšíření."
 
 #: js/extensionPrefs/main.js:135
 msgid "Technical Details"
