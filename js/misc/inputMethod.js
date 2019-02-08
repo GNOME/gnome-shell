@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-const { Clutter, GObject, IBus } = imports.gi;
+const { Clutter, GLib, GObject, IBus } = imports.gi;
 
 const Keyboard = imports.ui.status.keyboard;
 
@@ -13,6 +13,7 @@ class InputMethod extends Clutter.InputMethod {
         this._preeditStr = '';
         this._preeditPos = 0;
         this._preeditVisible = false;
+        this._hidePanelId = 0;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -136,6 +137,11 @@ class InputMethod extends Clutter.InputMethod {
             this._updateCapabilities();
             this._emitRequestSurrounding();
         }
+
+        if (this._hidePanelId) {
+            GLib.source_remove(this._hidePanelId);
+            this._hidePanelId = 0;
+        }
     }
 
     vfunc_focus_out() {
@@ -150,6 +156,12 @@ class InputMethod extends Clutter.InputMethod {
             this.set_preedit_text(null, 0);
             this._preeditStr = null;
         }
+
+        this._hidePanelId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 50, () => {
+            this.set_input_panel_state(Clutter.InputPanelState.OFF);
+            this._hidePanelId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     vfunc_reset() {
