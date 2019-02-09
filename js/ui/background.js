@@ -113,8 +113,9 @@ const PICTURE_URI_KEY = 'picture-uri';
 
 const LUMINANCE_DARK_THRESHOLD = 60;
 const LUMINANCE_BRIGHT_THRESHOLD = 160;
-const LUMINANCE_STD_BUSY_THRESHOLD = 48;
-const ACUTANCE_BUSY_THRESHOLD = 8;
+const LUMINANCE_STD_CALM_THRESHOLD = 30;
+const LUMINANCE_STD_NOISY_THRESHOLD = 46;
+const ACUTANCE_NOISY_THRESHOLD = 8;
 
 var FADE_ANIMATION_TIME = 1.0;
 
@@ -702,8 +703,8 @@ var BackgroundManager = class BackgroundManager {
         let background = this._backgroundSource.getBackground(this._monitorIndex);
         let metaBackground = background.background;
 
-        let areaIsBusy, areaIsDark, areaIsBright;
-        areaIsBusy = areaIsDark = areaIsBright = false;
+        let areaIsNoisy, areaIsDark, areaIsBright;
+        areaIsNoisy = areaIsDark = areaIsBright = false;
 
         // Always return false for animated backgrounds, we don't want to
         // do those calculations on every animation frame.
@@ -719,20 +720,22 @@ var BackgroundManager = class BackgroundManager {
 
         let luminanceStd = Math.sqrt(luminanceVariance);
 
-        if (meanLuminance < LUMINANCE_DARK_THRESHOLD)
-            areaIsDark = true;
-        else if (meanLuminance > LUMINANCE_BRIGHT_THRESHOLD)
-            areaIsBright = true;
+        if (luminanceStd < LUMINANCE_STD_CALM_THRESHOLD) {
+            if (meanLuminance < LUMINANCE_DARK_THRESHOLD)
+                areaIsDark = true;
+            else if (meanLuminance > LUMINANCE_BRIGHT_THRESHOLD)
+                areaIsBright = true;
+        }
 
-        if (meanAcutance > ACUTANCE_BUSY_THRESHOLD ||
-            luminanceStd > LUMINANCE_STD_BUSY_THRESHOLD ||
+        if (meanAcutance > ACUTANCE_NOISY_THRESHOLD ||
+            luminanceStd > LUMINANCE_STD_NOISY_THRESHOLD ||
             (areaIsDark &&
              meanLuminance + luminanceStd > LUMINANCE_BRIGHT_THRESHOLD) ||
             (areaIsBright &&
              meanLuminance - luminanceStd < LUMINANCE_DARK_THRESHOLD))
-            areaIsBusy = true;
+            areaIsNoisy = true;
 
-        return [true, areaIsBusy, areaIsDark, areaIsBright];
+        return [true, areaIsNoisy, areaIsDark, areaIsBright];
     }
 
     _swapBackgroundActor() {
