@@ -3,6 +3,7 @@ stages:
 
 variables:
     JS_LOG: "js-report.txt"
+    POT_LOG: "pot-update.txt"
 
 js_check:
     image: registry.fedoraproject.org/fedora:latest
@@ -15,4 +16,22 @@ js_check:
     artifacts:
         paths:
             - ${JS_LOG}
+        when: on_failure
+
+pot_check:
+    # Check that pot files are generated correctly:
+    # https://savannah.gnu.org/bugs/?50920#comment5
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    stage: source_check
+    script:
+        - meson _meson
+        - ninja -C _meson gnome-shell-pot | awk '
+            BEGIN { start=0; }
+            start==1 { print $0; }
+            /gnome-shell-pot/ { start=1; }
+          ' | tee $POT_LOG
+        - (! grep -q . $POT_LOG)
+    artifacts:
+        paths:
+            - ${POT_LOG}
         when: on_failure
