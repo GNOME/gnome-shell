@@ -923,6 +923,8 @@ var ScreenShield = class {
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
 
+        this.emit('shield-hidden');
+
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup.hide();
 
@@ -1035,6 +1037,8 @@ var ScreenShield = class {
         }
 
         this._lockScreenGroup.grab_key_focus();
+
+        this.emit('shield-visible');
 
         if (Main.sessionMode.currentMode != 'lock-screen')
             Main.sessionMode.pushMode('lock-screen');
