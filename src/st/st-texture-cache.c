@@ -71,6 +71,7 @@ create_invisible_actor (void)
 {
   return g_object_new (CLUTTER_TYPE_ACTOR,
                        "opacity", 0,
+                       "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
                        NULL);
 }
 
