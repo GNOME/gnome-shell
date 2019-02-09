@@ -615,6 +615,10 @@ var ScreenShield = class {
             this._createBackground(i);
     }
 
+    getBgManagerForMonitor(monitor) {
+        return this._bgManagers[monitor.index];
+   }
+
     _liftShield(onPrimary, velocity) {
         if (this._isLocked) {
             if (this._ensureUnlockDialog(onPrimary, true /* allowCancel */))
