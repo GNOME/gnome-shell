@@ -14,10 +14,11 @@ var DRAG_DISTANCE = 80;
 var EdgeDragAction = GObject.registerClass({
     Signals: { 'activated': {} },
 }, class EdgeDragAction extends Clutter.GestureAction {
-    _init(side, allowedModes) {
+    _init(side, allowedModes, beginCheckFunc) {
         super._init();
         this._side = side;
         this._allowedModes = allowedModes;
+        this._beginCheckFunc = beginCheckFunc;
         this.set_n_touch_points(1);
 
         global.display.connect('grab-op-begin', () => { this.cancel(); });
@@ -35,6 +36,9 @@ var EdgeDragAction = GObject.registerClass({
             return false;
 
         if (!(this._allowedModes & Main.actionMode))
+            return false;
+
+        if (this._beginCheckFunc && !this._beginCheckFunc())
             return false;
 
         let [x, y] = this.get_press_coords(0);

@@ -1077,7 +1077,15 @@ var WindowManager = class {
         });
         global.stage.add_action(gesture);
 
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
+        let focusWindowIsFullscreen = () => {
+            let currentWindow = global.display.focus_window;
+            if (currentWindow && currentWindow.is_fullscreen())
+                return true;
+
+            return false;
+        };
+
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode, focusWindowIsFullscreen);
         gesture.connect('activated',  () => {
             let currentWindow = global.display.focus_window;
             if (currentWindow)
