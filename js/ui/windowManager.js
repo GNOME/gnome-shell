@@ -1083,6 +1083,15 @@ var WindowManager = class {
             if (currentWindow)
                 currentWindow.unmake_fullscreen();
         });
+
+        let updateUnfullscreenGesture = () => {
+            let currentWindow = global.display.focus_window;
+            gesture.enabled = currentWindow && currentWindow.is_fullscreen();
+        }
+
+        global.display.connect('notify::focus-window', updateUnfullscreenGesture);
+        global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
+
         global.stage.add_action(gesture);
     }
 
