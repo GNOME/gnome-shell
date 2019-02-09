@@ -12,3 +12,24 @@ stage {
   background-image: url("resource:///org/gnome/shell/theme/toggle-off-hc.svg");
   &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-hc.svg"); }
 }
+
+//force opaque panel
+#panel {
+  &, &.background-bright, &.background-dark, &.background-noisy {
+    @include panel(high-contrast);
+  }
+
+  &:overview, &:overview.background-noisy {
+    @include panel(high-contrast);
+  }
+
+  &.lock-screen, &.login-screen, &.unlock-screen {
+    @include panel(login-screen);
+
+    &.screen-shield {
+      &, &.background-bright, &.background-dark, &.background-noisy {
+        @include panel(high-contrast);
+      }
+    }
+  }
+}
