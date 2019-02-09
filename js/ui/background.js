@@ -111,6 +111,11 @@ const BACKGROUND_STYLE_KEY = 'picture-options';
 const PICTURE_OPACITY_KEY = 'picture-opacity';
 const PICTURE_URI_KEY = 'picture-uri';
 
+const LUMINANCE_DARK_THRESHOLD = 60;
+const LUMINANCE_BRIGHT_THRESHOLD = 140;
+const LUMINANCE_STD_NOISY_THRESHOLD = 42;
+const ACUTANCE_NOISY_THRESHOLD = 24;
+
 var FADE_ANIMATION_TIME = 1.0;
 
 // These parameters affect how often we redraw.
@@ -288,6 +293,10 @@ var Background = class Background {
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
         this._settingsChangedSignalId = 0;
+    }
+
+    isAnimated() {
+        return this._animation != null;
     }
 
     updateResolution() {
@@ -687,6 +696,42 @@ var BackgroundManager = class BackgroundManager {
             this.backgroundActor.destroy();
             this.backgroundActor = null;
         }
+    }
+
+    getCharacteristicsForArea(x, y, width, height) {
+        let background = this._backgroundSource.getBackground(this._monitorIndex);
+        let metaBackground = background.background;
+
+        let areaIsNoisy, areaIsDark, areaIsBright;
+        areaIsNoisy = areaIsDark = areaIsBright = false;
+
+        // Always return false for animated backgrounds, we don't want to
+        // do those calculations on every animation frame.
+        if (background.isAnimated())
+            return [false];
+
+        let [retval, meanLuminance, luminanceVariance, meanAcutance] =
+            metaBackground.get_color_info(this._monitorIndex, x, y, width, height);
+
+        if (!retval)
+            return [false];
+
+        let luminanceStd = Math.sqrt(luminanceVariance);
+
+        if (meanLuminance < LUMINANCE_DARK_THRESHOLD)
+            areaIsDark = true;
+        else if (meanLuminance > LUMINANCE_BRIGHT_THRESHOLD)
+            areaIsBright = true;
+
+        if (meanAcutance > ACUTANCE_NOISY_THRESHOLD ||
+            luminanceStd > LUMINANCE_STD_NOISY_THRESHOLD ||
+            (areaIsDark &&
+             meanLuminance + luminanceStd > LUMINANCE_BRIGHT_THRESHOLD) ||
+            (areaIsBright &&
+             meanLuminance - luminanceStd < LUMINANCE_DARK_THRESHOLD))
+            areaIsNoisy = true;
+
+        return [true, areaIsNoisy, areaIsDark, areaIsBright];
     }
 
     _swapBackgroundActor() {
