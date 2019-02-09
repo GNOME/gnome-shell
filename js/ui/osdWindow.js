@@ -1,16 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const Mainloop = imports.mainloop;
 
 const BarLevel = imports.ui.barLevel;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const Mainloop = imports.mainloop;
 const Tweener = imports.ui.tweener;
-const Meta = imports.gi.Meta;
 
 var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 0.1;

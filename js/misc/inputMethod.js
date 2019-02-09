@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const IBus = imports.gi.IBus;
+const { Clutter, GObject, IBus } = imports.gi;
+
 const Keyboard = imports.ui.status.keyboard;
 
 var InputMethod = GObject.registerClass(

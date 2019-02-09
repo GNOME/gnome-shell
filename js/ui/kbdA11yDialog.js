@@ -1,6 +1,5 @@
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
+const { Clutter, Gio, GObject } = imports.gi;
+
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 

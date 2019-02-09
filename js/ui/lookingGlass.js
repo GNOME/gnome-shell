@@ -1,16 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Cogl = imports.gi.Cogl;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
-const Shell = imports.gi.Shell;
-const Signals = imports.signals;
+const { Clutter, Cogl, Gio, GLib,
+        GObject, Meta, Pango, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
+const Signals = imports.signals;
 const System = imports.system;
 
 const History = imports.misc.history;
@@ -24,15 +17,9 @@ const JsParse = imports.misc.jsParse;
 const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
-var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
-                    'const GLib = imports.gi.GLib; ' +
-                    'const GObject = imports.gi.GObject; ' +
-                    'const Gio = imports.gi.Gio; ' +
-                    'const Gtk = imports.gi.Gtk; ' +
-                    'const Mainloop = imports.mainloop; ' +
-                    'const Meta = imports.gi.Meta; ' +
-                    'const Shell = imports.gi.Shell; ' +
+var commandHeader = 'const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell } = imports.gi; ' +
                     'const Main = imports.ui.main; ' +
+                    'const Mainloop = imports.mainloop; ' +
                     'const Tweener = imports.ui.tweener; ' +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */

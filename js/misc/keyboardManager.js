@@ -1,8 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const Meta = imports.gi.Meta;
+const { GLib, GnomeDesktop, Meta } = imports.gi;
 
 const Main = imports.ui.main;
 

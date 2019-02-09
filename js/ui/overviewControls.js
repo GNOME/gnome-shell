@@ -1,9 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const GObject = imports.gi.GObject;
-const Clutter = imports.gi.Clutter;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+const { Clutter, GObject, Meta, St } = imports.gi;
 
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;

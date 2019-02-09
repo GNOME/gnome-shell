@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Gio = imports.gi.Gio;
-const NMA = imports.gi.NMA;
+const { Gio, NMA } = imports.gi;
 const Signals = imports.signals;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;

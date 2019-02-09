@@ -1,9 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
+const { GLib, Gio, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const St = imports.gi.St;
 
 const Tweener = imports.ui.tweener;
 

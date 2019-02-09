@@ -1,11 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
+const { Gio, GLib, IBus } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
-const IBus = imports.gi.IBus;
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 
 // Ensure runtime version matches

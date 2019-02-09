@@ -1,15 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const IBus = imports.gi.IBus;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const Signals = imports.signals;
-const St = imports.gi.St;
+const { Clutter, Gio, GLib, GObject, IBus, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
+const Signals = imports.signals;
 
 const IBusManager = imports.misc.ibusManager;
 const KeyboardManager = imports.misc.keyboardManager;

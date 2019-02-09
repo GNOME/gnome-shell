@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const GLib = imports.gi.GLib;
+const { GLib, Meta } = imports.gi;
 const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
 
 // We stop polling if the user is idle for more than this amount of time
 var IDLE_TIME = 1000;

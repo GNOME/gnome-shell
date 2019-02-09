@@ -1,10 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const St = imports.gi.St;
-const Shell = imports.gi.Shell;
+const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
 
 const FileUtils = imports.misc.fileUtils;
 

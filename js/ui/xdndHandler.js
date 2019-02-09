@@ -1,10 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Main = imports.ui.main;
-const Meta = imports.gi.Meta;
+const { Clutter, Meta } = imports.gi;
 const Signals = imports.signals;
+
 const DND = imports.ui.dnd;
+const Main = imports.ui.main;
 
 var XdndHandler = class {
     constructor() {

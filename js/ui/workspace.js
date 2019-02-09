@@ -1,15 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const { Atk, Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;

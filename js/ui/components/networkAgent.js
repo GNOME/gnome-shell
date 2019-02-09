@@ -1,13 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const NM = imports.gi.NM;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
+const { Clutter, Gio, GLib, NM, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;

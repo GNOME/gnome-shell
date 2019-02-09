@@ -1,10 +1,5 @@
 const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
-const Pango = imports.gi.Pango;
+const { Gdk, GLib, Gio, GObject, Gtk, Pango } = imports.gi;
 const Format = imports.format;
 
 const _ = Gettext.gettext;

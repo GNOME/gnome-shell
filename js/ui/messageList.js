@@ -1,14 +1,7 @@
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const { Atk, Clutter, Gio, GLib, GObject, Meta, Pango, St } = imports.gi;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
 const Tweener = imports.ui.tweener;

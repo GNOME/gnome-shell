@@ -1,6 +1,4 @@
-const Clutter = imports.gi.Clutter;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
+const { Clutter, Pango, St } = imports.gi;
 
 var CheckBox = class CheckBox {
     constructor(label) {
