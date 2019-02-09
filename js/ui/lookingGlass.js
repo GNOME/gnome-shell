@@ -17,7 +17,7 @@ const JsParse = imports.misc.jsParse;
 const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
-var commandHeader = 'const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell } = imports.gi; ' +
+var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi; ' +
                     'const Main = imports.ui.main; ' +
                     'const Mainloop = imports.mainloop; ' +
                     'const Tweener = imports.ui.tweener; ' +
