@@ -1,12 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
+const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
-const St = imports.gi.St;
-const Shell = imports.gi.Shell;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;

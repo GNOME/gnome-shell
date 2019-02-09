@@ -1,18 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const AccountsService = imports.gi.AccountsService;
+const { AccountsService, Clutter, Cogl, Gio, GLib,
+        GnomeDesktop, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
-const Cogl = imports.gi.Cogl;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const St = imports.gi.St;
 const TweenerEquations = imports.tweener.equations;
 
 const Background = imports.ui.background;

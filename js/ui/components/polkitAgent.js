@@ -1,15 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const { AccountsService, Clutter, Gio, GLib,
+        Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
-const AccountsService = imports.gi.AccountsService;
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
-const Pango = imports.gi.Pango;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Polkit = imports.gi.Polkit;
-const PolkitAgent = imports.gi.PolkitAgent;
 
 const Animation = imports.ui.animation;
 const Dialog = imports.ui.dialog;

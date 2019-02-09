@@ -1,15 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const St = imports.gi.St;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
+const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const Tweener = imports.ui.tweener;
-const Main = imports.ui.main;
 
+const Main = imports.ui.main;
 const Params = imports.misc.params;
+const Tweener = imports.ui.tweener;
 
 // Time to scale down to maxDragActorSize
 var SCALE_ANIMATION_TIME = 0.25;

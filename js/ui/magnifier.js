@@ -1,16 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Atspi = imports.gi.Atspi;
-const Clutter = imports.gi.Clutter;
-const Cogl = imports.gi.Cogl;
-const GDesktopEnums = imports.gi.GDesktopEnums;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+const { Atspi, Clutter, Cogl, GDesktopEnums,
+        Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;

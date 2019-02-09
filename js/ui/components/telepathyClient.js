@@ -1,18 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const St = imports.gi.St;
 
 var Tpl = null;
 var Tp = null;
 try {
-    Tpl = imports.gi.TelepathyLogger;
-    Tp = imports.gi.TelepathyGLib;
+    ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
 } catch(e) {
     log('Telepathy is not available, chat integration will be disabled.');
 }

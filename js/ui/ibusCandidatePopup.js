@@ -1,9 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const IBus = imports.gi.IBus;
+const { Clutter, IBus, St } = imports.gi;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;

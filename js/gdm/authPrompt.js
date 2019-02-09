@@ -1,15 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Pango = imports.gi.Pango;
+const { Clutter, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const Params = imports.misc.params;
-const Shell = imports.gi.Shell;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;

@@ -93,12 +93,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const Clutter = imports.gi.Clutter;
-const GDesktopEnums = imports.gi.GDesktopEnums;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const Meta = imports.gi.Meta;
+const { Clutter, GDesktopEnums, Gio, GLib, GnomeDesktop, Meta } = imports.gi;
 const Signals = imports.signals;
 
 const LoginManager = imports.misc.loginManager;

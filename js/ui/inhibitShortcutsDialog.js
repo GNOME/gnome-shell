@@ -1,9 +1,4 @@
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
+const { Clutter, Gio, GObject, Gtk, Meta, Shell } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

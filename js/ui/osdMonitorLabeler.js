@@ -1,11 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const St = imports.gi.St;
+const { Clutter, Gio, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
-const Meta = imports.gi.Meta;
 
 var FADE_TIME = 0.1;
 

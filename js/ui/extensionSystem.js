@@ -1,9 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const { Gio, St } = imports.gi;
 const Signals = imports.signals;
-
-const Gio = imports.gi.Gio;
-const St = imports.gi.St;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;

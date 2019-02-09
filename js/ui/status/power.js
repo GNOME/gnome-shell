@@ -1,9 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Gio = imports.gi.Gio;
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
-const UPower = imports.gi.UPowerGlib;
+const { Clutter, Gio, St, UPowerGlib: UPower } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;

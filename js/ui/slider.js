@@ -1,7 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
+const { Atk, Clutter } = imports.gi;
 const Signals = imports.signals;
 
 const BarLevel = imports.ui.barLevel;
