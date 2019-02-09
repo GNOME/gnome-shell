@@ -79,10 +79,15 @@ static void
 set_content_from_image (ClutterActor   *actor,
                         ClutterContent *image)
 {
+  float width, height;
+
   g_assert (image && CLUTTER_IS_IMAGE (image));
+
+  clutter_content_get_preferred_size (image, &width, &height);
 
   clutter_actor_set_content (actor, image);
   clutter_actor_set_opacity (actor, 255);
+  clutter_actor_set_size (actor, width, height);
 }
 
 static void
