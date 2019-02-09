@@ -801,43 +801,34 @@ StScrollBar {
 /* TOP BAR */
 
 #panel {
-  background-color: black;
+  @include panel();
+  transition-duration: 300ms;
   font-weight: bold;
   height: 1.86em;
   font-feature-settings: "tnum";
-
-  &.unlock-screen,
-  &.login-screen,
-  &.lock-screen {
-    background-color: transparent;
-  }
 
   #panelLeft, #panelCenter { // spacing between activities<>app menu and such
     spacing: 4px;
   }
 
   .panel-corner {
+    transition-duration: 300ms;
     -panel-corner-radius: $panel-corner-radius;
     -panel-corner-background-color: black;
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent;
 
-    &:active, &:overview, &:focus {
+    &:active, &:focus {
       -panel-corner-border-color: lighten($selected_bg_color,5%);
-    }
-
-    &.lock-screen, &.login-screen, &.unlock-screen {
-      -panel-corner-radius: 0;
-      -panel-corner-background-color: transparent;
-      -panel-corner-border-color: transparent;
     }
   }
 
   .panel-button {
+    // Trick due to St limitations. It needs a background to draw a box-shadow
+    background-color: rgba(0, 0, 0, 0.01);
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
     font-weight: bold;
-    color: #ccc;
 
     .app-menu-icon {
       -st-icon-style: symbolic;
@@ -846,25 +837,7 @@ StScrollBar {
       //dimensions of the icon are hardcoded
     }
 
-    &:hover {
-      color: $selected_fg_color;
-    }
-
-    &:active, &:overview, &:focus, &:checked {
-      // Trick due to St limitations. It needs a background to draw
-      // a box-shadow
-      background-color: rgba(0, 0, 0, 0.01);
-      box-shadow: inset 0 -2px 0px lighten($selected_bg_color,5%);
-      color: $selected_fg_color;
-    }
-
     .system-status-icon { icon-size: 1.09em; padding: 0 5px; }
-    .unlock-screen &,
-    .login-screen &,
-    .lock-screen & {
-      color: lighten($fg_color, 10%);
-      &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
-    }
   }
 
   .panel-status-indicators-box,
@@ -880,6 +853,31 @@ StScrollBar {
   .screencast-indicator { color: $warning_color; }
 
   .remote-access-indicator { color: $warning_color; }
+
+  &.background-dark { @include panel(dark); }
+  &.background-bright { @include panel(bright); }
+  &.background-noisy { @include panel(noisy); }
+  &.window-near { @include panel(window-near); }
+
+  &:overview {
+    @include panel(overview);
+
+    &.background-noisy {
+      @include panel(overview-noisy);
+    }
+  }
+
+  &.lock-screen, &.login-screen, &.unlock-screen {
+    @include panel(login-screen);
+
+    &.screen-shield {
+      @include panel(normal);
+
+      &.background-dark { @include panel(dark); }
+      &.background-bright { @include panel(bright); }
+      &.background-noisy { @include panel(noisy); }
+    }
+  }
 }
 
   // calendar popover
@@ -2109,8 +2107,6 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 }
 
 .screen-shield-notification-count-text { padding: 0px 0px 0px 12px; }
-
-#panel.lock-screen { background-color: transparentize($osd_bg_color, 0.5); }
 
 .screen-shield-background { //just the shadow, really
   background: black;
