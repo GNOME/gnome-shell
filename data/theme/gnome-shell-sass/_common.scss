@@ -730,35 +730,22 @@ StScrollBar {
 
 #panel {
   background-color: black;
+  transition-duration: 300ms;
   font-weight: bold;
   height: 1.86em;
   font-feature-settings: "tnum";
-
-  &.unlock-screen,
-  &.login-screen,
-  &.lock-screen {
-    background-color: transparent;
-  }
 
   #panelLeft, #panelCenter { // spacing between activities<>app menu and such
     spacing: 4px;
   }
 
   .panel-corner {
+    transition-duration: 300ms;
+    opacity: 255;
     -panel-corner-radius: $panel-corner-radius;
     -panel-corner-background-color: black;
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent;
-
-    &:active, &:overview, &:focus {
-      -panel-corner-border-color: lighten($selected_bg_color,5%);
-    }
-
-    &.lock-screen, &.login-screen, &.unlock-screen {
-      -panel-corner-radius: 0;
-      -panel-corner-background-color: transparent;
-      -panel-corner-border-color: transparent;
-    }
   }
 
   .panel-button {
@@ -774,25 +761,7 @@ StScrollBar {
       //dimensions of the icon are hardcoded
     }
 
-    &:hover {
-      color: lighten($fg_color, 10%);
-    }
-
-    &:active, &:overview, &:focus, &:checked {
-      // Trick due to St limitations. It needs a background to draw
-      // a box-shadow
-      background-color: rgba(0, 0, 0, 0.01);
-      box-shadow: inset 0 -2px 0px lighten($selected_bg_color,5%);
-      color: lighten($fg_color,10%);
-    }
-
     .system-status-icon { icon-size: 1.09em; padding: 0 5px; }
-    .unlock-screen &,
-    .login-screen &,
-    .lock-screen & {
-      color: lighten($fg_color, 10%);
-      &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
-    }
   }
 
   .panel-status-indicators-box,
@@ -808,6 +777,134 @@ StScrollBar {
   .screencast-indicator { color: $warning_color; }
 
   .remote-access-indicator { color: $warning_color; }
+
+  &.background-dark, &.background-bright {
+    background-color: transparent;
+
+    .panel-corner {
+      opacity: 0;
+    }
+  }
+
+  &.background-dark .panel-button {
+    color: white;
+  }
+
+  &.background-bright .panel-button {
+    color: black;
+  }
+
+  &.background-noisy, &.window-near {
+    background-color: black;
+
+    .panel-corner {
+      opacity: 255;
+    }
+
+    .panel-button {
+      color: #ccc;
+    }
+  }
+
+  &:overview {
+    background-color: black;
+
+    .panel-corner {
+      opacity: 0;
+    }
+
+    .panel-button {
+      color: #ccc;
+    }
+
+    &.background-dark, &.background-bright, &.window-near {
+      background-color: transparent;
+
+      .panel-corner {
+        opacity: 0;
+      }
+
+      .panel-button {
+        color: white;
+      }
+    }
+
+    &.background-noisy {
+      background-color: black;
+
+      .panel-corner {
+        opacity: 255;
+      }
+
+      .panel-button {
+        color: #ccc;
+      }
+
+      &.window-near {
+        background-color: transparent;
+
+        .panel-corner {
+          opacity: 0;
+        }
+
+        .panel-button {
+          color: white;
+        }
+      }
+    }
+  }
+
+  &.lock-screen, &.login-screen, &.unlock-screen {
+    background-color: transparent;
+
+    .panel-corner {
+      opacity: 0;
+    }
+
+    .panel-button {
+      color: white;
+    }
+
+    &.screen-shield {
+      background-color: black;
+
+      .panel-corner {
+        opacity: 255;
+      }
+
+      .panel-button {
+        color: #ccc;
+      }
+
+      &.background-bright, &.background-dark {
+        background-color: transparent;
+
+        .panel-corner {
+          opacity: 0;
+        }
+      }
+
+      &.background-bright .panel-button {
+        color: black;
+      }
+
+      &.background-dark .panel-button {
+        color: white;
+      }
+
+      &.background-noisy {
+        background-color: black;
+
+        .panel-corner {
+          opacity: 255;
+        }
+
+        .panel-button {
+          color: #ccc;
+        }
+      }
+    }
+  }
 }
 
   // calendar popover
@@ -1929,8 +2026,6 @@ StScrollBar {
 }
 
 .screen-shield-notification-count-text { padding: 0px 0px 0px 12px; }
-
-#panel.lock-screen { background-color: transparentize($_bubble_bg_color, 0.5); }
 
 .screen-shield-background { //just the shadow, really
   background: black;
