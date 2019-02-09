@@ -853,9 +853,46 @@ class Panel extends St.Widget {
 
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
+            this._updateOpaqueState();
         });
         Main.overview.connect('hiding', () => {
             this.remove_style_pseudo_class('overview');
+            this._updateOpaqueState();
+        });
+
+        if (Main.screenShield) {
+            Main.screenShield.connect('shield-visible', () => {
+                this._addStyleClassName('screen-shield');
+                if (Main.layoutManager.primaryMonitor) {
+                    let bgManager = Main.screenShield.getBgManagerForMonitor(Main.layoutManager.primaryMonitor);
+                    this._onBackgroundChanged(bgManager);
+                }
+            });
+            Main.screenShield.connect('shield-hidden', () => {
+                this._removeStyleClassName('screen-shield');
+                if (Main.layoutManager.primaryMonitor) {
+                    let bgManager = Main.layoutManager._bgManagers[Main.layoutManager.primaryIndex];
+                    this._onBackgroundChanged(bgManager);
+                }
+            });
+        }
+
+        Main.layoutManager.connect('monitors-changed', () => {
+            if (Main.layoutManager.primaryMonitor) {
+                let bgManager = Main.layoutManager._bgManagers[Main.layoutManager.primaryIndex];
+                bgManager.connect('changed', () => this._onBackgroundChanged(bgManager));
+                if (bgManager.isLoaded)
+                    this._onBackgroundChanged(bgManager);
+            }
+        });
+
+        Main.layoutManager.connect('startup-complete', () => {
+            if (Main.layoutManager.primaryMonitor) {
+                let bgManager = Main.layoutManager._bgManagers[Main.layoutManager.primaryIndex];
+                bgManager.connect('changed', () => this._onBackgroundChanged(bgManager));
+                if (bgManager.isLoaded)
+                    this._onBackgroundChanged(bgManager);
+            }
         });
 
         Main.layoutManager.panelBox.add(this);
@@ -864,8 +901,43 @@ class Panel extends St.Widget {
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
+        this._trackedWindows = new Map();
+        global.display.connect('window-created', this._onWindowAdded.bind(this));
+        global.window_manager.connect('switch-workspace', () => this._updateOpaqueState());
+
         global.display.connect('workareas-changed', () => { this.queue_relayout(); });
         this._updatePanel();
+    }
+
+    _onWindowAdded(metaDisplay, metaWindow) {
+        let signalIds = [];
+        let metaWindowActor = metaWindow.get_compositor_private();
+
+        // Workaround for https://gitlab.gnome.org/GNOME/mutter/issues/156
+        if (!metaWindowActor) {
+            let id = Mainloop.idle_add(() => {
+                if (metaWindow.get_compositor_private())
+                    this._onWindowAdded(metaDisplay, metaWindow);
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._onWindowAdded');
+            return;
+        }
+
+        ['allocation-changed', 'notify::visible'].forEach(s => {
+            signalIds.push(metaWindowActor.connect(s, this._updateOpaqueState.bind(this)));
+        });
+        this._trackedWindows.set(metaWindowActor, signalIds);
+
+        metaWindowActor.connect('destroy', this._onWindowRemoved.bind(this));
+    }
+
+    _onWindowRemoved(metaWindowActor) {
+        this._trackedWindows.get(metaWindowActor).forEach(id => {
+            metaWindowActor.disconnect(id);
+        });
+        this._trackedWindows.delete(metaWindowActor);
+        this._updateOpaqueState();
     }
 
     vfunc_get_preferred_width(forHeight) {
@@ -1075,6 +1147,8 @@ class Panel extends St.Widget {
         else
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.CENTER;
 
+        this._updateOpaqueState();
+
         if (this._sessionStyle)
             this._removeStyleClassName(this._sessionStyle);
 
@@ -1089,6 +1163,64 @@ class Panel extends St.Widget {
             this._leftCorner.setStyleParent(this._leftBox);
             this._rightCorner.setStyleParent(this._rightBox);
         }
+    }
+
+    _updateOpaqueState() {
+        /* Get all the windows in the active workspace that are in the primary monitor and visible */
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let windows = activeWorkspace.list_windows().filter(metaWindow => {
+            return metaWindow.is_on_primary_monitor() &&
+                   metaWindow.showing_on_its_workspace() &&
+                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
+        });
+
+        /* Check if at least one window is near enough to the panel */
+        let [, panelTop] = this.get_transformed_position();
+        let panelBottom = panelTop + this.get_height();
+        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+
+        let windowNearPanel = windows.some(metaWindow => {
+            let verticalPosition = metaWindow.get_frame_rect().y;
+            return verticalPosition < panelBottom + 5 * scale;
+        });
+
+        if (windowNearPanel)
+            this._addStyleClassName('window-near');
+        else
+            this._removeStyleClassName('window-near');
+    }
+
+    _onBackgroundChanged(bgManager) {
+        let allStyleClassNames = ['background-noisy', 'background-dark', 'background-bright'];
+
+        // We use a slightly bigger height to make sure the algorithm
+        // can factor in sudden color changes right beneath the panel.
+        let width = this.get_width();
+        let height = parseInt(this.get_height() * 1.5);
+
+        let [success, bgIsNoisy, bgIsDark, bgIsBright] =
+            bgManager.getCharacteristicsForArea(this.x, this.y, width, height);
+
+        let styleClassNames = [];
+        if (success) {
+            if (bgIsNoisy)
+                styleClassNames.push('background-noisy');
+            if (bgIsDark)
+                styleClassNames.push('background-dark');
+            if (bgIsBright)
+                styleClassNames.push('background-bright');
+        } else {
+            // Always assume the background is noisy if the color check failed
+            styleClassNames.push('background-noisy');
+        }
+
+        allStyleClassNames.forEach(name => {
+            if (styleClassNames.includes(name))
+                this._addStyleClassName(name);
+            else
+                this._removeStyleClassName(name);
+        });
     }
 
     _hideIndicators() {
