@@ -2,7 +2,7 @@
 //
 // A widget showing the user avatar and name
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
