@@ -219,3 +219,83 @@
   }
 }
 
+@mixin panel($t:normal) {
+//
+// Top panel drawing function
+//
+// $t: panel type,
+//
+// possible $t values:
+// normal, noisy, dark, bright, window-near, overview, overview-noisy, login-screen, high-contrast
+//
+
+  $_opacity: 1;
+  $_color: #ccc;
+  $_highlight_color: white;
+  $_shadow: none;
+
+  @if $t==noisy or $t==overview-noisy or $t==window-near or $t==high-contrast {
+    .panel-button {
+      &:active, &:focus {
+        box-shadow: inset 0 -2px 0px lighten($selected_bg_color,5%);
+      }
+    }
+  }
+  @else if $t==normal or $t==dark or $t==overview or $t==login-screen {
+    $_opacity: 0;
+    $_color: #eee;
+    $_shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
+
+    .panel-button {
+      &:active, &:focus {
+        box-shadow: inset 0 -1px 0px white;
+      }
+    }
+  }
+  @else if $t==bright {
+    $_opacity: 0;
+    $_color: rgba(0, 0, 0, 0.75);
+    $_highlight_color: black;
+    $_shadow: 0px 1px 0px rgba(255, 255, 255, 0.15);
+
+    .panel-button {
+      &:active, &:focus {
+        box-shadow: inset 0 -1px 0px darken($osd_bg_color, 10%);
+      }
+    }
+  }
+
+  background-color: rgba(0, 0, 0, $_opacity);
+
+  .panel-button {
+    color: $_color;
+    text-shadow: $_shadow;
+
+    .system-status-icon,
+    .app-menu-icon > StIcon,
+    .messages-indicator-icon,
+    .popup-menu-arrow,
+    .app-menu-spinner {
+      color: $_color;
+      icon-shadow: $_shadow;
+    }
+
+    &:hover, &:active, &:overview, &:focus, &:checked {
+      color: $_highlight_color;
+
+      .system-status-icon,
+      .app-menu-icon > StIcon,
+      .messages-indicator-icon,
+      .popup-menu-arrow,
+      .app-menu-spinner {
+        color: $_highlight_color;
+      }
+    }
+  }
+
+  // We have to use opacity instead of background-color for the corner because
+  // the corner uses custom drawing code that we animate manually.
+  .panel-corner {
+    opacity: 255 * $_opacity;
+  }
+}
