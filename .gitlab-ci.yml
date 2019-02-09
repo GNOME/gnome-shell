@@ -5,6 +5,7 @@ stages:
 
 variables:
     JS_LOG: "js-report.txt"
+    POT_LOG: "pot-update.txt"
 
 js_check:
     image: registry.fedoraproject.org/fedora:latest
@@ -54,6 +55,8 @@ build:
 test:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: test
+    dependencies:
+        - build
     before_script:
         - dnf builddep -y gnome-shell
         - dnf remove -y mutter
@@ -66,3 +69,18 @@ test:
         paths:
             - build/meson-logs/testlog.txt
         when: on_failure
+
+test-pot:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    stage: test
+    dependencies:
+        - build
+    script:
+        # Check that pot files are generated correctly:
+        # https://savannah.gnu.org/bugs/?50920#comment5
+        - ninja -C build gnome-shell-pot 2>&1 | awk '
+            BEGIN { start=0; }
+            start==1 { print $0; }
+            /gnome-shell-pot/ { start=1; }
+          ' | tee $POT_LOG
+        - (! grep -q . $POT_LOG)
