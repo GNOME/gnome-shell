@@ -16,18 +16,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const AccountsService = imports.gi.AccountsService;
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
+const { AccountsService, Atk, Clutter, Gdm, Gio,
+        GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const AuthPrompt = imports.gdm.authPrompt;
 const Batch = imports.gdm.batch;

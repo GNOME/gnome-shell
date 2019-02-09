@@ -1,12 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
+const { Clutter, Gio, GLib, GObject, NM, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const NM = imports.gi.NM;
 const Signals = imports.signals;
-const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
 const Main = imports.ui.main;

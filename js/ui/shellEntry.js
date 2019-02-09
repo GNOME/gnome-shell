@@ -1,13 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
+const { Clutter, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
-const Shell = imports.gi.Shell;
 
 var EntryMenu = class extends PopupMenu.PopupMenu {
     constructor(entry) {

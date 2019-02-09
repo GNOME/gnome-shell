@@ -1,15 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const AccountsService = imports.gi.AccountsService;
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gdm  = imports.gi.Gdm;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
+const { AccountsService, Atk, Clutter,
+        Gdm, Gio, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;

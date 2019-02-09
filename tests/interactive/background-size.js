@@ -2,9 +2,7 @@
 
 const UI = imports.testcommon.ui;
 
-const Cogl = imports.gi.Cogl;
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
+const { Cogl, Clutter, St } = imports.gi;
 
 
 function test() {

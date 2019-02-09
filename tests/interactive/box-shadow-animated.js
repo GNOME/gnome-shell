@@ -2,10 +2,8 @@
 
 const UI = imports.testcommon.ui;
 
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
+const { Clutter, GLib, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const GLib = imports.gi.GLib;
 
 const DELAY = 2000;
 

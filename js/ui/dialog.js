@@ -1,10 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
+const { Clutter, Gio, GObject, Pango, St } = imports.gi;
 
 var Dialog = GObject.registerClass(
 class Dialog extends St.Widget {

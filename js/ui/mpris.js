@@ -1,7 +1,5 @@
-const Gio = imports.gi.Gio;
+const { Gio, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;

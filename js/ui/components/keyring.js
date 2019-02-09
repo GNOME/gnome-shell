@@ -1,12 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Shell = imports.gi.Shell;
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
-const Pango = imports.gi.Pango;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Gcr = imports.gi.Gcr;
+const { Clutter, Gcr, Gio, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const Dialog = imports.ui.dialog;

@@ -1,9 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Geoclue = imports.gi.Geoclue;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GWeather = imports.gi.GWeather;
+const { Geoclue, Gio, GLib, GWeather } = imports.gi;
 const Signals = imports.signals;
 
 const PermissionStore = imports.misc.permissionStore;
