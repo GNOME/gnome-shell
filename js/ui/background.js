@@ -668,6 +668,7 @@ var BackgroundManager = class BackgroundManager {
         this._monitorIndex = params.monitorIndex;
         this._controlPosition = params.controlPosition;
 
+        this.isLoaded = false;
         this.backgroundActor = this._createBackgroundActor();
         this._newBackgroundActor = null;
     }
@@ -767,6 +768,21 @@ var BackgroundManager = class BackgroundManager {
             if (backgroundActor.loadedSignalId)
                 background.disconnect(backgroundActor.loadedSignalId);
         });
+
+        if (!this.backgroundActor) {
+            if (background.isLoaded) {
+                this.isLoaded = true;
+            } else {
+                let id = background.connect('loaded', () => {
+                    if (background) {
+                        background.disconnect(id);
+
+                        this.isLoaded = true;
+                        this.emit('changed');
+                    }
+                });
+            }
+        }
 
         return backgroundActor;
     }
