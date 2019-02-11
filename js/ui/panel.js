@@ -174,13 +174,6 @@ class AppMenu extends PopupMenu.PopupMenu {
                 Main.activateWindow(window, event.get_time());
             });
         });
-
-        // Add separator between windows of the current desktop and other windows.
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let pos = windows.findIndex(w => w.get_workspace() != activeWorkspace);
-        if (pos >= 0)
-            this._windowSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(), pos);
     }
 }
 
