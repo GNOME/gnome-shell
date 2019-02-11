@@ -75,6 +75,9 @@ class AppMenu extends PopupMenu.PopupMenu {
 
         this._windowsChangedId = 0;
 
+        /* Translators: This is the heading of a list of open windows */
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(_("Open Windows")));
+
         this._windowSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._windowSection);
 
