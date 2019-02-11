@@ -574,10 +574,6 @@ class PanelCorner extends St.DrawingArea {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.set_style_pseudo_class(pseudoClass);
                 });
-
-            // The corner doesn't support theme transitions, so override
-            // the .panel-button default
-            button.style = 'transition-duration: 0ms';
         }
     }
 
@@ -618,8 +614,18 @@ class PanelCorner extends St.DrawingArea {
         let cornerRadius = node.get_length("-panel-corner-radius");
         let borderWidth = node.get_length('-panel-corner-border-width');
 
+        const transitionDuration = node.get_transition_duration();
+        const opacity = node.get_double('-panel-corner-opacity');
+
         this.set_size(cornerRadius, borderWidth + cornerRadius);
         this.translation_y = -borderWidth;
+
+        this.remove_transition('opacity');
+        this.ease({
+            opacity: opacity * 255,
+            duration: transitionDuration,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+        });
     }
 });
 
