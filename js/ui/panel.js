@@ -640,10 +640,6 @@ var PanelCorner = class {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.actor.set_style_pseudo_class(pseudoClass);
                 });
-
-            // The corner doesn't support theme transitions, so override
-            // the .panel-button default
-            button.style = 'transition-duration: 0ms';
         }
     }
 
@@ -698,11 +694,22 @@ var PanelCorner = class {
     _styleChanged() {
         let node = this.actor.get_theme_node();
 
+        let transitionDuration = node.get_transition_duration();
+        let opacity = node.get_double("opacity");
+
         let cornerRadius = node.get_length("-panel-corner-radius");
         let borderWidth = node.get_length('-panel-corner-border-width');
 
         this.actor.set_size(cornerRadius, borderWidth + cornerRadius);
         this.actor.set_anchor_point(0, borderWidth);
+
+        Tweener.removeTweens(this.actor);
+
+        if (transitionDuration > 0)
+            Tweener.addTween(this.actor,
+                             { opacity,
+                               time: (transitionDuration / 1000),
+                               transition: 'easeInOutQuint' });
     }
 };
 
