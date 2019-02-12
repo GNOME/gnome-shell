@@ -109,8 +109,9 @@ function isTweening(scope) {
     return Tweener.getTweenCount(scope) != 0;
 }
 
-function removeTweens(scope) {
-    if (Tweener.removeTweens.apply(null, arguments)) {
+function removeTweens(...args) {
+    if (Tweener.removeTweens(args)) {
+        let [scope] = args;
         // If we just removed the last active tween, clean up
         if (Tweener.getTweenCount(scope) == 0)
             _tweenCompleted(scope);
@@ -119,12 +120,12 @@ function removeTweens(scope) {
         return false;
 }
 
-function pauseTweens() {
-    return Tweener.pauseTweens.apply(null, arguments);
+function pauseTweens(...args) {
+    return Tweener.pauseTweens(...args);
 }
 
-function resumeTweens() {
-    return Tweener.resumeTweens.apply(null, arguments);
+function resumeTweens(...args) {
+    return Tweener.resumeTweens(...args);
 }
 
 

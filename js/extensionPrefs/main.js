@@ -611,8 +611,8 @@ function initEnvironment() {
     // Monkey-patch in a "global" object that fakes some Shell utilities
     // that ExtensionUtils depends on.
     window.global = {
-        log() {
-            print([].join.call(arguments, ', '));
+        log(...args) {
+            print(args.join(', '));
         },
 
         logError(s) {
