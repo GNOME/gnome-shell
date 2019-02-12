@@ -26,7 +26,9 @@ build:
         - git clone https://gitlab.gnome.org/GNOME/mutter.git
         - cd mutter
         - MUTTER_BRANCH=`git branch -l $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME`
+        - echo $MUTTER_BRANCH
         - MUTTER_BRANCH=${MUTTER_BRANCH:-master}
+        - echo $MUTTER_BRANCH
         - git checkout origin/$MUTTER_BRANCH
         - meson . build
         - ninja -C build
