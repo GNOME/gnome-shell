@@ -693,12 +693,13 @@ var WindowOverlay = class {
     }
 
     _idleHideOverlay() {
-        this._idleHideOverlayId = 0;
+        if (this.closeButton['has-pointer'])
+            return GLib.SOURCE_CONTINUE;
 
-        if (!this._windowClone['has-pointer'] &&
-            !this.closeButton['has-pointer'])
+        if (!this._windowClone['has-pointer'])
             this._animateInvisible();
 
+        this._idleHideOverlayId = 0;
         return GLib.SOURCE_REMOVE;
     }
 
