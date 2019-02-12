@@ -449,14 +449,16 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;
             let label = dialogContent.confirmButtons[i].label;
-            buttons.push({ action: () => {
-                               this.close(true);
-                               let signalId = this.connect('closed', () => {
-                                   this.disconnect(signalId);
-                                   this._confirm(signal);
-                               });
-                           },
-                           label: label });
+            buttons.push({
+                action: () => {
+                    this.close(true);
+                    let signalId = this.connect('closed', () => {
+                        this.disconnect(signalId);
+                        this._confirm(signal);
+                    });
+                },
+                label: label,
+            });
         }
 
         this.setButtons(buttons);

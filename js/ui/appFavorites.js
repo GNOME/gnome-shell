@@ -147,12 +147,11 @@ class AppFavorites {
 
         let app = Shell.AppSystem.get_default().lookup_app(appId);
 
-        Main.overview.setMessage(_("%s has been added to your favorites.").format(app.get_name()),
-                                 { forFeedback: true,
-                                   undoCallback: () => {
-                                       this._removeFavorite(appId);
-                                   }
-                                 });
+        let msg = _("%s has been added to your favorites.").format(app.get_name());
+        Main.overview.setMessage(msg, {
+            forFeedback: true,
+            undoCallback: () => this._removeFavorite(appId),
+        });
     }
 
     addFavorite(appId) {
@@ -181,12 +180,11 @@ class AppFavorites {
         if (!this._removeFavorite(appId))
             return;
 
-        Main.overview.setMessage(_("%s has been removed from your favorites.").format(app.get_name()),
-                                 { forFeedback: true,
-                                   undoCallback: () => {
-                                       this._addFavorite(appId, pos);
-                                   }
-                                 });
+        let msg = _("%s has been removed from your favorites.").format(app.get_name());
+        Main.overview.setMessage(msg, {
+            forFeedback: true,
+            undoCallback: () => this._addFavorite(appId, pos),
+        });
     }
 }
 Signals.addSignalMethods(AppFavorites.prototype);

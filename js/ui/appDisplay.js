@@ -1158,11 +1158,10 @@ var AppSearchProvider = class AppSearchProvider {
             if (id.endsWith('.desktop')) {
                 let app = this._appSys.lookup_app(id);
 
-                metas.push({ 'id': app.get_id(),
-                             'name': app.get_name(),
-                             'createIcon'(size) {
-                                 return app.create_icon_texture(size);
-                             }
+                metas.push({
+                    id: app.get_id(),
+                    name: app.get_name(),
+                    createIcon: size => app.create_icon_texture(size),
                 });
             } else {
                 let name = this._systemActions.getName(id);
