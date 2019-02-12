@@ -679,10 +679,11 @@ var WindowOverlay = class {
     }
 
     _onHideChrome() {
-        if (this._idleHideOverlayId == 0) {
-            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
-            GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
-        }
+        if (this._idleHideOverlayId != 0)
+            Mainloop.source_remove(this._idleHideOverlayId);
+
+        this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
+        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
     }
 
     _idleHideOverlay() {
