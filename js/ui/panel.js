@@ -230,6 +230,9 @@ var AppMenuButton = GObject.registerClass({
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._container.add_actor(this._arrow);
 
+        this._spinnerColorEffect = new Clutter.ColorizeEffect();
+        this.actor.connect('style-changed', this._onButtonStyleChanged.bind(this));
+
         this._visible = !Main.overview.visible;
         if (!this._visible)
             this.hide();
@@ -292,10 +295,20 @@ var AppMenuButton = GObject.registerClass({
         let [success, icon] = node.lookup_url('spinner-image', false);
         if (!success || (this._spinnerIcon && this._spinnerIcon.equal(icon)))
             return;
+
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
+        this._spinner.actor.add_effect(this._spinnerColorEffect);
+
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
+    }
+
+    _onButtonStyleChanged(actor) {
+        let node = actor.get_theme_node();
+
+        let buttonColor = node.get_color('color');
+        this._spinnerColorEffect.set_tint(buttonColor);
     }
 
     _syncIcon() {
