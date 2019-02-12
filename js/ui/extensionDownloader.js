@@ -186,14 +186,15 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         this._info = info;
         this._invocation = invocation;
 
-        this.setButtons([{ label: _("Cancel"),
-                           action: this._onCancelButtonPressed.bind(this),
-                           key: Clutter.Escape
-                         },
-                         { label: _("Install"),
-                           action: this._onInstallButtonPressed.bind(this),
-                           default: true
-                         }]);
+        this.setButtons([{
+            label: _("Cancel"),
+            action: this._onCancelButtonPressed.bind(this),
+            key: Clutter.Escape,
+        }, {
+            label: _("Install"),
+            action: this._onInstallButtonPressed.bind(this),
+            default: true,
+        }]);
 
         let content = new Dialog.MessageDialogContent({
             title: _("Download and install “%s” from extensions.gnome.org?").format(info.name),

@@ -108,12 +108,13 @@ var RadialShaderEffect = GObject.registerClass({
  */
 var Lightbox = class Lightbox {
     constructor(container, params) {
-        params = Params.parse(params, { inhibitEvents: false,
-                                        width: null,
-                                        height: null,
-                                        fadeFactor: DEFAULT_FADE_FACTOR,
-                                        radialEffect: false,
-                                      });
+        params = Params.parse(params, {
+            inhibitEvents: false,
+            width: null,
+            height: null,
+            fadeFactor: DEFAULT_FADE_FACTOR,
+            radialEffect: false,
+        });
 
         this._container = container;
         this._children = container.get_children();
