@@ -168,13 +168,20 @@ var Application = class {
 
         copyButton.connect('clicked', w => {
             let clipboard = Gtk.Clipboard.get_default(w.get_display());
-            let backticks = '```';
-            clipboard.set_text(
-                // markdown for pasting in gitlab issues
-                `The settings of extension ${extension.uuid} had an error:\n${
-                backticks}\n${exc}\n${backticks}\n\nStack trace:\n${
-                backticks}\n${exc.stack}${backticks}\n`, -1
-            );
+            // markdown for pasting in gitlab issues
+            let lines = [
+                `The settings of extension ${extension.uuid} had an error:`,
+                '```',
+                `${exc}`,
+                '```',
+                '',
+                'Stack trace:',
+                '```',
+                exc.stack.replace(/\n$/, ''), // stack without trailing newline
+                '```',
+                ''
+            ];
+            clipboard.set_text(lines.join('\n'), -1);
         });
 
         let spacing = new Gtk.SeparatorToolItem({ draw: false });
