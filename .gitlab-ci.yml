@@ -39,6 +39,6 @@ build:
         - ninja -C build install
         - cd ..
     script:
-        - meson . build -Dbuiltype=debugoptimized --werror
+        - meson . build -Dbuiltype=debugoptimized
         - ninja -C build
         - ninja -C build install
