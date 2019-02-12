@@ -76,3 +76,7 @@ test-pot:
             /gnome-shell-pot/ { start=1; }
           ' | tee $POT_LOG
         - (! grep -q . $POT_LOG)
+
+    except:
+        changes:
+            - js
