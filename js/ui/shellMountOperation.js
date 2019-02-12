@@ -26,9 +26,10 @@ function _setButtonsForChoices(dialog, choices) {
 
     for (let idx = 0; idx < choices.length; idx++) {
         let button = idx;
-        buttons.unshift({ label: choices[idx],
-                          action: () => dialog.emit('response', button)
-                        });
+        buttons.unshift({
+            label: choices[idx],
+            action: () => dialog.emit('response', button)
+        });
     }
 
     dialog.setButtons(buttons);
@@ -387,24 +388,26 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._rememberChoice = null;
         }
 
-        this._defaultButtons = [{ label: _("Cancel"),
-                                  action: this._onCancelButton.bind(this),
-                                  key: Clutter.Escape
-                                },
-                                { label: _("Unlock"),
-                                  action: this._onUnlockButton.bind(this),
-                                  default: true
-                                }];
+        this._defaultButtons = [{
+            label: _("Cancel"),
+            action: this._onCancelButton.bind(this),
+            key: Clutter.Escape
+        }, {
+            label: _("Unlock"),
+            action: this._onUnlockButton.bind(this),
+            default: true
+        }];
 
-        this._usesKeyfilesButtons = [{ label: _("Cancel"),
-                                       action: this._onCancelButton.bind(this),
-                                       key: Clutter.Escape
-                                     },
-                                     { /* Translators: %s is the Disks application */
-                                       label: _("Open %s").format(disksApp.get_name()),
-                                       action: this._onOpenDisksButton.bind(this),
-                                       default: true
-                                     }];
+        this._usesKeyfilesButtons = [{
+            label: _("Cancel"),
+            action: this._onCancelButton.bind(this),
+            key: Clutter.Escape
+        }, {
+            /* Translators: %s is the Disks application */
+            label: _("Open %s").format(disksApp.get_name()),
+            action: this._onOpenDisksButton.bind(this),
+            default: true
+        }];
 
         this.setButtons(this._defaultButtons);
     }

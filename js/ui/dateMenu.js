@@ -30,11 +30,12 @@ var TodayButton = class TodayButton {
         // Having the ability to go to the current date if the user is already
         // on the current date can be confusing. So don't make the button reactive
         // until the selected date changes.
-        this.actor = new St.Button({ style_class: 'datemenu-today-button',
-                                     x_expand: true, x_align: St.Align.START,
-                                     can_focus: true,
-                                     reactive: false
-                                   });
+        this.actor = new St.Button({
+            style_class: 'datemenu-today-button',
+            x_expand: true, x_align: St.Align.START,
+            can_focus: true,
+            reactive: false
+        });
         this.actor.connect('clicked', () => {
             this._calendar.setDate(new Date(), false);
         });
