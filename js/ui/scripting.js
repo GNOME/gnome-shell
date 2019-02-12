@@ -37,16 +37,13 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
  * 'yield Scripting.sleep(500);'
  */
 function sleep(milliseconds) {
-    let cb;
-
-    let id = Mainloop.timeout_add(milliseconds, () => {
-        if (cb)
-            cb();
-        return GLib.SOURCE_REMOVE;
+    return new Promise(resolve => {
+        let id = Mainloop.timeout_add(milliseconds, () => {
+            resolve();
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(id, '[gnome-shell] sleep');
     });
-    GLib.Source.set_name_by_id(id, '[gnome-shell] sleep');
-
-    return callback => { cb = callback; };
 }
 
 /**
@@ -57,14 +54,9 @@ function sleep(milliseconds) {
  * 'yield Scripting.waitLeisure();'
  */
 function waitLeisure() {
-    let cb;
-
-    global.run_at_leisure(() => {
-       if (cb)
-           cb();
+    return new Promise(resolve => {
+        global.run_at_leisure(resolve);
     });
-
-    return callback => { cb = callback; };
 }
 
 const PerfHelperIface = loadInterfaceXML('org.gnome.Shell.PerfHelper');
@@ -82,25 +74,16 @@ function _getPerfHelper() {
 }
 
 function _callRemote(obj, method, ...args) {
-    let cb;
-    let errcb;
+    return new Promise((resolve, reject) => {
+        args.push((result, excp) => {
+            if (excp)
+                reject(excp);
+            else
+                resolve();
+        });
 
-    args.push((result, excp) => {
-         if (excp) {
-             if (errcb)
-                 errcb(excp);
-         } else {
-             if (cb)
-                 cb();
-         }
+        method.apply(obj, args);
     });
-
-    method.apply(obj, args);
-
-    return (callback, error_callback) => {
-        cb = callback;
-        errcb = error_callback;
-    };
 }
 
 /**
@@ -190,27 +173,6 @@ function scriptEvent(name) {
  */
 function collectStatistics() {
     Shell.PerfLog.get_default().collect_statistics();
-}
-
-function _step(g, finish, onError) {
-    try {
-        let waitFunction = g.next();
-        waitFunction(() => {
-                         _step(g, finish, onError);
-                     },
-                     err => {
-                         if (onError)
-                             onError(err);
-                     });
-    } catch (err) {
-        if (err instanceof StopIteration) {
-            if (finish)
-                finish();
-        } else {
-            if (onError)
-                onError(err);
-        }
-    }
 }
 
 function _collect(scriptModule, outputFile) {
@@ -348,23 +310,23 @@ function _collect(scriptModule, outputFile) {
  * After running the script and collecting statistics from the
  * event log, GNOME Shell will exit.
  **/
-function runPerfScript(scriptModule, outputFile) {
+async function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);
 
-    let g = scriptModule.run();
+    for (let step of scriptModule.run()) {
+        try {
+            await step;
+        } catch (err) {
+            log(`Script failed: ${err}\n${err.stack}`);
+            Meta.exit(Meta.ExitCode.ERROR);
+        }
+    }
 
-    _step(g,
-          () => {
-              try {
-                  _collect(scriptModule, outputFile);
-              } catch (err) {
-                  log("Script failed: " + err + "\n" + err.stack);
-                  Meta.exit(Meta.ExitCode.ERROR);
-              }
-              Meta.exit(Meta.ExitCode.SUCCESS);
-          },
-         err => {
-             log("Script failed: " + err + "\n" + err.stack);
-             Meta.exit(Meta.ExitCode.ERROR);
-         });
+    try {
+        _collect(scriptModule, outputFile);
+    } catch (err) {
+        log(`Script failed: ${err}\n${err.stack}`);
+        Meta.exit(Meta.ExitCode.ERROR);
+    }
+    Meta.exit(Meta.ExitCode.SUCCESS);
 }
