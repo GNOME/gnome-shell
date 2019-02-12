@@ -1047,6 +1047,7 @@ var LoginDialog = GObject.registerClass({
                              return this._blockTimedLoginUntilIdle();
                          } else {
                              animationTime = delay;
+                             return null;
                          }
                      },
 
