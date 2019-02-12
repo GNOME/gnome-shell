@@ -1707,25 +1707,20 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             w => !w.skip_taskbar
         );
 
-        // Display the app windows menu items and the separator between windows
-        // of the current desktop and other windows.
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let separatorShown = windows.length > 0 && windows[0].get_workspace() != activeWorkspace;
+        if (windows.length > 0)
+            this.addMenuItem(
+                /* Translators: This is the heading of a list of open windows */
+                new PopupMenu.PopupSeparatorMenuItem(_("Open Windows"))
+            );
 
-        for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
-            if (!separatorShown && window.get_workspace() != activeWorkspace) {
-                this._appendSeparator();
-                separatorShown = true;
-            }
+        windows.forEach(window => {
             let title = window.title ? window.title
                                      : this._source.app.get_name();
             let item = this._appendMenuItem(title);
             item.connect('activate', () => {
                 this.emit('activate-window', window);
             });
-        }
+        });
 
         if (!this._source.app.is_window_backed()) {
             this._appendSeparator();
