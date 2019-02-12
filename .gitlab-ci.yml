@@ -1,5 +1,6 @@
 stages:
  - source_check
+ - build
 
 variables:
     JS_LOG: "js-report.txt"
@@ -16,3 +17,21 @@ js_check:
         paths:
             - ${JS_LOG}
         when: on_failure
+
+build:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    stage: build
+    before_script:
+        - dnf install -y evolution-data-server-devel gjs-devel
+        - git clone https://gitlab.gnome.org/GNOME/mutter.git
+        - cd mutter
+        - MUTTER_BRANCH=`git branch -l $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME`
+        - MUTTER_BRANCH=${MUTTER_BRANCH:-master}
+        - git checkout origin/$MUTTER_BRANCH
+        - meson . build
+        - ninja -C build
+        - ninja -C build install
+    script:
+        - meson . build -Dbuiltype=debugoptimized --werror
+        - ninja -C build
+        - ninja -C build install
