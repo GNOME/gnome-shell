@@ -12,6 +12,9 @@ js_check:
     script:
         - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
+    only:
+        changes:
+            - js/*
     artifacts:
         paths:
             - ${JS_LOG}
