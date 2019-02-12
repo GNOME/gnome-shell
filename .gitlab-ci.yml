@@ -24,7 +24,6 @@ build:
     stage: build
     before_script:
         # non-mutter build dependencies
-        - dnf install -y 'dnf-command(builddep)' redhat-rpm-config
         - dnf builddep -y gnome-shell
         - dnf remove -y mutter
         # check out mutter ...
@@ -35,7 +34,7 @@ build:
         - MUTTER_BRANCH=$(git branch -r -l $MUTTER_BRANCH)
         - git checkout ${MUTTER_BRANCH:-origin/master}
         # ... and build it
-        - meson . build -Dtests=false
+        - meson . build --prefix=/usr -Dtests=false
         - ninja -C build
         - ninja -C build install
         - cd ..
