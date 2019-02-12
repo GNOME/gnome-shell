@@ -23,10 +23,12 @@ js_check:
     script:
         - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
+    only:
+        - merge_requests
+        - /^.*$/
+        changes:
+            - js/**/*
     artifacts:
         paths:
             - ${JS_LOG}
         when: on_failure
-    only:
-        - merge_requests
-        - /^.*$/
