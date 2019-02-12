@@ -26,10 +26,8 @@ build:
         #- dnf install -y evolution-data-server-devel gjs-devel
         - git clone https://gitlab.gnome.org/GNOME/mutter.git
         - cd mutter
-        - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-        - MUTTER_BRANCH=$(git branch -l $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME)
-        - echo $MUTTER_BRANCH
-        - echo ${MUTTER_BRANCH:-master}
+        - MUTTER_BRANCH=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-master}
+        - MUTTER_BRANCH=$(git branch -l $MUTTER_BRANCH)
         - git checkout origin/${MUTTER_BRANCH:-master}
         - meson . build
         - ninja -C build
