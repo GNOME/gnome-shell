@@ -1,6 +1,7 @@
 stages:
  - source_check
  - build
+ - test
 
 variables:
     JS_LOG: "js-report.txt"
@@ -44,3 +45,15 @@ build:
         - meson . build -Dbuiltype=debugoptimized
         - ninja -C build
         - ninja -C build install
+    artifacts:
+        expire_in: 1 day
+        paths:
+            - build
+
+test:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    stage: test
+    dependencies:
+        - build
+    script:
+        - meson -C build test --no-rebuild
