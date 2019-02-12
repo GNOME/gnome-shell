@@ -39,6 +39,7 @@
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Rfkill.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Wacom.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.AudioDeviceSelection.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.Shell.CalendarServer.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.Extensions.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.Introspect.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.HotplugSniffer.xml</file>
