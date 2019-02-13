@@ -76,6 +76,7 @@ test-pot:
     dependencies:
         - build
     script:
+        - ls -l build
         # Check that pot files are generated correctly:
         # https://savannah.gnu.org/bugs/?50920#comment5
         - ninja -C build gnome-shell-pot 2>&1 | awk '
