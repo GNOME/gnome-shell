@@ -78,6 +78,7 @@ test-pot:
     script:
         # Check that pot files are generated correctly:
         # https://savannah.gnu.org/bugs/?50920#comment5
+        - ninja -C build -v gnome-shell-pot
         - ninja -C build gnome-shell-pot 2>&1 | awk '
             BEGIN { start=0; }
             start==1 { print $0; }
