@@ -27,6 +27,7 @@ var RfkillManager = class {
                                                                      this._changed.bind(this));
                                                  this._changed();
                                              });
+        log(`kill me`);
     }
 
     get airplaneMode() {
