@@ -256,6 +256,17 @@ do_grab_screenshot (ShellScreenshot *screenshot,
   g_free (captures);
 }
 
+static gboolean
+should_draw_cursor_image (void)
+{
+  g_autoptr (GSettings) settings = g_settings_new (A11Y_APPS_SCHEMA);
+
+  if (!g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+    return TRUE;
+
+  return FALSE;
+}
+
 static void
 draw_cursor_image (cairo_surface_t       *surface,
                    cairo_rectangle_int_t  area)
@@ -321,7 +332,6 @@ grab_screenshot (ClutterActor *stage,
 {
   MetaDisplay *display;
   int width, height;
-  GSettings *settings;
   ShellScreenshot *screenshot = g_task_get_source_object (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
   GTask *task;
@@ -375,12 +385,8 @@ grab_screenshot (ClutterActor *stage,
   priv->screenshot_area.width = width;
   priv->screenshot_area.height = height;
 
-  settings = g_settings_new (A11Y_APPS_SCHEMA);
-  if (priv->include_cursor &&
-      !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+  if (priv->include_cursor)
     draw_cursor_image (priv->image, priv->screenshot_area);
-
-  g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, grab_screenshot, result);
 
@@ -417,7 +423,6 @@ grab_window_screenshot (ClutterActor *stage,
   ShellScreenshot *screenshot = g_task_get_source_object (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
   GTask *task;
-  GSettings *settings;
   MetaDisplay *display = shell_global_get_display (priv->global);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
@@ -446,11 +451,8 @@ grab_window_screenshot (ClutterActor *stage,
   priv->image = meta_shaped_texture_get_image (stex, &clip);
   priv->datetime = g_date_time_new_now_local ();
 
-  settings = g_settings_new (A11Y_APPS_SCHEMA);
-  if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+  if (priv->include_cursor)
     draw_cursor_image (priv->image, priv->screenshot_area);
-
-  g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, grab_window_screenshot, result);
   task = g_task_new (screenshot, NULL, on_screenshot_written, result);
@@ -541,7 +543,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   g_task_set_source_tag (result, shell_screenshot_screenshot);
 
   priv->filename = g_strdup (filename);
-  priv->include_cursor = include_cursor;
+  priv->include_cursor = include_cursor && should_draw_cursor_image ();
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
@@ -715,7 +717,7 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
 
   priv->filename = g_strdup (filename);
   priv->include_frame = include_frame;
-  priv->include_cursor = include_cursor;
+  priv->include_cursor = include_cursor && should_draw_cursor_image ();
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
