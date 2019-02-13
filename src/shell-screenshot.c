@@ -40,6 +40,13 @@ struct _ShellScreenshotPrivate
   gboolean include_frame;
 };
 
+typedef enum
+{
+  SHELL_SCREENSHOT_SCREEN,
+  SHELL_SCREENSHOT_WINDOW,
+  SHELL_SCREENSHOT_AREA,
+} ShellScreenshotMode;
+
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 
 static void
@@ -257,12 +264,15 @@ do_grab_screenshot (ShellScreenshot *screenshot,
 }
 
 static gboolean
-should_draw_cursor_image (void)
+should_draw_cursor_image (ShellScreenshotMode mode)
 {
-  g_autoptr (GSettings) settings = g_settings_new (A11Y_APPS_SCHEMA);
+  if (mode == SHELL_SCREENSHOT_WINDOW || !meta_is_wayland_compositor ())
+    {
+      g_autoptr (GSettings) settings = g_settings_new (A11Y_APPS_SCHEMA);
 
-  if (!g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    return TRUE;
+      if (!g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+        return TRUE;
+    }
 
   return FALSE;
 }
@@ -524,6 +534,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
 {
   ClutterActor *stage;
   ShellScreenshotPrivate *priv = screenshot->priv;
+  const char *paint_signal;
   GTask *result;
 
   if (priv->filename != NULL) {
@@ -543,13 +554,22 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   g_task_set_source_tag (result, shell_screenshot_screenshot);
 
   priv->filename = g_strdup (filename);
-  priv->include_cursor = include_cursor && should_draw_cursor_image ();
+  priv->include_cursor = FALSE;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
+  paint_signal = "actors-painted";
 
   meta_disable_unredirect_for_display (shell_global_get_display (priv->global));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_screenshot), result);
+  if (include_cursor)
+    {
+      if (should_draw_cursor_image (SHELL_SCREENSHOT_SCREEN))
+        priv->include_cursor = TRUE;
+      else
+        paint_signal = "paint";
+    }
+
+  g_signal_connect_after (stage, paint_signal, G_CALLBACK (grab_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
 }
@@ -717,7 +737,8 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
 
   priv->filename = g_strdup (filename);
   priv->include_frame = include_frame;
-  priv->include_cursor = include_cursor && should_draw_cursor_image ();
+  priv->include_cursor = include_cursor &&
+                         should_draw_cursor_image (SHELL_SCREENSHOT_WINDOW);
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
