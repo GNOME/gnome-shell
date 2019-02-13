@@ -8,7 +8,7 @@ variables:
     POT_LOG: "pot-update.txt"
 
 js_check:
-    image: registry.fedoraproject.org/fedora:latest
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
     stage: source_check
     before_script:
         - dnf install -y findutils mozjs60-devel
@@ -24,12 +24,9 @@ js_check:
         when: on_failure
 
 build:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
     stage: build
     before_script:
-        # non-mutter build dependencies
-        - dnf builddep -y gnome-shell
-        - dnf remove -y mutter
         # check out mutter ...
         - git clone https://gitlab.gnome.org/GNOME/mutter.git
         - cd mutter
@@ -53,14 +50,11 @@ build:
             - build
 
 test:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
     stage: test
     dependencies:
         - build
     before_script:
-        - dnf builddep -y gnome-shell
-        - dnf remove -y mutter
-        - dnf install -y '*/xvfb-run' '*/Gdm-1.0.typelib'
         - ninja -C mutter/build install
     script:
         - xvfb-run meson test -C build --no-rebuild
@@ -71,14 +65,13 @@ test:
         when: on_failure
 
 test-pot:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
     stage: test
     dependencies:
         - build
     script:
         # Check that pot files are generated correctly:
         # https://savannah.gnu.org/bugs/?50920#comment5
-        - ninja -C build -v gnome-shell-pot
         - ninja -C build gnome-shell-pot 2>&1 | awk '
             BEGIN { start=0; }
             start==1 { print $0; }
