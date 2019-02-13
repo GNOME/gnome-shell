@@ -1,8 +1,16 @@
 stages:
+ - review
  - source_check
 
 variables:
     JS_LOG: "js-report.txt"
+
+check_commit_log:
+    stage: review
+    script:
+        - ./.gitlab-ci/check-commit-log.sh
+    only:
+        - merge_requests
 
 js_check:
     image: registry.fedoraproject.org/fedora:latest
@@ -16,3 +24,6 @@ js_check:
         paths:
             - ${JS_LOG}
         when: on_failure
+    only:
+        - merge_requests
+        - /^.*$/
