@@ -257,21 +257,26 @@ do_grab_screenshot (ShellScreenshot *screenshot,
 }
 
 static void
-_draw_cursor_image (MetaCursorTracker     *tracker,
-                    cairo_surface_t       *surface,
-                    cairo_rectangle_int_t  area)
+draw_cursor_image (cairo_surface_t       *surface,
+                   cairo_rectangle_int_t  area)
 {
   CoglTexture *texture;
   int width, height;
   int stride;
   guint8 *data;
+  MetaDisplay *display;
+  MetaCursorTracker *tracker;
   cairo_surface_t *cursor_surface;
   cairo_region_t *screenshot_region;
   cairo_t *cr;
   int x, y;
   int xhot, yhot;
+  double xscale, yscale;
 
+  display = shell_global_get_display (shell_global_get ());
+  tracker = meta_cursor_tracker_get_for_display (display);
   texture = meta_cursor_tracker_get_sprite (tracker);
+
   if (!texture)
     return;
 
@@ -315,7 +320,6 @@ grab_screenshot (ClutterActor *stage,
                  GTask        *result)
 {
   MetaDisplay *display;
-  MetaCursorTracker *tracker;
   int width, height;
   GSettings *settings;
   ShellScreenshot *screenshot = g_task_get_source_object (result);
@@ -374,10 +378,8 @@ grab_screenshot (ClutterActor *stage,
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor &&
       !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    {
-      tracker = meta_cursor_tracker_get_for_display (display);
-      _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
-    }
+    draw_cursor_image (priv->image, priv->screenshot_area);
+
   g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, grab_screenshot, result);
@@ -417,7 +419,6 @@ grab_window_screenshot (ClutterActor *stage,
   GTask *task;
   GSettings *settings;
   MetaDisplay *display = shell_global_get_display (priv->global);
-  MetaCursorTracker *tracker;
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
@@ -447,10 +448,8 @@ grab_window_screenshot (ClutterActor *stage,
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    {
-      tracker = meta_cursor_tracker_get_for_display (display);
-      _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
-    }
+    draw_cursor_image (priv->image, priv->screenshot_area);
+
   g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, grab_window_screenshot, result);
