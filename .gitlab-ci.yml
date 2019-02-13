@@ -44,9 +44,7 @@ build:
         - ninja -C build install
     artifacts:
         expire_in: 1 day
-        paths:
-            - mutter
-            - build
+        untracked: true
 
 test:
     image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
