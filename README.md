@@ -11,6 +11,14 @@ see the [project wiki][project-wiki].
 
 Bugs should be reported to the GNOME [bug tracking system][bug-tracker].
 
+## Contributing
+
+To contribute, open merge requests at https://gitlab.gnome.org/GNOME/gnome-shell.
+
+Commit messages should follow the [GNOME commit message
+guidelines](https://wiki.gnome.org/Git/CommitMessages). We require an URL
+to either an issue or a merge request in each commit.
+
 ## License
 GNOME Shell is distributed under the terms of the GNU General Public License,
 version 2 or later. See the [COPYING][license] file for details.
