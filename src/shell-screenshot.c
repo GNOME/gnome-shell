@@ -323,6 +323,22 @@ draw_cursor_image (cairo_surface_t       *surface,
                                                         width, height,
                                                         stride);
 
+  cairo_surface_get_device_scale (surface, &xscale, &yscale);
+
+  if (xscale != 1.0 || yscale != 1.0)
+    {
+      int monitor;
+      float monitor_scale;
+      MetaRectangle cursor_rect = {
+        .x = x, .y = y, .width = width, .height = height
+      };
+
+      monitor = meta_display_get_monitor_index_for_rect (display, &cursor_rect);
+      monitor_scale = meta_display_get_monitor_scale (display, monitor);
+
+      cairo_surface_set_device_scale (cursor_surface, monitor_scale, monitor_scale);
+    }
+
   cr = cairo_create (surface);
   cairo_set_source_surface (cr,
                             cursor_surface,
@@ -462,7 +478,18 @@ grab_window_screenshot (ClutterActor *stage,
   priv->datetime = g_date_time_new_now_local ();
 
   if (priv->include_cursor)
-    draw_cursor_image (priv->image, priv->screenshot_area);
+    {
+      if (meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_WAYLAND)
+        {
+          float resource_scale;
+          if (!clutter_actor_get_resource_scale (window_actor, &resource_scale))
+            resource_scale = 1.0f;
+
+          cairo_surface_set_device_scale (priv->image, resource_scale, resource_scale);
+        }
+
+      draw_cursor_image (priv->image, priv->screenshot_area);
+    }
 
   g_signal_handlers_disconnect_by_func (stage, grab_window_screenshot, result);
   task = g_task_new (screenshot, NULL, on_screenshot_written, result);
