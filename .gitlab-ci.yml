@@ -63,6 +63,8 @@ test:
 test-pot:
     image: registry.gitlab.gnome.org/gnome/gnome-shell/master:v1
     stage: test
+    before_script:
+        - ninja -C mutter/build install
     script:
         # Check that pot files are generated correctly:
         # https://savannah.gnu.org/bugs/?50920#comment5
