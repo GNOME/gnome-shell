@@ -1,0 +1,33 @@
+FROM registry.fedoraproject.org/fedora:latest
+
+ENV BUILD_DEPS="redhat-rpm-config meson git gcc make which gnome-common gtk-doc vala"
+
+RUN dnf -y update && dnf -y upgrade && \
+    # For syntax checks with `find . -name '*.js' -exec js60 -c -s '{}' ';'`
+    dnf install -y findutils mozjs60 && \
+
+    # For static analysis with eslint
+    dnf install -y nodejs && \
+    npm install -g eslint && \
+
+    # Shameless plug for gnome-extensions-tool; useful for creating zip
+    dnf install -y $BUILD_DEPS gobject-introspection-devel \
+                   'pkgconfig(json-glib-1.0)' 'pkgconfig(gnome-autoar-0)' && \
+
+    # Build gnome-autoar to keep gtk & friends out of the image
+    git clone https://gitlab.gnome.org/GNOME/gnome-autoar.git && \
+    cd gnome-autoar && \
+    ./autogen.sh --prefix=/usr --disable-gtk --disable-introspection \
+                               --disable-gtk-doc --disable-vala && \
+    make all install && \
+    cd .. && \
+
+    git clone https://gitlab.gnome.org/fmuellner/gnome-extensions-tool.git && \
+    cd gnome-extensions-tool && \
+    meson --prefix /usr build && \
+    ninja -C build install && \
+    cd .. && \
+
+    dnf remove -y $BUILD_DEPS *-devel && \
+    dnf clean all && \
+    rm -rf /var/cache/dnf
