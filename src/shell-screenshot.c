@@ -658,7 +658,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
 
   meta_disable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_area_screenshot), result);
+  g_signal_connect_after (stage, "actors-painted", G_CALLBACK (grab_area_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
 }
@@ -744,7 +744,7 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
 
   meta_disable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_window_screenshot), result);
+  g_signal_connect_after (stage, "actors-painted", G_CALLBACK (grab_window_screenshot), result);
 
   clutter_actor_queue_redraw (stage);
 }
@@ -812,7 +812,7 @@ shell_screenshot_pick_color (ShellScreenshot     *screenshot,
 
   meta_disable_unredirect_for_display (display);
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_pixel), result);
+  g_signal_connect_after (stage, "actors-painted", G_CALLBACK (grab_pixel), result);
 
   clutter_actor_queue_redraw (stage);
 }
