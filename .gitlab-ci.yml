@@ -8,10 +8,8 @@ variables:
     POT_LOG: "pot-update.txt"
 
 js_check:
-    image: registry.fedoraproject.org/fedora:latest
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
     stage: source_check
-    before_script:
-        - dnf install -y findutils mozjs60-devel
     script:
         - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
