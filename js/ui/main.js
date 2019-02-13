@@ -3,6 +3,7 @@
 const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
 
+// foo
 const AccessDialog = imports.ui.accessDialog;
 const AudioDeviceSelection = imports.ui.audioDeviceSelection;
 const Components = imports.ui.components;
