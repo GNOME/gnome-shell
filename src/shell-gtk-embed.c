@@ -4,6 +4,7 @@
 
 #include "shell-embedded-window-private.h"
 #include "shell-global.h"
+#include "shell-util.h"
 
 #include <gdk/gdkx.h>
 #include <meta/display.h>
@@ -93,6 +94,10 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
       /* Hide the original actor otherwise it will appear in the scene
          as a normal window */
       clutter_actor_set_opacity (window_actor, 0);
+
+      /* Also make sure it (or any of its children) doesn't block
+         events on wayland */
+      shell_util_set_hidden_from_pick (window_actor, TRUE);
 
       /* Set an empty input shape on the window so that it can't get
          any input. This probably isn't the ideal way to achieve this.
