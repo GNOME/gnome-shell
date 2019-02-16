@@ -26,6 +26,7 @@ build:
     stage: build
     before_script:
         - .gitlab-ci/checkout-mutter.sh
+        - false
         - meson mutter mutter/build --prefix=/usr -Dtests=false
         - ninja -C mutter/build install
     script:
