@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-10-10 19:07+0000\n"
+"POT-Creation-Date: 2019-02-14 09:04+0000\n"
 "PO-Revision-Date: 2018-02-26 12:55+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
@@ -182,7 +182,7 @@ msgstr "Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” fhosgladh"
 #: data/org.gnome.shell.gschema.xml.in:109
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr "Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” aig foir-shealladh na gnìomhachd fhosgladh."
+msgstr "Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” aig foir-shealladh nan gnìomhachdan fhosgladh."
 
 #: data/org.gnome.shell.gschema.xml.in:116
 msgid "Keybinding to open the overview"
@@ -190,7 +190,7 @@ msgstr "Nasgadh iuchrach gus am foir-shealladh fhosgladh"
 
 #: data/org.gnome.shell.gschema.xml.in:117
 msgid "Keybinding to open the Activities Overview."
-msgstr "Nasgadh iuchrach gus foir-shealladh na gnìomhachd fhosgladh."
+msgstr "Nasgadh iuchrach gus foir-shealladh nan gnìomhachdan fhosgladh."
 
 #: data/org.gnome.shell.gschema.xml.in:123
 msgid "Keybinding to toggle the visibility of the notification list"
@@ -224,13 +224,13 @@ msgstr "An seòrsa de mheur-chlàr a thèid a chleachdadh."
 #: data/org.gnome.shell.gschema.xml.in:158
 #: data/org.gnome.shell.gschema.xml.in:185
 msgid "Limit switcher to current workspace."
-msgstr "Cuingich an t-suidsear air an rum-obrach làithreach."
+msgstr "Cuingich an t-suidsear air an rùm-obrach làithreach."
 
 #: data/org.gnome.shell.gschema.xml.in:159
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-aplacaidean aig a bheil uinneag san rum-obrach làithreach. Mur e, thèid a h-uile aplacaid a ghabhail a-staigh."
+msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-aplacaidean aig a bheil uinneag san rùm-obrach làithreach. Mur e, thèid a h-uile aplacaid a ghabhail a-staigh."
 
 #: data/org.gnome.shell.gschema.xml.in:176
 msgid "The application icon mode."
@@ -247,7 +247,7 @@ msgstr "Rèitichidh seo an dòigh sa thèid na h-uinneagan a shealltainn san t-s
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-uinneagan a tha san rum-obrach làithreach. Mur e, thèid a h-uile uinneag a ghabhail a-staigh."
+msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-uinneagan a tha san rùm-obrach làithreach. Mur e, thèid a h-uile uinneag a ghabhail a-staigh."
 
 #: data/org.gnome.shell.gschema.xml.in:198
 msgid "Attach modal dialog to the parent window"
@@ -292,23 +292,23 @@ msgstr "network-workgroup"
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Thachair mearachd le luchdadh còmhradh nan roghainnean airson %s:"
 
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:62
+#: js/gdm/authPrompt.js:148 js/ui/audioDeviceSelection.js:62
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:442 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:345 js/ui/status/network.js:905
 msgid "Cancel"
 msgstr "Sguir dheth"
 
-#: js/gdm/authPrompt.js:166 js/gdm/authPrompt.js:209 js/gdm/authPrompt.js:441
+#: js/gdm/authPrompt.js:167 js/gdm/authPrompt.js:210 js/gdm/authPrompt.js:442
 msgid "Next"
 msgstr "Air adhart"
 
-#: js/gdm/authPrompt.js:205 js/ui/shellMountOperation.js:349
+#: js/gdm/authPrompt.js:206 js/ui/shellMountOperation.js:349
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Neo-ghlais"
 
-#: js/gdm/authPrompt.js:207
+#: js/gdm/authPrompt.js:208
 msgctxt "button"
 msgid "Sign In"
 msgstr "Clàraich a-steach"
@@ -320,13 +320,13 @@ msgstr "Tagh seisean"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:462
+#: js/gdm/loginDialog.js:463
 msgid "Not listed?"
 msgstr "Nach eil d’ ainm air an liosta?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:891
+#: js/gdm/loginDialog.js:892
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(m.e., cleachdaiche no %s)"
@@ -334,12 +334,12 @@ msgstr "(m.e., cleachdaiche no %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:896 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:897 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Ainm-cleachdaiche:"
 
-#: js/gdm/loginDialog.js:1234
+#: js/gdm/loginDialog.js:1235
 msgid "Login Window"
 msgstr "Uinneag a’ chlàraidh a-steach"
 
@@ -602,23 +602,23 @@ msgstr "An fheadhainn thric"
 msgid "All"
 msgstr "Na h-uile"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1889
 msgid "New Window"
 msgstr "Uinneag ùr"
 
-#: js/ui/appDisplay.js:1901
+#: js/ui/appDisplay.js:1903
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Cuir gu dol le cairt-ghrafaigeachd shònraichte"
 
-#: js/ui/appDisplay.js:1928 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1930 js/ui/dash.js:287
 msgid "Remove from Favorites"
 msgstr "Thoir air falbh o na h-annsachdan"
 
-#: js/ui/appDisplay.js:1934
+#: js/ui/appDisplay.js:1936
 msgid "Add to Favorites"
 msgstr "Cuir ris na h-annsachdan"
 
-#: js/ui/appDisplay.js:1944
+#: js/ui/appDisplay.js:1946
 msgid "Show Details"
 msgstr "Seall am mion-fhiosrachadh"
 
@@ -937,13 +937,13 @@ msgstr "Thug %s %s air"
 msgid "Windows"
 msgstr "Uinneagan"
 
-#: js/ui/dash.js:246 js/ui/dash.js:287
+#: js/ui/dash.js:248 js/ui/dash.js:289
 msgid "Show Applications"
 msgstr "Seall na h-aplacaidean"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:444
+#: js/ui/dash.js:446
 msgid "Dash"
 msgstr "Deas-bhòrd"
 
@@ -1315,7 +1315,7 @@ msgstr "Seall am bun-tùs"
 msgid "Web Page"
 msgstr "Duilleag-lìn"
 
-#: js/ui/messageTray.js:1495
+#: js/ui/messageTray.js:1498
 msgid "System Information"
 msgstr "Fiosrachadh an t-siostaim"
 
@@ -1401,7 +1401,7 @@ msgstr "Fàg an-seo"
 #. in your language, you can use the word for "Overview".
 #: js/ui/panel.js:415
 msgid "Activities"
-msgstr "A’ ghnìomhachd"
+msgstr "Gnìomhachdan"
 
 #: js/ui/panel.js:696
 msgctxt "System menu in the top bar"
@@ -1417,7 +1417,7 @@ msgstr "Bàr a’ bharra"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:300
+#: js/ui/popupMenu.js:301
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1461,7 +1461,7 @@ msgstr[1] "%d bhrath ùr"
 msgstr[2] "%d brathan ùra"
 msgstr[3] "%d brath ùr"
 
-#: js/ui/screenShield.js:451 js/ui/status/system.js:294
+#: js/ui/screenShield.js:451 js/ui/status/system.js:297
 msgid "Lock"
 msgstr "Glais"
 
@@ -1501,19 +1501,19 @@ msgstr[1] "%d a bharrachd"
 msgstr[2] "%d a bharrachd"
 msgstr[3] "%d a bharrachd"
 
-#: js/ui/shellEntry.js:25
+#: js/ui/shellEntry.js:26
 msgid "Copy"
 msgstr "Dèan lethbhreac"
 
-#: js/ui/shellEntry.js:30
+#: js/ui/shellEntry.js:31
 msgid "Paste"
 msgstr "Cuir ann"
 
-#: js/ui/shellEntry.js:96
+#: js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "Seall an teacsa"
 
-#: js/ui/shellEntry.js:98
+#: js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "Falaich an teacsa"
 
@@ -1599,11 +1599,11 @@ msgstr "Air"
 msgid "Brightness"
 msgstr "Soilleireachd"
 
-#: js/ui/status/keyboard.js:781
+#: js/ui/status/keyboard.js:795
 msgid "Keyboard"
 msgstr "Meur-chlàr"
 
-#: js/ui/status/keyboard.js:804
+#: js/ui/status/keyboard.js:818
 msgid "Show Keyboard Layout"
 msgstr "Seall co-dhealbhachd a’ mheur-chlàir"
 
@@ -1904,7 +1904,6 @@ msgid "Screen is Being Shared"
 msgstr "Tha an sgrìn ’ga cho-roinneadh"
 
 #: js/ui/status/remoteAccess.js:48
-#, fuzzy
 #| msgid "Turn Off"
 msgid "Turn off"
 msgstr "Cuir dheth"
@@ -1916,27 +1915,27 @@ msgstr "Cuir dheth"
 msgid "Airplane Mode On"
 msgstr "Tha am modh itealain air"
 
-#: js/ui/status/system.js:227
+#: js/ui/status/system.js:230
 msgid "Switch User"
 msgstr "Leum gu cleachdaiche eile"
 
-#: js/ui/status/system.js:239
+#: js/ui/status/system.js:242
 msgid "Log Out"
 msgstr "Clàraich a-mach"
 
-#: js/ui/status/system.js:251
+#: js/ui/status/system.js:254
 msgid "Account Settings"
 msgstr "Roghainnean a’ chunntais"
 
-#: js/ui/status/system.js:279
+#: js/ui/status/system.js:282
 msgid "Orientation Lock"
 msgstr "Glais na comhair"
 
-#: js/ui/status/system.js:305
+#: js/ui/status/system.js:308
 msgid "Suspend"
 msgstr "Cuir ’na dhàil"
 
-#: js/ui/status/system.js:315
+#: js/ui/status/system.js:318
 msgid "Power Off"
 msgstr "Cuir dheth"
 
@@ -1960,7 +1959,7 @@ msgid "Thunderbolt authorization error"
 msgstr "Mearachd dearbhadh Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:331
-#, fuzzy, javascript-format
+#,  javascript-format
 #| msgid "Could not authorize the thunderbolt device: %s"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Cha b’ urrainn dhuinn an t-uidheam Thunderbolt ùghdarrachadh: %s"
@@ -2044,7 +2043,7 @@ msgstr[3] "Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d 
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:681
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2079,23 +2078,23 @@ msgstr "Air a’ bhàrr an-còmhnaidh"
 
 #: js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr "Air rum-obrach a tha ri fhaicinn an-còmhnaidh"
+msgstr "Air rùm-obrach a tha ri fhaicinn an-còmhnaidh"
 
 #: js/ui/windowMenu.js:103
 msgid "Move to Workspace Left"
-msgstr "Gluais dhan rum-obrach air an taobh chlì"
+msgstr "Gluais dhan rùm-obrach air an taobh chlì"
 
 #: js/ui/windowMenu.js:109
 msgid "Move to Workspace Right"
-msgstr "Gluais dhan rum-obrach air an taobh deas"
+msgstr "Gluais dhan rùm-obrach air an taobh deas"
 
 #: js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr "Gluais dhan rum-obrach aig a’ bhàrr"
+msgstr "Gluais dhan rùm-obrach aig a’ bhàrr"
 
 #: js/ui/windowMenu.js:121
 msgid "Move to Workspace Down"
-msgstr "Gluais dhan rum-obrach aig a’ bhonn"
+msgstr "Gluais dhan rùm-obrach aig a’ bhonn"
 
 #: js/ui/windowMenu.js:139
 msgid "Move to Monitor Up"
