@@ -2,6 +2,7 @@
 
 const { AccountsService, Clutter, GLib, GObject, Shell, St } = imports.gi;
 
+// foo
 const BoxPointer = imports.ui.boxpointer;
 const SystemActions = imports.misc.systemActions;
 const Main = imports.ui.main;
