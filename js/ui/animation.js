@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { GLib, Gio, St } = imports.gi;
+const { Clutter, Cogl, GLib, GObject, Gio, St } = imports.gi;
 const Mainloop = imports.mainloop;
 
 const Tweener = imports.ui.tweener;
@@ -9,13 +9,15 @@ var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var SPINNER_ANIMATION_TIME = 0.3;
 var SPINNER_ANIMATION_DELAY = 1.0;
 
-var Animation = class {
-    constructor(file, width, height, speed) {
-        this.actor = new St.Bin();
-        this.actor.set_size(width, height);
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('notify::size', this._syncAnimationSize.bind(this));
-        this.actor.connect('resource-scale-changed',
+var Animation = GObject.registerClass(
+class AnimationAnimation extends St.Bin {
+    _init(file, width, height, speed) {
+        super._init({});
+        this.set_size(width, height);
+        this.actor = this;
+        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('notify::size', this._syncAnimationSize.bind(this));
+        this.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
 
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -54,7 +56,7 @@ var Animation = class {
     }
 
     _loadFile(file, width, height) {
-        let [validResourceScale, resourceScale] = this.actor.get_resource_scale();
+        let [validResourceScale, resourceScale] = this.get_resource_scale();
 
         this._isLoaded = false;
         this.actor.destroy_all_children();
@@ -67,7 +69,61 @@ var Animation = class {
         this._animations = texture_cache.load_sliced_image(file, width, height,
                                                            scaleFactor, resourceScale,
                                                            this._animationsLoaded.bind(this));
-        this.actor.set_child(this._animations);
+
+        this._colorEffect = new Clutter.ColorizeEffect();
+        this._animations.add_effect(this._colorEffect);
+
+        this.set_child(this._animations);
+
+        this._shadowHelper = null;
+        this._shadowWidth = this._shadowHeight = 0;
+    }
+
+    vfunc_get_paint_volume(volume) {
+        if (!super.vfunc_get_paint_volume(volume))
+            return false;
+
+        if (!this._shadow)
+            return true;
+
+        let shadow_box = new Clutter.ActorBox();
+        this._shadow.get_box(this.get_allocation_box(), shadow_box);
+
+        volume.set_width(Math.max(shadow_box.x2 - shadow_box.x1, volume.get_width()));
+        volume.set_height(Math.max(shadow_box.y2 - shadow_box.y1, volume.get_height()));
+
+        return true;
+    }
+
+    vfunc_style_changed() {
+        let node = this.get_theme_node();
+        this._shadow = node.get_shadow('icon-shadow');
+        if (this._shadow)
+            this._shadowHelper = St.ShadowHelper.new(this._shadow);
+        else
+            this._shadowHelper = null;
+
+        super.vfunc_style_changed();
+
+        if (this._colorEffect) {
+            let color = node.get_color('color');
+            this._colorEffect.set_tint(color);
+        }
+    }
+
+    vfunc_paint() {
+        if (this._shadowHelper) {
+            this._shadowHelper.update(this._animations);
+
+            let allocation = this._animations.get_allocation_box();
+            let paintOpacity = this._animations.get_paint_opacity();
+            let framebuffer = Cogl.get_draw_framebuffer();
+//            print(allocation.get_width(), allocation.get_height());
+
+            this._shadowHelper.paint(framebuffer, allocation, paintOpacity);
+        }
+
+        this._animations.paint();
     }
 
     _showFrame(frame) {
@@ -80,6 +136,8 @@ var Animation = class {
         let newFrameActor = this._animations.get_child_at_index(this._frame);
         if (newFrameActor)
             newFrameActor.show();
+
+        this.vfunc_style_changed();
     }
 
     _update() {
@@ -95,6 +153,8 @@ var Animation = class {
 
         for (let i = 0; i < this._animations.get_n_children(); ++i)
             this._animations.get_child_at_index(i).set_size(width, height);
+
+        this.vfunc_style_changed();
     }
 
     _animationsLoaded() {
@@ -114,7 +174,7 @@ var Animation = class {
             themeContext.disconnect(this._scaleChangedId);
         this._scaleChangedId = 0;
     }
-};
+});
 
 var AnimatedIcon = class extends Animation {
     constructor(file, size) {
@@ -129,6 +189,7 @@ var Spinner = class extends AnimatedIcon {
 
         this.actor.opacity = 0;
         this._animate = animate;
+        this.actor.add_style_class_name('spinner');
     }
 
     _onDestroy() {
