@@ -299,6 +299,8 @@ var AppMenuButton = GObject.registerClass({
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
+        this._spinner.actor.set_style_class_name('app-menu-spinner');
+
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
     }
