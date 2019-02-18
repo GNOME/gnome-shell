@@ -275,12 +275,21 @@
     .app-menu-icon > StIcon,
     .messages-indicator-icon,
     .popup-menu-arrow,
-    .spinner {
+    .app-menu-spinner {
+      color: $_color;
       icon-shadow: $_shadow;
     }
 
     &:hover, &:active, &:overview, &:focus, &:checked {
       color: $_highlight_color;
+
+      .system-status-icon,
+      .app-menu-icon > StIcon,
+      .messages-indicator-icon,
+      .popup-menu-arrow,
+      .app-menu-spinner {
+        color: $_highlight_color;
+      }
     }
   }
 
