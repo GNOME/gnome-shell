@@ -342,7 +342,8 @@ var MessagesIndicator = class MessagesIndicator {
         this.actor = new St.Icon({ icon_name: 'message-indicator-symbolic',
                                    icon_size: 16,
                                    visible: false, y_expand: true,
-                                   y_align: Clutter.ActorAlign.CENTER });
+                                   y_align: Clutter.ActorAlign.CENTER,
+                                   style_class: 'messages-indicator-icon' });
 
         this._sources = [];
 
