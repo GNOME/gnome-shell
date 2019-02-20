@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, GObject, Meta, St } = imports.gi;
+const { Clutter, GObject, Graphene, Meta, St } = imports.gi;
 
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -365,7 +365,7 @@ var IconGrid = GObject.registerClass({
         let allocationBox = this.get_allocation_box();
         let paintBox = themeNode.get_paint_box(allocationBox);
 
-        let origin = new Clutter.Vertex();
+        let origin = new Graphene.Point3D();
         origin.x = paintBox.x1 - allocationBox.x1;
         origin.y = paintBox.y1 - allocationBox.y1;
         origin.z = 0.0;
