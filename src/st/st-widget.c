@@ -762,7 +762,7 @@ st_widget_get_paint_volume (ClutterActor *self,
   ClutterActorBox paint_box, alloc_box;
   StThemeNode *theme_node;
   StWidgetPrivate *priv;
-  ClutterVertex origin;
+  graphene_point3d_t origin;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (self))
@@ -2062,7 +2062,7 @@ filter_by_position (GList            *children,
                     StDirectionType   direction)
 {
   ClutterActorBox cbox;
-  ClutterVertex abs_vertices[4];
+  graphene_point3d_t abs_vertices[4];
   GList *l, *ret;
   ClutterActor *child;
 
@@ -2128,7 +2128,7 @@ get_distance (ClutterActor    *actor,
 {
   int ax, ay, bx, by, dx, dy;
   ClutterActorBox abox;
-  ClutterVertex abs_vertices[4];
+  graphene_point3d_t abs_vertices[4];
 
   clutter_actor_get_abs_allocation_vertices (actor, abs_vertices);
   clutter_actor_box_from_vertices (&abox, abs_vertices);
@@ -2232,7 +2232,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
   else /* direction is an arrow key, not tab */
     {
       ClutterActorBox sort_box;
-      ClutterVertex abs_vertices[4];
+      graphene_point3d_t abs_vertices[4];
 
       /* Compute the allocation box of the previous focused actor. If there
        * was no previous focus, use the coordinates of the appropriate edge of
