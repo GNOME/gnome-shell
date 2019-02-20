@@ -98,6 +98,10 @@
         the shell.
       </description>
     </key>
+    <key name="locate-pointer" type="b">
+      <default>false</default>
+      <summary>Highlights the current location of the pointer.</summary>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
