@@ -44,6 +44,15 @@ st_h = configure_file(
 
 st_inc = include_directories('.', '..')
 
+st_deps = [
+  croco_dep,
+  clutter_dep,
+  graphene_dep,
+  gtk_dep,
+  m_dep,
+  x11_dep,
+]
+
 st_private_headers = [
   'st-private.h',
   'st-theme-private.h',
@@ -123,7 +132,7 @@ st_cflags = [
 libst = shared_library('st-1.0',
   sources: st_gir_sources + st_non_gir_sources,
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep, croco_dep, x11_dep, m_dep],
+  dependencies: st_deps,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
   install: true
@@ -136,7 +145,7 @@ libst_dep = declare_dependency(link_with: libst,
 test_theme = executable('test-theme',
   sources: 'test-theme.c',
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep],
+  dependencies: st_deps,
   link_with: libst
 )
 

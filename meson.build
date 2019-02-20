@@ -28,6 +28,7 @@ polkit_req = '>= 0.100'
 schemas_req = '>= 3.27.90'
 startup_req = '>= 0.11'
 ibus_req = '>= 1.5.2'
+graphene_req = '>= 1.5.0'
 
 bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
@@ -94,6 +95,7 @@ startup_dep = dependency('libstartup-notification-1.0', version: startup_req)
 ibus_dep = dependency('ibus-1.0', version: ibus_req)
 x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
+graphene_dep = dependency('graphene-gobject-1.0', version: graphene_req)
 
 bt_dep = dependency('gnome-bluetooth-1.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
