@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { AccountsService, Clutter, Cogl, Gio, GLib,
-        GnomeDesktop, GObject, Meta, Shell, St } = imports.gi;
+        GnomeDesktop, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -485,7 +485,7 @@ var ScreenShield = class {
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
                                                 reactive: true,
-                                                pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
+                                                pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
 
         this.actor.add_actor(this._lockDialogGroup);
