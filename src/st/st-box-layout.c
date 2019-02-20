@@ -506,7 +506,7 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
-  ClutterVertex origin;
+  graphene_point3d_t origin;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
