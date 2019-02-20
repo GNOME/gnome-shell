@@ -60,7 +60,7 @@ struct _StIconPrivate
 
   CoglPipeline *shadow_pipeline;
   StShadow     *shadow_spec;
-  ClutterSize   shadow_size;
+  graphene_size_t shadow_size;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StIcon, st_icon, ST_TYPE_WIDGET)
@@ -290,7 +290,7 @@ st_icon_clear_shadow_pipeline (StIcon *icon)
   StIconPrivate *priv = icon->priv;
 
   g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
-  clutter_size_init (&priv->shadow_size, 0, 0);
+  graphene_size_init (&priv->shadow_size, 0, 0);
 }
 
 static void
@@ -317,7 +317,7 @@ st_icon_update_shadow_pipeline (StIcon *icon)
                                                    priv->icon_texture);
 
           if (priv->shadow_pipeline)
-            clutter_size_init (&priv->shadow_size, width, height);
+            graphene_size_init (&priv->shadow_size, width, height);
         }
     }
 }
