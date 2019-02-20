@@ -115,6 +115,7 @@ enum {
 enum
 {
  NOTIFY_ERROR,
+ LOCATE_POINTER,
  LAST_SIGNAL
 };
 
@@ -357,6 +358,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_NONE, 2,
                     G_TYPE_STRING,
                     G_TYPE_STRING);
+  shell_global_signals[LOCATE_POINTER] =
+      g_signal_new ("locate-pointer",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
 
   g_object_class_install_property (gobject_class,
                                    PROP_SESSION_MODE,
@@ -1731,4 +1739,10 @@ shell_global_get_persistent_state (ShellGlobal  *global,
                                    const char   *property_name)
 {
   return load_variant (global->userdatadir_path, property_type, property_name);
+}
+
+void
+_shell_global_locate_pointer (ShellGlobal *global)
+{
+  g_signal_emit (global, shell_global_signals[LOCATE_POINTER], 0);
 }
