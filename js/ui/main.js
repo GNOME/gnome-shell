@@ -37,6 +37,7 @@ const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
+const LocatePointer = imports.ui.locatePointer;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -74,6 +75,7 @@ var layoutManager = null;
 var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
+var locatePointer = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -165,6 +167,8 @@ function _initializeUI() {
     kbdA11yDialog = new KbdA11yDialog.KbdA11yDialog();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
+    locatePointer = new LocatePointer.locatePointer();
+
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
 
