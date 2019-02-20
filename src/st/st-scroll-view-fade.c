@@ -100,7 +100,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   float fade_area_topleft[2];
   float fade_area_bottomright[2];
-  ClutterVertex verts[4];
+  graphene_point3d_t verts[4];
 
   clutter_actor_get_paint_box (self->actor, &paint_box);
   clutter_actor_get_abs_allocation_vertices (self->actor, verts);
