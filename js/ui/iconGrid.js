@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BaseIcon, IconGrid, PaginatedIconGrid */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
 
 const Params = imports.misc.params;
 const Main = imports.ui.main;
@@ -402,7 +402,7 @@ var IconGrid = GObject.registerClass({
         let allocationBox = this.get_allocation_box();
         let paintBox = themeNode.get_paint_box(allocationBox);
 
-        let origin = new Clutter.Vertex();
+        let origin = new Graphene.Point3D();
         origin.x = paintBox.x1 - allocationBox.x1;
         origin.y = paintBox.y1 - allocationBox.y1;
         origin.z = 0.0;
