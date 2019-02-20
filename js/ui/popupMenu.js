@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Atk, Clutter, Gio, GObject, Shell, St } = imports.gi;
+const { Atk, Clutter, Gio, GObject, Graphene, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const BoxPointer = imports.ui.boxpointer;
@@ -1080,7 +1080,7 @@ var PopupSubMenuMenuItem = class extends PopupBaseMenuItem {
         this.actor.add(expander, { expand: true });
 
         this._triangle = arrowIcon(St.Side.RIGHT);
-        this._triangle.pivot_point = new Clutter.Point({ x: 0.5, y: 0.6 });
+        this._triangle.pivot_point = new Graphene.Point({ x: 0.5, y: 0.6 });
 
         this._triangleBin = new St.Widget({ y_expand: true,
                                             y_align: Clutter.ActorAlign.CENTER });
