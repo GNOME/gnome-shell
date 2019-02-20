@@ -37,6 +37,7 @@ const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
+const LocatePointer = imports.ui.locatePointer;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -74,6 +75,7 @@ var layoutManager = null;
 var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
+var locatePointer = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -91,6 +93,8 @@ function _sessionUpdated() {
                                   sessionMode.hasOverview ? overview.toggle.bind(overview) : null);
     wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
                                       Shell.ActionMode.OVERVIEW);
+
+    wm.allowKeybinding('locate-pointer-key', Shell.ActionMode.ALL);
 
     wm.setCustomKeybindingHandler('panel-run-dialog',
                                   Shell.ActionMode.NORMAL |
@@ -165,6 +169,8 @@ function _initializeUI() {
     kbdA11yDialog = new KbdA11yDialog.KbdA11yDialog();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
+    locatePointer = new LocatePointer.locatePointer();
+
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
 
@@ -188,6 +194,10 @@ function _initializeUI() {
     global.display.connect('overlay-key', () => {
         if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
             overview.toggle();
+    });
+
+    global.connect('locate-pointer', () => {
+        locatePointer.show();
     });
 
     global.display.connect('show-restart-message', (display, message) => {
