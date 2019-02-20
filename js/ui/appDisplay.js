@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppDisplay, AppSearchProvider */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppFavorites = imports.ui.appFavorites;
@@ -1987,7 +1987,7 @@ var AppIcon = class AppIcon {
         this.name = app.get_name();
 
         this.actor = new St.Button({ style_class: 'app-well-app',
-                                     pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
+                                     pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
                                      can_focus: true,

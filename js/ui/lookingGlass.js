@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported LookingGlass */
 
-const { Clutter, Cogl, Gio, GLib,
-        GObject, Meta, Pango, Shell, St } = imports.gi;
+const { Clutter, Cogl, Gio, GLib, GObject,
+        Graphene, Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 const System = imports.system;
 
@@ -352,7 +352,7 @@ var ObjInspector = class ObjInspector {
 
         this._parentList = [];
 
-        this.actor = new St.ScrollView({ pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
+        this.actor = new St.ScrollView({ pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
                                          x_fill: true, y_fill: true });
         this.actor.get_hscroll_bar().hide();
         this._container = new St.BoxLayout({ name: 'LookingGlassPropertyInspector',
