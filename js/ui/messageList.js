@@ -1,4 +1,5 @@
-const { Atk, Clutter, Gio, GLib, GObject, Meta, Pango, St } = imports.gi;
+const { Atk, Clutter, Gio, GLib,
+        GObject, Graphene, Meta, Pango, St } = imports.gi;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Signals = imports.signals;
@@ -564,7 +565,7 @@ var MessageListSection = class MessageListSection {
             keyFocusId: 0,
             closeId: 0
         };
-        let pivot = new Clutter.Point({ x: .5, y: .5 });
+        let pivot = new Graphene.Point({ x: .5, y: .5 });
         let scale = animate ? 0 : 1;
         obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
                                         pivot_point: pivot,
