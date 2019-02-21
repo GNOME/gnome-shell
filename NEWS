@@ -1,3 +1,22 @@
+3.31.91
+=======
+* Don't close on-screen-keyboard's language menu on hover [Florian; #171]
+* Don't let unfullscreen gesture interfere with top bar taps [Jonas D.; #552]
+* Always use symbolic user icon in system menu [Florian; #957]
+* Add flags parameter in GrabAccelerators API [Andrea; #68]
+* Misc. bug fixes and cleanups [Florian, Jonas A.; !399, !398, !400, !402,
+  !407, !410, !411]
+
+Contributors:
+  Jonas Ådahl, Andrea Azzarone, Arnaud Bonatti, Jonas Dreßler, Florian Müllner
+
+Translators:
+  Jordi Mas [ca], Ryuta Fujii [ja], Marek Cernocky [cs], Fran Dieguez [gl],
+  Jiri Grönroos [fi], Serdar Sağlam [tr], Anders Jonsson [sv],
+  Matej Urbančič [sl], Gun Chleoc [gd], Kukuh Syafaat [id],
+  Baurzhan Muftakhidinov [kk], Alan Mortensen [da], Rafael Fontenelle [pt_BR],
+  Sveinn í Felli [is]
+
 3.31.90
 =======
 * Fix input methods after ibus restarts [Takao; #295]
