@@ -11,6 +11,7 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
+const Ripples = imports.ui.ripples;
 
 var STARTUP_ANIMATION_TIME = 0.5;
 var KEYBOARD_ANIMATION_TIME = 0.15;
@@ -1117,14 +1118,15 @@ var HotCorner = class HotCorner {
                                                     Shell.ActionMode.OVERVIEW);
         this._pressureBarrier.connect('trigger', this._toggleOverview.bind(this));
 
-        // Cache the three ripples instead of dynamically creating and destroying them.
-        this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
-        this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
-        this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
+        let px = 0.0;
+        let py = 0.0;
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+            px = 1.0;
+            py = 0.0;
+        }
 
-        layoutManager.uiGroup.add_actor(this._ripple1);
-        layoutManager.uiGroup.add_actor(this._ripple2);
-        layoutManager.uiGroup.add_actor(this._ripple3);
+        this._ripples = new Ripples.Ripples(px, py, 'ripple-box');
+        this._ripples.addTo(layoutManager.uiGroup);
     }
 
     setBarrierSize(size) {
@@ -1206,53 +1208,12 @@ var HotCorner = class HotCorner {
             this.actor.destroy();
     }
 
-    _animRipple(ripple, delay, time, startScale, startOpacity, finalScale) {
-        // We draw a ripple by using a source image and animating it scaling
-        // outwards and fading away. We want the ripples to move linearly
-        // or it looks unrealistic, but if the opacity of the ripple goes
-        // linearly to zero it fades away too quickly, so we use Tweener's
-        // 'onUpdate' to give a non-linear curve to the fade-away and make
-        // it more visible in the middle section.
-
-        ripple._opacity = startOpacity;
-
-        if (ripple.get_text_direction() == Clutter.TextDirection.RTL)
-            ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-
-        ripple.visible = true;
-        ripple.opacity = 255 * Math.sqrt(startOpacity);
-        ripple.scale_x = ripple.scale_y = startScale;
-
-        ripple.x = this._x;
-        ripple.y = this._y;
-
-        Tweener.addTween(ripple, { _opacity: 0,
-                                   scale_x: finalScale,
-                                   scale_y: finalScale,
-                                   delay: delay,
-                                   time: time,
-                                   transition: 'linear',
-                                   onUpdate() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
-                                   onComplete() { ripple.visible = false; } });
-    }
-
-    _rippleAnimation() {
-        // Show three concentric ripples expanding outwards; the exact
-        // parameters were found by trial and error, so don't look
-        // for them to make perfect sense mathematically
-
-        //                              delay  time  scale opacity => scale
-        this._animRipple(this._ripple1, 0.0,   0.83,  0.25,  1.0,     1.5);
-        this._animRipple(this._ripple2, 0.05,  1.0,   0.0,   0.7,     1.25);
-        this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
-    }
-
     _toggleOverview() {
         if (this._monitor.inFullscreen && !Main.overview.visible)
             return;
 
         if (Main.overview.shouldToggleByCornerOrButton()) {
-            this._rippleAnimation();
+            this._ripples.playAnimation(this._x, this._y);
             Main.overview.toggle();
         }
     }
