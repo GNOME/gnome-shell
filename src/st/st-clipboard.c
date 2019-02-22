@@ -59,32 +59,6 @@ static Atom __utf8_string = None;
 static Atom __atom_targets = None;
 
 static void
-st_clipboard_get_property (GObject    *object,
-                           guint       property_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-  switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
-
-static void
-st_clipboard_set_property (GObject      *object,
-                           guint         property_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
-{
-  switch (property_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
-
-static void
 st_clipboard_dispose (GObject *object)
 {
   G_OBJECT_CLASS (st_clipboard_parent_class)->dispose (object);
@@ -180,8 +154,6 @@ st_clipboard_class_init (StClipboardClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->get_property = st_clipboard_get_property;
-  object_class->set_property = st_clipboard_set_property;
   object_class->dispose = st_clipboard_dispose;
   object_class->finalize = st_clipboard_finalize;
 }
