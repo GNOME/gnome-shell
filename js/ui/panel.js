@@ -110,9 +110,14 @@ class AppMenu extends PopupMenu.PopupMenu {
         });
 
         this._appSystem.connect('installed-changed', () => {
-            let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
-            this._detailsItem.actor.visible = (sw != null);
+            this._updateDetailsVisibility();
         });
+        this._updateDetailsVisibility();
+    }
+
+    _updateDetailsVisibility() {
+        let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
+        this._detailsItem.actor.visible = (sw != null);
     }
 
     isEmpty() {
