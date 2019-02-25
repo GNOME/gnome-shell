@@ -1422,7 +1422,8 @@ st_theme_node_load_background_image (StThemeNode *node)
       if (background_image_shadow_spec)
         {
           node->background_shadow_pipeline = _st_create_shadow_pipeline (background_image_shadow_spec,
-                                                                         node->background_texture);
+                                                                         node->background_texture,
+                                                                         resource_scale);
         }
     }
 
@@ -1561,10 +1562,12 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
     {
       if (st_theme_node_load_border_image (node))
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
-                                                                 node->border_slices_texture);
+                                                                 node->border_slices_texture,
+                                                                 state->resource_scale);
       else if (state->prerendered_texture != NULL)
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
-                                                                 state->prerendered_texture);
+                                                                 state->prerendered_texture,
+                                                                 state->resource_scale);
       else if (node->background_color.alpha > 0 || has_border)
         st_theme_node_prerender_shadow (state);
     }
@@ -1636,7 +1639,8 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
   if (had_box_shadow)
     state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
-                                                             state->prerendered_texture);
+                                                             state->prerendered_texture,
+                                                             state->resource_scale);
 }
 
 static void
@@ -2330,7 +2334,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
       st_theme_node_paint_borders (state, offscreen, &box, 0xFF);
 
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
-                                                               buffer);
+                                                               buffer, state->resource_scale);
     }
   else
     {
