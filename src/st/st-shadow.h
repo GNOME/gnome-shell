@@ -72,6 +72,8 @@ void      st_shadow_get_box  (StShadow              *shadow,
                               const ClutterActorBox *actor_box,
                               ClutterActorBox       *shadow_box);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (StShadow, st_shadow_unref);
+
 
 GType     st_shadow_helper_get_type (void) G_GNUC_CONST;
 
