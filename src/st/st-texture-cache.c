@@ -1008,14 +1008,16 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 }
 
 static ClutterActor *
-load_from_pixbuf (GdkPixbuf *pixbuf)
+load_from_pixbuf (GdkPixbuf *pixbuf,
+                  int        paint_scale,
+                  float      resource_scale)
 {
   g_autoptr(ClutterContent) image = NULL;
   ClutterActor *actor;
   int width = gdk_pixbuf_get_width (pixbuf);
   int height = gdk_pixbuf_get_height (pixbuf);
 
-  image = pixbuf_to_st_content_image (pixbuf, width, height, 1, 1.0f);
+  image = pixbuf_to_st_content_image (pixbuf, -1, -1, paint_scale, resource_scale);
 
   actor = clutter_actor_new ();
   clutter_actor_set_size (actor, width, height);
@@ -1109,7 +1111,9 @@ on_sliced_image_loaded (GObject *source_object,
 
   for (list = pixbufs; list; list = list->next)
     {
-      ClutterActor *actor = load_from_pixbuf (GDK_PIXBUF (list->data));
+      ClutterActor *actor = load_from_pixbuf (GDK_PIXBUF (list->data),
+                                              data->paint_scale,
+                                              data->resource_scale);
       clutter_actor_hide (actor);
       clutter_actor_add_child (data->actor, actor);
     }
