@@ -77,13 +77,13 @@ shell_tray_icon_constructed (GObject *object)
   plug_xid = GDK_WINDOW_XID (icon_app_window);
 
   display = gtk_widget_get_display (GTK_WIDGET (icon->priv->socket));
-  gdk_error_trap_push ();
+  gdk_x11_display_error_trap_push (display);
   _NET_WM_PID = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PID");
   result = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (display), plug_xid,
                                _NET_WM_PID, 0, G_MAXLONG, False, XA_CARDINAL,
                                &type, &format, &nitems,
                                &bytes_after, (guchar **)&val);
-  if (!gdk_error_trap_pop () &&
+  if (!gdk_x11_display_error_trap_pop (display) &&
       result == Success &&
       type == XA_CARDINAL &&
       nitems == 1)
@@ -190,6 +190,7 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   XKeyEvent xkevent;
   XButtonEvent xbevent;
   XCrossingEvent xcevent;
+  GdkDisplay *display;
   GdkWindow *remote_window;
   GdkScreen *screen;
   int x_root, y_root;
@@ -201,20 +202,22 @@ shell_tray_icon_click (ShellTrayIcon *icon,
                     event_type == CLUTTER_KEY_PRESS ||
                     event_type == CLUTTER_KEY_RELEASE);
 
-  gdk_error_trap_push ();
-
   remote_window = gtk_socket_get_plug_window (GTK_SOCKET (icon->priv->socket));
   if (remote_window == NULL)
     {
       g_warning ("shell tray: plug window is gone");
-      gdk_error_trap_pop_ignored ();
       return;
     }
-  xwindow = GDK_WINDOW_XID (remote_window);
   xdisplay = GDK_WINDOW_XDISPLAY (remote_window);
+
+  display = gdk_x11_lookup_xdisplay (xdisplay);
+  gdk_x11_display_error_trap_push (display);
+
+  xwindow = GDK_WINDOW_XID (remote_window);
   screen = gdk_window_get_screen (remote_window);
   xrootwindow = GDK_WINDOW_XID (gdk_screen_get_root_window (screen));
   gdk_window_get_origin (remote_window, &x_root, &y_root);
+
 
   /* First make the icon believe the pointer is inside it */
   xcevent.type = EnterNotify;
@@ -287,5 +290,5 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   xcevent.type = LeaveNotify;
   XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xcevent);
 
-  gdk_error_trap_pop_ignored ();
+  gdk_x11_display_error_trap_pop_ignored (display);
 }
