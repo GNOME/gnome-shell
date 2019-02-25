@@ -63,7 +63,8 @@ CoglPipeline * _st_create_texture_pipeline (CoglTexture *src_texture);
 
 /* Helper for widgets which need to draw additional shadows */
 CoglPipeline * _st_create_shadow_pipeline (StShadow    *shadow_spec,
-                                           CoglTexture *src_texture);
+                                           CoglTexture *src_texture,
+                                           float        resource_scale);
 CoglPipeline * _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
                                                       ClutterActor *actor);
 cairo_pattern_t *_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
