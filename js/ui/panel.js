@@ -729,7 +729,7 @@ class AggregateLayout extends Clutter.BoxLayout {
             let child = this._sizeChildren[i];
             let [childMin, childNat] = child.get_preferred_width(forHeight);
             minWidth = Math.max(minWidth, childMin);
-            natWidth = Math.max(minWidth, childNat);
+            natWidth = Math.max(natWidth, childNat);
         }
         return [minWidth, natWidth];
     }
