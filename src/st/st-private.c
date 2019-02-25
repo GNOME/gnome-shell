@@ -359,7 +359,8 @@ blur_pixels (guchar  *pixels_in,
 
 CoglPipeline *
 _st_create_shadow_pipeline (StShadow    *shadow_spec,
-                            CoglTexture *src_texture)
+                            CoglTexture *src_texture,
+                            float        resource_scale)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
@@ -386,7 +387,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
                          rowstride_in, pixels_in);
 
   pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
-                            shadow_spec->blur,
+                            shadow_spec->blur * resource_scale,
                             &width_out, &height_out, &rowstride_out);
   g_free (pixels_in);
 
@@ -456,7 +457,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       if (texture &&
           cogl_texture_get_width (texture) == width &&
           cogl_texture_get_height (texture) == height)
-        shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, texture);
+        shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, texture,
+                                                      resource_scale);
     }
 
   if (shadow_pipeline == NULL)
@@ -510,7 +512,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
       cogl_object_unref (fb);
 
-      shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, buffer);
+      shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, buffer,
+                                                    resource_scale);
 
       cogl_object_unref (buffer);
     }
