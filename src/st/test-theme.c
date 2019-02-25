@@ -576,7 +576,7 @@ main (int argc, char **argv)
   group3 = st_theme_node_new (context, group2, NULL,
                               CLUTTER_TYPE_GROUP, "group3", NULL, "hover", NULL);
   cairo_texture = st_theme_node_new (context, root, NULL,
-                                     CLUTTER_TYPE_CAIRO_TEXTURE, "cairoTexture", NULL, NULL, NULL);
+                                     CLUTTER_TYPE_CANVAS, "cairoTexture", NULL, NULL, NULL);
 
   test_defaults ();
   test_lengths ();
