@@ -759,6 +759,7 @@ paint_shadow_pattern_to_cairo_context (StShadow *shadow_spec,
     {
       cairo_surface_t *surface;
       int width, height;
+      double xscale, yscale;
       cairo_matrix_t matrix;
 
       cairo_save (cr);
@@ -775,11 +776,13 @@ paint_shadow_pattern_to_cairo_context (StShadow *shadow_spec,
         /* Something went wrong previously */
         goto no_surface;
 
+      cairo_surface_get_device_scale (surface, &xscale, &yscale);
       width = cairo_image_surface_get_width  (surface);
       height = cairo_image_surface_get_height (surface);
 
       cairo_pattern_get_matrix (pattern, &matrix);
       cairo_matrix_invert (&matrix);
+      cairo_matrix_scale (&matrix, 1.0 / xscale, 1.0 / yscale);
       cairo_transform (cr, &matrix);
 
       cairo_rectangle (cr, 0, height, width, - height);
@@ -803,7 +806,8 @@ paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
                                                 int              x,
                                                 int              y,
                                                 int              width,
-                                                int              height)
+                                                int              height,
+                                                float            resource_scale)
 {
   cairo_pattern_t *shadow_pattern;
 
@@ -819,7 +823,10 @@ paint_background_image_shadow_to_cairo_context (StThemeNode     *node,
       /* Prerender the pattern to a temporary surface,
        * so it's properly clipped before we create a shadow from it
        */
+      width = ceilf (width * resource_scale);
+      height = ceilf (height * resource_scale);
       clipped_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+      cairo_surface_set_device_scale (clipped_surface, resource_scale, resource_scale);
       temp_cr = cairo_create (clipped_surface);
 
       cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
@@ -883,6 +890,7 @@ path_extents (cairo_path_t *path,
 static void
 paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
                                          StShadow        *shadow_spec,
+                                         float            resource_scale,
                                          cairo_t         *cr,
                                          cairo_path_t    *shadow_outline)
 {
@@ -923,8 +931,8 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
       /* Bounds of temporary surface */
       int surface_x = floor (shrunk_extents_x1);
       int surface_y = floor (shrunk_extents_y1);
-      int surface_width = ceil (shrunk_extents_x2) - surface_x;
-      int surface_height = ceil (shrunk_extents_y2) - surface_y;
+      int surface_width = ceil ((shrunk_extents_x2 - surface_x) * resource_scale);
+      int surface_height = ceil ((shrunk_extents_y2 - surface_y) * resource_scale);
 
       /* Center of the original path */
       double x_center = (extents_x1 + extents_x2) / 2;
@@ -935,6 +943,7 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
       cairo_matrix_t matrix;
 
       shadow_surface = cairo_image_surface_create (CAIRO_FORMAT_A8, surface_width, surface_height);
+      cairo_surface_set_device_scale (shadow_surface, resource_scale, resource_scale);
       temp_cr = cairo_create (shadow_surface);
 
       /* Match the coordinates in the temporary context to the parent context */
@@ -1284,7 +1293,8 @@ st_theme_node_prerender_background (StThemeNode *node,
                                                       has_visible_outline?  outline_path : NULL,
                                                       actor_box.x1,
                                                       actor_box.y1,
-                                                      width, height);
+                                                      width, height,
+                                                      resource_scale);
       cairo_append_path (cr, outline_path);
     }
 
@@ -1301,6 +1311,7 @@ st_theme_node_prerender_background (StThemeNode *node,
     {
       paint_inset_box_shadow_to_cairo_context (node,
                                                box_shadow_spec,
+                                               resource_scale,
                                                cr,
                                                interior_path ? interior_path
                                                              : outline_path);
