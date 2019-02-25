@@ -536,9 +536,10 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
  * the offset.
  */
 cairo_pattern_t *
-_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
+_st_create_shadow_cairo_pattern (StShadow        *shadow_spec_in,
                                  cairo_pattern_t *src_pattern)
 {
+  g_autoptr(StShadow) shadow_spec = NULL;
   static cairo_user_data_key_t shadow_pattern_user_data;
   cairo_t *cr;
   cairo_surface_t *src_surface;
@@ -549,9 +550,10 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
   gint             width_in, height_in, rowstride_in;
   gint             width_out, height_out, rowstride_out;
   cairo_matrix_t   shadow_matrix;
+  double           xscale_in, yscale_in;
   int i, j;
 
-  g_return_val_if_fail (shadow_spec != NULL, NULL);
+  g_return_val_if_fail (shadow_spec_in != NULL, NULL);
   g_return_val_if_fail (src_pattern != NULL, NULL);
 
   if (cairo_pattern_get_surface (src_pattern, &src_surface) != CAIRO_STATUS_SUCCESS)
@@ -563,6 +565,25 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
 
   width_in  = cairo_image_surface_get_width  (src_surface);
   height_in = cairo_image_surface_get_height (src_surface);
+
+  cairo_surface_get_device_scale (src_surface, &xscale_in, &yscale_in);
+
+  if (xscale_in != 1.0 || yscale_in != 1.0)
+    {
+      /* Scale the shadow specifications in a temporary copy so that
+       * we can work everywhere in absolute surface coordinates */
+      double scale = (xscale_in + yscale_in) / 2.0;
+      shadow_spec = st_shadow_new (&shadow_spec_in->color,
+                                   shadow_spec_in->xoffset * xscale_in,
+                                   shadow_spec_in->yoffset * yscale_in,
+                                   shadow_spec_in->blur * scale,
+                                   shadow_spec_in->spread * scale,
+                                   shadow_spec_in->inset);
+    }
+  else
+    {
+      shadow_spec = st_shadow_ref (shadow_spec_in);
+    }
 
   /* We want the output to be a color agnostic alpha mask,
    * so we need to strip the color channels from the input
@@ -606,6 +627,7 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                                      width_out,
                                                      height_out,
                                                      rowstride_out);
+  cairo_surface_set_device_scale (surface_out, xscale_in, yscale_in);
   cairo_surface_set_user_data (surface_out, &shadow_pattern_user_data,
                                pixels_out, (cairo_destroy_func_t) g_free);
 
@@ -616,6 +638,9 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
 
   if (shadow_spec->inset)
     {
+      /* Scale the matrix in surface absolute coordinates */
+      cairo_matrix_scale (&shadow_matrix, 1.0 / xscale_in, 1.0 / yscale_in);
+
       /* For inset shadows, offsets and spread radius have already been
        * applied to the original pattern, so all left to do is shift the
        * blurred image left, so that it aligns centered under the
@@ -624,6 +649,10 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
       cairo_matrix_translate (&shadow_matrix,
                               (width_out - width_in) / 2.0,
                               (height_out - height_in) / 2.0);
+
+      /* Scale back the matrix in original coordinates */
+      cairo_matrix_scale (&shadow_matrix, xscale_in, yscale_in);
+
       cairo_pattern_set_matrix (dst_pattern, &shadow_matrix);
       return dst_pattern;
     }
@@ -635,6 +664,9 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
 
   /* 6. Invert the matrix back */
   cairo_matrix_invert (&shadow_matrix);
+
+  /* Scale the matrix in surface absolute coordinates */
+  cairo_matrix_scale (&shadow_matrix, 1.0 / xscale_in, 1.0 / yscale_in);
 
   /* 5. Adjust based on specified offsets */
   cairo_matrix_translate (&shadow_matrix,
@@ -656,6 +688,9 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
   cairo_matrix_translate (&shadow_matrix,
                           - (width_out - width_in) / 2.0,
                           - (height_out - height_in) / 2.0);
+
+  /* Scale back the matrix in scaled coordinates */
+  cairo_matrix_scale (&shadow_matrix, xscale_in, yscale_in);
 
   /* 1. Invert the matrix so we can work with it in pattern space
    */
