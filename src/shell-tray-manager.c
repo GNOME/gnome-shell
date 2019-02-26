@@ -227,32 +227,6 @@ shell_tray_manager_manage_screen (ShellTrayManager *manager,
 }
 
 static void
-shell_tray_manager_child_on_realize (GtkWidget             *widget,
-                                     ShellTrayManagerChild *child)
-{
-  /* If the tray child is using an RGBA colormap (and so we have real
-   * transparency), we don't need to worry about the background. If
-   * not, we obey the bg-color property by creating a cairo pattern of
-   * that color and setting it as our background. Then "parent-relative"
-   * background on the socket and the plug within that will cause
-   * the icons contents to appear on top of our background color.
-   */
-  if (!na_tray_child_has_alpha (NA_TRAY_CHILD (child->socket)))
-    {
-      ClutterColor color = child->manager->priv->bg_color;
-      cairo_pattern_t *bg_pattern;
-
-      bg_pattern = cairo_pattern_create_rgb (color.red / 255.,
-                                             color.green / 255.,
-                                             color.blue / 255.);
-      gdk_window_set_background_pattern (gtk_widget_get_window (widget),
-                                         bg_pattern);
-
-      cairo_pattern_destroy (bg_pattern);
-    }
-}
-
-static void
 on_plug_added (GtkSocket        *socket,
                ShellTrayManager *manager)
 {
@@ -288,9 +262,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->manager = manager;
   child->window = win;
   child->socket = socket;
-
-  g_signal_connect (win, "realize",
-                    G_CALLBACK (shell_tray_manager_child_on_realize), child);
 
   gtk_widget_show_all (win);
 
