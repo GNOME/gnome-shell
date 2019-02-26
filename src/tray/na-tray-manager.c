@@ -70,7 +70,7 @@ static guint manager_signals[LAST_SIGNAL];
 #define SYSTEM_TRAY_ORIENTATION_VERT 1
 
 #ifdef GDK_WINDOWING_X11
-static gboolean na_tray_manager_check_running_screen_x11 (GdkScreen *screen);
+static gboolean na_tray_manager_check_running_screen_x11 ();
 #endif
 
 static void na_tray_manager_finalize     (GObject      *object);
@@ -682,15 +682,15 @@ na_tray_manager_set_colors_property (NaTrayManager *manager)
 #ifdef GDK_WINDOWING_X11
 
 static gboolean
-na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
-				   GdkScreen     *screen)
+na_tray_manager_manage_screen_x11 (NaTrayManager *manager)
 {
   GdkDisplay *display;
-  Screen     *xscreen;
-  GtkWidget  *invisible;
-  GdkWindow  *window;
-  char       *selection_atom_name;
-  guint32     timestamp;
+  GdkScreen *screen;
+  Screen *xscreen;
+  GtkWidget *invisible;
+  GdkWindow *window;
+  char *selection_atom_name;
+  guint32 timestamp;
   
   g_return_val_if_fail (NA_IS_TRAY_MANAGER (manager), FALSE);
   g_return_val_if_fail (manager->screen == NULL, FALSE);
@@ -699,10 +699,11 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
    * we can't create another one.
    */
 #if 0
-  if (na_tray_manager_check_running_screen_x11 (screen))
+  if (na_tray_manager_check_running_screen_x11 ())
     return FALSE;
 #endif
   
+  screen = gdk_screen_get_default ();
   manager->screen = screen;
 
   display = gdk_screen_get_display (screen);
@@ -715,7 +716,7 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
                          GDK_PROPERTY_CHANGE_MASK | GDK_STRUCTURE_MASK);
 
   selection_atom_name = g_strdup_printf ("_NET_SYSTEM_TRAY_S%d",
-					 gdk_screen_get_number (screen));
+                                         gdk_x11_get_default_screen ());
   manager->selection_atom = gdk_atom_intern (selection_atom_name, FALSE);
   g_free (selection_atom_name);
 
@@ -793,14 +794,12 @@ na_tray_manager_manage_screen_x11 (NaTrayManager *manager,
 #endif
 
 gboolean
-na_tray_manager_manage_screen (NaTrayManager *manager,
-			       GdkScreen     *screen)
+na_tray_manager_manage_screen (NaTrayManager *manager)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
   g_return_val_if_fail (manager->screen == NULL, FALSE);
 
 #ifdef GDK_WINDOWING_X11
-  return na_tray_manager_manage_screen_x11 (manager, screen);
+  return na_tray_manager_manage_screen_x11 (manager);
 #else
   return FALSE;
 #endif
@@ -809,15 +808,17 @@ na_tray_manager_manage_screen (NaTrayManager *manager,
 #ifdef GDK_WINDOWING_X11
 
 static gboolean
-na_tray_manager_check_running_screen_x11 (GdkScreen *screen)
+na_tray_manager_check_running_screen_x11 ()
 {
   GdkDisplay *display;
-  Atom        selection_atom;
-  char       *selection_atom_name;
+  GdkScreen *screen;
+  Atom selection_atom;
+  char *selection_atom_name;
 
+  screen = gdk_screen_get_default ();
   display = gdk_screen_get_display (screen);
   selection_atom_name = g_strdup_printf ("_NET_SYSTEM_TRAY_S%d",
-                                         gdk_screen_get_number (screen));
+                                         gdk_x11_get_default_screen ());
   selection_atom = gdk_x11_get_xatom_by_name_for_display (display,
                                                           selection_atom_name);
   g_free (selection_atom_name);
@@ -832,12 +833,10 @@ na_tray_manager_check_running_screen_x11 (GdkScreen *screen)
 #endif
 
 gboolean
-na_tray_manager_check_running (GdkScreen *screen)
+na_tray_manager_check_running ()
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
-
 #ifdef GDK_WINDOWING_X11
-  return na_tray_manager_check_running_screen_x11 (screen);
+  return na_tray_manager_check_running_screen_x11 ();
 #else
   return FALSE;
 #endif
