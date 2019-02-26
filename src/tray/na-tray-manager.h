@@ -88,10 +88,9 @@ struct _NaTrayManagerClass
 
 GType           na_tray_manager_get_type        (void);
 
-gboolean        na_tray_manager_check_running   (GdkScreen          *screen);
+gboolean        na_tray_manager_check_running   (void);
 NaTrayManager  *na_tray_manager_new             (void);
-gboolean        na_tray_manager_manage_screen   (NaTrayManager      *manager,
-						 GdkScreen          *screen);
+gboolean        na_tray_manager_manage_screen   (NaTrayManager      *manager);
 void            na_tray_manager_set_orientation (NaTrayManager      *manager,
 						 GtkOrientation      orientation);
 GtkOrientation  na_tray_manager_get_orientation (NaTrayManager      *manager);

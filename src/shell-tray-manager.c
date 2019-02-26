@@ -212,13 +212,7 @@ void
 shell_tray_manager_manage_screen (ShellTrayManager *manager,
                                   StWidget         *theme_widget)
 {
-  GdkDisplay *display;
-  GdkScreen *gdk_screen;
-
-  display = gdk_display_get_default ();
-  gdk_screen = gdk_display_get_default_screen (display);
-
-  na_tray_manager_manage_screen (manager->priv->na_manager, gdk_screen);
+  na_tray_manager_manage_screen (manager->priv->na_manager);
 
   g_signal_connect_object (theme_widget, "style-changed",
                            G_CALLBACK (shell_tray_manager_style_changed),
