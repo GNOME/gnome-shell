@@ -411,15 +411,15 @@ test_background (void)
   test = "background";
   /* group1 has a background: shortcut property setting color and image */
   assert_background_color (group1, "group1", 0xff0000ff);
-  assert_background_image (group1, "group1", "st/some-background.png");
+  assert_background_image (group1, "group1", "some-background.png");
   /* text1 inherits the background image but not the color */
   assert_background_color (text1,  "text1",  0x00000000);
-  assert_background_image (text1,  "text1",  "st/some-background.png");
+  assert_background_image (text1,  "text1",  "some-background.png");
   /* text2 inherits both, but then background: none overrides both */
   assert_background_color (text2,  "text2",  0x00000000);
   assert_background_image (text2,  "text2",  NULL);
   /* background-image property */
-  assert_background_image (group2, "group2", "st/other-background.png");
+  assert_background_image (group2, "group2", "other-background.png");
 }
 
 static void
@@ -545,7 +545,7 @@ main (int argc, char **argv)
   /* Make sure our assumptions about resolution are correct */
   g_object_set (clutter_settings_get_default (), "font-dpi", -1, NULL);
 
-  file = g_file_new_for_path ("st/test-theme.css");
+  file = g_file_new_for_path ("test-theme.css");
   theme = st_theme_new (file, NULL, NULL);
   g_object_unref (file);
 
