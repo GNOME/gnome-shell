@@ -45,34 +45,8 @@ na_tray_child_realize (GtkWidget *widget)
 
   window = gtk_widget_get_window (widget);
 
-  if (child->has_alpha)
-    {
-      /* We have real transparency with an ARGB visual and the Composite
-       * extension. */
-
-      /* Set a transparent background */
-      cairo_pattern_t *transparent = cairo_pattern_create_rgba (0, 0, 0, 0);
-      gdk_window_set_background_pattern (window, transparent);
-      cairo_pattern_destroy (transparent);
-
-      child->parent_relative_bg = FALSE;
-    }
-  else if (visual == gdk_window_get_visual (gdk_window_get_parent (window)))
-    {
-      /* Otherwise, if the visual matches the visual of the parent window, we
-       * can use a parent-relative background and fake transparency. */
-      gdk_window_set_background_pattern (window, NULL);
-
-      child->parent_relative_bg = TRUE;
-    }
-  else
-    {
-      /* Nothing to do; the icon will sit on top of an ugly gray box */
-      child->parent_relative_bg = FALSE;
-    }
-
-  gtk_widget_set_app_paintable (GTK_WIDGET (child),
-                                child->parent_relative_bg || child->has_alpha);
+  child->parent_relative_bg = FALSE;
+  gtk_widget_set_app_paintable (GTK_WIDGET (child), TRUE);
 
   /* Double-buffering will interfere with the parent-relative-background fake
    * transparency, since the double-buffer code doesn't know how to fill in the
