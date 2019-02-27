@@ -39,7 +39,7 @@ LOCALE_TO_XKB_OVERRIDES = {
     'en':    'us',
     'en-GB': 'uk',
     'es-US': 'latam',
-    'fr_CA': 'ca',
+    'fr-CA': 'ca',
     'hi':    'in+bolnagri',
     'ky':    'kg',
     'nl-BE': 'be',
