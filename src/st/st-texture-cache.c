@@ -1014,13 +1014,12 @@ load_from_pixbuf (GdkPixbuf *pixbuf,
 {
   g_autoptr(ClutterContent) image = NULL;
   ClutterActor *actor;
-  int width = gdk_pixbuf_get_width (pixbuf);
-  int height = gdk_pixbuf_get_height (pixbuf);
 
   image = pixbuf_to_st_content_image (pixbuf, -1, -1, paint_scale, resource_scale);
 
-  actor = clutter_actor_new ();
-  clutter_actor_set_size (actor, width, height);
+  actor = g_object_new (CLUTTER_TYPE_ACTOR,
+                        "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
+                        NULL);
   clutter_actor_set_content (actor, image);
 
   return actor;
