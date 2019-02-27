@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include "st-image-content.h"
 #include "st-texture-cache.h"
 #include "st-private.h"
 #include "st-settings.h"
@@ -486,12 +487,26 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
 }
 
 static ClutterContent *
-pixbuf_to_clutter_image (GdkPixbuf *pixbuf)
+pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
+                            int        width,
+                            int        height,
+                            int        paint_scale,
+                            float      resource_scale)
 {
   ClutterContent *image;
   g_autoptr(GError) error = NULL;
 
-  image = clutter_image_new ();
+  if (width < 0)
+    width = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
+  else
+    width *= paint_scale;
+
+  if (height < 0)
+    height = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
+  else
+    height *= paint_scale;
+
+  image = st_image_content_new_with_preferred_size (width, height);
   clutter_image_set_data (CLUTTER_IMAGE (image),
                           gdk_pixbuf_get_pixels (pixbuf),
                           gdk_pixbuf_get_has_alpha (pixbuf) ?
@@ -553,7 +568,10 @@ finish_texture_load (AsyncTextureLoadData *data,
       if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
                                          &orig_key, &value))
         {
-          image = pixbuf_to_clutter_image (pixbuf);
+          image = pixbuf_to_st_content_image (pixbuf,
+                                              data->width, data->height,
+                                              data->paint_scale,
+                                              data->resource_scale);
           if (!image)
             goto out;
 
@@ -567,7 +585,10 @@ finish_texture_load (AsyncTextureLoadData *data,
     }
   else
     {
-      image = pixbuf_to_clutter_image (pixbuf);
+      image = pixbuf_to_st_content_image (pixbuf,
+                                          data->width, data->height,
+                                          data->paint_scale,
+                                          data->resource_scale);
       if (!image)
         goto out;
     }
@@ -994,7 +1015,7 @@ load_from_pixbuf (GdkPixbuf *pixbuf)
   int width = gdk_pixbuf_get_width (pixbuf);
   int height = gdk_pixbuf_get_height (pixbuf);
 
-  image = pixbuf_to_clutter_image (pixbuf);
+  image = pixbuf_to_st_content_image (pixbuf, width, height, 1, 1.0f);
 
   actor = clutter_actor_new ();
   clutter_actor_set_size (actor, width, height);
@@ -1326,7 +1347,9 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
       if (!pixbuf)
         goto out;
 
-      image = pixbuf_to_clutter_image (pixbuf);
+      image = pixbuf_to_st_content_image (pixbuf,
+                                          available_height, available_width,
+                                          paint_scale, resource_scale);
       g_object_unref (pixbuf);
 
       if (!image)
