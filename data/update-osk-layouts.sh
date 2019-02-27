@@ -40,6 +40,7 @@ do
 done
 
 cat >>$TMP_GRESOURCE_FILE <<EOF
+    <file>emoji.json</file>
   </gresource>
 </gresources>
 EOF
