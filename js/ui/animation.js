@@ -18,6 +18,10 @@ var Animation = class {
         this.actor.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
 
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        this._scaleChangedId = themeContext.connect('notify::scale-factor',
+            this._loadFile.bind(this, file, width, height));
+
         this._speed = speed;
 
         this._isLoaded = false;
@@ -104,6 +108,11 @@ var Animation = class {
 
     _onDestroy() {
         this.stop();
+
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        if (this._scaleChangedId)
+            themeContext.disconnect(this._scaleChangedId);
+        this._scaleChangedId = 0;
     }
 };
 
