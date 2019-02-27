@@ -315,7 +315,7 @@ texture_load_data_free (gpointer p)
   if (data->actors)
     g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
 
-  g_free (data);
+  g_slice_free (AsyncTextureLoadData, data);
 }
 
 /**
@@ -750,7 +750,7 @@ st_texture_cache_free_bind (gpointer data)
   StTextureCachePropertyBind *bind = data;
   if (bind->weakref_active)
     g_object_weak_unref (G_OBJECT (bind->actor), st_texture_cache_bind_weak_notify, bind);
-  g_free (bind);
+  g_slice_free (StTextureCachePropertyBind, bind);
 }
 
 /**
@@ -779,7 +779,7 @@ st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
 
   actor = clutter_actor_new ();
 
-  bind = g_new0 (StTextureCachePropertyBind, 1);
+  bind = g_slice_new0 (StTextureCachePropertyBind);
   bind->cache = cache;
   bind->actor = actor;
   bind->source = object;
@@ -876,7 +876,7 @@ ensure_request (StTextureCache        *cache,
   if (pending == NULL)
     {
       /* Not cached and no pending request, create it */
-      *request = g_new0 (AsyncTextureLoadData, 1);
+      *request = g_slice_new0 (AsyncTextureLoadData);
       if (policy != ST_TEXTURE_CACHE_POLICY_NONE)
         g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
     }
@@ -1092,7 +1092,7 @@ on_data_destroy (gpointer data)
   g_object_unref (d->gfile);
   g_object_unref (d->actor);
   g_object_unref (d->cancellable);
-  g_free (d);
+  g_slice_free (AsyncImageData, d);
 }
 
 static void
@@ -1257,7 +1257,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
   g_assert (paint_scale > 0);
   g_assert (resource_scale > 0);
 
-  data = g_new0 (AsyncImageData, 1);
+  data = g_slice_new0 (AsyncImageData);
   data->grid_width = grid_width;
   data->grid_height = grid_height;
   data->paint_scale = paint_scale;
