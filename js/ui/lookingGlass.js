@@ -382,6 +382,7 @@ var ObjInspector = class ObjInspector {
         }
 
         button = new St.Button({ style_class: 'window-close' });
+        button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
         button.connect('clicked', this.close.bind(this));
         hbox.add(button);
         if (typeof(obj) == typeof({})) {
