@@ -679,6 +679,7 @@ load_texture_async (StTextureCache       *cache,
 typedef struct {
   StTextureCache *cache;
   ClutterActor *actor;
+  gint size;
   GObject *source;
   guint notify_signal_id;
   gboolean weakref_active;
@@ -702,7 +703,7 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
 
       image = clutter_actor_get_content (bind->actor);
       if (!image || !CLUTTER_IS_IMAGE (image))
-        image = clutter_image_new ();
+        image = st_image_content_new_with_preferred_size (bind->size, bind->size);
       else
         g_object_ref (image);
 
@@ -771,17 +772,20 @@ st_texture_cache_free_bind (gpointer data)
 ClutterActor *
 st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                               GObject           *object,
-                                              const char        *property_name)
+                                              const char        *property_name,
+                                              gint               size)
 {
   ClutterActor *actor;
   gchar *notify_key;
   StTextureCachePropertyBind *bind;
 
-  actor = clutter_actor_new ();
+  actor = create_invisible_actor ();
+  clutter_actor_set_size (actor, size, size);
 
   bind = g_new0 (StTextureCachePropertyBind, 1);
   bind->cache = cache;
   bind->actor = actor;
+  bind->size = size;
   bind->source = object;
   g_object_weak_ref (G_OBJECT (actor), st_texture_cache_bind_weak_notify, bind);
   bind->weakref_active = TRUE;
