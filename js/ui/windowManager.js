@@ -1828,6 +1828,9 @@ var WindowManager = class {
                 lastCurSibling = windows[i];
             } else {
                 for (let dir of Object.values(Meta.MotionDirection)) {
+                    if (!Number.isInteger(dir))
+                        continue;
+
                     let info = this._switchData.surroundings[dir];
                     if (!info || windows[i].get_parent() != info.actor)
                         continue;
@@ -1895,6 +1898,8 @@ var WindowManager = class {
 
         for (let dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
+            if (!Number.isInteger(dir))
+                continue;
 
             if (to < 0)
                 ws = curWs.get_neighbor(dir);
@@ -1941,6 +1946,9 @@ var WindowManager = class {
             } else {
                 let visible = false;
                 for (let dir of Object.values(Meta.MotionDirection)) {
+                    if (!Number.isInteger(dir))
+                        continue;
+
                     let info = switchData.surroundings[dir];
 
                     if (!info || info.index != window.get_workspace().index())
