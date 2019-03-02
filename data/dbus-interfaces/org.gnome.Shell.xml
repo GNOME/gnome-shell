@@ -34,6 +34,10 @@
       <arg type="u" direction="in" name="action"/>
       <arg type="b" direction="out" name="success"/>
     </method>
+    <method name="UngrabAccelerators">
+      <arg type="au" direction="in" name="action"/>
+      <arg type="b" direction="out" name="success"/>
+    </method>
     <signal name="AcceleratorActivated">
       <arg name="action" type="u"/>
       <arg name="parameters" type="a{sv}"/>

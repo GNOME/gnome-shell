@@ -124,13 +124,20 @@ var GnomeShell = class {
 
     UngrabAcceleratorAsync(params, invocation) {
         let [action] = params;
-        let grabbedBy = this._grabbedAccelerators.get(action);
-        if (invocation.get_sender() != grabbedBy)
-            return invocation.return_value(GLib.Variant.new('(b)', [false]));
+        let sender = invocation.get_sender();
+        let ungrabSucceeded = this._ungrabAcceleratorForSender(action, sender);
 
-        let ungrabSucceeded = global.display.ungrab_accelerator(action);
-        if (ungrabSucceeded)
-            this._grabbedAccelerators.delete(action);
+        return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
+    }
+
+    UngrabAcceleratorsAsync(params, invocation) {
+        let [actions] = params;
+        let sender = invocation.get_sender();
+        let ungrabSucceeded = true;
+
+        for (let i = 0; i < actions.length; i++)
+            ungrabSucceeded &= this._ungrabAcceleratorForSender(actions[i], sender);
+
         return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
@@ -174,6 +181,16 @@ var GnomeShell = class {
         let ungrabSucceeded = global.display.ungrab_accelerator(action);
         if (ungrabSucceeded)
             this._grabbedAccelerators.delete(action);
+
+        return ungrabSucceeded;
+    }
+
+    _ungrabAcceleratorForSender(action, sender) {
+        let grabbedBy = this._grabbedAccelerators.get(action);
+        if (sender != grabbedBy)
+            return false;
+
+        return this._ungrabAccelerator(action);
     }
 
     _onGrabberBusNameVanished(connection, name) {
