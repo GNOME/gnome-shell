@@ -133,6 +133,24 @@ var GnomeShell = class {
             this._grabbedAccelerators.delete(action);
         return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
+    UngrabAcceleratorsAsync(params, invocation) {
+        let [actions] = params;
+        let sender = invocation.get_sender();
+        let ungrabSucceeded = []
+        for (let i = 0; i < actions.length; i++) {
+            let grabbedBy = this._grabbedAccelerators.get(actions[i]);
+            if (sender != grabbedBy) {
+                ungrabSucceeded.push(false);
+                continue;
+            }
+
+            let success = global.display.ungrab_accelerator(actions[i]);
+            if (success)
+                this._grabbedAccelerators.delete(actions[i]);
+            ungrabSucceeded.push(success);
+        }
+        return invocation.return_value(GLib.Variant.new('(ab)', [ungrabSucceeded]));
+    }
 
     _emitAcceleratorActivated(action, deviceid, timestamp) {
         let destination = this._grabbedAccelerators.get(action);
