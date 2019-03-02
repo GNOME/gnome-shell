@@ -708,6 +708,12 @@ var Source = class Source {
         return this._policy;
     }
 
+    set policy(policy) {
+        if (this._policy)
+            this._policy.destroy();
+        this._policy = policy;
+    }
+
     get count() {
         return this.notifications.length;
     }
