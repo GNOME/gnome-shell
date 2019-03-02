@@ -1236,7 +1236,6 @@ var NMDeviceWireless = class {
     }
 
     _dialogClosed() {
-        this._dialog.destroy();
         this._dialog = null;
     }
 
