@@ -101,6 +101,5 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
 
     open() {
         Main.activateWindow(this._window);
-        this.destroy();
     }
 };
