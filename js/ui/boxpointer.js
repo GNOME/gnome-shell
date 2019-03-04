@@ -265,7 +265,7 @@ var BoxPointer = GObject.registerClass({
         }
         this.bin.allocate(childBox, flags);
 
-        if (this._sourceActor) {
+        if (this._sourceActor && this._sourceActor.mapped) {
             this._reposition();
             this._updateFlip();
         }
