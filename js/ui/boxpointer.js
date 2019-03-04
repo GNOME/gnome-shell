@@ -47,10 +47,6 @@ var BoxPointer = GObject.registerClass({
         this._border.connect('repaint', this._drawBorder.bind(this));
         this.add_actor(this._border);
         this.bin.raise(this._border);
-        this._xOffset = 0;
-        this._yOffset = 0;
-        this._xPosition = 0;
-        this._yPosition = 0;
         this._sourceAlignment = 0.5;
         this._capturedEventId = 0;
         this._muteInput();
@@ -107,6 +103,8 @@ var BoxPointer = GObject.registerClass({
         let themeNode = this.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
         let animationTime = (animate & PopupAnimation.FULL) ? POPUP_ANIMATION_TIME : 0;
+        let x = this.x;
+        let y = this.y;
 
         if (animate & PopupAnimation.FADE)
             this.opacity = 0;
@@ -118,26 +116,28 @@ var BoxPointer = GObject.registerClass({
         if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
-                    this.yOffset = -rise;
+                    this.y -= rise;
                     break;
                 case St.Side.BOTTOM:
-                    this.yOffset = rise;
+                    this.y += rise;
                     break;
                 case St.Side.LEFT:
-                    this.xOffset = -rise;
+                    this.x -= rise;
                     break;
                 case St.Side.RIGHT:
-                    this.xOffset = rise;
+                    this.x += rise;
                     break;
             }
         }
 
+        this._animating = true;
         Tweener.addTween(this, { opacity: 255,
-                                 xOffset: 0,
-                                 yOffset: 0,
+                                 x: x,
+                                 y: y,
                                  transition: 'linear',
                                  onComplete: () => {
                                      this._unmuteInput();
+                                     this._animating = false;
                                      if (onComplete)
                                          onComplete();
                                  },
@@ -148,8 +148,10 @@ var BoxPointer = GObject.registerClass({
         if (!this.visible)
             return;
 
-        let xOffset = 0;
-        let yOffset = 0;
+        let x = this.x;
+        let y = this.y;
+        let originalX = this.x;
+        let originalY = this.y;
         let themeNode = this.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
         let fade = (animate & PopupAnimation.FADE);
@@ -158,33 +160,35 @@ var BoxPointer = GObject.registerClass({
         if (animate & PopupAnimation.SLIDE) {
             switch (this._arrowSide) {
                 case St.Side.TOP:
-                    yOffset = rise;
+                    y += rise;
                     break;
                 case St.Side.BOTTOM:
-                    yOffset = -rise;
+                    y -= rise;
                     break;
                 case St.Side.LEFT:
-                    xOffset = rise;
+                    x += rise;
                     break;
                 case St.Side.RIGHT:
-                    xOffset = -rise;
+                    x -= rise;
                     break;
             }
         }
 
         this._muteInput();
 
+        this._animating = true;
         Tweener.removeTweens(this);
         Tweener.addTween(this, { opacity: fade ? 0 : 255,
-                                 xOffset: xOffset,
-                                 yOffset: yOffset,
+                                 x: x,
+                                 y: y,
                                  transition: 'linear',
                                  time: animationTime,
                                  onComplete: () => {
                                      this.hide();
                                      this.opacity = 0;
-                                     this.xOffset = 0;
-                                     this.yOffset = 0;
+                                     this.x = originalX;
+                                     this.y = originalY;
+                                     this._animating = false;
                                      if (onComplete)
                                          onComplete();
                                  }
@@ -265,7 +269,7 @@ var BoxPointer = GObject.registerClass({
         }
         this.bin.allocate(childBox, flags);
 
-        if (this._sourceActor && this._sourceActor.mapped) {
+        if (this._sourceActor && this._sourceActor.mapped && !this._animating) {
             this._reposition();
             this._updateFlip();
         }
@@ -584,9 +588,9 @@ var BoxPointer = GObject.registerClass({
             parent = parent.get_parent();
         }
 
-        this._xPosition = Math.floor(x);
-        this._yPosition = Math.floor(y);
-        this._shiftActor();
+        // Actually set the position
+        this.x = Math.floor(x);
+        this.y = Math.floor(y);
     }
 
     // @origin: Coordinate specifying middle of the arrow, along
@@ -607,17 +611,6 @@ var BoxPointer = GObject.registerClass({
             this._arrowActor = actor;
             this._border.queue_repaint();
         }
-    }
-
-    _shiftActor() {
-        // Since the position of the BoxPointer depends on the allocated size
-        // of the BoxPointer and the position of the source actor, trying
-        // to position the BoxPointer via the x/y properties will result in
-        // allocation loops and warnings. Instead we do the positioning via
-        // the anchor point, which is independent of allocation, and leave
-        // x == y == 0.
-        this.set_anchor_point(-(this._xPosition + this._xOffset),
-                              -(this._yPosition + this._yOffset));
     }
 
     _calculateArrowSide(arrowSide) {
@@ -664,24 +657,6 @@ var BoxPointer = GObject.registerClass({
 
             this.emit('arrow-side-changed');
         }
-    }
-
-    set xOffset(offset) {
-        this._xOffset = offset;
-        this._shiftActor();
-    }
-
-    get xOffset() {
-        return this._xOffset;
-    }
-
-    set yOffset(offset) {
-        this._yOffset = offset;
-        this._shiftActor();
-    }
-
-    get yOffset() {
-        return this._yOffset;
     }
 
     updateArrowSide(side) {
