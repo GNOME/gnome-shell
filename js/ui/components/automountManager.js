@@ -93,10 +93,10 @@ var AutomountManager = class {
         if (!this._session.SessionIsActive)
             return;
 
-        let sound = global.display.get_sound();
-        sound.play_from_theme('device-removed-media',
-                              _("External drive disconnected"),
-                              null);
+        let player = global.display.get_sound_player();
+        player.play_from_theme('device-removed-media',
+                               _("External drive disconnected"),
+                               null);
     }
 
     _onDriveEjectButton(monitor, drive) {
