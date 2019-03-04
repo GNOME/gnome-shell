@@ -252,7 +252,7 @@ var LayoutManager = GObject.registerClass({
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
-        this.dummyCursor = new St.Widget({ width: 0, height: 0, visible: false });
+        this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
         this.uiGroup.add_actor(this.dummyCursor);
 
         global.stage.remove_actor(global.top_window_group);
