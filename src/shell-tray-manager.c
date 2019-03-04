@@ -239,8 +239,10 @@ shell_tray_manager_child_on_realize (GtkWidget             *widget,
       bg_pattern = cairo_pattern_create_rgb (color.red / 255.,
                                              color.green / 255.,
                                              color.blue / 255.);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gdk_window_set_background_pattern (gtk_widget_get_window (widget),
                                          bg_pattern);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       cairo_pattern_destroy (bg_pattern);
     }
