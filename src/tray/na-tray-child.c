@@ -52,7 +52,9 @@ na_tray_child_realize (GtkWidget *widget)
 
       /* Set a transparent background */
       cairo_pattern_t *transparent = cairo_pattern_create_rgba (0, 0, 0, 0);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gdk_window_set_background_pattern (window, transparent);
+G_GNUC_END_IGNORE_DEPRECATIONS
       cairo_pattern_destroy (transparent);
 
       child->parent_relative_bg = FALSE;
@@ -61,7 +63,9 @@ na_tray_child_realize (GtkWidget *widget)
     {
       /* Otherwise, if the visual matches the visual of the parent window, we
        * can use a parent-relative background and fake transparency. */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gdk_window_set_background_pattern (window, NULL);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
       child->parent_relative_bg = TRUE;
     }
