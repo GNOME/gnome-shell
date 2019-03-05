@@ -73,12 +73,9 @@ class AspectContainer extends St.Widget {
                 box.x1 += Math.floor(diff / 2);
                 box.x2 -= Math.ceil(diff / 2);
             } else {
-                /* Restrict vertically */
+                /* Restrict vertically, align to bottom */
                 let height = box.get_width() / this._ratio;
-                let diff = box.get_height() - height;
-
-                box.y1 += Math.floor(diff / 2);
-                box.y2 -= Math.floor(diff / 2);
+                box.y1 = box.y2 - Math.floor(height);
             }
         }
 
