@@ -2,7 +2,7 @@ const { Clutter, Gio, Gtk, Shell } = imports.gi;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 
-let METRICS = {
+var METRICS = {
     timeToDesktop:
     { description: "Time from starting graphical.target to desktop showing",
       units: "us" },

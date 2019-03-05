@@ -10,7 +10,7 @@ const Scripting = imports.ui.scripting;
 // someone should be able to get an idea of how well the shell is performing
 // on a particular system.
 
-let METRICS = {
+var METRICS = {
     overviewLatencyFirst:
     { description: "Time to first frame after triggering overview, first time",
       units: "us" },
