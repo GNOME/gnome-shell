@@ -211,13 +211,6 @@ function _initializeUI() {
 
     _startDate = new Date();
 
-    let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
-    if (perfModuleName) {
-        let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
-        let module = eval('imports.perf.' + perfModuleName + ';');
-        Scripting.runPerfScript(module, perfOutput);
-    }
-
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
@@ -238,6 +231,13 @@ function _initializeUI() {
             sessionMode.currentMode != 'initial-setup') {
             Shell.Global.log_structured('GNOME Shell started at ' + _startDate,
                                         ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
+        }
+
+        let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
+        if (perfModuleName) {
+            let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
+            let module = eval('imports.perf.' + perfModuleName + ';');
+            Scripting.runPerfScript(module, perfOutput);
         }
     });
 }
