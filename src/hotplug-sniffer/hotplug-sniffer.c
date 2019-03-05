@@ -266,7 +266,7 @@ main (int    argc,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void
+static void __attribute__((format(printf, 1, 0)))
 print_debug (const gchar *format, ...)
 {
   gchar *s;
