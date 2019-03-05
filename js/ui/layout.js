@@ -160,6 +160,19 @@ var Monitor = class Monitor {
     }
 };
 
+const UiActor = GObject.registerClass(
+class UiActor extends St.Widget {
+    vfunc_get_preferred_width (forHeight) {
+        let width = global.stage.width;
+        return [width, width];
+    }
+
+    vfunc_get_preferred_height (forWidth) {
+        let height = global.stage.height;
+        return [height, height];
+    }
+});
+
 const defaultParams = {
     trackFullscreen: false,
     affectsStruts: false,
@@ -200,12 +213,8 @@ var LayoutManager = GObject.registerClass({
         global.stage.no_clear_hint = true;
 
         // Set up stage hierarchy to group all UI actors under one container.
-        this.uiGroup = new St.Widget({ name: 'uiGroup' });
+        this.uiGroup = new UiActor({ name: 'uiGroup' });
         this.uiGroup.set_flags(Clutter.ActorFlags.NO_LAYOUT);
-        this.uiGroup.add_constraint(new Clutter.BindConstraint({
-            source: global.stage,
-            coordinate: Clutter.BindCoordinate.ALL,
-        }));
 
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
