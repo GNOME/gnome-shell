@@ -579,7 +579,11 @@ get_root_theme_node (ClutterStage *stage)
 StThemeNode *
 st_widget_get_theme_node (StWidget *widget)
 {
-  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+  StWidgetPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
+
+  priv = st_widget_get_instance_private (widget);
 
   if (priv->theme_node == NULL)
     {
