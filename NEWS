@@ -1,3 +1,30 @@
+3.31.92
+=======
+* Fix visual glitch in submenus [Alex; #987]
+* Support fractional scaling [Jonas, Marco; #765011, !5]
+* Only consider visible children for :first-child/:last-child [Florian; !312]
+* Hide trailing separator in search results [verdre; !311]
+* Remember choice in inhibit-shortcuts dialogue [Olivier; !382]
+* Don't toggle on-screen keyboard on every focus change [Carlos; !397]
+* Fix legacy tray icons not responding to events on wayland [Florian; #191]
+* Fix generating French OSK layout [Florian; #997]
+* Use borderless round user images [Florian; #811]
+* Misc. bug fixes and cleanups [Andrea, Robert, Florian, Marco, Niels,
+  Benjamin; !414, !417, !420, #996, !408, !422, !425, #1006, !427, !315,
+  #989, !430, !431, !432, #1015, !429, !423, !419, !434]
+
+Contributors:
+  Jonas Ådahl, Alan, Andrea Azzarone, Benjamin Berg, Olivier Fourdan,
+  Carlos Garnacho, Niels De Graef, Robert Mader, Alex Monday, Florian Müllner,
+  Marco Trevisan (Treviño), verdre
+
+Translators:
+  Carmen Bianca BAKKER [eo], Asier Sarasua Garmendia [eu], Stas Solovey [ru],
+  Changwoo Ryu [ko], Julien Humbert [fr], Milo Casagrande [it],
+  Марко Костић [sr], Ask Hjorth Larsen [da], Kukuh Syafaat [id],
+  Daniel Șerbănescu [ro], Bernd Homuth [de], Trần Ngọc Quân [vi],
+  Nathan Follens [nl], Rūdolfs Mazurs [lv], Aurimas Černius [lt]
+
 3.31.91
 =======
 * Don't close on-screen-keyboard's language menu on hover [Florian; #171]
