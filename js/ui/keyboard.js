@@ -881,7 +881,7 @@ var EmojiSelection = class EmojiSelection {
         this._pageIndicator.setReactive(false);
 
         let bottomRow = this._createBottomRow();
-        this.actor.add(bottomRow, { x_fill: true, y_fill: false });
+        this.actor.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
 
         this._emojiPager.setCurrentPage(0);
     }
@@ -970,7 +970,12 @@ var EmojiSelection = class EmojiSelection {
         row.appendKey(key.actor);
         row.layoutButtons();
 
-        return row;
+        let actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
+                                          x_expand: true, y_expand: true });
+        actor.add_child(row);
+        actor.setRatio(11.5, 1);
+
+        return actor;
     }
 };
 Signals.addSignalMethods(EmojiSelection.prototype);
