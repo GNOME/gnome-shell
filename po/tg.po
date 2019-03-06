@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-03-02 10:57+0000\n"
-"PO-Revision-Date: 2019-03-06 20:03+0500\n"
+"PO-Revision-Date: 2019-03-06 20:14+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: tg\n"
@@ -201,47 +201,47 @@ msgstr "Тугмабандие, ки ҳамаи твинҳои фаъол бар
 #: data/org.gnome.shell.gschema.xml.in:150
 #| msgid "Show Applications"
 msgid "Switch to application 1"
-msgstr "Гузариш ба баономаи 1"
+msgstr "Гузариш ба барномаи 1"
 
 #: data/org.gnome.shell.gschema.xml.in:154
 #| msgid "Show Applications"
 msgid "Switch to application 2"
-msgstr "Гузариш ба баономаи 2"
+msgstr "Гузариш ба барномаи 2"
 
 #: data/org.gnome.shell.gschema.xml.in:158
 #| msgid "Show Applications"
 msgid "Switch to application 3"
-msgstr "Гузариш ба баономаи 3"
+msgstr "Гузариш ба барномаи 3"
 
 #: data/org.gnome.shell.gschema.xml.in:162
 #| msgid "Show Applications"
 msgid "Switch to application 4"
-msgstr "Гузариш ба баономаи 4"
+msgstr "Гузариш ба барномаи 4"
 
 #: data/org.gnome.shell.gschema.xml.in:166
 #| msgid "Show Applications"
 msgid "Switch to application 5"
-msgstr "Гузариш ба баономаи 5"
+msgstr "Гузариш ба барномаи 5"
 
 #: data/org.gnome.shell.gschema.xml.in:170
 #| msgid "Show Applications"
 msgid "Switch to application 6"
-msgstr "Гузариш ба баономаи 6"
+msgstr "Гузариш ба барномаи 6"
 
 #: data/org.gnome.shell.gschema.xml.in:174
 #| msgid "Show Applications"
 msgid "Switch to application 7"
-msgstr "Гузариш ба баономаи 7"
+msgstr "Гузариш ба барномаи 7"
 
 #: data/org.gnome.shell.gschema.xml.in:178
 #| msgid "Show Applications"
 msgid "Switch to application 8"
-msgstr "Гузариш ба баономаи 8"
+msgstr "Гузариш ба барномаи 8"
 
 #: data/org.gnome.shell.gschema.xml.in:182
 #| msgid "Show Applications"
 msgid "Switch to application 9"
-msgstr "Гузариш ба баономаи 9"
+msgstr "Гузариш ба барномаи 9"
 
 #: data/org.gnome.shell.gschema.xml.in:190
 msgid "Which keyboard to use"
@@ -1352,13 +1352,13 @@ msgstr "Маълумоти система"
 #: js/ui/mpris.js:177
 #| msgid "Unknown reason"
 msgid "Unknown artist"
-msgstr "Сабаби номаълум"
+msgstr "Ҳофизи номаълум"
 
 #: js/ui/mpris.js:178
 #| msgctxt "program"
 #| msgid "Unknown"
 msgid "Unknown title"
-msgstr "Номаълум"
+msgstr "Унвони номаълум"
 
 #: js/ui/osdWindow.js:22 js/ui/status/volume.js:199
 msgid "Volume"
@@ -1398,7 +1398,7 @@ msgstr ""
 #: js/ui/padOsd.js:143
 #| msgid "Switch User"
 msgid "Switch monitor"
-msgstr "Таъвизи корбар"
+msgstr "Иваз кардани монитор"
 
 #: js/ui/padOsd.js:144
 msgid "Assign keystroke"
@@ -1410,7 +1410,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:721
 msgid "Edit…"
-msgstr ""
+msgstr "Таҳрир кардан…"
 
 #: js/ui/padOsd.js:763 js/ui/padOsd.js:868
 msgid "None"
@@ -2170,12 +2170,12 @@ msgstr "Интиқол ба канори рости монитор"
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
-msgstr "Ӣақвими Evolution"
+msgstr "Тақвими инкишоф"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
 msgid "evolution"
-msgstr ""
+msgstr "инкишоф"
 
 #: src/main.c:408
 msgid "Print version"
