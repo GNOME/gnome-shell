@@ -62,8 +62,10 @@ test:
     stage: test
     before_script:
         - ninja -C mutter/build install
+        - ls /usr/bin/gnome-shell || true
     script:
         - xvfb-run meson test -C build --no-rebuild
+        - ldd build/src/st/test-theme
     <<: *only_default
     artifacts:
         expire_in: 1 day
