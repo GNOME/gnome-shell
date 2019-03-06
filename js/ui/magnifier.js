@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Atspi, Clutter, Cogl, GDesktopEnums,
+const { Atspi, Clutter, GDesktopEnums,
         Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -65,9 +65,7 @@ var MouseSpriteContent = GObject.registerClass({
         if (!this._texture)
             return;
 
-        let color = new Cogl.Color();
-        color.init_from_4ub(0, 0, 0, 0);
-
+        let color = new Clutter.Color();
         let textureNode = new Clutter.TextureNode(this._texture,
                                                   color,
                                                   Clutter.ScalingFilter.NEAREST,
