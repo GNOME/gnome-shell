@@ -15,49 +15,6 @@
 #define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
 #define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
 
-/* Copy-on-write smart pointer, to prevent extra allocations,
-   and to avoid freeing pointers which should not be freed. */
-typedef struct {
-  gpointer *data;
-  gboolean  owned;
-} CowPtr;
-
-static CowPtr
-cow_ptr_new ()
-{
-  CowPtr self = { NULL, FALSE };
-  return self;
-}
-
-/* The inner data pointer will only be freed if it is owned. */
-static void
-cow_ptr_free (CowPtr *self)
-{
-  if (NULL != self && NULL != self->data && self->owned) {
-    g_clear_pointer (&self->data, g_free);
-  }
-}
-
-/* Free any existing owned value, and set a new owned value. */
-static void
-cow_ptr_owned (CowPtr *self, gchar *data)
-{
-  cow_ptr_free (self);
-  self->data = data;
-  self->owned = TRUE;
-}
-
-/* Free any existing owned value, and set a new borrowed value. */
-static void cow_ptr_borrowed
-(CowPtr *self, gchar *data)
-{
-  cow_ptr_free (self);
-  self->data = data;
-  self->owned = FALSE;
-}
-
-/* End of definition for copy-on-write support */
-
 typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
 struct _ShellScreenshot
@@ -174,23 +131,26 @@ get_stream_for_unique_path (const gchar *path,
   return stream;
 }
 
-static CowPtr
+static gchar *
 get_screenshot_directory (void)
 {
   g_autoptr(GSettings) gsettings_screenshots = NULL;
 
   gsettings_screenshots = g_settings_new ("org.gnome.gnome-screenshot");
-  gchar *auto_save_dir =
-    g_settings_get_string (gsettings_screenshots, "auto-save-directory");
+  if (NULL != gsettings_screenshots) {
+    gchar *auto_save_dir =
+      g_settings_get_string (gsettings_screenshots, "auto-save-directory");
 
-  CowPtr cow = cow_ptr_new ();
-  if (NULL == auto_save_dir || strlen (auto_save_dir) == 0) {
-    cow_ptr_borrowed (&cow, g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
-  } else {
-    cow_ptr_owned (&cow, auto_save_dir);
+    if (NULL != auto_save_dir) {
+      if (g_file_test (auto_save_dir, G_FILE_TEST_EXISTS)) {
+        return auto_save_dir;
+      }
+
+      g_clear_pointer (&auto_save_dir, g_free);
+    }
   }
 
-  return cow;
+  return g_strdup (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
 }
 
 /* called in an I/O thread */
@@ -198,17 +158,15 @@ static GOutputStream *
 get_stream_for_filename (const gchar *filename,
                          gchar **filename_used)
 {
-  CowPtr cow = get_screenshot_directory ();
-  if (!g_file_test ((gchar*)cow.data, G_FILE_TEST_EXISTS))
+  g_autofree gchar *path = get_screenshot_directory ();
+  if (!g_file_test (path, G_FILE_TEST_EXISTS))
     {
-      cow_ptr_borrowed (&cow, g_get_home_dir ());
-      if (!g_file_test ((gchar*)cow.data, G_FILE_TEST_EXISTS))
+      path = g_strdup (g_get_home_dir ());
+      if (!g_file_test (path, G_FILE_TEST_EXISTS))
         return NULL;
     }
 
-  GOutputStream *stream = get_stream_for_unique_path ((gchar*)cow.data, filename, filename_used);
-  cow_ptr_free (&cow);
-  return stream;
+  return get_stream_for_unique_path (path, filename, filename_used);
 }
 
 static GOutputStream *
