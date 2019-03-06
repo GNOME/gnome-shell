@@ -126,6 +126,7 @@ libst = shared_library('st-1.0',
   sources: st_gir_sources + st_non_gir_sources,
   c_args: st_cflags,
   dependencies: [clutter_dep, gtk_dep, croco_dep, x11_dep, m_dep],
+  build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
   install: true
