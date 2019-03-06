@@ -502,7 +502,7 @@ pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
     width *= paint_scale;
 
   if (height < 0)
-    height = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
+    height = ceilf (gdk_pixbuf_get_height (pixbuf) / resource_scale);
   else
     height *= paint_scale;
 
