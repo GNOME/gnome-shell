@@ -46,15 +46,15 @@ var Avatar = class {
         if (iconFile) {
             let file = Gio.File.new_for_path(iconFile);
             this.actor.child = null;
-            this.actor.style = 'background-image: url("%s");'.format(iconFile);
+            this.actor.style = `
+                background-image: url("${iconFile}");
+                width: ${this._iconSize}px;
+                height: ${this._iconSize}px;`;
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
                                              icon_size: this._iconSize });
         }
-
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this.actor.set_size(this._iconSize * scaleFactor, this._iconSize * scaleFactor);
     }
 };
 
