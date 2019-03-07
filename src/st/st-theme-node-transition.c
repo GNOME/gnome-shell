@@ -119,6 +119,10 @@ st_theme_node_transition_new (StThemeNode *from_node,
   return transition;
 }
 
+/**
+ * st_theme_node_transition_get_new_paint_state: (skip)
+ *
+ */
 StThemeNodePaintState *
 st_theme_node_transition_get_new_paint_state (StThemeNodeTransition *transition)
 {
