@@ -1673,7 +1673,11 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
     _readDevices() {
         let devices = this._client.get_devices() || [ ];
         for (let i = 0; i < devices.length; ++i) {
-            this._deviceAdded(this._client, devices[i], true);
+            try {
+                this._deviceAdded(this._client, devices[i], true);
+            } catch (e) {
+                log(`Failed to add device ${devices[i]}: ${e}`);
+            }
         }
         this._syncDeviceNames();
     }
