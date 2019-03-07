@@ -46,6 +46,7 @@ const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
 var componentManager = null;
+var extensionManager = null;
 var panel = null;
 var overview = null;
 var runDialog = null;
@@ -226,7 +227,7 @@ function _initializeUI() {
     _startDate = new Date();
 
     ExtensionDownloader.init();
-    ExtensionSystem.init();
+    extensionManager = new ExtensionSystem.ExtensionManager();
 
     if (sessionMode.isGreeter && screenShield) {
         layoutManager.connect('startup-prepared', () => {
