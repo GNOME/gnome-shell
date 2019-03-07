@@ -49,7 +49,7 @@ var Avatar = class {
             this.actor.style = `
                 background-image: url("${iconFile}");
                 width: ${this._iconSize}px;
-                height: ${this._iconSize}px;`;
+
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
