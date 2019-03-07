@@ -48,7 +48,7 @@ var Avatar = class {
             this.actor.child = null;
             this.actor.style = `
                 background-image: url("${iconFile}");
-                width: ${this._iconSize}px;
+                background-size: ${this._iconSize}px;
 
         } else {
             this.actor.style = null;
