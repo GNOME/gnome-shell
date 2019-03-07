@@ -7,6 +7,7 @@ const Dialog = imports.ui.dialog;
 const ExtensionUtils = imports.misc.extensionUtils;
 const ExtensionSystem = imports.ui.extensionSystem;
 const FileUtils = imports.misc.fileUtils;
+const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
 var REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
@@ -24,7 +25,7 @@ function installExtension(uuid, invocation) {
 
     _httpSession.queue_message(message, (session, message) => {
         if (message.status_code != Soup.KnownStatusCode.OK) {
-            ExtensionSystem.logExtensionError(uuid, `downloading info: ${message.status_code}`);
+            Main.extensionManager.logExtensionError(uuid, `downloading info: ${message.status_code}`);
             invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
             return;
         }
@@ -33,7 +34,7 @@ function installExtension(uuid, invocation) {
         try {
             info = JSON.parse(message.response_body.data);
         } catch (e) {
-            ExtensionSystem.logExtensionError(uuid, `parsing info: ${e}`);
+            Main.extensionManager.logExtensionError(uuid, `parsing info: ${e}`);
             invocation.return_dbus_error('org.gnome.Shell.ParseInfoError', e.toString());
             return;
         }
@@ -52,7 +53,7 @@ function uninstallExtension(uuid) {
     if (extension.type != ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
-    if (!ExtensionSystem.unloadExtension(extension))
+    if (!Main.extensionManager.unloadExtension(extension))
         return false;
 
     FileUtils.recursivelyDeleteDir(extension.dir, true);
@@ -116,7 +117,7 @@ function updateExtension(uuid) {
             let oldExtension = ExtensionUtils.extensions[uuid];
             let extensionDir = oldExtension.dir;
 
-            if (!ExtensionSystem.unloadExtension(oldExtension))
+            if (!Main.extensionManager.unloadExtension(oldExtension))
                 return;
 
             FileUtils.recursivelyMoveDir(extensionDir, oldExtensionTmpDir);
@@ -126,10 +127,10 @@ function updateExtension(uuid) {
 
             try {
                 extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
-                ExtensionSystem.loadExtension(extension);
+                Main.extensionManager.loadExtension(extension);
             } catch (e) {
                 if (extension)
-                    ExtensionSystem.unloadExtension(extension);
+                    Main.extensionManager.unloadExtension(extension);
 
                 logError(e, 'Error loading extension %s'.format(uuid));
 
@@ -138,7 +139,7 @@ function updateExtension(uuid) {
 
                 // Restore what was there before. We can't do much if we
                 // fail here.
-                ExtensionSystem.loadExtension(oldExtension);
+                Main.extensionManager.loadExtension(oldExtension);
                 return;
             }
 
@@ -233,7 +234,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
 
             try {
                 let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
-                ExtensionSystem.loadExtension(extension);
+                Main.extensionManager.loadExtension(extension);
             } catch (e) {
                 uninstallExtension(uuid);
                 errback('LoadExtensionError', e);
