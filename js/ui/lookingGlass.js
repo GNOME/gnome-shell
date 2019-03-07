@@ -7,7 +7,6 @@ const Signals = imports.signals;
 const System = imports.system;
 
 const History = imports.misc.history;
-const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionUtils = imports.misc.extensionUtils;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
@@ -628,8 +627,8 @@ var Extensions = class Extensions {
         for (let uuid in ExtensionUtils.extensions)
             this._loadExtension(null, uuid);
 
-        ExtensionSystem.connect('extension-loaded',
-                                this._loadExtension.bind(this));
+        Main.extensionManager.connect('extension-loaded',
+                                      this._loadExtension.bind(this));
     }
 
     _loadExtension(o, uuid) {

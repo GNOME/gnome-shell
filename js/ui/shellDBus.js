@@ -4,7 +4,6 @@ const { Gio, GLib, Meta, Shell } = imports.gi;
 const Lang = imports.lang;
 
 const Config = imports.misc.config;
-const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
@@ -251,8 +250,8 @@ var GnomeShellExtensions = class {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
-        ExtensionSystem.connect('extension-state-changed',
-                                this._extensionStateChanged.bind(this));
+        Main.extensionManager.connect('extension-state-changed',
+                                      this._extensionStateChanged.bind(this));
     }
 
     ListExtensions() {
@@ -335,7 +334,7 @@ var GnomeShellExtensions = class {
         if (!extension)
             return;
 
-        ExtensionSystem.reloadExtension(extension);
+        Main.extensionManager.reloadExtension(extension);
     }
 
     CheckForUpdates() {
