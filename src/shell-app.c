@@ -213,6 +213,8 @@ window_backed_app_get_icon (ShellApp *app,
                                                         G_OBJECT (window),
                                                         "icon",
                                                         size);
+  st_widget_add_style_class_name (ST_WIDGET (actor), "fallback-app-icon");
+
   return actor;
 }
 
