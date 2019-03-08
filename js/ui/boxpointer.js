@@ -482,10 +482,13 @@ var BoxPointer = GObject.registerClass({
         let sourceActor = this._sourceActor;
         let alignment = this._arrowAlignment;
 
+        this._sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
+        this._monitorIndex = Main.layoutManager.findIndexForActor(sourceActor);
+
         // Position correctly relative to the sourceActor
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
-        let sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
+        let sourceAllocation = this._sourceAllocation;
         let sourceCenterX = sourceAllocation.x1 + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) * this._sourceAlignment;
         let sourceCenterY = sourceAllocation.y1 + sourceContentBox.y1 + (sourceContentBox.y2 - sourceContentBox.y1) * this._sourceAlignment;
         let [minWidth, minHeight, natWidth, natHeight] = this.get_preferred_size();
@@ -493,8 +496,7 @@ var BoxPointer = GObject.registerClass({
         // We also want to keep it onscreen, and separated from the
         // edge by the same distance as the main part of the box is
         // separated from its sourceActor
-        let monitorIndex = Main.layoutManager.findIndexForActor(sourceActor);
-        let workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+        let workarea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
         let themeNode = this.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let arrowBase = themeNode.get_length('-arrow-base');
@@ -614,10 +616,9 @@ var BoxPointer = GObject.registerClass({
     }
 
     _calculateArrowSide(arrowSide) {
-        let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
-        let monitor = Main.layoutManager.findMonitorForActor(this._sourceActor);
+        let sourceAllocation = this._sourceAllocation;
         let [minWidth, minHeight, boxWidth, boxHeight] = this.get_preferred_size();
-        let workarea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
+        let workarea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
 
         switch (arrowSide) {
         case St.Side.TOP:
