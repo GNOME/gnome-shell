@@ -621,11 +621,8 @@ var BoxPointer = GObject.registerClass({
 
     _calculateArrowSide(arrowSide) {
         let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
+        let monitor = Main.layoutManager.findMonitorForActor(this._sourceActor);
         let [minWidth, minHeight, boxWidth, boxHeight] = this.get_preferred_size();
-        let monitorActor = this.sourceActor;
-        if (!monitorActor)
-            monitorActor = this;
-        let monitor = Main.layoutManager.findMonitorForActor(monitorActor);
 
         switch (arrowSide) {
         case St.Side.TOP:
