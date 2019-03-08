@@ -215,6 +215,8 @@ window_backed_app_get_icon (ShellApp *app,
                                                          G_OBJECT (window),
                                                          "icon",
                                                          size);
+  st_widget_add_style_class_name (widget, "fallback-app-icon");
+
   return CLUTTER_ACTOR (widget);
 }
 
