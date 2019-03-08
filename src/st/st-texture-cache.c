@@ -71,10 +71,12 @@ G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
 static ClutterActor *
 create_invisible_actor (void)
 {
-  return g_object_new (CLUTTER_TYPE_ACTOR,
-                       "opacity", 0,
-                       "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
-                       NULL);
+  StWidget *widget;
+  widget = g_object_new (ST_TYPE_WIDGET,
+                         "opacity", 0,
+                         "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
+                         NULL);
+  return CLUTTER_ACTOR (widget);
 }
 
 /* Reverse the opacity we added while loading */
