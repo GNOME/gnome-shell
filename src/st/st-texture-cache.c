@@ -700,10 +700,14 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
     {
       g_autoptr(ClutterContent) image = NULL;
       g_autoptr(GError) error = NULL;
+      int size = bind->size;
+
+      if (size < 0)
+        clutter_actor_get_preferred_width (bind->actor, -1, NULL, (float *)&size);
 
       image = clutter_actor_get_content (bind->actor);
       if (!image || !CLUTTER_IS_IMAGE (image))
-        image = st_image_content_new_with_preferred_size (bind->size, bind->size);
+        image = st_image_content_new_with_preferred_size (size, size);
       else
         g_object_ref (image);
 
