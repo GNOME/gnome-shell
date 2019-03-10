@@ -1453,13 +1453,13 @@ StScrollBar {
       height: 12px;
       background-color: transparent;
       border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius:12px;
+      border-radius: 12px;
     }
 
     &:hover .page-indicator-icon { border-color: white; }
-    &:active .page-indicator-icon { border: none; margin: 2px; background-color:#fff; }
+    &:active .page-indicator-icon { border: none; margin: 2px; background-color: white; }
     &:checked .page-indicator-icon,
-    &:checked:active { background-color: #fff;}
+    &:checked:active .page-indicator-icon { background-color: white;}
   }
 
   .no-frequent-applications-label { @extend %status_text; }
