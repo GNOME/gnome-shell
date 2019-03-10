@@ -2175,7 +2175,7 @@ msgstr "Тақвими инкишоф"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
 msgid "evolution"
-msgstr "инкишоф"
+msgstr "evolution"
 
 #: src/main.c:408
 msgid "Print version"

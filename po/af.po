@@ -330,7 +330,7 @@ msgstr "Netwerkaanmelding"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
 msgid "network-workgroup"
-msgstr "netwerk-werkgroep"
+msgstr "network-workgroup"
 
 #: js/extensionPrefs/main.js:120
 #, javascript-format
