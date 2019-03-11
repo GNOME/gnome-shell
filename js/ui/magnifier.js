@@ -84,8 +84,14 @@ var MouseSpriteContent = GObject.registerClass({
         if (this._texture == coglTexture)
             return;
 
+        let oldTexture = this._texture;
         this._texture = coglTexture;
         this.invalidate();
+
+        if (!oldTexture ||
+            oldTexture.get_width() != coglTexture.get_width() ||
+            oldTexture.get_height() != coglTexture.get_height())
+            this.invalidate_size();
     }
 });
 
