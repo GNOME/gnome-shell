@@ -65,7 +65,7 @@ var MouseSpriteContent = GObject.registerClass({
         if (!this._texture)
             return;
 
-        let color = new Clutter.Color();
+        let color = Clutter.Color.get_static(Clutter.StaticColor.WHITE);
         let textureNode = new Clutter.TextureNode(this._texture,
                                                   color,
                                                   Clutter.ScalingFilter.NEAREST,
