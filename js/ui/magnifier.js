@@ -56,9 +56,9 @@ var MouseSpriteContent = GObject.registerClass({
 
     vfunc_get_preferred_size() {
         if (!this._texture)
-            return [0, 0];
+            return [false, 0, 0];
 
-        return [this._texture.get_width(), this._texture.get_height()];
+        return [true, this._texture.get_width(), this._texture.get_height()];
     }
 
     vfunc_paint_content(actor, node) {
