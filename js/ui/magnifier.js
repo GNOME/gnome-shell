@@ -66,10 +66,9 @@ var MouseSpriteContent = GObject.registerClass({
             return;
 
         let color = Clutter.Color.get_static(Clutter.StaticColor.WHITE);
+        let [minFilter, magFilter] = actor.get_content_scaling_filters();
         let textureNode = new Clutter.TextureNode(this._texture,
-                                                  color,
-                                                  Clutter.ScalingFilter.NEAREST,
-                                                  Clutter.ScalingFilter.NEAREST);
+                                                  color, minFilter, magFilter);
         textureNode.set_name('MouseSpriteContent');
         node.add_child(textureNode);
 
