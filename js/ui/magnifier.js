@@ -87,7 +87,7 @@ var MouseSpriteContent = GObject.registerClass({
         let oldTexture = this._texture;
         this._texture = coglTexture;
 
-        if (!oldTexture ||
+        if (!oldTexture || !coglTexture ||
             oldTexture.get_width() != coglTexture.get_width() ||
             oldTexture.get_height() != coglTexture.get_height())
             this.invalidate_size();
@@ -107,7 +107,6 @@ var Magnifier = class Magnifier {
 
         this._mouseSprite = new Clutter.Actor({ request_mode: Clutter.RequestMode.CONTENT_SIZE });
         this._mouseSprite.content = new MouseSpriteContent();
-        this._updateSpriteTexture();
 
         this._cursorRoot = new Clutter.Actor();
         this._cursorRoot.add_actor(this._mouseSprite);
@@ -122,8 +121,6 @@ var Magnifier = class Magnifier {
         this._zoomRegions.push(aZoomRegion);
         let showAtLaunch = this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
-
-        cursorTracker.connect('cursor-changed', this._updateMouseSprite.bind(this));
 
         // Export to dbus.
         magDBusService = new MagnifierDBus.ShellMagnifier();
@@ -160,9 +157,15 @@ var Magnifier = class Magnifier {
 
         if (isActive != activate) {
             if (activate) {
+                this._updateMouseSprite();
+                this._cursorSpriteChangedId =
+                    this._cursorTracker.connect('cursor-changed',
+                                                this._updateMouseSprite.bind(this));
                 Meta.disable_unredirect_for_display(global.display);
                 this.startTrackingMouse();
             } else {
+                this._cursorTracker.disconnect(this._cursorSpriteChangedId);
+                this._mouseSprite.content.texture = null;
                 Meta.enable_unredirect_for_display(global.display);
                 this.stopTrackingMouse();
             }
