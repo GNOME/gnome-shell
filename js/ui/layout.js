@@ -940,11 +940,18 @@ var LayoutManager = GObject.registerClass({
         return this._findIndexForRect(x, y, w, h);
     }
 
-    findMonitorForActor(actor) {
-        let index = this.findIndexForActor(actor);
+    _findMonitorForIndex(index) {
         if (index >= 0 && index < this.monitors.length)
             return this.monitors[index];
         return null;
+    }
+
+    findMonitorForActor(actor) {
+        return this._findMonitorForIndex(this.findIndexForActor(actor));
+    }
+
+    findMonitorForPoint(x, y) {
+        return this._findMonitorForIndex(this._findIndexForRect(x, y, 1, 1));
     }
 
     _queueUpdateRegions() {
