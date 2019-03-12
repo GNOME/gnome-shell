@@ -450,7 +450,8 @@ var _Draggable = class _Draggable {
         let [stageX, stageY] = event.get_coords();
 
         // See if the user has moved the mouse enough to trigger a drag
-        let threshold = St.Settings.get().drag_threshold;
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let threshold = St.Settings.get().drag_threshold * scaleFactor;
         if (!currentDraggable &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
