@@ -306,6 +306,9 @@ var _Draggable = class _Draggable {
      * for the draggable.
      */
     startDrag(stageX, stageY, time, sequence, device) {
+        if (currentDraggable)
+            return;
+
         if (device == undefined) {
             let event = Clutter.get_current_event();
 
@@ -448,9 +451,8 @@ var _Draggable = class _Draggable {
 
         // See if the user has moved the mouse enough to trigger a drag
         let threshold = St.Settings.get().drag_threshold;
-        if (!currentDraggable &&
-            (Math.abs(stageX - this._dragStartX) > threshold ||
-             Math.abs(stageY - this._dragStartY) > threshold)) {
+        if (Math.abs(stageX - this._dragStartX) > threshold ||
+            Math.abs(stageY - this._dragStartY) > threshold) {
             this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
             this._updateDragPosition(event);
         }
