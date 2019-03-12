@@ -12,9 +12,6 @@
 #include "shell-screenshot.h"
 #include "shell-util.h"
 
-#define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
-#define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
-
 typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
 struct _ShellScreenshot
@@ -268,9 +265,7 @@ should_draw_cursor_image (ShellScreenshotMode mode)
 {
   if (mode == SHELL_SCREENSHOT_WINDOW || !meta_is_wayland_compositor ())
     {
-      g_autoptr (GSettings) settings = g_settings_new (A11Y_APPS_SCHEMA);
-
-      if (!g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+      if (!shell_global_get_magnifier_is_active (shell_global_get ()))
         return TRUE;
     }
 

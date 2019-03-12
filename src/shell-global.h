@@ -97,6 +97,7 @@ void     shell_global_set_persistent_state      (ShellGlobal  *global,
 GVariant * shell_global_get_persistent_state    (ShellGlobal  *global,
                                                  const char   *property_type,
                                                  const char   *property_name);
+gboolean shell_global_get_magnifier_is_active   (ShellGlobal  *global);
 
 G_END_DECLS
 

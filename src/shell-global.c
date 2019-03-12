@@ -51,6 +51,9 @@
 #include "shell-wm.h"
 #include "st.h"
 
+#define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
+#define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
+
 static ShellGlobal *the_object = NULL;
 
 struct _ShellGlobal {
@@ -90,6 +93,7 @@ struct _ShellGlobal {
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
+  gboolean magnifier_active;
 };
 
 enum {
@@ -111,6 +115,7 @@ enum {
   PROP_FOCUS_MANAGER,
   PROP_FRAME_TIMESTAMPS,
   PROP_FRAME_FINISH_TIMESTAMP,
+  PROP_MAGNIFIER_ACTIVE,
 };
 
 /* Signals */
@@ -143,6 +148,9 @@ shell_global_set_property(GObject         *object,
       break;
     case PROP_FRAME_FINISH_TIMESTAMP:
       global->frame_finish_timestamp = g_value_get_boolean (value);
+      break;
+    case PROP_MAGNIFIER_ACTIVE:
+      global->magnifier_active = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -218,6 +226,9 @@ shell_global_get_property(GObject         *object,
     case PROP_FRAME_FINISH_TIMESTAMP:
       g_value_set_boolean (value, global->frame_finish_timestamp);
       break;
+    case PROP_MAGNIFIER_ACTIVE:
+      g_value_set_boolean (value, global->magnifier_active);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -227,6 +238,7 @@ shell_global_get_property(GObject         *object,
 static void
 shell_global_init (ShellGlobal *global)
 {
+  g_autoptr(GSettings) a11y_settings = NULL;
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
   const char *shell_js = g_getenv("GNOME_SHELL_JS");
   char *imagedir, **search_path;
@@ -271,6 +283,12 @@ shell_global_init (ShellGlobal *global)
   g_free (path);
 
   global->settings = g_settings_new ("org.gnome.shell");
+
+  a11y_settings = g_settings_new (A11Y_APPS_SCHEMA);
+  global->magnifier_active = g_settings_get_boolean (a11y_settings,
+                                                     MAGNIFIER_ACTIVE_KEY);
+  g_settings_bind (a11y_settings, MAGNIFIER_ACTIVE_KEY,
+                   global, "magnifier-active", G_SETTINGS_BIND_DEFAULT);
 
   if (shell_js)
     {
@@ -476,6 +494,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                                    g_param_spec_boolean ("frame-finish-timestamp",
                                                          "Frame Finish Timestamps",
                                                          "Whether at the end of a frame to call glFinish and log paintCompletedTimestamp",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_MAGNIFIER_ACTIVE,
+                                   g_param_spec_boolean ("magnifier-active",
+                                                         "Magnifier is active",
+                                                         "Weather the a11y magnifier is active",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
 }
@@ -1730,4 +1756,18 @@ shell_global_get_persistent_state (ShellGlobal  *global,
                                    const char   *property_name)
 {
   return load_variant (global->userdatadir_path, property_type, property_name);
+}
+
+/**
+ * shell_global_get_magnifier_is_active:
+ * @global: a #ShellGlobal
+ *
+ * Weather the a11y magnifier is active or not.
+ *
+ * Returns: %TRUE if the magnifier is currently active
+ */
+gboolean
+shell_global_get_magnifier_is_active (ShellGlobal *global)
+{
+  return global->magnifier_active;
 }
