@@ -18,9 +18,6 @@ var NO_CHANGE = 0.0;
 var POINTER_REST_TIME = 1000; // milliseconds
 
 // Settings
-const APPLICATIONS_SCHEMA       = 'org.gnome.desktop.a11y.applications';
-const SHOW_KEY                  = 'screen-magnifier-enabled';
-
 const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
 const SCREEN_POSITION_KEY       = 'screen-position';
 const MAG_FACTOR_KEY            = 'mag-factor';
@@ -117,12 +114,16 @@ var Magnifier = class Magnifier {
 
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
-        let showAtLaunch = this._settingsInit(aZoomRegion);
+        this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
+
+        St.Settings.get().connect('notify::magnifier-active', () => {
+            this.setActive(St.Settings.get().magnifier_active);
+        });
 
         // Export to dbus.
         magDBusService = new MagnifierDBus.ShellMagnifier();
-        this.setActive(showAtLaunch);
+        this.setActive(St.Settings.get().magnifier_active);
     }
 
     /**
@@ -501,12 +502,7 @@ var Magnifier = class Magnifier {
     }
 
     _settingsInit(zoomRegion) {
-        this._appSettings = new Gio.Settings({ schema_id: APPLICATIONS_SCHEMA });
         this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
-
-        this._appSettings.connect('changed::' + SHOW_KEY, () => {
-            this.setActive(this._appSettings.get_boolean(SHOW_KEY));
-        });
 
         this._settings.connect('changed::' + SCREEN_POSITION_KEY,
                                this._updateScreenPosition.bind(this));
@@ -614,8 +610,6 @@ var Magnifier = class Magnifier {
         let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
         this.addCrosshairs();
         this.setCrosshairsVisible(showCrosshairs);
-
-        return this._appSettings.get_boolean(SHOW_KEY);
    }
 
     _updateScreenPosition() {

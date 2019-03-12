@@ -7,13 +7,11 @@
 #include <meta/meta-plugin.h>
 #include <meta/meta-shaped-texture.h>
 #include <meta/meta-cursor-tracker.h>
+#include <st/st.h>
 
 #include "shell-global.h"
 #include "shell-screenshot.h"
 #include "shell-util.h"
-
-#define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
-#define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
 
 typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
@@ -271,9 +269,12 @@ should_draw_cursor_image (ShellScreenshotMode mode)
 {
   if (mode == SHELL_SCREENSHOT_WINDOW || !meta_is_wayland_compositor ())
     {
-      g_autoptr (GSettings) settings = g_settings_new (A11Y_APPS_SCHEMA);
+      StSettings *settings = st_settings_get ();
+      gboolean magnifier_active = FALSE;
 
-      if (!g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+      g_object_get (settings, "magnifier-active", &magnifier_active, NULL);
+
+      if (!magnifier_active)
         return TRUE;
     }
 
