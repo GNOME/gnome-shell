@@ -306,6 +306,9 @@ var _Draggable = class _Draggable {
      * for the draggable.
      */
     startDrag(stageX, stageY, time, sequence, device) {
+        if (currentDraggable)
+            return;
+
         if (device == undefined) {
             let event = Clutter.get_current_event();
 
