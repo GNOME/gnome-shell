@@ -17,14 +17,12 @@
 #include <meta/meta-cursor-tracker.h>
 #include <meta/display.h>
 #include <meta/compositor-mutter.h>
+#include <st/st.h>
 
 #include "shell-global.h"
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
 #include "shell-util.h"
-
-#define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
-#define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
 
 typedef enum {
   RECORDER_STATE_CLOSED,
@@ -58,7 +56,6 @@ struct _ShellRecorder {
   int pointer_x;
   int pointer_y;
 
-  GSettings *a11y_settings;
   gboolean draw_cursor;
   MetaCursorTracker *cursor_tracker;
   cairo_surface_t *cursor_image;
@@ -213,8 +210,6 @@ shell_recorder_init (ShellRecorder *recorder)
 
   recorder->memory_target = get_memory_target();
 
-  recorder->a11y_settings = g_settings_new (A11Y_APPS_SCHEMA);
-
   recorder->state = RECORDER_STATE_CLOSED;
   recorder->framerate = DEFAULT_FRAMES_PER_SECOND;
   recorder->draw_cursor = TRUE;
@@ -238,8 +233,6 @@ shell_recorder_finalize (GObject  *object)
   recorder_set_file_template (recorder, NULL);
 
   recorder_remove_redraw_timeout (recorder);
-
-  g_clear_object (&recorder->a11y_settings);
 
   G_OBJECT_CLASS (shell_recorder_parent_class)->finalize (object);
 }
@@ -465,9 +458,16 @@ recorder_record_frame (ShellRecorder *recorder,
 
   GST_BUFFER_PTS(buffer) = now;
 
-  if (recorder->draw_cursor &&
-      !g_settings_get_boolean (recorder->a11y_settings, MAGNIFIER_ACTIVE_KEY))
-    recorder_draw_cursor (recorder, buffer);
+  if (recorder->draw_cursor)
+    {
+      StSettings *settings = st_settings_get ();
+      gboolean magnifier_active = FALSE;
+
+      g_object_get (settings, "magnifier-active", &magnifier_active, NULL);
+
+      if (magnifier_active)
+        recorder_draw_cursor (recorder, buffer);
+    }
 
   shell_recorder_src_add_buffer (SHELL_RECORDER_SRC (recorder->current_pipeline->src), buffer);
   gst_buffer_unref (buffer);

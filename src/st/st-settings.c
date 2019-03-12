@@ -30,6 +30,7 @@
 #define KEY_DRAG_THRESHOLD    "drag-threshold"
 #define KEY_GTK_THEME         "gtk-theme"
 #define KEY_GTK_ICON_THEME    "icon-theme"
+#define KEY_MAGNIFIER_ACTIVE "screen-magnifier-enabled"
 
 enum {
   PROP_0,
@@ -38,6 +39,7 @@ enum {
   PROP_DRAG_THRESHOLD,
   PROP_GTK_THEME,
   PROP_GTK_ICON_THEME,
+  PROP_MAGNIFIER_ACTIVE,
   N_PROPS
 };
 
@@ -48,11 +50,13 @@ struct _StSettings
   GObject parent_object;
   GSettings *interface_settings;
   GSettings *mouse_settings;
+  GSettings *a11y_settings;
 
   gchar *gtk_theme;
   gchar *gtk_icon_theme;
   gboolean enable_animations;
   gboolean primary_paste;
+  gboolean magnifier_active;
   gint drag_threshold;
 };
 
@@ -105,6 +109,9 @@ st_settings_get_property (GObject    *object,
     case PROP_GTK_ICON_THEME:
       g_value_set_string (value, settings->gtk_icon_theme);
       break;
+    case PROP_MAGNIFIER_ACTIVE:
+      g_value_set_boolean (value, settings->magnifier_active);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -144,6 +151,11 @@ st_settings_class_init (StSettingsClass *klass)
                                                     "GTK+ Icon Theme",
                                                     "",
                                                     G_PARAM_READABLE);
+  props[PROP_MAGNIFIER_ACTIVE] = g_param_spec_boolean("magnifier-active",
+                                                      "Magnifier is active",
+                                                      "Weather the a11y magnifier is active",
+                                                      FALSE,
+                                                      G_PARAM_READABLE);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
@@ -191,6 +203,18 @@ on_mouse_settings_changed (GSettings   *g_settings,
 }
 
 static void
+on_a11y_settings_changed (GSettings   *g_settings,
+                          const gchar *key,
+                          StSettings  *settings)
+{
+  if (g_str_equal (key, KEY_MAGNIFIER_ACTIVE))
+    {
+      settings->magnifier_active = g_settings_get_boolean (g_settings, key);
+      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_MAGNIFIER_ACTIVE]);
+    }
+}
+
+static void
 st_settings_init (StSettings *settings)
 {
   settings->interface_settings = g_settings_new ("org.gnome.desktop.interface");
@@ -200,6 +224,10 @@ st_settings_init (StSettings *settings)
   settings->mouse_settings = g_settings_new ("org.gnome.settings-daemon.peripherals.mouse");
   g_signal_connect (settings->interface_settings, "changed",
                     G_CALLBACK (on_mouse_settings_changed), settings);
+
+  settings->a11y_settings = g_settings_new ("org.gnome.desktop.a11y.applications");
+  g_signal_connect (settings->a11y_settings, "changed",
+                    G_CALLBACK (on_a11y_settings_changed), settings);
 
   settings->enable_animations = g_settings_get_boolean (settings->interface_settings,
                                                         KEY_ENABLE_ANIMATIONS);
@@ -211,6 +239,8 @@ st_settings_init (StSettings *settings)
                                                     KEY_GTK_ICON_THEME);
   settings->drag_threshold = g_settings_get_int (settings->mouse_settings,
                                                  KEY_DRAG_THRESHOLD);
+  settings->magnifier_active = g_settings_get_boolean (settings->a11y_settings,
+                                                       KEY_MAGNIFIER_ACTIVE);
 }
 
 /**
