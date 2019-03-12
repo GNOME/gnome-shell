@@ -169,7 +169,8 @@ var Magnifier = class Magnifier {
     }
 
     _updateContentScale() {
-        let monitor = Main.layoutManager.findMonitorForActor(this._mouseSprite);
+        let monitor = Main.layoutManager.findMonitorForPoint(this.xMouse,
+                                                             this.yMouse);
         this._mouseSprite.content.monitorScale = monitor.geometry_scale;
     }
 
