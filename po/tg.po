@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-03-02 10:57+0000\n"
-"PO-Revision-Date: 2019-03-13 21:31+0500\n"
+"PO-Revision-Date: 2019-03-13 21:44+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: tg\n"
@@ -82,7 +82,7 @@ msgstr "Ғайрифаъол кардани васеъшавиҳои корба�
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid "Disable all extensions the user has enabled without affecting the “enabled-extension” setting."
-msgstr ""
+msgstr "Ҳамаи васеъшавиҳое, ки корбар фаъол кард, бе расонидани таъсир ба танзими “васеъшавиии-фаъол” ғайрифаъол карда мешаванд."
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
