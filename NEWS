@@ -1,3 +1,17 @@
+3.32.0
+======
+* Fix sizing issues in on-screen-keyboard emoji panel [Carlos; !439]
+* Fix test linker failure on Debian/Ubuntu [Iain; !442]
+* Avoid assertion when sizing fallback app icons from CSS [Florian; #1027]
+* Fix mis-sized menu arrows after texture cache changes [Florian; !452]
+
+Contributors:
+  Carlos Garnacho, Iain Lane, Florian Müllner
+
+Translators:
+  Gábor Kelemen [hu], Victor Ibragimov [tg], Ryuta Fujii [ja], Piotr Drąg [af,
+  tg], Mart Raudsepp [et]
+
 3.31.92
 =======
 * Fix visual glitch in submenus [Alex; #987]

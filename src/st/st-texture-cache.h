@@ -32,6 +32,7 @@
 
 #include <st/st-types.h>
 #include <st/st-theme-node.h>
+#include <st/st-widget.h>
 
 #define ST_TYPE_TEXTURE_CACHE                 (st_texture_cache_get_type ())
 G_DECLARE_FINAL_TYPE (StTextureCache, st_texture_cache,
@@ -63,10 +64,10 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     GFunc           load_callback,
                                     gpointer        user_data);
 
-ClutterActor *st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
-                                                            GObject           *object,
-                                                            const char        *property_name,
-                                                            gint               size);
+StWidget *st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
+                                                        GObject           *object,
+                                                        const char        *property_name,
+                                                        gint               size);
 
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            StThemeNode    *theme_node,

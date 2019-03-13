@@ -502,7 +502,7 @@ pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
     width *= paint_scale;
 
   if (height < 0)
-    height = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
+    height = ceilf (gdk_pixbuf_get_height (pixbuf) / resource_scale);
   else
     height *= paint_scale;
 
@@ -700,10 +700,14 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
     {
       g_autoptr(ClutterContent) image = NULL;
       g_autoptr(GError) error = NULL;
+      int size = bind->size;
+
+      if (size < 0)
+        clutter_actor_get_preferred_width (bind->actor, -1, NULL, (float *)&size);
 
       image = clutter_actor_get_content (bind->actor);
       if (!image || !CLUTTER_IS_IMAGE (image))
-        image = st_image_content_new_with_preferred_size (bind->size, bind->size);
+        image = st_image_content_new_with_preferred_size (size, size);
       else
         g_object_ref (image);
 
@@ -767,27 +771,30 @@ st_texture_cache_free_bind (gpointer data)
  * If the source object is destroyed, the texture will continue to show the last
  * value of the property.
  *
- * Return value: (transfer none): A new #ClutterActor
+ * Return value: (transfer none): A new #StWidget
  */
-ClutterActor *
+StWidget *
 st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                               GObject           *object,
                                               const char        *property_name,
                                               gint               size)
 {
-  ClutterActor *actor;
+  StWidget *widget;
   gchar *notify_key;
   StTextureCachePropertyBind *bind;
 
-  actor = create_invisible_actor ();
-  clutter_actor_set_size (actor, size, size);
+  widget = g_object_new (ST_TYPE_WIDGET,
+                         "opacity", 0,
+                         "width", (float)size,
+                         "height", (float)size,
+                         NULL);
 
   bind = g_slice_new0 (StTextureCachePropertyBind);
   bind->cache = cache;
-  bind->actor = actor;
+  bind->actor = CLUTTER_ACTOR (widget);
   bind->size = size;
   bind->source = object;
-  g_object_weak_ref (G_OBJECT (actor), st_texture_cache_bind_weak_notify, bind);
+  g_object_weak_ref (G_OBJECT (widget), st_texture_cache_bind_weak_notify, bind);
   bind->weakref_active = TRUE;
 
   st_texture_cache_reset_texture (bind, property_name);
@@ -797,7 +804,7 @@ st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                                   bind, (GClosureNotify)st_texture_cache_free_bind, 0);
   g_free (notify_key);
 
-  return actor;
+  return widget;
 }
 
 /**
