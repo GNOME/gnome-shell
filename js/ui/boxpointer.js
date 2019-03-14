@@ -35,8 +35,6 @@ var BoxPointer = GObject.registerClass({
 
         this.actor = this;
 
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
-
         this._arrowSide = arrowSide;
         this._userArrowSide = arrowSide;
         this._arrowOrigin = 0;
