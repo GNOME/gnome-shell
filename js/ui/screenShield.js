@@ -810,16 +810,8 @@ var ScreenShield = class {
 
         this._maybeCancelDialog();
 
-        if (this._longLightbox.actor.visible ||
-            this._isActive) {
-            // We're either shown and active, or in the process of
-            // showing.
-            // The latter is a very unlikely condition (it requires
-            // idle-delay < 20), but in any case we have nothing
-            // to do at this point: either isActive is true, or
-            // it will soon be.
-            // isActive can also be true if the lightbox is hidden,
-            // in case the shield is down and the user hasn't unlocked yet
+        if (this._longLightbox.actor.visible) {
+            // We're in the process of showing.
             return;
         }
 
