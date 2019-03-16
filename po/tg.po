@@ -308,7 +308,7 @@ msgstr "Воридшавии шабакавӣ"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
 msgid "network-workgroup"
-msgstr "шабака-гурӯҳи корӣ"
+msgstr "network-workgroup"
 
 #: js/extensionPrefs/main.js:116
 msgid "Something’s gone wrong"
