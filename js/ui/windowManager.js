@@ -1049,6 +1049,10 @@ var WindowManager = new Lang.Class({
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
 
+        // If overview is visible, we would mess up the positioning of windows.
+        if (Main.overview.visible)
+            return;
+
         if (!this._switchData)
             this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
 
@@ -1088,7 +1092,8 @@ var WindowManager = new Lang.Class({
         if (newWs == activeWorkspace) {
             this._switchWorkspaceCancel();
         } else {
-            this._switchData.gestureActivated = true;
+            if (this._switchData)
+                this._switchData.gestureActivated = true;
             this.actionMoveWorkspace(newWs);
         }
     },
