@@ -619,9 +619,8 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 var WindowCyclerPopup = GObject.registerClass(
 class WindowCyclerPopup extends CyclerPopup {
     _init() {
-        super._init();
-
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        super._init();
     }
 
     _getWindows() {
