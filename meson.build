@@ -204,10 +204,17 @@ all_warnings = [
   '-Werror=empty-body',
   '-Werror=write-strings',
 ]
-
 supported_warnings = cc.get_supported_arguments(all_warnings)
-
 add_project_arguments(supported_warnings, language: 'c')
+
+debug_c_args = [
+  '-DG_ENABLE_DEBUG',
+  '-fno-omit-frame-pointer'
+]
+supported_debug_c_args = cc.get_supported_arguments(debug_c_args)
+if get_option('debug')
+  add_project_arguments(debug_c_args, language: 'c')
+endif
 
 config_h = configure_file(
   input: 'config.h.meson',
