@@ -167,6 +167,15 @@ cdata.set('HAVE_FDWALK',
           cc.has_function('fdwalk')
 )
 
+debug_c_args = []
+if get_option('debug')
+  debug_c_args += [
+    '-DG_ENABLE_DEBUG',
+    '-fno-omit-frame-pointer'
+  ]
+endif
+add_project_arguments(debug_c_args, language: 'c')
+
 config_h = configure_file(
   input: 'config.h.meson',
   output: 'config.h',
