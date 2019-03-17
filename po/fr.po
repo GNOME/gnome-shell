@@ -14,23 +14,23 @@
 # Alain Lojewski <allomervan@gmail.com>, 2014-2018.
 # Erwan Georget <egeorget@opmbx.org>, 2016.
 # Claude Paroz <claude@2xlibre.net>, 2010-2011, 2016.
-# Charles Monzat <charles.monzat@numericable.fr>, 2016-2018.
 # Julien Humbert <julroy67@gmail.com>, 2019.
+# Charles Monzat <charles.monzat@free.fr>, 2016-2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-28 03:16+0000\n"
-"PO-Revision-Date: 2019-02-28 08:29+0100\n"
-"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
-"Language-Team: français <gnomefr@traduc.org>\n"
+"POT-Creation-Date: 2019-03-13 20:47+0000\n"
+"PO-Revision-Date: 2019-03-17 19:15+0100\n"
+"Last-Translator: Charles Monzat <charles.monzat@free.fr>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 3.32.0\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -482,7 +482,7 @@ msgstr "Absent de la liste ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:880
+#: js/gdm/loginDialog.js:884
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(par ex. utilisateur ou %s)"
@@ -490,12 +490,12 @@ msgstr "(par ex. utilisateur ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:885 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Nom d’utilisateur : "
 
-#: js/gdm/loginDialog.js:1223
+#: js/gdm/loginDialog.js:1227
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
@@ -1075,7 +1075,7 @@ msgstr "Mot de passe de la connexion mobile"
 msgid "A password is required to connect to “%s”."
 msgstr "Un mot de passe est requis pour se connecter à « %s »."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1665
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1664
 msgid "Network Manager"
 msgstr "Gestionnaire de réseau"
 
@@ -1335,26 +1335,26 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Télécharger et installer « %s » à partir de extensions.gnome.org ?"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:50
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
 msgstr "%s veut neutraliser les raccourcis"
 
-#: js/ui/inhibitShortcutsDialog.js:51
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "Application wants to inhibit shortcuts"
 msgstr "L’application veut neutraliser les raccourcis"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:60
+#: js/ui/inhibitShortcutsDialog.js:88
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Pour restaurer les raccourcis, appuyez sur %s."
 
-#: js/ui/inhibitShortcutsDialog.js:65
+#: js/ui/inhibitShortcutsDialog.js:93
 msgid "Deny"
 msgstr "Refuser"
 
-#: js/ui/inhibitShortcutsDialog.js:71
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Allow"
 msgstr "Autoriser"
 
@@ -1407,13 +1407,13 @@ msgid "Leave On"
 msgstr "Laisser activé"
 
 #: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:1264
+#: js/ui/status/network.js:1263
 msgid "Turn On"
 msgstr "Activer"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
 #: js/ui/status/network.js:128 js/ui/status/network.js:310
-#: js/ui/status/network.js:1264 js/ui/status/network.js:1376
+#: js/ui/status/network.js:1263 js/ui/status/network.js:1375
 #: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
 #: js/ui/status/rfkill.js:106
 msgid "Turn Off"
@@ -1423,59 +1423,59 @@ msgstr "Éteindre"
 msgid "Leave Off"
 msgstr "Laisser éteint"
 
-#: js/ui/keyboard.js:203
+#: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
 msgstr "Paramètres de langue et région"
 
-#: js/ui/lookingGlass.js:614
+#: js/ui/lookingGlass.js:615
 msgid "No extensions installed"
 msgstr "Aucune extension installée"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:668
+#: js/ui/lookingGlass.js:669
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s n’a émis aucune erreur."
 
-#: js/ui/lookingGlass.js:674
+#: js/ui/lookingGlass.js:675
 msgid "Hide Errors"
 msgstr "Masquer les erreurs"
 
-#: js/ui/lookingGlass.js:678 js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:679 js/ui/lookingGlass.js:739
 msgid "Show Errors"
 msgstr "Afficher les erreurs"
 
-#: js/ui/lookingGlass.js:687
+#: js/ui/lookingGlass.js:688
 msgid "Enabled"
 msgstr "Activé"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:690 subprojects/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:691 subprojects/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: js/ui/lookingGlass.js:692
+#: js/ui/lookingGlass.js:693
 msgid "Error"
 msgstr "Erreur"
 
-#: js/ui/lookingGlass.js:694
+#: js/ui/lookingGlass.js:695
 msgid "Out of date"
 msgstr "Périmé"
 
-#: js/ui/lookingGlass.js:696
+#: js/ui/lookingGlass.js:697
 msgid "Downloading"
 msgstr "Téléchargement"
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:721
 msgid "View Source"
 msgstr "Afficher la source"
 
-#: js/ui/lookingGlass.js:729
+#: js/ui/lookingGlass.js:730
 msgid "Web Page"
 msgstr "Page Web"
 
-#: js/ui/messageTray.js:1474
+#: js/ui/messageTray.js:1480
 msgid "System Information"
 msgstr "Informations du système"
 
@@ -1559,16 +1559,16 @@ msgstr "Quitter"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:466
+#: js/ui/panel.js:471
 msgid "Activities"
 msgstr "Activités"
 
-#: js/ui/panel.js:741
+#: js/ui/panel.js:746
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Système"
 
-#: js/ui/panel.js:861
+#: js/ui/panel.js:866
 msgid "Top Bar"
 msgstr "Barre supérieure"
 
@@ -1800,7 +1800,7 @@ msgid "<unknown>"
 msgstr "<inconnu>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:416 js/ui/status/network.js:1293
+#: js/ui/status/network.js:416 js/ui/status/network.js:1292
 #, javascript-format
 msgid "%s Off"
 msgstr "%s éteint"
@@ -1826,7 +1826,7 @@ msgid "%s Disconnecting"
 msgstr "Déconnexion de %s en cours"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:434 js/ui/status/network.js:1285
+#: js/ui/status/network.js:434 js/ui/status/network.js:1284
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Connexion de %s en cours"
@@ -1866,7 +1866,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Paramètres connexion mobile"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:553 js/ui/status/network.js:1290
+#: js/ui/status/network.js:553 js/ui/status/network.js:1289
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Équipement %s désactivé"
@@ -1931,72 +1931,72 @@ msgid "Wi-Fi Settings"
 msgstr "Paramètres Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1281
+#: js/ui/status/network.js:1280
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Point d’accès %s actif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1296
+#: js/ui/status/network.js:1295
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s non connecté"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1392
 msgid "connecting…"
 msgstr "connexion…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1396
+#: js/ui/status/network.js:1395
 msgid "authentication required"
 msgstr "authentification nécessaire"
 
-#: js/ui/status/network.js:1398
+#: js/ui/status/network.js:1397
 msgid "connection failed"
 msgstr "échec de connexion"
 
-#: js/ui/status/network.js:1448
+#: js/ui/status/network.js:1447
 msgid "VPN Settings"
 msgstr "Paramètres VPN"
 
-#: js/ui/status/network.js:1465
+#: js/ui/status/network.js:1464
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1475
+#: js/ui/status/network.js:1474
 msgid "VPN Off"
 msgstr "VPN désactivé"
 
-#: js/ui/status/network.js:1536 js/ui/status/rfkill.js:82
+#: js/ui/status/network.js:1535 js/ui/status/rfkill.js:82
 msgid "Network Settings"
 msgstr "Paramètres du réseau"
 
-#: js/ui/status/network.js:1565
+#: js/ui/status/network.js:1564
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexion filaire."
 msgstr[1] "%s connexions filaires."
 
-#: js/ui/status/network.js:1569
+#: js/ui/status/network.js:1568
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexion Wi-Fi."
 msgstr[1] "%s connexions Wi-Fi."
 
-#: js/ui/status/network.js:1573
+#: js/ui/status/network.js:1572
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexion à un modem."
 msgstr[1] "%s connexions à des modems."
 
-#: js/ui/status/network.js:1702
+#: js/ui/status/network.js:1701
 msgid "Connection failed"
 msgstr "Échec de connexion"
 
-#: js/ui/status/network.js:1703
+#: js/ui/status/network.js:1702
 msgid "Activation of network connection failed"
 msgstr "L’activation de la connexion réseau a échoué"
 
@@ -2049,7 +2049,7 @@ msgstr "%d∶%02d avant chargement complet (%d %%)"
 #: js/ui/status/power.js:117 js/ui/status/power.js:119
 #, javascript-format
 msgid "%d %%"
-msgstr "%d %%"
+msgstr "%d %%"
 
 #: js/ui/status/remoteAccess.js:42
 msgid "Screen is Being Shared"
@@ -2298,12 +2298,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Lister les modes possibles"
 
-#: src/shell-app.c:260
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/shell-app.c:511
+#: src/shell-app.c:515
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Impossible de lancer « %s »"
@@ -2322,7 +2322,7 @@ msgstr "La fenêtre d’authentification a été écartée par l’utilisateur"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1873
+#: subprojects/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2331,14 +2331,14 @@ msgstr[1] "%u sorties"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1883
+#: subprojects/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrée"
 msgstr[1] "%u entrées"
 
-#: subprojects/gvc/gvc-mixer-control.c:2738
+#: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Sons système"
 
