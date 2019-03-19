@@ -121,6 +121,7 @@
     <file>ui/components/keyring.js</file>
 
     <file>ui/status/accessibility.js</file>
+    <file>ui/status/automaticUpdates.js</file>
     <file>ui/status/brightness.js</file>
     <file>ui/status/location.js</file>
     <file>ui/status/keyboard.js</file>
