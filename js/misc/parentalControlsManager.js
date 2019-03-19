@@ -3,7 +3,7 @@
 // Copyright (C) 2018 Endless Mobile, Inc.
 //
 // This is a GNOME Shell component to wrap the interactions over
-// D-Bus with the eos-parental-controls library.
+// D-Bus with the malcontent library.
 //
 // Licensed under the GNU General Public License Version 2
 //
@@ -21,7 +21,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-const EosParentalControls = imports.gi.EosParentalControls;
+const Malcontent = imports.gi.Malcontent;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -54,9 +54,9 @@ var ParentalControlsManager = new Lang.Class({
 
         log('Getting parental controls for user ' + Shell.util_get_uid ());
         try {
-            this._appFilter = EosParentalControls.get_app_filter(null,
-                                                                 Shell.util_get_uid (),
-                                                                 false, null);
+            this._appFilter = Malcontent.get_app_filter(null,
+                                                        Shell.util_get_uid (),
+                                                        false, null);
         } catch (e) {
             logError(e, 'Failed to get parental controls settings');
         }
