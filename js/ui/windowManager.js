@@ -456,7 +456,8 @@ var TilePreview = class {
 };
 
 var TouchpadWorkspaceSwitchAction = class {
-    constructor(actor) {
+    constructor(actor, allowedModes) {
+        this._allowedModes = allowedModes;
         this._dx = 0;
         this._dy = 0;
         this._enabled = true;
@@ -491,15 +492,13 @@ var TouchpadWorkspaceSwitchAction = class {
     }
 
     _handleEvent(actor, event) {
-        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
-
         if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
-        if ((allowedModes & Main.actionMode) == 0)
+        if ((this._allowedModes & Main.actionMode) == 0)
             return Clutter.EVENT_PROPAGATE;
 
         if (!this._enabled)
@@ -535,10 +534,11 @@ var WorkspaceSwitchAction = GObject.registerClass({
                'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
                'cancel':    { param_types: [] }},
 }, class WorkspaceSwitchAction extends Clutter.SwipeAction {
-    _init() {
+    _init(allowedModes) {
         super._init();
         this.set_n_touch_points(4);
         this._swept = false;
+        this._allowedModes = allowedModes;
 
         global.display.connect('grab-op-begin', () => {
             this.cancel();
@@ -546,14 +546,12 @@ var WorkspaceSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_prepare(actor) {
-        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
-
         this._swept = false;
 
         if (!super.vfunc_gesture_prepare(actor))
             return false;
 
-        return (allowedModes & Main.actionMode);
+        return (this._allowedModes & Main.actionMode);
     }
 
     vfunc_gesture_progress(actor) {
@@ -1055,14 +1053,15 @@ var WindowManager = class {
         global.workspace_manager.override_workspace_layout(Meta.DisplayCorner.TOPLEFT,
                                                            false, -1, 1);
 
-        let gesture = new WorkspaceSwitchAction();
+        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
+        let gesture = new WorkspaceSwitchAction(allowedModes);
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
         global.stage.add_action(gesture);
 
         // This is not a normal Clutter.GestureAction, doesn't need add_action()
-        gesture = new TouchpadWorkspaceSwitchAction(global.stage);
+        gesture = new TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
