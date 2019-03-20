@@ -236,6 +236,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
+        this.buttonGroup = item.actor;
 
         let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
             'gnome-control-center.desktop'

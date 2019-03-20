@@ -809,6 +809,7 @@ class AggregateMenu extends PanelMenu.Button {
         menuLayout.addSizeChild(this._location.menu.actor);
         menuLayout.addSizeChild(this._rfkill.menu.actor);
         menuLayout.addSizeChild(this._power.menu.actor);
+        menuLayout.addSizeChild(this._system.buttonGroup);
     }
 });
 
