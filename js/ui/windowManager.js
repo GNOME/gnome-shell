@@ -459,8 +459,22 @@ var TouchpadWorkspaceSwitchAction = class {
     constructor(actor) {
         this._dx = 0;
         this._dy = 0;
+        this._enabled = true;
         actor.connect('captured-event', this._handleEvent.bind(this));
 	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
+    }
+
+    get enabled() {
+        return this._enabled;
+    }
+
+    set enabled(enabled) {
+        if (this._enabled == enabled)
+            return;
+
+        this._enabled = enabled;
+        if (!enabled)
+            this.emit('cancel');
     }
 
     _checkActivated() {
@@ -491,6 +505,9 @@ var TouchpadWorkspaceSwitchAction = class {
             return Clutter.EVENT_PROPAGATE;
 
         if ((allowedModes & Main.actionMode) == 0)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (!this._enabled)
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
