@@ -37,6 +37,7 @@ const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
+const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -80,6 +81,7 @@ let _cssStylesheet = null;
 let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
+let pointerA11yTimeout = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -182,6 +184,8 @@ function _initializeUI() {
 
     layoutManager.init();
     overview.init();
+
+    pointerA11yTimeout = new PointerA11yTimeout.PointerA11yTimeout();
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
