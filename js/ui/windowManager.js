@@ -1053,7 +1053,7 @@ var WindowManager = class {
         global.workspace_manager.override_workspace_layout(Meta.DisplayCorner.TOPLEFT,
                                                            false, -1, 1);
 
-        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
+        let allowedModes = Shell.ActionMode.NORMAL;
         let gesture = new WorkspaceSwitchAction(allowedModes);
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
