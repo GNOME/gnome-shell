@@ -1,10 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GObject, Meta, St } = imports.gi;
+const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 
 var WORKSPACE_SWITCH_TIME = 0.25;
@@ -82,6 +83,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
+        this._gestureActive = false; // touch(pad) gestures
         this._animatingScroll = false; // programatically updating the adjustment
 
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -211,7 +213,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            if (this._animating || this._scrolling) {
+            if (this._animating || this._scrolling || this._gestureActive) {
                 workspace.actor.show();
             } else {
                 if (this._inDrag)
@@ -223,7 +225,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     _updateScrollAdjustment(index) {
-        if (this._scrolling)
+        if (this._scrolling || this._gestureActive)
             return;
 
         this._animatingScroll = true;
@@ -300,6 +302,18 @@ var WorkspacesView = class extends WorkspacesViewBase {
         this._updateVisibility();
     }
 
+    startTouchGesture() {
+        this._gestureActive = true;
+    }
+
+    endTouchGesture() {
+        this._gestureActive = false;
+
+        // Make sure title captions etc are shown as necessary
+        this._scrollToActive();
+        this._updateVisibility();
+    }
+
     // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
     _onScroll(adj) {
@@ -310,7 +324,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         let active = workspaceManager.get_active_workspace_index();
         let current = Math.round(adj.value);
 
-        if (active != current) {
+        if (active != current && !this._gestureActive) {
             if (!this._workspaces[current]) {
                 // The current workspace was destroyed. This could happen
                 // when you are on the last empty workspace, and consolidate
@@ -391,6 +405,12 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
 
     endSwipeScroll() {
     }
+
+    startTouchGesture() {
+    }
+
+    endTouchGesture() {
+    }
 };
 
 var DelegateFocusNavigator = GObject.registerClass(
@@ -430,22 +450,36 @@ var WorkspacesDisplay = class {
                     return false;
             }
 
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].startSwipeScroll();
+            this._startSwipeScroll();
             return true;
         });
         panAction.connect('gesture-cancel', () => {
             clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
+            this._endSwipeScroll();
         });
         panAction.connect('gesture-end', () => {
             clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
+            this._endSwipeScroll();
         });
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        let allowedModes = Shell.ActionMode.OVERVIEW;
+        let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
+        switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
+        switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
+        switchGesture.connect('cancel', this._endTouchGesture.bind(this));
+        Main.overview.addAction(switchGesture);
+        this.actor.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
+        switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
+        switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
+        switchGesture.connect('cancel', this._endTouchGesture.bind(this));
+        this.actor.connect('notify::mapped', () => {
+            switchGesture.enabled = this.actor.mapped;
+        });
+        switchGesture.enabled = this.actor.mapped;
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
@@ -472,6 +506,47 @@ var WorkspacesDisplay = class {
         let adjustment = this._scrollAdjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
+    }
+
+    _startSwipeScroll() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].startSwipeScroll();
+    }
+
+    _endSwipeScroll() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].endSwipeScroll();
+    }
+
+    _startTouchGesture() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].startTouchGesture();
+    }
+
+    _endTouchGesture() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].endTouchGesture();
+    }
+
+    _onSwitchWorkspaceMotion(action, xRel, yRel) {
+        // We don't have a way to hook into start of touchpad actions,
+        // luckily this is safe to call repeatedly.
+        this._startTouchGesture();
+
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
+        let adjustment = this._scrollAdjustment;
+        adjustment.value = (active - yRel / this.actor.height) * adjustment.page_size;
+    }
+
+    _onSwitchWorkspaceActivated(action, direction) {
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let newWs = activeWorkspace.get_neighbor(direction);
+        if (newWs != activeWorkspace)
+            newWs.activate(global.get_current_time());
+
+        this._endTouchGesture();
     }
 
     navigateFocus(from, direction) {
