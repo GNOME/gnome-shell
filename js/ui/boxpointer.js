@@ -24,7 +24,7 @@ var POPUP_ANIMATION_TIME = 0.15;
  * placed.  The arrow position may be controlled via
  * setArrowOrigin(). The arrow side might be temporarily flipped
  * depending on the box size and source position to keep the box
- * totally inside the monitor if possible.
+ * totally inside the monitor workarea if possible.
  *
  */
 var BoxPointer = GObject.registerClass({
@@ -489,7 +489,8 @@ var BoxPointer = GObject.registerClass({
         // We also want to keep it onscreen, and separated from the
         // edge by the same distance as the main part of the box is
         // separated from its sourceActor
-        let monitor = Main.layoutManager.findMonitorForActor(sourceActor);
+        let monitorIndex = Main.layoutManager.findIndexForActor(sourceActor);
+        let workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
         let themeNode = this.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let arrowBase = themeNode.get_length('-arrow-base');
@@ -539,8 +540,8 @@ var BoxPointer = GObject.registerClass({
         case St.Side.BOTTOM:
             resX = sourceCenterX - (halfMargin + (natWidth - margin) * alignment);
 
-            resX = Math.max(resX, monitor.x + padding);
-            resX = Math.min(resX, monitor.x + monitor.width - (padding + natWidth));
+            resX = Math.max(resX, workarea.x + padding);
+            resX = Math.min(resX, workarea.x + workarea.width - (padding + natWidth));
 
             arrowOrigin = sourceCenterX - resX;
             if (arrowOrigin <= (x1 + (borderRadius + halfBase))) {
@@ -558,8 +559,8 @@ var BoxPointer = GObject.registerClass({
         case St.Side.RIGHT:
             resY = sourceCenterY - (halfMargin + (natHeight - margin) * alignment);
 
-            resY = Math.max(resY, monitor.y + padding);
-            resY = Math.min(resY, monitor.y + monitor.height - (padding + natHeight));
+            resY = Math.max(resY, workarea.y + padding);
+            resY = Math.min(resY, workarea.y + workarea.height - (padding + natHeight));
 
             arrowOrigin = sourceCenterY - resY;
             if (arrowOrigin <= (y1 + (borderRadius + halfBase))) {
@@ -625,27 +626,28 @@ var BoxPointer = GObject.registerClass({
         let monitorActor = this.sourceActor;
         if (!monitorActor)
             monitorActor = this;
-        let monitor = Main.layoutManager.findMonitorForActor(monitorActor);
+        let monitorIndex = Main.layoutManager.findIndexForActor(monitorActor);
+        let workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         switch (arrowSide) {
         case St.Side.TOP:
-            if (sourceAllocation.y2 + boxHeight > monitor.y + monitor.height &&
-                boxHeight < sourceAllocation.y1 - monitor.y)
+            if (sourceAllocation.y2 + boxHeight > workarea.y + workarea.height &&
+                boxHeight < sourceAllocation.y1 - workarea.y)
                 return St.Side.BOTTOM;
             break;
         case St.Side.BOTTOM:
-            if (sourceAllocation.y1 - boxHeight < monitor.y &&
-                boxHeight < monitor.y + monitor.height - sourceAllocation.y2)
+            if (sourceAllocation.y1 - boxHeight < workarea.y &&
+                boxHeight < workarea.y + workarea.height - sourceAllocation.y2)
                 return St.Side.TOP;
             break;
         case St.Side.LEFT:
-            if (sourceAllocation.x2 + boxWidth > monitor.x + monitor.width &&
-                boxWidth < sourceAllocation.x1 - monitor.x)
+            if (sourceAllocation.x2 + boxWidth > workarea.x + workarea.width &&
+                boxWidth < sourceAllocation.x1 - workarea.x)
                 return St.Side.RIGHT;
             break;
         case St.Side.RIGHT:
-            if (sourceAllocation.x1 - boxWidth < monitor.x &&
-                boxWidth < monitor.x + monitor.width - sourceAllocation.x2)
+            if (sourceAllocation.x1 - boxWidth < workarea.x &&
+                boxWidth < workarea.x + workarea.width - sourceAllocation.x2)
                 return St.Side.LEFT;
             break;
         }
