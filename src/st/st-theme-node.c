@@ -1136,10 +1136,14 @@ get_length_from_term_int (StThemeNode *node,
 {
   double value;
   GetFromTermResult result;
+  int scale_factor;
 
   result = get_length_from_term (node, term, use_parent_font, &value);
   if (result == VALUE_FOUND)
-    *length = (int) (0.5 + value);
+    {
+      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
+      *length = (int) ((value / scale_factor) + 0.5) * scale_factor;
+    }
   return result;
 }
 
