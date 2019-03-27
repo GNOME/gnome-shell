@@ -992,20 +992,36 @@ export const LayoutManager = GObject.registerClass({
         return ws.get_work_area_for_monitor(monitorIndex);
     }
 
+    _findIndexForRect(x, y, width, height) {
+        const rect = new Mtk.Rectangle({
+            x: Math.floor(x),
+            y: Math.floor(y),
+            width: Math.ceil(x + width) - Math.floor(x),
+            height: Math.ceil(y + height) - Math.floor(y),
+        });
+        return global.display.get_monitor_index_for_rect(rect);
+    }
+
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
     findIndexForActor(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        const rect = new Mtk.Rectangle({x, y, width: w, height: h});
-        return global.display.get_monitor_index_for_rect(rect);
+        return this._findIndexForRect(x, y, w, h);
     }
 
-    findMonitorForActor(actor) {
-        let index = this.findIndexForActor(actor);
+    _findMonitorForIndex(index) {
         if (index >= 0 && index < this.monitors.length)
             return this.monitors[index];
         return null;
+    }
+
+    findMonitorForActor(actor) {
+        return this._findMonitorForIndex(this.findIndexForActor(actor));
+    }
+
+    findMonitorForPoint(x, y) {
+        return this._findMonitorForIndex(this._findIndexForRect(x, y, 1, 1));
     }
 
     _queueUpdateRegions() {
