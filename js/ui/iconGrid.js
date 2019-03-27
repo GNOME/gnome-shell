@@ -104,6 +104,7 @@ class BaseIcon extends St.Bin {
     }
 
     vfunc_style_changed() {
+        super.vfunc_style_changed();
         let node = this.get_theme_node();
 
         let size;
