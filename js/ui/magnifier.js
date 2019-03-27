@@ -763,6 +763,18 @@ var ZoomRegion = class ZoomRegion {
                                     this._updateFocus.bind(this));
     }
 
+    _updateScreenPosition() {
+        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE)
+            this._setViewPort({
+                x: this._viewPortX,
+                y: this._viewPortY,
+                width: this._viewPortWidth,
+                height: this._viewPortHeight
+            });
+        else
+            this.setScreenPosition(this._screenPosition);
+    }
+
     _updateFocus(caller, event) {
         let component = event.source.get_component_iface();
         if (!component || event.detail1 != 1)
@@ -808,6 +820,7 @@ var ZoomRegion = class ZoomRegion {
             this._createActors();
             if (this._isMouseOverRegion())
                 this._magnifier.hideSystemCursor();
+            this._updateScreenPosition();
             this._updateMagViewGeometry();
             this._updateCloneGeometry();
             this._updateMousePosition();
@@ -1565,14 +1578,7 @@ var ZoomRegion = class ZoomRegion {
             return;
 
         this._background.set_size(global.screen_width, global.screen_height);
-
-        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE)
-            this._setViewPort({ x: this._viewPortX,
-                                y: this._viewPortY,
-                                width: this._viewPortWidth,
-                                height: this._viewPortHeight });
-        else
-            this.setScreenPosition(this._screenPosition);
+        this._updateScreenPosition();
     }
 };
 
