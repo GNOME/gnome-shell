@@ -754,13 +754,29 @@ var ZoomRegion = class ZoomRegion {
 
         this._pointerIdleMonitor = Meta.IdleMonitor.get_for_device(Meta.VIRTUAL_CORE_POINTER_ID);
         this._scrollContentsTimerId = 0;
+    }
 
-        Main.layoutManager.connect('monitors-changed',
-                                   this._monitorsChanged.bind(this));
-        this._focusCaretTracker.connect('caret-moved',
-                                    this._updateCaret.bind(this));
-        this._focusCaretTracker.connect('focus-changed',
-                                    this._updateFocus.bind(this));
+    _connectSignals() {
+        if (this._signalConnections)
+            return;
+
+        this._signalConnections = [];
+        let id = Main.layoutManager.connect('monitors-changed',
+                                            this._monitorsChanged.bind(this));
+        this._signalConnections.push([Main.layoutManager, id]);
+
+        id = this._focusCaretTracker.connect('caret-moved', this._updateCaret.bind(this));
+        this._signalConnections.push([this._focusCaretTracker, id]);
+
+        id = this._focusCaretTracker.connect('focus-changed', this._updateFocus.bind(this));
+        this._signalConnections.push([this._focusCaretTracker, id]);
+    }
+
+    _disconnectSignals() {
+        for (let [obj, id] of this._signalConnections)
+            obj.disconnect(id);
+
+        delete this._signalConnections;
     }
 
     _updateScreenPosition() {
@@ -824,7 +840,9 @@ var ZoomRegion = class ZoomRegion {
             this._updateMagViewGeometry();
             this._updateCloneGeometry();
             this._updateMousePosition();
+            this._connectSignals();
         } else {
+            this._disconnectSignals();
             this._destroyActors();
         }
 
@@ -1574,9 +1592,6 @@ var ZoomRegion = class ZoomRegion {
     }
 
     _monitorsChanged() {
-        if (!this.isActive())
-            return;
-
         this._background.set_size(global.screen_width, global.screen_height);
         this._updateScreenPosition();
     }
