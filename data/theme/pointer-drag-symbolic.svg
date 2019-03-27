@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   width="20"
+   height="20"
+   id="svg2">
+  <g
+     id="layer1"
+     style="display:inline">
+    <g
+       id="g5823"
+       transform="translate(-101,-1)">
+      <path
+         id="path5630"
+         d="m 103.50276,9.5011158 c 0,0 0.0884,4.9260802 0.0884,7.0474002 0,2.12132 2.03294,2.032932 2.03294,2.032932 0,0 10.87176,0.04419 11.57887,-0.0442 0.70711,-0.08839 1.41421,-0.662912 1.41421,-1.370018 0,-0.707107 0,-9.4932454 0,-9.4932454 -1.0426,-1.2592553 -1.96481,-1.24083 -3.06234,-1.1079952 -0.12343,-0.8146008 -0.15457,-1.4820303 -0.94638,-1.939182 l -2.10301,-0.00758 c -0.0613,-0.6343726 -0.38254,-1.148082 -0.82675,-1.1963834 l -1.24188,0.044194 c -0.5711,0.016847 -0.98618,0.6085039 -0.98078,1.1490485 l -1.86059,0 c -0.69909,0.090175 -1.06158,0.5098041 -1.08747,1.2276335 l 0,7.434424 c 0,0 0.0884,-3.7328367 -1.23744,-3.7770309 0,0 -1.59099,1e-7 -1.76776,1e-7 z"
+         style="color:#000000;fill:#474747;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:block;overflow:visible;enable-background:accumulate" />
+      <path
+         id="path5632"
+         d="m 109.04913,5.0801277 0.44194,5.8999223 0.41984,-5.8778253 -0.86178,-0.022097 z"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:block;overflow:visible;enable-background:accumulate" />
+      <path
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:block;overflow:visible;enable-background:accumulate"
+         d="m 112.07643,5.0801277 0.44194,5.8999223 0.41984,-5.8778253 -0.86178,-0.022097 z"
+         id="path5634" />
+      <path
+         id="path5636"
+         d="m 115.10373,6.9362826 0.28726,4.1542524 0.57452,-4.1100582 -0.86178,-0.044194 z"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:block;overflow:visible;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>
