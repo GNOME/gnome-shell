@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-03-24 17:37+0000\n"
-"PO-Revision-Date: 2019-03-31 23:10+0800\n"
+"PO-Revision-Date: 2019-03-31 23:32+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -846,12 +846,9 @@ msgid "All Day"
 msgstr "整天"
 
 #: js/ui/calendar.js:819
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%b%d日%A"
+msgstr "%b%-d日%A"
 
 #: js/ui/calendar.js:823
 msgctxt "calendar heading"
