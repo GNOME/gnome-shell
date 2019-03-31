@@ -80,3 +80,4 @@ tests/run-test.sh
 *~
 *.patch
 *.sw?
+.vscode
