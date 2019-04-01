@@ -202,6 +202,9 @@ write_screenshot_thread (GTask        *result,
                                             cairo_image_surface_get_height (priv->image));
       creation_time = g_date_time_format (priv->datetime, "%c");
 
+      if (!creation_time)
+        creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
+
       if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
                                      "tEXt::Software", "gnome-screenshot",
                                      "tEXt::Creation Time", creation_time,
