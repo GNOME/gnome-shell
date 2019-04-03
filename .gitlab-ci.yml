@@ -15,10 +15,8 @@ variables:
         - merge_requests
 
 check_commit_log:
-    image: registry.fedoraproject.org/fedora:latest
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: review
-    before_script:
-        - dnf install -y git
     script:
         - ./.gitlab-ci/check-commit-log.sh
     only:
