@@ -30,6 +30,14 @@ var WeatherClient = class {
                 return;
             }
 
+            if (this._permStore.g_name_owner == null) {
+                // Failed to auto-start, likely because xdg-desktop-portal
+                // isn't installed; don't restrict access to location service
+                this._weatherAuthorized = true;
+                this._updateAutoLocation();
+                return;
+            }
+
             this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
                 if (error)
                     log('Error looking up permission: ' + error.message);
