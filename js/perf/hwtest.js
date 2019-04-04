@@ -1,4 +1,4 @@
-const { Clutter, Gio, Gtk, Shell } = imports.gi;
+const { Clutter, Gio, Shell } = imports.gi;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 
@@ -104,7 +104,10 @@ function *run() {
     yield Scripting.waitLeisure();
     Scripting.scriptEvent('desktopShown');
 
-    Gtk.Settings.get_default().gtk_enable_animations = false;
+    let interfaceSettings = new Gio.Settings({
+        schema_id: 'org.gnome.desktop.interface'
+    });
+    interfaceSettings.set_boolean('enable-animations', false);
 
     Scripting.scriptEvent('overviewShowStart');
     Main.overview.show();
@@ -200,7 +203,7 @@ function *run() {
 
     yield Scripting.sleep(1000);
 
-    Gtk.Settings.get_default().gtk_enable_animations = true;
+    interfaceSettings.set_boolean('enable-animations', true);
 }
 
 let overviewShowStart;
