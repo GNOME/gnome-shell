@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Atk, Clutter, Gio, GLib, GObject, Gtk, Meta, Shell, St } = imports.gi;
+const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
 
@@ -201,7 +201,6 @@ var AppMenuButton = GObject.registerClass({
         this._startingApps = [];
 
         this._menuManager = panel.menuManager;
-        this._gtkSettings = Gtk.Settings.get_default();
         this._targetApp = null;
         this._busyNotifyId = 0;
 
