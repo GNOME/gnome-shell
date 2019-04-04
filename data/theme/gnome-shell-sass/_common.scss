@@ -1142,6 +1142,12 @@ StScrollBar {
 
 .ripple-box:rtl { border-radius: 0 0 0 52px; } // just a simple change to the border radius position
 
+// Rubberband for select-area screenshots
+.select-area-rubberband {
+  background-color: transparentize($selected_bg_color,0.7);
+  border: 1px solid $selected_bg_color;
+}
+
 // not really top bar only
 .popup-menu-arrow { icon-size: 1.09em; }
 .popup-menu-icon { icon-size: 1.09em; }
