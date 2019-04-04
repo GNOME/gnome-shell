@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Gtk, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const GrabHelper = imports.ui.grabHelper;
@@ -227,8 +227,6 @@ var SelectArea = class {
         this._lastY = 0;
         this._result = null;
 
-        this._initRubberbandColors();
-
         this._group = new St.Widget({ visible: false,
                                       reactive: true,
                                       x: 0,
@@ -248,10 +246,10 @@ var SelectArea = class {
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._group.add_constraint(constraint);
 
-        this._rubberband = new Clutter.Rectangle({ color: this._background,
-                                                   has_border: true,
-                                                   border_width: 1,
-                                                   border_color: this._border });
+        this._rubberband = new St.Widget({
+            style_class: 'select-area-rubberband',
+            visible: false
+        });
         this._group.add_actor(this._rubberband);
     }
 
@@ -263,25 +261,6 @@ var SelectArea = class {
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         Main.uiGroup.set_child_above_sibling(this._group, null);
         this._group.visible = true;
-    }
-
-    _initRubberbandColors() {
-        function colorFromRGBA(rgba) {
-            return new Clutter.Color({ red: rgba.red * 255,
-                                       green: rgba.green * 255,
-                                       blue: rgba.blue * 255,
-                                       alpha: rgba.alpha * 255 });
-        }
-
-        let path = new Gtk.WidgetPath();
-        path.append_type(Gtk.IconView);
-
-        let context = new Gtk.StyleContext();
-        context.set_path(path);
-        context.add_class('rubberband');
-
-        this._background = colorFromRGBA(context.get_background_color(Gtk.StateFlags.NORMAL));
-        this._border = colorFromRGBA(context.get_border_color(Gtk.StateFlags.NORMAL));
     }
 
     _getGeometry() {
@@ -302,6 +281,7 @@ var SelectArea = class {
 
         this._rubberband.set_position(geometry.x, geometry.y);
         this._rubberband.set_size(geometry.width, geometry.height);
+        this._rubberband.show();
 
         return Clutter.EVENT_PROPAGATE;
     }
