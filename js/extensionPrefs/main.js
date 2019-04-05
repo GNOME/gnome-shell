@@ -551,9 +551,9 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
         let button = new Gtk.Button({ valign: Gtk.Align.CENTER,
                                       no_show_all: true });
-        button.add(new Gtk.Image({ icon_name: 'emblem-system-symbolic',
-                                   icon_size: Gtk.IconSize.BUTTON,
-                                   visible: true }));
+        button.set_image(new Gtk.Image({ icon_name: 'emblem-system-symbolic',
+                                         icon_size: Gtk.IconSize.BUTTON,
+                                         visible: true }));
         button.get_style_context().add_class('circular');
         hbox.add(button);
 
