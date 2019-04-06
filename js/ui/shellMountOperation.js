@@ -3,6 +3,7 @@
 const { Clutter, Gio, GLib, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -14,6 +15,7 @@ const ShellEntry = imports.ui.shellEntry;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 var LIST_ITEM_ICON_SIZE = 48;
+var WORK_SPINNER_ICON_SIZE = 16;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -326,6 +328,9 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
 
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
+        this._passwordBox.add(this._workSpinner.actor);
+
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
                                                  text: _("Sorry, that didn’t work. Please try again.") });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -393,6 +398,7 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
     reaskPassword() {
         this._passwordEntry.set_text('');
         this._errorMessageLabel.show();
+        this._workSpinner.stop();
     }
 
     _onCancelButton() {
@@ -417,6 +423,8 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
 
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.actor.checked);
+
+        this._workSpinner.play();
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
