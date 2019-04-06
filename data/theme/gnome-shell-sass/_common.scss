@@ -387,7 +387,6 @@ StScrollBar {
 
   .prompt-dialog-password-box {
     spacing: 1em;
-    padding-bottom: 1em;
   }
 
   .prompt-dialog-error-label {
@@ -408,6 +407,10 @@ StScrollBar {
   .prompt-dialog-null-label {
     font-size: 10pt;
     padding-bottom: 8px;
+  }
+
+  .prompt-dialog-pim-box {
+    spacing: 1em;
   }
 
 
