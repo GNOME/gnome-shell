@@ -3,6 +3,7 @@
 const { Clutter, Gio, GLib, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -14,6 +15,7 @@ const ShellEntry = imports.ui.shellEntry;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 var LIST_ITEM_ICON_SIZE = 48;
+var WORK_SPINNER_ICON_SIZE = 16;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -362,6 +364,8 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
         this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this.setInitialKeyFocus(this._passwordEntry);
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
+        this._passwordEntry.secondary_icon = this._workSpinner.actor;
 
         if (rtl) {
             layout.attach(this._passwordEntry, 0, 1, 1, 1);
@@ -414,6 +418,7 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
     reaskPassword() {
         this._passwordEntry.set_text('');
         this._errorMessageLabel.show();
+        this._workSpinner.stop();
     }
 
     _onCancelButton() {
@@ -438,6 +443,8 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
 
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.actor.checked);
+
+        this._workSpinner.play();
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
