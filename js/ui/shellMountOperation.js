@@ -148,7 +148,7 @@ var ShellMountOperation = class {
         }
 
         this._dialogId = this._dialog.connect('response',
-            (object, choice, password, remember) => {
+            (object, choice, password, remember, hidden_volume, system_volume, pim) => {
                 if (choice == -1) {
                     this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                 } else {
@@ -158,6 +158,9 @@ var ShellMountOperation = class {
                         this.mountOp.set_password_save(Gio.PasswordSave.NEVER);
 
                     this.mountOp.set_password(password);
+                    this.mountOp.set_is_tcrypt_hidden_volume(hidden_volume);
+                    this.mountOp.set_is_tcrypt_system_volume(system_volume);
+                    this.mountOp.set_pim(pim);
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
             });
@@ -288,6 +291,15 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
 
         let content = new Dialog.MessageDialogContent({ icon, title, body });
         this.contentLayout.add_actor(content);
+        content._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+
+        if (flags & Gio.AskPasswordFlags.TCRYPT) {
+            this._keyfilesLabel = new St.Label(({ style_class: 'prompt-dialog-keyfiles-label' }));
+            this._keyfilesLabel.clutter_text.set_markup(_("To unlock a volume that uses keyfiles, use the <i>Disks</i> utility instead."));
+            this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._keyfilesLabel.clutter_text.line_wrap = true;
+            content.messageBox.add(this._keyfilesLabel);
+        }
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
@@ -313,13 +325,48 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
         content.messageBox.add(this._errorMessageLabel);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
-            this._rememberChoice = new CheckBox.CheckBox();
-            this._rememberChoice.getLabelActor().text = _("Remember Password");
+            this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
             this._rememberChoice.actor.checked =
                 global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
             content.messageBox.add(this._rememberChoice.actor);
         } else {
             this._rememberChoice = null;
+        }
+
+        if (flags & Gio.AskPasswordFlags.TCRYPT) {
+
+            this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
+            content.messageBox.add(this._hiddenVolume.actor);
+
+            this._systemVolume = new CheckBox.CheckBox(_("Windows System Volume"));
+            content.messageBox.add(this._systemVolume.actor);
+
+            this._pimBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-pim-box' });
+            content.messageBox.add(this._pimBox);
+
+            this._pimLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
+                                             text: _("PIM") }));
+            this._pimBox.add(this._pimLabel, { y_fill: false, y_align: St.Align.MIDDLE });
+
+            this._pimEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
+                                            text: "",
+                                            can_focus: true });
+            ShellEntry.addContextMenu(this._pimEntry, { isPassword: true });
+            this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
+            this._pimEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+            this._pimBox.add(this._pimEntry, { expand: true });
+
+            this._pimErrorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
+                                                        text: _("The PIM must be a number or empty.") });
+            this._pimErrorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._pimErrorMessageLabel.clutter_text.line_wrap = true;
+            this._pimErrorMessageLabel.hide();
+            content.messageBox.add(this._pimErrorMessageLabel);
+        } else {
+            this._hiddenVolume = null;
+            this._systemVolume = null;
+            this._pimEntry = null;
+            this._pimErrorMessageLabel = null;
         }
 
         let buttons = [{ label: _("Cancel"),
@@ -348,12 +395,28 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
     }
 
     _onEntryActivate() {
+        let pim = 0;
+        if (this._pimEntry !== null)
+            pim = this._pimEntry.get_text();
+        if (isNaN(pim)) {
+            this._pimEntry.set_text('');
+            this._pimErrorMessageLabel.show();
+            return;
+        } else if (this._pimErrorMessageLabel !== null) {
+            this._pimErrorMessageLabel.hide();
+        }
+
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.actor.checked);
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
-            this._rememberChoice.actor.checked);
+            this._rememberChoice.actor.checked,
+            this._hiddenVolume &&
+            this._hiddenVolume.actor.checked,
+            this._systemVolume &&
+            this._systemVolume.actor.checked,
+            pim);
     }
 };
 
@@ -515,7 +578,7 @@ var GnomeShellMountOpHandler = class {
 
         this._dialog = new ShellMountPasswordDialog(message, this._createGIcon(iconName), flags);
         this._dialog.connect('response',
-            (object, choice, password, remember) => {
+            (object, choice, password, remember, hiddenVolume, systemVolume, pim) => {
                 let details = {};
                 let response;
 
@@ -527,6 +590,9 @@ var GnomeShellMountOpHandler = class {
                     let passSave = remember ? Gio.PasswordSave.PERMANENTLY : Gio.PasswordSave.NEVER;
                     details['password_save'] = GLib.Variant.new('u', passSave);
                     details['password'] = GLib.Variant.new('s', password);
+                    details['hidden_volume'] = GLib.Variant.new('b', hiddenVolume);
+                    details['system_volume'] = GLib.Variant.new('b', systemVolume);
+                    details['pim'] = GLib.Variant.new('u', parseInt(pim));
                 }
 
                 this._clearCurrentRequest(response, details);
