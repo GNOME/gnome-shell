@@ -289,21 +289,33 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
         let content = new Dialog.MessageDialogContent({ icon, title, body });
         this.contentLayout.add_actor(content);
 
-        this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        content.messageBox.add(this._passwordBox);
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
+        let grid = new St.Widget({ style_class: 'prompt-dialog-grid',
+                                   layout_manager: layout });
+        layout.hookup_style(grid);
 
-        this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
-                                              text: _("Password") }));
-        this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
+        let rtl = grid.get_text_direction() === Clutter.TextDirection.RTL;
 
+        this._passwordLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
+                                             text: _("Password"),
+                                             y_align: Clutter.ActorAlign.CENTER });
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                             text: "",
-                                             can_focus: true});
-        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+                                             can_focus: true,
+                                             x_expand: true});
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
-        this._passwordBox.add(this._passwordEntry, {expand: true });
+        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this.setInitialKeyFocus(this._passwordEntry);
+
+        if (rtl) {
+            layout.attach(this._passwordEntry, 0, 0, 1, 1);
+            layout.attach(this._passwordLabel, 1, 0, 1, 1);
+        } else {
+            layout.attach(this._passwordLabel, 0, 0, 1, 1);
+            layout.attach(this._passwordEntry, 1, 0, 1, 1);
+        }
+
+        content.messageBox.add(grid);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
                                                  text: _("Sorry, that didn’t work. Please try again.") });
