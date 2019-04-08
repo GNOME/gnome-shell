@@ -24,6 +24,8 @@
 #ifndef __ST_SETTINGS_H__
 #define __ST_SETTINGS_H__
 
+#include <glib-object.h>
+
 G_BEGIN_DECLS
 
 #define ST_TYPE_SETTINGS (st_settings_get_type ())
