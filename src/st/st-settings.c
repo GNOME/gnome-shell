@@ -30,6 +30,7 @@
 #define KEY_ENABLE_ANIMATIONS "enable-animations"
 #define KEY_PRIMARY_PASTE     "gtk-enable-primary-paste"
 #define KEY_DRAG_THRESHOLD    "drag-threshold"
+#define KEY_FONT_NAME         "font-name"
 #define KEY_GTK_THEME         "gtk-theme"
 #define KEY_GTK_ICON_THEME    "icon-theme"
 #define KEY_MAGNIFIER_ACTIVE "screen-magnifier-enabled"
@@ -39,6 +40,7 @@ enum {
   PROP_ENABLE_ANIMATIONS,
   PROP_PRIMARY_PASTE,
   PROP_DRAG_THRESHOLD,
+  PROP_FONT_NAME,
   PROP_GTK_THEME,
   PROP_GTK_ICON_THEME,
   PROP_MAGNIFIER_ACTIVE,
@@ -55,6 +57,7 @@ struct _StSettings
   GSettings *mouse_settings;
   GSettings *a11y_settings;
 
+  gchar *font_name;
   gchar *gtk_theme;
   gchar *gtk_icon_theme;
   gboolean enable_animations;
@@ -87,6 +90,7 @@ st_settings_finalize (GObject *object)
   g_object_unref (settings->interface_settings);
   g_object_unref (settings->mouse_settings);
   g_object_unref (settings->a11y_settings);
+  g_free (settings->font_name);
   g_free (settings->gtk_theme);
   g_free (settings->gtk_icon_theme);
 
@@ -130,6 +134,9 @@ st_settings_get_property (GObject    *object,
     case PROP_DRAG_THRESHOLD:
       g_value_set_int (value, settings->drag_threshold);
       break;
+    case PROP_FONT_NAME:
+      g_value_set_string (value, settings->font_name);
+      break;
     case PROP_GTK_THEME:
       g_value_set_string (value, settings->gtk_theme);
       break;
@@ -171,6 +178,11 @@ st_settings_class_init (StSettingsClass *klass)
                                                  "Drag threshold",
                                                  0, G_MAXINT, 8,
                                                  ST_PARAM_READABLE);
+  props[PROP_FONT_NAME] = g_param_spec_string ("font-name",
+                                               "font name",
+                                               "font name",
+                                               "",
+                                               ST_PARAM_READABLE);
   props[PROP_GTK_THEME] = g_param_spec_string ("gtk-theme",
                                                "GTK+ Theme",
                                                "GTK+ Theme",
@@ -209,6 +221,12 @@ on_interface_settings_changed (GSettings   *g_settings,
     {
       settings->primary_paste = g_settings_get_boolean (g_settings, key);
       g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_PRIMARY_PASTE]);
+    }
+  else if (g_str_equal (key, KEY_FONT_NAME))
+    {
+      g_free (settings->font_name);
+      settings->font_name = g_settings_get_string (g_settings, key);
+      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_FONT_NAME]);
     }
   else if (g_str_equal (key, KEY_GTK_THEME))
     {
@@ -268,6 +286,8 @@ st_settings_init (StSettings *settings)
                                                         KEY_ENABLE_ANIMATIONS);
   settings->primary_paste = g_settings_get_boolean (settings->interface_settings,
                                                     KEY_PRIMARY_PASTE);
+  settings->font_name = g_settings_get_string (settings->interface_settings,
+                                               KEY_FONT_NAME);
   settings->gtk_theme = g_settings_get_string (settings->interface_settings,
                                                KEY_GTK_THEME);
   settings->gtk_icon_theme = g_settings_get_string (settings->interface_settings,
