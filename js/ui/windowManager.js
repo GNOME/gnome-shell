@@ -1218,6 +1218,10 @@ var WindowManager = class {
             // Same for OR windows
             if (window.is_override_redirect())
                 return;
+            // Sticky windows don't need moving, in fact moving would
+            // unstick them
+            if (window.on_all_workspaces)
+                return;
             // Windows on workspaces below pos don't need moving
             let index = window.get_workspace().index();
             if (index < pos)
