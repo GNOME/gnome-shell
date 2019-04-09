@@ -584,7 +584,6 @@ class SourceActor extends St.Widget {
         this._source = source;
         this._size = size;
 
-        this.actor = this;
         this.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
