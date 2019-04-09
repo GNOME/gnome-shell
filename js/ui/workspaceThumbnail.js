@@ -601,8 +601,7 @@ class ThumbnailsBox extends St.Widget {
                       style_class: 'workspace-thumbnails',
                       request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
 
-        this.actor = this;
-        this.actor._delegate = this;
+        this._delegate = this;
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
 
@@ -674,6 +673,12 @@ class ThumbnailsBox extends St.Widget {
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
         this._workareasChangedId = 0;
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     _updateSwitcherVisibility() {
