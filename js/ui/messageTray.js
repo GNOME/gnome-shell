@@ -584,7 +584,6 @@ class SourceActor extends St.Widget {
         this._source = source;
         this._size = size;
 
-        this.actor = this;
         this.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
@@ -601,6 +600,12 @@ class SourceActor extends St.Widget {
 
         this._iconUpdatedId = this._source.connect('icon-updated', this._updateIcon.bind(this));
         this._updateIcon();
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     setIcon(icon) {
