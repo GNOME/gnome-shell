@@ -366,7 +366,7 @@ class CloseButton extends St.Button {
     }
 
     _computeBoxPointerOffset() {
-        if (!this._boxPointer || !this._boxPointer.actor.get_stage())
+        if (!this._boxPointer || !this._boxPointer.get_stage())
             return 0;
 
         let side = this._boxPointer.arrowSide;

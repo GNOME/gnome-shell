@@ -33,8 +33,6 @@ var BoxPointer = GObject.registerClass({
     _init(arrowSide, binProperties) {
         super._init();
 
-        this.actor = this;
-
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._arrowSide = arrowSide;
@@ -50,6 +48,12 @@ var BoxPointer = GObject.registerClass({
         this._sourceAlignment = 0.5;
         this._capturedEventId = 0;
         this._muteInput();
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     get arrowSide() {
