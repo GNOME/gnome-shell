@@ -43,8 +43,6 @@ class BaseIcon extends St.Bin {
                       x_fill: true,
                       y_fill: true });
 
-        this.actor = this;
-
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._box = new St.BoxLayout({ vertical: true });
@@ -71,6 +69,12 @@ class BaseIcon extends St.Bin {
 
         let cache = St.TextureCache.get_default();
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     vfunc_get_preferred_width(forHeight) {
@@ -188,8 +192,6 @@ var IconGrid = GObject.registerClass({
         super._init({ style_class: 'icon-grid',
                       y_align: Clutter.ActorAlign.START });
 
-        this.actor = this;
-
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
                                         minRows: 1,
@@ -227,6 +229,12 @@ var IconGrid = GObject.registerClass({
 
         this.connect('actor-added', this._childAdded.bind(this));
         this.connect('actor-removed', this._childRemoved.bind(this));
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     _keyFocusIn(actor) {
