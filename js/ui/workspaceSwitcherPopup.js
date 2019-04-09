@@ -85,8 +85,6 @@ class WorkspaceSwitcherPopup extends St.Widget {
                       height: global.screen_height,
                       style_class: 'workspace-switcher-group' });
 
-        this.actor = this;
-
         Main.uiGroup.add_actor(this);
 
         this._timeoutId = 0;
@@ -109,6 +107,12 @@ class WorkspaceSwitcherPopup extends St.Widget {
                                                                     this._redisplay.bind(this)));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    get actor() {
+        log(`WARN: usage of object.actor is deprecated for ${this.constructor.name}\n` +
+            new Error().stack);
+        return this;
     }
 
     _redisplay() {
@@ -142,7 +146,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad'
                                            });
-        this.actor.show();
+        this.show();
     }
 
     display(direction, activeWorkspaceIndex) {
