@@ -85,8 +85,6 @@ class WorkspaceSwitcherPopup extends St.Widget {
                       height: global.screen_height,
                       style_class: 'workspace-switcher-group' });
 
-        this.actor = this;
-
         Main.uiGroup.add_actor(this);
 
         this._timeoutId = 0;
@@ -142,7 +140,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad'
                                            });
-        this.actor.show();
+        this.show();
     }
 
     display(direction, activeWorkspaceIndex) {
