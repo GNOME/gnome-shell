@@ -272,7 +272,7 @@ var CandidatePopup = class CandidatePopup {
 
     _setDummyCursorGeometry(x, y, w, h) {
         Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
-        if (this._boxPointer.actor.visible)
+        if (this._boxPointer.visible)
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
     }
 
@@ -285,7 +285,7 @@ var CandidatePopup = class CandidatePopup {
         if (isVisible) {
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
             this._boxPointer.open(BoxPointer.PopupAnimation.NONE);
-            this._boxPointer.actor.raise_top();
+            this._boxPointer.raise_top();
         } else {
             this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
         }
