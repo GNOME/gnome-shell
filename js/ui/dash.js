@@ -584,22 +584,18 @@ var Dash = class Dash {
         let firstButton = iconChildren[0].child;
         let firstIcon = firstButton._delegate.icon;
 
-        let minHeight, natHeight;
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-
-        // Enforce the current icon size during the size request
+        // Enforce valid spacings during the size request
         firstIcon.icon.ensure_style();
-        let [, currentHeight] = firstIcon.icon.get_size();
-        firstIcon.icon.set_height(this.iconSize * scaleFactor);
-        [minHeight, natHeight] = firstButton.get_preferred_height(-1);
-        firstIcon.icon.set_height(currentHeight);
+        let [, iconHeight] = firstIcon.icon.get_preferred_height(-1);
+        let [, buttonHeight] = firstButton.get_preferred_height(-1);
 
         // Subtract icon padding and box spacing from the available height
-        availHeight -= iconChildren.length * (natHeight - this.iconSize * scaleFactor) +
+        availHeight -= iconChildren.length * (buttonHeight - iconHeight) +
                        (iconChildren.length - 1) * spacing;
 
         let availSize = availHeight / iconChildren.length;
 
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
 
         let newIconSize = baseIconSizes[0];
