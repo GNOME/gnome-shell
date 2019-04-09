@@ -601,8 +601,7 @@ class ThumbnailsBox extends St.Widget {
                       style_class: 'workspace-thumbnails',
                       request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
 
-        this.actor = this;
-        this.actor._delegate = this;
+        this._delegate = this;
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
 
