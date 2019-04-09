@@ -476,10 +476,9 @@ class DateMenuButton extends PanelMenu.Button {
         box.add_actor(this._clockDisplay);
         box.add_actor(this._indicator.actor);
 
-        this.actor.label_actor = this._clockDisplay;
-        this.actor.add_actor(box);
-        this.actor.add_style_class_name ('clock-display');
-
+        this.label_actor = this._clockDisplay;
+        this.add_actor(box);
+        this.add_style_class_name ('clock-display');
 
         let layout = new FreezableBinLayout();
         let bin = new St.Widget({ layout_manager: layout });
