@@ -39,7 +39,7 @@ class ATIndicator extends PanelMenu.Button {
                                            icon_name: 'preferences-desktop-accessibility-symbolic' }));
         this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
-        this.actor.add_child(this._hbox);
+        this.add_child(this._hbox);
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
         this._a11ySettings.connect('changed::' + KEY_ALWAYS_SHOW, this._queueSyncMenuVisibility.bind(this));
@@ -86,7 +86,7 @@ class ATIndicator extends PanelMenu.Button {
         let alwaysShow = this._a11ySettings.get_boolean(KEY_ALWAYS_SHOW);
         let items = this.menu._getMenuItems();
 
-        this.actor.visible = alwaysShow || items.some(f => !!f.state);
+        this.visible = alwaysShow || items.some(f => !!f.state);
 
         return GLib.SOURCE_REMOVE;
     }
