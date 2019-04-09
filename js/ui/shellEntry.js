@@ -148,7 +148,7 @@ function addContextMenu(entry, params) {
 
     entry.menu = new EntryMenu(entry);
     entry.menu.isPassword = params.isPassword;
-    entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry },
+    entry._menuManager = new PopupMenu.PopupMenuManager(entry,
                                                         { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);
 

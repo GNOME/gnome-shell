@@ -173,7 +173,7 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
 
 var WindowMenuManager = class {
     constructor() {
-        this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
+        this._manager = new PopupMenu.PopupMenuManager(Main.layoutManager.dummyCursor);
 
         this._sourceActor = new St.Widget({ reactive: true, visible: false });
         this._sourceActor.connect('button-press-event', () => {
