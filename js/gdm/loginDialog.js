@@ -325,7 +325,7 @@ var SessionMenuButton = class {
                  this._button.remove_style_pseudo_class('active');
         });
 
-        this._manager = new PopupMenu.PopupMenuManager({ actor: this._button },
+        this._manager = new PopupMenu.PopupMenuManager(this._button,
                                                        { actionMode: Shell.ActionMode.NONE });
         this._manager.addMenu(this._menu);
 
