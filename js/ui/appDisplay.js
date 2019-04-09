@@ -1301,16 +1301,16 @@ var AppFolderPopup = class AppFolderPopup {
                                                        x_expand: true,
                                                        x_align: St.Align.START });
 
-        this._boxPointer.actor.style_class = 'app-folder-popup';
-        this.actor.add_actor(this._boxPointer.actor);
+        this._boxPointer.style_class = 'app-folder-popup';
+        this.actor.add_actor(this._boxPointer);
         this._boxPointer.bin.set_child(this._view.actor);
 
         this.closeButton = Util.makeCloseButton(this._boxPointer);
         this.closeButton.connect('clicked', this.popdown.bind(this));
         this.actor.add_actor(this.closeButton);
 
-        this._boxPointer.actor.bind_property('opacity', this.closeButton, 'opacity',
-                                             GObject.BindingFlags.SYNC_CREATE);
+        this._boxPointer.bind_property('opacity', this.closeButton, 'opacity',
+                                       GObject.BindingFlags.SYNC_CREATE);
 
         global.focus_manager.add_group(this.actor);
 

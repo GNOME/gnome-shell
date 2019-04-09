@@ -853,7 +853,7 @@ var PopupMenu = class extends PopupMenuBase {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        if (this._boxPointer.actor.visible) {
+        if (this._boxPointer.visible) {
             this._boxPointer.close(animate, () => {
                 this.emit('menu-closed');
             });
