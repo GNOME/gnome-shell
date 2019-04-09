@@ -1479,7 +1479,7 @@ var AppIcon = class AppIcon {
         this.actor.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
         this._menu = null;
-        this._menuManager = new PopupMenu.PopupMenuManager(this);
+        this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
 
         if (isDraggable) {
             this._draggable = DND.makeDraggable(this.actor);
