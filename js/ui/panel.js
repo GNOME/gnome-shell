@@ -196,7 +196,7 @@ var AppMenuButton = GObject.registerClass({
     _init(panel) {
         super._init(0.0, null, true);
 
-        this.actor.accessible_role = Atk.Role.MENU;
+        this.accessible_role = Atk.Role.MENU;
 
         this._startingApps = [];
 
@@ -206,10 +206,10 @@ var AppMenuButton = GObject.registerClass({
 
         let bin = new St.Bin({ name: 'appMenu' });
         bin.connect('style-changed', this._onStyleChanged.bind(this));
-        this.actor.add_actor(bin);
+        this.add_actor(bin);
 
-        this.actor.bind_property("reactive", this.actor, "can-focus", 0);
-        this.actor.reactive = false;
+        this.bind_property("reactive", this, "can-focus", 0);
+        this.reactive = false;
 
         this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         bin.set_child(this._container);
@@ -265,10 +265,10 @@ var AppMenuButton = GObject.registerClass({
             return;
 
         this._visible = true;
-        this.actor.reactive = true;
+        this.reactive = true;
         this.show();
-        Tweener.removeTweens(this.actor);
-        Tweener.addTween(this.actor,
+        Tweener.removeTweens(this);
+        Tweener.addTween(this,
                          { opacity: 255,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad' });
@@ -279,9 +279,9 @@ var AppMenuButton = GObject.registerClass({
             return;
 
         this._visible = false;
-        this.actor.reactive = false;
-        Tweener.removeTweens(this.actor);
-        Tweener.addTween(this.actor,
+        this.reactive = false;
+        Tweener.removeTweens(this);
+        Tweener.addTween(this,
                          { opacity: 0,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -404,7 +404,7 @@ var AppMenuButton = GObject.registerClass({
             if (this._targetApp) {
                 this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
                 this._label.set_text(this._targetApp.get_name());
-                this.actor.set_accessible_name(this._targetApp.get_name());
+                this.set_accessible_name(this._targetApp.get_name());
             }
         }
 
@@ -422,7 +422,7 @@ var AppMenuButton = GObject.registerClass({
         else
             this.stopAnimation();
 
-        this.actor.reactive = (visible && !isBusy);
+        this.reactive = (visible && !isBusy);
 
         this._syncIcon();
         this.menu.setApp(this._targetApp);
@@ -461,28 +461,28 @@ var ActivitiesButton = GObject.registerClass(
 class ActivitiesButton extends PanelMenu.Button {
     _init() {
         super._init(0.0, null, true);
-        this.actor.accessible_role = Atk.Role.TOGGLE_BUTTON;
+        this.accessible_role = Atk.Role.TOGGLE_BUTTON;
 
-        this.actor.name = 'panelActivities';
+        this.name = 'panelActivities';
 
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
         this._label = new St.Label({ text: _("Activities"),
                                      y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(this._label);
+        this.add_actor(this._label);
 
-        this.actor.label_actor = this._label;
+        this.label_actor = this._label;
 
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
-        this.actor.connect_after('key-release-event', this._onKeyRelease.bind(this));
+        this.connect('captured-event', this._onCapturedEvent.bind(this));
+        this.connect_after('key-release-event', this._onKeyRelease.bind(this));
 
         Main.overview.connect('showing', () => {
-            this.actor.add_style_pseudo_class('overview');
-            this.actor.add_accessible_state (Atk.StateType.CHECKED);
+            this.add_style_pseudo_class('overview');
+            this.add_accessible_state (Atk.StateType.CHECKED);
         });
         Main.overview.connect('hiding', () => {
-            this.actor.remove_style_pseudo_class('overview');
-            this.actor.remove_accessible_state (Atk.StateType.CHECKED);
+            this.remove_style_pseudo_class('overview');
+            this.remove_accessible_state (Atk.StateType.CHECKED);
         });
 
         this._xdndTimeOut = 0;
@@ -535,7 +535,7 @@ class ActivitiesButton extends PanelMenu.Button {
         let [x, y, mask] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
-        if (pickedActor == this.actor && Main.overview.shouldToggleByCornerOrButton())
+        if (pickedActor == this && Main.overview.shouldToggleByCornerOrButton())
             Main.overview.toggle();
 
         Mainloop.source_remove(this._xdndTimeOut);
@@ -749,7 +749,7 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.box.set_layout_manager(menuLayout);
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
-        this.actor.add_child(this._indicators);
+        this.add_child(this._indicators);
 
         if (Config.HAVE_NETWORKMANAGER) {
             this._network = new imports.ui.status.network.NMApplet();
@@ -1021,7 +1021,7 @@ class Panel extends St.Widget {
             return; // menu not supported by current session mode
 
         let menu = indicator.menu;
-        if (!indicator.actor.reactive)
+        if (!indicator.reactive)
             return;
 
         menu.toggle();
@@ -1043,7 +1043,7 @@ class Panel extends St.Widget {
             return;
 
         let menu = indicator.menu;
-        if (!indicator.actor.reactive)
+        if (!indicator.reactive)
             return;
 
         menu.close();

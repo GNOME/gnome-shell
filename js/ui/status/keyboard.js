@@ -822,7 +822,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._hbox.add_child(this._container);
         this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
-        this.actor.add_child(this._hbox);
+        this.add_child(this._hbox);
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(this._propSeparator);
@@ -908,11 +908,11 @@ class InputSourceIndicator extends PanelMenu.Button {
             // We also hide if we have only one visible source unless
             // it's an IBus source with properties.
             this.menu.close();
-            this.actor.hide();
+            this.hide();
             return;
         }
 
-        this.actor.show();
+        this.show();
 
         this._buildPropSection(newSource.properties);
 
