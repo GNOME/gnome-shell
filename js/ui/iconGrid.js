@@ -43,8 +43,6 @@ class BaseIcon extends St.Bin {
                       x_fill: true,
                       y_fill: true });
 
-        this.actor = this;
-
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._box = new St.BoxLayout({ vertical: true });
@@ -187,8 +185,6 @@ var IconGrid = GObject.registerClass({
     _init(params) {
         super._init({ style_class: 'icon-grid',
                       y_align: Clutter.ActorAlign.START });
-
-        this.actor = this;
 
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
