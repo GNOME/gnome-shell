@@ -282,11 +282,11 @@ var Key = class Key {
                                                        y_fill: true,
                                                        x_align: St.Align.START });
         this._boxPointer.hide();
-        Main.layoutManager.addChrome(this._boxPointer.actor);
+        Main.layoutManager.addChrome(this._boxPointer);
         this._boxPointer.setPosition(this.keyButton, 0.5);
 
         // Adds style to existing keyboard style to avoid repetition
-        this._boxPointer.actor.add_style_class_name('keyboard-subkeys');
+        this._boxPointer.add_style_class_name('keyboard-subkeys');
         this._getExtendedKeys();
         this.keyButton._extended_keys = this._extended_keyboard;
     }
