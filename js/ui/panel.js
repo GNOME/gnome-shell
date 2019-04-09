@@ -825,9 +825,6 @@ class Panel extends St.Widget {
         super._init({ name: 'panel',
                       reactive: true });
 
-        // For compatibility with extensions that still use the
-        // this.actor field
-        this.actor = this;
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._sessionStyle = null;
