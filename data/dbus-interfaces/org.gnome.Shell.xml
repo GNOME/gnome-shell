@@ -9,9 +9,6 @@
     <method name="ShowOSD">
       <arg type="a{sv}" direction="in" name="params"/>
     </method>
-    <method name="ShowMonitorLabels">
-      <arg type="a{uv}" direction="in" name="params"/>
-    </method>
     <method name="ShowMonitorLabels2">
       <arg type="a{sv}" direction="in" name="params"/>
     </method>
