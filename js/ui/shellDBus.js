@@ -207,7 +207,7 @@ var GnomeShell = class {
         this._grabbers.delete(name);
     }
 
-    ShowMonitorLabels2Async(params, invocation) {
+    ShowMonitorLabelsAsync(params, invocation) {
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
