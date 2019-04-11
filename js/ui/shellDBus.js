@@ -79,14 +79,15 @@ var GnomeShell = class {
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
-        let { monitor: monitorIndex,
+        let { connector: connector,
               label,
               level,
               max_level: maxLevel,
               icon: serializedIcon } = params;
 
-        if (monitorIndex === undefined)
-            monitorIndex = -1;
+        let monitorIndex = -1;
+        if (connector)
+            monitorIndex = this._monitorManager.get_monitor_for_output(connector);
 
         let icon = null;
         if (serializedIcon)
