@@ -95,28 +95,6 @@ var OsdMonitorLabeler = class {
 
         this._reset();
 
-        for (let id in params) {
-            let monitor = this._monitorManager.get_monitor_for_output(id);
-            if (monitor == -1)
-                continue;
-            this._monitorLabels.get(monitor).push(params[id].deep_unpack());
-        }
-
-        // In mirrored display setups, more than one physical outputs
-        // might be showing the same logical monitor. In that case, we
-        // join each output's labels on the same OSD widget.
-        for (let [monitor, labels] of this._monitorLabels.entries()) {
-            labels.sort();
-            this._osdLabels.push(new OsdMonitorLabel(monitor, labels.join(' ')));
-        }
-    }
-
-    show2(client, params) {
-        if (!this._trackClient(client))
-            return;
-
-        this._reset();
-
         for (let connector in params) {
             let monitor = this._monitorManager.get_monitor_for_connector(connector);
             if (monitor == -1)
