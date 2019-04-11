@@ -136,6 +136,8 @@ var WorldClocksSection = class WorldClocksSection {
         layout.attach(header, 0, 0, 2, 1);
         this.actor.label_actor = header;
 
+        let localOffset = GLib.DateTime.new_now_local().get_utc_offset();
+
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i].location;
 
@@ -149,7 +151,8 @@ var WorldClocksSection = class WorldClocksSection {
 
             let time = new St.Label({ style_class: 'world-clocks-time' });
 
-            let offset = l.get_timezone().get_offset() / 60.;
+            let otherOffset = this._getTimeAtLocation(l).get_utc_offset();
+            let offset = (otherOffset - localOffset) / GLib.TIME_SPAN_HOUR;
             let fmt = (Math.trunc(offset) == offset) ? '%s%.0f' : '%s%.1f';
             let prefix = (offset >= 0) ? '+' : '-';
             let tz = new St.Label({ style_class: 'world-clocks-timezone',
@@ -182,11 +185,15 @@ var WorldClocksSection = class WorldClocksSection {
         }
     }
 
+    _getTimeAtLocation(location) {
+        let tz = GLib.TimeZone.new(location.get_timezone().get_tzid());
+        return GLib.DateTime.new_now(tz);
+    }
+
     _updateLabels() {
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i];
-            let tz = GLib.TimeZone.new(l.location.get_timezone().get_tzid());
-            let now = GLib.DateTime.new_now(tz);
+            let now = this._getTimeAtLocation(l.location);
             l.actor.text = Util.formatTime(now, { timeOnly: true });
         }
     }
