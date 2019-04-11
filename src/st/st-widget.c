@@ -1918,7 +1918,7 @@ st_widget_sync_hover (StWidget *widget)
 
   device_manager = clutter_device_manager_get_default ();
   pointer = clutter_device_manager_get_device (device_manager, VIRTUAL_CORE_POINTER_ID);
-  pointer_actor = clutter_input_device_get_pointer_actor (pointer);
+  pointer_actor = clutter_input_device_get_actor (pointer, NULL);
   if (pointer_actor && clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
     st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
   else
