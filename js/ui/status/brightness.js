@@ -37,12 +37,12 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });
-        this._item.actor.add(icon);
-        this._item.actor.add(this._slider.actor, { expand: true });
-        this._item.actor.connect('button-press-event', (actor, event) => {
+        this._item.add(icon);
+        this._item.add(this._slider.actor, { expand: true });
+        this._item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
-        this._item.actor.connect('key-press-event', (actor, event) => {
+        this._item.connect('key-press-event', (actor, event) => {
             return this._slider.onKeyPressEvent(actor, event);
         });
 
@@ -55,7 +55,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
     _sync() {
         let visible = this._proxy.Brightness >= 0;
-        this._item.actor.visible = visible;
+        this._item.visible = visible;
         if (visible)
             this._slider.setValue(this._proxy.Brightness / 100.0);
     }

@@ -41,12 +41,12 @@ var StreamSlider = class {
         this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
-        this.item.actor.add(this._icon);
-        this.item.actor.add(this._slider.actor, { expand: true });
-        this.item.actor.connect('button-press-event', (actor, event) => {
+        this.item.add(this._icon);
+        this.item.add(this._slider.actor, { expand: true });
+        this.item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
-        this.item.actor.connect('key-press-event', (actor, event) => {
+        this.item.connect('key-press-event', (actor, event) => {
             return this._slider.onKeyPressEvent(actor, event);
         });
 
@@ -93,7 +93,7 @@ var StreamSlider = class {
 
     _updateVisibility() {
         let visible = this._shouldBeVisible();
-        this.item.actor.visible = visible;
+        this.item.visible = visible;
     }
 
     scroll(event) {

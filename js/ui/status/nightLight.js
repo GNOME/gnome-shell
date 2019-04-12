@@ -61,6 +61,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                                          : _("Night Light On");
         this._disableItem.label.text = disabled ? _("Resume")
                                                 : _("Disable Until Tomorrow");
-        this._item.actor.visible = this._indicator.visible = visible;
+        this._item.visible = this._indicator.visible = visible;
     }
 };
