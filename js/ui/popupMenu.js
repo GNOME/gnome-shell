@@ -291,26 +291,27 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var Switch = class {
-    constructor(state) {
-        this.actor = new St.Bin({ style_class: 'toggle-switch',
-                                  accessible_role: Atk.Role.CHECK_BOX,
-                                  can_focus: true });
+var Switch = GObject.registerClass(
+class Switch extends St.Bin {
+    _init(state) {
+        super._init({ style_class: 'toggle-switch',
+                      accessible_role: Atk.Role.CHECK_BOX,
+                      can_focus: true });
         this.setToggleState(state);
     }
 
     setToggleState(state) {
         if (state)
-            this.actor.add_style_pseudo_class('checked');
+            this.add_style_pseudo_class('checked');
         else
-            this.actor.remove_style_pseudo_class('checked');
+            this.remove_style_pseudo_class('checked');
         this.state = state;
     }
 
     toggle() {
         this.setToggleState(!this.state);
     }
-};
+});
 
 var PopupSwitchMenuItem = GObject.registerClass({
     Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] }, },
@@ -334,7 +335,7 @@ class PopupSwitchMenuItem extends PopupBaseMenuItem {
         this._statusLabel = new St.Label({ text: '',
                                            style_class: 'popup-status-menu-item'
                                          });
-        this._statusBin.child = this._switch.actor;
+        this._statusBin.child = this._switch;
     }
 
     setStatus(text) {
@@ -344,7 +345,7 @@ class PopupSwitchMenuItem extends PopupBaseMenuItem {
             this.reactive = false;
             this.accessible_role = Atk.Role.MENU_ITEM;
         } else {
-            this._statusBin.child = this._switch.actor;
+            this._statusBin.child = this._switch;
             this.reactive = true;
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         }
@@ -352,9 +353,8 @@ class PopupSwitchMenuItem extends PopupBaseMenuItem {
     }
 
     activate(event) {
-        if (this._switch.actor.mapped) {
+        if (this._switch.mapped)
             this.toggle();
-        }
 
         // we allow pressing space to toggle the switch
         // without closing the menu
