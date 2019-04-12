@@ -1165,13 +1165,13 @@ StScrollBar {
   box-shadow: -1px 1px 5px 0px transparentize(black, 0.5);
 
   &:hover {
-    background-color: lighten($selected_bg_color,5%);
-    border-color: lighten($selected_bg_color,5%);
+    background-color: lighten($selected_bg_color, 5%);
+    border-color: lighten($selected_bg_color, 5%);
   }
 
   &:active {
-    background-color: darken($selected_bg_color,5%);
-    border-color: darken($selected_bg_color,5%);
+    background-color: darken($selected_bg_color, 5%);
+    border-color: darken($selected_bg_color, 5%);
   }
 }
 
@@ -1236,7 +1236,7 @@ StScrollBar {
   }
 
   .window-clone-border {
-    $_bg: transparentize(white,0.65);
+    $_bg: transparentize(white, 0.65);
     border: 5px solid $_bg;
     border-radius: 6px;
     // For window decorations with round corners we can't match
