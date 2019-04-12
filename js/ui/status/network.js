@@ -389,8 +389,8 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
 
     _sync() {
         let nItems = this._connectionItems.size;
-        this._autoConnectItem.actor.visible = (nItems == 0);
-        this._deactivateItem.actor.visible = this._device.state > NM.DeviceState.DISCONNECTED;
+        this._autoConnectItem.visible = (nItems == 0);
+        this._deactivateItem.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
             let activeConnection = this._device.active_connection;
@@ -477,7 +477,7 @@ var NMDeviceWired = class extends NMConnectionDevice {
     }
 
     _sync() {
-        this.item.actor.visible = this._hasCarrier();
+        this.item.visible = this._hasCarrier();
         super._sync();
     }
 
@@ -1076,7 +1076,7 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
 
             let newPos = Util.insertSorted(this._networks, network, this._networkSortFunction);
             this._createNetworkItem(network);
-            this._itemBox.insert_child_at_index(network.item.actor, newPos);
+            this._itemBox.insert_child_at_index(network.item, newPos);
         }
 
         this._syncView();
@@ -1094,7 +1094,7 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
         network.accessPoints.splice(res.ap, 1);
 
         if (network.accessPoints.length == 0) {
-            network.item.actor.destroy();
+            network.item.destroy();
             this._networks.splice(res.network, 1);
         } else {
             network.item.updateBestAP(network.accessPoints[0]);
@@ -1110,7 +1110,7 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
 
         this._itemBox.remove_all_children();
         this._networks.forEach(network => {
-            this._itemBox.add_child(network.item.actor);
+            this._itemBox.add_child(network.item);
         });
 
         adjustment.value = scrollValue;
@@ -1118,25 +1118,25 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
 
     _selectNetwork(network) {
         if (this._selectedNetwork)
-            this._selectedNetwork.item.actor.remove_style_pseudo_class('selected');
+            this._selectedNetwork.item.remove_style_pseudo_class('selected');
 
         this._selectedNetwork = network;
         this._updateSensitivity();
 
         if (this._selectedNetwork)
-            this._selectedNetwork.item.actor.add_style_pseudo_class('selected');
+            this._selectedNetwork.item.add_style_pseudo_class('selected');
     }
 
     _createNetworkItem(network) {
         network.item = new NMWirelessDialogItem(network);
         network.item.setActive(network == this._selectedNetwork);
         network.item.connect('selected', () => {
-            Util.ensureActorVisibleInScrollView(this._scrollView, network.item.actor);
+            Util.ensureActorVisibleInScrollView(this._scrollView, network.item);
             this._selectNetwork(network);
         });
-        network.item.actor.connect('destroy', () => {
+        network.item.connect('destroy', () => {
             let keyFocus = global.stage.key_focus;
-            if (keyFocus && keyFocus.contains(network.item.actor))
+            if (keyFocus && keyFocus.contains(network.item))
                 this._itemBox.grab_key_focus();
         });
     }
@@ -1262,7 +1262,7 @@ var NMDeviceWireless = class {
 
     _sync() {
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
-        this._toggleItem.actor.visible = this._client.wireless_hardware_enabled;
+        this._toggleItem.visible = this._client.wireless_hardware_enabled;
 
         this.item.icon.icon_name = this._getMenuIcon();
         this.item.label.text = this._getStatus();
@@ -1452,7 +1452,7 @@ var NMVpnSection = class extends NMConnectionSection {
 
     _sync() {
         let nItems = this._connectionItems.size;
-        this.item.actor.visible = (nItems > 0);
+        this.item.visible = (nItems > 0);
 
         super._sync();
     }
@@ -1535,7 +1535,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
 
         this._summaryItem.menu.addSettingsAction(_('Network Settings'),
                                                  'gnome-network-panel.desktop');
-        this._summaryItem.actor.hide();
+        this._summaryItem.hide();
 
     }
 
@@ -1544,7 +1544,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
             (prev, child) => prev + (child.visible ? 1 : 0), 0);
         this._summaryItem.label.text = this._getSummaryLabel(nDevices);
         let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
-        this._summaryItem.actor.visible = shouldSummarize;
+        this._summaryItem.visible = shouldSummarize;
         this.section.actor.visible = !shouldSummarize;
     }
 
