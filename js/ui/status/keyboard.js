@@ -15,17 +15,18 @@ const Util = imports.misc.util;
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
 const INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
-var LayoutMenuItem = class extends PopupMenu.PopupBaseMenuItem {
-    constructor(displayName, shortName) {
-        super();
+var LayoutMenuItem = GObject.registerClass(
+class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
+    _init(displayName, shortName) {
+        super._init();
 
         this.label = new St.Label({ text: displayName });
         this.indicator = new St.Label({ text: shortName });
-        this.actor.add(this.label, { expand: true });
-        this.actor.add(this.indicator);
-        this.actor.label_actor = this.label;
+        this.add(this.label, { expand: true });
+        this.add(this.indicator);
+        this.label_actor = this.label;
     }
-};
+});
 
 var InputSource = class {
     constructor(type, id, displayName, shortName, index) {
@@ -857,7 +858,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         // but at least for now it is used as "allow popping up windows
         // from shell menus"; we can always add a separate sessionMode
         // option if need arises.
-        this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
+        this._showLayoutItem.visible = Main.sessionMode.allowSettings;
     }
 
     _sourcesChanged() {
