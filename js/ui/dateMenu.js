@@ -139,8 +139,7 @@ var WorldClocksSection = class WorldClocksSection {
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i].location;
 
-            let name = l.get_level() == GWeather.LocationLevel.NAMED_TIMEZONE ? l.get_name()
-                                                                              : l.get_city_name();
+            let name = l.get_city_name() || l.get_name();
             let label = new St.Label({ style_class: 'world-clocks-city',
                                        text: name,
                                        x_align: Clutter.ActorAlign.START,
