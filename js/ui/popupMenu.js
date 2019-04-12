@@ -95,9 +95,6 @@ var PopupBaseMenuItem = GObject.registerClass({
         }
         if (params.reactive && params.hover)
             this.connect('notify::hover', this._onHoverChanged.bind(this));
-
-        this.connect('key-focus-in', this._onKeyFocusIn.bind(this));
-        this.connect('key-focus-out', this._onKeyFocusOut.bind(this));
     }
 
     get actor() {
@@ -161,11 +158,13 @@ var PopupBaseMenuItem = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onKeyFocusIn(actor) {
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
         this.setActive(true);
     }
 
-    _onKeyFocusOut(actor) {
+    vfunc_key_focus_out() {
+        super.vfunc_key_focus_out();
         this.setActive(false);
     }
 
