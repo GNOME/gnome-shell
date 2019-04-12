@@ -1604,7 +1604,9 @@ var AppIcon = class AppIcon {
 
         this.emit('menu-state-changed', true);
 
+        this.actor.reactive = false;
         this.actor.set_hover(true);
+
         this._menu.popup();
         this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
@@ -1621,7 +1623,7 @@ var AppIcon = class AppIcon {
     }
 
     _onMenuPoppedDown() {
-        this.actor.sync_hover();
+        this.actor.reactive = true;
         this.emit('menu-state-changed', false);
     }
 

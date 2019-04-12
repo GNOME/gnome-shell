@@ -178,6 +178,22 @@ var GrabHelper = class GrabHelper {
         if (!this._takeModalGrab())
             return false;
 
+        // Find the devices and sequences positioned outside the grabbed
+        // actors and remove cursor focus.
+        let dm = Clutter.DeviceManager.get_default();
+        dm.peek_devices().forEach(d => {
+            let actor = d.get_actor(null);
+            if (actor && !this._isWithinGrabbedActor(actor))
+                d.set_focus(null, false);
+
+            let sequences = d.get_touch_sequences();
+            sequences.forEach(s => {
+                actor = d.get_actor(s);
+                if (actor && !this._isWithinGrabbedActor(actor))
+                    d.set_focus(s, false);
+            });
+        });
+
         this._grabStack.push(params);
 
         if (params.focus) {
@@ -261,6 +277,22 @@ var GrabHelper = class GrabHelper {
             this._releaseModalGrab();
         }
 
+        // Find the devices and sequences positioned outside the grabbed
+        // actors and add cursor focus again.
+        let dm = Clutter.DeviceManager.get_default();
+        dm.peek_devices().forEach(d => {
+            let actor = d.get_actor(null);
+            if (actor && !this._isWithinGrabbedActor(actor))
+                d.set_focus(null, true);
+
+            let sequences = d.get_touch_sequences();
+            sequences.forEach(s => {
+                actor = d.get_actor(s);
+                if (actor && !this._isWithinGrabbedActor(actor))
+                    d.set_focus(s, true);
+            });
+        });
+
         if (hadFocus) {
             let poppedGrab = poppedGrabs[0];
             if (poppedGrab.savedFocus)
@@ -276,6 +308,9 @@ var GrabHelper = class GrabHelper {
             this.ungrab({ isUser: true });
             return Clutter.EVENT_STOP;
         }
+
+        if (type == Clutter.EventType.LEAVE)
+            return Clutter.EVENT_PROPAGATE;
 
         let motion = type == Clutter.EventType.MOTION;
         let press = type == Clutter.EventType.BUTTON_PRESS;
