@@ -101,12 +101,12 @@ var Indicator = class extends PanelMenu.SystemIndicator {
     _syncIndicator() {
         if (this._managerProxy == null) {
             this._indicator.visible = false;
-            this._item.actor.visible = false;
+            this._item.visible = false;
             return;
         }
 
         this._indicator.visible = this._managerProxy.InUse;
-        this._item.actor.visible = this._indicator.visible;
+        this._item.visible = this._indicator.visible;
         this._updateMenuLabels();
     }
 
