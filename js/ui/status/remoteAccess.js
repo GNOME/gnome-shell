@@ -53,10 +53,10 @@ var RemoteAccessApplet = class extends PanelMenu.SystemIndicator {
     _sync() {
         if (this._handles.size == 0) {
             this._indicator.visible = false;
-            this._item.actor.visible = false;
+            this._item.visible = false;
         } else {
             this._indicator.visible = true;
-            this._item.actor.visible = true;
+            this._item.visible = true;
         }
     }
 
