@@ -53,6 +53,8 @@ struct _StScrollBarPrivate
   gfloat        x_origin;
   gfloat        y_origin;
 
+  ClutterInputDevice *device;
+
   ClutterActor *trough;
   ClutterActor *handle;
 
@@ -606,7 +608,8 @@ stop_scrolling (StScrollBar *bar)
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (priv->handle), "active");
 
-  clutter_ungrab_pointer ();
+  clutter_input_device_ungrab (priv->device);
+  priv->device = NULL;
   priv->grabbed = FALSE;
   g_signal_emit (bar, signals[SCROLL_STOP], 0);
 }
@@ -642,6 +645,7 @@ handle_button_press_event_cb (ClutterActor       *actor,
                               StScrollBar        *bar)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
+  ClutterInputDevice *device = clutter_event_get_device ((ClutterEvent*) event);
 
   if (event->button != 1)
     return FALSE;
@@ -661,7 +665,8 @@ handle_button_press_event_cb (ClutterActor       *actor,
 
   g_assert (!priv->grabbed);
 
-  clutter_grab_pointer (priv->handle);
+  clutter_input_device_grab (device, priv->handle);
+  priv->device = device;
   priv->grabbed = TRUE;
   g_signal_emit (bar, signals[SCROLL_START], 0);
 
