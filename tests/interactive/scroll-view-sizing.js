@@ -215,14 +215,12 @@ class SizingIllustrator extends St.Widget {
 	    let [x, y] = event.get_coords();
 	    this._dragX = x - handleX;
 	    this._dragY = y - handleY;
-	    Clutter.grab_pointer(handle);
 	}
     }
 
     _handleReleased(handle, event) {
 	if (event.get_button() == 1) {
 	    this._inDrag = false;
-	    Clutter.ungrab_pointer(handle);
 	}
     }
 
