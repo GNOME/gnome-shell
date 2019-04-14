@@ -491,8 +491,13 @@ var Inspector = GObject.registerClass({
         eventHandler.connect('button-press-event', this._onButtonPressEvent.bind(this));
         eventHandler.connect('scroll-event', this._onScrollEvent.bind(this));
         eventHandler.connect('motion-event', this._onMotionEvent.bind(this));
-        Clutter.grab_pointer(eventHandler);
-        Clutter.grab_keyboard(eventHandler);
+
+        let dm = Clutter.DeviceManager.get_default();
+        this._pointerDevice = dm.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
+        this._keyboardDevice = dm.get_core_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+
+        this._pointerDevice.grab(eventHandler);
+        this._keyboardDevice.grab(eventHandler);
 
         // this._target is the actor currently shown by the inspector.
         // this._pointerTarget is the actor directly under the pointer.
@@ -525,8 +530,8 @@ var Inspector = GObject.registerClass({
     }
 
     _close() {
-        Clutter.ungrab_pointer();
-        Clutter.ungrab_keyboard();
+        this._pointerDevice.ungrab();
+        this._keyboardDevice.ungrab();
         this._eventHandler.destroy();
         this._eventHandler = null;
         this.emit('closed');
