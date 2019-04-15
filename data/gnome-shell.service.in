@@ -1,5 +1,6 @@
 [Unit]
 Description=GNOME Shell
+OnFailure=gnome-shell-disable-extensions.service
 RefuseManualStart=true
 
 Requisite=gnome-session-manager.target
