@@ -304,12 +304,27 @@ var PaygManager = GObject.registerClass({
             return false;
         }
 
-        let [isMatch, matchInfo] = this._codeFormatRegex.match(code, 0);
-        return isMatch || (partial && matchInfo.is_partial_match());
+        let is_match, match_info;
+
+        if (partial)
+            [is_match, match_info] = this._codeFormatRegex.match(this.codeFormatPrefix + code, 0);
+        else
+            [is_match, match_info] = this._codeFormatRegex.match(
+                this.codeFormatPrefix + code + this.codeFormatSuffix, 0);
+
+        return is_match || (partial && match_info.is_partial_match());
     }
 
     get initialized() {
         return this._initialized;
+    }
+
+    get codeFormatPrefix() {
+        return this._proxy.CodeFormatPrefix;
+    }
+
+    get codeFormatSuffix() {
+        return this._proxy.CodeFormatSuffix;
     }
 
     get enabled() {

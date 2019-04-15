@@ -58,6 +58,8 @@ var PaygUnlockCodeEntry = GObject.registerClass({
             reactive: true,
             can_focus: true,
             x_align: Clutter.ActorAlign.FILL,
+            x_expand: true,
+            y_expand: false,
         });
 
         this._code = '';
@@ -138,7 +140,9 @@ var PaygUnlockCodeEntry = GObject.registerClass({
     }
 
     addCharacter(character) {
-        if (!this._enabled || !GLib.unichar_isprint(character))
+        if (!this._enabled || !GLib.unichar_isprint(character) ||
+            character === Main.paygManager.codeFormatPrefix ||
+            character === Main.paygManager.codeFormatSuffix)
             return;
 
         let pos = this.clutter_text.get_cursor_position();
@@ -254,8 +258,8 @@ var PaygUnlockDialog = GObject.registerClass({
         promptLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         promptBox.add_child(promptLabel);
 
-        this._entry = new PaygUnlockCodeEntry();
-        promptBox.add_child(this._entry);
+        let entryBox = this._createEntryArea();
+        promptBox.add_child(entryBox);
 
         this._errorMessage = new St.Label({
             opacity: 0,
@@ -405,6 +409,38 @@ var PaygUnlockDialog = GObject.registerClass({
         buttonsBox.add_child(this._nextButton);
 
         return buttonsBox;
+    }
+
+    _createEntryArea() {
+        let entryBox = new St.BoxLayout({
+            vertical: false,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+        });
+
+        if (Main.paygManager.codeFormatPrefix !== '') {
+            let prefix = new St.Label({
+                style_class: 'unlock-dialog-payg-code-entry',
+                text: Main.paygManager.codeFormatPrefix,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
+            entryBox.add_child(prefix);
+        }
+
+        this._entry = new PaygUnlockCodeEntry();
+        entryBox.add_child(this._entry);
+
+        if (Main.paygManager.codeFormatSuffix !== '') {
+            let suffix = new St.Label({
+                style_class: 'unlock-dialog-payg-code-entry',
+                text: Main.paygManager.codeFormatSuffix,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            entryBox.add_child(suffix);
+        }
+
+        return entryBox;
     }
 
     _createMessageBox() {

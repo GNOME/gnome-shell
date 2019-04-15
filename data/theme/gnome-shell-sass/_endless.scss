@@ -715,6 +715,14 @@ $success_time_payg_color: #02b842;
           padding-top: 1em;
       }
 
+      .unlock-dialog-payg-code-entry {
+          color: darken($osd_fg_color, 20%);
+          font-size: 24px; // Consistent with .login-dialog-prompt-label
+          padding-left: 3px;
+          padding-right: 3px;
+          padding-top: 0.3em;
+      }
+
       .unlock-dialog-payg-entry {
           font-size: 24px;
           padding-left: 12px;
@@ -767,4 +775,13 @@ $success_time_payg_color: #02b842;
   padding-right: 12px;
   letter-spacing: 6px;
   margin: 5px;
+}
+
+.notification-payg-code-entry {
+  text-align: center;
+  font-size: 20px;
+  color: darken($osd_fg_color, 20%);
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-top: 6px;
 }

@@ -78,7 +78,7 @@ var PaygUnlockUi = GObject.registerClass({
     }
 
     updateApplyButtonSensitivity() {
-        let sensitive = this.validateCurrentCode() &&
+        let sensitive = this.validateCurrentCode(false) &&
             this.verificationStatus !== UnlockStatus.VERIFYING &&
             this.verificationStatus !== UnlockStatus.SUCCEEDED &&
             this.verificationStatus !== UnlockStatus.TOO_MANY_ATTEMPTS;
@@ -198,12 +198,12 @@ var PaygUnlockUi = GObject.registerClass({
         this.updateSensitivity();
     }
 
-    validateCurrentCode() {
-        return Main.paygManager.validateCode(this.entryCode);
+    validateCurrentCode(partial=true) {
+        return Main.paygManager.validateCode(this.entryCode, partial);
     }
 
     startVerifyingCode() {
-        if (!this.validateCurrentCode())
+        if (!this.validateCurrentCode(false))
             return;
 
         this.verificationStatus = UnlockStatus.VERIFYING;
@@ -211,7 +211,12 @@ var PaygUnlockUi = GObject.registerClass({
         this.updateSensitivity();
         this.cancelled = false;
 
-        Main.paygManager.addCode(this.entryCode, error => {
+        let code = '%s%s%s'.format(
+            Main.paygManager.codeFormatPrefix,
+            this.entryCode,
+            Main.paygManager.codeFormatSuffix);
+
+        Main.paygManager.addCode(code, error => {
             // We don't care about the result if we're closing the dialog.
             if (this.cancelled) {
                 this.verificationStatus = UnlockStatus.NOT_VERIFYING;
@@ -249,8 +254,27 @@ var PaygUnlockWidget = GObject.registerClass({
             style_class: 'notification-actions',
             x_expand: false,
         });
+        if (Main.paygManager.codeFormatPrefix !== '') {
+            let prefix = new St.Label({
+                style_class: 'notification-payg-code-entry',
+                text: Main.paygManager.codeFormatPrefix,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
+            entrySpinnerBox.add_child(prefix);
+        }
         entrySpinnerBox.add_child(this._codeEntry);
         entrySpinnerBox.add_child(this._spinner.actor);
+
+        if (Main.paygManager.codeFormatSuffix !== '') {
+            let suffix = new St.Label({
+                style_class: 'notification-payg-code-entry',
+                text: Main.paygManager.codeFormatSuffix,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
+            entrySpinnerBox.add_child(suffix);
+        }
 
         this._buttonBox = new St.BoxLayout({
             style_class: 'notification-actions',
