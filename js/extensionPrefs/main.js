@@ -224,10 +224,25 @@ var Application = class {
                             Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
+        this._hbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        this._window.add(this._hbox);
+
+        this._disabled_infobar = new Gtk.InfoBar();
+        this._disabled_infobar.message_type = Gtk.MessageType.ERROR;
+        this._disabled_infobar.revealed = false;
+        this._disabled_infobar.show_close_button = true;
+        this._disabled_infobar.connect('response',  () => {
+            this._disabled_infobar.revealed = false;
+        });
+        let content_area = this._disabled_infobar.get_content_area();
+        let label = new Gtk.Label({label: _('Shell Extensions were disabled due to a fatal error! Disable or configure extensions that may have caused the issue before re-enabling extensions at the top.')});
+        content_area.add(label);
+        this._hbox.add(this._disabled_infobar);
+
         this._mainStack = new Gtk.Stack({
             transition_type: Gtk.StackTransitionType.CROSSFADE
         });
-        this._window.add(this._mainStack);
+        this._hbox.add(this._mainStack);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
 
@@ -309,6 +324,14 @@ var Application = class {
         let args = commandLine.get_arguments();
 
         if (args.length) {
+            if (args[0] == '--disabled-warning') {
+                if (!this._settings.is_writable('disable-user-extensions'))
+                    app.quit();
+
+                this._disabled_infobar.set_revealed(true);
+                return 0;
+            }
+
             let uuid = args[0];
 
             this._skipMainWindow = true;
