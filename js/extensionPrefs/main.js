@@ -219,10 +219,33 @@ var Application = GObject.registerClass({
                             Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
+        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        this._window.add(vbox);
+
+        this.disabledInfobar = new Gtk.InfoBar({
+            message_type: Gtk.MessageType.ERROR,
+            revealed: false,
+            show_close_button: true
+        });
+        this.disabledInfobar.connect('response',  () => {
+            this.disabledInfobar.revealed = false;
+        });
+        let contentArea = this.disabledInfobar.get_content_area();
+        let label = new Gtk.Label({
+            label: _('A problem was detected and extensions were automatically disabled. It is recommended to disable or reconfigure any extensions that may have caused the issue before re-enabling them at the top.'),
+            ellipsize: Pango.EllipsizeMode.END,
+            wrap: true,
+            lines: 2,
+            xalign: 0,
+            margin: 6
+        });
+        contentArea.add(label);
+        vbox.add(this.disabledInfobar);
+
         this._mainStack = new Gtk.Stack({
             transition_type: Gtk.StackTransitionType.CROSSFADE
         });
-        this._window.add(this._mainStack);
+        vbox.add(this._mainStack);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
 
@@ -338,6 +361,14 @@ var Application = GObject.registerClass({
         let args = commandLine.get_arguments();
 
         if (args.length) {
+            if (args[0] == '--disabled-warning') {
+                if (!this._settings.is_writable('disable-user-extensions'))
+                    this.quit();
+
+                this.disabledInfobar.set_revealed(true);
+                return 0;
+            }
+
             let uuid = args[0];
 
             this._skipMainWindow = true;
