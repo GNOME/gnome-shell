@@ -98,15 +98,23 @@ if have_systemd
   unitconf = configuration_data()
   unitconf.set('bindir', bindir)
 
-  unit = configure_file(
+  configure_file(
     input: 'gnome-shell.service.in',
     output: 'gnome-shell.service',
     configuration: unitconf,
     install_dir: systemduserunitdir
   )
 
+  configure_file(
+    input: 'gnome-shell-extensions-disabled-warning.service.in',
+    output: 'gnome-shell-extensions-disabled-warning.service',
+    configuration: unitconf,
+    install_dir: systemduserunitdir
+  )
+
   units = files('gnome-shell-wayland.target',
-                'gnome-shell-x11.target')
+                'gnome-shell-x11.target',
+                'gnome-shell-disable-extensions.service')
 
   install_data(units, install_dir: systemduserunitdir)
 endif
