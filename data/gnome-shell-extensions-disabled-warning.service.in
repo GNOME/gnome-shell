@@ -1,0 +1,10 @@
+[Unit]
+Description=Warn about GNOME Shell extenions being disabled
+ConditionPathExists=%E/gnome-shell-extensions-disabled-warning
+
+[Service]
+Type=simple
+ExecStart=@bindir@/gnome-shell-extension-prefs --disabled-warning
+ExecStartPre=/bin/rm %E/gnome-shell-extensions-disabled-warning
+Restart=no
+

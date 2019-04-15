@@ -1,0 +1,11 @@
+[Unit]
+Description=Disable GNOME Shell extenions after failure
+
+[Service]
+Type=simple
+# Disable extensions and touch a file; if disabling fails for whatever
+# reason then the file will not be touched.
+ExecStartPre=gsettings set org.gnome.shell disable-user-extensions true
+ExecStart=/bin/touch %E/gnome-shell-extensions-disabled-warning
+Restart=no
+

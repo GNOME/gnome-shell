@@ -3,6 +3,7 @@ Description=GNOME Shell
 Wants=gnome-session.service
 After=graphical-session-pre.target gnome-session-bus.target
 PartOf=graphical-session.target
+OnFailure=gnome-shell-disable-extensions.service
 
 [Service]
 Type=dbus
