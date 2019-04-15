@@ -100,14 +100,22 @@ if have_systemd
   unitconf = configuration_data()
   unitconf.set('bindir', bindir)
 
-  unit = configure_file(
+  configure_file(
     input: 'gnome-shell.service.in',
     output: 'gnome-shell.service',
     configuration: unitconf,
     install_dir: systemd_userunitdir
   )
 
-  units = files('gnome-shell.target')
+  configure_file(
+    input: 'gnome-shell-extensions-disabled-warning.service.in',
+    output: 'gnome-shell-extensions-disabled-warning.service',
+    configuration: unitconf,
+    install_dir: systemd_userunitdir
+  )
+
+  units = files('gnome-shell.target',
+                'gnome-shell-disable-extensions.service')
 
   install_data(units, install_dir: systemd_userunitdir)
 endif
