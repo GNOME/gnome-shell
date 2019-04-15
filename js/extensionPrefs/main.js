@@ -235,7 +235,7 @@ var Application = class {
             this._disabled_infobar.revealed = false;
         });
         let content_area = this._disabled_infobar.get_content_area();
-        let label = new Gtk.Label({label: _('Shell Extensions were disabled due to a failure! You can re-enable them at the top.')});
+        let label = new Gtk.Label({label: _('Shell Extensions were disabled due to a fatal error! You can re-enable them at the top.')});
         content_area.add(label);
         this._hbox.add(this._disabled_infobar);
 
@@ -530,19 +530,22 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this.uuid = uuid;
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.connect('changed::enabled-extensions', () => {
-            this._switch.state = this._isEnabled();
-        });
+        this._settings.connect('changed::enabled-extensions',
+                               this._updateSwitch.bind(this));
         this._settings.connect('changed::disable-extension-version-validation',
-            () => {
-                this._switch.sensitive = this._canEnable();
-            });
+                               this._updateSwitch.bind(this));
         this._settings.connect('changed::disable-user-extensions',
-            () => {
-                this._switch.sensitive = this._canEnable();
-            });
+                               this._updateSwitch.bind(this));
 
         this._buildUI();
+    }
+
+    _updateSwitch() {
+        this._switch.freeze_notify();
+        this._switch.state = this._isLoaded();
+        this._switch.active = this._isEnabled();
+        this._switch.thaw_notify();
+        this._switch.sensitive = this._canEnable();
     }
 
     _buildUI() {
@@ -579,9 +582,8 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
         this.prefsButton = button;
 
-        this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
-                                        sensitive: this._canEnable(),
-                                        state: this._isEnabled() });
+        this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+        this._updateSwitch();
         this._switch.connect('notify::active', () => {
             if (this._switch.active)
                 this._enable();
@@ -596,13 +598,20 @@ class ExtensionRow extends Gtk.ListBoxRow {
         let extension = ExtensionUtils.extensions[this.uuid];
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
-        return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && ExtensionUtils.isOutOfDate(extension));
+        return !(checkVersion && ExtensionUtils.isOutOfDate(extension));
     }
 
     _isEnabled() {
         let extensions = this._settings.get_strv('enabled-extensions');
         return extensions.indexOf(this.uuid) != -1;
+    }
+
+    _canLoad() {
+        return this._canEnable() && !this._settings.get_boolean('disable-user-extensions');
+    }
+
+    _isLoaded() {
+        return this._isEnabled() && this._canLoad();
     }
 
     _enable() {
