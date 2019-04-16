@@ -111,7 +111,7 @@
   }
 }
 
-@mixin button($t, $c:$osd_bg_color, $tc:$fg_color, $edge: $borders_edge) {
+@mixin button($t, $c:opacify(lighten($osd_bg_color, 5%),1.0), $tc:$fg_color, $edge: $borders_edge) {
 //
 // Button drawing function
 //
@@ -136,8 +136,7 @@
   //
   // normal button
   //
-    $_bg: if($c!=$osd_bg_color, transparentize($c, 0.5),
-                            $osd_bg_color);
+    $_bg: $c;
 
     color: $osd_fg_color;
     background-color: $_bg;
@@ -150,8 +149,7 @@
   //
   // focused button
   //
-    $_bg: if($c!=$osd_bg_color, transparentize($c, 0.3),
-                          lighten($osd_bg_color,3%));
+    $_bg: lighten($c,3%);
 
     color: $osd_fg_color;
     text-shadow: 0 1px black;
@@ -163,8 +161,7 @@
   //
   // active osd button
   //
-    $_bg: if($c!=$osd_bg_color, transparentize($c, 0.3),
-                            lighten($osd_bg_color,3%));
+    $_bg: lighten($c,3%);
 
     color: white;
     border-color: $osd_borders_color;
