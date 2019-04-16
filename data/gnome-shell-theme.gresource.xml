@@ -21,10 +21,8 @@
     <file>noise-texture.png</file>
     <file>pad-osd.css</file>
     <file>process-working.svg</file>
-    <file>toggle-off-us.svg</file>
     <file>toggle-off-intl.svg</file>
     <file>toggle-off-hc.svg</file>
-    <file>toggle-on-us.svg</file>
     <file>toggle-on-intl.svg</file>
     <file>toggle-on-hc.svg</file>
   </gresource>

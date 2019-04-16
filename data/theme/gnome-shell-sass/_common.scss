@@ -160,14 +160,9 @@ StScrollBar {
   width: 46px;
   height: 22px;
   background-size: contain;
+  background-image: url("resource:///org/gnome/shell/theme/toggle-off-intl.svg");
+  &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-intl.svg"); }
 }
-
-  @each $v in us, intl {
-    .toggle-switch-#{$v} {
-      background-image: url("resource:///org/gnome/shell/theme/toggle-off-#{$v}.svg");
-      &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-#{$v}.svg"); }
-    }
-  }
 
 /* links */
 .shell-link {

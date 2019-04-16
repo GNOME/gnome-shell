@@ -277,12 +277,6 @@ var Switch = class {
         this.actor = new St.Bin({ style_class: 'toggle-switch',
                                   accessible_role: Atk.Role.CHECK_BOX,
                                   can_focus: true });
-        // Translators: this MUST be either "toggle-switch-us"
-        // (for toggle switches containing the English words
-        // "ON" and "OFF") or "toggle-switch-intl" (for toggle
-        // switches containing "◯" and "|"). Other values will
-        // simply result in invisible toggle switches.
-        this.actor.add_style_class_name(_("toggle-switch-us"));
         this.setToggleState(state);
     }
 
