@@ -57,10 +57,13 @@ var PopupBaseMenuItem = GObject.registerClass({
                                             GObject.ParamFlags.READWRITE,
                                             GObject.TYPE_BOOLEAN,
                                             false),
+        'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
+                                               GObject.ParamFlags.READWRITE,
+                                               GObject.TYPE_BOOLEAN,
+                                               true),
     },
     Signals: {
         'activate': { param_types: [Clutter.Event.$gtype] },
-        'sensitive-changed': {},
     }
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
@@ -209,15 +212,15 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 
     syncSensitive() {
-        let sensitive = this.getSensitive();
+        let sensitive = this.sensitive;
         this.reactive = sensitive;
         this.can_focus = sensitive;
-        this.emit('sensitive-changed');
+        this.notify('sensitive');
         return sensitive;
     }
 
     getSensitive() {
-        let parentSensitive = this._parent ? this._parent.getSensitive() : true;
+        let parentSensitive = this._parent ? this._parent.sensitive : true;
         return this._activatable && this._sensitive && parentSensitive;
     }
 
@@ -227,6 +230,14 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._sensitive = sensitive;
         this.syncSensitive();
+    }
+
+    get sensitive() {
+        return this.getSensitive();
+    }
+
+    set sensitive(sensitive) {
+        this.setSensitive(sensitive);
     }
 
     setOrnament(ornament) {
@@ -454,13 +465,21 @@ var PopupMenuBase = class {
     }
 
     getSensitive() {
-        let parentSensitive = this._parent ? this._parent.getSensitive() : true;
+        let parentSensitive = this._parent ? this._parent.sensitive : true;
         return this._sensitive && parentSensitive;
     }
 
     setSensitive(sensitive) {
         this._sensitive = sensitive;
-        this.emit('sensitive-changed');
+        this.emit('notify::sensitive');
+    }
+
+    get sensitive() {
+        return this.getSensitive();
+    }
+
+    set sensitive(sensitive) {
+        this.setSensitive(sensitive);
     }
 
     _sessionUpdated() {
@@ -546,8 +565,8 @@ var PopupMenuBase = class {
                 this.emit('active-changed', null);
             }
         });
-        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', () => {
-            let sensitive = menuItem.getSensitive();
+        menuItem._sensitiveChangeId = menuItem.connect('notify::sensitive', () => {
+            let sensitive = menuItem.sensitive;
             if (!sensitive && this._activeMenuItem == menuItem) {
                 if (!this.actor.navigate_focus(menuItem.actor,
                                                St.DirectionType.TAB_FORWARD,
@@ -563,7 +582,7 @@ var PopupMenuBase = class {
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
         });
 
-        menuItem._parentSensitiveChangeId = this.connect('sensitive-changed', () => {
+        menuItem._parentSensitiveChangeId = this.connect('notify::sensitive', () => {
             menuItem.syncSensitive();
         });
 
@@ -662,8 +681,8 @@ var PopupMenuBase = class {
             let parentClosingId = this.connect('menu-closed', () => {
                 menuItem.emit('menu-closed');
             });
-            let subMenuSensitiveChangedId = this.connect('sensitive-changed', () => {
-                menuItem.emit('sensitive-changed');
+            let subMenuSensitiveChangedId = this.connect('notify::sensitive', () => {
+                menuItem.emit('notify::sensitive');
             });
 
             menuItem.connect('destroy', () => {
@@ -941,7 +960,7 @@ var PopupSubMenu = class extends PopupMenuBase {
     }
 
     getSensitive() {
-        return this._sensitive && this.sourceActor._delegate.getSensitive();
+        return this._sensitive && this.sourceActor.sensitive;
     }
 
     open(animate) {
