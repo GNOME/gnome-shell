@@ -1,3 +1,34 @@
+3.32.1
+======
+* Fix avatar scaling on login screen [Florian; #1024]
+* Fix distortion of desktop zoom [Florian; #646]
+* Fix mouse cursor visibility when using desktop zoom [Florian, Marco; #1020]
+* Fix screen dimming after wake-up on lock screen [Xiaoguang; #900]
+* Fix Alt+Esc switcher [Florian; #1064]
+* Respect struts for popover placement [Andrea; #1102]
+* Fix app icons updates after theme changes [Florian; #1117]
+* Fix desktop zoom after resolution changes [Marco; #1120]
+* Implement stick-to-finger workspace switch overview gestures [Florian; #516]
+* Make World Clocks offsets relative to local time [Florian; #1157]
+* Fix top app icon disappearing from dash [Florian; #1053]
+* Update switch style to match new Adwaita [Jakub; !496]
+* Ensure CSS units are pixel-aligned when scaling is used [Carlos; #91]
+* Misc. bug fixes and cleanups [Florian, Jakub, Robert, Alex, Carlos, Phil,
+  Marco, Benjamin, AsciiWolf, Ray, verdre; !444, #1016, #1018, !449, #1036,
+  !455, #1094, !440, #1023, #624, #1017, !476, !473, !480, #1130, !485, !481,
+  !490, !489, #1151, !435, #1160, !482, #1150, #1166, !384]
+
+Contributors:
+  AsciiWolf, Andrea Azzarone, Benjamin Berg, Carlos Garnacho, Victor Ibragimov,
+  Robert Mader, Alex Monday, Florian Müllner, Jakub Steiner, Ray Strode,
+  Marco Trevisan (Treviño), verdre, Xiaoguang Wang, Phil Wyett
+
+Translators:
+  Victor Ibragimov [tg, af, et, ja], Bruce Cowan [en_GB], Piotr Drąg [tg],
+  Charles Monzat [fr], Khaled Hosny [ar], Goran Vidović [hr],
+  Cheng-Chia Tseng [zh_TW], Carmen Bianca BAKKER [eo], Daniel Mustieles [es],
+  Dušan Kazik [sk]
+
 3.32.0
 ======
 * Fix sizing issues in on-screen-keyboard emoji panel [Carlos; !439]
