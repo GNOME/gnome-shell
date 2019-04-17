@@ -52,9 +52,14 @@ function arrowIcon(side) {
 }
 
 var PopupBaseMenuItem = GObject.registerClass({
+    Properties: {
+        'active': GObject.ParamSpec.boolean('active', 'active', 'active',
+                                            GObject.ParamFlags.READWRITE,
+                                            GObject.TYPE_BOOLEAN,
+                                            false),
+    },
     Signals: {
         'activate': { param_types: [Clutter.Event.$gtype] },
-        'active-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sensitive-changed': {},
     }
 }, class PopupBaseMenuItem extends St.BoxLayout {
@@ -77,7 +82,7 @@ var PopupBaseMenuItem = GObject.registerClass({
         this.add(this._ornamentLabel);
 
         this._parent = null;
-        this.active = false;
+        this._active = false;
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
 
@@ -94,7 +99,7 @@ var PopupBaseMenuItem = GObject.registerClass({
             this.connect('key-press-event', this._onKeyPressEvent.bind(this));
         }
         if (params.reactive && params.hover)
-            this.connect('notify::hover', this._onHoverChanged.bind(this));
+            this.bind_property('hover', this, 'active', GObject.BindingFlags.SYNC_CREATE);
     }
 
     get actor() {
@@ -160,26 +165,26 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     vfunc_key_focus_in() {
         super.vfunc_key_focus_in();
-        this.setActive(true);
+        this.active = true;
     }
 
     vfunc_key_focus_out() {
         super.vfunc_key_focus_out();
-        this.setActive(false);
-    }
-
-    _onHoverChanged(actor) {
-        this.setActive(actor.hover);
+        this.active = false;
     }
 
     activate(event) {
         this.emit('activate', event);
     }
 
-    setActive(active) {
+    get active() {
+        return this._active;
+    }
+
+    set active(active) {
         let activeChanged = active != this.active;
         if (activeChanged) {
-            this.active = active;
+            this._active = active;
             if (active) {
                 this.add_style_class_name('selected');
                 if (this.can_focus)
@@ -194,7 +199,7 @@ var PopupBaseMenuItem = GObject.registerClass({
                 // in the container
                 this.remove_style_pseudo_class('active');
             }
-            this.emit('active-changed', active);
+            this.notify('active');
         }
     }
 
@@ -518,16 +523,17 @@ var PopupMenuBase = class {
 
     _subMenuActiveChanged(submenu, submenuItem) {
         if (this._activeMenuItem && this._activeMenuItem != submenuItem)
-            this._activeMenuItem.setActive(false);
+            this._activeMenuItem.active = false;
         this._activeMenuItem = submenuItem;
         this.emit('active-changed', submenuItem);
     }
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('active-changed', (menuItem, active) => {
+        menuItem._activeChangeId = menuItem.connect('notify::active', (menuItem) => {
+            let active = menuItem.active;
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
-                    this._activeMenuItem.setActive(false);
+                    this._activeMenuItem.active = false;
                 this._activeMenuItem = menuItem;
                 this.emit('active-changed', menuItem);
             } else if (!active && this._activeMenuItem == menuItem) {
@@ -858,7 +864,7 @@ var PopupMenu = class extends PopupMenuBase {
 
     close(animate) {
         if (this._activeMenuItem)
-            this._activeMenuItem.setActive(false);
+            this._activeMenuItem.active = false;
 
         if (this._boxPointer.visible) {
             this._boxPointer.close(animate, () => {
@@ -997,7 +1003,7 @@ var PopupSubMenu = class extends PopupMenuBase {
         this.emit('open-state-changed', false);
 
         if (this._activeMenuItem)
-            this._activeMenuItem.setActive(false);
+            this._activeMenuItem.active = false;
 
         if (animate && this._needsScrollbar())
             animate = false;
@@ -1029,7 +1035,7 @@ var PopupSubMenu = class extends PopupMenuBase {
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
             this.close(BoxPointer.PopupAnimation.FULL);
-            this.sourceActor._delegate.setActive(true);
+            this.sourceActor._delegate.active = true;
             return Clutter.EVENT_STOP;
         }
 
