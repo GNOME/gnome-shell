@@ -1446,6 +1446,9 @@ var WindowManager = class {
     }
 
     _unminimizeWindowDone(shellwm, actor) {
+        let rect = actor.meta_window.get_frame_rect();
+        actor.set_position(rect.x, rect.y);
+
         if (this._removeEffect(this._unminimizing, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
