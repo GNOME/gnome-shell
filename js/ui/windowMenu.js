@@ -11,10 +11,10 @@ class WindowMenu extends PopupMenu.PopupMenu {
     _init(window, sourceActor) {
         super._init(sourceActor, 0, St.Side.TOP);
 
-        this.actor.add_style_class_name('window-menu');
+        this.add_style_class_name('window-menu');
 
-        Main.layoutManager.uiGroup.add_actor(this.actor);
-        this.actor.hide();
+        Main.layoutManager.uiGroup.add_actor(this);
+        this.hide();
 
         this._buildMenu(window);
     }

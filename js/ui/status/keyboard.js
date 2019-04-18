@@ -829,7 +829,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(this._propSeparator);
         this._propSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._propSection);
-        this._propSection.actor.hide();
+        this._propSection.hide();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), this._showLayout.bind(this));
@@ -922,15 +922,15 @@ class InputSourceIndicator extends PanelMenu.Button {
     }
 
     _buildPropSection(properties) {
-        this._propSeparator.actor.hide();
-        this._propSection.actor.hide();
+        this._propSeparator.hide();
+        this._propSection.hide();
         this._propSection.removeAll();
 
         this._buildPropSubMenu(this._propSection, properties);
 
         if (!this._propSection.isEmpty()) {
-            this._propSection.actor.show();
-            this._propSeparator.actor.show();
+            this._propSection.show();
+            this._propSeparator.show();
         }
     }
 

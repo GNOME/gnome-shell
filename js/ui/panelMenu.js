@@ -121,12 +121,12 @@ var Button = GObject.registerClass({
 
         this.menu = menu;
         if (this.menu) {
-            this.menu.actor.add_style_class_name('panel-menu');
+            this.menu.add_style_class_name('panel-menu');
             this.menu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
-            this.menu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
+            this.menu.connect('key-press-event', this._onMenuKeyPress.bind(this));
 
-            Main.uiGroup.add_actor(this.menu.actor);
-            this.menu.actor.hide();
+            Main.uiGroup.add_actor(this.menu);
+            this.menu.hide();
         }
         this.emit('menu-set');
     }
@@ -175,13 +175,13 @@ var Button = GObject.registerClass({
         // scrollable so the minimum height is smaller than the natural height
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let verticalMargins = this.menu.actor.margin_top + this.menu.actor.margin_bottom;
+        let verticalMargins = this.menu.margin_top + this.menu.margin_bottom;
 
         // The workarea and margin dimensions are in physical pixels, but CSS
         // measures are in logical pixels, so make sure to consider the scale
         // factor when computing max-height
         let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
-        this.menu.actor.style = ('max-height: %spx;').format(maxHeight);
+        this.menu.style = ('max-height: %spx;').format(maxHeight);
     }
 
     _onDestroy() {
