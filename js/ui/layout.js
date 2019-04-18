@@ -588,17 +588,17 @@ var LayoutManager = GObject.registerClass({
             return;
         }
         this._systemBackground = new Background.SystemBackground();
-        this._systemBackground.actor.hide();
+        this._systemBackground.hide();
 
-        global.stage.insert_child_below(this._systemBackground.actor, null);
+        global.stage.insert_child_below(this._systemBackground, null);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._systemBackground.actor.add_constraint(constraint);
+        this._systemBackground.add_constraint(constraint);
 
         let signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
-            this._systemBackground.actor.show();
+            this._systemBackground.show();
             global.stage.show();
 
             this._prepareStartupAnimation();
@@ -704,7 +704,7 @@ var LayoutManager = GObject.registerClass({
         this._coverPane.destroy();
         this._coverPane = null;
 
-        this._systemBackground.actor.destroy();
+        this._systemBackground.destroy();
         this._systemBackground = null;
 
         this._startingUp = false;
