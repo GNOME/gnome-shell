@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, Gvc, St } = imports.gi;
+const { Clutter, Gio, GObject, Gvc, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -40,7 +40,7 @@ var StreamSlider = class {
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
-        this.item.add(this._slider.actor, { expand: true });
+        this.item.add(this._slider, { expand: true });
         this.item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
@@ -194,7 +194,7 @@ Signals.addSignalMethods(StreamSlider.prototype);
 var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Volume");
+        this._slider.accessible_name = _("Volume");
     }
 
     _connectStream(stream) {
@@ -242,7 +242,7 @@ var OutputStreamSlider = class extends StreamSlider {
 var InputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Microphone");
+        this._slider.accessible_name = _("Microphone");
         this._control.connect('stream-added', this._maybeShowInput.bind(this));
         this._control.connect('stream-removed', this._maybeShowInput.bind(this));
         this._icon.icon_name = 'audio-input-microphone-symbolic';
@@ -338,9 +338,11 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass({
+    GTypeName: 'Volume_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._primaryIndicator = this._addIndicator();
 
@@ -350,16 +352,16 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             let icon = this._volumeMenu.getIcon();
 
             if (icon != null) {
-                this.indicators.show();
+                this.show();
                 this._primaryIndicator.icon_name = icon;
             } else {
-                this.indicators.hide();
+                this.hide();
             }
         });
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.indicators.connect('scroll-event', this._onScrollEvent.bind(this));
+        this.connect('scroll-event', this._onScrollEvent.bind(this));
     }
 
     _onScrollEvent(actor, event) {
@@ -373,4 +375,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
-};
+});

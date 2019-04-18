@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Gio, GnomeBluetooth } = imports.gi;
+const { Gio, GnomeBluetooth, GObject } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -16,9 +16,11 @@ const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass({
+    GTypeName: 'Bluetooth_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
@@ -132,4 +134,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
     }
-};
+});

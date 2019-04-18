@@ -295,8 +295,8 @@ var AppMenuButton = GObject.registerClass({
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
-        this._spinner.actor.hide();
+        this._container.add_actor(this._spinner);
+        this._spinner.hide();
     }
 
     _syncIcon() {
@@ -323,16 +323,16 @@ var AppMenuButton = GObject.registerClass({
         if (this._spinner == null)
             return;
 
-        Tweener.addTween(this._spinner.actor,
-                         { opacity: 0,
-                           time: SPINNER_ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: () => {
-                               this._spinner.stop();
-                               this._spinner.actor.opacity = 255;
-                               this._spinner.actor.hide();
-                           }
-                         });
+        Tweener.addTween(this._spinner, {
+            opacity: 0,
+            time: SPINNER_ANIMATION_TIME,
+            transition: "easeOutQuad",
+            onComplete: () => {
+                this._spinner.stop();
+                this._spinner.opacity = 255;
+                this._spinner.hide();
+            }
+        });
     }
 
     startAnimation() {
@@ -342,7 +342,7 @@ var AppMenuButton = GObject.registerClass({
             return;
 
         this._spinner.play();
-        this._spinner.actor.show();
+        this._spinner.show();
     }
 
     _onAppStateChanged(appSys, app) {
@@ -540,13 +540,12 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 });
 
-var PanelCorner = class {
-    constructor(side) {
+var PanelCorner = GObject.registerClass(
+class PanelCorner extends St.DrawingArea {
+    _init(side) {
         this._side = side;
 
-        this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
-        this.actor.connect('style-changed', this._styleChanged.bind(this));
-        this.actor.connect('repaint', this._repaint.bind(this));
+        super._init({ style_class: 'panel-corner' });
     }
 
     _findRightmostButton(container) {
@@ -636,7 +635,7 @@ var PanelCorner = class {
             this._buttonStyleChangedSignalId = button.connect('style-changed',
                 actor => {
                     let pseudoClass = button.get_style_pseudo_class();
-                    this.actor.set_style_pseudo_class(pseudoClass);
+                    this.set_style_pseudo_class(pseudoClass);
                 });
 
             // The corner doesn't support theme transitions, so override
@@ -645,8 +644,8 @@ var PanelCorner = class {
         }
     }
 
-    _repaint() {
-        let node = this.actor.get_theme_node();
+    vfunc_repaint() {
+        let node = this.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
         let borderWidth = node.get_length('-panel-corner-border-width');
@@ -657,7 +656,7 @@ var PanelCorner = class {
         let overlap = borderColor.alpha != 0;
         let offsetY = overlap ? 0 : borderWidth;
 
-        let cr = this.actor.get_context();
+        let cr = this.get_context();
         cr.setOperator(Cairo.Operator.SOURCE);
 
         cr.moveTo(0, offsetY);
@@ -693,16 +692,17 @@ var PanelCorner = class {
         cr.$dispose();
     }
 
-    _styleChanged() {
-        let node = this.actor.get_theme_node();
+    vfunc_style_changed() {
+        super.vfunc_style_changed();
+        let node = this.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
         let borderWidth = node.get_length('-panel-corner-border-width');
 
-        this.actor.set_size(cornerRadius, borderWidth + cornerRadius);
-        this.actor.set_anchor_point(0, borderWidth);
+        this.set_size(cornerRadius, borderWidth + cornerRadius);
+        this.set_anchor_point(0, borderWidth);
     }
-};
+});
 
 var AggregateLayout = GObject.registerClass(
 class AggregateLayout extends Clutter.BoxLayout {
@@ -767,20 +767,20 @@ class AggregateMenu extends PanelMenu.Button {
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
-        this._indicators.add_child(this._thunderbolt.indicators);
-        this._indicators.add_child(this._screencast.indicators);
-        this._indicators.add_child(this._location.indicators);
-        this._indicators.add_child(this._nightLight.indicators);
+        this._indicators.add_child(this._thunderbolt);
+        this._indicators.add_child(this._screencast);
+        this._indicators.add_child(this._location);
+        this._indicators.add_child(this._nightLight);
         if (this._network) {
-            this._indicators.add_child(this._network.indicators);
+            this._indicators.add_child(this._network);
         }
         if (this._bluetooth) {
-            this._indicators.add_child(this._bluetooth.indicators);
+            this._indicators.add_child(this._bluetooth);
         }
-        this._indicators.add_child(this._remoteAccess.indicators);
-        this._indicators.add_child(this._rfkill.indicators);
-        this._indicators.add_child(this._volume.indicators);
-        this._indicators.add_child(this._power.indicators);
+        this._indicators.add_child(this._remoteAccess);
+        this._indicators.add_child(this._rfkill);
+        this._indicators.add_child(this._volume);
+        this._indicators.add_child(this._power);
         this._indicators.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
         this.menu.addMenuItem(this._volume.menu);
@@ -838,10 +838,10 @@ class Panel extends St.Widget {
         this.add_child(this._rightBox);
 
         this._leftCorner = new PanelCorner(St.Side.LEFT);
-        this.add_child(this._leftCorner.actor);
+        this.add_child(this._leftCorner);
 
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
-        this.add_child(this._rightCorner.actor);
+        this.add_child(this._rightCorner);
 
         this.connect('button-press-event', this._onButtonPress.bind(this));
         this.connect('touch-event', this._onButtonPress.bind(this));
@@ -935,21 +935,21 @@ class Panel extends St.Widget {
         let cornerMinWidth, cornerMinHeight;
         let cornerWidth, cornerHeight;
 
-        [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
+        [cornerMinWidth, cornerWidth] = this._leftCorner.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = this._leftCorner.get_preferred_height(-1);
         childBox.x1 = 0;
         childBox.x2 = cornerWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
-        this._leftCorner.actor.allocate(childBox, flags);
+        this._leftCorner.allocate(childBox, flags);
 
-        [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
+        [cornerMinWidth, cornerWidth] = this._rightCorner.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = this._rightCorner.get_preferred_height(-1);
         childBox.x1 = allocWidth - cornerWidth;
         childBox.x2 = allocWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
-        this._rightCorner.actor.allocate(childBox, flags);
+        this._rightCorner.allocate(childBox, flags);
     }
 
     _onButtonPress(actor, event) {
@@ -1154,14 +1154,14 @@ class Panel extends St.Widget {
 
     _addStyleClassName(className) {
         this.add_style_class_name(className);
-        this._rightCorner.actor.add_style_class_name(className);
-        this._leftCorner.actor.add_style_class_name(className);
+        this._rightCorner.add_style_class_name(className);
+        this._leftCorner.add_style_class_name(className);
     }
 
     _removeStyleClassName(className) {
         this.remove_style_class_name(className);
-        this._rightCorner.actor.remove_style_class_name(className);
-        this._leftCorner.actor.remove_style_class_name(className);
+        this._rightCorner.remove_style_class_name(className);
+        this._leftCorner.remove_style_class_name(className);
     }
 
     _onMenuSet(indicator) {

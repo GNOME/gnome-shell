@@ -860,7 +860,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                                                  y_align: Clutter.ActorAlign.CENTER });
 
         this._noNetworksSpinner = new Animation.Spinner(16);
-        this._noNetworksBox.add_actor(this._noNetworksSpinner.actor);
+        this._noNetworksBox.add_actor(this._noNetworksSpinner);
         this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
                                                      text: _("No Networks") }));
         this._stack.add_child(this._noNetworksBox);
@@ -1587,9 +1587,11 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var NMApplet = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var NMApplet = GObject.registerClass({
+    GTypeName: 'Network_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._primaryIndicator = this._addIndicator();
         this._vpnIndicator = this._addIndicator();
@@ -1938,7 +1940,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
     }
 
     _syncNMState() {
-        this.indicators.visible = this._client.nm_running;
+        this.visible = this._client.nm_running;
         this.menu.actor.visible = this._client.networking_enabled;
 
         this._updateIcon();
@@ -2058,4 +2060,4 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
         this._vpnIndicator.visible = (this._vpnIndicator.icon_name != '');
     }
-};
+});

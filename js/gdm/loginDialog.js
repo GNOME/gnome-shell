@@ -18,7 +18,6 @@
 
 const { AccountsService, Atk, Clutter, Gdm, Gio,
         GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const AuthPrompt = imports.gdm.authPrompt;
 const Batch = imports.gdm.batch;
@@ -39,44 +38,50 @@ const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
-var UserListItem = class {
-    constructor(user) {
+var UserListItem = GObject.registerClass({
+    GTypeName: 'LoginDialog_UserListItem',
+    Signals: { 'activate': {} }
+}, class UserListItem extends St.Button {
+    _init(user) {
+        let layout = new St.BoxLayout({ vertical: true });
+        super._init({
+            style_class: 'login-dialog-user-list-item',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            can_focus: true,
+            child: layout,
+            reactive: true,
+            x_align: St.Align.START,
+            x_fill: true
+        });
+
         this.user = user;
         this._userChangedId = this.user.connect('changed',
                                                 this._onUserChanged.bind(this));
 
-        let layout = new St.BoxLayout({ vertical: true });
-        this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                     can_focus: true,
-                                     child: layout,
-                                     reactive: true,
-                                     x_align: St.Align.START,
-                                     x_fill: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
-        this.actor.connect('key-focus-in', () => {
+        this.connect('key-focus-in', () => {
             this._setSelected(true);
         });
-        this.actor.connect('key-focus-out', () => {
+        this.connect('key-focus-out', () => {
             this._setSelected(false);
         });
-        this.actor.connect('notify::hover', () => {
-            this._setSelected(this.actor.hover);
+        this.connect('notify::hover', () => {
+            this._setSelected(this.hover);
         });
 
         this._userWidget = new UserWidget.UserWidget(this.user);
-        layout.add(this._userWidget.actor);
+        layout.add(this._userWidget);
 
-        this._userWidget.actor.bind_property('label-actor', this.actor, 'label-actor',
-                                             GObject.BindingFlags.SYNC_CREATE);
+        this._userWidget.bind_property('label-actor', this, 'label-actor',
+                                       GObject.BindingFlags.SYNC_CREATE);
 
         this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
                                                  scale_x: 0,
                                                  visible: false });
         layout.add(this._timedLoginIndicator);
 
-        this.actor.connect('clicked', this._onClicked.bind(this));
+        this.connect('clicked', this._onClicked.bind(this));
         this._onUserChanged();
     }
 
@@ -86,9 +91,9 @@ var UserListItem = class {
 
     _updateLoggedIn() {
         if (this.user.is_logged_in())
-            this.actor.add_style_pseudo_class('logged-in');
+            this.add_style_pseudo_class('logged-in');
         else
-            this.actor.remove_style_pseudo_class('logged-in');
+            this.remove_style_pseudo_class('logged-in');
     }
 
     _onDestroy() {
@@ -101,10 +106,10 @@ var UserListItem = class {
 
     _setSelected(selected) {
         if (selected) {
-            this.actor.add_style_pseudo_class('selected');
-            this.actor.grab_key_focus();
+            this.add_style_pseudo_class('selected');
+            this.grab_key_focus();
         } else {
-            this.actor.remove_style_pseudo_class('selected');
+            this.remove_style_pseudo_class('selected');
         }
     }
 
@@ -145,23 +150,28 @@ var UserListItem = class {
         this._timedLoginIndicator.visible = false;
         this._timedLoginIndicator.scale_x = 0.;
     }
-};
-Signals.addSignalMethods(UserListItem.prototype);
+});
 
-var UserList = class {
-    constructor() {
-        this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view' });
-        this.actor.set_policy(St.PolicyType.NEVER,
-                              St.PolicyType.AUTOMATIC);
+var UserList = GObject.registerClass({
+    GTypeName: 'LoginDialog_UserList',
+    Signals: {
+        'activate': { param_types: [UserListItem.$gtype] },
+        'item-added': { param_types: [UserListItem.$gtype] },
+    }
+}, class UserList extends St.ScrollView {
+    _init() {
+        super._init({ style_class: 'login-dialog-user-list-view' });
+        this.set_policy(St.PolicyType.NEVER,
+                        St.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({ vertical: true,
                                        style_class: 'login-dialog-user-list',
                                        pseudo_class: 'expanded' });
 
-        this.actor.add_actor(this._box);
+        this.add_actor(this._box);
         this._items = {};
 
-        this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
+        this.connect('key-focus-in', this._moveFocusToItems.bind(this));
     }
 
     _moveFocusToItems() {
@@ -170,10 +180,10 @@ var UserList = class {
         if (!hasItems)
             return;
 
-        if (global.stage.get_key_focus() != this.actor)
+        if (global.stage.get_key_focus() != this)
             return;
 
-        let focusSet = this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        let focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
@@ -194,14 +204,14 @@ var UserList = class {
 
         for (let userName in this._items) {
             let item = this._items[userName];
-            item.actor.sync_hover();
+            item.sync_hover();
         }
     }
 
     scrollToItem(item) {
-        let box = item.actor.get_allocation_box();
+        let box = item.get_allocation_box();
 
-        let adjustment = this.actor.get_vscroll_bar().get_adjustment();
+        let adjustment = this.get_vscroll_bar().get_adjustment();
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         Tweener.removeTweens(adjustment);
@@ -212,9 +222,9 @@ var UserList = class {
     }
 
     jumpToItem(item) {
-        let box = item.actor.get_allocation_box();
+        let box = item.get_allocation_box();
 
-        let adjustment = this.actor.get_vscroll_bar().get_adjustment();
+        let adjustment = this.get_vscroll_bar().get_adjustment();
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
@@ -252,14 +262,14 @@ var UserList = class {
         this.removeUser(user);
 
         let item = new UserListItem(user);
-        this._box.add(item.actor, { x_fill: true });
+        this._box.add(item, { x_fill: true });
 
         this._items[userName] = item;
 
         item.connect('activate', this._onItemActivated.bind(this));
 
         // Try to keep the focused item front-and-center
-        item.actor.connect('key-focus-in', () => this.scrollToItem(item));
+        item.connect('key-focus-in', () => this.scrollToItem(item));
 
         this._moveFocusToItems();
 
@@ -280,33 +290,36 @@ var UserList = class {
         if (!item)
             return;
 
-        item.actor.destroy();
+        item.destroy();
         delete this._items[userName];
     }
 
     numItems() {
         return Object.keys(this._items).length;
     }
-};
-Signals.addSignalMethods(UserList.prototype);
+});
 
-var SessionMenuButton = class {
-    constructor() {
+var SessionMenuButton = GObject.registerClass({
+    GTypeName: 'LoginDialog_SessionMenuButton',
+    Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } }
+}, class SessionMenuButton extends St.Bin {
+    _init() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
-        this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
-                                       reactive: true,
-                                       track_hover: true,
-                                       can_focus: true,
-                                       accessible_name: _("Choose Session"),
-                                       accessible_role: Atk.Role.MENU,
-                                       child: gearIcon });
+        let button = new St.Button({ style_class: 'login-dialog-session-list-button',
+                                     reactive: true,
+                                     track_hover: true,
+                                     can_focus: true,
+                                     accessible_name: _("Choose Session"),
+                                     accessible_role: Atk.Role.MENU,
+                                     child: gearIcon });
 
-        this.actor = new St.Bin({ child: this._button });
+        super._init({ child: button });
+        this._button = button;
 
         let side = St.Side.TOP;
         let align = 0;
         if (Gdm.get_session_ids().length > _MAX_BOTTOM_MENU_ITEMS) {
-            if (this.actor.text_direction == Clutter.TextDirection.RTL)
+            if (this.text_direction == Clutter.TextDirection.RTL)
                 side = St.Side.RIGHT;
             else
                 side = St.Side.LEFT;
@@ -385,15 +398,13 @@ var SessionMenuButton = class {
             });
         }
     }
-};
-Signals.addSignalMethods(SessionMenuButton.prototype);
+});
 
 var LoginDialog = GObject.registerClass({
     Signals: { 'failed': {} },
 }, class LoginDialog extends St.Widget {
     _init(parentActor) {
-        super._init({ style_class: 'login-dialog',
-                      visible: false });
+        super._init({ style_class: 'login-dialog', visible: false });
 
         this.get_accessible().set_role(Atk.Role.WINDOW);
 
@@ -427,7 +438,7 @@ var LoginDialog = GObject.registerClass({
         this.add_child(this._userSelectionBox);
 
         this._userList = new UserList();
-        this._userSelectionBox.add(this._userList.actor,
+        this._userSelectionBox.add(this._userList,
                                    { expand: true,
                                      x_fill: true,
                                      y_fill: true });
@@ -436,7 +447,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.hide();
-        this.add_child(this._authPrompt.actor);
+        this.add_child(this._authPrompt);
 
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
@@ -495,9 +506,9 @@ var LoginDialog = GObject.registerClass({
             (list, sessionId) => {
                 this._greeter.call_select_session_sync (sessionId, null);
             });
-        this._sessionMenuButton.actor.opacity = 0;
-        this._sessionMenuButton.actor.show();
-        this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
+        this._sessionMenuButton.opacity = 0;
+        this._sessionMenuButton.show();
+        this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton);
 
         this._disableUserList = undefined;
         this._userListLoaded = false;
@@ -580,8 +591,8 @@ var LoginDialog = GObject.registerClass({
 
         let authPromptAllocation = null;
         let authPromptWidth = 0;
-        if (this._authPrompt.actor.visible) {
-            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt.actor);
+        if (this._authPrompt.visible) {
+            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt);
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 
@@ -691,7 +702,7 @@ var LoginDialog = GObject.registerClass({
         }
 
         if (authPromptAllocation)
-            this._authPrompt.actor.allocate(authPromptAllocation, flags);
+            this._authPrompt.allocate(authPromptAllocation, flags);
 
         if (userSelectionAllocation)
             this._userSelectionBox.allocate(userSelectionAllocation, flags);
@@ -794,7 +805,7 @@ var LoginDialog = GObject.registerClass({
     _onPrompted() {
         if (this._shouldShowSessionMenuButton()) {
             this._sessionMenuButton.updateSensitivity(true);
-            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
+            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton);
         } else {
             this._sessionMenuButton.updateSensitivity(false);
         }
@@ -854,11 +865,11 @@ var LoginDialog = GObject.registerClass({
     }
 
     _showPrompt() {
-        if (this._authPrompt.actor.visible)
+        if (this._authPrompt.visible)
             return;
-        this._authPrompt.actor.opacity = 0;
-        this._authPrompt.actor.show();
-        Tweener.addTween(this._authPrompt.actor,
+        this._authPrompt.opacity = 0;
+        this._authPrompt.show();
+        Tweener.addTween(this._authPrompt,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
@@ -1044,12 +1055,12 @@ var LoginDialog = GObject.registerClass({
                      () => {
                          // If idle timeout is done, make sure the timed login indicator is shown
                          if (delay > _TIMED_LOGIN_IDLE_THRESHOLD &&
-                             this._authPrompt.actor.visible)
+                             this._authPrompt.visible)
                              this._authPrompt.cancel();
 
                          if (delay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
                              this._userList.scrollToItem(loginItem);
-                             loginItem.actor.grab_key_focus();
+                             loginItem.grab_key_focus();
                          }
                      },
 
@@ -1110,7 +1121,7 @@ var LoginDialog = GObject.registerClass({
         this._sessionMenuButton.close();
         this._setUserListExpanded(true);
         this._notListedButton.show();
-        this._userList.actor.grab_key_focus();
+        this._userList.grab_key_focus();
     }
 
     _beginVerificationForItem(item) {
@@ -1218,7 +1229,7 @@ var LoginDialog = GObject.registerClass({
                                         _("Login Window"),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
-        this._userList.actor.grab_key_focus();
+        this._userList.grab_key_focus();
         this.show();
         this.opacity = 0;
 
