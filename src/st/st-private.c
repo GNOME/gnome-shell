@@ -204,9 +204,7 @@ _st_create_texture_pipeline (CoglTexture *src_texture)
         clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
       texture_pipeline_template = cogl_pipeline_new (ctx);
-      cogl_pipeline_set_layer_null_texture (texture_pipeline_template,
-                                            0, /* layer */
-                                            COGL_TEXTURE_TYPE_2D);
+      cogl_pipeline_set_layer_null_texture (texture_pipeline_template, 0);
     }
 
   pipeline = cogl_pipeline_copy (texture_pipeline_template);
