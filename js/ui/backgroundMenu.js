@@ -1,14 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, St } = imports.gi;
+const { Clutter, GObject, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 
-var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
-    constructor(layoutManager) {
-        super(layoutManager.dummyCursor, 0, St.Side.TOP);
+var BackgroundMenu = GObject.registerClass(
+class BackgroundMenu extends PopupMenu.PopupMenu {
+    _init(layoutManager) {
+        super._init(layoutManager.dummyCursor, 0, St.Side.TOP);
 
         this.addSettingsAction(_("Change Background…"), 'gnome-background-panel.desktop');
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -20,7 +21,7 @@ var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
         layoutManager.uiGroup.add_actor(this.actor);
         this.actor.hide();
     }
-};
+});
 
 function addBackgroundMenu(actor, layoutManager) {
     actor.reactive = true;
