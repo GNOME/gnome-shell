@@ -397,8 +397,8 @@ var PopupImageMenuItem = class extends PopupBaseMenuItem {
 
 var PopupMenuBase = class {
     constructor(sourceActor, styleClass) {
-        if (new.target === PopupMenuBase)
-            throw new TypeError('Cannot instantiate abstract class ' + new.target.name);
+        if (this.constructor === PopupMenuBase)
+            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
 
         this.sourceActor = sourceActor;
         this._parent = null;
