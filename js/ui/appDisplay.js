@@ -1687,7 +1687,7 @@ var AppIconMenu = GObject.registerClass({
 
         this._source = source;
 
-        this.actor.add_style_class_name('app-well-menu');
+        this.add_style_class_name('app-well-menu');
 
         // Chain our visibility and lifecycle to that of the source
         this._sourceMappedId = source.actor.connect('notify::mapped', () => {
@@ -1699,7 +1699,7 @@ var AppIconMenu = GObject.registerClass({
             this.destroy();
         });
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.uiGroup.add_actor(this);
     }
 
     _redisplay() {
