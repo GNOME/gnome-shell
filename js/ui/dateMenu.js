@@ -508,7 +508,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         // Fill up the first column
         this._messageList = new Calendar.CalendarMessageList();
-        hbox.add(this._messageList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
+        hbox.add(this._messageList, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Fill up the second column
         let boxLayout = new CalendarColumnLayout(this._calendar);
