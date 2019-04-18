@@ -1300,7 +1300,7 @@ var ZoomRegion = class ZoomRegion {
 
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).
-        this._background = (new Background.SystemBackground()).actor;
+        this._background = new Background.SystemBackground();
         mainGroup.add_actor(this._background);
 
         // Clone the group that contains all of UI on the screen.  This is the
