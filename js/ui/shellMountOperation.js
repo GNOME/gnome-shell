@@ -373,7 +373,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this.setInitialKeyFocus(this._passwordEntry);
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
-        this._passwordEntry.secondary_icon = this._workSpinner.actor;
+        this._passwordEntry.secondary_icon = this._workSpinner;
 
         if (rtl) {
             layout.attach(this._passwordEntry, 0, 1, 1, 1);

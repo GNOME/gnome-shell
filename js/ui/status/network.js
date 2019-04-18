@@ -856,7 +856,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                                                  y_align: Clutter.ActorAlign.CENTER });
 
         this._noNetworksSpinner = new Animation.Spinner(16);
-        this._noNetworksBox.add_actor(this._noNetworksSpinner.actor);
+        this._noNetworksBox.add_actor(this._noNetworksSpinner);
         this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
                                                      text: _("No Networks") }));
         this._stack.add_child(this._noNetworksBox);
