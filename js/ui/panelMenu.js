@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Atk, Clutter, GObject, St } = imports.gi;
-const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -199,24 +198,33 @@ var Button = GObject.registerClass({
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-var SystemIndicator = class {
-    constructor() {
-        this.indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box',
-                                             reactive: true });
-        this.indicators.hide();
+var SystemIndicator = GObject.registerClass(
+class PanelMenuSystemIndicator extends St.BoxLayout {
+    _init() {
+        super._init({
+            style_class: 'panel-status-indicators-box',
+            reactive: true,
+            visible: false
+        });
         this.menu = new PopupMenu.PopupMenuSection();
     }
 
+    get indicators() {
+        let klass = this.constructor.name;
+        let { stack } = new Error();
+        log(`Usage of indicator.indicators is deprecated for ${klass}\n${stack}`);
+        return this;
+    }
+
     _syncIndicatorsVisible() {
-        this.indicators.visible = this.indicators.get_children().some(a => a.visible);
+        this.visible = this.get_children().some(a => a.visible);
     }
 
     _addIndicator() {
         let icon = new St.Icon({ style_class: 'system-status-icon' });
-        this.indicators.add_actor(icon);
+        this.add_actor(icon);
         icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();
         return icon;
     }
-};
-Signals.addSignalMethods(SystemIndicator.prototype);
+});

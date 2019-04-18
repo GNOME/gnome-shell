@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Gio, St } = imports.gi;
+const { Gio, GObject, St } = imports.gi;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -14,9 +14,10 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super('display-brightness-symbolic');
+var Indicator = GObject.registerClass(
+class BrightnessIndicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                           (proxy, error) => {
                                               if (error) {
@@ -33,12 +34,12 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._slider = new Slider.Slider(0);
         this._slider.connect('value-changed', this._sliderChanged.bind(this));
-        this._slider.actor.accessible_name = _("Brightness");
+        this._slider.accessible_name = _("Brightness");
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });
         this._item.add(icon);
-        this._item.add(this._slider.actor, { expand: true });
+        this._item.add(this._slider, { expand: true });
         this._item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
@@ -59,4 +60,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         if (visible)
             this._slider.setValue(this._proxy.Brightness / 100.0);
     }
-};
+});
