@@ -76,13 +76,13 @@ class KeyringDialog extends ModalDialog.ModalDialog {
             this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
 
             if (rtl) {
-                layout.attach(this._workSpinner.actor, 0, row, 1, 1);
+                layout.attach(this._workSpinner, 0, row, 1, 1);
                 layout.attach(this._passwordEntry, 1, row, 1, 1);
                 layout.attach(label, 2, row, 1, 1);
             } else {
                 layout.attach(label, 0, row, 1, 1);
                 layout.attach(this._passwordEntry, 1, row, 1, 1);
-                layout.attach(this._workSpinner.actor, 2, row, 1, 1);
+                layout.attach(this._workSpinner, 2, row, 1, 1);
             }
             row++;
         } else {
