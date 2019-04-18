@@ -1672,13 +1672,15 @@ var AppIcon = class AppIcon {
 };
 Signals.addSignalMethods(AppIcon.prototype);
 
-var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
-    constructor(source) {
+var AppIconMenu = GObject.registerClass({
+    Signals: { 'activate-window': { param_types: [Meta.Window.$gtype] } },
+}, class AppIconMenu extends PopupMenu.PopupMenu {
+    _init(source) {
         let side = St.Side.LEFT;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        super(source.actor, 0.5, side);
+        super._init(source.actor, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
@@ -1821,8 +1823,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         this._redisplay();
         this.open();
     }
-};
-Signals.addSignalMethods(AppIconMenu.prototype);
+});
 
 var SystemActionIcon = class SystemActionIcon extends Search.GridSearchResult {
     activate() {

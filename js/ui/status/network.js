@@ -1515,9 +1515,10 @@ var NMVpnSection = class extends NMConnectionSection {
 };
 Signals.addSignalMethods(NMVpnSection.prototype);
 
-var DeviceCategory = class extends PopupMenu.PopupMenuSection {
-    constructor(category) {
-        super();
+var DeviceCategory = GObject.registerClass(
+class DeviceCategory extends PopupMenu.PopupMenuSection {
+    _init(category) {
+        super._init();
 
         this._category = category;
 
@@ -1575,7 +1576,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
         }
         return '';
     }
-};
+});
 
 var NMApplet = class extends PanelMenu.SystemIndicator {
     constructor() {

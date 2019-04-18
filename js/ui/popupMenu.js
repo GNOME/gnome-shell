@@ -16,9 +16,8 @@ var Ornament = {
 };
 
 function isPopupMenuItemVisible(child) {
-    if (child._delegate instanceof PopupMenuSection)
-        if (child._delegate.isEmpty())
-            return false;
+    if (child instanceof PopupMenuSection && child.isEmpty())
+        return false;
     return child.visible;
 }
 
@@ -51,16 +50,40 @@ function arrowIcon(side) {
     return arrow;
 }
 
+var PopupItemInterface = GObject.registerClass({
+    Requires: [ GObject.Object ],
+    Properties: {
+        'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
+                                               GObject.ParamFlags.READWRITE,
+                                               GObject.TYPE_BOOLEAN,
+                                               true),
+    },
+}, class PopupItemInterface extends GObject.Interface {
+    get sensitive() {
+        throw new GObject.NotImplementedError();
+    }
+
+    set sensitive(sensitive) {
+        throw new GObject.NotImplementedError();
+    }
+
+    setSensitive(sensitive) {
+        this.sensitive = sensitive;
+    }
+
+    getSensitive() {
+        return this.sensitive;
+    }
+});
+
 var PopupBaseMenuItem = GObject.registerClass({
+    Implements: [ PopupItemInterface ],
     Properties: {
         'active': GObject.ParamSpec.boolean('active', 'active', 'active',
                                             GObject.ParamFlags.READWRITE,
                                             GObject.TYPE_BOOLEAN,
                                             false),
-        'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
-                                               GObject.ParamFlags.READWRITE,
-                                               GObject.TYPE_BOOLEAN,
-                                               true),
+        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
     },
     Signals: {
         'activate': { param_types: [Clutter.Event.$gtype] },
@@ -78,7 +101,6 @@ var PopupBaseMenuItem = GObject.registerClass({
                       track_hover: params.reactive,
                       can_focus: params.can_focus,
                       accessible_role: Atk.Role.MENU_ITEM });
-        this._delegate = this;
 
         this._ornament = Ornament.NONE;
         this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
@@ -103,12 +125,6 @@ var PopupBaseMenuItem = GObject.registerClass({
         }
         if (params.reactive && params.hover)
             this.connect('notify::hover', () => { this.active = this.hover; });
-    }
-
-    get actor() {
-        /* This is kept for compatibility with current implementation, and we
-           don't want to warn here yet since PopupMenu depends on this */
-        return this;
     }
 
     _getTopMenu() {
@@ -230,14 +246,6 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._sensitive = sensitive;
         this.syncSensitive();
-    }
-
-    getSensitive() {
-        return this.sensitive;
-    }
-
-    setSensitive(sensitive) {
-        this.sensitive = sensitive;
     }
 
     setOrnament(ornament) {
@@ -424,13 +432,43 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var PopupMenuBase = class {
-    constructor(sourceActor, styleClass) {
-        if (new.target === PopupMenuBase)
-            throw new TypeError('Cannot instantiate abstract class ' + new.target.name);
+var PopupMenuInterface = GObject.registerClass({
+    Requires: [ PopupItemInterface ],
+    Signals: {
+        'activate': { param_types: [ PopupBaseMenuItem.$gtype ] },
+        'active-changed': { param_types: [ PopupBaseMenuItem.$gtype ] },
+        'menu-closed': {},
+        'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+    },
+}, class PopupMenuInterface extends GObject.Interface {
+    get sourceActor() {
+        return this._sourceActor;
+    }
 
-        this.sourceActor = sourceActor;
-        this._parent = null;
+    get isOpen() {
+        return !!this._isOpen;
+    }
+
+    set isOpen(open) {
+        this._isOpen = open;
+    }
+
+    open() {
+        throw new GObject.NotImplementedError();
+    }
+
+    close() {
+        throw new GObject.NotImplementedError();
+    }
+
+    toggle() {}
+});
+
+var PopupMenuBaseInterface = GObject.registerClass({
+    Requires: [ PopupItemInterface, PopupMenuInterface ],
+}, class PopupMenuBaseInterface extends GObject.Interface {
+    _init_menu(sourceActor, styleClass) {
+        this._sourceActor = sourceActor;
 
         if (styleClass !== undefined) {
             this.box = new St.BoxLayout({ style_class: styleClass,
@@ -439,8 +477,6 @@ var PopupMenuBase = class {
             this.box = new St.BoxLayout({ vertical: true });
         }
         this.length = 0;
-
-        this.isOpen = false;
 
         // If set, we don't send events (including crossing events) to the source actor
         // for the menu which causes its prelight state to freeze
@@ -452,6 +488,7 @@ var PopupMenuBase = class {
         this._sensitive = true;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _getTopMenu() {
@@ -471,16 +508,10 @@ var PopupMenuBase = class {
     }
 
     set sensitive(sensitive) {
+        if (this._sensitive == sensitive)
+            return;
         this._sensitive = sensitive;
-        this.emit('notify::sensitive');
-    }
-
-    getSensitive() {
-        return this.sensitive;
-    }
-
-    setSensitive(sensitive) {
-        this.sensitive = sensitive;
+        this.notify('sensitive');
     }
 
     _sessionUpdated() {
@@ -531,7 +562,7 @@ var PopupMenuBase = class {
 
     isEmpty() {
         let hasVisibleChildren = this.box.get_children().some(child => {
-            if (child._delegate instanceof PopupSeparatorMenuItem)
+            if (child instanceof PopupSeparatorMenuItem)
                 return false;
             return isPopupMenuItemVisible(child);
         });
@@ -569,13 +600,13 @@ var PopupMenuBase = class {
         menuItem._sensitiveChangeId = menuItem.connect('notify::sensitive', () => {
             let sensitive = menuItem.sensitive;
             if (!sensitive && this._activeMenuItem == menuItem) {
-                if (!this.actor.navigate_focus(menuItem.actor,
-                                               St.DirectionType.TAB_FORWARD,
-                                               true))
-                    this.actor.grab_key_focus();
+                if (!this.navigate_focus(menuItem,
+                                         St.DirectionType.TAB_FORWARD,
+                                         true))
+                    this.grab_key_focus();
             } else if (sensitive && this._activeMenuItem == null) {
-                if (global.stage.get_key_focus() == this.actor)
-                    menuItem.actor.grab_key_focus();
+                if (global.stage.get_key_focus() == this)
+                    menuItem.grab_key_focus();
             }
         });
         menuItem._activateId = menuItem.connect('activate', (menuItem, event) => {
@@ -608,7 +639,7 @@ var PopupMenuBase = class {
 
         let children = this.box.get_children();
 
-        let index = children.indexOf(menuItem.actor);
+        let index = children.indexOf(menuItem);
 
         if (index < 0)
             return;
@@ -619,8 +650,8 @@ var PopupMenuBase = class {
             childBeforeIndex--;
 
         if (childBeforeIndex < 0
-            || children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
-            menuItem.actor.hide();
+            || children[childBeforeIndex] instanceof PopupSeparatorMenuItem) {
+            menuItem.hide();
             return;
         }
 
@@ -630,8 +661,8 @@ var PopupMenuBase = class {
             childAfterIndex++;
 
         if (childAfterIndex >= children.length
-            || children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
-            menuItem.actor.hide();
+            || children[childAfterIndex] instanceof PopupSeparatorMenuItem) {
+            menuItem.hide();
             return;
         }
 
@@ -649,24 +680,24 @@ var PopupMenuBase = class {
         }
 
         if (i < items.length) {
-                if (items[i] != menuItem)
-                        this.box.set_child_below_sibling(menuItem.actor, items[i].actor);
+            if (items[i] != menuItem)
+                this.box.set_child_below_sibling(menuItem, items[i]);
         } else {
-                this.box.set_child_above_sibling(menuItem.actor, null);
+            this.box.set_child_above_sibling(menuItem, null);
         }
     }
 
     addMenuItem(menuItem, position) {
         let before_item = null;
         if (position == undefined) {
-            this.box.add(menuItem.actor);
+            this.box.add(menuItem);
         } else {
             let items = this._getMenuItems();
             if (position < items.length) {
-                before_item = items[position].actor;
-                this.box.insert_child_below(menuItem.actor, before_item);
+                before_item = items[position];
+                this.box.insert_child_below(menuItem, before_item);
             } else {
-                this.box.add(menuItem.actor);
+                this.box.add(menuItem);
             }
         }
 
@@ -683,7 +714,7 @@ var PopupMenuBase = class {
                 menuItem.emit('menu-closed');
             });
             let subMenuSensitiveChangedId = this.connect('notify::sensitive', () => {
-                menuItem.emit('notify::sensitive');
+                menuItem.notify('sensitive');
             });
 
             menuItem.connect('destroy', () => {
@@ -695,9 +726,9 @@ var PopupMenuBase = class {
             });
         } else if (menuItem instanceof PopupSubMenuMenuItem) {
             if (before_item == null)
-                this.box.add(menuItem.menu.actor);
+                this.box.add(menuItem.menu);
             else
-                this.box.insert_child_below(menuItem.menu.actor, before_item);
+                this.box.insert_child_below(menuItem.menu, before_item);
 
             this._connectItemSignals(menuItem);
             let subMenuActiveChangeId = menuItem.menu.connect('active-changed', this._subMenuActiveChanged.bind(this));
@@ -726,7 +757,7 @@ var PopupMenuBase = class {
         } else if (menuItem instanceof PopupBaseMenuItem)
             this._connectItemSignals(menuItem);
         else
-            throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
+            throw TypeError(`Invalid argument to ${this.constructor.name}.addMenuItem()`);
 
         menuItem._setParent(this);
 
@@ -734,7 +765,7 @@ var PopupMenuBase = class {
     }
 
     _getMenuItems() {
-        return this.box.get_children().map(a => a._delegate).filter(item => {
+        return this.box.get_children().filter(item => {
             return item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection;
         });
     }
@@ -766,45 +797,45 @@ var PopupMenuBase = class {
             this.open(BoxPointer.PopupAnimation.FULL);
     }
 
-    destroy() {
+    _onDestroy() {
         this.close();
         this.removeAll();
-        this.actor.destroy();
 
-        this.emit('destroy');
-
-        Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
+        if (this._sessionUpdatedId) {
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+            this._sessionUpdatedId = 0;
+        }
     }
-};
-Signals.addSignalMethods(PopupMenuBase.prototype);
+});
 
-var PopupMenu = class extends PopupMenuBase {
-    constructor(sourceActor, arrowAlignment, arrowSide) {
-        super(sourceActor, 'popup-menu-content');
+var PopupMenu = GObject.registerClass({
+    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
+    Properties: {
+        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
+    },
+}, class PopupMenu extends BoxPointer.BoxPointer {
+    _init(sourceActor, arrowAlignment, arrowSide) {
+        super._init(arrowSide, { x_fill: true, y_fill: true, x_align: St.Align.START });
+        this._init_menu(sourceActor, 'popup-menu-content');
 
         this._arrowAlignment = arrowAlignment;
         this._arrowSide = arrowSide;
 
-        this._boxPointer = new BoxPointer.BoxPointer(arrowSide,
-                                                     { x_fill: true,
-                                                       y_fill: true,
-                                                       x_align: St.Align.START });
-        this.actor = this._boxPointer;
-        this.actor._delegate = this;
-        this.actor.style_class = 'popup-menu-boxpointer';
+        this.style_class = 'popup-menu-boxpointer';
 
-        this._boxPointer.bin.set_child(this.box);
-        this.actor.add_style_class_name('popup-menu');
+        this.bin.set_child(this.box);
+        this.add_style_class_name('popup-menu');
 
-        global.focus_manager.add_group(this.actor);
-        this.actor.reactive = true;
+        global.focus_manager.add_group(this);
+        this.reactive = true;
 
         if (this.sourceActor)
             this._keyPressId = this.sourceActor.connect('key-press-event',
                                                         this._onKeyPress.bind(this));
 
         this._openedSubMenu = null;
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _setOpenedSubMenu(submenu) {
@@ -821,7 +852,7 @@ var PopupMenu = class extends PopupMenuBase {
             return Clutter.EVENT_PROPAGATE;
 
         let navKey;
-        switch (this._boxPointer.arrowSide) {
+        switch (this.arrowSide) {
             case St.Side.TOP:
                 navKey = Clutter.KEY_Down;
                 break;
@@ -856,18 +887,10 @@ var PopupMenu = class extends PopupMenuBase {
         } else if (symbol == navKey) {
             if (!this.isOpen)
                 this.toggle();
-            this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
             return Clutter.EVENT_STOP;
         } else
             return Clutter.EVENT_PROPAGATE;
-    }
-
-    setArrowOrigin(origin) {
-        this._boxPointer.setArrowOrigin(origin);
-    }
-
-    setSourceAlignment(alignment) {
-        this._boxPointer.setSourceAlignment(alignment);
     }
 
     open(animate) {
@@ -879,10 +902,10 @@ var PopupMenu = class extends PopupMenuBase {
 
         this.isOpen = true;
 
-        this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
-        this._boxPointer.open(animate);
+        this.setPosition(this.sourceActor, this._arrowAlignment);
+        super.open(animate);
 
-        this.actor.raise_top();
+        this.raise_top();
 
         this.emit('open-state-changed', true);
     }
@@ -891,8 +914,8 @@ var PopupMenu = class extends PopupMenuBase {
         if (this._activeMenuItem)
             this._activeMenuItem.active = false;
 
-        if (this._boxPointer.visible) {
-            this._boxPointer.close(animate, () => {
+        if (this.visible) {
+            super.close(animate, () => {
                 this.emit('menu-closed');
             });
         }
@@ -904,64 +927,68 @@ var PopupMenu = class extends PopupMenuBase {
         this.emit('open-state-changed', false);
     }
 
-    destroy() {
-        if (this._keyPressId)
+    _onDestroy() {
+        if (this._keyPressId) {
             this.sourceActor.disconnect(this._keyPressId);
-        super.destroy();
+            delete this._keyPressId;
+        }
     }
-};
+});
 
-var PopupDummyMenu = class {
-    constructor(sourceActor) {
-        this.sourceActor = sourceActor;
-        this.actor = sourceActor;
-        this.actor._delegate = this;
-    }
-
-    getSensitive() {
-        return true;
+var PopupDummyMenu = GObject.registerClass({
+    Implements: [ PopupItemInterface, PopupMenuInterface ],
+    Properties: {
+        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
+    },
+    Signals: {
+        'destroy': {}
+    },
+}, class PopupDummyMenu extends GObject.Object {
+    _init(sourceActor) {
+        super._init();
+        this._sourceActor = sourceActor;
     }
 
     open() { this.emit('open-state-changed', true); }
     close() { this.emit('open-state-changed', false); }
     toggle() {}
-    destroy() {
-        this.emit('destroy');
-    }
-};
-Signals.addSignalMethods(PopupDummyMenu.prototype);
+    destroy() { this.emit('destroy'); }
+});
 
-var PopupSubMenu = class extends PopupMenuBase {
-    constructor(sourceActor, sourceArrow) {
-        super(sourceActor);
-
+var PopupSubMenu = GObject.registerClass({
+    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
+    Properties: {
+        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
+    },
+}, class PopupSubMenu extends St.ScrollView {
+    _init(sourceActor, sourceArrow) {
         this._arrow = sourceArrow;
 
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
         // effect if a CSS max-height is set on the top menu.
-        this.actor = new St.ScrollView({ style_class: 'popup-sub-menu',
-                                         hscrollbar_policy: St.PolicyType.NEVER,
-                                         vscrollbar_policy: St.PolicyType.NEVER });
+        super._init({ style_class: 'popup-sub-menu',
+                      hscrollbar_policy: St.PolicyType.NEVER,
+                      vscrollbar_policy: St.PolicyType.NEVER });
+        this._init_menu(sourceActor);
+        this.add_actor(this.box);
 
-        this.actor.add_actor(this.box);
-        this.actor._delegate = this;
-        this.actor.clip_to_allocation = true;
-        this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));
-        this.actor.hide();
+        this.clip_to_allocation = true;
+        this.connect('key-press-event', this._onKeyPressEvent.bind(this));
+        this.hide();
     }
 
     _needsScrollbar() {
         let topMenu = this._getTopMenu();
-        let [topMinHeight, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
-        let topThemeNode = topMenu.actor.get_theme_node();
+        let [topMinHeight, topNaturalHeight] = topMenu.get_preferred_height(-1);
+        let topThemeNode = topMenu.get_theme_node();
 
         let topMaxHeight = topThemeNode.get_max_height();
         return topMaxHeight >= 0 && topNaturalHeight >= topMaxHeight;
     }
 
-    getSensitive() {
-        return this._sensitive && this.sourceActor._delegate.sensitive;
+    get sensitive() {
+        return this._sensitive && this.sourceActor.sensitive;
     }
 
     open(animate) {
@@ -974,7 +1001,7 @@ var PopupSubMenu = class extends PopupMenuBase {
         this.isOpen = true;
         this.emit('open-state-changed', true);
 
-        this.actor.show();
+        this.show();
 
         let needsScrollbar = this._needsScrollbar();
 
@@ -983,36 +1010,36 @@ var PopupSubMenu = class extends PopupMenuBase {
         // of width-for-height in St.BoxLayout and St.ScrollView. This looks bad
         // when we *don't* need it, so turn off the scrollbar when that's true.
         // Dynamic changes in whether we need it aren't handled properly.
-        this.actor.vscrollbar_policy =
+        this.vscrollbar_policy =
             needsScrollbar ? St.PolicyType.AUTOMATIC : St.PolicyType.NEVER;
 
         if (needsScrollbar)
-            this.actor.add_style_pseudo_class('scrolled');
+            this.add_style_pseudo_class('scrolled');
         else
-            this.actor.remove_style_pseudo_class('scrolled');
+            this.remove_style_pseudo_class('scrolled');
 
         // It looks funny if we animate with a scrollbar (at what point is
         // the scrollbar added?) so just skip that case
         if (animate && needsScrollbar)
             animate = false;
 
-        let targetAngle = this.actor.text_direction == Clutter.TextDirection.RTL ? -90 : 90;
+        let targetAngle = this.text_direction == Clutter.TextDirection.RTL ? -90 : 90;
 
         if (animate) {
-            let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
-            this.actor.height = 0;
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            Tweener.addTween(this.actor,
+            let [minHeight, naturalHeight] = this.get_preferred_height(-1);
+            this.height = 0;
+            this._arrowRotation = this._arrow.rotation_angle_z;
+            Tweener.addTween(this,
                              { _arrowRotation: targetAngle,
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
                                onUpdate() {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
+                                   this._arrow.rotation_angle_z = this._arrowRotation;
                                },
                                onCompleteScope: this,
                                onComplete() {
-                                   this.actor.set_height(-1);
+                                   this.set_height(-1);
                                }
                              });
         } else {
@@ -1034,24 +1061,24 @@ var PopupSubMenu = class extends PopupMenuBase {
             animate = false;
 
         if (animate) {
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            Tweener.addTween(this.actor,
+            this._arrowRotation = this._arrow.rotation_angle_z;
+            Tweener.addTween(this,
                              { _arrowRotation: 0,
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
                                onUpdate() {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
+                                   this._arrow.rotation_angle_z = this._arrowRotation;
                                },
                                onCompleteScope: this,
                                onComplete() {
-                                   this.actor.hide();
-                                   this.actor.set_height(-1);
+                                   this.hide();
+                                   this.set_height(-1);
                                },
                              });
         } else {
             this._arrow.rotation_angle_z = 0;
-            this.actor.hide();
+            this.hide();
         }
     }
 
@@ -1060,13 +1087,13 @@ var PopupSubMenu = class extends PopupMenuBase {
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
             this.close(BoxPointer.PopupAnimation.FULL);
-            this.sourceActor._delegate.active = true;
+            this.sourceActor.active = true;
             return Clutter.EVENT_STOP;
         }
 
         return Clutter.EVENT_PROPAGATE;
     }
-};
+});
 
 /**
  * PopupMenuSection:
@@ -1076,12 +1103,16 @@ var PopupSubMenu = class extends PopupMenuBase {
  * can add it to another menu), but is completely transparent
  * to the user
  */
-var PopupMenuSection = class extends PopupMenuBase {
-    constructor() {
-        super();
-
-        this.actor = this.box;
-        this.actor._delegate = this;
+var PopupMenuSection = GObject.registerClass({
+    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
+    Properties: {
+        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
+    },
+}, class PopupMenuSection extends St.Bin {
+    _init() {
+        super._init({ x_fill: true, y_fill: true });
+        this._init_menu();
+        this.set_child(this.box);
         this.isOpen = true;
     }
 
@@ -1089,7 +1120,7 @@ var PopupMenuSection = class extends PopupMenuBase {
     // corresponding signal so children can still pick it up
     open() { this.emit('open-state-changed', true); }
     close() { this.emit('open-state-changed', false); }
-};
+});
 
 var PopupSubMenuMenuItem = GObject.registerClass(
 class PopupSubMenuMenuItem extends PopupBaseMenuItem {
@@ -1173,7 +1204,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
 
         if (symbol == Clutter.KEY_Right) {
             this._setOpenState(true);
-            this.menu.actor.navigate_focus(null, St.DirectionType.DOWN, false);
+            this.menu.navigate_focus(null, St.DirectionType.DOWN, false);
             return Clutter.EVENT_STOP;
         } else if (symbol == Clutter.KEY_Left && this._getOpenState()) {
             this._setOpenState(false);
@@ -1272,7 +1303,7 @@ var PopupMenuManager = class {
     get activeMenu() {
         let firstGrab = this._grabHelper.grabStack[0];
         if (firstGrab)
-            return firstGrab.actor._delegate;
+            return firstGrab.actor;
         else
             return null;
     }
@@ -1285,12 +1316,12 @@ var PopupMenuManager = class {
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
+            this._grabHelper.grab({ actor: menu, focus: menu.sourceActor,
                                     onUngrab: isUser => {
                                         this._closeMenu(isUser, menu);
                                     } });
         } else {
-            this._grabHelper.ungrab({ actor: menu.actor });
+            this._grabHelper.ungrab({ actor: menu });
         }
     }
 
@@ -1303,7 +1334,7 @@ var PopupMenuManager = class {
         if (!this._grabHelper.grabbed)
             return Clutter.EVENT_PROPAGATE;
 
-        if (this._grabHelper.isActorGrabbed(menu.actor))
+        if (this._grabHelper.isActorGrabbed(menu))
             return Clutter.EVENT_PROPAGATE;
 
         this._changeMenu(menu);
