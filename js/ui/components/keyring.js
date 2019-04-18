@@ -120,8 +120,8 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         if (this.prompt.choice_visible) {
             let choice = new CheckBox.CheckBox();
             this.prompt.bind_property('choice-label', choice.getLabelActor(), 'text', GObject.BindingFlags.SYNC_CREATE);
-            this.prompt.bind_property('choice-chosen', choice.actor, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
-            layout.attach(choice.actor, rtl ? 0 : 1, row, 1, 1);
+            this.prompt.bind_property('choice-chosen', choice, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
+            layout.attach(choice, rtl ? 0 : 1, row, 1, 1);
             row++;
         }
 
