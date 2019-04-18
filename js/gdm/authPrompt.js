@@ -122,9 +122,9 @@ var AuthPrompt = class {
         this._initButtons();
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
-        this._spinner.actor.opacity = 0;
-        this._spinner.actor.show();
-        this._defaultButtonWell.add_child(this._spinner.actor);
+        this._spinner.opacity = 0;
+        this._spinner.show();
+        this._defaultButtonWell.add_child(this._spinner);
     }
 
     _onDestroy() {
@@ -270,13 +270,13 @@ var AuthPrompt = class {
             Tweener.removeTweens(oldActor);
 
         let wasSpinner;
-        if (oldActor == this._spinner.actor)
+        if (oldActor == this._spinner)
             wasSpinner = true;
         else
             wasSpinner = false;
 
         let isSpinner;
-        if (actor == this._spinner.actor)
+        if (actor == this._spinner)
             isSpinner = true;
         else
             isSpinner = false;
@@ -324,7 +324,7 @@ var AuthPrompt = class {
     }
 
     startSpinning() {
-        this.setActorInDefaultButtonWell(this._spinner.actor, true);
+        this.setActorInDefaultButtonWell(this._spinner, true);
     }
 
     stopSpinning() {
