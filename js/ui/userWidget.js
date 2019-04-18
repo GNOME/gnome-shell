@@ -13,20 +13,24 @@ var AVATAR_ICON_SIZE = 64;
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-var Avatar = class {
-    constructor(user, params) {
-        this._user = user;
+var Avatar = GObject.registerClass(
+class Avatar extends St.Bin {
+    _init(user, params) {
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
                                         styleClass: 'user-icon' });
-        this._iconSize = params.iconSize;
 
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this.actor = new St.Bin({ style_class: params.styleClass,
-                                  track_hover: params.reactive,
-                                  reactive: params.reactive,
-                                  width: this._iconSize * scaleFactor,
-                                  height: this._iconSize * scaleFactor });
+        super._init({
+            style_class: params.styleClass,
+            track_hover: params.reactive,
+            reactive: params.reactive,
+            width: params.iconSize * scaleFactor,
+            height: params.iconSize * scaleFactor
+        });
+
+        this._iconSize = params.iconSize;
+        this._user = user;
 
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -34,8 +38,8 @@ var Avatar = class {
     }
 
     setSensitive(sensitive) {
-        this.actor.can_focus = sensitive;
-        this.actor.reactive = sensitive;
+        this.can_focus = sensitive;
+        this.reactive = sensitive;
     }
 
     update() {
@@ -44,17 +48,17 @@ var Avatar = class {
             iconFile = null;
 
         if (iconFile) {
-            this.actor.child = null;
-            this.actor.style = `
+            this.child = null;
+            this.style = `
                 background-image: url("${iconFile}");
                 background-size: ${this._iconSize}px`;
         } else {
-            this.actor.style = null;
-            this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                             icon_size: this._iconSize });
+            this.style = null;
+            this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
+                                       icon_size: this._iconSize });
         }
     }
-};
+});
 
 var UserWidgetLabel = GObject.registerClass(
 class UserWidgetLabel extends St.Widget {
@@ -136,21 +140,22 @@ class UserWidgetLabel extends St.Widget {
     }
 });
 
-var UserWidget = class {
-    constructor(user) {
+var UserWidget = GObject.registerClass(
+class UserWidget extends St.BoxLayout {
+    _init(user) {
+        super._init({ style_class: 'user-widget', vertical: false });
+
         this._user = user;
 
-        this.actor = new St.BoxLayout({ style_class: 'user-widget',
-                                        vertical: false });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._avatar = new Avatar(user);
-        this.actor.add_child(this._avatar.actor);
+        this.add_child(this._avatar);
 
         this._label = new UserWidgetLabel(user);
-        this.actor.add_child(this._label);
+        this.add_child(this._label);
 
-        this._label.bind_property('label-actor', this.actor, 'label-actor',
+        this._label.bind_property('label-actor', this, 'label-actor',
                                   GObject.BindingFlags.SYNC_CREATE);
 
         this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
@@ -173,4 +178,4 @@ var UserWidget = class {
     _updateUser() {
         this._avatar.update();
     }
-};
+});
