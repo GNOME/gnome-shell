@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, Gvc, St } = imports.gi;
+const { Clutter, Gio, GObject, Gvc, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -281,9 +281,13 @@ var InputStreamSlider = class extends StreamSlider {
     }
 };
 
-var VolumeMenu = class extends PopupMenu.PopupMenuSection {
-    constructor(control) {
-        super();
+var VolumeMenu = GObject.registerClass({
+    Signals: {
+        'icon-changed': {}
+    },
+}, class VolumeMenu extends PopupMenu.PopupMenuSection {
+    _init(control) {
+        super._init();
 
         this.hasHeadphones = false;
 
@@ -338,7 +342,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     getMaxLevel() {
         return this._output.getMaxLevel();
     }
-};
+});
 
 var Indicator = class extends PanelMenu.SystemIndicator {
     constructor() {

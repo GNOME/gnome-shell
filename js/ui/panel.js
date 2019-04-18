@@ -64,9 +64,10 @@ function _unpremultiply(color) {
                                blue: blue, alpha: color.alpha });
 };
 
+var AppMenu = GObject.registerClass(
 class AppMenu extends PopupMenu.PopupMenu {
-    constructor(sourceActor) {
-        super(sourceActor, 0.0, St.Side.TOP);
+    _init(sourceActor) {
+        super._init(sourceActor, 0.0, St.Side.TOP);
 
         this.actor.add_style_class_name('app-menu');
 
@@ -178,7 +179,7 @@ class AppMenu extends PopupMenu.PopupMenu {
             });
         });
     }
-}
+});
 
 /**
  * AppMenuButton:
