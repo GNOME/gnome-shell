@@ -1054,18 +1054,19 @@ class Placeholder extends St.BoxLayout {
     }
 });
 
-var CalendarMessageList = class CalendarMessageList {
-    constructor() {
-        this.actor = new St.Widget({ style_class: 'message-list',
-                                     layout_manager: new Clutter.BinLayout(),
-                                     x_expand: true, y_expand: true });
+var CalendarMessageList = GObject.registerClass(
+class CalendarMessageList extends St.Widget {
+    _init() {
+        super._init({ style_class: 'message-list',
+                      layout_manager: new Clutter.BinLayout(),
+                      x_expand: true, y_expand: true });
 
         this._placeholder = new Placeholder();
-        this.actor.add_actor(this._placeholder);
+        this.add_actor(this._placeholder);
 
         let box = new St.BoxLayout({ vertical: true,
                                      x_expand: true, y_expand: true });
-        this.actor.add_actor(box);
+        this.add_actor(box);
 
         this._scrollView = new St.ScrollView({ style_class: 'vfade',
                                                overlay_scrollbars: true,
@@ -1148,7 +1149,7 @@ var CalendarMessageList = class CalendarMessageList {
     _sync() {
         let sections = [...this._sections.keys()];
         let visible = sections.some(s => s.allowed);
-        this.actor.visible = visible;
+        this.visible = visible;
         if (!visible)
             return;
 
@@ -1169,4 +1170,4 @@ var CalendarMessageList = class CalendarMessageList {
             section.setDate(date);
         this._placeholder.setDate(date);
     }
-};
+});
