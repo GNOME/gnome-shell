@@ -786,8 +786,8 @@ var WindowPositionFlags = {
 
 var LayoutStrategy = class {
     constructor(monitor, rowSpacing, columnSpacing) {
-        if (new.target === LayoutStrategy)
-            throw new TypeError('Cannot instantiate abstract type ' + new.target.name);
+        if (this.constructor === LayoutStrategy)
+            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._monitor = monitor;
         this._rowSpacing = rowSpacing;

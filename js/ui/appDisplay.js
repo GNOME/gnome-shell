@@ -98,8 +98,8 @@ function clamp(value, min, max) {
 
 class BaseAppView {
     constructor(params, gridParams) {
-        if (new.target === BaseAppView)
-            throw new TypeError('Cannot instantiate abstract class ' + new.target.name);
+        if (this.constructor === BaseAppView)
+            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
 
         gridParams = Params.parse(gridParams, { xAlign: St.Align.MIDDLE,
                                                 columnLimit: MAX_COLUMNS,
