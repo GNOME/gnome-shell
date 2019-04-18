@@ -142,7 +142,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                        this._lockScreenAction.visible ||
                        this._altSwitcher.actor.visible);
 
-        this._actionsItem.visible = visible;
+        this.buttonGroup.visible = visible;
     }
 
     _sessionUpdated() {
@@ -302,7 +302,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._altSwitcher = new AltSwitcher(this._powerOffAction, this._suspendAction);
         item.add(this._altSwitcher.actor, { expand: true, x_fill: false });
 
-        this._actionsItem = item;
         this.menu.addMenuItem(item);
 
 
