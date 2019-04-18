@@ -295,13 +295,13 @@ create_client_for_source (ESource              *source,
 		          CalendarSourceData   *source_data)
 {
   ClientData *data;
-  ECalClient *client;
+  EClient *client;
   GError *error = NULL;
 
   client = g_hash_table_lookup (source_data->clients, source);
   g_return_if_fail (client == NULL);
 
-  client = e_cal_client_new (source, source_type, &error);
+  client = e_cal_client_connect_sync (source, source_type, -1, NULL, &error);
   if (!client)
     {
       g_warning ("Could not load source '%s': %s",
@@ -312,7 +312,7 @@ create_client_for_source (ESource              *source,
     }
 
   data = g_slice_new0 (ClientData);
-  data->client = client;  /* takes ownership */
+  data->client = E_CAL_CLIENT (client);  /* takes ownership */
   data->backend_died_id = g_signal_connect (client,
                                             "backend-died",
                                             G_CALLBACK (backend_died_cb),
