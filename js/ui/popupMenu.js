@@ -802,15 +802,42 @@ var PopupMenuBaseInterface = GObject.registerClass({
     }
 });
 
-var PopupMenu = GObject.registerClass({
-    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
-    Properties: {
-        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
-    },
-}, class PopupMenu extends BoxPointer.BoxPointer {
+var PopupMenuBaseFactory = function (baseType) {
+    if (!baseType || !(baseType.prototype instanceof Clutter.Actor))
+        throw new TypeError('Cannot instantiate PopupMenuBase with type ' + baseType);
+
+    let gtypeName = 'PopupMenuBase_' + baseType.$gtype.name;
+
+    if (!this._REGISTERED_TYPES)
+        this._REGISTERED_TYPES = new Map();
+    if (gtypeName in this._REGISTERED_TYPES)
+        return this._REGISTERED_TYPES[gtypeName];
+
+    let klass = GObject.registerClass({
+        GTypeName: gtypeName,
+        Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
+        Properties: {
+            'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
+        },
+    }, class extends baseType {
+        _init(sourceActor, styleClass) {
+            super._init(...([...arguments].slice(2)));
+            this._init_menu(sourceActor, styleClass);
+        }
+
+        open() { super.open(); }
+        close() { super.close(); }
+    });
+
+    this._REGISTERED_TYPES[gtypeName] = klass;
+    return klass;
+}
+
+var PopupMenu = GObject.registerClass(
+class PopupMenu extends PopupMenuBaseFactory(BoxPointer.BoxPointer) {
     _init(sourceActor, arrowAlignment, arrowSide) {
-        super._init(arrowSide, { x_fill: true, y_fill: true, x_align: St.Align.START });
-        this._init_menu(sourceActor, 'popup-menu-content');
+        super._init(sourceActor, 'popup-menu-content', arrowSide,
+                    { x_fill: true, y_fill: true, x_align: St.Align.START });
 
         this._arrowAlignment = arrowAlignment;
         this._arrowSide = arrowSide;
@@ -953,22 +980,18 @@ var PopupDummyMenu = GObject.registerClass({
     destroy() { this.emit('destroy'); }
 });
 
-var PopupSubMenu = GObject.registerClass({
-    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
-    Properties: {
-        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
-    },
-}, class PopupSubMenu extends St.ScrollView {
+var PopupSubMenu = GObject.registerClass(
+class PopupSubMenu extends PopupMenuBaseFactory(St.ScrollView) {
     _init(sourceActor, sourceArrow) {
         this._arrow = sourceArrow;
 
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
         // effect if a CSS max-height is set on the top menu.
-        super._init({ style_class: 'popup-sub-menu',
+        super._init(sourceActor, undefined,
+                    { style_class: 'popup-sub-menu',
                       hscrollbar_policy: St.PolicyType.NEVER,
                       vscrollbar_policy: St.PolicyType.NEVER });
-        this._init_menu(sourceActor);
         this.add_actor(this.box);
 
         this.clip_to_allocation = true;
@@ -1105,15 +1128,10 @@ var PopupSubMenu = GObject.registerClass({
  * can add it to another menu), but is completely transparent
  * to the user
  */
-var PopupMenuSection = GObject.registerClass({
-    Implements: [ PopupItemInterface, PopupMenuInterface, PopupMenuBaseInterface ],
-    Properties: {
-        'sensitive': GObject.ParamSpec.override('sensitive', PopupItemInterface),
-    },
-}, class PopupMenuSection extends St.Bin {
+var PopupMenuSection = GObject.registerClass(
+class PopupMenuSection extends PopupMenuBaseFactory(St.Bin) {
     _init() {
-        super._init({ x_fill: true, y_fill: true });
-        this._init_menu();
+        super._init(undefined, undefined, { x_fill: true, y_fill: true });
         this.set_child(this.box);
         this.isOpen = true;
     }
