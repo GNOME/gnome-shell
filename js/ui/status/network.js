@@ -204,8 +204,8 @@ var NMConnectionSection = class NMConnectionSection {
     _sync() {
         let nItems = this._connectionItems.size;
 
-        this._radioSection.actor.visible = (nItems > 1);
-        this._labelSection.actor.visible = (nItems == 1);
+        this._radioSection.visible = (nItems > 1);
+        this._labelSection.visible = (nItems == 1);
 
         this.item.label.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
@@ -1551,7 +1551,7 @@ class DeviceCategory extends PopupMenu.PopupMenuSection {
         this._summaryItem.label.text = this._getSummaryLabel(nDevices);
         let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
         this._summaryItem.visible = shouldSummarize;
-        this.section.actor.visible = !shouldSummarize;
+        this.section.visible = !shouldSummarize;
     }
 
     _getSummaryIcon() {
@@ -1936,7 +1936,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
 
     _syncNMState() {
         this.indicators.visible = this._client.nm_running;
-        this.menu.actor.visible = this._client.networking_enabled;
+        this.menu.visible = this._client.networking_enabled;
 
         this._updateIcon();
         this._syncConnectivity();
