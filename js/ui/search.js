@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
 const IconGrid = imports.ui.iconGrid;
@@ -32,39 +31,41 @@ class MaxWidthBin extends St.Bin {
     }
 });
 
-var SearchResult = class {
-    constructor(provider, metaInfo, resultsView) {
+var SearchResult = GObject.registerClass({
+    Signals: { 'activate': { param_types: [GObject.TYPE_STRING] } }
+}, class SearchResult extends St.Button {
+    _init(provider, metaInfo, resultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
 
-        this.actor = new St.Button({ reactive: true,
-                                     can_focus: true,
-                                     track_hover: true,
-                                     x_align: St.Align.START,
-                                     y_fill: true });
+        super._init({
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            x_align: St.Align.START,
+            y_fill: true
+        });
 
-        this.actor._delegate = this;
-        this.actor.connect('clicked', this.activate.bind(this));
+        this.connect('clicked', this.activate.bind(this));
     }
 
     activate() {
         this.emit('activate', this.metaInfo.id);
     }
-};
-Signals.addSignalMethods(SearchResult.prototype);
+});
 
-var ListSearchResult = class extends SearchResult {
+var ListSearchResult = GObject.registerClass(
+class ListSearchResult extends SearchResult {
+    _init(provider, metaInfo, resultsView) {
+        super._init(provider, metaInfo, resultsView);
 
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-
-        this.actor.style_class = 'list-search-result';
-        this.actor.x_fill = true;
+        this.style_class = 'list-search-result';
+        this.x_fill = true;
 
         let content = new St.BoxLayout({ style_class: 'list-search-result-content',
                                          vertical: false });
-        this.actor.set_child(content);
+        this.set_child(content);
 
         this._termsChangedId = 0;
 
@@ -87,7 +88,7 @@ var ListSearchResult = class extends SearchResult {
                               x_align: St.Align.START,
                               y_align: St.Align.MIDDLE });
 
-        this.actor.label_actor = title;
+        this.label_actor = title;
 
         if (this.metaInfo['description']) {
             this._descriptionLabel = new St.Label({ style_class: 'list-search-result-description' });
@@ -103,7 +104,7 @@ var ListSearchResult = class extends SearchResult {
             this._highlightTerms();
         }
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     get ICON_SIZE() {
@@ -120,48 +121,52 @@ var ListSearchResult = class extends SearchResult {
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
     }
-};
+});
 
-var GridSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
+var GridSearchResult = GObject.registerClass(
+class GridSearchResult extends SearchResult {
+    _init(provider, metaInfo, resultsView) {
+        super._init(provider, metaInfo, resultsView);
 
-        this.actor.style_class = 'grid-search-result';
+        this.style_class = 'grid-search-result';
 
         this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                           { createIcon: this.metaInfo['createIcon'] });
         let content = new St.Bin({ child: this.icon });
-        this.actor.set_child(content);
-        this.actor.label_actor = this.icon.label;
+        this.set_child(content);
+        this.label_actor = this.icon.label;
     }
-};
+});
 
-var SearchResultsBase = class {
-    constructor(provider, resultsView) {
+var SearchResultsBase = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
+    Signals: { 'key-focus-in-child': { param_types: [Clutter.Actor.$gtype] } }
+}, class SearchResultsBase extends St.BoxLayout {
+    _init(provider, resultsView) {
+        super._init({ style_class: 'search-section', vertical: true });
+
         this.provider = provider;
         this._resultsView = resultsView;
 
         this._terms = [];
 
-        this.actor = new St.BoxLayout({ style_class: 'search-section',
-                                        vertical: true });
-
         this._resultDisplayBin = new St.Bin({ x_fill: true,
                                               y_fill: true });
-        this.actor.add(this._resultDisplayBin, { expand: true });
+        this.add(this._resultDisplayBin, { expand: true });
 
         let separator = new St.Widget({ style_class: 'search-section-separator' });
-        this.actor.add(separator);
+        this.add(separator);
 
         this._resultDisplays = {};
 
         this._clipboard = St.Clipboard.get_default();
 
         this._cancellable = new Gio.Cancellable();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
-        this.actor.destroy();
+    _onDestroy() {
         this._terms = [];
     }
 
@@ -175,14 +180,14 @@ var SearchResultsBase = class {
     clear() {
         this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
-            this._resultDisplays[resultId].actor.destroy();
+            this._resultDisplays[resultId].destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
-        this.actor.hide();
+        this.hide();
     }
 
     _keyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        this.emit('key-focus-in-child', actor);
     }
 
     _activateResult(result, id) {
@@ -228,8 +233,9 @@ var SearchResultsBase = class {
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.connect('activate', this._activateResult.bind(this));
-                    display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
+                    if (GObject.signal_lookup('activate', display))
+                        display.connect('activate', this._activateResult.bind(this));
+                    display.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
                 callback(true);
@@ -241,7 +247,7 @@ var SearchResultsBase = class {
         this._terms = terms;
         if (providerResults.length == 0) {
             this._clearResultDisplay();
-            this.actor.hide();
+            this.hide();
             callback();
         } else {
             let maxResults = this._getMaxDisplayedResults();
@@ -258,22 +264,23 @@ var SearchResultsBase = class {
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
-                this.actor.hide();
+                this.hide();
                 this._clearResultDisplay();
                 results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
                 });
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
-                this.actor.show();
+                this.show();
                 callback();
             });
         }
     }
-};
+});
 
-var ListSearchResults = class extends SearchResultsBase {
-    constructor(provider, resultsView) {
-        super(provider, resultsView);
+var ListSearchResults = GObject.registerClass(
+class ListSearchResults extends SearchResultsBase {
+    _init(provider, resultsView) {
+        super._init(provider, resultsView);
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
@@ -314,27 +321,27 @@ var ListSearchResults = class extends SearchResultsBase {
     }
 
     _addItem(display) {
-        this._content.add_actor(display.actor);
+        this._content.add_actor(display);
     }
 
     getFirstResult() {
         if (this._content.get_n_children() > 0)
-            return this._content.get_child_at_index(0)._delegate;
+            return this._content.get_child_at_index(0);
         else
             return null;
     }
-};
-Signals.addSignalMethods(ListSearchResults.prototype);
+});
 
-var GridSearchResults = class extends SearchResultsBase {
-    constructor(provider, resultsView) {
-        super(provider, resultsView);
+var GridSearchResults = GObject.registerClass(
+class GridSearchResults extends SearchResultsBase {
+    _init(provider, resultsView) {
+        super._init(provider, resultsView);
         // We need to use the parent container to know how much results we can show.
         // None of the actors in this class can be used for that, since the main actor
         // goes hidden when no results are displayed, and then it lost its allocation.
         // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
         // it doesn't show any result although we have some.
-        this._parentContainer = resultsView.actor;
+        this._parentContainer = resultsView;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -366,17 +373,17 @@ var GridSearchResults = class extends SearchResultsBase {
 
     getFirstResult() {
         if (this._grid.visibleItemsCount() > 0)
-            return this._grid.getItemAtIndex(0)._delegate;
+            return this._grid.getItemAtIndex(0);
         else
             return null;
     }
-};
-Signals.addSignalMethods(GridSearchResults.prototype);
+});
 
-var SearchResults = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ name: 'searchResults',
-                                        vertical: true });
+var SearchResults = GObject.registerClass({
+    Signals: { 'terms-changed': {} }
+}, class SearchResults extends St.BoxLayout {
+    _init() {
+        super._init({ name: 'searchResults', vertical: true });
 
         this._content = new St.BoxLayout({ name: 'searchResultsContent',
                                            vertical: true });
@@ -398,16 +405,17 @@ var SearchResults = class {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this.actor.add(this._scrollView, { x_fill: true,
-                                           y_fill: true,
-                                           expand: true,
-                                           x_align: St.Align.START,
-                                           y_align: St.Align.START });
+        this.add(this._scrollView, {
+            x_fill: true, y_fill: true,
+            expand: true,
+            x_align: St.Align.START,
+            y_align: St.Align.STAR
+        });
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                        y_align: St.Align.MIDDLE });
-        this.actor.add(this._statusBin, { expand: true });
+        this.add(this._statusBin, { expand: true });
         this._statusBin.add_actor(this._statusText);
 
         this._highlightDefault = false;
@@ -561,7 +569,7 @@ var SearchResults = class {
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollView.vscroll.adjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        adjustment.value -= (dy / this.height) * adjustment.page_size;
         return false;
     }
 
@@ -579,9 +587,9 @@ var SearchResults = class {
         else
             providerDisplay = new GridSearchResults(provider, this);
 
-        providerDisplay.connect('key-focus-in', this._keyFocusIn.bind(this));
-        providerDisplay.actor.hide();
-        this._content.add(providerDisplay.actor);
+        providerDisplay.connect('key-focus-in-child', this._keyFocusIn.bind(this));
+        providerDisplay.hide();
+        this._content.add(providerDisplay);
         provider.display = providerDisplay;
     }
 
@@ -599,7 +607,7 @@ var SearchResults = class {
             let provider = providers[i];
             let display = provider.display;
 
-            if (!display.actor.visible)
+            if (!display.visible)
                 continue;
 
             let firstResult = display.getFirstResult();
@@ -674,21 +682,21 @@ var SearchResults = class {
             this._doSearch();
 
         if (this._defaultResult)
-            this._defaultResult.actor.popup_menu();
+            this._defaultResult.popup_menu();
     }
 
     navigateFocus(direction) {
-        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
+        let rtl = this.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == St.DirectionType.TAB_BACKWARD ||
             direction == (rtl ? St.DirectionType.RIGHT
                               : St.DirectionType.LEFT) ||
             direction == St.DirectionType.UP) {
-            this.actor.navigate_focus(null, direction, false);
+            this.navigate_focus(null, direction, false);
             return;
         }
 
-        let from = this._defaultResult ? this._defaultResult.actor : null;
-        this.actor.navigate_focus(from, direction, false);
+        let from = this._defaultResult ? this._defaultResult : null;
+        this.navigate_focus(from, direction, false);
     }
 
     _setSelected(result, selected) {
@@ -696,10 +704,10 @@ var SearchResults = class {
             return;
 
         if (selected) {
-            result.actor.add_style_pseudo_class('selected');
-            Util.ensureActorVisibleInScrollView(this._scrollView, result.actor);
+            result.add_style_pseudo_class('selected');
+            Util.ensureActorVisibleInScrollView(this._scrollView, result);
         } else {
-            result.actor.remove_style_pseudo_class('selected');
+            result.remove_style_pseudo_class('selected');
         }
     }
 
@@ -712,8 +720,7 @@ var SearchResults = class {
 
         return description.replace(this._highlightRegex, '<b>$1</b>');
     }
-};
-Signals.addSignalMethods(SearchResults.prototype);
+});
 
 var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {

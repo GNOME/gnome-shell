@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { AccountsService, Atk, Clutter,
-        Gdm, Gio, GLib, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+        Gdm, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -12,15 +11,19 @@ const AuthPrompt = imports.gdm.authPrompt;
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
 
-var UnlockDialog = class {
-    constructor(parentActor) {
-        this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
-                                     style_class: 'login-dialog',
-                                     layout_manager: new Clutter.BoxLayout(),
-                                     visible: false });
+var UnlockDialog = GObject.registerClass({
+    Signals: { 'failed': {} }
+}, class UnlockDialog extends St.Widget {
+    _init(parentActor) {
+        super._init({
+            accessible_role: Atk.Role.WINDOW,
+            style_class: 'login-dialog',
+            layout_manager: new Clutter.BoxLayout(),
+            visible: false
+        });
 
-        this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        parentActor.add_child(this.actor);
+        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        parentActor.add_child(this);
 
         this._userManager = AccountsService.UserManager.get_default();
         this._userName = GLib.get_user_name();
@@ -31,7 +34,7 @@ var UnlockDialog = class {
                                              y_align: Clutter.ActorAlign.CENTER,
                                              x_expand: true,
                                              y_expand: true });
-        this.actor.add_child(this._promptBox);
+        this.add_child(this._promptBox);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
@@ -40,7 +43,7 @@ var UnlockDialog = class {
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
 
-        this._promptBox.add_child(this._authPrompt.actor);
+        this._promptBox.add_child(this._authPrompt);
 
         this.allowCancel = false;
 
@@ -63,10 +66,12 @@ var UnlockDialog = class {
         this._authPrompt.reset();
         this._updateSensitivity(true);
 
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Unlock Window"), 'dialog-password-symbolic');
+        Main.ctrlAltTabManager.addGroup(this, _("Unlock Window"), 'dialog-password-symbolic');
 
         this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _updateSensitivity(sensitive) {
@@ -105,9 +110,8 @@ var UnlockDialog = class {
         this._authPrompt.cancel();
     }
 
-    destroy() {
+    _onDestroy() {
         this.popModal();
-        this.actor.destroy();
 
         if (this._idleWatchId) {
             this._idleMonitor.remove_watch(this._idleWatchId);
@@ -130,13 +134,13 @@ var UnlockDialog = class {
     }
 
     open(timestamp) {
-        this.actor.show();
+        this.show();
 
         if (this._isModal)
             return true;
 
-        if (!Main.pushModal(this.actor, { timestamp: timestamp,
-                                          actionMode: Shell.ActionMode.UNLOCK_SCREEN }))
+        if (!Main.pushModal(this, { timestamp: timestamp,
+                                    actionMode: Shell.ActionMode.UNLOCK_SCREEN }))
             return false;
 
         this._isModal = true;
@@ -146,9 +150,8 @@ var UnlockDialog = class {
 
     popModal(timestamp) {
         if (this._isModal) {
-            Main.popModal(this.actor, timestamp);
+            Main.popModal(this, timestamp);
             this._isModal = false;
         }
     }
-};
-Signals.addSignalMethods(UnlockDialog.prototype);
+});

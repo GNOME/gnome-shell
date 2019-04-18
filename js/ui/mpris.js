@@ -1,4 +1,4 @@
-const { Gio, Shell, St } = imports.gi;
+const { Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
@@ -18,9 +18,10 @@ const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
-var MediaMessage = class MediaMessage extends MessageList.Message {
-    constructor(player) {
-        super('', '');
+var MediaMessage = GObject.registerClass(
+class MediaMessage extends MessageList.Message {
+    _init(player) {
+        super._init('', '');
 
         this._player = player;
 
@@ -77,7 +78,7 @@ var MediaMessage = class MediaMessage extends MessageList.Message {
         this._updateNavButton(this._prevButton, this._player.canGoPrevious);
         this._updateNavButton(this._nextButton, this._player.canGoNext);
     }
-};
+});
 
 var MprisPlayer = class MprisPlayer {
     constructor(busName) {
@@ -192,9 +193,10 @@ var MprisPlayer = class MprisPlayer {
 };
 Signals.addSignalMethods(MprisPlayer.prototype);
 
-var MediaSection = class MediaSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+var MediaSection = GObject.registerClass(
+class MediaSection extends MessageList.MessageListSection {
+    _init() {
+        super._init();
 
         this._players = new Map();
 
@@ -245,4 +247,4 @@ var MediaSection = class MediaSection extends MessageList.MessageListSection {
         if (newOwner && !oldOwner)
             this._addPlayer(name);
     }
-};
+});

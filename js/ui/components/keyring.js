@@ -76,13 +76,13 @@ class KeyringDialog extends ModalDialog.ModalDialog {
             this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
 
             if (rtl) {
-                layout.attach(this._workSpinner.actor, 0, row, 1, 1);
+                layout.attach(this._workSpinner, 0, row, 1, 1);
                 layout.attach(this._passwordEntry, 1, row, 1, 1);
                 layout.attach(label, 2, row, 1, 1);
             } else {
                 layout.attach(label, 0, row, 1, 1);
                 layout.attach(this._passwordEntry, 1, row, 1, 1);
-                layout.attach(this._workSpinner.actor, 2, row, 1, 1);
+                layout.attach(this._workSpinner, 2, row, 1, 1);
             }
             row++;
         } else {
@@ -120,8 +120,8 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         if (this.prompt.choice_visible) {
             let choice = new CheckBox.CheckBox();
             this.prompt.bind_property('choice-label', choice.getLabelActor(), 'text', GObject.BindingFlags.SYNC_CREATE);
-            this.prompt.bind_property('choice-chosen', choice.actor, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
-            layout.attach(choice.actor, rtl ? 0 : 1, row, 1, 1);
+            this.prompt.bind_property('choice-chosen', choice, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
+            layout.attach(choice, rtl ? 0 : 1, row, 1, 1);
             row++;
         }
 
