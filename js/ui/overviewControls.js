@@ -320,13 +320,13 @@ var DashSlider = class extends SlidingControl {
         // SlideLayout reads the actor's expand flags to decide
         // whether to allocate the natural size to its child, or the whole
         // available allocation
-        this._dash.actor.x_expand = true;
+        this._dash.x_expand = true;
 
         this.actor.x_expand = true;
         this.actor.x_align = Clutter.ActorAlign.START;
         this.actor.y_expand = true;
 
-        this.actor.add_actor(this._dash.actor);
+        this.actor.add_actor(this._dash);
 
         this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
     }
