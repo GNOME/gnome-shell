@@ -179,9 +179,10 @@ var Suggestions = class {
 };
 Signals.addSignalMethods(Suggestions.prototype);
 
-var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
-    constructor(actor) {
-        super(actor, 0.5, St.Side.BOTTOM);
+var LanguageSelectionPopup = GObject.registerClass(
+class LanguageSelectionPopup extends PopupMenu.PopupMenu {
+    _init(actor) {
+        super._init(actor, 0.5, St.Side.BOTTOM);
 
         let inputSourceManager = InputSourceManager.getInputSourceManager();
         let inputSources = inputSourceManager.inputSources;
@@ -206,6 +207,8 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
             if (!actor.is_mapped())
                 this.close(true);
         });
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onCapturedEvent(actor, event) {
@@ -233,14 +236,13 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
         }
     }
 
-    destroy() {
+    _onDestroy() {
         if (this._capturedEventId != 0)
             global.stage.disconnect(this._capturedEventId);
         if (this._unmapId != 0)
             this.sourceActor.disconnect(this._unmapId);
-        super.destroy();
     }
-};
+});
 
 var Key = class Key {
     constructor(key, extendedKeys) {

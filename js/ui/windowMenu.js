@@ -1,14 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
 
-const { Meta, St } = imports.gi;
+const { Meta, GObject, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 
-var WindowMenu = class extends PopupMenu.PopupMenu {
-    constructor(window, sourceActor) {
-        super(sourceActor, 0, St.Side.TOP);
+var WindowMenu = GObject.registerClass(
+class WindowMenu extends PopupMenu.PopupMenu {
+    _init(window, sourceActor) {
+        super._init(sourceActor, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('window-menu');
 
@@ -169,7 +170,7 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
         if (!window.can_close())
             item.setSensitive(false);
     }
-};
+});
 
 var WindowMenuManager = class {
     constructor() {
