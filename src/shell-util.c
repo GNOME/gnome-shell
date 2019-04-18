@@ -430,7 +430,7 @@ ClutterContent *
 shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                          MetaRectangle   *window_rect)
 {
-  ClutterActor *texture;
+  MetaShapedTexture *texture;
   ClutterContent *content;
   cairo_surface_t *surface;
   cairo_rectangle_int_t clip;
@@ -453,8 +453,7 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   clip.width = ceilf (window_rect->width * resource_scale);
   clip.height = ceilf (window_rect->height * resource_scale);
 
-  surface = meta_shaped_texture_get_image (META_SHAPED_TEXTURE (texture),
-                                           &clip);
+  surface = meta_shaped_texture_get_image (texture, &clip);
 
   content = clutter_canvas_new ();
   clutter_canvas_set_size (CLUTTER_CANVAS (content),
