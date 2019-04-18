@@ -16,10 +16,10 @@ class BackgroundMenu extends PopupMenu.PopupMenu {
         this.addSettingsAction(_("Display Settings"), 'gnome-display-panel.desktop');
         this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
 
-        this.actor.add_style_class_name('background-menu');
+        this.add_style_class_name('background-menu');
 
-        layoutManager.uiGroup.add_actor(this.actor);
-        this.actor.hide();
+        layoutManager.uiGroup.add_actor(this);
+        this.hide();
     }
 });
 

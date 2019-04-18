@@ -370,7 +370,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
     _onScrollEvent(actor, event) {
         let result = this._volumeMenu.scroll(event);
-        if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
+        if (result == Clutter.EVENT_PROPAGATE || this.menu.mapped)
             return result;
 
         let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
