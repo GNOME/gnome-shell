@@ -68,8 +68,8 @@ class EntryMenu extends PopupMenu.PopupMenu {
         this._entry.add_style_pseudo_class('focus');
 
         let direction = St.DirectionType.TAB_FORWARD;
-        if (!this.actor.navigate_focus(null, direction, false))
-            this.actor.grab_key_focus();
+        if (!this.navigate_focus(null, direction, false))
+            this.grab_key_focus();
     }
 
     _updateCopyItem() {
