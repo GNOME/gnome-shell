@@ -44,10 +44,10 @@ var TodayButton = class TodayButton {
         hbox.add_actor(this._dateLabel);
 
         this._calendar = calendar;
-        this._calendar.connect('selected-date-changed', (calendar, date) => {
+        this._calendar.connect('selected-date-changed', () => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.actor.reactive = !_isToday(date)
+            this.actor.reactive = !_isToday(this._calendar.selectedDate)
         });
     }
 
@@ -490,8 +490,8 @@ class DateMenuButton extends PanelMenu.Button {
         bin.add_actor(hbox);
 
         this._calendar = new Calendar.Calendar();
-        this._calendar.connect('selected-date-changed',
-                               (calendar, date) => {
+        this._calendar.connect('selected-date-changed', () => {
+                                   let date = this._calendar.selectedDate;
                                    layout.frozen = !_isToday(date);
                                    this._messageList.setDate(date);
                                });
@@ -511,7 +511,7 @@ class DateMenuButton extends PanelMenu.Button {
         hbox.add(this._messageList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Fill up the second column
-        let boxLayout = new CalendarColumnLayout(this._calendar.actor);
+        let boxLayout = new CalendarColumnLayout(this._calendar);
         vbox = new St.Widget({ style_class: 'datemenu-calendar-column',
                                layout_manager: boxLayout });
         boxLayout.hookup_style(vbox);
@@ -520,7 +520,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._date = new TodayButton(this._calendar);
         vbox.add_actor(this._date.actor);
 
-        vbox.add_actor(this._calendar.actor);
+        vbox.add_actor(this._calendar);
 
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
                                                     x_expand: true, x_fill: true,
