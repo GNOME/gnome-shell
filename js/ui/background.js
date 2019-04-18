@@ -93,7 +93,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const { Clutter, GDesktopEnums, Gio, GLib, GnomeDesktop, Meta } = imports.gi;
+const { Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeDesktop, Meta } = imports.gi;
 const Signals = imports.signals;
 
 const LoginManager = imports.misc.loginManager;
@@ -482,8 +482,10 @@ Signals.addSignalMethods(Background.prototype);
 
 let _systemBackground;
 
-var SystemBackground = class SystemBackground {
-    constructor() {
+var SystemBackground = GObject.registerClass({
+    Signals: { 'loaded': {} }
+}, class SystemBackground extends Meta.BackgroundActor {
+    _init() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
 
         if (_systemBackground == null) {
@@ -492,9 +494,9 @@ var SystemBackground = class SystemBackground {
             _systemBackground.set_file(file, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
-        this.actor = new Meta.BackgroundActor({ meta_display: global.display,
-                                                monitor: 0,
-                                                background: _systemBackground });
+        super._init({ meta_display: global.display,
+                      monitor: 0,
+                      background: _systemBackground });
 
         let cache = Meta.BackgroundImageCache.get_default();
         let image = cache.load(file);
@@ -513,8 +515,7 @@ var SystemBackground = class SystemBackground {
             });
         }
     }
-};
-Signals.addSignalMethods(SystemBackground.prototype);
+});
 
 var BackgroundSource = class BackgroundSource {
     constructor(layoutManager, settingsSchema) {
