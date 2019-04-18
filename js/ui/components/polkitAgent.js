@@ -106,7 +106,7 @@ var AuthenticationDialog = GObject.registerClass({
                               { expand: true });
 
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
-        this._passwordBox.add(this._workSpinner.actor);
+        this._passwordBox.add(this._workSpinner);
 
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
