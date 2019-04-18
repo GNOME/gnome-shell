@@ -1010,11 +1010,10 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 };
 
-var Placeholder = class Placeholder {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'message-list-placeholder',
-                                        vertical: true });
-
+var Placeholder = GObject.registerClass(
+class Placeholder extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'message-list-placeholder', vertical: true });
         this._date = new Date();
 
         let todayFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-notifications.svg');
@@ -1023,10 +1022,10 @@ var Placeholder = class Placeholder {
         this._otherIcon = new Gio.FileIcon({ file: otherFile });
 
         this._icon = new St.Icon();
-        this.actor.add_actor(this._icon);
+        this.add_actor(this._icon);
 
         this._label = new St.Label();
-        this.actor.add_actor(this._label);
+        this.add_actor(this._label);
 
         this._sync();
     }
@@ -1053,7 +1052,7 @@ var Placeholder = class Placeholder {
             this._label.text = _("No Events");
         }
     }
-};
+});
 
 var CalendarMessageList = class CalendarMessageList {
     constructor() {
@@ -1062,7 +1061,7 @@ var CalendarMessageList = class CalendarMessageList {
                                      x_expand: true, y_expand: true });
 
         this._placeholder = new Placeholder();
-        this.actor.add_actor(this._placeholder.actor);
+        this.actor.add_actor(this._placeholder);
 
         let box = new St.BoxLayout({ vertical: true,
                                      x_expand: true, y_expand: true });
@@ -1154,7 +1153,7 @@ var CalendarMessageList = class CalendarMessageList {
             return;
 
         let empty = sections.every(s => s.empty || !s.actor.visible);
-        this._placeholder.actor.visible = empty;
+        this._placeholder.visible = empty;
         this._clearButton.visible = !empty;
 
         let canClear = sections.some(s => s.canClear && s.actor.visible);
