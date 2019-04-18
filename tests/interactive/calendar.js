@@ -17,7 +17,7 @@ function test() {
     // Calendar can only be imported after Environment.init()
     const Calendar = imports.ui.calendar;
     let calendar = new Calendar.Calendar();
-    vbox.add(calendar.actor,
+    vbox.add(calendar,
              { expand: true,
                x_fill: false, x_align: St.Align.MIDDLE,
                y_fill: false, y_align: St.Align.START });
