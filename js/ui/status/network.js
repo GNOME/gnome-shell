@@ -169,8 +169,8 @@ Signals.addSignalMethods(NMConnectionItem.prototype);
 
 var NMConnectionSection = class {
     constructor(client) {
-        if (new.target === NMConnectionSection)
-            throw new TypeError('Cannot instantiate abstract type ' + new.target.name);
+        if (this.constructor === NMConnectionSection)
+            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._client = client;
 
@@ -299,8 +299,8 @@ Signals.addSignalMethods(NMConnectionSection.prototype);
 
 var NMConnectionDevice = class extends NMConnectionSection {
     constructor(client, device) {
-        if (new.target === NMConnectionDevice)
-            throw new TypeError('Cannot instantiate abstract type ' + new.target.name);
+        if (this.constructor === NMConnectionDevice)
+            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         super(client);
         this._device = device;

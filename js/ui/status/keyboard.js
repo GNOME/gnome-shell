@@ -125,8 +125,8 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
 
 var InputSourceSettings = class {
     constructor() {
-        if (new.target === InputSourceSettings)
-            throw new TypeError('Cannot instantiate abstract class ' + new.target.name);
+        if (this.constructor === InputSourceSettings)
+            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
     }
 
     _emitInputSourcesChanged() {
