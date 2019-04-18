@@ -1,15 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Shell, St } = imports.gi;
+const { Clutter, GObject, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-var EntryMenu = class extends PopupMenu.PopupMenu {
-    constructor(entry) {
-        super(entry, 0, St.Side.TOP);
+var EntryMenu = GObject.registerClass(
+class EntryMenu extends PopupMenu.PopupMenu {
+    _init(entry) {
+        super._init(entry, 0, St.Side.TOP);
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -28,8 +29,8 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
 
         this._passwordItem = null;
 
-        Main.uiGroup.add_actor(this.actor);
-        this.actor.hide();
+        Main.uiGroup.add_actor(this);
+        this.hide();
     }
 
     _makePasswordItem() {
@@ -112,7 +113,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         let visible = !!(this._entry.clutter_text.password_char);
         this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }
-};
+});
 
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);
