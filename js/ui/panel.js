@@ -69,7 +69,7 @@ class AppMenu extends PopupMenu.PopupMenu {
     _init(sourceActor) {
         super._init(sourceActor, 0.0, St.Side.TOP);
 
-        this.actor.add_style_class_name('app-menu');
+        this.add_style_class_name('app-menu');
 
         this._app = null;
         this._appSystem = Shell.AppSystem.get_default();
@@ -742,7 +742,7 @@ var AggregateMenu = GObject.registerClass(
 class AggregateMenu extends PanelMenu.Button {
     _init() {
         super._init(0.0, C_("System menu in the top bar", "System"), false);
-        this.menu.actor.add_style_class_name('aggregate-menu');
+        this.menu.add_style_class_name('aggregate-menu');
 
         let menuLayout = new AggregateLayout();
         this.menu.box.set_layout_manager(menuLayout);
@@ -804,9 +804,9 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._nightLight.menu);
         this.menu.addMenuItem(this._system.menu);
 
-        menuLayout.addSizeChild(this._location.menu.actor);
-        menuLayout.addSizeChild(this._rfkill.menu.actor);
-        menuLayout.addSizeChild(this._power.menu.actor);
+        menuLayout.addSizeChild(this._location.menu);
+        menuLayout.addSizeChild(this._rfkill.menu);
+        menuLayout.addSizeChild(this._power.menu);
         menuLayout.addSizeChild(this._system.buttonGroup);
     }
 });
