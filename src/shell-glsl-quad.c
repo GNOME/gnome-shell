@@ -149,7 +149,7 @@ shell_glsl_quad_constructed (GObject *object)
 
   priv->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
-  cogl_pipeline_set_layer_null_texture (priv->pipeline, 0, COGL_TEXTURE_TYPE_2D);
+  cogl_pipeline_set_layer_null_texture (priv->pipeline, 0);
 }
 
 static void
