@@ -2,7 +2,7 @@
 
 // the following is a modified version of bolt/contrib/js/client.js
 
-const { Gio, GLib, Polkit, Shell } = imports.gi;
+const { Gio, GLib, GObject, Polkit, Shell } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -220,9 +220,10 @@ Signals.addSignalMethods(AuthRobot.prototype);
 
 /* eof client.js  */
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass(
+class ThunderboltIndicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'thunderbolt-symbolic';
@@ -333,4 +334,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         const body = _("Could not authorize the Thunderbolt device: %s").format(error.message);
         this._notify(title, body);
     }
-};
+});

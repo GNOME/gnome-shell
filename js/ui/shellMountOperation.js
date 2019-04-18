@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
@@ -42,18 +41,21 @@ function _setLabelsForMessage(content, message) {
 
 /* -------------------------------------------------------- */
 
-var ListItem = class {
-    constructor(app) {
-        this._app = app;
-
+var ListItem = GObject.registerClass({
+    Signals: { 'activate': {} }
+}, class ShellMountOperationListItem extends St.Button {
+    _init(app) {
         let layout = new St.BoxLayout({ vertical: false });
+        super._init({
+            style_class: 'mount-dialog-app-list-item',
+            can_focus: true,
+            child: layout,
+            reactive: true,
+            x_align: St.Align.START,
+            x_fill: true
+        });
 
-        this.actor = new St.Button({ style_class: 'mount-dialog-app-list-item',
-                                     can_focus: true,
-                                     child: layout,
-                                     reactive: true,
-                                     x_align: St.Align.START,
-                                     x_fill: true });
+        this._app = app;
 
         this._icon = this._app.create_icon_texture(LIST_ITEM_ICON_SIZE);
 
@@ -67,15 +69,14 @@ var ListItem = class {
                                     child: this._nameLabel });
         layout.add(labelBin);
 
-        this.actor.connect('clicked', this._onClicked.bind(this));
+        this.connect('clicked', this._onClicked.bind(this));
     }
 
     _onClicked() {
         this.emit('activate');
         this._app.activate();
     }
-};
-Signals.addSignalMethods(ListItem.prototype);
+});
 
 var ShellMountOperation = class {
     constructor(source, params) {
@@ -302,14 +303,14 @@ var ShellMountPasswordDialog = GObject.registerClass({
                                                   visible: false }));
 
             this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
-            content.messageBox.add(this._hiddenVolume.actor);
+            content.messageBox.add(this._hiddenVolume);
 
             this._systemVolume = new CheckBox.CheckBox(_("Windows System Volume"));
-            content.messageBox.add(this._systemVolume.actor);
+            content.messageBox.add(this._systemVolume);
 
             this._keyfilesCheckbox = new CheckBox.CheckBox(_("Uses Keyfiles"));
-            this._keyfilesCheckbox.actor.connect("clicked", this._onKeyfilesCheckboxClicked.bind(this));
-            content.messageBox.add(this._keyfilesCheckbox.actor);
+            this._keyfilesCheckbox.connect("clicked", this._onKeyfilesCheckboxClicked.bind(this));
+            content.messageBox.add(this._keyfilesCheckbox);
 
             this._keyfilesLabel.clutter_text.set_markup(
                 /* Translators: %s is the Disks application */
@@ -359,7 +360,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this.setInitialKeyFocus(this._passwordEntry);
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
-        this._passwordEntry.secondary_icon = this._workSpinner.actor;
+        this._passwordEntry.secondary_icon = this._workSpinner;
 
         if (rtl) {
             layout.attach(this._passwordEntry, 0, 1, 1, 1);
@@ -380,9 +381,9 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
-            this._rememberChoice.actor.checked =
+            this._rememberChoice.checked =
                 global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
-            content.messageBox.add(this._rememberChoice.actor);
+            content.messageBox.add(this._rememberChoice);
         } else {
             this._rememberChoice = null;
         }
@@ -436,22 +437,22 @@ var ShellMountPasswordDialog = GObject.registerClass({
         }
 
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
-            this._rememberChoice && this._rememberChoice.actor.checked);
+            this._rememberChoice && this._rememberChoice.checked);
 
         this._workSpinner.play();
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
-            this._rememberChoice.actor.checked,
+            this._rememberChoice.checked,
             this._hiddenVolume &&
-            this._hiddenVolume.actor.checked,
+            this._hiddenVolume.checked,
             this._systemVolume &&
-            this._systemVolume.actor.checked,
+            this._systemVolume.checked,
             parseInt(pim));
     }
 
     _onKeyfilesCheckboxClicked() {
-        let useKeyfiles = this._keyfilesCheckbox.actor.checked;
+        let useKeyfiles = this._keyfilesCheckbox.checked;
         this._passwordEntry.reactive = !useKeyfiles;
         this._passwordEntry.can_focus = !useKeyfiles;
         this._passwordEntry.clutter_text.editable = !useKeyfiles;
@@ -460,8 +461,8 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._pimEntry.can_focus = !useKeyfiles;
         this._pimEntry.clutter_text.editable = !useKeyfiles;
         this._pimEntry.clutter_text.selectable = !useKeyfiles;
-        this._rememberChoice.actor.reactive = !useKeyfiles;
-        this._rememberChoice.actor.can_focus = !useKeyfiles;
+        this._rememberChoice.reactive = !useKeyfiles;
+        this._rememberChoice.can_focus = !useKeyfiles;
         this._keyfilesLabel.visible = useKeyfiles;
         this.setButtons(useKeyfiles ? this._usesKeyfilesButtons : this._defaultButtons);
     }
@@ -524,7 +525,7 @@ var ShellProcessesDialog = GObject.registerClass({
                 return;
 
             let item = new ListItem(app);
-            this._applicationList.add(item.actor, { x_fill: true });
+            this._applicationList.add(item, { x_fill: true });
 
             item.connect('activate', () => {
                 // use -1 to indicate Cancel

@@ -93,7 +93,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const { Clutter, GDesktopEnums, Gio, GLib, GnomeDesktop, Meta } = imports.gi;
+const { Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeDesktop, Meta } = imports.gi;
 const Signals = imports.signals;
 
 const LoginManager = imports.misc.loginManager;
@@ -221,16 +221,17 @@ function getBackgroundCache() {
     return _backgroundCache;
 }
 
-var Background = class Background {
-    constructor(params) {
+var Background = GObject.registerClass({
+    Signals: { 'loaded': {}, 'bg-changed': {} }
+}, class Background extends Meta.Background {
+    _init(params) {
         params = Params.parse(params, { monitorIndex: 0,
                                         layoutManager: Main.layoutManager,
                                         settings: null,
                                         file: null,
                                         style: null });
 
-        this.background = new Meta.Background({ meta_display: global.display });
-        this.background._delegate = this;
+        super._init({ meta_display: global.display });
 
         this._settings = params.settings;
         this._file = params.file;
@@ -263,8 +264,6 @@ var Background = class Background {
     }
 
     destroy() {
-        this.background = null;
-
         this._cancellable.cancel();
         this._removeAnimationTimeout();
 
@@ -304,6 +303,7 @@ var Background = class Background {
             this.emit('bg-changed');
             return GLib.SOURCE_REMOVE;
         });
+        GLib.Source.set_name_by_id(this._changedIdleId, '[gnome-shell] Background._emitChangedSignal');
     }
 
     updateResolution() {
@@ -329,7 +329,7 @@ var Background = class Background {
             this.emit('loaded');
             return GLib.SOURCE_REMOVE;
         });
-        GLib.Source.set_name_by_id(id, '[gnome-shell] this.emit');
+        GLib.Source.set_name_by_id(id, '[gnome-shell] Background._setLoaded Idle');
     }
 
     _loadPattern() {
@@ -343,9 +343,9 @@ var Background = class Background {
         let shadingType = this._settings.get_enum(COLOR_SHADING_TYPE_KEY);
 
         if (shadingType == GDesktopEnums.BackgroundShading.SOLID)
-            this.background.set_color(color);
+            this.set_color(color);
         else
-            this.background.set_gradient(shadingType, color, secondColor);
+            this.set_gradient(shadingType, color, secondColor);
     }
 
     _watchFile(file) {
@@ -381,13 +381,13 @@ var Background = class Background {
         let finish = () => {
             this._setLoaded();
             if (files.length > 1) {
-                this.background.set_blend(files[0], files[1],
-                                          this._animation.transitionProgress,
-                                          this._style);
+                this.set_blend(files[0], files[1],
+                               this._animation.transitionProgress,
+                               this._style);
             } else if (files.length > 0) {
-                this.background.set_file(files[0], this._style);
+                this.set_file(files[0], this._style);
             } else {
-                this.background.set_file(null, this._style);
+                this.set_file(null, this._style);
             }
             this._queueUpdateAnimation();
         };
@@ -459,7 +459,7 @@ var Background = class Background {
     }
 
     _loadImage(file) {
-        this.background.set_file(file, this._style);
+        this.set_file(file, this._style);
         this._watchFile(file);
 
         let cache = Meta.BackgroundImageCache.get_default();
@@ -493,13 +493,14 @@ var Background = class Background {
 
         this._loadFile(this._file);
     }
-};
-Signals.addSignalMethods(Background.prototype);
+});
 
 let _systemBackground;
 
-var SystemBackground = class SystemBackground {
-    constructor() {
+var SystemBackground = GObject.registerClass({
+    Signals: { 'loaded': {} }
+}, class SystemBackground extends Meta.BackgroundActor {
+    _init() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
 
         if (_systemBackground == null) {
@@ -508,9 +509,11 @@ var SystemBackground = class SystemBackground {
             _systemBackground.set_file(file, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
-        this.actor = new Meta.BackgroundActor({ meta_display: global.display,
-                                                monitor: 0,
-                                                background: _systemBackground });
+        super._init({
+            meta_display: global.display,
+            monitor: 0,
+            background: _systemBackground
+        });
 
         let cache = Meta.BackgroundImageCache.get_default();
         let image = cache.load(file);
@@ -529,8 +532,7 @@ var SystemBackground = class SystemBackground {
             });
         }
     }
-};
-Signals.addSignalMethods(SystemBackground.prototype);
+});
 
 var BackgroundSource = class BackgroundSource {
     constructor(layoutManager, settingsSchema) {
@@ -734,7 +736,7 @@ var BackgroundManager = class BackgroundManager {
 
         this._newBackgroundActor = newBackgroundActor;
 
-        let background = newBackgroundActor.background._delegate;
+        let background = newBackgroundActor.background;
 
         if (background.isLoaded) {
             this._swapBackgroundActor();
@@ -753,7 +755,7 @@ var BackgroundManager = class BackgroundManager {
         let background = this._backgroundSource.getBackground(this._monitorIndex);
         let backgroundActor = new Meta.BackgroundActor({ meta_display: global.display,
                                                          monitor: this._monitorIndex,
-                                                         background: background.background,
+                                                         background: background,
                                                          vignette: this._vignette,
                                                          vignette_sharpness: 0.5,
                                                          brightness: 0.5,
