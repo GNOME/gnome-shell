@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -315,8 +315,10 @@ var DBusEventSource = class DBusEventSource {
 };
 Signals.addSignalMethods(DBusEventSource.prototype);
 
-var Calendar = class Calendar {
-    constructor() {
+var Calendar = GObject.registerClass({
+    Signals: { 'selected-date-changed': {} }
+}, class Calendar extends St.Widget {
+    _init() {
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
@@ -346,12 +348,11 @@ var Calendar = class Calendar {
 
         this._shouldDateGrabFocus = false;
 
-        this.actor = new St.Widget({ style_class: 'calendar',
-                                     layout_manager: new Clutter.TableLayout(),
-                                     reactive: true });
+        super._init({ style_class: 'calendar',
+                      layout_manager: new Clutter.TableLayout(),
+                      reactive: true })
 
-        this.actor.connect('scroll-event',
-                           this._onScroll.bind(this));
+        this.connect('scroll-event', this._onScroll.bind(this));
 
         this._buildHeader ();
     }
@@ -375,7 +376,11 @@ var Calendar = class Calendar {
 
         this._selectedDate = date;
         this._update();
-        this.emit('selected-date-changed', new Date(this._selectedDate));
+        this.emit('selected-date-changed');
+    }
+
+    get selectedDate() {
+        return new Date(this._selectedDate);
     }
 
     updateTimeZone() {
@@ -386,9 +391,9 @@ var Calendar = class Calendar {
     }
 
     _buildHeader() {
-        let layout = this.actor.layout_manager;
+        let layout = this.layout_manager;
         let offsetCols = this._useWeekdate ? 1 : 0;
-        this.actor.destroy_all_children();
+        this.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
@@ -430,7 +435,7 @@ var Calendar = class Calendar {
                                        can_focus: true });
             label.accessible_name = iter.toLocaleFormat('%A');
             let col;
-            if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
+            if (this.get_text_direction() == Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
@@ -439,7 +444,7 @@ var Calendar = class Calendar {
         }
 
         // All the children after this are days, and get removed when we update the calendar
-        this._firstDayIndex = this.actor.get_n_children();
+        this._firstDayIndex = this.get_n_children();
     }
 
     _onScroll(actor, event) {
@@ -515,7 +520,7 @@ var Calendar = class Calendar {
         let now = new Date();
 
         // Remove everything but the topBox and the weekday labels
-        let children = this.actor.get_children();
+        let children = this.get_children();
         for (let i = this._firstDayIndex; i < children.length; i++)
             children[i].destroy();
 
@@ -554,7 +559,7 @@ var Calendar = class Calendar {
 
         beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
 
-        let layout = this.actor.layout_manager;
+        let layout = this.layout_manager;
         let iter = new Date(beginDate);
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
@@ -653,8 +658,7 @@ var Calendar = class Calendar {
                 button.remove_style_pseudo_class('selected');
         });
     }
-};
-Signals.addSignalMethods(Calendar.prototype);
+});
 
 var EventMessage = class EventMessage extends MessageList.Message {
     constructor(event, date) {
