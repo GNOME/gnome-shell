@@ -296,8 +296,8 @@ var AppMenuButton = GObject.registerClass({
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
-        this._spinner.actor.hide();
+        this._container.add_actor(this._spinner);
+        this._spinner.hide();
     }
 
     _syncIcon() {
@@ -324,15 +324,15 @@ var AppMenuButton = GObject.registerClass({
         if (this._spinner == null)
             return;
 
-        Tweener.addTween(this._spinner.actor,
+        Tweener.addTween(this._spinner,
                          { opacity: 0,
                            time: SPINNER_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onCompleteScope: this,
                            onComplete() {
                                this._spinner.stop();
-                               this._spinner.actor.opacity = 255;
-                               this._spinner.actor.hide();
+                               this._spinner.opacity = 255;
+                               this._spinner.hide();
                            }
                          });
     }
@@ -344,7 +344,7 @@ var AppMenuButton = GObject.registerClass({
             return;
 
         this._spinner.play();
-        this._spinner.actor.show();
+        this._spinner.show();
     }
 
     _onAppStateChanged(appSys, app) {
