@@ -55,8 +55,8 @@ class AccessDialog extends ModalDialog.ModalDialog {
 
             let check = new CheckBox.CheckBox();
             check.getLabelActor().text = name;
-            check.actor.checked = selected == "true";
-            content.insertBeforeBody(check.actor);
+            check.checked = selected == "true";
+            content.insertBeforeBody(check);
 
             this._choices.set(id, check);
         }
@@ -98,7 +98,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         let results = {};
         if (response == DialogResponse.OK) {
             for (let [id, check] of this._choices) {
-                let checked = check.actor.checked ? 'true' : 'false';
+                let checked = check.checked ? 'true' : 'false';
                 results[id] = new GLib.Variant('s', checked);
             }
         }
