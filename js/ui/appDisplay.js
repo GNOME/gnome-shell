@@ -770,8 +770,14 @@ var ViewStackLayout = GObject.registerClass({
     }
 });
 
-var AppDisplay = class AppDisplay {
-    constructor() {
+var AppDisplay = GObject.registerClass({
+    Signals: { 'activate': { param_types: [GObject.TYPE_STRING] } }
+}, class AppDisplay extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'app-display',
+                     x_expand: true, y_expand: true,
+                     vertical: true });
+
         this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
                                       this._updateFrequentVisibility.bind(this));
@@ -793,14 +799,11 @@ var AppDisplay = class AppDisplay {
                                  x_expand: true });
         this._views[Views.ALL] = { 'view': view, 'control': button };
 
-        this.actor = new St.BoxLayout ({ style_class: 'app-display',
-                                         x_expand: true, y_expand: true,
-                                         vertical: true });
         this._viewStackLayout = new ViewStackLayout();
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
                                           layout_manager: this._viewStackLayout });
         this._viewStackLayout.connect('allocated-size-changed', this._onAllocatedSizeChanged.bind(this));
-        this.actor.add_actor(this._viewStack);
+        this.add_actor(this._viewStack);
         let layout = new ControlsBoxLayout({ homogeneous: true });
         this._controls = new St.Widget({ style_class: 'app-view-controls',
                                          layout_manager: layout });
@@ -817,7 +820,7 @@ var AppDisplay = class AppDisplay {
         });
 
         layout.hookup_style(this._controls);
-        this.actor.add_actor(new St.Bin({ child: this._controls }));
+        this.add_actor(new St.Bin({ child: this._controls }));
 
         for (let i = 0; i < this._views.length; i++) {
             this._viewStack.add_actor(this._views[i].view);
@@ -927,7 +930,7 @@ var AppDisplay = class AppDisplay {
         for (let i = 0; i < this._views.length; i++)
             this._views[i].view.adaptToSize(availWidth, availHeight);
     }
-};
+});
 
 var AppSearchProvider = class AppSearchProvider {
     constructor() {
