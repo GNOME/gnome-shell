@@ -32,39 +32,39 @@ class MaxWidthBin extends St.Bin {
     }
 });
 
-var SearchResult = class {
-    constructor(provider, metaInfo, resultsView) {
+var SearchResult = GObject.registerClass({
+    Signals: { 'activate': { param_types: [GObject.TYPE_STRING] } }
+}, class SearchResult extends St.Button {
+    _init(provider, metaInfo, resultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
 
-        this.actor = new St.Button({ reactive: true,
-                                     can_focus: true,
-                                     track_hover: true,
-                                     x_align: St.Align.START,
-                                     y_fill: true });
+        super._init({ reactive: true,
+                      can_focus: true,
+                      track_hover: true,
+                      x_align: St.Align.START,
+                      y_fill: true });
 
-        this.actor._delegate = this;
-        this.actor.connect('clicked', this.activate.bind(this));
+        this.connect('clicked', this.activate.bind(this));
     }
 
     activate() {
         this.emit('activate', this.metaInfo.id);
     }
-};
-Signals.addSignalMethods(SearchResult.prototype);
+});
 
-var ListSearchResult = class extends SearchResult {
+var ListSearchResult = GObject.registerClass(
+class ListSearchResult extends SearchResult {
+    _init(provider, metaInfo, resultsView) {
+        super._init(provider, metaInfo, resultsView);
 
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-
-        this.actor.style_class = 'list-search-result';
-        this.actor.x_fill = true;
+        this.style_class = 'list-search-result';
+        this.x_fill = true;
 
         let content = new St.BoxLayout({ style_class: 'list-search-result-content',
                                          vertical: false });
-        this.actor.set_child(content);
+        this.set_child(content);
 
         this._termsChangedId = 0;
 
@@ -87,7 +87,7 @@ var ListSearchResult = class extends SearchResult {
                               x_align: St.Align.START,
                               y_align: St.Align.MIDDLE });
 
-        this.actor.label_actor = title;
+        this.label_actor = title;
 
         if (this.metaInfo['description']) {
             this._descriptionLabel = new St.Label({ style_class: 'list-search-result-description' });
@@ -103,7 +103,7 @@ var ListSearchResult = class extends SearchResult {
             this._highlightTerms();
         }
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     get ICON_SIZE() {
@@ -120,21 +120,22 @@ var ListSearchResult = class extends SearchResult {
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
     }
-};
+});
 
-var GridSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
+var GridSearchResult = GObject.registerClass(
+class GridSearchResult extends SearchResult {
+    _init(provider, metaInfo, resultsView) {
+        super._init(provider, metaInfo, resultsView);
 
-        this.actor.style_class = 'grid-search-result';
+        this.style_class = 'grid-search-result';
 
         this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                           { createIcon: this.metaInfo['createIcon'] });
         let content = new St.Bin({ child: this.icon });
-        this.actor.set_child(content);
-        this.actor.label_actor = this.icon.label;
+        this.set_child(content);
+        this.label_actor = this.icon.label;
     }
-};
+});
 
 var SearchResultsBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
@@ -178,7 +179,7 @@ var SearchResultsBase = GObject.registerClass({
     clear() {
         this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
-            this._resultDisplays[resultId].actor.destroy();
+            this._resultDisplays[resultId].destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
         this.hide();
@@ -231,9 +232,9 @@ var SearchResultsBase = GObject.registerClass({
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
                     if (GObject.signal_lookup('activate', display))
                         display.connect('activate', this._activateResult.bind(this));
+                    display.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
                 callback(true);
@@ -319,12 +320,12 @@ class ListSearchResults extends SearchResultsBase {
     }
 
     _addItem(display) {
-        this._content.add_actor(display.actor);
+        this._content.add_actor(display);
     }
 
     getFirstResult() {
         if (this._content.get_n_children() > 0)
-            return this._content.get_child_at_index(0)._delegate;
+            return this._content.get_child_at_index(0);
         else
             return null;
     }
@@ -371,7 +372,7 @@ class GridSearchResults extends SearchResultsBase {
 
     getFirstResult() {
         if (this._grid.visibleItemsCount() > 0)
-            return this._grid.getItemAtIndex(0)._delegate;
+            return this._grid.getItemAtIndex(0);
         else
             return null;
     }
@@ -678,7 +679,7 @@ var SearchResults = class {
             this._doSearch();
 
         if (this._defaultResult)
-            this._defaultResult.actor.popup_menu();
+            this._defaultResult.popup_menu();
     }
 
     navigateFocus(direction) {
@@ -691,7 +692,7 @@ var SearchResults = class {
             return;
         }
 
-        let from = this._defaultResult ? this._defaultResult.actor : null;
+        let from = this._defaultResult ? this._defaultResult : null;
         this.actor.navigate_focus(from, direction, false);
     }
 
@@ -700,10 +701,10 @@ var SearchResults = class {
             return;
 
         if (selected) {
-            result.actor.add_style_pseudo_class('selected');
-            Util.ensureActorVisibleInScrollView(this._scrollView, result.actor);
+            result.add_style_pseudo_class('selected');
+            Util.ensureActorVisibleInScrollView(this._scrollView, result);
         } else {
-            result.actor.remove_style_pseudo_class('selected');
+            result.remove_style_pseudo_class('selected');
         }
     }
 
