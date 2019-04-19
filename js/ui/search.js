@@ -228,8 +228,9 @@ var SearchResultsBase = class {
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.connect('activate', this._activateResult.bind(this));
                     display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
+                    if (GObject.signal_lookup('activate', display))
+                        display.connect('activate', this._activateResult.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
                 callback(true);

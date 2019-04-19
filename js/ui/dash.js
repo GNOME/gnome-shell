@@ -481,11 +481,11 @@ var Dash = GObject.registerClass({
         if (appIcon._draggable) {
             appIcon._draggable.connect('drag-begin',
                                        () => {
-                                           appIcon.actor.opacity = 50;
+                                           appIcon.opacity = 50;
                                        });
             appIcon._draggable.connect('drag-end',
                                        () => {
-                                           appIcon.actor.opacity = 255;
+                                           appIcon.opacity = 255;
                                        });
         }
 
@@ -495,11 +495,11 @@ var Dash = GObject.registerClass({
                         });
 
         let item = new DashItemContainer();
-        item.setChild(appIcon.actor);
+        item.setChild(appIcon);
 
         // Override default AppIcon label_actor, now the
         // accessible_name is set at DashItemContainer.setLabelText
-        appIcon.actor.label_actor = null;
+        appIcon.label_actor = null;
         item.setLabelText(app.get_name());
 
         appIcon.icon.setIconSize(this.iconSize);
