@@ -7,7 +7,7 @@ const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML, deleteGFile } = imports.misc.fileUtils;
 
 const { ExtensionState } = ExtensionUtils;
 
@@ -363,6 +363,12 @@ var Application = GObject.registerClass({
                     this.quit();
 
                 this.disabledInfobar.set_revealed(true);
+
+                let file = GLib.build_filenamev ([GLib.get_user_config_dir(), 'gnome-shell-extensions-disabled-warning']);
+                let gfile = Gio.File.new_for_path(file);
+                if (gfile.query_exists(null))
+                    deleteGFile(gfile);
+
                 return 0;
             }
 
