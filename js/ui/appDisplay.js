@@ -290,7 +290,7 @@ var AllView = class AllView extends BaseAppView {
 
             let [x, y] = this._clickAction.get_coords();
             let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-            if (!this._currentPopup.actor.contains(actor))
+            if (!this._currentPopup.contains(actor))
                 this._currentPopup.popdown();
         });
         this._eventBlocker.add_action(this._clickAction);
@@ -442,7 +442,7 @@ var AllView = class AllView extends BaseAppView {
 
         if (this._currentPopup && this._displayingPopup &&
             animationDirection == IconGrid.AnimationDirection.OUT)
-            Tweener.addTween(this._currentPopup.actor,
+            Tweener.addTween(this._currentPopup,
                              { time: VIEWS_SWITCH_TIME,
                                transition: 'easeOutQuad',
                                opacity: 0,
@@ -580,7 +580,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     addFolderPopup(popup) {
-        this._stack.add_actor(popup.actor);
+        this._stack.add_actor(popup);
         popup.connect('open-state-changed', (popup, isOpen) => {
             this._eventBlocker.reactive = isOpen;
             this._currentPopup = isOpen ? popup : null;
@@ -598,14 +598,14 @@ var AllView = class AllView extends BaseAppView {
     _updateIconOpacities(folderOpen) {
         for (let id in this._items) {
             let params, opacity;
-            if (folderOpen && !this._items[id].actor.checked)
+            if (folderOpen && !this._items[id].checked)
                 opacity =  INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
             params = { opacity: opacity,
                        time: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                        transition: 'easeOutQuad' };
-            Tweener.addTween(this._items[id].actor, params);
+            Tweener.addTween(this._items[id], params);
         }
     }
 
@@ -1244,9 +1244,9 @@ var FolderIcon = GObject.registerClass({
             return;
 
         if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.actor.y = this.allocation.y1 + this.translation_y - this._popupHeight();
+            this._popup.y = this.allocation.y1 + this.translation_y - this._popupHeight();
         else
-            this._popup.actor.y = this.allocation.y1 + this.translation_y + this.height;
+            this._popup.y = this.allocation.y1 + this.translation_y + this.height;
     }
 
     _ensurePopup() {
@@ -1277,8 +1277,25 @@ var FolderIcon = GObject.registerClass({
     }
 });
 
-var AppFolderPopup = class AppFolderPopup {
-    constructor(source, side) {
+var AppFolderPopup = GObject.registerClass({
+    Signals: {
+        'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+    }
+}, class AppDisplay_AppFolderPopup extends St.Widget {
+    _init(source, side) {
+        super._init({ layout_manager: new Clutter.BinLayout(),
+                      visible: false,
+                      // We don't want to expand really, but look
+                      // at the layout manager of our parent...
+                      //
+                      // DOUBLE HACK: if you set one, you automatically
+                      // get the effect for the other direction too, so
+                      // we need to set the y_align
+                      x_expand: true,
+                      y_expand: true,
+                      x_align: Clutter.ActorAlign.CENTER,
+                      y_align: Clutter.ActorAlign.START });
+
         this._source = source;
         this._view = source.view;
         this._arrowSide = side;
@@ -1286,18 +1303,6 @@ var AppFolderPopup = class AppFolderPopup {
         this._isOpen = false;
         this.parentOffset = 0;
 
-        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                     visible: false,
-                                     // We don't want to expand really, but look
-                                     // at the layout manager of our parent...
-                                     //
-                                     // DOUBLE HACK: if you set one, you automatically
-                                     // get the effect for the other direction too, so
-                                     // we need to set the y_align
-                                     x_expand: true,
-                                     y_expand: true,
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     y_align: Clutter.ActorAlign.START });
         this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide,
                                                      { style_class: 'app-folder-popup-bin',
                                                        x_fill: true,
@@ -1306,24 +1311,24 @@ var AppFolderPopup = class AppFolderPopup {
                                                        x_align: St.Align.START });
 
         this._boxPointer.style_class = 'app-folder-popup';
-        this.actor.add_actor(this._boxPointer);
+        this.add_actor(this._boxPointer);
         this._boxPointer.bin.set_child(this._view.actor);
 
         this.closeButton = Util.makeCloseButton(this._boxPointer);
         this.closeButton.connect('clicked', this.popdown.bind(this));
-        this.actor.add_actor(this.closeButton);
+        this.add_actor(this.closeButton);
 
         this._boxPointer.bind_property('opacity', this.closeButton, 'opacity',
                                        GObject.BindingFlags.SYNC_CREATE);
 
-        global.focus_manager.add_group(this.actor);
+        global.focus_manager.add_group(this);
 
-        source.connect('destroy', () => { this.actor.destroy(); });
-        this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
+        source.connect('destroy', () => { this.destroy(); });
+        this._grabHelper = new GrabHelper.GrabHelper(this, {
             actionMode: Shell.ActionMode.POPUP
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
-        this.actor.connect('key-press-event', this._onKeyPress.bind(this));
+        this.connect('key-press-event', this._onKeyPress.bind(this));
     }
 
     _onKeyPress(actor, event) {
@@ -1381,13 +1386,13 @@ var AppFolderPopup = class AppFolderPopup {
         if (this._isOpen)
             return;
 
-        this._isOpen = this._grabHelper.grab({ actor: this.actor,
+        this._isOpen = this._grabHelper.grab({ actor: this,
                                                onUngrab: this.popdown.bind(this) });
 
         if (!this._isOpen)
             return;
 
-        this.actor.show();
+        this.show();
 
         this._boxPointer.setArrowActor(this._source);
         // We need to hide the icons of the view until the boxpointer animation
@@ -1408,7 +1413,7 @@ var AppFolderPopup = class AppFolderPopup {
         if (!this._isOpen)
             return;
 
-        this._grabHelper.ungrab({ actor: this.actor });
+        this._grabHelper.ungrab({ actor: this });
 
         this._boxPointer.close(BoxPointer.PopupAnimation.FADE |
                                BoxPointer.PopupAnimation.SLIDE);
@@ -1431,8 +1436,7 @@ var AppFolderPopup = class AppFolderPopup {
         this._arrowSide = side;
         this._boxPointer.updateArrowSide(side);
     }
-};
-Signals.addSignalMethods(AppFolderPopup.prototype);
+});
 
 var AppIcon = GObject.registerClass({
     Signals: {
