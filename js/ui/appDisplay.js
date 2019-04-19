@@ -164,17 +164,17 @@ class BaseAppView {
 
     _selectAppInternal(id) {
         if (this._items[id])
-            this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            this._items[id].navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log('No such application ' + id);
     }
 
     selectApp(id) {
-        if (this._items[id] && this._items[id].actor.mapped) {
+        if (this._items[id] && this._items[id].mapped) {
             this._selectAppInternal(id);
         } else if (this._items[id]) {
             // Need to wait until the view is mapped
-            let signalId = this._items[id].actor.connect('notify::mapped',
+            let signalId = this._items[id].connect('notify::mapped',
                 actor => {
                     if (actor.mapped) {
                         actor.disconnect(signalId);
@@ -354,14 +354,14 @@ var AllView = class AllView extends BaseAppView {
     _refilterApps() {
         this._allItems.forEach(icon => {
             if (icon instanceof AppIcon)
-                icon.actor.visible = true;
+                icon.visible = true;
         });
 
         this.folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
                 let appIcon = this._items[appId];
-                appIcon.actor.visible = false;
+                appIcon.visible = false;
             });
         });
     }
@@ -1430,18 +1430,23 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = class AppIcon {
-    constructor(app, iconParams) {
+var AppIcon = GObject.registerClass({
+    Signals: {
+        'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+        'sync-tooltip': {},
+    }
+}, class AppDisplay_AppIcon extends St.Button {
+    _init(app, iconParams) {
+        super._init({ style_class: 'app-well-app',
+                      reactive: true,
+                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                      can_focus: true,
+                      x_fill: true,
+                      y_fill: true });
+
         this.app = app;
         this.id = app.get_id();
         this.name = app.get_name();
-
-        this.actor = new St.Button({ style_class: 'app-well-app',
-                                     reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
@@ -1452,10 +1457,10 @@ var AppIcon = class AppIcon {
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
 
-        this.actor.set_child(this._iconContainer);
+        this.set_child(this._iconContainer);
         this._iconContainer.add_child(this._dot);
 
-        this.actor._delegate = this;
+        this._delegate = this;
 
         if (!iconParams)
             iconParams = {};
@@ -1470,19 +1475,19 @@ var AppIcon = class AppIcon {
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
-        this.actor.label_actor = this.icon.label;
+        this.label_actor = this.icon.label;
 
-        this.actor.connect('leave-event', this._onLeaveEvent.bind(this));
-        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
-        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
-        this.actor.connect('clicked', this._onClicked.bind(this));
-        this.actor.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
+        this.connect('leave-event', this._onLeaveEvent.bind(this));
+        this.connect('button-press-event', this._onButtonPress.bind(this));
+        this.connect('touch-event', this._onTouchEvent.bind(this));
+        this.connect('clicked', this._onClicked.bind(this));
+        this.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
         this._menu = null;
-        this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
+        this._menuManager = new PopupMenu.PopupMenuManager(this);
 
         if (isDraggable) {
-            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable = DND.makeDraggable(this);
             this._draggable.connect('drag-begin', () => {
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
@@ -1495,13 +1500,13 @@ var AppIcon = class AppIcon {
             });
         }
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
             this._updateRunningStyle();
         });
         this._updateRunningStyle();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
@@ -1540,7 +1545,7 @@ var AppIcon = class AppIcon {
     }
 
     _onLeaveEvent(actor, event) {
-        this.actor.fake_release();
+        this.fake_release();
         this._removeMenuTimeout();
     }
 
@@ -1578,7 +1583,7 @@ var AppIcon = class AppIcon {
 
     popupMenu() {
         this._removeMenuTimeout();
-        this.actor.fake_release();
+        this.fake_release();
 
         if (this._draggable)
             this._draggable.fakeRelease();
@@ -1595,7 +1600,7 @@ var AppIcon = class AppIcon {
             let id = Main.overview.connect('hiding', () => {
                 this._menu.close();
             });
-            this.actor.connect('destroy', () => {
+            this.connect('destroy', () => {
                 Main.overview.disconnect(id);
             });
 
@@ -1604,7 +1609,7 @@ var AppIcon = class AppIcon {
 
         this.emit('menu-state-changed', true);
 
-        this.actor.set_hover(true);
+        this.set_hover(true);
         this._menu.popup();
         this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
@@ -1621,7 +1626,7 @@ var AppIcon = class AppIcon {
     }
 
     _onMenuPoppedDown() {
-        this.actor.sync_hover();
+        this.sync_hover();
         this.emit('menu-state-changed', false);
     }
 
@@ -1667,10 +1672,9 @@ var AppIcon = class AppIcon {
     }
 
     shouldShowTooltip() {
-        return this.actor.hover && (!this._menu || !this._menu.isOpen);
+        return this.hover && (!this._menu || !this._menu.isOpen);
     }
-};
-Signals.addSignalMethods(AppIcon.prototype);
+});
 
 var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
     constructor(source) {
@@ -1678,7 +1682,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        super(source.actor, 0.5, side);
+        super(source, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
@@ -1688,12 +1692,12 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         this.actor.add_style_class_name('app-well-menu');
 
         // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
-            if (!source.actor.mapped)
+        this._sourceMappedId = source.connect('notify::mapped', () => {
+            if (!source.mapped)
                 this.close();
         });
-        source.actor.connect('destroy', () => {
-            source.actor.disconnect(this._sourceMappedId);
+        source.connect('destroy', () => {
+            source.disconnect(this._sourceMappedId);
             this.destroy();
         });
 
