@@ -31,6 +31,19 @@ foreach desktop_file : desktop_files
   )
 endforeach
 
+i18n.merge_file('desktop',
+  input: configure_file(
+    input: 'gnome-shell-extensions-disabled-warning.desktop.in.in',
+    output: 'gnome-shell-extensions-disabled-warning.desktop.in',
+    configuration: desktopconf
+  ),
+  output: 'gnome-shell-extension-disabled-warning.desktop',
+  po_dir: '../po',
+  install: true,
+  install_dir: autostartdir,
+  type: 'desktop'
+)
+
 serviceconf = configuration_data()
 serviceconf.set('libexecdir', libexecdir)
 foreach service_file : service_files
