@@ -1,11 +1,30 @@
 [Unit]
 Description=GNOME Shell
-Wants=gnome-session.service
-After=graphical-session-pre.target gnome-session-bus.target
-PartOf=graphical-session.target
+RefuseManualStart=true
+
+Requisite=gnome-session-manager.target
+After=gnome-session-manager.target
+
+Requisite=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+
+Before=gnome-session.target
+
+# Limit startup frequency (see comment below)
+StartLimitIntervalSec=15s
+StartLimitBurst=1
 
 [Service]
 Type=dbus
 ExecStart=@bindir@/gnome-shell
-Restart=on-failure
+# XXX: On X11 we want to restart on-success (Alt+F2 + r) and on-failure
+#      while on wayland we cannot restart properly.
+#      Maybe a good approach would be to disable extensions if the shell
+#      fails in the first minute or so after logon. i.e. we define a
+#      gnome-session-stable.target which is reached after a timeout (simple
+#      unit that sleeps) and Requisite on that in the disable handler.
+Restart=always
+# Do not wait 100ms and limit restarting more than usual
+RestartSec=0ms
 BusName=org.gnome.Shell
