@@ -646,7 +646,7 @@ class WindowCyclerPopup extends CyclerPopup {
 });
 
 var AppIcon = GObject.registerClass(
-class AppIcon extends St.BoxLayout {
+class AltTabAppIcon extends St.BoxLayout {
     _init(app) {
         super._init({ style_class: 'alt-tab-app',
                       vertical: true });
