@@ -14,6 +14,12 @@ desktopconf = configuration_data()
 # file when built in a non-system prefix
 desktopconf.set('bindir', bindir)
 desktopconf.set('VERSION', meson.project_version())
+if have_systemd
+  desktopconf.set('systemd_hidden', 'X-GNOME-Autostart-systemd=true')
+else
+  desktopconf.set('systemd_hidden', )
+endif
+
 foreach desktop_file : desktop_files
   i18n.merge_file('desktop',
     input: configure_file(
@@ -102,13 +108,13 @@ if have_systemd
     input: 'gnome-shell.service.in',
     output: 'gnome-shell.service',
     configuration: unitconf,
-    install_dir: systemduserunitdir
+    install_dir: systemd_userunitdir
   )
 
   units = files('gnome-shell-wayland.target',
                 'gnome-shell-x11.target')
 
-  install_data(units, install_dir: systemduserunitdir)
+  install_data(units, install_dir: systemd_userunitdir)
 endif
 
 # for unit tests - gnome.compile_schemas() only looks in srcdir
