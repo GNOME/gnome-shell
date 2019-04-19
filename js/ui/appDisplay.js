@@ -96,11 +96,13 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-class BaseAppView {
-    constructor(params, gridParams) {
-        if (this.constructor === BaseAppView)
-            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
-
+var AppViewInterface = GObject.registerClass({
+    Requires: [Clutter.Actor],
+    Signals: {
+        'view-loaded': {},
+    }
+}, class AppViewInterface extends GObject.Interface {
+    _init_view(params, gridParams) {
         gridParams = Params.parse(gridParams, { xAlign: St.Align.MIDDLE,
                                                 columnLimit: MAX_COLUMNS,
                                                 minRows: MIN_ROWS,
@@ -215,29 +217,38 @@ class BaseAppView {
     }
 
     animateSwitch(animationDirection) {
-        Tweener.removeTweens(this.actor);
+        Tweener.removeTweens(this);
         Tweener.removeTweens(this._grid);
 
         let params = { time: VIEWS_SWITCH_TIME,
                        transition: 'easeOutQuad' };
         if (animationDirection == IconGrid.AnimationDirection.IN) {
-            this.actor.show();
+            this.show();
             params.opacity = 255;
             params.delay = VIEWS_SWITCH_ANIMATION_DELAY;
         } else {
             params.opacity = 0;
             params.delay = 0;
-            params.onComplete = () => { this.actor.hide(); };
+            params.onComplete = () => { this.hide(); };
         }
 
         Tweener.addTween(this._grid, params);
     }
-};
-Signals.addSignalMethods(BaseAppView.prototype);
 
-var AllView = class AllView extends BaseAppView {
-    constructor() {
-        super({ usePagination: true }, null);
+    adaptToSize(width, height) {
+        throw new GObject.NotImplementedError();
+    }
+});
+
+var AllView = GObject.registerClass({
+    Implements: [ AppViewInterface ],
+    Signals: { 'space-ready': {} }
+}, class AllView extends St.Widget {
+    _init() {
+        super._init({ layout_manager: new Clutter.BinLayout(),
+                      x_expand:true, y_expand:true });
+        this._init_view({ usePagination: true }, null);
+
         this._scrollView = new St.ScrollView({ style_class: 'all-apps',
                                                x_expand: true,
                                                y_expand: true,
@@ -245,9 +256,7 @@ var AllView = class AllView extends BaseAppView {
                                                y_fill: false,
                                                reactive: true,
                                                y_align: St.Align.START });
-        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                     x_expand:true, y_expand:true });
-        this.actor.add_actor(this._scrollView);
+        this.add_actor(this._scrollView);
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
@@ -259,7 +268,7 @@ var AllView = class AllView extends BaseAppView {
                 this.goToPage(pageIndex);
             });
         this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
-        this.actor.add_actor(this._pageIndicators);
+        this.add_actor(this._pageIndicators);
 
         this.folderIcons = [];
 
@@ -312,8 +321,8 @@ var AllView = class AllView extends BaseAppView {
             this._displayingPopup = false;
         });
 
-        this.actor.connect('notify::mapped', () => {
-            if (this.actor.mapped) {
+        this.connect('notify::mapped', () => {
+            if (this.mapped) {
                 this._keyPressEventId =
                     global.stage.connect('key-press-event',
                                          this._onKeyPressEvent.bind(this));
@@ -324,7 +333,7 @@ var AllView = class AllView extends BaseAppView {
             }
         });
 
-        this._redisplayWorkId = Main.initializeDeferredWork(this.actor, this._redisplay.bind(this));
+        this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
@@ -337,7 +346,7 @@ var AllView = class AllView extends BaseAppView {
 
     removeAll() {
         this.folderIcons = [];
-        super.removeAll();
+        AppViewInterface.removeAll(this);
     }
 
     _itemNameChanged(item) {
@@ -428,17 +437,17 @@ var AllView = class AllView extends BaseAppView {
             this._currentPopup.popdown();
             let spaceClosedId = this._grid.connect('space-closed', () => {
                 this._grid.disconnect(spaceClosedId);
-                super.animate(animationDirection, completionFunc);
+                AppViewInterface.animate(this, animationDirection, completionFunc);
             });
         } else {
-            super.animate(animationDirection, completionFunc);
+            AppViewInterface.animate(this, animationDirection, completionFunc);
             if (animationDirection == IconGrid.AnimationDirection.OUT)
                 this._pageIndicators.animateIndicators(animationDirection);
         }
     }
 
     animateSwitch(animationDirection) {
-        super.animateSwitch(animationDirection);
+        AppViewInterface.animateSwitch(this, animationDirection);
 
         if (this._currentPopup && this._displayingPopup &&
             animationDirection == IconGrid.AnimationDirection.OUT)
@@ -616,7 +625,7 @@ var AllView = class AllView extends BaseAppView {
         box.x2 = width;
         box.y1 = 0;
         box.y2 = height;
-        box = this.actor.get_theme_node().get_content_box(box);
+        box = this.get_theme_node().get_content_box(box);
         box = this._scrollView.get_theme_node().get_content_box(box);
         box = this._grid.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
@@ -646,16 +655,16 @@ var AllView = class AllView extends BaseAppView {
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
     }
-};
-Signals.addSignalMethods(AllView.prototype);
+});
 
-var FrequentView = class FrequentView extends BaseAppView {
-    constructor() {
-        super(null, { fillParent: true });
-
-        this.actor = new St.Widget({ style_class: 'frequent-apps',
-                                     layout_manager: new Clutter.BinLayout(),
-                                     x_expand: true, y_expand: true });
+var FrequentView = GObject.registerClass({
+    Implements: [ AppViewInterface ],
+}, class FrequentView extends St.Widget {
+    _init() {
+        super._init({ style_class: 'frequent-apps',
+                      layout_manager: new Clutter.BinLayout(),
+                      x_expand: true, y_expand: true });
+        this._init_view(null, { fillParent: true });
 
         this._noFrequentAppsLabel = new St.Label({ text: _("Frequently used applications will appear here"),
                                                    style_class: 'no-frequent-applications-label',
@@ -666,14 +675,14 @@ var FrequentView = class FrequentView extends BaseAppView {
 
         this._grid.y_expand = true;
 
-        this.actor.add_actor(this._grid);
-        this.actor.add_actor(this._noFrequentAppsLabel);
+        this.add_actor(this._grid);
+        this.add_actor(this._noFrequentAppsLabel);
         this._noFrequentAppsLabel.hide();
 
         this._usage = Shell.AppUsage.get_default();
 
-        this.actor.connect('notify::mapped', () => {
-            if (this.actor.mapped)
+        this.connect('notify::mapped', () => {
+            if (this.mapped)
                 this._redisplay();
         });
     }
@@ -712,13 +721,13 @@ var FrequentView = class FrequentView extends BaseAppView {
         box.x1 = box.y1 = 0;
         box.x2 = width;
         box.y2 = height;
-        box = this.actor.get_theme_node().get_content_box(box);
+        box = this.get_theme_node().get_content_box(box);
         box = this._grid.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
         this._grid.adaptToSize(availWidth, availHeight);
     }
-};
+});
 
 var Views = {
     FREQUENT: 0,
@@ -812,7 +821,7 @@ var AppDisplay = class AppDisplay {
         this.actor.add_actor(new St.Bin({ child: this._controls }));
 
         for (let i = 0; i < this._views.length; i++) {
-            this._viewStack.add_actor(this._views[i].view.actor);
+            this._viewStack.add_actor(this._views[i].view);
             this._controls.add_actor(this._views[i].control);
 
             let viewIndex = i;
@@ -899,7 +908,7 @@ var AppDisplay = class AppDisplay {
         let visibleViews = this._views.filter(v => v.control.visible);
         this._controls.visible = visibleViews.length > 1;
 
-        if (!enabled && this._views[Views.FREQUENT].view.actor.visible)
+        if (!enabled && this._views[Views.FREQUENT].view.visible)
             this._showView(Views.ALL);
     }
 
@@ -995,26 +1004,29 @@ var AppSearchProvider = class AppSearchProvider {
     }
 };
 
-var FolderView = class FolderView extends BaseAppView {
-    constructor() {
-        super(null, null);
+var FolderView = GObject.registerClass({
+    Implements: [ AppViewInterface ],
+}, class FolderView extends St.ScrollView {
+    _init() {
+        super._init({ overlay_scrollbars: true });
+        this._init_view(null, null);
+
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
 
-        this.actor = new St.ScrollView({ overlay_scrollbars: true });
-        this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
-        this.actor.add_actor(scrollableContainer);
+        this.add_actor(scrollableContainer);
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
-        this.actor.add_action(action);
+        this.add_action(action);
     }
 
     _childFocused(actor) {
-        Util.ensureActorVisibleInScrollView(this.actor, actor);
+        Util.ensureActorVisibleInScrollView(this, actor);
     }
 
     // Overridden from BaseAppView
@@ -1044,8 +1056,8 @@ var FolderView = class FolderView extends BaseAppView {
 
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
-        let adjustment = this.actor.vscroll.adjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        let adjustment = this.vscroll.adjustment;
+        adjustment.value -= (dy / this.height) * adjustment.page_size;
         return false;
     }
 
@@ -1061,7 +1073,7 @@ var FolderView = class FolderView extends BaseAppView {
         // effect to look good, so use the unadjusted padding
         let fadeOffset = Math.min(this._grid.topPadding,
                                   this._grid.bottomPadding);
-        this.actor.update_fade_effect(fadeOffset, 0);
+        this.update_fade_effect(fadeOffset, 0);
 
         // Set extra padding to avoid popup or close button being cut off
         this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
@@ -1069,8 +1081,8 @@ var FolderView = class FolderView extends BaseAppView {
         this._grid.leftPadding = Math.max(this._grid.leftPadding - this._offsetForEachSide, 0);
         this._grid.rightPadding = Math.max(this._grid.rightPadding - this._offsetForEachSide, 0);
 
-        this.actor.set_width(this.usedWidth());
-        this.actor.set_height(this.usedHeight());
+        this.set_width(this.usedWidth());
+        this.set_height(this.usedHeight());
     }
 
     _getPageAvailableSize() {
@@ -1079,7 +1091,7 @@ var FolderView = class FolderView extends BaseAppView {
         pageBox.x2 = this._parentAvailableWidth;
         pageBox.y2 = this._parentAvailableHeight;
 
-        let contentBox = this.actor.get_theme_node().get_content_box(pageBox);
+        let contentBox = this.get_theme_node().get_content_box(pageBox);
         // We only can show icons inside the collection view boxPointer
         // so we have to subtract the required padding etc of the boxpointer
         return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
@@ -1103,7 +1115,7 @@ var FolderView = class FolderView extends BaseAppView {
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
-};
+});
 
 var FolderIcon = GObject.registerClass({
     Signals: {
@@ -1136,7 +1148,7 @@ var FolderIcon = GObject.registerClass({
 
         this.connect('clicked', () => {
             this._ensurePopup();
-            this.view.actor.vscroll.adjustment.value = 0;
+            this.view.vscroll.adjustment.value = 0;
             this._openSpaceForPopup();
         });
         this.connect('notify::mapped', () => {
@@ -1222,7 +1234,7 @@ var FolderIcon = GObject.registerClass({
 
     _calculateBoxPointerArrowSide() {
         let spaceTop = this.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.actor.height - (spaceTop + this.height);
+        let spaceBottom = this._parentView.height - (spaceTop + this.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
     }
@@ -1312,7 +1324,7 @@ var AppFolderPopup = GObject.registerClass({
 
         this._boxPointer.style_class = 'app-folder-popup';
         this.add_actor(this._boxPointer);
-        this._boxPointer.bin.set_child(this._view.actor);
+        this._boxPointer.bin.set_child(this._view);
 
         this.closeButton = Util.makeCloseButton(this._boxPointer);
         this.closeButton.connect('clicked', this.popdown.bind(this));
@@ -1398,11 +1410,11 @@ var AppFolderPopup = GObject.registerClass({
         // We need to hide the icons of the view until the boxpointer animation
         // is completed so we can animate the icons after as we like without
         // showing them while boxpointer is animating.
-        this._view.actor.opacity = 0;
+        this._view.opacity = 0;
         this._boxPointer.open(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE,
                               () => {
-                this._view.actor.opacity = 255;
+                this._view.opacity = 255;
                 this._view.animate(IconGrid.AnimationDirection.IN);
             });
 
