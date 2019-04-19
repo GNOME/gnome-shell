@@ -173,7 +173,7 @@ var ViewSelector = class {
                                        _("Applications"), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResults();
-        this._searchPage = this._addPage(this._searchResults.actor,
+        this._searchPage = this._addPage(this._searchResults,
                                          _("Search"), 'edit-find-symbolic',
                                          { a11yFocus: this._entry });
 
@@ -184,9 +184,9 @@ var ViewSelector = class {
         this._focusTrap.connect('key-focus-in', () => {
             this._entry.grab_key_focus();
         });
-        this._searchResults.actor.add_actor(this._focusTrap);
+        this._searchResults.add_actor(this._focusTrap);
 
-        global.focus_manager.add_group(this._searchResults.actor);
+        global.focus_manager.add_group(this._searchResults);
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
@@ -458,7 +458,7 @@ var ViewSelector = class {
     _onStageKeyFocusChanged() {
         let focus = global.stage.get_key_focus();
         let appearFocused = (this._entry.contains(focus) ||
-                             this._searchResults.actor.contains(focus));
+                             this._searchResults.contains(focus));
 
         this._text.set_cursor_visible(appearFocused);
 
