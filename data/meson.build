@@ -111,8 +111,7 @@ if have_systemd
     install_dir: systemd_userunitdir
   )
 
-  units = files('gnome-shell-wayland.target',
-                'gnome-shell-x11.target')
+  units = files('gnome-shell.target')
 
   install_data(units, install_dir: systemd_userunitdir)
 endif
