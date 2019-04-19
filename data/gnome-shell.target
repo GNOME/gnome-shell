@@ -1,0 +1,6 @@
+[Unit]
+Description=GNOME Shell
+DefaultDependencies=false
+
+BindsTo=gnome-shell.service
+After=gnome-shell.service
