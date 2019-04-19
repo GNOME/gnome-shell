@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=GNOME Shell Extensions Disabled Warning
+Comment=Warning shown if extensions were disabled due to a failure
+Exec=@bindir@/gnome-shell-extension-prefs --disabled-warning
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=gnome-shell
+X-GNOME-Bugzilla-Component=general
+X-GNOME-Bugzilla-Version=@VERSION@
+OnlyShowIn=GNOME;
+AutostartCondition=if-exists gnome-shell-extensions-disabled-warning
+X-GNOME-HiddenUnderSystemd=@systemd_hidden@
