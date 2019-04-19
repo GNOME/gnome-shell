@@ -1,5 +1,10 @@
 [Unit]
-Description=GNOME Shell (wayland sync point)
-After=gnome-shell.service
-BindsTo=gnome-shell.service
-Conflicts=gnome-shell-x11.target
+Description=GNOME Shell on Wayland
+DefaultDependencies=no
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+Requires=gnome-shell-wayland.service
+After=gnome-shell-wayland.service
