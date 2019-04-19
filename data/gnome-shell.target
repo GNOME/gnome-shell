@@ -1,0 +1,8 @@
+[Unit]
+Description=GNOME Shell
+DefaultDependencies=false
+
+BindsTo=gnome-shell.service
+After=gnome-shell.service
+
+Wants=gnome-shell-extensions-disabled-warning.service
