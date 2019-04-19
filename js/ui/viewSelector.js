@@ -169,7 +169,7 @@ var ViewSelector = class {
                                              _("Windows"), 'focus-windows-symbolic');
 
         this.appDisplay = new AppDisplay.AppDisplay();
-        this._appsPage = this._addPage(this.appDisplay.actor,
+        this._appsPage = this._addPage(this.appDisplay,
                                        _("Applications"), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResults();
