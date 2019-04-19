@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
 const IconGrid = imports.ui.iconGrid;
@@ -340,7 +339,7 @@ class GridSearchResults extends SearchResultsBase {
         // goes hidden when no results are displayed, and then it lost its allocation.
         // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
         // it doesn't show any result although we have some.
-        this._parentContainer = resultsView.actor;
+        this._parentContainer = resultsView;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -378,10 +377,11 @@ class GridSearchResults extends SearchResultsBase {
     }
 });
 
-var SearchResults = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ name: 'searchResults',
-                                        vertical: true });
+var SearchResults = GObject.registerClass({
+    Signals: { 'terms-changed': {} }
+}, class SearchResults extends St.BoxLayout {
+    _init() {
+        super._init({ name: 'searchResults', vertical: true });
 
         this._content = new St.BoxLayout({ name: 'searchResultsContent',
                                            vertical: true });
@@ -403,16 +403,16 @@ var SearchResults = class {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this.actor.add(this._scrollView, { x_fill: true,
-                                           y_fill: true,
-                                           expand: true,
-                                           x_align: St.Align.START,
-                                           y_align: St.Align.START });
+        this.add(this._scrollView, { x_fill: true,
+                                     y_fill: true,
+                                     expand: true,
+                                     x_align: St.Align.START,
+                                     y_align: St.Align.START });
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                        y_align: St.Align.MIDDLE });
-        this.actor.add(this._statusBin, { expand: true });
+        this.add(this._statusBin, { expand: true });
         this._statusBin.add_actor(this._statusText);
 
         this._highlightDefault = false;
@@ -566,7 +566,7 @@ var SearchResults = class {
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollView.vscroll.adjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        adjustment.value -= (dy / this.height) * adjustment.page_size;
         return false;
     }
 
@@ -683,17 +683,17 @@ var SearchResults = class {
     }
 
     navigateFocus(direction) {
-        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
+        let rtl = this.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == St.DirectionType.TAB_BACKWARD ||
             direction == (rtl ? St.DirectionType.RIGHT
                               : St.DirectionType.LEFT) ||
             direction == St.DirectionType.UP) {
-            this.actor.navigate_focus(null, direction, false);
+            this.navigate_focus(null, direction, false);
             return;
         }
 
         let from = this._defaultResult ? this._defaultResult : null;
-        this.actor.navigate_focus(from, direction, false);
+        this.navigate_focus(from, direction, false);
     }
 
     _setSelected(result, selected) {
@@ -717,8 +717,7 @@ var SearchResults = class {
 
         return description.replace(this._highlightRegex, '<b>$1</b>');
     }
-};
-Signals.addSignalMethods(SearchResults.prototype);
+});
 
 var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {
