@@ -6,7 +6,7 @@ const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML, deleteGFile } = imports.misc.fileUtils;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
@@ -337,6 +337,12 @@ var Application = class {
                     app.quit();
 
                 this.disabledInfobar.set_revealed(true);
+
+                let file = GLib.build_filenamev ([GLib.get_user_config_dir(), 'gnome-shell-extensions-disabled-warning']);
+                let gfile = Gio.File.new_for_path(file);
+                if (gfile.query_exists(null))
+                    deleteGFile(gfile);
+
                 return 0;
             }
 
