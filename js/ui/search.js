@@ -136,32 +136,35 @@ var GridSearchResult = class extends SearchResult {
     }
 };
 
-var SearchResultsBase = class {
-    constructor(provider, resultsView) {
+var SearchResultsBase = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
+    Signals: { 'key-focus-in-child': { param_types: [ Clutter.Actor.$gtype ] }}
+}, class SearchResultsBase extends St.BoxLayout {
+    _init(provider, resultsView) {
+        super._init({ style_class: 'search-section', vertical: true });
+
         this.provider = provider;
         this._resultsView = resultsView;
 
         this._terms = [];
 
-        this.actor = new St.BoxLayout({ style_class: 'search-section',
-                                        vertical: true });
-
         this._resultDisplayBin = new St.Bin({ x_fill: true,
                                               y_fill: true });
-        this.actor.add(this._resultDisplayBin, { expand: true });
+        this.add(this._resultDisplayBin, { expand: true });
 
         let separator = new St.Widget({ style_class: 'search-section-separator' });
-        this.actor.add(separator);
+        this.add(separator);
 
         this._resultDisplays = {};
 
         this._clipboard = St.Clipboard.get_default();
 
         this._cancellable = new Gio.Cancellable();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
-        this.actor.destroy();
+    _onDestroy() {
         this._terms = [];
     }
 
@@ -178,11 +181,11 @@ var SearchResultsBase = class {
             this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
-        this.actor.hide();
+        this.hide();
     }
 
     _keyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        this.emit('key-focus-in-child', actor);
     }
 
     _activateResult(result, id) {
@@ -242,7 +245,7 @@ var SearchResultsBase = class {
         this._terms = terms;
         if (providerResults.length == 0) {
             this._clearResultDisplay();
-            this.actor.hide();
+            this.hide();
             callback();
         } else {
             let maxResults = this._getMaxDisplayedResults();
@@ -259,22 +262,23 @@ var SearchResultsBase = class {
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
-                this.actor.hide();
+                this.hide();
                 this._clearResultDisplay();
                 results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
                 });
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
-                this.actor.show();
+                this.show();
                 callback();
             });
         }
     }
-};
+});
 
-var ListSearchResults = class extends SearchResultsBase {
-    constructor(provider, resultsView) {
-        super(provider, resultsView);
+var ListSearchResults = GObject.registerClass(
+class ListSearchResults extends SearchResultsBase {
+    _init(provider, resultsView) {
+        super._init(provider, resultsView);
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
@@ -324,12 +328,12 @@ var ListSearchResults = class extends SearchResultsBase {
         else
             return null;
     }
-};
-Signals.addSignalMethods(ListSearchResults.prototype);
+});
 
-var GridSearchResults = class extends SearchResultsBase {
-    constructor(provider, resultsView) {
-        super(provider, resultsView);
+var GridSearchResults = GObject.registerClass(
+class GridSearchResults extends SearchResultsBase {
+    _init(provider, resultsView) {
+        super._init(provider, resultsView);
         // We need to use the parent container to know how much results we can show.
         // None of the actors in this class can be used for that, since the main actor
         // goes hidden when no results are displayed, and then it lost its allocation.
@@ -371,8 +375,7 @@ var GridSearchResults = class extends SearchResultsBase {
         else
             return null;
     }
-};
-Signals.addSignalMethods(GridSearchResults.prototype);
+});
 
 var SearchResults = class {
     constructor() {
@@ -580,9 +583,9 @@ var SearchResults = class {
         else
             providerDisplay = new GridSearchResults(provider, this);
 
-        providerDisplay.connect('key-focus-in', this._keyFocusIn.bind(this));
-        providerDisplay.actor.hide();
-        this._content.add(providerDisplay.actor);
+        providerDisplay.connect('key-focus-in-child', this._keyFocusIn.bind(this));
+        providerDisplay.hide();
+        this._content.add(providerDisplay);
         provider.display = providerDisplay;
     }
 
@@ -600,7 +603,7 @@ var SearchResults = class {
             let provider = providers[i];
             let display = provider.display;
 
-            if (!display.actor.visible)
+            if (!display.visible)
                 continue;
 
             let firstResult = display.getFirstResult();
