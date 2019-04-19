@@ -1105,37 +1105,45 @@ var FolderView = class FolderView extends BaseAppView {
     }
 };
 
-var FolderIcon = class FolderIcon {
-    constructor(id, path, parentView) {
+var FolderIcon = GObject.registerClass({
+    Signals: {
+        'apps-changed': {},
+        'name-changed': {},
+        'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+        'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+        'sync-tooltip': {},
+    }
+}, class AppDisplay_FolderIcon extends St.Button {
+    _init(id, path, parentView) {
+        super._init({ style_class: 'app-well-app app-folder',
+                      button_mask: St.ButtonMask.ONE,
+                      toggle_mode: true,
+                      can_focus: true,
+                      x_fill: true,
+                      y_fill: true });
         this.id = id;
         this.name = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path: path });
-        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
-                                     button_mask: St.ButtonMask.ONE,
-                                     toggle_mode: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
-        this.actor._delegate = this;
+        this._delegate = this;
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this), setSizeManually: true });
-        this.actor.set_child(this.icon);
-        this.actor.label_actor = this.icon.label;
+        this.set_child(this.icon);
+        this.label_actor = this.icon.label;
 
         this.view = new FolderView();
 
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             this._ensurePopup();
             this.view.actor.vscroll.adjustment.value = 0;
             this._openSpaceForPopup();
         });
-        this.actor.connect('notify::mapped', () => {
-            if (!this.actor.mapped && this._popup)
+        this.connect('notify::mapped', () => {
+            if (!this.mapped && this._popup)
                 this._popup.popdown();
         });
 
@@ -1192,7 +1200,7 @@ var FolderIcon = class FolderIcon {
             addAppId(appInfo.get_id());
         });
 
-        this.actor.visible = this.view.getAllItems().length > 0;
+        this.visible = this.view.getAllItems().length > 0;
         this.view.loadGrid();
         this.emit('apps-changed');
     }
@@ -1216,8 +1224,8 @@ var FolderIcon = class FolderIcon {
     }
 
     _calculateBoxPointerArrowSide() {
-        let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
+        let spaceTop = this.y - this._parentView.getCurrentPageY();
+        let spaceBottom = this._parentView.actor.height - (spaceTop + this.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
     }
@@ -1239,9 +1247,9 @@ var FolderIcon = class FolderIcon {
             return;
 
         if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y - this._popupHeight();
+            this._popup.actor.y = this.allocation.y1 + this.translation_y - this._popupHeight();
         else
-            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y + this.actor.height;
+            this._popup.actor.y = this.allocation.y1 + this.translation_y + this.height;
     }
 
     _ensurePopup() {
@@ -1253,7 +1261,7 @@ var FolderIcon = class FolderIcon {
             this._parentView.addFolderPopup(this._popup);
             this._popup.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
-                    this.actor.checked = false;
+                    this.checked = false;
             });
         } else {
             this._popup.updateArrowSide(this._boxPointerArrowside);
@@ -1270,8 +1278,7 @@ var FolderIcon = class FolderIcon {
             this.view.adaptToSize(width, height);
         this._popupInvalidated = true;
     }
-};
-Signals.addSignalMethods(FolderIcon.prototype);
+});
 
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
@@ -1314,7 +1321,7 @@ var AppFolderPopup = class AppFolderPopup {
 
         global.focus_manager.add_group(this.actor);
 
-        source.actor.connect('destroy', () => { this.actor.destroy(); });
+        source.connect('destroy', () => { this.actor.destroy(); });
         this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
             actionMode: Shell.ActionMode.POPUP
         });
@@ -1385,7 +1392,7 @@ var AppFolderPopup = class AppFolderPopup {
 
         this.actor.show();
 
-        this._boxPointer.setArrowActor(this._source.actor);
+        this._boxPointer.setArrowActor(this._source);
         // We need to hide the icons of the view until the boxpointer animation
         // is completed so we can animate the icons after as we like without
         // showing them while boxpointer is animating.
