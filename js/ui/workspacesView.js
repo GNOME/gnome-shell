@@ -5,7 +5,6 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
-const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 
 var WORKSPACE_SWITCH_TIME = 0.25;
@@ -465,7 +464,7 @@ var WorkspacesDisplay = class {
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
-        let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
+/*        let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
         switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
@@ -478,12 +477,12 @@ var WorkspacesDisplay = class {
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
         this.actor.connect('notify::mapped', () => {
             switchGesture.enabled = this.actor.mapped;
-        });
+        });*/
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._workspacesViews = [];
-        switchGesture.enabled = this.actor.mapped;
+//        switchGesture.enabled = this.actor.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
