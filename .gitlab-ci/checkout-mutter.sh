@@ -23,7 +23,7 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
 fi
 
 if [ -z "$mutter_target" ]; then
-  mutter_target=$(git branch -r -l $shell_branch)
+  mutter_target=$(git branch -r -l origin/$shell_branch)
   mutter_target=${mutter_target:-origin/master}
   echo Using $mutter_target instead
 fi
