@@ -5,6 +5,7 @@ jsconf.set('GETTEXT_PACKAGE', meson.project_name())
 jsconf.set('LIBMUTTER_API_VERSION', mutter_api_version)
 jsconf.set10('HAVE_BLUETOOTH', bt_dep.found())
 jsconf.set10('HAVE_NETWORKMANAGER', have_networkmanager)
+jsconf.set10('HAVE_MALCONTENT', malcontent_dep.found())
 jsconf.set('datadir', datadir)
 jsconf.set('libexecdir', libexecdir)
 
