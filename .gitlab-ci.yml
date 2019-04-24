@@ -17,6 +17,8 @@ variables:
 check_commit_log:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: review
+    variables:
+        GIT_DEPTH: "100"
     script:
         - ./.gitlab-ci/check-commit-log.sh
     only:
