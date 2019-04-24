@@ -10,6 +10,7 @@ const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
@@ -473,7 +474,7 @@ var AllView = GObject.registerClass({
             } catch (e) {
                 return false;
             }
-            return appInfo.should_show();
+            return this._parentalControlsManager.shouldShowApp(appInfo);
         });
 
         let apps = this._appInfoList.map(app => app.get_id());
@@ -932,6 +933,14 @@ class FrequentView extends BaseAppView {
         this._noFrequentAppsLabel.hide();
 
         this._usage = Shell.AppUsage.get_default();
+
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('changed', () => {
+            this._redisplay();
+        });
+        this._parentalControlsManager.connect('initialized', () => {
+            this._redisplay();
+        });
     }
 
     vfunc_map() {
@@ -965,7 +974,7 @@ class FrequentView extends BaseAppView {
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         for (let i = 0; i < mostUsed.length; i++) {
-            if (!mostUsed[i].get_app_info().should_show())
+            if (!this._parentalControlsManager.shouldShowApp(mostUsed[i].get_app_info()))
                 continue;
             let appIcon = this._items.get(mostUsed[i].get_id());
             if (!appIcon) {
@@ -1211,6 +1220,8 @@ var AppSearchProvider = class AppSearchProvider {
         this.canLaunchSearch = false;
 
         this._systemActions = new SystemActions.getDefault();
+
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
     }
 
     getResultMetas(apps, callback) {
@@ -1245,14 +1256,24 @@ var AppSearchProvider = class AppSearchProvider {
     }
 
     getInitialResultSet(terms, callback, _cancellable) {
+        // Defer until the parental controls manager is initialised, so the
+        // results can be filtered correctly.
+        if (!this._parentalControlsManager.initialized) {
+            let initializedId = this._parentalControlsManager.connect('initialized', () => {
+                this._parentalControlsManager.disconnect(initializedId);
+                this.getInitialResultSet(terms, callback, cancellable);
+            });
+        }
+
         let query = terms.join(' ');
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
         let results = [];
+
         groups.forEach(group => {
             group = group.filter(appID => {
                 const app = this._appSys.lookup_app(appID);
-                return app && app.app_info.should_show();
+                return app && this._parentalControlsManager.shouldShowApp(app.app_info);
             });
             results = results.concat(group.sort(
                 (a, b) => usage.compare(a, b)
@@ -1391,7 +1412,7 @@ class FolderView extends BaseAppView {
             if (!app)
                 return;
 
-            if (!app.get_app_info().should_show())
+            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
                 return;
 
             if (apps.some(appIcon => appIcon.id == appId))
