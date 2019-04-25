@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+set -x
+
 shell_branch=$(git describe --contains --all HEAD)
 mutter_target=
 
