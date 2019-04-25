@@ -23,20 +23,8 @@ var KeyringDialog = class extends ModalDialog.ModalDialog {
         this._content = new Dialog.MessageDialogContent({ icon });
         this.contentLayout.add(this._content);
 
-        // FIXME: Why does this break now?
-        /*
         this.prompt.bind_property('message', this._content, 'title', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('description', this._content, 'body', GObject.BindingFlags.SYNC_CREATE);
-        */
-        this.prompt.connect('notify::message', () => {
-            this._content.title = this.prompt.message;
-        });
-        this._content.title = this.prompt.message;
-
-        this.prompt.connect('notify::description', () => {
-            this._content.body = this.prompt.description;
-        });
-        this._content.body = this.prompt.description;
 
         this._workSpinner = null;
         this._controlTable = null;
