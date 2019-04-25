@@ -4,12 +4,13 @@
 # Andika Triwidada <andika@gmail.com>, 2010-2014, 2017.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
 # Wibiharto <wibinem@yahoo.com>, 2011.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-21 18:43+0000\n"
-"PO-Revision-Date: 2019-02-14 22:18+0700\n"
+"POT-Creation-Date: 2019-04-17 19:29+0000\n"
+"PO-Revision-Date: 2019-04-25 14:54+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -376,11 +377,6 @@ msgstr ""
 msgid "Network Login"
 msgstr "Log Masuk Jaringan"
 
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
-msgid "network-workgroup"
-msgstr "network-workgroup"
-
 #: js/extensionPrefs/main.js:116
 msgid "Something’s gone wrong"
 msgstr "Ada yang tidak beres"
@@ -461,7 +457,7 @@ msgstr "Tak masuk daftar?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:880
+#: js/gdm/loginDialog.js:884
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
@@ -469,12 +465,12 @@ msgstr "(cth., pengguna dari %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:885 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: js/gdm/loginDialog.js:1223
+#: js/gdm/loginDialog.js:1227
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -728,32 +724,37 @@ msgstr "Sering"
 msgid "All"
 msgstr "Semua"
 
-#: js/ui/appDisplay.js:1737 js/ui/panel.js:83
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:1713 js/ui/panel.js:79
+msgid "Open Windows"
+msgstr "Buka Jendela"
+
+#: js/ui/appDisplay.js:1732 js/ui/panel.js:86
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:1751
+#: js/ui/appDisplay.js:1746
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:1778 js/ui/dash.js:239
+#: js/ui/appDisplay.js:1773 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:1784
+#: js/ui/appDisplay.js:1779
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:1794 js/ui/panel.js:94
+#: js/ui/appDisplay.js:1789 js/ui/panel.js:97
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
-#: js/ui/appFavorites.js:141
+#: js/ui/appFavorites.js:149
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s telah ditambahkan ke favorit Anda."
 
-#: js/ui/appFavorites.js:175
+#: js/ui/appFavorites.js:183
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
@@ -1039,7 +1040,7 @@ msgstr "Sandi jaringan data seluler"
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1665
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1664
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -1109,23 +1110,23 @@ msgstr "Tambah jam dunia…"
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:222
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Cuaca"
 
-#: js/ui/dateMenu.js:305
+#: js/ui/dateMenu.js:311
 msgid "Select a location…"
 msgstr "Pilih lokasi…"
 
-#: js/ui/dateMenu.js:313
+#: js/ui/dateMenu.js:319
 msgid "Loading…"
 msgstr "Memuat…"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:325
+#: js/ui/dateMenu.js:331
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
@@ -1288,26 +1289,26 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:50
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
 msgstr "%s ingin mencegah pintasan"
 
-#: js/ui/inhibitShortcutsDialog.js:51
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "Application wants to inhibit shortcuts"
 msgstr "Aplikasi ingin mencegah pintasan"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:60
+#: js/ui/inhibitShortcutsDialog.js:88
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Anda dapat memulihkan pintasan dengan menekan %s."
 
-#: js/ui/inhibitShortcutsDialog.js:65
+#: js/ui/inhibitShortcutsDialog.js:93
 msgid "Deny"
 msgstr "Tolak"
 
-#: js/ui/inhibitShortcutsDialog.js:71
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Allow"
 msgstr "Izinkan"
 
@@ -1358,13 +1359,13 @@ msgid "Leave On"
 msgstr "Biarkan Menyala"
 
 #: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:1264
+#: js/ui/status/network.js:1263
 msgid "Turn On"
 msgstr "Nyalakan"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
 #: js/ui/status/network.js:128 js/ui/status/network.js:310
-#: js/ui/status/network.js:1264 js/ui/status/network.js:1376
+#: js/ui/status/network.js:1263 js/ui/status/network.js:1375
 #: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
 #: js/ui/status/rfkill.js:106
 msgid "Turn Off"
@@ -1374,59 +1375,59 @@ msgstr "Matikan"
 msgid "Leave Off"
 msgstr "Biarkan Mati"
 
-#: js/ui/keyboard.js:203
+#: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
 msgstr "Pengaturan Wilayah & Bahasa"
 
-#: js/ui/lookingGlass.js:614
+#: js/ui/lookingGlass.js:615
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:668
+#: js/ui/lookingGlass.js:669
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s tidak menampilkan galat apa pun."
 
-#: js/ui/lookingGlass.js:674
+#: js/ui/lookingGlass.js:675
 msgid "Hide Errors"
 msgstr "Sembunyikan Galat"
 
-#: js/ui/lookingGlass.js:678 js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:679 js/ui/lookingGlass.js:739
 msgid "Show Errors"
 msgstr "Tampilkan Galat"
 
-#: js/ui/lookingGlass.js:687
+#: js/ui/lookingGlass.js:688
 msgid "Enabled"
 msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:690 subprojects/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:691 subprojects/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: js/ui/lookingGlass.js:692
+#: js/ui/lookingGlass.js:693
 msgid "Error"
 msgstr "Galat"
 
-#: js/ui/lookingGlass.js:694
+#: js/ui/lookingGlass.js:695
 msgid "Out of date"
 msgstr "Kadaluarsa"
 
-#: js/ui/lookingGlass.js:696
+#: js/ui/lookingGlass.js:697
 msgid "Downloading"
 msgstr "Mengunduh"
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:721
 msgid "View Source"
 msgstr "Tilik Sumber"
 
-#: js/ui/lookingGlass.js:729
+#: js/ui/lookingGlass.js:730
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: js/ui/messageTray.js:1474
+#: js/ui/messageTray.js:1480
 msgid "System Information"
 msgstr "Informasi Sistem"
 
@@ -1504,34 +1505,24 @@ msgstr "Tekan Esc untuk keluar"
 msgid "Press any key to exit"
 msgstr "Tekan tombol apa saja untuk keluar"
 
-#: js/ui/panel.js:108
+#: js/ui/panel.js:113
 msgid "Quit"
 msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:466
+#: js/ui/panel.js:468
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: js/ui/panel.js:741
+#: js/ui/panel.js:743
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:861
+#: js/ui/panel.js:864
 msgid "Top Bar"
 msgstr "Bar Atas"
-
-# Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:285
-msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
 
 #: js/ui/runDialog.js:64
 msgid "Enter a Command"
@@ -1569,7 +1560,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 msgstr[1] "%d pemberitahuan baru"
 
-#: js/ui/screenShield.js:449 js/ui/status/system.js:270
+#: js/ui/screenShield.js:449 js/ui/status/system.js:271
 msgid "Lock"
 msgstr "Kunci"
 
@@ -1584,11 +1575,11 @@ msgstr "GNOME perlu mengunci layar"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:834 js/ui/screenShield.js:1307
+#: js/ui/screenShield.js:826 js/ui/screenShield.js:1299
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: js/ui/screenShield.js:835 js/ui/screenShield.js:1308
+#: js/ui/screenShield.js:827 js/ui/screenShield.js:1300
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
@@ -1750,7 +1741,7 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:416 js/ui/status/network.js:1293
+#: js/ui/status/network.js:416 js/ui/status/network.js:1292
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
@@ -1776,7 +1767,7 @@ msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:434 js/ui/status/network.js:1285
+#: js/ui/status/network.js:434 js/ui/status/network.js:1284
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
@@ -1816,7 +1807,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:553 js/ui/status/network.js:1290
+#: js/ui/status/network.js:553 js/ui/status/network.js:1289
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
@@ -1881,72 +1872,72 @@ msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1281
+#: js/ui/status/network.js:1280
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1296
+#: js/ui/status/network.js:1295
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1392
 msgid "connecting…"
 msgstr "menyambung…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1396
+#: js/ui/status/network.js:1395
 msgid "authentication required"
 msgstr "diperlukan otentikasi"
 
-#: js/ui/status/network.js:1398
+#: js/ui/status/network.js:1397
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: js/ui/status/network.js:1448
+#: js/ui/status/network.js:1447
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1465
+#: js/ui/status/network.js:1464
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1475
+#: js/ui/status/network.js:1474
 msgid "VPN Off"
 msgstr "VPN Mati"
 
-#: js/ui/status/network.js:1536 js/ui/status/rfkill.js:82
+#: js/ui/status/network.js:1535 js/ui/status/rfkill.js:82
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: js/ui/status/network.js:1565
+#: js/ui/status/network.js:1564
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Koneksi Kabel"
 msgstr[1] "%s Koneksi Kabel"
 
-#: js/ui/status/network.js:1569
+#: js/ui/status/network.js:1568
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Koneksi Wi-Fi"
 msgstr[1] "%s Koneksi Wi-Fi"
 
-#: js/ui/status/network.js:1573
+#: js/ui/status/network.js:1572
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Koneksi Modem"
 msgstr[1] "%s Koneksi Modem"
 
-#: js/ui/status/network.js:1702
+#: js/ui/status/network.js:1705
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1703
+#: js/ui/status/network.js:1706
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2028,15 +2019,15 @@ msgstr "Keluar"
 msgid "Account Settings"
 msgstr "Pengaturan Akun"
 
-#: js/ui/status/system.js:255
+#: js/ui/status/system.js:256
 msgid "Orientation Lock"
 msgstr "Kunci Orientasi"
 
-#: js/ui/status/system.js:281
+#: js/ui/status/system.js:282
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: js/ui/status/system.js:291
+#: js/ui/status/system.js:292
 msgid "Power Off"
 msgstr "Matikan"
 
@@ -2152,7 +2143,7 @@ msgstr[1] "Perubahan tatanan akan dikembalikan dalam %d detik"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:662
+#: js/ui/windowManager.js:677
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2225,11 +2216,6 @@ msgstr "Pindahkan ke Monitor Kanan"
 msgid "Evolution Calendar"
 msgstr "Evolution Kalender"
 
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: src/calendar-server/evolution-calendar.desktop.in:6
-msgid "evolution"
-msgstr "evolution"
-
 #: src/main.c:408
 msgid "Print version"
 msgstr "Versi Cetak"
@@ -2246,12 +2232,12 @@ msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
-#: src/shell-app.c:260
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: src/shell-app.c:511
+#: src/shell-app.c:515
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Gagal meluncurkan \"%s\""
@@ -2270,7 +2256,7 @@ msgstr "Dialog autentikasi ditolak oleh pengguna"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1873
+#: subprojects/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2279,16 +2265,26 @@ msgstr[1] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1883
+#: subprojects/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 msgstr[1] "%u Masukan"
 
-#: subprojects/gvc/gvc-mixer-control.c:2738
+#: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "network-workgroup"
+#~ msgstr "network-workgroup"
+
+# Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-intl"
+
+#~ msgid "evolution"
+#~ msgstr "evolution"
 
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr "Ada galat saat memuat dialog preferensi bagi %s:"
