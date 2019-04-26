@@ -100,7 +100,7 @@ var SwipeTracker = class {
 
     _cancel() {
         this.emit('end', true, 0);
-        this.reset();
+        this._reset();
     }
 
     _handleEvent(actor, event) {
@@ -120,11 +120,11 @@ var SwipeTracker = class {
             return Clutter.EVENT_PROPAGATE;
 
         let time = event.get_time();
-        let [dx, dy] = event.get_scroll_delta();
+        let [dx, dy] = event.get_gesture_motion_delta(); //event.get_scroll_delta();
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
 //        if ((event.get_scroll_finish_flags() & Clutter.ScrollFinishFlags.VERTICAL == 0) || (dx == 0 && dy == 0))
-            if(!(this._touchpadSettings.get_boolean('natural-scroll'))).
+            if(!(this._touchpadSettings.get_boolean('natural-scroll')))
                 dy = -dy;
             this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor diman
         } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
@@ -146,7 +146,7 @@ var SwipeTracker = class {
 
     _updateGesture(time, delta) {
         if (this._state != State.SCROLLING) {
-            _beginGesture(time);
+            this._beginGesture(time);
         }
 
         this._progress += delta;
@@ -163,7 +163,7 @@ var SwipeTracker = class {
         let minProgress = (this._progress < 0) ? -1 : 0;
         this._progress = clamp(this._progress, minProgress, maxProgress);
 
-        this.emit('progress', this._progress);
+        this.emit('update', this._progress);
 
         this._prevTime = time;
     }
