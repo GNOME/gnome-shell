@@ -241,6 +241,8 @@ libgvc = subproject('gvc',
 )
 libgvc_gir = libgvc.get_variable('libgvc_gir')
 
+po_dir = join_paths(meson.current_source_dir(), 'po')
+
 subdir('js')
 subdir('src')
 subdir('po')
