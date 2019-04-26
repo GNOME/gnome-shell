@@ -38,7 +38,7 @@ i18n.merge_file('desktop',
     configuration: desktopconf
   ),
   output: 'gnome-shell-extension-disabled-warning.desktop',
-  po_dir: '../po',
+  po_dir: po_dir,
   install: true,
   install_dir: autostartdir,
   type: 'desktop'
