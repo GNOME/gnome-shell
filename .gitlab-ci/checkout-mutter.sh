@@ -17,10 +17,11 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   merge_request_branch=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
 
   echo Looking for $merge_request_branch on remote ...
-  if git fetch -q $merge_request_remote $merge_request_branch; then
+  if git fetch -q $merge_request_remote $merge_request_branch 2>/dev/null; then
     mutter_target=FETCH_HEAD
   else
     mutter_target=origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    echo Using $mutter_target instead
   fi
 fi
 
