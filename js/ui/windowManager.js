@@ -17,6 +17,7 @@ const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
 const SwitchMonitor = imports.ui.switchMonitor;
+const SwipeTracker = imports.ui.swipeTracker;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -1061,7 +1062,7 @@ var WindowManager = class {
                                                            false, -1, 1);
 
         let allowedModes = Shell.ActionMode.NORMAL;
-        let gesture = new WorkspaceSwitchAction(allowedModes);
+/*        let gesture = new WorkspaceSwitchAction(allowedModes);
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
@@ -1072,6 +1073,11 @@ var WindowManager = class {
         gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
+*/
+        let gesture = new SwipeTracker.SwipeTracker(global.stage, allowedModes);
+        gesture.connect('begin', this._switchWorkspaceBegin.bind(this));
+        gesture.connect('update', this._switchWorkspaceUpdate.bind(this));
+        gesture.connect('end', this._switchWorkspaceEnd.bind(this));
 
         gesture = new AppSwitchAction();
         global.stage.add_action(gesture);
@@ -1110,6 +1116,50 @@ var WindowManager = class {
         this._currentPadOsd.connect('closed', () => { this._currentPadOsd = null });
 
         return this._currentPadOsd.actor;
+    }
+
+    _switchWorkspaceBegin() {
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+
+        if (!this._switchData)
+            this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
+    }
+
+    _switchWorkspaceUpdate(progress) {
+        if (!this._switchData)
+            return;
+
+        if (yRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.DOWN])
+            yRel = 0;
+        if (yRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.UP])
+            yRel = 0;
+        if (xRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.RIGHT])
+            xRel = 0;
+        if (xRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.LEFT])
+            xRel = 0;
+
+        this._switchData.container.set_position(xRel, yRel);
+    }
+
+    _switchWorkspaceEnd(cancelled, duration) {
+        if (!this._switchData)
+            return;
+
+        if (cancelled)
+            this._switchWorkspaceCancel();
+        let direction = Meta.MotionDirection.DOWN;
+
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let newWs = activeWorkspace.get_neighbor(direction);
+
+        if (newWs == activeWorkspace) {
+            this._switchWorkspaceCancel();
+        } else {
+            this._switchData.gestureActivated = true;
+            this.actionMoveWorkspace(newWs);
+        }
     }
 
     _switchWorkspaceMotion(action, xRel, yRel) {
