@@ -30,7 +30,7 @@ configure_file(
 i18n.merge_file('evolution-calendar.desktop',
   input: 'evolution-calendar.desktop.in',
   output: 'evolution-calendar.desktop',
-  po_dir: '../../po',
+  po_dir: po_dir,
   install: true,
   install_dir: desktopdir,
   type: 'desktop'

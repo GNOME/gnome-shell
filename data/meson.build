@@ -24,7 +24,7 @@ foreach desktop_file : desktop_files
       configuration: desktopconf
     ),
     output: desktop_file,
-    po_dir: '../po',
+    po_dir: po_dir,
     install: true,
     install_dir: desktopdir,
     type: 'desktop'
@@ -38,7 +38,7 @@ i18n.merge_file('desktop',
     configuration: desktopconf
   ),
   output: 'gnome-shell-extension-disabled-warning.desktop',
-  po_dir: '../po',
+  po_dir: po_dir,
   install: true,
   install_dir: autostartdir,
   type: 'desktop'
