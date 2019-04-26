@@ -1049,7 +1049,7 @@ var Keyboard = class Keyboard {
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
         this._lastDeviceId = null;
         this._suggestions = null;
-        this._emojiKeyVisible = true;
+        this._emojiKeyVisible = Meta.is_wayland_compositor();
 
         this._focusTracker = new FocusTracker();
         this._focusTracker.connect('position-changed', this._onFocusPositionChanged.bind(this));
@@ -1202,9 +1202,11 @@ var Keyboard = class Keyboard {
         this._keyboardNotifyId = this._keyboardController.connect('active-group', this._onGroupChanged.bind(this));
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', this._onKeyboardGroupsChanged.bind(this));
         this._keyboardStateId = this._keyboardController.connect('panel-state', this._onKeyboardStateChanged.bind(this));
-        this._emojiKeyVisibleId = this._keyboardController.connect('emoji-visible', this._onEmojiKeyVisible.bind(this));
         this._keypadVisibleId = this._keyboardController.connect('keypad-visible', this._onKeypadVisible.bind(this));
         this._focusNotifyId = global.stage.connect('notify::key-focus', this._onKeyFocusChanged.bind(this));
+
+        if (Meta.is_wayland_compositor())
+            this._emojiKeyVisibleId = this._keyboardController.connect('emoji-visible', this._onEmojiKeyVisible.bind(this));
 
         this._relayout();
     }
