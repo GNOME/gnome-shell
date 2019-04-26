@@ -374,12 +374,12 @@ var PadDiagram = GObject.registerClass({
         svgData += this._cssString();
         svgData += this._wrappingSvgFooter();
 
-        let handle = new Rsvg.Handle();
-        handle.set_base_uri(GLib.path_get_dirname(this._imagePath));
-        handle.write(svgData);
-        handle.close();
+        let istream = new Gio.MemoryInputStream();
+        istream.add_bytes(new GLib.Bytes(svgData));
 
-        return handle;
+        return Rsvg.Handle.new_from_stream_sync(istream,
+                                                Gio.File.new_for_path(this._imagePath),
+                                                0, null);
     }
 
     _updateDiagramScale() {
