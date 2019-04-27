@@ -59,7 +59,7 @@ var DisplayChangeDialog = class extends ModalDialog.ModalDialog {
                                { x_fill: true,
                                  y_fill: true });
 
-        /* Translators: this and the following message should be limited in lenght,
+        /* Translators: this and the following message should be limited in length,
            to avoid ellipsizing the labels.
         */
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
