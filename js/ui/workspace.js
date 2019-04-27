@@ -813,7 +813,7 @@ var LayoutStrategy = class {
     }
 
     // Computes and returns an individual scaling factor for @window,
-    // to be applied in addition to the overal layout scale.
+    // to be applied in addition to the overall layout scale.
     _computeWindowScale(window) {
         // Since we align windows next to each other, the height of the
         // thumbnails is much more important to preserve than the width of
@@ -1266,7 +1266,7 @@ var Workspace = class {
         }
 
         // We will reposition windows anyway when enter again overview or when ending the windows
-        // animations whith fade animation.
+        // animations with fade animation.
         // In this way we avoid unwanted animations of windows repositioning while
         // animating overview.
         if (this.leavingOverview || this._animatingWindowsFade)
@@ -1886,10 +1886,10 @@ var Workspace = class {
             // Win win -- better scale and better space
             return true;
         } else if (newLayout.scale > oldLayout.scale && newLayout.space <= oldLayout.space) {
-            // Keep new layout only if scale gain outweights aspect space loss
+            // Keep new layout only if scale gain outweighs aspect space loss
             return scalePower > spacePower;
         } else if (newLayout.scale <= oldLayout.scale && newLayout.space > oldLayout.space) {
-            // Keep new layout only if aspect space gain outweights scale loss
+            // Keep new layout only if aspect space gain outweighs scale loss
             return spacePower > scalePower;
         } else {
             // Lose -- worse scale and space
