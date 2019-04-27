@@ -1994,7 +1994,7 @@ msgstr "“%s”已就绪"
 msgid "Do you want to keep these display settings?"
 msgstr "您想保留这些显示设置吗？"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:84

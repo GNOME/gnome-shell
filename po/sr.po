@@ -2170,7 +2170,7 @@ msgstr "„%s“ је спреман"
 msgid "Do you want to keep these display settings?"
 msgstr "Да ли желите да задржите ова подешавања екрана?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:65

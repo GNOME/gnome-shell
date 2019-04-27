@@ -1713,7 +1713,7 @@ msgstr "“%s” సిద్ధం"
 msgid "Do you want to keep these display settings?"
 msgstr "ఈ ప్రదర్శనా అమరికలను ఉంచుకోవాలనుకుంటున్నారా?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84

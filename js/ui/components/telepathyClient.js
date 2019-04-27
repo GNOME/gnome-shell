@@ -401,7 +401,7 @@ var ChatSource = class extends MessageTray.Source {
         if (this._client.is_handling_channel(this._channel)) {
             // We are handling the channel, try to pass it to Empathy or Polari
             // (depending on the channel type)
-            // We don't check if either app is availble - mission control will
+            // We don't check if either app is available - mission control will
             // fallback to something else if activation fails
 
             let target;

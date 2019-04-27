@@ -235,14 +235,14 @@ var NMConnectionSection = class NMConnectionSection {
         if (!this._connectionValid(connection))
             return;
 
-        // This function is called everytime connection is added or updated
+        // This function is called every time the connection is added or updated.
         // In the usual case, we already added this connection and UUID
         // didn't change. So we need to check if we already have an item,
         // and update it for properties in the connection that changed
         // (the only one we care about is the name)
         // But it's also possible we didn't know about this connection
         // (eg, during coldplug, or because it was updated and suddenly
-        // it's valid for this device), in which case we add a new item
+        // it's valid for this device), in which case we add a new item.
 
         let item = this._connectionItems.get(connection.get_uuid());
         if (item)
