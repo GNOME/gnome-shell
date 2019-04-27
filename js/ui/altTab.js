@@ -474,12 +474,10 @@ var CyclerList = GObject.registerClass({
     }
 });
 
-var CyclerPopup = GObject.registerClass(
-class CyclerPopup extends SwitcherPopup.SwitcherPopup {
+var CyclerPopup = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT
+}, class CyclerPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
-        if (this.constructor.name === CyclerPopup.prototype.constructor.name)
-            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
-
         super._init();
 
         this._items = this._getWindows();

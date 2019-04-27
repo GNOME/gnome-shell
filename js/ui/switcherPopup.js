@@ -30,12 +30,10 @@ function primaryModifier(mask) {
     return primary;
 }
 
-var SwitcherPopup = GObject.registerClass(
-class SwitcherPopup extends St.Widget {
+var SwitcherPopup = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT
+}, class SwitcherPopup extends St.Widget {
     _init(items) {
-        if (this.constructor.name === SwitcherPopup.prototype.constructor.name)
-            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
-
         super._init({ style_class: 'switcher-popup',
                       reactive: true,
                       visible: false });
