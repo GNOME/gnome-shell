@@ -1731,7 +1731,7 @@ msgstr "“%s” ಸಿದ್ಧಗೊಂಡಿದೆ"
 msgid "Do you want to keep these display settings?"
 msgstr "ನೀವು ಈ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳಲು ಬಯಸುವಿರಾ?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84

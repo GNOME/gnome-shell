@@ -2100,7 +2100,7 @@ msgstr "”%s”は準備完了です"
 msgid "Do you want to keep these display settings?"
 msgstr "このディスプレイ設定を保存しますか?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:65

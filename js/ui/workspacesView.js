@@ -84,7 +84,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
-        this._animatingScroll = false; // programatically updating the adjustment
+        this._animatingScroll = false; // programmatically updating the adjustment
 
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
         this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
