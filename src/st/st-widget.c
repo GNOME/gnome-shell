@@ -2172,6 +2172,9 @@ st_widget_real_navigate_focus (StWidget         *widget,
   ClutterActor *widget_actor, *focus_child;
   GList *children, *l;
 
+  if (!ST_IS_WIDGET (from) || !st_widget_get_can_focus (ST_WIDGET (from)))
+    from = NULL;
+
   widget_actor = CLUTTER_ACTOR (widget);
   if (from == widget_actor)
     return FALSE;
