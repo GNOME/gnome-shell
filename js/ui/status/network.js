@@ -235,7 +235,7 @@ var NMConnectionSection = class NMConnectionSection {
         if (!this._connectionValid(connection))
             return;
 
-        // This function is called everytime connection is added or updated
+        // This function is called every time connection is added or updated
         // In the usual case, we already added this connection and UUID
         // didn't change. So we need to check if we already have an item,
         // and update it for properties in the connection that changed

@@ -1943,7 +1943,7 @@ msgstr "Програмата „%s“ е готова за употреба"
 msgid "Do you want to keep these display settings?"
 msgstr "Желаете ли да запазите настройките на екрана?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:84
