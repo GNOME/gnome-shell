@@ -1665,7 +1665,7 @@ msgstr "“%s” គឺ​រួចរាល់​ហើយ"
 msgid "Do you want to keep these display settings?"
 msgstr "អ្នក​ចង់​រក្សា​ការ​កំណត់​បង្ហាញ​ទាំងនេះ​ដែរ​ឬទេ?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:75

@@ -840,7 +840,7 @@ var PaginatedIconGrid = GObject.registerClass({
         }
     }
 
-    // Overriden from IconGrid
+    // Overridden from IconGrid
     _getChildrenToAnimate() {
         let children = this._getVisibleChildren();
         let firstIndex = this._childrenPerPage * this.currentPage;

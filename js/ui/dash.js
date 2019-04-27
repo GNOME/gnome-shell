@@ -899,7 +899,7 @@ var Dash = class Dash {
                 favPos++;
         }
 
-        // No drag placeholder means we don't wan't to favorite the app
+        // No drag placeholder means we don't want to favorite the app
         // and we are dragging it to its original position
         if (!this._dragPlaceholder)
             return true;

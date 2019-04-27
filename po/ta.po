@@ -1735,7 +1735,7 @@ msgstr "“%s” தயாராக உள்ளது"
 msgid "Do you want to keep these display settings?"
 msgstr "இந்தக் காட்சி அமைவுகளை வைத்திருக்க வேண்டுமா?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84

@@ -2133,7 +2133,7 @@ msgstr "”%s” är redo"
 msgid "Do you want to keep these display settings?"
 msgstr "Vill du behålla dessa skärminställningar?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:72
