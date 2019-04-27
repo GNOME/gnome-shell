@@ -2276,8 +2276,6 @@ st_widget_real_navigate_focus (StWidget         *widget,
             case ST_DIR_RIGHT:
               sort_box.x2 = sort_box.x1;
               break;
-            case ST_DIR_TAB_FORWARD:
-            case ST_DIR_TAB_BACKWARD:
             default:
               g_warn_if_reached ();
             }
