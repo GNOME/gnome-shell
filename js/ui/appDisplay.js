@@ -414,7 +414,7 @@ var AllView = class AllView extends BaseAppView {
         this._refilterApps();
     }
 
-    // Overriden from BaseAppView
+    // Overridden from BaseAppView
     animate(animationDirection, onComplete) {
         this._scrollView.reactive = false;
         let completionFunc = () => {
@@ -1017,7 +1017,7 @@ var FolderView = class FolderView extends BaseAppView {
         Util.ensureActorVisibleInScrollView(this.actor, actor);
     }
 
-    // Overriden from BaseAppView
+    // Overridden from BaseAppView
     animate(animationDirection) {
         this._grid.animatePulse(animationDirection);
     }
@@ -1081,7 +1081,7 @@ var FolderView = class FolderView extends BaseAppView {
 
         let contentBox = this.actor.get_theme_node().get_content_box(pageBox);
         // We only can show icons inside the collection view boxPointer
-        // so we have to substract the required padding etc of the boxpointer
+        // so we have to subtract the required padding etc of the boxpointer
         return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
     }
 

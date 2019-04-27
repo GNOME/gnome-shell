@@ -652,7 +652,7 @@ var LoginDialog = GObject.registerClass({
                      bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
                      bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
 
-                     // figure out how tall it would like to be and try to accomodate
+                     // figure out how tall it would like to be and try to accommodate
                      // but don't let it get too close to the logo
                      let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 

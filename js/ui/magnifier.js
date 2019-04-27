@@ -1272,7 +1272,7 @@ var ZoomRegion = class ZoomRegion {
 
     /**
      * getContrast:
-     * Retreive the contrast of the magnified view.
+     * Retrieve the contrast of the magnified view.
      * @return  Object containing the contrast for the red, green,
      *          and blue channels.
      */

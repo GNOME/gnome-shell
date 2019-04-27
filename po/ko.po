@@ -2086,7 +2086,7 @@ msgstr "“%s” 프로그램이 준비되었습니다"
 msgid "Do you want to keep these display settings?"
 msgstr "이 디스플레이 설정을 유지하시겠습니까?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:65

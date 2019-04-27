@@ -2164,7 +2164,7 @@ msgstr "“%s” ir gatavs"
 msgid "Do you want to keep these display settings?"
 msgstr "Vai vēlaties paturēt šos displeja iestatījumus?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:65
