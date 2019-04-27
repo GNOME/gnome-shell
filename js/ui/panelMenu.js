@@ -167,7 +167,12 @@ var Button = GObject.registerClass({
                 group.navigate_focus(this, direction, false);
                 return Clutter.EVENT_STOP;
             }
+        } else if (symbol == Clutter.KEY_Up) {
+            this.menu.toggle();
+            this.grab_key_focus();
+            return Clutter.EVENT_STOP;
         }
+
         return Clutter.EVENT_PROPAGATE;
     }
 
