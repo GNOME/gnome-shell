@@ -42,7 +42,7 @@ var StreamSlider = class {
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
-        this.item.add(this._slider.actor, { expand: true });
+        this.item.add(this._slider, { expand: true });
         this.item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
@@ -196,7 +196,7 @@ Signals.addSignalMethods(StreamSlider.prototype);
 var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Volume");
+        this._slider.accessible_name = _("Volume");
     }
 
     _connectStream(stream) {
@@ -244,7 +244,7 @@ var OutputStreamSlider = class extends StreamSlider {
 var InputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Microphone");
+        this._slider.accessible_name = _("Microphone");
         this._control.connect('stream-added', this._maybeShowInput.bind(this));
         this._control.connect('stream-removed', this._maybeShowInput.bind(this));
         this._icon.icon_name = 'audio-input-microphone-symbolic';
