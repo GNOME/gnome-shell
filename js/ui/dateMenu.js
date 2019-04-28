@@ -118,7 +118,7 @@ var WorldClocksSection = class WorldClocksSection {
             if (!clocks[i].location)
                 continue;
             let l = world.deserialize(clocks[i].location);
-            if (l)
+            if (l && l.get_timezone() != null)
                 this._locations.push({ location: l });
         }
 
