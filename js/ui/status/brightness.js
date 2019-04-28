@@ -33,12 +33,12 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._slider = new Slider.Slider(0);
         this._slider.connect('value-changed', this._sliderChanged.bind(this));
-        this._slider.actor.accessible_name = _("Brightness");
+        this._slider.accessible_name = _("Brightness");
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });
         this._item.add(icon);
-        this._item.add(this._slider.actor, { expand: true });
+        this._item.add(this._slider, { expand: true });
         this._item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
