@@ -414,7 +414,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             let avatarWidget = new UserWidget.Avatar(this._user,
                                                      { iconSize: _DIALOG_ICON_SIZE,
                                                        styleClass: dialogContent.iconStyleClass });
-            this._iconBin.child = avatarWidget.actor;
+            this._iconBin.child = avatarWidget;
             avatarWidget.update();
         }
 
@@ -621,7 +621,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         let actor = new St.BoxLayout({ style_class: 'end-session-dialog-session-list-item',
                                        can_focus: true });
-        actor.add(avatar.actor);
+        actor.add(avatar);
 
         let nameLabel = new St.Label({ text: userLabelText,
                                        style_class: 'end-session-dialog-session-list-item-name',
