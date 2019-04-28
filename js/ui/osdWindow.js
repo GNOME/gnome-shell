@@ -12,16 +12,17 @@ var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 0.1;
 var LEVEL_ANIMATION_TIME = 0.1;
 
-var LevelBar = class extends BarLevel.BarLevel {
-    constructor() {
-        super(0, { styleClass: 'level' });
+var LevelBar = GObject.registerClass(
+class LevelBar extends BarLevel.BarLevel {
+    _init() {
+        super._init(0, { styleClass: 'level' });
 
         this._level = 0;
         this._maxLevel = 100;
 
-        this.actor.accessible_name = _("Volume");
+        this.accessible_name = _("Volume");
 
-        this.actor.connect('notify::width', () => { this.level = this.level; });
+        this.connect('notify::width', () => { this.level = this.level; });
     }
 
     get level() {
@@ -43,7 +44,7 @@ var LevelBar = class extends BarLevel.BarLevel {
 
         this.setMaximumValue(this._maxLevel / 100);
     }
-};
+});
 
 var OsdWindowConstraint = GObject.registerClass(
 class OsdWindowConstraint extends Clutter.Constraint {
@@ -99,7 +100,7 @@ var OsdWindow = class {
         this._box.add(this._label);
 
         this._level = new LevelBar();
-        this._box.add(this._level.actor);
+        this._box.add(this._level);
 
         this._hideTimeoutId = 0;
         this._reset();
@@ -139,7 +140,7 @@ var OsdWindow = class {
     }
 
     setLevel(level) {
-        this._level.actor.visible = (level != undefined);
+        this._level.visible = (level != undefined);
         if (level != undefined) {
             if (this.actor.visible)
                 Tweener.addTween(this._level,
