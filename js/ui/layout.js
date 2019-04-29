@@ -6,6 +6,7 @@ const Signals = imports.signals;
 const Background = imports.ui.background;
 const BackgroundMenu = imports.ui.backgroundMenu;
 const LoginManager = imports.misc.loginManager;
+const MessageTray = imports.ui.messageTray;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -18,6 +19,11 @@ var BACKGROUND_FADE_ANIMATION_TIME = 1.0;
 
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
+
+// trigger attempts after which we offer to enable the corner
+var HOT_CORNER_TRIGGER_THRESHOLD = 2;
+// maximum time between trigger attempts
+var HOT_CORNER_TRIGGER_TIMEOUT = 1; // s
 
 function isPopupMetaWindow(actor) {
     switch(actor.meta_window.get_window_type()) {
@@ -267,9 +273,6 @@ var LayoutManager = GObject.registerClass({
         this._backgroundGroup.lower_bottom();
         this._bgManagers = [];
 
-        global.settings.connect('changed::enable-hot-corners',
-                                this._updateHotCorners.bind(this));
-
         // Need to update struts on new workspaces when they are added
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
@@ -372,11 +375,6 @@ var LayoutManager = GObject.registerClass({
                 corner.destroy();
         });
         this.hotCorners = [];
-
-        if (!global.settings.get_boolean('enable-hot-corners')) {
-            this.emit('hot-corners-changed');
-            return;
-        }
 
         let size = this.panelBox.height;
 
@@ -1099,6 +1097,11 @@ var HotCorner = class HotCorner {
         // multiple times due to an accidental jitter.
         this._entered = false;
 
+        // Count how often the disabled hot corner would have been triggered
+        // in a particular interval; this is used to offer the user to enable
+        // the corner when passing a threshold.
+        this._triggerCount = 0;
+
         this._monitor = monitor;
 
         this._x = x;
@@ -1242,9 +1245,47 @@ var HotCorner = class HotCorner {
         this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
     }
 
+    _resetTriggerTimeout() {
+        if (this._triggerTimeoutId)
+            GLib.source_remove(this._triggerTimeoutId);
+
+        this._triggerTimeoutId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            HOT_CORNER_TRIGGER_TIMEOUT,
+            () => {
+                this._triggerCount = 0;
+
+                this._triggerTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
+    _showEnableNotification() {
+        let source = new MessageTray.SystemNotificationSource();
+        Main.messageTray.add(source);
+        let notification = new MessageTray.Notification(source,
+            _('Are you trying to access the activities overview?'),
+            _('GNOME can open the overview every time the pointer is moved to the corner'));
+        notification.setTransient(true);
+        notification.addAction(_('Enable corner gesture'), () => {
+            global.settings.set_boolean('enable-hot-corners', true);
+        });
+        source.notify(notification);
+}
+
     _toggleOverview() {
         if (this._monitor.inFullscreen && !Main.overview.visible)
             return;
+
+        if (!global.settings.get_boolean('enable-hot-corners')) {
+            this._resetTriggerTimeout();
+            this._triggerCount++;
+
+            if (this._triggerCount >= HOT_CORNER_TRIGGER_THRESHOLD)
+                this._showEnableNotification();
+
+            return;
+        }
 
         if (Main.overview.shouldToggleByCornerOrButton()) {
             this._rippleAnimation();
