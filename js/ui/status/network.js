@@ -1739,6 +1739,19 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                     wrapper.checkConnection(connection);
                 });
             }
+
+            device.connect('notify::interface',
+                           this._interfaceChanged.bind(this, device));
+        }
+    }
+
+    _interfaceChanged(device) {
+        let wrapper = device._delegate;
+        this._syncDeviceNames();
+        if (wrapper instanceof NMConnectionSection) {
+            this._connections.forEach(connection => {
+                wrapper.checkConnection(connection);
+            });
         }
     }
 
