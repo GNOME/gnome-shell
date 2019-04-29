@@ -882,7 +882,7 @@ class Panel extends St.Widget {
     }
 
     vfunc_allocate(box, flags) {
-        super.vfunc_allocate(box, flags);
+        this.set_allocation(box, flags);
 
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
