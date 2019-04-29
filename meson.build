@@ -167,47 +167,48 @@ cdata.set('HAVE_FDWALK',
           cc.has_function('fdwalk')
 )
 
-all_warnings = [
-  '-fno-strict-aliasing',
-  '-Wpointer-arith',
-  '-Wmissing-declarations',
-  '-Wimplicit-function-declaration',
-  '-Wformat=2',
-  '-Wformat-nonliteral',
-  '-Wformat-security',
-  '-Wstrict-prototypes',
-  '-Wmissing-prototypes',
-  '-Wnested-externs',
-  '-Wold-style-definition',
-  '-Wundef',
-  '-Wunused',
-  '-Wcast-align',
-  '-Wmissing-noreturn',
-  '-Wmissing-format-attribute',
-  '-Wmissing-include-dirs',
-  '-Wlogical-op',
-  '-Wignored-qualifiers',
-  '-Werror=redundant-decls',
-  '-Werror=implicit',
-  '-Werror=nonnull',
-  '-Werror=init-self',
-  '-Werror=main',
-  '-Werror=missing-braces',
-  '-Werror=sequence-point',
-  '-Werror=return-type',
-  '-Werror=trigraphs',
-  '-Werror=array-bounds',
-  '-Werror=write-strings',
-  '-Werror=address',
-  '-Werror=int-to-pointer-cast',
-  '-Werror=pointer-to-int-cast',
-  '-Werror=empty-body',
-  '-Werror=write-strings',
-]
-
-supported_warnings = cc.get_supported_arguments(all_warnings)
-
-add_project_arguments(supported_warnings, language: 'c')
+buildtype = get_option('buildtype')
+if buildtype != 'plain'
+  all_warnings = [
+    '-fno-strict-aliasing',
+    '-Wpointer-arith',
+    '-Wmissing-declarations',
+    '-Wimplicit-function-declaration',
+    '-Wformat=2',
+    '-Wformat-nonliteral',
+    '-Wformat-security',
+    '-Wstrict-prototypes',
+    '-Wmissing-prototypes',
+    '-Wnested-externs',
+    '-Wold-style-definition',
+    '-Wundef',
+    '-Wunused',
+    '-Wcast-align',
+    '-Wmissing-noreturn',
+    '-Wmissing-format-attribute',
+    '-Wmissing-include-dirs',
+    '-Wlogical-op',
+    '-Wignored-qualifiers',
+    '-Werror=redundant-decls',
+    '-Werror=implicit',
+    '-Werror=nonnull',
+    '-Werror=init-self',
+    '-Werror=main',
+    '-Werror=missing-braces',
+    '-Werror=sequence-point',
+    '-Werror=return-type',
+    '-Werror=trigraphs',
+    '-Werror=array-bounds',
+    '-Werror=write-strings',
+    '-Werror=address',
+    '-Werror=int-to-pointer-cast',
+    '-Werror=pointer-to-int-cast',
+    '-Werror=empty-body',
+    '-Werror=write-strings',
+  ]
+  supported_warnings = cc.get_supported_arguments(all_warnings)
+  add_project_arguments(supported_warnings, language: 'c')
+endif
 
 if get_option('debug')
   debug_c_args = [
