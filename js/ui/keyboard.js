@@ -1472,7 +1472,17 @@ var Keyboard = class Keyboard {
     }
 
     _onKeyboardGroupsChanged(keyboard) {
-        this._groups = [];
+        for (let child = this._aspectContainer.get_first_child();
+             child != null;
+             child = child.get_next_sibling()) {
+            if (child == this._emojiSelection.actor ||
+                child == this._keypad.actor)
+                continue;
+
+            child.destroy();
+        }
+
+        this._groups = {};
         this._onGroupChanged();
     }
 
