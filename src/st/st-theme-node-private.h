@@ -107,6 +107,8 @@ struct _StThemeNode {
   int box_shadow_min_width;
   int box_shadow_min_height;
 
+  guint stylesheets_changed_id;
+
   CoglPipeline *border_slices_texture;
   CoglPipeline *border_slices_pipeline;
   CoglPipeline *background_texture;

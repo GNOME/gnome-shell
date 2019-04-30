@@ -111,9 +111,11 @@ st_theme_node_dispose (GObject *gobject)
       node->icon_colors = NULL;
     }
 
-  if (node->theme)
-    g_signal_handlers_disconnect_by_func (node->theme,
-                                          on_custom_stylesheets_changed, node);
+  if (node->theme && node->stylesheets_changed_id)
+    {
+      g_signal_handler_disconnect (node->theme, node->stylesheets_changed_id);
+      node->stylesheets_changed_id = 0;
+    }
 
   st_theme_node_paint_state_free (&node->cached_state);
 
@@ -230,8 +232,9 @@ st_theme_node_new (StThemeContext    *context,
   if (theme != NULL)
     {
       node->theme = g_object_ref (theme);
-      g_signal_connect (node->theme, "custom-stylesheets-changed",
-                        G_CALLBACK (on_custom_stylesheets_changed), node);
+      node->stylesheets_changed_id =
+        g_signal_connect (node->theme, "custom-stylesheets-changed",
+                          G_CALLBACK (on_custom_stylesheets_changed), node);
     }
 
   node->element_type = element_type;
