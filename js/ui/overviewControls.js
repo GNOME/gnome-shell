@@ -369,17 +369,15 @@ class DashSpacer extends St.Widget {
     }
 
     vfunc_get_preferred_width(forHeight) {
-        let box = this.get_allocation_box();
-        let minWidth = super.vfunc_get_preferred_width(forHeight)[0];
-        let natWidth = box.x2 - box.x1;
-        return [minWidth, natWidth];
+        if (this._bindConstraint)
+            return this._bindConstraint.source.get_preferred_width(forHeight);
+        return super.vfunc_get_preferred_width(forHeight);
     }
 
     vfunc_get_preferred_height(forWidth) {
-        let box = this.get_allocation_box();
-        let minHeight = super.vfunc_get_preferred_height(forWidth)[0];
-        let natHeight = box.y2 - box.y1;
-        return [minHeight, natHeight];
+        if (this._bindConstraint)
+            return this._bindConstraint.source.get_preferred_height(forWidth);
+        return super.vfunc_get_preferred_height(forWidth);
     }
 });
 
