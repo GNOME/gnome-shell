@@ -496,15 +496,31 @@ pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
   ClutterContent *image;
   g_autoptr(GError) error = NULL;
 
-  if (width < 0)
-    width = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
-  else
-    width *= paint_scale;
+  float native_width, native_height;
 
-  if (height < 0)
-    height = ceilf (gdk_pixbuf_get_height (pixbuf) / resource_scale);
+  native_width = ceilf (gdk_pixbuf_get_width (pixbuf) / resource_scale);
+  native_height = ceilf (gdk_pixbuf_get_height (pixbuf) / resource_scale);
+
+  if (width < 0 && height < 0)
+    {
+      width = native_width;
+      height = native_height;
+    }
+  else if (width < 0)
+    {
+      height *= paint_scale;
+      width = native_width * (height / native_height);
+    }
+  else if (height < 0)
+    {
+      width *= paint_scale;
+      height = native_height * (width / native_width);
+    }
   else
-    height *= paint_scale;
+    {
+      width *= paint_scale;
+      height *= paint_scale;
+    }
 
   image = st_image_content_new_with_preferred_size (width, height);
   clutter_image_set_data (CLUTTER_IMAGE (image),
