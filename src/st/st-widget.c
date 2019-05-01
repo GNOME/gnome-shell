@@ -42,6 +42,7 @@
 #include "st-theme-context.h"
 #include "st-theme-node-transition.h"
 #include "st-theme-node-private.h"
+#include "st-drawing-area.h"
 
 #include "st-widget-accessible.h"
 
@@ -1825,6 +1826,27 @@ st_widget_recompute_style (StWidget    *widget,
       if (!st_theme_node_paint_equal (new_theme_node, current_paint_state (widget)->node))
         st_theme_node_paint_state_invalidate (current_paint_state (widget));
     }
+
+  /* It is very likely that custom CSS properties are used with StDrawingArea
+     to control the custom drawing, so never omit the ::style-changed signal */
+  if (paint_equal)
+    paint_equal = !ST_IS_DRAWING_AREA (widget);
+
+  if (paint_equal && old_theme_node->font_desc != NULL)
+    paint_equal = pango_font_description_equal (old_theme_node->font_desc,
+                                                st_theme_node_get_font (new_theme_node));
+
+  if (paint_equal && old_theme_node->foreground_computed)
+    {
+      ClutterColor col;
+
+      st_theme_node_get_foreground_color (new_theme_node, &col);
+      paint_equal = clutter_color_equal (&old_theme_node->foreground_color, &col);
+    }
+
+  if (paint_equal && old_theme_node->icon_colors)
+    paint_equal = st_icon_colors_equal (old_theme_node->icon_colors,
+                                        st_theme_node_get_icon_colors (new_theme_node));
 
   if (!paint_equal || !geometry_equal)
     g_signal_emit (widget, signals[STYLE_CHANGED], 0);
