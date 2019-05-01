@@ -6,22 +6,22 @@
 # Daniel PUENTES <blatberk@openmailbox.org>, 2015.
 # Nicolas MAIA < >, 2015.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2012, 2015, 2016, 2018.
-# Carmen Bianca BAKKER <carmen@carmenbianca.eu>, 2018, 2019.
+# Carmen Bianca BAKKER <carmen@carmenbianca.eu>, 2018-2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-03-24 17:37+0000\n"
-"PO-Revision-Date: 2019-03-31 00:14+0100\n"
-"Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
+"POT-Creation-Date: 2019-04-17 19:29+0000\n"
+"PO-Revision-Date: 2019-05-01 16:29+0200\n"
+"Last-Translator: Carmen Bianca BAKKER <carmen@carmenbianca.eu>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 3.32.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -681,32 +681,38 @@ msgstr "Oftaj"
 msgid "All"
 msgstr "Ĉiuj"
 
-#: js/ui/appDisplay.js:1737 js/ui/panel.js:83
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:1713 js/ui/panel.js:79
+#| msgid "Windows"
+msgid "Open Windows"
+msgstr "Malfermaj fenestroj"
+
+#: js/ui/appDisplay.js:1732 js/ui/panel.js:86
 msgid "New Window"
 msgstr "Nova fenestro"
 
-#: js/ui/appDisplay.js:1751
+#: js/ui/appDisplay.js:1746
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanĉi uzante dediĉitan vidkarton"
 
-#: js/ui/appDisplay.js:1778 js/ui/dash.js:239
+#: js/ui/appDisplay.js:1773 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Forigi el preferataj"
 
-#: js/ui/appDisplay.js:1784
+#: js/ui/appDisplay.js:1779
 msgid "Add to Favorites"
 msgstr "Aldoni al preferataj"
 
-#: js/ui/appDisplay.js:1794 js/ui/panel.js:94
+#: js/ui/appDisplay.js:1789 js/ui/panel.js:97
 msgid "Show Details"
 msgstr "Montri detalojn"
 
-#: js/ui/appFavorites.js:141
+#: js/ui/appFavorites.js:149
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s estas aldonita de via preferataj aplikaĵoj."
 
-#: js/ui/appFavorites.js:175
+#: js/ui/appFavorites.js:183
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s estas forigita de via preferataj aplikaĵoj."
@@ -1060,23 +1066,23 @@ msgstr "Aldoni mondajn horloĝojn…"
 msgid "World Clocks"
 msgstr "Mondaj horloĝoj"
 
-#: js/ui/dateMenu.js:222
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Vetero"
 
-#: js/ui/dateMenu.js:305
+#: js/ui/dateMenu.js:311
 msgid "Select a location…"
 msgstr "Elekti lokon…"
 
-#: js/ui/dateMenu.js:313
+#: js/ui/dateMenu.js:319
 msgid "Loading…"
 msgstr "Ŝargante…"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Go online for weather information"
 msgstr "Enretigi por veterinformoj"
 
-#: js/ui/dateMenu.js:325
+#: js/ui/dateMenu.js:331
 msgid "Weather information is currently unavailable"
 msgstr "Veterinformoj ĉimomente nehaveblas"
 
@@ -1452,33 +1458,24 @@ msgstr "Premu Esk-klavon por ĉesi"
 msgid "Press any key to exit"
 msgstr "Premu iun ajn klavon por ĉesi"
 
-#: js/ui/panel.js:108
+#: js/ui/panel.js:113
 msgid "Quit"
 msgstr "Ĉesi"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:471
+#: js/ui/panel.js:468
 msgid "Activities"
 msgstr "Aktivecoj"
 
-#: js/ui/panel.js:746
+#: js/ui/panel.js:743
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistemo"
 
-#: js/ui/panel.js:867
+#: js/ui/panel.js:864
 msgid "Top Bar"
 msgstr "Supra breto"
-
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:285
-msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
 
 #: js/ui/runDialog.js:64
 msgid "Enter a Command"
@@ -1889,11 +1886,11 @@ msgid_plural "%s Modem Connections"
 msgstr[0] "%s modema konekto"
 msgstr[1] "%s modemaj konektoj"
 
-#: js/ui/status/network.js:1701
+#: js/ui/status/network.js:1705
 msgid "Connection failed"
 msgstr "Konekto malsukcesis"
 
-#: js/ui/status/network.js:1702
+#: js/ui/status/network.js:1706
 msgid "Activation of network connection failed"
 msgstr "Aktivigo de reto-konekto malsukcesis"
 
@@ -2098,7 +2095,7 @@ msgstr[1] "Agordaj ŝanĝoj malfaritos post %d sekundoj"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:662
+#: js/ui/windowManager.js:677
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2230,6 +2227,9 @@ msgstr[1] "%u enigoj"
 #: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Sistemsonoj"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-intl"
 
 #~ msgid "network-workgroup"
 #~ msgstr "network-workgroup"
