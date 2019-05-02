@@ -1982,7 +1982,7 @@ var Workspace = class {
     handleDragOver(source, actor, x, y, time) {
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
-        if (source.shellWorkspaceLaunch)
+        if (source.shellWorkspaceLaunch && source.canLaunchNow)
             return DND.DragMotionResult.COPY_DROP;
 
         return DND.DragMotionResult.CONTINUE;
@@ -2014,7 +2014,7 @@ var Workspace = class {
             let index = this.metaWorkspace ? this.metaWorkspace.index() : workspaceManager.get_active_workspace_index();
             metaWindow.change_workspace_by_index(index, false);
             return true;
-        } else if (source.shellWorkspaceLaunch) {
+        } else if (source.shellWorkspaceLaunch && source.canLaunchNow) {
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
                                           timestamp: time });
             return true;
