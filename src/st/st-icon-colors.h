@@ -35,6 +35,8 @@ StIconColors *st_icon_colors_new   (void);
 StIconColors *st_icon_colors_ref   (StIconColors *colors);
 void          st_icon_colors_unref (StIconColors *colors);
 StIconColors *st_icon_colors_copy  (StIconColors *colors);
+gboolean      st_icon_colors_equal (StIconColors *colors,
+                                    StIconColors *other);
 
 G_END_DECLS
 
