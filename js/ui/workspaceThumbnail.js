@@ -557,7 +557,8 @@ var WorkspaceThumbnail = class {
 
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
-        if (source.app || source.shellWorkspaceLaunch)
+        if ((source.app && source.app.can_open_new_window()) ||
+            source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
 
         return DND.DragMotionResult.CONTINUE;
@@ -582,7 +583,8 @@ var WorkspaceThumbnail = class {
 
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
             return true;
-        } else if (source.app || source.shellWorkspaceLaunch) {
+        } else if ((source.app && source.app.can_open_new_window()) ||
+                   source.shellWorkspaceLaunch) {
             let workspace = this.metaWorkspace ? this.metaWorkspace.index() : -1;
 
             source.app.open_new_window(workspace);
@@ -759,8 +761,8 @@ class ThumbnailsBox extends St.Widget {
     // Draggable target interface
     handleDragOver(source, actor, x, y, time) {
         if (!source.realWindow &&
-            !source.app && !source.shellWorkspaceLaunch &&
-            source != Main.xdndHandler)
+            (!source.app || (source.app && !source.app.can_open_new_window())) &&
+            !source.shellWorkspaceLaunch && source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         let canCreateWorkspaces = Meta.prefs_get_dynamic_workspaces();
@@ -817,7 +819,9 @@ class ThumbnailsBox extends St.Widget {
         if (this._dropWorkspace != -1) {
             return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
         } else if (this._dropPlaceholderPos != -1) {
-            if (!source.realWindow && !source.app && !source.shellWorkspaceLaunch)
+            if (!source.realWindow &&
+                (!source.app || (source.app && !source.app.can_open_new_window())) &&
+                !source.shellWorkspaceLaunch)
                 return false;
 
             let isWindow = !!source.realWindow;
@@ -834,7 +838,8 @@ class ThumbnailsBox extends St.Widget {
                 if (source.metaWindow.get_monitor() != thumbMonitor)
                     source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
-            } else if (source.app || source.shellWorkspaceLaunch) {
+            } else if ((source.app && source.app.can_open_new_window()) ||
+                       source.shellWorkspaceLaunch) {
                 source.app.open_new_window(newWorkspaceIndex);
 
                 // This new workspace will be automatically removed if the application fails
