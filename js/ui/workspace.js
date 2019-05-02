@@ -1994,7 +1994,7 @@ var Workspace = class {
     handleDragOver(source, _actor, _x, _y, _time) {
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
-        if (source.app)
+        if (source.app && source.app.can_open_new_window())
             return DND.DragMotionResult.COPY_DROP;
         if (!source.app && source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
@@ -2031,7 +2031,7 @@ var Workspace = class {
 
             metaWindow.change_workspace_by_index(workspaceIndex, false);
             return true;
-        } else if (source.app) {
+        } else if (source.app && source.app.can_open_new_window()) {
             source.app.open_new_window(workspaceIndex);
             return true;
         } else if (!source.app && source.shellWorkspaceLaunch) {
