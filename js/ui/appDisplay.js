@@ -1649,6 +1649,11 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
+    get canLaunchNow() {
+        return this.app.state == Shell.AppState.STOPPED ||
+               (this.app.state == Shell.AppState.RUNNING && this.app.can_open_new_window());
+    }
+
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
