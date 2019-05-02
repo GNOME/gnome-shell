@@ -573,7 +573,7 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
-        if (source.app)
+        if (source.app && source.app.can_open_new_window())
             return DND.DragMotionResult.COPY_DROP;
         if (source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
@@ -603,7 +603,7 @@ var WorkspaceThumbnail = GObject.registerClass({
 
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
             return true;
-        } else if (source.app) {
+        } else if (source.app && source.app.can_open_new_window()) {
             source.app.open_new_window(workspaceIndex);
             return true;
         } else if (source.shellWorkspaceLaunch) {
@@ -793,8 +793,8 @@ var ThumbnailsBox = GObject.registerClass({
     // Draggable target interface
     handleDragOver(source, actor, x, y, time) {
         if (!source.realWindow &&
-            !source.app && !source.shellWorkspaceLaunch &&
-            source != Main.xdndHandler)
+            (!source.app || (source.app && !source.app.can_open_new_window())) &&
+            !source.shellWorkspaceLaunch && source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         let canCreateWorkspaces = Meta.prefs_get_dynamic_workspaces();
@@ -851,7 +851,9 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._dropWorkspace != -1) {
             return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
         } else if (this._dropPlaceholderPos != -1) {
-            if (!source.realWindow && !source.app && !source.shellWorkspaceLaunch)
+            if (!source.realWindow &&
+                (!source.app || (source.app && !source.app.can_open_new_window())) &&
+                !source.shellWorkspaceLaunch)
                 return false;
 
             let isWindow = !!source.realWindow;
@@ -868,7 +870,7 @@ var ThumbnailsBox = GObject.registerClass({
                 if (source.metaWindow.get_monitor() != thumbMonitor)
                     source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
-            } else if (source.app) {
+            } else if (source.app && source.app.can_open_new_window()) {
                 source.app.open_new_window(newWorkspaceIndex);
             } else if (source.shellWorkspaceLaunch) {
                 // Implement shellWorkspaceLaunch to allow extensions to define
