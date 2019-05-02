@@ -102,6 +102,29 @@ st_icon_colors_copy (StIconColors *colors)
   return copy;
 }
 
+/**
+ * st_icon_colors_equal:
+ * @colors: a #StIconColors
+ * @other: another #StIconColors
+ *
+ * Returns: %TRUE if the #StIconColors are equal
+ */
+gboolean
+st_icon_colors_equal (StIconColors *colors,
+                      StIconColors *other)
+{
+  if (colors == other)
+    return TRUE;
+
+  if (colors == NULL || other == NULL)
+    return FALSE;
+
+  return clutter_color_equal (&colors->foreground, &other->foreground) &&
+         clutter_color_equal (&colors->warning, &other->warning) &&
+         clutter_color_equal (&colors->error, &other->error) &&
+         clutter_color_equal (&colors->success, &other->success);
+}
+
 G_DEFINE_BOXED_TYPE (StIconColors,
                      st_icon_colors,
                      st_icon_colors_ref,
