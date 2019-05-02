@@ -404,7 +404,7 @@ var WindowClone = class {
     }
 
     acceptDrop(source, actor, x, y, time) {
-        this._workspace.acceptDrop(source, actor, x, y, time);
+        return this._workspace.acceptDrop(source, actor, x, y, time);
     }
 
     _onDragCancelled(draggable, time) {
