@@ -65,6 +65,8 @@ struct _StWidgetPrivate
   StThemeNodeTransition *transition_animation;
 
   guint is_style_dirty : 1;
+  guint first_child_dirty : 1;
+  guint last_child_dirty : 1;
   guint draw_bg_color : 1;
   guint draw_border_internal : 1;
   guint track_hover : 1;
@@ -72,6 +74,7 @@ struct _StWidgetPrivate
   guint can_focus : 1;
 
   gulong texture_file_changed_id;
+  gulong update_child_styles_id;
 
   AtkObject *accessible;
   AtkRole accessible_role;
@@ -317,6 +320,12 @@ st_widget_dispose (GObject *gobject)
     {
       g_signal_handler_disconnect (st_texture_cache_get_default (), priv->texture_file_changed_id);
       priv->texture_file_changed_id = 0;
+    }
+
+  if (priv->update_child_styles_id != 0)
+    {
+      g_source_remove (priv->update_child_styles_id);
+      priv->update_child_styles_id = 0;
     }
 
   g_clear_object (&priv->first_visible_child);
@@ -1651,15 +1660,57 @@ st_widget_visible_notify (StWidget   *widget,
     }
 }
 
+static gboolean
+st_widget_update_child_styles (StWidget *widget)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->first_child_dirty)
+    {
+      ClutterActor *first_child;
+
+      priv->first_child_dirty = FALSE;
+
+      first_child = clutter_actor_get_first_child (CLUTTER_ACTOR (widget));
+      st_widget_set_first_visible_child (widget,
+                                         find_nearest_visible_forward (first_child));
+    }
+
+  if (priv->last_child_dirty)
+    {
+      ClutterActor *last_child;
+
+      priv->last_child_dirty = FALSE;
+
+      last_child = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));
+      st_widget_set_last_visible_child (widget,
+                                        find_nearest_visible_backwards (last_child));
+    }
+
+  priv->update_child_styles_id = 0;
+  return G_SOURCE_REMOVE;
+}
+
+static void
+st_widget_queue_child_styles_update (StWidget *widget)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->update_child_styles_id != 0)
+    return;
+
+  priv->update_child_styles_id = g_idle_add ((GSourceFunc) st_widget_update_child_styles, widget);
+}
+
 static void
 st_widget_first_child_notify (StWidget   *widget,
                               GParamSpec *pspec,
                               gpointer    data)
 {
-  ClutterActor *first_child;
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
 
-  first_child = clutter_actor_get_first_child (CLUTTER_ACTOR (widget));
-  st_widget_set_first_visible_child (widget, find_nearest_visible_forward (first_child));
+  priv->first_child_dirty = TRUE;
+  st_widget_queue_child_styles_update (widget);
 }
 
 static void
@@ -1667,10 +1718,10 @@ st_widget_last_child_notify (StWidget   *widget,
                              GParamSpec *pspec,
                              gpointer    data)
 {
-  ClutterActor *last_child;
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
 
-  last_child = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));
-  st_widget_set_last_visible_child (widget, find_nearest_visible_backwards (last_child));
+  priv->last_child_dirty = TRUE;
+  st_widget_queue_child_styles_update (widget);
 }
 
 static void
