@@ -2007,7 +2007,8 @@ var Workspace = class {
             return true;
         } else if (source.shellWorkspaceLaunch && source.canLaunchNow) {
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
-                                          timestamp: time });
+                                          timestamp: time,
+                                          animationX: actor.x, animationY: actor.y });
             return true;
         }
 

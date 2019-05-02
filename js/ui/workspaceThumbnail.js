@@ -546,7 +546,7 @@ var WorkspaceThumbnail = class {
     }
 
     // Draggable target interface used only by ThumbnailsBox
-    handleDragOverInternal(source, time) {
+    handleDragOverInternal(source, actor, x, y, time) {
         if (source == Main.xdndHandler) {
             this.metaWorkspace.activate(time);
             return DND.DragMotionResult.CONTINUE;
@@ -563,7 +563,7 @@ var WorkspaceThumbnail = class {
         return DND.DragMotionResult.CONTINUE;
     }
 
-    acceptDropInternal(source, time) {
+    acceptDropInternal(source, actor, x, y, time) {
         if (this.state > ThumbnailState.NORMAL)
             return false;
 
@@ -584,7 +584,8 @@ var WorkspaceThumbnail = class {
             return true;
         } else if (source.shellWorkspaceLaunch && source.canLaunchNow) {
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
-                                          timestamp: time });
+                                          timestamp: time,
+                                          animationX: actor.x, animationY: actor.y });
             return true;
         }
 
@@ -805,7 +806,7 @@ class ThumbnailsBox extends St.Widget {
         }
 
         if (this._dropWorkspace != -1)
-            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, actor, x, y, time);
         else if (this._dropPlaceholderPos != -1)
             return source.realWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
@@ -814,7 +815,7 @@ class ThumbnailsBox extends St.Widget {
 
     acceptDrop(source, actor, x, y, time) {
         if (this._dropWorkspace != -1) {
-            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, actor, x, y, time);
         } else if (this._dropPlaceholderPos != -1) {
             if (!source.realWindow && !source.shellWorkspaceLaunch)
                 return false;
@@ -835,7 +836,7 @@ class ThumbnailsBox extends St.Widget {
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
             } else if (source.shellWorkspaceLaunch && source.canLaunchNow) {
                 source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
-                                              timestamp: time });
+                                              timestamp: time, animationX: actor.x, animationY: actor.y });
                 // This new workspace will be automatically removed if the application fails
                 // to open its first window within some time, as tracked by Shell.WindowTracker.
                 // Here, we only add a very brief timeout to avoid the _immediate_ removal of the

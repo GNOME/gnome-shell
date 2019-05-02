@@ -1656,7 +1656,12 @@ var AppIcon = class AppIcon {
 
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
+                                        timestamp: 0,
+                                        animationX: -1,
+                                        animationY: -1 });
+
+        if (params.animationX != -1 && params.animationY != -1)
+          this.icon.animateZoomOut(params.animationX, params.animationY);
 
         this.app.open_new_window(params.workspace);
     }
