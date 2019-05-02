@@ -250,6 +250,8 @@ function _initializeUI() {
             });
         }
 
+        LoginManager.registerSessionWithGDM();
+
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
         if (perfModuleName) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
