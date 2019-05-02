@@ -233,6 +233,25 @@ function _initializeUI() {
                                         ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
         }
 
+        log("Registering session with GDM");
+        Gio.DBus.system.call('org.gnome.DisplayManager',
+                             '/org/gnome/DisplayManager/Manager',
+                             'org.gnome.DisplayManager.Manager',
+                             'RegisterSession',
+                             GLib.Variant.new('(a{sv})', [{}]), null,
+                             Gio.DBusCallFlags.NONE, -1, null,
+            (source, result) => {
+                try {
+                    source.call_finish(result);
+                } catch (e) {
+                    if (!e.matches(Gio.DBusError, Gio.DBusError.UNKNOWN_METHOD))
+                        log(`Error registering session with GDM: ${e.message}`);
+                    else
+                        log("Not calling RegisterSession(): method not exported, GDM too old?");
+                }
+            }
+        );
+
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
         if (perfModuleName) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
