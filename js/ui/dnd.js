@@ -252,6 +252,7 @@ var _Draggable = class _Draggable {
             } else if ((this._dragActor != null || this._dragState == DragState.CANCELLED) &&
                        !this._animationInProgress) {
                 // Drag must have been cancelled with Esc.
+                this._ungrabEvents();
                 this._dragComplete();
                 return Clutter.EVENT_STOP;
             } else {
@@ -594,6 +595,7 @@ var _Draggable = class _Draggable {
 
                     this._dragState = DragState.INIT;
                     global.display.set_cursor(Meta.Cursor.DEFAULT);
+                    this._ungrabEvents();
                     this.emit('drag-end', event.get_time(), true);
                     this._dragComplete();
                     return true;
@@ -644,6 +646,8 @@ var _Draggable = class _Draggable {
         let wasCancelled = (this._dragState == DragState.CANCELLED);
         this._dragState = DragState.CANCELLED;
 
+        this._ungrabEvents();
+
         if (this._actorDestroyed || wasCancelled) {
             global.display.set_cursor(Meta.Cursor.DEFAULT);
             if (!this._buttonDown)
@@ -674,6 +678,8 @@ var _Draggable = class _Draggable {
         this._dragActor.set_position(restoreX, restoreY);
         this._dragActor.set_scale(restoreScale, restoreScale);
         this._dragActor.opacity = 0;
+
+        this._ungrabEvents();
 
         this._animateDragEnd(eventTime,
                              { time: REVERT_ANIMATION_TIME });
@@ -721,7 +727,6 @@ var _Draggable = class _Draggable {
         if (!this._actorDestroyed && this._dragActor)
             Shell.util_set_hidden_from_pick(this._dragActor, false);
 
-        this._ungrabEvents();
         global.sync_pointer();
 
         if (this._updateHoverId) {
