@@ -268,7 +268,7 @@ var DragPlaceholderItem = GObject.registerClass(
 class DragPlaceholderItem extends DashItemContainer {
     _init() {
         super._init();
-        this.setChild(new St.Bin({ style_class: 'placeholder' }));
+        this.setChild(new St.Bin({ style_class: 'placeholder', reactive: true }));
     }
 });
 
@@ -286,7 +286,8 @@ class DashActor extends St.Widget {
         let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
         super._init({ name: 'dash',
                       layout_manager: layout,
-                      clip_to_allocation: true });
+                      clip_to_allocation: true,
+                      reactive: true });
     }
 
     vfunc_allocate(box, flags) {
