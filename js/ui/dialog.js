@@ -177,8 +177,8 @@ var MessageDialogContent = GObject.registerClass({
 
         let textProps = { ellipsize: Pango.EllipsizeMode.NONE,
                           line_wrap: true };
-        Object.assign(this._subtitle.clutter_text, textProps);
-        Object.assign(this._body.clutter_text, textProps);
+        this._subtitle.clutter_text.set(textProps);
+        this._body.clutter_text.set(textProps);
 
         if (!params.hasOwnProperty('style_class'))
             params.style_class = 'message-dialog-main-layout';
