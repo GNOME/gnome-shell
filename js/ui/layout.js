@@ -216,10 +216,17 @@ var LayoutManager = GObject.registerClass({
         this.uiGroup = new UiActor({ name: 'uiGroup' });
         this.uiGroup.set_flags(Clutter.ActorFlags.NO_LAYOUT);
 
+        global.stage.add_child(this.uiGroup);
+
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
 
-        global.stage.add_child(this.uiGroup);
+        // Using addChrome() to add actors to uiGroup will position actors
+        // underneath the top_window_group.
+        // To insert actors at the top of uiGroup, we use addTopChrome() or
+        // add the actor directly using uiGroup.add_actor().
+        global.stage.remove_actor(global.top_window_group);
+        this.uiGroup.add_actor(global.top_window_group);
 
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
                                              visible: false,
@@ -231,7 +238,7 @@ var LayoutManager = GObject.registerClass({
                                                  clip_to_allocation: true,
                                                  layout_manager: new Clutter.BinLayout(),
                                                });
-        this.addChrome(this.screenShieldGroup);
+        this.addTopChrome(this.screenShieldGroup);
 
         this.panelBox = new St.BoxLayout({ name: 'panelBox',
                                            vertical: true });
@@ -247,16 +254,13 @@ var LayoutManager = GObject.registerClass({
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
                                               track_hover: true });
-        this.addChrome(this.keyboardBox);
+        this.addTopChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
         this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
         this.uiGroup.add_actor(this.dummyCursor);
-
-        global.stage.remove_actor(global.top_window_group);
-        this.uiGroup.add_actor(global.top_window_group);
 
         let feedbackGroup = Meta.get_feedback_group_for_display(global.display);
         global.stage.remove_actor(feedbackGroup);
@@ -799,6 +803,16 @@ var LayoutManager = GObject.registerClass({
         this.uiGroup.add_actor(actor);
         if (this.uiGroup.contains(global.top_window_group))
             this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
+        this._trackActor(actor, params);
+    }
+
+    // addTopChrome:
+    // @actor: an actor to add to the chrome
+    // @params: (optional) additional params
+    //
+    // Like addChrome(), but adds @actor above all windows, including popups.
+    addTopChrome(actor, params) {
+        this.uiGroup.add_actor(actor);
         this._trackActor(actor, params);
     }
 
