@@ -184,7 +184,7 @@ var MessageDialogContent = new Lang.Class({
             this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
         });
 
-        let textProps = { ellipsize_mode: Pango.EllipsizeMode.NONE,
+        let textProps = { ellipsize: Pango.EllipsizeMode.NONE,
                           line_wrap: true };
         Object.assign(this._subtitle.clutter_text, textProps);
         Object.assign(this._body.clutter_text, textProps);
