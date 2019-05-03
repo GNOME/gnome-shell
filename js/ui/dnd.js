@@ -765,7 +765,7 @@ Signals.addSignalMethods(_Draggable.prototype);
  * be scaled down to be no larger than that size in pixels.
  *
  * If %dragActorOpacity is present in @params, the drag actor will
- * will be set to have that opacity during the drag.
+ * be set to have that opacity during the drag.
  *
  * Note that when the drag actor is the source actor and the drop
  * succeeds, the actor scale and opacity aren't reset; if the drop
