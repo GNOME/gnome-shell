@@ -1112,7 +1112,7 @@ var Workspace = class {
             this.actor.add_style_class_name('external-monitor');
         this.actor.set_size(0, 0);
 
-        this._dropRect = new Clutter.Actor({ opacity: 0 });
+        this._dropRect = new Clutter.Actor({ opacity: 0, reactive: true });
         this._dropRect._delegate = this;
 
         this.actor.add_actor(this._dropRect);
@@ -1854,7 +1854,7 @@ var Workspace = class {
         });
 
         if (this._windows.length == 0)
-            clone.setStackAbove(null);
+            clone.setStackAbove(this._dropRect);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 
