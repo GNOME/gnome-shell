@@ -153,7 +153,7 @@ class BaseAppView {
     }
 
     _compareItems(a, b) {
-        return a.name.localeCompare(b.name);
+        return a.title.localeCompare(b.title);
     }
 
     loadGrid() {
@@ -164,17 +164,17 @@ class BaseAppView {
 
     _selectAppInternal(id) {
         if (this._items[id])
-            this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            this._items[id].navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log('No such application ' + id);
     }
 
     selectApp(id) {
-        if (this._items[id] && this._items[id].actor.mapped) {
+        if (this._items[id] && this._items[id].mapped) {
             this._selectAppInternal(id);
         } else if (this._items[id]) {
             // Need to wait until the view is mapped
-            let signalId = this._items[id].actor.connect('notify::mapped',
+            let signalId = this._items[id].connect('notify::mapped',
                 actor => {
                     if (actor.mapped) {
                         actor.disconnect(signalId);
@@ -354,14 +354,14 @@ var AllView = class AllView extends BaseAppView {
     _refilterApps() {
         this._allItems.forEach(icon => {
             if (icon instanceof AppIcon)
-                icon.actor.visible = true;
+                icon.visible = true;
         });
 
         this.folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
                 let appIcon = this._items[appId];
-                appIcon.actor.visible = false;
+                appIcon.visible = false;
             });
         });
     }
@@ -598,14 +598,14 @@ var AllView = class AllView extends BaseAppView {
     _updateIconOpacities(folderOpen) {
         for (let id in this._items) {
             let params, opacity;
-            if (folderOpen && !this._items[id].actor.checked)
-                opacity =  INACTIVE_GRID_OPACITY;
+            if (folderOpen && !this._items[id].checked)
+                opacity = INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
             params = { opacity: opacity,
                        time: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                        transition: 'easeOutQuad' };
-            Tweener.addTween(this._items[id].actor, params);
+            Tweener.addTween(this._items[id], params);
         }
     }
 
@@ -1105,37 +1105,42 @@ var FolderView = class FolderView extends BaseAppView {
     }
 };
 
-var FolderIcon = class FolderIcon {
-    constructor(id, path, parentView) {
+var FolderIcon = GObject.registerClass({
+    Signals: { 'name-changed': {},
+               'apps-changed': {} },
+}, class FolderIcon extends St.Button {
+    _init(id, path, parentView) {
         this.id = id;
-        this.name = '';
+        this.title = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path: path });
-        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
-                                     button_mask: St.ButtonMask.ONE,
-                                     toggle_mode: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
-        this.actor._delegate = this;
+        super._init({ style_class: 'app-well-app app-folder',
+                      button_mask: St.ButtonMask.ONE,
+                      toggle_mode: true,
+                      can_focus: true,
+                      x_fill: true,
+                      y_fill: true });
+
+        this._delegate = this;
+
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this), setSizeManually: true });
-        this.actor.set_child(this.icon);
-        this.actor.label_actor = this.icon.label;
+        this.set_child(this.icon);
+        this.label_actor = this.icon.label;
 
         this.view = new FolderView();
 
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             this._ensurePopup();
             this.view.actor.vscroll.adjustment.value = 0;
             this._openSpaceForPopup();
         });
-        this.actor.connect('notify::mapped', () => {
-            if (!this.actor.mapped && this._popup)
+        this.connect('notify::mapped', () => {
+            if (!this.mapped && this._popup)
                 this._popup.popdown();
         });
 
@@ -1148,12 +1153,12 @@ var FolderIcon = class FolderIcon {
     }
 
     _updateName() {
-        let name = _getFolderName(this._folder);
-        if (this.name == name)
+        let title = _getFolderName(this._folder);
+        if (this.title == title)
             return;
 
-        this.name = name;
-        this.icon.label.text = this.name;
+        this.title = title;
+        this.icon.label.text = title;
         this.emit('name-changed');
     }
 
@@ -1192,7 +1197,7 @@ var FolderIcon = class FolderIcon {
             addAppId(appInfo.get_id());
         });
 
-        this.actor.visible = this.view.getAllItems().length > 0;
+        this.visible = this.view.getAllItems().length > 0;
         this.view.loadGrid();
         this.emit('apps-changed');
     }
@@ -1216,8 +1221,8 @@ var FolderIcon = class FolderIcon {
     }
 
     _calculateBoxPointerArrowSide() {
-        let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
+        let spaceTop = this.y - this._parentView.getCurrentPageY();
+        let spaceBottom = this._parentView.actor.height - (spaceTop + this.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
     }
@@ -1239,9 +1244,9 @@ var FolderIcon = class FolderIcon {
             return;
 
         if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y - this._popupHeight();
+            this._popup.actor.y = this.allocation.y1 + this.translation_y - this._popupHeight();
         else
-            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y + this.actor.height;
+            this._popup.actor.y = this.allocation.y1 + this.translation_y + this.height;
     }
 
     _ensurePopup() {
@@ -1253,7 +1258,7 @@ var FolderIcon = class FolderIcon {
             this._parentView.addFolderPopup(this._popup);
             this._popup.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
-                    this.actor.checked = false;
+                    this.checked = false;
             });
         } else {
             this._popup.updateArrowSide(this._boxPointerArrowside);
@@ -1270,8 +1275,7 @@ var FolderIcon = class FolderIcon {
             this.view.adaptToSize(width, height);
         this._popupInvalidated = true;
     }
-};
-Signals.addSignalMethods(FolderIcon.prototype);
+});
 
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
@@ -1314,7 +1318,7 @@ var AppFolderPopup = class AppFolderPopup {
 
         global.focus_manager.add_group(this.actor);
 
-        source.actor.connect('destroy', () => { this.actor.destroy(); });
+        source.connect('destroy', () => { this.actor.destroy(); });
         this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
             actionMode: Shell.ActionMode.POPUP
         });
@@ -1385,7 +1389,7 @@ var AppFolderPopup = class AppFolderPopup {
 
         this.actor.show();
 
-        this._boxPointer.setArrowActor(this._source.actor);
+        this._boxPointer.setArrowActor(this._source);
         // We need to hide the icons of the view until the boxpointer animation
         // is completed so we can animate the icons after as we like without
         // showing them while boxpointer is animating.
@@ -1430,18 +1434,22 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = class AppIcon {
-    constructor(app, iconParams) {
+var AppIcon = GObject.registerClass({
+    Signals: { 'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+               'sync-tooltip': {},
+               'activate': { param_types: [GObject.TYPE_STRING] } },
+}, class AppIcon extends St.Button {
+    _init(app, iconParams) {
         this.app = app;
         this.id = app.get_id();
-        this.name = app.get_name();
+        this.title = app.get_name();
 
-        this.actor = new St.Button({ style_class: 'app-well-app',
-                                     reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
+        super._init({ style_class: 'app-well-app',
+                      reactive: true,
+                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                      can_focus: true,
+                      x_fill: true,
+                      y_fill: true });
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
@@ -1452,10 +1460,10 @@ var AppIcon = class AppIcon {
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
 
-        this.actor.set_child(this._iconContainer);
+        this.set_child(this._iconContainer);
         this._iconContainer.add_child(this._dot);
 
-        this.actor._delegate = this;
+        this._delegate = this;
 
         if (!iconParams)
             iconParams = {};
@@ -1470,19 +1478,19 @@ var AppIcon = class AppIcon {
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
-        this.actor.label_actor = this.icon.label;
+        this.label_actor = this.icon.label;
 
-        this.actor.connect('leave-event', this._onLeaveEvent.bind(this));
-        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
-        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
-        this.actor.connect('clicked', this._onClicked.bind(this));
-        this.actor.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
+        this.connect('leave-event', this._onLeaveEvent.bind(this));
+        this.connect('button-press-event', this._onButtonPress.bind(this));
+        this.connect('touch-event', this._onTouchEvent.bind(this));
+        this.connect('clicked', this._onClicked.bind(this));
+        this.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
         this._menu = null;
-        this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
+        this._menuManager = new PopupMenu.PopupMenuManager(this);
 
         if (isDraggable) {
-            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable = DND.makeDraggable(this);
             this._draggable.connect('drag-begin', () => {
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
@@ -1495,7 +1503,7 @@ var AppIcon = class AppIcon {
             });
         }
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
@@ -1540,7 +1548,7 @@ var AppIcon = class AppIcon {
     }
 
     _onLeaveEvent(actor, event) {
-        this.actor.fake_release();
+        this.fake_release();
         this._removeMenuTimeout();
     }
 
@@ -1578,7 +1586,7 @@ var AppIcon = class AppIcon {
 
     popupMenu() {
         this._removeMenuTimeout();
-        this.actor.fake_release();
+        this.fake_release();
 
         if (this._draggable)
             this._draggable.fakeRelease();
@@ -1595,7 +1603,7 @@ var AppIcon = class AppIcon {
             let id = Main.overview.connect('hiding', () => {
                 this._menu.close();
             });
-            this.actor.connect('destroy', () => {
+            this.connect('destroy', () => {
                 Main.overview.disconnect(id);
             });
 
@@ -1604,7 +1612,7 @@ var AppIcon = class AppIcon {
 
         this.emit('menu-state-changed', true);
 
-        this.actor.set_hover(true);
+        this.set_hover(true);
         this._menu.popup();
         this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
@@ -1621,7 +1629,7 @@ var AppIcon = class AppIcon {
     }
 
     _onMenuPoppedDown() {
-        this.actor.sync_hover();
+        this.sync_hover();
         this.emit('menu-state-changed', false);
     }
 
@@ -1667,10 +1675,9 @@ var AppIcon = class AppIcon {
     }
 
     shouldShowTooltip() {
-        return this.actor.hover && (!this._menu || !this._menu.isOpen);
+        return this.hover && (!this._menu || !this._menu.isOpen);
     }
-};
-Signals.addSignalMethods(AppIcon.prototype);
+});
 
 var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
     constructor(source) {
@@ -1678,7 +1685,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        super(source.actor, 0.5, side);
+        super(source, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
@@ -1688,12 +1695,12 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         this.actor.add_style_class_name('app-well-menu');
 
         // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
-            if (!source.actor.mapped)
+        this._sourceMappedId = source.connect('notify::mapped', () => {
+            if (!source.mapped)
                 this.close();
         });
-        source.actor.connect('destroy', () => {
-            source.actor.disconnect(this._sourceMappedId);
+        source.connect('destroy', () => {
+            source.disconnect(this._sourceMappedId);
             this.destroy();
         });
 
@@ -1824,9 +1831,10 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
 
-var SystemActionIcon = class SystemActionIcon extends Search.GridSearchResult {
+var SystemActionIcon = GObject.registerClass(
+class SystemActionIcon extends Search.GridSearchResult {
     activate() {
         SystemActions.getDefault().activateAction(this.metaInfo['id']);
         Main.overview.hide();
     }
-};
+});

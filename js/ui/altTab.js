@@ -647,8 +647,8 @@ class WindowCyclerPopup extends CyclerPopup {
     }
 });
 
-var AppIcon = GObject.registerClass(
-class AppIcon extends St.BoxLayout {
+var AltTabApp = GObject.registerClass(
+class AltTabApp extends St.BoxLayout {
     _init(app) {
         super._init({ style_class: 'alt-tab-app',
                       vertical: true });
@@ -698,7 +698,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon(apps[i]);
+            let appIcon = new AltTabApp(apps[i]);
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
