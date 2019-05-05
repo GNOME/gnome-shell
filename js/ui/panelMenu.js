@@ -156,7 +156,11 @@ var Button = GObject.registerClass({
     }
 
     _onMenuKeyPress(actor, event) {
-        if (global.focus_manager.navigate_from_event(event))
+        // Only navigate outside the menu (to switch to another menu or to close
+        // the current menu) if the menu didn't handle the event itself or if the
+        // menu actor is still focused (it's focused after opening a menu).
+        if (!this.menu.actor.has_key_focus() &&
+            global.focus_manager.navigate_from_event(event))
             return Clutter.EVENT_STOP;
 
         let symbol = event.get_key_symbol();
