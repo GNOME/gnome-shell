@@ -375,11 +375,10 @@ st_theme_finalize (GObject * object)
 {
   StTheme *theme = ST_THEME (object);
 
-  g_slist_foreach (theme->custom_stylesheets, (GFunc) cr_stylesheet_unref, NULL);
-  g_slist_free (theme->custom_stylesheets);
-  theme->custom_stylesheets = NULL;
+  g_clear_pointer (&theme->stylesheets_by_file, g_hash_table_destroy);
 
-  g_hash_table_destroy (theme->stylesheets_by_file);
+  g_slist_free_full (g_steal_pointer (&theme->custom_stylesheets),
+                     (GDestroyNotify) cr_stylesheet_unref);
 
   g_clear_object (&theme->application_stylesheet);
   g_clear_object (&theme->theme_stylesheet);
