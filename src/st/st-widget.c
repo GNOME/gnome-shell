@@ -546,11 +546,16 @@ on_theme_context_changed (StThemeContext *context,
 static StThemeNode *
 get_root_theme_node (ClutterStage *stage)
 {
+  static GQuark st_theme_initialized = 0;
   StThemeContext *context = st_theme_context_get_for_stage (stage);
 
-  if (!g_object_get_data (G_OBJECT (context), "st-theme-initialized"))
+  if (G_UNLIKELY (st_theme_initialized == 0))
+    st_theme_initialized = g_quark_from_static_string ("st-theme-initialized");
+
+  if (!g_object_get_qdata (G_OBJECT (context), st_theme_initialized))
     {
-      g_object_set_data (G_OBJECT (context), "st-theme-initialized", GUINT_TO_POINTER (1));
+      g_object_set_qdata (G_OBJECT (context), st_theme_initialized,
+                          GUINT_TO_POINTER (1));
       g_signal_connect (G_OBJECT (context), "changed",
                         G_CALLBACK (on_theme_context_changed), stage);
     }
