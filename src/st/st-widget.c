@@ -520,7 +520,7 @@ void
 st_widget_style_changed (StWidget *widget)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
-  StThemeNode *old_theme_node = NULL;
+  g_autoptr (StThemeNode) old_theme_node = NULL;
 
   priv->is_style_dirty = TRUE;
   if (priv->theme_node)
@@ -534,9 +534,6 @@ st_widget_style_changed (StWidget *widget)
     st_widget_recompute_style (widget, old_theme_node);
   else
     notify_children_of_style_change (CLUTTER_ACTOR (widget));
-
-  if (old_theme_node)
-    g_object_unref (old_theme_node);
 }
 
 static void
