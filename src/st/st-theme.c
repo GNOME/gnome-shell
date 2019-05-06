@@ -203,7 +203,7 @@ parse_stylesheet (GFile   *file,
 {
   enum CRStatus status;
   CRStyleSheet *stylesheet;
-  char *contents;
+  g_autofree char *contents = NULL;
   gsize length;
 
   if (file == NULL)
@@ -216,14 +216,11 @@ parse_stylesheet (GFile   *file,
                                           length,
                                           CR_UTF_8,
                                           &stylesheet);
-  g_free (contents);
-
   if (status != CR_OK)
     {
-      char *uri = g_file_get_uri (file);
+      g_autofree char *uri = g_file_get_uri (file);
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Error parsing stylesheet '%s'; errcode:%d", uri, status);
-      g_free (uri);
       return NULL;
     }
 
@@ -889,7 +886,7 @@ add_matched_properties (StTheme      *a_this,
 
             if (import_rule->sheet == NULL)
               {
-                GFile *file = NULL;
+                g_autoptr (GFile) file = NULL;
 
                 if (import_rule->url->stryng && import_rule->url->stryng->str)
                   {
@@ -918,9 +915,6 @@ add_matched_properties (StTheme      *a_this,
                      */
                     import_rule->sheet = (CRStyleSheet *) - 1;
                   }
-
-                if (file)
-                  g_object_unref (file);
               }
 
             if (import_rule->sheet != (CRStyleSheet *) - 1)
@@ -1064,20 +1058,19 @@ _st_theme_resolve_url (StTheme      *theme,
                        CRStyleSheet *base_stylesheet,
                        const char   *url)
 {
-  char *scheme;
+  g_autofree char *scheme = NULL;
   GFile *resource;
 
   if ((scheme = g_uri_parse_scheme (url)))
     {
-      g_free (scheme);
       resource = g_file_new_for_uri (url);
     }
   else if (base_stylesheet != NULL)
     {
-      GFile *base_file = NULL, *parent;
       StyleSheetData *stylesheet_data = base_stylesheet->app_data;
+      GFile *base_file = stylesheet_data->file;
+      g_autoptr (GFile) parent = NULL;
 
-      base_file = stylesheet_data->file;
 
       /* This is an internal function, if we get here with
          a bad @base_stylesheet we have a problem. */
@@ -1085,8 +1078,6 @@ _st_theme_resolve_url (StTheme      *theme,
 
       parent = g_file_get_parent (base_file);
       resource = g_file_resolve_relative_path (parent, url);
-
-      g_object_unref (parent);
     }
   else
     {
