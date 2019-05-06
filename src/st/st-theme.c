@@ -110,6 +110,13 @@ file_equal0 (GFile *file1,
   return g_file_equal (file1, file2);
 }
 
+static inline CRStyleSheet *
+stylesheet_ref (CRStyleSheet *stylesheet)
+{
+  cr_stylesheet_ref (stylesheet);
+  return stylesheet;
+}
+
 static void
 stylesheet_destroy (CRStyleSheet *stylesheet)
 {
@@ -269,9 +276,8 @@ insert_stylesheet (StTheme      *theme,
   stylesheet_data = stylesheet->app_data;
   stylesheet_data->file = file;
 
-  cr_stylesheet_ref (stylesheet);
   g_hash_table_insert (theme->stylesheets_by_file,
-                       g_object_ref (file), stylesheet);
+                       g_object_ref (file), stylesheet_ref (stylesheet));
   return TRUE;
 }
 
