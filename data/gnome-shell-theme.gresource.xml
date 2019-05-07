@@ -25,11 +25,5 @@
     <file alias="icons/pointer-primary-click-symbolic.svg">pointer-primary-click-symbolic.svg</file>
     <file alias="icons/pointer-secondary-click-symbolic.svg">pointer-secondary-click-symbolic.svg</file>
     <file>process-working.svg</file>
-    <file>toggle-off.svg</file>
-    <file>toggle-off-dark.svg</file>
-    <file>toggle-off-hc.svg</file>
-    <file>toggle-on.svg</file>
-    <file>toggle-on-dark.svg</file>
-    <file>toggle-on-hc.svg</file>
   </gresource>
 </gresources>

@@ -167,15 +167,31 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
-  color: $fg_color;
-  width: 46px;
-  height: 22px;
-  background-size: contain;
-  background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/toggle-off.svg"),
-					    url("resource:///org/gnome/shell/theme/toggle-off-dark.svg"));
-  &:checked { 
-    background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/toggle-on.svg"),
-					    url("resource:///org/gnome/shell/theme/toggle-on-dark.svg"));
+  $_transition-duration: 250ms;
+  width: 2.86em;
+  height: 1.5em;
+  border-radius: 1.5em;
+  background: mix($borders_color, $bg_color, 50%);
+  box-shadow: inset 0 0 0 1px $borders_color;
+  transition-duration: $_transition-duration;
+
+  .slider {
+    width: 1.36em;
+    height: 1.36em;
+    border-radius: 1.36em;
+    background: lighten($bg_color, 3%);
+    box-shadow: inset 0 -106px 12px -100px $bg_color; // simulate linear gradient
+    border: .07em solid darken($bg_color, 14%);
+    transition-duration: $_transition-duration;
+  }
+
+  &:checked {
+    background: $selected_bg_color;
+    box-shadow: inset 0 0 0 1px darken($selected_bg_color, 25%);
+    .slider {
+      margin-left: 1.36em;
+      @if $variant== 'light' { border-color: darken($selected_bg_color, 15%); }
+    }
   }
 }
 

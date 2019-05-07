@@ -306,11 +306,13 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
 });
 
 var Switch = GObject.registerClass(
-class Switch extends St.Bin {
+class Switch extends St.BoxLayout {
     _init(state) {
         super._init({ style_class: 'toggle-switch',
                       accessible_role: Atk.Role.CHECK_BOX,
                       can_focus: true });
+        this._slider = new St.Bin({ style_class: 'slider' });
+        this.add_child(this._slider);
         this.setToggleState(state);
     }
 
