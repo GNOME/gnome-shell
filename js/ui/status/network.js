@@ -1730,14 +1730,24 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             this._addDeviceWrapper(wrapper);
 
             this._nmDevices.push(device);
-            if (!skipSyncDeviceNames)
-                this._syncDeviceNames();
+            this._deviceChanged(device, skipSyncDeviceNames);
 
-            if (wrapper instanceof NMConnectionSection) {
-                this._connections.forEach(connection => {
-                    wrapper.checkConnection(connection);
-                });
-            }
+            device.connect('notify::interface', () => {
+                this._deviceChanged(device, false);
+            });
+        }
+    }
+
+    _deviceChanged(device, skipSyncDeviceNames) {
+        let wrapper = device._delegate;
+
+        if (!skipSyncDeviceNames)
+            this._syncDeviceNames();
+
+        if (wrapper instanceof NMConnectionSection) {
+            this._connections.forEach(connection => {
+                wrapper.checkConnection(connection);
+            });
         }
     }
 
