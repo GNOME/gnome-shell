@@ -375,13 +375,17 @@ export const Switch = GObject.registerClass({
         this._handle = new St.Widget({
             style_class: 'handle',
             y_align: Clutter.ActorAlign.CENTER,
-            x_align: Clutter.ActorAlign.START,
-            x_expand: true,
             constraints: new Clutter.BindConstraint({
                 source: this,
-                coordinate: Clutter.BindCoordinate.SIZE,
+                coordinate: Clutter.BindCoordinate.HEIGHT,
             }),
         });
+        this._handleAlignConstraint = new Clutter.AlignConstraint({
+            name: 'align',
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            source: this,
+        });
+        this._handle.add_constraint(this._handleAlignConstraint);
         this.add_child(this._handle);
 
         this.state = state;
@@ -412,13 +416,23 @@ export const Switch = GObject.registerClass({
         if (this._state === state)
             return;
 
+        let handleAlignFactor;
+        // Calling get_theme_node() while unmapped is an error, avoid that
+        const duration = this._handle.mapped
+            ? this._handle.get_theme_node().get_transition_duration()
+            : 0;
+
         if (state) {
             this.add_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.END;
+            handleAlignFactor = 1.0;
         } else {
             this.remove_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.START;
+            handleAlignFactor = 0.0;
         }
+
+        this._handle.ease_property('@constraints.align.factor', handleAlignFactor, {
+            duration,
+        });
 
         this._state = state;
         this.notify('state');
