@@ -327,11 +327,13 @@ var Switch = GObject.registerClass({
             can_focus: true,
         });
 
-        this._handle = new St.Widget({
-            style_class: 'handle',
-            x_expand: true,
-            x_align: Clutter.ActorAlign.START,
+        this._handle = new St.Widget({ style_class: 'handle' });
+        this._handleAlignConstraint = new Clutter.AlignConstraint({
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            source: this,
+            //ignore_source_position: false,
         });
+        this._handle.add_constraint_with_name('align', this._handleAlignConstraint);
         this.add_child(this._handle);
 
         this.state = state;
@@ -345,13 +347,22 @@ var Switch = GObject.registerClass({
         if (this._state === state)
             return;
 
+        let handleAlignFactor;
+        let duration = this._handle.mapped
+            ? this._handle.get_theme_node().get_transition_duration()
+            : 0;
+
         if (state) {
             this.add_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.END;
+            handleAlignFactor = 1.0;
         } else {
             this.remove_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.START;
+            handleAlignFactor = 0.0;
         }
+
+        this._handle.ease_property('@constraints.align.factor', handleAlignFactor, {
+            duration,
+        });
 
         this._state = state;
         this.notify('state');
