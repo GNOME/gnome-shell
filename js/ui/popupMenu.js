@@ -314,23 +314,34 @@ class Switch extends St.BoxLayout {
             can_focus: true,
         });
 
-        this._handle = new St.Widget({
-            style_class: 'handle',
-            x_expand: true,
+        this._handle = new St.Widget({ style_class: 'handle' });
+        this._handleAlignConstraint = new Clutter.AlignConstraint({
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            source: this,
         });
+        this._handle.add_constraint_with_name('align', this._handleAlignConstraint);
         this.add_child(this._handle);
 
         this.setToggleState(state);
     }
 
     setToggleState(state) {
+        let handleAlignFactor;
+        let duration = this._handle.mapped
+            ? this._handle.get_theme_node().get_transition_duration()
+            : 0;
+
         if (state) {
             this.add_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.END;
+            handleAlignFactor = 1.0;
         } else {
             this.remove_style_pseudo_class('checked');
-            this._handle.x_align = Clutter.ActorAlign.START;
+            handleAlignFactor = 0.0;
         }
+
+        this._handle.ease_property('@constraints.align.factor', handleAlignFactor, {
+            duration,
+        });
 
         this.state = state;
     }
