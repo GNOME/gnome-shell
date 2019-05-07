@@ -317,7 +317,7 @@ var Switch = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             false),
     },
-}, class Switch extends St.Bin {
+}, class Switch extends St.BoxLayout {
     _init(state) {
         this._state = false;
 
@@ -325,8 +325,16 @@ var Switch = GObject.registerClass({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
             can_focus: true,
-            state,
         });
+
+        this._handle = new St.Widget({
+            style_class: 'handle',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+        });
+        this.add_child(this._handle);
+
+        this.state = state;
     }
 
     get state() {
@@ -337,10 +345,13 @@ var Switch = GObject.registerClass({
         if (this._state === state)
             return;
 
-        if (state)
+        if (state) {
             this.add_style_pseudo_class('checked');
-        else
+            this._handle.x_align = Clutter.ActorAlign.END;
+        } else {
             this.remove_style_pseudo_class('checked');
+            this._handle.x_align = Clutter.ActorAlign.START;
+        }
 
         this._state = state;
         this.notify('state');
