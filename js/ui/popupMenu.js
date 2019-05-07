@@ -336,21 +336,24 @@ export const Switch = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             false),
     },
-}, class Switch extends St.Bin {
+}, class Switch extends St.Widget {
     _init(state) {
         this._state = false;
+
+        super._init({
+            style_class: 'toggle-switch',
+            accessible_role: Atk.Role.CHECK_BOX,
+        });
 
         const box = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
+            constraints: new Clutter.BindConstraint({
+                source: this,
+                coordinate: Clutter.BindCoordinate.SIZE,
+            }),
         });
-
-        super._init({
-            style_class: 'toggle-switch',
-            child: box,
-            accessible_role: Atk.Role.CHECK_BOX,
-            state,
-        });
+        this.add_child(box);
 
         this._onIcon = new St.Icon({
             icon_name: 'switch-on-symbolic',
@@ -368,6 +371,20 @@ export const Switch = GObject.registerClass({
         });
         box.add_child(this._offIcon);
 
+        this._handle = new St.Widget({
+            style_class: 'handle',
+            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            constraints: new Clutter.BindConstraint({
+                source: this,
+                coordinate: Clutter.BindCoordinate.SIZE,
+            }),
+        });
+        this.add_child(this._handle);
+
+        this.state = state;
+
         this._a11ySettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.a11y.interface',
         });
@@ -375,8 +392,6 @@ export const Switch = GObject.registerClass({
         this._a11ySettings.connectObject('changed::show-status-shapes',
             () => this._updateIconOpacity(),
             this);
-        this.connect('notify::state',
-            () => this._updateIconOpacity());
         this._updateIconOpacity();
     }
 
@@ -384,10 +399,8 @@ export const Switch = GObject.registerClass({
         const activeOpacity = this._a11ySettings.get_boolean('show-status-shapes')
             ? 255. : 0.;
 
-        this._onIcon.opacity = this.state
-            ? activeOpacity : 0.;
-        this._offIcon.opacity = this.state
-            ? 0. : activeOpacity;
+        this._onIcon.opacity = activeOpacity;
+        this._offIcon.opacity = activeOpacity;
     }
 
     get state() {
@@ -398,10 +411,13 @@ export const Switch = GObject.registerClass({
         if (this._state === state)
             return;
 
-        if (state)
+        if (state) {
             this.add_style_pseudo_class('checked');
-        else
+            this._handle.x_align = Clutter.ActorAlign.END;
+        } else {
             this.remove_style_pseudo_class('checked');
+            this._handle.x_align = Clutter.ActorAlign.START;
+        }
 
         this._state = state;
         this.notify('state');
