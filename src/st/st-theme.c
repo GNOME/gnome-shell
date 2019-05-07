@@ -72,6 +72,7 @@ struct _StTheme
 
 typedef struct _StyleSheetData
 {
+  gatomicrefcount ref_count;
   GFile *file;
   gboolean extension_stylesheet;
 } StyleSheetData;
@@ -111,17 +112,29 @@ file_equal0 (GFile *file1,
   return g_file_equal (file1, file2);
 }
 
-static inline CRStyleSheet *
+static CRStyleSheet *
 stylesheet_ref (CRStyleSheet *stylesheet)
 {
+  StyleSheetData *data = stylesheet->app_data;
   cr_stylesheet_ref (stylesheet);
+
+  if (data)
+    {
+      if (g_atomic_ref_count_compare (&data->ref_count, 0))
+        g_atomic_ref_count_init (&data->ref_count);
+      else
+        g_atomic_ref_count_inc (&data->ref_count);
+    }
+
   return stylesheet;
 }
 
 static void
-stylesheet_destroy (CRStyleSheet *stylesheet)
+stylesheet_unref (CRStyleSheet *stylesheet)
 {
-  if (stylesheet->app_data)
+  StyleSheetData *data = stylesheet->app_data;
+
+  if (data && g_atomic_ref_count_dec (&data->ref_count))
     {
       g_slice_free (StyleSheetData, stylesheet->app_data);
       stylesheet->app_data = NULL;
@@ -136,7 +149,7 @@ st_theme_init (StTheme *theme)
   theme->stylesheets_by_file =
     g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
                            (GDestroyNotify) g_object_unref,
-                           (GDestroyNotify) stylesheet_destroy);
+                           (GDestroyNotify) stylesheet_unref);
 }
 
 static void
@@ -284,7 +297,7 @@ st_theme_load_stylesheet (StTheme    *theme,
   if (!insert_stylesheet (theme, file, stylesheet))
     {
       if (stylesheet)
-        stylesheet_destroy (stylesheet);
+        stylesheet_unref (stylesheet);
       return FALSE;
     }
 
@@ -313,7 +326,7 @@ st_theme_unload_stylesheet (StTheme    *theme,
 
   g_hash_table_remove (theme->stylesheets_by_file, file);
   theme->custom_stylesheets = g_slist_remove (theme->custom_stylesheets, stylesheet);
-  cr_stylesheet_unref (stylesheet);
+  stylesheet_unref (stylesheet);
   g_signal_emit (theme, signals[STYLESHEETS_CHANGED], 0);
 }
 
@@ -376,7 +389,7 @@ st_theme_finalize (GObject * object)
   g_clear_pointer (&theme->stylesheets_by_file, g_hash_table_destroy);
 
   g_slist_free_full (theme->custom_stylesheets,
-                     (GDestroyNotify) cr_stylesheet_unref);
+                     (GDestroyNotify) stylesheet_unref);
   theme->custom_stylesheets = NULL;
 
   g_clear_object (&theme->application_stylesheet);
