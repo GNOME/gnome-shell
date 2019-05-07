@@ -308,19 +308,48 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
 var Switch = GObject.registerClass(
 class Switch extends St.BoxLayout {
     _init(state) {
-        super._init({ style_class: 'toggle-switch',
-                      accessible_role: Atk.Role.CHECK_BOX,
-                      can_focus: true });
+        super._init({
+            style_class: 'toggle-switch',
+            accessible_role: Atk.Role.CHECK_BOX,
+            can_focus: true
+        });
+
         this._slider = new St.Bin({ style_class: 'slider' });
         this.add_child(this._slider);
-        this.setToggleState(state);
+
+        this.state = state;
+        this._slider.connect('style-changed', () => this.setToggleState(this.state, true));
+        
     }
 
-    setToggleState(state) {
-        if (state)
+    _getOnSwitchSliderX() {
+        let switchThemeNode = this.get_theme_node();
+        let switchLeftBorderWidth = switchThemeNode.get_border_width(St.Side.LEFT);
+        let switchRightBorderWidth = switchThemeNode.get_border_width(St.Side.RIGHT);
+        let switchLeftPadding = switchThemeNode.get_padding(St.Side.LEFT);
+        let switchRightPadding = switchThemeNode.get_padding(St.Side.RIGHT);
+        return this.width - this._slider.width
+               - switchLeftBorderWidth - switchRightBorderWidth
+               - switchLeftPadding - switchRightPadding;
+    }
+
+    setToggleState(state, immediate) {
+        let transitionDuration = !immediate && this.get_theme_node().get_transition_duration() || 0;
+        let sliderTranslationX = 0;
+
+        if (state) {
             this.add_style_pseudo_class('checked');
-        else
+            sliderTranslationX = this._getOnSwitchSliderX();
+        } else {
             this.remove_style_pseudo_class('checked');
+        }
+
+        this._slider.ease({
+            translation_x: sliderTranslationX,
+            duration: transitionDuration,
+            onComplete: () => this._slider.translation_x = sliderTranslationX
+        });
+
         this.state = state;
     }
 
