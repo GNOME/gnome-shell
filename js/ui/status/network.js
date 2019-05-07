@@ -1733,7 +1733,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             this._nmDevices.push(device);
             this._deviceChanged(device, skipSyncDeviceNames);
 
-            device.connect('notify::interface', () => { this._deviceChanged(device); });
+            device.connect('notify::interface', () => { this._deviceChanged(device, false); });
         }
     }
 
