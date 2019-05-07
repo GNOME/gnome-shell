@@ -6,12 +6,13 @@ $switch_handle_border: 0.07em;
 
 .toggle-switch {
   $_handle_size: $switch_height - 2 * $switch_handle_border;
+  $_transition-duration: 250ms;
   height: $switch_height;
   width: $switch_width;
   border-radius: $switch_height;
   background: mix($borders_color, $bg_color, 50%);
   box-shadow: inset 0 0 0 1px $borders_color;
-  transition-duration: 250ms;
+  transition-duration: $_transition-duration;
 
   .handle {
     width: $_handle_size;
@@ -19,6 +20,7 @@ $switch_handle_border: 0.07em;
     border-radius: $_handle_size;
     background: lighten($bg_color, 3%);
     border: $switch_handle_border solid darken($bg_color, 14%);
+    transition-duration: $_transition-duration;
   }
 
   &:checked {
