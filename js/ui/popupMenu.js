@@ -283,11 +283,45 @@ var Switch = class {
         this.setToggleState(state);
     }
 
+    _getSwitchOnHandleTranslationX() {
+        let switchWidth = this.actor.width;
+        let handleWidth = this._handle.width;
+        let switchThemeNode = this.actor.get_theme_node();
+        let switchRightBorderWidth = switchThemeNode.get_border_width(St.Side.RIGHT);
+        let switchLeftBorderWidth = switchThemeNode.get_border_width(St.Side.LEFT);
+        let switchRightPadding = switchThemeNode.get_padding(St.Side.RIGHT);
+        let switchLeftPadding = switchThemeNode.get_padding(St.Side.LEFT);
+        return switchWidth - handleWidth
+               - switchLeftBorderWidth - switchRightBorderWidth
+               - switchLeftPadding - switchRightPadding;
+    }
+
     setToggleState(state) {
-        if (state)
+        let themeNode = this.actor.get_theme_node();
+        let transitionMs = themeNode.get_transition_duration() || 1;
+        let transitionDuration = transitionMs / 1000;
+        if (state) {
             this.actor.add_style_pseudo_class('checked');
-        else
+            Tweener.addTween(this._handle,
+                             { translation_x: this._getSwitchOnHandleTranslationX(),
+                               time: transitionDuration,
+                               onCompleteScope: this,
+                               onComplete() {
+                                   this._handle.translation_x =
+                                           this._getSwitchOnHandleTranslationX();
+                               }
+                             });
+        } else {
             this.actor.remove_style_pseudo_class('checked');
+            Tweener.addTween(this._handle,
+                             { translation_x: 0,
+                               time: transitionDuration,
+                               onCompleteScope: this,
+                               onComplete() {
+                                   this._handle.translation_x = 0;
+                               }
+                             });
+        }
         this.state = state;
     }
 
