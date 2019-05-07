@@ -274,9 +274,12 @@ var PopupSeparatorMenuItem = class extends PopupBaseMenuItem {
 
 var Switch = class {
     constructor(state) {
-        this.actor = new St.Bin({ style_class: 'toggle-switch',
-                                  accessible_role: Atk.Role.CHECK_BOX,
-                                  can_focus: true });
+        this.actor = new St.BoxLayout({ style_class: 'toggle-switch',
+                                        accessible_role: Atk.Role.CHECK_BOX,
+                                        can_focus: true });
+
+        this._handle = new St.Bin({ style_class: 'switch-handle' });
+        this.actor.add_child(this._handle);
         this.setToggleState(state);
     }
 
