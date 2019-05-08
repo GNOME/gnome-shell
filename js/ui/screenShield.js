@@ -806,7 +806,7 @@ var ScreenShield = class {
 
         this._maybeCancelDialog();
 
-        if (this._longLightbox.actor.visible) {
+        if (this._longLightbox.visible) {
             // We're in the process of showing.
             return;
         }
@@ -844,7 +844,7 @@ var ScreenShield = class {
     }
 
     _activateFade(lightbox, time) {
-        Main.uiGroup.set_child_above_sibling(lightbox.actor, null);
+        Main.uiGroup.set_child_above_sibling(lightbox, null);
         lightbox.show(time);
 
         if (this._becameActiveId == 0)
