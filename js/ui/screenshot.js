@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const GrabHelper = imports.ui.grabHelper;
@@ -368,20 +368,22 @@ Signals.addSignalMethods(PickPixel.prototype);
 
 var FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
-var Flashspot = class extends Lightbox.Lightbox {
-    constructor(area) {
-        super(Main.uiGroup, { inhibitEvents: true,
-                              width: area.width,
-                              height: area.height });
+var Flashspot = GObject.registerClass(
+class Flashspot extends Lightbox.Lightbox {
+    _init(area) {
+        super._init(Main.uiGroup,
+                    { inhibitEvents: true,
+                      width: area.width,
+                      height: area.height });
 
-        this.actor.style_class = 'flashspot';
-        this.actor.set_position(area.x, area.y);
+        this.style_class = 'flashspot';
+        this.set_position(area.x, area.y);
     }
 
     fire(doneCallback) {
-        this.actor.show();
-        this.actor.opacity = 255;
-        Tweener.addTween(this.actor,
+        this.show();
+        this.opacity = 255;
+        Tweener.addTween(this,
                          { opacity: 0,
                            time: FLASHSPOT_ANIMATION_OUT_TIME,
                            transition: 'easeOutQuad',
@@ -392,4 +394,4 @@ var Flashspot = class extends Lightbox.Lightbox {
                            }
                          });
     }
-};
+});
