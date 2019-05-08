@@ -68,9 +68,9 @@ var ModalDialog = GObject.registerClass({
         this.buttonLayout = this.dialogLayout.buttonLayout;
 
         if (!this._shellReactive) {
-            this._lightbox = new Lightbox.Lightbox(this,
-                                                   { inhibitEvents: true,
-                                                     radialEffect: true });
+            this._lightbox = Lightbox.LightboxFactory(this,
+                                                      { inhibitEvents: true,
+                                                        radialEffect: true });
             this._lightbox.highlight(this._backgroundBin);
 
             this._eventBlocker = new Clutter.Actor({ reactive: true });
