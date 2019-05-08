@@ -555,13 +555,15 @@ var ScreenShield = class {
         // The "long" lightbox is used for the longer (20 seconds) fade from session
         // to idle status, the "short" is used for quickly fading to black when locking
         // manually
-        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                   { inhibitEvents: true,
-                                                     fadeFactor: 1 });
+        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup, {
+            inhibitEvents: true,
+            fadeFactor: 1
+        });
         this._longLightbox.connect('shown', this._onLongLightboxShown.bind(this));
-        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                    { inhibitEvents: true,
-                                                      fadeFactor: 1 });
+        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup, {
+            inhibitEvents: true,
+            fadeFactor: 1
+        });
         this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
@@ -806,7 +808,7 @@ var ScreenShield = class {
 
         this._maybeCancelDialog();
 
-        if (this._longLightbox.actor.visible) {
+        if (this._longLightbox.visible) {
             // We're in the process of showing.
             return;
         }
@@ -844,7 +846,7 @@ var ScreenShield = class {
     }
 
     _activateFade(lightbox, time) {
-        Main.uiGroup.set_child_above_sibling(lightbox.actor, null);
+        Main.uiGroup.set_child_above_sibling(lightbox, null);
         lightbox.show(time);
 
         if (this._becameActiveId == 0)
