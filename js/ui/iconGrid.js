@@ -686,13 +686,13 @@ var IconGrid = GObject.registerClass({
 
         this._items.push(item);
         if (index !== undefined)
-            this.insert_child_at_index(item.actor, index);
+            this.insert_child_at_index(item, index);
         else
-            this.add_actor(item.actor);
+            this.add_actor(item);
     }
 
     removeItem(item) {
-        this.remove_child(item.actor);
+        this.remove_child(item);
     }
 
     getItemAtIndex(index) {
@@ -931,7 +931,7 @@ var PaginatedIconGrid = GObject.registerClass({
     */
     openExtraSpace(sourceItem, side, nRows) {
         let children = this._getVisibleChildren();
-        let index = children.indexOf(sourceItem.actor);
+        let index = children.indexOf(sourceItem);
         if (index == -1)
             throw new Error('Item not found.');
 

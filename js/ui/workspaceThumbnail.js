@@ -3,7 +3,6 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -46,36 +45,43 @@ class PrimaryActorLayout extends Clutter.FixedLayout {
     }
 });
 
-var WindowClone = class {
-    constructor(realWindow) {
-        this.clone = new Clutter.Clone({ source: realWindow });
+var WindowClone = GObject.registerClass({
+    GTypeName: 'WorkspaceThumbnail_WindowClone',
+    Signals: {
+        'drag-begin': {},
+        'drag-cancelled': {},
+        'drag-end': {},
+        'selected': { param_types: [GObject.TYPE_UINT] },
+    }
+}, class WindowClone extends Clutter.Actor {
+    _init(realWindow) {
+        let clone = new Clutter.Clone({ source: realWindow });
+        super._init({
+            layout_manager: new PrimaryActorLayout(clone),
+            reactive: true
+        });
+        this._delegate = this;
 
-        /* Can't use a Shell.GenericContainer because of DND and reparenting... */
-        this.actor = new Clutter.Actor({ layout_manager: new PrimaryActorLayout(this.clone),
-                                         reactive: true });
-        this.actor._delegate = this;
-        this.actor.add_child(this.clone);
+        this.add_child(clone);
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
 
-        this.clone._updateId = this.realWindow.connect('notify::position',
-                                                       this._onPositionChanged.bind(this));
-        this.clone._destroyId = this.realWindow.connect('destroy', () => {
+        clone._updateId = this.realWindow.connect('notify::position',
+                                                  this._onPositionChanged.bind(this));
+        clone._destroyId = this.realWindow.connect('destroy', () => {
             // First destroy the clone and then destroy everything
             // This will ensure that we never see it in the _disconnectSignals loop
-            this.clone.destroy();
+            clone.destroy();
             this.destroy();
         });
         this._onPositionChanged();
 
-        this.actor.connect('button-release-event',
-                           this._onButtonRelease.bind(this));
-        this.actor.connect('touch-event',
-                           this._onTouchEvent.bind(this));
+        this.connect('button-release-event', this._onButtonRelease.bind(this));
+        this.connect('touch-event', this._onTouchEvent.bind(this));
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
-        this._draggable = DND.makeDraggable(this.actor,
+        this._draggable = DND.makeDraggable(this,
                                             { restoreOnSuccess: true,
                                               dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
                                               dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
@@ -126,13 +132,9 @@ var WindowClone = class {
 
         let actualAbove = this.getActualStackAbove();
         if (actualAbove == null)
-            this.actor.lower_bottom();
+            this.lower_bottom();
         else
-            this.actor.raise(actualAbove);
-    }
-
-    destroy() {
-        this.actor.destroy();
+            this.raise(actualAbove);
     }
 
     addAttachedDialog(win) {
@@ -149,7 +151,7 @@ var WindowClone = class {
         clone._destroyId = realDialog.connect('destroy', () => {
             clone.destroy();
         });
-        this.actor.add_child(clone);
+        this.add_child(clone);
     }
 
     _updateDialogPosition(realDialog, cloneDialog) {
@@ -161,11 +163,11 @@ var WindowClone = class {
     }
 
     _onPositionChanged() {
-        this.actor.set_position(this.realWindow.x, this.realWindow.y);
+        this.set_position(this.realWindow.x, this.realWindow.y);
     }
 
     _disconnectSignals() {
-        this.actor.get_children().forEach(child => {
+        this.get_children().forEach(child => {
             let realWindow = child.source;
 
             realWindow.disconnect(child._updateId);
@@ -176,14 +178,12 @@ var WindowClone = class {
     _onDestroy() {
         this._disconnectSignals();
 
-        this.actor._delegate = null;
+        this._delegate = null;
 
         if (this.inDrag) {
             this.emit('drag-end');
             this.inDrag = false;
         }
-
-        this.disconnectAll();
     }
 
     _onButtonRelease(actor, event) {
@@ -216,18 +216,17 @@ var WindowClone = class {
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
         // with a new one on the target workspace.
-        if (this.actor.get_parent() != null) {
+        if (this.get_parent() != null) {
             if (this._stackAbove == null)
-                this.actor.lower_bottom();
+                this.lower_bottom();
             else
-                this.actor.raise(this._stackAbove);
+                this.raise(this._stackAbove);
         }
 
 
         this.emit('drag-end');
     }
-};
-Signals.addSignalMethods(WindowClone.prototype);
+});
 
 
 var ThumbnailState = {
@@ -244,21 +243,24 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = class {
-    constructor(metaWorkspace) {
+var WorkspaceThumbnail = GObject.registerClass(
+class WorkspaceThumbnail extends St.Widget {
+    _init(metaWorkspace) {
+        super._init({
+            clip_to_allocation: true,
+            style_class: 'workspace-thumbnail'
+        });
+        this._delegate = this;
+
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
 
         this._removed = false;
 
-        this.actor = new St.Widget({ clip_to_allocation: true,
-                                     style_class: 'workspace-thumbnail' });
-        this.actor._delegate = this;
-
         this._contents = new Clutter.Actor();
-        this.actor.add_child(this._contents);
+        this.add_child(this._contents);
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._createBackground();
 
@@ -308,7 +310,7 @@ var WorkspaceThumbnail = class {
     }
 
     setPorthole(x, y, width, height) {
-        this.actor.set_size(width, height);
+        this.set_size(width, height);
         this._contents.set_position(-x, -y);
     }
 
@@ -329,14 +331,14 @@ var WorkspaceThumbnail = class {
                 clone.setStackAbove(this._bgManager.backgroundActor);
             } else {
                 let previousClone = this._windows[i - 1];
-                clone.setStackAbove(previousClone.actor);
+                clone.setStackAbove(previousClone);
             }
         }
     }
 
     set slidePosition(slidePosition) {
         this._slidePosition = slidePosition;
-        this.actor.queue_relayout();
+        this.queue_relayout();
     }
 
     get slidePosition() {
@@ -345,7 +347,7 @@ var WorkspaceThumbnail = class {
 
     set collapseFraction(collapseFraction) {
         this._collapseFraction = collapseFraction;
-        this.actor.queue_relayout();
+        this.queue_relayout();
     }
 
     get collapseFraction() {
@@ -446,11 +448,6 @@ var WorkspaceThumbnail = class {
             this._doAddWindow(metaWin);
     }
 
-    destroy() {
-        if (this.actor)
-            this.actor.destroy();
-    }
-
     workspaceRemoved() {
         if (this._removed)
             return;
@@ -475,7 +472,6 @@ var WorkspaceThumbnail = class {
         }
 
         this._windows = [];
-        this.actor = null;
     }
 
     // Tests if @actor belongs to this workspace and monitor
@@ -507,15 +503,15 @@ var WorkspaceThumbnail = class {
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
         });
-        clone.actor.connect('destroy', () => {
+        clone.connect('destroy', () => {
             this._removeWindowClone(clone.metaWindow);
         });
-        this._contents.add_actor(clone.actor);
+        this._contents.add_actor(clone);
 
         if (this._windows.length == 0)
             clone.setStackAbove(this._bgManager.backgroundActor);
         else
-            clone.setStackAbove(this._windows[this._windows.length - 1].actor);
+            clone.setStackAbove(this._windows[this._windows.length - 1]);
 
         this._windows.push(clone);
 
@@ -590,8 +586,7 @@ var WorkspaceThumbnail = class {
 
         return false;
     }
-};
-Signals.addSignalMethods(WorkspaceThumbnail.prototype);
+});
 
 
 var ThumbnailsBox = GObject.registerClass(
@@ -688,8 +683,8 @@ class ThumbnailsBox extends St.Widget {
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
-            let [, h] = thumbnail.actor.get_transformed_size();
-            if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
+            let [, h] = thumbnail.get_transformed_size();
+            if (y >= thumbnail.y && y <= thumbnail.y + h) {
                 thumbnail.activate(time);
                 break;
             }
@@ -769,14 +764,14 @@ class ThumbnailsBox extends St.Widget {
         if (this._dropPlaceholderPos == 0)
             targetBase = this._dropPlaceholder.y;
         else
-            targetBase = this._thumbnails[0].actor.y;
+            targetBase = this._thumbnails[0].y;
         let targetTop = targetBase - spacing - WORKSPACE_CUT_SIZE;
         let length = this._thumbnails.length;
         for (let i = 0; i < length; i ++) {
             // Allow the reorder target to have a 10px "cut" into
             // each side of the thumbnail, to make dragging onto the
             // placeholder easier
-            let [, h] = this._thumbnails[i].actor.get_transformed_size();
+            let [, h] = this._thumbnails[i].get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
             let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
@@ -955,7 +950,7 @@ class ThumbnailsBox extends St.Widget {
             thumbnail.setPorthole(this._porthole.x, this._porthole.y,
                                   this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
-            this.add_actor(thumbnail.actor);
+            this.add_actor(thumbnail);
 
             if (start > 0 && this._spliceIndex == -1) {
                 // not the initial fill, and not splicing via DND
@@ -1290,8 +1285,8 @@ class ThumbnailsBox extends St.Widget {
             childBox.y1 = y1;
             childBox.y2 = y1 + portholeHeight;
 
-            thumbnail.actor.set_scale(roundedHScale, roundedVScale);
-            thumbnail.actor.allocate(childBox, flags);
+            thumbnail.set_scale(roundedHScale, roundedVScale);
+            thumbnail.allocate(childBox, flags);
 
             // We round the collapsing portion so that we don't get thumbnails resizing
             // during an animation due to differences in rounded, but leave the uncollapsed
@@ -1329,7 +1324,7 @@ class ThumbnailsBox extends St.Widget {
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
         this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
         Tweener.addTween(this,
-                         { indicatorY: thumbnail.actor.allocation.y1,
+                         { indicatorY: thumbnail.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {

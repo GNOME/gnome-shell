@@ -404,27 +404,26 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-class CyclerHighlight {
-    constructor() {
+var CyclerHighlight = GObject.registerClass(
+class CyclerHighlight extends St.Widget {
+    _init() {
+        super._init({ layout_manager: new Clutter.BinLayout() });
         this._window = null;
 
-        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-
         this._clone = new Clutter.Clone();
-        this.actor.add_actor(this._clone);
+        this.add_actor(this._clone);
 
         this._highlight = new St.Widget({ style_class: 'cycler-highlight' });
-        this.actor.add_actor(this._highlight);
+        this.add_actor(this._highlight);
 
         let coordinate = Clutter.BindCoordinate.ALL;
         let constraint = new Clutter.BindConstraint({ coordinate: coordinate });
         this._clone.bind_property('source', constraint, 'source', 0);
 
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
-        this.actor.connect('notify::allocation',
-                           this._onAllocationChanged.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('notify::allocation', this._onAllocationChanged.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     set window(w) {
@@ -450,7 +449,7 @@ class CyclerHighlight {
             this._highlight.set_size(0, 0);
             this._highlight.hide();
         } else {
-            let [x, y] = this.actor.allocation.get_origin();
+            let [x, y] = this.allocation.get_origin();
             let rect = this._window.get_frame_rect();
             this._highlight.set_size(rect.width, rect.height);
             this._highlight.set_position(rect.x - x, rect.y - y);
@@ -461,7 +460,7 @@ class CyclerHighlight {
     _onDestroy() {
         this.window = null;
     }
-}
+});
 
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList
@@ -488,7 +487,7 @@ var CyclerPopup = GObject.registerClass({
             return;
 
         this._highlight = new CyclerHighlight();
-        global.window_group.add_actor(this._highlight.actor);
+        global.window_group.add_actor(this._highlight);
 
         this._switcherList = new CyclerList();
         this._switcherList.connect('item-highlighted', (list, index) => {
@@ -498,7 +497,7 @@ var CyclerPopup = GObject.registerClass({
 
     _highlightItem(index, _justOutline) {
         this._highlight.window = this._items[index];
-        global.window_group.set_child_above_sibling(this._highlight.actor, null);
+        global.window_group.set_child_above_sibling(this._highlight, null);
     }
 
     _finish() {
@@ -528,7 +527,7 @@ var CyclerPopup = GObject.registerClass({
     }
 
     _onDestroy() {
-        this._highlight.actor.destroy();
+        this._highlight.destroy();
 
         super._onDestroy();
     }

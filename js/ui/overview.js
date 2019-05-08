@@ -1,9 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Overview */
 
-const { Clutter, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -77,13 +76,47 @@ var ShellInfo = class {
     }
 };
 
-var Overview = class {
-    constructor() {
+var Overview = GObject.registerClass({
+    Properties: {
+        'visible': GObject.ParamSpec.override('visible', St.BoxLayout),
+    },
+    Signals: {
+        'hidden': {},
+        'hiding': {},
+        'item-drag-begin': {},
+        'item-drag-cancelled': {},
+        'item-drag-end': {},
+        'showing': {},
+        'shown': {},
+        'window-drag-begin': { param_types: [Meta.Window.$gtype] },
+        'window-drag-cancelled': { param_types: [Meta.Window.$gtype] },
+        'window-drag-end': { param_types: [Meta.Window.$gtype] },
+        'windows-restacked': {},
+    }
+}, class Overview extends St.BoxLayout {
+    _init() {
+        super._init({ 
+            name: 'overview',
+            /* Translators: This is the main view to select
+                activities. See also note for "Activities" string. */
+            accessible_name: _("Overview"),
+            vertical: true
+        });
+
         this._overviewCreated = false;
         this._initCalled = false;
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
+    }
+
+    get visible() {
+        return this._visible;
+    }
+
+    set visible(visible) {
+        if (this._visible != visible)
+            this.toggle();
     }
 
     _createOverview() {
@@ -94,14 +127,8 @@ var Overview = class {
             return;
 
         this._overviewCreated = true;
-
-        this._overview = new St.BoxLayout({ name: 'overview',
-                                            /* Translators: This is the main view to select
-                                               activities. See also note for "Activities" string. */
-                                            accessible_name: _("Overview"),
-                                            vertical: true });
-        this._overview.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
-        this._overview._delegate = this;
+        this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
+        this._delegate = this;
 
         // The main Background actors are inside global.window_group which are
         // hidden when displaying the overview, so we create a new
@@ -117,7 +144,7 @@ var Overview = class {
 
         this._activationTime = 0;
 
-        this.visible = false;           // animating to overview, in overview, animating out
+        this._visible = false;          // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
@@ -131,7 +158,7 @@ var Overview = class {
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
         this._coverPane.connect('event', () => Clutter.EVENT_STOP);
 
-        Main.layoutManager.overviewGroup.add_child(this._overview);
+        Main.layoutManager.overviewGroup.add_child(this);
 
         this._coverPane.hide();
 
@@ -217,7 +244,7 @@ var Overview = class {
         this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel }),
                                         reactive: false,
                                         opacity: 0 });
-        this._overview.add_actor(this._panelGhost);
+        this.add_actor(this._panelGhost);
 
         this._searchEntry = new St.Entry({ style_class: 'search-entry',
                                            /* Translators: this is the text displayed
@@ -229,7 +256,7 @@ var Overview = class {
                                            can_focus: true });
         this._searchEntryBin = new St.Bin({ child: this._searchEntry,
                                             x_align: St.Align.MIDDLE });
-        this._overview.add_actor(this._searchEntryBin);
+        this.add_actor(this._searchEntryBin);
 
         // Create controls
         this._controls = new OverviewControls.ControlsManager(this._searchEntry);
@@ -237,7 +264,7 @@ var Overview = class {
         this.viewSelector = this._controls.viewSelector;
 
         // Add our same-line elements after the search entry
-        this._overview.add(this._controls.actor, { y_fill: true, expand: true });
+        this.add(this._controls, { y_fill: true, expand: true });
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
@@ -466,7 +493,7 @@ var Overview = class {
             return false;
         if (this._inItemDrag || this._inWindowDrag)
             return false;
-        if (this._activationTime == 0 ||
+        if (!this._activationTime ||
             GLib.get_monotonic_time() / GLib.USEC_PER_SEC - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
             return true;
         return false;
@@ -483,7 +510,7 @@ var Overview = class {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal) {
                 if (!this._modal) {
-                    if (Main.pushModal(this._overview,
+                    if (Main.pushModal(this,
                                        { actionMode: Shell.ActionMode.OVERVIEW })) {
                         this._modal = true;
                     } else {
@@ -494,7 +521,7 @@ var Overview = class {
             }
         } else {
             if (this._modal) {
-                Main.popModal(this._overview);
+                Main.popModal(this);
                 this._modal = false;
             }
         }
@@ -520,10 +547,10 @@ var Overview = class {
 
 
     _animateVisible() {
-        if (this.visible || this.animationInProgress)
+        if (this._visible || this.animationInProgress)
             return;
 
-        this.visible = true;
+        this._visible = true;
         this.animationInProgress = true;
         this.visibleTarget = true;
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
@@ -531,8 +558,8 @@ var Overview = class {
         Meta.disable_unredirect_for_display(global.display);
         this.viewSelector.show();
 
-        this._overview.opacity = 0;
-        Tweener.addTween(this._overview,
+        this.opacity = 0;
+        Tweener.addTween(this,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -587,7 +614,7 @@ var Overview = class {
     }
 
     _animateNotVisible() {
-        if (!this.visible || this.animationInProgress)
+        if (!this._visible || this.animationInProgress)
             return;
 
         this.animationInProgress = true;
@@ -596,7 +623,7 @@ var Overview = class {
         this.viewSelector.animateFromOverview();
 
         // Make other elements fade out.
-        Tweener.addTween(this._overview,
+        Tweener.addTween(this,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -618,7 +645,7 @@ var Overview = class {
         this._desktopFade.hide();
         this._coverPane.hide();
 
-        this.visible = false;
+        this._visible = false;
         this.animationInProgress = false;
 
         this.emit('hidden');
@@ -635,7 +662,7 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        if (this.visible)
+        if (this._visible)
             this.hide();
         else
             this.show();
@@ -644,5 +671,4 @@ var Overview = class {
     getShowAppsButton() {
         return this._dash.showAppsButton;
     }
-};
-Signals.addSignalMethods(Overview.prototype);
+});

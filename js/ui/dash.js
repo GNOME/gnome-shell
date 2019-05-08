@@ -3,7 +3,6 @@
 
 const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
 const AppFavorites = imports.ui.appFavorites;
@@ -331,8 +330,10 @@ class DashActor extends St.Widget {
 
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
-var Dash = class Dash {
-    constructor() {
+var Dash = GObject.registerClass({
+    Signals: { 'icon-size-changed': {} }
+}, class Dash extends St.Bin {
+    _init() {
         this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
@@ -361,11 +362,11 @@ var Dash = class Dash {
 
         this._container.add_actor(this._showAppsIcon);
 
-        this.actor = new St.Bin({ child: this._container });
-        this.actor.connect('notify::height', () => {
-            if (this._maxHeight != this.actor.height)
+        super._init({ child: this._container });
+        this.connect('notify::height', () => {
+            if (this._maxHeight != this.height)
                 this._queueRedisplay();
-            this._maxHeight = this.actor.height;
+            this._maxHeight = this.height;
         });
 
         this._workId = Main.initializeDeferredWork(this._box, this._redisplay.bind(this));
@@ -388,7 +389,7 @@ var Dash = class Dash {
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Dash"), 'user-bookmarks-symbolic');
+        Main.ctrlAltTabManager.addGroup(this, _("Dash"), 'user-bookmarks-symbolic');
     }
 
     _onDragBegin() {
@@ -481,11 +482,11 @@ var Dash = class Dash {
         if (appIcon._draggable) {
             appIcon._draggable.connect('drag-begin',
                                        () => {
-                                           appIcon.actor.opacity = 50;
+                                           appIcon.opacity = 50;
                                        });
             appIcon._draggable.connect('drag-end',
                                        () => {
-                                           appIcon.actor.opacity = 255;
+                                           appIcon.opacity = 255;
                                        });
         }
 
@@ -495,11 +496,11 @@ var Dash = class Dash {
                         });
 
         let item = new DashItemContainer();
-        item.setChild(appIcon.actor);
+        item.setChild(appIcon);
 
         // Override default AppIcon label_actor, now the
         // accessible_name is set at DashItemContainer.setLabelText
-        appIcon.actor.label_actor = null;
+        appIcon.label_actor = null;
         item.setLabelText(app.get_name());
 
         appIcon.icon.setIconSize(this.iconSize);
@@ -916,5 +917,4 @@ var Dash = class Dash {
 
         return true;
     }
-};
-Signals.addSignalMethods(Dash.prototype);
+});
