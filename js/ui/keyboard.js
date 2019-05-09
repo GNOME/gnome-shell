@@ -1127,8 +1127,10 @@ var Keyboard = class Keyboard {
         else if (!this._enabled)
             this.setCursorLocation(null);
 
-        if (!this._enabled && wasEnabled)
+        if (!this._enabled && wasEnabled) {
             Main.layoutManager.hideKeyboard(true);
+            this._destroyKeyboard();
+        }
     }
 
     _destroyKeyboard() {
