@@ -1144,7 +1144,12 @@ var Keyboard = class Keyboard {
             this._keyboardController.disconnect(this._keypadVisibleId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
+
         this._clearShowIdle();
+
+        Main.layoutManager.untrackChrome(this.actor);
+        Main.layoutManager.keyboardBox.remove_actor(this.actor);
+
         this.actor.destroy();
         this.actor = null;
 
