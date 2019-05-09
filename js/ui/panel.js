@@ -533,6 +533,9 @@ class PanelCorner extends St.DrawingArea {
         if (index < 0)
             return null;
 
+        if (!(children[index] instanceof St.Widget))
+            return null;
+
         if (!children[index].has_style_class_name('panel-menu') &&
             !children[index].has_style_class_name('panel-button'))
             return this._findRightmostButton(children[index]);
@@ -556,6 +559,9 @@ class PanelCorner extends St.DrawingArea {
                 break;
         }
         if (index == children.length)
+            return null;
+
+        if (!(children[index] instanceof St.Widget))
             return null;
 
         if (!children[index].has_style_class_name('panel-menu') &&
