@@ -277,7 +277,7 @@ var LightboxClass = function(params) {
 }
 
 /**
- * LightboxFactory:
+ * Lightbox:
  * @container: parent Clutter.Container
  * @params: (optional) additional parameters:
  *           - inhibitEvents: whether to inhibit events for @container
@@ -285,7 +285,6 @@ var LightboxClass = function(params) {
  *           - height: shade actor height
  *           - fadeInTime: seconds used to fade in
  *           - fadeOutTime: seconds used to fade out
- *           - radialEffect: weather the radial effect should be enabled
  *
  * Lightbox creates a dark translucent "shade" actor to hide the
  * contents of @container, and allows you to specify particular actors
@@ -301,10 +300,37 @@ var LightboxClass = function(params) {
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-var LightboxFactory = function(container, params) {
-    return new (LightboxClass(params))(container, params);
-}
-
 var Lightbox = function() {
     return LightboxClass();
+}();
+
+/**
+ * RadialLightbox:
+ * @container: parent Clutter.Container
+ * @params: (optional) additional parameters:
+ *           - inhibitEvents: whether to inhibit events for @container
+ *           - width: shade actor width
+ *           - height: shade actor height
+ *           - fadeInTime: seconds used to fade in
+ *           - fadeOutTime: seconds used to fade out
+ *
+ * RadialLightbox creates a dark translucent "shade" actor to hide the
+ * contents of @container, and allows you to specify particular actors
+ * in @container to highlight by bringing them above the shade. It
+ * tracks added and removed actors in @container while the lightboxing
+ * is active, and ensures that all actors are returned to their
+ * original stacking order when the lightboxing is removed. (However,
+ * if actors are restacked by outside code while the lightboxing is
+ * active, the lightbox may later revert them back to their original
+ * order.)
+ *
+ * By default, the shade window will have the height and width of
+ * @container and will track any changes in its size. You can override
+ * this by passing an explicit width and height in @params.
+ *
+ * If GLSL shaders are supported, a radial effect will be applied,
+ * otherwise we fallback to a simple #Lightbox actor.
+ */
+var RadialLightbox = function () {
+    return LightboxClass({ radialEffect: true });
 }();
