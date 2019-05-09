@@ -1144,6 +1144,7 @@ var Keyboard = class Keyboard {
             this._keyboardController.disconnect(this._keypadVisibleId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
+        this._clearShowIdle();
         this._keyboard = null;
         this.actor.destroy();
         this.actor = null;
@@ -1229,6 +1230,7 @@ var Keyboard = class Keyboard {
         if (!this._showIdleId) {
           this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
               this.show(Main.layoutManager.focusIndex);
+              this._showIdleId = 0;
               return GLib.SOURCE_REMOVE;
           });
           GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.show');
