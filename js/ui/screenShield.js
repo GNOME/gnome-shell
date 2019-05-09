@@ -558,13 +558,13 @@ var ScreenShield = class {
         // The "long" lightbox is used for the longer (20 seconds) fade from session
         // to idle status, the "short" is used for quickly fading to black when locking
         // manually
-        this._longLightbox = Lightbox.LightboxFactory(Main.uiGroup,
-                                                      { inhibitEvents: true,
-                                                        fadeFactor: 1 });
+        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
+                                                   { inhibitEvents: true,
+                                                     fadeFactor: 1 });
         this._longLightbox.connect('shown', this._onLongLightboxShown.bind(this));
-        this._shortLightbox = Lightbox.LightboxFactory(Main.uiGroup,
-                                                       { inhibitEvents: true,
-                                                         fadeFactor: 1 });
+        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
+                                                    { inhibitEvents: true,
+                                                      fadeFactor: 1 });
         this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
