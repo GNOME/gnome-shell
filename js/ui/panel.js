@@ -636,11 +636,15 @@ var PanelCorner = class {
             });
 
             // Synchronize the locate button's pseudo classes with this corner
-            this._buttonStyleChangedSignalId = button.connect('style-changed',
-                actor => {
-                    let pseudoClass = button.get_style_pseudo_class();
-                    this.actor.set_style_pseudo_class(pseudoClass);
-                });
+            try {
+                this._buttonStyleChangedSignalId = button.connect('style-changed',
+                    actor => {
+                        let pseudoClass = button.get_style_pseudo_class();
+                        this.actor.set_style_pseudo_class(pseudoClass);
+                    });
+            } catch(e) {
+                this._buttonStyleChangedSignalId = 0;
+            }
 
             // The corner doesn't support theme transitions, so override
             // the .panel-button default
