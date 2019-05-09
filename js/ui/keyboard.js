@@ -1477,6 +1477,7 @@ var Keyboard = class Keyboard {
             c.destroy();
         });
 
+        this._currentPage = null;
         this._groups = {};
         this._onGroupChanged();
     }
