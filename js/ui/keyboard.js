@@ -1153,6 +1153,12 @@ var Keyboard = class Keyboard {
         this.actor.destroy();
         this.actor = null;
 
+        this._keyboardController = null;
+        this._suggestions = null;
+        this._aspectContainer = null;
+        this._emojiSelection = null;
+        this._keypad = null;
+
         if (this._languagePopup) {
             this._languagePopup.destroy();
             this._languagePopup = null;
