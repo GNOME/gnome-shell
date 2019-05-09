@@ -1162,7 +1162,7 @@ var Keyboard = class Keyboard {
         this._keyboardController = new KeyboardController();
 
         this._groups = {};
-        this._current_page = null;
+        this._currentPage = null;
 
         this._suggestions = new Suggestions();
         this.actor.add(this._suggestions.actor,
@@ -1355,7 +1355,7 @@ var Keyboard = class Keyboard {
             } else if (switchToLevel == 1) {
                 extraButton.connect('long-press', () => {
                     this._latched = true;
-                    this._setCurrentLevelLatched(this._current_page, this._latched);
+                    this._setCurrentLevelLatched(this._currentPage, this._latched);
                 });
             }
 
@@ -1382,8 +1382,8 @@ var Keyboard = class Keyboard {
     }
 
     _updateCurrentPageVisible() {
-        if (this._current_page)
-            this._current_page.visible = !this._emojiActive && !this._keypadVisible;
+        if (this._currentPage)
+            this._currentPage.visible = !this._emojiActive && !this._keypadVisible;
     }
 
     _setEmojiActive(active) {
@@ -1442,7 +1442,7 @@ var Keyboard = class Keyboard {
 
     _getGridSlots() {
         let numOfHorizSlots = 0, numOfVertSlots;
-        let rows = this._current_page.get_children();
+        let rows = this._currentPage.get_children();
         numOfVertSlots = rows.length;
 
         for (let i = 0; i < rows.length; ++i) {
@@ -1521,21 +1521,21 @@ var Keyboard = class Keyboard {
         let layers = this._groups[activeGroupName];
         let currentPage = layers[activeLevel];
 
-        if (this._current_page == currentPage) {
+        if (this._currentPage == currentPage) {
             this._updateCurrentPageVisible();
             return;
         }
 
-        if (this._current_page != null) {
-            this._setCurrentLevelLatched(this._current_page, false);
-            this._current_page.disconnect(this._current_page._destroyID);
-            this._current_page.hide();
-            delete this._current_page._destroyID;
+        if (this._currentPage != null) {
+            this._setCurrentLevelLatched(this._currentPage, false);
+            this._currentPage.disconnect(this._currentPage._destroyID);
+            this._currentPage.hide();
+            delete this._currentPage._destroyID;
         }
 
-        this._current_page = currentPage;
-        this._current_page._destroyID = this._current_page.connect('destroy', () => {
-            this._current_page = null;
+        this._currentPage = currentPage;
+        this._currentPage._destroyID = this._currentPage.connect('destroy', () => {
+            this._currentPage = null;
         })
         this._updateCurrentPageVisible();
     }
