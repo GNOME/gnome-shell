@@ -1522,10 +1522,15 @@ var Keyboard = class Keyboard {
 
         if (this._current_page != null) {
             this._setCurrentLevelLatched(this._current_page, false);
+            this._current_page.disconnect(this._current_page._destroyID);
             this._current_page.hide();
+            delete this._current_page._destroyID;
         }
 
         this._current_page = layers[activeLevel];
+        this._current_page._destroyID = this._current_page.connect('destroy', () => {
+            this._current_page = null;
+        });
         this._updateCurrentPageVisible();
     }
 
