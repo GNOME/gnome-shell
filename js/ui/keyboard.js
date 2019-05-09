@@ -1145,7 +1145,6 @@ var Keyboard = class Keyboard {
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._clearShowIdle();
-        this._keyboard = null;
         this.actor.destroy();
         this.actor = null;
 
