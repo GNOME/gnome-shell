@@ -1155,6 +1155,7 @@ var Keyboard = class Keyboard {
         this.actor.destroy();
         this.actor = null;
 
+        this._keyboardController.destroy();
         this._keyboardController = null;
         this._suggestions = null;
         this._aspectContainer = null;
