@@ -55,7 +55,7 @@ var AltSwitcher = class {
         }
 
         let childShown = this.actor.get_child();
-        if (childShown != childToShow) {
+        if (childToShow && childShown != childToShow ) {
             if (childShown) {
                 if (childShown.fake_release)
                     childShown.fake_release();
