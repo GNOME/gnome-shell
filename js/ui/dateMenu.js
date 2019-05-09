@@ -19,22 +19,23 @@ function _isToday(date) {
            now.getDate() == date.getDate();
 }
 
-var TodayButton = class TodayButton {
-    constructor(calendar) {
+var TodayButton = GObject.registerClass(
+class TodayButton extends St.Button {
+    _init(calendar) {
         // Having the ability to go to the current date if the user is already
         // on the current date can be confusing. So don't make the button reactive
         // until the selected date changes.
-        this.actor = new St.Button({ style_class: 'datemenu-today-button',
-                                     x_expand: true, x_align: St.Align.START,
-                                     can_focus: true,
-                                     reactive: false
-                                   });
-        this.actor.connect('clicked', () => {
+        super._init({ style_class: 'datemenu-today-button',
+                      x_expand: true, x_align: St.Align.START,
+                      can_focus: true,
+                      reactive: false
+                    });
+        this.connect('clicked', () => {
             this._calendar.setDate(new Date(), false);
         });
 
         let hbox = new St.BoxLayout({ vertical: true });
-        this.actor.add_actor(hbox);
+        this.add_actor(hbox);
 
         this._dayLabel = new St.Label({ style_class: 'day-label',
                                         x_align: Clutter.ActorAlign.START });
@@ -47,7 +48,7 @@ var TodayButton = class TodayButton {
         this._calendar.connect('selected-date-changed', () => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.actor.reactive = !_isToday(this._calendar.selectedDate)
+            this.reactive = !_isToday(this._calendar.selectedDate)
         });
     }
 
@@ -67,9 +68,9 @@ var TodayButton = class TodayButton {
          * date, e.g. "Tuesday February 17 2015".
          */
         dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
-        this.actor.accessible_name = date.toLocaleFormat(dateFormat);
+        this.accessible_name = date.toLocaleFormat(dateFormat);
     }
-};
+});
 
 var WorldClocksSection = class WorldClocksSection {
     constructor() {
@@ -518,7 +519,7 @@ class DateMenuButton extends PanelMenu.Button {
         hbox.add(vbox);
 
         this._date = new TodayButton(this._calendar);
-        vbox.add_actor(this._date.actor);
+        vbox.add_actor(this._date);
 
         vbox.add_actor(this._calendar);
 
