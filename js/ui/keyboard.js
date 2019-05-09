@@ -1730,19 +1730,37 @@ var KeyboardController = class {
         this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
-        this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
-                                                                 this._onSourceChanged.bind(this));
-        this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
-                                                                    this._onSourcesModified.bind(this));
+        this.connectSignal(this._inputSourceManager, 'current-source-changed',
+                           this._onSourceChanged.bind(this));
+        this.connectSignal(this._inputSourceManager, 'sources-changed',
+                           this._onSourcesModified.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
-        Main.inputMethod.connect('notify::content-purpose',
-                                 this._onContentPurposeHintsChanged.bind(this));
-        Main.inputMethod.connect('notify::content-hints',
-                                 this._onContentPurposeHintsChanged.bind(this));
-        Main.inputMethod.connect('input-panel-state', (o, state) => {
+        this.connectSignal(Main.inputMethod, 'notify::content-purpose',
+                           this._onContentPurposeHintsChanged.bind(this));
+        this.connectSignal(Main.inputMethod, 'notify::content-hints',
+                           this._onContentPurposeHintsChanged.bind(this));
+        this.connectSignal(Main.inputMethod, 'input-panel-state', (o, state) => {
             this.emit('panel-state', state);
         });
+    }
+
+    connectSignal(obj, signal, callback) {
+        if (!this._connectionsIDs)
+            this._connectionsIDs = [];
+
+        let id = obj.connect(signal, callback);
+        this._connectionsIDs.push([obj, id]);
+        return id;
+    }
+
+    destroy() {
+        this._virtualDevice = null;
+        this._inputSourceManager = null;
+
+        for (let [obj, id] of this._connectionsIDs)
+            obj.disconnect(id);
+        delete this._connectionsIDs;
     }
 
     _onSourcesModified() {
