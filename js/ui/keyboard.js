@@ -1626,18 +1626,6 @@ var Keyboard = class Keyboard {
         this.setCursorLocation(null);
     }
 
-    _hideSubkeys() {
-        if (this._subkeysBoxPointer) {
-            this._subkeysBoxPointer.hide(BoxPointer.PopupAnimation.FULL);
-            this._subkeysBoxPointer = null;
-        }
-        if (this._capturedEventId) {
-            this.actor.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
-        this._capturedPress = false;
-    }
-
     resetSuggestions() {
         if (this._suggestions)
             this._suggestions.clear();
