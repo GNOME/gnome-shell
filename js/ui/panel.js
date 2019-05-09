@@ -594,7 +594,8 @@ var PanelCorner = class {
         if (index == children.length)
             return null;
 
-        if (!(children[index].has_style_class_name('panel-menu')) &&
+        if (children[index].has_style_class_name != null &&
+            !(children[index].has_style_class_name('panel-menu')) &&
             !(children[index].has_style_class_name('panel-button')))
             return this._findLeftmostButton(children[index]);
 
