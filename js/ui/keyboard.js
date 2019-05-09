@@ -1162,7 +1162,7 @@ var Keyboard = class Keyboard {
         this._keyboardController = new KeyboardController();
 
         this._groups = {};
-        this._current_page = null;
+        this._currentPage = null;
 
         this._suggestions = new Suggestions();
         this.actor.add(this._suggestions.actor,
@@ -1355,7 +1355,7 @@ var Keyboard = class Keyboard {
             } else if (switchToLevel == 1) {
                 extraButton.connect('long-press', () => {
                     this._latched = true;
-                    this._setCurrentLevelLatched(this._current_page, this._latched);
+                    this._setCurrentLevelLatched(this._currentPage, this._latched);
                 });
             }
 
@@ -1382,8 +1382,8 @@ var Keyboard = class Keyboard {
     }
 
     _updateCurrentPageVisible() {
-        if (this._current_page)
-            this._current_page.visible = !this._emojiActive && !this._keypadVisible;
+        if (this._currentPage)
+            this._currentPage.visible = !this._emojiActive && !this._keypadVisible;
     }
 
     _setEmojiActive(active) {
@@ -1442,7 +1442,7 @@ var Keyboard = class Keyboard {
 
     _getGridSlots() {
         let numOfHorizSlots = 0, numOfVertSlots;
-        let rows = this._current_page.get_children();
+        let rows = this._currentPage.get_children();
         numOfVertSlots = rows.length;
 
         for (let i = 0; i < rows.length; ++i) {
@@ -1520,12 +1520,12 @@ var Keyboard = class Keyboard {
         let activeGroupName = this._keyboardController.getCurrentGroup();
         let layers = this._groups[activeGroupName];
 
-        if (this._current_page != null) {
-            this._setCurrentLevelLatched(this._current_page, false);
-            this._current_page.hide();
+        if (this._currentPage != null) {
+            this._setCurrentLevelLatched(this._currentPage, false);
+            this._currentPage.hide();
         }
 
-        this._current_page = layers[activeLevel];
+        this._currentPage = layers[activeLevel];
         this._updateCurrentPageVisible();
     }
 
