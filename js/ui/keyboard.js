@@ -1030,9 +1030,10 @@ var Keypad = class Keypad {
 };
 Signals.addSignalMethods(Keypad.prototype);
 
-var Keyboard = class Keyboard {
-    constructor() {
-        this.actor = null;
+var Keyboard = GObject.registerClass(
+class Keyboard extends St.BoxLayout {
+    _init() {
+        super._init({ name: 'keyboard', vertical: true, reactive: false });
         this._focusInExtendedKeys = false;
         this._emojiActive = false;
 
@@ -1144,10 +1145,21 @@ var Keyboard = class Keyboard {
             this._keyboardController.disconnect(this._keypadVisibleId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
+
         this._clearShowIdle();
-        this._keyboard = null;
-        this.actor.destroy();
-        this.actor = null;
+
+        this._keyboardController = null;
+        this._suggestions = null;
+        this._aspectContainer = null;
+        this._emojiSelection = null;
+        this._keypad = null;
+
+        this.unmap();
+        this.destroy_all_children();
+        this.reactive = false;
+
+        Main.layoutManager.untrackChrome(this);
+        Main.layoutManager.keyboardBox.remove_actor(this);
 
         if (this._languagePopup) {
             this._languagePopup.destroy();
@@ -1156,9 +1168,9 @@ var Keyboard = class Keyboard {
     }
 
     _setupKeyboard() {
-        this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
-        Main.layoutManager.keyboardBox.add_actor(this.actor);
-        Main.layoutManager.trackChrome(this.actor);
+        this.reactive = true;
+        Main.layoutManager.keyboardBox.add_actor(this);
+        Main.layoutManager.trackChrome(this);
 
         this._keyboardController = new KeyboardController();
 
@@ -1166,12 +1178,12 @@ var Keyboard = class Keyboard {
         this._currentPage = null;
 
         this._suggestions = new Suggestions();
-        this.actor.add(this._suggestions.actor,
-                       { x_align: St.Align.MIDDLE,
-                         x_fill: false });
+        this.add(this._suggestions.actor,
+                 { x_align: St.Align.MIDDLE,
+                   x_fill: false });
 
         this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
-        this.actor.add(this._aspectContainer, { expand: true });
+        this.add(this._aspectContainer, { expand: true });
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
@@ -1198,7 +1210,7 @@ var Keyboard = class Keyboard {
         // Keyboard models are defined in LTR, we must override
         // the locale setting in order to avoid flipping the
         // keyboard on RTL locales.
-        this.actor.text_direction = Clutter.TextDirection.LTR;
+        this.text_direction = Clutter.TextDirection.LTR;
 
         this._keyboardNotifyId = this._keyboardController.connect('active-group', this._onGroupChanged.bind(this));
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', this._onKeyboardGroupsChanged.bind(this));
@@ -1460,12 +1472,12 @@ var Keyboard = class Keyboard {
     _relayout() {
         let monitor = Main.layoutManager.keyboardMonitor;
 
-        if (this.actor == null || monitor == null)
+        if (!this.reactive || monitor == null)
             return;
 
         let maxHeight = monitor.height / 3;
-        this.actor.width = monitor.width;
-        this.actor.height = maxHeight;
+        this.width = monitor.width;
+        this.height = maxHeight;
     }
 
     _onGroupChanged() {
@@ -1710,7 +1722,7 @@ var Keyboard = class Keyboard {
 
         this._oskFocusWindow = window;
     }
-};
+});
 
 var KeyboardController = class {
     constructor() {
