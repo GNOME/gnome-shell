@@ -1,7 +1,6 @@
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Pango, St } = imports.gi;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
 const Tweener = imports.ui.tweener;
@@ -517,22 +516,28 @@ var Message = GObject.registerClass({
     }
 });
 
-var MessageListSection = class MessageListSection {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'message-list-section',
-                                        clip_to_allocation: true,
-                                        x_expand: true, vertical: true });
+var MessageListSection = GObject.registerClass({
+    Signals: {
+        'can-clear-changed': {},
+        'empty-changed': {},
+        'message-focused': { param_types: [Message.$gtype] },
+    }
+}, class MessageListSection extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'message-list-section',
+                      clip_to_allocation: true,
+                      x_expand: true, vertical: true });
 
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
                                         vertical: true });
-        this.actor.add_actor(this._list);
+        this.add_actor(this._list);
 
         this._list.connect('actor-added', this._sync.bind(this));
         this._list.connect('actor-removed', this._sync.bind(this));
 
         let id = Main.sessionMode.connect('updated',
                                           this._sync.bind(this));
-        this.actor.connect('destroy', () => {
+        this.connect('destroy', () => {
             Main.sessionMode.disconnect(id);
         });
 
@@ -544,7 +549,7 @@ var MessageListSection = class MessageListSection {
     }
 
     _onKeyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        this.emit('message-focused', actor);
     }
 
     get allowed() {
@@ -694,7 +699,6 @@ var MessageListSection = class MessageListSection {
         if (changed)
             this.emit('can-clear-changed');
 
-        this.actor.visible = this.allowed && this._shouldShow();
+        this.visible = this.allowed && this._shouldShow();
     }
-};
-Signals.addSignalMethods(MessageListSection.prototype);
+});

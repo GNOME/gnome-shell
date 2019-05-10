@@ -777,9 +777,10 @@ class NotificationMessage extends MessageList.Message {
     }
 });
 
-var EventsSection = class EventsSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+var EventsSection = GObject.registerClass(
+class EventsSection extends MessageList.MessageListSection {
+    _init() {
+        super._init();
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
@@ -791,7 +792,7 @@ var EventsSection = class EventsSection extends MessageList.MessageListSection {
                                       label: '',
                                       x_align: St.Align.START,
                                       can_focus: true });
-        this.actor.insert_child_below(this._title, null);
+        this.insert_child_below(this._title, null);
 
         this._title.connect('clicked', this._onTitleClicked.bind(this));
         this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
@@ -910,12 +911,12 @@ var EventsSection = class EventsSection extends MessageList.MessageListSection {
 
         super._sync();
     }
-};
+});
 
-var NotificationSection =
+var NotificationSection = GObject.registerClass(
 class NotificationSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+    _init() {
+        super._init();
 
         this._sources = new Map();
         this._nUrgent = 0;
@@ -925,7 +926,7 @@ class NotificationSection extends MessageList.MessageListSection {
             this._sourceAdded(Main.messageTray, source);
         });
 
-        this.actor.connect('notify::mapped', this._onMapped.bind(this));
+        this.connect('notify::mapped', this._onMapped.bind(this));
     }
 
     get allowed() {
@@ -967,7 +968,7 @@ class NotificationSection extends MessageList.MessageListSection {
 
         let updatedId = notification.connect('updated', () => {
             message.setSecondaryActor(this._createTimeLabel(notification.datetime));
-            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
+            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
         });
         let destroyId = notification.connect('destroy', () => {
             notification.disconnect(destroyId);
@@ -987,7 +988,7 @@ class NotificationSection extends MessageList.MessageListSection {
         }
 
         let index = isUrgent ? 0 : this._nUrgent;
-        this.addMessageAtIndex(message, index, this.actor.mapped);
+        this.addMessageAtIndex(message, index, this.mapped);
     }
 
     _onSourceDestroy(source, obj) {
@@ -998,7 +999,7 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 
     _onMapped() {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return;
 
         for (let message of this._messages.keys())
@@ -1009,7 +1010,7 @@ class NotificationSection extends MessageList.MessageListSection {
     _shouldShow() {
         return !this.empty && isToday(this._date);
     }
-};
+});
 
 var Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
@@ -1113,37 +1114,36 @@ class CalendarMessageList extends St.Widget {
             canClearChangedId: 0,
             keyFocusId: 0
         };
-        obj.destroyId = section.actor.connect('destroy', () => {
+        obj.destroyId = section.connect('destroy', () => {
             this._removeSection(section);
         });
-        obj.visibleId = section.actor.connect('notify::visible',
-                                              this._sync.bind(this));
+        obj.visibleId = section.connect('notify::visible', this._sync.bind(this));
         obj.emptyChangedId = section.connect('empty-changed',
                                              this._sync.bind(this));
         obj.canClearChangedId = section.connect('can-clear-changed',
                                                 this._sync.bind(this));
-        obj.keyFocusId = section.connect('key-focus-in',
-                                         this._onKeyFocusIn.bind(this));
+        obj.keyFocusId = section.connect('message-focused',
+                                         this._onMessageKeyFocusIn.bind(this));
 
         this._sections.set(section, obj);
-        this._sectionList.add_actor(section.actor);
+        this._sectionList.add_actor(section);
         this._sync();
     }
 
     _removeSection(section) {
         let obj = this._sections.get(section);
-        section.actor.disconnect(obj.destroyId);
-        section.actor.disconnect(obj.visibleId);
+        section.disconnect(obj.destroyId);
+        section.disconnect(obj.visibleId);
         section.disconnect(obj.emptyChangedId);
         section.disconnect(obj.canClearChangedId);
         section.disconnect(obj.keyFocusId);
 
         this._sections.delete(section);
-        this._sectionList.remove_actor(section.actor);
+        this._sectionList.remove_actor(section);
         this._sync();
     }
 
-    _onKeyFocusIn(section, actor) {
+    _onMessageKeyFocusIn(section, actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     }
 
@@ -1154,11 +1154,11 @@ class CalendarMessageList extends St.Widget {
         if (!visible)
             return;
 
-        let empty = sections.every(s => s.empty || !s.actor.visible);
+        let empty = sections.every(s => s.empty || !s.visible);
         this._placeholder.visible = empty;
         this._clearButton.visible = !empty;
 
-        let canClear = sections.some(s => s.canClear && s.actor.visible);
+        let canClear = sections.some(s => s.canClear && s.visible);
         this._clearButton.reactive = canClear;
     }
 
