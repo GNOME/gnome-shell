@@ -242,17 +242,25 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     }
 };
 
-var Key = class Key {
-    constructor(key, extendedKeys) {
+var Key = GObject.registerClass({
+    Signals: {
+        'activated': {},
+        'long-press': {},
+        'pressed': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
+        'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
+    }
+}, class Key extends St.BoxLayout {
+    _init(key, extendedKeys) {
+        super._init({ style_class: 'key-container' });
+
         this.key = key || "";
         this.keyButton = this._makeKey(this.key);
 
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
          */
-        this.actor = new St.BoxLayout ({ style_class: 'key-container' });
-        this.actor.add(this.keyButton, { expand: true, x_fill: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.add(this.keyButton, { expand: true, x_fill: true });
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._extended_keys = extendedKeys;
         this._extended_keyboard = null;
@@ -463,8 +471,7 @@ var Key = class Key {
         else
             this.keyButton.remove_style_pseudo_class('latched');
     }
-};
-Signals.addSignalMethods(Key.prototype);
+});
 
 var KeyboardModel = class {
     constructor(groupName) {
@@ -787,7 +794,7 @@ var EmojiPager = class EmojiPager {
                 this.emit('emoji', str);
             });
 
-            gridLayout.attach(key.actor, col, row, 1, 1);
+            gridLayout.attach(key, col, row, 1, 1);
 
             col++;
             if (col >= this._nCols) {
@@ -949,14 +956,14 @@ var EmojiSelection = class EmojiSelection {
         key = new Key('ABC', []);
         key.keyButton.add_style_class_name('default-key');
         key.connect('released', () => { this.emit('toggle'); });
-        row.appendKey(key.actor, 1.5);
+        row.appendKey(key, 1.5);
 
         for (let i = 0; i < this._sections.length; i++) {
             let section = this._sections[i];
 
             key = new Key(section.label, []);
             key.connect('released', () => { this._emojiPager.setCurrentSection(section, 0) });
-            row.appendKey(key.actor);
+            row.appendKey(key);
 
             section.button = key;
         }
@@ -967,7 +974,7 @@ var EmojiSelection = class EmojiSelection {
         key.connect('released', () => {
             this.emit('hide');
         });
-        row.appendKey(key.actor);
+        row.appendKey(key);
         row.layoutButtons();
 
         let actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
@@ -1020,7 +1027,7 @@ var Keypad = class Keypad {
             let w, h;
             w = cur.width || 1;
             h = cur.height || 1;
-            gridLayout.attach(key.actor, cur.left, cur.top, w, h);
+            gridLayout.attach(key, cur.left, cur.top, w, h);
 
             key.connect('released', () => {
                 this.emit('keyval', cur.keyval);
@@ -1350,7 +1357,7 @@ class Keyboard extends St.BoxLayout {
                     this._setActiveLayer(0);
             });
 
-            layout.appendKey(button.actor, button.keyButton.keyWidth);
+            layout.appendKey(button, button.keyButton.keyWidth);
         }
     }
 
@@ -1421,7 +1428,7 @@ class Keyboard extends St.BoxLayout {
                     /* Only hide the key actor, so the container still takes space */
                     extraButton.keyButton.hide();
                 } else {
-                    extraButton.actor.hide();
+                    extraButton.hide();
                 }
                 extraButton.setWidth(1.5);
             } else if (key.right && numKeys > 8) {
@@ -1432,7 +1439,7 @@ class Keyboard extends St.BoxLayout {
                 extraButton.setWidth(1.5);
             }
 
-            layout.appendKey(extraButton.actor, extraButton.keyButton.keyWidth);
+            layout.appendKey(extraButton, extraButton.keyButton.keyWidth);
         }
     }
 
