@@ -193,9 +193,10 @@ var MprisPlayer = class MprisPlayer {
 };
 Signals.addSignalMethods(MprisPlayer.prototype);
 
-var MediaSection = class MediaSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+var MediaSection = GObject.registerClass(
+class MediaSection extends MessageList.MessageListSection {
+    _init() {
+        super._init();
 
         this._players = new Map();
 
@@ -246,4 +247,4 @@ var MediaSection = class MediaSection extends MessageList.MessageListSection {
         if (newOwner && !oldOwner)
             this._addPlayer(name);
     }
-};
+});
