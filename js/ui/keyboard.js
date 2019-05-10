@@ -12,10 +12,10 @@ const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 
-var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
-var KEY_LONG_PRESS_TIME = 250;
-var PANEL_SWITCH_ANIMATION_TIME = 0.5;
-var PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
+const KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
+const KEY_LONG_PRESS_TIME = 250;
+const PANEL_SWITCH_ANIMATION_TIME = 0.5;
+const PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
