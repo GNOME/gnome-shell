@@ -862,8 +862,19 @@ var EmojiPager = GObject.registerClass({
     }
 });
 
-var EmojiSelection = class EmojiSelection {
-    constructor() {
+var EmojiSelection = GObject.registerClass({
+    Signals: {
+        'emoji-selected': { param_types: [GObject.TYPE_STRING] },
+        'hide-request': {},
+        'toggle': {},
+    }
+}, class EmojiSelection extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'emoji-panel',
+                      x_expand: true,
+                      y_expand: true,
+                      vertical: true });
+
         this._sections = [
             { first: 'grinning face', label: '🙂️' },
             { first: 'selfie', label: '👍️' },
@@ -878,11 +889,7 @@ var EmojiSelection = class EmojiSelection {
 
         this._populateSections();
 
-        this.actor = new St.BoxLayout({ style_class: 'emoji-panel',
-                                        x_expand: true,
-                                        y_expand: true,
-                                        vertical: true });
-        this.actor.connect('notify::mapped', () => { this._emojiPager.setCurrentPage(0); });
+        this.connect('notify::mapped', () => { this._emojiPager.setCurrentPage(0); });
 
         this._emojiPager = new EmojiPager(this._sections, 11, 3);
         this._emojiPager.connect('page-changed', (pager, sectionLabel, page, nPages) => {
@@ -891,14 +898,14 @@ var EmojiSelection = class EmojiSelection {
         this._emojiPager.connect('emoji', (pager, str) => {
             this.emit('emoji-selected', str);
         });
-        this.actor.add(this._emojiPager, { expand: true });
+        this.add(this._emojiPager, { expand: true });
 
         this._pageIndicator = new PageIndicators.PageIndicators(false);
-        this.actor.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
+        this.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
         this._pageIndicator.setReactive(false);
 
         let bottomRow = this._createBottomRow();
-        this.actor.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
+        this.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
 
         this._emojiPager.setCurrentPage(0);
     }
@@ -982,7 +989,7 @@ var EmojiSelection = class EmojiSelection {
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
-            this.emit('hide');
+            this.emit('hide-request');
         });
         row.appendKey(key);
         row.layoutButtons();
@@ -998,8 +1005,7 @@ var EmojiSelection = class EmojiSelection {
 
         return actor;
     }
-};
-Signals.addSignalMethods(EmojiSelection.prototype);
+});
 
 var Keypad = GObject.registerClass({
     Signals: {
@@ -1242,13 +1248,13 @@ class Keyboard extends St.BoxLayout {
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('hide', (selection) => { this.hide(); });
+        this._emojiSelection.connect('hide-request', (selection) => { this.hide(); });
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });
 
-        this._aspectContainer.add_child(this._emojiSelection.actor);
-        this._emojiSelection.actor.hide();
+        this._aspectContainer.add_child(this._emojiSelection);
+        this._emojiSelection.hide();
 
         this._keypad = new Keypad();
         this._connectSignal(this._keypad, 'keyval', (keypad, keyval) => {
@@ -1463,7 +1469,7 @@ class Keyboard extends St.BoxLayout {
 
     _setEmojiActive(active) {
         this._emojiActive = active;
-        this._emojiSelection.actor.visible = this._emojiActive;
+        this._emojiSelection.visible = this._emojiActive;
         this._updateCurrentPageVisible();
     }
 
@@ -1547,7 +1553,7 @@ class Keyboard extends St.BoxLayout {
     }
 
     _onKeyboardGroupsChanged(keyboard) {
-        let nonGroupActors = [this._emojiSelection.actor, this._keypad];
+        let nonGroupActors = [this._emojiSelection, this._keypad];
         this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
             c.destroy();
         });
