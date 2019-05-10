@@ -880,8 +880,7 @@ var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
     }
 
     _addMessage(message) {
-        let highlighter = new MessageList.URLHighlighter(message.body, true, true);
-        let body = highlighter.actor;
+        let body = new MessageList.URLHighlighter(message.body, true, true);
 
         let styles = message.styles;
         for (let i = 0; i < styles.length; i++)
