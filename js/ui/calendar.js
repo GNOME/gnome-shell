@@ -660,9 +660,10 @@ var Calendar = GObject.registerClass({
     }
 });
 
-var EventMessage = class EventMessage extends MessageList.Message {
-    constructor(event, date) {
-        super('', event.summary);
+var EventMessage = GObject.registerClass(
+class EventMessage extends MessageList.Message {
+    _init(event, date) {
+        super._init('', event.summary);
 
         this._event = event;
         this._date = date;
@@ -672,8 +673,8 @@ var EventMessage = class EventMessage extends MessageList.Message {
         this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
         this.setIcon(this._icon);
 
-        this.actor.connect('style-changed', () => {
-            let iconVisible = this.actor.get_parent().has_style_pseudo_class('first-child');
+        this.connect('style-changed', () => {
+            let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
             this._icon.opacity = (iconVisible ? 255 : 0);
         });
     }
@@ -710,12 +711,12 @@ var EventMessage = class EventMessage extends MessageList.Message {
         }
         return title;
     }
-};
+});
 
-var NotificationMessage =
+var NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
-    constructor(notification) {
-        super(notification.title, notification.bannerBodyText);
+    _init(notification) {
+        super._init(notification.title, notification.bannerBodyText);
         this.setUseBodyMarkup(notification.bannerBodyMarkup);
 
         this.notification = notification;
@@ -774,7 +775,7 @@ class NotificationMessage extends MessageList.Message {
     canClose() {
         return true;
     }
-};
+});
 
 var EventsSection = class EventsSection extends MessageList.MessageListSection {
     constructor() {

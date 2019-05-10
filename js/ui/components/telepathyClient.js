@@ -328,7 +328,7 @@ var ChatSource = class extends MessageTray.Source {
 
         // We ack messages when the user expands the new notification
         let id = this._banner.connect('expanded', this._ackMessages.bind(this));
-        this._banner.actor.connect('destroy', () => {
+        this._banner.connect('destroy', () => {
             this._banner.disconnect(id);
             this._banner = null;
         });
@@ -793,9 +793,10 @@ class ChatLineBox extends St.BoxLayout {
     }
 });
 
-var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
-    constructor(notification) {
-        super(notification);
+var ChatNotificationBanner = GObject.registerClass(
+class ChatNotificationBanner extends MessageTray.NotificationBanner {
+    _init(notification) {
+        super._init(notification);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              x_expand: true,
@@ -967,6 +968,6 @@ var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
             this.notification.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
     }
-};
+});
 
 var Component = TelepathyComponent;

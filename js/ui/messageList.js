@@ -285,21 +285,28 @@ var LabelExpanderLayout = GObject.registerClass({
     }
 });
 
-var Message = class Message {
-    constructor(title, body) {
-        this.expanded = false;
 
+var Message = GObject.registerClass({
+    Signals: {
+        'close': {},
+        'expanded': {},
+        'unexpanded': {},
+    }
+}, class Message extends St.Button {
+    _init(title, body) {
+        super._init({ style_class: 'message',
+                      accessible_role: Atk.Role.NOTIFICATION,
+                      can_focus: true,
+                      x_expand: true, x_fill: true });
+
+        this.expanded = false;
         this._useBodyMarkup = false;
 
-        this.actor = new St.Button({ style_class: 'message',
-                                     accessible_role: Atk.Role.NOTIFICATION,
-                                     can_focus: true,
-                                     x_expand: true, x_fill: true });
-        this.actor.connect('key-press-event',
+        this.connect('key-press-event',
                            this._onKeyPressed.bind(this));
 
         let vbox = new St.BoxLayout({ vertical: true });
-        this.actor.set_child(vbox);
+        this.set_child(vbox);
 
         let hbox = new St.BoxLayout();
         vbox.add_actor(hbox);
@@ -348,10 +355,10 @@ var Message = class Message {
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
-        let actorHoverId = this.actor.connect('notify::hover', this._sync.bind(this));
-        this._closeButton.connect('destroy', this.actor.disconnect.bind(this.actor, actorHoverId));
-        this.actor.connect('clicked', this._onClicked.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        let actorHoverId = this.connect('notify::hover', this._sync.bind(this));
+        this._closeButton.connect('destroy', this.disconnect.bind(this, actorHoverId));
+        this.connect('clicked', this._onClicked.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
         this._sync();
     }
 
@@ -487,7 +494,7 @@ var Message = class Message {
     }
 
     _sync() {
-        let visible = this.actor.hover && this.canClose();
+        let visible = this.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
         this._closeButton.reactive = visible;
     }
@@ -508,8 +515,7 @@ var Message = class Message {
         }
         return Clutter.EVENT_PROPAGATE;
     }
-};
-Signals.addSignalMethods(Message.prototype);
+});
 
 var MessageListSection = class MessageListSection {
     constructor() {
@@ -568,9 +574,9 @@ var MessageListSection = class MessageListSection {
         obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
                                         pivot_point: pivot,
                                         scale_x: scale, scale_y: scale });
-        obj.keyFocusId = message.actor.connect('key-focus-in',
+        obj.keyFocusId = message.connect('key-focus-in',
             this._onKeyFocusIn.bind(this));
-        obj.destroyId = message.actor.connect('destroy', () => {
+        obj.destroyId = message.connect('destroy', () => {
             this.removeMessage(message, false);
         });
         obj.closeId = message.connect('close', () => {
@@ -578,7 +584,7 @@ var MessageListSection = class MessageListSection {
         });
 
         this._messages.set(message, obj);
-        obj.container.add_actor(message.actor);
+        obj.container.add_actor(message);
 
         this._list.insert_child_at_index(obj.container, index);
 
@@ -614,8 +620,8 @@ var MessageListSection = class MessageListSection {
     removeMessage(message, animate) {
         let obj = this._messages.get(message);
 
-        message.actor.disconnect(obj.destroyId);
-        message.actor.disconnect(obj.keyFocusId);
+        message.disconnect(obj.destroyId);
+        message.disconnect(obj.keyFocusId);
         message.disconnect(obj.closeId);
 
         this._messages.delete(message);

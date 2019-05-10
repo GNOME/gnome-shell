@@ -481,13 +481,17 @@ var Notification = class Notification {
 };
 Signals.addSignalMethods(Notification.prototype);
 
-var NotificationBanner =
-class NotificationBanner extends Calendar.NotificationMessage {
-    constructor(notification) {
-        super(notification);
+var NotificationBanner = GObject.registerClass({
+    Signals: {
+        'done-displaying': {},
+        'unfocused': {},
+    }
+}, class NotificationBanner extends Calendar.NotificationMessage {
+    _init(notification) {
+        super._init(notification);
 
-        this.actor.can_focus = false;
-        this.actor.add_style_class_name('notification-banner');
+        this.can_focus = false;
+        this.add_style_class_name('notification-banner');
 
         this._buttonBox = null;
 
@@ -574,7 +578,7 @@ class NotificationBanner extends Calendar.NotificationMessage {
 
         return this.addButton(button, callback);
     }
-};
+});
 
 var SourceActor = GObject.registerClass(
 class SourceActor extends St.Widget {
@@ -1300,11 +1304,11 @@ var MessageTray = class MessageTray {
             this._updateState();
         });
 
-        this._bannerBin.add_actor(this._banner.actor);
+        this._bannerBin.add_actor(this._banner);
 
         this._bannerBin._opacity = 0;
         this._bannerBin.opacity = 0;
-        this._bannerBin.y = -this._banner.actor.height;
+        this._bannerBin.y = -this._banner.height;
         this.actor.show();
 
         Meta.disable_unredirect_for_display(global.display);
@@ -1447,7 +1451,7 @@ var MessageTray = class MessageTray {
         this._notificationRemoved = false;
         Meta.enable_unredirect_for_display(global.display);
 
-        this._banner.actor.destroy();
+        this._banner.destroy();
         this._banner = null;
         this.actor.hide();
     }
