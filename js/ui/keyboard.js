@@ -8,11 +8,13 @@ const IBusManager = imports.misc.ibusManager;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const Mainloop = imports.mainloop;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 
 const KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
+const KEYBOARD_DESTROY_WAIT = 90 /* In seconds, how long wait after last touch */
 const KEY_LONG_PRESS_TIME = 250;
 const PANEL_SWITCH_ANIMATION_TIME = 0.5;
 const PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
@@ -1048,6 +1050,7 @@ var Keyboard = class Keyboard {
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
         this._lastDeviceId = null;
+        this._lastTouchSeenId = 0;
         this._suggestions = null;
         this._emojiKeyVisible = Meta.is_wayland_compositor();
 
@@ -1069,16 +1072,8 @@ var Keyboard = class Keyboard {
                 this.hide();
         });
 
-        Meta.get_backend().connect('last-device-changed', 
-            (backend, deviceId) => {
-                let manager = Clutter.DeviceManager.get_default();
-                let device = manager.get_device(deviceId);
-
-                if (device.get_device_name().indexOf('XTEST') < 0) {
-                    this._lastDeviceId = deviceId;
-                    this._syncEnabled();
-                }
-            });
+        Meta.get_backend().connect('last-device-changed',
+                                   this._onLastDeviceChanged.bind(this));
         this._syncEnabled();
 
         this._showIdleId = 0;
@@ -1115,10 +1110,44 @@ var Keyboard = class Keyboard {
         return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     }
 
+    _onLastDeviceChanged(metaBackend, deviceId) {
+        let manager = Clutter.DeviceManager.get_default();
+        let device = manager.get_device(deviceId);
+
+        if (device.get_device_name().indexOf('XTEST') >= 0)
+            return;
+
+        let wasTouch = this._lastDeviceIsTouchscreen();
+        this._lastDeviceId = deviceId;
+
+        if (this._lastTouchSeenId) {
+            GLib.source_remove(this._lastTouchSeenId);
+            this._lastTouchSeenId = 0;
+        }
+
+        if (wasTouch && !this._lastDeviceIsTouchscreen()) {
+            let id = Mainloop.timeout_add_seconds(KEYBOARD_DESTROY_WAIT, () => {
+                this._lastTouchSeenId = 0;
+                this._syncEnabled();
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(id, '[gnome-shell] keyboard touch timeout');
+            this._lastTouchSeenId = id;
+        }
+        this._syncEnabled();
+    }
+
     _syncEnabled() {
         let wasEnabled = this._enabled;
+        let hasTouch = false;
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
-        this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
+        this._enabled = this._enableKeyboard;
+
+        if (!this._enabled) {
+            hasTouch = this._lastDeviceIsTouchscreen();
+            this._enabled = hasTouch;
+        }
+
         if (!this._enabled && !this._keyboardController)
             return;
 
@@ -1129,8 +1158,10 @@ var Keyboard = class Keyboard {
 
         if (!this._enabled && wasEnabled) {
             Main.layoutManager.hideKeyboard(true);
-            this._destroyKeyboard();
         }
+
+        if (!this.enabled && !hasTouch && this._lastTouchSeenId == 0)
+            this._destroyKeyboard();
     }
 
     _destroyKeyboard() {
@@ -1148,6 +1179,11 @@ var Keyboard = class Keyboard {
             global.stage.disconnect(this._focusNotifyId);
 
         this._clearShowIdle();
+
+        if (this._lastTouchSeenId) {
+            GLib.source_remove(this._lastTouchSeenId);
+            this._lastTouchSeenId = 0;
+        }
 
         Main.layoutManager.untrackChrome(this.actor);
         Main.layoutManager.keyboardBox.remove_actor(this.actor);
