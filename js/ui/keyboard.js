@@ -160,24 +160,24 @@ class KeyContainer extends St.Widget {
     }
 });
 
-var Suggestions = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'word-suggestions',
-                                        vertical: false });
-        this.actor.show();
+var Suggestions = GObject.registerClass(
+class Suggestions extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'word-suggestions',
+                      vertical: false });
+        this.show();
     }
 
     add(word, callback) {
         let button = new St.Button({ label: word });
         button.connect('clicked', callback);
-        this.actor.add(button);
+        this.add(button);
     }
 
     clear() {
-        this.actor.remove_all_children();
+        this.remove_all_children();
     }
-};
-Signals.addSignalMethods(Suggestions.prototype);
+});
 
 var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     constructor(actor) {
@@ -1213,7 +1213,7 @@ class Keyboard extends St.BoxLayout {
         this._currentPage = null;
 
         this._suggestions = new Suggestions();
-        this.add(this._suggestions.actor,
+        this.add(this._suggestions,
                  { x_align: St.Align.MIDDLE,
                    x_fill: false });
 
@@ -1676,7 +1676,7 @@ class Keyboard extends St.BoxLayout {
         if (!this._suggestions)
             return;
         this._suggestions.add(text, callback);
-        this._suggestions.actor.show();
+        this._suggestions.show();
     }
 
     _clearShowIdle() {
