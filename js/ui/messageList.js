@@ -32,15 +32,16 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = class URLHighlighter {
-    constructor(text, lineWrap, allowMarkup) {
+var URLHighlighter = GObject.registerClass(
+class URLHighlighter extends St.Label {
+    _init(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
-        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
-                                    x_expand: true, x_align: Clutter.ActorAlign.START });
+        super._init({ reactive: true, style_class: 'url-highlighter',
+                      x_expand: true, x_align: Clutter.ActorAlign.START });
         this._linkColor = '#ccccff';
-        this.actor.connect('style-changed', () => {
-            let [hasColor, color] = this.actor.get_theme_node().lookup_color('link-color', false);
+        this.connect('style-changed', () => {
+            let [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
                 let linkColor = color.to_string().substr(0, 7);
                 if (linkColor != this._linkColor) {
@@ -49,11 +50,11 @@ var URLHighlighter = class URLHighlighter {
                 }
             }
         });
-        this.actor.clutter_text.line_wrap = lineWrap;
-        this.actor.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+        this.clutter_text.line_wrap = lineWrap;
+        this.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
 
         this.setMarkup(text, allowMarkup);
-        this.actor.connect('button-press-event', (actor, event) => {
+        this.connect('button-press-event', (actor, event) => {
             // Don't try to URL highlight when invisible.
             // The MessageTray doesn't actually hide us, so
             // we need to check for paint opacities as well.
@@ -65,7 +66,7 @@ var URLHighlighter = class URLHighlighter {
             // handler, if an URL is clicked
             return this._findUrlAtPos(event) != -1;
         });
-        this.actor.connect('button-release-event', (actor, event) => {
+        this.connect('button-release-event', (actor, event) => {
             if (!actor.visible || actor.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
@@ -80,7 +81,7 @@ var URLHighlighter = class URLHighlighter {
             }
             return Clutter.EVENT_PROPAGATE;
         });
-        this.actor.connect('motion-event', (actor, event) => {
+        this.connect('motion-event', (actor, event) => {
             if (!actor.visible || actor.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
@@ -94,8 +95,8 @@ var URLHighlighter = class URLHighlighter {
             }
             return Clutter.EVENT_PROPAGATE;
         });
-        this.actor.connect('leave-event', () => {
-            if (!this.actor.visible || this.actor.get_paint_opacity() == 0)
+        this.connect('leave-event', () => {
+            if (!this.visible || this.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
             if (this._cursorChanged) {
@@ -110,9 +111,9 @@ var URLHighlighter = class URLHighlighter {
         text = text ? _fixMarkup(text, allowMarkup) : '';
         this._text = text;
 
-        this.actor.clutter_text.set_markup(text);
+        this.clutter_text.set_markup(text);
         /* clutter_text.text contain text without markup */
-        this._urls = Util.findUrls(this.actor.clutter_text.text);
+        this._urls = Util.findUrls(this.clutter_text.text);
         this._highlightUrls();
     }
 
@@ -128,16 +129,16 @@ var URLHighlighter = class URLHighlighter {
             pos = url.pos + url.url.length;
         }
         markup += this._text.substr(pos);
-        this.actor.clutter_text.set_markup(markup);
+        this.clutter_text.set_markup(markup);
     }
 
     _findUrlAtPos(event) {
         let success;
         let [x, y] = event.get_coords();
-        [success, x, y] = this.actor.transform_stage_point(x, y);
+        [success, x, y] = this.transform_stage_point(x, y);
         let find_pos = -1;
-        for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
-            let [success, px, py, line_height] = this.actor.clutter_text.position_to_coords(i);
+        for (let i = 0; i < this.clutter_text.text.length; i++) {
+            let [success, px, py, line_height] = this.clutter_text.position_to_coords(i);
             if (py > y || py + line_height < y || x < px)
                 continue;
             find_pos = i;
@@ -150,7 +151,7 @@ var URLHighlighter = class URLHighlighter {
         }
         return -1;
     }
-};
+});
 
 var ScaleLayout = GObject.registerClass(
 class ScaleLayout extends Clutter.BinLayout {
@@ -342,8 +343,8 @@ var Message = class Message {
         contentBox.add_actor(this._bodyStack);
 
         this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
-        this.bodyLabel.actor.add_style_class_name('message-body');
-        this._bodyStack.add_actor(this.bodyLabel.actor);
+        this.bodyLabel.add_style_class_name('message-body');
+        this._bodyStack.add_actor(this.bodyLabel);
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
@@ -436,7 +437,7 @@ var Message = class Message {
         if (this._bodyStack.get_n_children() < 2) {
             this._expandedLabel = new URLHighlighter(this._bodyText,
                                                      true, this._useBodyMarkup);
-            this.setExpandedBody(this._expandedLabel.actor);
+            this.setExpandedBody(this._expandedLabel);
         }
 
         if (animate) {
