@@ -991,8 +991,12 @@ var EmojiSelection = class EmojiSelection {
 };
 Signals.addSignalMethods(EmojiSelection.prototype);
 
-var Keypad = class Keypad {
-    constructor() {
+var Keypad = GObject.registerClass({
+    Signals: {
+        'keyval': { param_types: [GObject.TYPE_UINT] },
+    }
+}, class Keypad extends AspectContainer {
+    _init() {
         let keys = [
             { label: '1', keyval: Clutter.KEY_1, left: 0, top: 0 },
             { label: '2', keyval: Clutter.KEY_2, left: 1, top: 0 },
@@ -1008,14 +1012,14 @@ var Keypad = class Keypad {
             { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', left: 3, top: 1, height: 2 },
         ];
 
-        this.actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
-                                           x_expand: true, y_expand: true });
+        super._init({ layout_manager: new Clutter.BinLayout(),
+                      x_expand: true, y_expand: true });
 
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
         this._box = new St.Widget({ layout_manager: gridLayout, x_expand: true, y_expand: true });
-        this.actor.add_child(this._box);
+        this.add_child(this._box);
 
         for (let i = 0; i < keys.length; i++) {
             let cur = keys[i];
@@ -1034,8 +1038,7 @@ var Keypad = class Keypad {
             });
         }
     }
-};
-Signals.addSignalMethods(Keypad.prototype);
+});
 
 var KeyboardManager = class KeyBoardManager {
     constructor() {
@@ -1242,8 +1245,8 @@ class Keyboard extends St.BoxLayout {
             this._keyboardController.keyvalPress(keyval);
             this._keyboardController.keyvalRelease(keyval);
         });
-        this._aspectContainer.add_child(this._keypad.actor);
-        this._keypad.actor.hide();
+        this._aspectContainer.add_child(this._keypad);
+        this._keypad.hide();
         this._keypadVisible = false;
 
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
@@ -1534,7 +1537,7 @@ class Keyboard extends St.BoxLayout {
     }
 
     _onKeyboardGroupsChanged(keyboard) {
-        let nonGroupActors = [this._emojiSelection.actor, this._keypad.actor];
+        let nonGroupActors = [this._emojiSelection.actor, this._keypad];
         this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
             c.destroy();
         });
@@ -1548,7 +1551,7 @@ class Keyboard extends St.BoxLayout {
             return;
 
         this._keypadVisible = visible;
-        this._keypad.actor.visible = this._keypadVisible;
+        this._keypad.visible = this._keypadVisible;
         this._updateCurrentPageVisible();
     }
 
