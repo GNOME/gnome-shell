@@ -70,6 +70,7 @@ st_settings_finalize (GObject *object)
 
   g_object_unref (settings->interface_settings);
   g_object_unref (settings->mouse_settings);
+  g_object_unref (settings->a11y_settings);
   g_free (settings->gtk_theme);
   g_free (settings->gtk_icon_theme);
 
