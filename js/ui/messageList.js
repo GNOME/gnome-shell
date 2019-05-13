@@ -558,6 +558,9 @@ var MessageListSection = class MessageListSection {
     }
 
     addMessageAtIndex(message, index, animate) {
+        if (this._messages.has(message))
+            throw new Error('Message was already added previously');
+
         let obj = {
             container: null,
             destroyId: 0,
