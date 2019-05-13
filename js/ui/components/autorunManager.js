@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Gio, St } = imports.gi;
+const { Gio, GObject, St } = imports.gi;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
@@ -274,9 +274,10 @@ var AutorunDispatcher = class {
     }
 };
 
-var AutorunSource = class extends MessageTray.Source {
-    constructor(manager, mount, apps) {
-        super(mount.get_name());
+var AutorunSource = GObject.registerClass(
+class AutorunSource extends MessageTray.Source {
+    _init(manager, mount, apps) {
+        super._init(mount.get_name());
 
         this._manager = manager;
         this.mount = mount;
@@ -286,7 +287,7 @@ var AutorunSource = class extends MessageTray.Source {
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
-        this.notify(this._notification);
+        this.promptNotification(this._notification);
     }
 
     getIcon() {
@@ -296,11 +297,12 @@ var AutorunSource = class extends MessageTray.Source {
     _createPolicy() {
         return new MessageTray.NotificationApplicationPolicy('org.gnome.Nautilus');
     }
-};
+});
 
-var AutorunNotification = class extends MessageTray.Notification {
-    constructor(manager, source) {
-        super(source, source.title);
+var AutorunNotification = GObject.registerClass(
+class AutorunNotification extends MessageTray.Notification {
+    _init(manager, source) {
+        super._init(source, source.title);
 
         this._manager = manager;
         this._mount = source.mount;
@@ -352,6 +354,6 @@ var AutorunNotification = class extends MessageTray.Notification {
         let app = Gio.app_info_get_default_for_type('inode/directory', false);
         startAppForMount(app, this._mount);
     }
-};
+});
 
 var Component = AutorunManager;
