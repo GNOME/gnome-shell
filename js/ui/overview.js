@@ -72,7 +72,7 @@ var ShellInfo = class {
         if (undoCallback)
             notification.addAction(_("Undo"), this._onUndoClicked.bind(this));
 
-        this._source.notify(notification);
+        this._source.showNotification(notification);
     }
 };
 
