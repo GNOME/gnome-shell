@@ -563,7 +563,6 @@ var MessageListSection = GObject.registerClass({
             Main.sessionMode.disconnect(id);
         });
 
-        this._messages = new Map();
         this._date = new Date();
         this._empty = true;
         this._canClear = false;
@@ -576,6 +575,10 @@ var MessageListSection = GObject.registerClass({
 
     get canClear() {
         return this._canClear;
+    }
+
+    get _messages() {
+        return this._list.get_children().map(i => i.child);
     }
 
     _onKeyFocusIn(messageActor) {
@@ -598,58 +601,62 @@ var MessageListSection = GObject.registerClass({
     }
 
     addMessageAtIndex(message, index, animate) {
-        let obj = {
-            container: null,
-            destroyId: 0,
-            keyFocusId: 0,
-            closeId: 0
-        };
-        let pivot = new Clutter.Point({ x: .5, y: .5 });
-        let scale = animate ? 0 : 1;
-        obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
-                                        pivot_point: pivot,
-                                        scale_x: scale, scale_y: scale });
-        obj.keyFocusId = message.connect('key-focus-in',
-            this._onKeyFocusIn.bind(this));
-        obj.destroyId = message.connect('destroy', () => {
-            this.removeMessage(message, false);
+        if (this._messages.includes(message))
+            throw new Error('Message was already added previously');
+
+        let listItem = new St.Bin({
+            child: message,
+            x_fill: true,
+            y_fill: true,
+            layout_manager: new ScaleLayout(),
+            pivot_point: new Clutter.Point({ x: .5, y: .5 }),
         });
-        obj.closeId = message.connect('close', () => {
+        listItem._connectionsIds = [];
+
+        listItem._connectionsIds.push(message.connect('key-focus-in',
+            this._onKeyFocusIn.bind(this)));
+        listItem._connectionsIds.push(message.connect('close', () => {
             this.removeMessage(message, true);
-        });
+        }));
+        listItem._connectionsIds.push(message.connect('destroy', () => {
+            listItem._connectionsIds.forEach(id => message.disconnect(id));
+            listItem.destroy();
+        }));
 
-        this._messages.set(message, obj);
-        obj.container.add_actor(message);
+        this._list.insert_child_at_index(listItem, index);
 
-        this._list.insert_child_at_index(obj.container, index);
-
-        if (animate)
-            obj.container.ease({
+        if (animate) {
+            listItem.set({ scale_x: 0, scale_y: 0 });
+            listItem.ease({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
             });
+        }
     }
 
     moveMessage(message, index, animate) {
-        let obj = this._messages.get(message);
+        if (!this._messages.includes(message))
+            throw new Error(`Impossible to move the untracked message ${message}`);
+
+        let listItem = message.get_parent();
 
         if (!animate) {
-            this._list.set_child_at_index(obj.container, index);
+            this._list.set_child_at_index(listItem, index);
             return;
         }
 
         let onComplete = () => {
-            this._list.set_child_at_index(obj.container, index);
-            obj.container.ease({
+            this._list.set_child_at_index(listItem, index);
+            listItem.ease({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
             });
         };
-        obj.container.ease({
+        listItem.ease({
             scale_x: 0,
             scale_y: 0,
             duration: MESSAGE_ANIMATION_TIME,
@@ -659,33 +666,31 @@ var MessageListSection = GObject.registerClass({
     }
 
     removeMessage(message, animate) {
-        let obj = this._messages.get(message);
+        if (!this._messages.includes(message))
+            throw new Error(`Impossible to remove the untracked message ${message}`);
 
-        message.disconnect(obj.destroyId);
-        message.disconnect(obj.keyFocusId);
-        message.disconnect(obj.closeId);
-
-        this._messages.delete(message);
+        let listItem = message.get_parent();
+        listItem._connectionsIds.forEach(id => message.disconnect(id));
 
         if (animate) {
-            obj.container.ease({
+            listItem.ease({
                 scale_x: 0,
                 scale_y: 0,
                 duration: MESSAGE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
-                    obj.container.destroy();
+                    listItem.destroy();
                     global.sync_pointer();
                 }
             });
         } else {
-            obj.container.destroy();
+            listItem.destroy();
             global.sync_pointer();
         }
     }
 
     clear() {
-        let messages = [...this._messages.keys()].filter(msg => msg.canClose());
+        let messages = this._messages.filter(msg => msg.canClose());
 
         // If there are few messages, letting them all zoom out looks OK
         if (messages.length < 2) {
@@ -698,9 +703,8 @@ var MessageListSection = GObject.registerClass({
             let delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
             for (let i = 0; i < messages.length; i++) {
                 let message = messages[i];
-                let obj = this._messages.get(message);
-                obj.container.ease({
-                    anchor_x: this._list.width,
+                message.get_parent().ease({
+                    translation_x: this._list.width,
                     opacity: 0,
                     duration: MESSAGE_ANIMATION_TIME,
                     delay: i * delay,
@@ -716,14 +720,15 @@ var MessageListSection = GObject.registerClass({
     }
 
     _sync() {
-        let empty = this._list.get_n_children() == 0;
+        let messages = this._messages;
+        let empty = messages.length == 0;
 
         if (this._empty != empty) {
             this._empty = empty;
             this.notify('empty');
         }
 
-        let canClear = [...this._messages.keys()].some(m => m.canClose());
+        let canClear = messages.some(m => m.canClose());
         if (this._canClear != canClear) {
             this._canClear = canClear;
             this.notify('can-clear');
