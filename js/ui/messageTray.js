@@ -333,8 +333,23 @@ class NotificationApplicationPolicy extends NotificationPolicy {
 // @source allows playing sounds).
 //
 // [1] https://developer.gnome.org/notification-spec/#markup 
-var Notification = class Notification {
-    constructor(source, title, banner, params) {
+var Notification = GObject.registerClass({
+    Properties: {
+        'acknowledged': GObject.ParamSpec.boolean('acknowledged',
+                                                  'acknowledged',
+                                                  'acknowledged',
+                                                  GObject.ParamFlags.READWRITE,
+                                                  false),
+    },
+    Signals: {
+        'activated': {},
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'updated': { param_types: [GObject.TYPE_BOOLEAN] },
+    }
+}, class Notification extends GObject.Object {
+    _init(source, title, banner, params) {
+        super._init();
+
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
@@ -419,7 +434,7 @@ var Notification = class Notification {
         if (this._acknowledged == v)
             return;
         this._acknowledged = v;
-        this.emit('acknowledged-changed');
+        this.notify('acknowledged');
     }
 
     setUrgency(urgency) {
@@ -476,8 +491,7 @@ var Notification = class Notification {
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
         this.emit('destroy', reason);
     }
-};
-Signals.addSignalMethods(Notification.prototype);
+});
 
 var NotificationBanner =
 class NotificationBanner extends Calendar.NotificationMessage {
@@ -637,7 +651,7 @@ class SourceActorWithLabel extends SourceActor {
 
         this.add_actor(this._counterBin);
 
-        this._countUpdatedId = this._source.connect('count-updated', this._updateCount.bind(this));
+        this._countUpdatedId = this._source.connect('notify::count', this._updateCount.bind(this));
         this._updateCount();
 
         this.connect('destroy', () => {
@@ -685,8 +699,23 @@ class SourceActorWithLabel extends SourceActor {
     }
 });
 
-var Source = class Source {
-    constructor(title, iconName) {
+var Source = GObject.registerClass({
+    Properties: {
+        'count': GObject.ParamSpec.int('count', 'count', 'count',
+                                       GObject.ParamFlags.READABLE,
+                                       0, GLib.MAXINT32, 0),
+    },
+    Signals: {
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'icon-updated': {},
+        'notification-added': { param_types: [Notification.$gtype] },
+        'notification-notify': { param_types: [Notification.$gtype] },
+        'title-changed': {},
+    }
+}, class Source extends GObject.Object {
+    _init(title, iconName) {
+        super._init();
+
         this.SOURCE_ICON_SIZE = 48;
 
         this.title = title;
@@ -724,7 +753,7 @@ var Source = class Source {
     }
 
     countUpdated() {
-        this.emit('count-updated');
+        super.notify('count');
     }
 
     _createPolicy() {
@@ -777,7 +806,7 @@ var Source = class Source {
             this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
         notification.connect('destroy', this._onNotificationDestroy.bind(this));
-        notification.connect('acknowledged-changed', this.countUpdated.bind(this));
+        notification.connect('notify::acknowledged', this.countUpdated.bind(this));
         this.notifications.push(notification);
         this.emit('notification-added', notification);
 
@@ -789,7 +818,7 @@ var Source = class Source {
         this.pushNotification(notification);
 
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
-            this.emit('notify', notification);
+            this.emit('notification-notify', notification);
         } else {
             notification.playSound();
         }
@@ -822,8 +851,7 @@ var Source = class Source {
 
         this.countUpdated();
     }
-};
-Signals.addSignalMethods(Source.prototype);
+});
 
 var MessageTray = class MessageTray {
     constructor() {
@@ -1009,7 +1037,7 @@ var MessageTray = class MessageTray {
 
         this._sources.set(source, obj);
 
-        obj.notifyId = source.connect('notify', this._onNotify.bind(this));
+        obj.notifyId = source.connect('notification-notify', this._onNotify.bind(this));
         obj.destroyId = source.connect('destroy', this._onSourceDestroy.bind(this));
 
         this.emit('source-added', source);
@@ -1472,12 +1500,13 @@ var MessageTray = class MessageTray {
 };
 Signals.addSignalMethods(MessageTray.prototype);
 
-var SystemNotificationSource = class SystemNotificationSource extends Source {
-    constructor() {
-        super(_("System Information"), 'dialog-information-symbolic');
+var SystemNotificationSource = GObject.registerClass(
+class SystemNotificationSource extends Source {
+    _init() {
+        super._init(_("System Information"), 'dialog-information-symbolic');
     }
 
     open() {
         this.destroy();
     }
-};
+});

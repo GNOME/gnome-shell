@@ -217,9 +217,10 @@ var ShellMountOperation = class {
     }
 };
 
-var ShellUnmountNotifier = class extends MessageTray.Source {
-    constructor() {
-        super('', 'media-removable');
+var ShellUnmountNotifier = GObject.registerClass(
+class ShellUnmountNotifier extends MessageTray.Source {
+    _init() {
+        super._init('', 'media-removable');
 
         this._notification = null;
         Main.messageTray.add(this);
@@ -252,7 +253,7 @@ var ShellUnmountNotifier = class extends MessageTray.Source {
             this.notify(notification);
         }
     }
-};
+});
 
 var ShellMountQuestionDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } }

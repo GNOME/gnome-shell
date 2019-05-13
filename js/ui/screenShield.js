@@ -224,7 +224,7 @@ var NotificationsBox = class {
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
-        obj.sourceCountChangedId = source.connect('count-updated', source => {
+        obj.sourceCountChangedId = source.connect('notify::count', source => {
             this._countChanged(source, obj);
         });
         obj.sourceTitleChangedId = source.connect('title-changed', source => {
