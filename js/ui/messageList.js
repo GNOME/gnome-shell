@@ -555,6 +555,11 @@ var MessageListSection = class MessageListSection {
     }
 
     addMessageAtIndex(message, index, animate) {
+        if (this._messages.has(message)) {
+            this.moveMessage(message, index, animate);
+            return;
+        }
+
         let obj = {
             container: null,
             destroyId: 0,
