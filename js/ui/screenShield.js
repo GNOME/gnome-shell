@@ -224,14 +224,14 @@ var NotificationsBox = class {
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
-        obj.sourceCountChangedId = source.connect('count-updated', source => {
+        obj.sourceCountChangedId = source.connect('notify::count', source => {
             this._countChanged(source, obj);
         });
-        obj.sourceTitleChangedId = source.connect('title-changed', source => {
+        obj.sourceTitleChangedId = source.connect('notify::title', source => {
             this._titleChanged(source, obj);
         });
-        obj.policyChangedId = source.policy.connect('policy-changed', (policy, key) => {
-            if (key == 'show-in-lock-screen')
+        obj.policyChangedId = source.policy.connect('notify', (policy, pspec) => {
+            if (pspec.name == 'show-in-lock-screen')
                 this._visibleChanged(source, obj);
             else
                 this._detailedChanged(source, obj);

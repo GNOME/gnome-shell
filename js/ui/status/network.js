@@ -1705,7 +1705,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
         this._notification.connect('destroy', () => {
             this._notification = null;
         });
-        this._source.notify(this._notification);
+        this._source.promptNotification(this._notification);
     }
 
     _onActivationFailed(device, reason) {

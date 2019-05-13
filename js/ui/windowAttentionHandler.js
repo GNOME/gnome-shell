@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Shell = imports.gi.Shell;
+const { GObject, Shell } = imports.gi;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -33,7 +33,7 @@ var WindowAttentionHandler = class {
             return;
 
         let app = this._tracker.get_window_app(window);
-        let source = new Source(app, window);
+        let source = new WindowAttentionSource(app, window);
         Main.messageTray.add(source);
 
         let [title, banner] = this._getTitleAndBanner(app, window);
@@ -44,7 +44,7 @@ var WindowAttentionHandler = class {
         });
         notification.setForFeedback(true);
 
-        source.notify(notification);
+        source.promptNotification(notification);
 
         source.signalIDs.push(window.connect('notify::title', () => {
             let [title, banner] = this._getTitleAndBanner(app, window);
@@ -53,9 +53,10 @@ var WindowAttentionHandler = class {
     }
 };
 
-var Source = class WindowAttentionSource extends MessageTray.Source {
-    constructor(app, window) {
-        super(app.get_name());
+var WindowAttentionSource = GObject.registerClass(
+class WindowAttentionSource extends MessageTray.Source {
+    _init(app, window) {
+        super._init(app.get_name());
 
         this._window = window;
         this._app = app;
@@ -101,4 +102,4 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
     open() {
         Main.activateWindow(this._window);
     }
-};
+});

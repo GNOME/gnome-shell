@@ -729,7 +729,7 @@ var NetworkAgent = class {
         });
 
         Main.messageTray.add(source);
-        source.notify(notification);
+        source.promptNotification(notification);
     }
 
     _newRequest(agent, requestId, connection, settingName, hints, flags) {
