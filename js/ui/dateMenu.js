@@ -351,24 +351,30 @@ var MessagesIndicator = class MessagesIndicator {
                                    visible: false, y_expand: true,
                                    y_align: Clutter.ActorAlign.CENTER });
 
-        this._sources = [];
+        this._sources = new Map();
 
         Main.messageTray.connect('source-added', this._onSourceAdded.bind(this));
         Main.messageTray.connect('source-removed', this._onSourceRemoved.bind(this));
         Main.messageTray.connect('queue-changed', this._updateCount.bind(this));
 
         let sources = Main.messageTray.getSources();
-        sources.forEach(source => { this._onSourceAdded(null, source); });
+        sources.forEach(source => {
+            this._addSource(Main.messageTray.getSourceID(source), source);
+        });
     }
 
-    _onSourceAdded(tray, source) {
+    _onSourceAdded(tray, sourceID) {
+        this._addSource(sourceID, tray.getSource(sourceID));
+    }
+
+    _addSource(sourceID, source) {
         source.connect('count-updated', this._updateCount.bind(this));
-        this._sources.push(source);
+        this._sources.set(sourceID, Main.messageTray.getSource(sourceID));
         this._updateCount();
     }
 
-    _onSourceRemoved(tray, source) {
-        this._sources.splice(this._sources.indexOf(source), 1);
+    _onSourceRemoved(tray, sourceID) {
+        this._sources.delete(sourceID);
         this._updateCount();
     }
 
