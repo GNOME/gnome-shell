@@ -104,7 +104,9 @@ var NotificationsBox = class {
         });
         this._updateVisibility();
 
-        this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
+        this._sourceAddedId = Main.messageTray.connect('source-added', (tray, sourceID) => {
+            this._sourceAdded(tray, tray.getSource(sourceID), false);
+        });
     }
 
     destroy() {
