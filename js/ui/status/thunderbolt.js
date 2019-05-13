@@ -284,7 +284,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             if (app)
                 app.activate();
         });
-        this._source.notify(this._notification);
+        this._source.addNotification(this._notification);
     }
 
     /* Session callbacks */
