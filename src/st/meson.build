@@ -18,6 +18,7 @@ st_headers = [
   'st-scrollable.h',
   'st-scroll-bar.h',
   'st-scroll-view.h',
+  'st-scroll-view-fade.h',
   'st-settings.h',
   'st-shadow.h',
   'st-texture-cache.h',
@@ -73,6 +74,7 @@ st_sources = [
   'st-scrollable.c',
   'st-scroll-bar.c',
   'st-scroll-view.c',
+  'st-scroll-view-fade.c',
   'st-settings.c',
   'st-shadow.c',
   'st-texture-cache.c',
@@ -93,11 +95,6 @@ st_enums = gnome.mkenums_simple('st-enum-types',
 )
 
 st_gir_sources = st_sources + st_private_headers + st_headers + st_enums
-
-st_non_gir_sources = [
-  'st-scroll-view-fade.c',
-  'st-scroll-view-fade.h'
-]
 
 data_to_c = find_program(meson.source_root() + '/src/data-to-c.pl')
 
@@ -123,7 +120,7 @@ st_cflags = [
 
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-1.0',
-  sources: st_gir_sources + st_non_gir_sources,
+  sources: st_gir_sources,
   c_args: st_cflags,
   dependencies: [clutter_dep, gtk_dep, croco_dep, mutter_dep, m_dep],
   build_rpath: mutter_typelibdir,
