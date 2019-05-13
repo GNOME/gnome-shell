@@ -734,7 +734,7 @@ var NetworkAgent = class {
         });
 
         Main.messageTray.add(source);
-        source.notify(notification);
+        source.showNotification(notification);
     }
 
     _newRequest(agent, requestId, connection, settingName, hints, flags) {
