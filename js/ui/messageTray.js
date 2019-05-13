@@ -333,8 +333,23 @@ class NotificationApplicationPolicy extends NotificationPolicy {
 // @source allows playing sounds).
 //
 // [1] https://developer.gnome.org/notification-spec/#markup 
-var Notification = class Notification {
-    constructor(source, title, banner, params) {
+var Notification = GObject.registerClass({
+    Properties: {
+        'acknowledged': GObject.ParamSpec.boolean('acknowledged',
+                                                  'acknowledged',
+                                                  'acknowledged',
+                                                  GObject.ParamFlags.READWRITE,
+                                                  false),
+    },
+    Signals: {
+        'activated': {},
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'updated': { param_types: [GObject.TYPE_BOOLEAN] },
+    }
+}, class Notification extends GObject.Object {
+    _init(source, title, banner, params) {
+        super._init();
+
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
@@ -419,7 +434,7 @@ var Notification = class Notification {
         if (this._acknowledged == v)
             return;
         this._acknowledged = v;
-        this.emit('acknowledged-changed');
+        this.notify('acknowledged');
     }
 
     setUrgency(urgency) {
@@ -478,8 +493,7 @@ var Notification = class Notification {
             reason = NotificationDestroyedReason.DISMISSED;
         this.emit('destroy', reason);
     }
-};
-Signals.addSignalMethods(Notification.prototype);
+});
 
 var NotificationBanner = GObject.registerClass({
     Signals: {
@@ -783,7 +797,7 @@ var Source = class Source {
             this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
         notification.connect('destroy', this._onNotificationDestroy.bind(this));
-        notification.connect('acknowledged-changed', this.countUpdated.bind(this));
+        notification.connect('notify::acknowledged', this.countUpdated.bind(this));
         this.notifications.push(notification);
         this.emit('notification-added', notification);
 

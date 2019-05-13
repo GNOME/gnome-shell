@@ -629,10 +629,16 @@ var ChatSource = class extends MessageTray.Source {
     }
 };
 
-var ChatNotification = class extends MessageTray.Notification {
-    constructor(source) {
-        super(source, source.title, null,
-              { secondaryGIcon: source.getSecondaryIcon() });
+var ChatNotification = HAVE_TP ? GObject.registerClass({
+    Signals: {
+        'message-removed': { param_types: [Tp.Message.$gtype] },
+        'message-added': { param_types: [Tp.Message.$gtype] },
+        'timestamp-changed': { param_types: [Tp.Message.$gtype] },
+    }
+}, class ChatNotification extends MessageTray.Notification {
+    _init(source) {
+        super._init(source, source.title, null,
+                    { secondaryGIcon: source.getSecondaryIcon() });
         this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
@@ -783,7 +789,7 @@ var ChatNotification = class extends MessageTray.Notification {
 
         this._filterMessages();
     }
-};
+}) : null;
 
 var ChatLineBox = GObject.registerClass(
 class ChatLineBox extends St.BoxLayout {
