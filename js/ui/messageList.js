@@ -547,6 +547,10 @@ var MessageListSection = GObject.registerClass({
                                           this._sync.bind(this));
         this.connect('destroy', () => {
             Main.sessionMode.disconnect(id);
+            this._messages.forEach((connections, message) => {
+                for (let id of connections)
+                    message.disconnect(id);
+            });
         });
 
         this._messages = new Map();
