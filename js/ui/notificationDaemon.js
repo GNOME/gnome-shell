@@ -534,10 +534,10 @@ const PRIORITY_URGENCY_MAP = {
     urgent: MessageTray.Urgency.CRITICAL
 };
 
-var GtkNotificationDaemonNotification =
+var GtkNotificationDaemonNotification = GObject.registerClass(
 class GtkNotificationDaemonNotification extends MessageTray.Notification {
-    constructor(source, notification) {
-        super(source);
+    _init(source, notification) {
+        super._init(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
 
         let { "title": title,
@@ -600,7 +600,7 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
     serialize() {
         return this._serialized;
     }
-};
+});
 
 const FdoApplicationIface = loadInterfaceXML('org.freedesktop.Application');
 const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
