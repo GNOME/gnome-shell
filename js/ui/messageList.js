@@ -582,26 +582,22 @@ var MessageListSection = GObject.registerClass({
         if (this._messages.has(message))
             throw new Error('Message was already added previously');
 
-        let obj = {
-            destroyId: 0,
-            keyFocusId: 0,
-            closeId: 0
-        };
+        let connections = [];
         let pivot = new Clutter.Point({ x: .5, y: .5 });
         let scale = animate ? 0 : 1;
         let container = new St.Widget({ layout_manager: new ScaleLayout(),
                                         pivot_point: pivot,
                                         scale_x: scale, scale_y: scale });
-        obj.keyFocusId = message.connect('key-focus-in',
-            this._onKeyFocusIn.bind(this));
-        obj.destroyId = message.connect('destroy', () => {
+        connections.push(message.connect('key-focus-in',
+            this._onKeyFocusIn.bind(this)));
+        connections.push(message.connect('destroy', () => {
             this.removeMessage(message, false);
-        });
-        obj.closeId = message.connect('close', () => {
+        }));
+        connections.push(message.connect('close', () => {
             this.removeMessage(message, true);
-        });
+        }));
 
-        this._messages.set(message, obj);
+        this._messages.set(message, connections);
         container.add_actor(message);
 
         this._list.insert_child_at_index(container, index);
@@ -647,17 +643,15 @@ var MessageListSection = GObject.registerClass({
     }
 
     removeMessage(message, animate) {
-        let obj = this._messages.get(message);
-        if (!obj) {
+        let connections = this._messages.get(message);
+        if (!connections) {
             log(`Impossible to remove the untracked message ${message}`);
             return;
         }
 
         let container = message.get_parent();
-        message.disconnect(obj.destroyId);
-        message.disconnect(obj.keyFocusId);
-        message.disconnect(obj.closeId);
 
+        connections.forEach(id => message.disconnect(id));
         this._messages.delete(message);
 
         if (animate) {
