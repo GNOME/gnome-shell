@@ -997,9 +997,10 @@ class NotificationSection extends MessageList.MessageListSection {
         if (!this.mapped)
             return;
 
-        for (let message of this._messages.keys())
+        this._messages.forEach(message => {
             if (message.notification.urgency != MessageTray.Urgency.CRITICAL)
                 message.notification.acknowledged = true;
+        });
     }
 
     _shouldShow() {
