@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Gio, St } = imports.gi;
+const { Gio, GObject, St } = imports.gi;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
@@ -302,9 +302,10 @@ var AutorunSource = class extends MessageTray.Source {
     }
 };
 
-var AutorunNotification = class extends MessageTray.Notification {
-    constructor(manager, source) {
-        super(source, source.title);
+var AutorunNotification = GObject.registerClass(
+class AutorunNotification extends MessageTray.Notification {
+    _init(manager, source) {
+        super._init(source, source.title);
 
         this._manager = manager;
         this._mount = source.mount;
@@ -356,6 +357,6 @@ var AutorunNotification = class extends MessageTray.Notification {
         let app = Gio.app_info_get_default_for_type('inode/directory', false);
         startAppForMount(app, this._mount);
     }
-};
+});
 
 var Component = AutorunManager;
