@@ -921,7 +921,9 @@ class NotificationSection extends MessageList.MessageListSection {
         this._sources = new Map();
         this._nUrgent = 0;
 
-        Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
+        Main.messageTray.connect('source-added', (tray, sourceID) => {
+            this._sourceAdded(tray, tray.getSource(sourceID));
+        });
         Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source);
         });
