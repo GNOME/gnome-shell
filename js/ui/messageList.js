@@ -584,16 +584,18 @@ var MessageListSection = GObject.registerClass({
             throw new Error('Message was already added previously');
 
         let obj = {
-            container: null,
             destroyId: 0,
             keyFocusId: 0,
             closeId: 0
         };
         let pivot = new Clutter.Point({ x: .5, y: .5 });
         let scale = animate ? 0 : 1;
-        obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
-                                        pivot_point: pivot,
-                                        scale_x: scale, scale_y: scale });
+        let container = new St.Widget({
+            layout_manager: new ScaleLayout(),
+            pivot_point: pivot,
+            scale_x: scale,
+            scale_y: scale
+        });
         obj.keyFocusId = message.connect('key-focus-in',
             this._onKeyFocusIn.bind(this));
         obj.destroyId = message.connect('destroy', () => {
@@ -604,12 +606,12 @@ var MessageListSection = GObject.registerClass({
         });
 
         this._messages.set(message, obj);
-        obj.container.add_actor(message);
+        container.add_actor(message);
 
-        this._list.insert_child_at_index(obj.container, index);
+        this._list.insert_child_at_index(container, index);
 
         if (animate)
-            obj.container.ease({
+            container.ease({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
@@ -618,23 +620,28 @@ var MessageListSection = GObject.registerClass({
     }
 
     moveMessage(message, index, animate) {
-        let obj = this._messages.get(message);
+        if (!this._messages.has(message)) {
+            log(`Impossible to move the untracked message ${message}`);
+            return;
+        }
+
+        let container = message.get_parent();
 
         if (!animate) {
-            this._list.set_child_at_index(obj.container, index);
+            this._list.set_child_at_index(container, index);
             return;
         }
 
         let onComplete = () => {
-            this._list.set_child_at_index(obj.container, index);
-            obj.container.ease({
+            this._list.set_child_at_index(container, index);
+            container.ease({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
             });
         };
-        obj.container.ease({
+        container.ease({
             scale_x: 0,
             scale_y: 0,
             duration: MESSAGE_ANIMATION_TIME,
@@ -645,7 +652,12 @@ var MessageListSection = GObject.registerClass({
 
     removeMessage(message, animate) {
         let obj = this._messages.get(message);
+        if (!obj) {
+            log(`Impossible to remove the untracked message ${message}`);
+            return;
+        }
 
+        let container = message.get_parent();
         message.disconnect(obj.destroyId);
         message.disconnect(obj.keyFocusId);
         message.disconnect(obj.closeId);
@@ -653,18 +665,18 @@ var MessageListSection = GObject.registerClass({
         this._messages.delete(message);
 
         if (animate) {
-            obj.container.ease({
+            container.ease({
                 scale_x: 0,
                 scale_y: 0,
                 duration: MESSAGE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
-                    obj.container.destroy();
+                    container.destroy();
                     global.sync_pointer();
                 }
             });
         } else {
-            obj.container.destroy();
+            container.destroy();
             global.sync_pointer();
         }
     }
@@ -683,8 +695,8 @@ var MessageListSection = GObject.registerClass({
             let delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
             for (let i = 0; i < messages.length; i++) {
                 let message = messages[i];
-                let obj = this._messages.get(message);
-                obj.container.ease({
+                let container = message.get_parent();
+                container.ease({
                     anchor_x: this._list.width,
                     opacity: 0,
                     duration: MESSAGE_ANIMATION_TIME,
