@@ -573,6 +573,11 @@ var MessageListSection = GObject.registerClass({
     }
 
     addMessageAtIndex(message, index, animate) {
+        if (this._messages.has(message)) {
+            this.moveMessage(message, index, animate);
+            return;
+        }
+
         let connections = [];
         let pivot = new Clutter.Point({ x: .5, y: .5 });
         let scale = animate ? 0 : 1;
