@@ -403,7 +403,7 @@ function notify(msg, details) {
     messageTray.add(source);
     let notification = new MessageTray.Notification(source, msg, details);
     notification.setTransient(true);
-    source.notify(notification);
+    source.showNotification(notification);
 }
 
 /**
