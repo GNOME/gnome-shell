@@ -70,8 +70,6 @@ class WindowAttentionSource extends MessageTray.Source {
                                                  () => { this.destroy(); }));
         this.signalIDs.push(this._window.connect('unmanaged',
                                                  () => { this.destroy(); }));
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _sync() {
@@ -80,11 +78,13 @@ class WindowAttentionSource extends MessageTray.Source {
         this.destroy();
     }
 
-    _onDestroy() {
+    destroy() {
         for(let i = 0; i < this.signalIDs.length; i++) {
            this._window.disconnect(this.signalIDs[i]);
         }
         this.signalIDs = [];
+
+        super.destroy();
     }
 
     _createPolicy() {
