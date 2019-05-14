@@ -1,3 +1,32 @@
+3.33.1
+======
+* Refine the app menu [Florian; #968]
+* Refine window preview style [Feichtmeier; !461]
+* Only emit ::style-changed on actual changes [Carlos; #1153]
+* Disable emoji on-screen keyboard support on X11 [Florian; #1172]
+* Fix tablet button mapping overlay [Carlos; #1220]
+* Don't crash for world clock locations with no timezone [Florian; #1062]
+* Don't leak old on-screen keyboard layout groups [Carlos; mutter#556]
+* Fix ellipsization in dialog subtitles/bodies [Marco; !531]
+* Fix glitch of fullscreen window in workspace switch animation [Jonas D.; !322]
+* Fix distortion of some image contents [Florian; !525]
+* Allow dragging unfocused tiled/maximized windows from top bar [Dylan; #679290]
+* Handle network interface name changes [Fabrice; !534]
+* Avoid unnecessary style changes when computing :first/:last-child
+  [Florian; !529]
+* Misc. bug fixes and cleanups [Florian, Marco, Robert, Georges, Carlos, Simon,
+  Jonas D.; !487, !441, !502, !503, !504, !506, #822, !551, !512, !509, !511,
+  #1054, !524, #1065, !331, !540]
+
+Contributors:
+  Fabrice Bellet, Jonas Dreßler, Feichtmeier, Carlos Garnacho, Robert Mader,
+  Dylan McCall, Simon McVittie, Florian Müllner, Georges Basile Stavracas Neto,
+  Marco Trevisan (Treviño)
+
+Translators:
+  Daniel Mustieles [es], Kukuh Syafaat [id], Fabio Tomat [fur],
+  Carmen Bianca BAKKER [eo], Dingzhong Chen [zh_CN], Tim Sabsch [de]
+
 3.32.1
 ======
 * Fix avatar scaling on login screen [Florian; #1024]
