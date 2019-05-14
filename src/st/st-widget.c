@@ -1718,7 +1718,7 @@ st_widget_recompute_style (StWidget    *widget,
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
   StSettings *settings;
-  gboolean paint_equal, geometry_equal = FALSE;
+  gboolean paint_equal;
   gboolean animations_enabled;
 
   if (new_theme_node == old_theme_node)
@@ -1729,9 +1729,8 @@ st_widget_recompute_style (StWidget    *widget,
 
   _st_theme_node_apply_margins (new_theme_node, CLUTTER_ACTOR (widget));
 
-  if (old_theme_node)
-    geometry_equal = st_theme_node_geometry_equal (old_theme_node, new_theme_node);
-  if (!geometry_equal)
+  if (!old_theme_node ||
+      !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
     clutter_actor_queue_relayout ((ClutterActor *) widget);
 
   transition_duration = st_theme_node_get_transition_duration (new_theme_node);
@@ -1783,11 +1782,7 @@ st_widget_recompute_style (StWidget    *widget,
         st_theme_node_paint_state_invalidate (current_paint_state (widget));
     }
 
-  if (!paint_equal || !geometry_equal)
-    g_signal_emit (widget, signals[STYLE_CHANGED], 0);
-  else
-    notify_children_of_style_change ((ClutterActor *) widget);
-
+  g_signal_emit (widget, signals[STYLE_CHANGED], 0);
   priv->is_style_dirty = FALSE;
 }
 
