@@ -278,9 +278,10 @@ var AutorunDispatcher = class {
     }
 };
 
-var AutorunSource = class extends MessageTray.Source {
-    constructor(manager, mount, apps) {
-        super(mount.get_name());
+var AutorunSource = GObject.registerClass(
+class AutorunSource extends MessageTray.Source {
+    _init(manager, mount, apps) {
+        super._init(mount.get_name());
 
         this._manager = manager;
         this.mount = mount;
@@ -300,7 +301,7 @@ var AutorunSource = class extends MessageTray.Source {
     _createPolicy() {
         return new MessageTray.NotificationApplicationPolicy('org.gnome.Nautilus');
     }
-};
+});
 
 var AutorunNotification = GObject.registerClass(
 class AutorunNotification extends MessageTray.Notification {
