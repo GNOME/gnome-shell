@@ -837,10 +837,10 @@ var Source = GObject.registerClass({
             return;
 
         this.notifications.splice(index, 1);
+        this.countUpdated();
+
         if (this.notifications.length == 0)
             this.destroy();
-
-        this.countUpdated();
     }
 
     pushNotification(notification) {
@@ -894,6 +894,8 @@ var Source = GObject.registerClass({
             notifications[i].destroy(reason);
 
         this.emit('destroy', reason);
+
+        this.run_dispose();
     }
 
     iconUpdated() {
@@ -908,8 +910,6 @@ var Source = GObject.registerClass({
         for (let i = this.notifications.length - 1; i >= 0; i--)
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
-
-        this.countUpdated();
     }
 });
 
