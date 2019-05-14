@@ -268,9 +268,10 @@ class TelepathyClient extends Tp.BaseClient {
     }
 }) : null;
 
-var ChatSource = class extends MessageTray.Source {
-    constructor(account, conn, channel, contact, client) {
-        super(contact.get_alias());
+var ChatSource = HAVE_TP ? GObject.registerClass(
+class ChatSource extends MessageTray.Source {
+    _init(account, conn, channel, contact, client) {
+        super._init(contact.get_alias());
 
         this._account = account;
         this._contact = contact;
@@ -627,7 +628,7 @@ var ChatSource = class extends MessageTray.Source {
         // 'pending-message-removed' for each one.
         this._channel.ack_all_pending_messages_async(null);
     }
-};
+}) : null;
 
 var ChatNotification = HAVE_TP ? GObject.registerClass({
     Signals: {
