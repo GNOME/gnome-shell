@@ -353,7 +353,6 @@ var Notification = GObject.registerClass({
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
-        this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.privacyScope = PrivacyScope.USER;
@@ -365,6 +364,7 @@ var Notification = GObject.registerClass({
         this._soundFile = null;
         this._soundPlayed = false;
         this.actions = [];
+        this.setResident(false);
 
         // If called with only one argument we assume the caller
         // will call .update() later on. This is the case of
@@ -443,6 +443,15 @@ var Notification = GObject.registerClass({
 
     setResident(resident) {
         this.resident = resident;
+
+        if (!this.resident && !this._activatedId) {
+            this._activatedId = this.connect_after('activated', () => {
+                this.destroy();
+            });
+        } else if (this.resident && this._activatedId) {
+            this.disconnect(this._activatedId);
+            delete this._activatedId;
+        }
     }
 
     setTransient(isTransient) {
@@ -484,12 +493,16 @@ var Notification = GObject.registerClass({
 
     activate() {
         this.emit('activated');
-        if (!this.resident)
-            this.destroy();
     }
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
+        if (this._activatedId) {
+            this.disconnect(this._activatedId);
+            delete this._activatedId;
+        }
+
         this.emit('destroy', reason);
+        this.run_dispose();
     }
 });
 
