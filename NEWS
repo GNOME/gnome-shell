@@ -1,3 +1,22 @@
+3.32.2
+======
+* Fix tablet button mapping overlay [Carlos; #1220]
+* Fix ellipsization in dialog subtitles/bodies [Marco; !531]
+* Don't crash for world clock locations with no timezone<Paste> [Florian; #1062]
+* Handle network interface name changes [Fabrice; !534]
+* Don't leak old on-screen keyboard layout groups [Carlos; mutter#556]
+* Avoid unnecessary style changes when computing :first/:last-child
+  [Florian; !529]
+* Misc. bug fixes [Simon, Carlos, Florian; #822, !551, !509,
+  !511, #1054, !506, #1065]
+
+Contributors:
+  Fabrice Bellet, Carlos Garnacho, Simon McVittie, Florian Müllner,
+  Marco Trevisan (Treviño)
+
+Translators:
+  Dingzhong Chen [zh_CN], Tim Sabsch [de]
+
 3.32.1
 ======
 * Fix avatar scaling on login screen [Florian; #1024]
