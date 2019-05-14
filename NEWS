@@ -1,3 +1,30 @@
+3.28.4
+======
+* Fix wrong window positions in overview on wayland [Marco; #776588]
+* overview: Fix handling of confirmation dialogs on wayland [verdre; !180]
+* Avoid some full relayout/redraws [Carlos; !197]
+* Keep workspace switcher slid out when workspaces are in use [Florian; !161]
+* Cancel search on overview hiding [Marco; !205]
+* Fix disappearing network icon [Iain; #140]
+* Improve performance of app icon animations [Daniel; !253]
+* notifications: Support icon theme names in 'image-path' hint [Marco; !285]
+* Avoid focus changes when updating keyboard options [Takao; #391]
+* Fix unresponsive-app dialog blocking input in other windows [Florian; #273]
+* Fix ellipsization in dialog subtitles/bodies [Marco; !531]
+* Misc. bug fixes [Marco, Andrea, Florian, Jasper, Sam, verdre, Jonas,
+  Cosimo, Carlos; #792681, #372, !112, !162, #414, #663461, #788882, #787260,
+  !188, #791233, #602, #632, !305, !286, !314, #781, #693, #618, #430, #799,
+  #783, !293, #298, #1015, #539, #1270]
+
+Contributors:
+  Jonas Ådahl, Andrea Azzarone, Cosimo Cecchi, Takao Fujiwara, Carlos Garnacho,
+  Iain Lane, Florian Müllner, Georges Basile Stavracas Neto, Jasper St. Pierre,
+  Sam Spilsbury, Ray Strode, Will Thompson, Marco Trevisan (Treviño), verdre,
+  Daniel van Vugt
+
+Translators:
+  Marek Černocký [cs]
+
 3.28.3
 ======
 * Fix lagging pointer when zoomed [Daniel; #682013]
