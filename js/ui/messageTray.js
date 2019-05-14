@@ -657,7 +657,7 @@ class SourceActorWithLabel extends SourceActor {
 
         this.add_actor(this._counterBin);
 
-        this._countUpdatedId = this._source.connect('count-updated', this._updateCount.bind(this));
+        this._countUpdatedId = this._source.connect('notify::count', this._updateCount.bind(this));
         this._updateCount();
 
         this.connect('destroy', () => {
@@ -705,8 +705,23 @@ class SourceActorWithLabel extends SourceActor {
     }
 });
 
-var Source = class Source {
-    constructor(title, iconName) {
+var Source = GObject.registerClass({
+    Properties: {
+        'count': GObject.ParamSpec.int('count', 'count', 'count',
+                                       GObject.ParamFlags.READABLE,
+                                       0, GLib.MAXINT32, 0),
+    },
+    Signals: {
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'icon-updated': {},
+        'notification-added': { param_types: [Notification.$gtype] },
+        'notification-notify': { param_types: [Notification.$gtype] },
+        'title-changed': {},
+    }
+}, class Source extends GObject.Object {
+    _init(title, iconName) {
+        super._init();
+
         this.SOURCE_ICON_SIZE = 48;
 
         this.title = title;
@@ -744,7 +759,7 @@ var Source = class Source {
     }
 
     countUpdated() {
-        this.emit('count-updated');
+        super.notify('count');
     }
 
     _createPolicy() {
@@ -809,7 +824,7 @@ var Source = class Source {
         this.pushNotification(notification);
 
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
-            this.emit('notify', notification);
+            this.emit('notification-notify', notification);
         } else {
             notification.playSound();
         }
@@ -842,17 +857,14 @@ var Source = class Source {
 
         this.countUpdated();
     }
-};
-Signals.addSignalMethods(Source.prototype);
-
-
+});
 
 
 var MessageTray = GObject.registerClass({
     Signals: {
         'queue-changed': {},
-        'source-added': { param_types: [GObject.TYPE_UINT] },
-        'source-removed': { param_types: [GObject.TYPE_UINT] },
+        'source-added': { param_types: [Source.$gtype] },
+        'source-removed': { param_types: [Source.$gtype] },
     }
 }, class MessageTray extends St.Widget {
     _init() {
@@ -960,7 +972,6 @@ var MessageTray = GObject.registerClass({
                               Shell.ActionMode.OVERVIEW,
                               this._expandActiveNotification.bind(this));
 
-        this._sourcesID = 0;
         this._sources = new Map();
 
         this._sessionUpdated();
@@ -1033,18 +1044,16 @@ var MessageTray = GObject.registerClass({
 
     _addSource(source) {
         let obj = {
-            source: source,
-            sourceID: ++this._sourcesID,
             notifyId: 0,
             destroyId: 0,
         };
 
         this._sources.set(source, obj);
 
-        obj.notifyId = source.connect('notify', this._onNotify.bind(this));
+        obj.notifyId = source.connect('notification-notify', this._onNotify.bind(this));
         obj.destroyId = source.connect('destroy', this._onSourceDestroy.bind(this));
 
-        this.emit('source-added', obj.sourceID);
+        this.emit('source-added', source);
     }
 
     _removeSource(source) {
@@ -1054,25 +1063,11 @@ var MessageTray = GObject.registerClass({
         source.disconnect(obj.notifyId);
         source.disconnect(obj.destroyId);
 
-        this.emit('source-removed', obj.sourceID);
+        this.emit('source-removed', source);
     }
 
     getSources() {
         return [...this._sources.keys()];
-    }
-
-    getSourceID(source) {
-        let obj = this._sources.get(source);
-        return obj.sourceID || -1;
-    }
-
-    getSource(sourceID) {
-        for (let obj of this._sources.values()) {
-            if (obj.sourceID === sourceID)
-                return obj.source;
-        }
-
-        return null;
     }
 
     _onSourceEnableChanged(policy, source) {
@@ -1517,12 +1512,13 @@ var MessageTray = GObject.registerClass({
     }
 });
 
-var SystemNotificationSource = class SystemNotificationSource extends Source {
-    constructor() {
-        super(_("System Information"), 'dialog-information-symbolic');
+var SystemNotificationSource = GObject.registerClass(
+class SystemNotificationSource extends Source {
+    _init() {
+        super._init(_("System Information"), 'dialog-information-symbolic');
     }
 
     open() {
         this.destroy();
     }
-};
+});
