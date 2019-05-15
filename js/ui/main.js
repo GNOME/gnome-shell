@@ -636,7 +636,7 @@ function _queueBeforeRedraw(workId) {
  * initialization as well, under the assumption that new actors
  * will need it.
  *
- * Returns: A string work identifer
+ * Returns: A string work identifier
  */
 function initializeDeferredWork(actor, callback, props) {
     // Turn into a string so we can use as an object property
