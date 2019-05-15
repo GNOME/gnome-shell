@@ -53,6 +53,11 @@ var IntrospectService = class {
        return APP_WHITELIST.includes(sender);
     }
 
+    _getSandboxedAppId(app) {
+        let ids = app.get_windows().map(w => w.get_sandboxed_app_id());
+        return ids.find(id => id != null);
+    }
+
     _syncRunningApplications() {
         let tracker = Shell.WindowTracker.get_default();
         let apps = this._appSystem.get_running();
@@ -73,6 +78,10 @@ var IntrospectService = class {
                 appInfo['active-on-seats'] = new GLib.Variant('as', [seatName]);
                 newActiveApplication = app.get_id();
             }
+
+            let sandboxedAppId = this._getSandboxedAppId(app);
+            if (sandboxedAppId)
+                appInfo['sandboxed-app-id'] = new GLib.Variant('s', sandboxedAppId);
 
             newRunningApplications[app.get_id()] = appInfo;
         }
@@ -135,6 +144,7 @@ var IntrospectService = class {
                 let frameRect = window.get_frame_rect();
                 let title = window.get_title();
                 let wmClass = window.get_wm_class();
+                let sandboxedAppId = window.get_sandboxed_app_id();
 
                 windowsList[windowId] = {
                     'app-id': GLib.Variant.new('s', app.get_id()),
@@ -151,6 +161,10 @@ var IntrospectService = class {
 
                 if (wmClass != null)
                     windowsList[windowId]['wm-class'] = GLib.Variant.new('s', wmClass);
+
+                if (sandboxedAppId != null)
+                    windowsList[windowId]['sandboxed-app-id'] =
+                        GLib.Variant.new('s', sandboxedAppId);
             }
         }
         invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
