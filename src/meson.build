@@ -3,6 +3,7 @@ service_data.set('libexecdir', libexecdir)
 
 subdir('calendar-server')
 subdir('hotplug-sniffer')
+subdir('notification-daemon')
 subdir('st')
 subdir('tray')
 
