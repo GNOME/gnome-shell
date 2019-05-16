@@ -4,6 +4,7 @@ launcherconf.set('prefix', prefix)
 launcherconf.set('libdir', libdir)
 
 dbus_services = {
+  'org.gnome.Shell.Notifications': 'notifications',
 }
 
 config_dir = '@0@/..'.format(meson.current_build_dir())
