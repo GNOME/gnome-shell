@@ -4,6 +4,7 @@ launcherconf.set('prefix', prefix)
 launcherconf.set('libdir', libdir)
 
 dbus_services = [
+  'org.gnome.Shell.Notifications',
 ]
 
 foreach service : dbus_services
