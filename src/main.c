@@ -161,8 +161,8 @@ shell_dbus_init (gboolean replace)
                             "org.gnome.Panel", TRUE,
   /* ...and the org.gnome.Magnifier service. */
                             MAGNIFIER_DBUS_SERVICE, FALSE,
-  /* ...and the org.freedesktop.Notifications service. */
-                            "org.freedesktop.Notifications", FALSE,
+  /* ...and the org.gnome.Shell.FdoNotifications service. */
+                            "org.gnome.Shell.FdoNotifications", FALSE,
                             NULL);
   g_object_unref (bus);
   g_object_unref (session);

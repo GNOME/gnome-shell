@@ -46,7 +46,7 @@ const rewriteRules = {
 var FdoNotificationDaemon = class FdoNotificationDaemon {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
-        this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/FdoNotifications');
 
         this._sources = [];
         this._senderToPid = {};
