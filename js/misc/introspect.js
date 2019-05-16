@@ -42,8 +42,6 @@ var IntrospectService = class {
     }
 
     _isStandaloneApp(app) {
-        let windows = app.get_windows();
-
         return app.get_windows().some(w => w.transient_for == null);
     }
 
