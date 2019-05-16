@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/Shell/Notifications/js">
+    <file alias="main.js">notifications/main.js</file>
+    <file alias="notificationDaemon.js">notifications/notificationDaemon.js</file>
+    <file>dbusService.js</file>
+
+    <file alias="misc/config.js">../misc/config.js</file>
+    <file alias="misc/fileUtils.js">../misc/fileUtils.js</file>
+  </gresource>
+</gresources>
