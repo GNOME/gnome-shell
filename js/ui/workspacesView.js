@@ -483,15 +483,12 @@ var WorkspacesDisplay = class {
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._workspacesViews = [];
-        this._primaryScrollAdjustment = null;
         switchGesture.enabled = this.actor.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
                                this._workspacesOnlyOnPrimaryChanged.bind(this));
         this._workspacesOnlyOnPrimaryChanged();
-
-        this._switchWorkspaceNotifyId = 0;
 
         this._notifyOpacityId = 0;
         this._restackedNotifyId = 0;
