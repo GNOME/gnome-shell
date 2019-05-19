@@ -422,6 +422,8 @@ class DelegateFocusNavigator extends St.Widget {
 
 var WorkspacesDisplay = class {
     constructor() {
+        this._workspacesViews = [];
+
         this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
         this.actor._delegate = this;
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
@@ -481,8 +483,6 @@ var WorkspacesDisplay = class {
         });
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
-
-        this._workspacesViews = [];
         switchGesture.enabled = this.actor.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
