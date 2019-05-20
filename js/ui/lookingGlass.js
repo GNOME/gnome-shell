@@ -997,7 +997,11 @@ class LookingGlass extends St.BoxLayout {
     }
 
     getResult(idx) {
-        return this._resultsArea.get_child_at_index(idx - this._offset).o;
+        try {
+            return this._resultsArea.get_child_at_index(idx - this._offset).o;
+        } catch (e) {
+            throw new Error(`Unknown result at index ${idx}`);
+        }
     }
 
     toggle() {
