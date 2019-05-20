@@ -247,30 +247,31 @@ function objectToString(o) {
     }
 }
 
-var ObjLink = class ObjLink {
-    constructor(lookingGlass, o, title) {
+var ObjLink = GObject.registerClass(
+class ObjLink extends St.Button {
+    _init(lookingGlass, o, title) {
         let text;
         if (title)
             text = title;
         else
             text = objectToString(o);
         text = GLib.markup_escape_text(text, -1);
+
+        super._init({ reactive: true,
+                      track_hover: true,
+                      style_class: 'shell-link',
+                      label: text });
+        this.get_child().single_line_mode = true;
+        this.connect('clicked', this._onClicked.bind(this));
+
         this._obj = o;
-
-        this.actor = new St.Button({ reactive: true,
-                                     track_hover: true,
-                                     style_class: 'shell-link',
-                                     label: text });
-        this.actor.get_child().single_line_mode = true;
-        this.actor.connect('clicked', this._onClicked.bind(this));
-
         this._lookingGlass = lookingGlass;
     }
 
     _onClicked(link) {
-        this._lookingGlass.inspectObject(this._obj, this.actor);
+        this._lookingGlass.inspectObject(this._obj, this);
     }
-};
+});
 
 var Result = GObject.registerClass(
 class LookingGlass_Result extends St.BoxLayout {
@@ -291,7 +292,7 @@ class LookingGlass_Result extends St.BoxLayout {
         resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         box.add(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
-        box.add(objLink.actor);
+        box.add(objLink);
     }
 });
 
@@ -321,7 +322,7 @@ class LookingGlass_WindowList extends St.BoxLayout {
             let box = new St.BoxLayout({ vertical: true });
             this.add(box);
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
-            box.add(windowLink.actor, { x_align: St.Align.START, x_fill: false });
+            box.add(windowLink, { x_align: St.Align.START, x_fill: false });
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
             propsBox.add(new St.Label({ text: 'wmclass: ' + metaWindow.get_wm_class() }));
@@ -332,7 +333,7 @@ class LookingGlass_WindowList extends St.BoxLayout {
                 propsBox.add(propBox);
                 propBox.add(new St.Label({ text: 'app: ' }), { y_fill: false });
                 let appLink = new ObjLink(this._lookingGlass, app, app.get_id());
-                propBox.add(appLink.actor, { y_fill: false });
+                propBox.add(appLink, { y_fill: false });
                 propBox.add(icon, { y_fill: false });
             } else {
                 propsBox.add(new St.Label({ text: '<untracked>' }));
@@ -403,7 +404,7 @@ class ObjInspector extends St.ScrollView {
                 let link;
                 try {
                     let prop = obj[propName];
-                    link = new ObjLink(this._lookingGlass, prop).actor;
+                    link = new ObjLink(this._lookingGlass, prop);
                 } catch (e) {
                     link = new St.Label({ text: '<error>' });
                 }
