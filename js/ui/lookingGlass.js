@@ -611,18 +611,20 @@ var Inspector = GObject.registerClass({
     }
 });
 
-var Extensions = class Extensions {
-    constructor(lookingGlass) {
+var Extensions = GObject.registerClass(
+class LookingGlass_Extensions extends St.BoxLayout {
+    _init(lookingGlass) {
+        super._init({ vertical: true,
+                      name: 'lookingGlassExtensions' });
+
         this._lookingGlass = lookingGlass;
-        this.actor = new St.BoxLayout({ vertical: true,
-                                        name: 'lookingGlassExtensions' });
         this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
                                              text: _("No extensions installed") });
         this._numExtensions = 0;
         this._extensionsList = new St.BoxLayout({ vertical: true,
                                                   style_class: 'lg-extensions-list' });
         this._extensionsList.add(this._noExtensions);
-        this.actor.add(this._extensionsList);
+        this.add(this._extensionsList);
 
         for (let uuid in ExtensionUtils.extensions)
             this._loadExtension(null, uuid);
@@ -750,7 +752,7 @@ var Extensions = class Extensions {
 
         return box;
     }
-};
+});
 
 var LookingGlass = GObject.registerClass(
 class LookingGlass extends St.BoxLayout {
@@ -855,7 +857,7 @@ class LookingGlass extends St.BoxLayout {
         notebook.appendPage('Windows', this._windowList);
 
         this._extensions = new Extensions(this);
-        notebook.appendPage('Extensions', this._extensions.actor);
+        notebook.appendPage('Extensions', this._extensions);
 
         this._entry.clutter_text.connect('activate', (o, e) => {
             // Hide any completions we are currently showing
