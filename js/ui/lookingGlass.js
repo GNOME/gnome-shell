@@ -339,20 +339,22 @@ var WindowList = class WindowList {
 };
 Signals.addSignalMethods(WindowList.prototype);
 
-var ObjInspector = class ObjInspector {
-    constructor(lookingGlass) {
+var ObjInspector = GObject.registerClass(
+class ObjInspector extends St.ScrollView {
+    _init(lookingGlass) {
+        super._init({ pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
+                      x_fill: true, y_fill: true });
+
         this._obj = null;
         this._previousObj = null;
 
         this._parentList = [];
 
-        this.actor = new St.ScrollView({ pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
-                                         x_fill: true, y_fill: true });
-        this.actor.get_hscroll_bar().hide();
+        this.get_hscroll_bar().hide();
         this._container = new St.BoxLayout({ name: 'LookingGlassPropertyInspector',
                                              style_class: 'lg-dialog',
                                              vertical: true });
-        this.actor.add_actor(this._container);
+        this.add_actor(this._container);
 
         this._lookingGlass = lookingGlass;
     }
@@ -417,14 +419,14 @@ var ObjInspector = class ObjInspector {
             return;
         this._previousObj = null;
         this._open = true;
-        this.actor.show();
+        this.show();
         if (sourceActor) {
-            this.actor.set_scale(0, 0);
-            Tweener.addTween(this.actor, { scale_x: 1, scale_y: 1,
-                                           transition: 'easeOutQuad',
-                                           time: 0.2 });
+            this.set_scale(0, 0);
+            Tweener.addTween(this, { scale_x: 1, scale_y: 1,
+                                     transition: 'easeOutQuad',
+                                     time: 0.2 });
         } else {
-            this.actor.set_scale(1, 1);
+            this.set_scale(1, 1);
         }
     }
 
@@ -432,7 +434,7 @@ var ObjInspector = class ObjInspector {
         if (!this._open)
             return;
         this._open = false;
-        this.actor.hide();
+        this.hide();
         this._previousObj = null;
         this._obj = null;
     }
@@ -446,7 +448,7 @@ var ObjInspector = class ObjInspector {
     _onBack() {
         this.selectObject(this._previousObj, true);
     }
-};
+});
 
 var RedBorderEffect = GObject.registerClass(
 class RedBorderEffect extends Clutter.Effect {
@@ -786,8 +788,8 @@ class LookingGlass extends St.BoxLayout {
                                                this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);
-        Main.uiGroup.add_actor(this._objInspector.actor);
-        this._objInspector.actor.hide();
+        Main.uiGroup.add_actor(this._objInspector);
+        this._objInspector.hide();
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.add_actor(toolbar);
@@ -1021,9 +1023,9 @@ class LookingGlass extends St.BoxLayout {
         this.y = this._hiddenY;
         this.width = myWidth;
         this.height = myHeight;
-        this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
-        this._objInspector.actor.set_position(this.x + Math.floor(myWidth * 0.1),
-                                              this._targetY + Math.floor(myHeight * 0.1));
+        this._objInspector.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
+        this._objInspector.set_position(this.x + Math.floor(myWidth * 0.1),
+                                        this._targetY + Math.floor(myHeight * 0.1));
     }
 
     insertObject(obj) {
@@ -1040,7 +1042,7 @@ class LookingGlass extends St.BoxLayout {
         let symbol = event.get_key_symbol();
         let modifierState = event.get_state();
         if (symbol == Clutter.Escape) {
-            if (this._objInspector.actor.visible) {
+            if (this._objInspector.visible) {
                 this._objInspector.close();
             } else {
                 this.close();
@@ -1084,7 +1086,7 @@ class LookingGlass extends St.BoxLayout {
         if (!this._open)
             return;
 
-        this._objInspector.actor.hide();
+        this._objInspector.hide();
 
         this._open = false;
         Tweener.removeTweens(this);
