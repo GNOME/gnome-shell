@@ -747,8 +747,15 @@ var Extensions = class Extensions {
     }
 };
 
-var LookingGlass = class LookingGlass {
-    constructor() {
+var LookingGlass = GObject.registerClass(
+class LookingGlass extends St.BoxLayout {
+    _init() {
+        super._init({ name: 'LookingGlassDialog',
+                      style_class: 'lg-dialog',
+                      vertical: true,
+                      visible: false,
+                      reactive: true });
+
         this._borderPaintTarget = null;
         this._redBorderEffect = new RedBorderEffect();
 
@@ -761,12 +768,7 @@ var LookingGlass = class LookingGlass {
         // Sort of magic, but...eh.
         this._maxItems = 150;
 
-        this.actor = new St.BoxLayout({ name: 'LookingGlassDialog',
-                                        style_class: 'lg-dialog',
-                                        vertical: true,
-                                        visible: false,
-                                        reactive: true });
-        this.actor.connect('key-press-event', this._globalKeyPressEvent.bind(this));
+        this.connect('key-press-event', this._globalKeyPressEvent.bind(this));
 
         this._interfaceSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._interfaceSettings.connect('changed::monospace-font-name',
@@ -774,8 +776,8 @@ var LookingGlass = class LookingGlass {
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
-        Main.uiGroup.add_actor(this.actor);
-        Main.uiGroup.set_child_below_sibling(this.actor,
+        Main.uiGroup.add_actor(this);
+        Main.uiGroup.set_child_below_sibling(this,
                                              Main.layoutManager.panelBox);
         Main.layoutManager.panelBox.connect('allocation-changed',
                                             this._queueResize.bind(this));
@@ -787,7 +789,7 @@ var LookingGlass = class LookingGlass {
         this._objInspector.actor.hide();
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
-        this.actor.add_actor(toolbar);
+        this.add_actor(toolbar);
         let inspectIcon = new St.Icon({ icon_name: 'gtk-color-picker',
                                         icon_size: 24 });
         toolbar.add_actor(inspectIcon);
@@ -798,10 +800,10 @@ var LookingGlass = class LookingGlass {
                 this._pushResult('inspect(' + Math.round(stageX) + ', ' + Math.round(stageY) + ')', target);
             });
             inspector.connect('closed', () => {
-                this.actor.show();
+                this.show();
                 global.stage.set_key_focus(this._entry);
             });
-            this.actor.hide();
+            this.hide();
             return Clutter.EVENT_STOP;
         });
 
@@ -889,7 +891,7 @@ var LookingGlass = class LookingGlass {
         let fontDesc = Pango.FontDescription.from_string(fontName);
         // We ignore everything but size and style; you'd be crazy to set your system-wide
         // monospace font to be bold/oblique/etc. Could easily be added here.
-        this.actor.style =
+        this.style =
             'font-size: ' + fontDesc.get_size() / 1024. + (fontDesc.get_size_is_absolute() ? 'px' : 'pt') + ';'
             + 'font-family: "' + fontDesc.get_family() + '";';
     }
@@ -1012,14 +1014,14 @@ var LookingGlass = class LookingGlass {
         let myWidth = primary.width * 0.7;
         let availableHeight = primary.height - Main.layoutManager.keyboardBox.height;
         let myHeight = Math.min(primary.height * 0.7, availableHeight * 0.9);
-        this.actor.x = primary.x + (primary.width - myWidth) / 2;
+        this.x = primary.x + (primary.width - myWidth) / 2;
         this._hiddenY = primary.y + Main.layoutManager.panelBox.height - myHeight;
         this._targetY = this._hiddenY + myHeight;
-        this.actor.y = this._hiddenY;
-        this.actor.width = myWidth;
-        this.actor.height = myHeight;
+        this.y = this._hiddenY;
+        this.width = myWidth;
+        this.height = myHeight;
         this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
-        this._objInspector.actor.set_position(this.actor.x + Math.floor(myWidth * 0.1),
+        this._objInspector.actor.set_position(this.x + Math.floor(myWidth * 0.1),
                                               this._targetY + Math.floor(myHeight * 0.1));
     }
 
@@ -1063,18 +1065,18 @@ var LookingGlass = class LookingGlass {
             return;
 
         this._notebook.selectIndex(0);
-        this.actor.show();
+        this.show();
         this._open = true;
         this._history.lastItem();
 
-        Tweener.removeTweens(this.actor);
+        Tweener.removeTweens(this);
 
         // We inverse compensate for the slow-down so you can change the factor
         // through LookingGlass without long waits.
-        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
-                                       transition: 'easeOutQuad',
-                                       y: this._targetY
-                                     });
+        Tweener.addTween(this, { time: 0.5 / St.get_slow_down_factor(),
+                                 transition: 'easeOutQuad',
+                                 y: this._targetY
+                               });
     }
 
     close() {
@@ -1084,19 +1086,18 @@ var LookingGlass = class LookingGlass {
         this._objInspector.actor.hide();
 
         this._open = false;
-        Tweener.removeTweens(this.actor);
+        Tweener.removeTweens(this);
 
         this.setBorderPaintTarget(null);
 
         Main.popModal(this._entry);
 
-        Tweener.addTween(this.actor, { time: Math.min(0.5 / St.get_slow_down_factor(), 0.5),
-                                       transition: 'easeOutQuad',
-                                       y: this._hiddenY,
-                                       onComplete: () => {
-                                           this.actor.hide();
-                                       }
-                                     });
+        Tweener.addTween(this, { time: Math.min(0.5 / St.get_slow_down_factor(), 0.5),
+                                 transition: 'easeOutQuad',
+                                 y: this._hiddenY,
+                                 onComplete: () => {
+                                     this.hide();
+                                 }
+                               });
     }
-};
-Signals.addSignalMethods(LookingGlass.prototype);
+});
