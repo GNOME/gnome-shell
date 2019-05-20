@@ -998,7 +998,11 @@ var LookingGlass = class LookingGlass {
     }
 
     getResult(idx) {
-        return this._results[idx - this._offset].o;
+        try {
+            return this._results[idx - this._offset].o;
+        } catch (e) {
+            throw new Error(`Unknown result at index ${idx}`);
+        }
     }
 
     toggle() {
