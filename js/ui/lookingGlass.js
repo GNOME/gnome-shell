@@ -110,9 +110,11 @@ var AutoComplete = class AutoComplete {
 Signals.addSignalMethods(AutoComplete.prototype);
 
 
-var Notebook = class Notebook {
-    constructor() {
-        this.actor = new St.BoxLayout({ vertical: true });
+var Notebook = GObject.registerClass({
+    Signals: { 'selection': { param_types: [Clutter.Actor.$gtype] } },
+}, class Notebook extends St.BoxLayout {
+    _init() {
+        super._init({ vertical: true });
 
         this.tabControls = new St.BoxLayout({ style_class: 'labels' });
 
@@ -143,7 +145,7 @@ var Notebook = class Notebook {
                         _scrollToBottom: false };
         this._tabs.push(tabData);
         scrollview.hide();
-        this.actor.add(scrollview, { expand: true });
+        this.add(scrollview, { expand: true });
 
         let vAdjust = scrollview.vscroll.adjustment;
         vAdjust.connect('changed', () => { this._onAdjustScopeChanged(tabData); });
@@ -174,7 +176,7 @@ var Notebook = class Notebook {
         // Focus the new tab before unmapping the old one
         let tabData = this._tabs[index];
         if (!tabData.scrollView.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
-            this.actor.grab_key_focus();
+            this.grab_key_focus();
 
         this._unselect();
 
@@ -234,8 +236,7 @@ var Notebook = class Notebook {
 
         this.selectIndex(prevIndex);
     }
-};
-Signals.addSignalMethods(Notebook.prototype);
+});
 
 function objectToString(o) {
     if (typeof(o) == typeof(objectToString)) {
@@ -825,7 +826,7 @@ class LookingGlass extends St.BoxLayout {
 
         let notebook = new Notebook();
         this._notebook = notebook;
-        this.actor.add(notebook.actor, { expand: true });
+        this.add(notebook, { expand: true });
 
         let emptyBox = new St.Bin();
         toolbar.add(emptyBox, { expand: true });
