@@ -787,7 +787,6 @@ class LookingGlass extends St.BoxLayout {
 
         this._it = null;
         this._offset = 0;
-        this._results = [];
 
         // Sort of magic, but...eh.
         this._maxItems = 150;
@@ -931,17 +930,14 @@ class LookingGlass extends St.BoxLayout {
     }
 
     _pushResult(command, obj) {
-        let index = this._results.length + this._offset;
+        let index = this._resultsArea.get_n_children() + this._offset;
         let result = new Result(this, CHEVRON + command, obj, index);
-        this._results.push(result);
         this._resultsArea.add(result);
         if (obj instanceof Clutter.Actor)
             this.setBorderPaintTarget(obj);
 
-        let children = this._resultsArea.get_children();
-        if (children.length > this._maxItems) {
-            this._results.shift();
-            children[0].destroy();
+        if (this._resultsArea.get_n_children() > this._maxItems) {
+            this._resultsArea.get_first_child().destroy();
             this._offset++;
         }
         this._it = obj;
@@ -1028,7 +1024,7 @@ class LookingGlass extends St.BoxLayout {
 
     getResult(idx) {
         try {
-            return this._results[idx - this._offset].o;
+            return this._resultsArea.get_child_at_index(idx - this._offset).o;
         } catch (e) {
             throw new Error(`Unknown result at index ${idx}`);
         }
