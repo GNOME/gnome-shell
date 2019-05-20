@@ -293,11 +293,12 @@ var Result = class Result {
     }
 };
 
-var WindowList = class WindowList {
-    constructor(lookingGlass) {
-        this.actor = new St.BoxLayout({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
+var WindowList = GObject.registerClass(
+class LookingGlass_WindowList extends St.BoxLayout {
+    _init(lookingGlass) {
+        super._init({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
         let tracker = Shell.WindowTracker.get_default();
-        this._updateId = Main.initializeDeferredWork(this.actor, this._updateWindowList.bind(this));
+        this._updateId = Main.initializeDeferredWork(this, this._updateWindowList.bind(this));
         global.display.connect('window-created', this._updateWindowList.bind(this));
         tracker.connect('tracked-windows-changed', this._updateWindowList.bind(this));
 
@@ -305,7 +306,7 @@ var WindowList = class WindowList {
     }
 
     _updateWindowList() {
-        this.actor.destroy_all_children();
+        this.destroy_all_children();
         let windows = global.get_window_actors();
         let tracker = Shell.WindowTracker.get_default();
         for (let i = 0; i < windows.length; i++) {
@@ -316,7 +317,7 @@ var WindowList = class WindowList {
                 metaWindow._lookingGlassManaged = true;
             }
             let box = new St.BoxLayout({ vertical: true });
-            this.actor.add(box);
+            this.add(box);
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
             box.add(windowLink.actor, { x_align: St.Align.START, x_fill: false });
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
@@ -336,8 +337,7 @@ var WindowList = class WindowList {
             }
         }
     }
-};
-Signals.addSignalMethods(WindowList.prototype);
+});
 
 var ObjInspector = GObject.registerClass(
 class ObjInspector extends St.ScrollView {
@@ -851,7 +851,7 @@ class LookingGlass extends St.BoxLayout {
         this._entryArea.add(this._entry, { expand: true });
 
         this._windowList = new WindowList(this);
-        notebook.appendPage('Windows', this._windowList.actor);
+        notebook.appendPage('Windows', this._windowList);
 
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
