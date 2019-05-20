@@ -272,26 +272,28 @@ var ObjLink = class ObjLink {
     }
 };
 
-var Result = class Result {
-    constructor(lookingGlass, command, o, index) {
+var Result = GObject.registerClass(
+class LookingGlass_Result extends St.BoxLayout {
+    _init(lookingGlass, command, o, index) {
+        super._init({ vertical: true });
+
         this.index = index;
         this.o = o;
 
-        this.actor = new St.BoxLayout({ vertical: true });
         this._lookingGlass = lookingGlass;
 
         let cmdTxt = new St.Label({ text: command });
         cmdTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        this.actor.add(cmdTxt);
+        this.add(cmdTxt);
         let box = new St.BoxLayout({});
-        this.actor.add(box);
+        this.add(box);
         let resultTxt = new St.Label({ text: 'r(' + index + ') = ' });
         resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         box.add(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
         box.add(objLink.actor);
     }
-};
+});
 
 var WindowList = GObject.registerClass(
 class LookingGlass_WindowList extends St.BoxLayout {
@@ -911,7 +913,7 @@ class LookingGlass extends St.BoxLayout {
         let index = this._results.length + this._offset;
         let result = new Result(this, CHEVRON + command, obj, index);
         this._results.push(result);
-        this._resultsArea.add(result.actor);
+        this._resultsArea.add(result);
         if (obj instanceof Clutter.Actor)
             this.setBorderPaintTarget(obj);
 
