@@ -393,8 +393,14 @@ var ControlsLayout = GObject.registerClass({
     }
 });
 
-var ControlsManager = class {
-    constructor(searchEntry) {
+var ControlsManager = GObject.registerClass(
+class ControlsManager extends St.Widget {
+    _init(searchEntry) {
+        let layout = new ControlsLayout();
+        super._init({ layout_manager: layout,
+                      x_expand: true, y_expand: true,
+                      clip_to_allocation: true });
+
         this.dash = new Dash.Dash();
         this._dashSlider = new DashSlider(this.dash);
         this._dashSpacer = new DashSpacer();
@@ -408,15 +414,11 @@ var ControlsManager = class {
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
-        let layout = new ControlsLayout();
-        this.actor = new St.Widget({ layout_manager: layout,
-                                     x_expand: true, y_expand: true,
-                                     clip_to_allocation: true });
         this._group = new St.BoxLayout({ name: 'overview-group',
                                         x_expand: true, y_expand: true });
-        this.actor.add_actor(this._group);
+        this.add_actor(this._group);
 
-        this.actor.add_actor(this._dashSlider);
+        this.add_actor(this._dashSlider);
 
         this._group.add_actor(this._dashSpacer);
         this._group.add(this.viewSelector.actor, { x_fill: true,
@@ -440,18 +442,18 @@ var ControlsManager = class {
     }
 
     _updateWorkspacesGeometry() {
-        let [x, y] = this.actor.get_transformed_position();
-        let [width, height] = this.actor.get_transformed_size();
+        let [x, y] = this.get_transformed_position();
+        let [width, height] = this.get_transformed_size();
         let geometry = { x: x, y: y, width: width, height: height };
 
-        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let spacing = this.get_theme_node().get_length('spacing');
         let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
         let thumbnailsWidth = this._thumbnailsSlider.getNonExpandedWidth() + spacing;
 
         geometry.width -= dashWidth;
         geometry.width -= thumbnailsWidth;
 
-        if (this.actor.get_text_direction() == Clutter.TextDirection.LTR)
+        if (this.get_text_direction() == Clutter.TextDirection.LTR)
             geometry.x += dashWidth;
         else
             geometry.x += thumbnailsWidth;
@@ -498,4 +500,4 @@ var ControlsManager = class {
 
         this._updateSpacerVisibility();
     }
-};
+});
