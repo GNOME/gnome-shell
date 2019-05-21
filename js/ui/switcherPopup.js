@@ -162,7 +162,7 @@ var SwitcherPopup = GObject.registerClass({
     }
 
     _keyPressHandler(keysym, action) {
-        throw new Error('Not implemented');
+        throw new GObject.NotImplementedError();
     }
 
     _keyPressEvent(actor, event) {
