@@ -236,7 +236,7 @@ var Overview = class {
         this.viewSelector = this._controls.viewSelector;
 
         // Add our same-line elements after the search entry
-        this._overview.add(this._controls.actor, { y_fill: true, expand: true });
+        this._overview.add(this._controls, { y_fill: true, expand: true });
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
