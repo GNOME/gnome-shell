@@ -124,7 +124,7 @@ var Batch = class extends Task {
     }
 
     process() {
-        throw new Error('Not implemented');
+        throw new GObject.NotImplementedError(`process in ${this.constructor.name}`);
     }
 
     runTask() {

@@ -835,7 +835,7 @@ var LayoutStrategy = class {
     // (optionally) for each row in @layout.rows. This method is
     // intended to be called by subclasses.
     _computeRowSizes(layout) {
-        throw new Error('_computeRowSizes not implemented');
+        throw new GObject.NotImplementedError(`_computeRowSizes in ${this.constructor.name}`);
     }
 
     // Compute strategy-specific window slots for each window in
@@ -848,7 +848,7 @@ var LayoutStrategy = class {
     //  * gridHeight - The totial height used by the grid, unscaled, unspaced.
     //  * rows - A list of rows, which should be instantiated by _newRow.
     computeLayout(windows, layout) {
-        throw new Error('computeLayout not implemented');
+        throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
     }
 
     // Given @layout, compute the overall scale and space of the layout.

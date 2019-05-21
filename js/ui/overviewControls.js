@@ -122,7 +122,7 @@ var SlidingControl = class {
     }
 
     _getSlide() {
-        throw new Error('getSlide() must be overridden');
+        throw new GObject.NotImplementedError(`_getSlide in ${this.constructor.name}`);
     }
 
     _updateSlide() {

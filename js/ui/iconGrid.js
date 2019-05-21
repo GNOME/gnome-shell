@@ -79,7 +79,7 @@ class BaseIcon extends St.Bin {
     // This can be overridden by a subclass, or by the createIcon
     // parameter to _init()
     createIcon(size) {
-        throw new Error('no implementation of createIcon in ' + this);
+        throw new GObject.NotImplementedError(`createIcon in ${this.constructor.name}`);
     }
 
     setIconSize(size) {
@@ -416,7 +416,8 @@ var IconGrid = GObject.registerClass({
 
     animatePulse(animationDirection) {
         if (animationDirection != AnimationDirection.IN)
-            throw new Error("Pulse animation only implements 'in' animation direction");
+            throw new GObject.NotImplementedError("Pulse animation only implements " +
+                                                  "'in' animation direction");
 
         this._cancelAnimation();
 
