@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
@@ -57,18 +56,19 @@ function _createIcon(gicon) {
 
 /* -------------------------------------------------------- */
 
-var ListItem = class {
-    constructor(app) {
-        this._app = app;
-
+var ListItem = GObject.registerClass({
+    Signals: { 'activate': {} }
+}, class ShellMountOperation_ListItem extends St.Button {
+    _init(app) {
         let layout = new St.BoxLayout({ vertical: false});
+        super._init({ style_class: 'mount-dialog-app-list-item',
+                      can_focus: true,
+                      child: layout,
+                      reactive: true,
+                      x_align: St.Align.START,
+                      x_fill: true });
 
-        this.actor = new St.Button({ style_class: 'mount-dialog-app-list-item',
-                                     can_focus: true,
-                                     child: layout,
-                                     reactive: true,
-                                     x_align: St.Align.START,
-                                     x_fill: true });
+        this._app = app;
 
         this._icon = this._app.create_icon_texture(LIST_ITEM_ICON_SIZE);
 
@@ -82,15 +82,14 @@ var ListItem = class {
                                     child: this._nameLabel });
         layout.add(labelBin);
 
-        this.actor.connect('clicked', this._onClicked.bind(this));
+        this.connect('clicked', this._onClicked.bind(this));
     }
 
     _onClicked() {
         this.emit('activate');
         this._app.activate();
     }
-};
-Signals.addSignalMethods(ListItem.prototype);
+});
 
 var ShellMountOperation = class {
     constructor(source, params) {
@@ -539,7 +538,7 @@ var ShellProcessesDialog = GObject.registerClass({
                 return;
 
             let item = new ListItem(app);
-            this._applicationList.add(item.actor, { x_fill: true });
+            this._applicationList.add(item, { x_fill: true });
 
             item.connect('activate', () => {
                 // use -1 to indicate Cancel
