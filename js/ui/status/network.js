@@ -613,31 +613,36 @@ var NMDeviceBluetooth = class extends NMConnectionDevice {
     }
 };
 
-var NMWirelessDialogItem = class {
-    constructor(network) {
+var NMWirelessDialogItem = GObject.registerClass({
+    Signals: {
+        'selected': {},
+    }
+}, class NMWirelessDialogItem extends St.BoxLayout {
+    _init(network) {
         this._network = network;
         this._ap = network.accessPoints[0];
 
-        this.actor = new St.BoxLayout({ style_class: 'nm-dialog-item',
-                                        can_focus: true,
-                                        reactive: true });
-        this.actor.connect('key-focus-in', () => { this.emit('selected'); });
+        super._init({ style_class: 'nm-dialog-item',
+                      can_focus: true,
+                      reactive: true });
+
+        this.connect('key-focus-in', () => { this.emit('selected'); });
         let action = new Clutter.ClickAction();
-        action.connect('clicked', () => { this.actor.grab_key_focus(); });
-        this.actor.add_action(action);
+        action.connect('clicked', () => { this.grab_key_focus(); });
+        this.add_action(action);
 
         let title = ssidToLabel(this._ap.get_ssid());
         this._label = new St.Label({ text: title });
 
-        this.actor.label_actor = this._label;
-        this.actor.add(this._label, { x_align: St.Align.START });
+        this.label_actor = this._label;
+        this.add(this._label, { x_align: St.Align.START });
 
         this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
                                            icon_name: 'object-select-symbolic' });
-        this.actor.add(this._selectedIcon);
+        this.add(this._selectedIcon);
 
         this._icons = new St.BoxLayout({ style_class: 'nm-dialog-icons' });
-        this.actor.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
+        this.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
 
         this._secureIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         if (this._ap._secType != NMAccessPointSecurity.NONE)
@@ -669,8 +674,7 @@ var NMWirelessDialogItem = class {
         else
             return 'network-wireless-signal-' + signalToIcon(this._ap.strength) + '-symbolic';
     }
-};
-Signals.addSignalMethods(NMWirelessDialogItem.prototype);
+});
 
 var NMWirelessDialog = class extends ModalDialog.ModalDialog {
     constructor(client, device) {
