@@ -1,3 +1,20 @@
+3.33.2
+======
+* Fix keeping actors visible in scrollviews [Marco; #1061]
+* Move some chrome above popup windows [Jonas D.; !358]
+* Include 'sandboxed-app-id' in winodw introspection info [Florian; #1289]
+* Port to libecal-2.0 [Milan; !501]
+* Support TCRYPT in mount password dialog [segfault; !126]
+* Misc. bug fixes and cleanups [Florian, Marco, Veerasamy; !517, #745, !499,
+  !510, !515, !546, !549]
+
+Contributors:
+  Cosimo Cecchi, Milan Crha, Jonas Dreßler, Florian Müllner, segfault,
+  Veerasamy Sevagen, Marco Trevisan (Treviño)
+
+Translators:
+  Daniel Mustieles [es]
+
 3.33.1
 ======
 * Refine the app menu [Florian; #968]
