@@ -347,12 +347,13 @@ class WeatherSection extends St.Button {
     }
 });
 
-var MessagesIndicator = class MessagesIndicator {
-    constructor() {
-        this.actor = new St.Icon({ icon_name: 'message-indicator-symbolic',
-                                   icon_size: 16,
-                                   visible: false, y_expand: true,
-                                   y_align: Clutter.ActorAlign.CENTER });
+var MessagesIndicator = GObject.registerClass(
+class MessagesIndicator extends St.Icon {
+    _init() {
+        super._init({ icon_name: 'message-indicator-symbolic',
+                      icon_size: 16,
+                      visible: false, y_expand: true,
+                      y_align: Clutter.ActorAlign.CENTER });
 
         this._sources = [];
 
@@ -380,9 +381,9 @@ var MessagesIndicator = class MessagesIndicator {
         this._sources.forEach(source => { count += source.unseenCount; });
         count -= Main.messageTray.queueCount;
 
-        this.actor.visible = (count > 0);
+        this.visible = (count > 0);
     }
-};
+});
 
 var IndicatorPad = GObject.registerClass(
 class IndicatorPad extends St.Widget {
@@ -476,9 +477,9 @@ class DateMenuButton extends PanelMenu.Button {
         this._indicator = new MessagesIndicator();
 
         let box = new St.BoxLayout();
-        box.add_actor(new IndicatorPad(this._indicator.actor));
+        box.add_actor(new IndicatorPad(this._indicator));
         box.add_actor(this._clockDisplay);
-        box.add_actor(this._indicator.actor);
+        box.add_actor(this._indicator);
 
         this.label_actor = this._clockDisplay;
         this.add_actor(box);
