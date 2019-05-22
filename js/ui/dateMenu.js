@@ -72,17 +72,18 @@ class TodayButton extends St.Button {
     }
 });
 
-var WorldClocksSection = class WorldClocksSection {
-    constructor() {
+var WorldClocksSection = GObject.registerClass(
+class WorldClocksSection extends St.Button {
+    _init() {
+        super._init({ style_class: 'world-clocks-button',
+                      x_fill: true,
+                      can_focus: true });
         this._clock = new GnomeDesktop.WallClock();
         this._clockNotifyId = 0;
 
         this._locations = [];
 
-        this.actor = new St.Button({ style_class: 'world-clocks-button',
-                                     x_fill: true,
-                                     can_focus: true });
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             this._clockAppMon.activateApp();
 
             Main.overview.hide();
@@ -94,7 +95,7 @@ var WorldClocksSection = class WorldClocksSection {
                                      layout_manager: layout });
         layout.hookup_style(this._grid);
 
-        this.actor.child = this._grid;
+        this.child = this._grid;
 
         this._clockAppMon = new Util.AppSettingsMonitor('org.gnome.clocks.desktop',
                                                         'org.gnome.clocks');
@@ -106,7 +107,7 @@ var WorldClocksSection = class WorldClocksSection {
     }
 
     _sync() {
-        this.actor.visible = this._clockAppMon.available;
+        this.visible = this._clockAppMon.available;
     }
 
     _clocksChanged(settings) {
@@ -135,7 +136,7 @@ var WorldClocksSection = class WorldClocksSection {
                                     x_align: Clutter.ActorAlign.START,
                                     text: title });
         layout.attach(header, 0, 0, 2, 1);
-        this.actor.label_actor = header;
+        this.label_actor = header;
 
         let localOffset = GLib.DateTime.new_now_local().get_utc_offset();
 
@@ -197,7 +198,7 @@ var WorldClocksSection = class WorldClocksSection {
             l.actor.text = Util.formatTime(now, { timeOnly: true });
         }
     }
-};
+});
 
 var WeatherSection = class WeatherSection {
     constructor() {
@@ -534,7 +535,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._displaysSection.add_actor(displaysBox);
 
         this._clocksItem = new WorldClocksSection();
-        displaysBox.add(this._clocksItem.actor, { x_fill: true });
+        displaysBox.add(this._clocksItem, { x_fill: true });
 
         this._weatherItem = new WeatherSection();
         displaysBox.add(this._weatherItem.actor, { x_fill: true });
