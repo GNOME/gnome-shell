@@ -200,28 +200,30 @@ class WorldClocksSection extends St.Button {
     }
 });
 
-var WeatherSection = class WeatherSection {
-    constructor() {
+var WeatherSection = GObject.registerClass(
+class WeatherSection extends St.Button {
+    _init() {
+        super._init({ style_class: 'weather-button',
+                      x_fill: true,
+                      can_focus: true });
+
         this._weatherClient = new Weather.WeatherClient();
 
-        this.actor = new St.Button({ style_class: 'weather-button',
-                                     x_fill: true,
-                                     can_focus: true });
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             this._weatherClient.activateApp();
 
             Main.overview.hide();
             Main.panel.closeCalendar();
         });
-        this.actor.connect('notify::mapped', () => {
-            if (this.actor.mapped)
+        this.connect('notify::mapped', () => {
+            if (this.mapped)
                 this._weatherClient.update();
         });
 
         let box = new St.BoxLayout({ style_class: 'weather-box',
                                       vertical: true });
 
-        this.actor.child = box;
+        this.child = box;
 
         let titleBox = new St.BoxLayout();
         titleBox.add_child(new St.Label({ style_class: 'weather-header',
@@ -334,16 +336,16 @@ var WeatherSection = class WeatherSection {
     }
 
     _sync() {
-        this.actor.visible = this._weatherClient.available;
+        this.visible = this._weatherClient.available;
 
-        if (!this.actor.visible)
+        if (!this.visible)
             return;
 
         this._titleLocation.visible = this._weatherClient.hasLocation;
 
         this._updateForecasts();
     }
-};
+});
 
 var MessagesIndicator = class MessagesIndicator {
     constructor() {
@@ -538,7 +540,7 @@ class DateMenuButton extends PanelMenu.Button {
         displaysBox.add(this._clocksItem, { x_fill: true });
 
         this._weatherItem = new WeatherSection();
-        displaysBox.add(this._weatherItem.actor, { x_fill: true });
+        displaysBox.add(this._weatherItem, { x_fill: true });
 
         // Done with hbox for calendar and event list
 
