@@ -17,15 +17,17 @@ var AnimationType = {
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
-var WorkspacesViewBase = class {
-    constructor(monitorIndex) {
-        this.actor = new St.Widget({ style_class: 'workspaces-view',
-                                     reactive: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        global.focus_manager.add_group(this.actor);
+var WorkspacesViewBase = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT
+}, class WorkspacesViewBase extends St.Widget {
+    _init(monitorIndex) {
+        super._init({ style_class: 'workspaces-view',
+                      reactive: true });
+        this.connect('destroy', this._onDestroy.bind(this));
+        global.focus_manager.add_group(this);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
-        this.actor.set_size(0, 0);
+        this.set_size(0, 0);
 
         this._monitorIndex = monitorIndex;
 
@@ -60,10 +62,6 @@ var WorkspacesViewBase = class {
         this._setReservedSlot(null);
     }
 
-    destroy() {
-        this.actor.destroy();
-    }
-
     setFullGeometry(geom) {
         this._fullGeometry = geom;
         this._syncFullGeometry();
@@ -73,13 +71,14 @@ var WorkspacesViewBase = class {
         this._actualGeometry = geom;
         this._syncActualGeometry();
     }
-};
+});
 
-var WorkspacesView = class extends WorkspacesViewBase {
-    constructor(monitorIndex) {
+var WorkspacesView = GObject.registerClass(
+class WorkspacesView extends WorkspacesViewBase {
+    _init(monitorIndex) {
         let workspaceManager = global.workspace_manager;
 
-        super(monitorIndex);
+        super._init(monitorIndex);
 
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -104,8 +103,8 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
-                this.actor.set_clip(this._fullGeometry.x, this._fullGeometry.y,
-                                    this._fullGeometry.width, this._fullGeometry.height);
+                this.set_clip(this._fullGeometry.x, this._fullGeometry.y,
+                              this._fullGeometry.width, this._fullGeometry.height);
             });
 
         this._switchWorkspaceNotifyId =
@@ -145,7 +144,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     animateFromOverview(animationType) {
-        this.actor.remove_clip();
+        this.remove_clip();
 
         for (let w = 0; w < this._workspaces.length; w++) {
             if (animationType == AnimationType.ZOOM)
@@ -253,7 +252,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
             if (j >= this._workspaces.length) { /* added */
                 workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
-                this.actor.add_actor(workspace.actor);
+                this.add_actor(workspace.actor);
                 this._workspaces[j] = workspace;
             } else  {
                 workspace = this._workspaces[j];
@@ -356,14 +355,14 @@ var WorkspacesView = class extends WorkspacesViewBase {
             this._workspaces[i].actor.y += dy;
         }
     }
-};
-Signals.addSignalMethods(WorkspacesView.prototype);
+});
 
-var ExtraWorkspaceView = class extends WorkspacesViewBase {
-    constructor(monitorIndex) {
-        super(monitorIndex);
+var ExtraWorkspaceView = GObject.registerClass(
+class ExtraWorkspaceView extends WorkspacesViewBase {
+    _init(monitorIndex) {
+        super._init(monitorIndex);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
-        this.actor.add_actor(this._workspace.actor);
+        this.add_actor(this._workspace.actor);
     }
 
     _setReservedSlot(window) {
@@ -411,7 +410,7 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
 
     endTouchGesture() {
     }
-};
+});
 
 var DelegateFocusNavigator = GObject.registerClass(
 class DelegateFocusNavigator extends St.Widget {
@@ -547,7 +546,7 @@ var WorkspacesDisplay = class {
     }
 
     navigateFocus(from, direction) {
-        return this._getPrimaryView().actor.navigate_focus(from, direction, false);
+        return this._getPrimaryView().navigate_focus(from, direction, false);
     }
 
     show(fadeOnPrimary) {
@@ -623,7 +622,7 @@ var WorkspacesDisplay = class {
             else
                 view = new WorkspacesView(i);
 
-            view.actor.connect('scroll-event', this._onScrollEvent.bind(this));
+            view.connect('scroll-event', this._onScrollEvent.bind(this));
             if (i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
@@ -631,7 +630,7 @@ var WorkspacesDisplay = class {
             }
 
             this._workspacesViews.push(view);
-            Main.layoutManager.overviewGroup.add_actor(view.actor);
+            Main.layoutManager.overviewGroup.add_actor(view);
         }
 
         this._updateWorkspacesFullGeometry();
@@ -687,8 +686,8 @@ var WorkspacesDisplay = class {
                 let primaryView = this._getPrimaryView();
                 if (!primaryView)
                     return;
-                primaryView.actor.opacity = opacity;
-                primaryView.actor.visible = opacity != 0;
+                primaryView.opacity = opacity;
+                primaryView.visible = opacity != 0;
             });
         });
     }
