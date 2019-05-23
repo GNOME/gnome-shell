@@ -107,16 +107,18 @@ var KeybindingEntry = GObject.registerClass({
     }
 });
 
-var ActionComboBox = class {
-    constructor() {
-        this.actor = new St.Button({ style_class: 'button' });
-        this.actor.connect('clicked', this._onButtonClicked.bind(this));
-        this.actor.set_toggle_mode(true);
+var ActionComboBox = GObject.registerClass({
+    Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } }
+}, class PadOsd_ActionComboBox extends St.Button {
+    _init() {
+        super._init({ style_class: 'button' });
+        this.connect('clicked', this._onButtonClicked.bind(this));
+        this.set_toggle_mode(true);
 
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 6 });
         let box = new St.Widget({ layout_manager: boxLayout });
-        this.actor.set_child(box);
+        this.set_child(box);
 
         this._label = new St.Label({ style_class: 'combo-box-label' });
         box.add_child(this._label)
@@ -128,9 +130,9 @@ var ActionComboBox = class {
                                   y_align: Clutter.ActorAlign.CENTER });
         box.add_child(arrow);
 
-        this._editMenu = new PopupMenu.PopupMenu(this.actor, 0, St.Side.TOP);
+        this._editMenu = new PopupMenu.PopupMenu(this, 0, St.Side.TOP);
         this._editMenu.connect('menu-closed', () => {
-            this.actor.set_checked(false);
+            this.set_checked(false);
         });
         this._editMenu.actor.hide();
         Main.uiGroup.add_actor(this._editMenu.actor);
@@ -177,7 +179,7 @@ var ActionComboBox = class {
     }
 
     _onButtonClicked() {
-        if (this.actor.get_checked())
+        if (this.get_checked())
             this.popup();
         else
             this.popdown();
@@ -186,8 +188,7 @@ var ActionComboBox = class {
     setButtonActionsActive(active) {
         this._buttonItems.forEach(item => { item.setSensitive(active); });
     }
-};
-Signals.addSignalMethods(ActionComboBox.prototype);
+});
 
 var ActionEditor = class {
     constructor() {
@@ -198,7 +199,7 @@ var ActionEditor = class {
 
         this._actionComboBox = new ActionComboBox();
         this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
-        this.actor.add_actor(this._actionComboBox.actor);
+        this.actor.add_actor(this._actionComboBox);
 
         this._keybindingEdit = new KeybindingEntry();
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
