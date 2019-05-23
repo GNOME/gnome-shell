@@ -40,9 +40,10 @@ const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
-var DisplayChangeDialog = class extends ModalDialog.ModalDialog {
-    constructor(wm) {
-        super({ styleClass: 'prompt-dialog' });
+var DisplayChangeDialog = GObject.registerClass(
+class DisplayChangeDialog extends ModalDialog.ModalDialog {
+    _init(wm) {
+        super._init({ styleClass: 'prompt-dialog' });
 
         this._wm = wm;
 
@@ -111,7 +112,7 @@ var DisplayChangeDialog = class extends ModalDialog.ModalDialog {
         this._wm.complete_display_change(true);
         this.close();
     }
-};
+});
 
 var WindowDimmer = class {
     constructor(actor) {

@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Pango, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
@@ -269,9 +269,11 @@ var ShellUnmountNotifier = class extends MessageTray.Source {
     }
 };
 
-var ShellMountQuestionDialog = class extends ModalDialog.ModalDialog {
-    constructor(icon) {
-        super({ styleClass: 'mount-dialog' });
+var ShellMountQuestionDialog = GObject.registerClass({
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+}, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
+    _init(icon) {
+        super._init({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
         this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
@@ -281,15 +283,21 @@ var ShellMountQuestionDialog = class extends ModalDialog.ModalDialog {
         _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
     }
-};
-Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
+});
 
-var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
-    constructor(message, icon, flags) {
+var ShellMountPasswordDialog = GObject.registerClass({
+    Signals: { 'response': { param_types: [GObject.TYPE_INT,
+                                           GObject.TYPE_STRING,
+                                           GObject.TYPE_BOOLEAN,
+                                           GObject.TYPE_BOOLEAN,
+                                           GObject.TYPE_BOOLEAN,
+                                           GObject.TYPE_UINT] } }
+}, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
+    _init(message, icon, flags) {
         let strings = message.split('\n');
         let title = strings.shift() || null;
         let body = strings.shift() || null;
-        super({ styleClass: 'prompt-dialog' });
+        super._init({ styleClass: 'prompt-dialog' });
 
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
@@ -422,7 +430,7 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
     }
 
     _onCancelButton() {
-        this.emit('response', -1, '', false);
+        this.emit('response', -1, '', false, false, false, 0);
     }
 
     _onUnlockButton() {
@@ -453,7 +461,7 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
             this._hiddenVolume.actor.checked,
             this._systemVolume &&
             this._systemVolume.actor.checked,
-            pim);
+            parseInt(pim));
     }
 
     _onKeyfilesCheckboxClicked() {
@@ -485,11 +493,13 @@ var ShellMountPasswordDialog = class extends ModalDialog.ModalDialog {
             );
         this._onCancelButton();
     }
-};
+});
 
-var ShellProcessesDialog = class extends ModalDialog.ModalDialog {
-    constructor(icon) {
-        super({ styleClass: 'mount-dialog' });
+var ShellProcessesDialog = GObject.registerClass({
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+}, class ShellProcessesDialog extends ModalDialog.ModalDialog {
+    _init(icon) {
+        super._init({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
         this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
@@ -542,8 +552,7 @@ var ShellProcessesDialog = class extends ModalDialog.ModalDialog {
         _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
     }
-};
-Signals.addSignalMethods(ShellProcessesDialog.prototype);
+});
 
 const GnomeShellMountOpIface = loadInterfaceXML('org.Gtk.MountOperationHandler');
 
@@ -659,7 +668,7 @@ var GnomeShellMountOpHandler = class {
                     details['password'] = GLib.Variant.new('s', password);
                     details['hidden_volume'] = GLib.Variant.new('b', hiddenVolume);
                     details['system_volume'] = GLib.Variant.new('b', systemVolume);
-                    details['pim'] = GLib.Variant.new('u', parseInt(pim));
+                    details['pim'] = GLib.Variant.new('u', pim);
                 }
 
                 this._clearCurrentRequest(response, details);
