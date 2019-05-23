@@ -142,21 +142,23 @@ class UserWidgetLabel extends St.Widget {
     }
 });
 
-var UserWidget = class {
-    constructor(user) {
+var UserWidget = GObject.registerClass(
+class UserWidget extends St.BoxLayout {
+    _init(user) {
+        super._init({ style_class: 'user-widget',
+                      vertical: false });
+
         this._user = user;
 
-        this.actor = new St.BoxLayout({ style_class: 'user-widget',
-                                        vertical: false });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._avatar = new Avatar(user);
-        this.actor.add_child(this._avatar);
+        this.add_child(this._avatar);
 
         this._label = new UserWidgetLabel(user);
-        this.actor.add_child(this._label);
+        this.add_child(this._label);
 
-        this._label.bind_property('label-actor', this.actor, 'label-actor',
+        this._label.bind_property('label-actor', this, 'label-actor',
                                   GObject.BindingFlags.SYNC_CREATE);
 
         this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
@@ -179,4 +181,4 @@ var UserWidget = class {
     _updateUser() {
         this._avatar.update();
     }
-};
+});
