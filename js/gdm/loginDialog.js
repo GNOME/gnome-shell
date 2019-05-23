@@ -298,23 +298,26 @@ var UserList = GObject.registerClass({
     }
 });
 
-var SessionMenuButton = class {
-    constructor() {
+var SessionMenuButton = GObject.registerClass({
+    Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } }
+}, class LoginDialog_SessionMenuButton extends St.Bin {
+    _init() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
-        this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
-                                       reactive: true,
-                                       track_hover: true,
-                                       can_focus: true,
-                                       accessible_name: _("Choose Session"),
-                                       accessible_role: Atk.Role.MENU,
-                                       child: gearIcon });
+        let button = new St.Button({ style_class: 'login-dialog-session-list-button',
+                                     reactive: true,
+                                     track_hover: true,
+                                     can_focus: true,
+                                     accessible_name: _("Choose Session"),
+                                     accessible_role: Atk.Role.MENU,
+                                     child: gearIcon });
 
-        this.actor = new St.Bin({ child: this._button });
+        super._init({ child: button });
+        this._button = button;
 
         let side = St.Side.TOP;
         let align = 0;
         if (Gdm.get_session_ids().length > _MAX_BOTTOM_MENU_ITEMS) {
-            if (this.actor.text_direction == Clutter.TextDirection.RTL)
+            if (this.text_direction == Clutter.TextDirection.RTL)
                 side = St.Side.RIGHT;
             else
                 side = St.Side.LEFT;
@@ -393,8 +396,7 @@ var SessionMenuButton = class {
             });
         }
     }
-};
-Signals.addSignalMethods(SessionMenuButton.prototype);
+});
 
 var LoginDialog = GObject.registerClass({
     Signals: { 'failed': {} },
@@ -503,9 +505,9 @@ var LoginDialog = GObject.registerClass({
             (list, sessionId) => {
                 this._greeter.call_select_session_sync (sessionId, null);
             });
-        this._sessionMenuButton.actor.opacity = 0;
-        this._sessionMenuButton.actor.show();
-        this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
+        this._sessionMenuButton.opacity = 0;
+        this._sessionMenuButton.show();
+        this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton);
 
         this._disableUserList = undefined;
         this._userListLoaded = false;
@@ -806,7 +808,7 @@ var LoginDialog = GObject.registerClass({
     _onPrompted() {
         if (this._shouldShowSessionMenuButton()) {
             this._sessionMenuButton.updateSensitivity(true);
-            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
+            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton);
         } else {
             this._sessionMenuButton.updateSensitivity(false);
         }
