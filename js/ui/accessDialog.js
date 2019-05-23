@@ -1,4 +1,4 @@
-const { Clutter, Gio, GLib, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
@@ -15,9 +15,10 @@ var DialogResponse = {
     CLOSED: 2
 };
 
-var AccessDialog = class extends ModalDialog.ModalDialog {
-    constructor(invocation, handle, title, subtitle, body, options) {
-        super({ styleClass: 'access-dialog' });
+var AccessDialog = GObject.registerClass(
+class AccessDialog extends ModalDialog.ModalDialog {
+    _init(invocation, handle, title, subtitle, body, options) {
+        super._init({ styleClass: 'access-dialog' });
 
         this._invocation = invocation;
         this._handle = handle;
@@ -109,7 +110,7 @@ var AccessDialog = class extends ModalDialog.ModalDialog {
         });
         this.close();
     }
-};
+});
 
 var AccessDialogDBus = class {
     constructor() {

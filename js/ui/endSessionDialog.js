@@ -19,7 +19,7 @@
 const Mainloop = imports.mainloop;
 
 const { AccountsService, Clutter, Gio,
-        GLib, Pango, Polkit, Shell, St }  = imports.gi;
+        GLib, GObject, Pango, Polkit, Shell, St }  = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const GnomeSession = imports.misc.gnomeSession;
@@ -226,10 +226,11 @@ function init() {
     _endSessionDialog = new EndSessionDialog();
 }
 
-var EndSessionDialog = class EndSessionDialog extends ModalDialog.ModalDialog {
-    constructor() {
-        super({ styleClass: 'end-session-dialog',
-                destroyOnClose: false });
+var EndSessionDialog = GObject.registerClass(
+class EndSessionDialog extends ModalDialog.ModalDialog {
+    _init() {
+        super._init({ styleClass: 'end-session-dialog',
+                      destroyOnClose: false });
 
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
@@ -747,4 +748,4 @@ var EndSessionDialog = class EndSessionDialog extends ModalDialog.ModalDialog {
     Close(parameters, invocation) {
         this.close();
     }
-};
+});
