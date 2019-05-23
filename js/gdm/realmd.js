@@ -79,7 +79,9 @@ var Manager = class {
             }
         }
 
-        if (this._loginFormat != newLoginFormat) {
+        if (this._loginFormat !== undefined &&
+            newLoginFormat !== undefined &&
+            this._loginFormat != newLoginFormat) {
             this._loginFormat = newLoginFormat;
             this.emit('login-format-changed', newLoginFormat);
         }
