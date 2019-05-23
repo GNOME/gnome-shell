@@ -193,12 +193,12 @@ var ScreenshotService = class {
     PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
         pickPixel.show();
-        pickPixel.connect('finished', (pickPixel, coords) => {
-            if (coords) {
+        pickPixel.connect('finished', (pickPixel, x, y) => {
+            if (x > 0 && y > 0) {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)
                     return;
-                screenshot.pick_color(...coords, (o, res) => {
+                screenshot.pick_color(x, y, (o, res) => {
                     let [success, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
@@ -321,32 +321,35 @@ var SelectArea = GObject.registerClass({
     }
 });
 
-var PickPixel = class {
-    constructor() {
+var PickPixel = GObject.registerClass({
+    Signals: { 'finished': { param_types: [GObject.TYPE_INT, GObject.TYPE_INT] } }
+}, class ScreenShot_PickPixel extends St.Widget {
+    _init() {
+        super._init({ visible: false,
+                      reactive: true });
+
         this._result = null;
 
-        this._group = new St.Widget({ visible: false,
-                                      reactive: true });
-        Main.uiGroup.add_actor(this._group);
+        Main.uiGroup.add_actor(this);
 
-        this._grabHelper = new GrabHelper.GrabHelper(this._group);
+        this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this._group.connect('button-release-event',
+        this.connect('button-release-event',
                             this._onButtonRelease.bind(this));
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._group.add_constraint(constraint);
+        this.add_constraint(constraint);
     }
 
-    show() {
-        if (!this._grabHelper.grab({ actor: this._group,
+    vfunc_show() {
+        if (!this._grabHelper.grab({ actor: this,
                                      onUngrab: this._onUngrab.bind(this) }))
             return;
 
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
-        Main.uiGroup.set_child_above_sibling(this._group, null);
-        this._group.visible = true;
+        Main.uiGroup.set_child_above_sibling(this, null);
+        super.vfunc_show();
     }
 
     _onButtonRelease(actor, event) {
@@ -357,15 +360,15 @@ var PickPixel = class {
 
     _onUngrab() {
         global.display.set_cursor(Meta.Cursor.DEFAULT);
-        this.emit('finished', this._result);
+        let [x, y] = this._result || [-1, -1];
+        this.emit('finished', Math.round(x), Math.round(y));
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this._group.destroy();
+            this.destroy();
             return GLib.SOURCE_REMOVE;
         });
     }
-};
-Signals.addSignalMethods(PickPixel.prototype);
+});
 
 var FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
