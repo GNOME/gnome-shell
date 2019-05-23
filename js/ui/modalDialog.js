@@ -22,6 +22,11 @@ var State = {
 };
 
 var ModalDialog = GObject.registerClass({
+    Properties: { 'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
+                                                 GObject.ParamFlags.READABLE,
+                                                 Math.min(...Object.values(State)),
+                                                 Math.max(...Object.values(State)),
+                                                 State.CLOSED) },
     Signals: { 'opened': {}, 'closed': {} }
 }, class ModalDialog extends St.Widget {
     _init(params) {
@@ -37,7 +42,7 @@ var ModalDialog = GObject.registerClass({
                                         shouldFadeOut: true,
                                         destroyOnClose: true });
 
-        this.state = State.CLOSED;
+        this._state = State.CLOSED;
         this._hasModal = false;
         this._actionMode = params.actionMode;
         this._shellReactive = params.shellReactive;
@@ -78,6 +83,18 @@ var ModalDialog = GObject.registerClass({
         this._savedKeyFocus = null;
     }
 
+    get state() {
+        return this._state;
+    }
+
+    _setState(state) {
+        if (this._state == state)
+            return;
+
+        this._state = state;
+        this.notify('state');
+    }
+
     clearButtons() {
         this.dialogLayout.clearButtons();
     }
@@ -99,7 +116,7 @@ var ModalDialog = GObject.registerClass({
         else
             this._monitorConstraint.index = global.display.get_current_monitor();
 
-        this.state = State.OPENING;
+        this._setState(State.OPENING);
 
         this.dialogLayout.opacity = 255;
         if (this._lightbox)
@@ -111,7 +128,7 @@ var ModalDialog = GObject.registerClass({
                            time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                               this.state = State.OPENED;
+                               this._setState(State.OPENED);
                                this.emit('opened');
                            }
                          });
@@ -141,7 +158,7 @@ var ModalDialog = GObject.registerClass({
     }
 
     _closeComplete() {
-        this.state = State.CLOSED;
+        this._setState(State.CLOSED);
         this.hide();
         this.emit('closed');
 
@@ -153,7 +170,7 @@ var ModalDialog = GObject.registerClass({
         if (this.state == State.CLOSED || this.state == State.CLOSING)
             return;
 
-        this.state = State.CLOSING;
+        this._setState(State.CLOSING);
         this.popModal(timestamp);
         this._savedKeyFocus = null;
 
@@ -235,7 +252,7 @@ var ModalDialog = GObject.registerClass({
                            time:    FADE_OUT_DIALOG_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                               this.state = State.FADED_OUT;
+                               this._setState(State.FADED_OUT);
                            }
                          });
     }
