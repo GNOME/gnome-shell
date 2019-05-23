@@ -165,7 +165,7 @@ var ViewSelector = class {
         this._capturedEventId = 0;
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
+        this._workspacesPage = this._addPage(this._workspacesDisplay,
                                              _("Windows"), 'focus-windows-symbolic');
 
         this.appDisplay = new AppDisplay.AppDisplay();
