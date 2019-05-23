@@ -1656,8 +1656,11 @@ class Crosshairs extends Clutter.Actor {
                 if (this.get_parent() != null) {
                     crosshairsActor = new Clutter.Clone({ source: this });
                     this._clones.push(crosshairsActor);
+
+                    // Clones don't share visibility.
+                    this.bind_property('visible', crosshairsActor, 'visible',
+                                       GObject.BindingFlags.SYNC_CREATE);
                 }
-                crosshairsActor.visible = this.visible;
 
                 container.add_actor(crosshairsActor);
                 container.raise_child(magnifiedMouse, crosshairsActor);
@@ -1786,28 +1789,6 @@ class Crosshairs extends Clutter.Actor {
             this.reCenter();
         }
      }
-
-    /**
-     * show:
-     * Show the crosshairs.
-     */
-    vfunc_show() {
-        super.vfunc_show();
-        // Clones don't share visibility.
-        for (let i = 0; i < this._clones.length; i++)
-            this._clones[i].show();
-    }
-
-    /**
-     * hide:
-     * Hide the crosshairs.
-     */
-    vfunc_hide() {
-        super.vfunc_hide();
-        // Clones don't share visibility.
-        for (let i = 0; i < this._clones.length; i++)
-            this._clones[i].hide();
-    }
 
     /**
      * reCenter:
