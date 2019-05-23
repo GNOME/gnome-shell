@@ -431,7 +431,7 @@ var AuthPrompt = GObject.registerClass({
 
         if (user) {
             let userWidget = new UserWidget.UserWidget(user);
-            this._userWell.set_child(userWidget.actor);
+            this._userWell.set_child(userWidget);
         }
     }
 
