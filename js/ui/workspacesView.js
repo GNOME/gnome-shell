@@ -177,7 +177,7 @@ class WorkspacesView extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            Tweener.removeTweens(workspace.actor);
+            Tweener.removeTweens(workspace);
 
             let y = (w - active) * this._fullGeometry.height;
 
@@ -196,9 +196,9 @@ class WorkspacesView extends WorkspacesViewBase {
                         this._updateVisibility();
                     };
                 }
-                Tweener.addTween(workspace.actor, params);
+                Tweener.addTween(workspace, params);
             } else {
-                workspace.actor.set_position(0, y);
+                workspace.set_position(0, y);
                 if (w == 0)
                     this._updateVisibility();
             }
@@ -212,12 +212,12 @@ class WorkspacesView extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
             if (this._animating || this._scrolling || this._gestureActive) {
-                workspace.actor.show();
+                workspace.show();
             } else {
                 if (this._inDrag)
-                    workspace.actor.visible = (Math.abs(w - active) <= 1);
+                    workspace.visible = (Math.abs(w - active) <= 1);
                 else
-                    workspace.actor.visible = (w == active);
+                    workspace.visible = (w == active);
             }
         }
     }
@@ -251,7 +251,7 @@ class WorkspacesView extends WorkspacesViewBase {
 
             if (j >= this._workspaces.length) { /* added */
                 workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
-                this.add_actor(workspace.actor);
+                this.add_actor(workspace);
                 this._workspaces[j] = workspace;
             } else  {
                 workspace = this._workspaces[j];
@@ -337,8 +337,8 @@ class WorkspacesView extends WorkspacesViewBase {
         }
 
         let last = this._workspaces.length - 1;
-        let firstWorkspaceY = this._workspaces[0].actor.y;
-        let lastWorkspaceY = this._workspaces[last].actor.y;
+        let firstWorkspaceY = this._workspaces[0].y;
+        let lastWorkspaceY = this._workspaces[last].y;
         let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
         if (adj.upper == 1)
@@ -350,8 +350,8 @@ class WorkspacesView extends WorkspacesViewBase {
         let dy = newY - currentY;
 
         for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
-            this._workspaces[i].actor.y += dy;
+            this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
+            this._workspaces[i].y += dy;
         }
     }
 });
@@ -361,7 +361,7 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     _init(monitorIndex) {
         super._init(monitorIndex);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
-        this.add_actor(this._workspace.actor);
+        this.add_actor(this._workspace);
     }
 
     _setReservedSlot(window) {
