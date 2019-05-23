@@ -1106,7 +1106,7 @@ var WindowManager = class {
         this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
         this._currentPadOsd.connect('closed', () => { this._currentPadOsd = null });
 
-        return this._currentPadOsd.actor;
+        return this._currentPadOsd;
     }
 
     _switchWorkspaceMotion(action, xRel, yRel) {
