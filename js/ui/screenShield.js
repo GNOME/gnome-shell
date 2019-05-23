@@ -51,21 +51,24 @@ var MANUAL_FADE_TIME = 0.3;
 var BACKGROUND_FADE_TIME = 1.0;
 var CURTAIN_SLIDE_TIME = 0.3;
 
-var Clock = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'screen-shield-clock',
-                                        vertical: true });
+var Clock = GObject.registerClass(
+class Clock_ScreenShield extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'screen-shield-clock',
+                      vertical: true });
 
         this._time = new St.Label({ style_class: 'screen-shield-clock-time' });
         this._date = new St.Label({ style_class: 'screen-shield-clock-date' });
 
-        this.actor.add(this._time, { x_align: St.Align.MIDDLE });
-        this.actor.add(this._date, { x_align: St.Align.MIDDLE });
+        this.add(this._time, { x_align: St.Align.MIDDLE });
+        this.add(this._date, { x_align: St.Align.MIDDLE });
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._updateClock();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _updateClock() {
@@ -78,11 +81,10 @@ var Clock = class {
         this._date.text = date.toLocaleFormat(dateFormat);
     }
 
-    destroy() {
-        this.actor.destroy();
+    _onDestroy() {
         this._wallClock.run_dispose();
     }
-};
+});
 
 var NotificationsBox = class {
     constructor() {
@@ -1131,8 +1133,8 @@ var ScreenShield = class {
                                                          vertical: true,
                                                          style_class: 'screen-shield-contents-box' });
         this._clock = new Clock();
-        this._lockScreenContentsBox.add(this._clock.actor, { x_fill: true,
-                                                             y_fill: true });
+        this._lockScreenContentsBox.add(this._clock, { x_fill: true,
+                                                       y_fill: true });
 
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
