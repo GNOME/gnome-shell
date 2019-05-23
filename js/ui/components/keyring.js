@@ -10,9 +10,10 @@ const CheckBox = imports.ui.checkBox;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
-var KeyringDialog = class extends ModalDialog.ModalDialog {
-    constructor() {
-        super({ styleClass: 'prompt-dialog' });
+var KeyringDialog = GObject.registerClass(
+class KeyringDialog extends ModalDialog.ModalDialog {
+    _init() {
+        super._init({ styleClass: 'prompt-dialog' });
 
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', this._onShowPassword.bind(this));
@@ -212,7 +213,7 @@ var KeyringDialog = class extends ModalDialog.ModalDialog {
     _onCancelButton() {
         this.prompt.cancel();
     }
-};
+});
 
 var KeyringDummyDialog = class {
     constructor() {

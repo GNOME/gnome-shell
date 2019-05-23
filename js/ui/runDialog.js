@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -23,10 +23,11 @@ const EXEC_ARG_KEY = 'exec-arg';
 
 var DIALOG_GROW_TIME = 0.1;
 
-var RunDialog = class extends ModalDialog.ModalDialog {
-    constructor() {
-        super({ styleClass: 'run-dialog',
-                destroyOnClose: false });
+var RunDialog = GObject.registerClass(
+class RunDialog extends ModalDialog.ModalDialog {
+    _init() {
+        super._init({ styleClass: 'run-dialog',
+                      destroyOnClose: false });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
@@ -282,5 +283,4 @@ var RunDialog = class extends ModalDialog.ModalDialog {
 
         super.open();
     }
-};
-Signals.addSignalMethods(RunDialog.prototype);
+});

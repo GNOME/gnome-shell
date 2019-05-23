@@ -676,9 +676,10 @@ var NMWirelessDialogItem = GObject.registerClass({
     }
 });
 
-var NMWirelessDialog = class extends ModalDialog.ModalDialog {
-    constructor(client, device) {
-        super({ styleClass: 'nm-dialog' });
+var NMWirelessDialog = GObject.registerClass(
+class NMWirelessDialog extends ModalDialog.ModalDialog {
+    _init(client, device) {
+        super._init({ styleClass: 'nm-dialog' });
 
         this._client = client;
         this._device = device;
@@ -724,9 +725,11 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
             Main.sessionMode.disconnect(id);
             this.close();
         });
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
+    _onDestroy() {
         if (this._apAddedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._apAddedId);
             this._apAddedId = 0;
@@ -752,8 +755,6 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
             Mainloop.source_remove(this._scanTimeoutId);
             this._scanTimeoutId = 0;
         }
-
-        super.destroy();
     }
 
     _onScanTimeout() {
@@ -1144,7 +1145,7 @@ var NMWirelessDialog = class extends ModalDialog.ModalDialog {
                 this._itemBox.grab_key_focus();
         });
     }
-};
+});
 
 var NMDeviceWireless = class {
     constructor(client, device) {

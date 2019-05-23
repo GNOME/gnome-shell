@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Atk, Clutter, Shell, St } = imports.gi;
+const { Atk, Clutter, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Dialog = imports.ui.dialog;
@@ -21,8 +21,15 @@ var State = {
     FADED_OUT: 4
 };
 
-var ModalDialog = class {
-    constructor(params) {
+var ModalDialog = GObject.registerClass({
+    Signals: { 'opened': {}, 'closed': {} }
+}, class ModalDialog extends St.Widget {
+    _init(params) {
+        super._init({ visible: false,
+                      x: 0,
+                      y: 0,
+                      accessible_role: Atk.Role.DIALOG });
+
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
                                         actionMode: Shell.ActionMode.SYSTEM_MODAL,
@@ -38,31 +45,25 @@ var ModalDialog = class {
         this._shouldFadeOut = params.shouldFadeOut;
         this._destroyOnClose = params.destroyOnClose;
 
-        this._group = new St.Widget({ visible: false,
-                                      x: 0,
-                                      y: 0,
-                                      accessible_role: Atk.Role.DIALOG });
-        Main.layoutManager.modalDialogGroup.add_actor(this._group);
+        Main.layoutManager.modalDialogGroup.add_actor(this);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._group.add_constraint(constraint);
-
-        this._group.connect('destroy', this._onGroupDestroy.bind(this));
+        this.add_constraint(constraint);
 
         this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._backgroundBin = new St.Bin({ child: this.backgroundStack,
                                            x_fill: true, y_fill: true });
         this._monitorConstraint = new Layout.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
-        this._group.add_actor(this._backgroundBin);
+        this.add_actor(this._backgroundBin);
 
         this.dialogLayout = new Dialog.Dialog(this.backgroundStack, params.styleClass);
         this.contentLayout = this.dialogLayout.contentLayout;
         this.buttonLayout = this.dialogLayout.buttonLayout;
 
         if (!this._shellReactive) {
-            this._lightbox = new Lightbox.Lightbox(this._group,
+            this._lightbox = new Lightbox.Lightbox(this,
                                                    { inhibitEvents: true,
                                                      radialEffect: true });
             this._lightbox.highlight(this._backgroundBin);
@@ -75,10 +76,6 @@ var ModalDialog = class {
         this._initialKeyFocus = null;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
-    }
-
-    destroy() {
-        this._group.destroy();
     }
 
     clearButtons() {
@@ -96,10 +93,6 @@ var ModalDialog = class {
         return this.dialogLayout.addButton(buttonInfo);
     }
 
-    _onGroupDestroy() {
-        this.emit('destroy');
-    }
-
     _fadeOpen(onPrimary) {
         if (onPrimary)
             this._monitorConstraint.primary = true;
@@ -111,9 +104,9 @@ var ModalDialog = class {
         this.dialogLayout.opacity = 255;
         if (this._lightbox)
             this._lightbox.show();
-        this._group.opacity = 0;
-        this._group.show();
-        Tweener.addTween(this._group,
+        this.opacity = 0;
+        this.show();
+        Tweener.addTween(this,
                          { opacity: 255,
                            time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
                            transition: 'easeOutQuad',
@@ -149,7 +142,7 @@ var ModalDialog = class {
 
     _closeComplete() {
         this.state = State.CLOSED;
-        this._group.hide();
+        this.hide();
         this.emit('closed');
 
         if (this._destroyOnClose)
@@ -165,7 +158,7 @@ var ModalDialog = class {
         this._savedKeyFocus = null;
 
         if (this._shouldFadeOut)
-            Tweener.addTween(this._group,
+            Tweener.addTween(this,
                              { opacity: 0,
                                time: OPEN_AND_CLOSE_TIME,
                                transition: 'easeOutQuad',
@@ -183,11 +176,11 @@ var ModalDialog = class {
             return;
 
         let focus = global.stage.key_focus;
-        if (focus && this._group.contains(focus))
+        if (focus && this.contains(focus))
             this._savedKeyFocus = focus;
         else
             this._savedKeyFocus = null;
-        Main.popModal(this._group, timestamp);
+        Main.popModal(this, timestamp);
         this._hasModal = false;
 
         if (!this._shellReactive)
@@ -201,7 +194,7 @@ var ModalDialog = class {
         let params = { actionMode: this._actionMode };
         if (timestamp)
             params['timestamp'] = timestamp;
-        if (!Main.pushModal(this._group, params))
+        if (!Main.pushModal(this, params))
             return false;
 
         this._hasModal = true;
@@ -246,5 +239,4 @@ var ModalDialog = class {
                            }
                          });
     }
-};
-Signals.addSignalMethods(ModalDialog.prototype);
+});

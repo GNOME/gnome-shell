@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Soup, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Soup, St } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -176,10 +176,10 @@ function checkForUpdates() {
     });
 }
 
-var InstallExtensionDialog =
+var InstallExtensionDialog = GObject.registerClass(
 class InstallExtensionDialog extends ModalDialog.ModalDialog {
-    constructor(uuid, info, invocation) {
-        super({ styleClass: 'extension-dialog' });
+    _init(uuid, info, invocation) {
+        super._init({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
         this._info = info;
@@ -255,7 +255,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
 
         this.close();
     }
-};
+});
 
 function init() {
     _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
