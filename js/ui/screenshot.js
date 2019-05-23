@@ -219,55 +219,57 @@ var ScreenshotService = class {
     }
 };
 
-var SelectArea = class {
-    constructor() {
+var SelectArea = GObject.registerClass({
+    Signals: { 'finished': { param_types: [Meta.Rectangle.$gtype] } }
+}, class ScreenShot_SelectArea extends St.Widget {
+    _init() {
         this._startX = -1;
         this._startY = -1;
         this._lastX = 0;
         this._lastY = 0;
         this._result = null;
 
-        this._group = new St.Widget({ visible: false,
-                                      reactive: true,
-                                      x: 0,
-                                      y: 0 });
-        Main.uiGroup.add_actor(this._group);
+        super._init({ visible: false,
+                      reactive: true,
+                      x: 0,
+                      y: 0 });
+        Main.uiGroup.add_actor(this);
 
-        this._grabHelper = new GrabHelper.GrabHelper(this._group);
+        this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this._group.connect('button-press-event',
-                            this._onButtonPress.bind(this));
-        this._group.connect('button-release-event',
-                            this._onButtonRelease.bind(this));
-        this._group.connect('motion-event',
-                            this._onMotionEvent.bind(this));
+        this.connect('button-press-event',
+                     this._onButtonPress.bind(this));
+        this.connect('button-release-event',
+                     this._onButtonRelease.bind(this));
+        this.connect('motion-event',
+                     this._onMotionEvent.bind(this));
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._group.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._rubberband = new St.Widget({
             style_class: 'select-area-rubberband',
             visible: false
         });
-        this._group.add_actor(this._rubberband);
+        this.add_actor(this._rubberband);
     }
 
-    show() {
-        if (!this._grabHelper.grab({ actor: this._group,
+    vfunc_show() {
+        if (!this._grabHelper.grab({ actor: this,
                                      onUngrab: this._onUngrab.bind(this) }))
             return;
 
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
-        Main.uiGroup.set_child_above_sibling(this._group, null);
-        this._group.visible = true;
+        Main.uiGroup.set_child_above_sibling(this, null);
+        super.vfunc_show();
     }
 
     _getGeometry() {
-        return { x: Math.min(this._startX, this._lastX),
-                 y: Math.min(this._startY, this._lastY),
-                 width: Math.abs(this._startX - this._lastX) + 1,
-                 height: Math.abs(this._startY - this._lastY) + 1 };
+        return new Meta.Rectangle({ x: Math.min(this._startX, this._lastX),
+                                    y: Math.min(this._startY, this._lastY),
+                                    width: Math.abs(this._startX - this._lastX) + 1,
+                                    height: Math.abs(this._startY - this._lastY) + 1 });
     }
 
     _onMotionEvent(actor, event) {
@@ -297,7 +299,7 @@ var SelectArea = class {
 
     _onButtonRelease(actor, event) {
         this._result = this._getGeometry();
-        Tweener.addTween(this._group,
+        Tweener.addTween(this,
                          { opacity: 0,
                            time: 0.2,
                            transition: 'easeOutQuad',
@@ -313,12 +315,11 @@ var SelectArea = class {
         this.emit('finished', this._result);
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this._group.destroy();
+            this.destroy();
             return GLib.SOURCE_REMOVE;
         });
     }
-};
-Signals.addSignalMethods(SelectArea.prototype);
+});
 
 var PickPixel = class {
     constructor() {
