@@ -371,10 +371,11 @@ var WorkspaceTracker = class {
     }
 };
 
-var TilePreview = class {
-    constructor() {
-        this.actor = new St.Widget();
-        global.window_group.add_actor(this.actor);
+var TilePreview = GObject.registerClass(
+class TilePreview extends St.Widget {
+    _init() {
+        super._init();
+        global.window_group.add_actor(this);
 
         this._reset();
         this._showing = false;
@@ -385,7 +386,7 @@ var TilePreview = class {
         if (!windowActor)
             return;
 
-        global.window_group.set_child_below_sibling(this.actor, windowActor);
+        global.window_group.set_child_below_sibling(this, windowActor);
 
         if (this._rect && this._rect.equal(tileRect))
             return;
@@ -406,14 +407,14 @@ var TilePreview = class {
                                                    width: monitor.width,
                                                    height: monitor.height });
             let [, rect] = window.get_frame_rect().intersect(monitorRect);
-            this.actor.set_size(rect.width, rect.height);
-            this.actor.set_position(rect.x, rect.y);
-            this.actor.opacity = 0;
+            this.set_size(rect.width, rect.height);
+            this.set_position(rect.x, rect.y);
+            this.opacity = 0;
         }
 
         this._showing = true;
-        this.actor.show();
-        Tweener.addTween(this.actor,
+        super.show();
+        Tweener.addTween(this,
                          { x: tileRect.x,
                            y: tileRect.y,
                            width: tileRect.width,
@@ -429,7 +430,7 @@ var TilePreview = class {
             return;
 
         this._showing = false;
-        Tweener.addTween(this.actor,
+        Tweener.addTween(this,
                          { opacity: 0,
                            time: WINDOW_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -438,7 +439,7 @@ var TilePreview = class {
     }
 
     _reset() {
-        this.actor.hide();
+        super.hide();
         this._rect = null;
         this._monitorIndex = -1;
     }
@@ -452,9 +453,9 @@ var TilePreview = class {
         if (this._rect.x + this._rect.width == monitor.x + monitor.width)
             styles.push('tile-preview-right');
 
-        this.actor.style_class = styles.join(' ');
+        this.style_class = styles.join(' ');
     }
-};
+});
 
 var TouchpadWorkspaceSwitchAction = class {
     constructor(actor, allowedModes) {
