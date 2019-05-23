@@ -84,11 +84,13 @@ var PadChooser = GObject.registerClass({
     }
 });
 
-var KeybindingEntry = class {
-    constructor() {
-        this.actor = new St.Entry({ hint_text: _("New shortcut…"),
-                                    style: 'width: 10em' });
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+var KeybindingEntry = GObject.registerClass({
+    Signals: { 'keybinding-edited': {} }
+}, class PadOsd_KeybindingEntry extends St.Entry {
+    _init() {
+        super._init({ hint_text: _("New shortcut…"),
+                      style: 'width: 10em' });
+        this.connect('captured-event', this._onCapturedEvent.bind(this));
     }
 
     _onCapturedEvent(actor, event) {
@@ -99,12 +101,11 @@ var KeybindingEntry = class {
                                                     event.get_key_symbol(),
                                                     event.get_key_code(),
                                                     event.get_state());
-        this.actor.set_text(str);
+        this.set_text(str);
         this.emit('keybinding-edited', str);
         return Clutter.EVENT_STOP;
     }
-};
-Signals.addSignalMethods(KeybindingEntry.prototype);
+});
 
 var ActionComboBox = class {
     constructor() {
@@ -201,7 +202,7 @@ var ActionEditor = class {
 
         this._keybindingEdit = new KeybindingEntry();
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
-        this.actor.add_actor(this._keybindingEdit.actor);
+        this.actor.add_actor(this._keybindingEdit);
 
         this._doneButton = new St.Button({ label: _("Done"),
                                            style_class: 'button',
@@ -212,11 +213,11 @@ var ActionEditor = class {
 
     _updateKeybindingEntryState() {
         if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING) {
-            this._keybindingEdit.actor.set_text(this._currentKeybinding);
-            this._keybindingEdit.actor.show();
-            this._keybindingEdit.actor.grab_key_focus();
+            this._keybindingEdit.set_text(this._currentKeybinding);
+            this._keybindingEdit.show();
+            this._keybindingEdit.grab_key_focus();
         } else {
-            this._keybindingEdit.actor.hide();
+            this._keybindingEdit.hide();
         }
     }
 
