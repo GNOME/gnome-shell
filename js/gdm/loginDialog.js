@@ -438,7 +438,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.hide();
-        this.add_child(this._authPrompt.actor);
+        this.add_child(this._authPrompt);
 
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
@@ -585,8 +585,8 @@ var LoginDialog = GObject.registerClass({
         let authPromptAllocation = null;
         let authPromptHeight = 0;
         let authPromptWidth = 0;
-        if (this._authPrompt.actor.visible) {
-            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt.actor);
+        if (this._authPrompt.visible) {
+            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt);
             authPromptHeight = authPromptAllocation.y2 - authPromptAllocation.y1;
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
@@ -697,7 +697,7 @@ var LoginDialog = GObject.registerClass({
         }
 
         if (authPromptAllocation)
-            this._authPrompt.actor.allocate(authPromptAllocation, flags);
+            this._authPrompt.allocate(authPromptAllocation, flags);
 
         if (userSelectionAllocation)
             this._userSelectionBox.allocate(userSelectionAllocation, flags);
@@ -860,11 +860,11 @@ var LoginDialog = GObject.registerClass({
     }
 
     _showPrompt() {
-        if (this._authPrompt.actor.visible)
+        if (this._authPrompt.visible)
             return;
-        this._authPrompt.actor.opacity = 0;
-        this._authPrompt.actor.show();
-        Tweener.addTween(this._authPrompt.actor,
+        this._authPrompt.opacity = 0;
+        this._authPrompt.show();
+        Tweener.addTween(this._authPrompt,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
@@ -1053,7 +1053,7 @@ var LoginDialog = GObject.registerClass({
                      () => {
                          // If idle timeout is done, make sure the timed login indicator is shown
                          if (delay > _TIMED_LOGIN_IDLE_THRESHOLD &&
-                             this._authPrompt.actor.visible)
+                             this._authPrompt.visible)
                              this._authPrompt.cancel();
 
                          if (delay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
