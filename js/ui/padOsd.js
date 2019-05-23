@@ -608,8 +608,16 @@ var PadDiagram = GObject.registerClass({
     }
 });
 
-var PadOsd = class {
-    constructor(padDevice, settings, imagePath, editionMode, monitorIndex) {
+var PadOsd = GObject.registerClass({
+    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+}, class PadOsd extends St.BoxLayout {
+    _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
+        super._init({ style_class: 'pad-osd-window',
+                      x_expand: true,
+                      y_expand: true,
+                      vertical: true,
+                      reactive: true });
+
         this.padDevice = padDevice;
         this._groupPads = [ padDevice ];
         this._settings = settings;
@@ -646,23 +654,18 @@ var PadOsd = class {
                 this._groupPads.push(device);
         });
 
-        this.actor = new St.BoxLayout({ style_class: 'pad-osd-window',
-                                        x_expand: true,
-                                        y_expand: true,
-                                        vertical: true,
-                                        reactive: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        Main.uiGroup.add_actor(this.actor);
+        this.connect('destroy', this._onDestroy.bind(this));
+        Main.uiGroup.add_actor(this);
 
         this._monitorIndex = monitorIndex;
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._titleBox = new St.BoxLayout({ style_class: 'pad-osd-title-box',
                                             vertical: false,
                                             x_expand: false,
                                             x_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(this._titleBox);
+        this.add_actor(this._titleBox);
 
         let labelBox = new St.BoxLayout({ style_class: 'pad-osd-title-menu-box',
                                           vertical: true });
@@ -686,7 +689,7 @@ var PadOsd = class {
                                             editor_actor: this._actionEditor,
                                             x_expand: true,
                                             y_expand: true });
-        this.actor.add_actor(this._padDiagram);
+        this.add_actor(this._padDiagram);
 
         // FIXME: Fix num buttons.
         let i = 0;
@@ -717,7 +720,7 @@ var PadOsd = class {
                                          x_expand: true,
                                          x_align: Clutter.ActorAlign.CENTER,
                                          y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(buttonBox);
+        this.add_actor(buttonBox);
         this._editButton = new St.Button({ label: _("Edit…"),
                                            style_class: 'button',
                                            x_align: Clutter.ActorAlign.CENTER,
@@ -728,7 +731,7 @@ var PadOsd = class {
         buttonBox.add_actor(this._editButton);
 
         this._syncEditionMode();
-        Main.pushModal(this.actor);
+        Main.pushModal(this);
     }
 
     _updatePadChooser() {
@@ -912,12 +915,8 @@ var PadOsd = class {
         this._syncEditionMode();
     }
 
-    destroy() {
-        this.actor.destroy();
-    }
-
     _onDestroy() {
-        Main.popModal(this.actor);
+        Main.popModal(this);
         this._actionEditor.close();
 
         let deviceManager = Clutter.DeviceManager.get_default();
@@ -935,11 +934,9 @@ var PadOsd = class {
             this._capturedEventId = 0;
         }
 
-        this.actor = null;
         this.emit('closed');
     }
-};
-Signals.addSignalMethods(PadOsd.prototype);
+});
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
