@@ -86,11 +86,13 @@ class Clock_ScreenShield extends St.BoxLayout {
     }
 });
 
-var NotificationsBox = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ vertical: true,
-                                        name: 'screenShieldNotifications',
-                                        style_class: 'screen-shield-notifications-container' });
+var NotificationsBox = GObject.registerClass({
+    Signals: { 'wake-up-screen': {} }
+}, class NotificationsBox extends St.BoxLayout {
+    _init() {
+        super._init({ vertical: true,
+                      name: 'screenShieldNotifications',
+                      style_class: 'screen-shield-notifications-container' });
 
         this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
                                                hscrollbar_policy: St.PolicyType.NEVER });
@@ -98,7 +100,7 @@ var NotificationsBox = class {
                                                    style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
 
-        this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
+        this.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._sources = new Map();
         Main.messageTray.getSources().forEach(source => {
@@ -107,9 +109,11 @@ var NotificationsBox = class {
         this._updateVisibility();
 
         this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
+    _onDestroy() {
         if (this._sourceAddedId) {
             Main.messageTray.disconnect(this._sourceAddedId);
             this._sourceAddedId = 0;
@@ -119,15 +123,13 @@ var NotificationsBox = class {
         for (let [source, obj] of items) {
             this._removeSource(source, obj);
         }
-
-        this.actor.destroy();
     }
 
     _updateVisibility() {
         this._notificationBox.visible =
             this._notificationBox.get_children().some(a => a.visible);
 
-        this.actor.visible = this._notificationBox.visible;
+        this.visible = this._notificationBox.visible;
     }
 
     _makeNotificationCountText(count, isChat) {
@@ -343,8 +345,7 @@ var NotificationsBox = class {
 
         this._sources.delete(source);
     }
-};
-Signals.addSignalMethods(NotificationsBox.prototype);
+});
 
 var Arrow = GObject.registerClass(
 class ScreenShieldArrow extends St.Bin {
@@ -1140,9 +1141,9 @@ var ScreenShield = class {
 
         this._notificationsBox = new NotificationsBox();
         this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', this._wakeUpScreen.bind(this));
-        this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
-                                                                        y_fill: true,
-                                                                        expand: true });
+        this._lockScreenContentsBox.add(this._notificationsBox, { x_fill: true,
+                                                                  y_fill: true,
+                                                                  expand: true });
 
         this._hasLockScreen = true;
     }
