@@ -150,20 +150,25 @@ var UserListItem = GObject.registerClass({
     }
 });
 
-var UserList = class {
-    constructor() {
-        this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
-        this.actor.set_policy(St.PolicyType.NEVER,
-                              St.PolicyType.AUTOMATIC);
+var UserList = GObject.registerClass({
+    Signals: {
+        'activate': { param_types: [UserListItem.$gtype] },
+        'item-added': { param_types: [UserListItem.$gtype] },
+    }
+}, class LoginDialog_UserList extends St.ScrollView {
+    _init() {
+        super._init({ style_class: 'login-dialog-user-list-view' });
+        this.set_policy(St.PolicyType.NEVER,
+                        St.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({ vertical: true,
                                        style_class: 'login-dialog-user-list',
                                        pseudo_class: 'expanded' });
 
-        this.actor.add_actor(this._box);
+        this.add_actor(this._box);
         this._items = {};
 
-        this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
+        this.connect('key-focus-in', this._moveFocusToItems.bind(this));
     }
 
     _moveFocusToItems() {
@@ -172,10 +177,10 @@ var UserList = class {
         if (!hasItems)
             return;
 
-        if (global.stage.get_key_focus() != this.actor)
+        if (global.stage.get_key_focus() != this)
             return;
 
-        let focusSet = this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        let focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
@@ -205,7 +210,7 @@ var UserList = class {
     scrollToItem(item) {
         let box = item.get_allocation_box();
 
-        let adjustment = this.actor.get_vscroll_bar().get_adjustment();
+        let adjustment = this.get_vscroll_bar().get_adjustment();
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         Tweener.removeTweens(adjustment);
@@ -218,7 +223,7 @@ var UserList = class {
     jumpToItem(item) {
         let box = item.get_allocation_box();
 
-        let adjustment = this.actor.get_vscroll_bar().get_adjustment();
+        let adjustment = this.get_vscroll_bar().get_adjustment();
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
@@ -291,8 +296,7 @@ var UserList = class {
     numItems() {
         return Object.keys(this._items).length;
     }
-};
-Signals.addSignalMethods(UserList.prototype);
+});
 
 var SessionMenuButton = class {
     constructor() {
@@ -431,7 +435,7 @@ var LoginDialog = GObject.registerClass({
         this.add_child(this._userSelectionBox);
 
         this._userList = new UserList();
-        this._userSelectionBox.add(this._userList.actor,
+        this._userSelectionBox.add(this._userList,
                                    { expand: true,
                                      x_fill: true,
                                      y_fill: true });
@@ -1121,7 +1125,7 @@ var LoginDialog = GObject.registerClass({
         this._sessionMenuButton.close();
         this._setUserListExpanded(true);
         this._notListedButton.show();
-        this._userList.actor.grab_key_focus();
+        this._userList.grab_key_focus();
     }
 
     _beginVerificationForItem(item) {
@@ -1229,7 +1233,7 @@ var LoginDialog = GObject.registerClass({
                                         _("Login Window"),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
-        this._userList.actor.grab_key_focus();
+        this._userList.grab_key_focus();
         this.show();
         this.opacity = 0;
 
