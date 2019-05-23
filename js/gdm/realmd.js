@@ -68,6 +68,7 @@ var Manager = new Lang.Class({
                                            '/org/freedesktop/realmd',
                                            this._reloadRealms.bind(this))
         this._realms = {};
+        this._loginFormat = null;
 
         this._signalId = this._aggregateProvider.connect('g-properties-changed',
             (proxy, properties) => {
@@ -133,7 +134,7 @@ var Manager = new Lang.Class({
     },
 
     get loginFormat() {
-        if (this._loginFormat !== undefined)
+        if (this._loginFormat)
             return this._loginFormat;
 
         this._updateLoginFormat();
