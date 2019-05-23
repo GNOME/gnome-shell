@@ -190,26 +190,28 @@ var ActionComboBox = GObject.registerClass({
     }
 });
 
-var ActionEditor = class {
-    constructor() {
+var ActionEditor = GObject.registerClass({
+    Signals: { 'done': {} }
+}, class PadOsd_ActionEditor extends St.Widget {
+    _init() {
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 12 });
 
-        this.actor = new St.Widget({ layout_manager: boxLayout });
+        super._init({ layout_manager: boxLayout });
 
         this._actionComboBox = new ActionComboBox();
         this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
-        this.actor.add_actor(this._actionComboBox);
+        this.add_actor(this._actionComboBox);
 
         this._keybindingEdit = new KeybindingEntry();
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
-        this.actor.add_actor(this._keybindingEdit);
+        this.add_actor(this._keybindingEdit);
 
         this._doneButton = new St.Button({ label: _("Done"),
                                            style_class: 'button',
                                            x_expand: false});
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
-        this.actor.add_actor(this._doneButton);
+        this.add_actor(this._doneButton);
     }
 
     _updateKeybindingEntryState() {
@@ -236,7 +238,7 @@ var ActionEditor = class {
 
     close() {
         this._actionComboBox.popdown();
-        this.actor.hide();
+        this.hide();
     }
 
     _onKeybindingEdited(entry, keybinding) {
@@ -270,8 +272,7 @@ var ActionEditor = class {
         this.close();
         this.emit('done');
     }
-};
-Signals.addSignalMethods(ActionEditor.prototype);
+});
 
 var PadDiagram = GObject.registerClass({
     Properties: { 'left-handed': GObject.ParamSpec.boolean('left-handed',
@@ -682,7 +683,7 @@ var PadOsd = class {
 
         this._padDiagram = new PadDiagram({ image: this._imagePath,
                                             left_handed: settings.get_boolean('left-handed'),
-                                            editor_actor: this._actionEditor.actor,
+                                            editor_actor: this._actionEditor,
                                             x_expand: true,
                                             y_expand: true });
         this.actor.add_actor(this._padDiagram);
