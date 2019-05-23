@@ -21,25 +21,27 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-var PadChooser = class {
-    constructor(device, groupDevices) {
-        this.actor = new St.Button({ style_class: 'pad-chooser-button',
-                                     toggle_mode: true,
-                                     x_fill: false,
-                                     y_fill: false,
-                                     x_align: St.Align.MIDDLE,
-                                     y_align: St.Align.MIDDLE });
+var PadChooser = GObject.registerClass({
+    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+}, class PadChooser extends St.Button {
+    _init(device, groupDevices) {
+        super._init({ style_class: 'pad-chooser-button',
+                      toggle_mode: true,
+                      x_fill: false,
+                      y_fill: false,
+                      x_align: St.Align.MIDDLE,
+                      y_align: St.Align.MIDDLE });
         this.currentDevice = device;
         this._padChooserMenu = null;
 
         let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
                                   icon_name: 'pan-down-symbolic',
                                   accessible_role: Atk.Role.ARROW });
-        this.actor.set_child(arrow);
+        this.set_child(arrow);
         this._ensureMenu(groupDevices);
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('clicked', actor => {
+        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('clicked', actor => {
             if (actor.get_checked()) {
                 if (this._padChooserMenu != null)
                     this._padChooserMenu.open(true);
@@ -52,9 +54,9 @@ var PadChooser = class {
     }
 
     _ensureMenu(devices) {
-        this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
+        this._padChooserMenu =  new PopupMenu.PopupMenu(this, 0.5, St.Side.TOP);
         this._padChooserMenu.connect('menu-closed', () => {
-            this.actor.set_checked(false);
+            this.set_checked(false);
         });
         this._padChooserMenu.actor.hide();
         Main.uiGroup.add_actor(this._padChooserMenu.actor);
@@ -77,15 +79,10 @@ var PadChooser = class {
     update(devices) {
         if (this._padChooserMenu)
             this._padChooserMenu.actor.destroy();
-        this.actor.set_checked(false);
+        this.set_checked(false);
         this._ensureMenu(devices);
     }
-
-    destroy() {
-        this.actor.destroy();
-    }
-};
-Signals.addSignalMethods(PadChooser.prototype);
+});
 
 var KeybindingEntry = class {
     constructor() {
@@ -738,7 +735,7 @@ var PadOsd = class {
                 this._padChooser.connect('pad-selected', (chooser, pad) => {
                     this._requestForOtherPad(pad);
                 });
-                this._titleBox.add_child(this._padChooser.actor);
+                this._titleBox.add_child(this._padChooser);
             } else {
                 this._padChooser.update(this._groupPads);
             }
