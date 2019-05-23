@@ -123,9 +123,14 @@ var ShowOverviewAction = GObject.registerClass({
     }
 });
 
-var ViewSelector = class {
-    constructor(searchEntry, showAppsButton) {
-        this.actor = new Shell.Stack({ name: 'viewSelector' });
+var ViewSelector = GObject.registerClass({
+    Signals: {
+        'page-changed': {},
+        'page-empty': {},
+    }
+}, class ViewSelector extends Shell.Stack {
+    _init(searchEntry, showAppsButton) {
+        super._init({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
@@ -310,13 +315,13 @@ var ViewSelector = class {
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
         else
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon,
-                                            { proxy: this.actor,
+                                            { proxy: this,
                                               focusCallback: () => {
                                                   this._a11yFocusPage(page);
                                               }
                                             });;
         page.hide();
-        this.actor.add_actor(page);
+        this.add_actor(page);
         return page;
     }
 
@@ -618,5 +623,4 @@ var ViewSelector = class {
                                   transition: 'easeOutQuad'
                                 });
     }
-};
-Signals.addSignalMethods(ViewSelector.prototype);
+});
