@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
 
 const AccessDialog = imports.ui.accessDialog;
@@ -689,12 +689,13 @@ function queueDeferredWork(workId) {
     }
 }
 
-var RestartMessage = class extends ModalDialog.ModalDialog {
-    constructor(message) {
-        super({ shellReactive: true,
-                styleClass: 'restart-message headline',
-                shouldFadeIn: false,
-                destroyOnClose: true });
+var RestartMessage = GObject.registerClass(
+class RestartMessage extends ModalDialog.ModalDialog {
+    _init(message) {
+        super._init({ shellReactive: true,
+                      styleClass: 'restart-message headline',
+                      shouldFadeIn: false,
+                      destroyOnClose: true });
 
         let label = new St.Label({ text: message });
 
@@ -704,7 +705,7 @@ var RestartMessage = class extends ModalDialog.ModalDialog {
                                         y_align: St.Align.MIDDLE });
         this.buttonLayout.hide();
     }
-};
+});
 
 function showRestartMessage(message) {
     let restartMessage = new RestartMessage(message);

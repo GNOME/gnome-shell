@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, NM, Pango, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Config = imports.misc.config;
@@ -12,9 +12,10 @@ const ShellEntry = imports.ui.shellEntry;
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
-var NetworkSecretDialog = class extends ModalDialog.ModalDialog {
-    constructor(agent, requestId, connection, settingName, hints, flags, contentOverride) {
-        super({ styleClass: 'prompt-dialog' });
+var NetworkSecretDialog = GObject.registerClass(
+class NetworkSecretDialog extends ModalDialog.ModalDialog {
+    _init(agent, requestId, connection, settingName, hints, flags, contentOverride) {
+        super._init({ styleClass: 'prompt-dialog' });
 
         this._agent = agent;
         this._requestId = requestId;
@@ -347,7 +348,7 @@ var NetworkSecretDialog = class extends ModalDialog.ModalDialog {
 
         return content;
     }
-};
+});
 
 var VPNRequestHandler = class {
     constructor(agent, requestId, authHelper, serviceType, connection, hints, flags) {

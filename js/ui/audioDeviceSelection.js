@@ -1,4 +1,4 @@
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
@@ -13,10 +13,11 @@ var AudioDevice = {
 
 const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
-var AudioDeviceSelectionDialog =
-class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
-    constructor(devices) {
-        super({ styleClass: 'audio-device-selection-dialog' });
+var AudioDeviceSelectionDialog = GObject.registerClass({
+    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } }
+}, class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
+    _init(devices) {
+        super._init({ styleClass: 'audio-device-selection-dialog' });
 
         this._deviceItems = {};
 
@@ -31,10 +32,6 @@ class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
 
         if (this._selectionBox.get_n_children() < 2)
             throw new Error('Too few devices for a selection');
-    }
-
-    destroy() {
-        super.destroy();
     }
 
     _buildLayout(devices) {
@@ -125,7 +122,7 @@ class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
         Main.overview.hide();
         app.activate();
     }
-};
+});
 
 var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
     constructor() {

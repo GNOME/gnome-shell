@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { AccountsService, Clutter, Gio, GLib,
-        Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
+        GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
@@ -15,9 +15,11 @@ var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
-var AuthenticationDialog = class extends ModalDialog.ModalDialog {
-    constructor(actionId, body, cookie, userNames) {
-        super({ styleClass: 'prompt-dialog' });
+var AuthenticationDialog = GObject.registerClass({
+    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } }
+}, class AuthenticationDialog extends ModalDialog.ModalDialog {
+    _init(actionId, body, cookie, userNames) {
+        super._init({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
         this.message = body;
@@ -25,7 +27,7 @@ var AuthenticationDialog = class extends ModalDialog.ModalDialog {
         this._wasDismissed = false;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
-            this._group.visible = !Main.sessionMode.isLocked;
+            this.visible = !Main.sessionMode.isLocked;
         });
 
         this.connect('closed', this._onDialogClosed.bind(this));
@@ -326,8 +328,7 @@ var AuthenticationDialog = class extends ModalDialog.ModalDialog {
 
         this._destroySession();
     }
-};
-Signals.addSignalMethods(AuthenticationDialog.prototype);
+});
 
 var AuthenticationAgent = class {
     constructor() {
