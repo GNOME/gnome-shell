@@ -412,19 +412,12 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     }
 });
 
-var DelegateFocusNavigator = GObject.registerClass(
-class DelegateFocusNavigator extends St.Widget {
-    vfunc_navigate_focus(from, direction) {
-        return this._delegate.navigateFocus(from, direction);
-    }
-});
-
-var WorkspacesDisplay = class {
-    constructor() {
-        this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
-        this.actor._delegate = this;
-        this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
-        this.actor.connect('parent-set', this._parentSet.bind(this));
+var WorkspacesDisplay = GObject.registerClass(
+class WorkspacesDisplay extends St.Widget {
+    _init() {
+        super._init({ clip_to_allocation: true });
+        this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
+        this.connect('parent-set', this._parentSet.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -438,7 +431,7 @@ var WorkspacesDisplay = class {
                 Main.overview.hide();
         });
         Main.overview.addAction(clickAction);
-        this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
         panAction.connect('pan', this._onPan.bind(this));
@@ -461,7 +454,7 @@ var WorkspacesDisplay = class {
             this._endSwipeScroll();
         });
         Main.overview.addAction(panAction);
-        this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
         let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
@@ -469,20 +462,20 @@ var WorkspacesDisplay = class {
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
         Main.overview.addAction(switchGesture);
-        this.actor.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
         switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
-        this.actor.connect('notify::mapped', () => {
-            switchGesture.enabled = this.actor.mapped;
+        this.connect('notify::mapped', () => {
+            switchGesture.enabled = this.mapped;
         });
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._workspacesViews = [];
-        switchGesture.enabled = this.actor.mapped;
+        switchGesture.enabled = this.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
@@ -500,7 +493,7 @@ var WorkspacesDisplay = class {
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        adjustment.value -= (dy / this.height) * adjustment.page_size;
         return false;
     }
 
@@ -532,7 +525,7 @@ var WorkspacesDisplay = class {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
         let adjustment = this._scrollAdjustment;
-        adjustment.value = (active - yRel / this.actor.height) * adjustment.page_size;
+        adjustment.value = (active - yRel / this.height) * adjustment.page_size;
     }
 
     _onSwitchWorkspaceActivated(action, direction) {
@@ -545,7 +538,7 @@ var WorkspacesDisplay = class {
         this._endTouchGesture();
     }
 
-    navigateFocus(from, direction) {
+    vfunc_navigate_focus(from, direction) {
         return this._getPrimaryView().navigate_focus(from, direction, false);
     }
 
@@ -674,15 +667,15 @@ var WorkspacesDisplay = class {
         this._notifyOpacityId = 0;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-            let newParent = this.actor.get_parent();
+            let newParent = this.get_parent();
             if (!newParent)
                 return;
 
             // This is kinda hackish - we want the primary view to
-            // appear as parent of this.actor, though in reality it
+            // appear as parent of this, though in reality it
             // is added directly to Main.layoutManager.overviewGroup
             this._notifyOpacityId = newParent.connect('notify::opacity', () => {
-                let opacity = this.actor.get_parent().opacity;
+                let opacity = this.get_parent().opacity;
                 let primaryView = this._getPrimaryView();
                 if (!primaryView)
                     return;
@@ -715,8 +708,8 @@ var WorkspacesDisplay = class {
         if (!this._workspacesViews.length)
             return;
 
-        let [x, y] = this.actor.get_transformed_position();
-        let allocation = this.actor.allocation;
+        let [x, y] = this.get_transformed_position();
+        let allocation = this.allocation;
         let width = allocation.x2 - allocation.x1;
         let height = allocation.y2 - allocation.y1;
         let primaryGeometry = { x: x, y: y, width: width, height: height };
@@ -734,7 +727,7 @@ var WorkspacesDisplay = class {
     }
 
     _onScrollEvent(actor, event) {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._workspacesOnlyOnPrimary &&
@@ -759,7 +752,7 @@ var WorkspacesDisplay = class {
     }
 
     _onKeyPressEvent(actor, event) {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return Clutter.EVENT_PROPAGATE;
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
@@ -777,5 +770,4 @@ var WorkspacesDisplay = class {
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
     }
-};
-Signals.addSignalMethods(WorkspacesDisplay.prototype);
+});
