@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
@@ -34,8 +33,19 @@ var BeginRequestType = {
     DONT_PROVIDE_USERNAME: 1
 };
 
-var AuthPrompt = class {
-    constructor(gdmClient, mode) {
+var AuthPrompt = GObject.registerClass({
+    Signals: {
+        'cancelled': {},
+        'failed': {},
+        'next': {},
+        'prompted': {},
+        'reset': { param_types: [GObject.TYPE_UINT] },
+    }
+}, class AuthPrompt extends St.BoxLayout {
+    _init(gdmClient, mode) {
+        super._init({ style_class: 'login-dialog-prompt-layout',
+                      vertical: true });
+
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
 
         this._gdmClient = gdmClient;
@@ -68,10 +78,8 @@ var AuthPrompt = class {
                 }
             });
 
-        this.actor = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
-                                        vertical: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('key-press-event', (actor, event) => {
+        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('key-press-event', (actor, event) => {
                 if (event.get_key_symbol() == Clutter.KEY_Escape)
                     this.cancel();
                 return Clutter.EVENT_PROPAGATE;
@@ -79,14 +87,14 @@ var AuthPrompt = class {
 
         this._userWell = new St.Bin({ x_fill: true,
                                       x_align: St.Align.START });
-        this.actor.add(this._userWell,
+        this.add(this._userWell,
                        { x_align: St.Align.START,
                          x_fill: true,
                          y_fill: true,
                          expand: true });
         this._label = new St.Label({ style_class: 'login-dialog-prompt-label' });
 
-        this.actor.add(this._label,
+        this.add(this._label,
                        { expand: true,
                          x_fill: false,
                          y_fill: true,
@@ -95,7 +103,7 @@ var AuthPrompt = class {
                                      can_focus: true });
         ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
-        this.actor.add(this._entry,
+        this.add(this._entry,
                        { expand: true,
                          x_fill: true,
                          y_fill: false,
@@ -107,11 +115,11 @@ var AuthPrompt = class {
                                        styleClass: 'login-dialog-message' });
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
+        this.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
 
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
-        this.actor.add(this._buttonBox,
+        this.add(this._buttonBox,
                        { expand:  true,
                          x_align: St.Align.MIDDLE,
                          y_align: St.Align.END });
@@ -405,9 +413,9 @@ var AuthPrompt = class {
         this._entry.clutter_text.editable = sensitive;
     }
 
-    hide() {
+    vfunc_hide() {
         this.setActorInDefaultButtonWell(null, true);
-        this.actor.hide();
+        super.vfunc_hide();
         this._message.opacity = 0;
 
         this.setUser(null);
@@ -508,5 +516,4 @@ var AuthPrompt = class {
         this.reset();
         this.emit('cancelled');
     }
-};
-Signals.addSignalMethods(AuthPrompt.prototype);
+});
