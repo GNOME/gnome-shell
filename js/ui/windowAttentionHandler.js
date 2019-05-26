@@ -69,21 +69,12 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
                                                  () => { this.destroy(); }));
         this.signalIDs.push(this._window.connect('unmanaged',
                                                  () => { this.destroy(); }));
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _sync() {
         if (this._window.demands_attention || this._window.urgent)
             return;
         this.destroy();
-    }
-
-    _onDestroy() {
-        for(let i = 0; i < this.signalIDs.length; i++) {
-           this._window.disconnect(this.signalIDs[i]);
-        }
-        this.signalIDs = [];
     }
 
     _createPolicy() {
@@ -97,6 +88,14 @@ var Source = class WindowAttentionSource extends MessageTray.Source {
 
     createIcon(size) {
         return this._app.create_icon_texture(size);
+    }
+
+    destroy(params) {
+        for (let i = 0; i < this.signalIDs.length; i++)
+            this._window.disconnect(this.signalIDs[i]);
+        this.signalIDs = [];
+
+        super.destroy(params);
     }
 
     open() {
