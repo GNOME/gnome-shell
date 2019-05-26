@@ -1560,7 +1560,8 @@ delete_variant_cb (GObject      *object,
 
   if (!g_file_delete_finish (G_FILE (object), result, &error))
     {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+          !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
         {
           g_warning ("Could not delete runtime/persistent state file: %s\n",
                      error->message);
