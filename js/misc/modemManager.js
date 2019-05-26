@@ -71,7 +71,7 @@ function _findProviderForMccMnc(operator_name, operator_code) {
 // Tries to find the operator name corresponding to the given SID
 //
 function _findProviderForSid(sid) {
-    if (sid == 0)
+    if (!sid)
         return null;
 
     let mpd = _getMobileProvidersDatabase();
