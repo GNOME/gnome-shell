@@ -15,7 +15,7 @@ variables:
         - merge_requests
 
 check_commit_log:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v2
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: review
     variables:
         GIT_DEPTH: "100"
@@ -40,7 +40,7 @@ js_check:
         when: on_failure
 
 build:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v2
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: build
     before_script:
         - .gitlab-ci/checkout-mutter.sh
@@ -58,7 +58,7 @@ build:
             - build
 
 test:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v2
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: test
     before_script:
         - ninja -C mutter/build install
@@ -72,7 +72,7 @@ test:
         when: on_failure
 
 test-pot:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v2
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v1
     stage: test
     before_script:
         - ninja -C mutter/build install
