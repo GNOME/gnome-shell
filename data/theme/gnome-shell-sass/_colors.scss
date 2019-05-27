@@ -11,6 +11,7 @@ $selected_bg_color: if($variant == 'light', #3584e4, darken(#3584e4, 20%));
 $selected_borders_color: if($variant== 'light', darken($selected_bg_color, 15%), darken($selected_bg_color, 30%));
 $borders_color: if($variant == 'light', darken($bg_color, 18%), darken($bg_color, 10%));
 $borders_edge: if($variant == 'light', transparentize(white, 0.2), transparentize($fg_color, 0.93));
+$alt_borders_color: if($variant == 'light', darken($bg_color, 24%), darken($bg_color, 18%));
 $link_color: if($variant == 'light', darken($selected_bg_color, 10%), lighten($selected_bg_color, 20%));
 $link_visited_color: if($variant == 'light', darken($selected_bg_color, 20%), lighten($selected_bg_color, 10%));
 $top_hilight: $borders_edge;
@@ -24,6 +25,7 @@ $osd_fg_color: #eeeeec;
 $osd_bg_color: #2e3436;
 $osd_borders_color: transparentize(black, 0.3);
 $osd_outer_borders_color: transparentize(white, 0.9);
+$shadow_color: transparentize(black, 0.9);
 
 $tooltip_borders_color: $osd_outer_borders_color;
 

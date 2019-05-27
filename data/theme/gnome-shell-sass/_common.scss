@@ -1012,8 +1012,11 @@ StScrollBar {
       }
 
         .message-list-clear-button.button {
-          background-color: transparent;
-          &:hover,&:focus { background-color: lighten($bg_color,5%); }
+	  @include button(normal);
+	  &:insensitive { @include button(insensitive); }
+	  &:hover { @include button(hover); }
+	  &:focus { @include button(focus); }
+	  &:active { @include button(active); }
           margin: 1.5em 1.5em 0;
         }
 
@@ -1537,12 +1540,12 @@ StScrollBar {
     width: 34em;
     margin: 5px;
     border-radius: 6px;
-    color: $_bubble_fg_color;
-    background-color: $_bubble_bg_color;
+    color: $fg_color;
+    background-color: $bg_color;
     border: 1px solid $borders_color;
-    //box-shadow: 0 1px 4px black;
-    &:hover { background-color: $_bubble_bg_color; }
-    &:focus { background-color: $_bubble_bg_color; }
+    box-shadow: 0 1px 4px black;
+    //&:hover { background-color: $bg_color; }
+    //&:focus { background-color: $bg_color; }
 
     .notification-icon { padding: 5px; }
     .notification-content { padding: 5px; spacing: 5px; }
@@ -1557,7 +1560,6 @@ StScrollBar {
       background-color: darken($_bubble_bg_color,5%);
       &:first-child { border-radius: 0 0 0 6px; }
       &:last-child { border-radius: 0 0 6px 0; }
-      &:hover, &focus { background-color: darken($_bubble_bg_color,2%); }
     }
   }
   .summary-source-counter {
