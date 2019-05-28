@@ -114,18 +114,18 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var WindowDimmer = class {
-    constructor(actor) {
-        this._brightnessEffect = new Clutter.BrightnessContrastEffect();
-        actor.add_effect(this._brightnessEffect);
-        this.actor = actor;
+var WindowDimmer = GObject.registerClass(
+class WindowDimmer extends Clutter.BrightnessContrastEffect {
+    _init(actor) {
+        super._init();
+        actor.add_effect(this);
         this._enabled = true;
         this._dimFactor = 0.0;
         this._syncEnabled();
     }
 
     _syncEnabled() {
-        this._brightnessEffect.enabled = (this._enabled && this._dimFactor > 0);
+        this.enabled = (this._enabled && this._dimFactor > 0);
     }
 
     setEnabled(enabled) {
@@ -135,14 +135,14 @@ var WindowDimmer = class {
 
     set dimFactor(factor) {
         this._dimFactor = factor;
-        this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
+        this.set_brightness(factor * DIM_BRIGHTNESS);
         this._syncEnabled();
     }
 
     get dimFactor() {
         return this._dimFactor;
     }
-};
+});
 
 function getWindowDimmer(actor) {
     let enabled = Meta.prefs_get_attach_modal_dialogs();
