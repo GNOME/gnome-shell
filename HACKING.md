@@ -187,15 +187,27 @@ and "double quotes" for strings that the user may see. This allows us to
 quickly find untranslated or mistranslated strings by grepping through the
 sources for double quotes without a gettext call around them.
 
-## `actor` and `_delegate`
+## `actor` (deprecated) and `_delegate`
 
 gjs allows us to set so-called "expando properties" on introspected objects,
 allowing us to treat them like any other. Because the Shell was built before
-you could inherit from GTypes natively in JS, we usually have a wrapper class
-that has a property called `actor`. We call this wrapper class the "delegate".
+you could inherit from GTypes natively in JS, in some cases we have a wrapper
+class that has a property called `actor` (now deprecated). We call this
+wrapper class the "delegate".
 
 We sometimes use expando properties to set a property called `_delegate` on
 the actor itself:
+```javascript
+    var MyActor = GObject.registerClass(
+    class MyActor extends Clutter.Actor {
+        _init(params) {
+            super._init(params);
+            this._delegate = this;
+        }
+    });
+```
+
+Or using the deprecated `actor`:
 ```javascript
     var MyClass = class {
         constructor() {
@@ -216,6 +228,7 @@ delegate object from an associated actor. For instance, the drag and drop
 system calls the `handleDragOver` function on the delegate of a "drop target"
 when the user drags an item over it. If you do not set the `_delegate`
 property, your actor will not be able to be dropped onto.
+In case the class is an actor itself, the `_delegate` can be just set to `this`.
 
 ## Functional style
 
