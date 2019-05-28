@@ -662,15 +662,16 @@ var AppSwitchAction = GObject.registerClass({
     }
 });
 
-var ResizePopup = class {
-    constructor() {
-        this._widget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+var ResizePopup = GObject.registerClass(
+class ResizePopup extends St.Widget {
+    _init() {
+        super._init({ layout_manager: new Clutter.BinLayout() });
         this._label = new St.Label({ style_class: 'resize-popup',
                                      x_align: Clutter.ActorAlign.CENTER,
                                      y_align: Clutter.ActorAlign.CENTER,
                                      x_expand: true, y_expand: true });
-        this._widget.add_child(this._label);
-        Main.uiGroup.add_actor(this._widget);
+        this.add_child(this._label);
+        Main.uiGroup.add_actor(this);
     }
 
     set(rect, displayW, displayH) {
@@ -679,15 +680,10 @@ var ResizePopup = class {
         let text = _("%d × %d").format(displayW, displayH);
         this._label.set_text(text);
 
-        this._widget.set_position(rect.x, rect.y);
-        this._widget.set_size(rect.width, rect.height);
+        this.set_position(rect.x, rect.y);
+        this.set_size(rect.width, rect.height);
     }
-
-    destroy() {
-        this._widget.destroy();
-        this._widget = null;
-    }
-};
+});
 
 var WindowManager = class {
     constructor() {
