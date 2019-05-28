@@ -771,20 +771,20 @@ class AggregateMenu extends PanelMenu.Button {
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
-        this._indicators.add_child(this._thunderbolt.indicators);
-        this._indicators.add_child(this._screencast.indicators);
-        this._indicators.add_child(this._location.indicators);
-        this._indicators.add_child(this._nightLight.indicators);
+        this._indicators.add_child(this._thunderbolt);
+        this._indicators.add_child(this._screencast);
+        this._indicators.add_child(this._location);
+        this._indicators.add_child(this._nightLight);
         if (this._network) {
-            this._indicators.add_child(this._network.indicators);
+            this._indicators.add_child(this._network);
         }
         if (this._bluetooth) {
-            this._indicators.add_child(this._bluetooth.indicators);
+            this._indicators.add_child(this._bluetooth);
         }
-        this._indicators.add_child(this._remoteAccess.indicators);
-        this._indicators.add_child(this._rfkill.indicators);
-        this._indicators.add_child(this._volume.indicators);
-        this._indicators.add_child(this._power.indicators);
+        this._indicators.add_child(this._remoteAccess);
+        this._indicators.add_child(this._rfkill);
+        this._indicators.add_child(this._volume);
+        this._indicators.add_child(this._power);
         this._indicators.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
         this.menu.addMenuItem(this._volume.menu);
