@@ -107,9 +107,21 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         }
 
         // The icons
-        let icon = this._proxy.IconName;
+        let charging = this._proxy.State == UPower.DeviceState.CHARGING;
+        let icon;
+        if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED) {
+            icon = 'battery-level-100-charged-symbolic';
+        } else {
+            icon = `battery-level-${
+                10 * Math.floor(this._proxy.Percentage / 10)
+            }${charging ? '-charging' : ''}-symbolic`;
+        }
         this._indicator.icon_name = icon;
         this._item.icon.icon_name = icon;
+
+        let fallbackIcon = this._proxy.IconName;
+        this._indicator.fallback_icon_name = fallbackIcon;
+        this._item.icon.fallback_icon_name = fallbackIcon;
 
         // The icon label
         let label
