@@ -1,21 +1,26 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Meta } = imports.gi;
-const Signals = imports.signals;
+const { Clutter, GObject, Meta } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 
-var XdndHandler = class {
-    constructor() {
+var XdndHandler = GObject.registerClass({
+    Signals: {
+        'drag-begin': { param_types: [GObject.TYPE_UINT] },
+        'drag-end': {},
+    }
+}, class XdndHandler extends Clutter.Actor {
+    _init() {
+        super._init({ width: 1, height: 1, opacity: 0 });
+
         // Used to display a clone of the cursor window when the
         // window group is hidden (like it happens in the overview)
         this._cursorWindowClone = null;
 
         // Used as a drag actor in case we don't have a cursor window clone
-        this._dummy = new Clutter.Actor({ width: 1, height: 1, opacity: 0 });
-        Main.uiGroup.add_actor(this._dummy);
-        this._dummy.hide();
+        Main.uiGroup.add_actor(this);
+        this.hide();
 
         if (!Meta.is_wayland_compositor())
             global.init_xdnd();
@@ -88,7 +93,7 @@ var XdndHandler = class {
         let dragEvent = {
             x: x,
             y: y,
-            dragActor: this._cursorWindowClone ? this._cursorWindowClone : this._dummy,
+            dragActor: this._cursorWindowClone ? this._cursorWindowClone : this,
             source: this,
             targetActor: pickedActor
         };
@@ -103,18 +108,17 @@ var XdndHandler = class {
         }
 
         while (pickedActor) {
-                if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
+                if (pickedActor && pickedActor.handleDragOver) {
                     let [r, targX, targY] = pickedActor.transform_stage_point(x, y);
-                    let result = pickedActor._delegate.handleDragOver(this,
-                                                                      dragEvent.dragActor,
-                                                                      targX,
-                                                                      targY,
-                                                                      global.get_current_time());
+                    let result = pickedActor.handleDragOver(this,
+                                                            dragEvent.dragActor,
+                                                            targX,
+                                                            targY,
+                                                            global.get_current_time());
                     if (result != DND.DragMotionResult.CONTINUE)
                         return;
                 }
                 pickedActor = pickedActor.get_parent();
         }
     }
-};
-Signals.addSignalMethods(XdndHandler.prototype);
+});
