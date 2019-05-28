@@ -257,9 +257,8 @@ var Background = class Background {
                 this._refreshAnimation();
             });
 
-        this._settingsChangedSignalId = this._settings.connect('changed', () => {
-            this.emit('changed');
-        });
+        this._settingsChangedSignalId =
+            this._settings.connect('changed', this._emitChangedSignal.bind(this));
 
         this._load();
     }
@@ -290,6 +289,22 @@ var Background = class Background {
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
         this._settingsChangedSignalId = 0;
+
+        if (this._changedIdleId) {
+            GLib.source_remove(this._changedIdleId);
+            this._changedIdleId = 0;
+        }
+    }
+
+    _emitChangedSignal() {
+        if (this._changedIdleId)
+            return;
+
+        this._changedIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._changedIdleId = 0;
+            this.emit('changed');
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     updateResolution() {
@@ -345,7 +360,7 @@ var Background = class Background {
                                                if (changedFile.equal(file)) {
                                                    let imageCache = Meta.BackgroundImageCache.get_default();
                                                    imageCache.purge(changedFile);
-                                                   this.emit('changed');
+                                                   this._emitChangedSignal();
                                                }
                                            });
         this._fileWatches[key] = signalId;
