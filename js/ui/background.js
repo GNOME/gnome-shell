@@ -265,6 +265,8 @@ var Background = class Background {
     }
 
     destroy() {
+        this.background = null;
+
         this._cancellable.cancel();
         this._removeAnimationTimeout();
 
@@ -699,7 +701,6 @@ var BackgroundManager = class BackgroundManager {
                            time: FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete() {
-                               oldBackgroundActor.background.run_dispose();
                                oldBackgroundActor.destroy();
                            }
                          });
