@@ -17,17 +17,15 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
-var Application = class {
-    constructor() {
+var Application = GObject.registerClass({
+    GTypeName: 'ExtensionPrefs_Application'
+}, class Application extends Gtk.Application {
+    _init() {
         GLib.set_prgname('gnome-shell-extension-prefs');
-        this.application = new Gtk.Application({
+        super._init({
             application_id: 'org.gnome.shell.ExtensionPrefs',
             flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE
         });
-
-        this.application.connect('activate', this._onActivate.bind(this));
-        this.application.connect('command-line', this._onCommandLine.bind(this));
-        this.application.connect('startup', this._onStartup.bind(this));
 
         this._extensionPrefsModules = {};
 
@@ -84,7 +82,7 @@ var Application = class {
                                                 visible: true }));
 
         if (this._skipMainWindow) {
-            this.application.add_window(dialog);
+            this.add_window(dialog);
             if (this._window)
                 this._window.destroy();
             this._window = dialog;
@@ -213,8 +211,8 @@ var Application = class {
         return scroll;
     }
 
-    _buildUI(app) {
-        this._window = new Gtk.ApplicationWindow({ application: app,
+    _buildUI() {
+        this._window = new Gtk.ApplicationWindow({ application: this,
                                                    window_position: Gtk.WindowPosition.CENTER });
 
         this._window.set_default_size(800, 500);
@@ -302,17 +300,19 @@ var Application = class {
         this._loaded = true;
     }
 
-    _onActivate() {
+    vfunc_activate() {
         this._window.present();
     }
 
-    _onStartup(app) {
-        this._buildUI(app);
+    vfunc_startup() {
+        super.vfunc_startup();
+
+        this._buildUI();
         this._scanExtensions();
     }
 
-    _onCommandLine(app, commandLine) {
-        app.activate();
+    vfunc_command_line(commandLine) {
+        this.activate();
         let args = commandLine.get_arguments();
 
         if (args.length) {
@@ -332,7 +332,7 @@ var Application = class {
         }
         return 0;
     }
-};
+});
 
 var Expander = GObject.registerClass({
     Properties: {
@@ -638,6 +638,5 @@ function main(argv) {
     Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
     Gettext.textdomain(Config.GETTEXT_PACKAGE);
 
-    let app = new Application();
-    app.application.run(argv);
+    new Application().run(argv);
 }
