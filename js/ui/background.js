@@ -93,7 +93,8 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const { Clutter, GDesktopEnums, Gio, GLib, GnomeDesktop, Meta } = imports.gi;
+const { Clutter, GDesktopEnums, Gio, GLib, GnomeDesktop, GObject,
+        Meta } = imports.gi;
 const Signals = imports.signals;
 
 const LoginManager = imports.misc.loginManager;
@@ -173,7 +174,7 @@ var BackgroundCache = class BackgroundCache {
             return;
         }
 
-        animation = new Animation({ file: params.file });
+        animation = new Animation({ filename: params.file.get_path() });
 
         animation.load(() => {
             this._animations[params.settingsSchema] = animation;
@@ -621,11 +622,21 @@ var BackgroundSource = class BackgroundSource {
     }
 };
 
-var Animation = class Animation {
-    constructor(params) {
-        params = Params.parse(params, { file: null });
+var Animation = GObject.registerClass({
+    GTypeName: 'Background_Animation',
+    Properties: {
+        'file': GObject.ParamSpec.object('file',
+                                         'file',
+                                         'file',
+                                         GObject.ParamFlags.READWRITE |
+                                         GObject.ParamFlags.CONSTRUCT_ONLY,
+                                         Gio.File.$gtype),
+    }
+}, class Animation extends GnomeDesktop.BGSlideShow {
+    _init(params) {
+        super._init(params);
 
-        this.file = params.file;
+        this.file = Gio.File.new_for_path(this.filename);
         this.keyFrameFiles = [];
         this.transitionProgress = 0.0;
         this.transitionDuration = 0.0;
@@ -633,9 +644,7 @@ var Animation = class Animation {
     }
 
     load(callback) {
-        this._show = new GnomeDesktop.BGSlideShow({ filename: this.file.get_path() });
-
-        this._show.load_async(null, (object, result) => {
+        this.load_async(null, (object, result) => {
             this.loaded = true;
             if (callback)
                 callback();
@@ -645,13 +654,11 @@ var Animation = class Animation {
     update(monitor) {
         this.keyFrameFiles = [];
 
-        if (!this._show)
+        if (this.get_num_slides() < 1)
             return;
 
-        if (this._show.get_num_slides() < 1)
-            return;
-
-        let [progress, duration, isFixed, filename1, filename2] = this._show.get_current_slide(monitor.width, monitor.height);
+        let [progress, duration, isFixed, filename1, filename2] =
+            this.get_current_slide(monitor.width, monitor.height);
 
         this.transitionDuration = duration;
         this.transitionProgress = progress;
@@ -662,8 +669,7 @@ var Animation = class Animation {
         if (filename2)
             this.keyFrameFiles.push(Gio.File.new_for_path(filename2));
     }
-};
-Signals.addSignalMethods(Animation.prototype);
+});
 
 var BackgroundManager = class BackgroundManager {
     constructor(params) {
