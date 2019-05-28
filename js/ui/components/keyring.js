@@ -228,10 +228,11 @@ var KeyringDummyDialog = class {
     }
 };
 
-var KeyringPrompter = class {
-    constructor() {
-        this._prompter = new Gcr.SystemPrompter();
-        this._prompter.connect('new-prompt', () => {
+var KeyringPrompter = GObject.registerClass(
+class KeyringPrompter extends Gcr.SystemPrompter {
+    _init() {
+        super._init();
+        this.connect('new-prompt', () => {
             let dialog = this._enabled ? new KeyringDialog()
                                        : new KeyringDummyDialog();
             this._currentPrompt = dialog.prompt;
@@ -245,7 +246,7 @@ var KeyringPrompter = class {
 
     enable() {
         if (!this._registered) {
-            this._prompter.register(Gio.DBus.session);
+            this.register(Gio.DBus.session);
             this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
                                                      Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
             this._registered = true;
@@ -256,10 +257,10 @@ var KeyringPrompter = class {
     disable() {
         this._enabled = false;
 
-        if (this._prompter.prompting)
+        if (this.prompting)
             this._currentPrompt.cancel();
         this._currentPrompt = null;
     }
-};
+});
 
 var Component = KeyringPrompter;
