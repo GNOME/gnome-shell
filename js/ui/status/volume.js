@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, Gvc, St } = imports.gi;
+const { Clutter, Gio, GObject, Gvc, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -340,9 +340,10 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass(
+class Volume_Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._primaryIndicator = this._addIndicator();
 
@@ -352,16 +353,16 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             let icon = this._volumeMenu.getIcon();
 
             if (icon != null) {
-                this.indicators.show();
+                this.show();
                 this._primaryIndicator.icon_name = icon;
             } else {
-                this.indicators.hide();
+                this.hide();
             }
         });
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.indicators.connect('scroll-event', this._onScrollEvent.bind(this));
+        this.connect('scroll-event', this._onScrollEvent.bind(this));
     }
 
     _onScrollEvent(actor, event) {
@@ -375,4 +376,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
-};
+});

@@ -106,9 +106,10 @@ class AltSwitcher extends St.Bin {
     }
 });
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass(
+class System_Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         let userManager = AccountsService.UserManager.get_default();
         this._user = userManager.get_user(GLib.get_user_name());
@@ -321,4 +322,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         Main.overview.hide();
         this._settingsApp.activate();
     }
-};
+});
