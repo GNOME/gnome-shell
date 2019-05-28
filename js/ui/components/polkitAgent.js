@@ -330,19 +330,20 @@ var AuthenticationDialog = GObject.registerClass({
     }
 });
 
-var AuthenticationAgent = class {
-    constructor() {
+var AuthenticationAgent = GObject.registerClass(
+class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
+    _init() {
+        super._init();
+
         this._currentDialog = null;
-        this._handle = null;
-        this._native = new Shell.PolkitAuthenticationAgent();
-        this._native.connect('initiate', this._onInitiate.bind(this));
-        this._native.connect('cancel', this._onCancel.bind(this));
+        this.connect('initiate', this._onInitiate.bind(this));
+        this.connect('cancel', this._onCancel.bind(this));
         this._sessionUpdatedId = 0;
     }
 
     enable() {
         try {
-            this._native.register();
+            this.register();
         } catch (e) {
             log('Failed to register AuthenticationAgent');
         }
@@ -350,7 +351,7 @@ var AuthenticationAgent = class {
 
     disable() {
         try {
-            this._native.unregister();
+            this.unregister();
         } catch (e) {
             log('Failed to unregister AuthenticationAgent');
         }
@@ -400,8 +401,8 @@ var AuthenticationAgent = class {
             Main.sessionMode.disconnect(this._sessionUpdatedId);
         this._sessionUpdatedId = 0;
 
-        this._native.complete(dismissed);
+        this.complete(dismissed);
     }
-};
+});
 
 var Component = AuthenticationAgent;
