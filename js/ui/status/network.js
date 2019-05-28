@@ -1583,9 +1583,10 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var NMApplet = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var NMApplet = GObject.registerClass(
+class Network_Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._primaryIndicator = this._addIndicator();
         this._vpnIndicator = this._addIndicator();
@@ -1934,7 +1935,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
     }
 
     _syncNMState() {
-        this.indicators.visible = this._client.nm_running;
+        this.visible = this._client.nm_running;
         this.menu.actor.visible = this._client.networking_enabled;
 
         this._updateIcon();
@@ -2054,4 +2055,4 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
         this._vpnIndicator.visible = (this._vpnIndicator.icon_name != '');
     }
-};
+});
