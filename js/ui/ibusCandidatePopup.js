@@ -132,16 +132,17 @@ var CandidateArea = GObject.registerClass({
     }
 });
 
-var CandidatePopup = class CandidatePopup {
-    constructor() {
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
-        this._boxPointer.visible = false;
-        this._boxPointer.style_class = 'candidate-popup-boxpointer';
-        Main.layoutManager.addChrome(this._boxPointer);
+var CandidatePopup = GObject.registerClass(
+class IbusCandidatePopup extends BoxPointer.BoxPointer {
+    _init() {
+        super._init(St.Side.TOP);
+        this.visible = false;
+        this.style_class = 'candidate-popup-boxpointer';
+        Main.layoutManager.addChrome(this);
 
         let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
                                      vertical: true });
-        this._boxPointer.bin.set_child(box);
+        this.bin.set_child(box);
 
         this._preeditText = new St.Label({ style_class: 'candidate-popup-text',
                                            visible: false });
@@ -274,15 +275,15 @@ var CandidatePopup = class CandidatePopup {
             this._updateVisibility();
         });
         panelService.connect('focus-out', ps => {
-            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
+            this.close(BoxPointer.PopupAnimation.NONE);
             Main.keyboard.resetSuggestions();
         });
     }
 
     _setDummyCursorGeometry(x, y, w, h) {
         Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
-        if (this._boxPointer.visible)
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
+        if (this.visible)
+            this.setPosition(Main.layoutManager.dummyCursor, 0);
     }
 
     _updateVisibility() {
@@ -292,11 +293,11 @@ var CandidatePopup = class CandidatePopup {
                           this._candidateArea.visible));
 
         if (isVisible) {
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
-            this._boxPointer.open(BoxPointer.PopupAnimation.NONE);
-            this._boxPointer.raise_top();
+            this.setPosition(Main.layoutManager.dummyCursor, 0);
+            this.open(BoxPointer.PopupAnimation.NONE);
+            this.raise_top();
         } else {
-            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
+            this.close(BoxPointer.PopupAnimation.NONE);
         }
     }
 
@@ -306,4 +307,4 @@ var CandidatePopup = class CandidatePopup {
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
     }
-};
+});
