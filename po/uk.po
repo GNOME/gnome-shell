@@ -1205,7 +1205,7 @@ msgstr "Встановити"
 #: js/ui/extensionDownloader.js:206
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
+msgstr "Завантажити і встановити «%s» з extensions.gnome.org?"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:59
@@ -1273,7 +1273,7 @@ msgstr "Застаріло"
 
 #: js/ui/lookingGlass.js:724
 msgid "Downloading"
-msgstr "Звантаження"
+msgstr "Завантаження"
 
 #: js/ui/lookingGlass.js:748
 msgid "View Source"
