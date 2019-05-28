@@ -489,7 +489,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                 /* Translators: %s is the Disks application */
                 _("Unable to start %s").format(app.get_name()),
                 /* Translators: %s is the Disks application */
-                _("Couldn't find the %s application").format(app.get_name())
+                _("Couldn’t find the %s application").format(app.get_name())
             );
         this._onCancelButton();
     }
