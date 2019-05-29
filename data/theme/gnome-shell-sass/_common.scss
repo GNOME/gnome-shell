@@ -6,6 +6,7 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 
 $panel-corner-radius: 6px;
 $medium_radius: 9px;
+$_trough_color: transparentize($bubble_fg_color, 0.7);
 
 /* Copyright 2009, 2015 Red Hat, Inc.
  *
@@ -130,7 +131,7 @@ StScrollBar {
 .slider {
   height: 1em;
   -barlevel-height: 0.3em;
-  -barlevel-background-color: lighten($bubble_fg_color, 25%); //background of the trough
+  -barlevel-background-color: $_trough_color; //background of the trough
   -barlevel-border-color: transparent; //trough border color
   -barlevel-active-background-color: $selected_bg_color; //active trough fill
   -barlevel-active-border-color: transparent; //active trough border
@@ -157,6 +158,7 @@ StScrollBar {
 
 /* Switches */
 .toggle-switch {
+  color: $fg_color;
   width: 46px;
   height: 22px;
   background-size: contain;
@@ -613,7 +615,7 @@ StScrollBar {
   .level {
     height: 0.6em;
     -barlevel-height: 0.6em;
-    -barlevel-background-color: transparentize(darken($osd_bg_color,15%),0.5);
+    -barlevel-background-color: $_trough_color;
     -barlevel-active-background-color: $osd_fg_color;
     -barlevel-overdrive-color: $destructive_color;
     -barlevel-overdrive-separator-width: 0.2em;
@@ -752,7 +754,7 @@ StScrollBar {
       box-shadow: none;
       border-color: $bubble_borders_color;
     }
-    background-color: white;
+    background-color: $bubble_bg_color;
     color: $bubble_fg_color;
     &:hover { background-color: $bubble_hover_bg_color; }
     &:active { 
@@ -830,7 +832,7 @@ StScrollBar {
     }
 
     &:hover {
-      color: lighten($fg_color, 10%);
+      color: $selected_fg_color;
     }
 
     &:active, &:overview, &:focus, &:checked {
@@ -838,7 +840,7 @@ StScrollBar {
       // a box-shadow
       background-color: rgba(0, 0, 0, 0.01);
       box-shadow: inset 0 -2px 0px lighten($selected_bg_color,5%);
-      color: lighten($fg_color,10%);
+      color: $selected_fg_color;
     }
 
     .system-status-icon { icon-size: 1.09em; padding: 0 5px; }
@@ -886,7 +888,7 @@ StScrollBar {
     .datemenu-displays-box { spacing: 1em; }
 
     .datemenu-calendar-column {
-      border: 0 solid darken($bubble_bg_color, 15%);
+      border: 0 solid transparentize($bubble_fg_color, 0.9);
       &:ltr { border-left-width: 1px; }
       &:rtl { border-right-width: 1px; }
     }
@@ -1053,7 +1055,7 @@ StScrollBar {
       }
 
         .message-list-clear-button.button {
-          background-color: white;
+          background-color: $bubble_bg_color;
           color: $bubble_fg_color;
           box-shadow: none;
           border-color: $bubble_borders_color;
