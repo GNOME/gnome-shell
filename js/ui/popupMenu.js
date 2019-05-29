@@ -1215,7 +1215,6 @@ var PopupMenuManager = class {
     constructor(owner, grabParams) {
         grabParams = Params.parse(grabParams,
                                   { actionMode: Shell.ActionMode.POPUP });
-        this._owner = owner;
         this._grabHelper = new GrabHelper.GrabHelper(owner, grabParams);
         this._menus = [];
     }
