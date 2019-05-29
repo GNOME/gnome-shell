@@ -345,10 +345,8 @@ var IconGrid = GObject.registerClass({
                  * to next allocation cycle. */
                 children[i]._toHide = true;
                 anyToHide = true;
-            } else {
+            } else
                 children[i].allocate(childBox, flags);
-                children[i].show();
-            }
 
             columnIndex++;
             if (columnIndex == nColumns) {
