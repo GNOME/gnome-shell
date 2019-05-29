@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Calendar, CalendarMessageList */
+/* exported Calendar, CalendarMessageList, DBusEventSource */
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
@@ -99,15 +98,52 @@ var CalendarEvent = class CalendarEvent {
 // Interface for appointments/events - e.g. the contents of a calendar
 //
 
-// First, an implementation with no events
-var EmptyEventSource = class EmptyEventSource {
-    constructor() {
-        this.isLoading = false;
-        this.isDummy = true;
-        this.hasCalendars = false;
+var EventSourceBase = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
+    Properties: {
+        'has-calendars': GObject.ParamSpec.boolean(
+            'has-calendars', 'has-calendars', 'has-calendars',
+            GObject.ParamFlags.READABLE,
+            false),
+        'is-loading': GObject.ParamSpec.boolean(
+            'is-loading', 'is-loading', 'is-loading',
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+    Signals: { 'changed': {} }
+}, class EventSourceBase extends GObject.Object {
+    get isLoading() {
+        throw new GObject.NotImplementedError(`isLoading in ${this.constructor.name}`);
+    }
+
+    get hasCalendars() {
+        throw new GObject.NotImplementedError(`hasCalendars in ${this.constructor.name}`);
     }
 
     destroy() {
+    }
+
+    requestRange(_begin, _end) {
+        throw new GObject.NotImplementedError(`requestRange in ${this.constructor.name}`);
+    }
+
+    getEvents(_begin, _end) {
+        throw new GObject.NotImplementedError(`getEvents in ${this.constructor.name}`);
+    }
+
+    hasEvents(_day) {
+        throw new GObject.NotImplementedError(`hasEvents in ${this.constructor.name}`);
+    }
+});
+
+var EmptyEventSource = GObject.registerClass(
+class EmptyEventSource extends EventSourceBase {
+    get isLoading() {
+        return false;
+    }
+
+    get hasCalendars() {
+        return false;
     }
 
     requestRange(_begin, _end) {
@@ -121,8 +157,7 @@ var EmptyEventSource = class EmptyEventSource {
     hasEvents(_day) {
         return false;
     }
-};
-Signals.addSignalMethods(EmptyEventSource.prototype);
+});
 
 const CalendarServerIface = loadInterfaceXML('org.gnome.Shell.CalendarServer');
 
@@ -154,11 +189,12 @@ function _dateIntervalsOverlap(a0, a1, b0, b1) {
 }
 
 // an implementation that reads data from a session bus service
-var DBusEventSource = class DBusEventSource {
-    constructor() {
+var DBusEventSource = GObject.registerClass(
+class DBusEventSource extends EventSourceBase {
+    _init() {
+        super._init();
         this._resetCache();
-        this.isLoading = false;
-        this.isDummy = false;
+        this._isLoading = false;
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
@@ -193,12 +229,12 @@ var DBusEventSource = class DBusEventSource {
             });
 
             this._dbusProxy.connect('g-properties-changed', () => {
-                this.emit('notify::has-calendars');
+                this.notify('has-calendars');
             });
 
             this._initialized = loaded;
             if (loaded) {
-                this.emit('notify::has-calendars');
+                this.notify('has-calendars');
                 this._onNameAppeared();
             }
         });
@@ -213,6 +249,10 @@ var DBusEventSource = class DBusEventSource {
             return this._dbusProxy.HasCalendars;
         else
             return false;
+    }
+
+    get isLoading() {
+        return this._isLoading;
     }
 
     _resetCache() {
@@ -252,7 +292,7 @@ var DBusEventSource = class DBusEventSource {
         newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
 
         this._events = newEvents;
-        this.isLoading = false;
+        this._isLoading = false;
         this.emit('changed');
     }
 
@@ -272,7 +312,7 @@ var DBusEventSource = class DBusEventSource {
 
     requestRange(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
-            this.isLoading = true;
+            this._isLoading = true;
             this._lastRequestBegin = begin;
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
@@ -310,8 +350,7 @@ var DBusEventSource = class DBusEventSource {
 
         return true;
     }
-};
-Signals.addSignalMethods(DBusEventSource.prototype);
+});
 
 var Calendar = GObject.registerClass({
     Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } }
@@ -355,9 +394,10 @@ var Calendar = GObject.registerClass({
         this._buildHeader ();
     }
 
-    // @eventSource: is an object implementing the EventSource API, e.g. the
-    // requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
     setEventSource(eventSource) {
+        if (!(eventSource instanceof EventSourceBase))
+            throw new Error('Event source is not valid type');
+
         this._eventSource = eventSource;
         this._eventSource.connect('changed', () => {
             this._rebuildCalendar();
@@ -566,7 +606,7 @@ var Calendar = GObject.registerClass({
                                          can_focus: true });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
-            if (this._eventSource.isDummy)
+            if (this._eventSource instanceof EmptyEventSource)
                 button.reactive = false;
 
             button._date = new Date(iter);
@@ -802,6 +842,9 @@ class EventsSection extends MessageList.MessageListSection {
     }
 
     setEventSource(eventSource) {
+        if (!(eventSource instanceof EventSourceBase))
+            throw new Error('Event source is not valid type');
+
         this._eventSource = eventSource;
         this._eventSource.connect('changed', this._reloadEvents.bind(this));
     }
