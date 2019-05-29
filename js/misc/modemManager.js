@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Gio, NMA } = imports.gi;
-const Signals = imports.signals;
+const { Gio, GObject, NMA } = imports.gi;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -98,21 +97,57 @@ const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInter
 const ModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager.Modem.Cdma');
 const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 
-var ModemGsm = class {
-    constructor(path) {
-        this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
+var ModemInterface = GObject.registerClass({
+    Requires: [GObject.Object],
+    Properties: {
+        'operator-name': GObject.ParamSpec.string('operator-name',
+                                                  'operator-name',
+                                                  'operator-name',
+                                                  GObject.ParamFlags.READABLE,
+                                                  null),
+        'signal-quality': GObject.ParamSpec.int('signal-quality',
+                                                'signal-quality',
+                                                'signal-quality',
+                                                GObject.ParamFlags.READABLE,
+                                                0, 100, 0),
+    },
+}, class ModemManager_ModemInterface extends GObject.Interface {
+    get operator_name() { return this._operator_name || null; }
+    get signal_quality() { return this._signal_quality || 0; }
 
-        this.signal_quality = 0;
-        this.operator_name = null;
+    _setOperatorName(operator_name) {
+        if (this._operator_name == operator_name)
+            return;
+        this._operator_name = operator;
+        this.notify('operator-name');
+    }
+
+    _setSignalQuality(signal_quality) {
+        if (this._signal_quality == signal_quality)
+            return;
+        this._signal_quality = signal_quality;
+        this.notify('signal-quality');
+    }
+});
+
+var ModemGsm = GObject.registerClass({
+    Implements: [ModemInterface],
+    Properties: {
+        'operator-name': GObject.ParamSpec.override('operator-name',
+                                                    ModemInterface),
+        'signal-quality': GObject.ParamSpec.override('signal-quality',
+                                                     ModemInterface),
+    }
+}, class ModemManager_ModemGsm extends GObject.Object {
+    _init(path) {
+        this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         // Code is duplicated because the function have different signatures
         this._proxy.connectSignal('SignalQuality', (proxy, sender, [quality]) => {
-            this.signal_quality = quality;
-            this.emit('notify::signal-quality');
+            this._setSignalQuality(quality);
         });
         this._proxy.connectSignal('RegistrationInfo', (proxy, sender, [status, code, name]) => {
-            this.operator_name = _findProviderForMccMnc(name, code);
-            this.emit('notify::operator-name');
+            this._setOperatorName(_findProviderForMccMnc(name, code));
         });
         this._proxy.GetRegistrationInfoRemote(([result], err) => {
             if (err) {
@@ -121,32 +156,34 @@ var ModemGsm = class {
             }
 
             let [status, code, name] = result;
-            this.operator_name = _findProviderForMccMnc(name, code);
-            this.emit('notify::operator-name');
+            this._setOperatorName(_findProviderForMccMnc(name, code));
         });
         this._proxy.GetSignalQualityRemote((result, err) => {
             if (err) {
                 // it will return an error if the device is not connected
-                this.signal_quality = 0;
+                this._setSignalQuality(0);
             } else {
                 let [quality] = result;
-                this.signal_quality = quality;
+                this._setSignalQuality(quality);
             }
-            this.emit('notify::signal-quality');
         });
     }
-};
-Signals.addSignalMethods(ModemGsm.prototype);
+});
 
-var ModemCdma = class {
-    constructor(path) {
+var ModemCdma = GObject.registerClass({
+    Implements: [ModemInterface],
+    Properties: {
+        'operator-name': GObject.ParamSpec.override('operator-name',
+                                                    ModemInterface),
+        'signal-quality': GObject.ParamSpec.override('signal-quality',
+                                                     ModemInterface),
+    }
+}, class ModemManager_ModemCdma extends GObject.Object {
+    _init(path) {
         this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
-        this.signal_quality = 0;
-        this.operator_name = null;
         this._proxy.connectSignal('SignalQuality', (proxy, sender, params) => {
-            this.signal_quality = params[0];
-            this.emit('notify::signal-quality');
+            this._setSignalQuality(params[0]);
 
             // receiving this signal means the device got activated
             // and we can finally call GetServingSystem
@@ -156,12 +193,11 @@ var ModemCdma = class {
         this._proxy.GetSignalQualityRemote((result, err) => {
             if (err) {
                 // it will return an error if the device is not connected
-                this.signal_quality = 0;
+                this._setSignalQuality(0);
             } else {
                 let [quality] = result;
-                this.signal_quality = quality;
+                this._setSignalQuality(quality);
             }
-            this.emit('notify::signal-quality');
         });
     }
 
@@ -169,17 +205,14 @@ var ModemCdma = class {
         this._proxy.GetServingSystemRemote(([result], err) => {
             if (err) {
                 // it will return an error if the device is not connected
-                this.operator_name = null;
+                this._setOperatorName(null);
             } else {
                 let [bandClass, band, sid] = result;
-
-                this.operator_name = _findProviderForSid(sid);
+                this._setOperatorName(_findProviderForSid(sid));
             }
-            this.emit('notify::operator-name');
         });
     }
-};
-Signals.addSignalMethods(ModemCdma.prototype);
+});
 
 
 //------------------------------------------------------------------------------
@@ -195,8 +228,16 @@ const BroadbandModem3gppProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModem3gp
 const BroadbandModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager1.Modem.ModemCdma');
 const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
 
-var BroadbandModem = class {
-    constructor(path, capabilities) {
+var BroadbandModem = GObject.registerClass({
+    Implements: [ModemInterface],
+    Properties: {
+        'operator-name': GObject.ParamSpec.override('operator-name',
+                                                    ModemInterface),
+        'signal-quality': GObject.ParamSpec.override('signal-quality',
+                                                     ModemInterface),
+    }
+}, class ModemManager_BroadbandModem extends GObject.Object {
+    _init(path, capabilities) {
         this._proxy = new BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_3gpp = new BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
@@ -224,9 +265,8 @@ var BroadbandModem = class {
     }
 
     _reloadSignalQuality() {
-        let [quality, recent] = this._proxy.SignalQuality;
-        this.signal_quality = quality;
-        this.emit('notify::signal-quality');
+        let [quality, recent] = this.SignalQuality;
+        this._setSignalQuality(quality);
     }
 
     _reloadOperatorName() {
@@ -240,8 +280,7 @@ var BroadbandModem = class {
             newName += this.operator_name_cdma;
         }
 
-        this.operator_name = newName;
-        this.emit('notify::operator-name');
+        this._setOperatorName(newName);
     }
 
     _reload3gppOperatorName() {
@@ -256,5 +295,4 @@ var BroadbandModem = class {
         this.operator_name_cdma = _findProviderForSid(sid);
         this._reloadOperatorName();
     }
-};
-Signals.addSignalMethods(BroadbandModem.prototype);
+});
