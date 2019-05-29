@@ -465,11 +465,6 @@ var Overview = class {
     }
 
     _relayout() {
-        // To avoid updating the position and size of the workspaces
-        // we just hide the overview. The positions will be updated
-        // when it is next shown.
-        this.hide();
-
         this._relayoutNoHide();
     }
 
