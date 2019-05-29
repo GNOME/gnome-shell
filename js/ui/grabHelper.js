@@ -43,6 +43,9 @@ function _popGrabHelper(grabHelper) {
 // call grab().
 var GrabHelper = class GrabHelper {
     constructor(owner, params) {
+        if (!(owner instanceof Clutter.Actor))
+            throw new Error('GrabHelper owner must be a Clutter.Actor');
+
         this._owner = owner;
         this._modalParams = params;
 
