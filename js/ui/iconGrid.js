@@ -223,6 +223,15 @@ var IconGrid = GObject.registerClass({
 
         this.connect('actor-added', this._childAdded.bind(this));
         this.connect('actor-removed', this._childRemoved.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._childrenLaterHide) {
+            Meta.later_remove(this._childrenLaterHide);
+            delete this._childrenLaterHide;
+        }
     }
 
     _keyFocusIn(actor) {
@@ -258,7 +267,7 @@ var IconGrid = GObject.registerClass({
     }
 
     _getVisibleChildren() {
-        return this.get_children().filter(actor => actor.visible);
+        return this.get_children().filter(actor => actor.visible && !actor._toHide);
     }
 
     vfunc_get_preferred_height(forWidth) {
@@ -326,12 +335,16 @@ var IconGrid = GObject.registerClass({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+        let anyToHide = false;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
-                children[i].hide();
+                /* This is causing a reallocation of the parent, so delay this
+                 * to next allocation cycle. */
+                children[i]._toHide = true;
+                anyToHide = true;
             } else {
                 children[i].allocate(childBox, flags);
                 children[i].show();
@@ -349,6 +362,17 @@ var IconGrid = GObject.registerClass({
             } else {
                 x += this._getHItemSize() + spacing;
             }
+        }
+
+        if (anyToHide && !this._childrenLaterHide) {
+            this._childrenLaterHide = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                for (let child of this.get_children().filter(c => !!c._toHide)) {
+                    delete child._toHide;
+                    child.hide();
+                }
+
+                delete this._childrenLaterHide;
+            });
         }
     }
 
