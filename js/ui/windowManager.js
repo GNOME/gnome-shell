@@ -2121,7 +2121,14 @@ var WindowManager = class {
         Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
     }
 
+    _allowFavoriteShortcuts() {
+        return Main.sessionMode.hasOverview;
+    }
+
     _switchToApplication(display, window, binding) {
+        if (!this._allowFavoriteShortcuts())
+            return;
+
         let [,,,target] = binding.get_name().split('-');
         let apps = AppFavorites.getAppFavorites().getFavorites();
         let app = apps[target - 1];
