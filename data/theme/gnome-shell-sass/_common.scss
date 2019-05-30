@@ -540,7 +540,7 @@ StScrollBar {
 .popup-menu {
   min-width: 15em;
   color: $fg_color;
-  border-color: $_bubble_borders_color;
+  border-color: $borders_color;
 
   .popup-menu-arrow { } //defined globally in the TOP BAR
   .popup-sub-menu {
@@ -1378,12 +1378,10 @@ StScrollBar {
   /* DASHBOARD */
 
   #dash {
+    @extend %overview-panel;
     font-size: 9pt;
-    color: $osd_fg_color;
-    background-color: $osd_bg_color;
     padding: 4px 0;
-    border: 1px solid $osd_borders_color;
-    border-left: 0px;
+    border-left-width: 0px; /* sadly no workie */
     border-radius: 0px 9px 9px 0px;
 
     &:rtl {
@@ -1577,9 +1575,9 @@ StScrollBar {
   }
 
 %overview-panel {
-  color: $fg_color;
+  color: $osd_fg_color;
   background-color: $osd_bg_color;
-  border: 1px solid $_bubble_borders_color;
+  border: 1px solid $osd_outer_borders_color;
 }
 
 %status_text {
