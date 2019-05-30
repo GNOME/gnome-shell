@@ -1097,8 +1097,11 @@ var LayoutManager = GObject.registerClass({
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-var HotCorner = class HotCorner {
-    constructor(layoutManager, monitor, x, y) {
+var HotCorner = GObject.registerClass(
+class HotCorner extends Clutter.Actor {
+    _init(layoutManager, monitor, x, y) {
+        super._init();
+
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -1127,6 +1130,8 @@ var HotCorner = class HotCorner {
 
         this._ripples = new Ripples.Ripples(px, py, 'ripple-box');
         this._ripples.addTo(layoutManager.uiGroup);
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     setBarrierSize(size) {
@@ -1166,11 +1171,12 @@ var HotCorner = class HotCorner {
 
     _setupFallbackCornerIfNeeded(layoutManager) {
         if (!global.display.supports_extended_barriers()) {
-            this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
-                                             x: this._x, y: this._y,
-                                             width: 3,
-                                             height: 3,
-                                             reactive: true });
+            this.set({ name: 'hot-corner-environs',
+                       x: this._x, y: this._y,
+                       width: 3,
+                       height: 3,
+                       visible: true,
+                       reactive: true });
 
             this._corner = new Clutter.Actor({ name: 'hot-corner',
                                                width: 1,
@@ -1179,17 +1185,17 @@ var HotCorner = class HotCorner {
                                                reactive: true });
             this._corner._delegate = this;
 
-            this.actor.add_child(this._corner);
-            layoutManager.addChrome(this.actor);
+            this.add_child(this._corner);
+            layoutManager.addChrome(this);
 
             if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-                this._corner.set_position(this.actor.width - this._corner.width, 0);
-                this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+                this._corner.set_position(this.width - this._corner.width, 0);
+                this.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
             } else {
                 this._corner.set_position(0, 0);
             }
 
-            this.actor.connect('leave-event',
+            this.connect('leave-event',
                                this._onEnvironsLeft.bind(this));
 
             this._corner.connect('enter-event',
@@ -1199,13 +1205,14 @@ var HotCorner = class HotCorner {
         }
     }
 
-    destroy() {
+    _onDestroy() {
         this.setBarrierSize(0);
         this._pressureBarrier.destroy();
         this._pressureBarrier = null;
 
-        if (this.actor)
-            this.actor.destroy();
+        this._ripple1.destroy();
+        this._ripple2.destroy();
+        this._ripple3.destroy();
     }
 
     _toggleOverview() {
@@ -1236,7 +1243,7 @@ var HotCorner = class HotCorner {
     }
 
     _onCornerLeft(actor, event) {
-        if (event.get_related() != this.actor)
+        if (event.get_related() != this)
             this._entered = false;
         // Consume event, otherwise this will confuse onEnvironsLeft
         return Clutter.EVENT_STOP;
@@ -1247,7 +1254,7 @@ var HotCorner = class HotCorner {
             this._entered = false;
         return Clutter.EVENT_PROPAGATE;
     }
-};
+});
 
 var PressureBarrier = class PressureBarrier {
     constructor(threshold, timeout, actionMode) {
