@@ -64,9 +64,9 @@ stage {
   border-right-width: 1px;
   @include button(normal, $c:$bubble_bg_color, $tc:$bubble_fg_color);
   &:insensitive { @include button(insensitive, $c:$bubble_bg_color, $tc:$bubble_fg_color); }
-  &:hover { @include button(hover, $c:$bubble_bg_color, $tc:$bubble_fg_color); }
-  &:focus { @include button(focus, $c:$bubble_bg_color, $tc:$bubble_fg_color); }
-  &:active { @include button(active, $c:$bubble_bg_color, $tc:$bubble_fg_color); }
+  &:hover { @include button(hover, $c:$bubble_hover_bg_color, $tc:$bubble_fg_color); }
+  &:focus { @include button(focus, $c:$bubble_hover_bg_color, $tc:$bubble_fg_color); }
+  &:active { @include button(active, $c:$bubble_active_bg_color, $tc:$bubble_active_fg_color); }
   padding: 12px;
   border-top: 1px solid $bubble_borders_color;
 
