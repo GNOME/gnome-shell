@@ -30,8 +30,8 @@ $medium_radius: 9px;
 
 $_trough_color: transparentize($fg_color, 0.9);
 $_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 1%));
-$_active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
+$_hover_bg_color: if($variant=='light', darken($bg_color, 5%), lighten($bg_color, 4%));
+$_active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 6%));
 
 $font-size: 11;
 $font-family: Cantarell, Sans-Serif;
@@ -135,7 +135,7 @@ StScrollBar {
 .slider {
   height: 1em;
   -barlevel-height: 0.3em;
-  -barlevel-background-color: $_trough_color; //background of the trough
+  -barlevel-background-color: transparentize($fg_color, 0.9); //background of the trough
   -barlevel-border-color: $borders_color; //trough border color
   -barlevel-active-background-color: $selected_bg_color; //active trough fill
   -barlevel-active-border-color: $selected_borders_color; //active trough border
@@ -540,7 +540,7 @@ StScrollBar {
 .popup-menu {
   min-width: 15em;
   color: $fg_color;
-  border-color: $borders_color;
+  border-color: $_bubble_borders_color;
 
   .popup-menu-arrow { } //defined globally in the TOP BAR
   .popup-sub-menu {
@@ -590,7 +590,7 @@ StScrollBar {
     -arrow-border-radius: $medium_radius;
     -arrow-background-color: $bg_color;
     -arrow-border-width: 1px;
-    -arrow-border-color: $borders_color;
+    -arrow-border-color: if($variant=='light', transparentize(black, 0.6), $borders_color);
     -arrow-base: 24px;
     -arrow-rise: 11px;
     -arrow-box-shadow: 0 1px 3px black; //dreaming. bug #689995
@@ -629,7 +629,7 @@ StScrollBar {
   .level {
     height: 0.6em;
     -barlevel-height: 0.6em;
-    -barlevel-background-color: $_trough_color;
+    -barlevel-background-color: transparentize($fg_color, if($variant=='light', 0.2, 0.9));
     -barlevel-active-background-color: $osd_fg_color;
     -barlevel-overdrive-color: $destructive_color;
     -barlevel-overdrive-separator-width: 0.2em;
@@ -758,7 +758,7 @@ StScrollBar {
 %bubble-panel {
   color: $fg_color;
   background-color: $bg_color;
-  border: 1px solid $_bubble_borders_color;
+  border: 1px solid if($variant=='light', transparentize(black, 0.6), $borders_color);
 
   StEntry { @extend %bubble-entry; }
   .button {
@@ -1331,16 +1331,17 @@ StScrollBar {
     border-radius: 6px;
     color: $osd_fg_color;
     background-color: $osd_bg_color;
+    border-color: transparent;
     &:focus {
       padding: 6px 8px;
       border-width: 2px;
       border-color: $selected_bg_color;
     }
 
-    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: transparentize($fg_color,.3); }
+    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: $osd_fg_color; }
 
     &:hover, &:focus {
-      .search-entry-icon { color: $fg_color; }
+      .search-entry-icon { color: transparentize($osd_fg_color,.3); }
     }
   }
 
@@ -1381,7 +1382,6 @@ StScrollBar {
     @extend %overview-panel;
     font-size: 9pt;
     padding: 4px 0;
-    border-left-width: 0px; /* sadly no workie */
     border-radius: 0px 9px 9px 0px;
 
     &:rtl {
@@ -1562,7 +1562,7 @@ StScrollBar {
     }
   }
   .workspace-thumbnail-indicator {
-    border: 4px solid $selected_bg_color;
+    border: 2px solid $selected_bg_color;
     padding: 1px;
   }
 
@@ -1576,8 +1576,8 @@ StScrollBar {
 
 %overview-panel {
   color: $osd_fg_color;
-  background-color: $osd_bg_color;
-  border: 1px solid $osd_outer_borders_color;
+  background-color: transparentize($osd_bg_color, 0.1);
+  border: none;
 }
 
 %status_text {
@@ -1873,9 +1873,9 @@ StScrollBar {
   .modal-dialog-button {
     padding: 4px 18px;
     &:default {
-      @include button(normal,$c:$selected_bg_color);
-      &:hover,&:focus { @include button(hover,$c:$selected_bg_color); }
-      &:active { @include button(active,$c:$selected_bg_color); }
+      @include button(normal,$c:$selected_bg_color, $tc:$selected_fg_color);
+      &:hover,&:focus { @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color); }
+      &:active { @include button(active,$c:$selected_bg_color, $tc:$selected_fg_color); }
       &:insensitive { @include button(insensitive); }
 
     }
