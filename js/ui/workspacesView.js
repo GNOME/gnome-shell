@@ -720,7 +720,8 @@ class WorkspacesDisplay extends St.Widget {
         }
     }
 
-    _onRestacked(overview, stackIndices) {
+    _onRestacked(overview) {
+        let stackIndices = overview.getStackIndices();
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].syncStacking(stackIndices);
     }
