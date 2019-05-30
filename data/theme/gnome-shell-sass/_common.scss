@@ -45,7 +45,7 @@ stage {
 /* WIDGETS */
 
 /* Buttons */
-.button {
+.button, %button {
   border-radius: 5px;
   border-width: 1px;
   min-height: 22px;
@@ -1067,15 +1067,7 @@ StScrollBar {
       }
 
         .message-list-clear-button.button {
-          background-color: $bg_color;
-          color: $fg_color;
-          box-shadow: none;
-          border-color: $_bubble_borders_color;
-          &:hover,&:focus { background-color: $_hover_bg_color; }
-          &:active { 
-            background-color: $selected_bg_color;
-            color: $selected_fg_color;
-           }
+	  @extend %button;
           margin: 1.5em 1.5em 0;
         }
 
