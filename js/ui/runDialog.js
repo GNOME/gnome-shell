@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
