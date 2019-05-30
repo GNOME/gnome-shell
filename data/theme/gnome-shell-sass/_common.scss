@@ -6,6 +6,13 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 
 $panel-corner-radius: 6px;
 $medium_radius: 9px;
+$bubble_bg_color: $bg_color;
+$bubble_fg_color: $fg_color;
+$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+$bubble_outer_borders_color: if($variant=='light', transparentize(black, 0.6), $borders_color);
+$bubble_hover_bg_color: transparentize($bubble_fg_color, 0.94);
+$bubble_active_bg_color: $selected_bg_color;//transparentize($bubble_fg_color, 0.84);
+$bubble_active_fg_color: $selected_fg_color;
 $_trough_color: transparentize($bubble_fg_color, 0.7);
 
 /* Copyright 2009, 2015 Red Hat, Inc.
@@ -731,7 +738,6 @@ StScrollBar {
   border: 1px solid $osd_outer_borders_color;
   border-radius: 12px;
   padding: 12px;
-  box-shadow: 0 3px 9px 1px transparentize(black, 0.5);
 }
 
 %bubble-entry {
@@ -746,7 +752,6 @@ StScrollBar {
   color: $bubble_fg_color;
   background-color: $bubble_bg_color;
   border: 1px solid $bubble_outer_borders_color;
-  box-shadow: 0 3px 9px 1px transparentize(black, 0.5); // to match with the notification banner but maybe no?
 
   StEntry { @extend %bubble-entry; }
   .button {
@@ -888,7 +893,7 @@ StScrollBar {
     .datemenu-displays-box { spacing: 1em; }
 
     .datemenu-calendar-column {
-      border: 0 solid transparentize($bubble_fg_color, 0.9);
+      border: 0 solid $bubble_borders_color;
       &:ltr { border-left-width: 1px; }
       &:rtl { border-right-width: 1px; }
     }
@@ -1378,7 +1383,7 @@ StScrollBar {
     color: $fg_color;
     background-color: $osd_bg_color;
     padding: 4px 0;
-    border: 1px solid $osd_outer_borders_color;
+    border: 1px solid $bubble_outer_borders_color;
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
 
@@ -1575,7 +1580,7 @@ StScrollBar {
 %overview-panel {
   color: $fg_color;
   background-color: $osd_bg_color;
-  border: 1px solid $osd_outer_borders_color;
+  border: 1px solid $bubble_outer_borders_color;
 }
 
 %status_text {
@@ -1594,9 +1599,9 @@ StScrollBar {
     width: 34em;
     margin: 5px;
     border-radius: $medium-radius;
-    border: none;
+    border: if($variant == 'light', none, $bubble_borders_color);
     min-height: 64px;
-    box-shadow: 0 3px 9px 1px transparentize(black, 0.5);
+    box-shadow: 0 1px 2px transparentize(black, 0.7);
     &:hover { background: $bubble_bg_color; }
     &, &:focus, &:active {
       background-color: $bubble_bg_color;

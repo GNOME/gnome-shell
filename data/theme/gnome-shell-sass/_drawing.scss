@@ -40,7 +40,7 @@
 
   @if $t==normal {
     background-color: $base_color;
-    border-color: $osd_outer_borders_color;
+    border-color: $bubble_outer_borders_color;
 
   }
   @if $t==focus {
