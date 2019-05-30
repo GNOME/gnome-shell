@@ -1052,6 +1052,14 @@ load_from_pixbuf (GdkPixbuf *pixbuf,
   return actor;
 }
 
+static gboolean
+key_has_prefix (char     *key,
+                gpointer  value,
+                char     *prefix)
+{
+  return g_str_has_prefix (key, prefix);
+}
+
 static void
 file_changed_cb (GFileMonitor      *monitor,
                  GFile             *file,
@@ -1069,11 +1077,11 @@ file_changed_cb (GFileMonitor      *monitor,
   file_hash = g_file_hash (file);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u", file_hash);
-  g_hash_table_remove (cache->priv->keyed_cache, key);
+  g_hash_table_foreach_remove (cache->priv->keyed_cache, (GHRFunc) key_has_prefix, key);
   g_free (key);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u", file_hash);
-  g_hash_table_remove (cache->priv->keyed_surface_cache, key);
+  g_hash_table_foreach_remove (cache->priv->keyed_surface_cache, (GHRFunc) key_has_prefix, key);
   g_free (key);
 
   g_signal_emit (cache, signals[TEXTURE_FILE_CHANGED], 0, file);
