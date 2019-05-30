@@ -10,6 +10,7 @@ $medium_radius: 9px;
 $_trough_color: transparentize($fg_color, 0.9);
 $_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
 $_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 1%));
+$_active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 /* Copyright 2009, 2015 Red Hat, Inc.
  *
  * Portions adapted from Mx's data/style/default.css
@@ -49,10 +50,10 @@ stage {
   min-height: 22px;
   padding: 4px 32px;
   @include button(normal);
-  &:focus { @include button(focus); }
-  &:hover { @include button(hover); }
+  &:focus { @include button(focus, $c:$_hover_bg_color, $tc:$fg_color); }
+  &:hover { @include button(hover, $c:$_hover_bg_color, $tc:$fg_color); }
   &:insensitive { @include button(insensitive); }
-  &:active { @include button(active); }
+  &:active { @include button(active, $c:$_active_bg_color, $tc:$fg_color); }
 }
 
 .modal-dialog-linked-button, %bubble_button {
@@ -61,7 +62,7 @@ stage {
   &:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }
   &:hover { @include button(hover, $c:$_hover_bg_color, $tc:$fg_color); }
   &:focus { @include button(focus, $c:$_hover_bg_color, $tc:$fg_color); }
-  &:active { @include button(active, $c:$selected_bg_color, $tc:$selected_fg_color); }
+  &:active { @include button(active, $c:$_active_bg_color, $tc:$fg_color); }
   padding: 12px;
   border-top: 1px solid $_bubble_borders_color;
 
