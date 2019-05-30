@@ -21,9 +21,11 @@
     <file>noise-texture.png</file>
     <file>pad-osd.css</file>
     <file>process-working.svg</file>
-    <file>toggle-off-intl.svg</file>
+    <file>toggle-off.svg</file>
+    <file>toggle-off-dark.svg</file>
     <file>toggle-off-hc.svg</file>
-    <file>toggle-on-intl.svg</file>
+    <file>toggle-on.svg</file>
+    <file>toggle-on-dark.svg</file>
     <file>toggle-on-hc.svg</file>
   </gresource>
 </gresources>
