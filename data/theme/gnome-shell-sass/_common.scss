@@ -6,15 +6,10 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 
 $panel-corner-radius: 6px;
 $medium_radius: 9px;
-$bubble_bg_color: $bg_color;
-$bubble_fg_color: $fg_color;
-$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$bubble_outer_borders_color: if($variant=='light', transparentize(black, 0.6), $borders_color);
-$bubble_hover_bg_color: transparentize($bubble_fg_color, 0.94);
-$bubble_active_bg_color: $selected_bg_color;//transparentize($bubble_fg_color, 0.84);
-$bubble_active_fg_color: $selected_fg_color;
-$_trough_color: transparentize($bubble_fg_color, 0.9);
 
+$_trough_color: transparentize($fg_color, 0.9);
+$_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+$_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 1%));
 /* Copyright 2009, 2015 Red Hat, Inc.
  *
  * Portions adapted from Mx's data/style/default.css
@@ -62,13 +57,13 @@ stage {
 
 .modal-dialog-linked-button, %bubble_button {
   border-right-width: 1px;
-  @include button(normal, $c:$bubble_bg_color, $tc:$bubble_fg_color);
-  &:insensitive { @include button(insensitive, $c:$bubble_bg_color, $tc:$bubble_fg_color); }
-  &:hover { @include button(hover, $c:$bubble_hover_bg_color, $tc:$bubble_fg_color); }
-  &:focus { @include button(focus, $c:$bubble_hover_bg_color, $tc:$bubble_fg_color); }
-  &:active { @include button(active, $c:$bubble_active_bg_color, $tc:$bubble_active_fg_color); }
+  @include button(normal, $c:$bg_color, $tc:$fg_color);
+  &:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }
+  &:hover { @include button(hover, $c:$_hover_bg_color, $tc:$fg_color); }
+  &:focus { @include button(focus, $c:$_hover_bg_color, $tc:$fg_color); }
+  &:active { @include button(active, $c:$selected_bg_color, $tc:$selected_fg_color); }
   padding: 12px;
-  border-top: 1px solid $bubble_borders_color;
+  border-top: 1px solid $_bubble_borders_color;
 
   &:first-child {
     border-radius: 0px 0px 0px $medium_radius;
@@ -210,7 +205,7 @@ StScrollBar {
   .run-dialog-label {
     @include fontsize($font-size + 1.1);
     font-weight: normal;
-    color: $bubble_fg_color;
+    color: $fg_color;
     padding-bottom: .4em;
   }
 
@@ -242,14 +237,14 @@ StScrollBar {
   }
 
   .message-dialog-subtitle {
-    color: $bubble_fg_color;
+    color: $fg_color;
     font-weight: bold;
   }
 
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px;
-  border: 1px solid $bubble_outer_borders_color;
+  border: 1px solid $_bubble_borders_color;
 }
 
   .end-session-dialog-list {
@@ -286,7 +281,7 @@ StScrollBar {
   }
 
   .end-session-dialog-shutdown-icon {
-    color: $bubble_fg_color;
+    color: $fg_color;
     width: 48px;
     height: 48px;
   }
@@ -365,8 +360,8 @@ StScrollBar {
   }
 
   .mount-dialog-app-list-item {
-    color: lighten($bubble_fg_color,10%);
-    &:hover { color: $bubble_fg_color; }
+    color: lighten($fg_color,10%);
+    &:hover { color: $fg_color; }
     &:ltr { padding-right: 1em; }
     &:rtl { padding-left: 1em; }
   }
@@ -390,7 +385,7 @@ StScrollBar {
 
   .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-content { spacing: 16px; }
-  .message-dialog-title { color: lighten($bubble_fg_color,15%); }
+  .message-dialog-title { color: lighten($fg_color,15%); }
 }
 
   .prompt-dialog-description:rtl {
@@ -483,12 +478,12 @@ StScrollBar {
   }
 
   .audio-selection-device {
-    border: 1px solid $bubble_borders_color;
+    border: 1px solid $_bubble_borders_color;
     border-radius: 12px;
-    &:hover,&:focus { background-color: $bubble_hover_bg_color; }
+    &:hover,&:focus { background-color: $_hover_bg_color; }
     &:active { 
-      background-color: $bubble_active_bg_color;
-      color: $bubble_active_fg_color;
+      background-color: $selected_bg_color;
+      color: $selected_fg_color;
     }
   }
 
@@ -517,7 +512,7 @@ StScrollBar {
 .extension-dialog {
   @extend %bubble-panel;
   .message-dialog-main-layout { spacing: 24px; padding: 10px; }
-  .message-dialog-title { font-weight: normal; color: $bubble_fg_color; }
+  .message-dialog-title { font-weight: normal; color: $fg_color; }
 }
 
 /* Inhibit-Shortcuts Dialog */
@@ -542,13 +537,13 @@ StScrollBar {
 
 .popup-menu {
   min-width: 15em;
-  color: $bubble_fg_color;
-  border-color: $bubble_borders_color;
+  color: $fg_color;
+  border-color: $_bubble_borders_color;
 
   .popup-menu-arrow { } //defined globally in the TOP BAR
   .popup-sub-menu {
-    background-color: darken($bubble_bg_color,5%);
-    box-shadow: inset 0 -1px 0px $bubble_borders_color;
+    background-color: darken($bg_color,5%);
+    box-shadow: inset 0 -1px 0px $_bubble_borders_color;
   }
 
   .popup-menu-content { padding: 1em 0em; }
@@ -558,22 +553,22 @@ StScrollBar {
     &:ltr { padding: .4em 1.75em .4em 0em; }
     &:rtl { padding: .4em 0em .4em 1.75em; }
     &:checked {
-      background-color: $bubble_bg_color;
-      box-shadow: inset 0 -1px 0px $bubble_borders_color;
+      background-color: $bg_color;
+      box-shadow: inset 0 -1px 0px $_bubble_borders_color;
       font-weight: bold;
     }
-    &.selected { background-color: $bubble_hover_bg_color; color: $bubble_fg_color; }
+    &.selected { background-color: $_hover_bg_color; color: $fg_color; }
     &:active { 
-      background-color: $bubble_active_bg_color;
-      color: $bubble_active_fg_color;
+      background-color: $selected_bg_color;
+      color: $selected_fg_color;
      }
-    &:insensitive { color: transparentize($bubble_fg_color,.5); }
+    &:insensitive { color: transparentize($fg_color,.5); }
   }
 
   .popup-inactive-menu-item { //all icons and other graphical elements
-    color: $bubble_fg_color;
+    color: $fg_color;
 
-    &:insensitive { color: transparentize($bubble_fg_color,0.5); }
+    &:insensitive { color: transparentize($fg_color,0.5); }
   }
   //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is
   &.panel-menu {
@@ -591,9 +586,9 @@ StScrollBar {
   .popup-menu-boxpointer,
   .candidate-popup-boxpointer {
     -arrow-border-radius: $medium_radius;
-    -arrow-background-color: $bubble_bg_color;
+    -arrow-background-color: $bg_color;
     -arrow-border-width: 1px;
-    -arrow-border-color: $bubble_outer_borders_color;
+    -arrow-border-color: $borders_color;
     -arrow-base: 24px;
     -arrow-rise: 11px;
     -arrow-box-shadow: 0 1px 3px black; //dreaming. bug #689995
@@ -604,7 +599,7 @@ StScrollBar {
     height: 1px; //not really the whole box
     margin: 6px 64px;
     background-color: transparent;
-    border-color: $bubble_borders_color;
+    border-color: $_bubble_borders_color;
     border-bottom-width: 1px;
     border-bottom-style: solid;
   }
@@ -743,7 +738,7 @@ StScrollBar {
   }
 
 %osd-panel {
-  color: $fg_color;
+  color: $osd_fg_color;
   background-color: $osd_bg_color;
   border: 1px solid $osd_outer_borders_color;
   border-radius: 12px;
@@ -751,30 +746,30 @@ StScrollBar {
 }
 
 %bubble-entry {
-  color: $bubble_fg_color;
-  background-color: darken($bubble_bg_color, 2%);
-  border-color: $bubble_borders_color;
+  color: $fg_color;
+  background-color: darken($bg_color, 2%);
+  border-color: $_bubble_borders_color;
   box-shadow: none;
   &:focus { border: 2px solid $selected_bg_color; }
 }
 
 %bubble-panel {
-  color: $bubble_fg_color;
-  background-color: $bubble_bg_color;
-  border: 1px solid $bubble_outer_borders_color;
+  color: $fg_color;
+  background-color: $bg_color;
+  border: 1px solid $_bubble_borders_color;
 
   StEntry { @extend %bubble-entry; }
   .button {
     &, &:hover, &:focus, &:active, &:disabled { 
       box-shadow: none;
-      border-color: $bubble_borders_color;
+      border-color: $_bubble_borders_color;
     }
-    background-color: $bubble_bg_color;
-    color: $bubble_fg_color;
-    &:hover { background-color: $bubble_hover_bg_color; }
+    background-color: $bg_color;
+    color: $fg_color;
+    &:hover { background-color: $_hover_bg_color; }
     &:active { 
-      background-color: $bubble_active_bg_color;
-      color: $bubble_active_fg_color;
+      background-color: $selected_bg_color;
+      color: $selected_fg_color;
     }
     &:disabled { color: $insensitive_fg_color; }
   }
@@ -903,7 +898,7 @@ StScrollBar {
     .datemenu-displays-box { spacing: 1em; }
 
     .datemenu-calendar-column {
-      border: 0 solid $bubble_borders_color;
+      border: 0 solid $_bubble_borders_color;
       &:ltr { border-left-width: 1px; }
       &:rtl { border-right-width: 1px; }
     }
@@ -928,8 +923,8 @@ StScrollBar {
     .world-clocks-button,
     .weather-button,
     .events-section-title {
-      &:hover, focus { background-color: darken($bubble_bg_color, 12%); }
-      &:active { background-color: darken($bubble_bg_color, 15%); }
+      &:hover, focus { background-color: darken($bg_color, 12%); }
+      &:active { background-color: darken($bg_color, 15%); }
     }
 
     .datemenu-today-button .day-label {
@@ -974,7 +969,7 @@ StScrollBar {
     }
 
     .world-clocks-timezone {
-      color: $bubble_fg_color;
+      color: $fg_color;
       font-feature-settings: "tnum";
       font-size: 0.9em;
     }
@@ -989,7 +984,7 @@ StScrollBar {
     }
 
     .calendar-month-label {
-      color: lighten($bubble_fg_color,5%);
+      color: lighten($fg_color,5%);
       font-weight: bold;
       padding: 8px 0;
       &:focus {}
@@ -999,8 +994,8 @@ StScrollBar {
       background-color: transparent;
       width: 32px;
       border-radius: 4px;
-      &:hover, focus { background-color: $bubble_hover_bg_color; }
-      &:active { background-color: transparentize($bubble_fg_color, 0.84); }
+      &:hover, focus { background-color: $_hover_bg_color; }
+      &:active { background-color: transparentize($fg_color, 0.84); }
     }
 
       .calendar-change-month-back StIcon, .calendar-change-month-forward StIcon { // arrows
@@ -1015,14 +1010,14 @@ StScrollBar {
       margin: 2px;
       border-radius: 1.4em;
       font-feature-settings: "tnum";
-      &:hover, focus { background-color: $bubble_hover_bg_color; }
+      &:hover, focus { background-color: $_hover_bg_color; }
       &:active,&:selected {
         color: lighten($selected_fg_color,5%);
         background-color: $selected_bg_color;
         border-color: transparent; //avoid jumparound due to today
       }
       &.calendar-day-heading {  //day of week heading
-        color: lighten($bubble_fg_color,5%);
+        color: lighten($fg_color,5%);
         margin-top: 1em;
         font-size: 70%;
       }
@@ -1042,15 +1037,15 @@ StScrollBar {
         font-weight: bold;
         //color: lighten($fg_color,10%);
         //background-color: darken($bg_color,5%);
-        border: 1px solid $bubble_borders_color;
+        border: 1px solid $_bubble_borders_color;
       }
       .calendar-day-with-events {
-        color: lighten($bubble_fg_color,10%);
+        color: lighten($fg_color,10%);
         font-weight: bold;
         background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg");
       }
       .calendar-other-month-day {
-        color: transparentize($bubble_fg_color ,0.5);
+        color: transparentize($fg_color ,0.5);
         opacity: 0.5;
       }
       .calendar-week-number {
@@ -1060,8 +1055,8 @@ StScrollBar {
         border-radius: 2px;
         padding: 0.5em 0 0;
         margin: 6px;
-        background-color: $bubble_borders_color;
-        color: $bubble_fg_color;
+        background-color: $_bubble_borders_color;
+        color: $fg_color;
       }
 
       /* Message list */
@@ -1070,14 +1065,14 @@ StScrollBar {
       }
 
         .message-list-clear-button.button {
-          background-color: $bubble_bg_color;
-          color: $bubble_fg_color;
+          background-color: $bg_color;
+          color: $fg_color;
           box-shadow: none;
-          border-color: $bubble_borders_color;
-          &:hover,&:focus { background-color: $bubble_hover_bg_color; }
+          border-color: $_bubble_borders_color;
+          &:hover,&:focus { background-color: $_hover_bg_color; }
           &:active { 
-            background-color: $bubble_active_bg_color;
-            color: $bubble_active_fg_color;
+            background-color: $selected_bg_color;
+            color: $selected_fg_color;
            }
           margin: 1.5em 1.5em 0;
         }
@@ -1092,10 +1087,10 @@ StScrollBar {
         }
 
         .message {
-          border: 1px solid $bubble_borders_color;
-          background-color: lighten($bubble_bg_color, 2%);
-          &:hover,&:focus { background-color: $bubble_hover_bg_color; }
-          &:active { background-color: transparentize($bubble_fg_color, 0.84) }
+          border: 1px solid $_bubble_borders_color;
+          background-color: lighten($bg_color, 2%);
+          &:hover,&:focus { background-color: $_hover_bg_color; }
+          &:active { background-color: transparentize($fg_color, 0.84) }
           border-radius: 5px;
         }
 
@@ -1105,7 +1100,7 @@ StScrollBar {
           }
 
           .message-icon-bin > StIcon {
-            color: $bubble_fg_color;
+            color: $fg_color;
             icon-size: 1.09em;
             -st-icon-style: symbolic;
           }
@@ -1120,7 +1115,7 @@ StScrollBar {
           }
 
           .message-secondary-bin > .event-time {
-            color: $bubble_fg_color;
+            color: $fg_color;
             font-size: 0.7em;
             /* HACK: the label should be baseline-aligned with a 1em label,
                      fake this with some bottom padding */
@@ -1132,30 +1127,30 @@ StScrollBar {
           }
 
           .message-title {
-            color: $bubble_fg_color;            
+            color: $fg_color;            
           }
 
           .message-content {
-            color: darken($bubble_fg_color, 10%);
+            color: darken($fg_color, 10%);
             padding: 10px;
           }
 
           .message-media-control {
             padding: 12px;
-            color: lighten($bubble_fg_color, 15%);
+            color: lighten($fg_color, 15%);
 
             &:last-child:ltr { padding-right: 18px; }
             &:last-child:rtl { padding-left: 18px; }
-            &:hover { color: $bubble_fg_color; }
+            &:hover { color: $fg_color; }
             &:insensitive { color: darken($fg_color,40%); }
           }
 
           .media-message-cover-icon {
             icon-size: 48px !important;
             &.fallback {
-              color: lighten($bubble_fg_color,10%);
-              background-color: $bubble_bg_color;
-              border: 1px solid $bubble_bg_color;
+              color: lighten($fg_color,10%);
+              background-color: $bg_color;
+              border: 1px solid $bg_color;
               border-radius: 2px;
               icon-size: 32px !important;
               padding: 6px; }
@@ -1194,20 +1189,20 @@ StScrollBar {
 
   .system-menu-action {
     -st-icon-style: symbolic;
-    color: $bubble_fg_color;
+    color: $fg_color;
     border-radius: 32px; /* wish we could do 50% */
     padding: 13px;
-    border: 1px solid $bubble_borders_color;
+    border: 1px solid $_bubble_borders_color;
 
     &:hover, &:focus {
-      background-color: $bubble_hover_bg_color;
-      color: $bubble_fg_color;
+      background-color: $_hover_bg_color;
+      color: $fg_color;
       border: none;
       padding: 14px;
     }
     &:active { 
-      background-color: $bubble_active_bg_color;
-      color: $bubble_active_fg_color;
+      background-color: $selected_bg_color;
+      color: $selected_fg_color;
     }
 
     & > StIcon { icon-size: 16px; }
@@ -1590,7 +1585,7 @@ StScrollBar {
 %overview-panel {
   color: $fg_color;
   background-color: $osd_bg_color;
-  border: 1px solid $bubble_outer_borders_color;
+  border: 1px solid $_bubble_borders_color;
 }
 
 %status_text {
@@ -1609,18 +1604,18 @@ StScrollBar {
     width: 34em;
     margin: 5px;
     border-radius: $medium-radius;
-    border: if($variant == 'light', none, $bubble_borders_color);
+    border: if($variant == 'light', none, $_bubble_borders_color);
     min-height: 64px;
     box-shadow: 0 1px 2px transparentize(black, 0.7);
-    &:hover { background: $bubble_bg_color; }
+    &:hover { background: $bg_color; }
     &, &:focus, &:active {
-      background-color: $bubble_bg_color;
-      .message-title { color: $bubble_fg_color }
-      .message-content { color: $bubble_fg_color; }
+      background-color: $bg_color;
+      .message-title { color: $fg_color }
+      .message-content { color: $fg_color; }
     }
 
     .message-icon-bin > StIcon {
-      color: $bubble_fg_color;
+      color: $fg_color;
     }
 
     StEntry { @extend %bubble-entry; }
@@ -1630,8 +1625,8 @@ StScrollBar {
     .secondary-icon { icon-size: 1.09em; }
     .notification-actions {
       padding-top: 0;
-      color: $bubble_fg_color;
-      border-top: 1px solid $bubble_borders_color;
+      color: $fg_color;
+      border-top: 1px solid $_bubble_borders_color;
       spacing: 0px;
     }
     .notification-button {
@@ -1650,7 +1645,7 @@ StScrollBar {
     -shell-counter-overlap-y: 3px;
     background-color: $selected_bg_color;
     color: $selected_fg_color;
-    border: 2px solid $bubble_fg_color;
+    border: 2px solid $fg_color;
     box-shadow: 0 2px 2px rgba(0,0,0,0.5);
     border-radius: 0.9em; // should be 0.8 but whatever; wish I could do 50%;
   }
@@ -1660,7 +1655,7 @@ StScrollBar {
   //chat bubbles
   .chat-body { spacing: 5px; }
   .chat-response { margin: 5px; }
-  .chat-log-message { color: darken($bubble_fg_color,10%); }
+  .chat-log-message { color: darken($fg_color,10%); }
   .chat-new-group { padding-top: 1em; }
   .chat-received {
     padding-left: 4px;
@@ -1668,14 +1663,14 @@ StScrollBar {
   }
   .chat-sent {
     padding-left: 18pt;
-    color: lighten($bubble_fg_color, 15%);
+    color: lighten($fg_color, 15%);
     &:rtl { padding-left: 0; padding-right: 18pt; }
   }
   .chat-meta-message {
     padding-left: 4px;
     font-size: 9pt;
     font-weight: bold;
-    color: lighten($bubble_fg_color,18%);
+    color: lighten($fg_color,18%);
     &:rtl { padding-left: 0; padding-right: 4px; }
   }
 
@@ -1701,7 +1696,7 @@ StScrollBar {
     .hotplug-resident-mount {
       spacing: 8px;
       border-radius: 4px;
-      &:hover { background-color: $bubble_hover_bg_color; }
+      &:hover { background-color: $_hover_bg_color; }
     }
 
     .hotplug-resident-mount-label {
