@@ -2,7 +2,6 @@
 
 const { AccountsService, Clutter, Gio, GLib,
         GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
 const Dialog = imports.ui.dialog;
