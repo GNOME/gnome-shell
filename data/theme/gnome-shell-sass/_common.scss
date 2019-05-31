@@ -925,8 +925,8 @@ StScrollBar {
     .world-clocks-button,
     .weather-button,
     .events-section-title {
-      &:hover, focus { background-color: darken($bg_color, 12%); }
-      &:active { background-color: darken($bg_color, 15%); }
+      &:hover, focus { background-color: $_hover_bg_color }
+      &:active { background-color: $_active_bg_color }
     }
 
     .datemenu-today-button .day-label {
