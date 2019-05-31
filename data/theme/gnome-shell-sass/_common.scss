@@ -1328,10 +1328,10 @@ StScrollBar {
   .search-entry {
     width: 320px;
     padding: 7px 9px;
-    border-radius: 6px;
+    border-radius: 18px;
     color: $fg_color;
     background-color: $base_color;
-    border-color: transparent;
+    border-color: $borders_color;
     &:focus {
       padding: 6px 8px;
       border-width: 2px;
