@@ -1329,8 +1329,8 @@ StScrollBar {
     width: 320px;
     padding: 7px 9px;
     border-radius: 6px;
-    color: $osd_fg_color;
-    background-color: $osd_bg_color;
+    color: $fg_color;
+    background-color: $base_color;
     border-color: transparent;
     &:focus {
       padding: 6px 8px;
@@ -1338,10 +1338,10 @@ StScrollBar {
       border-color: $selected_bg_color;
     }
 
-    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: $osd_fg_color; }
+    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: $fg_color; }
 
     &:hover, &:focus {
-      .search-entry-icon { color: transparentize($osd_fg_color,.3); }
+      .search-entry-icon { color: transparentize($fg_color,.3); }
     }
   }
 
@@ -1349,6 +1349,9 @@ StScrollBar {
 
   #searchResultsBin {
     max-width: 1000px;
+    background-color: $osd_bg_color;
+    padding: 2em;
+    border-radius: 16px;
   }
 
   #searchResultsContent {
@@ -1370,7 +1373,7 @@ StScrollBar {
 
   .list-search-result-content { spacing: 30px; }
   .list-search-result-title { color: darken($osd_fg_color,5%); spacing: 12px; }
-  .list-search-result-description { color: transparentize(darken($osd_fg_color,15%), 0.5); }
+  .list-search-result-description { color: darken($osd_fg_color,45%); }
   .list-search-provider-details { width: 150px; color: darken($osd_fg_color,5%); margin-top: 0.24em; }
   .list-search-provider-content { spacing: 20px; }
   .search-provider-icon { padding: 15px; }
@@ -1583,7 +1586,7 @@ StScrollBar {
 %status_text {
   font-size: 2em;
   font-weight: bold;
-  color: $fg_color;
+  color: $osd_fg_color;
 }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
