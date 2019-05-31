@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-04-17 19:29+0000\n"
-"PO-Revision-Date: 2019-04-25 14:54+0700\n"
+"POT-Creation-Date: 2019-05-29 20:40+0000\n"
+"PO-Revision-Date: 2019-05-31 10:51+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -423,10 +423,11 @@ msgstr ""
 msgid "Browse in Software"
 msgstr "Ramban di Perangkat Lunak"
 
-#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:55
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:136
-#: js/ui/endSessionDialog.js:430 js/ui/extensionDownloader.js:188
-#: js/ui/shellMountOperation.js:325 js/ui/status/network.js:888
+#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:52
+#: js/ui/components/networkAgent.js:118 js/ui/components/polkitAgent.js:138
+#: js/ui/endSessionDialog.js:431 js/ui/extensionDownloader.js:188
+#: js/ui/shellMountOperation.js:404 js/ui/shellMountOperation.js:413
+#: js/ui/status/network.js:894
 msgid "Cancel"
 msgstr "Batal"
 
@@ -434,7 +435,7 @@ msgstr "Batal"
 msgid "Next"
 msgstr "Selanjutnya"
 
-#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:329
+#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:408
 #: js/ui/unlockDialog.js:41
 msgid "Unlock"
 msgstr "Buka Kunci"
@@ -465,8 +466,8 @@ msgstr "(cth., pengguna dari %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:243
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
+#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
 msgid "Username: "
 msgstr "Nama pengguna: "
 
@@ -517,8 +518,8 @@ msgstr "Keluar"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:105
-msgid "logout;sign off"
-msgstr "keluar"
+msgid "logout;log out;sign off"
+msgstr "keluar;logout;log out;sign off"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:109
@@ -704,11 +705,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:37 js/ui/status/location.js:360
+#: js/ui/accessDialog.js:38 js/ui/status/location.js:362
 msgid "Deny Access"
 msgstr "Tolak Akses"
 
-#: js/ui/accessDialog.js:38 js/ui/status/location.js:363
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:365
 msgid "Grant Access"
 msgstr "Beri Akses"
 
@@ -759,23 +760,23 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: js/ui/audioDeviceSelection.js:42
+#: js/ui/audioDeviceSelection.js:39
 msgid "Select Audio Device"
 msgstr "Pilih Perangkat Audio"
 
-#: js/ui/audioDeviceSelection.js:53
+#: js/ui/audioDeviceSelection.js:50
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
-#: js/ui/audioDeviceSelection.js:62
+#: js/ui/audioDeviceSelection.js:59
 msgid "Headphones"
 msgstr "Headphone"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:61
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:66 js/ui/status/volume.js:247
+#: js/ui/audioDeviceSelection.js:63 js/ui/status/volume.js:247
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -936,68 +937,76 @@ msgstr "Tutup Paksa"
 msgid "Wait"
 msgstr "Tunggu"
 
-#: js/ui/components/automountManager.js:86
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "Drive eksternal tersambung"
 
-#: js/ui/components/automountManager.js:98
+#: js/ui/components/automountManager.js:99
 msgid "External drive disconnected"
 msgstr "Drive eksternal terputus"
+
+#: js/ui/components/automountManager.js:211
+msgid "Unable to unlock volume"
+msgstr "Tak bisa membuka kunci volume"
+
+#: js/ui/components/automountManager.js:212
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "Versi udisks yang dipasang tidak mendukung pengaturan PIM"
 
 #: js/ui/components/autorunManager.js:334
 #, javascript-format
 msgid "Open with %s"
 msgstr "Buka dengan %s"
 
-#: js/ui/components/keyring.js:77 js/ui/components/polkitAgent.js:255
+#: js/ui/components/keyring.js:66 js/ui/components/polkitAgent.js:257
 msgid "Password:"
 msgstr "Sandi:"
 
-#: js/ui/components/keyring.js:108
+#: js/ui/components/keyring.js:97
 msgid "Type again:"
 msgstr "Ketik lagi:"
 
-#: js/ui/components/networkAgent.js:102
+#: js/ui/components/networkAgent.js:103
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
 "router Anda."
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:219
-#: js/ui/status/network.js:309 js/ui/status/network.js:891
+#: js/ui/components/networkAgent.js:113 js/ui/status/network.js:219
+#: js/ui/status/network.js:310 js/ui/status/network.js:897
 msgid "Connect"
 msgstr "Sambung"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:211 js/ui/components/networkAgent.js:223
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:285 js/ui/components/networkAgent.js:295
+#: js/ui/components/networkAgent.js:212 js/ui/components/networkAgent.js:224
+#: js/ui/components/networkAgent.js:247 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:286 js/ui/components/networkAgent.js:296
 msgid "Password: "
 msgstr "Sandi: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:216
+#: js/ui/components/networkAgent.js:217
 msgid "Key: "
 msgstr "Tombol: "
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:272
 msgid "Private key password: "
 msgstr "Sandi kunci privat: "
 
-#: js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:270
 msgid "Identity: "
 msgstr "Identitas: "
 
-#: js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:284
 msgid "Service: "
 msgstr "Layanan: "
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:685
-msgid "Authentication required by wireless network"
-msgstr "Otentikasi diperlukan oleh jaringan nirkabel"
-
 #: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:686
+msgid "Authentication required by wireless network"
+msgstr "Autentikasi diperlukan oleh jaringan nirkabel"
+
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:687
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1006,61 +1015,61 @@ msgstr ""
 "Sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s"
 "\"."
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "Wired 802.1X authentication"
-msgstr "Otentikasi 802.1X kabel"
+msgstr "Autentikasi 802.1X kabel"
 
-#: js/ui/components/networkAgent.js:319
+#: js/ui/components/networkAgent.js:320
 msgid "Network name: "
 msgstr "Nama jaringan: "
 
-#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:694
 msgid "DSL authentication"
-msgstr "Otentikasi DSL"
+msgstr "Autentikasi DSL"
 
-#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:700
 msgid "PIN code required"
 msgstr "Perlu kode PIN"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:701
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:707
 msgid "Mobile broadband network password"
 msgstr "Sandi jaringan data seluler"
 
-#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:690
-#: js/ui/components/networkAgent.js:694 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:708
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1664
+#: js/ui/components/networkAgent.js:675 js/ui/status/network.js:1670
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
-#: js/ui/components/polkitAgent.js:34
+#: js/ui/components/polkitAgent.js:36
 msgid "Authentication Required"
 msgstr "Diperlukan Autentikasi"
 
-#: js/ui/components/polkitAgent.js:62
+#: js/ui/components/polkitAgent.js:64
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:139
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
-msgstr "Otentikasi"
+msgstr "Autentikasi"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:241 js/ui/shellMountOperation.js:309
+#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:389
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 
@@ -1254,27 +1263,27 @@ msgstr ""
 "waktu lama: pastikan bahwa Anda telah melakukan back up dan komputer "
 "tersambung ke listrik."
 
-#: js/ui/endSessionDialog.js:309
+#: js/ui/endSessionDialog.js:310
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Berjalan memakai daya baterai: harap tancapkan sebelum memasang pemutakhiran."
 
-#: js/ui/endSessionDialog.js:326
+#: js/ui/endSessionDialog.js:327
 msgid "Some applications are busy or have unsaved work."
 msgstr "Beberapa aplikasi sedang sibuk atau belum disimpan perubahannya."
 
-#: js/ui/endSessionDialog.js:333
+#: js/ui/endSessionDialog.js:334
 msgid "Other users are logged in."
 msgstr "Pengguna lain sedang log masuk."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:614
+#: js/ui/endSessionDialog.js:615
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (jarak jauh)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:617
+#: js/ui/endSessionDialog.js:618
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsol)"
@@ -1359,13 +1368,13 @@ msgid "Leave On"
 msgstr "Biarkan Menyala"
 
 #: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:1263
+#: js/ui/status/network.js:1269
 msgid "Turn On"
 msgstr "Nyalakan"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:128 js/ui/status/network.js:310
-#: js/ui/status/network.js:1263 js/ui/status/network.js:1375
+#: js/ui/status/network.js:128 js/ui/status/network.js:311
+#: js/ui/status/network.js:1269 js/ui/status/network.js:1381
 #: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
 #: js/ui/status/rfkill.js:106
 msgid "Turn Off"
@@ -1427,7 +1436,7 @@ msgstr "Tilik Sumber"
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: js/ui/messageTray.js:1480
+#: js/ui/messageTray.js:1479
 msgid "System Information"
 msgstr "Informasi Sistem"
 
@@ -1520,23 +1529,23 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:864
+#: js/ui/panel.js:861
 msgid "Top Bar"
 msgstr "Bar Atas"
 
-#: js/ui/runDialog.js:64
+#: js/ui/runDialog.js:65
 msgid "Enter a Command"
 msgstr "Ketikkan Perintah"
 
-#: js/ui/runDialog.js:104 js/ui/windowMenu.js:166
+#: js/ui/runDialog.js:105 js/ui/windowMenu.js:166
 msgid "Close"
 msgstr "Tutup"
 
-#: js/ui/runDialog.js:266
+#: js/ui/runDialog.js:267
 msgid "Restart is not available on Wayland"
 msgstr "Memulai ulang tidak tersedia di Wayland"
 
-#: js/ui/runDialog.js:271
+#: js/ui/runDialog.js:272
 msgid "Restarting…"
 msgstr "Memulai ulang…"
 
@@ -1583,15 +1592,15 @@ msgstr "Tak bisa mengunci"
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: js/ui/search.js:635
+#: js/ui/search.js:638
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: js/ui/search.js:637
+#: js/ui/search.js:640
 msgid "No results."
 msgstr "Tak ada yang cocok."
 
-#: js/ui/search.js:761
+#: js/ui/search.js:764
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1614,13 +1623,60 @@ msgstr "Tampilkan Teks"
 msgid "Hide Text"
 msgstr "Sembunyikan Teks"
 
-#: js/ui/shellMountOperation.js:296
+#: js/ui/shellMountOperation.js:318
+msgid "Hidden Volume"
+msgstr "Volume Tersembunyi"
+
+#: js/ui/shellMountOperation.js:321
+msgid "Windows System Volume"
+msgstr "Volume Sistem Windows"
+
+#: js/ui/shellMountOperation.js:324
+msgid "Uses Keyfiles"
+msgstr "Gunakan Berkas Kunci"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:330
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+"Untuk membuka kunci volume yang menggunakan berkas kunci, gunakan utilitas "
+"<i>%s</i>."
+
+#: js/ui/shellMountOperation.js:337
+msgid "PIM Number"
+msgstr "Nomor PIM"
+
+#: js/ui/shellMountOperation.js:355
+msgid "The PIM must be a number or empty."
+msgstr "PIM harus berupa angka atau kosong."
+
+#: js/ui/shellMountOperation.js:366
 msgid "Password"
 msgstr "Sandi"
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:396
 msgid "Remember Password"
 msgstr "Ingat Sandi"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:418
+#, javascript-format
+msgid "Open %s"
+msgstr "Buka %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:490
+#, javascript-format
+msgid "Unable to start %s"
+msgstr "Tak bisa memulai %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:492
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr "Tak bisa menemukan aplikasi %s"
 
 #: js/ui/status/accessibility.js:35
 msgid "Accessibility"
@@ -1658,11 +1714,11 @@ msgstr "Tombol Pantul"
 msgid "Mouse Keys"
 msgstr "Tombol Tetikus"
 
-#: js/ui/status/accessibility.js:151
+#: js/ui/status/accessibility.js:135
 msgid "High Contrast"
 msgstr "Kontras Tinggi"
 
-#: js/ui/status/accessibility.js:182
+#: js/ui/status/accessibility.js:177
 msgid "Large Text"
 msgstr "Teks Besar"
 
@@ -1670,7 +1726,7 @@ msgstr "Teks Besar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:47 js/ui/status/network.js:585
+#: js/ui/status/bluetooth.js:47 js/ui/status/network.js:586
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
@@ -1694,11 +1750,11 @@ msgstr "Hidup"
 msgid "Brightness"
 msgstr "Kecerahan"
 
-#: js/ui/status/keyboard.js:812
+#: js/ui/status/keyboard.js:813
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
-#: js/ui/status/keyboard.js:834
+#: js/ui/status/keyboard.js:835
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
@@ -1727,12 +1783,12 @@ msgid "Enable"
 msgstr "Fungsikan"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:353
+#: js/ui/status/location.js:355
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Beri %s akses ke lokasi Anda?"
 
-#: js/ui/status/location.js:354
+#: js/ui/status/location.js:356
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Akses lokasi dapat diubah setiap saat dari pengaturan privasi."
 
@@ -1741,13 +1797,13 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:416 js/ui/status/network.js:1292
+#: js/ui/status/network.js:417 js/ui/status/network.js:1298
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:419
+#: js/ui/status/network.js:420
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s Tersambung"
@@ -1755,189 +1811,189 @@ msgstr "%s Tersambung"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:424
+#: js/ui/status/network.js:425
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s Tak Dikelola"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:427
+#: js/ui/status/network.js:428
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:434 js/ui/status/network.js:1284
+#: js/ui/status/network.js:435 js/ui/status/network.js:1290
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:437
+#: js/ui/status/network.js:438
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr "%s Memerlukan Otentikasi"
+msgstr "%s Memerlukan Autentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:445
+#: js/ui/status/network.js:446
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Firmware Hilang Untuk %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:450
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s Tak tersedia"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452
+#: js/ui/status/network.js:453
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Koneksi %s Gagal"
 
-#: js/ui/status/network.js:464
+#: js/ui/status/network.js:465
 msgid "Wired Settings"
 msgstr "Pengaturan Kabel"
 
-#: js/ui/status/network.js:506
+#: js/ui/status/network.js:507
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:553 js/ui/status/network.js:1289
+#: js/ui/status/network.js:554 js/ui/status/network.js:1295
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:557
+#: js/ui/status/network.js:558
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s Dinonaktifkan"
 
-#: js/ui/status/network.js:597
+#: js/ui/status/network.js:598
 msgid "Connect to Internet"
 msgstr "Sambungkan ke Internet"
 
-#: js/ui/status/network.js:786
+#: js/ui/status/network.js:792
 msgid "Airplane Mode is On"
 msgstr "Mode Pesawat Terbang Menyala"
 
-#: js/ui/status/network.js:787
+#: js/ui/status/network.js:793
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
 
-#: js/ui/status/network.js:788
+#: js/ui/status/network.js:794
 msgid "Turn Off Airplane Mode"
 msgstr "Matikan Mode Pesawat Terbang"
 
-#: js/ui/status/network.js:797
+#: js/ui/status/network.js:803
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi Mati"
 
-#: js/ui/status/network.js:798
+#: js/ui/status/network.js:804
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
 
-#: js/ui/status/network.js:799
+#: js/ui/status/network.js:805
 msgid "Turn On Wi-Fi"
 msgstr "Nyalakan Wi-Fi"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:830
 msgid "Wi-Fi Networks"
 msgstr "Jaringan Wi-Fi"
 
-#: js/ui/status/network.js:826
+#: js/ui/status/network.js:832
 msgid "Select a network"
 msgstr "Pilih jaringan"
 
-#: js/ui/status/network.js:855
+#: js/ui/status/network.js:861
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: js/ui/status/network.js:876 js/ui/status/rfkill.js:104
+#: js/ui/status/network.js:882 js/ui/status/rfkill.js:104
 msgid "Use hardware switch to turn off"
 msgstr "Pakai saklar perangkat keras untuk mematikan"
 
-#: js/ui/status/network.js:1152
+#: js/ui/status/network.js:1158
 msgid "Select Network"
 msgstr "Pilih Jaringan"
 
-#: js/ui/status/network.js:1158
+#: js/ui/status/network.js:1164
 msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1280
+#: js/ui/status/network.js:1286
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1295
+#: js/ui/status/network.js:1301
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1392
+#: js/ui/status/network.js:1398
 msgid "connecting…"
 msgstr "menyambung…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1395
+#: js/ui/status/network.js:1401
 msgid "authentication required"
-msgstr "diperlukan otentikasi"
+msgstr "diperlukan autentikasi"
 
-#: js/ui/status/network.js:1397
+#: js/ui/status/network.js:1403
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1453
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1464
+#: js/ui/status/network.js:1470
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1474
+#: js/ui/status/network.js:1480
 msgid "VPN Off"
 msgstr "VPN Mati"
 
-#: js/ui/status/network.js:1535 js/ui/status/rfkill.js:82
+#: js/ui/status/network.js:1541 js/ui/status/rfkill.js:82
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: js/ui/status/network.js:1564
+#: js/ui/status/network.js:1570
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Koneksi Kabel"
 msgstr[1] "%s Koneksi Kabel"
 
-#: js/ui/status/network.js:1568
+#: js/ui/status/network.js:1574
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Koneksi Wi-Fi"
 msgstr[1] "%s Koneksi Wi-Fi"
 
-#: js/ui/status/network.js:1572
+#: js/ui/status/network.js:1578
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Koneksi Modem"
 msgstr[1] "%s Koneksi Modem"
 
-#: js/ui/status/network.js:1705
+#: js/ui/status/network.js:1711
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1706
+#: js/ui/status/network.js:1712
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2119,22 +2175,22 @@ msgstr "Cari"
 msgid "“%s” is ready"
 msgstr "'%s' siap"
 
-#: js/ui/windowManager.js:53
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Apakah Anda ingin mempertahankan pengaturan tampilan ini?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:65
+#: js/ui/windowManager.js:66
 msgid "Revert Settings"
 msgstr "Balikkan Tatanan"
 
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:69
 msgid "Keep Changes"
 msgstr "Simpan Perubahan"
 
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:87
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2143,7 +2199,7 @@ msgstr[1] "Perubahan tatanan akan dikembalikan dalam %d detik"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:677
+#: js/ui/windowManager.js:678
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2242,11 +2298,11 @@ msgstr "Tak dikenal"
 msgid "Failed to launch “%s”"
 msgstr "Gagal meluncurkan \"%s\""
 
-#: src/shell-keyring-prompt.c:730
+#: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
 msgstr "Sandi tidak cocok."
 
-#: src/shell-keyring-prompt.c:738
+#: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
 msgstr "Sandi tidak boleh kosong"
 
