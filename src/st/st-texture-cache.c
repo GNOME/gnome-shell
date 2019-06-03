@@ -42,6 +42,7 @@ struct _StTextureCachePrivate
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> ClutterImage* */
   GHashTable *keyed_surface_cache; /* char * -> cairo_surface_t* */
+  GHashTable *keyed_file_scale_cache; /* char * -> GArray<float> * */
 
   /* Presently this is used to de-duplicate requests for GIcons and async URIs. */
   GHashTable *outstanding_requests; /* char * -> AsyncTextureLoadData * */
@@ -63,6 +64,44 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
+
+static void
+cache_file_with_scale (GHashTable *scale_cache,
+                       char       *key,
+                       float       resource_scale)
+{
+  GArray *scales = NULL;
+
+  scales = g_hash_table_lookup (scale_cache, key);
+  if (!scales)
+    {
+      scales = g_array_new (FALSE, FALSE, sizeof (float));
+      g_hash_table_insert (scale_cache, key, scales);
+    }
+  g_array_append_val (scales, resource_scale);
+}
+
+static void
+remove_from_file_scale_cache (GHashTable *scale_cache,
+                              GHashTable *cache,
+                              const char *key)
+{
+  GArray *scales = NULL;
+  int i = 0;
+
+  scales = g_hash_table_lookup (scale_cache, key);
+  if (!scales)
+    return;
+
+  for (i = 0; i < scales->len; i++)
+    {
+      g_autofree char *scaled_key = NULL;
+      scaled_key = g_strdup_printf ("%s%f", key, g_array_index (scales, float, i));
+      g_hash_table_remove (cache, scaled_key);
+    }
+
+  g_hash_table_remove (scale_cache, key);
+}
 
 /* We want to preserve the aspect ratio by default, also the default
  * pipeline for an empty texture is full opacity white, which we
@@ -171,6 +210,10 @@ st_texture_cache_init (StTextureCache *self)
                                                            g_str_equal,
                                                            g_free,
                                                            (GDestroyNotify) cairo_surface_destroy);
+  self->priv->keyed_file_scale_cache = g_hash_table_new_full (g_str_hash,
+                                                              g_str_equal,
+                                                              g_free,
+                                                              (GDestroyNotify) g_array_unref);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                             g_free, NULL);
   self->priv->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
@@ -189,6 +232,7 @@ st_texture_cache_dispose (GObject *object)
 
   g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
   g_clear_pointer (&self->priv->keyed_surface_cache, g_hash_table_destroy);
+  g_clear_pointer (&self->priv->keyed_file_scale_cache, g_hash_table_destroy);
   g_clear_pointer (&self->priv->outstanding_requests, g_hash_table_destroy);
   g_clear_pointer (&self->priv->file_monitors, g_hash_table_destroy);
 
@@ -1070,10 +1114,16 @@ file_changed_cb (GFileMonitor      *monitor,
 
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u", file_hash);
   g_hash_table_remove (cache->priv->keyed_cache, key);
+  remove_from_file_scale_cache (cache->priv->keyed_file_scale_cache,
+                                cache->priv->keyed_cache,
+                                key);
   g_free (key);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u", file_hash);
   g_hash_table_remove (cache->priv->keyed_surface_cache, key);
+  remove_from_file_scale_cache (cache->priv->keyed_file_scale_cache,
+                                cache->priv->keyed_surface_cache,
+                                key);
   g_free (key);
 
   g_signal_emit (cache, signals[TEXTURE_FILE_CHANGED], 0, file);
@@ -1385,9 +1435,10 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
   ClutterContent *image;
   CoglTexture *texdata;
   GdkPixbuf *pixbuf;
-  char *key;
+  char *key, *file_key;
 
-  key = g_strdup_printf (CACHE_PREFIX_FILE "%u%f", g_file_hash (file), resource_scale);
+  file_key = g_strdup_printf (CACHE_PREFIX_FILE "%u", g_file_hash (file));
+  key = g_strdup_printf ("%s%f", file_key, resource_scale);
 
   texdata = NULL;
   image = g_hash_table_lookup (cache->priv->keyed_cache, key);
@@ -1408,7 +1459,11 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
         goto out;
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-        g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
+        {
+          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
+          cache_file_with_scale (cache->priv->keyed_file_scale_cache,
+                                 g_strdup (file_key), resource_scale);
+        }
     }
 
   /* Because the texture is loaded synchronously, we won't call
@@ -1421,6 +1476,7 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
 
 out:
   g_free (key);
+  g_free (file_key);
   return texdata;
 }
 
@@ -1436,9 +1492,10 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
 {
   cairo_surface_t *surface;
   GdkPixbuf *pixbuf;
-  char *key;
+  char *key, *file_key;
 
-  key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u%f", g_file_hash (file), resource_scale);
+  file_key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u", g_file_hash (file));
+  key = g_strdup_printf ("%s%f", file_key, resource_scale);
 
   surface = g_hash_table_lookup (cache->priv->keyed_surface_cache, key);
 
@@ -1457,6 +1514,8 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
           cairo_surface_reference (surface);
           g_hash_table_insert (cache->priv->keyed_surface_cache,
                                g_strdup (key), surface);
+          cache_file_with_scale (cache->priv->keyed_file_scale_cache,
+                                 g_strdup (file_key), resource_scale);
         }
     }
   else
@@ -1466,6 +1525,7 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
 
 out:
   g_free (key);
+  g_free (file_key);
   return surface;
 }
 
