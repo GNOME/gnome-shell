@@ -2199,8 +2199,14 @@ var WindowManager = class {
                 direction = Meta.MotionDirection.DOWN;
         }
 
-        if (direction != Meta.MotionDirection.UP &&
+        if (workspaceManager.layout_rows == -1 &&
+            direction != Meta.MotionDirection.UP &&
             direction != Meta.MotionDirection.DOWN)
+            return;
+
+        if (workspaceManager.layout_columns == -1 &&
+            direction != Meta.MotionDirection.LEFT &&
+            direction != Meta.MotionDirection.RIGHT)
             return;
 
         if (action == 'switch')
