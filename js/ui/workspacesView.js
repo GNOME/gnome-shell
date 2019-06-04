@@ -189,26 +189,32 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
             Tweener.removeTweens(workspace.actor);
 
-            let y = (w - active) * this._fullGeometry.height;
+            let params = {};
+            if (workspaceManager.layout_rows == -1)
+                params.y = (w - active) * this._fullGeometry.height;
+            else if (this.actor.text_direction == Clutter.TextDirection.RTL)
+                params.x = (active - w) * this._fullGeometry.width;
+            else
+                params.x = (w - active) * this._fullGeometry.width;
 
             if (showAnimation) {
-                let params = { y: y,
-                               time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
-                             };
+                let tweenParams = Object.assign(params, {
+                    time: WORKSPACE_SWITCH_TIME,
+                    transition: 'easeOutQuad'
+                });
                 // we have to call _updateVisibility() once before the
                 // animation and once afterwards - it does not really
                 // matter which tween we use, so we pick the first one ...
                 if (w == 0) {
                     this._updateVisibility();
-                    params.onComplete = () => {
+                    tweenParams.onComplete = () => {
                         this._animating = false;
                         this._updateVisibility();
                     };
                 }
-                Tweener.addTween(workspace.actor, params);
+                Tweener.addTween(workspace.actor, tweenParams);
             } else {
-                workspace.actor.set_position(0, y);
+                workspace.actor.set(params);
                 if (w == 0)
                     this._updateVisibility();
             }
@@ -346,22 +352,39 @@ var WorkspacesView = class extends WorkspacesViewBase {
             metaWorkspace.activate(global.get_current_time());
         }
 
-        let last = this._workspaces.length - 1;
-        let firstWorkspaceY = this._workspaces[0].actor.y;
-        let lastWorkspaceY = this._workspaces[last].actor.y;
-        let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
-
         if (adj.upper == 1)
             return;
 
-        let currentY = firstWorkspaceY;
-        let newY =  - adj.value / (adj.upper - 1) * workspacesHeight;
+        let last = this._workspaces.length - 1;
 
-        let dy = newY - currentY;
+        if (workspaceManager.layout_rows == -1) {
+            let firstWorkspaceY = this._workspaces[0].actor.y;
+            let lastWorkspaceY = this._workspaces[last].actor.y;
+            let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
-        for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
-            this._workspaces[i].actor.y += dy;
+            let currentY = firstWorkspaceY;
+            let newY = -adj.value / (adj.upper - 1) * workspacesHeight;
+
+            let dy = newY - currentY;
+
+            for (let i = 0; i < this._workspaces.length; i++) {
+                this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
+                this._workspaces[i].actor.y += dy;
+            }
+        } else {
+            let firstWorkspaceX = this._workspaces[0].actor.x;
+            let lastWorkspaceX = this._workspaces[last].actor.x;
+            let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
+
+            let currentX = firstWorkspaceX;
+            let newX = -adj.value / (adj.upper - 1) * workspacesWidth;
+
+            let dx = newX - currentX;
+
+            for (let i = 0; i < this._workspaces.length; i++) {
+                this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
+                this._workspaces[i].actor.x += dx;
+            }
         }
     }
 };
@@ -509,7 +532,12 @@ var WorkspacesDisplay = class {
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        if (global.workspace_manager.layout_rows == -1)
+            adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        else if (this.actor.text_direction == Clutter.TextDirection.RTL)
+            adjustment.value += (dx / this.actor.width) * adjustment.page_size;
+        else
+            adjustment.value -= (dx / this.actor.width) * adjustment.page_size;
         return false;
     }
 
@@ -541,7 +569,12 @@ var WorkspacesDisplay = class {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
         let adjustment = this._scrollAdjustment;
-        adjustment.value = (active - yRel / this.actor.height) * adjustment.page_size;
+        if (workspaceManager.layout_rows == -1)
+            adjustment.value = (active - yRel / this.actor.height) * adjustment.page_size;
+        else if (this.actor.text_direction == Clutter.TextDirection.RTL)
+            adjustment.value = (active + xRel / this.actor.width) * adjustment.page_size;
+        else
+            adjustment.value = (active - xRel / this.actor.width) * adjustment.page_size;
     }
 
     _onSwitchWorkspaceActivated(action, direction) {
@@ -764,6 +797,12 @@ var WorkspacesDisplay = class {
             break;
         case Clutter.ScrollDirection.DOWN:
             ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            break;
+        case Clutter.ScrollDirection.LEFT:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
+            break;
+        case Clutter.ScrollDirection.RIGHT:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
             break;
         default:
             return Clutter.EVENT_PROPAGATE;
