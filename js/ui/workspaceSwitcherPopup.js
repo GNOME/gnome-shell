@@ -32,6 +32,10 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._childHeight = 0;
         this._childWidth = 0;
         this._timeoutId = 0;
+        this._orientation = global.screen.layout_rows == -1
+            ? Clutter.Orientation.VERTICAL
+            : Clutter.Orientation.HORIZONTAL;
+
         this._list.connect('style-changed', () => {
            this._itemSpacing = this._list.get_theme_node().get_length('spacing');
         });
@@ -52,53 +56,93 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._globalSignals.push(global.screen.connect('workspace-removed', this._redisplay.bind(this)));
     },
 
-    _getPreferredHeight(actor, forWidth, alloc) {
+    _getPreferredSizeForOrientation(forSize) {
         let children = this._list.get_children();
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        let themeNode = this.actor.get_theme_node();
 
-        let availHeight = workArea.height;
-        availHeight -= this.actor.get_theme_node().get_vertical_padding();
-        availHeight -= this._container.get_theme_node().get_vertical_padding();
-        availHeight -= this._list.get_theme_node().get_vertical_padding();
+        let availSize;
+        if (this._orientation == Clutter.Orientation.HORIZONTAL) {
+            availSize = workArea.width - themeNode.get_horizontal_padding();
+            availSize -= this._container.get_theme_node().get_horizontal_padding();
+            availSize -= this._list.get_theme_node().get_horizontal_padding();
+        } else {
+            availSize = workArea.height - themeNode.get_vertical_padding();
+            availSize -= this._container.get_theme_node().get_vertical_padding();
+            availSize -= this._list.get_theme_node().get_vertical_padding();
+        }
 
-        let height = 0;
+        let size = 0;
         for (let i = 0; i < children.length; i++) {
             let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(-1);
-            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(childNaturalHeight);
-            height += childNaturalHeight * workArea.width / workArea.height;
+            let height = childNaturalHeight * workArea.width / workArea.height;
+
+            if (this._orientation == Clutter.Orientation.HORIZONTAL)
+                size += height * workArea.width / workArea.height;
+            else
+                size += height;
         }
 
         let spacing = this._itemSpacing * (global.screen.n_workspaces - 1);
-        height += spacing;
-        height = Math.min(height, availHeight);
+        size += spacing;
+        size = Math.min(size, availSize);
 
-        this._childHeight = (height - spacing) / global.screen.n_workspaces;
+        if (this._orientation == Clutter.Orientation.HORIZONTAL) {
+            this._childWidth = (size - spacing) / global.screen.n_workspaces;
+            return themeNode.adjust_preferred_width(size, size);
+        } else {
+            this._childHeight = (size - spacing) / global.screen.n_workspaces;
+            return themeNode.adjust_preferred_height(size, size);
+        }
+    },
 
-        alloc.min_size = height;
-        alloc.natural_size = height;
+    _getSizeForOppositeOrientation() {
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+
+        if (this._orientation == Clutter.Orientation.HORIZONTAL) {
+            this._childHeight = Math.round(this._childWidth * workArea.height / workArea.width);
+            return [this._childHeight, this._childHeight];
+        } else {
+            this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
+            return [this._childWidth, this._childWidth];
+        }
+    },
+
+    _getPreferredHeight(actor, forWidth, alloc) {
+        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+            [alloc.min_size, alloc.natural_size] = this._getSizeForOppositeOrientation();
+        else
+            [alloc.min_size, alloc.natural_size] = this._getPreferredSizeForOrientation(forWidth);
     },
 
     _getPreferredWidth(actor, forHeight, alloc) {
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-        this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
-
-        alloc.min_size = this._childWidth;
-        alloc.natural_size = this._childWidth;
+        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+            [alloc.min_size, alloc.natural_size] = this._getPreferredSizeForOrientation(forHeight);
+        else
+            [alloc.min_size, alloc.natural_size] = this._getSizeForOppositeOrientation();
     },
 
     _allocate(actor, box, flags) {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
+        let rtl = this.text_direction == Clutter.TextDirection.RTL;
+        let x = rtl ? box.x2 - this._childWidth : box.x1;
         let y = box.y1;
-        let prevChildBoxY2 = box.y1 - this._itemSpacing;
         for (let i = 0; i < children.length; i++) {
-            childBox.x1 = box.x1;
-            childBox.x2 = box.x1 + this._childWidth;
-            childBox.y1 = prevChildBoxY2 + this._itemSpacing;
+            childBox.x1 = Math.round(x);
+            childBox.x2 = Math.round(x + this._childWidth);
+            childBox.y1 = Math.round(y);
             childBox.y2 = Math.round(y + this._childHeight);
-            y += this._childHeight + this._itemSpacing;
-            prevChildBoxY2 = childBox.y2;
+
+            if (this._orientation == Clutter.Orientation.HORIZONTAL) {
+                if (rtl)
+                    x -= this._childWidth + this._itemSpacing;
+                else
+                    x += this._childWidth + this._itemSpacing;
+            } else {
+                y += this._childHeight + this._itemSpacing;
+            }
             children[i].allocate(childBox, flags);
         }
     },
@@ -111,8 +155,12 @@ var WorkspaceSwitcherPopup = new Lang.Class({
 
            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-           else if(i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
+           else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
+           else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.LEFT)
+               indicator = new St.Bin({ style_class: 'ws-switcher-active-left' });
+           else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.RIGHT)
+               indicator = new St.Bin({ style_class: 'ws-switcher-active-right' });
            else
                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
 
