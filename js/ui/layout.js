@@ -239,7 +239,7 @@ var LayoutManager = GObject.registerClass({
                                                  clip_to_allocation: true,
                                                  layout_manager: new Clutter.BinLayout(),
                                                });
-        this.addTopChrome(this.screenShieldGroup);
+        this.addChrome(this.screenShieldGroup);
 
         this.panelBox = new St.BoxLayout({ name: 'panelBox',
                                            vertical: true });
