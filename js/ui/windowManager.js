@@ -2132,6 +2132,8 @@ var WindowManager = class {
         let [action,,, target] = binding.get_name().split('-');
         let newWs;
         let direction;
+        let vertical = workspaceManager.layout_rows == -1;
+        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
 
         if (action == 'move') {
             // "Moving" a window to another workspace doesn't make sense when
@@ -2144,7 +2146,12 @@ var WindowManager = class {
         }
 
         if (target == 'last') {
-            direction = Meta.MotionDirection.DOWN;
+            if (vertical)
+                direction = Meta.MotionDirection.DOWN;
+            else if (rtl)
+                direction = Meta.MotionDirection.LEFT;
+            else
+                direction = Meta.MotionDirection.RIGHT;
             newWs = workspaceManager.get_workspace_by_index(workspaceManager.n_workspaces - 1);
         } else if (isNaN(target)) {
             // Prepend a new workspace dynamically
@@ -2160,14 +2167,31 @@ var WindowManager = class {
             target--;
             newWs = workspaceManager.get_workspace_by_index(target);
 
-            if (workspaceManager.get_active_workspace().index() > target)
-                direction = Meta.MotionDirection.UP;
-            else
-                direction = Meta.MotionDirection.DOWN;
+            if (workspaceManager.get_active_workspace().index() > target) {
+                if (vertical)
+                    direction = Meta.MotionDirection.UP;
+                else if (rtl)
+                    direction = Meta.MotionDirection.RIGHT;
+                else
+                    direction = Meta.MotionDirection.LEFT;
+            } else {
+                if (vertical)
+                    direction = Meta.MotionDirection.DOWN;
+                else if (rtl)
+                    direction = Meta.MotionDirection.LEFT;
+                else
+                    direction = Meta.MotionDirection.RIGHT;
+            }
         }
 
-        if (direction != Meta.MotionDirection.UP &&
+        if (workspaceManager.layout_rows == -1 &&
+            direction != Meta.MotionDirection.UP &&
             direction != Meta.MotionDirection.DOWN)
+            return;
+
+        if (workspaceManager.layout_columns == -1 &&
+            direction != Meta.MotionDirection.LEFT &&
+            direction != Meta.MotionDirection.RIGHT)
             return;
 
         if (action == 'switch')
