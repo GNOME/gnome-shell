@@ -30,7 +30,7 @@ $medium_radius: 9px;
 
 $_trough_color: transparentize($fg_color, 0.9);
 $_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 1%));
+$_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 3%));
 $_active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 
 $font-size: 11;
@@ -559,7 +559,10 @@ StScrollBar {
       box-shadow: inset 0 -1px 0px $_bubble_borders_color;
       font-weight: bold;
     }
-    &.selected { background-color: transparentize(black, 0.9); color: $fg_color; }
+    &.selected {
+      background-color: transparentize(white, if($variant=='light', 0.2, 0.9));
+      color: $fg_color;
+    }
     &:active { 
       background-color: $selected_bg_color;
       color: $selected_fg_color;
@@ -1370,7 +1373,7 @@ StScrollBar {
 
   .list-search-result-content { spacing: 30px; }
   .list-search-result-title { color: darken($osd_fg_color,5%); spacing: 12px; }
-  .list-search-result-description { color: darken($osd_fg_color,45%); }
+  .list-search-result-description { color: darken($osd_fg_color, 30%); }
   .list-search-provider-details { width: 150px; color: darken($osd_fg_color,5%); margin-top: 0.24em; }
   .list-search-provider-content { spacing: 20px; }
   .search-provider-icon { padding: 15px; }
@@ -1885,28 +1888,46 @@ StScrollBar {
   border: none;
   background-color: transparent;
 
+  $_gdm_fg: #f6f5f4;
+  $_gdm_bg: lighten(#2e3436, 19%);
+
   StEntry {
     @extend %search_entry;
+    $_gdm_entry_bg: transparentize(lighten(desaturate(#241f31, 20%), 2%), 0.5);
+    background-color: $_gdm_entry_bg;
+    border-color: $_gdm_entry_bg;
     border-radius: 5px;
+    color: $osd_fg_color;
   }
 
   .modal-dialog-button-box { spacing: 3px; }
   .modal-dialog-button {
     padding: 4px 18px;
-    $_hover_c: white;
+    
+    background-color: $_gdm_bg;
+    border-color: $_gdm_bg;
+    color: $_gdm_fg;
+
+    $_hover_c: lighten($_gdm_bg, 5%);
     &:hover,&:focus {
       box-shadow: none;
       background-color: $_hover_c;
       border-color: $_hover_c;
     }
     &:active {
-      $_active_c: $_active_bg_color;
+      $_active_c: darken($_gdm_bg, 5%);
       box-shadow: none;
       background-color: $_active_c;
       border-color: $_active_c;
     }
+    &:insensitive {
+      @include button(insensitive);
+      border-color: darken($_gdm_bg, 10%);
+      background-color: darken($_gdm_bg, 10%);
+      color: transparentize($_gdm_fg, 0.3);
+    }
     &:default {
-      @include button(normal,$c:$selected_bg_color, $tc:$selected_fg_color);
+      @include button(normal, $c:$selected_bg_color, $tc:$selected_fg_color);
       border-color: $selected_bg_color;
       &:hover,&:focus { 
         @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color);
@@ -1920,7 +1941,12 @@ StScrollBar {
         background-color: $_def_active_c;
         border-color: $_def_active_c;
       }
-      &:insensitive { @include button(insensitive); }
+      &:insensitive {
+        @include button(insensitive);
+        border-color: darken($selected_bg_color, 10%);
+        background-color: darken($selected_bg_color, 10%);
+        color: transparentize($selected_fg_color, 0.3);
+      }
     }
   }
 }
@@ -2074,7 +2100,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 }
 
 #lockDialogGroup {
-  background: #2e3436 url(resource:///org/gnome/shell/theme/noise-texture.png);
+  background: lighten(#2e3436, 8%) url(resource:///org/gnome/shell/theme/noise-texture.png);
   background-repeat: repeat;
 }
 
