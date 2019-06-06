@@ -50,7 +50,6 @@ function canLock() {
 
 
 function registerSessionWithGDM() {
-    log("Registering session with GDM");
     Gio.DBus.system.call('org.gnome.DisplayManager',
                          '/org/gnome/DisplayManager/Manager',
                          'org.gnome.DisplayManager.Manager',
