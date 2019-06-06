@@ -331,10 +331,10 @@ var IconGrid = GObject.registerClass({
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
-                children[i].hide();
+                children[i].opacity = 0;
             } else {
+                children[i].opacity = 255;
                 children[i].allocate(childBox, flags);
-                children[i].show();
             }
 
             columnIndex++;
@@ -378,7 +378,7 @@ var IconGrid = GObject.registerClass({
              child != null;
              child = child.get_next_sibling()) {
 
-            if (!child.visible)
+            if (!child.visible || !child.opacity)
                 continue;
 
             let childVolume = child.get_transformed_paint_volume(this);
