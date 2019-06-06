@@ -1893,24 +1893,26 @@ StScrollBar {
 
   StEntry {
     @extend %search_entry;
-    $_gdm_entry_bg: transparentize(lighten(desaturate(#241f31, 20%), 2%), 0.5);
-    background-color: $_gdm_entry_bg;
-    border-color: $_gdm_entry_bg;
     border-radius: 5px;
-    color: $osd_fg_color;
+    @if $variant=='dark' {
+      $_gdm_entry_bg: transparentize(lighten(desaturate(#241f31, 20%), 2%), 0.5);
+      background-color: $_gdm_entry_bg;
+      border-color: $_gdm_entry_bg;    
+      color: $osd_fg_color;
+    }
   }
 
   .modal-dialog-button-box { spacing: 3px; }
   .modal-dialog-button {
     padding: 4px 18px;
-    
+    box-shadow: 0 1px 3px transparentize($shadow_color, 0.02);
     background-color: $_gdm_bg;
     border-color: $_gdm_bg;
     color: $_gdm_fg;
 
     $_hover_c: lighten($_gdm_bg, 5%);
     &:hover,&:focus {
-      box-shadow: none;
+      box-shadow: 0 1px 3px $shadow_color;
       background-color: $_hover_c;
       border-color: $_hover_c;
     }
@@ -1922,8 +1924,8 @@ StScrollBar {
     }
     &:insensitive {
       @include button(insensitive);
-      border-color: darken($_gdm_bg, 10%);
-      background-color: darken($_gdm_bg, 10%);
+      border-color: darken($_gdm_bg, 5%);
+      background-color: darken($_gdm_bg, 5%);
       color: transparentize($_gdm_fg, 0.3);
     }
     &:default {
