@@ -1911,8 +1911,7 @@ StScrollBar {
     color: $_gdm_fg;
 
     $_hover_c: lighten($_gdm_bg, 5%);
-    &:hover,&:focus {
-      box-shadow: 0 1px 3px $shadow_color;
+    &:hover, &:focus {
       background-color: $_hover_c;
       border-color: $_hover_c;
     }
@@ -1931,7 +1930,7 @@ StScrollBar {
     &:default {
       @include button(normal, $c:$selected_bg_color, $tc:$selected_fg_color);
       border-color: $selected_bg_color;
-      &:hover,&:focus { 
+      &:hover, &:focus { 
         @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color);
         $_def_hover_c: lighten($selected_bg_color, 5%);
         background-color: $_def_hover_c;
