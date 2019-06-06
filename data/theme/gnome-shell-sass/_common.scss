@@ -559,7 +559,7 @@ StScrollBar {
       box-shadow: inset 0 -1px 0px $_bubble_borders_color;
       font-weight: bold;
     }
-    &.selected { background-color: $_hover_bg_color; color: $fg_color; }
+    &.selected { background-color: transparentize(black, 0.9); color: $fg_color; }
     &:active { 
       background-color: $selected_bg_color;
       color: $selected_fg_color;
@@ -1325,7 +1325,7 @@ StScrollBar {
   }
 
   //search entry
-  .search-entry {
+  .search-entry, %search_entry {
     width: 320px;
     padding: 7px 9px;
     border-radius: 18px;
@@ -1437,13 +1437,29 @@ StScrollBar {
   }
   .app-view-control { //favorties | all toggle button
     padding: 4px 32px;
-    &:checked { @include button(active); }
+    margin: 0 4px;
+    &, &:hover, &:checked { @include button(undecorated); }
+
+    &, &:hover { color: darken($osd_fg_color, 25%); }
+
+    &:hover { box-shadow: inset 0 -2px darken($osd_fg_color, 25%); }
+
+    &:active {
+      box-shadow: inset 0 -2px $osd_fg_color;
+    }
+
+    &:checked {
+      color: $osd_fg_color;
+      box-shadow: inset 0 -2px $selected_bg_color;
+    }
+
     &:first-child {
       border-right-width: 0;
-      border-radius: 3px 0 0 3px;
+      border-radius: 0;
     }
+
     &:last-child {
-     border-radius: 0 3px 3px 0;
+     border-radius: 0;
     }
   }
 
@@ -1869,18 +1885,44 @@ StScrollBar {
   border: none;
   background-color: transparent;
 
+  StEntry {
+    @extend %search_entry;
+    border-radius: 5px;
+  }
+
   .modal-dialog-button-box { spacing: 3px; }
   .modal-dialog-button {
     padding: 4px 18px;
+    $_hover_c: white;
+    &:hover,&:focus {
+      box-shadow: none;
+      background-color: $_hover_c;
+      border-color: $_hover_c;
+    }
+    &:active {
+      $_active_c: $_active_bg_color;
+      box-shadow: none;
+      background-color: $_active_c;
+      border-color: $_active_c;
+    }
     &:default {
       @include button(normal,$c:$selected_bg_color, $tc:$selected_fg_color);
-      &:hover,&:focus { @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color); }
-      &:active { @include button(active,$c:$selected_bg_color, $tc:$selected_fg_color); }
+      border-color: $selected_bg_color;
+      &:hover,&:focus { 
+        @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color);
+        $_def_hover_c: lighten($selected_bg_color, 5%);
+        background-color: $_def_hover_c;
+        border-color: $_def_hover_c;
+      }
+      &:active {
+        @include button(active,$c:$selected_bg_color, $tc:$selected_fg_color);
+        $_def_active_c: darken($selected_bg_color, 5%);
+        background-color: $_def_active_c;
+        border-color: $_def_active_c;
+      }
       &:insensitive { @include button(insensitive); }
-
     }
   }
-
 }
 
   .login-dialog-logo-bin { padding: 24px 0px; }
