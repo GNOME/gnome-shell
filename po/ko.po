@@ -1116,13 +1116,13 @@ msgstr "로그아웃"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s 사용자가 %d초 뒤에 자동으로 로그아웃합니다."
+msgstr[0] "%s 사용자가 %d초 뒤에 자동으로 로그아웃됩니다."
 
 #: js/ui/endSessionDialog.js:50
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "%d초 뒤에 자동으로 로그아웃합니다."
+msgstr[0] "%d초 뒤에 자동으로 로그아웃됩니다."
 
 #: js/ui/endSessionDialog.js:56
 msgctxt "button"
