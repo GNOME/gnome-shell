@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-05-28 17:15+0000\n"
-"PO-Revision-Date: 2019-06-03 12:01+0200\n"
+"POT-Creation-Date: 2019-06-06 11:42+0000\n"
+"PO-Revision-Date: 2019-06-10 12:04+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -950,7 +950,6 @@ msgid "External drive disconnected"
 msgstr "Dispositivo externo desconectado"
 
 #: js/ui/components/automountManager.js:211
-#| msgid "Unable to lock"
 msgid "Unable to unlock volume"
 msgstr "No se puede desbloquear el volumen"
 
@@ -1535,7 +1534,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:861
+#: js/ui/panel.js:862
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1598,15 +1597,15 @@ msgstr "No se pudo bloquear"
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: js/ui/search.js:635
+#: js/ui/search.js:638
 msgid "Searching…"
 msgstr "Buscando…"
 
-#: js/ui/search.js:637
+#: js/ui/search.js:640
 msgid "No results."
 msgstr "No se encontraron resultados."
 
-#: js/ui/search.js:761
+#: js/ui/search.js:764
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1630,7 +1629,6 @@ msgid "Hide Text"
 msgstr "Ocultar texto"
 
 #: js/ui/shellMountOperation.js:318
-#| msgid "Volume"
 msgid "Hidden Volume"
 msgstr "Ocultar volumen"
 
@@ -1639,7 +1637,6 @@ msgid "Windows System Volume"
 msgstr "Volumen de sistema Windows"
 
 #: js/ui/shellMountOperation.js:324
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
 msgstr "Usa archivos de claves"
 
@@ -1671,14 +1668,12 @@ msgstr "Recordar contraseña"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:418
 #, javascript-format
-#| msgid "Open with %s"
 msgid "Open %s"
 msgstr "Abrir %s"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:490
 #, javascript-format
-#| msgid "Unable to connect to %s"
 msgid "Unable to start %s"
 msgstr "No se puede iniciar %s"
 
@@ -1759,6 +1754,26 @@ msgstr "Encendido"
 #: js/ui/status/brightness.js:36
 msgid "Brightness"
 msgstr "Brillo"
+
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr "Una sola pulsación"
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr "Doble pulsación"
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr "Arrastrar"
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr "Pulsación secundaria"
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr "Pulsación al posarse"
 
 #: js/ui/status/keyboard.js:813
 msgid "Keyboard"
