@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-04-17 19:29+0000\n"
-"PO-Revision-Date: 2019-04-26 16:10+0200\n"
+"POT-Creation-Date: 2019-06-06 11:42+0000\n"
+"PO-Revision-Date: 2019-06-11 11:25+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -419,10 +419,11 @@ msgstr ""
 msgid "Browse in Software"
 msgstr "Esplore in Software"
 
-#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:55
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:136
-#: js/ui/endSessionDialog.js:430 js/ui/extensionDownloader.js:188
-#: js/ui/shellMountOperation.js:325 js/ui/status/network.js:888
+#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:52
+#: js/ui/components/networkAgent.js:118 js/ui/components/polkitAgent.js:138
+#: js/ui/endSessionDialog.js:431 js/ui/extensionDownloader.js:188
+#: js/ui/shellMountOperation.js:404 js/ui/shellMountOperation.js:413
+#: js/ui/status/network.js:894
 msgid "Cancel"
 msgstr "Anule"
 
@@ -430,7 +431,7 @@ msgstr "Anule"
 msgid "Next"
 msgstr "Indenant"
 
-#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:329
+#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:408
 #: js/ui/unlockDialog.js:41
 msgid "Unlock"
 msgstr "Sbloche"
@@ -461,10 +462,10 @@ msgstr "(p.e., utent o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:243
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
+#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
 msgid "Username: "
-msgstr "Non utent:"
+msgstr "Non utent: "
 
 #: js/gdm/loginDialog.js:1227
 msgid "Login Window"
@@ -513,8 +514,8 @@ msgstr "Jessî"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:105
-msgid "logout;sign off"
-msgstr "jessî;sierâ session"
+msgid "logout;log out;sign off"
+msgstr "jessî;sierâ session;disconeti"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:109
@@ -700,11 +701,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:37 js/ui/status/location.js:360
+#: js/ui/accessDialog.js:38 js/ui/status/location.js:362
 msgid "Deny Access"
 msgstr "Dinee acès"
 
-#: js/ui/accessDialog.js:38 js/ui/status/location.js:363
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:365
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
@@ -755,23 +756,23 @@ msgstr "%s al è stât zontât tai tiei preferîts."
 msgid "%s has been removed from your favorites."
 msgstr "%s al è stât gjavât dai tiei preferîts."
 
-#: js/ui/audioDeviceSelection.js:42
+#: js/ui/audioDeviceSelection.js:39
 msgid "Select Audio Device"
 msgstr "Selezione dispositîf sonôr"
 
-#: js/ui/audioDeviceSelection.js:53
+#: js/ui/audioDeviceSelection.js:50
 msgid "Sound Settings"
 msgstr "Impostazions suns"
 
-#: js/ui/audioDeviceSelection.js:62
+#: js/ui/audioDeviceSelection.js:59
 msgid "Headphones"
 msgstr "Cufis"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:61
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:66 js/ui/status/volume.js:247
+#: js/ui/audioDeviceSelection.js:63 js/ui/status/volume.js:247
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -932,67 +933,75 @@ msgstr "Sfuarce jessude"
 msgid "Wait"
 msgstr "Spiete"
 
-#: js/ui/components/automountManager.js:86
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "Dispositîf esterni tacât"
 
-#: js/ui/components/automountManager.js:98
+#: js/ui/components/automountManager.js:99
 msgid "External drive disconnected"
 msgstr "Dispositîf esterni distacât"
+
+#: js/ui/components/automountManager.js:211
+msgid "Unable to unlock volume"
+msgstr "Impussibil sblocâ il volum"
+
+#: js/ui/components/automountManager.js:212
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "La version di udisks instalade no supuarte la impostazion PIM"
 
 #: js/ui/components/autorunManager.js:334
 #, javascript-format
 msgid "Open with %s"
 msgstr "Vierç cun %s"
 
-#: js/ui/components/keyring.js:77 js/ui/components/polkitAgent.js:255
+#: js/ui/components/keyring.js:66 js/ui/components/polkitAgent.js:257
 msgid "Password:"
 msgstr "Password:"
 
-#: js/ui/components/keyring.js:108
+#: js/ui/components/keyring.js:97
 msgid "Type again:"
 msgstr "Scîf di gnûf:"
 
-#: js/ui/components/networkAgent.js:102
+#: js/ui/components/networkAgent.js:103
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "In alternative al è pussibil conetisi fracant il boton “WPS” sul router."
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:219
-#: js/ui/status/network.js:309 js/ui/status/network.js:891
+#: js/ui/components/networkAgent.js:113 js/ui/status/network.js:219
+#: js/ui/status/network.js:310 js/ui/status/network.js:897
 msgid "Connect"
 msgstr "Conet"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:211 js/ui/components/networkAgent.js:223
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:285 js/ui/components/networkAgent.js:295
+#: js/ui/components/networkAgent.js:212 js/ui/components/networkAgent.js:224
+#: js/ui/components/networkAgent.js:247 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:286 js/ui/components/networkAgent.js:296
 msgid "Password: "
 msgstr "Password: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:216
+#: js/ui/components/networkAgent.js:217
 msgid "Key: "
-msgstr "Clâf:"
+msgstr "Clâf: "
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:272
 msgid "Private key password: "
-msgstr "Password di clâf privade:"
+msgstr "Password di clâf privade: "
 
-#: js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:270
 msgid "Identity: "
-msgstr "Identitât:"
+msgstr "Identitât: "
 
-#: js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:284
 msgid "Service: "
-msgstr "Servizi:"
+msgstr "Servizi: "
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:686
 msgid "Authentication required by wireless network"
 msgstr "La rêt cence fîl e domande autenticazion"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:687
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1001,53 +1010,53 @@ msgstr ""
 "Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence "
 "fîl \"%s\"."
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "Wired 802.1X authentication"
 msgstr "Autenticazion vie fîl 802.1X"
 
-#: js/ui/components/networkAgent.js:319
+#: js/ui/components/networkAgent.js:320
 msgid "Network name: "
-msgstr "Non rêt:"
+msgstr "Non rêt: "
 
-#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:694
 msgid "DSL authentication"
 msgstr "Autenticazion DSL"
 
-#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:700
 msgid "PIN code required"
 msgstr "Si pretint un codiç PIN"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:701
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:707
 msgid "Mobile broadband network password"
 msgstr "Passowrd rêt mobil a bande largje"
 
-#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:690
-#: js/ui/components/networkAgent.js:694 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:708
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1664
+#: js/ui/components/networkAgent.js:675 js/ui/status/network.js:1670
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
-#: js/ui/components/polkitAgent.js:34
+#: js/ui/components/polkitAgent.js:36
 msgid "Authentication Required"
 msgstr "Autenticazion Necessarie"
 
-#: js/ui/components/polkitAgent.js:62
+#: js/ui/components/polkitAgent.js:64
 msgid "Administrator"
 msgstr "Aministradôr"
 
-#: js/ui/components/polkitAgent.js:139
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autentiche"
 
@@ -1055,7 +1064,7 @@ msgstr "Autentiche"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:241 js/ui/shellMountOperation.js:309
+#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:389
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Mi displâs, no je lade drete. Prove di gnûf."
 
@@ -1249,28 +1258,28 @@ msgstr ""
 "dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il to "
 "computer al sedi tacât."
 
-#: js/ui/endSessionDialog.js:309
+#: js/ui/endSessionDialog.js:310
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Funzionament su batarie: par plasê tache la spine prime di instalâ i "
 "inzornaments."
 
-#: js/ui/endSessionDialog.js:326
+#: js/ui/endSessionDialog.js:327
 msgid "Some applications are busy or have unsaved work."
 msgstr "Cualchi aplicazion e je impegnade opûr e à lavôrs no salvâts."
 
-#: js/ui/endSessionDialog.js:333
+#: js/ui/endSessionDialog.js:334
 msgid "Other users are logged in."
 msgstr "Altris utents a son jentrâts."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:614
+#: js/ui/endSessionDialog.js:615
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (rimot)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:617
+#: js/ui/endSessionDialog.js:618
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (locâl vie tastiere)"
@@ -1356,13 +1365,13 @@ msgid "Leave On"
 msgstr "Lasse ativât"
 
 #: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:1263
+#: js/ui/status/network.js:1269
 msgid "Turn On"
 msgstr "Impie"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
-#: js/ui/status/network.js:128 js/ui/status/network.js:310
-#: js/ui/status/network.js:1263 js/ui/status/network.js:1375
+#: js/ui/status/network.js:128 js/ui/status/network.js:311
+#: js/ui/status/network.js:1269 js/ui/status/network.js:1381
 #: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
 #: js/ui/status/rfkill.js:106
 msgid "Turn Off"
@@ -1424,7 +1433,7 @@ msgstr "Viôt sorzint"
 msgid "Web Page"
 msgstr "Pagjine Web"
 
-#: js/ui/messageTray.js:1480
+#: js/ui/messageTray.js:1479
 msgid "System Information"
 msgstr "Informazion di sisteme"
 
@@ -1518,24 +1527,24 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sisteme"
 
-#: js/ui/panel.js:864
+#: js/ui/panel.js:862
 msgid "Top Bar"
 msgstr "Sbare parsore"
 
-#: js/ui/runDialog.js:64
+#: js/ui/runDialog.js:65
 msgid "Enter a Command"
 msgstr "Scrîf un comant"
 
-#: js/ui/runDialog.js:104 js/ui/windowMenu.js:166
+#: js/ui/runDialog.js:105 js/ui/windowMenu.js:166
 msgid "Close"
 msgstr "Siere"
 
 # torne invie o torne tache
-#: js/ui/runDialog.js:266
+#: js/ui/runDialog.js:267
 msgid "Restart is not available on Wayland"
 msgstr "Il tornâ a tacâ nol è disponibil in Wayland"
 
-#: js/ui/runDialog.js:271
+#: js/ui/runDialog.js:272
 msgid "Restarting…"
 msgstr "Daûr a tornâ a inviâ…"
 
@@ -1582,16 +1591,16 @@ msgstr "Impussibil blocâ"
 msgid "Lock was blocked by an application"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
-#: js/ui/search.js:635
+#: js/ui/search.js:638
 msgid "Searching…"
 msgstr "Daûr a cirî…"
 
-#: js/ui/search.js:637
+#: js/ui/search.js:640
 msgid "No results."
 msgstr "Nissun risultât."
 
 # o ancjemò %d
-#: js/ui/search.js:761
+#: js/ui/search.js:764
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1614,13 +1623,60 @@ msgstr "Mostre Test"
 msgid "Hide Text"
 msgstr "Plate Test"
 
-#: js/ui/shellMountOperation.js:296
+#: js/ui/shellMountOperation.js:318
+msgid "Hidden Volume"
+msgstr "Volum platât"
+
+#: js/ui/shellMountOperation.js:321
+msgid "Windows System Volume"
+msgstr "Volum di sisteme Windows"
+
+#: js/ui/shellMountOperation.js:324
+msgid "Uses Keyfiles"
+msgstr "Al dopre i File-clâf"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:330
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+"Par sblocâ un volum che al dopre i file-clâf dopre invezit il program di "
+"utilitât <i>%s</i>."
+
+#: js/ui/shellMountOperation.js:337
+msgid "PIM Number"
+msgstr "Numar PIM"
+
+#: js/ui/shellMountOperation.js:355
+msgid "The PIM must be a number or empty."
+msgstr "Il PIM al scugne jessi un numar o vueit."
+
+#: js/ui/shellMountOperation.js:366
 msgid "Password"
 msgstr "Password"
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:396
 msgid "Remember Password"
 msgstr "Visâsi Password"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:418
+#, javascript-format
+msgid "Open %s"
+msgstr "Vierç %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:490
+#, javascript-format
+msgid "Unable to start %s"
+msgstr "Impussibil inviâ %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:492
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr "Impussibil cjatâ la aplicazion %s"
 
 #: js/ui/status/accessibility.js:35
 msgid "Accessibility"
@@ -1658,11 +1714,11 @@ msgstr "Tascj che si sbalcin"
 msgid "Mouse Keys"
 msgstr "Mouse di tastiere"
 
-#: js/ui/status/accessibility.js:151
+#: js/ui/status/accessibility.js:135
 msgid "High Contrast"
 msgstr "Contrast elevât"
 
-#: js/ui/status/accessibility.js:182
+#: js/ui/status/accessibility.js:177
 msgid "Large Text"
 msgstr "Test Larc"
 
@@ -1670,7 +1726,7 @@ msgstr "Test Larc"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:47 js/ui/status/network.js:585
+#: js/ui/status/bluetooth.js:47 js/ui/status/network.js:586
 msgid "Bluetooth Settings"
 msgstr "Impostazions Bluetooth"
 
@@ -1694,11 +1750,31 @@ msgstr "Impiât"
 msgid "Brightness"
 msgstr "Luminositât"
 
-#: js/ui/status/keyboard.js:812
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr "Clic singul"
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr "Dopli clic"
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr "Strissinâ"
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr "Clic secondari"
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr "Clic in polse"
+
+#: js/ui/status/keyboard.js:813
 msgid "Keyboard"
 msgstr "Tastiere"
 
-#: js/ui/status/keyboard.js:834
+#: js/ui/status/keyboard.js:835
 msgid "Show Keyboard Layout"
 msgstr "Mostre la disposizion de tastiere"
 
@@ -1727,12 +1803,12 @@ msgid "Enable"
 msgstr "Abilite"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:353
+#: js/ui/status/location.js:355
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Permeti a %s di cognossi la tô posizion?"
 
-#: js/ui/status/location.js:354
+#: js/ui/status/location.js:356
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "L'acès ae posizion al pues jessi cambiât cuant che tu vuelis su impostazions "
@@ -1743,13 +1819,13 @@ msgid "<unknown>"
 msgstr "<no cognossût>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:416 js/ui/status/network.js:1292
+#: js/ui/status/network.js:417 js/ui/status/network.js:1298
 #, javascript-format
 msgid "%s Off"
 msgstr "%s distudât"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:419
+#: js/ui/status/network.js:420
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s tacât"
@@ -1757,189 +1833,189 @@ msgstr "%s tacât"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:424
+#: js/ui/status/network.js:425
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s no ministrât"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:427
+#: js/ui/status/network.js:428
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s daûr a disconeti"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:434 js/ui/status/network.js:1284
+#: js/ui/status/network.js:435 js/ui/status/network.js:1290
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s in conession"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:437
+#: js/ui/status/network.js:438
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s al à dibisugne di autenticazion"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:445
+#: js/ui/status/network.js:446
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Al mancje il firmware par %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:450
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s no disponibil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452
+#: js/ui/status/network.js:453
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Conession falide su %s"
 
-#: js/ui/status/network.js:464
+#: js/ui/status/network.js:465
 msgid "Wired Settings"
 msgstr "Impostazions rêt vie fîl"
 
-#: js/ui/status/network.js:506
+#: js/ui/status/network.js:507
 msgid "Mobile Broadband Settings"
 msgstr "Impostazions bande largje mobil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:553 js/ui/status/network.js:1289
+#: js/ui/status/network.js:554 js/ui/status/network.js:1295
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "%s disabilitât vie hardware "
+msgstr "%s disabilitât vie hardware"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:557
+#: js/ui/status/network.js:558
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s disabilitât"
 
-#: js/ui/status/network.js:597
+#: js/ui/status/network.js:598
 msgid "Connect to Internet"
 msgstr "Conet a internet"
 
-#: js/ui/status/network.js:786
+#: js/ui/status/network.js:792
 msgid "Airplane Mode is On"
 msgstr "Modalitât avion piade"
 
-#: js/ui/status/network.js:787
+#: js/ui/status/network.js:793
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Il Wi-Fi al è disabilitât cuant che la modalitât avion e je impiade."
 
-#: js/ui/status/network.js:788
+#: js/ui/status/network.js:794
 msgid "Turn Off Airplane Mode"
 msgstr "Distude modalitât avion"
 
-#: js/ui/status/network.js:797
+#: js/ui/status/network.js:803
 msgid "Wi-Fi is Off"
 msgstr "Il Wi-Fi al è distudât"
 
-#: js/ui/status/network.js:798
+#: js/ui/status/network.js:804
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Il Wi-Fi al scugne jessi impiât par podêsi tacâ a une rêt."
 
-#: js/ui/status/network.js:799
+#: js/ui/status/network.js:805
 msgid "Turn On Wi-Fi"
 msgstr "Impie il Wi-Fi"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:830
 msgid "Wi-Fi Networks"
 msgstr "Rêts Wi-Fi"
 
-#: js/ui/status/network.js:826
+#: js/ui/status/network.js:832
 msgid "Select a network"
 msgstr "Selezione une rêt"
 
-#: js/ui/status/network.js:855
+#: js/ui/status/network.js:861
 msgid "No Networks"
 msgstr "Nissune rêt"
 
-#: js/ui/status/network.js:876 js/ui/status/rfkill.js:104
+#: js/ui/status/network.js:882 js/ui/status/rfkill.js:104
 msgid "Use hardware switch to turn off"
 msgstr "Dopre interutôr fisic par distudâ"
 
-#: js/ui/status/network.js:1152
+#: js/ui/status/network.js:1158
 msgid "Select Network"
 msgstr "Selezione rêt"
 
-#: js/ui/status/network.js:1158
+#: js/ui/status/network.js:1164
 msgid "Wi-Fi Settings"
 msgstr "Impostazions Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1280
+#: js/ui/status/network.js:1286
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s atîf"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1295
+#: js/ui/status/network.js:1301
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s distacât"
 
-#: js/ui/status/network.js:1392
+#: js/ui/status/network.js:1398
 msgid "connecting…"
 msgstr "daûr a coneti…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1395
+#: js/ui/status/network.js:1401
 msgid "authentication required"
 msgstr "autenticazion necessarie"
 
-#: js/ui/status/network.js:1397
+#: js/ui/status/network.js:1403
 msgid "connection failed"
 msgstr "conession falide"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1453
 msgid "VPN Settings"
 msgstr "Impostazions VPN"
 
-#: js/ui/status/network.js:1464
+#: js/ui/status/network.js:1470
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1474
+#: js/ui/status/network.js:1480
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1535 js/ui/status/rfkill.js:82
+#: js/ui/status/network.js:1541 js/ui/status/rfkill.js:82
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1564
+#: js/ui/status/network.js:1570
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conession cablade"
 msgstr[1] "%s conessions cabladis"
 
-#: js/ui/status/network.js:1568
+#: js/ui/status/network.js:1574
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conession cence fîi"
 msgstr[1] "%s conessions cence fîi"
 
-#: js/ui/status/network.js:1572
+#: js/ui/status/network.js:1578
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conession modem"
 msgstr[1] "%s conessions modem"
 
-#: js/ui/status/network.js:1705
+#: js/ui/status/network.js:1711
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1706
+#: js/ui/status/network.js:1712
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -2122,22 +2198,22 @@ msgstr "Cîr"
 msgid "“%s” is ready"
 msgstr "“%s” al è pront"
 
-#: js/ui/windowManager.js:53
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Vûstu tignî chestis impostazions di visôr?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:65
+#: js/ui/windowManager.js:66
 msgid "Revert Settings"
 msgstr "Ripristine impostazions"
 
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:69
 msgid "Keep Changes"
 msgstr "Ten lis modifichis"
 
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:87
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2148,7 +2224,7 @@ msgstr[1] ""
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:677
+#: js/ui/windowManager.js:678
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2247,11 +2323,11 @@ msgstr "No cognossût"
 msgid "Failed to launch “%s”"
 msgstr "No soi rivât a eseguî '%s'"
 
-#: src/shell-keyring-prompt.c:730
+#: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
 msgstr "Lis password no corispuindin."
 
-#: src/shell-keyring-prompt.c:738
+#: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
 msgstr "La password no pues jessi vueide"
 
