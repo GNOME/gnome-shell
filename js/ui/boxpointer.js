@@ -234,13 +234,10 @@ var BoxPointer = GObject.registerClass({
         this.set_allocation(box, flags);
 
         let themeNode = this.get_theme_node();
-        box = themeNode.get_content_box(box);
-
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let rise = themeNode.get_length('-arrow-rise');
         let childBox = new Clutter.ActorBox();
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
+        let [availWidth, availHeight] = themeNode.get_content_box(box).get_size();
 
         childBox.x1 = 0;
         childBox.y1 = 0;
@@ -269,8 +266,9 @@ var BoxPointer = GObject.registerClass({
         this.bin.allocate(childBox, flags);
 
         if (this._sourceActor && this._sourceActor.mapped) {
-            this._reposition();
-            this._updateFlip();
+            this._reposition(box);
+            this._updateFlip(box);
+            this.set_allocation(box, flags);
         }
     }
 
@@ -494,7 +492,7 @@ var BoxPointer = GObject.registerClass({
         this.setPosition(this._sourceActor, this._arrowAlignment);
     }
 
-    _reposition() {
+    _reposition(allocationBox) {
         let sourceActor = this._sourceActor;
         let alignment = this._arrowAlignment;
         let monitorIndex = Main.layoutManager.findIndexForActor(sourceActor);
@@ -607,9 +605,14 @@ var BoxPointer = GObject.registerClass({
             parent = parent.get_parent();
         }
 
+        x = Math.floor(x);
+        y = Math.floor(y);
+
         // Actually set the position
-        this.x = Math.floor(x);
-        this.y = Math.floor(y);
+        if (!allocationBox)
+            this.set_position(x, y);
+        else
+            allocationBox.set_origin(x, y);
     }
 
     // @origin: Coordinate specifying middle of the arrow, along
@@ -663,11 +666,11 @@ var BoxPointer = GObject.registerClass({
         return arrowSide;
     }
 
-    _updateFlip() {
+    _updateFlip(allocationBox) {
         let arrowSide = this._calculateArrowSide(this._userArrowSide);
         if (this._arrowSide != arrowSide) {
             this._arrowSide = arrowSide;
-            this._reposition();
+            this._reposition(allocationBox);
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this.queue_relayout();
                 return false;
