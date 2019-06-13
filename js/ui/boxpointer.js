@@ -48,6 +48,15 @@ var BoxPointer = GObject.registerClass({
         this._sourceAlignment = 0.5;
         this._capturedEventId = 0;
         this._muteInput();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._sourceActorDestroyId) {
+            this._sourceActor.disconnect(this._sourceActorDestroyId);
+            delete this._sourceActorDestroyId;
+        }
     }
 
     get arrowSide() {
@@ -452,8 +461,25 @@ var BoxPointer = GObject.registerClass({
         // so that we can query the correct size.
         this.show();
 
-        this._sourceActor = sourceActor;
+        if (sourceActor != this._sourceActor) {
+            if (this._sourceActorDestroyId) {
+                this._sourceActor.disconnect(this._sourceActorDestroyId);
+                delete this._sourceActorDestroyId;
+            }
+
+            this._sourceActor = sourceActor;
+
+            if (this._sourceActor) {
+                this._sourceActorDestroyId = this._sourceActor.connect('destroy', () => {
+                    this._sourceActor = null;
+                    delete this._sourceActorDestroyId;
+                })
+            }
+        }
         this._arrowAlignment = alignment;
+
+        if (!this._sourceActor)
+            return;
 
         this._reposition();
         this._updateFlip();
