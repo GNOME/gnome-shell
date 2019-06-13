@@ -671,10 +671,6 @@ var BoxPointer = GObject.registerClass({
         if (this._arrowSide != arrowSide) {
             this._arrowSide = arrowSide;
             this._reposition(allocationBox);
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this.queue_relayout();
-                return false;
-            });
 
             this.emit('arrow-side-changed');
         }
