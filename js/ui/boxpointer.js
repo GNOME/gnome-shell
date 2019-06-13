@@ -61,6 +61,15 @@ var BoxPointer = new Lang.Class({
         this._sourceAlignment = 0.5;
         this._capturedEventId = 0;
         this._muteInput();
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    },
+
+    _onDestroy() {
+        if (this._sourceActorDestroyId) {
+            this._sourceActor.disconnect(this._sourceActorDestroyId);
+            delete this._sourceActorDestroyId;
+        }
     },
 
     get arrowSide() {
@@ -424,8 +433,25 @@ var BoxPointer = new Lang.Class({
         // so that we can query the correct size.
         this.actor.show();
 
-        this._sourceActor = sourceActor;
+        if (!this._sourceActor || sourceActor != this._sourceActor) {
+            if (this._sourceActorDestroyId) {
+                this._sourceActor.disconnect(this._sourceActorDestroyId);
+                delete this._sourceActorDestroyId;
+            }
+
+            this._sourceActor = sourceActor;
+
+            if (this._sourceActor) {
+                this._sourceActorDestroyId = this._sourceActor.connect('destroy', () => {
+                    this._sourceActor = null;
+                    delete this._sourceActorDestroyId;
+                })
+            }
+        }
         this._arrowAlignment = alignment;
+
+        if (!this._sourceActor)
+            return;
 
         this._reposition();
         this._updateFlip();
