@@ -19,7 +19,7 @@ cogl_pango_pc = 'mutter-cogl-pango-' + mutter_api_version
 libmutter_pc = 'libmutter-' + mutter_api_version
 
 croco_req = '>= 0.6.8'
-ecal_req = '>= 3.33.1'
+ecal_req = '>= 3.5.3'
 eds_req = '>= 3.17.2'
 gcr_req = '>= 3.7.5'
 gio_req = '>= 2.56.0'
@@ -76,7 +76,7 @@ else
 endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
-ecal_dep = dependency('libecal-2.0', version: ecal_req)
+ecal_dep = dependency('libecal-1.2', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-base-3', version: gcr_req)
 gdk_x11_dep = dependency('gdk-x11-3.0')
