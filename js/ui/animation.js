@@ -55,6 +55,11 @@ var Animation = class {
     _loadFile(file, width, height) {
         let [validResourceScale, resourceScale] = this.actor.get_resource_scale();
 
+        if (this._isPlaying) {
+            this.stop();
+            this._isPlaying = true;
+        }
+
         this._isLoaded = false;
         this.actor.destroy_all_children();
 
