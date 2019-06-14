@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-05-29 20:40+0000\n"
-"PO-Revision-Date: 2019-05-31 10:51+0700\n"
+"POT-Creation-Date: 2019-06-06 11:42+0000\n"
+"PO-Revision-Date: 2019-06-14 17:35+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural= n!=1;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -1529,7 +1529,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:861
+#: js/ui/panel.js:862
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1749,6 +1749,26 @@ msgstr "Hidup"
 #: js/ui/status/brightness.js:36
 msgid "Brightness"
 msgstr "Kecerahan"
+
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr "Klik Tunggal"
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr "Klik Ganda"
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr "Seret"
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr "Klik Sekunder"
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr "Klik Menetap"
 
 #: js/ui/status/keyboard.js:813
 msgid "Keyboard"
