@@ -14,7 +14,6 @@ var Animation = class {
         this.actor = new St.Bin();
         this.actor.set_size(width, height);
         this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('notify::size', this._syncAnimationSize.bind(this));
         this.actor.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
 
