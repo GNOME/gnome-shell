@@ -55,6 +55,11 @@ class Animation extends St.Bin {
     _loadFile(file, width, height) {
         let [validResourceScale, resourceScale] = this.get_resource_scale();
 
+        if (this._isPlaying) {
+            this.stop();
+            this._isPlaying = true;
+        }
+
         this._isLoaded = false;
         this.destroy_all_children();
 
