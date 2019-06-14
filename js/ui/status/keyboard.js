@@ -810,7 +810,7 @@ class InputSourceIndicatorContainer extends St.Widget {
 var InputSourceIndicator = GObject.registerClass(
 class InputSourceIndicator extends PanelMenu.Button {
     _init() {
-        super._init(0.0, _("Keyboard"));
+        super._init(0.5, _("Keyboard"));
 
         this.connect('destroy', this._onDestroy.bind(this));
 

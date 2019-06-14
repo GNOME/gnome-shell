@@ -66,7 +66,7 @@ function _unpremultiply(color) {
 
 class AppMenu extends PopupMenu.PopupMenu {
     constructor(sourceActor) {
-        super(sourceActor, 0.0, St.Side.TOP);
+        super(sourceActor, 0.5, St.Side.TOP);
 
         this.actor.add_style_class_name('app-menu');
 

@@ -32,7 +32,7 @@ const HIGH_CONTRAST_THEME           = 'HighContrast';
 var ATIndicator = GObject.registerClass(
 class ATIndicator extends PanelMenu.Button {
     _init() {
-        super._init(0.0, _("Accessibility"));
+        super._init(0.5, _("Accessibility"));
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(new St.Icon({ style_class: 'system-status-icon',
