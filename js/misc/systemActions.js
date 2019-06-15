@@ -174,13 +174,21 @@ const SystemActions = GObject.registerClass({
                                           });
         Main.layoutManager.connect('monitors-changed',
                                    () => this._updateOrientationLock());
-        Gio.DBus.system.watch_name(SENSOR_BUS_NAME,
-                                   Gio.BusNameWatcherFlags.NONE,
-                                   () => this._sensorProxyAppeared(),
-                                   () => {
-                                       this._sensorProxy = null;
-                                       this._updateOrientationLock();
-                                   });
+        this._sensorProxy = new SensorProxy(Gio.DBus.system,
+            SENSOR_BUS_NAME,
+            SENSOR_OBJECT_PATH,
+            (proxy, error)  => {
+                if (error)
+                    log(error.message);
+            },
+            null,
+            Gio.DBusProxyFlags.DO_NOT_AUTO_START);
+        this._sensorProxy.connect('g-properties-changed', () => {
+            this._updateOrientationLock();
+        });
+        this._sensorProxy.connect('notify::g-name-owner', () => {
+            this._updateOrientationLock();
+        });
         this._updateOrientationLock();
         this._updateOrientationLockIcon();
 
@@ -223,22 +231,9 @@ const SystemActions = GObject.registerClass({
         return this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName;
     }
 
-    _sensorProxyAppeared() {
-        this._sensorProxy = new SensorProxy(Gio.DBus.system, SENSOR_BUS_NAME, SENSOR_OBJECT_PATH,
-            (proxy, error)  => {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._sensorProxy.connect('g-properties-changed',
-                                          () => this._updateOrientationLock());
-                this._updateOrientationLock();
-            });
-    }
-
     _updateOrientationLock() {
         let available = false;
-        if (this._sensorProxy)
+        if (this._sensorProxy.g_name_owner)
             available = this._sensorProxy.HasAccelerometer &&
                         this._monitorManager.get_is_builtin_display_on();
 
