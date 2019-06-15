@@ -1114,7 +1114,7 @@ _shell_app_remove_window (ShellApp   *app,
  * shell_app_get_pids:
  * @app: a #ShellApp
  *
- * Returns: (transfer container) (element-type int): An unordered list of process identifers associated with this application.
+ * Returns: (transfer container) (element-type int): An unordered list of process identifiers associated with this application.
  */
 GSList *
 shell_app_get_pids (ShellApp *app)
