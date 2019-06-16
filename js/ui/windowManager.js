@@ -591,61 +591,73 @@ var WorkspaceSwitchAction = GObject.registerClass({
     }
 });
 
-var AppSwitchAction = GObject.registerClass({
-    Signals: { 'activated': {} },
-}, class AppSwitchAction extends Clutter.GestureAction {
+var AppSwitchAction = GObject.registerClass(
+class AppSwitchAction extends Clutter.GestureAction {
     _init() {
         super._init();
         this.set_n_touch_points(3);
+        this.set_exact_n_required(false);
     }
 
-    vfunc_gesture_prepare(actor, point) {
-        if (Main.actionMode != Shell.ActionMode.NORMAL) {
-            this.cancel();
-            return false;
-        }
+    _switchWindow() {
+        this._curWindow++;
+        if (this._curWindow == this._windows.length)
+            this._curWindow = 0;
 
-        return this.get_n_current_points() <= 4;
+        Main.activateWindow(this._windows[this._curWindow]);
     }
 
     vfunc_gesture_begin(actor, point) {
-        // in milliseconds
-        const LONG_PRESS_TIMEOUT = 250;
+        const START_TIMEOUT = 250;
 
-        let nPoints = this.get_n_current_points();
-        let event = this.get_last_event (nPoints - 1);
+        if (Main.actionMode != Shell.ActionMode.NORMAL)
+            return false;
 
-        if (nPoints == 3)
-            this._longPressStartTime = event.get_time();
-        else if (nPoints == 4) {
-            // Check whether the 4th finger press happens after a 3-finger long press,
-            // this only needs to be checked on the first 4th finger press
-            if (this._longPressStartTime != null &&
-                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT) {
-                this.cancel();
-            } else {
-                this._longPressStartTime = null;
-                this.emit('activated');
-            }
-        }
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        this._windows = AltTab.getWindows(activeWorkspace);
+        if (this._windows.length < 2)
+            return false;
 
-        return this.get_n_current_points() <= 4;
+        this._curWindow = 0;
+        this._startTimeoutDone = false;
+
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, START_TIMEOUT, () => {
+            this._startTimeoutDone = true;
+            return GLib.SOURCE_REMOVE;
+        });
+
+        return true;
     }
 
     vfunc_gesture_progress(actor, point) {
         const MOTION_THRESHOLD = 30;
 
-        if (this.get_n_current_points() == 3) {
-            for (let i = 0; i < this.get_n_current_points(); i++) {
-                let [startX, startY] = this.get_press_coords(i);
-                let [x, y] = this.get_motion_coords(i);
+        let [startX, startY] = this.get_press_coords(point);
+        let [x, y] = this.get_motion_coords(point);
 
-                if (Math.abs(x - startX) > MOTION_THRESHOLD ||
-                    Math.abs(y - startY) > MOTION_THRESHOLD)
-                    this.cancel();
-            }
+        if (Math.abs(x - startX) > MOTION_THRESHOLD ||
+            Math.abs(y - startY) > MOTION_THRESHOLD)
+            this.cancel();
+    }
 
+    vfunc_touch_added(actor, point) {
+        if (!this._startTimeoutDone) {
+            this.cancel();
+            return true;
         }
+
+        if (this.get_n_current_points() == 4)
+            this._switchWindow();
+        else
+            this.cancel();
+
+        return true;
+    }
+
+    vfunc_touch_removed(actor, point) {
+        if (this.get_n_current_points() < 3)
+            this.cancel();
     }
 });
 
@@ -1061,7 +1073,6 @@ var WindowManager = class {
         touchpadSwitchAction.connect('cancel', this._switchWorkspaceCancel.bind(this));
 
         let appSwitchAction = new AppSwitchAction();
-        appSwitchAction.connect('activated', this._switchApp.bind(this));
         global.stage.add_action(appSwitchAction);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
@@ -1146,44 +1157,6 @@ var WindowManager = class {
             this._switchData.gestureActivated = true;
             this.actionMoveWorkspace(newWs);
         }
-    }
-
-    _lookupIndex(windows, metaWindow) {
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].metaWindow == metaWindow) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    _switchApp() {
-        let windows = global.get_window_actors().filter(actor => {
-            let win = actor.metaWindow;
-            let workspaceManager = global.workspace_manager;
-            let activeWorkspace = workspaceManager.get_active_workspace();
-            return (!win.is_override_redirect() &&
-                    win.located_on_workspace(activeWorkspace));
-        });
-
-        if (windows.length == 0)
-            return;
-
-        let focusWindow = global.display.focus_window;
-        let nextWindow;
-
-        if (focusWindow == null) {
-            nextWindow = windows[0].metaWindow;
-        } else {
-            let index = this._lookupIndex (windows, focusWindow) + 1;
-
-            if (index >= windows.length)
-                index = 0;
-
-            nextWindow = windows[index].metaWindow;
-        }
-
-        Main.activateWindow(nextWindow);
     }
 
     insertWorkspace(pos) {
