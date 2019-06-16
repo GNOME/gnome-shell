@@ -16,8 +16,6 @@ var EdgeDragAction = GObject.registerClass({
         this._side = side;
         this._allowedModes = allowedModes;
         this.set_n_touch_points(1);
-
-        global.display.connect('grab-op-begin', () => this.cancel());
     }
 
     _getMonitorRect(x, y) {
@@ -27,7 +25,7 @@ var EdgeDragAction = GObject.registerClass({
         return global.display.get_monitor_geometry(monitorIndex);
     }
 
-    vfunc_gesture_prepare(_actor) {
+    vfunc_gesture_prepare(_actor, _point) {
         if (this.get_n_current_points() == 0)
             return false;
 
@@ -43,27 +41,23 @@ var EdgeDragAction = GObject.registerClass({
                 (this._side == St.Side.BOTTOM && y > monitorRect.y + monitorRect.height - EDGE_THRESHOLD));
     }
 
-    vfunc_gesture_progress(_actor) {
+    vfunc_gesture_progress(_actor, _point) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let offsetX = Math.abs (x - startX);
         let offsetY = Math.abs (y - startY);
 
         if (offsetX < EDGE_THRESHOLD && offsetY < EDGE_THRESHOLD)
-            return true;
+            return;
 
         if ((offsetX > offsetY &&
              (this._side == St.Side.TOP || this._side == St.Side.BOTTOM)) ||
             (offsetY > offsetX &&
-             (this._side == St.Side.LEFT || this._side == St.Side.RIGHT))) {
+             (this._side == St.Side.LEFT || this._side == St.Side.RIGHT)))
             this.cancel();
-            return false;
-        }
-
-        return true;
     }
 
-    vfunc_gesture_end(_actor) {
+    vfunc_gesture_end(_actor, _point) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let monitorRect = this._getMonitorRect(startX, startY);
