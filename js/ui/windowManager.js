@@ -545,26 +545,21 @@ var WorkspaceSwitchAction = GObject.registerClass({
         this.set_n_touch_points(4);
         this._swept = false;
         this._allowedModes = allowedModes;
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
     }
 
-    vfunc_gesture_prepare(actor) {
+    vfunc_gesture_begin(actor, point) {
         this._swept = false;
 
-        if (!super.vfunc_gesture_prepare(actor))
+        if (!super.vfunc_gesture_begin(actor, point))
             return false;
 
         return (this._allowedModes & Main.actionMode);
     }
 
-    vfunc_gesture_progress(_actor) {
+    vfunc_gesture_progress(_actor, _point) {
         let [x, y] = this.get_motion_coords(0);
         let [xPress, yPress] = this.get_press_coords(0);
         this.emit('motion', x - xPress, y - yPress);
-        return true;
     }
 
     vfunc_gesture_cancel(_actor) {
@@ -603,13 +598,9 @@ var AppSwitchAction = GObject.registerClass({
     _init() {
         super._init();
         this.set_n_touch_points(3);
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
     }
 
-    vfunc_gesture_prepare(_actor) {
+    vfunc_gesture_prepare(_actor, _point) {
         if (Main.actionMode != Shell.ActionMode.NORMAL) {
             this.cancel();
             return false;
@@ -618,7 +609,7 @@ var AppSwitchAction = GObject.registerClass({
         return this.get_n_current_points() <= 4;
     }
 
-    vfunc_gesture_begin(_actor) {
+    vfunc_gesture_begin(_actor, _point) {
         // in milliseconds
         const LONG_PRESS_TIMEOUT = 250;
 
@@ -642,7 +633,7 @@ var AppSwitchAction = GObject.registerClass({
         return this.get_n_current_points() <= 4;
     }
 
-    vfunc_gesture_progress(_actor) {
+    vfunc_gesture_progress(_actor, _point) {
         const MOTION_THRESHOLD = 30;
 
         if (this.get_n_current_points() == 3) {
@@ -652,12 +643,10 @@ var AppSwitchAction = GObject.registerClass({
 
                 if (Math.abs(x - startX) > MOTION_THRESHOLD ||
                     Math.abs(y - startY) > MOTION_THRESHOLD)
-                    return false;
+                    this.cancel();
             }
 
         }
-
-        return true;
     }
 });
 
