@@ -68,13 +68,9 @@ var ShowOverviewAction = GObject.registerClass({
     _init() {
         super._init();
         this.set_n_touch_points(3);
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
     }
 
-    vfunc_gesture_prepare(actor) {
+    vfunc_gesture_prepare(actor, point) {
         return Main.actionMode == Shell.ActionMode.NORMAL &&
                this.get_n_current_points() == this.get_n_touch_points();
     }
@@ -108,12 +104,12 @@ var ShowOverviewAction = GObject.registerClass({
                                     height: maxY - minY });
     }
 
-    vfunc_gesture_begin(actor) {
+    vfunc_gesture_begin(actor, point) {
         this._initialRect = this._getBoundingRect(false);
         return true;
     }
 
-    vfunc_gesture_end(actor) {
+    vfunc_gesture_end(actor, point) {
         let rect = this._getBoundingRect(true);
         let oldArea = this._initialRect.width * this._initialRect.height;
         let newArea = rect.width * rect.height;
