@@ -473,7 +473,7 @@ var WorkspacesDisplay = class {
         Main.overview.addAction(clickAction);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
-        let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
+        let panAction = new Clutter.PanAction({ trigger_edge: Clutter.TriggerEdge.AFTER });
         panAction.connect('pan', this._onPan.bind(this));
         panAction.connect('gesture-begin', () => {
             if (this._workspacesOnlyOnPrimary) {
