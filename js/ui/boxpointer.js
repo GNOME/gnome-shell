@@ -455,10 +455,6 @@ var BoxPointer = GObject.registerClass({
     }
 
     setPosition(sourceActor, alignment) {
-        // We need to show it now to force an allocation,
-        // so that we can query the correct size.
-        this.show();
-
         if (!this._sourceActor || sourceActor != this._sourceActor) {
             if (this._sourceActorDestroyId) {
                 this._sourceActor.disconnect(this._sourceActorDestroyId);
@@ -474,13 +470,10 @@ var BoxPointer = GObject.registerClass({
                 })
             }
         }
+
         this._arrowAlignment = alignment;
 
-        if (!this._sourceActor)
-            return;
-
-        this._reposition();
-        this._updateFlip();
+        this.queue_relayout();
     }
 
     setSourceAlignment(alignment) {
@@ -605,14 +598,8 @@ var BoxPointer = GObject.registerClass({
             parent = parent.get_parent();
         }
 
-        x = Math.floor(x);
-        y = Math.floor(y);
-
         // Actually set the position
-        if (!allocationBox)
-            this.set_position(x, y);
-        else
-            allocationBox.set_origin(x, y);
+        allocationBox.set_origin(Math.floor(x), Math.floor(y));
     }
 
     // @origin: Coordinate specifying middle of the arrow, along
