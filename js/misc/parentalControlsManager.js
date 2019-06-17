@@ -60,7 +60,7 @@ var ParentalControlsManager = class {
 
         log('Getting parental controls for user ' + Shell.util_get_uid ());
         let connection = Gio.bus_get_sync(Gio.BusType.SYSTEM);
-        this._manager = Malcontent.Manager(connection);
+        this._manager = new Malcontent.Manager({connection: connection});
         manager.get_app_filter_async(Shell.util_get_uid (), false,
                                      null, this._onGetAppFilter.bind(this));
     }
