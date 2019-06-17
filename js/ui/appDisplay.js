@@ -632,9 +632,9 @@ var AllView = class AllView extends BaseAppView {
             this._scrollView.get_effect('fade').fade_edges = true;
 
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
-            this._adjustment.value = 0;
-            this._grid.currentPage = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this._adjustment.value = 0;
+                this._grid.currentPage = 0;
                 this._pageIndicators.setNPages(this._grid.nPages());
                 this._pageIndicators.setCurrentPage(0);
             });
