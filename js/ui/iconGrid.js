@@ -322,6 +322,7 @@ var IconGrid = GObject.registerClass({
                 leftEmptySpace = availWidth - usedWidth;
         }
 
+        let animating = this._clonesAnimating.length > 0;
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
@@ -333,7 +334,8 @@ var IconGrid = GObject.registerClass({
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
                 children[i].opacity = 0;
             } else {
-                children[i].opacity = 255;
+                if (!animating)
+                    children[i].opacity = 255;
                 children[i].allocate(childBox, flags);
             }
 
