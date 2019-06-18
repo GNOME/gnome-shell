@@ -282,7 +282,7 @@ var Key = class Key {
                                                        y_fill: true,
                                                        x_align: St.Align.START });
         this._boxPointer.hide();
-        Main.layoutManager.addChrome(this._boxPointer);
+        Main.layoutManager.addTopChrome(this._boxPointer);
         this._boxPointer.setPosition(this.keyButton, 0.5);
 
         // Adds style to existing keyboard style to avoid repetition
@@ -1306,7 +1306,7 @@ var Keyboard = class Keyboard {
             this._languagePopup.destroy();
 
         this._languagePopup = new LanguageSelectionPopup(keyActor);
-        Main.layoutManager.addChrome(this._languagePopup.actor);
+        Main.layoutManager.addTopChrome(this._languagePopup.actor);
         this._languagePopup.open(true);
     }
 
