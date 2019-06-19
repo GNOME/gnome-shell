@@ -1,5 +1,41 @@
 // Drawing mixins
 
+// text styles
+
+@mixin large-title() {
+   font-weight: 300;
+   font-size: 24pt;
+//   letter-spacing: 0.2rem;  This breaks the style 
+}
+@mixin title-1() {
+   font-weight: 800;
+   font-size: 20pt;
+}
+@mixin title-2() {
+   font-weight: 800;
+   font-size: 15pt;
+} 
+@mixin title-3() {
+   font-weight: 700;
+   font-size: 15pt;
+}
+@mixin title-4() {
+   font-weight: 700;
+   font-size: 13pt;
+}
+@mixin heading() {
+   font-weight: 700;
+   font-size: 11pt;
+}
+@mixin caption-heading() {
+   font-weight: 700;
+   font-size: 9pt;
+}
+@mixin caption() {
+   font-weight: 400;
+   font-size: 9pt;
+}
+
 // generic drawing of more complex things
 
 @function _widget_edge($c:$borders_edge) {
