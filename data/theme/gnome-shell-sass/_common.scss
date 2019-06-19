@@ -187,7 +187,7 @@ StScrollBar {
 
 /* Modal Dialogs */
 
-.headline { font-size: 110%; }
+.headline { @extend %heading; }
 .lightbox { background-color: black; }
 .flashspot { background-color: white; }
 
@@ -204,8 +204,7 @@ StScrollBar {
   }
   .run-dialog-button-box { padding-top: 1em; }
   .run-dialog-label {
-    @include fontsize($font-size + 1.1);
-    font-weight: normal;
+    @extend %title-4;
     color: $fg_color;
     padding-bottom: .4em;
   }
@@ -213,8 +212,8 @@ StScrollBar {
 }
 
   .mount-dialog-subject,
-  .end-session-dialog-subject { //this should be a generic header class
-    @include fontsize($font-size * 1.3);
+  .end-session-dialog-subject {
+    @extend %title-2;
   }
 
 /* Message Dialog */
@@ -234,12 +233,12 @@ StScrollBar {
   }
 
   .message-dialog-title {
-    font-weight: bold;
+    @extend %title-2;
   }
 
   .message-dialog-subtitle {
+    @extend %heading;
     color: $fg_color;
-    font-weight: bold;
   }
 
 /* End Session Dialog */
@@ -300,7 +299,7 @@ StScrollBar {
   }
 
   .end-session-dialog-list-header {
-    font-weight: bold;
+    @extend %heading;
     &:rtl { text-align: right; }
   }
 
@@ -311,12 +310,11 @@ StScrollBar {
 
   .end-session-dialog-app-list-item-name,
   .end-session-dialog-session-list-item-name {
-    font-weight: bold;
+    @extend %heading;
   }
 
   .end-session-dialog-app-list-item-description {
     color: darken($fg_color,5%);
-    font-size: 10pt;
   }
 
 /* ShellMountOperation Dialogs */
@@ -372,11 +370,6 @@ StScrollBar {
     &:rtl { padding-left: 17px; }
   }
 
-  .mount-dialog-app-list-item-name {
-    font-size: 10pt;
-  }
-
-
 /* Password or Authentication Dialog */
 
 .prompt-dialog {
@@ -386,7 +379,7 @@ StScrollBar {
 
   .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-content { spacing: 16px; }
-  .message-dialog-title { color: lighten($fg_color,15%); }
+  .message-dialog-title { @extend %title-2; color: lighten($fg_color,15%); }
 }
 
   .prompt-dialog-description:rtl {
@@ -399,13 +392,11 @@ StScrollBar {
   }
 
   .prompt-dialog-error-label {
-    font-size: 10pt;
     color: $warning_color;
     padding-bottom: 8px;
   }
 
   .prompt-dialog-info-label {
-    font-size: 10pt;
     padding-bottom: 8px;
   }
 
@@ -414,7 +405,6 @@ StScrollBar {
   }
 
   .prompt-dialog-null-label {
-    font-size: 10pt;
     padding-bottom: 8px;
   }
 
@@ -470,7 +460,7 @@ StScrollBar {
   }
 
   .audio-selection-title {
-    font-weight: bold;
+    @extend %title-2;
     text-align: center;
   }
 
@@ -513,7 +503,7 @@ StScrollBar {
 .extension-dialog {
   @extend %bubble-panel;
   .message-dialog-main-layout { spacing: 24px; padding: 10px; }
-  .message-dialog-title { font-weight: normal; color: $fg_color; }
+  .message-dialog-title { @extend %title-2; }
 }
 
 /* Inhibit-Shortcuts Dialog */
@@ -554,9 +544,9 @@ StScrollBar {
     &:ltr { padding: .4em 1.75em .4em 0em; }
     &:rtl { padding: .4em 0em .4em 1.75em; }
     &:checked {
+      @extend %heading;
       background-color: $bg_color;
       box-shadow: inset 0 -1px 0px $_bubble_borders_color;
-      font-weight: bold;
     }
     &.selected {
       background-color: transparentize(white, if($variant=='light', 0.2, 0.9));
@@ -627,7 +617,7 @@ StScrollBar {
   min-width: 64px;
   min-height: 64px;
 
-  .osd-monitor-label { font-size: 3em; }
+  .osd-monitor-label { @extend %title-1; }
   .level {
     height: 0.6em;
     -barlevel-height: 0.6em;
@@ -800,8 +790,8 @@ StScrollBar {
 /* TOP BAR */
 
 #panel {
+  @extend %heading;
   background-color: black;
-  font-weight: bold;
   height: 1.86em;
   font-feature-settings: "tnum";
 
@@ -833,9 +823,9 @@ StScrollBar {
   }
 
   .panel-button {
+    @extend %heading;
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
-    font-weight: bold;
     color: #ccc;
 
     .app-menu-icon {
@@ -932,28 +922,28 @@ StScrollBar {
     }
 
     .datemenu-today-button .day-label {
+      @extend %heading;
     }
 
     .datemenu-today-button .date-label {
-      font-size: 1.5em;
-      font-weight: 300;
+      @extend %large-title;
     }
 
     .world-clocks-header,
     .weather-header,
-    .events-section-title {
+    .events-section-title,
+    .calendar-month-label {
+      @extend %heading;
       color: darken($fg_color,40%);
-      font-weight: bold;
     }
 
     .weather-header.location {
-      font-weight: normal;
-      font-size: 0.9em;
+      @extend %caption;
     }
 
     .world-clocks-grid,
     .weather-grid {
-      spacing-rows: 0.4em;
+      spacing-rows: 0.8em;
       spacing-columns: 0.8em;
     }
 
@@ -961,35 +951,26 @@ StScrollBar {
       spacing: 0.4em;
     }
 
-    .world-clocks-city {
-      font-weight: bold;
-      font-size: 0.9em;
-    }
-
     .world-clocks-time {
-      color: darken($fg_color,20%);
-      font-feature-settings: "tnum";
-      font-size: 1.2em;
+        font-feature-settings: "tnum";
     }
 
     .world-clocks-timezone {
-      color: $fg_color;
+      color: darken($fg_color,40%);
       font-feature-settings: "tnum";
-      font-size: 0.9em;
+      @extend %caption;
     }
 
     .weather-forecast-icon {
-      icon-size: 2.18em;
+      icon-size: 32px;
     }
 
     .weather-forecast-time {
+      @extend %caption;
       color: darken($fg_color,40%);
-      font-size: 0.8em;
     }
 
     .calendar-month-label {
-      color: lighten($fg_color,5%);
-      font-weight: bold;
       padding: 8px 0;
       &:focus {}
     }
@@ -1007,7 +988,7 @@ StScrollBar {
       }
 
     .calendar-day-base {
-      font-size: 80%;
+      @extend %caption;
       text-align: center;
       width: 2.4em; height: 2.4em;
       padding: 0.1em;
@@ -1021,9 +1002,8 @@ StScrollBar {
         border-color: transparent; //avoid jumparound due to today
       }
       &.calendar-day-heading {  //day of week heading
-        color: lighten($fg_color,5%);
-        margin-top: 1em;
-        font-size: 70%;
+        color: darken($fg_color,40%);
+//        margin-top: 1em;
       }
     }
       .calendar-day { //border collapse hack - see calendar.js
@@ -1038,14 +1018,15 @@ StScrollBar {
         color: $insensitive_fg_color;
       }
       .calendar-today {
-        font-weight: bold;
+        @extend %caption-heading;
         //color: lighten($fg_color,10%);
         //background-color: darken($bg_color,5%);
         border: 1px solid $_bubble_borders_color;
       }
       .calendar-day-with-events {
+        @extend %caption-heading;
         color: lighten($fg_color,10%);
-        font-weight: bold;
+
         background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg");
       }
       .calendar-other-month-day {
@@ -1053,8 +1034,7 @@ StScrollBar {
         opacity: 0.5;
       }
       .calendar-week-number {
-        font-size: 70%;
-        font-weight: bold;
+        @extend %caption-heading;
         width: 2.3em; height: 1.8em;
         border-radius: 2px;
         padding: 0.5em 0 0;
@@ -1111,8 +1091,8 @@ StScrollBar {
           }
 
           .message-secondary-bin > .event-time {
+            @extend %caption;
             color: $fg_color;
-            font-size: 0.7em;
             /* HACK: the label should be baseline-aligned with a 1em label,
                      fake this with some bottom padding */
             padding-bottom: 0.13em;
@@ -1283,17 +1263,16 @@ StScrollBar {
   .nm-dialog-airplane-box { spacing: 12px; }
 
   .nm-dialog-airplane-headline {
-    font-weight: bold;
+    @extend %heading;
     text-align: center;
   }
 
   .nm-dialog-airplane-text { color: $fg_color; }
   .nm-dialog-header-icon { icon-size: 32px; }
   .nm-dialog-scroll-view { border: 2px solid $borders_color; }
-  .nm-dialog-header { font-weight: bold; }
+  .nm-dialog-header { @extend %title-2; }
 
   .nm-dialog-item {
-    font-size: 110%;
     border-bottom: 1px solid $borders_color;
     padding: 12px;
     spacing: 20px;
@@ -1400,7 +1379,7 @@ StScrollBar {
 
   #dash {
     @extend %overview-panel;
-    font-size: 9pt;
+    @extend %caption;
     padding: 4px 0;
     border-radius: 0px 9px 9px 0px;
 
@@ -1615,9 +1594,9 @@ StScrollBar {
   border: none;
 }
 
+// Search status, like "Searching..." and "No results"
 %status_text {
-  font-size: 2em;
-  font-weight: bold;
+  @extend %large-title;
   color: $osd_fg_color;
 }
 
@@ -1626,8 +1605,12 @@ StScrollBar {
   .url-highlighter { link-color: lighten($selected_bg_color,10%); }
 
   // Banners
+  .message-body {
+    @extend %caption;
+    padding-top: 2px;
+  }
+
   .notification-banner {
-    font-size: 11pt;
     width: 34em;
     margin: 5px;
     border-radius: $medium-radius;
@@ -1637,7 +1620,7 @@ StScrollBar {
     &:hover { background: $bg_color; }
     &, &:focus, &:active {
       background-color: $bg_color;
-      .message-title { color: $fg_color }
+      .message-title { color: $fg_color; }
       .message-content { color: $fg_color; }
     }
 
@@ -1680,9 +1663,8 @@ StScrollBar {
     &:rtl { padding-left: 0; padding-right: 18pt; }
   }
   .chat-meta-message {
+    @extend %caption-heading;
     padding-left: 4px;
-    font-size: 9pt;
-    font-weight: bold;
     color: lighten($fg_color,18%);
     &:rtl { padding-left: 0; padding-right: 4px; }
   }
@@ -1968,8 +1950,7 @@ StScrollBar {
     }
   }
   .login-dialog-not-listed-label {
-    font-size: 90%;
-    font-weight: bold;
+    @extend %heading;
     color: darken($osd_fg_color,30%);
     padding-top: 1em;
   }
@@ -1998,8 +1979,7 @@ StScrollBar {
   .login-dialog-username,
   .user-widget-label {
     color: $osd_fg_color;
-    font-size: 120%;
-    font-weight: bold;
+    @extend %title-3;
     text-align: left;
     padding-left: 15px;
   }
@@ -2017,7 +1997,6 @@ StScrollBar {
 
   .login-dialog-prompt-label {
       color: darken($osd_fg_color, 20%);
-      font-size: 110%;
       padding-top: 1em;
   }
 
@@ -2089,7 +2068,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
 
 .screen-shield-notification-label {
-  font-weight: bold;
+  @extend %heading;
   padding: 0px 0px 0px 12px;
 }
 
@@ -2129,9 +2108,9 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   }
   .labels { spacing: 4px; }
   .notebook-tab {
+    @extend %heading;
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
-    font-weight: bold;
     color: #ccc;
     transition-duration: 100ms;
     padding-left: .3em;
@@ -2192,7 +2171,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   }
 
   .lg-extension-name {
-      font-weight: bold;
+      @extend %heading;
   }
 
   .lg-extension-meta {
@@ -2205,3 +2184,39 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
     border-radius: 4px;
     padding: 6px;
   }
+
+// text styles
+
+%large-title {
+  font-weight: 300;
+  font-size: 24pt;
+// letter-spacing: 0.2rem; this breaks the style
+}
+%title-1 {
+  font-weight: 800;
+  font-size: 20pt;
+}
+%title-2 {
+  font-weight: 800;
+  font-size: 15pt;
+}
+%title-3 {
+  font-weight: 700;
+  font-size: 15pt;
+}
+%title-4 {
+  font-weight: 700;
+  font-size: 13pt;
+}
+%heading {
+  font-weight: 700;
+  font-size: 11pt;
+}
+%caption-heading {
+  font-weight: 700;
+  font-size: 9pt;
+}
+%caption {
+  font-weight: 400;
+  font-size: 9pt;
+}
