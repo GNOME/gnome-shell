@@ -72,7 +72,7 @@ create_corner_material (StCornerSpec *corner)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-  CoglError *error = NULL;
+  GError *error = NULL;
   CoglTexture *texture;
   cairo_t *cr;
   cairo_surface_t *surface;
@@ -184,7 +184,7 @@ create_corner_material (StCornerSpec *corner)
   if (error)
     {
       g_warning ("Failed to allocate texture: %s", error->message);
-      cogl_error_free (error);
+      g_error_free (error);
     }
 
   g_free (data);
@@ -1007,7 +1007,7 @@ st_theme_node_prerender_background (StThemeNode *node,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-  CoglError *error = NULL;
+  GError *error = NULL;
   StBorderImage *border_image;
   CoglTexture *texture;
   guint radius[4];
@@ -1344,7 +1344,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   if (error)
     {
       g_warning ("Failed to allocate texture: %s", error->message);
-      cogl_error_free (error);
+      g_error_free (error);
     }
 
   cairo_destroy (cr);
@@ -2288,7 +2288,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   int fb_width, fb_height;
   CoglTexture *buffer;
   CoglFramebuffer *offscreen = NULL;
-  CoglError *error = NULL;
+  GError *error = NULL;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
@@ -2351,11 +2351,8 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
                                                                buffer, state->resource_scale);
     }
-  else
-    {
-      cogl_error_free (error);
-    }
 
+  g_clear_error (&error);
   cogl_clear_object (&offscreen);
   cogl_clear_object (&buffer);
 }

@@ -249,7 +249,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   StThemeNodeTransitionPrivate *priv = transition->priv;
   CoglContext *ctx;
   guint width, height;
-  CoglError *catch_error = NULL;
+  GError *catch_error = NULL;
 
   /* template material to avoid unnecessary shader compilation */
   static CoglPipeline *material_template = NULL;
@@ -277,7 +277,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   priv->old_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (priv->old_texture));
   if (!cogl_framebuffer_allocate (priv->old_offscreen, &catch_error))
     {
-      cogl_error_free (catch_error);
+      g_error_free (catch_error);
       cogl_clear_object (&priv->old_offscreen);
       return FALSE;
     }
@@ -286,7 +286,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   priv->new_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (priv->new_texture));
   if (!cogl_framebuffer_allocate (priv->new_offscreen, &catch_error))
     {
-      cogl_error_free (catch_error);
+      g_error_free (catch_error);
       cogl_clear_object (&priv->new_offscreen);
       return FALSE;
     }
