@@ -743,11 +743,11 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
-        let iconSize = baseIconSizes[0];
+        let iconSize = iconSizes[0];
 
         if (this._items.length > 1) {
-            for(let i =  0; i < baseIconSizes.length; i++) {
-                iconSize = baseIconSizes[i];
+            for(let i =  0; i < iconSizes.length; i++) {
+                iconSize = iconSizes[i];
                 let height = iconSizes[i] + iconSpacing;
                 let w = height * this._items.length + totalSpacing;
                 if (w <= availWidth)
