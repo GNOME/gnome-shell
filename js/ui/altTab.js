@@ -730,6 +730,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                 j++;
         }
         let themeNode = this._items[j].get_theme_node();
+        this._list.ensure_style();
 
         let iconPadding = themeNode.get_horizontal_padding();
         let iconBorder = themeNode.get_border_width(St.Side.LEFT) + themeNode.get_border_width(St.Side.RIGHT);
