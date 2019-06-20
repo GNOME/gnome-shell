@@ -665,14 +665,6 @@ class AppIcon extends St.BoxLayout {
     set_size(size) {
         this.icon = this.app.create_icon_texture(size);
         this._iconBin.child = this.icon;
-        this._iconBin.set_size(size, size);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        let [minWidth, ] = super.vfunc_get_preferred_width(forHeight);
-
-        minWidth = Math.max(minWidth, forHeight);
-        return [minWidth, minWidth];
     }
 });
 
