@@ -69,9 +69,12 @@ function ssidToLabel(ssid) {
 
 function ensureActiveConnectionProps(active, client) {
     if (!active._primaryDevice) {
-        // This list is guaranteed to have only one device in it.
-        let device = active.get_devices()[0]._delegate;
-        active._primaryDevice = device;
+        let devices = active.get_devices();
+        if (devices.length > 0) {
+            // This list is guaranteed to have at most one device in it.
+            let device = devices[0]._delegate;
+            active._primaryDevice = device;
+        }
     }
 }
 
