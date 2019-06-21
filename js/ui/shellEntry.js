@@ -5,9 +5,11 @@ const { Clutter, Gio, GObject, Gtk, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const BoxPointer = imports.ui.boxpointer;
+const InternetSearch = imports.ui.internetSearch;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 
 const Util = imports.misc.util;
 
@@ -137,17 +139,13 @@ var OverviewEntry = GObject.registerClass({
             hideOnStop: true,
         });
 
-        // Set the search entry's text based on the current search engine
-        let entryText;
-        let searchEngine = Util.getSearchEngineName();
-
-        if (searchEngine)
-            entryText = _('Search %s and more…').format(searchEngine);
-        else
-            entryText = _('Search the internet and more…');
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('app-filter-changed', () => {
+            this._updateSearchEntryText();
+        });
 
         let hintActor = new St.Label({
-            text: entryText,
+            text: '',
             style_class: 'search-entry-text-hint',
         });
 
@@ -164,6 +162,8 @@ var OverviewEntry = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
+        this._updateSearchEntryText();
+
         this._blinkBrightnessEffect = new Clutter.BrightnessContrastEffect({
             enabled: false,
         });
@@ -178,6 +178,27 @@ var OverviewEntry = GObject.registerClass({
         this.clutter_text.connect('key-press-event', this._onKeyPress.bind(this));
         this.clutter_text.connect('text-changed', this._onTextChanged.bind(this));
         global.stage.connect('notify::key-focus', this._onStageKeyFocusChanged.bind(this));
+    }
+
+    _updateSearchEntryText() {
+        let entryText;
+        let internetProvider = InternetSearch.getInternetSearchProvider();
+
+        if (internetProvider &&
+            internetProvider.appInfo &&
+            this._parentalControlsManager.shouldShowApp(internetProvider.appInfo)) {
+            // Set the search entry's text based on the current search engine
+            let searchEngine = Util.getSearchEngineName();
+
+            if (searchEngine)
+                entryText = _('Search %s and more…').format(searchEngine);
+            else
+                entryText = _('Search the internet and more…');
+        } else {
+            entryText = _('Search…');
+        }
+
+        this.hint_actor.set_text(entryText);
     }
 
     _isActivated() {
