@@ -1,3 +1,30 @@
+3.33.3
+======
+* Prepare for optional X11 [Carlos; !378]
+* Fix opening window menu [Marco; !557]
+* Reload search providers when installed applications change [Cosimo; !562]
+* Implement locate-pointer accessibility feature [Olivier; #981]
+* Allow to disable window menus via session mode [Cosimo; !569]
+* Implement mouse accessibility [Olivier; !474]
+* Call GDM's RegisterSession() after startup [Iain; !570]
+* Fix extended keys popups being hidden by on-screen keyboard [Marco; !583]
+* Fix top bar being hidden by lock screen [Jonas; !571]
+* Update theme to better match GTK's Adwaita [Frederik; #841]
+* Set up GJS profiler when GJS_TRACE_FD is set [Christian; !573]
+* Misc. bug fixes and cleanups [Jonas, Cosimo, Robert, Florian, Marco, Simon,
+  Laurent, Niels, Will; !551, !555, !464, #1333, !565, !572, !568, !558, #1205,
+  #1336, !579, !576, #1392, !582, !586, #1406, #1351]
+
+Contributors:
+  Laurent Bigonville, Cosimo Cecchi, Piotr Drąg, Jonas Dreßler,
+  Frederik Feichtmeier, Olivier Fourdan, Carlos Garnacho, Niels De Graef,
+  Christian Hergert, Iain Lane, Robert Mader, Florian Müllner, Simon Schampijer,
+  Jakub Steiner, Will Thompson, Marco Trevisan (Treviño)
+
+Translators:
+  Kukuh Syafaat [id], Balázs Meskó [hu], Daniel Mustieles [es],
+  Fabio Tomat [fur], Nathan Follens [nl], Goran Vidović [hr], Jordi Mas [ca]
+
 3.33.2
 ======
 * Fix keeping actors visible in scrollviews [Marco; #1061]
