@@ -7,7 +7,7 @@ const Signals = imports.signals;
 const Main = imports.ui.main;
 
 const TOUCHPAD_BASE_DISTANCE = 400;
-const SCROLL_MULTIPLIER = 10;
+const SCROLL_MULTIPLIER = 1;
 
 const MIN_ANIMATION_DURATION = 0.1;
 const MAX_ANIMATION_DURATION = 0.4;
@@ -65,9 +65,6 @@ var SwipeTracker = class {
     }
 
     set can_swipe_back(can_swipe_back) {
-        if (this._can_swipe_back == can_swipe_back)
-            return;
-
         this._can_swipe_back = can_swipe_back;
         if (!can_swipe_back && this._progress > 0)
             this._cancel();
@@ -78,9 +75,6 @@ var SwipeTracker = class {
     }
 
     set can_swipe_forward(can_swipe_forward) {
-        if (this._can_swipe_forward == can_swipe_forward)
-            return;
-
         this._can_swipe_forward = can_swipe_forward;
         if (!can_swipe_forward && this._progress < 0)
             this._cancel();
@@ -202,7 +196,7 @@ var SwipeTracker = class {
         }
 
         this.emit('end', cancelled, duration);
-        this.reset();
+        this._reset();
     }
 };
 Signals.addSignalMethods(SwipeTracker.prototype);
