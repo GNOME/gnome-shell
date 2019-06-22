@@ -1077,6 +1077,7 @@ var WindowManager = class {
         gesture.connect('begin', this._switchWorkspaceBegin.bind(this));
         gesture.connect('update', this._switchWorkspaceUpdate.bind(this));
         gesture.connect('end', this._switchWorkspaceEnd.bind(this));
+        this._swipeTracker = gesture;
 
         gesture = new AppSwitchAction();
         gesture.connect('activated', this._switchApp.bind(this));
@@ -1118,31 +1119,26 @@ var WindowManager = class {
         return this._currentPadOsd.actor;
     }
 
-    _switchWorkspaceBegin() {
+    _switchWorkspaceBegin(tracker) {
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (!this._switchData)
             this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
+
+        // TODO: horizontal
+        this._swipeTracker.can_swipe_forward = this._switchData.surroundings[Meta.MotionDirection.UP];
+        this._swipeTracker.can_swipe_back = this._switchData.surroundings[Meta.MotionDirection.DOWN];
     }
 
-    _switchWorkspaceUpdate(progress) {
+    _switchWorkspaceUpdate(tracker, progress) {
         if (!this._switchData)
             return;
 
-        if (yRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.DOWN])
-            yRel = 0;
-        if (yRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.UP])
-            yRel = 0;
-        if (xRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.RIGHT])
-            xRel = 0;
-        if (xRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.LEFT])
-            xRel = 0;
-
-        this._switchData.container.set_position(xRel, yRel);
+        this._switchData.container.set_position(0, -progress * 1080);
     }
 
-    _switchWorkspaceEnd(cancelled, duration) {
+    _switchWorkspaceEnd(tracker, cancelled, duration) {
         if (!this._switchData)
             return;
 
@@ -1161,7 +1157,7 @@ var WindowManager = class {
             this.actionMoveWorkspace(newWs);
         }
     }
-
+/*
     _switchWorkspaceMotion(action, xRel, yRel) {
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
@@ -1180,7 +1176,7 @@ var WindowManager = class {
 
         this._switchData.container.set_position(xRel, yRel);
     }
-
+*/
     _switchWorkspaceCancel() {
         if (!this._switchData || this._switchData.inProgress)
             return;
@@ -1196,7 +1192,7 @@ var WindowManager = class {
                            onCompleteParams: [switchData],
                          });
     }
-
+/*
     _actionSwitchWorkspace(action, direction) {
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
@@ -1209,7 +1205,7 @@ var WindowManager = class {
             this.actionMoveWorkspace(newWs);
         }
     }
-
+*/
     _lookupIndex(windows, metaWindow) {
         for (let i = 0; i < windows.length; i++) {
             if (windows[i].metaWindow == metaWindow) {
@@ -1968,6 +1964,8 @@ var WindowManager = class {
         switchData.surroundings = {};
         switchData.gestureActivated = false;
         switchData.inProgress = false;
+        switchData.xPos = 0;
+        switchData.yPos = 0;
 
         switchData.container = new Clutter.Actor();
         switchData.container.add_actor(switchData.curGroup);
