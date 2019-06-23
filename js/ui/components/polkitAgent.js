@@ -304,6 +304,10 @@ var AuthenticationDialog = GObject.registerClass({
             this._session.disconnect(this._sessionShowInfoId);
             this._session = null;
         }
+
+        this._passwordBox.hide();
+        this._cancelButton.grab_key_focus();
+        this._okButton.reactive = false;
     }
 
     _onUserChanged() {
