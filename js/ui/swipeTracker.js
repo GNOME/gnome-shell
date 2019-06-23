@@ -7,7 +7,7 @@ const Signals = imports.signals;
 const Main = imports.ui.main;
 
 const TOUCHPAD_BASE_DISTANCE = 400;
-const SCROLL_MULTIPLIER = 1;
+const SCROLL_MULTIPLIER = 10;
 
 const MIN_ANIMATION_DURATION = 0.1;
 const MAX_ANIMATION_DURATION = 0.4;
@@ -35,6 +35,77 @@ function clamp(value, min, max) {
 // TODO: support touch
 // TODO: support horizontal
 
+/*
+//        actor.connect('event', this._handleEvent.bind(this));
+
+    _handleEvent(actor, event) {
+        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE) // SCROLL
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_touchpad_gesture_finger_count() != 4)
+            return Clutter.EVENT_PROPAGATE;
+
+//        if (event.get_scroll_direction() != Clutter.ScrollDirection.SMOOTH)
+//            return Clutter.EVENT_PROPAGATE;
+
+        if ((this._allowedModes & Main.actionMode) == 0)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (!this._enabled)
+            return Clutter.EVENT_PROPAGATE;
+
+        let time = event.get_time();
+        let [dx, dy] = event.get_gesture_motion_delta(); //event.get_scroll_delta();
+
+        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
+//        if ((event.get_scroll_finish_flags() & Clutter.ScrollFinishFlags.VERTICAL == 0) || (dx == 0 && dy == 0))
+            if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
+                dx = -dx;
+                dy = -dy;
+            }
+            this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor dimen for touch
+        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
+            this._endGesture(time);
+        else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
+            this._endGesture(time); // TODO: maybe cancel it?
+
+        return Clutter.EVENT_STOP;
+    }
+*/
+
+var TouchpadSwipeGesture = class {
+    constructor(actor) {
+        this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
+
+        actor.connect('captured-event', this._handleEvent.bind(this));
+    }
+
+    _handleEvent(actor, event) {
+        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_touchpad_gesture_finger_count() != 4)
+            return Clutter.EVENT_PROPAGATE;
+
+        let time = event.get_time();
+        let [dx, dy] = event.get_gesture_motion_delta();
+
+        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
+            if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
+                dx = -dx;
+                dy = -dy;
+            }
+            this.emit('update', time, -dy / TOUCHPAD_BASE_DISTANCE);
+        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
+            this.emit('end', time);
+        else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
+            this.emit('cancel', time);
+
+        return Clutter.EVENT_STOP;
+    }
+};
+Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
+
 var SwipeTracker = class {
     constructor(actor, allowedModes) {
         this.actor = actor;
@@ -46,9 +117,10 @@ var SwipeTracker = class {
         this._can_swipe_back = true;
         this._can_swipe_forward = true;
 
-//        actor.connect('event', this._handleEvent.bind(this));
-        actor.connect('captured-event', this._handleEvent.bind(this));
-        this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
+        let gesture = new TouchpadSwipeGesture(actor);
+        gesture.connect('update', this._updateGesture.bind(this));
+        gesture.connect('end', this._endGesture.bind(this));
+        gesture.connect('cancel', this._endGesture.bind(this)); // TODO: cancel it without animation
     }
 
 
@@ -102,41 +174,7 @@ var SwipeTracker = class {
         this._reset();
     }
 
-    _handleEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE) // SCROLL
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_touchpad_gesture_finger_count() != 4)
-            return Clutter.EVENT_PROPAGATE;
-
-//        if (event.get_scroll_direction() != Clutter.ScrollDirection.SMOOTH)
-//            return Clutter.EVENT_PROPAGATE;
-
-        if ((this._allowedModes & Main.actionMode) == 0)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (!this._enabled)
-            return Clutter.EVENT_PROPAGATE;
-
-        let time = event.get_time();
-        let [dx, dy] = event.get_gesture_motion_delta(); //event.get_scroll_delta();
-
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
-//        if ((event.get_scroll_finish_flags() & Clutter.ScrollFinishFlags.VERTICAL == 0) || (dx == 0 && dy == 0))
-            if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
-                dx = -dx;
-                dy = -dy;
-            }
-            this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor dimen for touch
-        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-            this._endGesture(time);
-        else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
-            this._endGesture(time); // TODO: maybe cancel it?
-
-        return Clutter.EVENT_STOP;
-    }
-
-    _beginGesture(time) {
+    _beginGesture(gesture, time) {
         if (this._state == State.SCROLLING)
             return;
 
@@ -145,10 +183,12 @@ var SwipeTracker = class {
         this._state = State.SCROLLING;
     }
 
-    _updateGesture(time, delta) {
-        if (this._state != State.SCROLLING) {
-            this._beginGesture(time);
-        }
+    _updateGesture(gesture, time, delta) {
+        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
+            return;
+
+        if (this._state != State.SCROLLING)
+            this._beginGesture(gesture, time);
 
         this._progress += delta;
 
@@ -185,7 +225,10 @@ var SwipeTracker = class {
         return Math.abs(this._progress) < CANCEL_AREA && Math.abs(this._velocity) < VELOCITY_THRESHOLD;
     }
 
-    _endGesture(time) {
+    _endGesture(gesture, time) {
+        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
+            return;
+
         if (this._state != State.SCROLLING)
             return;
 
