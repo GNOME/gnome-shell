@@ -59,7 +59,6 @@ var AuthenticationDialog = GObject.registerClass({
         this._userAvatar = new UserWidget.Avatar(this._user,
                                                  { iconSize: DIALOG_ICON_SIZE,
                                                    styleClass: 'polkit-dialog-user-icon' });
-        this._userAvatar.actor.hide();
         userBox.add(this._userAvatar.actor,
                     { x_fill:  true,
                       y_fill:  false,
@@ -298,12 +297,10 @@ var AuthenticationDialog = GObject.registerClass({
             return;
 
         let userName = this._user.get_user_name();
-        if (userName != 'root') {
+        if (userName != 'root')
             this._userLabel.set_text(this._user.get_real_name());
 
-            this._userAvatar.update();
-            this._userAvatar.actor.show();
-        }
+        this._userAvatar.update();
     }
 
     cancel() {
