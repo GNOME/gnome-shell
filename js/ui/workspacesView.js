@@ -472,13 +472,13 @@ var WorkspacesDisplay = class {
         Main.overview.addAction(switchGesture);
         this.actor.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
-        switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
+/*        switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
         switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
         this.actor.connect('notify::mapped', () => {
             switchGesture.enabled = this.actor.mapped;
-        });
+        });*/
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
