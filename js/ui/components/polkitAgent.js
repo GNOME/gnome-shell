@@ -313,6 +313,10 @@ var AuthenticationDialog = GObject.registerClass({
 
             this._session = null;
         }
+
+        this._passwordBox.hide();
+        this._cancelButton.grab_key_focus();
+        this._updateOkButtonSensitivity(false);
     }
 
     _onUserChanged() {
@@ -331,8 +335,7 @@ var AuthenticationDialog = GObject.registerClass({
             this._mode = DialogMode.CONFIRM;
             this._destroySession();
 
-            this._cancelButton.grab_key_focus();
-            this._passwordBox.hide();
+            this._updateOkButtonSensitivity(true);
 
             this._ensureOpen();
         } else if (this._mode != DialogMode.AUTH) {
