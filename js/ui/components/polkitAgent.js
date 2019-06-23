@@ -162,7 +162,8 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     performAuthentication() {
-        this._destroySession();
+        this._destroySession(200);
+
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
         this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
@@ -255,6 +256,11 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onSessionRequest(session, request, echoOn) {
+        if (this._sessionRequestTimeoutId) {
+            GLib.source_remove(this._sessionRequestTimeoutId);
+            this._sessionRequestTimeoutId = 0;
+        }
+
         // Cheap localization trick
         if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
@@ -294,7 +300,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._ensureOpen();
     }
 
-    _destroySession() {
+    _destroySession(delay) {
         if (this._session) {
             if (!this._completed)
                 this._session.cancel();
@@ -307,9 +313,23 @@ var AuthenticationDialog = GObject.registerClass({
             this._session = null;
         }
 
-        this._passwordBox.hide();
-        this._cancelButton.grab_key_focus();
-        this._okButton.reactive = false;
+        if (this._sessionRequestTimeoutId) {
+            GLib.source_remove(this._sessionRequestTimeoutId);
+            this._sessionRequestTimeoutId = 0;
+        }
+
+        let resetDialog = () => {
+            this._passwordBox.hide();
+            this._cancelButton.grab_key_focus();
+            this._okButton.reactive = false;
+        };
+
+        if (delay) {
+            this._sessionRequestTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, resetDialog);
+            GLib.Source.set_name_by_id(this._sessionRequestTimeoutId, '[gnome-shell] this._sessionRequestTimeoutId');
+        } else {
+            resetDialog();
+        }
     }
 
     _onUserChanged() {
@@ -334,7 +354,9 @@ var AuthenticationDialog = GObject.registerClass({
     _onDialogClosed() {
         if (this._sessionUpdatedId)
             Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
+
+        if (this._sessionRequestTimeoutId)
+            GLib.source_remove(this._sessionRequestTimeoutId);
 
         if (this._user) {
             this._user.disconnect(this._userLoadedId);
