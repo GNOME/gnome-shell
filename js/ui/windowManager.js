@@ -1125,18 +1125,24 @@ var WindowManager = class {
         let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (this._switchData && this._switchData.gestureActivated) {
+            Tweener.removeTweens(this._switchData.container);
+
             let currWs = global.workspace_manager.get_active_workspace();
             let topWs = activeWorkspace.get_neighbor(Meta.MotionDirection.UP);
             let bottomWs = activeWorkspace.get_neighbor(Meta.MotionDirection.DOWN);
-            let [xDestTop, yDestTop] = this._getPositionForDirection(direction, currWs, topWs);
-            let [xDestBottom, yDestBottom] = this._getPositionForDirection(direction, currWs, bottomWs);
+            let [xDestTop, yDestTop] = this._getPositionForDirection(Meta.MotionDirection.UP, currWs, topWs);
+            let [xDestBottom, yDestBottom] = this._getPositionForDirection(Meta.MotionDirection.DOWN, currWs, bottomWs);
+            let [x, y] = this._switchData.container.get_position();
 
-//            xDestTop = -xDestTop;
+            xDestTop = -xDestTop;
             yDestTop = -yDestTop;
-//            xDestBottom = -xDestBottom;
+            xDestBottom = -xDestBottom;
             yDestBottom = -yDestBottom;
 
-            this._swipeTracker.continueFrom(0);
+            // TODO: horizontal
+            let progress = y / (y > 0 ? -yDestTop : yDestBottom);
+
+            this._swipeTracker.continueFrom(progress);
             return;
         }
 
@@ -1178,12 +1184,11 @@ var WindowManager = class {
             return;
 
         let switchData = this._switchData;
-        this._switchData = null;
         Tweener.addTween(switchData.container,
                          { x: 0,
                            y: 0,
                            time: duration,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutCubic',
                            onComplete: this._finishWorkspaceSwitch,
                            onCompleteScope: this,
                            onCompleteParams: [switchData],
@@ -1192,7 +1197,6 @@ var WindowManager = class {
 
     _switchWorkspaceAnimate(direction, duration, newWs) {
         let switchData = this._switchData;
-        this._switchData = null;
 
         let oldWs = global.workspace_manager.get_active_workspace();
         let [xDest, yDest] = this._getPositionForDirection(direction, oldWs, newWs);
@@ -1204,7 +1208,7 @@ var WindowManager = class {
                          { x: xDest,
                            y: yDest,
                            time: duration,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutCubic',
                            onComplete: this._switchAndFinishWorkspaceSwitch,
                            onCompleteScope: this,
                            onCompleteParams: [newWs, switchData],
