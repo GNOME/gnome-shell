@@ -457,85 +457,6 @@ var TilePreview = class {
     }
 };
 
-var TouchpadWorkspaceSwitchAction = class {
-    constructor(actor, allowedModes) {
-        this._allowedModes = allowedModes;
-        this._dx = 0;
-        this._dy = 0;
-        this._enabled = true;
-        actor.connect('captured-event', this._handleEvent.bind(this));
-	this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
-    }
-
-    get enabled() {
-        return this._enabled;
-    }
-
-    set enabled(enabled) {
-        if (this._enabled == enabled)
-            return;
-
-        this._enabled = enabled;
-        if (!enabled)
-            this.emit('cancel');
-    }
-
-    _checkActivated() {
-        let dir;
-
-        if (this._dy < -MOTION_THRESHOLD)
-            dir = Meta.MotionDirection.DOWN;
-        else if (this._dy > MOTION_THRESHOLD)
-            dir = Meta.MotionDirection.UP;
-        else if (this._dx < -MOTION_THRESHOLD)
-            dir = Meta.MotionDirection.RIGHT;
-        else if (this._dx > MOTION_THRESHOLD)
-            dir = Meta.MotionDirection.LEFT;
-        else
-            return false;
-
-        this.emit('activated', dir);
-        return true;
-    }
-
-    _handleEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_touchpad_gesture_finger_count() != 4)
-            return Clutter.EVENT_PROPAGATE;
-
-        if ((this._allowedModes & Main.actionMode) == 0)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (!this._enabled)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
-            let [dx, dy] = event.get_gesture_motion_delta();
-
-            // Scale deltas up a bit to make it feel snappier
-            this._dx += dx * 2;
-	    if(!(this._touchpadSettings.get_boolean('natural-scroll'))) 
-		this._dy -= dy * 2;
-	    else
-		this._dy += dy * 2;
-	    
-            this.emit('motion', this._dx, this._dy);
-        } else {
-            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && ! this._checkActivated()) ||
-                event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
-                this.emit('cancel');
-
-            this._dx = 0;
-            this._dy = 0;
-        }
-
-        return Clutter.EVENT_STOP;
-    }
-};
-Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
-
 var WorkspaceSwitchAction = GObject.registerClass({
     Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
                'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
@@ -1066,12 +987,6 @@ var WindowManager = class {
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
         global.stage.add_action(gesture);
-
-        // This is not a normal Clutter.GestureAction, doesn't need add_action()
-        gesture = new TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
-        gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
-        gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
-        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
 */
         let gesture = new SwipeTracker.SwipeTracker(global.stage, allowedModes);
         gesture.connect('begin', this._switchWorkspaceBegin.bind(this));
@@ -1224,40 +1139,6 @@ var WindowManager = class {
         this._finishWorkspaceSwitch(switchData);
     }
 
-/*
-    _switchWorkspaceMotion(action, xRel, yRel) {
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-
-        if (!this._switchData)
-            this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
-
-        if (yRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.DOWN])
-            yRel = 0;
-        if (yRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.UP])
-            yRel = 0;
-        if (xRel < 0 && !this._switchData.surroundings[Meta.MotionDirection.RIGHT])
-            xRel = 0;
-        if (xRel > 0 && !this._switchData.surroundings[Meta.MotionDirection.LEFT])
-            xRel = 0;
-
-        this._switchData.container.set_position(xRel, yRel);
-    }
-*/
-/*
-    _actionSwitchWorkspace(action, direction) {
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let newWs = activeWorkspace.get_neighbor(direction);
-
-        if (newWs == activeWorkspace) {
-            this._switchWorkspaceCancel();
-        } else {
-            this._switchData.gestureActivated = true;
-            this.actionMoveWorkspace(newWs);
-        }
-    }
-*/
     _lookupIndex(windows, metaWindow) {
         for (let i = 0; i < windows.length; i++) {
             if (windows[i].metaWindow == metaWindow) {
