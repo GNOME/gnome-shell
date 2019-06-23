@@ -1151,7 +1151,7 @@ var WindowManager = class {
         if (!this._switchData)
             return;
 
-        this._switchData.container.set_position(0, -progress * 1080);
+        this._switchData.container.set_position(0, Math.round(-progress * (global.screen_height - Main.panel.height)));
     }
 
     _switchWorkspaceEnd(tracker, duration, isBack) {
