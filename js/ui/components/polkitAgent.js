@@ -232,10 +232,8 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onSessionCompleted(session, gainedAuthorization) {
-        if (this._completed || this._doneEmitted)
+        if (this._doneEmitted)
             return;
-
-        this._completed = true;
 
         /* Yay, all done */
         if (gainedAuthorization) {
@@ -305,14 +303,13 @@ var AuthenticationDialog = GObject.registerClass({
 
     _destroySession() {
         if (this._session) {
-            if (!this._completed)
-                this._session.cancel();
-            this._completed = false;
-
             this._session.disconnect(this._sessionCompletedId);
             this._session.disconnect(this._sessionRequestId);
             this._session.disconnect(this._sessionShowErrorId);
             this._session.disconnect(this._sessionShowInfoId);
+
+            this._session.cancel();
+
             this._session = null;
         }
     }
