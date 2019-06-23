@@ -159,6 +159,9 @@ var AuthenticationDialog = GObject.registerClass({
 
     _initiateSession() {
         this._destroySession();
+
+        this._sessionRequestHappened = false;
+
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
         this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
@@ -262,6 +265,8 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onSessionRequest(session, request, echo_on) {
+        this._sessionRequestHappened = true;
+
         // Cheap localization trick
         if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
@@ -313,9 +318,20 @@ var AuthenticationDialog = GObject.registerClass({
             this._session = null;
         }
 
-        this._passwordBox.hide();
-        this._cancelButton.grab_key_focus();
-        this._updateOkButtonSensitivity(false);
+        if (this._sessionRequestTimeoutId)
+            GLib.source_remove(this._sessionRequestTimeoutId);
+
+        this._sessionRequestTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 200, () => {
+            if (!this._sessionRequestHappened) {
+                this._passwordBox.hide();
+                this._cancelButton.grab_key_focus();
+                this._updateOkButtonSensitivity(false);
+            }
+
+            this._sessionRequestTimeoutId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(this._sessionRequestTimeoutId, '[gnome-shell] this._sessionRequestTimeoutId');
     }
 
     _onUserChanged() {
@@ -332,6 +348,9 @@ var AuthenticationDialog = GObject.registerClass({
             this._mode = DialogMode.CONFIRM;
             this._destroySession();
 
+            this._sessionRequestHappened = true;
+            this._passwordBox.hide();
+            this._cancelButton.grab_key_focus();
             this._updateOkButtonSensitivity(true);
 
             this._ensureOpen();
@@ -359,6 +378,9 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         this._destroySession();
+
+        if (this._sessionRequestTimeoutId)
+            GLib.source_remove(this._sessionRequestTimeoutId);
     }
 });
 
