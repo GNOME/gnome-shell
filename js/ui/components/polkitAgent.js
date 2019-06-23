@@ -31,7 +31,6 @@ var AuthenticationDialog = GObject.registerClass({
         this.actionId = actionId;
         this.message = body;
         this.userNames = userNames;
-        this._wasDismissed = false;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
             this.visible = !Main.sessionMode.isLocked;
@@ -249,7 +248,7 @@ var AuthenticationDialog = GObject.registerClass({
              * error providing authentication-method specific information),
              * show "Sorry, that didn't work. Please try again."
              */
-            if (!this._errorMessageLabel.visible && !this._wasDismissed) {
+            if (!this._errorMessageLabel.visible) {
                 /* Translators: "that didn't work" refers to the fact that the
                  * requested authentication was not gained; this can happen
                  * because of an authentication error (like invalid password),
@@ -312,14 +311,15 @@ var AuthenticationDialog = GObject.registerClass({
 
     _destroySession(delay = 0) {
         if (this._session) {
-            if (!this._completed)
-                this._session.cancel();
-            this._completed = false;
-
             this._session.disconnect(this._sessionCompletedId);
             this._session.disconnect(this._sessionRequestId);
             this._session.disconnect(this._sessionShowErrorId);
             this._session.disconnect(this._sessionShowInfoId);
+
+            if (!this._completed)
+                this._session.cancel();
+
+            this._completed = false;
             this._session = null;
         }
 
@@ -378,7 +378,6 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     cancel() {
-        this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
     }
