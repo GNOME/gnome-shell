@@ -51,46 +51,37 @@ var AuthenticationDialog = GObject.registerClass({
             userName = userNames[0];
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
-        let userRealName = this._user.get_real_name();
+
+        let userBox = new St.BoxLayout({
+            style_class: 'polkit-dialog-user-layout',
+            vertical: false,
+        });
+        content.messageBox.add(userBox);
+
+        this._userAvatar = new UserWidget.Avatar(this._user, {
+            iconSize: DIALOG_ICON_SIZE,
+            styleClass: 'polkit-dialog-user-icon',
+        });
+        this._userAvatar.actor.hide();
+        userBox.add_child(this._userAvatar.actor);
+
+        this._userLabel = new St.Label({
+            style_class: userName === 'root'
+                ? 'polkit-dialog-user-root-label'
+                : 'polkit-dialog-user-label',
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        if (userName === 'root')
+            this._userLabel.text = _('Administrator');
+
+        userBox.add_child(this._userLabel);
+
         this._userLoadedId = this._user.connect('notify::is-loaded',
                                                 this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed',
                                                  this._onUserChanged.bind(this));
-
-        // Special case 'root'
-        let userIsRoot = false;
-        if (userName == 'root') {
-            userIsRoot = true;
-            userRealName = _("Administrator");
-        }
-
-        if (userIsRoot) {
-            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
-                                            text: userRealName }));
-            content.messageBox.add(userLabel, { x_fill: false,
-                                                x_align: St.Align.START });
-        } else {
-            let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
-                                             vertical: false });
-            content.messageBox.add(userBox);
-            this._userAvatar = new UserWidget.Avatar(this._user,
-                                                     { iconSize: DIALOG_ICON_SIZE,
-                                                       styleClass: 'polkit-dialog-user-icon' });
-            this._userAvatar.actor.hide();
-            userBox.add(this._userAvatar.actor,
-                        { x_fill: true,
-                          y_fill: false,
-                          x_align: St.Align.END,
-                          y_align: St.Align.START });
-            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-label',
-                                            text: userRealName }));
-            userBox.add(userLabel,
-                        { x_fill: true,
-                          y_fill: false,
-                          x_align: St.Align.END,
-                          y_align: St.Align.MIDDLE });
-        }
-
         this._onUserChanged();
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
@@ -305,7 +296,15 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onUserChanged() {
-        if (this._user.is_loaded && this._userAvatar) {
+        if (!this._user.is_loaded)
+            return;
+
+        let userName = this._user.get_user_name();
+        let realName = this._user.get_real_name();
+
+        if (userName !== 'root') {
+            this._userLabel.set_text(realName);
+
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
