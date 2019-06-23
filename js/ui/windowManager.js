@@ -1077,6 +1077,7 @@ var WindowManager = class {
         gesture.connect('begin', this._switchWorkspaceBegin.bind(this));
         gesture.connect('update', this._switchWorkspaceUpdate.bind(this));
         gesture.connect('end', this._switchWorkspaceEnd.bind(this));
+        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
         this._swipeTracker = gesture;
 
         gesture = new AppSwitchAction();
@@ -1123,8 +1124,23 @@ var WindowManager = class {
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
 
-        if (!this._switchData)
-            this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
+        if (this._switchData && this._switchData.gestureActivated) {
+            let currWs = global.workspace_manager.get_active_workspace();
+            let topWs = activeWorkspace.get_neighbor(Meta.MotionDirection.UP);
+            let bottomWs = activeWorkspace.get_neighbor(Meta.MotionDirection.DOWN);
+            let [xDestTop, yDestTop] = this._getPositionForDirection(direction, currWs, topWs);
+            let [xDestBottom, yDestBottom] = this._getPositionForDirection(direction, currWs, bottomWs);
+
+//            xDestTop = -xDestTop;
+            yDestTop = -yDestTop;
+//            xDestBottom = -xDestBottom;
+            yDestBottom = -yDestBottom;
+
+            this._swipeTracker.continueFrom(0);
+            return;
+        }
+
+        this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
 
         // TODO: horizontal
         this._swipeTracker.can_swipe_forward = this._switchData.surroundings[Meta.MotionDirection.UP];
@@ -1138,25 +1154,72 @@ var WindowManager = class {
         this._switchData.container.set_position(0, -progress * 1080);
     }
 
-    _switchWorkspaceEnd(tracker, cancelled, duration) {
+    _switchWorkspaceEnd(tracker, duration, isBack) {
         if (!this._switchData)
             return;
 
-        if (cancelled)
-            this._switchWorkspaceCancel();
-        let direction = Meta.MotionDirection.DOWN;
+        let direction = isBack ? Meta.MotionDirection.DOWN : Meta.MotionDirection.UP;
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
         let newWs = activeWorkspace.get_neighbor(direction);
 
         if (newWs == activeWorkspace) {
-            this._switchWorkspaceCancel();
+            // FIXME: throw an error
+            log('this should never happen')
         } else {
             this._switchData.gestureActivated = true;
-            this.actionMoveWorkspace(newWs);
+            this._switchWorkspaceAnimate(direction, duration, newWs);
         }
     }
+
+    _switchWorkspaceCancel(tracker, duration) {
+        if (!this._switchData || this._switchData.inProgress)
+            return;
+
+        let switchData = this._switchData;
+        this._switchData = null;
+        Tweener.addTween(switchData.container,
+                         { x: 0,
+                           y: 0,
+                           time: duration,
+                           transition: 'easeOutQuad',
+                           onComplete: this._finishWorkspaceSwitch,
+                           onCompleteScope: this,
+                           onCompleteParams: [switchData],
+                         });
+    }
+
+    _switchWorkspaceAnimate(direction, duration, newWs) {
+        let switchData = this._switchData;
+        this._switchData = null;
+
+        let oldWs = global.workspace_manager.get_active_workspace();
+        let [xDest, yDest] = this._getPositionForDirection(direction, oldWs, newWs);
+
+        xDest = -xDest;
+        yDest = -yDest;
+
+        Tweener.addTween(switchData.container,
+                         { x: xDest,
+                           y: yDest,
+                           time: duration,
+                           transition: 'easeOutQuad',
+                           onComplete: this._switchAndFinishWorkspaceSwitch,
+                           onCompleteScope: this,
+                           onCompleteParams: [newWs, switchData],
+                         });
+    }
+
+    _switchAndFinishWorkspaceSwitch(newWs, switchData) {
+        // We've already animated the transition, don't animate it again
+        this._blockAnimations = true;
+        this.actionMoveWorkspace(newWs);
+        this._blockAnimations = false;
+
+        this._finishWorkspaceSwitch(switchData);
+    }
+
 /*
     _switchWorkspaceMotion(action, xRel, yRel) {
         let workspaceManager = global.workspace_manager;
@@ -1177,21 +1240,6 @@ var WindowManager = class {
         this._switchData.container.set_position(xRel, yRel);
     }
 */
-    _switchWorkspaceCancel() {
-        if (!this._switchData || this._switchData.inProgress)
-            return;
-        let switchData = this._switchData;
-        this._switchData = null;
-        Tweener.addTween(switchData.container,
-                         { x: 0,
-                           y: 0,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._finishWorkspaceSwitch,
-                           onCompleteScope: this,
-                           onCompleteParams: [switchData],
-                         });
-    }
 /*
     _actionSwitchWorkspace(action, direction) {
         let workspaceManager = global.workspace_manager;

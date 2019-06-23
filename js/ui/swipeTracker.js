@@ -14,6 +14,7 @@ const MAX_ANIMATION_DURATION = 0.4;
 const CANCEL_AREA = 0.5;
 const VELOCITY_THRESHOLD = 0.001;
 const DURATION_MULTIPLIER = 3;
+const ANIMATION_BASE_VELOCITY = 0.002;
 
 /*var Direction = {
     NEGATIVE: -1,
@@ -29,6 +30,10 @@ var State = {
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
+
+// TODO: support scrolling
+// TODO: support touch
+// TODO: support horizontal
 
 var SwipeTracker = class {
     constructor(actor, allowedModes) {
@@ -93,7 +98,7 @@ var SwipeTracker = class {
     }
 
     _cancel() {
-        this.emit('end', true, 0);
+        this.emit('cancel', 0);
         this._reset();
     }
 
@@ -118,9 +123,11 @@ var SwipeTracker = class {
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
 //        if ((event.get_scroll_finish_flags() & Clutter.ScrollFinishFlags.VERTICAL == 0) || (dx == 0 && dy == 0))
-            if(!(this._touchpadSettings.get_boolean('natural-scroll')))
+            if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
+                dx = -dx;
                 dy = -dy;
-            this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor diman
+            }
+            this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor dimen for touch
         } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
             this._endGesture(time);
         else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
@@ -188,15 +195,25 @@ var SwipeTracker = class {
         if (!cancelled)
             endProgress = (this._progress > 0) ? 1 : -1;
 
-        let duration = MAX_ANIMATION_DURATION;
-        if ((endProgress - this._progress) * this._velocity > 0) {
-            duration = Math.abs((this._progress - endProgress) / this._velocity * DURATION_MULTIPLIER) / 1000;
-            if (duration != 0)
-                duration = clamp(duration, MIN_ANIMATION_DURATION, MAX_ANIMATION_DURATION);
-        }
+        let velocity = ANIMATION_BASE_VELOCITY;
+        if ((endProgress - this._progress) * this._velocity > 0)
+            velocity = this._velocity;
 
-        this.emit('end', cancelled, duration);
+        let duration = Math.abs((this._progress - endProgress) / velocity * DURATION_MULTIPLIER) / 1000;
+        duration = clamp(duration, MIN_ANIMATION_DURATION, MAX_ANIMATION_DURATION);
+
+        if (cancelled)
+            this.emit('cancel', duration);
+        else
+            this.emit('end', duration, this._progress > 0);
         this._reset();
     }
+
+    continueFrom(progress) {
+        this._progress = progress;
+        this._velocity = 0;
+        this._state = State.SCROLLING;
+    }
+
 };
 Signals.addSignalMethods(SwipeTracker.prototype);
