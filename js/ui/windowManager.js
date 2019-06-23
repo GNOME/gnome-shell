@@ -1040,24 +1040,10 @@ var WindowManager = class {
         let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (this._switchData && this._switchData.gestureActivated) {
+            Tweener.removeTweens(this._switchData);
             Tweener.removeTweens(this._switchData.container);
 
-            let currWs = global.workspace_manager.get_active_workspace();
-            let topWs = activeWorkspace.get_neighbor(Meta.MotionDirection.UP);
-            let bottomWs = activeWorkspace.get_neighbor(Meta.MotionDirection.DOWN);
-            let [xDestTop, yDestTop] = this._getPositionForDirection(Meta.MotionDirection.UP, currWs, topWs);
-            let [xDestBottom, yDestBottom] = this._getPositionForDirection(Meta.MotionDirection.DOWN, currWs, bottomWs);
-            let [x, y] = this._switchData.container.get_position();
-
-            xDestTop = -xDestTop;
-            yDestTop = -yDestTop;
-            xDestBottom = -xDestBottom;
-            yDestBottom = -yDestBottom;
-
-            // TODO: horizontal
-            let progress = y / (y > 0 ? -yDestTop : yDestBottom);
-
-            this._swipeTracker.continueFrom(progress);
+            this._swipeTracker.continueFrom(this._switchData.progress);
             return;
         }
 
@@ -1072,6 +1058,7 @@ var WindowManager = class {
         if (!this._switchData)
             return;
 
+        this._switchData.progress = progress;
         this._switchData.container.set_position(0, Math.round(-progress * (global.screen_height - Main.panel.height)));
     }
 
@@ -1099,6 +1086,11 @@ var WindowManager = class {
             return;
 
         let switchData = this._switchData;
+        Tweener.addTween(switchData,
+                         { progress: 0,
+                           time: duration,
+                           transition: 'easeOutCubic'
+                         });
         Tweener.addTween(switchData.container,
                          { x: 0,
                            y: 0,
@@ -1119,6 +1111,11 @@ var WindowManager = class {
         xDest = -xDest;
         yDest = -yDest;
 
+        Tweener.addTween(switchData,
+                         { progress: direction == Meta.MotionDirection.DOWN ? 1 : -1,
+                           time: duration,
+                           transition: 'easeOutCubic'
+                         });
         Tweener.addTween(switchData.container,
                          { x: xDest,
                            y: yDest,
@@ -1859,8 +1856,7 @@ var WindowManager = class {
         switchData.surroundings = {};
         switchData.gestureActivated = false;
         switchData.inProgress = false;
-        switchData.xPos = 0;
-        switchData.yPos = 0;
+        switchData.progress = 0;
 
         switchData.container = new Clutter.Actor();
         switchData.container.add_actor(switchData.curGroup);
@@ -1956,6 +1952,7 @@ var WindowManager = class {
                 global.workspace_manager.get_active_workspace())
                 w.window.hide();
         }
+        Tweener.removeTweens(switchData);
         Tweener.removeTweens(switchData.container);
         switchData.container.destroy();
         switchData.movingWindowBin.destroy();
@@ -1989,11 +1986,16 @@ var WindowManager = class {
         xDest = -xDest;
         yDest = -yDest;
 
+        Tweener.addTween(this._switchData,
+                         { progress: direction == Meta.MotionDirection.DOWN ? 1 : -1,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutCubic'
+                         });
         Tweener.addTween(this._switchData.container,
                          { x: xDest,
                            y: yDest,
                            time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutCubic',
                            onComplete: this._switchWorkspaceDone,
                            onCompleteScope: this,
                            onCompleteParams: [shellwm]
