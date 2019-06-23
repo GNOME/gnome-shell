@@ -11,6 +11,11 @@ const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 
+const DialogMode = {
+    AUTH: 0,
+    CONFIRM: 1,
+};
+
 var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
@@ -78,12 +83,6 @@ var AuthenticationDialog = GObject.registerClass({
 
         userBox.add_child(this._userLabel);
 
-        this._userLoadedId = this._user.connect('notify::is-loaded',
-                                                this._onUserChanged.bind(this));
-        this._userChangedId = this._user.connect('changed',
-                                                 this._onUserChanged.bind(this));
-        this._onUserChanged();
-
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
@@ -137,8 +136,16 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._doneEmitted = false;
 
+        this._mode = -1;
+
         this._identityToAuth = Polkit.UnixUser.new_for_name(userName);
         this._cookie = cookie;
+
+        this._userLoadedId = this._user.connect('notify::is-loaded',
+            this._onUserChanged.bind(this));
+        this._userChangedId = this._user.connect('changed',
+            this._onUserChanged.bind(this));
+        this._onUserChanged();
     }
 
     _setWorking(working) {
@@ -148,8 +155,9 @@ var AuthenticationDialog = GObject.registerClass({
             this._workSpinner.stop();
     }
 
-    performAuthentication() {
+    _initiateSession() {
         this._destroySession();
+
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
         this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
@@ -209,7 +217,10 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onAuthenticateButtonPressed() {
-        this._onEntryActivate();
+        if (this._mode === DialogMode.CONFIRM)
+            this._initiateSession();
+        else
+            this._onEntryActivate();
     }
 
     _onSessionCompleted(session, gainedAuthorization) {
@@ -240,7 +251,7 @@ var AuthenticationDialog = GObject.registerClass({
             }
 
             /* Try and authenticate again */
-            this.performAuthentication();
+            this._initiateSession();
         }
     }
 
@@ -308,6 +319,28 @@ var AuthenticationDialog = GObject.registerClass({
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
+
+        if (this._user.get_password_mode() === AccountsService.UserPasswordMode.NONE) {
+            if (this._mode === DialogMode.CONFIRM)
+                return;
+
+            this._mode = DialogMode.CONFIRM;
+            this._destroySession();
+
+            this._okButton.reactive = true;
+
+            /* We normally open the dialog when we get a "request" signal, but
+             * since in this case initiating a session would perform the
+             * authentication, only open the dialog and initiate the session
+             * when the user confirmed. */
+            this._ensureOpen();
+        } else {
+            if (this._mode === DialogMode.AUTH)
+                return;
+
+            this._mode = DialogMode.AUTH;
+            this._initiateSession();
+        }
     }
 
     cancel() {
@@ -370,19 +403,7 @@ var AuthenticationAgent = class {
         }
 
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
-
-        // We actually don't want to open the dialog until we know for
-        // sure that we're going to interact with the user. For
-        // example, if the password for the identity to auth is blank
-        // (which it will be on a live CD) then there will be no
-        // conversation at all... of course, we don't *know* that
-        // until we actually try it.
-        //
-        // See https://bugzilla.gnome.org/show_bug.cgi?id=643062 for more
-        // discussion.
-
         this._currentDialog.connect('done', this._onDialogDone.bind(this));
-        this._currentDialog.performAuthentication();
     }
 
     _onCancel(_nativeAgent) {
