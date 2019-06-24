@@ -97,7 +97,6 @@ var AuthenticationDialog = GObject.registerClass({
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner);
 
-        this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
@@ -265,9 +264,12 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox.show();
         this._passwordEntry.set_text('');
-        this._passwordEntry.grab_key_focus();
-        this._updateSensitivity(true);
+        this._updatePasswordEntrySensitivity(true);
+        this._updateOkButtonSensitivity(false);
+        this._setWorking(false);
+
         this._ensureOpen();
+        this._passwordEntry.grab_key_focus();
     }
 
     _onSessionShowError(session, text) {
