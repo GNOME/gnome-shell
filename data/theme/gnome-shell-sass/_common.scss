@@ -1345,6 +1345,8 @@ StScrollBar {
     border-radius: 0px 9px 9px 0px;
 
     &:rtl {
+      border-left-width: 1px;
+      border-right-width: 0;
       border-radius: 9px 0 0 9px;
     }
 
