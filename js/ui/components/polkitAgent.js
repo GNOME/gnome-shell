@@ -94,6 +94,13 @@ var AuthenticationDialog = GObject.registerClass({
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
 
+        this._passwordEntry.clutter_text.connect('text-changed', (text) => {
+            if (text.get_text().length === 0)
+                this._updateOkButtonSensitivity(false);
+            else
+                this._updateOkButtonSensitivity(true);
+        });
+
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner);
 
@@ -127,8 +134,8 @@ var AuthenticationDialog = GObject.registerClass({
                                               action: this.cancel.bind(this),
                                               key: Clutter.Escape });
         this._okButton = this.addButton({ label: _("Authenticate"),
-                                          action: this._onAuthenticateButtonPressed.bind(this),
-                                          default: true });
+                                          action: this._onAuthenticateButtonPressed.bind(this) });
+        this._updateOkButtonSensitivity(false);
 
         this._doneEmitted = false;
 
@@ -191,18 +198,25 @@ var AuthenticationDialog = GObject.registerClass({
         }
     }
 
-    _updateSensitivity(sensitive) {
+    _updatePasswordEntrySensitivity(sensitive) {
         this._passwordEntry.reactive = sensitive;
         this._passwordEntry.clutter_text.editable = sensitive;
+    }
 
+    _updateOkButtonSensitivity(sensitive) {
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
-        this._setWorking(!sensitive);
     }
 
     _onEntryActivate() {
         let response = this._passwordEntry.get_text();
-        this._updateSensitivity(false);
+        if (response.length === 0)
+            return;
+
+        this._updatePasswordEntrySensitivity(false);
+        this._updateOkButtonSensitivity(false);
+        this._setWorking(true);
+
         this._session.response(response);
         // When the user responds, dismiss already shown info and
         // error texts (if any)
