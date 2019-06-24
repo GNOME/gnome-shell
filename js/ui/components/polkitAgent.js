@@ -98,6 +98,9 @@ var AuthenticationDialog = GObject.registerClass({
         });
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
+        this._passwordEntry.bind_property('reactive',
+            this._passwordEntry.clutter_text, 'editable',
+            GObject.BindingFlags.SYNC_CREATE);
         this._passwordBox.add_child(this._passwordEntry);
 
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
@@ -134,7 +137,14 @@ var AuthenticationDialog = GObject.registerClass({
                                               key: Clutter.Escape });
         this._okButton = this.addButton({ label: _("Authenticate"),
                                           action: this._onAuthenticateButtonPressed.bind(this),
-                                          default: true });
+                                          reactive: false });
+        this._okButton.bind_property('reactive',
+            this._okButton, 'can-focus',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._passwordEntry.clutter_text.connect('text-changed', text => {
+            this._okButton.reactive = text.get_text().length > 0;
+        });
 
         this._doneEmitted = false;
 
@@ -189,18 +199,15 @@ var AuthenticationDialog = GObject.registerClass({
         }
     }
 
-    _updateSensitivity(sensitive) {
-        this._passwordEntry.reactive = sensitive;
-        this._passwordEntry.clutter_text.editable = sensitive;
-
-        this._okButton.can_focus = sensitive;
-        this._okButton.reactive = sensitive;
-        this._setWorking(!sensitive);
-    }
-
     _onEntryActivate() {
         let response = this._passwordEntry.get_text();
-        this._updateSensitivity(false);
+        if (response.length === 0)
+            return;
+
+        this._passwordEntry.reactive = false;
+        this._okButton.reactive = false;
+        this._setWorking(true);
+
         this._session.response(response);
         // When the user responds, dismiss already shown info and
         // error texts (if any)
@@ -259,7 +266,9 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox.show();
         this._passwordEntry.set_text('');
-        this._updateSensitivity(true);
+        this._passwordEntry.reactive  = true;
+        this._okButton.reactive = false;
+        this._setWorking(false);
 
         this._ensureOpen();
         this._passwordEntry.grab_key_focus();
