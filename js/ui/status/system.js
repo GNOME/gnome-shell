@@ -186,10 +186,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         let item;
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._switchUserSubMenu.icon.set({
-            icon_name: 'avatar-default-symbolic',
-            style_class: 'system-switch-user-submenu-icon'
-        });
+        this._switchUserSubMenu.icon.icon_name = 'avatar-default-symbolic';
 
         // Since the label of the switch user submenu depends on the width of
         // the popup menu, and we can't easily connect on allocation-changed
