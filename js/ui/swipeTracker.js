@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, Shell } = imports.gi;
+const { Clutter, Gio, GObject, Shell } = imports.gi;
 
 const Signals = imports.signals;
 
@@ -15,12 +15,6 @@ const CANCEL_AREA = 0.5;
 const VELOCITY_THRESHOLD = 0.001;
 const DURATION_MULTIPLIER = 3;
 const ANIMATION_BASE_VELOCITY = 0.002;
-
-/*var Direction = {
-    NEGATIVE: -1,
-    NONE: 0,
-    POSITIVE: 1
-};*/
 
 var State = {
     NONE: 0,
@@ -73,7 +67,7 @@ function clamp(value, min, max) {
     }
 */
 
-var TouchpadSwipeGesture = class {
+var TouchpadSwipeGesture = class TouchpadSwipeGesture {
     constructor(actor) {
         this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
 
@@ -105,7 +99,85 @@ var TouchpadSwipeGesture = class {
     }
 };
 Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
+/*
+var TouchSwipeGesture = GObject.registerClass({
+    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
+               'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
+               'cancel':    { param_types: [] }},
+}, class TouchSwipeGesture extends Clutter.SwipeAction {
+    _init(actor) {
+        super._init();
+        this.set_n_touch_points(4);
 
+        global.display.connect('grab-op-begin', () => {
+            this.cancel();
+        });
+    }
+});
+*/
+/*
+var WorkspaceSwitchAction = GObject.registerClass({
+    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
+               'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
+               'cancel':    { param_types: [] }},
+}, class WorkspaceSwitchAction extends Clutter.SwipeAction {
+    _init(allowedModes) {
+        super._init();
+        this.set_n_touch_points(4);
+        this._swept = false;
+        this._allowedModes = allowedModes;
+
+        global.display.connect('grab-op-begin', () => {
+            this.cancel();
+        });
+    }
+
+    vfunc_gesture_prepare(actor) {
+        this._swept = false;
+
+        if (!super.vfunc_gesture_prepare(actor))
+            return false;
+
+        return (this._allowedModes & Main.actionMode);
+    }
+
+    vfunc_gesture_progress(actor) {
+        let [x, y] = this.get_motion_coords(0);
+        let [xPress, yPress] = this.get_press_coords(0);
+        this.emit('motion', x - xPress, y - yPress);
+        return true;
+    }
+
+    vfunc_gesture_cancel(actor) {
+        if (!this._swept)
+            this.emit('cancel');
+    }
+
+    vfunc_swipe(actor, direction) {
+        let [x, y] = this.get_motion_coords(0);
+        let [xPress, yPress] = this.get_press_coords(0);
+        if (Math.abs(x - xPress) < MOTION_THRESHOLD &&
+            Math.abs(y - yPress) < MOTION_THRESHOLD) {
+            this.emit('cancel');
+            return;
+        }
+            
+        let dir;
+            
+        if (direction & Clutter.SwipeDirection.UP)
+            dir = Meta.MotionDirection.DOWN;
+        else if (direction & Clutter.SwipeDirection.DOWN)
+            dir = Meta.MotionDirection.UP;
+        else if (direction & Clutter.SwipeDirection.LEFT)
+            dir = Meta.MotionDirection.RIGHT;
+        else if (direction & Clutter.SwipeDirection.RIGHT)
+            dir = Meta.MotionDirection.LEFT;
+        
+        this._swept = true;
+        this.emit('activated', dir);
+    }
+});
+*/
 var SwipeTracker = class {
     constructor(actor, allowedModes) {
         this.actor = actor;
@@ -159,7 +231,6 @@ var SwipeTracker = class {
 
     _reset() {
         this._state = State.NONE;
-//        this._direction = Direction.NONE;
 
         this._prevOffset = 0;
 
