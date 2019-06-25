@@ -75,33 +75,28 @@ var TouchSwipeGesture = GObject.registerClass({
         this.set_n_touch_points(4);
 
         this._actor = actor;
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
     }
 
-    vfunc_gesture_prepare(actor) {
+    vfunc_gesture_begin(actor, point) {
         this._swept = false;
 
-        if (!super.vfunc_gesture_prepare(actor))
+        if (!super.vfunc_gesture_begin(actor, point))
             return false;
 
         return true; //(this._allowedModes & Main.actionMode) != 0 && this._enabled;
     }
 
-    vfunc_gesture_progress(actor) {
-        let [d, dx, dy] = this.get_motion_delta(0);
-        let time = this.get_last_event(0).get_time();
+    vfunc_gesture_progress(actor, point) {
+        let [d, dx, dy] = this.get_motion_delta(point);
+        let time = this.get_last_event(point).get_time();
 
         this.emit('update', time, dy / this._actor.height); // TODO: the height isn't always equal to the actor height
-        return true;
     }
 
     vfunc_swipe(actor, direction) {
         this._swept = true;
 
-        let time = this.get_last_event(0).get_time();
+        let time = Clutter.get_current_event_time();
 
         this.emit('end', time);
     }
@@ -110,7 +105,7 @@ var TouchSwipeGesture = GObject.registerClass({
         if (this._swept)
             return;
 
-        let time = this.get_last_event(0).get_time();
+        let time = Clutter.get_current_event_time();
 
         this.emit('cancel', time);
     }
