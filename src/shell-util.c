@@ -437,7 +437,7 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   gfloat actor_x, actor_y;
   gfloat resource_scale;
 
-  texture = meta_window_actor_get_texture (window_actor);
+  texture = META_SHAPED_TEXTURE (meta_window_actor_get_texture (window_actor));
   clutter_actor_get_position (CLUTTER_ACTOR (window_actor), &actor_x, &actor_y);
 
   if (!clutter_actor_get_resource_scale (CLUTTER_ACTOR (window_actor),
