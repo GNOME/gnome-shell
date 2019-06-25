@@ -81,11 +81,6 @@ var TouchSwipeGesture = GObject.registerClass({
         });
     }
 
-    _get_time() {
-        let event = this.get_last_event();
-        return event.get_time();
-    }
-
     vfunc_gesture_prepare(actor) {
         this._swept = false;
 
@@ -97,7 +92,7 @@ var TouchSwipeGesture = GObject.registerClass({
 
     vfunc_gesture_progress(actor) {
         let [dx, dy] = this.get_motion_delta(0);
-        let time = this._get_time();
+        let time = Clutter.get_current_event_time();
 
         this.emit('update', time, -dy / this._actor.height); // TODO: the height isn't always equal to the actor height
         return true;
@@ -106,7 +101,7 @@ var TouchSwipeGesture = GObject.registerClass({
     vfunc_swipe(actor, direction) {
         this._swept = true;
 
-        let time = this._get_time();
+        let time = Clutter.get_current_event_time();
 
         this.emit('end', time);
     }
@@ -115,7 +110,7 @@ var TouchSwipeGesture = GObject.registerClass({
         if (this._swept)
             return;
 
-        let time = this._get_time();
+        let time = Clutter.get_current_event_time();
 
         this.emit('cancel', time);
     }
