@@ -29,44 +29,6 @@ function clamp(value, min, max) {
 // TODO: support touch
 // TODO: support horizontal
 
-/*
-//        actor.connect('event', this._handleEvent.bind(this));
-
-    _handleEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE) // SCROLL
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_touchpad_gesture_finger_count() != 4)
-            return Clutter.EVENT_PROPAGATE;
-
-//        if (event.get_scroll_direction() != Clutter.ScrollDirection.SMOOTH)
-//            return Clutter.EVENT_PROPAGATE;
-
-        if ((this._allowedModes & Main.actionMode) == 0)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (!this._enabled)
-            return Clutter.EVENT_PROPAGATE;
-
-        let time = event.get_time();
-        let [dx, dy] = event.get_gesture_motion_delta(); //event.get_scroll_delta();
-
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
-//        if ((event.get_scroll_finish_flags() & Clutter.ScrollFinishFlags.VERTICAL == 0) || (dx == 0 && dy == 0))
-            if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
-                dx = -dx;
-                dy = -dy;
-            }
-            this._updateGesture(time, -dy / TOUCHPAD_BASE_DISTANCE * SCROLL_MULTIPLIER); // TODO: multiply on actor dimen for touch
-        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-            this._endGesture(time);
-        else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
-            this._endGesture(time); // TODO: maybe cancel it?
-
-        return Clutter.EVENT_STOP;
-    }
-*/
-
 var TouchpadSwipeGesture = class TouchpadSwipeGesture {
     constructor(actor) {
         this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
@@ -81,6 +43,9 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
         if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
+//        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
+//            return Clutter.EVENT_PROPAGATE;
+
         let time = event.get_time();
         let [dx, dy] = event.get_gesture_motion_delta();
 
@@ -93,28 +58,69 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
         } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
             this.emit('end', time);
         else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
-            this.emit('cancel', time);
+            this.emit('cancel');
 
         return Clutter.EVENT_STOP;
     }
 };
 Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
-/*
+
 var TouchSwipeGesture = GObject.registerClass({
-    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
-               'motion':    { param_types: [GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-               'cancel':    { param_types: [] }},
+    Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+               'end':    { param_types: [GObject.TYPE_UINT] },
+               'cancel': { param_types: [] }},
 }, class TouchSwipeGesture extends Clutter.SwipeAction {
     _init(actor) {
         super._init();
         this.set_n_touch_points(4);
 
+        this._actor = actor;
+
         global.display.connect('grab-op-begin', () => {
             this.cancel();
         });
     }
+
+    _get_time() {
+        let event = this.get_last_event();
+        return event.get_time();
+    }
+
+    vfunc_gesture_prepare(actor) {
+        this._swept = false;
+
+        if (!super.vfunc_gesture_prepare(actor))
+            return false;
+
+        return true; //(this._allowedModes & Main.actionMode) != 0 && this._enabled;
+    }
+
+    vfunc_gesture_progress(actor) {
+        let [dx, dy] = this.get_motion_delta(0);
+        let time = this._get_time();
+
+        this.emit('update', time, -dy / this._actor.height); // TODO: the height isn't always equal to the actor height
+        return true;
+    }
+
+    vfunc_swipe(actor, direction) {
+        this._swept = true;
+
+        let time = this._get_time();
+
+        this.emit('end', time);
+    }
+
+    vfunc_gesture_cancel(actor) {
+        if (this._swept)
+            return;
+
+//        let time = this._get_time();
+
+        this.emit('cancel');
+    }
 });
-*/
+
 /*
 var WorkspaceSwitchAction = GObject.registerClass({
     Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] },
@@ -161,9 +167,9 @@ var WorkspaceSwitchAction = GObject.registerClass({
             this.emit('cancel');
             return;
         }
-            
+
         let dir;
-            
+
         if (direction & Clutter.SwipeDirection.UP)
             dir = Meta.MotionDirection.DOWN;
         else if (direction & Clutter.SwipeDirection.DOWN)
@@ -172,7 +178,7 @@ var WorkspaceSwitchAction = GObject.registerClass({
             dir = Meta.MotionDirection.RIGHT;
         else if (direction & Clutter.SwipeDirection.RIGHT)
             dir = Meta.MotionDirection.LEFT;
-        
+
         this._swept = true;
         this.emit('activated', dir);
     }
@@ -192,9 +198,14 @@ var SwipeTracker = class {
         let gesture = new TouchpadSwipeGesture(actor);
         gesture.connect('update', this._updateGesture.bind(this));
         gesture.connect('end', this._endGesture.bind(this));
-        gesture.connect('cancel', this._endGesture.bind(this)); // TODO: cancel it without animation
-    }
+        gesture.connect('cancel', this._endGesture.bind(this)); // End the gesture normally for touchpads
 
+        gesture = new TouchSwipeGesture(actor);
+        gesture.connect('update', this._updateGesture.bind(this));
+        gesture.connect('end', this._endGesture.bind(this));
+        gesture.connect('cancel', this._cancelGesture.bind(this));
+        actor.add_action(gesture);
+    }
 
     get enabled() {
         return this._enabled;
@@ -320,6 +331,11 @@ var SwipeTracker = class {
             this.emit('cancel', duration);
         else
             this.emit('end', duration, this._progress > 0);
+        this._reset();
+    }
+
+    _cancelGesture(gesture) {
+        this.emit('cancel', MIN_ANIMATION_DURATION);
         this._reset();
     }
 

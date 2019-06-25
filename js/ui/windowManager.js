@@ -1085,6 +1085,14 @@ var WindowManager = class {
         if (!this._switchData || this._switchData.inProgress)
             return;
 
+        if (duration == 0) {
+            this._switchData.progress = 0;
+            this._switchData.container.x = 0;
+            this._switchData.container.y = 0;
+            this._finishWorkspaceSwitch(this._switchData);
+            return;
+        }
+
         let switchData = this._switchData;
         Tweener.addTween(switchData,
                          { progress: 0,
