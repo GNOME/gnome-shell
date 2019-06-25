@@ -58,7 +58,7 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
         } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
             this.emit('end', time);
         else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
-            this.emit('cancel');
+            this.emit('cancel', time);
 
         return Clutter.EVENT_STOP;
     }
@@ -68,7 +68,7 @@ Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
 var TouchSwipeGesture = GObject.registerClass({
     Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
-               'cancel': { param_types: [] }},
+               'cancel': { param_types: [GObject.TYPE_UINT] }},
 }, class TouchSwipeGesture extends Clutter.SwipeAction {
     _init(actor) {
         super._init();
@@ -115,9 +115,9 @@ var TouchSwipeGesture = GObject.registerClass({
         if (this._swept)
             return;
 
-//        let time = this._get_time();
+        let time = this._get_time();
 
-        this.emit('cancel');
+        this.emit('cancel', time);
     }
 });
 
@@ -198,7 +198,7 @@ var SwipeTracker = class {
         let gesture = new TouchpadSwipeGesture(actor);
         gesture.connect('update', this._updateGesture.bind(this));
         gesture.connect('end', this._endGesture.bind(this));
-        gesture.connect('cancel', this._endGesture.bind(this)); // End the gesture normally for touchpads
+        gesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
 
         gesture = new TouchSwipeGesture(actor);
         gesture.connect('update', this._updateGesture.bind(this));
@@ -249,6 +249,8 @@ var SwipeTracker = class {
 
         this._prevTime = 0;
         this._velocity = 0;
+
+        this._cancelled = false;
     }
 
     _cancel() {
@@ -292,6 +294,9 @@ var SwipeTracker = class {
     }
 
     _shouldCancel() {
+        if (this._cancelled)
+            return true;
+
         if (this._progress == 0)
             return true;
 
@@ -334,9 +339,9 @@ var SwipeTracker = class {
         this._reset();
     }
 
-    _cancelGesture(gesture) {
-        this.emit('cancel', MIN_ANIMATION_DURATION);
-        this._reset();
+    _cancelGesture(gesture, time) {
+        this._cancelled = true;
+        this._endGesture(gesture, time);
     }
 
     continueFrom(progress) {
