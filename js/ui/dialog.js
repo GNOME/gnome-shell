@@ -214,7 +214,10 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     set icon(icon) {
-        Object.assign(this._icon, { gicon: icon, visible: icon != null });
+        this._icon.set({
+            gicon: icon,
+            visible: icon != null
+        });
         this.notify('icon');
     }
 
@@ -231,7 +234,10 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     _setLabel(label, prop, value) {
-        Object.assign(label, { text: value || '', visible: value != null });
+        label.set({
+            text: value || '',
+            visible: value != null
+        });
         this.notify(prop);
     }
 
