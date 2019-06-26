@@ -1060,35 +1060,35 @@ var WindowManager = class {
                                                            false, -1, 1);
 
         let allowedModes = Shell.ActionMode.NORMAL;
-        let gesture = new WorkspaceSwitchAction(allowedModes);
-        gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
-        gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
-        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
-        global.stage.add_action(gesture);
+        let workspaceSwitchAction = new WorkspaceSwitchAction(allowedModes);
+        workspaceSwitchAction.connect('motion', this._switchWorkspaceMotion.bind(this));
+        workspaceSwitchAction.connect('activated', this._actionSwitchWorkspace.bind(this));
+        workspaceSwitchAction.connect('cancel', this._switchWorkspaceCancel.bind(this));
+        global.stage.add_action(workspaceSwitchAction);
 
         // This is not a normal Clutter.GestureAction, doesn't need add_action()
-        gesture = new TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
-        gesture.connect('motion', this._switchWorkspaceMotion.bind(this));
-        gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
-        gesture.connect('cancel', this._switchWorkspaceCancel.bind(this));
+        let touchpadSwitchAction = new TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
+        touchpadSwitchAction.connect('motion', this._switchWorkspaceMotion.bind(this));
+        touchpadSwitchAction.connect('activated', this._actionSwitchWorkspace.bind(this));
+        touchpadSwitchAction.connect('cancel', this._switchWorkspaceCancel.bind(this));
 
-        gesture = new AppSwitchAction();
-        gesture.connect('activated', this._switchApp.bind(this));
-        global.stage.add_action(gesture);
+        let appSwitchAction = new AppSwitchAction();
+        appSwitchAction.connect('activated', this._switchApp.bind(this));
+        global.stage.add_action(appSwitchAction);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
-        gesture.connect('activated', () => {
+        let bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
+        bottomDragAction.connect('activated', () => {
             Main.keyboard.show(Main.layoutManager.bottomIndex);
         });
         Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
-            gesture.cancel();
-            gesture.set_enabled(!visible);
+            bottomDragAction.cancel();
+            bottomDragAction.set_enabled(!visible);
         });
-        global.stage.add_action(gesture);
+        global.stage.add_action(bottomDragAction);
 
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
-        gesture.connect('activated',  () => {
+        let topDragAction = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
+        topDragAction.connect('activated',  () => {
             let currentWindow = global.display.focus_window;
             if (currentWindow)
                 currentWindow.unmake_fullscreen();
@@ -1096,13 +1096,13 @@ var WindowManager = class {
 
         let updateUnfullscreenGesture = () => {
             let currentWindow = global.display.focus_window;
-            gesture.enabled = currentWindow && currentWindow.is_fullscreen();
+            topDragAction.enabled = currentWindow && currentWindow.is_fullscreen();
         }
 
         global.display.connect('notify::focus-window', updateUnfullscreenGesture);
         global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
 
-        global.stage.add_action(gesture);
+        global.stage.add_action(topDragAction);
     }
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
