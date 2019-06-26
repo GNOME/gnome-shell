@@ -69,7 +69,7 @@ var TouchSwipeGesture = GObject.registerClass({
     Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
                'cancel': { param_types: [GObject.TYPE_UINT] }},
-}, class TouchSwipeGesture extends Clutter.SwipeAction {
+}, class TouchSwipeGesture extends Clutter.GestureAction {
     _init(actor) {
         super._init();
         this.set_n_touch_points(4);
@@ -87,16 +87,20 @@ var TouchSwipeGesture = GObject.registerClass({
     }
 
     vfunc_gesture_progress(actor, point) {
-        let [d, dx, dy] = this.get_motion_delta(point);
+        if (point != 0)
+            return;
+
+        let [distance, dx, dy] = this.get_motion_delta(0);
+
         let time = this.get_last_event(point).get_time();
 
-        this.emit('update', time, dy / this._actor.height); // TODO: the height isn't always equal to the actor height
+        this.emit('update', time, -dy / global.screen_height - Main.panel.height); // TODO: the height isn't always equal to the actor height
     }
 
-    vfunc_swipe(actor, direction) {
+    vfunc_gesture_end(actor, point) {
         this._swept = true;
 
-        let time = Clutter.get_current_event_time();
+        let time = this.get_last_event(point).get_time();
 
         this.emit('end', time);
     }
@@ -188,7 +192,7 @@ var SwipeTracker = class {
         let gesture = new TouchpadSwipeGesture(actor);
         gesture.connect('update', this._updateGesture.bind(this));
         gesture.connect('end', this._endGesture.bind(this));
-        gesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
+        gesture.connect('cancel', this._endGesture.bind(this)); // End the gesture normally for touchpads
 
         gesture = new TouchSwipeGesture(actor);
         gesture.connect('update', this._updateGesture.bind(this));
@@ -296,10 +300,13 @@ var SwipeTracker = class {
         if (this._progress < 0 && !this.can_swipe_forward)
             return true;
 
+        if (Math.abs(this._velocity) < VELOCITY_THRESHOLD)
+            return Math.abs(this._progress) < CANCEL_AREA;
+
         if (this._velocity * this._progress < 0)
             return true;
 
-        return Math.abs(this._progress) < CANCEL_AREA && Math.abs(this._velocity) < VELOCITY_THRESHOLD;
+        return false;
     }
 
     _endGesture(gesture, time) {
