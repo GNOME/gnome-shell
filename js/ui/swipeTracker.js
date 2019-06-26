@@ -94,7 +94,7 @@ var TouchSwipeGesture = GObject.registerClass({
 
         let time = this.get_last_event(point).get_time();
 
-        this.emit('update', time, -dy / global.screen_height - Main.panel.height); // TODO: the height isn't always equal to the actor height
+        this.emit('update', time, -dy / (global.screen_height - Main.panel.height)); // TODO: the height isn't always equal to the actor height
     }
 
     vfunc_gesture_end(actor, point) {
