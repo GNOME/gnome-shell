@@ -48,6 +48,141 @@ var UnlockStatus = {
     SUCCEEDED: 4,
 };
 
+var PaygUnlockCodeEntry = GObject.registerClass({
+    Signals: {
+        'code-changed': { param_types: [GObject.TYPE_STRING] },
+    },
+}, class PaygUnlockCodeEntry extends St.Entry {
+
+    _init() {
+        super._init({
+            style_class: 'unlock-dialog-payg-entry',
+            reactive: true,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.FILL,
+            x_expand: true,
+            y_expand: false,
+        });
+
+        this._code = '';
+        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.clutter_text.x_align = Clutter.ActorAlign.CENTER;
+
+        this._enabled = false;
+        this._buttonPressEventId = this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+        this._capturedEventId = this.clutter_text.connect('captured-event', this._onCapturedEvent.bind(this));
+        this._textChangedId = this.clutter_text.connect('text-changed', this._onTextChanged.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._buttonPressEventId > 0) {
+            this.disconnect(this._buttonPressEventId);
+            this._buttonPressEventId = 0;
+        }
+
+        if (this._capturedEventId > 0) {
+            this.clutter_text.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
+        if (this._textChangedId > 0) {
+            this.clutter_text.disconnect(this._textChangedId);
+            this._textChangedId = 0;
+        }
+    }
+
+    _onCapturedEvent(textActor, event) {
+        if (event.type() !== Clutter.EventType.KEY_PRESS)
+            return Clutter.EVENT_PROPAGATE;
+
+        let keysym = event.get_key_symbol();
+        let isDeleteKey =
+            keysym === Clutter.KEY_Delete ||
+            keysym === Clutter.KEY_KP_Delete ||
+            keysym === Clutter.KEY_BackSpace;
+        let isEnterKey =
+            keysym === Clutter.KEY_Return ||
+            keysym === Clutter.KEY_KP_Enter ||
+            keysym === Clutter.KEY_ISO_Enter;
+        let isExitKey =
+            keysym === Clutter.KEY_Escape ||
+            keysym === Clutter.KEY_Tab;
+        let isMovementKey =
+            keysym === Clutter.KEY_Left ||
+            keysym === Clutter.KEY_Right ||
+            keysym === Clutter.KEY_Home ||
+            keysym === Clutter.KEY_KP_Home ||
+            keysym === Clutter.KEY_End ||
+            keysym === Clutter.KEY_KP_End;
+
+        // Make sure we can leave the entry and delete and
+        // navigate numbers with the keyboard.
+        if (isExitKey || isEnterKey || isDeleteKey || isMovementKey)
+            return Clutter.EVENT_PROPAGATE;
+
+        let character = event.get_key_unicode();
+        this.addCharacter(character);
+
+        return Clutter.EVENT_STOP;
+    }
+
+    _onTextChanged(textActor) {
+        this._code = textActor.text;
+        this.emit('code-changed', this._code);
+    }
+
+    _onButtonPressEvent() {
+        if (!this._enabled)
+            return;
+
+        this.grab_key_focus();
+        return false;
+    }
+
+    addCharacter(character) {
+        if (!this._enabled || !GLib.unichar_isprint(character) ||
+            character === Main.paygManager.codeFormatPrefix ||
+            character === Main.paygManager.codeFormatSuffix)
+            return;
+
+        let pos = this.clutter_text.get_cursor_position();
+        let before = pos === -1 ? this._code : this._code.slice(0, pos);
+        let after = pos === -1 ? '' : this._code.slice(pos);
+        let newCode = before + character + after;
+
+        if (!Main.paygManager.validateCode(newCode, true))
+            return;
+
+        this.clutter_text.insert_unichar(character);
+    }
+
+    setEnabled(value) {
+        if (this._enabled === value)
+            return;
+
+        this._enabled = value;
+        this.reactive = value;
+        this.can_focus = value;
+        this.clutter_text.reactive = value;
+        this.clutter_text.editable = value;
+        this.clutter_text.cursor_visible = value;
+    }
+
+    reset() {
+        this.text = '';
+    }
+
+    get code() {
+        return this._code;
+    }
+
+    get length() {
+        return this._code.length;
+    }
+});
+
 var PaygUnlockUi = GObject.registerClass({
     Signals: {
         'code-reset': {},
