@@ -140,12 +140,12 @@ function start() {
 
 function _initializeUI() {
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
-    // also initialize ShellAppSystem first.  ShellAppSystem
+    // also initialize ShellAppSystem first. ShellAppSystem
     // needs to load all the .desktop files, and ShellWindowTracker
-    // will use those to associate with windows.  Right now
+    // will use those to associate with windows. Right now
     // the Monitor doesn't listen for installed app changes
     // and recalculate application associations, so to avoid
-    // races for now we initialize it here.  It's better to
+    // races for now we initialize it here. It's better to
     // be predictable anyways.
     Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
@@ -157,8 +157,8 @@ function _initializeUI() {
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
 
-    // Various parts of the codebase still refers to Main.uiGroup
-    // instead using the layoutManager.  This keeps that code
+    // Various parts of the codebase still refer to Main.uiGroup
+    // instead of using the layoutManager. This keeps that code
     // working until it's updated.
     uiGroup = layoutManager.uiGroup;
 
@@ -322,7 +322,7 @@ function getThemeStylesheet() {
 /**
  * setThemeStylesheet:
  * @cssStylesheet: A file path that contains the theme CSS,
- *                  set it to null to use the default
+ *                 set it to null to use the default
  *
  * Set the theme CSS file that the shell will load
  */
@@ -422,15 +422,15 @@ function _findModal(actor) {
  *
  * @params may be used to provide the following parameters:
  *  - timestamp: used to associate the call with a specific user initiated
- *               event.  If not provided then the value of
+ *               event. If not provided then the value of
  *               global.get_current_time() is assumed.
  *
  *  - options: Meta.ModalOptions flags to indicate that the pointer is
  *             already grabbed
  *
  *  - actionMode: used to set the current Shell.ActionMode to filter
- *                    global keybindings; the default of NONE will filter
- *                    out all keybindings
+ *                global keybindings; the default of NONE will filter
+ *                out all keybindings
  *
  * Returns: true iff we successfully acquired a grab or already had one
  */
@@ -476,15 +476,15 @@ function pushModal(actor, params) {
 
 /**
  * popModal:
- * @actor: #ClutterActor passed to original invocation of pushModal().
+ * @actor: #ClutterActor passed to original invocation of pushModal()
  * @timestamp: optional timestamp
  *
- * Reverse the effect of pushModal().  If this invocation is undoing
+ * Reverse the effect of pushModal(). If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
  * previous focus at the time when pushModal() was invoked.
  *
  * @timestamp is optionally used to associate the call with a specific user
- * initiated event.  If not provided then the value of
+ * initiated event. If not provided then the value of
  * global.get_current_time() is assumed.
  */
 function popModal(actor, timestamp) {
@@ -646,7 +646,7 @@ function _queueBeforeRedraw(workId) {
  *
  * This function sets up a callback to be invoked when either the
  * given actor is mapped, or after some period of time when the machine
- * is idle.  This is useful if your actor isn't always visible on the
+ * is idle. This is useful if your actor isn't always visible on the
  * screen (for example, all actors in the overview), and you don't want
  * to consume resources updating if the actor isn't actually going to be
  * displaying to the user.
@@ -682,7 +682,7 @@ function initializeDeferredWork(actor, callback, props) {
  * @workId: work identifier
  *
  * Ensure that the work identified by @workId will be
- * run on map or timeout.  You should call this function
+ * run on map or timeout. You should call this function
  * for example when data being displayed by the actor has
  * changed.
  */
