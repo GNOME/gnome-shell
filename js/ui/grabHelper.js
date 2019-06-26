@@ -181,6 +181,10 @@ var GrabHelper = class GrabHelper {
         if (!this._takeModalGrab())
             return false;
 
+        this._modalPushedId = global.connect('modal-pushed',() => {
+            this.ungrab({ isUser: true });
+        });
+
         this._grabStack.push(params);
 
         if (params.focus) {
@@ -247,6 +251,8 @@ var GrabHelper = class GrabHelper {
         let grabStackIndex = this._findStackIndex(params.actor);
         if (grabStackIndex < 0)
             return;
+
+        global.disconnect(this._modalPushedId);
 
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
