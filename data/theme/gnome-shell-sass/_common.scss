@@ -146,8 +146,7 @@ StScrollBar {
   -slider-handle-radius: 8px;
   -slider-handle-border-width: 1px;
   -slider-handle-border-color: $borders_color;
-  color: $bg_color; /* FIXME to match gtk, we'd need to style the border of the slider, not
-     the whole widget */
+  color: if($variant == 'light', lighten($bg_color, 10%), darken($bg_color,4%));
   &:hover { color: $_hover_bg_color; }
   &:active { color: $_active_bg_color; }
 }
