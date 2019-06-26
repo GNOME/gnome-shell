@@ -3,6 +3,7 @@
 const { Clutter, Gio, GLib, GObject, Soup, St } = imports.gi;
 
 const Config = imports.misc.config;
+const Dialog = imports.ui.dialog;
 const ExtensionUtils = imports.misc.extensionUtils;
 const ExtensionSystem = imports.ui.extensionSystem;
 const FileUtils = imports.misc.fileUtils;
@@ -194,19 +195,14 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                            default: true
                          }]);
 
-        let message = _("Download and install “%s” from extensions.gnome.org?").format(info.name);
+        let content = new Dialog.MessageDialogContent({
+            title: _("Download and install “%s” from extensions.gnome.org?").format(info.name),
+            icon: new Gio.FileIcon({
+                file: Gio.File.new_for_uri(`${REPOSITORY_URL_BASE}${info.icon}`)
+            })
+        });
 
-        let box = new St.BoxLayout({ style_class: 'message-dialog-main-layout',
-                                     vertical: false });
-        this.contentLayout.add(box);
-
-        let gicon = new Gio.FileIcon({ file: Gio.File.new_for_uri(REPOSITORY_URL_BASE + info.icon) })
-        let icon = new St.Icon({ gicon: gicon });
-        box.add(icon);
-
-        let label = new St.Label({ style_class: 'message-dialog-title headline',
-                                   text: message });
-        box.add(label);
+        this.contentLayout.add(content);
     }
 
     _onCancelButtonPressed(button, event) {
