@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, GObject, Soup, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Pango, Soup, St } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -194,19 +194,30 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                            default: true
                          }]);
 
-        let message = _("Download and install “%s” from extensions.gnome.org?").format(info.name);
+        let title_text = _("Install “%s”?").format(info.name);
 
-        let box = new St.BoxLayout({ style_class: 'message-dialog-main-layout',
+        let description_text = _("“%s” will be downloaded and installed from extensions.gnome.org.").format(info.name);
+
+        let mainContentLayout = new St.BoxLayout({ style_class: 'message-dialog-main-layout',
                                      vertical: false });
-        this.contentLayout.add(box);
+        this.contentLayout.add(mainContentLayout);
 
         let gicon = new Gio.FileIcon({ file: Gio.File.new_for_uri(REPOSITORY_URL_BASE + info.icon) })
         let icon = new St.Icon({ gicon: gicon });
-        box.add(icon);
+        mainContentLayout.add(icon);
 
-        let label = new St.Label({ style_class: 'message-dialog-title headline',
-                                   text: message });
-        box.add(label);
+        let dialogContent = new St.BoxLayout({ style_class: 'message-dialog-content', 
+                                     vertical: true });
+
+        let title = new St.Label({ style_class: 'message-dialog-title headline',
+                                   text: title_text });
+        dialogContent.add(title);
+
+        let description = new St.Label({ text: description_text });
+        description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        description.clutter_text.line_wrap = true;
+        dialogContent.add(description);
+        mainContentLayout.add(dialogContent);
     }
 
     _onCancelButtonPressed(button, event) {
