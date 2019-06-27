@@ -162,7 +162,7 @@ var Spinner = class extends AnimatedIcon {
                 time: SPINNER_ANIMATION_TIME,
                 transition: 'linear',
                 onComplete: () => {
-                    super.stop();
+                    this.stop(false);
                 }
             });
         } else {
