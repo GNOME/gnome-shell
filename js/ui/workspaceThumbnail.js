@@ -1002,7 +1002,7 @@ class ThumbnailsBox extends St.Widget {
 
     set indicatorY(indicatorY) {
         this._indicatorY = indicatorY;
-        this.queue_relayout();
+        this._indicator.translation_y = indicatorY;
     }
 
     get indicatorY() {
@@ -1208,11 +1208,10 @@ class ThumbnailsBox extends St.Widget {
         else
             slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
-        let indicatorY1 = this._indicatorY;
+        let indicatorY1;
         let indicatorY2;
         // when not animating, the workspace position overrides this._indicatorY
         let activeWorkspace = workspaceManager.get_active_workspace();
-        let indicatorWorkspace = !this._animatingIndicator ? activeWorkspace : null;
         let indicatorThemeNode = this._indicator.get_theme_node();
 
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
@@ -1266,7 +1265,7 @@ class ThumbnailsBox extends St.Widget {
             let y2 = Math.round(y + thumbnailHeight);
             let roundedVScale = (y2 - y1) / portholeHeight;
 
-            if (thumbnail.metaWorkspace == indicatorWorkspace) {
+            if (thumbnail.metaWorkspace == activeWorkspace) {
                 indicatorY1 = y1;
                 indicatorY2 = y2;
             }
@@ -1297,7 +1296,7 @@ class ThumbnailsBox extends St.Widget {
         childBox.x1 -= indicatorLeftFullBorder;
         childBox.x2 += indicatorRightFullBorder;
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
-        childBox.y2 = (indicatorY2 ? indicatorY2 : (indicatorY1 + thumbnailHeight)) + indicatorBottomFullBorder;
+        childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
     }
 
@@ -1312,12 +1311,13 @@ class ThumbnailsBox extends St.Widget {
             }
         }
 
+        this.queue_relayout();
+
         this._animatingIndicator = true;
-        let indicatorThemeNode = this._indicator.get_theme_node();
-        let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
-        this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
+        this.indicatorY = this._indicator.allocation.y1 - thumbnail.actor.allocation.y1;
+
         Tweener.addTween(this,
-                         { indicatorY: thumbnail.actor.allocation.y1,
+                         { indicatorY: 0,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
                            onComplete() {
