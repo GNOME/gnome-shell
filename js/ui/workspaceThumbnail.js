@@ -626,7 +626,8 @@ class ThumbnailsBox extends St.Widget {
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
-        this._indicatorY = 0; // only used when _animatingIndicator is true
+        this._gestureActive = false;
+        this._indicatorY = 0; // only used when _animatingIndicator or_gestureActive is true
 
         this._stateCounts = {};
         for (let key in ThumbnailState)
@@ -1001,12 +1002,38 @@ class ThumbnailsBox extends St.Widget {
     }
 
     set indicatorY(indicatorY) {
+        if (indicatorY == this._indicatorY)
+            return;
+
         this._indicatorY = indicatorY;
         this.queue_relayout();
     }
 
     get indicatorY() {
         return this._indicatorY;
+    }
+
+    overrideIndicatorPosition(pos) {
+        if (this._animatingIndicator) {
+            Tweener.removeTweens(this);
+            this._animatingIndicator = false;
+        }
+
+        let index1 = Math.floor(pos);
+        let index2 = Math.ceil(pos);
+        let progress = pos - index1;
+
+        this._gestureActive = true;
+
+        let indicatorY1 = this._thumbnails[index1].actor.allocation.y1;
+        let indicatorY2 = this._thumbnails[index2].actor.allocation.y1;
+
+        this.indicatorY = indicatorY1 + (indicatorY2 - indicatorY1) * progress;
+    }
+
+    resetIndicatorPosition() {
+        this._gestureActive = false;
+        this._queueUpdateStates();
     }
 
     _setThumbnailState(thumbnail, state) {
@@ -1038,7 +1065,7 @@ class ThumbnailsBox extends St.Widget {
         this._stateUpdateQueued = false;
 
         // If we are animating the indicator, wait
-        if (this._animatingIndicator)
+        if (this._animatingIndicator || this._gestureActive)
             return;
 
         // Then slide out any thumbnails that have been destroyed
@@ -1212,7 +1239,7 @@ class ThumbnailsBox extends St.Widget {
         let indicatorY2;
         // when not animating, the workspace position overrides this._indicatorY
         let activeWorkspace = workspaceManager.get_active_workspace();
-        let indicatorWorkspace = !this._animatingIndicator ? activeWorkspace : null;
+        let indicatorWorkspace = (!this._animatingIndicator && !this._gestureActive) ? activeWorkspace : null;
         let indicatorThemeNode = this._indicator.get_theme_node();
 
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
@@ -1302,6 +1329,9 @@ class ThumbnailsBox extends St.Widget {
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
+        if (this._gestureActive)
+             return;
+
         let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
@@ -1319,7 +1349,7 @@ class ThumbnailsBox extends St.Widget {
         Tweener.addTween(this,
                          { indicatorY: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutCubic',
                            onComplete() {
                                this._animatingIndicator = false;
                                this._queueUpdateStates();
