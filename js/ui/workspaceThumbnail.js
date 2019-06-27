@@ -625,7 +625,6 @@ class ThumbnailsBox extends St.Widget {
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
-        this._indicatorY = 0; // only used when _animatingIndicator is true
 
         this._stateCounts = {};
         for (let key in ThumbnailState)
@@ -672,6 +671,19 @@ class ThumbnailsBox extends St.Widget {
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
         this._workareasChangedId = 0;
+
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                     lower: 0,
+                                                     page_increment: 1,
+                                                     page_size: 1,
+                                                     step_increment: 0,
+                                                     upper: workspaceManager.n_workspaces });
+
+        this._scrollAdjustment.connect('notify::value', adj => {
+            this.queue_relayout();
+        });
     }
 
     _updateSwitcherVisibility() {
@@ -926,6 +938,8 @@ class ThumbnailsBox extends St.Widget {
         let oldNumWorkspaces = validThumbnails.length;
         let newNumWorkspaces = workspaceManager.n_workspaces;
 
+        this._scrollAdjustment.upper = newNumWorkspaces;
+
         if (newNumWorkspaces > oldNumWorkspaces) {
             this.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
         } else {
@@ -1008,15 +1022,6 @@ class ThumbnailsBox extends St.Widget {
 
     get scale() {
         return this._scale;
-    }
-
-    set indicatorY(indicatorY) {
-        this._indicatorY = indicatorY;
-        this.queue_relayout();
-    }
-
-    get indicatorY() {
-        return this._indicatorY;
     }
 
     _setThumbnailState(thumbnail, state) {
@@ -1218,13 +1223,16 @@ class ThumbnailsBox extends St.Widget {
         else
             slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
-        let indicatorY1 = this._indicatorY;
-        let indicatorY2;
-        // when not animating, the workspace position overrides this._indicatorY
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let indicatorWorkspace = !this._animatingIndicator ? activeWorkspace : null;
-        let indicatorThemeNode = this._indicator.get_theme_node();
+        let indicatorValue = this._scrollAdjustment.value;
+        let indicatorUpperWs = Math.ceil(indicatorValue);
+        let indicatorLowerWs = Math.floor(indicatorValue);
 
+        let indicatorLowerY1;
+        let indicatorLowerY2;
+        let indicatorUpperY1;
+        let indicatorUpperY2;
+
+        let indicatorThemeNode = this._indicator.get_theme_node();
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
         let indicatorBottomFullBorder = indicatorThemeNode.get_padding(St.Side.BOTTOM) + indicatorThemeNode.get_border_width(St.Side.BOTTOM);
         let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
@@ -1276,9 +1284,13 @@ class ThumbnailsBox extends St.Widget {
             let y2 = Math.round(y + thumbnailHeight);
             let roundedVScale = (y2 - y1) / portholeHeight;
 
-            if (thumbnail.metaWorkspace == indicatorWorkspace) {
-                indicatorY1 = y1;
-                indicatorY2 = y2;
+            if (i == indicatorUpperWs) {
+                indicatorUpperY1 = y1;
+                indicatorUpperY2 = y2;
+            }
+            if (i == indicatorLowerWs) {
+                indicatorLowerY1 = y1;
+                indicatorLowerY2 = y2;
             }
 
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
@@ -1304,30 +1316,21 @@ class ThumbnailsBox extends St.Widget {
             childBox.x1 = box.x2 - thumbnailWidth;
             childBox.x2 = box.x2;
         }
+        let indicatorY1 = indicatorLowerY1 + (indicatorUpperY1 - indicatorLowerY1) * (indicatorValue % 1);
+        let indicatorY2 = indicatorLowerY2 + (indicatorUpperY2 - indicatorLowerY2) * (indicatorValue % 1);
+
         childBox.x1 -= indicatorLeftFullBorder;
         childBox.x2 += indicatorRightFullBorder;
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
-        childBox.y2 = (indicatorY2 ? indicatorY2 : (indicatorY1 + thumbnailHeight)) + indicatorBottomFullBorder;
+        childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
-        let thumbnail;
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            if (this._thumbnails[i].metaWorkspace == activeWorkspace) {
-                thumbnail = this._thumbnails[i];
-                break;
-            }
-        }
-
+        this._scrollAdjustment.value = from;
         this._animatingIndicator = true;
-        let indicatorThemeNode = this._indicator.get_theme_node();
-        let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
-        this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
-        Tweener.addTween(this,
-                         { indicatorY: thumbnail.actor.allocation.y1,
+        Tweener.addTween(this._scrollAdjustment,
+                         { value: to,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
