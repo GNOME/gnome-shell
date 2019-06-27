@@ -54,20 +54,10 @@ var PaygUnlockCodeEntry = GObject.registerClass({
     },
 }, class PaygUnlockCodeEntry extends St.Entry {
 
-    _init() {
-        super._init({
-            style_class: 'unlock-dialog-payg-entry',
-            reactive: true,
-            can_focus: true,
-            x_align: Clutter.ActorAlign.FILL,
-            x_expand: true,
-            y_expand: false,
-        });
+    _init(params) {
+        super._init(params);
 
         this._code = '';
-        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.clutter_text.x_align = Clutter.ActorAlign.CENTER;
-
         this._enabled = false;
         this._buttonPressEventId = this.connect('button-press-event', this._onButtonPressEvent.bind(this));
         this._capturedEventId = this.clutter_text.connect('captured-event', this._onCapturedEvent.bind(this));
@@ -427,7 +417,7 @@ var PaygUnlockWidget = GObject.registerClass({
     }
 
     _createCodeEntry() {
-        let codeEntry = new St.Entry({
+        let codeEntry = new PaygUnlockCodeEntry({
             style_class: 'notification-payg-entry',
             x_expand: true,
             can_focus: true,

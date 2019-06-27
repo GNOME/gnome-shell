@@ -281,7 +281,17 @@ var PaygUnlockDialog = GObject.registerClass({
             entryBox.add_child(prefix);
         }
 
-        this._entry = new Payg.PaygUnlockCodeEntry();
+        this._entry = new Payg.PaygUnlockCodeEntry({
+            style_class: 'unlock-dialog-payg-entry',
+            reactive: true,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.FILL,
+            x_expand: true,
+            y_expand: false,
+        });
+        this._entry.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._entry.clutter_text.x_align = Clutter.ActorAlign.CENTER;
+
         entryBox.add_child(this._entry);
 
         if (Main.paygManager.codeFormatSuffix !== '') {
