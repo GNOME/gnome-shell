@@ -82,7 +82,6 @@ var WorkspacesView = class extends WorkspacesViewBase {
         super(monitorIndex);
 
         this._animating = false; // tweening
-        this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
         this._animatingScroll = false; // programmatically updating the adjustment
 
@@ -213,7 +212,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            if (this._animating || this._scrolling || this._gestureActive) {
+            if (this._animating || this._gestureActive) {
                 workspace.actor.show();
             } else {
                 if (this._inDrag)
@@ -225,7 +224,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     _updateScrollAdjustment(index) {
-        if (this._scrolling || this._gestureActive)
+        if (this._gestureActive)
             return;
 
         this._animatingScroll = true;
@@ -274,7 +273,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
-        if (this._scrolling)
+        if (this._gestureActive)
             return;
 
         this._scrollToActive();
@@ -290,23 +289,12 @@ var WorkspacesView = class extends WorkspacesViewBase {
         workspaceManager.disconnect(this._updateWorkspacesId);
     }
 
-    startSwipeScroll() {
-        this._scrolling = true;
-    }
-
-    endSwipeScroll() {
-        this._scrolling = false;
-
-        // Make sure title captions etc are shown as necessary
-        this._scrollToActive();
-        this._updateVisibility();
-    }
-
     startTouchGesture() {
         this._gestureActive = true;
     }
 
     endTouchGesture() {
+        // Make sure title captions etc are shown as necessary
         this._scrollToActive(false);
         this._updateVisibility();
 
@@ -399,12 +387,6 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
         this._workspace.syncStacking(stackIndices);
     }
 
-    startSwipeScroll() {
-    }
-
-    endSwipeScroll() {
-    }
-
     startTouchGesture() {
     }
 
@@ -428,8 +410,8 @@ var WorkspacesDisplay = class {
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
         this.actor.connect('parent-set', this._parentSet.bind(this));
 
-        let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', action => {
+        this._clickAction = new Clutter.ClickAction();
+        this._clickAction.connect('clicked', action => {
             // Only switch to the workspace when there's no application
             // windows open. The problem is that it's too easy to miss
             // an app window and get the wrong one focused.
@@ -439,34 +421,11 @@ var WorkspacesDisplay = class {
                 this._workspacesViews[index].getActiveWorkspace().isEmpty())
                 Main.overview.hide();
         });
-        Main.overview.addAction(clickAction);
-        this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-
-        let panAction = new Clutter.PanAction({ trigger_edge: Clutter.TriggerEdge.AFTER });
-        panAction.connect('pan', this._onPan.bind(this));
-        panAction.connect('gesture-begin', () => {
-            if (this._workspacesOnlyOnPrimary) {
-                let event = Clutter.get_current_event();
-                if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
-                    return false;
-            }
-
-            this._startSwipeScroll();
-            return true;
-        });
-        panAction.connect('gesture-cancel', () => {
-            clickAction.release();
-            this._endSwipeScroll();
-        });
-        panAction.connect('gesture-end', () => {
-            clickAction.release();
-            this._endSwipeScroll();
-        });
-        Main.overview.addAction(panAction);
-        this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        Main.overview.addAction(this._clickAction);
+        this.actor.bind_property('mapped', this._clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
-        let swipeTracker = new SwipeTracker.SwipeTracker(global.stage, allowedModes); // TODO: somehow teach it to work with addAction() too
+        let swipeTracker = new SwipeTracker.SwipeTracker(Main.overview._backgroundGroup, allowedModes); // TODO: somehow teach it to work with addAction() too
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
@@ -493,26 +452,6 @@ var WorkspacesDisplay = class {
         this._fullGeometry = null;
 
         this._gestureActive = false;
-    }
-
-    _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
-        let adjustment = this._scrollAdjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
-        return false;
-    }
-
-    _startSwipeScroll() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].startSwipeScroll();
-        this._gestureActive = true;
-    }
-
-    _endSwipeScroll() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].endSwipeScroll();
-        this._gestureActive = false;
-        this._thumbnailsBox.resetIndicatorProgress();
     }
 
     _switchWorkspaceBegin(tracker) {
@@ -548,6 +487,8 @@ var WorkspacesDisplay = class {
     }
 
     _switchWorkspaceEnd(tracker, duration, isBack) {
+        this._clickAction.release();
+
         let direction = isBack ? Meta.MotionDirection.DOWN : Meta.MotionDirection.UP;
 
         let workspaceManager = global.workspace_manager;
@@ -571,6 +512,8 @@ var WorkspacesDisplay = class {
     }
 
     _switchWorkspaceCancel(tracker, duration) {
+        this._clickAction.release();
+
         if (duration == 0) {
             this._endTouchGesture();
             return;

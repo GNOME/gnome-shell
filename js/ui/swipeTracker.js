@@ -26,15 +26,14 @@ function clamp(value, min, max) {
 }
 
 // TODO: support scrolling
-// TODO: support dragging
 // TODO: support horizontal
 
 var TouchpadSwipeGesture = class TouchpadSwipeGesture {
-    constructor(actor, shouldSkip) {
+    constructor(shouldSkip) {
+        this._shouldSkip = shouldSkip;
         this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
 
-        actor.connect('captured-event', this._handleEvent.bind(this));
-        this._shouldSkip = shouldSkip;
+        global.stage.connect('captured-event', this._handleEvent.bind(this));
     }
 
     _handleEvent(actor, event) {
@@ -69,10 +68,11 @@ var TouchSwipeGesture = GObject.registerClass({
     Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
                'cancel': { param_types: [GObject.TYPE_UINT] }},
-}, class TouchSwipeGesture extends Clutter.GestureAction {
-    _init(actor, shouldSkip) {
+}, class TouchSwipeGesture extends Clutter.TriggerAction {
+    _init(actor, shouldSkip, n_touch_points, trigger_edge = Clutter.TriggerEdge.NONE) {
         super._init();
-        this.set_n_touch_points(4);
+        this.set_n_touch_points(n_touch_points);
+        this.set_trigger_edge(trigger_edge);
 
         this._actor = actor;
         this._shouldSkip = shouldSkip;
@@ -153,16 +153,22 @@ var SwipeTracker = class {
         let shouldSkip = () =>
             ((this._allowedModes & Main.actionMode) == 0 || !this._enabled);
 
-        let gesture = new TouchpadSwipeGesture(actor, shouldSkip);
-        gesture.connect('update', this._updateGesture.bind(this));
-        gesture.connect('end', this._endGesture.bind(this));
-//        gesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
+        let touchpadGesture = new TouchpadSwipeGesture(shouldSkip);
+        touchpadGesture.connect('update', this._updateGesture.bind(this));
+        touchpadGesture.connect('end', this._endGesture.bind(this));
+//        touchpadGesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
 
-        gesture = new TouchSwipeGesture(actor, shouldSkip);
-        gesture.connect('update', this._updateGesture.bind(this));
-        gesture.connect('end', this._endGesture.bind(this));
-        gesture.connect('cancel', this._cancelGesture.bind(this));
-        actor.add_action(gesture);
+        let touchGesture = new TouchSwipeGesture(actor, shouldSkip, 4, Clutter.TriggerEdge.NONE);
+        touchGesture.connect('update', this._updateGesture.bind(this));
+        touchGesture.connect('end', this._endGesture.bind(this));
+        touchGesture.connect('cancel', this._cancelGesture.bind(this));
+        global.stage.add_action(touchGesture);
+
+        let dragGesture = new TouchSwipeGesture(actor, shouldSkip, 1, Clutter.TriggerEdge.AFTER);
+        dragGesture.connect('update', this._updateGesture.bind(this));
+        dragGesture.connect('end', this._endGesture.bind(this));
+        dragGesture.connect('cancel', this._cancelGesture.bind(this));
+        actor.add_action(dragGesture);
     }
 
     get enabled() {
@@ -271,8 +277,10 @@ var SwipeTracker = class {
     }
 
     _endGesture(gesture, time) {
-        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
+        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled) {
+//            this._cancel();
             return;
+        }
 
         if (this._state != State.SCROLLING)
             return;

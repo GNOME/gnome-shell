@@ -1357,7 +1357,6 @@ class ThumbnailsBox extends St.Widget {
                            transition: 'easeOutCubic',
                            onComplete() {
                                this._animatingIndicator = false;
-                               this._queue_relayout();
                                this._queueUpdateStates();
                            },
                            onCompleteScope: this
