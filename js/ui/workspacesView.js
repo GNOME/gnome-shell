@@ -441,7 +441,7 @@ var WorkspacesDisplay = class {
         });
         Main.overview.addAction(clickAction);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-
+/*
         let panAction = new Clutter.PanAction({ trigger_edge: Clutter.TriggerEdge.AFTER });
         panAction.connect('pan', this._onPan.bind(this));
         panAction.connect('gesture-begin', () => {
@@ -464,7 +464,7 @@ var WorkspacesDisplay = class {
         });
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-
+*/
         let allowedModes = Shell.ActionMode.OVERVIEW;
         let swipeTracker = new SwipeTracker.SwipeTracker(global.stage, allowedModes); // TODO: somehow teach it to work with addAction() too
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));

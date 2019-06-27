@@ -109,6 +109,50 @@ var TouchSwipeGesture = GObject.registerClass({
     }
 });
 
+/*var DragGesture = GObject.registerClass({
+    Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+               'end':    { param_types: [GObject.TYPE_UINT] },
+               'cancel': { param_types: [GObject.TYPE_UINT] }},
+}, class PanGesture extends Clutter.DragAction {
+    _init(actor, shouldSkip) {
+        super._init();
+
+        this._actor = actor;
+        this._shouldSkip = shouldSkip;
+    }
+
+    vfunc_drag_begin(actor, x, y, modifiers) {
+        
+    }
+
+    vfunc_drag_motion(actor, x, y, modifiers) {
+        
+    }
+
+});*/
+/*
+let panAction = new Clutter.PanAction({ trigger_edge: Clutter.TriggerEdge.AFTER });
+        panAction.connect('pan', this._onPan.bind(this));
+        panAction.connect('gesture-begin', () => {
+            if (this._workspacesOnlyOnPrimary) {
+                let event = Clutter.get_current_event();
+                if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
+                    return false;
+            }
+
+            this._startSwipeScroll();
+            return true;
+        });
+        panAction.connect('gesture-cancel', () => {
+            clickAction.release();
+            this._endSwipeScroll();
+        });
+        panAction.connect('gesture-end', () => {
+            clickAction.release();
+            this._endSwipeScroll();
+        });
+        Main.overview.addAction(panAction);
+*/
 // USAGE:
 //
 // To correctly implement the gesture, the implementer must implement handlers for the
