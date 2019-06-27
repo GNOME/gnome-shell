@@ -16,8 +16,8 @@ const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
-const SwitchMonitor = imports.ui.switchMonitor;
 const SwipeTracker = imports.ui.swipeTracker;
+const SwitchMonitor = imports.ui.switchMonitor;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 

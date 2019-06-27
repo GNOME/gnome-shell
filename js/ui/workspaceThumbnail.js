@@ -626,7 +626,8 @@ class ThumbnailsBox extends St.Widget {
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
-        this._indicatorY = 0; // only used when _animatingIndicator is true
+        this._gestureActive = false;
+        this._indicatorY = 0; // only used when _animatingIndicator or_gestureActive is true
 
         this._stateCounts = {};
         for (let key in ThumbnailState)
@@ -1009,6 +1010,37 @@ class ThumbnailsBox extends St.Widget {
         return this._indicatorY;
     }
 
+    overrideIndicatorProgress(progress) {
+        if (this._animatingIndicator) {
+            Tweener.removeTweens(this);
+            this._animatingIndicator = false;
+        }
+
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+
+        let active;
+        for (let i = 0; i < this._thumbnails.length; i++) {
+            if (this._thumbnails[i].metaWorkspace == activeWorkspace) {
+                active = i;
+                break;
+            }
+        }
+
+        this._gestureActive = true;
+
+//        log("WTF", progress);
+        let indicatorY1 = this._thumbnails[active].actor.allocation.y1;
+        let indicatorY2 = this._thumbnails[active + Math.sign(progress)].actor.allocation.y1;
+        this.indicatorY = (indicatorY2 - indicatorY1) * Math.abs(progress);
+    }
+
+    resetIndicatorProgress() {
+        this.indicatorY = 0;
+        this._gestureActive = false;
+        this._queueUpdateStates();
+    }
+
     _setThumbnailState(thumbnail, state) {
         this._stateCounts[thumbnail.state]--;
         thumbnail.state = state;
@@ -1038,7 +1070,7 @@ class ThumbnailsBox extends St.Widget {
         this._stateUpdateQueued = false;
 
         // If we are animating the indicator, wait
-        if (this._animatingIndicator)
+        if (this._animatingIndicator || this._gestureActive)
             return;
 
         // Then slide out any thumbnails that have been destroyed
@@ -1301,6 +1333,11 @@ class ThumbnailsBox extends St.Widget {
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
+        this.queue_relayout();
+
+        if (this._gestureActive)
+             return;
+
         let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
@@ -1311,17 +1348,16 @@ class ThumbnailsBox extends St.Widget {
             }
         }
 
-        this.queue_relayout();
-
         this._animatingIndicator = true;
         this.indicatorY = this._indicator.allocation.y1 - thumbnail.actor.allocation.y1;
 
         Tweener.addTween(this,
                          { indicatorY: 0,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
-                           transition: 'easeOutQuad',
+                           transition: 'easeOutCubic',
                            onComplete() {
                                this._animatingIndicator = false;
+                               this._queue_relayout();
                                this._queueUpdateStates();
                            },
                            onCompleteScope: this

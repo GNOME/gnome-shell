@@ -30,10 +30,11 @@ function clamp(value, min, max) {
 // TODO: support horizontal
 
 var TouchpadSwipeGesture = class TouchpadSwipeGesture {
-    constructor(actor) {
+    constructor(actor, shouldSkip) {
         this._touchpadSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.touchpad'});
 
         actor.connect('captured-event', this._handleEvent.bind(this));
+        this._shouldSkip = shouldSkip;
     }
 
     _handleEvent(actor, event) {
@@ -43,8 +44,8 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
         if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
-//        if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
-//            return Clutter.EVENT_PROPAGATE;
+        if (this._shouldSkip())
+            return Clutter.EVENT_PROPAGATE;
 
         let time = event.get_time();
         let [dx, dy] = event.get_gesture_motion_delta();
@@ -69,18 +70,19 @@ var TouchSwipeGesture = GObject.registerClass({
                'end':    { param_types: [GObject.TYPE_UINT] },
                'cancel': { param_types: [GObject.TYPE_UINT] }},
 }, class TouchSwipeGesture extends Clutter.GestureAction {
-    _init(actor) {
+    _init(actor, shouldSkip) {
         super._init();
         this.set_n_touch_points(4);
 
         this._actor = actor;
+        this._shouldSkip = shouldSkip;
     }
 
     vfunc_gesture_begin(actor, point) {
         if (!super.vfunc_gesture_begin(actor, point))
             return false;
 
-        return true; //(this._allowedModes & Main.actionMode) != 0 && this._enabled;
+        return !this._shouldSkip();
     }
 
     // TODO: track center of the fingers instead of the first one
@@ -148,12 +150,15 @@ var SwipeTracker = class {
         this._can_swipe_back = true;
         this._can_swipe_forward = true;
 
-        let gesture = new TouchpadSwipeGesture(actor);
+        let shouldSkip = () =>
+            ((this._allowedModes & Main.actionMode) == 0 || !this._enabled);
+
+        let gesture = new TouchpadSwipeGesture(actor, shouldSkip);
         gesture.connect('update', this._updateGesture.bind(this));
         gesture.connect('end', this._endGesture.bind(this));
 //        gesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
 
-        gesture = new TouchSwipeGesture(actor);
+        gesture = new TouchSwipeGesture(actor, shouldSkip);
         gesture.connect('update', this._updateGesture.bind(this));
         gesture.connect('end', this._endGesture.bind(this));
         gesture.connect('cancel', this._cancelGesture.bind(this));
