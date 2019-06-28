@@ -335,6 +335,9 @@ var AllView = class AllView extends BaseAppView {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+
         this._nEventBlockerInhibits = 0;
     }
 
@@ -677,6 +680,61 @@ var AllView = class AllView extends BaseAppView {
         // Update folder views
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
+    }
+
+    _handleDragOvershoot(dragEvent) {
+        let [, gridY] = this.actor.get_transformed_position();
+        let [, gridHeight] = this.actor.get_transformed_size();
+        let gridBottom = gridY + gridHeight;
+
+        // Within the grid boundaries, or already animating
+        if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
+            this._adjustment.get_transition('value') != null) {
+            return;
+        }
+
+        // Moving above the grid
+        let currentY = this._adjustment.value;
+        if (dragEvent.y <= gridY && currentY > 0) {
+            this.goToPage(this._grid.currentPage - 1);
+            return;
+        }
+
+        // Moving below the grid
+        let maxY = this._adjustment.upper - this._adjustment.page_size;
+        if (dragEvent.y >= gridBottom && currentY < maxY) {
+            this.goToPage(this._grid.currentPage + 1);
+            return;
+        }
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this)
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        if (!(dragEvent.source instanceof AppIcon))
+            return DND.DragMotionResult.CONTINUE;
+
+        let appIcon = dragEvent.source;
+
+        // Handle the drag overshoot. When dragging to above the
+        // icon grid, move to the page above; when dragging below,
+        // move to the page below.
+        if (this._grid.contains(appIcon.actor))
+            this._handleDragOvershoot(dragEvent);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
     }
 
     inhibitEventBlocker() {
