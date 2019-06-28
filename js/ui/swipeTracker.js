@@ -122,7 +122,7 @@ var ScrollGesture = class ScrollGesture {
         if (event.get_scroll_direction() != Clutter.ScrollDirection.SMOOTH)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.get_scroll_source() != Clutter.ScrollSource.FINGER)
+        if (event.get_scroll_source() != Clutter.ScrollSource.FINGER && event.get_source_device().get_device_type() != Clutter.InputDeviceType.TOUCHPAD_DEVICE)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._shouldSkip())

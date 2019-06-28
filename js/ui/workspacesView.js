@@ -737,7 +737,7 @@ var WorkspacesDisplay = class {
     }
 
     _onScrollEvent(actor, event) {
-        if (event.get_scroll_source() == Clutter.ScrollSource.FINGER) // TODO: remove this and handle it in SwipeTracker too
+        if (event.get_scroll_source() == Clutter.ScrollSource.FINGER || event.get_source_device().get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE) // TODO: remove this and handle it in SwipeTracker too
             return Clutter.EVENT_PROPAGATE;
 
         if (!this.actor.mapped)
