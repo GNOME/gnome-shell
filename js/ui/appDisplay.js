@@ -1126,6 +1126,11 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView();
 
+        Main.overview.connect('item-drag-begin',
+                              this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end',
+                              this._onDragEnd.bind(this));
+
         this.actor.connect('clicked', () => {
             this._ensurePopup();
             this.view.actor.vscroll.adjustment.value = 0;
@@ -1142,6 +1147,48 @@ var FolderIcon = class FolderIcon {
 
     getAppIds() {
         return this.view.getAllItems().map(item => item.id);
+    }
+
+    _onDragBegin() {
+        this._parentView.inhibitEventBlocker();
+    }
+
+    _onDragEnd() {
+        this._parentView.uninhibitEventBlocker();
+    }
+
+    _canDropAt(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        if (!global.settings.is_writable('favorite-apps'))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        let folderApps = this._folder.get_strv('apps');
+        if (folderApps.includes(source.app.id))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return false;
+
+        let app = source.app;
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        return true;
     }
 
     _updateName() {
