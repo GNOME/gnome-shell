@@ -294,8 +294,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     endTouchGesture() {
-        // Make sure title captions etc are shown as necessary
-        this._scrollToActive(false);
+        this._scrollToActive();
         this._updateVisibility();
 
         this._gestureActive = false;
