@@ -1238,6 +1238,7 @@ var FolderIcon = class FolderIcon {
 
         this.actor.visible = this.view.getAllItems().length > 0;
         this.view.loadGrid();
+        this.icon.update();
         this.emit('apps-changed');
     }
 
