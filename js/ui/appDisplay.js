@@ -326,6 +326,8 @@ var AllView = class AllView extends BaseAppView {
         this._folderSettings.connect('changed::folder-children', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
+
+        this._nEventBlockerInhibits = 0;
     }
 
     _redisplay() {
@@ -667,6 +669,19 @@ var AllView = class AllView extends BaseAppView {
         // Update folder views
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
+    }
+
+    inhibitEventBlocker() {
+        this._nEventBlockerInhibits++;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
+    }
+
+    uninhibitEventBlocker() {
+        if (this._nEventBlockerInhibits === 0)
+            throw new Error('Not inhibited');
+
+        this._nEventBlockerInhibits--;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
     }
 };
 Signals.addSignalMethods(AllView.prototype);
