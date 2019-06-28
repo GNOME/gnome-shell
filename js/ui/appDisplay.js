@@ -1220,6 +1220,11 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView(this._folder, parentView);
 
+        Main.overview.connect('item-drag-begin',
+                              this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end',
+                              this._onDragEnd.bind(this));
+
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
@@ -1251,6 +1256,44 @@ var FolderIcon = class FolderIcon {
 
     getAppIds() {
         return this.view.getAllItems().map(item => item.id);
+    }
+
+    _onDragBegin() {
+        this._parentView.inhibitEventBlocker();
+    }
+
+    _onDragEnd() {
+        this._parentView.uninhibitEventBlocker();
+    }
+
+    _canAccept(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        if (this._folder.get_strv('apps').includes(source.id))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        if (!this._canAccept(source))
+            return true;
+
+        let app = source.app;
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        return true;
     }
 
     _updateName() {
