@@ -81,6 +81,13 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
+function _getViewFromIcon(icon) {
+    let parent = icon.actor.get_parent();
+    if (!parent._delegate || !(parent._delegate instanceof BaseAppView))
+        return null;
+    return parent._delegate;
+}
+
 class BaseAppView {
     constructor(params, gridParams) {
         if (this.constructor === BaseAppView)
@@ -240,6 +247,7 @@ var AllView = class AllView extends BaseAppView {
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
         this.actor.add_actor(this._scrollView);
+        this._grid._delegate = this;
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
@@ -1048,6 +1056,7 @@ var FolderView = class FolderView extends BaseAppView {
         this._grid.x_expand = true;
         this._folder = folder;
         this._parentView = parentView;
+        this._grid._delegate = this;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
@@ -1220,6 +1229,11 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView(this._folder, parentView);
 
+        Main.overview.connect('item-drag-begin',
+                              this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end',
+                              this._onDragEnd.bind(this));
+
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
@@ -1251,6 +1265,57 @@ var FolderIcon = class FolderIcon {
 
     getAppIds() {
         return this.view.getAllItems().map(item => item.id);
+    }
+
+    _onDragBegin() {
+        this._parentView.inhibitEventBlocker();
+    }
+
+    _onDragEnd() {
+        this._parentView.uninhibitEventBlocker();
+    }
+
+    _canAccept(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        let view = _getViewFromIcon(source);
+        if (!view || !(view instanceof AllView))
+            return false;
+
+        if (this._folder.get_strv('apps').includes(source.id))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        if (!this._canAccept(source))
+            return true;
+
+        let app = source.app;
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        // Also remove from 'excluded-apps' if the app id is listed
+        // there. This is only possible on categories-based folders.
+        let excludedApps = this._folder.get_strv('excluded-apps');
+        let index = excludedApps.indexOf(app.id);
+        if (index >= 0) {
+            excludedApps.splice(index, 1);
+            this._folder.set_strv('excluded-apps', excludedApps);
+        }
+
+        return true;
     }
 
     _updateName() {
