@@ -424,7 +424,7 @@ var WorkspacesDisplay = class {
         this.actor.bind_property('mapped', this._clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
-        let swipeTracker = new SwipeTracker.SwipeTracker(Main.overview._backgroundGroup, allowedModes); // TODO: somehow teach it to work with addAction() too
+        let swipeTracker = new SwipeTracker.SwipeTracker(Main.overview, allowedModes);
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
@@ -619,7 +619,6 @@ var WorkspacesDisplay = class {
             else
                 view = new WorkspacesView(i);
 
-            view.actor.connect('scroll-event', this._onScrollEvent.bind(this));
             if (i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
@@ -738,6 +737,9 @@ var WorkspacesDisplay = class {
     }
 
     _onScrollEvent(actor, event) {
+        if (event.get_scroll_source() == Clutter.ScrollSource.FINGER) // TODO: remove this and handle it in SwipeTracker too
+            return Clutter.EVENT_PROPAGATE;
+
         if (!this.actor.mapped)
             return Clutter.EVENT_PROPAGATE;
 
