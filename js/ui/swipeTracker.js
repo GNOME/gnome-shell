@@ -171,7 +171,7 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 //   This property can be used to enable or disable the swipe tracker temporarily.
 
 var SwipeTracker = class {
-    constructor(actor, allowedModes, allowDrag = true) {
+    constructor(actor, allowedModes, allowDrag = true, allowScroll = true) {
         this._allowedModes = allowedModes;
         this._enabled = true;
 
@@ -202,13 +202,15 @@ var SwipeTracker = class {
             try {
                 actor.add_action(dragGesture);
             } catch (e) {
-                actor.addAction(dragGesture);
+                actor.addAction(dragGesture); // FIXME: wtf is this
             }
         }
 
-        let scrollGesture = new ScrollGesture(actor, shouldSkip);
-        scrollGesture.connect('update', this._updateGesture.bind(this));
-        scrollGesture.connect('end', this._endGesture.bind(this));
+        if (allowScroll) {
+            let scrollGesture = new ScrollGesture(actor, shouldSkip);
+            scrollGesture.connect('update', this._updateGesture.bind(this));
+            scrollGesture.connect('end', this._endGesture.bind(this));
+        }
     }
 
     get enabled() {
