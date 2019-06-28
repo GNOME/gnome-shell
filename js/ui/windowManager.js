@@ -926,7 +926,7 @@ var WindowManager = class {
                                                            false, -1, 1);
 
         let allowedModes = Shell.ActionMode.NORMAL;
-        let gesture = new SwipeTracker.SwipeTracker(global.stage, allowedModes);
+        let gesture = new SwipeTracker.SwipeTracker(global.stage, allowedModes, false);
         gesture.connect('begin', this._switchWorkspaceBegin.bind(this));
         gesture.connect('update', this._switchWorkspaceUpdate.bind(this));
         gesture.connect('end', this._switchWorkspaceEnd.bind(this));

@@ -140,7 +140,7 @@ var TouchSwipeGesture = GObject.registerClass({
 //   This property can be used to enable or disable the swipe tracker temporarily.
 
 var SwipeTracker = class {
-    constructor(actor, allowedModes) {
+    constructor(actor, allowedModes, allowDrag = true) {
         this.actor = actor;
         this._allowedModes = allowedModes;
         this._enabled = true;
@@ -164,11 +164,13 @@ var SwipeTracker = class {
         touchGesture.connect('cancel', this._cancelGesture.bind(this));
         global.stage.add_action(touchGesture);
 
-        let dragGesture = new TouchSwipeGesture(actor, shouldSkip, 1, Clutter.TriggerEdge.AFTER);
-        dragGesture.connect('update', this._updateGesture.bind(this));
-        dragGesture.connect('end', this._endGesture.bind(this));
-        dragGesture.connect('cancel', this._cancelGesture.bind(this));
-        actor.add_action(dragGesture);
+        if (allowDrag) {
+            let dragGesture = new TouchSwipeGesture(actor, shouldSkip, 1, Clutter.TriggerEdge.AFTER);
+            dragGesture.connect('update', this._updateGesture.bind(this));
+            dragGesture.connect('end', this._endGesture.bind(this));
+            dragGesture.connect('cancel', this._cancelGesture.bind(this));
+            actor.add_action(dragGesture);
+        }
     }
 
     get enabled() {
