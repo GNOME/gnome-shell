@@ -141,6 +141,10 @@ class BaseIcon extends St.Bin {
         // animating.
         zoomOutActor(this.child);
     }
+
+    update() {
+        this._createIconTexture(this.iconSize);
+    }
 });
 
 function clamp(value, min, max) {
