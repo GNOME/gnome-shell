@@ -1310,6 +1310,7 @@ var FolderIcon = class FolderIcon {
     _redisplay() {
         this._updateName();
         this.actor.visible = this.view.getAllItems().length > 0;
+        this.icon.update();
         this.emit('apps-changed');
     }
 
