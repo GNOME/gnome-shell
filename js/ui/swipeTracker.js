@@ -7,7 +7,7 @@ const Signals = imports.signals;
 const Main = imports.ui.main;
 
 const TOUCHPAD_BASE_DISTANCE = 400;
-const SCROLL_MULTIPLIER = 10;
+const SCROLL_MULTIPLIER = 20;
 
 const MIN_ANIMATION_DURATION = 0.1;
 const MAX_ANIMATION_DURATION = 0.4;
