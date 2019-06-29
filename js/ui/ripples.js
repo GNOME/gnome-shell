@@ -61,10 +61,8 @@ var Ripples = class Ripples {
     }
 
     addTo(stage) {
-        if (this._stage !== undefined) {
+        if (this._stage !== undefined)
             throw new Error('Ripples already added');
-            return;
-        }
 
         this._stage = stage;
         this._stage.add_actor(this._ripple1);
@@ -73,10 +71,8 @@ var Ripples = class Ripples {
     }
 
     playAnimation(x, y) {
-        if (this._stage === undefined) {
+        if (this._stage === undefined)
             throw new Error('Ripples not added');
-            return;
-        }
 
         this._x = x;
         this._y = y;
