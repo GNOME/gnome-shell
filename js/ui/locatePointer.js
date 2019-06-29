@@ -15,7 +15,7 @@ var LocatePointer = class {
     }
 
     show() {
-        if (!this._settings.get_boolean("locate-pointer"))
+        if (!this._settings.get_boolean(LOCATE_POINTER_KEY))
             return;
 
         let [x, y, mods] = global.get_pointer();
