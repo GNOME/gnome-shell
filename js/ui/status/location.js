@@ -8,7 +8,6 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const ModalDialog = imports.ui.modalDialog;
 const PermissionStore = imports.misc.permissionStore;
-const Signals = imports.signals;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 

@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Atk, Clutter, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Dialog = imports.ui.dialog;
 const Layout = imports.ui.layout;

@@ -1,5 +1,4 @@
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;

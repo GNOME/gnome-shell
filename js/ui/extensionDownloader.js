@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, GObject, Soup, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 
 const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;

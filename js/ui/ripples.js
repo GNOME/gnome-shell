@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, St } = imports.gi;
+const { St } = imports.gi;
 const Tweener = imports.ui.tweener;
 
 // Shamelessly copied from the layout "hotcorner" ripples implementation

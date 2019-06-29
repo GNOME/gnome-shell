@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, St } = imports.gi;
+const { Gio } = imports.gi;
 const Ripples = imports.ui.ripples;
 const Main = imports.ui.main;
 
