@@ -737,6 +737,37 @@ var AllView = class AllView extends BaseAppView {
         }
     }
 
+    _canAccept(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        let view = _getViewFromIcon(source);
+        if (!(view instanceof FolderView))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        if (!this._canAccept(source))
+            return false;
+
+        let view = _getViewFromIcon(source);
+        view.removeApp(source.app);
+
+        if (this._currentPopup)
+            this._currentPopup.popdown();
+
+        return true;
+    }
+
     inhibitEventBlocker() {
         this._nEventBlockerInhibits++;
         this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
@@ -1257,6 +1288,26 @@ var FolderView = class FolderView extends BaseAppView {
         });
 
         return apps;
+    }
+
+    removeApp(app) {
+        let folderApps = this._folder.get_strv('apps');
+        let index = folderApps.indexOf(app.id);
+        if (index >= 0) {
+            folderApps.splice(index, 1);
+            this._folder.set_strv('apps', folderApps);
+        }
+
+        // If this is a categories-based folder, also add it to
+        // the list of excluded apps
+        let categories = this._folder.get_strv('categories');
+        if (categories.length > 0) {
+            let excludedApps = this._folder.get_strv('excluded-apps');
+            excludedApps.push(app.id);
+            this._folder.set_strv('excluded-apps', excludedApps);
+        }
+
+        return true;
     }
 };
 
