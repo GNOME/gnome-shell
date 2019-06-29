@@ -1020,11 +1020,13 @@ var AppSearchProvider = class AppSearchProvider {
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor() {
+    constructor(folder, parentView) {
         super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._folder = folder;
+        this._parentView = parentView;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
@@ -1035,6 +1037,9 @@ var FolderView = class FolderView extends BaseAppView {
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
+
+        this._folder.connect('changed', this._redisplay.bind(this));
+        this._redisplay();
     }
 
     _childFocused(actor) {
@@ -1127,6 +1132,43 @@ var FolderView = class FolderView extends BaseAppView {
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
+
+    _loadApps() {
+        let excludedApps = this._folder.get_strv('excluded-apps');
+        let appSys = Shell.AppSystem.get_default();
+        let addAppId = appId => {
+            if (this.hasItem(appId))
+                 return;
+
+            if (excludedApps.includes(appId))
+                return;
+
+            let app = appSys.lookup_app(appId);
+            if (!app)
+                return;
+
+            if (!app.get_app_info().should_show())
+                return;
+
+            let icon = new AppIcon(app);
+            this.addItem(icon);
+        };
+
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        let folderCategories = this._folder.get_strv('categories');
+        let appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
+        this.loadGrid();
+    }
 };
 
 var FolderIcon = class FolderIcon {
@@ -1154,7 +1196,7 @@ var FolderIcon = class FolderIcon {
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this.view = new FolderView();
+        this.view = new FolderView(this._folder, parentView);
 
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
@@ -1201,44 +1243,7 @@ var FolderIcon = class FolderIcon {
 
     _redisplay() {
         this._updateName();
-
-        this.view.removeAll();
-
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let appSys = Shell.AppSystem.get_default();
-        let addAppId = appId => {
-            if (this.view.hasItem(appId))
-                return;
-
-            if (excludedApps.includes(appId))
-                return;
-
-            let app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            if (!app.get_app_info().should_show())
-                return;
-
-            let icon = new AppIcon(app);
-            this.view.addItem(icon);
-        };
-
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
-        });
-
         this.actor.visible = this.view.getAllItems().length > 0;
-        this.view.loadGrid();
         this.emit('apps-changed');
     }
 
