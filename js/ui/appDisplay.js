@@ -1220,6 +1220,9 @@ var FolderIcon = class FolderIcon {
         if (!global.settings.is_writable('favorite-apps'))
             return false;
 
+        if (source.parentView instanceof FolderView)
+            return false;
+
         return true;
     }
 
