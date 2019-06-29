@@ -172,7 +172,7 @@ function _initializeUI() {
     kbdA11yDialog = new KbdA11yDialog.KbdA11yDialog();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
-    locatePointer = new LocatePointer.locatePointer();
+    locatePointer = new LocatePointer.LocatePointer();
 
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
