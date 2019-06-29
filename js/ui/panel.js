@@ -1167,7 +1167,7 @@ class Panel extends St.Widget {
     }
 
     _onMenuSet(indicator) {
-        if (!indicator.menu || indicator.menu.hasOwnProperty('_openChangedId'))
+        if (!indicator.menu || indicator.menu._openChangedId)
             return;
 
         indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
