@@ -239,6 +239,7 @@ var AllView = class AllView extends BaseAppView {
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
         this.actor.add_actor(this._scrollView);
+        this._grid._delegate = this;
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
