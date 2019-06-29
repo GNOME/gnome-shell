@@ -367,8 +367,6 @@ var SwipeTracker = class {
         this._touchGesture.setDistance(distance);
         if (this._dragGesture)
             this._dragGesture.setDistance(distance);
-
-        log("start", canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent);
     }
 
     continueFrom(progress) {
