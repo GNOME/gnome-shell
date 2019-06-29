@@ -38,6 +38,9 @@ var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
 var PAGE_SWITCH_TIME = 300;
 
+var APP_ICON_SCALE_IN_TIME = 500;
+var APP_ICON_SCALE_IN_DELAY = 700;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
@@ -358,6 +361,8 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _refilterApps() {
+        let filteredApps = this._allItems.filter(icon => !icon.actor.visible);
+
         this._allItems.forEach(icon => {
             if (icon instanceof AppIcon)
                 icon.actor.visible = true;
@@ -369,6 +374,12 @@ var AllView = class AllView extends BaseAppView {
                 let appIcon = this._items[appId];
                 appIcon.actor.visible = false;
             });
+        });
+
+        // Scale in app icons that weren't visible, but now are
+        filteredApps.filter(icon => icon.actor.visible).forEach(icon => {
+            if (icon instanceof AppIcon)
+                icon.scaleIn();
         });
     }
 
@@ -1711,6 +1722,7 @@ var AppIcon = class AppIcon {
         this.name = app.get_name();
 
         this.actor = new St.Button({ style_class: 'app-well-app',
+                                     pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
                                      can_focus: true,
@@ -1925,6 +1937,19 @@ var AppIcon = class AppIcon {
 
     animateLaunch() {
         this.icon.animateZoomOut();
+    }
+
+    scaleIn() {
+        this.actor.scale_x = 0;
+        this.actor.scale_y = 0;
+
+        this.actor.ease({
+            scale_x: 1,
+            scale_y: 1,
+            time: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            mode: Clutter.AnimationMode.EASE_OUT_QUINT
+        });
     }
 
     shellWorkspaceLaunch(params) {
