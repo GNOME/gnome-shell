@@ -283,10 +283,9 @@ var AppMenuButton = GObject.registerClass({
                          { opacity: 0,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete() {
+                           onComplete: () => {
                                this.hide();
-                           },
-                           onCompleteScope: this });
+                           } });
     }
 
     _onStyleChanged(actor) {
@@ -328,8 +327,7 @@ var AppMenuButton = GObject.registerClass({
                          { opacity: 0,
                            time: SPINNER_ANIMATION_TIME,
                            transition: "easeOutQuad",
-                           onCompleteScope: this,
-                           onComplete() {
+                           onComplete: () => {
                                this._spinner.stop();
                                this._spinner.actor.opacity = 255;
                                this._spinner.actor.hide();

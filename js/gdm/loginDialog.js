@@ -913,7 +913,7 @@ var LoginDialog = GObject.registerClass({
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onUpdate() {
+                           onUpdate: () => {
                                let children = Main.layoutManager.uiGroup.get_children();
 
                                for (let i = 0; i < children.length; i++) {
@@ -921,12 +921,10 @@ var LoginDialog = GObject.registerClass({
                                        children[i].opacity = this.opacity;
                                }
                            },
-                           onUpdateScope: this,
-                           onComplete() {
+                           onComplete: () => {
                                if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                                    this._authPrompt.reset();
-                           },
-                           onCompleteScope: this });
+                           } });
     }
 
     _gotGreeterSessionProxy(proxy) {
@@ -943,7 +941,7 @@ var LoginDialog = GObject.registerClass({
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onUpdate() {
+                           onUpdate: () => {
                                let children = Main.layoutManager.uiGroup.get_children();
 
                                for (let i = 0; i < children.length; i++) {
@@ -951,11 +949,9 @@ var LoginDialog = GObject.registerClass({
                                        children[i].opacity = this.opacity;
                                }
                            },
-                           onUpdateScope: this,
-                           onComplete() {
+                           onComplete: () => {
                                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
-                           },
-                           onCompleteScope: this });
+                           } });
     }
 
     _onSessionOpened(client, serviceName) {
