@@ -1049,11 +1049,12 @@ var AppSearchProvider = class AppSearchProvider {
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor() {
+    constructor(folderIcon) {
         super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._folderIcon = folderIcon;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
@@ -1156,6 +1157,10 @@ var FolderView = class FolderView extends BaseAppView {
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
+
+    get folderIcon() {
+        return this._folderIcon;
+    }
 };
 
 var FolderIcon = class FolderIcon {
@@ -1181,7 +1186,7 @@ var FolderIcon = class FolderIcon {
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this.view = new FolderView();
+        this.view = new FolderView(this);
 
         Main.overview.connect('item-drag-begin',
                               this._onDragBegin.bind(this));
