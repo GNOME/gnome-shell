@@ -255,11 +255,10 @@ var NotificationsBox = class {
                              { height: natHeight,
                                transition: 'easeOutQuad',
                                time: 0.25,
-                               onComplete() {
+                               onComplete: () => {
                                    this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
                                    widget.set_height(-1);
-                               },
-                               onCompleteScope: this
+                               }
                              });
 
             this._updateVisibility();
@@ -791,11 +790,10 @@ var ScreenShield = class {
                              { y: 0,
                                time: time,
                                transition: 'easeInQuad',
-                               onComplete() {
+                               onComplete: () => {
                                    this._lockScreenGroup.fixed_position_set = false;
                                    this._lockScreenState = MessageTray.State.SHOWN;
-                               },
-                               onCompleteScope: this,
+                               }
                              });
 
             this._maybeCancelDialog();
@@ -1008,11 +1006,10 @@ var ScreenShield = class {
                              { y: 0,
                                time: MANUAL_FADE_TIME,
                                transition: 'easeOutQuad',
-                               onComplete() {
+                               onComplete: () => {
                                    this._lockScreenShown({ fadeToBlack: fadeToBlack,
                                                            animateFade: true });
-                               },
-                               onCompleteScope: this
+                               }
                              });
         } else {
             this._lockScreenGroup.fixed_position_set = false;

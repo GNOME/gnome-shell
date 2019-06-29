@@ -1318,11 +1318,10 @@ class ThumbnailsBox extends St.Widget {
                          { indicatorY: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
-                           onComplete() {
+                           onComplete: () => {
                                this._animatingIndicator = false;
                                this._queueUpdateStates();
-                           },
-                           onCompleteScope: this
+                           }
                          });
     }
 });

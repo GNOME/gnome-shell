@@ -1015,12 +1015,10 @@ var PopupSubMenu = class extends PopupMenuBase {
                              { _arrowRotation: targetAngle,
                                height: naturalHeight,
                                time: 0.25,
-                               onUpdateScope: this,
-                               onUpdate() {
+                               onUpdate: () => {
                                    this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
-                               onCompleteScope: this,
-                               onComplete() {
+                               onComplete: () => {
                                    this.actor.set_height(-1);
                                }
                              });
@@ -1048,12 +1046,10 @@ var PopupSubMenu = class extends PopupMenuBase {
                              { _arrowRotation: 0,
                                height: 0,
                                time: 0.25,
-                               onUpdateScope: this,
-                               onUpdate() {
+                               onUpdate: () => {
                                    this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
-                               onCompleteScope: this,
-                               onComplete() {
+                               onComplete: () => {
                                    this.actor.hide();
                                    this.actor.set_height(-1);
                                },

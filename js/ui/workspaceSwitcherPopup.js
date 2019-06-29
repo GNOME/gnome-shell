@@ -161,8 +161,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
         Tweener.addTween(this._container, { opacity: 0.0,
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad',
-                                            onComplete() { this.destroy(); },
-                                            onCompleteScope: this
+                                            onComplete: () => this.destroy()
                                            });
         return GLib.SOURCE_REMOVE;
     }

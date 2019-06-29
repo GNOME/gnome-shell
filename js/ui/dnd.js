@@ -434,14 +434,13 @@ var _Draggable = class _Draggable {
                                    scale_y: scale * origScale,
                                    time: SCALE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
-                                   onUpdate() {
+                                   onUpdate: () => {
                                        let currentScale = this._dragActor.scale_x / origScale;
                                        this._dragOffsetX = currentScale * origDragOffsetX;
                                        this._dragOffsetY = currentScale * origDragOffsetY;
                                        this._dragActor.set_position(this._dragX + this._dragOffsetX,
                                                                     this._dragY + this._dragOffsetY);
-                                   },
-                                   onUpdateScope: this });
+                                   } });
             }
         }
     }

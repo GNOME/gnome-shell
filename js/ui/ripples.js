@@ -56,8 +56,8 @@ var Ripples = class Ripples {
                                    delay: delay,
                                    time: time,
                                    transition: 'linear',
-                                   onUpdate() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
-                                   onComplete() { ripple.visible = false; } });
+                                   onUpdate: () => ripple.opacity = 255 * Math.sqrt(ripple._opacity),
+                                   onComplete: () => ripple.visible = false });
     }
 
     addTo(stage) {
