@@ -861,7 +861,7 @@ var LayoutManager = GObject.registerClass({
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
         for (let prop in defaultParams) {
-            if (!params.hasOwnProperty(prop))
+            if (!Object.prototype.hasOwnProperty.call(params, prop))
                 params[prop] = ancestorData[prop];
         }
 
