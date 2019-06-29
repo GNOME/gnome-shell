@@ -1676,7 +1676,7 @@ var AppIcon = class AppIcon {
             });
             this._draggable.connect('drag-end', () => {
                 this._dragging = false;
-               Main.overview.endItemDrag(this);
+                Main.overview.endItemDrag(this);
             });
         }
 
