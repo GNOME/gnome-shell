@@ -1099,6 +1099,7 @@ var FolderView = class FolderView extends BaseAppView {
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
         this._folderIcon = folderIcon;
+        this._grid._delegate = this;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
@@ -1200,6 +1201,15 @@ var FolderView = class FolderView extends BaseAppView {
 
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        return DND.DragMotionResult.NO_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        // Only dropping at the folder icon is accepted
+        return true;
     }
 
     get folderIcon() {
