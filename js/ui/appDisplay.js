@@ -706,6 +706,11 @@ var FrequentView = class FrequentView extends BaseAppView {
         return this._usage.get_most_used().length >= MIN_FREQUENT_APPS_COUNT;
     }
 
+    _compareItems() {
+        // The FrequentView does not need to be sorted alphabetically
+        return 0;
+    }
+
     _loadApps() {
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
@@ -726,8 +731,10 @@ var FrequentView = class FrequentView extends BaseAppView {
                 continue;
             let appIcon = new AppIcon(mostUsed[i],
                                       { isDraggable: favoritesWritable });
-            this._grid.addItem(appIcon, -1);
+            this.addItem(appIcon);
         }
+
+        this.loadGrid();
     }
 
     // Called before allocation to calculate dynamic spacing
