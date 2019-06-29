@@ -472,8 +472,9 @@ var WorkspacesDisplay = class {
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
 
-        tracker.can_swipe_forward = (activeWs.get_neighbor(Meta.MotionDirection.UP) != activeWs);
-        tracker.can_swipe_back = (activeWs.get_neighbor(Meta.MotionDirection.DOWN) != activeWs);
+        let canSwipeBack = (activeWs.get_neighbor(Meta.MotionDirection.DOWN) != activeWs);
+        let canSwipeForward = (activeWs.get_neighbor(Meta.MotionDirection.UP) != activeWs);
+        tracker.startSwipe(canSwipeBack, canSwipeForward, this.actor.height, 0, 0);
 
         this._gestureActive = true;
     }

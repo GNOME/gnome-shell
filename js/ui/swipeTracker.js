@@ -25,7 +25,6 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-// TODO: support scrolling
 // TODO: support horizontal
 
 var TouchpadSwipeGesture = class TouchpadSwipeGesture {
@@ -75,6 +74,7 @@ var TouchSwipeGesture = GObject.registerClass({
         this.set_trigger_edge(trigger_edge);
 
         this._shouldSkip = shouldSkip;
+        this._distance = global.screen_height;
     }
 
     vfunc_gesture_begin(actor, point) {
@@ -92,7 +92,7 @@ var TouchSwipeGesture = GObject.registerClass({
         let [distance, dx, dy] = this.get_motion_delta(0);
         let time = this.get_last_event(point).get_time();
 
-        this.emit('update', time, -dy / (global.screen_height - Main.panel.height)); // TODO: the height isn't always equal to the actor height
+        this.emit('update', time, -dy / this._distance);
     }
 
     vfunc_gesture_end(actor, point) {
@@ -105,6 +105,10 @@ var TouchSwipeGesture = GObject.registerClass({
         let time = Clutter.get_current_event_time();
 
         this.emit('cancel', time);
+    }
+
+    setDistance(distance) {
+        this._distance = distance;
     }
 });
 
@@ -148,7 +152,17 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 // begin(tracker)
 //   The handler should check whether a deceleration animation is currently
 //   running. If it is, it should stop the animation (without resetting progress)
-//   and call tracker.continueFrom(progress). Otherwise it should initialize the gesture.
+//   and call tracker.continueFrom(progress). Otherwise it should initialize the gesture
+//   and call tracker.startSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent).
+//   The parameters are:
+//    * canSwipeBack: whether the tracker should allow to swipe back;
+//    * canSwipeForward: whether the tracker should allow to swipe forward;
+//    * distance: the page size
+//    * backExtent: can be used to make "back" page longer. Normally this is 0.
+//    * forwardExtent: can be used to make "forward" page longer. Normally this is 0
+//   Extents should be used for extending one or both page in some cases (such as switching to a
+//   workspace with a fullscreen window). Speed of touchpad swipe and scrolling only depend on
+//   distance, so the speed is consistent with or without extents.
 //
 // update(tracker, progress)
 //   The handler should set the progress to the given value.
@@ -164,9 +178,6 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 //
 // ======================================================================================
 //
-// 'can_swipe_back' and 'can_swipe_forward'
-//   These properties can be used to disable swiping back from the first page or forward from the last page.
-//
 // 'enabled'
 //   This property can be used to enable or disable the swipe tracker temporarily.
 
@@ -177,8 +188,11 @@ var SwipeTracker = class {
 
         this._reset();
 
-        this._can_swipe_back = true;
-        this._can_swipe_forward = true;
+        this._canSwipeBack = true;
+        this._canSwipeForward = true;
+        this._distance = 0;
+        this._backExtent = 0;
+        this._forwardExtent = 0;
 
         let shouldSkip = () =>
             ((this._allowedModes & Main.actionMode) == 0 || !this._enabled);
@@ -193,6 +207,7 @@ var SwipeTracker = class {
         touchGesture.connect('end', this._endGesture.bind(this));
         touchGesture.connect('cancel', this._cancelGesture.bind(this));
         global.stage.add_action(touchGesture);
+        this._touchGesture = touchGesture;
 
         if (allowDrag) {
             let dragGesture = new TouchSwipeGesture(shouldSkip, 1, Clutter.TriggerEdge.AFTER);
@@ -204,7 +219,9 @@ var SwipeTracker = class {
             } catch (e) {
                 actor.addAction(dragGesture); // FIXME: wtf is this
             }
-        }
+            this._dragGesture = dragGesture;
+        } else
+            this._dragGesture = null;
 
         if (allowScroll) {
             let scrollGesture = new ScrollGesture(actor, shouldSkip);
@@ -223,26 +240,6 @@ var SwipeTracker = class {
 
         this._enabled = enabled;
         if (!enabled && this._state == State.SCROLLING)
-            this._cancel();
-    }
-
-    get can_swipe_back() {
-        return this._can_swipe_back;
-    }
-
-    set can_swipe_back(can_swipe_back) {
-        this._can_swipe_back = can_swipe_back;
-        if (!can_swipe_back && this._progress > 0)
-            this._cancel();
-    }
-
-    get can_swipe_forward() {
-        return this._can_swipe_forward;
-    }
-
-    set can_swipe_forward(can_swipe_forward) {
-        this._can_swipe_forward = can_swipe_forward;
-        if (!can_swipe_forward && this._progress < 0)
             this._cancel();
     }
 
@@ -273,6 +270,10 @@ var SwipeTracker = class {
         this._state = State.SCROLLING;
     }
 
+//    _updateGestureWithClamp(gesture, time, delta) {
+//        this._updateGesture(gesture, time, delta / this._distance);
+//    }
+
     _updateGesture(gesture, time, delta) {
         if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
             return;
@@ -285,16 +286,18 @@ var SwipeTracker = class {
         if (time != this._prevTime)
             this._velocity = delta / (time - this._prevTime);
 
-        if (this._progress > 0 && !this.can_swipe_back)
+        if (this._progress > 0 && !this._canSwipeBack)
             this._progress = 0;
-        if (this._progress < 0 && !this.can_swipe_forward)
+        if (this._progress < 0 && !this._canSwipeForward)
             this._progress = 0;
 
-        let maxProgress = (this._progress > 0) ? 1 : 0;
-        let minProgress = (this._progress < 0) ? -1 : 0;
+        let maxProgress = (this._progress > 0) ? (1 + this._backExtent / this._distance) : 0;
+        let minProgress = (this._progress < 0) ? -(1 + this._forwardExtent / this._distance) : 0;
         this._progress = clamp(this._progress, minProgress, maxProgress);
 
-        this.emit('update', this._progress);
+        // Clamp progress to [0,1]
+        let progress = this._progress / (1 + (this._progress > 0 ? this._backExtent : this._forwardExtent) / this._distance);
+        this.emit('update', progress);
 
         this._prevTime = time;
     }
@@ -306,10 +309,10 @@ var SwipeTracker = class {
         if (this._progress == 0)
             return true;
 
-        if (this._progress > 0 && !this.can_swipe_back)
+        if (this._progress > 0 && !this._canSwipeBack)
             return true;
 
-        if (this._progress < 0 && !this.can_swipe_forward)
+        if (this._progress < 0 && !this._canSwipeForward)
             return true;
 
         if (Math.abs(this._velocity) < VELOCITY_THRESHOLD)
@@ -331,7 +334,7 @@ var SwipeTracker = class {
 
         let endProgress = 0;
         if (!cancelled)
-            endProgress = (this._progress > 0) ? 1 : -1;
+            endProgress = (this._progress > 0) ? (1 + this._backExtent / this._distance) : -(1 + this._forwardExtent / this._distance);
 
         let velocity = ANIMATION_BASE_VELOCITY;
         if ((endProgress - this._progress) * this._velocity > 0)
@@ -353,6 +356,20 @@ var SwipeTracker = class {
 
         this._cancelled = true;
         this._endGesture(gesture, time);
+    }
+
+    startSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent) {
+        this._canSwipeBack = canSwipeBack;
+        this._canSwipeForward = canSwipeForward;
+        this._distance = distance;
+        this._backExtent = backExtent;
+        this._forwardExtent = forwardExtent;
+
+        this._touchGesture.setDistance(distance);
+        if (this._dragGesture)
+            this._dragGesture.setDistance(distance);
+
+        log("start", canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent);
     }
 
     continueFrom(progress) {

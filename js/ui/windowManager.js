@@ -986,8 +986,18 @@ var WindowManager = class {
         this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
 
         // TODO: horizontal
-        tracker.can_swipe_forward = this._switchData.surroundings[Meta.MotionDirection.UP];
-        tracker.can_swipe_back = this._switchData.surroundings[Meta.MotionDirection.DOWN];
+
+        let baseDistance = global.screen_height - Main.panel.height;
+
+        let direction = Meta.MotionDirection.DOWN;
+        let backInfo = this._switchData.surroundings[direction];
+        let backExtent = backInfo ? (backInfo.yDest - baseDistance) : 0;
+
+        direction = Meta.MotionDirection.UP;
+        let forwardInfo = this._switchData.surroundings[direction];
+        let forwardExtent = forwardInfo ? (-forwardInfo.yDest - baseDistance) : 0;
+
+        tracker.startSwipe((backInfo != null), (forwardInfo != null), baseDistance, backExtent, forwardExtent);
     }
 
     _switchWorkspaceUpdate(tracker, progress) {
@@ -995,7 +1005,12 @@ var WindowManager = class {
             return;
 
         this._switchData.progress = progress;
-        this._switchData.container.set_position(0, Math.round(-progress * (global.screen_height - Main.panel.height)));
+
+        let direction = (progress > 0) ? Meta.MotionDirection.DOWN : Meta.MotionDirection.UP;
+        let info = this._switchData.surroundings[direction];
+        let distance = info ? Math.abs(info.yDest) : 0;
+
+        this._switchData.container.set_position(0, Math.round(-progress * distance));
     }
 
     _switchWorkspaceEnd(tracker, duration, isBack) {
@@ -1049,11 +1064,8 @@ var WindowManager = class {
     _switchWorkspaceAnimate(direction, duration, newWs) {
         let switchData = this._switchData;
 
-        let oldWs = global.workspace_manager.get_active_workspace();
-        let [xDest, yDest] = this._getPositionForDirection(direction, oldWs, newWs);
-
-        xDest = -xDest;
-        yDest = -yDest;
+        let xDest = -this._switchData.surroundings[direction].xDest;
+        let yDest = -this._switchData.surroundings[direction].yDest;
 
         Tweener.addTween(switchData,
                          { progress: direction == Meta.MotionDirection.DOWN ? 1 : -1,
@@ -1824,13 +1836,15 @@ var WindowManager = class {
                 continue;
             }
 
+            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             let info = { index: ws.index(),
-                         actor: new Clutter.Actor() };
+                         actor: new Clutter.Actor(),
+                         xDest: x,
+                         yDest: y };
             switchData.surroundings[dir] = info;
             switchData.container.add_actor(info.actor);
             info.actor.raise_top();
 
-            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             info.actor.set_position(x, y);
         }
 
