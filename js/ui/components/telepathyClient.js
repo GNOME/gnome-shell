@@ -40,8 +40,6 @@ var NotificationDirection = {
     RECEIVED: 'chat-received'
 };
 
-var N_ = s => s;
-
 function makeMessageFromTpMessage(tpMessage, direction) {
     let [text, flags] = tpMessage.to_text();
 
