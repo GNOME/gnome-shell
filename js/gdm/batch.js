@@ -44,6 +44,7 @@
  * replaced by something else.
  */
 
+const { GObject } = imports.gi;
 const Signals = imports.signals;
 
 var Task = class {
