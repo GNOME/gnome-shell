@@ -799,8 +799,10 @@ var FrequentView = class FrequentView extends BaseAppView {
                 continue;
             let appIcon = new AppIcon(mostUsed[i], this,
                                       { isDraggable: favoritesWritable });
-            this._grid.addItem(appIcon, -1);
+            this.addItem(appIcon);
         }
+
+        this.loadGrid();
     }
 
     // Called before allocation to calculate dynamic spacing
