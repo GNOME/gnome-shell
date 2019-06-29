@@ -122,6 +122,7 @@ class BaseAppView {
     _redisplay() {
         this.removeAll();
         this._loadApps();
+        this._loadGrid();
     }
 
     getAllItems() {
@@ -141,7 +142,7 @@ class BaseAppView {
         return a.name.localeCompare(b.name);
     }
 
-    loadGrid() {
+    _loadGrid() {
         this._allItems.sort(this._compareItems);
         this._allItems.forEach(item => this._grid.addItem(item));
         this.emit('view-loaded');
@@ -400,8 +401,10 @@ var AllView = class AllView extends BaseAppView {
                                    { isDraggable: favoritesWritable });
             this.addItem(icon);
         });
+    }
 
-        this.loadGrid();
+    _loadGrid() {
+        super._loadGrid();
         this._refilterApps();
     }
 
@@ -786,8 +789,6 @@ var FrequentView = class FrequentView extends BaseAppView {
                                       { isDraggable: favoritesWritable });
             this.addItem(appIcon);
         }
-
-        this.loadGrid();
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1233,8 +1234,6 @@ var FolderView = class FolderView extends BaseAppView {
 
             addAppId(appInfo.get_id());
         });
-
-        this.loadGrid();
     }
 
     get folderIcon() {
