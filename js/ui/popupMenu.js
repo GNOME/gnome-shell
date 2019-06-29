@@ -919,9 +919,16 @@ var PopupDummyMenu = class {
         return this.getSensitive();
     }
 
-    open() { this.emit('open-state-changed', true); }
-    close() { this.emit('open-state-changed', false); }
+    open() {
+        this.emit('open-state-changed', true);
+    }
+
+    close() {
+        this.emit('open-state-changed', false);
+    }
+
     toggle() {}
+
     destroy() {
         this.emit('destroy');
     }
@@ -1088,8 +1095,13 @@ var PopupMenuSection = class extends PopupMenuBase {
 
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
-    open() { this.emit('open-state-changed', true); }
-    close() { this.emit('open-state-changed', false); }
+    open() {
+        this.emit('open-state-changed', true);
+    }
+
+    close() {
+        this.emit('open-state-changed', false);
+    }
 };
 
 var PopupSubMenuMenuItem = GObject.registerClass(
