@@ -690,6 +690,35 @@ var AllView = class AllView extends BaseAppView {
         }
     }
 
+    _canDropAt(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        if (!global.settings.is_writable('favorite-apps'))
+            return false;
+
+        if (!(source.parentView instanceof FolderView))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return false;
+
+        source.parentView.folderIcon.removeApp(source.app);
+
+        return true;
+    }
+
     inhibitEventBlocker() {
         this._nEventBlockerInhibits++;
         this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
@@ -1375,6 +1404,22 @@ var FolderIcon = class FolderIcon {
         if (this._popup)
             this.view.adaptToSize(width, height);
         this._popupInvalidated = true;
+    }
+
+    removeApp(app) {
+        let folderApps = this._folder.get_strv('apps');
+        let index = folderApps.indexOf(app.id);
+        if (index < 0)
+            return false;
+
+        folderApps.splice(index, 1);
+
+        this._folder.set_strv('apps', folderApps);
+
+        if (this._popup)
+            this._popup.popdown();
+
+        return true;
     }
 };
 Signals.addSignalMethods(FolderIcon.prototype);
