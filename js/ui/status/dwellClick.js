@@ -8,26 +8,26 @@ const KEY_DWELL_CLICK_ENABLED = 'dwell-click-enabled';
 const KEY_DWELL_MODE          = 'dwell-mode';
 const DWELL_MODE_WINDOW       = 'window';
 const DWELL_CLICK_MODES = {
-    primary:   {
-                 name: _("Single Click"),
-                 icon: 'pointer-primary-click-symbolic',
-                 type: Clutter.PointerA11yDwellClickType.PRIMARY
-               },
-    double:    {
-                 name: _("Double Click"),
-                 icon: 'pointer-double-click-symbolic',
-                 type: Clutter.PointerA11yDwellClickType.DOUBLE
-               },
-    drag:      {
-                 name: _("Drag"),
-                 icon: 'pointer-drag-symbolic',
-                 type: Clutter.PointerA11yDwellClickType.DRAG
-               },
+    primary: {
+        name: _("Single Click"),
+        icon: 'pointer-primary-click-symbolic',
+        type: Clutter.PointerA11yDwellClickType.PRIMARY
+    },
+    double: {
+        name: _("Double Click"),
+        icon: 'pointer-double-click-symbolic',
+        type: Clutter.PointerA11yDwellClickType.DOUBLE
+    },
+    drag: {
+        name: _("Drag"),
+        icon: 'pointer-drag-symbolic',
+        type: Clutter.PointerA11yDwellClickType.DRAG
+    },
     secondary: {
-                 name: _("Secondary Click"),
-                 icon: 'pointer-secondary-click-symbolic',
-                 type: Clutter.PointerA11yDwellClickType.SECONDARY
-               },
+        name: _("Secondary Click"),
+        icon: 'pointer-secondary-click-symbolic',
+        type: Clutter.PointerA11yDwellClickType.SECONDARY
+    }
 };
 
 var DwellClickIndicator = GObject.registerClass(
