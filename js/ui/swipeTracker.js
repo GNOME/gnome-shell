@@ -26,6 +26,7 @@ function clamp(value, min, max) {
 }
 
 // TODO: support horizontal
+// TODO: swap back and forward, this doesn't make sense
 
 var TouchpadSwipeGesture = class TouchpadSwipeGesture {
     constructor(shouldSkip) {
@@ -157,12 +158,14 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 //   The parameters are:
 //    * canSwipeBack: whether the tracker should allow to swipe back;
 //    * canSwipeForward: whether the tracker should allow to swipe forward;
-//    * distance: the page size
-//    * backExtent: can be used to make "back" page longer. Normally this is 0.
-//    * forwardExtent: can be used to make "forward" page longer. Normally this is 0
+//    * distance: the page size;
+//    * backExtent: can be used to make "back" page longer. Normally this is 0;
+//    * forwardExtent: can be used to make "forward" page longer. Normally this is 0.
 //   Extents should be used for extending one or both page in some cases (such as switching to a
 //   workspace with a fullscreen window). Speed of touchpad swipe and scrolling only depend on
 //   distance, so the speed is consistent with or without extents.
+//   Internally it means progress range is not [-1, 1], but [-(1 + forwardExtent/distance), 1 + (backExtent/distance)],
+//   but progress and duration in update() and end() will be normalized.
 //
 // update(tracker, progress)
 //   The handler should set the progress to the given value.
@@ -269,10 +272,6 @@ var SwipeTracker = class {
         this.emit('begin');
         this._state = State.SCROLLING;
     }
-
-//    _updateGestureWithClamp(gesture, time, delta) {
-//        this._updateGesture(gesture, time, delta / this._distance);
-//    }
 
     _updateGesture(gesture, time, delta) {
         if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
