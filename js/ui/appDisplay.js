@@ -407,7 +407,7 @@ var AllView = class AllView extends BaseAppView {
         apps.forEach(appId => {
             let app = appSys.lookup_app(appId);
 
-            let icon = new AppIcon(app,
+            let icon = new AppIcon(app, this,
                                    { isDraggable: favoritesWritable });
             this.addItem(icon);
         });
@@ -712,7 +712,7 @@ var FrequentView = class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i],
+            let appIcon = new AppIcon(mostUsed[i], this,
                                       { isDraggable: favoritesWritable });
             this._grid.addItem(appIcon, -1);
         }
@@ -1001,7 +1001,7 @@ var AppSearchProvider = class AppSearchProvider {
 
     createResultObject(resultMeta) {
         if (resultMeta.id.endsWith('.desktop'))
-            return new AppIcon(this._appSys.lookup_app(resultMeta['id']));
+            return new AppIcon(this._appSys.lookup_app(resultMeta['id']), null);
         else
             return new SystemActionIcon(this, resultMeta);
     }
@@ -1234,7 +1234,7 @@ var FolderIcon = class FolderIcon {
             if (!app.get_app_info().should_show())
                 return;
 
-            let icon = new AppIcon(app);
+            let icon = new AppIcon(app, this.view);
             this.view.addItem(icon);
         };
 
@@ -1491,10 +1491,11 @@ var AppFolderPopup = class AppFolderPopup {
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
 var AppIcon = class AppIcon {
-    constructor(app, iconParams) {
+    constructor(app, parentView, iconParams) {
         this.app = app;
         this.id = app.get_id();
         this.name = app.get_name();
+        this._parentView = parentView;
 
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
@@ -1728,6 +1729,10 @@ var AppIcon = class AppIcon {
 
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    }
+
+    get parentView() {
+        return this._parentView;
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);
