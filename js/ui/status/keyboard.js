@@ -227,7 +227,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
 
         for (let i = 0; i < layouts.length && !!layouts[i]; i++) {
             let id = layouts[i];
-            if (!!variants[i])
+            if (variants[i])
                 id += '+' + variants[i];
             sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id: id });
         }
