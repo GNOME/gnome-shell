@@ -111,7 +111,7 @@ function _loadMode(file, info) {
     let suffix = name.indexOf('.json');
     let modeName = suffix == -1 ? name : name.slice(name, suffix);
 
-    if (_modes.hasOwnProperty(modeName))
+    if (Object.prototype.hasOwnProperty.call(_modes, modeName))
         return;
 
     let fileContent, success_, newMode;
