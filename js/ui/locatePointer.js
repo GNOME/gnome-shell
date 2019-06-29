@@ -7,7 +7,7 @@ const Main = imports.ui.main;
 const LOCATE_POINTER_KEY = "locate-pointer";
 const LOCATE_POINTER_SCHEMA = "org.gnome.desktop.interface"
 
-var locatePointer = class {
+var LocatePointer = class {
     constructor() {
         this._settings = new Gio.Settings({schema_id: LOCATE_POINTER_SCHEMA});
         this._ripples = new Ripples.Ripples(0.5, 0.5, 'ripple-pointer-location');
