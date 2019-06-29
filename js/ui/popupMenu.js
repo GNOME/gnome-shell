@@ -315,8 +315,7 @@ class Switch extends St.Bin {
 
 var PopupSwitchMenuItem = GObject.registerClass({
     Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] }, },
-},
-class PopupSwitchMenuItem extends PopupBaseMenuItem {
+}, class PopupSwitchMenuItem extends PopupBaseMenuItem {
     _init(text, active, params) {
         super._init(params);
 
