@@ -1478,13 +1478,16 @@ var AppIcon = class AppIcon {
         if (isDraggable) {
             this._draggable = DND.makeDraggable(this.actor);
             this._draggable.connect('drag-begin', () => {
+                this._dragging = true;
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             });
             this._draggable.connect('drag-cancelled', () => {
+                this._dragging = false;
                 Main.overview.cancelledItemDrag(this);
             });
             this._draggable.connect('drag-end', () => {
+                this._dragging = false;
                 Main.overview.endItemDrag(this);
             });
         }
@@ -1501,6 +1504,10 @@ var AppIcon = class AppIcon {
     _onDestroy() {
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
+        if (this._draggable && this._dragging) {
+            Main.overview.endItemDrag(this);
+            this.draggable = null;
+        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
     }
