@@ -53,6 +53,9 @@ var INDICATORS_ANIMATION_MAX_TIME_OUT =
 
 var PAGE_SWITCH_TIME = 0.3;
 
+var APP_ICON_SCALE_IN_TIME = 0.5;
+var APP_ICON_SCALE_IN_DELAY = 0.7;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
@@ -359,6 +362,8 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _refilterApps() {
+        let filteredApps = this._allItems.filter(icon => { return !icon.actor.visible; });
+
         this._allItems.forEach(icon => {
             if (icon instanceof AppIcon)
                 icon.actor.visible = true;
@@ -370,6 +375,14 @@ var AllView = class AllView extends BaseAppView {
                 let appIcon = this._items[appId];
                 appIcon.actor.visible = false;
             });
+        });
+
+        // Scale in app icons that weren't visible, but now are
+        this._allItems.filter(icon => {
+            return icon.actor.visible && filteredApps.indexOf(icon) != -1;
+        }).forEach(icon => {
+            if (icon instanceof AppIcon)
+                icon.scheduleScaleIn();
         });
     }
 
@@ -1642,6 +1655,7 @@ var AppIcon = class AppIcon {
         this._iconContainer.add_child(this._dot);
 
         this.actor._delegate = this;
+        this._scaleInId = 0;
 
         if (!iconParams)
             iconParams = {};
@@ -1840,6 +1854,46 @@ var AppIcon = class AppIcon {
 
     animateLaunch() {
         this.icon.animateZoomOut();
+    }
+
+    _scaleIn() {
+        this.actor.scale_x = 0;
+        this.actor.scale_y = 0;
+        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
+
+        Tweener.addTween(this.actor, {
+            scale_x: 1,
+            scale_y: 1,
+            time: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            transition: (t, b, c, d) => {
+                // Similar to easeOutElastic, but less aggressive.
+                t /= d;
+                let p = 0.5;
+                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
+            }
+        });
+    }
+
+    _unscheduleScaleIn() {
+        if (this._scaleInId != 0) {
+            this.actor.disconnect(this._scaleInId);
+            this._scaleInId = 0;
+        }
+    }
+
+    scheduleScaleIn() {
+        if (this._scaleInId != 0)
+            return;
+
+        if (this.actor.mapped) {
+            this._scaleIn();
+        } else {
+            this._scaleInId = this.actor.connect('notify::mapped', () => {
+                this._unscheduleScaleIn();
+                this._scaleIn();
+            })
+        }
     }
 
     shellWorkspaceLaunch(params) {
