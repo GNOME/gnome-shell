@@ -1147,7 +1147,10 @@ var FolderIcon = class FolderIcon {
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this), setSizeManually: true });
+        this.icon = new IconGrid.BaseIcon('', {
+            createIcon: this._createIcon.bind(this),
+            setSizeManually: true
+        });
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
