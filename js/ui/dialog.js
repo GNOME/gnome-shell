@@ -180,10 +180,8 @@ var MessageDialogContent = GObject.registerClass({
         this._subtitle.clutter_text.set(textProps);
         this._body.clutter_text.set(textProps);
 
-        if (!params.hasOwnProperty('style_class'))
-            params.style_class = 'message-dialog-main-layout';
-
-        super._init(params);
+        let defaultParams = { style_class: 'message-dialog-main-layout' };
+        super._init(Object.assign(defaultParams, params));
 
         this.messageBox = new St.BoxLayout({ style_class: 'message-dialog-content',
                                              x_expand: true,
