@@ -469,8 +469,7 @@ var Message = class Message {
                              { scale_y: 0,
                                time: MessageTray.ANIMATION_TIME,
                                transition: 'easeOutQuad',
-                               onCompleteScope: this,
-                               onComplete() {
+                               onComplete: () => {
                                    this._actionBin.hide();
                                    this.expanded = false;
                                } });

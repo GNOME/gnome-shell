@@ -295,8 +295,7 @@ var AuthPrompt = class {
                                    time: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
                                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
                                    transition: 'linear',
-                                   onCompleteScope: this,
-                                   onComplete() {
+                                   onComplete: () => {
                                       if (wasSpinner) {
                                           if (this._spinner)
                                               this._spinner.stop();
