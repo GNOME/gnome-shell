@@ -1625,60 +1625,69 @@ var WindowManager = class {
     _syncStacking() {
         if (this._switchData == null)
             return;
+        return;
 
         let windows = global.get_window_actors();
         let lastCurSibling = null;
         let lastDirSibling = [];
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() == this._switchData.curGroup) {
-                this._switchData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
-                lastCurSibling = windows[i];
-            } else {
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = this._switchData.surroundings[dir];
-                    if (!info || windows[i].get_parent() != info.actor)
-                        continue;
-
-                    let sibling = lastDirSibling[dir];
-                    if (sibling == undefined)
-                        sibling = null;
-
-                    info.actor.set_child_above_sibling(windows[i], sibling);
-                    lastDirSibling[dir] = windows[i];
+            monitorsLoop:
+            for (let monitorData of this._switchData.monitors) {
+                if (windows[i].get_parent() == monitorData.curGroup) {
+                    monitorData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
+                    lastCurSibling = windows[i];
                     break;
+                } else {
+                    for (let dir of Object.values(Meta.MotionDirection)) {
+                        let info = monitorData.surroundings[dir];
+                        if (!info || windows[i].get_parent() != info.actor)
+                            continue;
+
+                        let sibling = lastDirSibling[dir];
+                        if (sibling == undefined)
+                            sibling = null;
+
+                        info.actor.set_child_above_sibling(windows[i], sibling);
+                        lastDirSibling[dir] = windows[i];
+                        break monitorsLoop;
+                    }
                 }
             }
         }
     }
 
-    _getPositionForDirection(direction, fromWs, toWs) {
+    _getPositionForDirection(direction, fromWs, toWs, monitor) {
         let xDest = 0, yDest = 0;
 
-        let oldWsIsFullscreen = fromWs.list_windows().some(w => w.is_fullscreen());
-        let newWsIsFullscreen = toWs.list_windows().some(w => w.is_fullscreen());
+        let condition = w => w.get_monitor() == monitor && w.is_fullscreen();
+
+        let oldWsIsFullscreen = fromWs.list_windows().some(condition);
+        let newWsIsFullscreen = toWs.list_windows().some(condition);
+
+        let geometry = global.display.get_monitor_geometry(monitor);
 
         // We have to shift windows up or down by the height of the panel to prevent having a
         // visible gap between the windows while switching workspaces. Since fullscreen windows
         // hide the panel, they don't need to be shifted up or down.
-        let shiftHeight = Main.panel.height;
+        let shiftHeight = (monitor == Main.layoutManager.primaryIndex) ? Main.panel.height : 0;
 
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-            yDest = -global.screen_height + (oldWsIsFullscreen ? 0 : shiftHeight);
+            yDest = -geometry.height + (oldWsIsFullscreen ? 0 : shiftHeight);
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-            yDest = global.screen_height - (newWsIsFullscreen ? 0 : shiftHeight);
+            yDest = geometry.height - (newWsIsFullscreen ? 0 : shiftHeight);
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.DOWN_LEFT)
-            xDest = -global.screen_width;
+            xDest = -geometry.width;
         else if (direction == Meta.MotionDirection.RIGHT ||
                  direction == Meta.MotionDirection.UP_RIGHT ||
                  direction == Meta.MotionDirection.DOWN_RIGHT)
-            xDest = global.screen_width;
+            xDest = geometry.width;
 
         return [xDest, yDest];
     }
@@ -1692,86 +1701,101 @@ var WindowManager = class {
         let switchData = {};
 
         this._switchData = switchData;
-        switchData.curGroup = new Clutter.Actor();
         switchData.movingWindowBin = new Clutter.Actor();
         switchData.windows = [];
-        switchData.surroundings = {};
         switchData.gestureActivated = false;
         switchData.inProgress = false;
         switchData.progress = 0;
-
-        switchData.container = new Clutter.Actor();
-        switchData.container.add_actor(switchData.curGroup);
+        switchData.monitors = [];
 
         wgroup.add_actor(switchData.movingWindowBin);
-        wgroup.add_actor(switchData.container);
 
         let workspaceManager = global.workspace_manager;
         let curWs = workspaceManager.get_workspace_by_index (from);
 
-        for (let dir of Object.values(Meta.MotionDirection)) {
-            let ws = null;
-
-            if (to < 0)
-                ws = curWs.get_neighbor(dir);
-            else if (dir == direction)
-                ws = workspaceManager.get_workspace_by_index(to);
-
-            if (ws == null || ws == curWs) {
-                switchData.surroundings[dir] = null;
-                continue;
-            }
-
-            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
-            let info = { index: ws.index(),
-                         actor: new Clutter.Actor(),
-                         xDest: x,
-                         yDest: y };
-            switchData.surroundings[dir] = info;
-            switchData.container.add_actor(info.actor);
-            info.actor.raise_top();
-
-            info.actor.set_position(x, y);
-        }
-
-        switchData.movingWindowBin.raise_top();
-
-        for (let i = 0; i < windows.length; i++) {
-            let actor = windows[i];
-            let window = actor.get_meta_window();
-
-            if (!window.showing_on_its_workspace())
+        for (let monitor of Main.layoutManager.monitors) {
+            if (Meta.prefs_get_workspaces_only_on_primary() && monitor != Main.layoutManager.primaryMonitor)
                 continue;
 
-            if (window.is_on_all_workspaces())
-                continue;
+            let monitorData = { index: monitor.index,
+                                container: new Clutter.Actor(),
+                                curGroup: new Clutter.Actor(),
+                                surroundings: {} };
 
-            let record = { window: actor,
-                           parent: actor.get_parent() };
+            monitorData.container.add_actor(monitorData.curGroup);
+            wgroup.add_actor(monitorData.container);
 
-            if (this._movingWindow && window == this._movingWindow) {
-                switchData.movingWindow = record;
-                switchData.windows.push(switchData.movingWindow);
-                actor.reparent(switchData.movingWindowBin);
-            } else if (window.get_workspace().index() == from) {
-                switchData.windows.push(record);
-                actor.reparent(switchData.curGroup);
-            } else {
-                let visible = false;
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = switchData.surroundings[dir];
+            for (let dir of Object.values(Meta.MotionDirection)) {
+                let ws = null;
 
-                    if (!info || info.index != window.get_workspace().index())
-                        continue;
+                if (to < 0)
+                    ws = curWs.get_neighbor(dir);
+                else if (dir == direction)
+                    ws = workspaceManager.get_workspace_by_index(to);
 
-                    switchData.windows.push(record);
-                    actor.reparent(info.actor);
-                    visible = true;
-                    break;
+                if (ws == null || ws == curWs) {
+                    monitorData.surroundings[dir] = null;
+                    continue;
                 }
 
-                actor.visible = visible;
+                let [x, y] = this._getPositionForDirection(dir, curWs, ws, monitor.index);
+                let info = { index: ws.index(),
+                             actor: new Clutter.Actor(),
+                             xDest: x,
+                             yDest: y };
+                monitorData.surroundings[dir] = info;
+                monitorData.container.add_actor(info.actor);
+                info.actor.raise_top();
+
+                info.actor.set_position(x, y);
             }
+
+            switchData.movingWindowBin.raise_top();
+
+            for (let i = 0; i < windows.length; i++) {
+                let actor = windows[i];
+                let window = actor.get_meta_window();
+
+                if (!window.showing_on_its_workspace())
+                    continue;
+
+                if (window.is_on_all_workspaces())
+                    continue;
+
+                // TODO: what if a window is between monitors?
+//                r(0).get_frame_rect().intersect(global.display.get_monitor_geometry(1))
+                if (window.get_monitor() != monitor.index)
+                    continue;
+
+                let record = { window: actor,
+                               parent: actor.get_parent() };
+
+                if (this._movingWindow && window == this._movingWindow) {
+                    switchData.movingWindow = record;
+                    switchData.windows.push(switchData.movingWindow);
+                    actor.reparent(switchData.movingWindowBin);
+                } else if (window.get_workspace().index() == from) {
+                    switchData.windows.push(record);
+                    actor.reparent(monitorData.curGroup);
+                } else {
+                    let visible = false;
+                    for (let dir of Object.values(Meta.MotionDirection)) {
+                        let info = monitorData.surroundings[dir];
+
+                        if (!info || info.index != window.get_workspace().index())
+                            continue;
+
+                        switchData.windows.push(record);
+                        actor.reparent(info.actor);
+                        visible = true;
+                        break;
+                    }
+
+                    actor.visible = visible;
+                }
+            }
+
+            switchData.monitors[monitorData.index] = monitorData;
         }
 
         for (let i = 0; i < switchData.windows.length; i++) {
@@ -1797,8 +1821,11 @@ var WindowManager = class {
                 w.window.hide();
         }
         Tweener.removeTweens(switchData);
-        Tweener.removeTweens(switchData.container);
-        switchData.container.destroy();
+        for (let monitorData of switchData.monitors) {
+            let container = monitorData.container;
+            Tweener.removeTweens(container);
+            container.destroy();
+        }
         switchData.movingWindowBin.destroy();
 
         this._movingWindow = null;
@@ -1817,23 +1844,25 @@ var WindowManager = class {
         let fromWs = workspaceManager.get_workspace_by_index(from);
         let toWs = workspaceManager.get_workspace_by_index(to);
 
-        let [xDest, yDest] = this._getPositionForDirection(direction, fromWs, toWs);
+        for (let monitorData of this._switchData.monitors) {
+            let [xDest, yDest] = this._getPositionForDirection(direction, fromWs, toWs, monitorData.index);
 
-        /* @direction is the direction that the "camera" moves, so the
-         * screen contents have to move one screen's worth in the
-         * opposite direction.
-         */
-        xDest = -xDest;
-        yDest = -yDest;
+            /* @direction is the direction that the "camera" moves, so the
+             * screen contents have to move one screen's worth in the
+             * opposite direction.
+             */
+            xDest = -xDest;
+            yDest = -yDest;
 
+            Tweener.addTween(monitorData.container,
+                             { x: xDest,
+                               y: yDest,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutCubic'
+                             });
+        }
         Tweener.addTween(this._switchData,
                          { progress: direction == Meta.MotionDirection.DOWN ? 1 : -1,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutCubic'
-                         });
-        Tweener.addTween(this._switchData.container,
-                         { x: xDest,
-                           y: yDest,
                            time: WINDOW_ANIMATION_TIME,
                            transition: 'easeOutCubic',
                            onComplete: this._switchWorkspaceDone,
@@ -1856,7 +1885,8 @@ var WindowManager = class {
 
         if (this._switchData && this._switchData.gestureActivated) {
             Tweener.removeTweens(this._switchData);
-            Tweener.removeTweens(this._switchData.container);
+            for (let monitorData of this._switchData.monitors)
+                Tweener.removeTweens(monitorData.container);
 
             tracker.continueSwipe(this._switchData.progress);
             return;
@@ -1866,14 +1896,14 @@ var WindowManager = class {
 
         // TODO: horizontal
 
-        let baseDistance = global.screen_height - Main.panel.height;
+        let baseDistance = global.display.get_monitor_geometry(monitor).height - Main.panel.height;
 
         let direction = Meta.MotionDirection.DOWN;
-        let backInfo = this._switchData.surroundings[direction];
+        let backInfo = this._switchData.monitors[monitor].surroundings[direction];
         let backExtent = backInfo ? (backInfo.yDest - baseDistance) : 0;
 
         direction = Meta.MotionDirection.UP;
-        let forwardInfo = this._switchData.surroundings[direction];
+        let forwardInfo = this._switchData.monitors[monitor].surroundings[direction];
         let forwardExtent = forwardInfo ? (-forwardInfo.yDest - baseDistance) : 0;
 
         tracker.confirmSwipe((backInfo != null), (forwardInfo != null), baseDistance, backExtent, forwardExtent);
@@ -1886,10 +1916,13 @@ var WindowManager = class {
         this._switchData.progress = progress;
 
         let direction = (progress > 0) ? Meta.MotionDirection.DOWN : Meta.MotionDirection.UP;
-        let info = this._switchData.surroundings[direction];
-        let distance = info ? Math.abs(info.yDest) : 0;
 
-        this._switchData.container.set_position(0, Math.round(-progress * distance));
+        for (let monitorData of this._switchData.monitors) {
+            let info = monitorData.surroundings[direction];
+            let distance = info ? Math.abs(info.yDest) : 0;
+
+            monitorData.container.set_position(0, Math.round(-progress * distance));
+        }
     }
 
     _switchWorkspaceEnd(tracker, duration, isBack) {
@@ -1908,20 +1941,22 @@ var WindowManager = class {
             return;
         }
 
-        let xDest = -this._switchData.surroundings[direction].xDest;
-        let yDest = -this._switchData.surroundings[direction].yDest;
-
         let switchData = this._switchData;
         this._switchData.gestureActivated = true;
 
+        for (let monitorData of switchData.monitors) {
+            let xDest = -monitorData.surroundings[direction].xDest;
+            let yDest = -monitorData.surroundings[direction].yDest;
+
+            Tweener.addTween(monitorData.container,
+                             { x: xDest,
+                               y: yDest,
+                               time: duration,
+                               transition: 'easeOutCubic'
+                             });
+        }
         Tweener.addTween(switchData,
                          { progress: direction == Meta.MotionDirection.DOWN ? 1 : -1,
-                           time: duration,
-                           transition: 'easeOutCubic'
-                         });
-        Tweener.addTween(switchData.container,
-                         { x: xDest,
-                           y: yDest,
                            time: duration,
                            transition: 'easeOutCubic',
                            onComplete: () => {
@@ -1946,26 +1981,30 @@ var WindowManager = class {
 
         let switchData = this._switchData;
 
+        for (let monitorData of switchData.monitors) {
+            Tweener.addTween(monitorData.container,
+                             { x: 0,
+                               y: 0,
+                               time: duration,
+                               transition: 'easeOutCubic'
+                             });
+        }
         Tweener.addTween(switchData,
                          { progress: 0,
-                           time: duration,
-                           transition: 'easeOutCubic'
-                         });
-        Tweener.addTween(switchData.container,
-                         { x: 0,
-                           y: 0,
                            time: duration,
                            transition: 'easeOutCubic',
                            onComplete: this._finishWorkspaceSwitch,
                            onCompleteScope: this,
-                           onCompleteParams: [switchData],
+                           onCompleteParams: [switchData]
                          });
     }
 
     _switchWorkspaceStop() {
         this._switchData.progress = 0;
-        this._switchData.container.x = 0;
-        this._switchData.container.y = 0;
+        for (let monitorData of this._switchData.monitors) {
+            monitorData.container.x = 0;
+            monitorData.container.y = 0;
+        }
         this._finishWorkspaceSwitch(this._switchData);
     }
 
