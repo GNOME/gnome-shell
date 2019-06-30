@@ -13,6 +13,7 @@ const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
+const SwipeTracker = imports.ui.swipeTracker;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
@@ -321,7 +322,9 @@ var AllView = GObject.registerClass({
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
             });
-        this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
+        this._pageIndicators.connect('scroll-event', (actor, event) => {
+            this._scrollView.event (event, false);
+        });
         this.add_actor(this._pageIndicators);
 
         this.folderIcons = [];
@@ -339,13 +342,13 @@ var AllView = GObject.registerClass({
 
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
-        let panAction = new Clutter.PanAction({ interpolate: false });
-        panAction.connect('pan', this._onPan.bind(this));
-        panAction.connect('gesture-cancel', this._onPanEnd.bind(this));
-        panAction.connect('gesture-end', this._onPanEnd.bind(this));
-        this._panAction = panAction;
-        this._scrollView.add_action(panAction);
-        this._panning = false;
+        let allowedModes = Shell.ActionMode.OVERVIEW;
+        this._swipeTracker = new SwipeTracker.SwipeTracker(this._scrollView, allowedModes);
+        this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
+        this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
+        this._swipeTracker.connect('end', this._swipeEnd.bind(this));
+
+        this._animating = false;
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', () => {
             if (!this._currentPopup)
@@ -396,6 +399,7 @@ var AllView = GObject.registerClass({
         this._keyPressEventId =
             global.stage.connect('key-press-event',
                 this._onKeyPressEvent.bind(this));
+        this._swipeTracker.enabled = true;
         super.vfunc_map();
     }
 
@@ -404,6 +408,7 @@ var AllView = GObject.registerClass({
             global.stage.disconnect(this._keyPressEventId);
             this._keyPressEventId = 0;
         }
+        this._swipeTracker.enabled = false;
         super.vfunc_unmap();
     }
 
@@ -557,44 +562,20 @@ var AllView = GObject.registerClass({
             return;
         }
 
-        let velocity;
-        if (!this._panning)
-            velocity = 0;
-        else
-            velocity = Math.abs(this._panAction.get_velocity(0)[2]);
-        // Tween the change between pages.
-        // If velocity is not specified (i.e. scrolling with mouse wheel),
-        // use the same speed regardless of original position
-        // if velocity is specified, it's in pixels per milliseconds
-        let diffToPage = this._diffToPage(pageNumber);
-        let childBox = this._scrollView.get_allocation_box();
-        let totalHeight = childBox.y2 - childBox.y1;
-        let time;
-        // Only take the velocity into account on page changes, otherwise
-        // return smoothly to the current page using the default velocity
-        if (this._grid.currentPage != pageNumber) {
-            let minVelocity = totalHeight / PAGE_SWITCH_TIME;
-            velocity = Math.max(minVelocity, velocity);
-            time = diffToPage / velocity;
-        } else {
-            time = PAGE_SWITCH_TIME * diffToPage / totalHeight;
-        }
-        // When changing more than one page, make sure to not take
-        // longer than PAGE_SWITCH_TIME
-        time = Math.min(time, PAGE_SWITCH_TIME);
-
         this._grid.currentPage = pageNumber;
-        this._adjustment.ease(this._grid.getPageY(pageNumber), {
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: time
-        });
+
+        if (!this._animating) {
+            this._animating = true;
+            // Tween the change between pages.
+            this._adjustment.ease(this._grid.getPageY(this._grid.currentPage), {
+                mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+                duration: PAGE_SWITCH_TIME,
+                onComplete: () => (this._animating = false)
+            });
+        } else
+            this._adjustment.value = this._grid.getPageY(this._grid.currentPage);
 
         this._pageIndicators.setCurrentPage(pageNumber);
-    }
-
-    _diffToPage(pageNumber) {
-        let currentScrollPosition = this._adjustment.value;
-        return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
     }
 
     openSpaceForPopup(item, side, nRows) {
@@ -617,6 +598,9 @@ var AllView = GObject.registerClass({
         if (this._displayingPopup || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
+        if (this._swipeTracker.canHandleScrollEvent(event))
+            return Clutter.EVENT_PROPAGATE;
+
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
             this.goToPage(this._grid.currentPage - 1);
@@ -626,34 +610,49 @@ var AllView = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    _onPan(action) {
-        if (this._displayingPopup)
-            return false;
-        this._panning = true;
-        this._clickAction.release();
-        let [dist_, dx_, dy] = action.get_motion_delta(0);
-        let adjustment = this._adjustment;
-        adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
-        return false;
-    }
-
-    _onPanEnd(action) {
-        if (this._displayingPopup)
+    _swipeBegin(tracker, monitor) {
+        if (monitor != Main.layoutManager.primaryIndex)
             return;
 
-        let pageHeight = this._grid.getPageHeight();
+        let adjustment = this._adjustment;
+        if (this._animating)
+            adjustment.remove_transition('value');
 
-        // Calculate the scroll value we'd be at, which is our current
-        // scroll plus any velocity the user had when they released
-        // their finger.
+        let progress = adjustment.value / adjustment.page_size;
 
-        let velocity = -action.get_velocity(0)[2];
-        let endPanValue = this._adjustment.value + velocity;
+        let points = [];
+        for (let i = 0; i < this._grid.nPages(); i++)
+            points.push(i);
 
-        let closestPage = Math.round(endPanValue / pageHeight);
-        this.goToPage(closestPage);
+        tracker.confirmSwipe(this._scrollView.height, points, progress, Math.round(progress));
 
-        this._panning = false;
+        this._animating = true;
+    }
+
+    _swipeUpdate(_tracker, progress) {
+        let adjustment = this._adjustment;
+        adjustment.value = progress * adjustment.page_size;
+    }
+
+    _swipeEnd(_tracker, duration, endProgress) {
+        let adjustment = this._adjustment;
+        let value = endProgress * adjustment.page_size;
+
+        if (duration == 0) {
+            adjustment.value = value;
+            this.goToPage(endProgress);
+            this._animating = false;
+            return;
+        }
+
+        this._adjustment.ease(value, {
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            duration: duration,
+            onComplete: () => {
+                this.goToPage(endProgress);
+                this._animating = false;
+            }
+        });
     }
 
     _onKeyPressEvent(actor, event) {
