@@ -400,7 +400,7 @@ var ControlsManager = class {
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
-        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
+        this.viewSelector = new ViewSelector.ViewSelector(searchEntry, this._thumbnailsBox,
                                                           this.dash.showAppsButton);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
