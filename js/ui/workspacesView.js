@@ -453,10 +453,9 @@ var WorkspacesDisplay = class {
         this._gestureActive = false;
     }
 
-    _switchWorkspaceBegin(tracker) {
-//        if (this._workspacesOnlyOnPrimary &&
-//            this._getMonitorIndexForEvent(event) != this._primaryIndex)
-//            return;
+    _switchWorkspaceBegin(tracker, monitor) {
+        if (this._workspacesOnlyOnPrimary && monitor != this._primaryIndex)
+            return;
 
         if (this._gestureActive) {
             let workspaceManager = global.workspace_manager;

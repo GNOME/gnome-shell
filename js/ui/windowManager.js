@@ -971,7 +971,10 @@ var WindowManager = class {
         return this._currentPadOsd.actor;
     }
 
-    _switchWorkspaceBegin(tracker) {
+    _switchWorkspaceBegin(tracker, monitor) {
+        if (Meta.prefs_get_workspaces_only_on_primary() && monitor != Main.layoutManager.primaryIndex)
+            return;
+
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
 

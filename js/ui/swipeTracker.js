@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GObject, Shell } = imports.gi;
+const { Clutter, Gio, GObject, Meta, Shell } = imports.gi;
 
 const Signals = imports.signals;
 
@@ -47,18 +47,21 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
             return Clutter.EVENT_PROPAGATE;
 
         let time = event.get_time();
-        let [dx, dy] = event.get_gesture_motion_delta();
 
         switch (event.get_gesture_phase()) {
         case Clutter.TouchpadGesturePhase.BEGIN:
-            this.emit('begin', time);
+            let [x, y] = event.get_coords();
+            this.emit('begin', time, x, y);
             break;
 
         case Clutter.TouchpadGesturePhase.UPDATE:
+            let [dx, dy] = event.get_gesture_motion_delta();
+
             if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
                 dx = -dx;
                 dy = -dy;
             }
+
             this.emit('update', time, -dy / TOUCHPAD_BASE_DISTANCE);
             break;
 
@@ -74,7 +77,7 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
 Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
 
 var TouchSwipeGesture = GObject.registerClass({
-    Signals: { 'begin':  { param_types: [GObject.TYPE_UINT] },
+    Signals: { 'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
                'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
                'cancel': { param_types: [GObject.TYPE_UINT] }},
@@ -96,8 +99,9 @@ var TouchSwipeGesture = GObject.registerClass({
             return false;
 
         let time = this.get_last_event(point).get_time();
+        let [x, y] = this.get_press_coords(point);
 
-        this.emit('begin', time);
+        this.emit('begin', time, x, y);
         return true;
     }
 
@@ -159,7 +163,8 @@ var ScrollGesture = class ScrollGesture {
         }
 
         if (!this._began) {
-            this.emit('begin', time);
+            let [x, y] = event.get_coords();
+            this.emit('begin', time, x, y);
             this._began = true;
         }
 
@@ -175,11 +180,12 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 // To correctly implement the gesture, the implementer must implement handlers for the
 // following four signals with the following behavior:
 //
-// begin(tracker)
+// begin(tracker, monitor)
 //   The handler should check whether a deceleration animation is currently
 //   running. If it is, it should stop the animation (without resetting progress)
 //   and call tracker.continueSwipe(progress). Otherwise it should initialize the gesture
 //   and call tracker.confirmSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent).
+//   If nothing is called, the swipe would be ignored.
 //   The parameters are:
 //    * canSwipeBack: whether the tracker should allow to swipe back;
 //    * canSwipeForward: whether the tracker should allow to swipe forward;
@@ -293,12 +299,16 @@ var SwipeTracker = class {
         this._reset();
     }
 
-    _beginGesture(gesture, time) {
+    _beginGesture(gesture, time, x, y) {
         if (this._state == State.SCROLLING)
             return;
 
         this._prevTime = time;
-        this.emit('begin');
+
+        let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
+        let monitor = global.display.get_monitor_index_for_rect(rect);
+
+        this.emit('begin', monitor);
     }
 
     _updateGesture(gesture, time, delta) {

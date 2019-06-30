@@ -515,7 +515,10 @@ var AllView = class AllView extends BaseAppView {
         return Clutter.EVENT_STOP;
     }
 
-    _swipeBegin(tracker) {
+    _swipeBegin(tracker, monitor) {
+        if (monitor != Main.layoutManager.primaryIndex)
+            return;
+
         if (this._gestureActive) {
             let adjustment = this._adjustment;
             Tweener.removeTweens(adjustment);
