@@ -99,7 +99,6 @@
       </description>
     </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
-    <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
 
   <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
@@ -180,17 +179,6 @@
     <key name="switch-to-application-9" type="as">
       <default>["&lt;Super&gt;9"]</default>
       <summary>Switch to application 9</summary>
-    </key>
-  </schema>
-
-  <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
-          gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="keyboard-type" type="s">
-      <default>'touch'</default>
-      <summary>Which keyboard to use</summary>
-      <description>
-        The type of keyboard to use.
-      </description>
     </key>
   </schema>
 
