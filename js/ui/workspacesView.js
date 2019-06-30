@@ -454,6 +454,10 @@ var WorkspacesDisplay = class {
     }
 
     _switchWorkspaceBegin(tracker) {
+//        if (this._workspacesOnlyOnPrimary &&
+//            this._getMonitorIndexForEvent(event) != this._primaryIndex)
+//            return;
+
         if (this._gestureActive) {
             let workspaceManager = global.workspace_manager;
             let active = workspaceManager.get_active_workspace_index();
@@ -462,7 +466,7 @@ var WorkspacesDisplay = class {
             Tweener.removeTweens(adjustment);
 
             let progress = adjustment.value / adjustment.page_size - active;
-            tracker.continueFrom(progress);
+            tracker.continueSwipe(progress);
             return;
         }
 
@@ -474,7 +478,7 @@ var WorkspacesDisplay = class {
 
         let canSwipeBack = (activeWs.get_neighbor(Meta.MotionDirection.DOWN) != activeWs);
         let canSwipeForward = (activeWs.get_neighbor(Meta.MotionDirection.UP) != activeWs);
-        tracker.startSwipe(canSwipeBack, canSwipeForward, this.actor.height, 0, 0);
+        tracker.confirmSwipe(canSwipeBack, canSwipeForward, this.actor.height, 0, 0);
 
         this._gestureActive = true;
     }

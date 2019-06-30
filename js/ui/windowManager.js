@@ -979,7 +979,7 @@ var WindowManager = class {
             Tweener.removeTweens(this._switchData);
             Tweener.removeTweens(this._switchData.container);
 
-            tracker.continueFrom(this._switchData.progress);
+            tracker.continueSwipe(this._switchData.progress);
             return;
         }
 
@@ -997,7 +997,7 @@ var WindowManager = class {
         let forwardInfo = this._switchData.surroundings[direction];
         let forwardExtent = forwardInfo ? (-forwardInfo.yDest - baseDistance) : 0;
 
-        tracker.startSwipe((backInfo != null), (forwardInfo != null), baseDistance, backExtent, forwardExtent);
+        tracker.confirmSwipe((backInfo != null), (forwardInfo != null), baseDistance, backExtent, forwardExtent);
     }
 
     _switchWorkspaceUpdate(tracker, progress) {

@@ -153,8 +153,8 @@ Signals.addSignalMethods(ScrollGesture.prototype);
 // begin(tracker)
 //   The handler should check whether a deceleration animation is currently
 //   running. If it is, it should stop the animation (without resetting progress)
-//   and call tracker.continueFrom(progress). Otherwise it should initialize the gesture
-//   and call tracker.startSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent).
+//   and call tracker.continueSwipe(progress). Otherwise it should initialize the gesture
+//   and call tracker.confirmSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent).
 //   The parameters are:
 //    * canSwipeBack: whether the tracker should allow to swipe back;
 //    * canSwipeForward: whether the tracker should allow to swipe forward;
@@ -270,7 +270,6 @@ var SwipeTracker = class {
 
         this._prevTime = time;
         this.emit('begin');
-        this._state = State.SCROLLING;
     }
 
     _updateGesture(gesture, time, delta) {
@@ -279,6 +278,9 @@ var SwipeTracker = class {
 
         if (this._state != State.SCROLLING)
             this._beginGesture(gesture, time);
+
+        if (this._state != State.SCROLLING)
+            return;
 
         this._progress += delta;
 
@@ -357,7 +359,7 @@ var SwipeTracker = class {
         this._endGesture(gesture, time);
     }
 
-    startSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent) {
+    confirmSwipe(canSwipeBack, canSwipeForward, distance, backExtent, forwardExtent) {
         this._canSwipeBack = canSwipeBack;
         this._canSwipeForward = canSwipeForward;
         this._distance = distance;
@@ -367,9 +369,11 @@ var SwipeTracker = class {
         this._touchGesture.setDistance(distance);
         if (this._dragGesture)
             this._dragGesture.setDistance(distance);
+
+        this._state = State.SCROLLING;
     }
 
-    continueFrom(progress) {
+    continueSwipe(progress) {
         this._progress = progress;
         this._velocity = 0;
         this._state = State.SCROLLING;

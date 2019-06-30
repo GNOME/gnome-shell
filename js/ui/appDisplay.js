@@ -521,13 +521,13 @@ var AllView = class AllView extends BaseAppView {
             Tweener.removeTweens(adjustment);
 
             let progress = this._adjustment.value / adjustment.page_size - this._grid.currentPage;
-            tracker.continueFrom(progress);
+            tracker.continueSwipe(progress);
             return;
         }
 
         let canSwipeForward = this._grid.currentPage > 0;
         let canSwipeBack = this._grid.currentPage < this._grid.nPages() - 1;
-        tracker.startSwipe(canSwipeBack, canSwipeForward, this._scrollView.height, 0, 0);
+        tracker.confirmSwipe(canSwipeBack, canSwipeForward, this._scrollView.height, 0, 0);
 
         this._gestureActive = true;
     }
