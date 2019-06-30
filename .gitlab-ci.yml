@@ -38,6 +38,17 @@ js_check:
             - ${JS_LOG}
         when: on_failure
 
+eslint:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/run-eslint.sh
+    <<: *only_default
+    artifacts:
+        paths:
+            - reports
+        when: always
+
 build:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v2
     stage: build
