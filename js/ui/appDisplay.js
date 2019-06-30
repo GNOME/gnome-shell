@@ -14,6 +14,7 @@ const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 const Search = imports.ui.search;
+const SwipeTracker = imports.ui.swipeTracker;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
@@ -243,7 +244,9 @@ var AllView = class AllView extends BaseAppView {
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
             });
-        this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
+        this._pageIndicators.connect('scroll-event', (actor, event) => {
+            this._scrollView.event (event, false)
+        });
         this.actor.add_actor(this._pageIndicators);
 
         this.folderIcons = [];
@@ -261,13 +264,14 @@ var AllView = class AllView extends BaseAppView {
 
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
-        let panAction = new Clutter.PanAction({ interpolate: false });
-        panAction.connect('pan', this._onPan.bind(this));
-        panAction.connect('gesture-cancel', this._onPanEnd.bind(this));
-        panAction.connect('gesture-end', this._onPanEnd.bind(this));
-        this._panAction = panAction;
-        this._scrollView.add_action(panAction);
-        this._panning = false;
+        let allowedModes = Shell.ActionMode.OVERVIEW;
+        let swipeTracker = new SwipeTracker.SwipeTracker(this._scrollView, allowedModes);
+        swipeTracker.connect('begin', this._swipeBegin.bind(this));
+        swipeTracker.connect('update', this._swipeUpdate.bind(this));
+        swipeTracker.connect('end', this._swipeEnd.bind(this));
+        swipeTracker.connect('cancel', this._swipeCancel.bind(this));
+
+        this._gestureActive = false;
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', () => {
             if (!this._currentPopup)
@@ -307,6 +311,7 @@ var AllView = class AllView extends BaseAppView {
                     global.stage.disconnect(this._keyPressEventId);
                 this._keyPressEventId = 0;
             }
+            swipeTracker.enabled = this.actor.mapped;
         });
 
         this._redisplayWorkId = Main.initializeDeferredWork(this.actor, this._redisplay.bind(this));
@@ -451,43 +456,16 @@ var AllView = class AllView extends BaseAppView {
         if (this._displayingPopup && this._currentPopup)
             this._currentPopup.popdown();
 
-        let velocity;
-        if (!this._panning)
-            velocity = 0;
-        else
-            velocity = Math.abs(this._panAction.get_velocity(0)[2]);
-        // Tween the change between pages.
-        // If velocity is not specified (i.e. scrolling with mouse wheel),
-        // use the same speed regardless of original position
-        // if velocity is specified, it's in pixels per milliseconds
-        let diffToPage = this._diffToPage(pageNumber);
-        let childBox = this._scrollView.get_allocation_box();
-        let totalHeight = childBox.y2 - childBox.y1;
-        let time;
-        // Only take the velocity into account on page changes, otherwise
-        // return smoothly to the current page using the default velocity
-        if (this._grid.currentPage != pageNumber) {
-            let minVelocity = totalHeight / (PAGE_SWITCH_TIME * 1000);
-            velocity = Math.max(minVelocity, velocity);
-            time = (diffToPage / velocity) / 1000;
-        } else {
-            time = PAGE_SWITCH_TIME * diffToPage / totalHeight;
-        }
-        // When changing more than one page, make sure to not take
-        // longer than PAGE_SWITCH_TIME
-        time = Math.min(time, PAGE_SWITCH_TIME);
-
         this._grid.currentPage = pageNumber;
-        Tweener.addTween(this._adjustment,
-                         { value: this._grid.getPageY(this._grid.currentPage),
-                           time: time,
-                           transition: 'easeOutQuad' });
-        this._pageIndicators.setCurrentPage(pageNumber);
-    }
 
-    _diffToPage(pageNumber) {
-        let currentScrollPosition = this._adjustment.value;
-        return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
+        if (!this._gestureActive)
+            // Tween the change between pages.
+            Tweener.addTween(this._adjustment,
+                             { value: this._grid.getPageY(this._grid.currentPage),
+                               time: PAGE_SWITCH_TIME,
+                               transition: 'easeOutCubic' });
+
+        this._pageIndicators.setCurrentPage(pageNumber);
     }
 
     openSpaceForPopup(item, side, nRows) {
@@ -510,6 +488,9 @@ var AllView = class AllView extends BaseAppView {
         if (this._displayingPopup || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
+        if (event.get_scroll_source() == Clutter.ScrollSource.FINGER || event.get_source_device().get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE) // TODO: remove this and handle it in SwipeTracker too
+            return Clutter.EVENT_PROPAGATE;
+
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
             this.goToPage(this._grid.currentPage - 1);
@@ -519,34 +500,67 @@ var AllView = class AllView extends BaseAppView {
         return Clutter.EVENT_STOP;
     }
 
-    _onPan(action) {
-        if (this._displayingPopup)
-            return false;
-        this._panning = true;
-        this._clickAction.release();
-        let [dist, dx, dy] = action.get_motion_delta(0);
-        let adjustment = this._adjustment;
-        adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
-        return false;
-    }
-
-    _onPanEnd(action) {
-        if (this._displayingPopup)
+    _swipeBegin(tracker, monitor) {
+        if (monitor != Main.layoutManager.primaryIndex)
             return;
 
-        let pageHeight = this._grid.getPageHeight();
+        if (this._gestureActive) {
+            let adjustment = this._adjustment;
+            Tweener.removeTweens(adjustment);
 
-        // Calculate the scroll value we'd be at, which is our current
-        // scroll plus any velocity the user had when they released
-        // their finger.
+            let progress = this._adjustment.value / adjustment.page_size - this._grid.currentPage;
+            tracker.continueSwipe(progress);
+            return;
+        }
 
-        let velocity = -action.get_velocity(0)[2];
-        let endPanValue = this._adjustment.value + velocity;
+        let canSwipeForward = this._grid.currentPage > 0;
+        let canSwipeBack = this._grid.currentPage < this._grid.nPages() - 1;
+        tracker.confirmSwipe(canSwipeBack, canSwipeForward, this._scrollView.height, 0, 0);
 
-        let closestPage = Math.round(endPanValue / pageHeight);
-        this.goToPage(closestPage);
+        this._gestureActive = true;
+    }
 
-        this._panning = false;
+    _swipeUpdate(tracker, progress) {
+        let adjustment = this._adjustment;
+        adjustment.value = (this._grid.currentPage + progress) * adjustment.page_size;
+    }
+
+    _swipeEnd(tracker, duration, isBack) {
+        let adjustment = this._adjustment;
+        let page = this._grid.currentPage + (isBack ? 1 : -1);
+        let value = page * adjustment.page_size;
+
+        Tweener.addTween(adjustment,
+                         { value: value,
+                           time: duration,
+                           transition: 'easeOutCubic',
+                           onComplete: () => {
+                               this.goToPage(page);
+                               this._gestureActive = false;
+                           },
+                           onCompleteScope: this
+                         });
+    }
+
+    _swipeCancel(tracker, duration) {
+        let adjustment = this._adjustment;
+        let value = this._grid.currentPage * adjustment.page_size;
+
+        if (duration == 0) {
+            adjustment.value = value;
+            this._gestureActive = false;
+            return;
+        }
+
+        Tweener.addTween(adjustment,
+                         { value: value,
+                           time: duration,
+                           transition: 'easeOutCubic',
+                           onComplete: () => {
+                               this._gestureActive = false;
+                           },
+                           onCompleteScope: this
+                         });
     }
 
     _onKeyPressEvent(actor, event) {
