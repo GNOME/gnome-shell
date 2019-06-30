@@ -49,15 +49,24 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
         let time = event.get_time();
         let [dx, dy] = event.get_gesture_motion_delta();
 
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
+        switch (event.get_gesture_phase()) {
+        case Clutter.TouchpadGesturePhase.BEGIN:
+            this.emit('begin', time);
+            break;
+
+        case Clutter.TouchpadGesturePhase.UPDATE:
             if(!(this._touchpadSettings.get_boolean('natural-scroll'))) {
                 dx = -dx;
                 dy = -dy;
             }
             this.emit('update', time, -dy / TOUCHPAD_BASE_DISTANCE);
-        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END ||
-                   event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
+            break;
+
+        case Clutter.TouchpadGesturePhase.END:
+        case Clutter.TouchpadGesturePhase.CANCEL:
             this.emit('end', time);
+            break;
+        }
 
         return Clutter.EVENT_STOP;
     }
@@ -65,7 +74,8 @@ var TouchpadSwipeGesture = class TouchpadSwipeGesture {
 Signals.addSignalMethods(TouchpadSwipeGesture.prototype);
 
 var TouchSwipeGesture = GObject.registerClass({
-    Signals: { 'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+    Signals: { 'begin':  { param_types: [GObject.TYPE_UINT] },
+               'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
                'cancel': { param_types: [GObject.TYPE_UINT] }},
 }, class TouchSwipeGesture extends Clutter.TriggerAction {
@@ -82,7 +92,13 @@ var TouchSwipeGesture = GObject.registerClass({
         if (!super.vfunc_gesture_begin(actor, point))
             return false;
 
-        return !this._shouldSkip();
+        if (this._shouldSkip())
+            return false;
+
+        let time = this.get_last_event(point).get_time();
+
+        this.emit('begin', time);
+        return true;
     }
 
     // TODO: track center of the fingers instead of the first one
@@ -116,6 +132,7 @@ var TouchSwipeGesture = GObject.registerClass({
 var ScrollGesture = class ScrollGesture {
     constructor(actor, shouldSkip) {
         this._shouldSkip = shouldSkip;
+        this._began = false;
 
         actor.connect('scroll-event', this._handleEvent.bind(this));
     }
@@ -135,10 +152,18 @@ var ScrollGesture = class ScrollGesture {
 
         let time = event.get_time();
         let [dx, dy] = event.get_scroll_delta();
-        if (dx == 0 && dy == 0)
+        if (dx == 0 && dy == 0) {
             this.emit('end', time);
-        else
-            this.emit('update', time, dy * SCROLL_MULTIPLIER / TOUCHPAD_BASE_DISTANCE);
+            this._began = false;
+            return;
+        }
+
+        if (!this._began) {
+            this.emit('begin', time);
+            this._began = true;
+        }
+
+        this.emit('update', time, dy * SCROLL_MULTIPLIER / TOUCHPAD_BASE_DISTANCE);
 
         return Clutter.EVENT_STOP;
     }
@@ -201,11 +226,13 @@ var SwipeTracker = class {
             ((this._allowedModes & Main.actionMode) == 0 || !this._enabled);
 
         let touchpadGesture = new TouchpadSwipeGesture(shouldSkip);
+        touchpadGesture.connect('begin', this._beginGesture.bind(this));
         touchpadGesture.connect('update', this._updateGesture.bind(this));
         touchpadGesture.connect('end', this._endGesture.bind(this));
 //        touchpadGesture.connect('cancel', this._cancelGesture.bind(this)); // End the gesture normally for touchpads
 
         let touchGesture = new TouchSwipeGesture(shouldSkip, 4, Clutter.TriggerEdge.NONE);
+        touchGesture.connect('begin', this._beginGesture.bind(this));
         touchGesture.connect('update', this._updateGesture.bind(this));
         touchGesture.connect('end', this._endGesture.bind(this));
         touchGesture.connect('cancel', this._cancelGesture.bind(this));
@@ -214,6 +241,7 @@ var SwipeTracker = class {
 
         if (allowDrag) {
             let dragGesture = new TouchSwipeGesture(shouldSkip, 1, Clutter.TriggerEdge.AFTER);
+            dragGesture.connect('begin', this._beginGesture.bind(this));
             dragGesture.connect('update', this._updateGesture.bind(this));
             dragGesture.connect('end', this._endGesture.bind(this));
             dragGesture.connect('cancel', this._cancelGesture.bind(this));
@@ -228,6 +256,7 @@ var SwipeTracker = class {
 
         if (allowScroll) {
             let scrollGesture = new ScrollGesture(actor, shouldSkip);
+            scrollGesture.connect('begin', this._beginGesture.bind(this));
             scrollGesture.connect('update', this._updateGesture.bind(this));
             scrollGesture.connect('end', this._endGesture.bind(this));
         }
@@ -275,9 +304,6 @@ var SwipeTracker = class {
     _updateGesture(gesture, time, delta) {
         if ((this._allowedModes & Main.actionMode) == 0 || !this._enabled)
             return;
-
-        if (this._state != State.SCROLLING)
-            this._beginGesture(gesture, time);
 
         if (this._state != State.SCROLLING)
             return;
