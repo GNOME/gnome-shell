@@ -1719,12 +1719,16 @@ var WindowManager = class {
                 continue;
 
             let monitorData = { index: monitor.index,
+                                clipBin: new Clutter.Actor(),
                                 container: new Clutter.Actor(),
                                 curGroup: new Clutter.Actor(),
                                 surroundings: {} };
 
             monitorData.container.add_actor(monitorData.curGroup);
-            wgroup.add_actor(monitorData.container);
+
+            monitorData.clipBin.add_actor(monitorData.container);
+            monitorData.clipBin.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
+            wgroup.add_actor(monitorData.clipBin);
 
             for (let dir of Object.values(Meta.MotionDirection)) {
                 let ws = null;
@@ -1826,6 +1830,7 @@ var WindowManager = class {
             let container = monitorData.container;
             Tweener.removeTweens(container);
             container.destroy();
+            monitorData.clipBin.destroy();
         }
         switchData.movingWindowBin.destroy();
 
