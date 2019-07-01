@@ -80,7 +80,7 @@ var TouchSwipeGesture = GObject.registerClass({
     Signals: { 'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
                'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
                'end':    { param_types: [GObject.TYPE_UINT] },
-               'cancel': { param_types: [GObject.TYPE_UINT] }},
+               'cancel': { param_types: [GObject.TYPE_UINT] } },
 }, class TouchSwipeGesture extends Clutter.TriggerAction {
     _init(shouldSkip, n_touch_points, trigger_edge = Clutter.TriggerEdge.NONE) {
         super._init();
