@@ -874,11 +874,11 @@ msgstr "Mes següent"
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr "%d"
+msgstr "%-d"
 
 #: js/ui/calendar.js:619
 msgid "Week %V"
-msgstr "Setmana %V"
+msgstr "Setmana %-V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
