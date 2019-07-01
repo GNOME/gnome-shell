@@ -1628,6 +1628,8 @@ var WindowManager = class {
             return;
         return;
 
+        // TODO: rewrite this whole thing
+
         let windows = global.get_window_actors();
         let lastCurSibling = null;
         let lastDirSibling = [];
@@ -1767,21 +1769,22 @@ var WindowManager = class {
                 if (window.is_on_all_workspaces())
                     continue;
 
-                // TODO: what if a window is between monitors?
-//                r(0).get_frame_rect().intersect(global.display.get_monitor_geometry(1))
-                if (window.get_monitor() != monitor.index)
+                if (!window.get_frame_rect().intersect(global.display.get_monitor_geometry(monitor.index))[0])
                     continue;
 
                 let record = { window: actor,
-                               parent: actor.get_parent() };
+                               parent: actor.get_parent(),
+                               clone: new Clutter.Clone({ source: actor,
+                                                          x: actor.x,
+                                                          y: actor.y }) };
 
                 if (this._movingWindow && window == this._movingWindow) {
                     switchData.movingWindow = record;
                     switchData.windows.push(switchData.movingWindow);
-                    actor.reparent(switchData.movingWindowBin);
+                    switchData.movingWindowBin.add_actor(record.clone);
                 } else if (window.get_workspace().index() == from) {
                     switchData.windows.push(record);
-                    actor.reparent(monitorData.curGroup);
+                    monitorData.curGroup.add_actor(record.clone);
                 } else {
                     let visible = false;
                     for (let dir of Object.values(Meta.MotionDirection)) {
@@ -1791,13 +1794,14 @@ var WindowManager = class {
                             continue;
 
                         switchData.windows.push(record);
-                        actor.reparent(info.actor);
+                        info.actor.add_actor(record.clone);
                         visible = true;
                         break;
                     }
 
-                    actor.visible = visible;
+                    record.clone.visible = visible;
                 }
+                actor.hide();
             }
 
             switchData.monitors[monitorData.index] = monitorData;
@@ -1807,6 +1811,7 @@ var WindowManager = class {
             let w = switchData.windows[i];
 
             w.windowDestroyId = w.window.connect('destroy', () => {
+                w.clone.destroy();
                 switchData.windows.splice(switchData.windows.indexOf(w), 1);
             });
         }
@@ -1819,11 +1824,11 @@ var WindowManager = class {
             let w = switchData.windows[i];
 
             w.window.disconnect(w.windowDestroyId);
-            w.window.reparent(w.parent);
+            w.clone.destroy();
 
-            if (w.window.get_meta_window().get_workspace() !=
+            if (w.window.get_meta_window().get_workspace() ==
                 global.workspace_manager.get_active_workspace())
-                w.window.hide();
+                w.window.show();
         }
         Tweener.removeTweens(switchData);
         for (let monitorData of switchData.monitors) {
