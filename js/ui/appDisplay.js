@@ -515,6 +515,37 @@ var AllView = class AllView extends BaseAppView {
         return newApps;
     }
 
+    moveItem(item, position) {
+        let visibleApps = this._allItems.filter(icon => icon.actor.visible);
+        let oldPosition = visibleApps.indexOf(item);
+
+        if (oldPosition == position)
+            return;
+
+        super.moveItem(item, position);
+
+        if (position > oldPosition)
+            position -= 1;
+
+        // Update all custom icon positions to match what's visible
+        visibleApps = this._allItems.filter(icon => icon.actor.visible);
+        let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+        visibleApps.forEach((icon, index) => {
+            if (!iconsData[icon.id] || icon.id == item.id)
+                return;
+
+            iconsData[icon.id] = new GLib.Variant('a{sv}', {
+                'position': GLib.Variant.new_uint32(index),
+            });
+        });
+
+        iconsData[item.id] = new GLib.Variant('a{sv}', {
+            'position': GLib.Variant.new_uint32(position),
+        });
+        this._gridSettings.set_value('icons-data',
+            new GLib.Variant('a{sv}', iconsData));
+    }
+
     _loadGrid() {
         super._loadGrid();
         this._refilterApps();
@@ -811,45 +842,60 @@ var AllView = class AllView extends BaseAppView {
         if (appIcon.view == this)
             this._handleDragOvershoot(dragEvent);
 
+        if (dragEvent.targetActor != this._grid)
+            this.removeNudges();
+
         return DND.DragMotionResult.CONTINUE;
     }
 
     _onDragEnd() {
+        this.removeNudges();
+
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
         }
     }
 
-    _canDropAt(source) {
-        if (!(source instanceof AppIcon))
-            return false;
-
-        if (!global.settings.is_writable('favorite-apps'))
-            return false;
-
-        if (!(source.view instanceof FolderView))
-            return false;
-
-        return true;
-    }
-
     handleDragOver(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
-            return DND.DragMotionResult.NO_DROP;
+        let sourceIndex = -1;
+        if (source.view == this) {
+            let visibleItems = this._allItems.filter(item => item.actor.visible);
+            sourceIndex = visibleItems.indexOf(source);
+        }
 
-        return DND.DragMotionResult.MOVE_DROP;
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        this.removeNudges();
+        if (source.view && source.view != this)
+            source.view.removeNudges();
+
+        if (index != -1) {
+            if (sourceIndex == -1 || (index != sourceIndex && index != sourceIndex + 1))
+                this.nudgeItemsAtIndex(index, dragLocation);
+
+            return DND.DragMotionResult.MOVE_DROP;
+        }
+
+        return DND.DragMotionResult.NO_DROP;
     }
 
     acceptDrop(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        if (index == -1)
             return false;
 
-        source.view.removeApp(source.app);
+        if (source.view instanceof FolderView) {
+            source.view.removeApp(source.app);
+            source = this._items[source.id];
 
-        if (this._currentPopup)
-            this._currentPopup.popdown();
+            if (this._currentPopup)
+                this._currentPopup.popdown();
+        }
 
+        this.moveItem(source, index);
+        this.removeNudges();
         return true;
     }
 
@@ -1228,6 +1274,7 @@ var FolderView = class FolderView extends BaseAppView {
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
         this.actor.add_actor(scrollableContainer);
+        this._grid._delegate = this;
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
@@ -1295,6 +1342,29 @@ var FolderView = class FolderView extends BaseAppView {
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let sourceIndex = this._allItems.indexOf(source);
+
+        this._parentView.removeNudges();
+        this.removeNudges();
+        if (index != -1 && index != sourceIndex && index != sourceIndex + 1)
+            this.nudgeItemsAtIndex(index, dragLocation);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let success = index != -1;
+
+        if (success)
+            this.moveItem(source, index);
+
+        this.removeNudges();
+        return success;
     }
 
     _getPageAvailableSize() {
@@ -1377,6 +1447,13 @@ var FolderView = class FolderView extends BaseAppView {
         this._folder.set_strv('apps', folderApps);
 
         return true;
+    }
+
+    moveItem(item, newPosition) {
+        super.moveItem(item, newPosition);
+
+        let appIds = this._allItems.map(icon => icon.id);
+        this._folder.set_strv('apps', appIds);
     }
 };
 
