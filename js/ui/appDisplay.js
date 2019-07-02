@@ -299,6 +299,18 @@ var BaseAppView = GObject.registerClass({
     get gridActor() {
         return this._grid;
     }
+
+    canDropAt(x, y) {
+        return this._grid.canDropAt(x, y);
+    }
+
+    nudgeItemsAtIndex(index, dragLocation) {
+        this._grid.nudgeItemsAtIndex(index, dragLocation);
+    }
+
+    removeNudges() {
+        this._grid.removeNudges();
+    }
 });
 
 var AppDisplay = GObject.registerClass(
