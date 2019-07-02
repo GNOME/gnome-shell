@@ -1497,6 +1497,9 @@ StScrollBar {
     & .overview-icon {
       @extend %icon_tile;
     }
+    &:drop > .overview-icon {
+      background-color: transparentize($selected_bg_color,.15);
+    }
     &:active .overview-icon,
     &:checked .overview-icon {
       background-color: transparentize(darken($osd_bg_color,10%), 0.5);
