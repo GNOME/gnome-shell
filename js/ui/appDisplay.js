@@ -333,6 +333,12 @@ var AllView = class AllView extends BaseAppView {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
+        this._gridSettings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._gridChangedId = this._gridSettings.connect('changed::icon-grid-layout', () => {
+            if (!this._blockGridSettings)
+                Main.queueDeferredWork(this._redisplayWorkId);
+        });
+
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
@@ -413,12 +419,53 @@ var AllView = class AllView extends BaseAppView {
             newApps.push(icon);
         });
 
+        let gridLayout = this._gridSettings.get_strv('icon-grid-layout');
+
+        // Sort the list of apps according to the saved layout. The fallback
+        // is sorting alphabetically.
+        newApps.sort((a, b) => {
+            let indexA = gridLayout.indexOf(a.id);
+            let indexB = gridLayout.indexOf(b.id);
+
+            if (indexA == -1 && indexB == -1)
+                return a.name.localeCompare(b.name);
+            else if (indexA == -1)
+                return 1;
+            else if (indexB == -1)
+                return -1;
+            else
+                return indexA - indexB;
+        });
+
         return newApps;
+    }
+
+    _saveGridLayout() {
+        let appIds = this._allItems.filter(icon => icon.actor.visible).map(icon => icon.id);
+        let gridLayout = this._gridSettings.get_strv('icon-grid-layout');
+
+        // Only save the new layout if it changed
+        let changed = appIds.length != gridLayout.length;
+        if (!changed) {
+            for (let i = 0; i < appIds.length; i++) {
+                if (appIds[i] != gridLayout[i]) {
+                    changed = true;
+                    break;
+                }
+            }
+        }
+
+        if (changed) {
+            this._blockGridSettings = true;
+            this._gridSettings.set_strv('icon-grid-layout', appIds);
+            this._blockGridSettings = false;
+        }
     }
 
     _loadGrid() {
         super._loadGrid();
         this._refilterApps();
+        this._saveGridLayout();
     }
 
     // Overridden from BaseAppView
