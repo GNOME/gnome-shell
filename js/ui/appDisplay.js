@@ -386,7 +386,7 @@ var AllView = class AllView extends BaseAppView {
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
-                icon.connect('apps-changed', this._refilterApps.bind(this));
+                icon.connect('apps-changed', this._redisplay.bind(this));
             }
             newApps.push(icon);
             this.folderIcons.push(icon);
