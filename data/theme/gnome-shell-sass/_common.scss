@@ -1439,6 +1439,9 @@ StScrollBar {
     .overview-icon { icon-size: 96px; }
   }
   //.app-display { spacing: 20px; }
+  .all-apps:drop .icon-grid:drop {
+    background-color: transparentize($selected_bg_color,.1);
+  }
 
   .system-action-icon {
     background-color: black;
@@ -1551,6 +1554,13 @@ StScrollBar {
     padding: 5px;
     spacing-rows: 5px;
     spacing-columns: 5px;
+  }
+  .all-apps:drop .app-folder-popup {
+    -arrow-background-color: black;
+  }
+  .all-apps:drop .app-folder-popup-bin {
+    border-radius: 8px;
+    background-color: black;
   }
 
   .page-indicator {

@@ -705,16 +705,27 @@ var AllView = class AllView extends BaseAppView {
     _onDragMotion(dragEvent) {
         let appIcon = dragEvent.source;
 
-        // Handle the drag overshoot. When dragging to above the
-        // icon grid, move to the page above; when dragging below,
-        // move to the page below.
-        if (appIcon.parentView == this)
-            this._handleDragOvershoot(dragEvent);
+        if (appIcon.parentView) {
+            if (appIcon.parentView == this) {
+                // Handle the drag overshoot. When dragging to above the
+                // icon grid, move to the page above; when dragging below,
+                // move to the page below.
+                this._handleDragOvershoot(dragEvent);
+            } else {
+                // When dragging from a folder over the icon grid, show a
+                // visual indicator
+                this._scrollView.add_style_pseudo_class('drop');
+                this._grid.add_style_pseudo_class('drop');
+            }
+        }
 
         return DND.DragMotionResult.CONTINUE;
     }
 
     _onDragEnd() {
+        this._scrollView.remove_style_pseudo_class('drop');
+        this._grid.remove_style_pseudo_class('drop');
+
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
