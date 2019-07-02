@@ -361,7 +361,11 @@ var IconGrid = GObject.registerClass({
             } else {
                 if (!animating)
                     children[i].opacity = 255;
+
+                children[i].save_easing_state();
+                children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
                 children[i].allocate(childBox, flags);
+                children[i].restore_easing_state();
             }
 
             columnIndex++;
@@ -1087,7 +1091,12 @@ var PaginatedIconGrid = GObject.registerClass({
 
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
+
+            children[i].save_easing_state();
+            children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
             children[i].allocate(childBox, flags);
+            children[i].restore_easing_state();
+
             children[i].show();
 
             columnIndex++;
