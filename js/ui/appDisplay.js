@@ -114,15 +114,33 @@ class BaseAppView {
         // Nothing by default
     }
 
-    removeAll() {
-        this._grid.destroyAll();
-        this._items = {};
-        this._allItems = [];
-    }
-
     _redisplay() {
-        this.removeAll();
-        this._loadApps();
+        let oldApps = this._allItems.slice();
+        let oldAppIds = oldApps.map(icon => icon.id);
+
+        let newApps = this._loadApps();
+        let newAppIds = newApps.map(icon => icon.id);
+
+        let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
+        let removedApps = oldApps.filter(icon => !newAppIds.includes(icon.id));
+
+        // Remove old app icons
+        removedApps.forEach(icon => {
+            let iconIndex = this._allItems.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 1);
+            this._grid.removeItem(icon);
+            delete this._items[icon.id];
+        });
+
+        // Add new app icons
+        addedApps.forEach(icon => {
+            let iconIndex = newApps.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 0, icon);
+            this._items[icon.id] = icon;
+        });
+
         this._updateGrid();
     }
 
@@ -335,26 +353,6 @@ var AllView = class AllView extends BaseAppView {
         });
     }
 
-    removeAll() {
-        this.folderIcons = [];
-        super.removeAll();
-    }
-
-    _redisplay() {
-        let openFolderId = null;
-        if (this._displayingPopup && this._currentPopup)
-            openFolderId = this._currentPopup._source.id;
-
-        super._redisplay();
-
-        if (openFolderId) {
-            let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
-
-            if (folderToReopen)
-                folderToReopen.open();
-        }
-    }
-
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
@@ -386,6 +384,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
+        let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
@@ -399,6 +398,8 @@ var AllView = class AllView extends BaseAppView {
 
         let appSys = Shell.AppSystem.get_default();
 
+        this.folderIcons = [];
+
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
             if (this.hasItem(id))
@@ -407,7 +408,7 @@ var AllView = class AllView extends BaseAppView {
             let icon = new FolderIcon(id, path, this);
             icon.connect('name-changed', this._itemNameChanged.bind(this));
             icon.connect('apps-changed', this._refilterApps.bind(this));
-            this.addItem(icon);
+            newApps.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -424,8 +425,10 @@ var AllView = class AllView extends BaseAppView {
 
             let icon = new AppIcon(app,
                                    { isDraggable: favoritesWritable });
-            this.addItem(icon);
+            newApps.push(icon);
         });
+
+        return newApps;
     }
 
     _updateGrid() {
@@ -723,11 +726,12 @@ var FrequentView = class FrequentView extends BaseAppView {
     }
 
     _loadApps() {
+        let apps = [];
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if (!hasUsefulData)
-            return;
+            return [];
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -742,8 +746,10 @@ var FrequentView = class FrequentView extends BaseAppView {
                 continue;
             let appIcon = new AppIcon(mostUsed[i],
                                       { isDraggable: favoritesWritable });
-            this.addItem(appIcon);
+            apps.push(appIcon);
         }
+
+        return apps;
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1150,6 +1156,7 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     _loadApps() {
+        let apps = [];
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
@@ -1167,7 +1174,7 @@ var FolderView = class FolderView extends BaseAppView {
                 return;
 
             let icon = new AppIcon(app);
-            this.addItem(icon);
+            apps.push(icon);
         };
 
         let folderApps = this._folder.get_strv('apps');
@@ -1182,6 +1189,8 @@ var FolderView = class FolderView extends BaseAppView {
 
             addAppId(appInfo.get_id());
         });
+
+        return apps;
     }
 };
 
