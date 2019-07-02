@@ -785,38 +785,45 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _onDragEnd() {
+        this.removeNudges();
+
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
         }
     }
 
-    _canDropAt(source) {
-        if (!(source instanceof AppIcon))
-            return false;
-
-        if (!global.settings.is_writable('favorite-apps'))
-            return false;
-
-        if (!(source.parentView instanceof FolderView))
-            return false;
-
-        return true;
-    }
-
     handleDragOver(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
-            return DND.DragMotionResult.NO_DROP;
+        y += this._adjustment.value;
 
-        return DND.DragMotionResult.MOVE_DROP;
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        this.removeNudges();
+        if (index != -1) {
+            if (dragLocation != IconGrid.DragLocation.ON_ICON)
+                this.nudgeItemsAtIndex(index, dragLocation);
+
+            return DND.DragMotionResult.MOVE_DROP;
+        }
+
+        return DND.DragMotionResult.NO_DROP;
     }
 
     acceptDrop(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
+        y += this._adjustment.value;
+
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        if (index == -1)
             return false;
 
-        source.parentView.folderIcon.removeApp(source.app);
+        if (source.parentView != this) {
+            source.parentView.folderIcon.removeApp(source.app);
+            source = this._items[source.id];
+        }
 
+        this.moveItem(source, index);
+        this.removeNudges();
         return true;
     }
 
@@ -1263,6 +1270,28 @@ var FolderView = class FolderView extends BaseAppView {
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        this._folderIcon._parentView.removeNudges();
+        this.removeNudges();
+        if (index != -1 && dragLocation != IconGrid.DragLocation.ON_ICON)
+            this.nudgeItemsAtIndex(index, dragLocation);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let success = index != -1;
+
+        if (success)
+            this.moveItem(source, index);
+
+        this.removeNudges();
+        return success;
     }
 
     _getPageAvailableSize() {
