@@ -390,9 +390,12 @@ var AllView = class AllView extends BaseAppView {
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
             let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = new FolderIcon(id, path, this);
-            icon.connect('name-changed', this._itemNameChanged.bind(this));
-            icon.connect('apps-changed', this._refilterApps.bind(this));
+            let icon = this._items[id];
+            if (!icon) {
+                icon = new FolderIcon(id, path, this);
+                icon.connect('name-changed', this._itemNameChanged.bind(this));
+                icon.connect('apps-changed', this._refilterApps.bind(this));
+            }
             newApps.push(icon);
             this.folderIcons.push(icon);
         });
