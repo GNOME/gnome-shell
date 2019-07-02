@@ -506,6 +506,11 @@ var AllView = class AllView extends BaseAppView {
         this._saveGridLayout();
     }
 
+    moveItem(item, newPosition) {
+        super.moveItem(item, newPosition);
+        this._saveGridLayout();
+    }
+
     // Overridden from BaseAppView
     animate(animationDirection, onComplete) {
         this._scrollView.reactive = false;
@@ -1360,6 +1365,13 @@ var FolderView = class FolderView extends BaseAppView {
         });
 
         return apps;
+    }
+
+    moveItem(item, newPosition) {
+        super.moveItem(item, newPosition);
+
+        let appIds = this._allItems.map(icon => icon.id);
+        this._folder.set_strv('apps', appIds);
     }
 
     get folderIcon() {
