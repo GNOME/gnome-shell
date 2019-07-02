@@ -123,7 +123,7 @@ class BaseAppView {
     _redisplay() {
         this.removeAll();
         this._loadApps();
-        this._loadGrid();
+        this._updateGrid();
     }
 
     getAllItems() {
@@ -147,9 +147,17 @@ class BaseAppView {
         return a.name.localeCompare(b.name);
     }
 
-    _loadGrid() {
+    _updateGrid() {
         this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => this._grid.addItem(item));
+
+        this._allItems.forEach((item, index) => {
+            // Don't readd already added items
+            if (item.actor.get_parent())
+                return;
+
+            this._grid.addItem(item, index);
+        });
+
         this.emit('view-loaded');
     }
 
@@ -420,8 +428,8 @@ var AllView = class AllView extends BaseAppView {
         });
     }
 
-    _loadGrid() {
-        super._loadGrid();
+    _updateGrid() {
+        super._updateGrid();
         this._refilterApps();
     }
 
