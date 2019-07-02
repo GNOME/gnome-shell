@@ -160,6 +160,24 @@ class BaseAppView {
         this.emit('view-loaded');
     }
 
+    moveItem(item, newPosition) {
+        let itemIndex = this._allItems.indexOf(item);
+
+        if (itemIndex == -1) {
+            log('Trying to move item %s that is not in this app view'.format(item.id));
+            return;
+        }
+
+        if (newPosition > itemIndex)
+            newPosition -= 1;
+
+        // Remove from the old position
+        this._allItems.splice(itemIndex, 1);
+
+        let realPosition = this._grid.moveItem(item, newPosition);
+        this._allItems.splice(realPosition, 0, item);
+    }
+
     _selectAppInternal(id) {
         if (this._items[id])
             this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
