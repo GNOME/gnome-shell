@@ -1377,11 +1377,29 @@ var FolderIcon = class FolderIcon {
     }
 
     _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+
         this._parentView.inhibitEventBlocker();
     }
 
+    _onDragMotion(dragEvent) {
+        let target = dragEvent.targetActor;
+
+        if (!this.actor.contains(target) || !this._canAccept(dragEvent.source))
+            this.actor.remove_style_pseudo_class('drop');
+        else
+            this.actor.add_style_pseudo_class('drop');
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
     _onDragEnd() {
+        this.actor.remove_style_pseudo_class('drop');
         this._parentView.uninhibitEventBlocker();
+        DND.removeDragMonitor(this._dragMonitor);
     }
 
     _canAccept(source) {
