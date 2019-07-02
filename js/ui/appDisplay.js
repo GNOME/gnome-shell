@@ -148,19 +148,6 @@ class BaseAppView {
         return this._allItems;
     }
 
-    hasItem(id) {
-        return this._items[id] !== undefined;
-    }
-
-    addItem(icon) {
-        let id = icon.id;
-        if (this.hasItem(id))
-            throw new Error(`icon with id ${id} already added to view`);
-
-        this._allItems.push(icon);
-        this._items[id] = icon;
-    }
-
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
     }
