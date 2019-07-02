@@ -134,23 +134,16 @@ class BaseAppView {
         }
 
         // Add new app icons
-        for (let app of addedApps)
-            this.addItem(app);
+        for (let appIcon of addedApps) {
+            this._allItems.push(appIcon);
+            this._items[appIcon.id] = appIcon;
+        }
 
         this._loadGrid();
     }
 
     getAllItems() {
         return this._allItems;
-    }
-
-    addItem(icon) {
-        let id = icon.id;
-        if (this._items[id] !== undefined)
-            return;
-
-        this._allItems.push(icon);
-        this._items[id] = icon;
     }
 
     _compareItems(a, b) {
