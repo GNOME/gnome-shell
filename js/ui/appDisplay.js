@@ -213,6 +213,36 @@ var BaseAppView = GObject.registerClass({
         return a.name.localeCompare(b.name);
     }
 
+    moveItem(item, newPosition) {
+        let visibleItems = this._orderedItems.filter(item => item.visible);
+
+        // Avoid overflow
+        if (newPosition >= visibleItems.length)
+            return -1;
+
+        let targetId = visibleItems[newPosition].id;
+
+        let visibleIndex = visibleItems.indexOf(item);
+        if (newPosition > visibleIndex)
+            newPosition -= 1;
+
+        // Remove from the old position
+        let itemIndex = this._orderedItems.indexOf(item);
+
+        let realPosition = -1;
+        if (itemIndex != -1) {
+            this._orderedItems.splice(itemIndex, 1);
+            realPosition = this._grid.moveItem(item, newPosition);
+            this._orderedItems.splice(realPosition, 0, item);
+        } else {
+            realPosition = this._orderedItems.indexOf(targetId);
+        }
+
+        this._iconGridLayout.repositionIcon(item.id, targetId, this.id);
+
+        return realPosition;
+    }
+
     _selectAppInternal(id) {
         if (this._items.has(id))
             this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);

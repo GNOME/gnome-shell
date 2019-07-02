@@ -664,6 +664,22 @@ var IconGrid = GObject.registerClass({
             this.add_actor(item);
     }
 
+    moveItem(item, newPosition) {
+        if (!this.contains(item)) {
+            log('Cannot move item not contained by the IconGrid');
+            return;
+        }
+
+        let children = this.get_children();
+        let visibleChildren = children.filter(c => c.is_visible());
+        let visibleChildAtPosition = visibleChildren[newPosition];
+        let realPosition = children.indexOf(visibleChildAtPosition);
+
+        this.set_child_at_index(item, realPosition);
+
+        return realPosition;
+    }
+
     removeItem(item) {
         this.remove_child(item);
     }
