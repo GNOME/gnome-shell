@@ -160,6 +160,10 @@ class BaseAppView {
             this._grid.addItem(item, index);
         });
 
+        this._allItems.forEach((item, index) => {
+            this._grid.set_child_at_index(item.actor, index);
+        });
+
         this.emit('view-loaded');
     }
 
@@ -379,6 +383,12 @@ var AllView = class AllView extends BaseAppView {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
+        this._gridSettings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._gridChangedId = this._gridSettings.connect('changed::icons-data', () => {
+            if (!this._blockGridSettings)
+                Main.queueDeferredWork(this._redisplayWorkId);
+        });
+
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
@@ -430,6 +440,10 @@ var AllView = class AllView extends BaseAppView {
         let appSys = Shell.AppSystem.get_default();
 
         this.folderIcons = [];
+        let appsInFolder = [];
+
+        let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+        let customPositionedIcons = [];
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
@@ -439,8 +453,14 @@ var AllView = class AllView extends BaseAppView {
                 icon = new FolderIcon(id, path, this);
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
-            newApps.push(icon);
             this.folderIcons.push(icon);
+
+            if (iconsData[id])
+                customPositionedIcons.push(icon);
+            else
+                newApps.push(icon);
+
+            icon.getAppIds().forEach(appId => appsInFolder.push(appId));
         });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -451,12 +471,45 @@ var AllView = class AllView extends BaseAppView {
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
+        // First, add only the app icons that do not have a custom position
+        // set. These icons will be sorted alphabetically.
         apps.forEach(appId => {
             let app = appSys.lookup_app(appId);
 
             let icon = new AppIcon(app, this,
                                    { isDraggable: favoritesWritable });
-            newApps.push(icon);
+
+            if (iconsData[appId])
+                customPositionedIcons.push(icon);
+            else
+                newApps.push(icon);
+        });
+        newApps.sort((a, b) => a.name.localeCompare(b.name));
+
+        // The stored position is final. That means we need to add the custom
+        // icons in order (first to last) otherwise they end up with in the
+        // wrong position
+        customPositionedIcons.sort((a, b) => {
+            let indexA = iconsData[a.id].deep_unpack()['position'].deep_unpack();
+            let indexB = iconsData[b.id].deep_unpack()['position'].deep_unpack();
+
+            return indexA - indexB;
+        });
+
+        // Now add the icons with a custom position set. Because 'newApps' has
+        // literally all apps -- including the ones that will be hidden -- we
+        // need to translate from visible position to the real position.
+        let visibleApps = newApps.filter(app => !appsInFolder.includes(app.id));
+
+        customPositionedIcons.forEach((icon, index) => {
+            let iconData = iconsData[icon.id].deep_unpack();
+            let position = iconData['position'].deep_unpack();
+
+            // Because we are modifying 'newApps' here, compensate the number
+            // of added items by subtracting 'index'
+            let visibleAppAtPosition = visibleApps[position - index];
+            let realPosition = newApps.indexOf(visibleAppAtPosition);
+            newApps.splice(realPosition, 0, icon);
         });
 
         return newApps;
