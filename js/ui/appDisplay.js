@@ -146,13 +146,7 @@ class BaseAppView {
         return this._allItems;
     }
 
-    _compareItems(a, b) {
-        return a.name.localeCompare(b.name);
-    }
-
     _loadGrid() {
-        this._allItems.sort(this._compareItems);
-
         for (let i = 0; i < this._allItems.length; i++) {
             let item = this._allItems[i];
 
@@ -345,17 +339,6 @@ var AllView = class AllView extends BaseAppView {
         this._nEventBlockerInhibits = 0;
     }
 
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._allItems.indexOf(item);
-        this._allItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
-
-        this._grid.removeItem(item);
-        this._grid.addItem(item, newIdx);
-    }
-
     _refilterApps() {
         let filteredApps = this._allItems.filter(icon => !icon.actor.visible);
 
@@ -408,7 +391,6 @@ var AllView = class AllView extends BaseAppView {
             let icon = this._items[id];
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._refilterApps.bind(this));
             }
             newApps.push(icon);
