@@ -253,6 +253,18 @@ class BaseAppView {
 
         Tweener.addTween(this._grid, params);
     }
+
+    canDropAt(x, y) {
+        return this._grid.canDropAt(x, y);
+    }
+
+    nudgeItemsAtIndex(index, dragLocation) {
+        this._grid.nudgeItemsAtIndex(index, dragLocation);
+    }
+
+    removeNudges() {
+        this._grid.removeNudges();
+    }
 }
 Signals.addSignalMethods(BaseAppView.prototype);
 
