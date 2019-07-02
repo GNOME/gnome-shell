@@ -147,7 +147,17 @@ class BaseAppView {
 
     _loadGrid() {
         this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => this._grid.addItem(item));
+
+        for (let i = 0; i < this._allItems.length; i++) {
+            let item = this._allItems[i];
+
+            // Don't readd already added items
+            if (item.actor.get_parent())
+                continue;
+
+            this._grid.addItem(item, i);
+        }
+
         this.emit('view-loaded');
     }
 
