@@ -98,6 +98,10 @@
         the shell.
       </description>
     </key>
+    <key name="icon-grid-layout" type="as">
+      <default>[]</default>
+      <summary>Layout of the icon grid</summary>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 
