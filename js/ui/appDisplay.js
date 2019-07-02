@@ -123,7 +123,10 @@ class BaseAppView {
     _redisplay() {
         this.removeAll();
         this._loadApps();
-        this._loadGrid();
+
+        this._allItems.sort(this._compareItems);
+        this._allItems.forEach(item => this._grid.addItem(item));
+        this.emit('view-loaded');
     }
 
     getAllItems() {
@@ -145,12 +148,6 @@ class BaseAppView {
 
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
-    }
-
-    _loadGrid() {
-        this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => this._grid.addItem(item));
-        this.emit('view-loaded');
     }
 
     _selectAppInternal(id) {
@@ -338,6 +335,7 @@ var AllView = class AllView extends BaseAppView {
             openFolderId = this._currentPopup._source.id;
 
         super._redisplay();
+        this._refilterApps();
 
         if (openFolderId) {
             let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
@@ -418,11 +416,6 @@ var AllView = class AllView extends BaseAppView {
                                    { isDraggable: favoritesWritable });
             this.addItem(icon);
         });
-    }
-
-    _loadGrid() {
-        super._loadGrid();
-        this._refilterApps();
     }
 
     // Overridden from BaseAppView
