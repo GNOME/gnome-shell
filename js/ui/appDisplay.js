@@ -169,6 +169,14 @@ class BaseAppView {
             log(`No such application ${id}`);
     }
 
+    handleDragOver() {
+        return DND.DragMotionResult.NO_DROP;
+    }
+
+    acceptDrop() {
+        return false;
+    }
+
     selectApp(id) {
         if (this._items[id] && this._items[id].actor.mapped) {
             this._selectAppInternal(id);
