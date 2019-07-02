@@ -28,6 +28,26 @@ var AnimationDirection = {
 var APPICON_ANIMATION_OUT_SCALE = 3;
 var APPICON_ANIMATION_OUT_TIME = 0.25;
 
+const LEFT_DIVIDER_LEEWAY = 30;
+const RIGHT_DIVIDER_LEEWAY = 30;
+
+const NUDGE_ANIMATION_TYPE = 'easeOutElastic';
+const NUDGE_DURATION = 0.8;
+const NUDGE_PERIOD = 0.7;
+
+const NUDGE_RETURN_ANIMATION_TYPE = 'easeOutQuint';
+const NUDGE_RETURN_DURATION = 0.3;
+
+const NUDGE_FACTOR = 0.33;
+
+var DragLocation = {
+    DEFAULT: 0,
+    ON_ICON: 1,
+    START_EDGE: 2,
+    END_EDGE: 3,
+    EMPTY_AREA: 4,
+}
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -778,6 +798,183 @@ var IconGrid = GObject.registerClass({
             this._items[i].icon.setIconSize(newIconSize);
         }
     }
+
+    // Drag n' Drop methods
+
+    nudgeItemsAtIndex(index, dragLocation) {
+        // No nudging when the cursor is in an empty area
+        if (dragLocation == DragLocation.EMPTY_AREA)
+            return;
+
+        let nudgeIndex = index;
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+
+        if (dragLocation != DragLocation.START_EDGE) {
+            let leftItem = this.getItemAtIndex(nudgeIndex - 1);
+            let offset = rtl ? Math.floor(this._hItemSize * NUDGE_FACTOR) : Math.floor(-this._hItemSize * NUDGE_FACTOR);
+            this._animateNudge(leftItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+        }
+
+        // Nudge the icon to the right if we are the first item or not at the
+        // end of row
+        if (dragLocation != DragLocation.END_EDGE) {
+            let rightItem = this.getItemAtIndex(nudgeIndex);
+            let offset = rtl ? Math.floor(-this._hItemSize * NUDGE_FACTOR) : Math.floor(this._hItemSize * NUDGE_FACTOR);
+            this._animateNudge(rightItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+        }
+    }
+
+    removeNudges() {
+        let children = this.get_children();
+        for (let index = 0; index < children.length; index++) {
+            this._animateNudge(children[index],
+                               NUDGE_RETURN_ANIMATION_TYPE,
+                               NUDGE_RETURN_DURATION,
+                               0);
+        }
+    }
+
+    _animateNudge(item, animationType, duration, offset) {
+        if (!item)
+            return;
+
+        Tweener.addTween(item, { translation_x: offset,
+                                 time: duration,
+                                 transition: animationType,
+                                 transitionParams: { period: duration * 1000 * NUDGE_PERIOD }
+                               });
+    }
+
+    // This function is overriden by the PaginatedIconGrid subclass so we can
+    // take into account the extra space when dragging from a folder
+    _calculateDndRow(y) {
+        let rowHeight = this._getVItemSize() + this._getSpacing();
+        return Math.floor(y / rowHeight);
+    }
+
+    // Returns the drop point index or -1 if we can't drop there
+    canDropAt(x, y) {
+        let usedWidth = this.width;
+
+        // Undo the align translation from _allocate()
+        if (this._xAlign == St.Align.MIDDLE)
+            usedWidth -= 2 * this._leftPadding;
+        else if (this._xAlign == St.Align.END)
+            usedWidth -= this._leftPadding;
+
+        let row = this._calculateDndRow(y);
+
+        // Correct sx to handle the left padding to correctly calculate
+        // the column
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+        let gridX = x - this._leftPadding;
+
+        let columnWidth = this._getHItemSize() + this._getSpacing();
+        let column = Math.floor(gridX / columnWidth);
+
+        // If we're outside of the grid, we are in an invalid drop location
+        if (gridX < 0 || gridX > usedWidth)
+            return [-1, DragLocation.DEFAULT];
+
+        let children = this.get_children();
+        let childIndex = Math.min((row * this._allocatedColumns) + column, children.length);
+
+        // If we're above the grid vertically, we are in an invalid
+        // drop location
+        if (childIndex < 0)
+            return [-1, DragLocation.DEFAULT];
+
+        // If we're past the last visible element in the grid,
+        // we might be allowed to drop there.
+        if (childIndex >= children.length)
+            return [children.length, DragLocation.EMPTY_AREA];
+
+        let child = children[childIndex];
+        let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight] = child.get_preferred_size();
+
+        // This is the width of the cell that contains the icon
+        // (excluding spacing between cells)
+        let childIconWidth = Math.max(this._getHItemSize(), childNaturalWidth);
+
+        // Calculate the original position of the child icon (prior to nudging)
+        let cx;
+        if (rtl)
+            cx = this._leftPadding + usedWidth - (column * columnWidth) - childIconWidth;
+        else
+            cx = this._leftPadding + (column * columnWidth);
+
+        // childIconWidth is used to determine whether or not a drag point
+        // is inside the icon or the divider.
+
+        // Reduce the size of the icon area further by only having it start
+        // further in.  If the drop point is in those initial pixels
+        // then the drop point is the current icon
+        //
+        // Increasing cx and decreasing childIconWidth gives a greater priority
+        // to rearranging icons on the desktop vs putting them into folders
+        // Decreasing cx and increasing childIconWidth gives a greater priority
+        // to putting icons in folders vs rearranging them on the desktop
+        let iconLeftX = cx + LEFT_DIVIDER_LEEWAY;
+        let iconRightX = cx + childIconWidth - RIGHT_DIVIDER_LEEWAY;
+        let leftEdge = this._leftPadding + LEFT_DIVIDER_LEEWAY;
+        let rightEdge = this._leftPadding + usedWidth - RIGHT_DIVIDER_LEEWAY;
+
+        let dropIndex;
+        let dragLocation;
+
+        if (gridX < iconLeftX) {
+            // We are to the left of the icon target
+            if (gridX < leftEdge) {
+                // We are before the leftmost icon on the grid
+                if (rtl) {
+                    dropIndex = childIndex + 1;
+                    dragLocation = DragLocation.END_EDGE;
+                } else {
+                    dropIndex = childIndex;
+                    dragLocation = DragLocation.START_EDGE;
+                }
+            } else {
+                // We are between the previous icon (next in RTL) and this one
+                if (rtl)
+                    dropIndex = childIndex + 1;
+                else
+                    dropIndex = childIndex;
+
+                dragLocation = DragLocation.DEFAULT;
+            }
+        } else if (gridX >= iconRightX) {
+            // We are to the right of the icon target
+            if (childIndex >= children.length) {
+                // We are beyond the last valid icon
+                // (to the right of the app store / trash can, if present)
+                dropIndex = -1;
+                dragLocation = DragLocation.DEFAULT;
+            } else if (gridX >= rightEdge) {
+                // We are beyond the rightmost icon on the grid
+                if (rtl) {
+                    dropIndex = childIndex;
+                    dragLocation = DragLocation.START_EDGE;
+                } else {
+                    dropIndex = childIndex + 1;
+                    dragLocation = DragLocation.END_EDGE;
+                }
+            } else {
+                // We are between this icon and the next one (previous in RTL)
+                if (rtl)
+                    dropIndex = childIndex;
+                else
+                    dropIndex = childIndex + 1;
+
+                dragLocation = DragLocation.DEFAULT;
+            }
+        } else {
+            // We are over the icon target area
+            dropIndex = childIndex;
+            dragLocation = DragLocation.ON_ICON;
+        }
+
+        return [dropIndex, dragLocation];
+    }
 });
 
 var PaginatedIconGrid = GObject.registerClass({
@@ -857,6 +1054,23 @@ var PaginatedIconGrid = GObject.registerClass({
     }
 
     // Overridden from IconGrid
+    _calculateDndRow(y) {
+        let row = super._calculateDndRow(y);
+
+        // If there's no extra space, just return the current value and maintain
+        // the same behavior when without a folder opened.
+        if (!this._extraSpaceData)
+            return row;
+
+        let [ baseRow, nRowsUp, nRowsDown ] = this._extraSpaceData;
+        let newRow = row + nRowsUp;
+
+        if (row > baseRow)
+            newRow -= nRowsDown;
+
+        return newRow;
+    }
+
     _getChildrenToAnimate() {
         let children = this._getVisibleChildren();
         let firstIndex = this._childrenPerPage * this.currentPage;
