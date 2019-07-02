@@ -786,38 +786,48 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _onDragEnd() {
+        this.removeNudges();
+
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
         }
     }
 
-    _canDropAt(source) {
-        if (!(source instanceof AppIcon))
-            return false;
-
-        if (!global.settings.is_writable('favorite-apps'))
-            return false;
-
-        if (!(source.parentView instanceof FolderView))
-            return false;
-
-        return true;
-    }
-
     handleDragOver(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
-            return DND.DragMotionResult.NO_DROP;
+        let sourceIndex = -1;
+        if (source.parentView == this)
+            sourceIndex = this._allItems.indexOf(source);
 
-        return DND.DragMotionResult.MOVE_DROP;
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        this.removeNudges();
+        if (source.parentView != this)
+            source.parentView.removeNudges();
+
+        if (index != -1) {
+            if (sourceIndex == -1 || (index != sourceIndex && index != sourceIndex + 1))
+                this.nudgeItemsAtIndex(index, dragLocation);
+
+            return DND.DragMotionResult.MOVE_DROP;
+        }
+
+        return DND.DragMotionResult.NO_DROP;
     }
 
     acceptDrop(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        if (index == -1)
             return false;
 
-        source.parentView.folderIcon.removeApp(source.app);
+        if (source.parentView != this) {
+            source.parentView.folderIcon.removeApp(source.app);
+            source = this._items[source.id];
+        }
 
+        this.moveItem(source, index);
+        this.removeNudges();
         return true;
     }
 
@@ -1264,6 +1274,29 @@ var FolderView = class FolderView extends BaseAppView {
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let sourceIndex = this._allItems.indexOf(source);
+
+        this._folderIcon._parentView.removeNudges();
+        this.removeNudges();
+        if (index != -1 && index != sourceIndex && index != sourceIndex + 1)
+            this.nudgeItemsAtIndex(index, dragLocation);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let success = index != -1;
+
+        if (success)
+            this.moveItem(source, index);
+
+        this.removeNudges();
+        return success;
     }
 
     _getPageAvailableSize() {
