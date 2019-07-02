@@ -116,15 +116,29 @@ class BaseAppView {
         // Nothing by default
     }
 
-    removeAll() {
-        this._grid.destroyAll();
-        this._items = {};
-        this._allItems = [];
-    }
-
     _redisplay() {
-        this.removeAll();
-        this._loadApps();
+        let oldApps = this._allItems.slice();
+        let oldAppIds = oldApps.map(icon => icon.id);
+
+        let newApps = this._loadApps();
+        let newAppIds = newApps.map(icon => icon.id);
+
+        let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
+        let removedApps = oldApps.filter(icon => !newAppIds.includes(icon.id));
+
+        // Remove old app icons
+        removedApps.forEach((icon, index) => {
+            this._grid.removeItem(icon);
+            this._allItems.splice(this._allItems.indexOf(icon), 1);
+            delete this._items[icon.id];
+        });
+
+        // Add new app icons
+        addedApps.forEach((appIcon, index) => {
+            this._allItems.splice(newApps.indexOf(appIcon), 0, appIcon);
+            this._items[appIcon.id] = appIcon;
+        });
+
         this._loadGrid();
     }
 
@@ -340,11 +354,6 @@ var AllView = class AllView extends BaseAppView {
         this._nEventBlockerInhibits = 0;
     }
 
-    removeAll() {
-        this.folderIcons = [];
-        super.removeAll();
-    }
-
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
@@ -386,6 +395,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
+        let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
@@ -399,13 +409,15 @@ var AllView = class AllView extends BaseAppView {
 
         let appSys = Shell.AppSystem.get_default();
 
+        this.folderIcons = [];
+
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
             let path = this._folderSettings.path + 'folders/' + id + '/';
             let icon = new FolderIcon(id, path, this);
             icon.connect('name-changed', this._itemNameChanged.bind(this));
             icon.connect('apps-changed', this._refilterApps.bind(this));
-            this.addItem(icon);
+            newApps.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -422,8 +434,10 @@ var AllView = class AllView extends BaseAppView {
 
             let icon = new AppIcon(app, this,
                                    { isDraggable: favoritesWritable });
-            this.addItem(icon);
+            newApps.push(icon);
         });
+
+        return newApps;
     }
 
     _loadGrid() {
@@ -791,6 +805,7 @@ var FrequentView = class FrequentView extends BaseAppView {
     }
 
     _loadApps() {
+        let apps = [];
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
@@ -810,8 +825,10 @@ var FrequentView = class FrequentView extends BaseAppView {
                 continue;
             let appIcon = new AppIcon(mostUsed[i], this,
                                       { isDraggable: favoritesWritable });
-            this.addItem(appIcon);
+            apps.push(appIcon);
         }
+
+        return apps;
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1228,6 +1245,7 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     _loadApps() {
+        let apps = [];
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
@@ -1242,7 +1260,7 @@ var FolderView = class FolderView extends BaseAppView {
                 return;
 
             let icon = new AppIcon(app, this);
-            this.addItem(icon);
+            apps.push(icon);
         };
 
         let folderApps = this._folder.get_strv('apps');
@@ -1257,6 +1275,8 @@ var FolderView = class FolderView extends BaseAppView {
 
             addAppId(appInfo.get_id());
         });
+
+        return apps;
     }
 
     get folderIcon() {
