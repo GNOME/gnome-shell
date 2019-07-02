@@ -27,6 +27,7 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 
 $panel-corner-radius: 6px;
 $medium_radius: 9px;
+$small_radius: 5px;
 
 $_trough_color: transparentize($fg_color, 0.9);
 $_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
@@ -46,7 +47,7 @@ stage {
 
 /* Buttons */
 .button, %button {
-  border-radius: 5px;
+  border-radius: $small_radius;
   border-width: 1px;
   min-height: 22px;
   padding: 4px 32px;
@@ -82,7 +83,7 @@ stage {
 
 /* Entries */
 StEntry {
-  border-radius: 5px;
+  border-radius: $small_radius;
   padding: 4px;
   border-width: 1px;
   color: $fg_color;
@@ -1777,30 +1778,36 @@ StScrollBar {
   }
 
   .keyboard-key {
-    background-color: #393f3f;
+    $_key_bg: opacify(lighten($osd_bg_color, 9%), 1);
+    background-color: $_key_bg;
     min-height: 1.2em;
     min-width: 1.2em;
     font-size: 16pt;
-    border-radius: 3px;
-    border: 1px solid #464d4d;
-    color: #e5e5e5;
+    border-radius: $small_radius;
+    border: 1px solid $osd_outer_borders_color;
+    color: $osd_fg_color;
     &:focus { @include button(focus); }
-    &:hover,&:checked { @include button(hover); }
-    &:active { @include button(active);}
+    &:hover, &:checked { background-color: lighten($_key_bg, 3%); }
+    &:active { background-color: darken($_key_bg, 2%); }
     &:grayed { //FIXME
       background-color: $osd_bg_color;
       color: $osd_fg_color;
       border-color: $osd_borders_color;
     }
     &.default-key {
-      border-color: #2d3232;
-      background-color: #1d2020;
+      $_default_key_bg: opacify($osd_bg_color, 1);
+      border-color: $osd_outer_borders_color;
+      background-color: $_default_key_bg;
       background-size: 20px;
+      &:hover, &:checked { background-color: lighten($_default_key_bg, 3%); }
+      &:active { background-color: darken($_default_key_bg, 2%); }
     }
     &.enter-key {
-      border-color: #005684;
-      background-color: #006098;
+      border-color: lighten($selected_bg_color, 5%);
+      background-color: $selected_bg_color;
       background-image: url("resource:///org/gnome/shell/theme/key-enter.svg");
+      &:hover, &:checked { background-color: lighten($selected_bg_color, 3%); }
+      &:active { background-color: darken($selected_bg_color, 2%); }
     }
     &.shift-key-lowercase {
       background-image: url("resource:///org/gnome/shell/theme/key-shift.svg");
@@ -1839,8 +1846,8 @@ StScrollBar {
 
 .emoji-panel {
   .keyboard-key:latched {
-    border-color: #005684;
-    background-color: #006098;
+    border-color: lighten($selected_bg_color, 5%);
+    background-color: $selected_bg_color;
   }
 }
 
@@ -1904,7 +1911,7 @@ StScrollBar {
 
   StEntry {
     @extend %search_entry;
-    border-radius: 5px;
+    border-radius: $small_radius;
     @if $variant=='dark' {
       $_gdm_entry_bg: transparentize(lighten(desaturate(#241f31, 20%), 2%), 0.5);
       background-color: $_gdm_entry_bg;
