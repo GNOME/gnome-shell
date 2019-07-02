@@ -210,6 +210,9 @@ var IconGrid = GObject.registerClass({
         this.rightPadding = 0;
         this.leftPadding = 0;
 
+        this._leftPadding = 0;
+        this._allocatedColumns = 0;
+
         this._items = [];
         this._clonesAnimating = [];
         // Pulled from CSS, but hardcode some defaults here
@@ -325,6 +328,10 @@ var IconGrid = GObject.registerClass({
         case St.Align.END:
             leftEmptySpace = availWidth - usedWidth;
         }
+
+        // Store some information about the allocated layout
+        this._leftPadding = leftEmptySpace;
+        this._allocatedColumns = nColumns;
 
         let animating = this._clonesAnimating.length > 0;
         let x = box.x1 + leftEmptySpace + this.leftPadding;
