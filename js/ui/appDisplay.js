@@ -149,12 +149,6 @@ class BaseAppView {
         return this._allItems;
     }
 
-    addItem(icon) {
-        let id = icon.id;
-        this._allItems.push(icon);
-        this._items[id] = icon;
-    }
-
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
     }
