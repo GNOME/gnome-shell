@@ -109,6 +109,10 @@
         the shell.
       </description>
     </key>
+    <key name="icons-data" type="a{sv}">
+      <default>[]</default>
+      <summary>Data about the icons in the icon grid</summary>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 
