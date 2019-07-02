@@ -788,6 +788,7 @@ var PaginatedIconGrid = GObject.registerClass({
         this._rowsPerPage = 0;
         this._spaceBetweenPages = 0;
         this._childrenPerPage = 0;
+        this._extraSpaceData = null;
     }
 
     vfunc_get_preferred_height(forWidth) {
@@ -823,6 +824,10 @@ var PaginatedIconGrid = GObject.registerClass({
         case St.Align.END:
             leftEmptySpace = availWidth - usedWidth;
         }
+
+        // Store some information about the allocated layout
+        this._leftPadding = leftEmptySpace;
+        this._allocatedColumns = nColumns;
 
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
@@ -953,6 +958,11 @@ var PaginatedIconGrid = GObject.registerClass({
         let childrenUp = children.splice(pageOffset,
                                          nRowsAbove * childrenPerRow);
 
+        // Store the resulting calculations so that we can properly take
+        // the open space when dragging icons over the icon grid from a
+        // folder popup.
+        this._extraSpaceData = [sourceRow, nRowsUp, nRowsDown];
+
         // Special case: On the last row with no rows below the icon,
         // there's no need to move any rows either up or down
         if (childrenDown.length == 0 && nRowsUp == 0) {
@@ -987,6 +997,7 @@ var PaginatedIconGrid = GObject.registerClass({
 
     closeExtraSpace() {
         if (!this._translatedChildren || !this._translatedChildren.length) {
+            this._extraSpaceData = null;
             this.emit('space-closed');
             return;
         }
