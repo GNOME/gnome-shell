@@ -1958,7 +1958,19 @@ var AppIcon = class AppIcon {
     }
 
     getDragActor() {
-        return this.app.create_icon_texture(Main.overview.dashIconSize);
+        let iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: (this.icon.label != null),
+            setSizeManually: true
+        };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.setIconSize(this.icon.iconSize);
+
+        let bin = new St.Bin({ style_class: this.actor.style_class });
+        bin.set_child(icon);
+
+        return bin;
     }
 
     // Returns the original actor that should align with the actor
