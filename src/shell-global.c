@@ -51,7 +51,6 @@ struct _ShellGlobal {
   GObject parent;
 
   ClutterStage *stage;
-  Window stage_xwindow;
 
   MetaDisplay *meta_display;
   MetaWorkspaceManager *workspace_manager;
@@ -852,15 +851,10 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
 
-  if (meta_is_wayland_compositor ())
-    {
-      global->stage_xwindow = None;
-    }
-  else
+  if (!meta_is_wayland_compositor ())
     {
       MetaX11Display *x11_display = meta_display_get_x11_display (display);
       global->xdisplay = meta_x11_display_get_xdisplay (x11_display);
-      global->stage_xwindow = meta_x11_get_stage_window (global->stage);
     }
 
   st_entry_set_cursor_func (entry_cursor_func, global);
@@ -1182,34 +1176,6 @@ shell_global_notify_error (ShellGlobal  *global,
                            const char   *details)
 {
   g_signal_emit_by_name (global, "notify-error", msg, details);
-}
-
-/**
- * shell_global_init_xdnd:
- * @global: the #ShellGlobal
- *
- * Enables tracking of Xdnd events
- */
-void shell_global_init_xdnd (ShellGlobal *global)
-{
-  Window output_window = meta_get_overlay_window (global->meta_display);
-  long xdnd_version = 5;
-
-  XChangeProperty (global->xdisplay, global->stage_xwindow,
-                   gdk_x11_get_xatom_by_name ("XdndAware"), XA_ATOM,
-                   32, PropModeReplace, (const unsigned char *)&xdnd_version, 1);
-
-  XChangeProperty (global->xdisplay, output_window,
-                   gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
-                   32, PropModeReplace, (const unsigned char *)&global->stage_xwindow, 1);
-
-  /*
-   * XdndProxy is additionally set on the proxy window as verification that the
-   * XdndProxy property on the target window isn't a left-over
-   */
-  XChangeProperty (global->xdisplay, global->stage_xwindow,
-                   gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
-                   32, PropModeReplace, (const unsigned char *)&global->stage_xwindow, 1);
 }
 
 /**
