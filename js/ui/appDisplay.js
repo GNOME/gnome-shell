@@ -1713,7 +1713,12 @@ var AppIcon = class AppIcon {
     }
 
     getDragActor() {
-        return this.app.create_icon_texture(Main.overview.dashIconSize);
+        let iconParams = { createIcon: this._createIcon.bind(this),
+                           showLabel: (this.icon.label != null),
+                           setSizeManually: false };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        return icon;
     }
 
     // Returns the original actor that should align with the actor
