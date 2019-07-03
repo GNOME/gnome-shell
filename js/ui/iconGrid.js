@@ -57,6 +57,8 @@ class BaseIcon extends St.Bin {
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
+            this.label.clutter_text.x_align = Clutter.ActorAlign.CENTER;
+            this.label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
             this._box.add_actor(this.label);
         } else {
             this.label = null;
