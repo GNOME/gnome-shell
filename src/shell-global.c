@@ -860,7 +860,7 @@ _shell_global_set_plugin (ShellGlobal *global,
     {
       MetaX11Display *x11_display = meta_display_get_x11_display (display);
       global->xdisplay = meta_x11_display_get_xdisplay (x11_display);
-      global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
+      global->stage_xwindow = meta_x11_get_stage_window (global->stage);
     }
 
   st_entry_set_cursor_func (entry_cursor_func, global);
