@@ -1809,15 +1809,18 @@ var AppIcon = class AppIcon {
             this._draggable = DND.makeDraggable(this.actor);
             this._draggable.connect('drag-begin', () => {
                 this._dragging = true;
+                this.actor.opacity = 0;
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             });
             this._draggable.connect('drag-cancelled', () => {
                 this._dragging = false;
+                this.actor.opacity = 255;
                 Main.overview.cancelledItemDrag(this);
             });
             this._draggable.connect('drag-end', () => {
                 this._dragging = false;
+                this.actor.opacity = 255;
                 Main.overview.endItemDrag(this);
             });
         }
@@ -2028,7 +2031,12 @@ var AppIcon = class AppIcon {
     }
 
     getDragActor() {
-        return this.app.create_icon_texture(Main.overview.dashIconSize);
+        let iconParams = { createIcon: this._createIcon.bind(this),
+                           showLabel: (this.icon.label != null),
+                           setSizeManually: false };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        return icon;
     }
 
     // Returns the original actor that should align with the actor
