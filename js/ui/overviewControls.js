@@ -194,20 +194,6 @@ var SlidingControl = class {
         this._updateSlide();
     }
 
-    fadeIn() {
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
-                                       transition: 'easeInQuad'
-                                     });
-    }
-
-    fadeHalf() {
-        Tweener.addTween(this.actor, { opacity: 128,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
-                                       transition: 'easeOutQuad'
-                                     });
-    }
-
     slideIn() {
         this._visible = true;
         // we will update slideX and the translation from pageEmpty
@@ -423,17 +409,6 @@ var ControlsManager = class {
         layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
 
         Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
-        Main.overview.connect('item-drag-begin', () => {
-            let activePage = this.viewSelector.getActivePage();
-            if (activePage != ViewSelector.ViewPage.WINDOWS)
-                this.viewSelector.fadeHalf();
-        });
-        Main.overview.connect('item-drag-end', () => {
-            this.viewSelector.fadeIn();
-        });
-        Main.overview.connect('item-drag-cancelled', () => {
-            this.viewSelector.fadeIn();
-        });
     }
 
     _updateWorkspacesGeometry() {
