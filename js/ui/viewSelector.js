@@ -599,23 +599,5 @@ var ViewSelector = class {
         else
             return ViewPage.SEARCH;
     }
-
-    fadeIn() {
-        let actor = this._activePage;
-        actor.ease({
-            opacity: 255,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
-        });
-    }
-
-    fadeHalf() {
-        let actor = this._activePage;
-        actor.ease({
-            opacity: 128,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
-        });
-    }
 };
 Signals.addSignalMethods(ViewSelector.prototype);
