@@ -39,6 +39,8 @@ const NUDGE_RETURN_DURATION = 300;
 
 const NUDGE_FACTOR = 0.33;
 
+const ICON_POSITION_DELAY = 25;
+
 var DragLocation = {
     DEFAULT: 0,
     ON_ICON: 1,
@@ -352,6 +354,7 @@ var IconGrid = GObject.registerClass({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+        let nChanged = 0;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
@@ -362,8 +365,13 @@ var IconGrid = GObject.registerClass({
                 if (!animating)
                     children[i].opacity = 255;
 
+                // Figure out how much delay to apply
+                if (!childBox.equal(children[i].get_allocation_box()))
+                    nChanged++;
+
                 children[i].save_easing_state();
                 children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+                children[i].set_easing_delay(ICON_POSITION_DELAY * nChanged);
                 children[i].allocate(childBox, flags);
                 children[i].restore_easing_state();
             }
@@ -1088,12 +1096,18 @@ var PaginatedIconGrid = GObject.registerClass({
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
+        let nChanged = 0;
 
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
+            // Figure out how much delay to apply
+            if (!childBox.equal(children[i].get_allocation_box()))
+                nChanged++;
+
             children[i].save_easing_state();
             children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+            children[i].set_easing_delay(ICON_POSITION_DELAY * nChanged);
             children[i].allocate(childBox, flags);
             children[i].restore_easing_state();
 
