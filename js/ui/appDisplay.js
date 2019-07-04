@@ -262,6 +262,21 @@ class BaseAppView {
         Tweener.addTween(this._grid, params);
     }
 
+    _transformToGridCoordinates(x, y) {
+        let point = new Clutter.Vertex();
+        point.x = x;
+        point.y = y;
+        point.z = 0.0;
+
+        point = this.actor.apply_transform_to_point(point);
+
+        let [ok, gridX, gridY] = this._grid.transform_stage_point(point.x, point.y);
+        if (!ok)
+            return [-1, -1];
+
+        return [gridX, gridY];
+    }
+
     canDropAt(x, y) {
         return this._grid.canDropAt(x, y);
     }
@@ -850,6 +865,8 @@ var AllView = class AllView extends BaseAppView {
     }
 
     handleDragOver(source, actor, x, y, time) {
+        [x, y] = this._transformToGridCoordinates(x, y);
+
         let sourceIndex = -1;
         if (source.view == this) {
             let visibleItems = this._allItems.filter(item => item.actor.visible);
@@ -873,6 +890,8 @@ var AllView = class AllView extends BaseAppView {
     }
 
     acceptDrop(source, actor, x, y, time) {
+        [x, y] = this._transformToGridCoordinates(x, y);
+
         let [index, dragLocation] = this.canDropAt(x, y);
 
         if (index == -1)
@@ -1336,6 +1355,8 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     handleDragOver(source, actor, x, y, time) {
+        [x, y] = this._transformToGridCoordinates(x, y);
+
         let [index, dragLocation] = this.canDropAt(x, y);
         let sourceIndex = this._allItems.indexOf(source);
 
@@ -1348,6 +1369,8 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     acceptDrop(source, actor, x, y, time) {
+        [x, y] = this._transformToGridCoordinates(x, y);
+
         let [index, dragLocation] = this.canDropAt(x, y);
         let success = index != -1;
 
