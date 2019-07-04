@@ -1,66 +1,144 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceAnimationController */
 
-const { Clutter, Meta, Shell } = imports.gi;
+const { Clutter, GObject, Meta, Shell } = imports.gi;
 
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 
 const WINDOW_ANIMATION_TIME = 250;
 
-var WorkspaceAnimationController = class {
-    constructor() {
-        this._movingWindow = null;
-        this._switchData = null;
+const WorkspaceAnimation = GObject.registerClass({
+    Properties: {
+        'progress': GObject.ParamSpec.double(
+            'progress', 'progress', 'progress',
+            GObject.ParamFlags.READWRITE,
+            -1, 1, 0),
+    },
+}, class WorkspaceAnimation extends Clutter.Actor {
+    _init(controller, from, to, direction) {
+        super._init();
 
-        global.display.connect('restacked', this._syncStacking.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
-        Main.overview.connect('showing', () => {
-            if (this._switchData) {
-                if (this._switchData.gestureActivated)
-                    this._switchWorkspaceStop();
-                this._swipeTracker.enabled = false;
-            }
-        });
-        Main.overview.connect('hiding', () => {
-            this._swipeTracker.enabled = true;
-        });
+        this._controller = controller;
+        this._curGroup = new Clutter.Actor();
+        this._movingWindowBin = new Clutter.Actor();
+        this._windows = [];
+        this._surroundings = {};
+        this._progress = 0;
 
-        let swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
-            Shell.ActionMode.NORMAL, { allowDrag: false, allowScroll: false });
-        swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
-        swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
-        swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
-        this._swipeTracker = swipeTracker;
-    }
-
-    _syncStacking() {
-        if (this._switchData === null)
-            return;
-
+        let wgroup = global.window_group;
         let windows = global.get_window_actors();
-        let lastCurSibling = null;
-        let lastDirSibling = [];
+
+        this._container = new Clutter.Actor();
+        this._container.add_actor(this._curGroup);
+
+        this.add_actor(this._container);
+        wgroup.add_actor(this);
+        wgroup.add_actor(this._movingWindowBin);
+
+        let workspaceManager = global.workspace_manager;
+        let curWs = workspaceManager.get_workspace_by_index(from);
+
+        for (let dir of Object.values(Meta.MotionDirection)) {
+            let ws = null;
+
+            if (to < 0)
+                ws = curWs.get_neighbor(dir);
+            else if (dir === direction)
+                ws = workspaceManager.get_workspace_by_index(to);
+
+            if (ws === null || ws === curWs) {
+                this._surroundings[dir] = null;
+                continue;
+            }
+
+            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
+            let info = {
+                index: ws.index(),
+                actor: new Clutter.Actor(),
+                xDest: x,
+                yDest: y,
+            };
+            this._surroundings[dir] = info;
+            this._container.add_actor(info.actor);
+            this._container.set_child_above_sibling(info.actor, null);
+
+            info.actor.set_position(x, y);
+        }
+
+        wgroup.set_child_above_sibling(this._movingWindowBin, null);
+
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() === this._switchData.curGroup) {
-                this._switchData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
-                lastCurSibling = windows[i];
+            let actor = windows[i];
+            let window = actor.get_meta_window();
+
+            if (!window.showing_on_its_workspace())
+                continue;
+
+            if (window.is_on_all_workspaces())
+                continue;
+
+            let record = {
+                window: actor,
+                parent: actor.get_parent(),
+            };
+
+            if (this._controller.movingWindow &&
+                window === this._controller.movingWindow) {
+                record.parent.remove_child(actor);
+                this._movingWindow = record;
+                this._windows.push(this._movingWindow);
+                this._movingWindowBin.add_child(actor);
+            } else if (window.get_workspace().index() === from) {
+                record.parent.remove_child(actor);
+                this._windows.push(record);
+                this._curGroup.add_child(actor);
             } else {
+                let visible = false;
                 for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = this._switchData.surroundings[dir];
-                    if (!info || windows[i].get_parent() !== info.actor)
+                    let info = this._surroundings[dir];
+
+                    if (!info || info.index !== window.get_workspace().index())
                         continue;
 
-                    let sibling = lastDirSibling[dir];
-                    if (sibling === undefined)
-                        sibling = null;
-
-                    info.actor.set_child_above_sibling(windows[i], sibling);
-                    lastDirSibling[dir] = windows[i];
+                    record.parent.remove_child(actor);
+                    this._windows.push(record);
+                    info.actor.add_child(actor);
+                    visible = true;
                     break;
                 }
+
+                actor.visible = visible;
             }
         }
+
+        for (let i = 0; i < this._windows.length; i++) {
+            let w = this._windows[i];
+
+            w.windowDestroyId = w.window.connect('destroy', () => {
+                this._windows.splice(this._windows.indexOf(w), 1);
+            });
+        }
+
+        global.display.connect('restacked', this._syncStacking.bind(this));
+    }
+
+    _onDestroy() {
+        for (let i = 0; i < this._windows.length; i++) {
+            let w = this._windows[i];
+
+            w.window.disconnect(w.windowDestroyId);
+            w.window.get_parent().remove_child(w.window);
+            w.parent.add_child(w.window);
+
+            if (w.window.get_meta_window().get_workspace() !==
+                global.workspace_manager.get_active_workspace())
+                w.window.hide();
+        }
+
+        this._movingWindowBin.destroy();
     }
 
     _getPositionForDirection(direction, fromWs, toWs) {
@@ -95,162 +173,33 @@ var WorkspaceAnimationController = class {
         return [xDest, yDest];
     }
 
-    _prepareWorkspaceSwitch(from, to, direction) {
-        if (this._switchData)
-            return;
-
-        let wgroup = global.window_group;
+    _syncStacking() {
         let windows = global.get_window_actors();
-        let switchData = {};
-
-        this._switchData = switchData;
-        switchData.curGroup = new Clutter.Actor();
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.windows = [];
-        switchData.surroundings = {};
-        switchData.gestureActivated = false;
-        switchData.inProgress = false;
-
-        switchData.container = new Clutter.Actor();
-        switchData.container.add_actor(switchData.curGroup);
-
-        wgroup.add_actor(switchData.movingWindowBin);
-        wgroup.add_actor(switchData.container);
-
-        let workspaceManager = global.workspace_manager;
-        let curWs = workspaceManager.get_workspace_by_index(from);
-
-        for (let dir of Object.values(Meta.MotionDirection)) {
-            let ws = null;
-
-            if (to < 0)
-                ws = curWs.get_neighbor(dir);
-            else if (dir === direction)
-                ws = workspaceManager.get_workspace_by_index(to);
-
-            if (ws === null || ws === curWs) {
-                switchData.surroundings[dir] = null;
-                continue;
-            }
-
-            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
-            let info = {
-                index: ws.index(),
-                actor: new Clutter.Actor(),
-                xDest: x,
-                yDest: y,
-            };
-            switchData.surroundings[dir] = info;
-            switchData.container.add_actor(info.actor);
-            switchData.container.set_child_above_sibling(info.actor, null);
-
-            info.actor.set_position(x, y);
-        }
-
-        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
-
+        let lastCurSibling = null;
+        let lastDirSibling = [];
         for (let i = 0; i < windows.length; i++) {
-            let actor = windows[i];
-            let window = actor.get_meta_window();
-
-            if (!window.showing_on_its_workspace())
-                continue;
-
-            if (window.is_on_all_workspaces())
-                continue;
-
-            let record = {
-                window: actor,
-                parent: actor.get_parent(),
-            };
-
-            if (this.movingWindow && window === this.movingWindow) {
-                record.parent.remove_child(actor);
-                switchData.movingWindow = record;
-                switchData.windows.push(switchData.movingWindow);
-                switchData.movingWindowBin.add_child(actor);
-            } else if (window.get_workspace().index() === from) {
-                record.parent.remove_child(actor);
-                switchData.windows.push(record);
-                switchData.curGroup.add_child(actor);
+            if (windows[i].get_parent() === this._curGroup) {
+                this._curGroup.set_child_above_sibling(windows[i], lastCurSibling);
+                lastCurSibling = windows[i];
             } else {
-                let visible = false;
                 for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = switchData.surroundings[dir];
-
-                    if (!info || info.index !== window.get_workspace().index())
+                    let info = this._surroundings[dir];
+                    if (!info || windows[i].get_parent() !== info.actor)
                         continue;
 
-                    record.parent.remove_child(actor);
-                    switchData.windows.push(record);
-                    info.actor.add_child(actor);
-                    visible = true;
+                    let sibling = lastDirSibling[dir];
+                    if (sibling === undefined)
+                        sibling = null;
+
+                    info.actor.set_child_above_sibling(windows[i], sibling);
+                    lastDirSibling[dir] = windows[i];
                     break;
                 }
-
-                actor.visible = visible;
             }
         }
-
-        for (let i = 0; i < switchData.windows.length; i++) {
-            let w = switchData.windows[i];
-
-            w.windowDestroyId = w.window.connect('destroy', () => {
-                switchData.windows.splice(switchData.windows.indexOf(w), 1);
-            });
-        }
     }
 
-    _finishWorkspaceSwitch(switchData) {
-        this._switchData = null;
-
-        for (let i = 0; i < switchData.windows.length; i++) {
-            let w = switchData.windows[i];
-
-            w.window.disconnect(w.windowDestroyId);
-            w.window.get_parent().remove_child(w.window);
-            w.parent.add_child(w.window);
-
-            if (w.window.get_meta_window().get_workspace() !==
-                global.workspace_manager.get_active_workspace())
-                w.window.hide();
-        }
-        switchData.container.destroy();
-        switchData.movingWindowBin.destroy();
-
-        this.movingWindow = null;
-    }
-
-    animateSwitchWorkspace(from, to, direction, onComplete) {
-        this._prepareWorkspaceSwitch(from, to, direction);
-        this._switchData.inProgress = true;
-
-        let workspaceManager = global.workspace_manager;
-        let fromWs = workspaceManager.get_workspace_by_index(from);
-        let toWs = workspaceManager.get_workspace_by_index(to);
-
-        let [xDest, yDest] = this._getPositionForDirection(direction, fromWs, toWs);
-
-        /* @direction is the direction that the "camera" moves, so the
-         * screen contents have to move one screen's worth in the
-         * opposite direction.
-         */
-        xDest = -xDest;
-        yDest = -yDest;
-
-        this._switchData.container.ease({
-            x: xDest,
-            y: yDest,
-            duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            onComplete: () => {
-                this._finishWorkspaceSwitch(this._switchData);
-                onComplete();
-            },
-        });
-    }
-
-    _directionForProgress(progress) {
+    directionForProgress(progress) {
         if (global.workspace_manager.layout_rows === -1) {
             return progress > 0
                 ? Meta.MotionDirection.DOWN
@@ -266,35 +215,130 @@ var WorkspaceAnimationController = class {
         }
     }
 
-    _getProgressRange() {
-        if (!this._switchData)
-            return [0, 0];
+    progressForDirection(dir) {
+        if (global.workspace_manager.layout_rows === -1)
+            return dir === Meta.MotionDirection.DOWN ? 1 : -1;
+        else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+            return dir === Meta.MotionDirection.LEFT ? 1 : -1;
+        else
+            return dir === Meta.MotionDirection.RIGHT ? 1 : -1;
+    }
 
-        let lower = 0;
-        let upper = 0;
+    get progress() {
+        return this._progress;
+    }
 
-        let horiz = global.workspace_manager.layout_rows !== -1;
+    set progress(progress) {
+        this._progress = progress;
+
+        let direction = this.directionForProgress(progress);
+        let xPos = 0;
+        let yPos = 0;
+
+        if (global.workspace_manager.layout_rows === -1)
+            yPos = -Math.round(progress * this._getDistance(direction));
+        else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+            xPos = Math.round(progress * this._getDistance(direction));
+        else
+            xPos = -Math.round(progress * this._getDistance(direction));
+
+        this._container.set_position(xPos, yPos);
+    }
+
+    _getDistance(direction) {
+        let info = this._surroundings[direction];
+        if (!info)
+            return 0;
+
+        switch (direction) {
+        case Meta.MotionDirection.UP:
+            return -info.yDest;
+        case Meta.MotionDirection.DOWN:
+            return info.yDest;
+        case Meta.MotionDirection.LEFT:
+            return -info.xDest;
+        case Meta.MotionDirection.RIGHT:
+            return info.xDest;
+        }
+
+        return 0;
+    }
+
+    getProgressRange() {
         let baseDistance;
-        if (horiz)
+        if (global.workspace_manager.layout_rows !== -1)
             baseDistance = global.screen_width;
         else
             baseDistance = global.screen_height;
 
-        let direction = this._directionForProgress(-1);
-        let info = this._switchData.surroundings[direction];
-        if (info !== null) {
-            let distance = horiz ? info.xDest : info.yDest;
-            lower = -Math.abs(distance) / baseDistance;
-        }
+        let direction = this.directionForProgress(-1);
+        let distance = this._getDistance(direction);
+        let lower = -distance / baseDistance;
 
-        direction = this._directionForProgress(1);
-        info = this._switchData.surroundings[direction];
-        if (info !== null) {
-            let distance = horiz ? info.xDest : info.yDest;
-            upper = Math.abs(distance) / baseDistance;
-        }
+        direction = this.directionForProgress(1);
+        distance = this._getDistance(direction);
+        let upper = distance / baseDistance;
 
         return [lower, upper];
+    }
+});
+
+var WorkspaceAnimationController = class {
+    constructor() {
+        this._blockAnimations = false;
+        this._movingWindow = null;
+        this._inProgress = false;
+        this._gestureActivated = false;
+        this._animation = null;
+
+        Main.overview.connect('showing', () => {
+            if (this._gestureActivated)
+                this._switchWorkspaceStop();
+
+            this._swipeTracker.enabled = false;
+        });
+        Main.overview.connect('hiding', () => {
+            this._swipeTracker.enabled = true;
+        });
+
+        let swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
+            Shell.ActionMode.NORMAL, { allowDrag: false, allowScroll: false });
+        swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
+        swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
+        swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
+        this._swipeTracker = swipeTracker;
+    }
+
+    _prepareWorkspaceSwitch(from, to, direction) {
+        if (this._animation)
+            return;
+
+        this._animation = new WorkspaceAnimation(this, from, to, direction);
+    }
+
+    _finishWorkspaceSwitch() {
+        if (this._animation)
+            this._animation.destroy();
+        this._animation = null;
+        this._inProgress = false;
+        this._gestureActivated = false;
+        this.movingWindow = null;
+    }
+
+    animateSwitchWorkspace(from, to, direction, onComplete) {
+        this._prepareWorkspaceSwitch(from, to, direction);
+        this._inProgress = true;
+
+        let progress = this._animation.progressForDirection(direction);
+
+        this._animation.ease_property('progress', progress, {
+            duration: WINDOW_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            onComplete: () => {
+                this._finishWorkspaceSwitch();
+                onComplete();
+            },
+        });
     }
 
     _switchWorkspaceBegin(tracker, monitor) {
@@ -317,22 +361,21 @@ var WorkspaceAnimationController = class {
             baseDistance = global.screen_height;
 
         let progress;
-        if (this._switchData && this._switchData.gestureActivated) {
-            this._switchData.container.remove_all_transitions();
-            if (!horiz)
-                progress = -this._switchData.container.y / baseDistance;
-            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                progress = this._switchData.container.x / baseDistance;
-            else
-                progress = -this._switchData.container.x / baseDistance;
+        if (this._gestureActivated) {
+            this._animation.remove_all_transitions();
+            progress = this._animation.progress;
         } else {
             this._prepareWorkspaceSwitch(activeWorkspace.index(), -1);
             progress = 0;
         }
 
-        let points = [];
-        let [lower, upper] = this._getProgressRange();
+        let [lower, upper] = this._animation.getProgressRange();
+        if (progress < 0)
+            progress *= -lower;
+        else if (progress > 0)
+            progress *= upper;
 
+        let points = [];
         if (lower !== 0)
             points.push(lower);
 
@@ -345,69 +388,55 @@ var WorkspaceAnimationController = class {
     }
 
     _switchWorkspaceUpdate(tracker, progress) {
-        if (!this._switchData)
-            return;
+        // Translate the progress into [-1;1] range
+        let [lower, upper] = this._animation.getProgressRange();
+        if (progress < 0)
+            progress /= -lower;
+        else if (progress > 0)
+            progress /= upper;
 
-        let direction = this._directionForProgress(progress);
-        let info = this._switchData.surroundings[direction];
-        let xPos = 0;
-        let yPos = 0;
-        if (info) {
-            if (global.workspace_manager.layout_rows === -1)
-                yPos = -Math.round(progress * global.screen_height);
-            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                xPos = Math.round(progress * global.screen_width);
-            else
-                xPos = -Math.round(progress * global.screen_width);
-        }
-
-        this._switchData.container.set_position(xPos, yPos);
+        this._animation.progress = progress;
     }
 
     _switchWorkspaceEnd(tracker, duration, endProgress) {
-        if (!this._switchData)
+        if (!this._animation)
             return;
+
+        // Translate the progress into [-1;1] range
+        endProgress = Math.sign(endProgress);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
         let newWs = activeWorkspace;
-        let xDest = 0;
-        let yDest = 0;
         if (endProgress !== 0) {
-            let direction = this._directionForProgress(endProgress);
+            let direction = this._animation.directionForProgress(endProgress);
             newWs = activeWorkspace.get_neighbor(direction);
-            xDest = -this._switchData.surroundings[direction].xDest;
-            yDest = -this._switchData.surroundings[direction].yDest;
         }
 
-        let switchData = this._switchData;
-        switchData.gestureActivated = true;
+        this._gestureActivated = true;
 
-        this._switchData.container.ease({
-            x: xDest,
-            y: yDest,
+        this._animation.ease_property('progress', endProgress, {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             onComplete: () => {
                 if (newWs !== activeWorkspace)
                     newWs.activate(global.get_current_time());
-                this._finishWorkspaceSwitch(switchData);
+                this._finishWorkspaceSwitch();
             },
         });
     }
 
     _switchWorkspaceStop() {
-        this._switchData.container.x = 0;
-        this._switchData.container.y = 0;
-        this._finishWorkspaceSwitch(this._switchData);
+        this._animation.progress = 0;
+        this._finishWorkspaceSwitch();
     }
 
     isAnimating() {
-        return this._switchData !== null;
+        return this._animation !== null;
     }
 
     canCancelGesture() {
-        return this.isAnimating() && this._switchData.gestureActivated;
+        return this.isAnimating() && this._gestureActivated;
     }
 
     set movingWindow(movingWindow) {
