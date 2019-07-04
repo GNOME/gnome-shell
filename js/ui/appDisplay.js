@@ -474,7 +474,8 @@ var AllView = class AllView extends BaseAppView {
             let app = appSys.lookup_app(appId);
 
             let icon = new AppIcon(app, this,
-                                   { isDraggable: favoritesWritable });
+                                   { isDraggable: favoritesWritable,
+                                     hideWhileDragging: true });
             newApps.push(icon);
         });
 
@@ -839,10 +840,6 @@ var AllView = class AllView extends BaseAppView {
     handleDragOver(source, actor, x, y, time) {
         [x, y] = this._transformToGridCoordinates(x, y);
 
-        let sourceIndex = -1;
-        if (source.parentView == this)
-            sourceIndex = this._allItems.indexOf(source);
-
         let [index, dragLocation] = this.canDropAt(x, y);
 
         this.removeNudges();
@@ -850,9 +847,7 @@ var AllView = class AllView extends BaseAppView {
             this._schedulePopdown();
 
         if (index != -1) {
-            if (sourceIndex == -1 || (index != sourceIndex && index != sourceIndex + 1))
-                this.nudgeItemsAtIndex(index, dragLocation);
-
+            this.nudgeItemsAtIndex(index, dragLocation);
             return DND.DragMotionResult.MOVE_DROP;
         }
 
@@ -871,6 +866,15 @@ var AllView = class AllView extends BaseAppView {
             source.parentView.folderIcon.removeApp(source.app);
             source = this._items[source.id];
         }
+
+        // AppIcon hides itself, show it again
+        source.actor.show();
+
+        // When moving to a position forward, the index will be misadjusted by
+        // one, because the original actor is hidden. Adjust it back.
+        let sourceIndex = this._allItems.indexOf(source);
+        if (sourceIndex != -1 && index > sourceIndex)
+            index++;
 
         this.moveItem(source, index);
         this.removeNudges();
@@ -1330,8 +1334,7 @@ var FolderView = class FolderView extends BaseAppView {
 
         this._folderIcon._parentView.removeNudges();
         this.removeNudges();
-        if (index != -1 && index != sourceIndex && index != sourceIndex + 1)
-            this.nudgeItemsAtIndex(index, dragLocation);
+        this.nudgeItemsAtIndex(index, dragLocation);
 
         return DND.DragMotionResult.MOVE_DROP;
     }
@@ -1340,7 +1343,16 @@ var FolderView = class FolderView extends BaseAppView {
         [x, y] = this._transformToGridCoordinates(x, y);
 
         let [index, dragLocation] = this.canDropAt(x, y);
+        let sourceIndex = this._allItems.indexOf(source);
         let success = index != -1;
+
+        // AppIcon hides itself, show it again
+        source.actor.show();
+
+        // When moving to a position forward, the index will be misadjusted by
+        // one, because the original actor is hidden. Adjust it back.
+        if (sourceIndex != -1 && index > sourceIndex)
+            index++;
 
         if (success)
             this.moveItem(source, index);
@@ -1395,7 +1407,7 @@ var FolderView = class FolderView extends BaseAppView {
             if (!app.get_app_info().should_show())
                 return;
 
-            let icon = new AppIcon(app, this);
+            let icon = new AppIcon(app, this, { hideWhileDragging: true });
             apps.push(icon);
         };
 
@@ -1551,8 +1563,11 @@ var FolderIcon = class FolderIcon {
     acceptDrop(source, actor, x, y, time) {
         this._unscheduleOpenPopup();
 
-        if (!this._canDropAt(source))
+        if (!this._canDropAt(source)) {
+            // AppIcon hides itself, show it again
+            source.actor.show();
             return true;
+        }
 
         let app = source.app;
         let folderApps = this._folder.get_strv('apps');
@@ -1859,9 +1874,13 @@ var AppIcon = class AppIcon {
         this._scaleInId = 0;
 
         // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        let appIconParams = Params.parse(iconParams, { isDraggable: true,
+                                                       hideWhileDragging: false, }, true);
         let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
+
+        let hideWhileDragging = appIconParams['hideWhileDragging'];
+        delete iconParams['hideWhileDragging'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
@@ -1883,18 +1902,19 @@ var AppIcon = class AppIcon {
             this._draggable = DND.makeDraggable(this.actor);
             this._draggable.connect('drag-begin', () => {
                 this._dragging = true;
-                this.actor.opacity = 0;
+                if (hideWhileDragging)
+                    this.actor.hide();
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             });
             this._draggable.connect('drag-cancelled', () => {
                 this._dragging = false;
-                this.actor.opacity = 255;
                 Main.overview.cancelledItemDrag(this);
             });
-            this._draggable.connect('drag-end', () => {
+            this._draggable.connect('drag-end', (source, time, success) => {
                 this._dragging = false;
-                this.actor.opacity = 255;
+                if (!success && hideWhileDragging)
+                    this.actor.show();
                 Main.overview.endItemDrag(this);
             });
         }

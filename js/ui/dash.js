@@ -871,6 +871,8 @@ var Dash = class Dash {
     acceptDrop(source, actor, x, y, time) {
         let app = getAppFromSource(source);
 
+        source.actor.show();
+
         // Don't allow favoriting of transient apps
         if (app == null || app.is_window_backed()) {
             return false;
