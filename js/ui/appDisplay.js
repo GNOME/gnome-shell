@@ -784,6 +784,7 @@ var AllView = class AllView extends BaseAppView {
         if (this._currentPopup)
             this._currentPopup.popdown();
 
+        source.undoScaleAndFade();
         return true;
     }
 
@@ -1443,8 +1444,10 @@ var FolderIcon = class FolderIcon {
     }
 
     acceptDrop(source) {
-        if (!this._canAccept(source))
+        if (!this._canAccept(source)) {
+            source.undoScaleAndFade();
             return true;
+        }
 
         let app = source.app;
         let folderApps = this._folder.get_strv('apps');
@@ -1776,6 +1779,7 @@ var AppIcon = class AppIcon {
             this._draggable = DND.makeDraggable(this.actor);
             this._draggable.connect('drag-begin', () => {
                 this._dragging = true;
+                this.scaleAndFade();
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             });
@@ -1785,6 +1789,7 @@ var AppIcon = class AppIcon {
             });
             this._draggable.connect('drag-end', () => {
                 this._dragging = false;
+                this.undoScaleAndFade();
                 Main.overview.endItemDrag(this);
             });
         }
@@ -1979,6 +1984,24 @@ var AppIcon = class AppIcon {
 
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    }
+
+    scaleAndFade() {
+        this.actor.reactive = false;
+        this.actor.ease({
+            scale_x: 0.75,
+            scale_y: 0.75,
+            opacity: 128
+        });
+    }
+
+    undoScaleAndFade() {
+        this.actor.reactive = true;
+        this.actor.ease({
+            scale_x: 1.0,
+            scale_y: 1.0,
+            opacity: 255
+        });
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);
