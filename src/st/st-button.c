@@ -780,15 +780,15 @@ st_button_fake_release (StButton *button)
                                             priv->press_sequence);
     }
 
-  if (priv->pressed || priv->press_sequence)
-    st_button_release (button, priv->device,
-                       priv->pressed, 0, NULL);
-
   if (priv->grabbed)
     {
       priv->grabbed = 0;
       clutter_input_device_ungrab (priv->device);
     }
+
+  if (priv->pressed || priv->press_sequence)
+    st_button_release (button, priv->device,
+                       priv->pressed, 0, NULL);
 
   priv->device = NULL;
 }
