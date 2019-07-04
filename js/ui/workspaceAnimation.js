@@ -41,12 +41,16 @@ class WorkspaceGroup extends Clutter.Actor {
     }
 
     _syncStacking() {
-        const windowActors = global.get_window_actors();
-        let lastSibling = null;
+        const windowActors = global.get_window_actors().filter(w =>
+            this._shouldShowWindow(w.meta_window));
+
+        let lastRecord;
 
         for (const windowActor of windowActors) {
-            this.set_child_above_sibling(windowActor, lastSibling);
-            lastSibling = windowActor;
+            const record = this._windowRecords.find(r => r.windowActor === windowActor);
+
+            this.set_child_above_sibling(record.clone, lastRecord ? lastRecord.clone : null);
+            lastRecord = record;
         }
     }
 
@@ -55,16 +59,18 @@ class WorkspaceGroup extends Clutter.Actor {
             this._shouldShowWindow(w.meta_window));
 
         for (const windowActor of windowActors) {
-            const record = {
-                windowActor,
-                parent: windowActor.get_parent(),
-            };
+            const clone = new Clutter.Clone({
+                source: windowActor,
+                x: windowActor.x,
+                y: windowActor.y,
+            });
 
-            record.parent.remove_child(windowActor);
-            this.add_child(windowActor);
-            windowActor.show();
+            this.add_child(clone);
+
+            const record = { windowActor, clone };
 
             record.windowDestroyId = windowActor.connect('destroy', () => {
+                clone.destroy();
                 this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
             });
 
@@ -75,13 +81,7 @@ class WorkspaceGroup extends Clutter.Actor {
     _removeWindows() {
         for (const record of this._windowRecords) {
             record.windowActor.disconnect(record.windowDestroyId);
-            this.remove_child(record.windowActor);
-            record.parent.add_child(record.windowActor);
-
-            // No workspace means we showed sticky windows,
-            // don't hide anything in this case
-            if (this._workspace && !this._workspace.active)
-                record.windowActor.hide();
+            record.clone.destroy();
         }
 
         this._windowRecords = [];
