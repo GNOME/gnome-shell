@@ -1,19 +1,93 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceAnimationController */
 
-const { Clutter, Meta, Shell } = imports.gi;
+const { Clutter, GObject, Meta, Shell } = imports.gi;
 
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 
 const WINDOW_ANIMATION_TIME = 250;
 
+const WorkspaceGroup = GObject.registerClass(
+class WorkspaceGroup extends Clutter.Actor {
+    _init(workspace, movingWindow) {
+        super._init();
+
+        this._workspace = workspace;
+        this._movingWindow = movingWindow;
+        this._windows = [];
+
+        this._refreshWindows();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+        this._restackedId = global.display.connect('restacked',
+            this._refreshWindows.bind(this));
+    }
+
+    _shouldShowWindow(window) {
+        if (window.get_workspace() !== this._workspace)
+            return false;
+
+        if (!window.showing_on_its_workspace())
+            return false;
+
+        if (window.is_on_all_workspaces())
+            return false;
+
+        if (this._movingWindow && window === this._movingWindow)
+            return false;
+
+        return true;
+    }
+
+    _refreshWindows() {
+        if (this._windows.length > 0)
+            this._removeWindows();
+
+        const windows = global.get_window_actors().filter(w =>
+            this._shouldShowWindow(w.meta_window));
+
+        for (let window of windows) {
+            let record = {
+                window,
+                parent: window.get_parent(),
+            };
+
+            record.parent.remove_child(window);
+            this.add_child(window);
+            window.show();
+
+            record.windowDestroyId = window.connect('destroy', () => {
+                this._windows.splice(this._windows.indexOf(record), 1);
+            });
+
+            this._windows.push(record);
+        }
+    }
+
+    _removeWindows() {
+        for (const record of this._windows) {
+            record.window.disconnect(record.windowDestroyId);
+            this.remove_child(record.window);
+            record.parent.add_child(record.window);
+
+            if (!record.window.get_meta_window().get_workspace().active)
+                record.window.hide();
+        }
+
+        this._windows = [];
+    }
+
+    _onDestroy() {
+        global.display.disconnect(this._restackedId);
+        this._removeWindows();
+    }
+});
+
 var WorkspaceAnimationController = class {
     constructor() {
         this._movingWindow = null;
         this._switchData = null;
-
-        global.display.connect('restacked', this._syncStacking.bind(this));
 
         Main.overview.connect('showing', () => {
             if (this._switchData) {
@@ -32,35 +106,6 @@ var WorkspaceAnimationController = class {
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this._swipeTracker = swipeTracker;
-    }
-
-    _syncStacking() {
-        if (this._switchData === null)
-            return;
-
-        let windows = global.get_window_actors();
-        let lastCurSibling = null;
-        let lastDirSibling = [];
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() === this._switchData.curGroup) {
-                this._switchData.curGroup.set_child_above_sibling(windows[i], lastCurSibling);
-                lastCurSibling = windows[i];
-            } else {
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = this._switchData.surroundings[dir];
-                    if (!info || windows[i].get_parent() !== info.actor)
-                        continue;
-
-                    let sibling = lastDirSibling[dir];
-                    if (sibling === undefined)
-                        sibling = null;
-
-                    info.actor.set_child_above_sibling(windows[i], sibling);
-                    lastDirSibling[dir] = windows[i];
-                    break;
-                }
-            }
-        }
     }
 
     _getPositionForDirection(direction, fromWs, toWs) {
@@ -100,13 +145,15 @@ var WorkspaceAnimationController = class {
             return;
 
         let wgroup = global.window_group;
-        let windows = global.get_window_actors();
+        let workspaceManager = global.workspace_manager;
+        let curWs = workspaceManager.get_workspace_by_index(from);
+
         let switchData = {};
 
         this._switchData = switchData;
-        switchData.curGroup = new Clutter.Actor();
+        switchData.curGroup = new WorkspaceGroup(curWs, this.movingWindow);
         switchData.movingWindowBin = new Clutter.Actor();
-        switchData.windows = [];
+        switchData.movingWindow = null;
         switchData.surroundings = {};
         switchData.gestureActivated = false;
         switchData.inProgress = false;
@@ -116,9 +163,6 @@ var WorkspaceAnimationController = class {
 
         wgroup.add_child(switchData.movingWindowBin);
         wgroup.add_child(switchData.container);
-
-        let workspaceManager = global.workspace_manager;
-        let curWs = workspaceManager.get_workspace_by_index(from);
 
         for (let dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
@@ -136,7 +180,7 @@ var WorkspaceAnimationController = class {
             let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             let info = {
                 index: ws.index(),
-                actor: new Clutter.Actor(),
+                actor: new WorkspaceGroup(ws, this.movingWindow),
                 xDest: x,
                 yDest: y,
             };
@@ -149,54 +193,18 @@ var WorkspaceAnimationController = class {
 
         wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
 
-        for (let i = 0; i < windows.length; i++) {
-            let actor = windows[i];
-            let window = actor.get_meta_window();
+        if (this.movingWindow) {
+            const actor = this.movingWindow.get_compositor_private();
 
-            if (!window.showing_on_its_workspace())
-                continue;
-
-            if (window.is_on_all_workspaces())
-                continue;
-
-            const record = {
+            switchData.movingWindow = {
                 window: actor,
                 parent: actor.get_parent(),
             };
 
-            if (this.movingWindow && window === this.movingWindow) {
-                record.parent.remove_child(actor);
-                switchData.movingWindow = record;
-                switchData.windows.push(switchData.movingWindow);
-                switchData.movingWindowBin.add_child(actor);
-            } else if (window.get_workspace().index() === from) {
-                record.parent.remove_child(actor);
-                switchData.windows.push(record);
-                switchData.curGroup.add_child(actor);
-            } else {
-                let visible = false;
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = switchData.surroundings[dir];
-
-                    if (!info || info.index !== window.get_workspace().index())
-                        continue;
-
-                    record.parent.remove_child(actor);
-                    switchData.windows.push(record);
-                    info.actor.add_child(actor);
-                    visible = true;
-                    break;
-                }
-
-                actor.visible = visible;
-            }
-        }
-
-        for (let i = 0; i < switchData.windows.length; i++) {
-            let w = switchData.windows[i];
-
-            w.windowDestroyId = w.window.connect('destroy', () => {
-                switchData.windows.splice(switchData.windows.indexOf(w), 1);
+            switchData.movingWindow.parent.remove_child(actor);
+            switchData.movingWindowBin.add_child(actor);
+            switchData.movingWindow.windowDestroyId = actor.connect('destroy', () => {
+                switchData.movingWindow = null;
             });
         }
     }
@@ -204,16 +212,15 @@ var WorkspaceAnimationController = class {
     _finishWorkspaceSwitch(switchData) {
         this._switchData = null;
 
-        for (let i = 0; i < switchData.windows.length; i++) {
-            let w = switchData.windows[i];
+        if (switchData.movingWindow) {
+            let record = switchData.movingWindow;
+            record.window.disconnect(record.windowDestroyId);
+            record.window.get_parent().remove_child(record.window);
+            record.parent.add_child(record.window);
 
-            w.window.disconnect(w.windowDestroyId);
-            w.window.get_parent().remove_child(w.window);
-            w.parent.add_child(w.window);
-
-            if (!w.window.get_meta_window().get_workspace().active)
-                w.window.hide();
+            switchData.movingWindow = null;
         }
+
         switchData.container.destroy();
         switchData.movingWindowBin.destroy();
 
