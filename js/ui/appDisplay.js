@@ -431,6 +431,7 @@ var AllView = class AllView extends BaseAppView {
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this._nEventBlockerInhibits = 0;
+        this._popdownId = 0;
     }
 
     _refilterApps() {
@@ -864,6 +865,25 @@ var AllView = class AllView extends BaseAppView {
         }
     }
 
+    _schedulePopdown() {
+        if (this._popdownId > 0)
+            return;
+
+        this._popdownId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+            if (this._currentPopup)
+                this._currentPopup.popdown();
+            this._popdownId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _unschedulePopdown() {
+        if (this._popdownId > 0) {
+            GLib.source_remove(this._popdownId);
+            this._popdownId = 0;
+        }
+    }
+
     _onDragBegin() {
         this._dragMonitor = {
             dragMotion: this._onDragMotion.bind(this)
@@ -874,11 +894,22 @@ var AllView = class AllView extends BaseAppView {
     _onDragMotion(dragEvent) {
         let appIcon = dragEvent.source;
 
-        // Handle the drag overshoot. When dragging to above the
-        // icon grid, move to the page above; when dragging below,
-        // move to the page below.
-        if (appIcon.view == this)
+        // When dragging from a folder, don't nudge items; instead,
+        // prevent DND entirely by returning NO_DROP
+        if (this._currentPopup) {
+            if (dragEvent.targetActor == this._grid ||
+                this._grid.contains(dragEvent.targetActor)) {
+                this._schedulePopdown();
+                return DND.DragMotionResult.NO_DROP;
+            } else {
+                this._unschedulePopdown();
+            }
+        } else {
+            // Handle the drag overshoot. When dragging to above the
+            // icon grid, move to the page above; when dragging below,
+            // move to the page below.
             this._handleDragOvershoot(dragEvent);
+        }
 
         if (dragEvent.targetActor != this._grid)
             this.removeNudges();
