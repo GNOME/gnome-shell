@@ -453,16 +453,6 @@ var Dash = class Dash {
         let appIcon = new AppDisplay.AppIcon(app,
                                              { setSizeManually: true,
                                                showLabel: false });
-        if (appIcon._draggable) {
-            appIcon._draggable.connect('drag-begin',
-                                       () => {
-                                           appIcon.actor.opacity = 50;
-                                       });
-            appIcon._draggable.connect('drag-end',
-                                       () => {
-                                           appIcon.actor.opacity = 255;
-                                       });
-        }
 
         appIcon.connect('menu-state-changed',
                         (appIcon, opened) => {
