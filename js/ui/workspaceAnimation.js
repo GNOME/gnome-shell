@@ -48,16 +48,19 @@ class WorkspaceGroup extends Clutter.Actor {
             this._shouldShowWindow(w.meta_window));
 
         for (let window of windows) {
-            let record = {
-                window,
-                parent: window.get_parent(),
-            };
+            let clone = new Clutter.Clone({
+                source: window,
+                x: window.x,
+                y: window.y,
+            });
 
-            record.parent.remove_child(window);
-            this.add_child(window);
-            window.show();
+            this.add_child(clone);
+            window.hide();
+
+            let record = { window, clone };
 
             record.windowDestroyId = window.connect('destroy', () => {
+                clone.destroy();
                 this._windows.splice(this._windows.indexOf(record), 1);
             });
 
@@ -68,11 +71,10 @@ class WorkspaceGroup extends Clutter.Actor {
     _removeWindows() {
         for (const record of this._windows) {
             record.window.disconnect(record.windowDestroyId);
-            this.remove_child(record.window);
-            record.parent.add_child(record.window);
+            record.clone.destroy();
 
-            if (!record.window.get_meta_window().get_workspace().active)
-                record.window.hide();
+            if (record.window.get_meta_window().get_workspace().active)
+                record.window.show();
         }
 
         this._windows = [];
