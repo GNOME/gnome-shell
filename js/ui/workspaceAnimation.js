@@ -11,11 +11,12 @@ var WINDOW_ANIMATION_TIME = 0.25;
 
 var WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
-    _init(controller, workspace) {
+    _init(controller, workspace, monitor) {
         super._init();
 
         this._controller = controller;
         this._workspace = workspace;
+        this._monitor = monitor;
         this._windows = [];
 
         this.refreshWindows();
@@ -26,6 +27,9 @@ class WorkspaceGroup extends Clutter.Actor {
 
     _shouldShowWindow(window) {
         if (window.get_workspace() != this._workspace)
+            return false;
+
+        if (!window.get_frame_rect().intersect(global.display.get_monitor_geometry(this._monitor.index))[0])
             return false;
 
         if (!window.showing_on_its_workspace())
@@ -92,42 +96,52 @@ var WorkspaceAnimation = class {
     constructor(controller, from, to, direction) {
         this._controller = controller;
         this._movingWindow = null;
-        this._surroundings = {};
+        this._monitors = [];
         this._progress = 0;
-
-        this._container = new Clutter.Actor();
-
-        global.window_group.add_actor(this._container);
 
         let workspaceManager = global.workspace_manager;
         let curWs = workspaceManager.get_workspace_by_index(from);
 
-        this._curGroup = new WorkspaceGroup(controller, curWs);
-        this._container.add_actor(this._curGroup);
+        for (let monitor of Main.layoutManager.monitors) {
+            let record = { index: monitor.index,
+                           clipBin: new Clutter.Actor(),
+                           container: new Clutter.Actor(),
+                           surroundings: {} };
 
-        for (let dir of Object.values(Meta.MotionDirection)) {
-            let ws = null;
+            record.clipBin.add_actor(record.container);
+            record.clipBin.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
 
-            if (to < 0)
-                ws = curWs.get_neighbor(dir);
-            else if (dir == direction)
-                ws = workspaceManager.get_workspace_by_index(to);
+            global.window_group.add_actor(record.clipBin);
 
-            if (ws == null || ws == curWs) {
-                this._surroundings[dir] = null;
-                continue;
+            record.curGroup = new WorkspaceGroup(controller, curWs, monitor);
+            record.container.add_actor(record.curGroup);
+
+            for (let dir of Object.values(Meta.MotionDirection)) {
+                let ws = null;
+
+                if (to < 0)
+                    ws = curWs.get_neighbor(dir);
+                else if (dir == direction)
+                    ws = workspaceManager.get_workspace_by_index(to);
+
+                if (ws == null || ws == curWs) {
+                    record.surroundings[dir] = null;
+                    continue;
+                }
+
+                let [x, y] = this._getPositionForDirection(dir, curWs, ws, monitor.index);
+                let info = { index: ws.index(),
+                             actor: new WorkspaceGroup(controller, ws, monitor),
+                             xDest: x,
+                             yDest: y };
+                record.surroundings[dir] = info;
+                record.container.add_actor(info.actor);
+                info.actor.raise_top();
+
+                info.actor.set_position(x, y);
             }
 
-            let [x, y] = this._getPositionForDirection(dir, curWs, ws);
-            let info = { index: ws.index(),
-                         actor: new WorkspaceGroup(controller, ws),
-                         xDest: x,
-                         yDest: y };
-            this._surroundings[dir] = info;
-            this._container.add_actor(info.actor);
-            info.actor.raise_top();
-
-            info.actor.set_position(x, y);
+            this._monitors.push(record);
         }
 
         if (this._controller.movingWindow) {
@@ -150,6 +164,10 @@ var WorkspaceAnimation = class {
     }
 
     destroy() {
+        for (let monitorData of this._monitors)
+            monitorData.clipBin.destroy();
+        this._monitors = [];
+
         if (this._movingWindow) {
             let record = this._movingWindow;
             record.window.disconnect(record.windowDestroyId);
@@ -158,38 +176,40 @@ var WorkspaceAnimation = class {
 
             this._movingWindow = null;
         }
-
-        this._container.destroy();
     }
 
-    _getPositionForDirection(direction, fromWs, toWs) {
+    _getPositionForDirection(direction, fromWs, toWs, monitor) {
         let xDest = 0, yDest = 0;
 
-        let oldWsIsFullscreen = fromWs.list_windows().some(w => w.is_fullscreen());
-        let newWsIsFullscreen = toWs.list_windows().some(w => w.is_fullscreen());
+        let condition = w => w.get_monitor() == monitor && w.is_fullscreen();
+
+        let oldWsIsFullscreen = fromWs.list_windows().some(condition);
+        let newWsIsFullscreen = toWs.list_windows().some(condition);
+
+        let geometry = Main.layoutManager.monitors[monitor];
 
         // We have to shift windows up or down by the height of the panel to prevent having a
         // visible gap between the windows while switching workspaces. Since fullscreen windows
         // hide the panel, they don't need to be shifted up or down.
-        let shiftHeight = Main.panel.height;
+        let shiftHeight = (monitor == Main.layoutManager.primaryIndex) ? Main.panel.height : 0;
 
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-            yDest = -global.screen_height + (oldWsIsFullscreen ? 0 : shiftHeight);
+            yDest = -geometry.height + (oldWsIsFullscreen ? 0 : shiftHeight);
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-            yDest = global.screen_height - (newWsIsFullscreen ? 0 : shiftHeight);
+            yDest = geometry.height - (newWsIsFullscreen ? 0 : shiftHeight);
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.DOWN_LEFT)
-            xDest = -global.screen_width;
+            xDest = -geometry.width;
         else if (direction == Meta.MotionDirection.RIGHT ||
                  direction == Meta.MotionDirection.UP_RIGHT ||
                  direction == Meta.MotionDirection.DOWN_RIGHT)
-            xDest = global.screen_width;
+            xDest = geometry.width;
 
         return [xDest, yDest];
     }
@@ -211,21 +231,34 @@ var WorkspaceAnimation = class {
         this._progress = progress;
 
         let direction = this.directionForProgress(progress);
-        let info = this._surroundings[direction];
-        let xPos = 0;
-        let yPos = 0;
-        if (info) {
-            if (global.workspace_manager.layout_rows == -1)
-                yPos = Math.round(Math.abs(progress) * -info.yDest);
-            else
-                xPos = Math.round(Math.abs(progress) * -info.xDest);
-        }
 
-        this._container.set_position(xPos, yPos);
+        for (let monitorData of this._monitors) {
+            let info = monitorData.surroundings[direction];
+            let xPos = 0;
+            let yPos = 0;
+            if (info) {
+                if (global.workspace_manager.layout_rows == -1)
+                    yPos = Math.round(Math.abs(progress) * -info.yDest);
+                else
+                    xPos = Math.round(Math.abs(progress) * -info.xDest);
+            }
+
+            monitorData.container.set_position(xPos, yPos);
+        }
     }
 
-    getDistance(direction) {
-        let info = this._surroundings[direction];
+    getDistance(monitor, direction) {
+        let monitorData = null;
+        for (let data of this._monitors)
+            if (data.index == monitor) {
+                monitorData = data;
+                break;
+            }
+
+        if (!monitorData)
+            return 0;
+
+        let info = monitorData.surroundings[direction];
         if (!info)
             return 0;
 
@@ -336,19 +369,19 @@ var WorkspaceAnimationController = class {
         let points = [];
         let baseDistance;
         if (horiz)
-            baseDistance = global.screen_width;
+            baseDistance = Main.layoutManager.monitors[monitor].width;
         else
-            baseDistance = global.screen_height;
+            baseDistance = Main.layoutManager.monitors[monitor].height;
 
         let direction = this._animation.directionForProgress(-1);
-        let distance = this._animation.getDistance(direction);
+        let distance = this._animation.getDistance(monitor, direction);
         if (distance != 0)
             points.push(-distance / baseDistance);
 
         points.push(0);
 
         direction = this._animation.directionForProgress(1);
-        distance = this._animation.getDistance(direction);
+        distance = this._animation.getDistance(monitor, direction);
         if (distance != 0)
             points.push(distance / baseDistance);
 
