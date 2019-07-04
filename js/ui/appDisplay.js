@@ -894,6 +894,8 @@ var AllView = class AllView extends BaseAppView {
                 this._currentPopup.popdown();
         }
 
+        source.undoScaleAndFade();
+
         this.moveItem(source, index);
         this.removeNudges();
         return true;
@@ -1358,7 +1360,10 @@ var FolderView = class FolderView extends BaseAppView {
 
     acceptDrop(source, actor, x, y, time) {
         let [index, dragLocation] = this.canDropAt(x, y);
+        let sourceIndex = this._allItems.indexOf(source);
         let success = index != -1;
+
+        source.undoScaleAndFade();
 
         if (success)
             this.moveItem(source, index);
@@ -1569,8 +1574,10 @@ var FolderIcon = class FolderIcon {
     }
 
     acceptDrop(source, actor, x, y, time) {
-        if (!this._canDropAt(source))
+        if (!this._canDropAt(source)) {
+            source.undoScaleAndFade();
             return true;
+        }
 
         let app = source.app;
         let folderApps = this._folder.get_strv('apps');
@@ -1848,6 +1855,7 @@ var AppIcon = class AppIcon {
         this._view = view;
 
         this.actor = new St.Button({ style_class: 'app-well-app',
+                                     pivot_point: new Clutter.Point({x: 0.5, y: 0.5}),
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
                                      can_focus: true,
@@ -1894,6 +1902,7 @@ var AppIcon = class AppIcon {
             this._draggable = DND.makeDraggable(this.actor);
             this._draggable.connect('drag-begin', () => {
                 this._dragging = true;
+                this.scaleAndFade();
                 this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             });
@@ -1903,6 +1912,7 @@ var AppIcon = class AppIcon {
             });
             this._draggable.connect('drag-end', () => {
                 this._dragging = false;
+                this.undoScaleAndFade();
                 Main.overview.endItemDrag(this);
             });
         }
@@ -2124,6 +2134,24 @@ var AppIcon = class AppIcon {
 
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    }
+
+    scaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = false;
+        this.actor.scale_x = 0.75;
+        this.actor.scale_y = 0.75;
+        this.actor.opacity = 128;
+        this.actor.restore_easing_state();
+    }
+
+    undoScaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = true;
+        this.actor.scale_x = 1.0;
+        this.actor.scale_y = 1.0;
+        this.actor.opacity = 255;
+        this.actor.restore_easing_state();
     }
 
     get view() {
