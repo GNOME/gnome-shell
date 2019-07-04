@@ -401,6 +401,7 @@ var AllView = class AllView extends BaseAppView {
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this._nEventBlockerInhibits = 0;
+        this._popdownId = 0;
     }
 
     _refilterApps() {
@@ -786,6 +787,25 @@ var AllView = class AllView extends BaseAppView {
         }
     }
 
+    _schedulePopdown() {
+        if (this._popdownId > 0)
+            return;
+
+        this._popdownId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+            if (this._currentPopup)
+                this._currentPopup.popdown();
+            this._popdownId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _unschedulePopdown() {
+        if (this._popdownId > 0) {
+            GLib.source_remove(this._popdownId);
+            this._popdownId = 0;
+        }
+    }
+
     _onDragBegin() {
         this._dragMonitor = {
             dragMotion: this._onDragMotion.bind(this)
@@ -799,8 +819,10 @@ var AllView = class AllView extends BaseAppView {
         // Handle the drag overshoot. When dragging to above the
         // icon grid, move to the page above; when dragging below,
         // move to the page below.
-        if (appIcon.parentView == this)
+        if (!this._currentPopup)
             this._handleDragOvershoot(dragEvent);
+        else
+            this._unschedulePopdown();
 
         return DND.DragMotionResult.CONTINUE;
     }
@@ -824,8 +846,8 @@ var AllView = class AllView extends BaseAppView {
         let [index, dragLocation] = this.canDropAt(x, y);
 
         this.removeNudges();
-        if (source.parentView != this)
-            source.parentView.removeNudges();
+        if (this._currentPopup)
+            this._schedulePopdown();
 
         if (index != -1) {
             if (sourceIndex == -1 || (index != sourceIndex && index != sourceIndex + 1))
