@@ -779,18 +779,15 @@ st_button_fake_release (StButton *button)
       clutter_input_device_sequence_ungrab (priv->device,
                                             priv->press_sequence);
     }
-
-  if (priv->pressed || priv->press_sequence)
-    st_button_release (button, priv->device,
-                       priv->pressed, 0, NULL);
-
-  if (priv->grabbed)
+  else if (priv->grabbed)
     {
       priv->grabbed = 0;
       clutter_input_device_ungrab (priv->device);
     }
 
-  priv->device = NULL;
+  if (priv->pressed || priv->press_sequence)
+    st_button_release (button, priv->device,
+                       priv->pressed, 0, NULL);
 }
 
 /******************************************************************************/
