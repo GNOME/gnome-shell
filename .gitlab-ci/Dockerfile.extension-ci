@@ -1,7 +1,7 @@
 FROM registry.fedoraproject.org/fedora:latest
 
 RUN dnf -y update && dnf -y upgrade && \
-    dnf install -y 'dnf-command(copr)' && \
+    dnf install -y 'dnf-command(copr)' git && \
 
     # For syntax checks with `find . -name '*.js' -exec js60 -c -s '{}' ';'`
     dnf install -y findutils mozjs60-devel && \
