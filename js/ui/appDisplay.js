@@ -1469,10 +1469,33 @@ var FolderIcon = class FolderIcon {
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
+
+        this._openPopupTimeoutId = 0;
     }
 
     getAppIds() {
         return this.view.getAllItems().map(item => item.id);
+    }
+
+    _scheduleOpenPopup() {
+        if (this._openPopupTimeoutId > 0)
+            return;
+
+        this._openPopupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+            this._ensurePopup();
+            this.view.actor.vscroll.adjustment.value = 0;
+            this._openSpaceForPopup();
+
+            this._openPopupTimeoutId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _unscheduleOpenPopup() {
+        if (this._openPopupTimeoutId > 0) {
+            GLib.source_remove(this._openPopupTimeoutId);
+            this._openPopupTimeoutId = 0;
+        }
     }
 
     _onDragBegin() {
@@ -1487,10 +1510,12 @@ var FolderIcon = class FolderIcon {
     _onDragMotion(dragEvent) {
         let target = dragEvent.targetActor;
 
-        if (!this.actor.contains(target) || !this._canDropAt(dragEvent.source))
+        if (!this.actor.contains(target) || !this._canDropAt(dragEvent.source))  {
             this.actor.remove_style_pseudo_class('drop');
-        else
+            this._unscheduleOpenPopup();
+        } else {
             this.actor.add_style_pseudo_class('drop');
+        }
 
         return DND.DragMotionResult.CONTINUE;
     }
@@ -1515,6 +1540,8 @@ var FolderIcon = class FolderIcon {
     }
 
     handleDragOver(source, actor, x, y, time) {
+        this._scheduleOpenPopup();
+
         if (!this._canDropAt(source))
             return DND.DragMotionResult.NO_DROP;
 
@@ -1522,6 +1549,8 @@ var FolderIcon = class FolderIcon {
     }
 
     acceptDrop(source, actor, x, y, time) {
+        this._unscheduleOpenPopup();
+
         if (!this._canDropAt(source))
             return true;
 
