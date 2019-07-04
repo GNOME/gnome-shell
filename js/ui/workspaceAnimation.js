@@ -8,6 +8,85 @@ const SwipeTracker = imports.ui.swipeTracker;
 
 const WINDOW_ANIMATION_TIME = 250;
 
+const WorkspaceGroup = GObject.registerClass(
+class WorkspaceGroup extends Clutter.Actor {
+    _init(controller, workspace) {
+        super._init();
+
+        this._controller = controller;
+        this._workspace = workspace;
+        this._windows = [];
+
+        this._refreshWindows();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+        this._restackedId = global.display.connect('restacked',
+            this._refreshWindows.bind(this));
+    }
+
+    _shouldShowWindow(window) {
+        if (window.get_workspace() !== this._workspace)
+            return false;
+
+        if (!window.showing_on_its_workspace())
+            return false;
+
+        if (window.is_on_all_workspaces())
+            return false;
+
+        if (this._controller.movingWindow &&
+            window === this._controller.movingWindow)
+            return false;
+
+        return true;
+    }
+
+    _refreshWindows() {
+        if (this._windows.length > 0)
+            this._removeWindows();
+
+        let windows = global.get_window_actors();
+        windows = windows.filter(w => this._shouldShowWindow(w.meta_window));
+
+        for (let window of windows) {
+            let record = {
+                window,
+                parent: window.get_parent(),
+            };
+
+            record.parent.remove_child(window);
+            this.add_child(window);
+
+            record.windowDestroyId = window.connect('destroy', () => {
+                this._windows.splice(this._windows.indexOf(record), 1);
+            });
+
+            this._windows.push(record);
+        }
+    }
+
+    _removeWindows() {
+        for (let i = 0; i < this._windows.length; i++) {
+            let w = this._windows[i];
+
+            w.window.disconnect(w.windowDestroyId);
+            this.remove_child(w.window);
+            w.parent.add_child(w.window);
+
+            if (w.window.get_meta_window().get_workspace() !==
+                global.workspace_manager.get_active_workspace())
+                w.window.hide();
+        }
+
+        this._windows = [];
+    }
+
+    _onDestroy() {
+        global.display.disconnect(this._restackedId);
+        this._removeWindows();
+    }
+});
+
 const WorkspaceAnimation = GObject.registerClass({
     Properties: {
         'progress': GObject.ParamSpec.double(
@@ -22,24 +101,22 @@ const WorkspaceAnimation = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._controller = controller;
-        this._curGroup = new Clutter.Actor();
         this._movingWindowBin = new Clutter.Actor();
-        this._windows = [];
+        this._movingWindow = null;
         this._surroundings = {};
         this._progress = 0;
 
-        let wgroup = global.window_group;
-        let windows = global.get_window_actors();
-
         this._container = new Clutter.Actor();
-        this._container.add_actor(this._curGroup);
 
         this.add_actor(this._container);
-        wgroup.add_actor(this);
-        wgroup.add_actor(this._movingWindowBin);
+        global.window_group.add_actor(this);
+        global.window_group.add_actor(this._movingWindowBin);
 
         let workspaceManager = global.workspace_manager;
         let curWs = workspaceManager.get_workspace_by_index(from);
+
+        this._curGroup = new WorkspaceGroup(controller, curWs);
+        this._container.add_actor(this._curGroup);
 
         for (let dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
@@ -57,7 +134,7 @@ const WorkspaceAnimation = GObject.registerClass({
             let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             let info = {
                 index: ws.index(),
-                actor: new Clutter.Actor(),
+                actor: new WorkspaceGroup(controller, ws),
                 xDest: x,
                 yDest: y,
             };
@@ -68,74 +145,32 @@ const WorkspaceAnimation = GObject.registerClass({
             info.actor.set_position(x, y);
         }
 
-        wgroup.set_child_above_sibling(this._movingWindowBin, null);
+        global.window_group.set_child_above_sibling(this._movingWindowBin, null);
 
-        for (let i = 0; i < windows.length; i++) {
-            let actor = windows[i];
-            let window = actor.get_meta_window();
+        if (this._controller.movingWindow) {
+            let actor = this._controller.movingWindow.get_compositor_private();
 
-            if (!window.showing_on_its_workspace())
-                continue;
-
-            if (window.is_on_all_workspaces())
-                continue;
-
-            let record = {
+            this._movingWindow = {
                 window: actor,
                 parent: actor.get_parent(),
             };
 
-            if (this._controller.movingWindow &&
-                window === this._controller.movingWindow) {
-                record.parent.remove_child(actor);
-                this._movingWindow = record;
-                this._windows.push(this._movingWindow);
-                this._movingWindowBin.add_child(actor);
-            } else if (window.get_workspace().index() === from) {
-                record.parent.remove_child(actor);
-                this._windows.push(record);
-                this._curGroup.add_child(actor);
-            } else {
-                let visible = false;
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = this._surroundings[dir];
-
-                    if (!info || info.index !== window.get_workspace().index())
-                        continue;
-
-                    record.parent.remove_child(actor);
-                    this._windows.push(record);
-                    info.actor.add_child(actor);
-                    visible = true;
-                    break;
-                }
-
-                actor.visible = visible;
-            }
-        }
-
-        for (let i = 0; i < this._windows.length; i++) {
-            let w = this._windows[i];
-
-            w.windowDestroyId = w.window.connect('destroy', () => {
-                this._windows.splice(this._windows.indexOf(w), 1);
+            this._movingWindow.parent.remove_child(actor);
+            this._movingWindowBin.add_child(actor);
+            this._movingWindow.windowDestroyId = actor.connect('destroy', () => {
+                this._movingWindow = null;
             });
         }
-
-        global.display.connect('restacked', this._syncStacking.bind(this));
     }
 
     _onDestroy() {
-        for (let i = 0; i < this._windows.length; i++) {
-            let w = this._windows[i];
+        if (this._movingWindow) {
+            let record = this._movingWindow;
+            record.window.disconnect(record.windowDestroyId);
+            record.window.get_parent().remove_child(record.window);
+            record.parent.add_child(record.window);
 
-            w.window.disconnect(w.windowDestroyId);
-            w.window.get_parent().remove_child(w.window);
-            w.parent.add_child(w.window);
-
-            if (w.window.get_meta_window().get_workspace() !==
-                global.workspace_manager.get_active_workspace())
-                w.window.hide();
+            this._movingWindow = null;
         }
 
         this._movingWindowBin.destroy();
@@ -171,32 +206,6 @@ const WorkspaceAnimation = GObject.registerClass({
             xDest = global.screen_width;
 
         return [xDest, yDest];
-    }
-
-    _syncStacking() {
-        let windows = global.get_window_actors();
-        let lastCurSibling = null;
-        let lastDirSibling = [];
-        for (let i = 0; i < windows.length; i++) {
-            if (windows[i].get_parent() === this._curGroup) {
-                this._curGroup.set_child_above_sibling(windows[i], lastCurSibling);
-                lastCurSibling = windows[i];
-            } else {
-                for (let dir of Object.values(Meta.MotionDirection)) {
-                    let info = this._surroundings[dir];
-                    if (!info || windows[i].get_parent() !== info.actor)
-                        continue;
-
-                    let sibling = lastDirSibling[dir];
-                    if (sibling === undefined)
-                        sibling = null;
-
-                    info.actor.set_child_above_sibling(windows[i], sibling);
-                    lastDirSibling[dir] = windows[i];
-                    break;
-                }
-            }
-        }
     }
 
     directionForProgress(progress) {
