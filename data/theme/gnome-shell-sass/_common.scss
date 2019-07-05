@@ -87,9 +87,8 @@ StEntry {
   &:insensitive { @include entry(insensitive);}
   selection-background-color: $selected_bg_color;
   selected-color: $selected_fg_color;
-  StIcon.capslock-warning {
+  StIcon.peek-password {
     icon-size: 16px;
-    warning-color: $warning_color;
     padding: 0 4px;
   }
 }
