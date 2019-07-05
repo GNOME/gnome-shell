@@ -1235,10 +1235,12 @@ var AppSearchProvider = class AppSearchProvider {
     }
 
     createResultObject(resultMeta) {
-        if (resultMeta.id.endsWith('.desktop'))
-            return new AppIcon(this._appSys.lookup_app(resultMeta['id']), null);
-        else
+        if (resultMeta.id.endsWith('.desktop')) {
+            return new AppIcon(this._appSys.lookup_app(resultMeta['id']), null,
+                                                       { isDropTarget: false });
+        } else {
             return new SystemActionIcon(this, resultMeta);
+        }
     }
 };
 
@@ -1471,10 +1473,12 @@ var BaseViewIcon = class BaseViewIcon {
 
         // Get the isDraggable property without passing it on to the BaseIcon:
         params = Params.parse(params, { isDraggable: true,
-                                        hideWhileDragging: false }, true);
+                                        hideWhileDragging: false,
+                                        isDropTarget: true }, true);
         let isDraggable = params['isDraggable'];
         let hideWhileDragging = params['hideWhileDragging'];
 
+        this._isDropTarget = params.isDropTarget;
         this._hasDndHover = false;
 
         if (isDraggable) {
@@ -1497,8 +1501,10 @@ var BaseViewIcon = class BaseViewIcon {
             });
         }
 
-        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        if (this._isDropTarget) {
+            Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+            Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
     }
@@ -1557,6 +1563,9 @@ var BaseViewIcon = class BaseViewIcon {
     }
 
     handleDragOver(source, actor, x, y, time) {
+        if (!this._isDropTarget)
+            return DND.DragMotionResult.NO_DROP;
+
         if (!this._canDropAt(source))
             return DND.DragMotionResult.NO_DROP;
 
@@ -1567,6 +1576,9 @@ var BaseViewIcon = class BaseViewIcon {
         source.actor.show();
 
         this._setHoveringByDnd(false);
+
+        if (!this._isDropTarget)
+            return false;
 
         if (!this._canDropAt(source))
             false;
@@ -2058,6 +2070,7 @@ var AppIcon = class AppIcon extends BaseViewIcon {
         this._scaleInId = 0;
 
         delete iconParams['isDraggable'];
+        delete iconParams['isDropTarget'];
         delete iconParams['hideWhileDragging'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);

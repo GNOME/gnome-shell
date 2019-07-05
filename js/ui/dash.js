@@ -476,7 +476,8 @@ var Dash = class Dash {
     _createAppItem(app) {
         let appIcon = new AppDisplay.AppIcon(app, null,
                                              { setSizeManually: true,
-                                               showLabel: false });
+                                               showLabel: false,
+                                               isDropTarget: false });
         if (appIcon._draggable) {
             appIcon._draggable.connect('drag-begin',
                                        () => {
