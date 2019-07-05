@@ -106,7 +106,7 @@ struct _StEntryPrivate
 
   gfloat        spacing;
 
-  gboolean      capslock_warning_shown;
+  gboolean      show_password;
   gboolean      has_ibeam;
 
   CoglPipeline *text_shadow_material;
@@ -213,46 +213,33 @@ st_entry_get_property (GObject    *gobject,
 }
 
 static void
-show_capslock_feedback (StEntry *entry)
+st_entry_hide_password (StEntry *entry)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
-  if (priv->secondary_icon == NULL)
-    {
-      ClutterActor *icon = g_object_new (ST_TYPE_ICON,
-                                         "style-class", "capslock-warning",
-                                         "icon-name", "dialog-warning-symbolic",
-                                         NULL);
+  clutter_text_set_password_char (CLUTTER_TEXT (priv->entry), 9679); /* 9679 unicode for BLACK CIRCLE */
 
-      st_entry_set_secondary_icon (entry, icon);
-      priv->capslock_warning_shown = TRUE;
-    }
+  //TODO: Design question, if no text is in the entry, hide the secondary icon?
+  ClutterActor *icon = g_object_new (ST_TYPE_ICON,
+                                     "style-class", "peek-password",
+                                     "icon-name", "eye-not-looking-symbolic",
+                                     NULL);
+
+  st_entry_set_secondary_icon (entry, icon);
+  priv->show_password = FALSE;
 }
 
 static void
-remove_capslock_feedback (StEntry *entry)
+st_entry_show_password (StEntry *entry)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
-  if (priv->capslock_warning_shown)
-    {
-      st_entry_set_secondary_icon (entry, NULL);
-      priv->capslock_warning_shown = FALSE;
-    }
-}
+  clutter_text_set_password_char (CLUTTER_TEXT (priv->entry), 0);
+  ClutterActor *icon = g_object_new (ST_TYPE_ICON,
+                                     "style-class", "peek-password",
+                                     "icon-name","eye-open-negative-filled-symbolic",
+                                     NULL);
 
-static void
-keymap_state_changed (ClutterKeymap *keymap,
-                      gpointer       user_data)
-{
-  StEntry *entry = ST_ENTRY (user_data);
-  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
-
-  if (clutter_text_get_password_char (CLUTTER_TEXT (priv->entry)) != 0)
-    {
-      if (clutter_keymap_get_caps_lock_state (keymap))
-        show_capslock_feedback (entry);
-      else
-        remove_capslock_feedback (entry);
-    }
+  st_entry_set_secondary_icon (entry, icon);
+  priv->show_password = TRUE;
 }
 
 static void
@@ -260,12 +247,8 @@ st_entry_dispose (GObject *object)
 {
   StEntry *entry = ST_ENTRY (object);
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
-  ClutterKeymap *keymap;
 
   cogl_clear_object (&priv->text_shadow_material);
-
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
-  g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
 
   G_OBJECT_CLASS (st_entry_parent_class)->dispose (object);
 }
@@ -564,14 +547,11 @@ clutter_text_focus_in_cb (ClutterText  *text,
                           ClutterActor *actor)
 {
   StEntry *entry = ST_ENTRY (actor);
-  ClutterKeymap *keymap;
 
   st_entry_update_hint_visibility (entry);
 
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
-  keymap_state_changed (keymap, entry);
-  g_signal_connect (keymap, "state-changed",
-                    G_CALLBACK (keymap_state_changed), entry);
+  if (st_entry_get_input_purpose (entry) == CLUTTER_INPUT_CONTENT_PURPOSE_PASSWORD)
+    st_entry_hide_password (entry);
 
   st_widget_add_style_pseudo_class (ST_WIDGET (actor), "focus");
   clutter_text_set_cursor_visible (text, TRUE);
@@ -582,29 +562,15 @@ clutter_text_focus_out_cb (ClutterText  *text,
                            ClutterActor *actor)
 {
   StEntry *entry = ST_ENTRY (actor);
-  ClutterKeymap *keymap;
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
 
   st_entry_update_hint_visibility (entry);
 
+  if (st_entry_get_input_purpose (entry) == CLUTTER_INPUT_CONTENT_PURPOSE_PASSWORD)
+    st_entry_hide_password (entry);
+
   clutter_text_set_cursor_visible (text, FALSE);
-  remove_capslock_feedback (entry);
-
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
-  g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
-}
-
-static void
-clutter_text_password_char_cb (GObject    *object,
-                               GParamSpec *pspec,
-                               gpointer    user_data)
-{
-  StEntry *entry = ST_ENTRY (user_data);
-  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
-
-  if (clutter_text_get_password_char (CLUTTER_TEXT (priv->entry)) == 0)
-    remove_capslock_feedback (entry);
 }
 
 static void
@@ -1044,9 +1010,6 @@ st_entry_init (StEntry *entry)
   g_signal_connect (priv->entry, "key-focus-out",
                     G_CALLBACK (clutter_text_focus_out_cb), entry);
 
-  g_signal_connect (priv->entry, "notify::password-char",
-                    G_CALLBACK (clutter_text_password_char_cb), entry);
-
   g_signal_connect (priv->entry, "button-press-event",
                     G_CALLBACK (clutter_text_button_press_event), entry);
 
@@ -1452,6 +1415,26 @@ st_entry_get_hint_actor (StEntry *entry)
 
   priv = ST_ENTRY_PRIV (entry);
   return priv->hint_actor;
+}
+
+/**
+ * st_entry_toggle_peek_password
+ * @entry: a #StEntry
+ *
+ * Toggles between show/hide password of the #StEntry.
+ */
+void
+st_entry_toggle_peek_password (StEntry *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+
+  g_return_if_fail (st_entry_get_input_purpose (entry) ==
+                    CLUTTER_INPUT_CONTENT_PURPOSE_PASSWORD);
+
+  if (priv->show_password)
+    st_entry_hide_password (entry);
+  else
+    st_entry_show_password (entry);
 }
 
 /******************************************************************************/

@@ -50,11 +50,17 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         if (v) {
             this._makePasswordItem();
             this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
+            this._iconClickedId = this._entry.connect('secondary-icon-clicked',
+                                                       this.toggle_password.bind(this));
         } else {
             this._passwordItem.destroy();
             this._passwordItem = null;
             this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
         }
+    }
+
+    toggle_password() {
+      this._entry.toggle_peek_password();
     }
 
     open(animate) {

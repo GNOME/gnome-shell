@@ -55,6 +55,8 @@ void            st_entry_set_input_purpose  (StEntry                    *entry,
 void            st_entry_set_input_hints    (StEntry                      *entry,
                                              ClutterInputContentHintFlags  hints);
 
+void            st_entry_toggle_peek_password (StEntry      *entry);
+
 ClutterInputContentPurpose     st_entry_get_input_purpose  (StEntry *entry);
 ClutterInputContentHintFlags   st_entry_get_input_hints    (StEntry *entry);
 
