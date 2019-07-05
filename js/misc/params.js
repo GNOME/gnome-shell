@@ -1,7 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
-
 // parse:
 // @params: caller-provided parameter object, or %null
 // @defaults-provided defaults object
@@ -23,7 +21,6 @@ function parse(params = {}, defaults, allowExtras) {
                 throw new Error(`Unrecognized parameter "${prop}"`);
     }
 
-    let defaultsCopy = {};
-    Lang.copyProperties(defaults, defaultsCopy);
+    let defaultsCopy = Object.assign({}, defaults);
     return Object.assign(defaultsCopy, params);
 }
