@@ -1424,6 +1424,9 @@ var FolderView = class FolderView extends BaseAppView {
             if (!app.get_app_info().should_show())
                 return;
 
+            if (apps.some(appIcon => appIcon.id == appId))
+                return;
+
             let icon = new AppIcon(app, this, { hideWhileDragging: true });
             apps.push(icon);
         };
