@@ -7,6 +7,8 @@
     <file>checkbox-off.svg</file>
     <file>checkbox.svg</file>
     <file>dash-placeholder.svg</file>
+    <file alias="icons/eye-open-negative-filled-symbolic.svg">eye-open-negative-filled-symbolic.svg</file>
+    <file alias="icons/eye-not-looking-symbolic.svg">eye-not-looking-symbolic.svg</file>
     <file>gnome-shell.css</file>
     <file>gnome-shell-high-contrast.css</file>
     <file>key-enter.svg</file>
