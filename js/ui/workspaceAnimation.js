@@ -95,7 +95,6 @@ var WorkspaceAnimation = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._controller = controller;
-        this._movingWindowBin = new Clutter.Actor();
         this._movingWindow = null;
         this._surroundings = {};
         this._progress = 0;
@@ -104,7 +103,6 @@ var WorkspaceAnimation = GObject.registerClass({
 
         this.add_actor(this._container);
         global.window_group.add_actor(this);
-        global.window_group.add_actor(this._movingWindowBin);
 
         let workspaceManager = global.workspace_manager;
         let curWs = workspaceManager.get_workspace_by_index(from);
@@ -137,18 +135,22 @@ var WorkspaceAnimation = GObject.registerClass({
             info.actor.set_position(x, y);
         }
 
-        this._movingWindowBin.raise_top();
-
         if (this._controller.movingWindow) {
             let actor = this._controller.movingWindow.get_compositor_private();
+            let container = new Clutter.Actor();
 
-            this._movingWindow = { window: actor,
+            this._movingWindow = { container: container,
+                                   window: actor,
                                    parent: actor.get_parent() };
 
-            actor.reparent(this._movingWindowBin);
+            actor.reparent(this._movingWindow.container);
             this._movingWindow.windowDestroyId = actor.connect('destroy', () => {
                 this._movingWindow = null;
             });
+
+            global.window_group.add_actor(container);
+
+            container.raise_top();
         }
     }
 
@@ -159,12 +161,12 @@ var WorkspaceAnimation = GObject.registerClass({
             let record = this._movingWindow;
             record.window.disconnect(record.windowDestroyId);
             record.window.reparent(record.parent);
+            record.container.destroy();
 
             this._movingWindow = null;
         }
 
         this._container.destroy();
-        this._movingWindowBin.destroy();
     }
 
     _getPositionForDirection(direction, fromWs, toWs) {
