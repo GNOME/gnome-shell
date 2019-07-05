@@ -345,6 +345,16 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
+// isSorted:
+// @array: an array of strings
+//
+// Checks if @array is sorted ascendently.
+// Returns true if it is.
+function isSorted(array, cmp) {
+    const limit = array.length - 1;
+    return array.every((value, position) => position === 0 || cmp(value, array[position - 1]) >= 0);
+}
+
 var CloseButton = GObject.registerClass(
 class CloseButton extends St.Button {
     _init(boxpointer) {
