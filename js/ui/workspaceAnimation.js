@@ -85,14 +85,12 @@ class WorkspaceGroup extends Clutter.Actor {
 var WorkspaceAnimation = class {
     constructor(controller, from, to, direction) {
         this._controller = controller;
-        this._movingWindowBin = new Clutter.Actor();
         this._movingWindow = null;
         this._surroundings = {};
         this._progress = 0;
 
         this._container = new Clutter.Actor();
 
-        global.window_group.add_actor(this._movingWindowBin);
         global.window_group.add_actor(this._container);
 
         let workspaceManager = global.workspace_manager;
@@ -126,18 +124,22 @@ var WorkspaceAnimation = class {
             info.actor.set_position(x, y);
         }
 
-        this._movingWindowBin.raise_top();
-
         if (this._controller.movingWindow) {
             let actor = this._controller.movingWindow.get_compositor_private();
+            let container = new Clutter.Actor();
 
-            this._movingWindow = { window: actor,
+            this._movingWindow = { container: container,
+                                   window: actor,
                                    parent: actor.get_parent() };
 
-            actor.reparent(this._movingWindowBin);
+            actor.reparent(this._movingWindow.container);
             this._movingWindow.windowDestroyId = actor.connect('destroy', () => {
                 this._movingWindow = null;
             });
+
+            global.window_group.add_actor(container);
+
+            container.raise_top();
         }
     }
 
@@ -146,12 +148,12 @@ var WorkspaceAnimation = class {
             let record = this._movingWindow;
             record.window.disconnect(record.windowDestroyId);
             record.window.reparent(record.parent);
+            record.container.destroy();
 
             this._movingWindow = null;
         }
 
         this._container.destroy();
-        this._movingWindowBin.destroy();
     }
 
     _getPositionForDirection(direction, fromWs, toWs) {
