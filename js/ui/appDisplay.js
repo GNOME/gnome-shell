@@ -862,7 +862,7 @@ var AllView = class AllView extends BaseAppView {
         if (index == -1)
             return false;
 
-        if (source.parentView != this) {
+        if ((source instanceof AppIcon) && source.parentView != this) {
             source.parentView.folderIcon.removeApp(source.app);
             source = this._items[source.id];
         }
@@ -1459,35 +1459,213 @@ var FolderView = class FolderView extends BaseAppView {
     }
 };
 
-var FolderIcon = class FolderIcon {
+var BaseViewIcon = class BaseViewIcon {
+    constructor(params, buttonParams) {
+        buttonParams = Params.parse(buttonParams, { reactive: true,
+                                                    can_focus: true,
+                                                    x_fill: true,
+                                                    y_fill: true }, true);
+
+        this.actor = new St.Button(buttonParams);
+        this.actor._delegate = this;
+
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        params = Params.parse(params, { isDraggable: true,
+                                        hideWhileDragging: false }, true);
+        let isDraggable = params['isDraggable'];
+        let hideWhileDragging = params['hideWhileDragging'];
+
+        this._hasDndHover = false;
+
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable.connect('drag-begin', () => {
+                this._dragging = true;
+                if (hideWhileDragging)
+                    this.actor.hide();
+                Main.overview.beginItemDrag(this);
+            });
+            this._draggable.connect('drag-cancelled', () => {
+                this._dragging = false;
+                Main.overview.cancelledItemDrag(this);
+            });
+            this._draggable.connect('drag-end', (source, time, success) => {
+                this._dragging = false;
+                if (!success && hideWhileDragging)
+                    this.actor.show();
+                Main.overview.endItemDrag(this);
+            });
+        }
+
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._stateChangedId > 0)
+            this.app.disconnect(this._stateChangedId);
+        if (this._draggable && this._dragging) {
+            Main.overview.endItemDrag(this);
+            this.draggable = null;
+        }
+        this._stateChangedId = 0;
+        this._removeMenuTimeout();
+    }
+
+    _createIcon(iconSize) {
+        throw new GObject.NotImplementedError('createIcon in %s'.format(this.constructor.name));
+    }
+
+    _canDropAt(source) {
+        return false;
+    }
+
+    // Should be overriden by subclasses
+    _setHoveringByDnd(isHovering) {
+        if (isHovering)
+            this.actor.add_style_pseudo_class('drop');
+        else
+            this.actor.remove_style_pseudo_class('drop');
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        let target = dragEvent.targetActor;
+        let hoveringActor = target == this.actor || this.actor.contains(target);
+        let canDrop = this._canDropAt(dragEvent.source);
+        let hasDndHover = hoveringActor && canDrop;
+
+        if (this._hasDndHover != hasDndHover) {
+            this._setHoveringByDnd(hasDndHover);
+            this._hasDndHover = hasDndHover;
+        }
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        this.actor.remove_style_pseudo_class('drop');
+        DND.removeDragMonitor(this._dragMonitor);
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        source.actor.show();
+
+        this._setHoveringByDnd(false);
+
+        if (!this._canDropAt(source))
+            false;
+
+        return true;
+    }
+
+    getDragActor() {
+        let iconParams = { createIcon: this._createIcon.bind(this),
+                           showLabel: (this._icon.label != null),
+                           setSizeManually: false };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+
+        let bin = new St.Bin({ style_class: this.actor.style_class });
+        bin.set_child(icon);
+
+        return bin;
+    }
+
+    getDragActorSource() {
+        return this._icon.icon;
+    }
+
+    _scaleIn() {
+        this.actor.scale_x = 0;
+        this.actor.scale_y = 0;
+        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
+
+        Tweener.addTween(this.actor, {
+            scale_x: 1,
+            scale_y: 1,
+            time: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            transition: (t, b, c, d) => {
+                // Similar to easeOutElastic, but less aggressive.
+                t /= d;
+                let p = 0.5;
+                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
+            }
+        });
+    }
+
+    _unscheduleScaleIn() {
+        if (this._scaleInId != 0) {
+            this.actor.disconnect(this._scaleInId);
+            this._scaleInId = 0;
+        }
+    }
+
+    scheduleScaleIn() {
+        if (this._scaleInId != 0)
+            return;
+
+        if (this.actor.mapped) {
+            this._scaleIn();
+        } else {
+            this._scaleInId = this.actor.connect('notify::mapped', () => {
+                this._unscheduleScaleIn();
+                this._scaleIn();
+            })
+        }
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get icon() {
+        return this._icon;
+    }
+}
+
+var FolderIcon = class FolderIcon extends BaseViewIcon {
     constructor(id, path, parentView) {
-        this.id = id;
-        this.name = '';
+        super({ hideWhileDragging: true },
+              { style_class: 'app-well-app app-folder',
+                toggle_mode: true });
+
+        this._id = id;
+        this._name = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path: path });
-        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
-                                     button_mask: St.ButtonMask.ONE,
-                                     toggle_mode: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
-        this.actor._delegate = this;
+
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this),
-                                                setSizeManually: true });
+        this._icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this),
+                                                 setSizeManually: true });
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView(this, this._folder);
-
-        Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
 
         this.actor.connect('clicked', () => {
             this._ensurePopup();
@@ -1531,31 +1709,20 @@ var FolderIcon = class FolderIcon {
     }
 
     _onDragBegin() {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
-        };
-        DND.addDragMonitor(this._dragMonitor);
-
+        super._onDragBegin();
         this._parentView.inhibitEventBlocker();
     }
 
-    _onDragMotion(dragEvent) {
-        let target = dragEvent.targetActor;
-
-        if (!this.actor.contains(target) || !this._canDropAt(dragEvent.source))  {
-            this.actor.remove_style_pseudo_class('drop');
+    _setHoveringByDnd(isHovering) {
+        if (!isHovering)
             this._unscheduleOpenPopup();
-        } else {
-            this.actor.add_style_pseudo_class('drop');
-        }
 
-        return DND.DragMotionResult.CONTINUE;
+        super._setHoveringByDnd(isHovering);
     }
 
     _onDragEnd() {
-        this.actor.remove_style_pseudo_class('drop');
+        super._onDragEnd();
         this._parentView.uninhibitEventBlocker();
-        DND.removeDragMonitor(this._dragMonitor);
     }
 
     _canDropAt(source) {
@@ -1600,11 +1767,11 @@ var FolderIcon = class FolderIcon {
 
     _updateName() {
         let name = _getFolderName(this._folder);
-        if (this.name == name)
+        if (this._name == name)
             return;
 
-        this.name = name;
-        this.icon.label.text = this.name;
+        this._name = name;
+        this.icon.label.text = name;
         this.emit('name-changed');
     }
 
@@ -1864,19 +2031,14 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = class AppIcon {
+var AppIcon = class AppIcon extends BaseViewIcon {
     constructor(app, parentView, iconParams = {}) {
+        super(iconParams, { style_class: 'app-well-app',
+                            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO, });
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
+        this._id = app.get_id();
+        this._name = app.get_name();
         this._parentView = parentView;
-
-        this.actor = new St.Button({ style_class: 'app-well-app',
-                                     reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
@@ -1893,18 +2055,12 @@ var AppIcon = class AppIcon {
         this.actor._delegate = this;
         this._scaleInId = 0;
 
-        // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true,
-                                                       hideWhileDragging: false, }, true);
-        let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
-
-        let hideWhileDragging = appIconParams['hideWhileDragging'];
         delete iconParams['hideWhileDragging'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
-        this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
+        this._icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
         this.actor.label_actor = this.icon.label;
@@ -1918,28 +2074,8 @@ var AppIcon = class AppIcon {
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this.actor);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                if (hideWhileDragging)
-                    this.actor.hide();
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', (source, time, success) => {
-                this._dragging = false;
-                if (!success && hideWhileDragging)
-                    this.actor.show();
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        if (this._draggable)
+            this._draggable.connect('drag-begin', this._removeMenuTimeout.bind(this));
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
@@ -1949,12 +2085,10 @@ var AppIcon = class AppIcon {
     }
 
     _onDestroy() {
+        super._onDestroy();
+
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
-        if (this._draggable && this._dragging) {
-            Main.overview.endItemDrag(this);
-            this.draggable = null;
-        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
     }
@@ -2097,66 +2231,11 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
-    _scaleIn() {
-        this.actor.scale_x = 0;
-        this.actor.scale_y = 0;
-        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
-
-        Tweener.addTween(this.actor, {
-            scale_x: 1,
-            scale_y: 1,
-            time: APP_ICON_SCALE_IN_TIME,
-            delay: APP_ICON_SCALE_IN_DELAY,
-            transition: (t, b, c, d) => {
-                // Similar to easeOutElastic, but less aggressive.
-                t /= d;
-                let p = 0.5;
-                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
-            }
-        });
-    }
-
-    _unscheduleScaleIn() {
-        if (this._scaleInId != 0) {
-            this.actor.disconnect(this._scaleInId);
-            this._scaleInId = 0;
-        }
-    }
-
-    scheduleScaleIn() {
-        if (this._scaleInId != 0)
-            return;
-
-        if (this.actor.mapped) {
-            this._scaleIn();
-        } else {
-            this._scaleInId = this.actor.connect('notify::mapped', () => {
-                this._unscheduleScaleIn();
-                this._scaleIn();
-            })
-        }
-    }
-
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
         this.app.open_new_window(params.workspace);
-    }
-
-    getDragActor() {
-        let iconParams = { createIcon: this._createIcon.bind(this),
-                           showLabel: (this.icon.label != null),
-                           setSizeManually: false };
-
-        let icon = new IconGrid.BaseIcon(this.name, iconParams);
-        return icon;
-    }
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
-    getDragActorSource() {
-        return this.icon.icon;
     }
 
     shouldShowTooltip() {
