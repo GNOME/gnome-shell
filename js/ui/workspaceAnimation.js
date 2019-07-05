@@ -101,7 +101,6 @@ const WorkspaceAnimation = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._controller = controller;
-        this._movingWindowBin = new Clutter.Actor();
         this._movingWindow = null;
         this._surroundings = {};
         this._progress = 0;
@@ -110,7 +109,6 @@ const WorkspaceAnimation = GObject.registerClass({
 
         this.add_actor(this._container);
         global.window_group.add_actor(this);
-        global.window_group.add_actor(this._movingWindowBin);
 
         let workspaceManager = global.workspace_manager;
         let curWs = workspaceManager.get_workspace_by_index(from);
@@ -145,21 +143,24 @@ const WorkspaceAnimation = GObject.registerClass({
             info.actor.set_position(x, y);
         }
 
-        global.window_group.set_child_above_sibling(this._movingWindowBin, null);
-
         if (this._controller.movingWindow) {
             let actor = this._controller.movingWindow.get_compositor_private();
+            let container = new Clutter.Actor();
 
             this._movingWindow = {
+                container,
                 window: actor,
                 parent: actor.get_parent(),
             };
 
             this._movingWindow.parent.remove_child(actor);
-            this._movingWindowBin.add_child(actor);
+            this._movingWindow.container.add_child(actor);
             this._movingWindow.windowDestroyId = actor.connect('destroy', () => {
                 this._movingWindow = null;
             });
+
+            global.window_group.add_actor(container);
+            global.window_group.set_child_above_sibling(container, null);
         }
     }
 
@@ -169,11 +170,10 @@ const WorkspaceAnimation = GObject.registerClass({
             record.window.disconnect(record.windowDestroyId);
             record.window.get_parent().remove_child(record.window);
             record.parent.add_child(record.window);
+            record.container.destroy();
 
             this._movingWindow = null;
         }
-
-        this._movingWindowBin.destroy();
     }
 
     _getPositionForDirection(direction, fromWs, toWs) {
