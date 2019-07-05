@@ -1367,6 +1367,7 @@ var FolderView = class FolderView extends BaseAppView {
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
         this.actor.add_actor(scrollableContainer);
+        this.actor._delegate = this;
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
@@ -1454,13 +1455,28 @@ var FolderView = class FolderView extends BaseAppView {
         [x, y] = this._transformToGridCoordinates(x, y);
 
         let [index, dragLocation] = this.canDropAt(x, y);
-        let sourceIndex = this._allItems.indexOf(source);
         let success = index != -1;
 
         source.undoScaleAndFade();
 
-        if (success)
-            this.moveItem(source, index);
+        if (success) {
+            // If we're dragging from another folder, remove from the old folder
+            if (source.view != this &&
+                (source instanceof AppIcon) &&
+                (source.view instanceof FolderView)) {
+                source.view.removeApp(source.app);
+            }
+
+            // If the new app icon is not in this folder yet, add it; otherwise,
+            // just move the icon to the new position
+            let folderApps = this._folder.get_strv('apps');
+            if (!folderApps.includes(source.id)) {
+                folderApps.splice(index, 0, source.id);
+                this._folder.set_strv('apps', folderApps);
+            } else {
+                this.moveItem(source, index);
+            }
+        }
 
         this.removeNudges();
         return success;
