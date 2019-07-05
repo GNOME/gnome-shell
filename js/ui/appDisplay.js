@@ -897,7 +897,8 @@ var AllView = class AllView extends BaseAppView {
         if (index == -1)
             return false;
 
-        if (source.view instanceof FolderView) {
+        if ((source instanceof AppIcon) &&
+            (source.view instanceof FolderView)) {
             source.view.removeApp(source.app);
             source = this._items[source.id];
 
@@ -1476,37 +1477,243 @@ var FolderView = class FolderView extends BaseAppView {
     }
 };
 
-var FolderIcon = class FolderIcon {
+var BaseViewIcon = class BaseViewIcon {
+    constructor(params, buttonParams) {
+        buttonParams = Params.parse(buttonParams, {
+            pivot_point: new Clutter.Point({x: 0.5, y: 0.5}),
+            reactive: true,
+            can_focus: true,
+            x_fill: true,
+            y_fill: true
+        }, true);
+
+        this.actor = new St.Button(buttonParams);
+        this.actor._delegate = this;
+
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        params = Params.parse(params, {
+            isDraggable: true,
+            hideWhileDragging: false
+        }, true);
+        let isDraggable = params['isDraggable'];
+        delete params['isDraggable'];
+
+        this._hasDndHover = false;
+
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable.connect('drag-begin', () => {
+                this._dragging = true;
+                this.scaleAndFade();
+                Main.overview.beginItemDrag(this);
+            });
+            this._draggable.connect('drag-cancelled', () => {
+                this._dragging = false;
+                Main.overview.cancelledItemDrag(this);
+            });
+            this._draggable.connect('drag-end', () => {
+                this._dragging = false;
+                this.undoScaleAndFade();
+                Main.overview.endItemDrag(this);
+            });
+        }
+
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._draggable && this._dragging) {
+            Main.overview.endItemDrag(this);
+            this.draggable = null;
+        }
+    }
+
+    _createIcon(iconSize) {
+        throw new GObject.NotImplementedError(`_createIcon in ${this.constructor.name}`);
+    }
+
+    _canDropAt(source) {
+        return false;
+    }
+
+    // Should be overriden by subclasses
+    _setHoveringByDnd(isHovering) {
+        if (isHovering)
+            this.actor.add_style_pseudo_class('drop');
+        else
+            this.actor.remove_style_pseudo_class('drop');
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        let target = dragEvent.targetActor;
+        let hoveringActor = target == this.actor || this.actor.contains(target);
+        let canDrop = this._canDropAt(dragEvent.source);
+        let hasDndHover = hoveringActor && canDrop;
+
+        if (this._hasDndHover != hasDndHover) {
+            this._setHoveringByDnd(hasDndHover);
+            this._hasDndHover = hasDndHover;
+        }
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        this.actor.remove_style_pseudo_class('drop');
+        DND.removeDragMonitor(this._dragMonitor);
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (source == this)
+            return DND.DragMotionResult.NO_DROP;
+
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        source.undoScaleAndFade();
+
+        this._setHoveringByDnd(false);
+
+        if (!this._canDropAt(source))
+            return false;
+
+        return true;
+    }
+
+    getDragActor() {
+        let iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: (this._icon.label != null),
+            setSizeManually: true
+        };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.setIconSize(this.icon.iconSize);
+
+        let bin = new St.Bin({ style_class: this.actor.style_class });
+        bin.set_child(icon);
+
+        return bin;
+    }
+
+    getDragActorSource() {
+        return this._icon.icon;
+    }
+
+    _scaleIn() {
+        this.actor.scale_x = 0;
+        this.actor.scale_y = 0;
+        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
+
+        Tweener.addTween(this.actor, {
+            scale_x: 1,
+            scale_y: 1,
+            time: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            transition: (t, b, c, d) => {
+                // Similar to easeOutElastic, but less aggressive.
+                t /= d;
+                let p = 0.5;
+                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
+            }
+        });
+    }
+
+    _unscheduleScaleIn() {
+        if (this._scaleInId != 0) {
+            this.actor.disconnect(this._scaleInId);
+            this._scaleInId = 0;
+        }
+    }
+
+    scheduleScaleIn() {
+        if (this._scaleInId != 0)
+            return;
+
+        if (this.actor.mapped) {
+            this._scaleIn();
+        } else {
+            this._scaleInId = this.actor.connect('notify::mapped', () => {
+                this._unscheduleScaleIn();
+                this._scaleIn();
+            })
+        }
+    }
+
+    scaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = false;
+        this.actor.scale_x = 0.75;
+        this.actor.scale_y = 0.75;
+        this.actor.opacity = 128;
+        this.actor.restore_easing_state();
+    }
+
+    undoScaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = true;
+        this.actor.scale_x = 1.0;
+        this.actor.scale_y = 1.0;
+        this.actor.opacity = 255;
+        this.actor.restore_easing_state();
+    }
+
+    get icon() {
+        return this._icon;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get view() {
+        return this._view;
+    }
+}
+
+var FolderIcon = class FolderIcon extends BaseViewIcon {
     constructor(id, path, parentView) {
-        this.id = id;
-        this.name = '';
-        this._parentView = parentView;
+        super({ hideWhileDragging: true }, {
+            style_class: 'app-well-app app-folder',
+            toggle_mode: true
+        });
+
+        this._id = id;
+        this._name = '';
+        this._view = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path: path });
-        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
-                                     button_mask: St.ButtonMask.ONE,
-                                     toggle_mode: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
-        this.actor._delegate = this;
+
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        this.icon = new IconGrid.BaseIcon('', {
+        this._icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
             setSizeManually: true
         });
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this.view = new FolderView(this._folder, parentView);
-
-        Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
+        this._folderView = new FolderView(this._folder, parentView);
 
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
@@ -1520,10 +1727,10 @@ var FolderIcon = class FolderIcon {
     }
 
     onDestroy() {
-        this.view.actor.destroy();
+        this._folderView.actor.destroy();
 
         if (this._spaceReadySignalId) {
-            this._parentView.disconnect(this._spaceReadySignalId);
+            this.view.disconnect(this._spaceReadySignalId);
             this._spaceReadySignalId = 0;
         }
 
@@ -1533,38 +1740,22 @@ var FolderIcon = class FolderIcon {
 
     open() {
         this._ensurePopup();
-        this.view.actor.vscroll.adjustment.value = 0;
+        this._folderView.actor.vscroll.adjustment.value = 0;
         this._openSpaceForPopup();
     }
 
     getAppIds() {
-        return this.view.getAllItems().map(item => item.id);
+        return this._folderView.getAllItems().map(item => item.id);
     }
 
     _onDragBegin() {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
-        };
-        DND.addDragMonitor(this._dragMonitor);
-
-        this._parentView.inhibitEventBlocker();
-    }
-
-    _onDragMotion(dragEvent) {
-        let target = dragEvent.targetActor;
-
-        if (!this.actor.contains(target) || !this._canDropAt(dragEvent.source))
-            this.actor.remove_style_pseudo_class('drop');
-        else
-            this.actor.add_style_pseudo_class('drop');
-
-        return DND.DragMotionResult.CONTINUE;
+        super._onDragBegin();
+        this.view.inhibitEventBlocker();
     }
 
     _onDragEnd() {
-        this.actor.remove_style_pseudo_class('drop');
-        this._parentView.uninhibitEventBlocker();
-        DND.removeDragMonitor(this._dragMonitor);
+        super._onDragEnd();
+        this.view.uninhibitEventBlocker();
     }
 
     _canDropAt(source) {
@@ -1604,57 +1795,57 @@ var FolderIcon = class FolderIcon {
 
     _updateName() {
         let name = _getFolderName(this._folder);
-        if (this.name == name)
+        if (this._name == name)
             return;
 
-        this.name = name;
-        this.icon.label.text = this.name;
+        this._name = name;
+        this.icon.label.text = name;
         this.emit('name-changed');
     }
 
     _redisplay() {
         this._updateName();
-        this.actor.visible = this.view.getAllItems().length > 0;
+        this.actor.visible = this._folderView.getAllItems().length > 0;
         this.icon.update();
         this.emit('apps-changed');
     }
 
     _createIcon(iconSize) {
-        return this.view.createFolderIcon(iconSize, this);
+        return this._folderView.createFolderIcon(iconSize, this);
     }
 
     _popupHeight() {
-        let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
+        let usedHeight = this._folderView.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
         return usedHeight;
     }
 
     _openSpaceForPopup() {
-        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(this._spaceReadySignalId);
+        this._spaceReadySignalId = this.view.connect('space-ready', () => {
+            this.view.disconnect(this._spaceReadySignalId);
             this._spaceReadySignalId = 0;
             this._popup.popup();
             this._updatePopupPosition();
         });
-        this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
+        this.view.openSpaceForPopup(this, this._boxPointerArrowside, this._folderView.nRowsDisplayedAtOnce());
     }
 
     _calculateBoxPointerArrowSide() {
-        let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
+        let spaceTop = this.actor.y - this.view.getCurrentPageY();
+        let spaceBottom = this.view.actor.height - (spaceTop + this.actor.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
     }
 
     _updatePopupSize() {
         // StWidget delays style calculation until needed, make sure we use the correct values
-        this.view._grid.ensure_style();
+        this._folderView._grid.ensure_style();
 
         let offsetForEachSide = Math.ceil((this._popup.getOffset(St.Side.TOP) +
                                            this._popup.getOffset(St.Side.BOTTOM) -
                                            this._popup.getCloseButtonOverlap()) / 2);
         // Add extra padding to prevent boxpointer decorations and close button being cut off
-        this.view.setPaddingOffsets(offsetForEachSide);
-        this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
+        this._folderView.setPaddingOffsets(offsetForEachSide);
+        this._folderView.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
     }
 
     _updatePopupPosition() {
@@ -1673,7 +1864,7 @@ var FolderIcon = class FolderIcon {
         this._boxPointerArrowside = this._calculateBoxPointerArrowSide();
         if (!this._popup) {
             this._popup = new AppFolderPopup(this, this._boxPointerArrowside);
-            this._parentView.addFolderPopup(this._popup);
+            this.view.addFolderPopup(this._popup);
             this._popup.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
                     this.actor.checked = false;
@@ -1690,7 +1881,7 @@ var FolderIcon = class FolderIcon {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
         if (this._popup)
-            this.view.adaptToSize(width, height);
+            this._folderView.adaptToSize(width, height);
         this._popupInvalidated = true;
     }
 };
@@ -1699,7 +1890,7 @@ Signals.addSignalMethods(FolderIcon.prototype);
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
         this._source = source;
-        this._view = source.view;
+        this._view = source._folderView;
         this._arrowSide = side;
 
         this._isOpen = false;
@@ -1861,20 +2052,16 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = class AppIcon {
-    constructor(app, view, iconParams = {}) {
+var AppIcon = class AppIcon extends BaseViewIcon {
+    constructor(app, parentView, iconParams = {}) {
+        super(iconParams, {
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            style_class: 'app-well-app'
+        });
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
-        this._view = view;
-
-        this.actor = new St.Button({ style_class: 'app-well-app',
-                                     pivot_point: new Clutter.Point({x: 0.5, y: 0.5}),
-                                     reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
+        this._id = app.get_id();
+        this._name = app.get_name();
+        this._view = parentView;
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
@@ -1891,14 +2078,11 @@ var AppIcon = class AppIcon {
         this.actor._delegate = this;
         this._scaleInId = 0;
 
-        // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
-        let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
-        this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
+        this._icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
         this.actor.label_actor = this.icon.label;
@@ -1912,26 +2096,8 @@ var AppIcon = class AppIcon {
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this.actor);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                this.scaleAndFade();
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', () => {
-                this._dragging = false;
-                this.undoScaleAndFade();
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        if (this._draggable)
+            this._draggable.connect('drag-begin', this._removeMenuTimeout.bind(this));
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
@@ -1941,12 +2107,10 @@ var AppIcon = class AppIcon {
     }
 
     _onDestroy() {
+        super._onDestroy();
+
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
-        if (this._draggable && this._dragging) {
-            Main.overview.endItemDrag(this);
-            this.draggable = null;
-        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
     }
@@ -2089,46 +2253,6 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
-    _scaleIn() {
-        this.actor.scale_x = 0;
-        this.actor.scale_y = 0;
-        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
-
-        Tweener.addTween(this.actor, {
-            scale_x: 1,
-            scale_y: 1,
-            time: APP_ICON_SCALE_IN_TIME,
-            delay: APP_ICON_SCALE_IN_DELAY,
-            transition: (t, b, c, d) => {
-                // Similar to easeOutElastic, but less aggressive.
-                t /= d;
-                let p = 0.5;
-                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
-            }
-        });
-    }
-
-    _unscheduleScaleIn() {
-        if (this._scaleInId != 0) {
-            this.actor.disconnect(this._scaleInId);
-            this._scaleInId = 0;
-        }
-    }
-
-    scheduleScaleIn() {
-        if (this._scaleInId != 0)
-            return;
-
-        if (this.actor.mapped) {
-            this._scaleIn();
-        } else {
-            this._scaleInId = this.actor.connect('notify::mapped', () => {
-                this._unscheduleScaleIn();
-                this._scaleIn();
-            })
-        }
-    }
-
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
@@ -2136,45 +2260,8 @@ var AppIcon = class AppIcon {
         this.app.open_new_window(params.workspace);
     }
 
-    getDragActor() {
-        let iconParams = { createIcon: this._createIcon.bind(this),
-                           showLabel: (this.icon.label != null),
-                           setSizeManually: true };
-        let icon = new IconGrid.BaseIcon(this.name, iconParams);
-        icon.setIconSize(this.icon.iconSize);
-        return icon;
-    }
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
-    getDragActorSource() {
-        return this.icon.icon;
-    }
-
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
-    }
-
-    scaleAndFade() {
-        this.actor.save_easing_state();
-        this.actor.reactive = false;
-        this.actor.scale_x = 0.75;
-        this.actor.scale_y = 0.75;
-        this.actor.opacity = 128;
-        this.actor.restore_easing_state();
-    }
-
-    undoScaleAndFade() {
-        this.actor.save_easing_state();
-        this.actor.reactive = true;
-        this.actor.scale_x = 1.0;
-        this.actor.scale_y = 1.0;
-        this.actor.opacity = 255;
-        this.actor.restore_easing_state();
-    }
-
-    get view() {
-        return this._view;
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);
