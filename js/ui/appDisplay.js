@@ -1740,7 +1740,8 @@ var FolderIcon = class FolderIcon extends BaseViewIcon {
     }
 
     handleDragOver(source, actor, x, y, time) {
-        this._scheduleOpenPopup();
+        if (!(source instanceof FolderIcon))
+            this._scheduleOpenPopup();
 
         if (!this._canDropAt(source))
             return DND.DragMotionResult.NO_DROP;
