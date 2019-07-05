@@ -1343,19 +1343,36 @@ var FolderView = class FolderView extends BaseAppView {
         [x, y] = this._transformToGridCoordinates(x, y);
 
         let [index, dragLocation] = this.canDropAt(x, y);
-        let sourceIndex = this._allItems.indexOf(source);
         let success = index != -1;
 
         // AppIcon hides itself, show it again
         source.actor.show();
 
-        // When moving to a position forward, the index will be misadjusted by
-        // one, because the original actor is hidden. Adjust it back.
-        if (sourceIndex != -1 && index > sourceIndex)
-            index++;
+        if (success) {
+            // If we're dragging from another folder, remove from the old folder
+            if (source.parentView != this &&
+                (source instanceof AppIcon) &&
+                (source.parentView instanceof FolderView)) {
+                source.parentView._folderIcon.removeApp(source.app);
+            }
 
-        if (success)
-            this.moveItem(source, index);
+            // If the new app icon is not in this folder yet, add it; otherwise,
+            // just move the icon to the new position
+            let folderApps = this._folder.get_strv('apps');
+            if (!folderApps.includes(source.id)) {
+                folderApps.splice(index, 0, source.id);
+                this._folder.set_strv('apps', folderApps);
+            } else {
+                let sourceIndex = this._allItems.indexOf(source);
+
+                // When moving to a position forward, the index will be misadjusted by
+                // one, because the original actor is hidden. Adjust it back.
+                if (sourceIndex != -1 && index > sourceIndex)
+                    index++;
+
+                this.moveItem(source, index);
+            }
+        }
 
         this.removeNudges();
         return success;
