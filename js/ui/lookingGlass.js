@@ -14,6 +14,8 @@ const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 const JsParse = imports.misc.jsParse;
 
+const { ExtensionState } = ExtensionUtils;
+
 const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
@@ -688,16 +690,16 @@ var Extensions = class Extensions {
 
     _stateToString(extensionState) {
         switch (extensionState) {
-        case ExtensionSystem.ExtensionState.ENABLED:
+        case ExtensionState.ENABLED:
             return _("Enabled");
-        case ExtensionSystem.ExtensionState.DISABLED:
-        case ExtensionSystem.ExtensionState.INITIALIZED:
+        case ExtensionState.DISABLED:
+        case ExtensionState.INITIALIZED:
             return _("Disabled");
-        case ExtensionSystem.ExtensionState.ERROR:
+        case ExtensionState.ERROR:
             return _("Error");
-        case ExtensionSystem.ExtensionState.OUT_OF_DATE:
+        case ExtensionState.OUT_OF_DATE:
             return _("Out of date");
-        case ExtensionSystem.ExtensionState.DOWNLOADING:
+        case ExtensionState.DOWNLOADING:
             return _("Downloading");
         }
         return 'Unknown'; // Not translated, shouldn't appear
