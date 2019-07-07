@@ -255,7 +255,7 @@ var GnomeShellExtensions = class {
 
     ListExtensions() {
         let out = {};
-        for (let uuid in ExtensionUtils.extensions) {
+        for (let uuid in Main.extensionManager.extensions) {
             let dbusObj = this.GetExtensionInfo(uuid);
             out[uuid] = dbusObj;
         }
@@ -263,12 +263,12 @@ var GnomeShellExtensions = class {
     }
 
     GetExtensionInfo(uuid) {
-        let extension = ExtensionUtils.extensions[uuid] || {};
+        let extension = Main.extensionManager.extensions[uuid] || {};
         return ExtensionUtils.serializeExtension(extension);
     }
 
     GetExtensionErrors(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = Main.extensionManager.extensions[uuid];
         if (!extension)
             return [];
 
@@ -304,7 +304,7 @@ var GnomeShellExtensions = class {
     }
 
     ReloadExtension(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = Main.extensionManager.extensions[uuid];
         if (!extension)
             return;
 

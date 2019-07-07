@@ -624,7 +624,7 @@ var Extensions = class Extensions {
         this._extensionsList.add(this._noExtensions);
         this.actor.add(this._extensionsList);
 
-        for (let uuid in ExtensionUtils.extensions)
+        for (let uuid in Main.extensionManager.extensions)
             this._loadExtension(null, uuid);
 
         Main.extensionManager.connect('extension-loaded',
@@ -632,7 +632,7 @@ var Extensions = class Extensions {
     }
 
     _loadExtension(o, uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = Main.extensionManager.extensions[uuid];
         // There can be cases where we create dummy extension metadata
         // that's not really a proper extension. Don't bother with these.
         if (!extension.metadata.name)
