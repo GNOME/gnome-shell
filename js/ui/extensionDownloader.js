@@ -44,7 +44,7 @@ function installExtension(uuid, invocation) {
 }
 
 function uninstallExtension(uuid) {
-    let extension = Main.extensionManager.extensions[uuid];
+    let extension = Main.extensionManager.lookup(uuid);
     if (!extension)
         return false;
 
@@ -113,7 +113,7 @@ function updateExtension(uuid) {
 
     _httpSession.queue_message(message, (session, message) => {
         gotExtensionZipFile(session, message, uuid, newExtensionTmpDir, () => {
-            let oldExtension = Main.extensionManager.extensions[uuid];
+            let oldExtension = Main.extensionManager.lookup(uuid);
             let extensionDir = oldExtension.dir;
 
             if (!Main.extensionManager.unloadExtension(oldExtension))
@@ -151,9 +151,9 @@ function updateExtension(uuid) {
 
 function checkForUpdates() {
     let metadatas = {};
-    for (let uuid in Main.extensionManager.extensions) {
+    Main.extensionManager.getUuids().forEach(uuid => {
         metadatas[uuid] = Main.extensionManager.extensions[uuid].metadata;
-    }
+    });
 
     let params = { shell_version: Config.PACKAGE_VERSION,
                    installed: JSON.stringify(metadatas) };
