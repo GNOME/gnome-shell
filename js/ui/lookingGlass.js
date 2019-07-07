@@ -624,15 +624,16 @@ var Extensions = class Extensions {
         this._extensionsList.add(this._noExtensions);
         this.actor.add(this._extensionsList);
 
-        for (let uuid in Main.extensionManager.extensions)
+        Main.extensionManager.getUuids().forEach(uuid => {
             this._loadExtension(null, uuid);
+        });
 
         Main.extensionManager.connect('extension-loaded',
                                       this._loadExtension.bind(this));
     }
 
     _loadExtension(o, uuid) {
-        let extension = Main.extensionManager.extensions[uuid];
+        let extension = Main.extensionManager.lookup(uuid);
         // There can be cases where we create dummy extension metadata
         // that's not really a proper extension. Don't bother with these.
         if (!extension.metadata.name)
