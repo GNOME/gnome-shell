@@ -7,10 +7,8 @@ const { Gio, GLib } = imports.gi;
 
 const Gettext = imports.gettext;
 const Lang = imports.lang;
-const Signals = imports.signals;
 
 const Config = imports.misc.config;
-const FileUtils = imports.misc.fileUtils;
 
 var ExtensionType = {
     SYSTEM: 1,
@@ -31,9 +29,6 @@ var ExtensionState = {
 };
 
 const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'canChange'];
-
-// Maps uuid -> metadata object
-var extensions = {};
 
 /**
  * getCurrentExtension:
@@ -65,13 +60,17 @@ function getCurrentExtension() {
     if (!match)
         return null;
 
+    // local import, as the module is used from outside the gnome-shell process
+    // as well (not this function though)
+    let extensionManager = imports.ui.main.extensionManager;
+
     let path = match[1];
     let file = Gio.File.new_for_path(path);
 
     // Walk up the directory tree, looking for an extension with
     // the same UUID as a directory name.
     while (file != null) {
-        let extension = extensions[file.get_basename()];
+        let extension = extensionManager.extensions[file.get_basename()];
         if (extension !== undefined)
             return extension;
         file = file.get_parent();
@@ -177,55 +176,6 @@ function isOutOfDate(extension) {
     return false;
 }
 
-function createExtensionObject(uuid, dir, type) {
-    let metadataFile = dir.get_child('metadata.json');
-    if (!metadataFile.query_exists(null)) {
-        throw new Error('Missing metadata.json');
-    }
-
-    let metadataContents, success, tag;
-    try {
-        [success, metadataContents, tag] = metadataFile.load_contents(null);
-        if (metadataContents instanceof Uint8Array)
-            metadataContents = imports.byteArray.toString(metadataContents);
-    } catch (e) {
-        throw new Error(`Failed to load metadata.json: ${e}`);
-    }
-    let meta;
-    try {
-        meta = JSON.parse(metadataContents);
-    } catch (e) {
-        throw new Error(`Failed to parse metadata.json: ${e}`);
-    }
-
-    let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
-    for (let i = 0; i < requiredProperties.length; i++) {
-        let prop = requiredProperties[i];
-        if (!meta[prop]) {
-            throw new Error(`missing "${prop}" property in metadata.json`);
-        }
-    }
-
-    if (uuid != meta.uuid) {
-        throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
-    }
-
-    let extension = {};
-
-    extension.metadata = meta;
-    extension.uuid = meta.uuid;
-    extension.type = type;
-    extension.dir = dir;
-    extension.path = dir.get_path();
-    extension.error = '';
-    extension.hasPrefs = dir.get_child('prefs.js').query_exists(null);
-    extension.canChange = false;
-
-    extensions[uuid] = extension;
-
-    return extension;
-}
-
 function serializeExtension(extension) {
     let obj = {};
     Lang.copyProperties(extension.metadata, obj);
@@ -280,36 +230,3 @@ function installImporter(extension) {
     extension.imports = imports[extension.uuid];
     imports.searchPath = oldSearchPath;
 }
-
-var ExtensionFinder = class {
-    _loadExtension(extensionDir, info, perUserDir) {
-        let fileType = info.get_file_type();
-        if (fileType != Gio.FileType.DIRECTORY)
-            return;
-        let uuid = info.get_name();
-        let existing = extensions[uuid];
-        if (existing) {
-            log('Extension %s already installed in %s. %s will not be loaded'.format(uuid, existing.path, extensionDir.get_path()));
-            return;
-        }
-
-        let extension;
-        let type = extensionDir.has_prefix(perUserDir) ? ExtensionType.PER_USER
-                                                       : ExtensionType.SYSTEM;
-        try {
-            extension = createExtensionObject(uuid, extensionDir, type);
-        } catch (e) {
-            logError(e, 'Could not load extension %s'.format(uuid));
-            return;
-        }
-        this.emit('extension-found', extension);
-    }
-
-    scanExtensions() {
-        let perUserDir = Gio.File.new_for_path(global.userdatadir);
-        FileUtils.collectFromDatadirs('extensions', true, (dir, info) => {
-            this._loadExtension(dir, info, perUserDir);
-        });
-    }
-};
-Signals.addSignalMethods(ExtensionFinder.prototype);
