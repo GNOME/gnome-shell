@@ -70,7 +70,7 @@ function getCurrentExtension() {
     // Walk up the directory tree, looking for an extension with
     // the same UUID as a directory name.
     while (file != null) {
-        let extension = extensionManager.extensions[file.get_basename()];
+        let extension = extensionManager.lookup(file.get_basename());
         if (extension !== undefined)
             return extension;
         file = file.get_parent();
