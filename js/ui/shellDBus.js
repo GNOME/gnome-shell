@@ -255,20 +255,20 @@ var GnomeShellExtensions = class {
 
     ListExtensions() {
         let out = {};
-        for (let uuid in Main.extensionManager.extensions) {
+        Main.extensionManager.getUuids().forEach(uuid => {
             let dbusObj = this.GetExtensionInfo(uuid);
             out[uuid] = dbusObj;
-        }
+        });
         return out;
     }
 
     GetExtensionInfo(uuid) {
-        let extension = Main.extensionManager.extensions[uuid] || {};
+        let extension = Main.extensionManager.lookup(uuid) || {};
         return ExtensionUtils.serializeExtension(extension);
     }
 
     GetExtensionErrors(uuid) {
-        let extension = Main.extensionManager.extensions[uuid];
+        let extension = Main.extensionManager.lookup(uuid);
         if (!extension)
             return [];
 
@@ -304,7 +304,7 @@ var GnomeShellExtensions = class {
     }
 
     ReloadExtension(uuid) {
-        let extension = Main.extensionManager.extensions[uuid];
+        let extension = Main.extensionManager.lookup(uuid);
         if (!extension)
             return;
 
