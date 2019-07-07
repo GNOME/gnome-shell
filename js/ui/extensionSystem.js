@@ -4,9 +4,10 @@ const { Gio, St } = imports.gi;
 const Signals = imports.signals;
 
 const ExtensionUtils = imports.misc.extensionUtils;
+const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 
-const { ExtensionState } = ExtensionUtils;
+const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
@@ -17,15 +18,23 @@ var ExtensionManager = class {
         this._initted = false;
         this._enabled = false;
 
+        this._extensions = {};
         this._enabledExtensions = [];
         this._extensionOrder = [];
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+    }
+
+    init() {
         this._sessionUpdated();
     }
 
+    get extensions() {
+        return this._extensions;
+    }
+
     _callExtensionDisable(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = this._extensions[uuid];
         if (!extension)
             return;
 
@@ -47,7 +56,7 @@ var ExtensionManager = class {
         for (let i = 0; i < orderReversed.length; i++) {
             let uuid = orderReversed[i];
             try {
-                ExtensionUtils.extensions[uuid].stateObj.disable();
+                this._extensions[uuid].stateObj.disable();
             } catch (e) {
                 this.logExtensionError(uuid, e);
             }
@@ -68,7 +77,7 @@ var ExtensionManager = class {
         for (let i = 0; i < order.length; i++) {
             let uuid = order[i];
             try {
-                ExtensionUtils.extensions[uuid].stateObj.enable();
+                this._extensions[uuid].stateObj.enable();
             } catch (e) {
                 this.logExtensionError(uuid, e);
             }
@@ -83,7 +92,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = this._extensions[uuid];
         if (!extension)
             return;
 
@@ -127,7 +136,7 @@ var ExtensionManager = class {
     }
 
     enableExtension(uuid) {
-        if (!ExtensionUtils.extensions[uuid])
+        if (!this._extensions[uuid])
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
@@ -140,7 +149,7 @@ var ExtensionManager = class {
     }
 
     disableExtension(uuid) {
-        if (!ExtensionUtils.extensions[uuid])
+        if (!this._extensions[uuid])
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
@@ -153,7 +162,7 @@ var ExtensionManager = class {
     }
 
     logExtensionError(uuid, error) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = this._extensions[uuid];
         if (!extension)
             return;
 
@@ -167,6 +176,54 @@ var ExtensionManager = class {
 
         log('Extension "%s" had error: %s'.format(uuid, message));
         this.emit('extension-state-changed', extension);
+    }
+
+    createExtensionObject(uuid, dir, type) {
+        let metadataFile = dir.get_child('metadata.json');
+        if (!metadataFile.query_exists(null)) {
+            throw new Error('Missing metadata.json');
+        }
+
+        let metadataContents, success;
+        try {
+            [success, metadataContents] = metadataFile.load_contents(null);
+            if (metadataContents instanceof Uint8Array)
+                metadataContents = imports.byteArray.toString(metadataContents);
+        } catch (e) {
+            throw new Error(`Failed to load metadata.json: ${e}`);
+        }
+        let meta;
+        try {
+            meta = JSON.parse(metadataContents);
+        } catch (e) {
+            throw new Error(`Failed to parse metadata.json: ${e}`);
+        }
+
+        let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
+        for (let i = 0; i < requiredProperties.length; i++) {
+            let prop = requiredProperties[i];
+            if (!meta[prop]) {
+                throw new Error(`missing "${prop}" property in metadata.json`);
+            }
+        }
+
+        if (uuid != meta.uuid) {
+            throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
+        }
+
+        let extension = {
+            metadata: meta,
+            uuid: meta.uuid,
+            type,
+            dir,
+            path: dir.get_path(),
+            error: '',
+            hasPrefs: dir.get_child('prefs.js').query_exists(null),
+            canChange: false
+        };
+        this._extensions[uuid] = extension;
+
+        return extension;
     }
 
     loadExtension(extension) {
@@ -202,7 +259,7 @@ var ExtensionManager = class {
         extension.state = ExtensionState.UNINSTALLED;
         this.emit('extension-state-changed', extension);
 
-        delete ExtensionUtils.extensions[extension.uuid];
+        delete this._extensions[extension.uuid];
         return true;
     }
 
@@ -217,7 +274,7 @@ var ExtensionManager = class {
         // Now, recreate the extension and load it.
         let newExtension;
         try {
-            newExtension = ExtensionUtils.createExtensionObject(uuid, dir, type);
+            newExtension = this.createExtensionObject(uuid, dir, type);
         } catch (e) {
             this.logExtensionError(uuid, e);
             return;
@@ -227,7 +284,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
-        let extension = ExtensionUtils.extensions[uuid];
+        let extension = this._extensions[uuid];
         let dir = extension.dir;
 
         if (!extension)
@@ -328,7 +385,7 @@ var ExtensionManager = class {
     }
 
     _onSettingsWritableChanged() {
-        for (let uuid in ExtensionUtils.extensions) {
+        for (let uuid in this._extensions) {
             let extension = ExtensionUtils.extensions[uuid];
             this._updateCanChange(extension);
             this.emit('extension-state-changed', extension);
@@ -340,8 +397,8 @@ var ExtensionManager = class {
         // extensions when allowed by the sessionMode, so
         // temporarily disable them all
         this._enabledExtensions = [];
-        for (let uuid in ExtensionUtils.extensions)
-            this.reloadExtension(ExtensionUtils.extensions[uuid]);
+        for (let uuid in this._extensions)
+            this.reloadExtension(this._extensions[uuid]);
         this._enabledExtensions = this._getEnabledExtensions();
 
         if (Main.sessionMode.allowExtensions) {
@@ -363,11 +420,30 @@ var ExtensionManager = class {
 
         this._enabledExtensions = this._getEnabledExtensions();
 
-        let finder = new ExtensionUtils.ExtensionFinder();
-        finder.connect('extension-found', (finder, extension) => {
+        let perUserDir = Gio.File.new_for_path(global.userdatadir);
+        FileUtils.collectFromDatadirs('extensions', true, (dir, info) => {
+            let fileType = info.get_file_type();
+            if (fileType != Gio.FileType.DIRECTORY)
+                return;
+            let uuid = info.get_name();
+            let existing = this._extensions[uuid];
+            if (existing) {
+                log(`Extension ${uuid} already installed in ${existing.path}. ${dir.get_path()} will not be loaded`);
+                return;
+            }
+
+            let extension;
+            let type = dir.has_prefix(perUserDir)
+                ? ExtensionType.PER_USER
+                : ExtensionType.SYSTEM;
+            try {
+                extension = this.createExtensionObject(uuid, dir, type);
+            } catch (e) {
+                logError(e, `Could not load extension ${uuid}`);
+                return;
+            }
             this.loadExtension(extension);
         });
-        finder.scanExtensions();
     }
 
     _enableAllExtensions() {
