@@ -44,7 +44,7 @@ function installExtension(uuid, invocation) {
 }
 
 function uninstallExtension(uuid) {
-    let extension = ExtensionUtils.extensions[uuid];
+    let extension = Main.extensionManager.extensions[uuid];
     if (!extension)
         return false;
 
@@ -113,7 +113,7 @@ function updateExtension(uuid) {
 
     _httpSession.queue_message(message, (session, message) => {
         gotExtensionZipFile(session, message, uuid, newExtensionTmpDir, () => {
-            let oldExtension = ExtensionUtils.extensions[uuid];
+            let oldExtension = Main.extensionManager.extensions[uuid];
             let extensionDir = oldExtension.dir;
 
             if (!Main.extensionManager.unloadExtension(oldExtension))
@@ -125,7 +125,7 @@ function updateExtension(uuid) {
             let extension = null;
 
             try {
-                extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
+                extension = Main.extensionManager.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
                 Main.extensionManager.loadExtension(extension);
             } catch (e) {
                 if (extension)
@@ -151,8 +151,8 @@ function updateExtension(uuid) {
 
 function checkForUpdates() {
     let metadatas = {};
-    for (let uuid in ExtensionUtils.extensions) {
-        metadatas[uuid] = ExtensionUtils.extensions[uuid].metadata;
+    for (let uuid in Main.extensionManager.extensions) {
+        metadatas[uuid] = Main.extensionManager.extensions[uuid].metadata;
     }
 
     let params = { shell_version: Config.PACKAGE_VERSION,
@@ -225,7 +225,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
 
         function callback() {
             try {
-                let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
+                let extension = Main.extensionManager.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 Main.extensionManager.loadExtension(extension);
                 if (!Main.extensionManager.enableExtension(uuid))
                     throw new Error(`Cannot add ${uuid} to enabled extensions gsettings key`);
