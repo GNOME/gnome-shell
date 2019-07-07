@@ -18,7 +18,7 @@ var ExtensionManager = class {
         this._initted = false;
         this._enabled = false;
 
-        this._extensions = {};
+        this._extensions = new Map();
         this._enabledExtensions = [];
         this._extensionOrder = [];
 
@@ -29,12 +29,16 @@ var ExtensionManager = class {
         this._sessionUpdated();
     }
 
-    get extensions() {
-        return this._extensions;
+    lookup(uuid) {
+        return this._extensions.get(uuid);
+    }
+
+    getUuids() {
+        return [...this._extensions.keys()];
     }
 
     _callExtensionDisable(uuid) {
-        let extension = this._extensions[uuid];
+        let extension = this.lookup(uuid);
         if (!extension)
             return;
 
@@ -56,7 +60,7 @@ var ExtensionManager = class {
         for (let i = 0; i < orderReversed.length; i++) {
             let uuid = orderReversed[i];
             try {
-                this._extensions[uuid].stateObj.disable();
+                this.lookup(uuid).stateObj.disable();
             } catch (e) {
                 this.logExtensionError(uuid, e);
             }
@@ -77,7 +81,7 @@ var ExtensionManager = class {
         for (let i = 0; i < order.length; i++) {
             let uuid = order[i];
             try {
-                this._extensions[uuid].stateObj.enable();
+                this.lookup(uuid).stateObj.enable();
             } catch (e) {
                 this.logExtensionError(uuid, e);
             }
@@ -92,7 +96,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
-        let extension = this._extensions[uuid];
+        let extension = this.lookup(uuid);
         if (!extension)
             return;
 
@@ -136,7 +140,7 @@ var ExtensionManager = class {
     }
 
     enableExtension(uuid) {
-        if (!this._extensions[uuid])
+        if (!this._extensions.has(uuid))
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
@@ -149,7 +153,7 @@ var ExtensionManager = class {
     }
 
     disableExtension(uuid) {
-        if (!this._extensions[uuid])
+        if (!this._extensions.has(uuid))
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
@@ -162,7 +166,7 @@ var ExtensionManager = class {
     }
 
     logExtensionError(uuid, error) {
-        let extension = this._extensions[uuid];
+        let extension = this.lookup(uuid);
         if (!extension)
             return;
 
@@ -221,7 +225,7 @@ var ExtensionManager = class {
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
             canChange: false
         };
-        this._extensions[uuid] = extension;
+        this._extensions.set(uuid, extension);
 
         return extension;
     }
@@ -259,7 +263,7 @@ var ExtensionManager = class {
         extension.state = ExtensionState.UNINSTALLED;
         this.emit('extension-state-changed', extension);
 
-        delete this._extensions[extension.uuid];
+        this._extensions.delete(extension.uuid);
         return true;
     }
 
@@ -284,7 +288,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
-        let extension = this._extensions[uuid];
+        let extension = this.lookup(uuid);
         let dir = extension.dir;
 
         if (!extension)
@@ -385,8 +389,7 @@ var ExtensionManager = class {
     }
 
     _onSettingsWritableChanged() {
-        for (let uuid in this._extensions) {
-            let extension = ExtensionUtils.extensions[uuid];
+        for (let extension of this._extensions.values()) {
             this._updateCanChange(extension);
             this.emit('extension-state-changed', extension);
         }
@@ -397,8 +400,11 @@ var ExtensionManager = class {
         // extensions when allowed by the sessionMode, so
         // temporarily disable them all
         this._enabledExtensions = [];
-        for (let uuid in this._extensions)
-            this.reloadExtension(this._extensions[uuid]);
+
+        // The loop modifies the extensions map, so iterate over a copy
+        let extensions = [...this._extensions.values()];
+        for (let extension of extensions)
+            this.reloadExtension(extension);
         this._enabledExtensions = this._getEnabledExtensions();
 
         if (Main.sessionMode.allowExtensions) {
@@ -426,7 +432,7 @@ var ExtensionManager = class {
             if (fileType != Gio.FileType.DIRECTORY)
                 return;
             let uuid = info.get_name();
-            let existing = this._extensions[uuid];
+            let existing = this.lookup(uuid);
             if (existing) {
                 log(`Extension ${uuid} already installed in ${existing.path}. ${dir.get_path()} will not be loaded`);
                 return;
