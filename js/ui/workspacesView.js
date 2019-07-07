@@ -81,31 +81,12 @@ class WorkspacesView extends WorkspacesViewBase {
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
-        this._animatingScroll = false; // programmatically updating the adjustment
-
-        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
-        this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                    lower: 0,
-                                                    page_increment: 1,
-                                                    page_size: 1,
-                                                    step_increment: 0,
-                                                    upper: workspaceManager.n_workspaces });
-        this.scrollAdjustment.connect('notify::value',
-                                      this._onScroll.bind(this));
 
         this._workspaces = [];
         this._updateWorkspaces();
         this._updateWorkspacesId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._updateWorkspaces.bind(this));
-        this._reorderWorkspacesId =
-            workspaceManager.connect('workspaces-reordered', () => {
-                this._workspaces.sort((a, b) => {
-                    return a.metaWorkspace.index() - b.metaWorkspace.index();
-                });
-                this._updateWorkspaceActors(false);
-            });
-
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
@@ -113,9 +94,6 @@ class WorkspacesView extends WorkspacesViewBase {
                               this._fullGeometry.width, this._fullGeometry.height);
             });
 
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          this._activeWorkspaceChanged.bind(this));
     }
 
     _setReservedSlot(window) {
@@ -146,7 +124,7 @@ class WorkspacesView extends WorkspacesViewBase {
             else
                 this._workspaces[w].fadeToOverview();
         }
-        this._updateWorkspaceActors(false);
+        this.updateWorkspaceActors(false);
     }
 
     animateFromOverview(animationType) {
@@ -166,16 +144,12 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     _scrollToActive() {
-        let workspaceManager = global.workspace_manager;
-        let active = workspaceManager.get_active_workspace_index();
-
-        this._updateWorkspaceActors(true);
-        this._updateScrollAdjustment(active);
+        this.updateWorkspaceActors(true);
     }
 
     // Update workspace actors parameters
     // @showAnimation: iff %true, transition between states
-    _updateWorkspaceActors(showAnimation) {
+    updateWorkspaceActors(showAnimation) {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
 
@@ -235,24 +209,9 @@ class WorkspacesView extends WorkspacesViewBase {
         }
     }
 
-    _updateScrollAdjustment(index) {
-        if (this._scrolling || this._gestureActive)
-            return;
-
-        this._animatingScroll = true;
-
-        this.scrollAdjustment.ease(index, {
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: WORKSPACE_SWITCH_TIME,
-            onComplete: () => (this._animatingScroll = false)
-        });
-    }
-
     _updateWorkspaces() {
         let workspaceManager = global.workspace_manager;
         let newNumWorkspaces = workspaceManager.n_workspaces;
-
-        this.scrollAdjustment.upper = newNumWorkspaces;
 
         for (let j = 0; j < newNumWorkspaces; j++) {
             let metaWorkspace = workspaceManager.get_workspace_by_index(j);
@@ -273,29 +232,19 @@ class WorkspacesView extends WorkspacesViewBase {
         }
 
         if (this._fullGeometry) {
-            this._updateWorkspaceActors(false);
+            this.updateWorkspaceActors(false);
             this._syncFullGeometry();
         }
         if (this._actualGeometry)
             this._syncActualGeometry();
     }
 
-    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
-        if (this._scrolling)
-            return;
-
-        this._scrollToActive();
-    }
-
     _onDestroy() {
         super._onDestroy();
 
-        this.scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShownId);
-        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
-        workspaceManager.disconnect(this._reorderWorkspacesId);
     }
 
     startSwipeScroll() {
@@ -306,7 +255,6 @@ class WorkspacesView extends WorkspacesViewBase {
         this._scrolling = false;
 
         // Make sure title captions etc are shown as necessary
-        this._scrollToActive();
         this._updateVisibility();
     }
 
@@ -318,16 +266,12 @@ class WorkspacesView extends WorkspacesViewBase {
         this._gestureActive = false;
 
         // Make sure title captions etc are shown as necessary
-        this._scrollToActive();
         this._updateVisibility();
     }
 
     // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
-    _onScroll(adj) {
-        if (this._animatingScroll)
-            return;
-
+    onScroll(adj) {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
         let current = Math.round(adj.value);
@@ -381,6 +325,13 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
     }
+
+    workspacesReordered() {
+        this._workspaces.sort((a, b) => {
+            return a.metaWorkspace.index() - b.metaWorkspace.index();
+        });
+        this.updateWorkspaceActors(false);
+    }
 });
 
 var ExtraWorkspaceView = GObject.registerClass(
@@ -425,6 +376,9 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         this._workspace.syncStacking(stackIndices);
     }
 
+    updateWorkspaceActors(_showAnimation) {
+    }
+
     startSwipeScroll() {
     }
 
@@ -436,6 +390,12 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 
     endTouchGesture() {
     }
+
+    onScroll(_adj) {
+    }
+
+    workspacesReordered() {
+    }
 });
 
 var WorkspacesDisplay = GObject.registerClass(
@@ -443,6 +403,27 @@ class WorkspacesDisplay extends St.Widget {
     _init() {
         super._init({ clip_to_allocation: true });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
+
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                     lower: 0,
+                                                     page_increment: 1,
+                                                     page_size: 1,
+                                                     step_increment: 0,
+                                                     upper: workspaceManager.n_workspaces });
+
+        this._updateWorkspaces();
+        workspaceManager.connect('notify::n-workspaces',
+                                 this._updateWorkspaces.bind(this));
+        this._scrollAdjustment.connect('notify::value',
+                                       this._scrollValueChanged.bind(this));
+
+        global.window_manager.connect('switch-workspace',
+                                      this._activeWorkspaceChanged.bind(this));
+
+        workspaceManager.connect('workspaces-reordered',
+                                 this._workspacesReordered.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -509,6 +490,10 @@ class WorkspacesDisplay extends St.Widget {
 
         this._fullGeometry = null;
 
+        this._scrolling = false; // swipe-scrolling
+        this._gestureActive = false; // touch(pad) gestures
+        this._animatingScroll = false; // programmatically updating the adjustment
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -526,6 +511,52 @@ class WorkspacesDisplay extends St.Widget {
         }
     }
 
+    _updateWorkspaces() {
+        let workspaceManager = global.workspace_manager;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
+
+        this._scrollAdjustment.upper = newNumWorkspaces;
+    }
+
+    _workspacesReordered() {
+        let workspaceManager = global.workspace_manager;
+
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].workspacesReordered();
+
+        this._scrollAdjustment.value = workspaceManager.get_active_workspace_index();
+    }
+
+    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
+        if (this._scrolling)
+            return;
+
+        this._scrollToActive();
+    }
+
+    _scrollToActive() {
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
+
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].updateWorkspaceActors(true);
+
+        this._updateScrollAdjustment(active);
+    }
+
+    _updateScrollAdjustment(index) {
+        if (this._scrolling || this._gestureActive)
+            return;
+
+        this._animatingScroll = true;
+
+        this._scrollAdjustment.ease(index, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: WORKSPACE_SWITCH_TIME,
+            onComplete: () => (this._animatingScroll = false)
+        });
+    }
+
     _onPan(action) {
         let [dist_, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
@@ -541,21 +572,27 @@ class WorkspacesDisplay extends St.Widget {
     _startSwipeScroll() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startSwipeScroll();
+        this._scrolling = true;
     }
 
     _endSwipeScroll() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].endSwipeScroll();
+        this._scrolling = false;
+        this._scrollToActive();
     }
 
     _startTouchGesture() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startTouchGesture();
+        this._gestureActive = true;
     }
 
     _endTouchGesture() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].endTouchGesture();
+        this._gestureActive = false;
+        this._scrollToActive();
     }
 
     _onSwitchWorkspaceMotion(action, xRel, yRel) {
@@ -662,11 +699,6 @@ class WorkspacesDisplay extends St.Widget {
                 view = new WorkspacesView(i);
 
             view.connect('scroll-event', this._onScrollEvent.bind(this));
-            if (i == this._primaryIndex) {
-                this._scrollAdjustment = view.scrollAdjustment;
-                this._scrollAdjustment.connect('notify::value',
-                                               this._scrollValueChanged.bind(this));
-            }
 
             // HACK: Avoid spurious allocation changes while updating views
             view.hide();
@@ -682,18 +714,11 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _scrollValueChanged() {
-        for (let i = 0; i < this._workspacesViews.length; i++) {
-            if (i == this._primaryIndex)
-                continue;
+        if (this._animatingScroll)
+            return;
 
-            let adjustment = this._workspacesViews[i].scrollAdjustment;
-            if (!adjustment)
-                continue;
-
-            // the adjustments work in terms of workspaces, so the
-            // values map directly
-            adjustment.value = this._scrollAdjustment.value;
-        }
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].onScroll(this._scrollAdjustment);
     }
 
     _getMonitorIndexForEvent(event) {
