@@ -4,8 +4,8 @@ const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
+const SwipeTracker = imports.ui.swipeTracker;
 const Tweener = imports.ui.tweener;
-const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 
 var WORKSPACE_SWITCH_TIME = 0.25;
@@ -82,7 +82,6 @@ var WorkspacesView = class extends WorkspacesViewBase {
         super(monitorIndex);
 
         this._animating = false; // tweening
-        this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
 
         this._workspaces = [];
@@ -158,7 +157,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
 
-        this.updateWorkspaceActors(true);
+        this.updateWorkspaceActors(!this._gestureActive);
     }
 
     // Update workspace actors parameters
@@ -179,7 +178,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
             if (showAnimation) {
                 let params = { y: y,
                                time: WORKSPACE_SWITCH_TIME,
-                               transition: 'easeOutQuad'
+                               transition: 'easeOutCubic'
                              };
                 // we have to call _updateVisibility() once before the
                 // animation and once afterwards - it does not really
@@ -206,7 +205,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            if (this._animating || this._scrolling || this._gestureActive) {
+            if (this._animating || this._gestureActive) {
                 workspace.actor.show();
             } else {
                 if (this._inDrag)
@@ -254,17 +253,6 @@ var WorkspacesView = class extends WorkspacesViewBase {
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
         workspaceManager.disconnect(this._reorderWorkspacesId);
-    }
-
-    startSwipeScroll() {
-        this._scrolling = true;
-    }
-
-    endSwipeScroll() {
-        this._scrolling = false;
-
-        // Make sure title captions etc are shown as necessary
-        this._updateVisibility();
     }
 
     startTouchGesture() {
@@ -364,12 +352,6 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
     updateWorkspaceActors(showAnimation) {
     }
 
-    startSwipeScroll() {
-    }
-
-    endSwipeScroll() {
-    }
-
     startTouchGesture() {
     }
 
@@ -417,50 +399,22 @@ var WorkspacesDisplay = class {
         });
         Main.overview.addAction(clickAction);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-
-        let panAction = new Clutter.PanAction({ trigger_edge: Clutter.TriggerEdge.AFTER });
-        panAction.connect('pan', this._onPan.bind(this));
-        panAction.connect('gesture-begin', () => {
-            if (this._workspacesOnlyOnPrimary) {
-                let event = Clutter.get_current_event();
-                if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
-                    return false;
-            }
-
-            this._startSwipeScroll();
-            return true;
-        });
-        panAction.connect('gesture-cancel', () => {
-            clickAction.release();
-            this._endSwipeScroll();
-        });
-        panAction.connect('gesture-end', () => {
-            clickAction.release();
-            this._endSwipeScroll();
-        });
-        Main.overview.addAction(panAction);
-        this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this._clickAction = clickAction;
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
-        let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
-        switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
-        switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
-        switchGesture.connect('cancel', this._endTouchGesture.bind(this));
-        Main.overview.addAction(switchGesture);
-        this.actor.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-
-        switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
-        switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
-        switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
-        switchGesture.connect('cancel', this._endTouchGesture.bind(this));
+        let swipeTracker = new SwipeTracker.SwipeTracker(Main.overview, allowedModes);
+        swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
+        swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
+        swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
+        swipeTracker.connect('cancel', this._switchWorkspaceCancel.bind(this));
         this.actor.connect('notify::mapped', () => {
-            switchGesture.enabled = this.actor.mapped;
+            swipeTracker.enabled = this.actor.mapped;
         });
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._workspacesViews = [];
-        switchGesture.enabled = this.actor.mapped;
+        swipeTracker.enabled = this.actor.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
@@ -474,13 +428,12 @@ var WorkspacesDisplay = class {
 
         this._fullGeometry = null;
 
-        this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
         this._animatingScroll = false; // programmatically updating the adjustment
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
-        if (this._scrolling)
+        if (this._gestureActive)
             return;
 
         this._scrollToActive();
@@ -497,7 +450,7 @@ var WorkspacesDisplay = class {
     }
 
     _updateScrollAdjustment(index) {
-        if (this._scrolling || this._gestureActive)
+        if (this._gestureActive)
             return;
 
         this._animatingScroll = true;
@@ -505,37 +458,97 @@ var WorkspacesDisplay = class {
         Tweener.addTween(this._scrollAdjustment, {
             value: index,
             time: WORKSPACE_SWITCH_TIME,
-            transition: 'easeOutQuad',
+            transition: 'easeOutCubic',
             onComplete: () => {
                 this._animatingScroll = false;
             }
         });
     }
 
-    _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
-        let adjustment = this._scrollAdjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
-        return false;
-    }
+    _switchWorkspaceBegin(tracker, monitor) {
+        if (this._workspacesOnlyOnPrimary && monitor != this._primaryIndex)
+            return;
 
-    _startSwipeScroll() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].startSwipeScroll();
-        this._scrolling = true;
-    }
+        if (this._gestureActive) {
+            let workspaceManager = global.workspace_manager;
+            let active = workspaceManager.get_active_workspace_index();
+            let adjustment = this._scrollAdjustment;
 
-    _endSwipeScroll() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].endSwipeScroll();
-        this._scrolling = false;
-        this._scrollToActive();
-    }
+            Tweener.removeTweens(adjustment);
 
-    _startTouchGesture() {
+            let progress = adjustment.value / adjustment.page_size - active;
+            tracker.continueSwipe(progress);
+            return;
+        }
+
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startTouchGesture();
+
+        let workspaceManager = global.workspace_manager;
+        let activeWs = workspaceManager.get_active_workspace();
+
+        let canSwipeBack = (activeWs.get_neighbor(Meta.MotionDirection.DOWN) != activeWs);
+        let canSwipeForward = (activeWs.get_neighbor(Meta.MotionDirection.UP) != activeWs);
+        tracker.confirmSwipe(canSwipeBack, canSwipeForward, this.actor.height, 0, 0);
+
         this._gestureActive = true;
+    }
+
+    _switchWorkspaceUpdate(tracker, progress) {
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
+        let adjustment = this._scrollAdjustment;
+        adjustment.value = (active + progress) * adjustment.page_size;
+    }
+
+    _switchWorkspaceEnd(tracker, duration, isBack) {
+        this._clickAction.release();
+
+        let direction = isBack ? Meta.MotionDirection.DOWN : Meta.MotionDirection.UP;
+
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
+        let newWs = activeWorkspace.get_neighbor(direction);
+
+        if (newWs == activeWorkspace) {
+            // FIXME: throw an error
+            log('this should never happen')
+        } else {
+            let active = workspaceManager.get_active_workspace_index();
+            Tweener.addTween(this._scrollAdjustment,
+                             { value: active + (isBack ? 1 : -1),
+                               time: duration,
+                               transition: 'easeOutCubic',
+                               onComplete: this._switchWorkspaceActivate,
+                               onCompleteScope: this,
+                               onCompleteParams: [newWs]
+                             });
+        }
+    }
+
+    _switchWorkspaceCancel(tracker, duration) {
+        this._clickAction.release();
+
+        if (duration == 0) {
+            this._endTouchGesture();
+            return;
+        }
+
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
+        Tweener.addTween(this._scrollAdjustment,
+                         { value: active,
+                           time: duration,
+                           transition: 'easeOutCubic',
+                           onComplete: this._endTouchGesture,
+                           onCompleteScope: this
+                         });
+    }
+
+    _switchWorkspaceActivate(newWs) {
+        newWs.activate(global.get_current_time());
+
+        this._endTouchGesture();
     }
 
     _endTouchGesture() {
@@ -564,6 +577,12 @@ var WorkspacesDisplay = class {
             newWs.activate(global.get_current_time());
 
         this._endTouchGesture();
+    }
+
+    _endTouchGesture() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].endTouchGesture();
+        this._gestureActive = false;
     }
 
     navigateFocus(from, direction) {
@@ -642,8 +661,6 @@ var WorkspacesDisplay = class {
                 view = new ExtraWorkspaceView(i);
             else
                 view = new WorkspacesView(i);
-
-            view.actor.connect('scroll-event', this._onScrollEvent.bind(this));
 
             // HACK: Avoid spurious allocation changes while updating views
             view.actor.hide();
@@ -748,6 +765,9 @@ var WorkspacesDisplay = class {
     }
 
     _onScrollEvent(actor, event) {
+        if (event.get_scroll_source() == Clutter.ScrollSource.FINGER || event.get_source_device().get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE) // TODO: remove this and handle it in SwipeTracker too
+            return Clutter.EVENT_PROPAGATE;
+
         if (!this.actor.mapped)
             return Clutter.EVENT_PROPAGATE;
 
