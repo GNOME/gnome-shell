@@ -397,10 +397,23 @@ var ControlsManager = class {
         this._dashSpacer = new DashSpacer();
         this._dashSpacer.setDashActor(this._dashSlider.actor);
 
-        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+
+        this._workspaceAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                        lower: 0,
+                                                        page_increment: 1,
+                                                        page_size: 1,
+                                                        step_increment: 0,
+                                                        upper: workspaceManager.n_workspaces });
+        this._updateWorkspaces();
+        workspaceManager.connect('notify::n-workspaces',
+                                 this._updateWorkspaces.bind(this));
+
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
-        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
+        this.viewSelector = new ViewSelector.ViewSelector(searchEntry, this._workspaceAdjustment,
                                                           this.dash.showAppsButton);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
@@ -434,6 +447,13 @@ var ControlsManager = class {
         Main.overview.connect('item-drag-cancelled', () => {
             this.viewSelector.fadeIn();
         });
+    }
+
+    _updateWorkspaces() {
+        let workspaceManager = global.workspace_manager;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
+
+        this._workspaceAdjustment.upper = newNumWorkspaces;
     }
 
     _updateWorkspacesGeometry() {
