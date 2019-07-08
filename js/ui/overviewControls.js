@@ -436,11 +436,28 @@ class ControlsManager extends St.Widget {
         this._dashSpacer = new DashSpacer();
         this._dashSpacer.setDashActor(this._dashSlider);
 
-        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+
+        this._workspaceAdjustment = new St.Adjustment({
+            value: activeWorkspaceIndex,
+            lower: 0,
+            page_increment: 1,
+            page_size: 1,
+            step_increment: 0,
+            upper: workspaceManager.n_workspaces,
+        });
+
+        this._nWorkspacesNotifyId =
+            workspaceManager.connect('notify::n-workspaces',
+                this._updateAdjustment.bind(this));
+
+        this._thumbnailsBox =
+            new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
         this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
-                                                          this.dash.showAppsButton);
+            this._workspaceAdjustment, this.dash.showAppsButton);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
@@ -457,6 +474,24 @@ class ControlsManager extends St.Widget {
         layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
 
         Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        global.workspace_manager.disconnect(this._nWorkspacesNotifyId);
+    }
+
+    _updateAdjustment() {
+        let workspaceManager = global.workspace_manager;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
+        let activeIndex = workspaceManager.get_active_workspace_index();
+
+        this._workspaceAdjustment.upper = newNumWorkspaces;
+
+        // A workspace might have been inserted or removed before the active
+        // one, causing the adjustment to go out of sync, so update the value
+        this._workspaceAdjustment.value = activeIndex;
     }
 
     _updateWorkspacesGeometry() {
