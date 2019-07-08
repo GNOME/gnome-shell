@@ -465,7 +465,7 @@ recorder_record_frame (ShellRecorder *recorder,
 
       g_object_get (settings, "magnifier-active", &magnifier_active, NULL);
 
-      if (magnifier_active)
+      if (!magnifier_active)
         recorder_draw_cursor (recorder, buffer);
     }
 
