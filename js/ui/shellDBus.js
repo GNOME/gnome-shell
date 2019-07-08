@@ -320,6 +320,10 @@ var GnomeShellExtensions = class {
     }
 
     _extensionStateChanged(_, newState) {
+        let state = ExtensionUtils.serializeExtension(newState);
+        this._dbusImpl.emit_signal('ExtensionStateChanged',
+            new GLib.Variant('(sa{sv})', [newState.uuid, state]));
+
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }

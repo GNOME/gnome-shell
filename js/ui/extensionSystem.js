@@ -159,15 +159,14 @@ var ExtensionManager = class {
 
         let message = `${error}`;
 
+        extension.error = message;
         extension.state = ExtensionState.ERROR;
         if (!extension.errors)
             extension.errors = [];
         extension.errors.push(message);
 
         log('Extension "%s" had error: %s'.format(uuid, message));
-        this.emit('extension-state-changed', { uuid: uuid,
-                                               error: message,
-                                               state: extension.state });
+        this.emit('extension-state-changed', extension);
     }
 
     loadExtension(extension) {
