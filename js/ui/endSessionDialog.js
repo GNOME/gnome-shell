@@ -353,8 +353,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         // It only makes sense to check for this permission if PackageKit is available.
         try {
             this._updatesPermission = Polkit.Permission.new_sync(
-                "org.freedesktop.packagekit.trigger-offline-update", null, null);
-        } catch(e) {
+                'org.freedesktop.packagekit.trigger-offline-update', null, null);
+        } catch (e) {
             log('No permission to trigger offline updates: %s'.format(e.toString()));
         }
     }
