@@ -262,6 +262,8 @@ var SwipeTracker = class {
             this._scrollGesture.connect('end', this._endGesture.bind(this));
         } else
             this._scrollGesture = null;
+
+        this._prevUpdate = 0;
     }
 
     get enabled() {
@@ -350,7 +352,12 @@ var SwipeTracker = class {
         this._progress = clamp(this._progress, firstPoint, lastPoint);
         this._progress = clamp(this._progress, this._initialProgress - 1, this._initialProgress + 1);
 
-        this.emit('update', this._progress);
+        if (this._prevUpdate != 0)
+            Meta.later_remove(this._prevUpdate);
+        this._prevUpdate = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this.emit('update', this._progress);
+            this._prevUpdate = 0;
+        });
 
         this._prevTime = time;
     }
