@@ -27,8 +27,8 @@ var GnomeShell = class {
         this._grabbers = new Map();
 
         global.display.connect('accelerator-activated',
-            (display, action, deviceid, timestamp) => {
-                this._emitAcceleratorActivated(action, deviceid, timestamp);
+            (display, action, device, timestamp) => {
+                this._emitAcceleratorActivated(action, device, timestamp);
             });
 
         this._cachedOverviewVisible = false;
@@ -144,14 +144,15 @@ var GnomeShell = class {
         return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
-    _emitAcceleratorActivated(action, deviceid, timestamp) {
+    _emitAcceleratorActivated(action, device, timestamp) {
         let destination = this._grabbedAccelerators.get(action);
         if (!destination)
             return;
 
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
-        let params = { 'device-id': GLib.Variant.new('u', deviceid),
+        let params = { 'device-id': GLib.Variant.new('u', device.get_device_id()),
+                       'device-node': GLib.Variant.new('s', device.get_device_node()),
                        'timestamp': GLib.Variant.new('u', timestamp),
                        'action-mode': GLib.Variant.new('u', Main.actionMode) };
         connection.emit_signal(destination,
