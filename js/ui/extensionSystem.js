@@ -24,7 +24,7 @@ var ExtensionManager = class {
         this._sessionUpdated();
     }
 
-    disableExtension(uuid) {
+    _callExtensionDisable(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
         if (!extension)
             return;
@@ -82,13 +82,13 @@ var ExtensionManager = class {
         }
     }
 
-    enableExtension(uuid) {
+    _callExtensionEnable(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
         if (!extension)
             return;
 
         if (extension.state == ExtensionState.INITIALIZED)
-            this.initExtension(uuid);
+            this._callExtensionInit(uuid);
 
         if (extension.state != ExtensionState.DISABLED)
             return;
@@ -155,10 +155,10 @@ var ExtensionManager = class {
         } else {
             let enabled = this._enabledExtensions.includes(extension.uuid);
             if (enabled) {
-                if (!this.initExtension(extension.uuid))
+                if (!this._callExtensionInit(extension.uuid))
                     return;
                 if (extension.state == ExtensionState.DISABLED)
-                    this.enableExtension(extension.uuid);
+                    this._callExtensionEnable(extension.uuid);
             } else {
                 extension.state = ExtensionState.INITIALIZED;
             }
@@ -171,7 +171,7 @@ var ExtensionManager = class {
         // Try to disable it -- if it's ERROR'd, we can't guarantee that,
         // but it will be removed on next reboot, and hopefully nothing
         // broke too much.
-        this.disableExtension(extension.uuid);
+        this._callExtensionDisable(extension.uuid);
 
         extension.state = ExtensionState.UNINSTALLED;
         this.emit('extension-state-changed', extension);
@@ -200,7 +200,7 @@ var ExtensionManager = class {
         this.loadExtension(newExtension);
     }
 
-    initExtension(uuid) {
+    _callExtensionInit(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
         let dir = extension.dir;
 
@@ -266,7 +266,7 @@ var ExtensionManager = class {
         newEnabledExtensions.filter(
             uuid => !this._enabledExtensions.includes(uuid)
         ).forEach(uuid => {
-            this.enableExtension(uuid);
+            this._callExtensionEnable(uuid);
         });
 
         // Find and disable all the newly disabled extensions: UUIDs found in the
@@ -274,7 +274,7 @@ var ExtensionManager = class {
         this._enabledExtensions.filter(
             item => !newEnabledExtensions.includes(item)
         ).forEach(uuid => {
-            this.disableExtension(uuid);
+            this._callExtensionDisable(uuid);
         });
 
         this._enabledExtensions = newEnabledExtensions;
@@ -291,7 +291,7 @@ var ExtensionManager = class {
 
         if (Main.sessionMode.allowExtensions) {
             this._enabledExtensions.forEach(uuid => {
-                this.enableExtension(uuid);
+                this._callExtensionEnable(uuid);
             });
         }
     }
@@ -313,7 +313,7 @@ var ExtensionManager = class {
         finder.scanExtensions();
     }
 
-    enableAllExtensions() {
+    _enableAllExtensions() {
         if (this._enabled)
             return;
 
@@ -322,19 +322,19 @@ var ExtensionManager = class {
             this._initted = true;
         } else {
             this._enabledExtensions.forEach(uuid => {
-                this.enableExtension(uuid);
+                this._callExtensionEnable(uuid);
             });
         }
         this._enabled = true;
     }
 
-    disableAllExtensions() {
+    _disableAllExtensions() {
         if (!this._enabled)
             return;
 
         if (this._initted) {
             this._extensionOrder.slice().reverse().forEach(uuid => {
-                this.disableExtension(uuid);
+                this._callExtensionDisable(uuid);
             });
         }
 
@@ -349,9 +349,9 @@ var ExtensionManager = class {
         if (Main.sessionMode.allowExtensions) {
             if (this._initted)
                 this._enabledExtensions = this._getEnabledExtensions();
-            this.enableAllExtensions();
+            this._enableAllExtensions();
         } else {
-            this.disableAllExtensions();
+            this._disableAllExtensions();
         }
     }
 };
