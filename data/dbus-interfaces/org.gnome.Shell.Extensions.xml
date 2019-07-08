@@ -213,6 +213,15 @@
     -->
     <method name="CheckForUpdates"/>
 
+    <signal name="ExtensionStateChanged">
+      <arg type="s" name="uuid"/>
+      <arg type="a{sv}" name="state"/>
+    </signal>
+
+    <!--
+        ExtensionStatusChanged:
+        Deprecated for ExtensionStateChanged
+    -->
     <signal name="ExtensionStatusChanged">
       <arg type="s" name="uuid"/>
       <arg type="i" name="state"/>
