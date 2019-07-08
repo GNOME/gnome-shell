@@ -620,7 +620,7 @@ var ThumbnailsBox = GObject.registerClass({
             0, Infinity, 0)
     }
 }, class ThumbnailsBox extends St.Widget {
-    _init() {
+    _init(adjustment) {
         super._init({ reactive: true,
                       style_class: 'workspace-thumbnails',
                       request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
@@ -697,16 +697,12 @@ var ThumbnailsBox = GObject.registerClass({
         this._syncStackingId = 0;
         this._workareasChangedId = 0;
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
-        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                     lower: 0,
-                                                     page_increment: 1,
-                                                     page_size: 1,
-                                                     step_increment: 0,
-                                                     upper: workspaceManager.n_workspaces });
+        this._scrollAdjustment = adjustment;
 
         this._scrollAdjustment.connect('notify::value', adj => {
+            this._animatingIndicator = (adj.value % 1) != 0;
+            if (!this._animatingIndicator)
+                this._queueUpdateStates();
             this.queue_relayout();
         });
     }
@@ -894,9 +890,6 @@ var ThumbnailsBox = GObject.registerClass({
     _createThumbnails() {
         let workspaceManager = global.workspace_manager;
 
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          this._activeWorkspaceChanged.bind(this));
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._workspacesChanged.bind(this));
@@ -929,10 +922,6 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0)
             return;
 
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
-        }
         if (this._nWorkspacesNotifyId > 0) {
             let workspaceManager = global.workspace_manager;
             workspaceManager.disconnect(this._nWorkspacesNotifyId);
@@ -960,8 +949,6 @@ var ThumbnailsBox = GObject.registerClass({
         let workspaceManager = global.workspace_manager;
         let oldNumWorkspaces = validThumbnails.length;
         let newNumWorkspaces = workspaceManager.n_workspaces;
-
-        this._scrollAdjustment.upper = newNumWorkspaces;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             this.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
@@ -1343,18 +1330,5 @@ var ThumbnailsBox = GObject.registerClass({
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
         childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
-    }
-
-    _activeWorkspaceChanged(_wm, from, to, _direction) {
-        this._scrollAdjustment.value = from;
-        this._animatingIndicator = true;
-        this._scrollAdjustment.ease(to, {
-            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: WorkspacesView.WORKSPACE_SWITCH_TIME,
-            onComplete: () => {
-                this._animatingIndicator = false;
-                this._queueUpdateStates();
-            }
-        });
     }
 });
