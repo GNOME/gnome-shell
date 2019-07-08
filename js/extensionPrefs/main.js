@@ -246,7 +246,7 @@ var Application = GObject.registerClass({
         this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
 
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-        this._shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
+        this._shellProxy.connectSignal('ExtensionStateChanged', (proxy, senderName, [uuid, state]) => {
             if (ExtensionUtils.extensions[uuid] !== undefined)
                 this._scanExtensions();
         });
