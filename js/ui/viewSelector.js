@@ -128,7 +128,7 @@ var ViewSelector = GObject.registerClass({
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, showAppsButton) {
+    _init(searchEntry, workspaceAdjustment, showAppsButton) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
@@ -171,7 +171,7 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
+        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
         this._workspacesPage = this._addPage(this._workspacesDisplay,
                                              _("Windows"), 'focus-windows-symbolic');
 
