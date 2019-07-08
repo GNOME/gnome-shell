@@ -388,7 +388,7 @@ class DelegateFocusNavigator extends St.Widget {
 });
 
 var WorkspacesDisplay = class {
-    constructor() {
+    constructor(adjustment) {
         this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
         this.actor._delegate = this;
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
@@ -396,16 +396,8 @@ var WorkspacesDisplay = class {
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
-        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                     lower: 0,
-                                                     page_increment: 1,
-                                                     page_size: 1,
-                                                     step_increment: 0,
-                                                     upper: workspaceManager.n_workspaces });
+        this._scrollAdjustment = adjustment;
 
-        this._updateWorkspaces();
-        workspaceManager.connect('notify::n-workspaces',
-                                 this._updateWorkspaces.bind(this));
         this._scrollAdjustment.connect('notify::value',
                                        this._scrollValueChanged.bind(this));
 
@@ -485,13 +477,6 @@ var WorkspacesDisplay = class {
         this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
         this._animatingScroll = false; // programmatically updating the adjustment
-    }
-
-    _updateWorkspaces() {
-        let workspaceManager = global.workspace_manager;
-        let newNumWorkspaces = workspaceManager.n_workspaces;
-
-        this._scrollAdjustment.upper = newNumWorkspaces;
     }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
