@@ -266,6 +266,8 @@ var SwipeTracker = class {
             scrollGesture.connect('update', this._updateGesture.bind(this));
             scrollGesture.connect('end', this._endGesture.bind(this));
         }
+
+        this._prevUpdate = 0;
     }
 
     get enabled() {
@@ -334,7 +336,13 @@ var SwipeTracker = class {
 
         // Clamp progress to [0,1]
         let progress = this._progress / (1 + (this._progress > 0 ? this._backExtent : this._forwardExtent) / this._distance);
-        this.emit('update', progress);
+
+        if (this._prevUpdate != 0)
+            Meta.later_remove(this._prevUpdate);
+        this._prevUpdate = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this.emit('update', progress);
+            this._prevUpdate = 0;
+        });
 
         this._prevTime = time;
     }
