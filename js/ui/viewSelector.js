@@ -125,7 +125,7 @@ var ShowOverviewAction = GObject.registerClass({
 });
 
 var ViewSelector = class {
-    constructor(searchEntry, showAppsButton) {
+    constructor(searchEntry, workspaceAdjustment, showAppsButton) {
         this.actor = new Shell.Stack({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
@@ -165,7 +165,7 @@ var ViewSelector = class {
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
+        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'focus-windows-symbolic');
 
