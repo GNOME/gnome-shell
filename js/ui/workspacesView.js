@@ -400,22 +400,14 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 
 var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
-    _init() {
+    _init(adjustment) {
         super._init({ clip_to_allocation: true });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
-        this._scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                     lower: 0,
-                                                     page_increment: 1,
-                                                     page_size: 1,
-                                                     step_increment: 0,
-                                                     upper: workspaceManager.n_workspaces });
+        this._scrollAdjustment = adjustment;
 
-        this._updateWorkspaces();
-        workspaceManager.connect('notify::n-workspaces',
-                                 this._updateWorkspaces.bind(this));
         this._scrollAdjustment.connect('notify::value',
                                        this._scrollValueChanged.bind(this));
 
@@ -509,13 +501,6 @@ class WorkspacesDisplay extends St.Widget {
             Meta.later_remove(this._parentSetLater);
             this._parentSetLater = 0;
         }
-    }
-
-    _updateWorkspaces() {
-        let workspaceManager = global.workspace_manager;
-        let newNumWorkspaces = workspaceManager.n_workspaces;
-
-        this._scrollAdjustment.upper = newNumWorkspaces;
     }
 
     _workspacesReordered() {
