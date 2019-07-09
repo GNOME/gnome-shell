@@ -101,6 +101,14 @@ var WorkspacesView = class extends WorkspacesViewBase {
         this._updateWorkspacesId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._updateWorkspaces.bind(this));
+        this._reorderWorkspacesId =
+            workspaceManager.connect('workspaces-reordered', () => {
+                this._workspaces.sort((a, b) => {
+                    return a.metaWorkspace.index() - b.metaWorkspace.index();
+                });
+                this._updateWorkspaceActors(false);
+            });
+
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
@@ -287,6 +295,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
+        workspaceManager.disconnect(this._reorderWorkspacesId);
     }
 
     startSwipeScroll() {
