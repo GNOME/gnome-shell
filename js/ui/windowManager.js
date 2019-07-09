@@ -1241,7 +1241,7 @@ var WindowManager = class {
     }
 
     _shouldAnimate() {
-        return !(Main.overview.visible || this._blockAnimations);
+        return !Main.overview.visible;
     }
 
     _shouldAnimateActor(actor, types) {
