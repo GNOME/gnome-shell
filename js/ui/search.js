@@ -309,7 +309,7 @@ var ListSearchResults = class extends SearchResultsBase {
     }
 
     _createResultDisplay(meta) {
-        return super._createResultDisplay(meta, this._resultsView) ||
+        return super._createResultDisplay(meta) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     }
 
@@ -361,7 +361,7 @@ var GridSearchResults = class extends SearchResultsBase {
     }
 
     _createResultDisplay(meta) {
-        return super._createResultDisplay(meta, this._resultsView) ||
+        return super._createResultDisplay(meta) ||
                new GridSearchResult(this.provider, meta, this._resultsView);
     }
 
