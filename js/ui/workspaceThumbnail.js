@@ -865,6 +865,13 @@ class ThumbnailsBox extends St.Widget {
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._workspacesChanged.bind(this));
+        this._workspacesReorderedId =
+            workspaceManager.connect('workspaces-reordered', () => {
+                this._thumbnails.sort((a, b) => {
+                    return a.metaWorkspace.index() - b.metaWorkspace.index();
+                });
+                this.queue_relayout();
+            });
         this._syncStackingId =
             Main.overview.connect('windows-restacked',
                                   this._syncStacking.bind(this));
@@ -895,6 +902,11 @@ class ThumbnailsBox extends St.Widget {
             let workspaceManager = global.workspace_manager;
             workspaceManager.disconnect(this._nWorkspacesNotifyId);
             this._nWorkspacesNotifyId = 0;
+        }
+        if (this._workspacesReorderedId > 0) {
+            let workspaceManager = global.workspace_manager;
+            workspaceManager.disconnect(this._workspacesReorderedId);
+            this._workspacesReorderedId = 0;
         }
 
         if (this._syncStackingId > 0) {
