@@ -46,9 +46,13 @@ var Avatar = class {
 
         if (iconFile) {
             this.actor.child = null;
+            let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+            this.actor.set_size(
+                this._iconSize * scaleFactor,
+                this._iconSize * scaleFactor);
             this.actor.style = `
                 background-image: url("${iconFile}");
-                background-size: ${this._iconSize}px`;
+                background-size: cover;`;
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
