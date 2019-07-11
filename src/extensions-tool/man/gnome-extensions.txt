@@ -175,6 +175,10 @@ reviewing their content.
   *--force*:::
     Override an existing extension
 
+*uninstall* 'UUID'::
+Uninstalls the extension identified by 'UUID'.
+
+
 EXIT STATUS
 -----------
 On success 0 is returned, a non-zero failure code otherwise.
