@@ -20,7 +20,13 @@ script_data.set('pkglibdir', pkglibdir)
 script_data.set('PYTHON', python.path())
 script_data.set('VERSION', meson.project_version())
 
-foreach tool : ['gnome-shell-extension-tool', 'gnome-shell-perf-tool']
+script_tools = ['gnome-shell-perf-tool']
+
+if get_option('extensions_tool')
+  script_tools += 'gnome-shell-extension-tool'
+endif
+
+foreach tool : script_tools
   configure_file(
     input: tool + '.in',
     output: tool,
