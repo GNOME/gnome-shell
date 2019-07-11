@@ -1,200 +1,27 @@
 #!@PYTHON@
 # -*- mode: Python; indent-tabs-mode: nil; -*-
 
-import os
-import re
-import socket
 import subprocess
 import sys
 import optparse
-import tempfile
-try:
-    import json
-except ImportError:
-    try:
-        import simplejson as json
-    except ImportError:
-        print('The Python simplejson module is required')
-        sys.exit(1)
 
-from gi.repository import Gio, GLib
-
-SAMPLE_EXTENSION_FILES = {
-    "extension.js": """
-const St = imports.gi.St;
-const Main = imports.ui.main;
-
-let text, button;
-
-function _hideHello() {
-    Main.uiGroup.remove_actor(text);
-    text = null;
-}
-
-function _showHello() {
-    if (!text) {
-        text = new St.Label({ style_class: 'helloworld-label', text: "Hello, world!" });
-        Main.uiGroup.add_actor(text);
-    }
-
-    text.opacity = 255;
-
-    let monitor = Main.layoutManager.primaryMonitor;
-
-    text.set_position(monitor.x + Math.floor(monitor.width / 2 - text.width / 2),
-                      monitor.y + Math.floor(monitor.height / 2 - text.height / 2));
-
-    text.ease({
-        opacity: 0,
-        duration: 2000,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => _hideHello()
-    });
-}
-
-function init() {
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
-    let icon = new St.Icon({ icon_name: 'system-run-symbolic',
-                             style_class: 'system-status-icon' });
-
-    button.set_child(icon);
-    button.connect('button-press-event', _showHello);
-}
-
-function enable() {
-    Main.panel._rightBox.insert_child_at_index(button, 0);
-}
-
-function disable() {
-    Main.panel._rightBox.remove_child(button);
-}
-""",
-
-    "stylesheet.css": """
-.helloworld-label {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: rgba(10,10,10,0.7);
-    border-radius: 5px;
-    padding: .5em;
-}
-""",
-}
+def extension_command(args):
+    print("gnome-shell-extension-tool is deprecated, use gnome-extensions instead",
+          file=sys.stderr)
+    subprocess.run(["@bindir@/gnome-extensions"] + args)
 
 def create_extension():
-    print()
-    print('''Name should be a very short (ideally descriptive) string.
-Examples are: "Click To Focus",  "Adblock", "Shell Window Shrinker".
-''')
-    name = input('Name: ').strip()
-    print()
-    print('''Description is a single-sentence explanation of what your extension does.
-Examples are: "Make windows visible on click", "Block advertisement popups"
-              "Animate windows shrinking on minimize"
-''')
-    description = input('Description: ').strip()
-    underifier = re.compile('[^A-Za-z]')
-    sample_uuid = underifier.sub('_', name)
-    # TODO use evolution data server
-    hostname = socket.gethostname()
-    sample_uuid = sample_uuid + '@' + hostname
-
-    print()
-    print('''Uuid is a globally-unique identifier for your extension.
-This should be in the format of an email address (foo.bar@extensions.example.com), but
-need not be an actual email address, though it's a good idea to base the uuid on your
-email address.  For example, if your email address is janedoe@example.com, you might
-use an extension title clicktofocus@janedoe.example.com.''')
-    uuid = input('Uuid [%s]: ' % (sample_uuid, )).strip()
-    if uuid == '':
-        uuid = sample_uuid
-
-    extension_path = os.path.join(os.path.expanduser('~/.local'), 'share', 'gnome-shell', 'extensions', uuid)
-    if os.path.exists(extension_path):
-        print("Extension path %r already exists" % (extension_path, ))
-        sys.exit(0)
-    os.makedirs(extension_path)
-    meta = { 'name': name,
-             'description': description,
-             'uuid': uuid,
-             'shell-version': ['@VERSION@'] }
-    f = open(os.path.join(extension_path, 'metadata.json'), 'w')
-    try:
-        json.dump(meta, f)
-    except AttributeError:
-        # For Python versions older than 2.6, try using the json-py module
-        f.write(json.write(meta) + '\n')
-    f.close()
-
-    for filename, contents in SAMPLE_EXTENSION_FILES.items():
-        path = os.path.join(extension_path, filename)
-        f = open(path, 'w')
-        f.write(contents)
-        f.close()
-
-    print("Created extension in %r" % (extension_path, ))
-    extensionjs_path = os.path.join(extension_path, 'extension.js')
-    subprocess.Popen(['xdg-open', extensionjs_path])
-
-ENABLED_EXTENSIONS_KEY = 'enabled-extensions'
+    extension_command(["create", "--interactive"])
 
 def enable_extension(uuid):
-    settings = Gio.Settings(schema='org.gnome.shell')
-    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
-
-    if uuid in extensions:
-        print("%r is already enabled." % (uuid,), file=sys.stderr)
-        sys.exit(1)
-
-    extensions.append(uuid)
-    settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now enabled." % (uuid,), file=sys.stderr)
+    extension_command(["enable", uuid])
 
 def disable_extension(uuid):
-    settings = Gio.Settings(schema='org.gnome.shell')
-    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
-
-    if uuid not in extensions:
-        print("%r is not enabled or installed." % (uuid,), file=sys.stderr)
-        sys.exit(1)
-
-    # Use a while loop here to remove *all* mentions instances
-    # of the extension. Some faulty tools like to append more than one.
-    while uuid in extensions:
-        extensions.remove(uuid)
-
-    settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now disabled." % (uuid,), file=sys.stderr)
+    extension_command(["disable", uuid])
 
 def reload_extension(uuid):
-    settings = Gio.Settings(schema='org.gnome.shell')
-    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
-
-    if uuid not in extensions:
-        print("%r is not enabled or installed." % (uuid,), file=sys.stderr)
-        sys.exit(1)
-
-    proxy = Gio.DBusProxy.new_sync(Gio.bus_get_sync(Gio.BusType.SESSION, None),
-                                   Gio.DBusProxyFlags.NONE,
-                                   None,
-                                   'org.gnome.Shell',
-                                   '/org/gnome/Shell',
-                                   'org.gnome.Shell.Extensions',
-                                   None)
-    proxy.call_sync('ReloadExtension',
-                    GLib.Variant('(s)', (uuid,)),
-                    Gio.DBusCallFlags.NONE,
-                    -1,
-                    None)
-
-    print("%r reloaded." % (uuid,), file=sys.stderr)
-
+    print("Reloading extensions does not wokr correctly and is no longer supported",
+          file=sys.stderr)
 
 def main():
     parser = optparse.OptionParser()
