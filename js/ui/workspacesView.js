@@ -623,6 +623,12 @@ var WorkspacesDisplay = class {
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
+
+        // this._workspacesViews is assumed everywhere to have either length 0
+        // or length equal to Main.layoutManager.monitors.length, so we have to
+        // be careful to update it atomically.
+        const newWorkspacesViews = [];
+
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             let view;
@@ -638,9 +644,10 @@ var WorkspacesDisplay = class {
                                                this._scrollValueChanged.bind(this));
             }
 
-            this._workspacesViews.push(view);
+            newWorkspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view.actor);
         }
+        this._workspacesViews = newWorkspacesViews;
 
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
