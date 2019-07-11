@@ -32,5 +32,6 @@ int handle_prefs      (int argc, char *argv[], gboolean do_help);
 int handle_create     (int argc, char *argv[], gboolean do_help);
 int handle_pack       (int argc, char *argv[], gboolean do_help);
 int handle_install    (int argc, char *argv[], gboolean do_help);
+int handle_uninstall  (int argc, char *argv[], gboolean do_help);
 
 G_END_DECLS
