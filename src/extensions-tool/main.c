@@ -183,6 +183,7 @@ usage (void)
   g_printerr ("  version   %s\n", _("Print version"));
   g_printerr ("  enable    %s\n", _("Enable extension"));
   g_printerr ("  disable   %s\n", _("Disable extension"));
+  g_printerr ("  uninstall %s\n", _("Uninstall extension"));
   g_printerr ("  list      %s\n", _("List extensions"));
   g_printerr ("  info      %s\n", _("Show extension info"));
   g_printerr ("  show      %s\n", _("Show extension info"));
@@ -261,6 +262,8 @@ main (int argc, char *argv[])
     return handle_pack (argc, argv, do_help);
   else if (g_str_equal (command, "install"))
     return handle_install (argc, argv, do_help);
+  else if (g_str_equal (command, "uninstall"))
+    return handle_uninstall (argc, argv, do_help);
   else
     usage ();
 
