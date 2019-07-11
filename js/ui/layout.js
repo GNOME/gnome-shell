@@ -278,8 +278,8 @@ var LayoutManager = GObject.registerClass({
             schema_id: 'org.gnome.desktop.interface'
         });
 
-       this._interfaceSettings.connect('changed::enable-hot-corners',
-                                       this._updateHotCorners.bind(this));
+        this._interfaceSettings.connect('changed::enable-hot-corners',
+                                        this._updateHotCorners.bind(this));
 
         // Need to update struts on new workspaces when they are added
         let workspaceManager = global.workspace_manager;
