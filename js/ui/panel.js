@@ -706,9 +706,7 @@ var PanelCorner = class {
 
 var AggregateLayout = GObject.registerClass(
 class AggregateLayout extends Clutter.BoxLayout {
-    _init(params) {
-        if (!params)
-            params = {};
+    _init(params = {}) {
         params['orientation'] = Clutter.Orientation.VERTICAL;
         super._init(params);
 

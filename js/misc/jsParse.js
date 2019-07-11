@@ -151,11 +151,7 @@ function getAllProps(obj) {
 // e.g., expr="({ foo: null, bar: null, 4: null })" will
 // return ["foo", "bar", ...] but the list will not include "4",
 // since methods accessed with '.' notation must star with a letter or _.
-function getPropertyNamesFromExpression(expr, commandHeader) {
-    if (commandHeader == null) {
-        commandHeader = '';
-    }
-
+function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {

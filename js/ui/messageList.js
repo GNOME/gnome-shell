@@ -33,9 +33,7 @@ function _fixMarkup(text, allowMarkup) {
 }
 
 var URLHighlighter = class URLHighlighter {
-    constructor(text, lineWrap, allowMarkup) {
-        if (!text)
-            text = '';
+    constructor(text = '', lineWrap, allowMarkup) {
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
                                     x_expand: true, x_align: Clutter.ActorAlign.START });
         this._linkColor = '#ccccff';

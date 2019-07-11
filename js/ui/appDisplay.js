@@ -1416,7 +1416,7 @@ var AppFolderPopup = class AppFolderPopup {
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
 var AppIcon = class AppIcon {
-    constructor(app, iconParams) {
+    constructor(app, iconParams = {}) {
         this.app = app;
         this.id = app.get_id();
         this.name = app.get_name();
@@ -1441,9 +1441,6 @@ var AppIcon = class AppIcon {
         this._iconContainer.add_child(this._dot);
 
         this.actor._delegate = this;
-
-        if (!iconParams)
-            iconParams = {};
 
         // Get the isDraggable property without passing it on to the BaseIcon:
         let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);

@@ -841,7 +841,7 @@ var LayoutManager = GObject.registerClass({
     // @params can have any of the same values as in addChrome(),
     // though some possibilities don't make sense. By default, @actor has
     // the same params as its chrome ancestor.
-    trackChrome(actor, params) {
+    trackChrome(actor, params = {}) {
         let ancestor = actor.get_parent();
         let index = this._findActor(ancestor);
         while (ancestor && index == -1) {
@@ -851,8 +851,6 @@ var LayoutManager = GObject.registerClass({
 
         let ancestorData = ancestor ? this._trackedActors[index]
                                     : defaultParams;
-        if (!params)
-            params = {};
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
         for (let prop in defaultParams) {
