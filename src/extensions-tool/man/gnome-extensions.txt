@@ -33,6 +33,8 @@ SYNOPSIS
 
 *gnome-extensions* install ['OPTION'...] 'PACK'
 
+*gnome-extensions* uninstall 'UUID'
+
 DESCRIPTION
 -----------
 *gnome-extensions* is a utility that makes some common GNOME extensions
@@ -174,6 +176,10 @@ reviewing their content.
 .Options
   *--force*:::
     Override an existing extension
+
+*uninstall* 'UUID'::
+Uninstalls the extension identified by 'UUID'.
+
 
 EXIT STATUS
 -----------
