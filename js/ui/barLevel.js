@@ -4,7 +4,7 @@ const { Atk, Clutter, St } = imports.gi;
 const Signals = imports.signals;
 
 var BarLevel = class {
-    constructor(value, params) {
+    constructor(value, params = {}) {
         if (isNaN(value))
             // Avoid spreading NaNs around
             throw TypeError('The bar level value must be a number');
@@ -12,9 +12,6 @@ var BarLevel = class {
         this._value = Math.max(Math.min(value, this._maxValue), 0);
         this._overdriveStart = 1;
         this._barLevelWidth = 0;
-
-        if (params == undefined)
-            params = {};
 
         this.actor = new St.DrawingArea({ styleClass: params['styleClass'] || 'barlevel',
                                           can_focus: params['canFocus'] || false,
