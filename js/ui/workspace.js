@@ -104,7 +104,7 @@ var WindowClone = GObject.registerClass({
         'show-chrome': {},
         'size-changed': {}
     },
-}, class WindowClone extends St.Widget {
+}, class WorkspaceWindowClone extends St.Widget {
     _init(realWindow, workspace) {
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
