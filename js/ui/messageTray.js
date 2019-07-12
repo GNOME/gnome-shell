@@ -1004,7 +1004,6 @@ var MessageTray = class MessageTray {
 
     _addSource(source) {
         let obj = {
-            source: source,
             notifyId: 0,
             destroyId: 0,
         };
