@@ -996,7 +996,8 @@ class ThumbnailsBox extends St.Widget {
         this._queueUpdateStates();
     }
 
-    _syncStacking(overview, stackIndices) {
+    _syncStacking(overview) {
+        let stackIndices = overview.getStackIndices();
         for (let i = 0; i < this._thumbnails.length; i++)
             this._thumbnails[i].syncStacking(stackIndices);
     }
