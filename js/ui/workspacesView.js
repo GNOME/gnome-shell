@@ -638,9 +638,14 @@ var WorkspacesDisplay = class {
                                                this._scrollValueChanged.bind(this));
             }
 
+            // HACK: Avoid spurious allocation changes while updating views
+            view.actor.hide();
+
             this._workspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view.actor);
         }
+
+        this._workspacesViews.forEach(v => v.actor.show());
 
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
