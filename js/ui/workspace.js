@@ -2028,6 +2028,9 @@ var Workspace = class {
             metaWindow.change_workspace_by_index(workspaceIndex, false);
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
+            if (source.animateLaunch)
+                source.animateLaunch(actor.x, actor.y);
+
             source.app.open_new_window(workspaceIndex);
             return true;
         } else if (source.shellWorkspaceLaunch) {
