@@ -237,7 +237,7 @@ var DBusEventSource = class DBusEventSource {
 
     _onEventsReceived(results, error) {
         let newEvents = [];
-        let appointments = results ? results[0] : null;
+        let appointments = results[0] || null;
         if (appointments != null) {
             for (let n = 0; n < appointments.length; n++) {
                 let a = appointments[n];
