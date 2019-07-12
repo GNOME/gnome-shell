@@ -2063,6 +2063,7 @@ var AppIcon = class AppIcon extends BaseViewIcon {
 
         this.actor._delegate = this;
         this._scaleInId = 0;
+        this._folderPreviewId = 0;
 
         delete iconParams['isDraggable'];
 
@@ -2094,6 +2095,11 @@ var AppIcon = class AppIcon extends BaseViewIcon {
 
     _onDestroy() {
         super._onDestroy();
+
+        if (this._folderPreviewId > 0) {
+            GLib.source_remove(this._folderPreviewId);
+            this._folderPreviewId = 0;
+        }
 
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
@@ -2248,6 +2254,57 @@ var AppIcon = class AppIcon extends BaseViewIcon {
 
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    }
+
+    _showFolderPreview() {
+        this.icon.label.opacity = 0;
+
+        // HACK!!!
+        this.icon._iconBin.save_easing_state();
+        this.icon._iconBin.scale_x = FOLDER_SUBICON_FRACTION;
+        this.icon._iconBin.scale_y = FOLDER_SUBICON_FRACTION;
+        this.icon._iconBin.restore_easing_state();
+    }
+
+    _hideFolderPreview() {
+        this.icon.label.opacity = 255;
+
+        // HACK!!!
+        this.icon._iconBin.save_easing_state();
+        this.icon._iconBin.scale_x = 1.0;
+        this.icon._iconBin.scale_y = 1.0;
+        this.icon._iconBin.restore_easing_state();
+    }
+
+    _setHoveringByDnd(hovering) {
+        if (hovering) {
+            if (this._folderPreviewId > 0)
+                return;
+
+            this._folderPreviewId =
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+                this._folderPreviewId = 0;
+
+                super._setHoveringByDnd(true);
+                this._showFolderPreview();
+
+                return GLib.SOURCE_REMOVE;
+            });
+        } else {
+            if (this._folderPreviewId > 0) {
+                GLib.source_remove(this._folderPreviewId);
+                this._folderPreviewId = 0;
+            }
+
+            super._setHoveringByDnd(false);
+            this._hideFolderPreview();
+        }
+    }
+
+    _canDropAt(source) {
+        return source != this &&
+               (source instanceof AppIcon) &&
+               (this.view instanceof AllView);
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);
