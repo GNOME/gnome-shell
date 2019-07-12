@@ -194,12 +194,12 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
             item = this.addAction(is.displayName, () => {
                 inputSourceManager.activateInputSource(is, true);
             });
-            item.actor.can_focus = false;
+            item.can_focus = false;
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         item = this.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
-        item.actor.can_focus = false;
+        item.can_focus = false;
 
         this._capturedEventId = 0;
 
