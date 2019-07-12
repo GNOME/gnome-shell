@@ -562,7 +562,7 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     // Draggable target interface used only by ThumbnailsBox
-    handleDragOverInternal(source, time) {
+    handleDragOverInternal(source, actor, _x, _y, time) {
         if (source == Main.xdndHandler) {
             this.metaWorkspace.activate(time);
             return DND.DragMotionResult.CONTINUE;
@@ -581,7 +581,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         return DND.DragMotionResult.CONTINUE;
     }
 
-    acceptDropInternal(source, time) {
+    acceptDropInternal(source, actor, _x, _y, _time) {
         if (this.state > ThumbnailState.NORMAL)
             return false;
 
@@ -840,7 +840,7 @@ var ThumbnailsBox = GObject.registerClass({
         }
 
         if (this._dropWorkspace != -1)
-            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, actor, x, y, time);
         else if (this._dropPlaceholderPos != -1)
             return source.realWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
@@ -849,7 +849,7 @@ var ThumbnailsBox = GObject.registerClass({
 
     acceptDrop(source, actor, x, y, time) {
         if (this._dropWorkspace != -1) {
-            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, actor, x, y, time);
         } else if (this._dropPlaceholderPos != -1) {
             if (!source.realWindow &&
                 (!source.app || (source.app && !source.app.can_open_new_window())) &&
