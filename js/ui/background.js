@@ -301,7 +301,7 @@ var Background = class Background {
 
         this._changedIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             this._changedIdleId = 0;
-            this.emit('changed');
+            this.emit('bg-changed');
             return GLib.SOURCE_REMOVE;
         });
     }
@@ -566,7 +566,7 @@ var BackgroundSource = class BackgroundSource {
 
         // We don't watch changes to settings here,
         // instead we rely on Background to watch those
-        // and emit 'changed' at the right time
+        // and emit 'bg-changed' at the right time
 
         if (this._overrideImage != null) {
             file = Gio.File.new_for_path(this._overrideImage);
@@ -595,7 +595,7 @@ var BackgroundSource = class BackgroundSource {
                 style: style
             });
 
-            background._changedId = background.connect('changed', () => {
+            background._changedId = background.connect('bg-changed', () => {
                 background.disconnect(background._changedId);
                 background.destroy();
                 delete this._backgrounds[monitorIndex];
@@ -767,7 +767,7 @@ var BackgroundManager = class BackgroundManager {
             backgroundActor.lower_bottom();
         }
 
-        let changeSignalId = background.connect('changed', () => {
+        let changeSignalId = background.connect('bg-changed', () => {
             background.disconnect(changeSignalId);
             changeSignalId = null;
             this._updateBackgroundActor();
