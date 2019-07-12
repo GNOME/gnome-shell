@@ -584,6 +584,8 @@ var WorkspaceThumbnail = class {
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
             let workspace = this.metaWorkspace ? this.metaWorkspace.index() : -1;
+            if (source.animateLaunch)
+                source.animateLaunch(actor.x, actor.y);
 
             source.app.open_new_window(workspace);
             return true;
@@ -836,6 +838,9 @@ class ThumbnailsBox extends St.Widget {
                     source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
             } else if (source.app && source.app.can_open_new_window()) {
+                if (source.animateLaunch)
+                    source.animateLaunch(actor.x, actor.y);
+
                 source.app.open_new_window(newWorkspaceIndex);
 
                 // This new workspace will be automatically removed if the application fails
