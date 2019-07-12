@@ -375,7 +375,7 @@ var Overview = class {
         this._updateBackgrounds();
     }
 
-    _onRestacked() {
+    getStackIndices() {
         let stack = global.get_window_actors();
         let stackIndices = {};
 
@@ -384,7 +384,11 @@ var Overview = class {
             stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
         }
 
-        this.emit('windows-restacked', stackIndices);
+        return stackIndices;
+    }
+
+    _onRestacked() {
+        this.emit('windows-restacked');
     }
 
     beginItemDrag(_source) {
