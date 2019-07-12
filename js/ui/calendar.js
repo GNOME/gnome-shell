@@ -237,20 +237,18 @@ var DBusEventSource = class DBusEventSource {
 
     _onEventsReceived(results, error) {
         let newEvents = [];
-        let appointments = results[0] || null;
-        if (appointments != null) {
-            for (let n = 0; n < appointments.length; n++) {
-                let a = appointments[n];
-                let date = new Date(a[4] * 1000);
-                let end = new Date(a[5] * 1000);
-                let id = a[0];
-                let summary = a[1];
-                let allDay = a[3];
-                let event = new CalendarEvent(id, date, end, summary, allDay);
-                newEvents.push(event);
-            }
-            newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
+        let appointments = results[0] || [];
+        for (let n = 0; n < appointments.length; n++) {
+            let a = appointments[n];
+            let date = new Date(a[4] * 1000);
+            let end = new Date(a[5] * 1000);
+            let id = a[0];
+            let summary = a[1];
+            let allDay = a[3];
+            let event = new CalendarEvent(id, date, end, summary, allDay);
+            newEvents.push(event);
         }
+        newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
 
         this._events = newEvents;
         this.isLoading = false;
