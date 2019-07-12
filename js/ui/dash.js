@@ -24,6 +24,30 @@ function getAppFromSource(source) {
     }
 }
 
+var DashIcon = class DashIcon extends AppDisplay.AppIcon {
+    constructor(app) {
+        super(app, {
+            setSizeManually: true,
+            showLabel: false
+        });
+    }
+
+    // Disable all DnD methods
+    _onDragBegin() {
+    }
+
+    _onDragEnd() {
+    }
+
+    handleDragOver() {
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    acceptDrop() {
+        return false;
+    }
+};
+
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
 var DashItemContainer = GObject.registerClass(
@@ -450,9 +474,7 @@ var Dash = class Dash {
     }
 
     _createAppItem(app) {
-        let appIcon = new AppDisplay.AppIcon(app,
-                                             { setSizeManually: true,
-                                               showLabel: false });
+        let appIcon = new DashIcon(app);
 
         appIcon.connect('menu-state-changed',
                         (appIcon, opened) => {
