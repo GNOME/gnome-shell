@@ -604,6 +604,9 @@ var WorkspaceThumbnail = GObject.registerClass({
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
+            if (source.animateLaunch)
+                source.animateLaunch(actor.x, actor.y);
+
             source.app.open_new_window(workspaceIndex);
             return true;
         } else if (source.shellWorkspaceLaunch) {
@@ -871,6 +874,9 @@ var ThumbnailsBox = GObject.registerClass({
                     source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
             } else if (source.app && source.app.can_open_new_window()) {
+                if (source.animateLaunch)
+                    source.animateLaunch(actor.x, actor.y);
+
                 source.app.open_new_window(newWorkspaceIndex);
             } else if (source.shellWorkspaceLaunch) {
                 // Implement shellWorkspaceLaunch to allow extensions to define
