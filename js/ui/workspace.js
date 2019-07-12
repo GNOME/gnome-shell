@@ -83,8 +83,8 @@ class WindowCloneLayout extends Clutter.LayoutManager {
     vfunc_allocate(container, box, flags) {
         container.get_children().forEach(child => {
             let realWindow;
-            if (child == container._delegate._windowClone)
-                realWindow = container._delegate.realWindow;
+            if (child == container._windowClone)
+                realWindow = container.realWindow;
             else
                 realWindow = child.source;
 
@@ -1099,10 +1099,8 @@ const WorkspaceActor = GObject.registerClass(
 class WorkspaceActor extends St.Widget {
     vfunc_get_focus_chain() {
         return this.get_children().filter(c => c.visible).sort((a, b) => {
-            let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate : null;
-            let cloneB = (b._delegate && b._delegate instanceof WindowClone) ? b._delegate : null;
-            if (cloneA && cloneB)
-                return cloneA.slotId - cloneB.slotId;
+            if (a instanceof WindowClone && b instanceof WindowClone)
+                return a.slotId - b.slotId;
 
             return 0;
         });
