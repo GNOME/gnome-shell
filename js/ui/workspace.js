@@ -2019,6 +2019,8 @@ var Workspace = class {
         } else if ((source.app && source.app.can_open_new_window()) ||
                    source.shellWorkspaceLaunch) {
             let workspace = this.metaWorkspace ? this.metaWorkspace.index() : -1;
+            if (source.animateLaunch)
+                source.animateLaunch(actor.x, actor.y);
 
             source.app.open_new_window(workspace);
             return true;
