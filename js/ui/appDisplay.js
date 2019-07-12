@@ -2040,8 +2040,8 @@ var AppIcon = class AppIcon {
         Main.overview.hide();
     }
 
-    animateLaunch() {
-        this.icon.animateZoomOut();
+    animateLaunch(x, y) {
+        this.icon.animateZoomOut(x, y);
     }
 
     scaleIn() {
