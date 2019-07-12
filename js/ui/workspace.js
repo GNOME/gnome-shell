@@ -354,6 +354,11 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = null;
         this._delegate = null;
 
+        if (this._longPressLater) {
+            Meta.later_remove(this._longPressLater);
+            delete this._longPressLater;
+        }
+
         if (this.inDrag) {
             this.emit('drag-end');
             this.inDrag = false;
@@ -388,9 +393,13 @@ var WindowClone = GObject.registerClass({
             let event = Clutter.get_current_event();
             this._dragTouchSequence = event.get_event_sequence();
 
+            if (this._longPressLater)
+                return true;
+
             // A click cancels a long-press before any click handler is
             // run - make sure to not start a drag in that case
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._longPressLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                delete this._longPressLater;
                 if (this._selected)
                     return;
                 let [x, y] = action.get_coords();
