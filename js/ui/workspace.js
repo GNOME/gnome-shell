@@ -2015,6 +2015,7 @@ var Workspace = class {
             metaWindow.change_workspace_by_index(index, false);
             return true;
         } else if (source.shellWorkspaceLaunch && source.canLaunchNow) {
+            source.animateLaunch(actor.x, actor.y);
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
                                           timestamp: time });
             return true;
