@@ -265,10 +265,12 @@ var SelectArea = class {
     }
 
     _getGeometry() {
-        return { x: Math.min(this._startX, this._lastX),
-                 y: Math.min(this._startY, this._lastY),
-                 width: Math.abs(this._startX - this._lastX) + 1,
-                 height: Math.abs(this._startY - this._lastY) + 1 };
+        return new Meta.Rectangle({
+            x: Math.min(this._startX, this._lastX),
+            y: Math.min(this._startY, this._lastY),
+            width: Math.abs(this._startX - this._lastX) + 1,
+            height: Math.abs(this._startY - this._lastY) + 1
+        });
     }
 
     _onMotionEvent(actor, event) {
