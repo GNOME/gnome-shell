@@ -7,6 +7,7 @@ const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const Main = imports.ui.main;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const Util = imports.misc.util;
 
 const SPLASH_SCREEN_TIMEOUT = 700; // ms
@@ -43,7 +44,8 @@ function _shouldShowSplash(app) {
         Util.getBrowserApp().state !== Shell.AppState.STOPPED)
         return false;
 
-    return true;
+    let parentalControlsManager = ParentalControlsManager.getDefault();
+    return parentalControlsManager.shouldShowApp(app.get_app_info());
 }
 
 var AppActivationContext = class {
