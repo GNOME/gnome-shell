@@ -1497,11 +1497,11 @@ StScrollBar {
   .search-provider-icon,
   .list-search-result {
     @extend %icon_tile;
-    &:active, &:checked { background-color: transparentize(darken($osd_bg_color,10%),.1); }
     &:focus, &:selected, &:hover {
       background-color: transparentize($osd_fg_color,.9);
       transition-duration: 200ms;
     }
+    &:active, &:checked { background-color: transparentize(darken($osd_bg_color,10%),.1); }
   }
   .app-well-app,
   .app-well-app.app-folder,
@@ -1509,10 +1509,6 @@ StScrollBar {
   .grid-search-result {
     & .overview-icon {
       @extend %icon_tile;
-    }
-    &:active .overview-icon,
-    &:checked .overview-icon {
-      background-color: transparentize(darken($osd_bg_color,10%), 0.5);
     }
     &:hover .overview-icon,
     &:focus .overview-icon,
@@ -1522,7 +1518,10 @@ StScrollBar {
       border-image: none;
       background-image: none;
     }
-
+    &:active .overview-icon,
+    &:checked .overview-icon {
+      background-color: transparentize(darken($osd_bg_color,10%), 0.5);
+    }
   }
 
   .app-well-app-running-dot { //running apps indicator
