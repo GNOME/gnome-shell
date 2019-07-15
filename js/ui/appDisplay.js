@@ -1115,7 +1115,7 @@ var FolderIcon = class FolderIcon {
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView();
-
+        this.actor.connect('destroy', () => { this.view.actor.destroy(); });
         this.actor.connect('clicked', () => {
             this._ensurePopup();
             this.view.actor.vscroll.adjustment.value = 0;
