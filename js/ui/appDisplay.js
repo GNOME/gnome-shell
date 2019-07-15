@@ -130,8 +130,10 @@ class BaseAppView {
 
     addItem(icon) {
         let id = icon.id;
-        if (this._items[id] !== undefined)
+        if (this._items[id] !== undefined) {
+            icon.actor.destroy();
             return;
+        }
 
         this._allItems.push(icon);
         this._items[id] = icon;
