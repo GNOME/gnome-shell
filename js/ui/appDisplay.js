@@ -1122,6 +1122,7 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView();
 
+        this.actor.connect('destroy', () => this._onDestroy.bind(this));
         this.actor.connect('clicked', () => {
             this._ensurePopup();
             this.view.actor.vscroll.adjustment.value = 0;
@@ -1134,6 +1135,11 @@ var FolderIcon = class FolderIcon {
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
+    }
+
+    _onDestroy() {
+        this._popup = null;
+        this.view = null;
     }
 
     getAppIds() {
