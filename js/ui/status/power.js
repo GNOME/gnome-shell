@@ -114,8 +114,15 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             ? 'battery-level-100-charged-symbolic'
             : `battery-level-${fillLevel}${chargingState}-symbolic`;
 
-        this._indicator.icon_name = icon;
-        this._item.icon.icon_name = icon;
+        // Make sure we fall back to fallback-icon-name and not GThemedIcon's
+        // default fallbacks
+        let gicon = new Gio.ThemedIcon({
+            name: icon,
+            use_default_fallbacks: false
+        });
+
+        this._indicator.gicon = gicon;
+        this._item.icon.gicon = gicon;
 
         let fallbackIcon = this._proxy.IconName;
         this._indicator.fallback_icon_name = fallbackIcon;
