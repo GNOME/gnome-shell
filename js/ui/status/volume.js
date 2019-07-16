@@ -347,9 +347,11 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass({
+    GTypeName: 'Volume_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._primaryIndicator = this._addIndicator();
         this._inputIndicator = this._addIndicator();
@@ -374,7 +376,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.indicators.connect('scroll-event', this._onScrollEvent.bind(this));
+        this.connect('scroll-event', this._onScrollEvent.bind(this));
     }
 
     _onScrollEvent(actor, event) {
@@ -388,4 +390,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
-};
+});
