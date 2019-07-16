@@ -47,7 +47,8 @@ class PrimaryActorLayout extends Clutter.FixedLayout {
 
 var WindowClone = class {
     constructor(realWindow) {
-        this.clone = new Clutter.Clone({ source: realWindow });
+        this.clone = new Clutter.Actor({ content: realWindow.content,
+                                         request_mode: Clutter.RequestMode.CONTENT_SIZE });
 
         /* Can't use a Shell.GenericContainer because of DND and reparenting... */
         this.actor = new Clutter.Actor({ layout_manager: new PrimaryActorLayout(this.clone),
@@ -139,7 +140,8 @@ var WindowClone = class {
     }
 
     _doAddAttachedDialog(metaDialog, realDialog) {
-        let clone = new Clutter.Clone({ source: realDialog });
+        let clone = new Clutter.Actor({ content: realDialog.content,
+                                        request_mode: Clutter.RequestMode.CONTENT_SIZE });
         this._updateDialogPosition(realDialog, clone);
 
         clone._updateId = realDialog.connect('notify::position', dialog => {
@@ -165,7 +167,7 @@ var WindowClone = class {
 
     _disconnectSignals() {
         this.actor.get_children().forEach(child => {
-            let realWindow = child.source;
+            let realWindow = child.content.window_actor;
 
             realWindow.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
