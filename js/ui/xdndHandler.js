@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported XdndHandler */
 
 const { Clutter, Meta } = imports.gi;
 const Signals = imports.signals;
@@ -100,13 +101,11 @@ var XdndHandler = class {
         }
 
         while (pickedActor) {
-            if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
-                let [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
-                let result = pickedActor._delegate.handleDragOver(this,
-                                                                  dragEvent.dragActor,
-                                                                  targX,
-                                                                  targY,
-                                                                  global.get_current_time());
+            if (pickedActor.handleDragOver) {
+                let [, targX, targY] = pickedActor.transform_stage_point(x, y);
+                let result = pickedActor.handleDragOver(
+                    this, dragEvent.dragActor, targX, targY,
+                    global.get_current_time());
                 if (result != DND.DragMotionResult.CONTINUE)
                     return;
             }
