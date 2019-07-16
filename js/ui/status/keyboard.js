@@ -923,7 +923,7 @@ class InputSourceIndicator extends PanelMenu.Button {
     }
 
     _buildPropSection(properties) {
-        this._propSeparator.actor.hide();
+        this._propSeparator.hide();
         this._propSection.actor.hide();
         this._propSection.removeAll();
 
@@ -931,7 +931,7 @@ class InputSourceIndicator extends PanelMenu.Button {
 
         if (!this._propSection.isEmpty()) {
             this._propSection.actor.show();
-            this._propSeparator.actor.show();
+            this._propSeparator.show();
         }
     }
 
