@@ -1,30 +1,33 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported OsdMonitorLabeler */
 
-const { Clutter, Gio, Meta, St } = imports.gi;
+const { Clutter, Gio, GObject, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
 
-var OsdMonitorLabel = class {
-    constructor(monitor, label) {
-        this._actor = new St.Widget({ x_expand: true,
-                                      y_expand: true });
+var OsdMonitorLabel = GObject.registerClass(
+class OsdMonitorLabel extends St.Widget {
+    _init(monitor, label) {
+        super._init({ x_expand: true, y_expand: true });
 
         this._monitor = monitor;
 
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
-        this._actor.add_actor(this._box);
+        this.add_actor(this._box);
 
         this._label = new St.Label({ style_class: 'osd-monitor-label',
                                      text: label });
         this._box.add(this._label);
 
-        Main.uiGroup.add_child(this._actor);
-        Main.uiGroup.set_child_above_sibling(this._actor, null);
+        Main.uiGroup.add_child(this);
+        Main.uiGroup.set_child_above_sibling(this, null);
         this._position();
 
         Meta.disable_unredirect_for_display(global.display);
+        this.connect('destroy', () => {
+            Meta.enable_unredirect_for_display(global.display);
+        });
     }
 
     _position() {
@@ -37,12 +40,7 @@ var OsdMonitorLabel = class {
 
         this._box.y = workArea.y;
     }
-
-    destroy() {
-        this._actor.destroy();
-        Meta.enable_unredirect_for_display(global.display);
-    }
-};
+});
 
 var OsdMonitorLabeler = class {
     constructor() {

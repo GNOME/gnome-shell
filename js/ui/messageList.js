@@ -1,7 +1,7 @@
+/* exported MessageListSection */
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Pango, St } = imports.gi;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
 const Util = imports.misc.util;
@@ -31,13 +31,18 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = class URLHighlighter {
-    constructor(text = '', lineWrap, allowMarkup) {
-        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
-                                    x_expand: true, x_align: Clutter.ActorAlign.START });
+var URLHighlighter = GObject.registerClass(
+class URLHighlighter extends St.Label {
+    _init(text = '', lineWrap, allowMarkup) {
+        super._init({
+            reactive: true,
+            style_class: 'url-highlighter',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START
+        });
         this._linkColor = '#ccccff';
-        this.actor.connect('style-changed', () => {
-            let [hasColor, color] = this.actor.get_theme_node().lookup_color('link-color', false);
+        this.connect('style-changed', () => {
+            let [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
                 let linkColor = color.to_string().substr(0, 7);
                 if (linkColor != this._linkColor) {
@@ -46,11 +51,11 @@ var URLHighlighter = class URLHighlighter {
                 }
             }
         });
-        this.actor.clutter_text.line_wrap = lineWrap;
-        this.actor.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+        this.clutter_text.line_wrap = lineWrap;
+        this.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
 
         this.setMarkup(text, allowMarkup);
-        this.actor.connect('button-press-event', (actor, event) => {
+        this.connect('button-press-event', (actor, event) => {
             // Don't try to URL highlight when invisible.
             // The MessageTray doesn't actually hide us, so
             // we need to check for paint opacities as well.
@@ -62,7 +67,7 @@ var URLHighlighter = class URLHighlighter {
             // handler, if an URL is clicked
             return this._findUrlAtPos(event) != -1;
         });
-        this.actor.connect('button-release-event', (actor, event) => {
+        this.connect('button-release-event', (actor, event) => {
             if (!actor.visible || actor.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
@@ -77,7 +82,7 @@ var URLHighlighter = class URLHighlighter {
             }
             return Clutter.EVENT_PROPAGATE;
         });
-        this.actor.connect('motion-event', (actor, event) => {
+        this.connect('motion-event', (actor, event) => {
             if (!actor.visible || actor.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
@@ -91,8 +96,8 @@ var URLHighlighter = class URLHighlighter {
             }
             return Clutter.EVENT_PROPAGATE;
         });
-        this.actor.connect('leave-event', () => {
-            if (!this.actor.visible || this.actor.get_paint_opacity() == 0)
+        this.connect('leave-event', () => {
+            if (!this.visible || this.get_paint_opacity() == 0)
                 return Clutter.EVENT_PROPAGATE;
 
             if (this._cursorChanged) {
@@ -107,9 +112,9 @@ var URLHighlighter = class URLHighlighter {
         text = text ? _fixMarkup(text, allowMarkup) : '';
         this._text = text;
 
-        this.actor.clutter_text.set_markup(text);
+        this.clutter_text.set_markup(text);
         /* clutter_text.text contain text without markup */
-        this._urls = Util.findUrls(this.actor.clutter_text.text);
+        this._urls = Util.findUrls(this.clutter_text.text);
         this._highlightUrls();
     }
 
@@ -125,16 +130,15 @@ var URLHighlighter = class URLHighlighter {
             pos = url.pos + url.url.length;
         }
         markup += this._text.substr(pos);
-        this.actor.clutter_text.set_markup(markup);
+        this.clutter_text.set_markup(markup);
     }
 
     _findUrlAtPos(event) {
-        let success_;
         let [x, y] = event.get_coords();
-        [success_, x, y] = this.actor.transform_stage_point(x, y);
+        [, x, y] = this.transform_stage_point(x, y);
         let findPos = -1;
-        for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
-            let [success_, px, py, lineHeight] = this.actor.clutter_text.position_to_coords(i);
+        for (let i = 0; i < this.clutter_text.text.length; i++) {
+            let [, px, py, lineHeight] = this.clutter_text.position_to_coords(i);
             if (py > y || py + lineHeight < y || x < px)
                 continue;
             findPos = i;
@@ -147,7 +151,7 @@ var URLHighlighter = class URLHighlighter {
         }
         return -1;
     }
-};
+});
 
 var ScaleLayout = GObject.registerClass(
 class ScaleLayout extends Clutter.BinLayout {
@@ -283,21 +287,30 @@ var LabelExpanderLayout = GObject.registerClass({
     }
 });
 
-var Message = class Message {
-    constructor(title, body) {
-        this.expanded = false;
 
+var Message = GObject.registerClass({
+    Signals: {
+        'close': {},
+        'expanded': {},
+        'unexpanded': {},
+    }
+}, class Message extends St.Button {
+    _init(title, body) {
+        super._init({
+            style_class: 'message',
+            accessible_role: Atk.Role.NOTIFICATION,
+            can_focus: true,
+            x_expand: true,
+            x_fill: true
+        });
+
+        this.expanded = false;
         this._useBodyMarkup = false;
 
-        this.actor = new St.Button({ style_class: 'message',
-                                     accessible_role: Atk.Role.NOTIFICATION,
-                                     can_focus: true,
-                                     x_expand: true, x_fill: true });
-        this.actor.connect('key-press-event',
-                           this._onKeyPressed.bind(this));
+        this.connect('key-press-event', this._onKeyPressed.bind(this));
 
         let vbox = new St.BoxLayout({ vertical: true });
-        this.actor.set_child(vbox);
+        this.set_child(vbox);
 
         let hbox = new St.BoxLayout();
         vbox.add_actor(hbox);
@@ -341,15 +354,15 @@ var Message = class Message {
         contentBox.add_actor(this._bodyStack);
 
         this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
-        this.bodyLabel.actor.add_style_class_name('message-body');
-        this._bodyStack.add_actor(this.bodyLabel.actor);
+        this.bodyLabel.add_style_class_name('message-body');
+        this._bodyStack.add_actor(this.bodyLabel);
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
-        let actorHoverId = this.actor.connect('notify::hover', this._sync.bind(this));
-        this._closeButton.connect('destroy', this.actor.disconnect.bind(this.actor, actorHoverId));
-        this.actor.connect('clicked', this._onClicked.bind(this));
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        let actorHoverId = this.connect('notify::hover', this._sync.bind(this));
+        this._closeButton.connect('destroy', this.disconnect.bind(this, actorHoverId));
+        this.connect('clicked', this._onClicked.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
         this._sync();
     }
 
@@ -435,7 +448,7 @@ var Message = class Message {
         if (this._bodyStack.get_n_children() < 2) {
             this._expandedLabel = new URLHighlighter(this._bodyText,
                                                      true, this._useBodyMarkup);
-            this.setExpandedBody(this._expandedLabel.actor);
+            this.setExpandedBody(this._expandedLabel);
         }
 
         if (animate) {
@@ -488,7 +501,7 @@ var Message = class Message {
     }
 
     _sync() {
-        let visible = this.actor.hover && this.canClose();
+        let visible = this.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
         this._closeButton.reactive = visible;
     }
@@ -509,25 +522,33 @@ var Message = class Message {
         }
         return Clutter.EVENT_PROPAGATE;
     }
-};
-Signals.addSignalMethods(Message.prototype);
+});
 
-var MessageListSection = class MessageListSection {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'message-list-section',
-                                        clip_to_allocation: true,
-                                        x_expand: true, vertical: true });
+var MessageListSection = GObject.registerClass({
+    Signals: {
+        'can-clear-changed': {},
+        'empty-changed': {},
+        'message-focused': { param_types: [Message.$gtype] },
+    }
+}, class MessageListSection extends St.BoxLayout {
+    _init() {
+        super._init({
+            style_class: 'message-list-section',
+            clip_to_allocation: true,
+            vertical: true,
+            x_expand: true
+        });
 
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
                                         vertical: true });
-        this.actor.add_actor(this._list);
+        this.add_actor(this._list);
 
         this._list.connect('actor-added', this._sync.bind(this));
         this._list.connect('actor-removed', this._sync.bind(this));
 
         let id = Main.sessionMode.connect('updated',
                                           this._sync.bind(this));
-        this.actor.connect('destroy', () => {
+        this.connect('destroy', () => {
             Main.sessionMode.disconnect(id);
         });
 
@@ -539,7 +560,7 @@ var MessageListSection = class MessageListSection {
     }
 
     _onKeyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        this.emit('message-focused', actor);
     }
 
     get allowed() {
@@ -572,9 +593,9 @@ var MessageListSection = class MessageListSection {
         obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
                                         pivot_point: pivot,
                                         scale_x: scale, scale_y: scale });
-        obj.keyFocusId = message.actor.connect('key-focus-in',
+        obj.keyFocusId = message.connect('key-focus-in',
             this._onKeyFocusIn.bind(this));
-        obj.destroyId = message.actor.connect('destroy', () => {
+        obj.destroyId = message.connect('destroy', () => {
             this.removeMessage(message, false);
         });
         obj.closeId = message.connect('close', () => {
@@ -582,7 +603,7 @@ var MessageListSection = class MessageListSection {
         });
 
         this._messages.set(message, obj);
-        obj.container.add_actor(message.actor);
+        obj.container.add_actor(message);
 
         this._list.insert_child_at_index(obj.container, index);
 
@@ -624,8 +645,8 @@ var MessageListSection = class MessageListSection {
     removeMessage(message, animate) {
         let obj = this._messages.get(message);
 
-        message.actor.disconnect(obj.destroyId);
-        message.actor.disconnect(obj.keyFocusId);
+        message.disconnect(obj.destroyId);
+        message.disconnect(obj.keyFocusId);
         message.disconnect(obj.closeId);
 
         this._messages.delete(message);
@@ -700,7 +721,6 @@ var MessageListSection = class MessageListSection {
         if (changed)
             this.emit('can-clear-changed');
 
-        this.actor.visible = this.allowed && this._shouldShow();
+        this.visible = this.allowed && this._shouldShow();
     }
-};
-Signals.addSignalMethods(MessageListSection.prototype);
+});
