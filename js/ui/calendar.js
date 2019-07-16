@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Calendar, CalendarMessageList */
 
-const { Clutter, Gio, GLib, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -313,8 +313,10 @@ var DBusEventSource = class DBusEventSource {
 };
 Signals.addSignalMethods(DBusEventSource.prototype);
 
-var Calendar = class Calendar {
-    constructor() {
+var Calendar = GObject.registerClass({
+    Signals: { 'selected-date-changed': {} }
+}, class Calendar extends St.Widget {
+    _init() {
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
@@ -344,12 +346,13 @@ var Calendar = class Calendar {
 
         this._shouldDateGrabFocus = false;
 
-        this.actor = new St.Widget({ style_class: 'calendar',
-                                     layout_manager: new Clutter.TableLayout(),
-                                     reactive: true });
+        super._init({
+            style_class: 'calendar',
+            layout_manager: new Clutter.TableLayout(),
+            reactive: true
+        });
 
-        this.actor.connect('scroll-event',
-                           this._onScroll.bind(this));
+        this.connect('scroll-event', this._onScroll.bind(this));
 
         this._buildHeader ();
     }
@@ -373,7 +376,11 @@ var Calendar = class Calendar {
 
         this._selectedDate = date;
         this._update();
-        this.emit('selected-date-changed', new Date(this._selectedDate));
+        this.emit('selected-date-changed');
+    }
+
+    get selectedDate() {
+        return new Date(this._selectedDate);
     }
 
     updateTimeZone() {
@@ -384,9 +391,9 @@ var Calendar = class Calendar {
     }
 
     _buildHeader() {
-        let layout = this.actor.layout_manager;
+        let layout = this.layout_manager;
         let offsetCols = this._useWeekdate ? 1 : 0;
-        this.actor.destroy_all_children();
+        this.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
@@ -428,7 +435,7 @@ var Calendar = class Calendar {
                                        can_focus: true });
             label.accessible_name = iter.toLocaleFormat('%A');
             let col;
-            if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
+            if (this.get_text_direction() == Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
@@ -437,7 +444,7 @@ var Calendar = class Calendar {
         }
 
         // All the children after this are days, and get removed when we update the calendar
-        this._firstDayIndex = this.actor.get_n_children();
+        this._firstDayIndex = this.get_n_children();
     }
 
     _onScroll(actor, event) {
@@ -511,7 +518,7 @@ var Calendar = class Calendar {
         let now = new Date();
 
         // Remove everything but the topBox and the weekday labels
-        let children = this.actor.get_children();
+        let children = this.get_children();
         for (let i = this._firstDayIndex; i < children.length; i++)
             children[i].destroy();
 
@@ -548,7 +555,7 @@ var Calendar = class Calendar {
 
         beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
 
-        let layout = this.actor.layout_manager;
+        let layout = this.layout_manager;
         let iter = new Date(beginDate);
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
@@ -647,12 +654,12 @@ var Calendar = class Calendar {
             }
         });
     }
-};
-Signals.addSignalMethods(Calendar.prototype);
+});
 
-var EventMessage = class EventMessage extends MessageList.Message {
-    constructor(event, date) {
-        super('', event.summary);
+var EventMessage = GObject.registerClass(
+class EventMessage extends MessageList.Message {
+    _init(event, date) {
+        super._init('', event.summary);
 
         this._event = event;
         this._date = date;
@@ -662,8 +669,8 @@ var EventMessage = class EventMessage extends MessageList.Message {
         this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
         this.setIcon(this._icon);
 
-        this.actor.connect('style-changed', () => {
-            let iconVisible = this.actor.get_parent().has_style_pseudo_class('first-child');
+        this.connect('style-changed', () => {
+            let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
             this._icon.opacity = (iconVisible ? 255 : 0);
         });
     }
@@ -700,12 +707,12 @@ var EventMessage = class EventMessage extends MessageList.Message {
         }
         return title;
     }
-};
+});
 
-var NotificationMessage =
+var NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
-    constructor(notification) {
-        super(notification.title, notification.bannerBodyText);
+    _init(notification) {
+        super._init(notification.title, notification.bannerBodyText);
         this.setUseBodyMarkup(notification.bannerBodyMarkup);
 
         this.notification = notification;
@@ -764,11 +771,12 @@ class NotificationMessage extends MessageList.Message {
     canClose() {
         return true;
     }
-};
+});
 
-var EventsSection = class EventsSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+var EventsSection = GObject.registerClass(
+class EventsSection extends MessageList.MessageListSection {
+    _init() {
+        super._init();
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
@@ -780,7 +788,7 @@ var EventsSection = class EventsSection extends MessageList.MessageListSection {
                                       label: '',
                                       x_align: St.Align.START,
                                       can_focus: true });
-        this.actor.insert_child_below(this._title, null);
+        this.insert_child_below(this._title, null);
 
         this._title.connect('clicked', this._onTitleClicked.bind(this));
         this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
@@ -899,12 +907,12 @@ var EventsSection = class EventsSection extends MessageList.MessageListSection {
 
         super._sync();
     }
-};
+});
 
-var NotificationSection =
+var NotificationSection = GObject.registerClass(
 class NotificationSection extends MessageList.MessageListSection {
-    constructor() {
-        super();
+    _init() {
+        super._init();
 
         this._sources = new Map();
         this._nUrgent = 0;
@@ -914,7 +922,7 @@ class NotificationSection extends MessageList.MessageListSection {
             this._sourceAdded(Main.messageTray, source);
         });
 
-        this.actor.connect('notify::mapped', this._onMapped.bind(this));
+        this.connect('notify::mapped', this._onMapped.bind(this));
     }
 
     get allowed() {
@@ -956,7 +964,7 @@ class NotificationSection extends MessageList.MessageListSection {
 
         let updatedId = notification.connect('updated', () => {
             message.setSecondaryActor(this._createTimeLabel(notification.datetime));
-            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
+            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
         });
         let destroyId = notification.connect('destroy', () => {
             notification.disconnect(destroyId);
@@ -976,7 +984,7 @@ class NotificationSection extends MessageList.MessageListSection {
         }
 
         let index = isUrgent ? 0 : this._nUrgent;
-        this.addMessageAtIndex(message, index, this.actor.mapped);
+        this.addMessageAtIndex(message, index, this.mapped);
     }
 
     _onSourceDestroy(source, obj) {
@@ -987,7 +995,7 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 
     _onMapped() {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return;
 
         for (let message of this._messages.keys())
@@ -998,13 +1006,12 @@ class NotificationSection extends MessageList.MessageListSection {
     _shouldShow() {
         return !this.empty && isToday(this._date);
     }
-};
+});
 
-var Placeholder = class Placeholder {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'message-list-placeholder',
-                                        vertical: true });
-
+var Placeholder = GObject.registerClass(
+class Placeholder extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'message-list-placeholder', vertical: true });
         this._date = new Date();
 
         let todayFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-notifications.svg');
@@ -1013,10 +1020,10 @@ var Placeholder = class Placeholder {
         this._otherIcon = new Gio.FileIcon({ file: otherFile });
 
         this._icon = new St.Icon();
-        this.actor.add_actor(this._icon);
+        this.add_actor(this._icon);
 
         this._label = new St.Label();
-        this.actor.add_actor(this._label);
+        this.add_actor(this._label);
 
         this._sync();
     }
@@ -1043,20 +1050,23 @@ var Placeholder = class Placeholder {
             this._label.text = _("No Events");
         }
     }
-};
+});
 
-var CalendarMessageList = class CalendarMessageList {
-    constructor() {
-        this.actor = new St.Widget({ style_class: 'message-list',
-                                     layout_manager: new Clutter.BinLayout(),
-                                     x_expand: true, y_expand: true });
+var CalendarMessageList = GObject.registerClass(
+class CalendarMessageList extends St.Widget {
+    _init() {
+        super._init({
+            style_class: 'message-list',
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true, y_expand: true
+        });
 
         this._placeholder = new Placeholder();
-        this.actor.add_actor(this._placeholder.actor);
+        this.add_actor(this._placeholder);
 
         let box = new St.BoxLayout({ vertical: true,
                                      x_expand: true, y_expand: true });
-        this.actor.add_actor(box);
+        this.add_actor(box);
 
         this._scrollView = new St.ScrollView({ style_class: 'vfade',
                                                overlay_scrollbars: true,
@@ -1102,52 +1112,51 @@ var CalendarMessageList = class CalendarMessageList {
             canClearChangedId: 0,
             keyFocusId: 0
         };
-        obj.destroyId = section.actor.connect('destroy', () => {
+        obj.destroyId = section.connect('destroy', () => {
             this._removeSection(section);
         });
-        obj.visibleId = section.actor.connect('notify::visible',
-                                              this._sync.bind(this));
+        obj.visibleId = section.connect('notify::visible', this._sync.bind(this));
         obj.emptyChangedId = section.connect('empty-changed',
                                              this._sync.bind(this));
         obj.canClearChangedId = section.connect('can-clear-changed',
                                                 this._sync.bind(this));
-        obj.keyFocusId = section.connect('key-focus-in',
-                                         this._onKeyFocusIn.bind(this));
+        obj.keyFocusId = section.connect('message-focused',
+                                         this._onMessageKeyFocusIn.bind(this));
 
         this._sections.set(section, obj);
-        this._sectionList.add_actor(section.actor);
+        this._sectionList.add_actor(section);
         this._sync();
     }
 
     _removeSection(section) {
         let obj = this._sections.get(section);
-        section.actor.disconnect(obj.destroyId);
-        section.actor.disconnect(obj.visibleId);
+        section.disconnect(obj.destroyId);
+        section.disconnect(obj.visibleId);
         section.disconnect(obj.emptyChangedId);
         section.disconnect(obj.canClearChangedId);
         section.disconnect(obj.keyFocusId);
 
         this._sections.delete(section);
-        this._sectionList.remove_actor(section.actor);
+        this._sectionList.remove_actor(section);
         this._sync();
     }
 
-    _onKeyFocusIn(section, actor) {
+    _onMessageKeyFocusIn(section, actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     }
 
     _sync() {
         let sections = [...this._sections.keys()];
         let visible = sections.some(s => s.allowed);
-        this.actor.visible = visible;
+        this.visible = visible;
         if (!visible)
             return;
 
-        let empty = sections.every(s => s.empty || !s.actor.visible);
-        this._placeholder.actor.visible = empty;
+        let empty = sections.every(s => s.empty || !s.visible);
+        this._placeholder.visible = empty;
         this._clearButton.visible = !empty;
 
-        let canClear = sections.some(s => s.canClear && s.actor.visible);
+        let canClear = sections.some(s => s.canClear && s.visible);
         this._clearButton.reactive = canClear;
     }
 
@@ -1160,4 +1169,4 @@ var CalendarMessageList = class CalendarMessageList {
             section.setDate(date);
         this._placeholder.setDate(date);
     }
-};
+});
