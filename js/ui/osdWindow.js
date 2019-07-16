@@ -42,22 +42,25 @@ class OsdWindowConstraint extends Clutter.Constraint {
     }
 });
 
-var OsdWindow = class {
-    constructor(monitorIndex) {
-        this.actor = new St.Widget({ x_expand: true,
-                                     y_expand: true,
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     y_align: Clutter.ActorAlign.CENTER });
+var OsdWindow = GObject.registerClass(
+class OsdWindow extends St.Widget {
+    _init(monitorIndex) {
+        super._init({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER
+        });
 
         this._monitorIndex = monitorIndex;
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._boxConstraint = new OsdWindowConstraint();
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
         this._box.add_constraint(this._boxConstraint);
-        this.actor.add_actor(this._box);
+        this.add_actor(this._box);
 
         this._icon = new St.Icon();
         this._box.add(this._icon, { expand: true });
@@ -74,7 +77,7 @@ var OsdWindow = class {
         this._hideTimeoutId = 0;
         this._reset();
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._monitorsChangedId =
             Main.layoutManager.connect('monitors-changed',
@@ -84,7 +87,7 @@ var OsdWindow = class {
             themeContext.connect('notify::scale-factor',
                                  this._relayout.bind(this));
         this._relayout();
-        Main.uiGroup.add_child(this.actor);
+        Main.uiGroup.add_child(this);
     }
 
     _onDestroy() {
@@ -111,7 +114,7 @@ var OsdWindow = class {
     setLevel(value) {
         this._level.visible = (value != undefined);
         if (value != undefined) {
-            if (this.actor.visible)
+            if (this.visible)
                 this._level.ease_property('value', value, {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                     duration: LEVEL_ANIMATION_TIME
@@ -129,13 +132,13 @@ var OsdWindow = class {
         if (!this._icon.gicon)
             return;
 
-        if (!this.actor.visible) {
+        if (!this.visible) {
             Meta.disable_unredirect_for_display(global.display);
-            this.actor.show();
-            this.actor.opacity = 0;
-            this.actor.get_parent().set_child_above_sibling(this.actor, null);
+            super.show();
+            this.opacity = 0;
+            this.get_parent().set_child_above_sibling(this, null);
 
-            this.actor.ease({
+            this.ease({
                 opacity: 255,
                 duration: FADE_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
@@ -159,7 +162,7 @@ var OsdWindow = class {
 
     _hide() {
         this._hideTimeoutId = 0;
-        this.actor.ease({
+        this.ease({
             opacity: 0,
             duration: FADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -172,7 +175,7 @@ var OsdWindow = class {
     }
 
     _reset() {
-        this.actor.hide();
+        super.hide();
         this.setLabel(null);
         this.setMaxLevel(null);
         this.setLevel(null);
@@ -194,7 +197,7 @@ var OsdWindow = class {
         this._box.translation_y = Math.round(monitor.height / 4);
         this._boxConstraint.minSize = popupSize;
     }
-};
+});
 
 var OsdWindowManager = class {
     constructor() {
@@ -211,7 +214,7 @@ var OsdWindowManager = class {
         }
 
         for (let i = Main.layoutManager.monitors.length; i < this._osdWindows.length; i++) {
-            this._osdWindows[i].actor.destroy();
+            this._osdWindows[i].destroy();
             this._osdWindows[i] = null;
         }
 
