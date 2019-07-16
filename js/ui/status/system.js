@@ -10,8 +10,10 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 
-var AltSwitcher = class {
-    constructor(standard, alternate) {
+var AltSwitcher = GObject.registerClass(
+class AltSwitcher extends St.Bin {
+    _init(standard, alternate) {
+        super._init();
         this._standard = standard;
         this._standard.connect('notify::visible', this._sync.bind(this));
         if (this._standard instanceof St.Button)
@@ -31,9 +33,8 @@ var AltSwitcher = class {
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('long-press', this._onLongPress.bind(this));
 
-        this.actor = new St.Bin();
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('notify::mapped', () => this._flipped = false);
+        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('notify::mapped', () => this._flipped = false);
     }
 
     _sync() {
@@ -51,11 +52,11 @@ var AltSwitcher = class {
         } else if (this._alternate.visible) {
             childToShow = this._alternate;
         } else {
-            this.actor.hide();
+            this.hide();
             return;
         }
 
-        let childShown = this.actor.get_child();
+        let childShown = this.get_child();
         if (childShown != childToShow) {
             if (childShown) {
                 if (childShown.fake_release)
@@ -64,8 +65,8 @@ var AltSwitcher = class {
             }
             childToShow.add_action(this._clickAction);
 
-            let hasFocus = this.actor.contains(global.stage.get_key_focus());
-            this.actor.set_child(childToShow);
+            let hasFocus = this.contains(global.stage.get_key_focus());
+            this.set_child(childToShow);
             if (hasFocus)
                 childToShow.grab_key_focus();
 
@@ -74,7 +75,7 @@ var AltSwitcher = class {
             global.sync_pointer();
         }
 
-        this.actor.show();
+        this.show();
     }
 
     _onDestroy() {
@@ -104,11 +105,13 @@ var AltSwitcher = class {
         this._sync();
         return true;
     }
-};
+});
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass({
+    GTypeName: 'System_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         let userManager = AccountsService.UserManager.get_default();
         this._user = userManager.get_user(GLib.get_user_name());
@@ -289,7 +292,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                                           bindFlags);
 
         this._altSwitcher = new AltSwitcher(this._powerOffAction, this._suspendAction);
-        item.add(this._altSwitcher.actor, { expand: true, x_fill: false });
+        item.add(this._altSwitcher, { expand: true, x_fill: false });
 
         this.menu.addMenuItem(item);
 
@@ -297,7 +300,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             this._settingsAction,
             this._orientationLockAction,
             this._lockScreenAction,
-            this._altSwitcher.actor,
+            this._altSwitcher,
         ];
 
         for (let actor of visibilityGroup) {
@@ -312,4 +315,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         Main.overview.hide();
         this._settingsApp.activate();
     }
-};
+});
