@@ -1295,7 +1295,7 @@ var ZoomRegion = class ZoomRegion {
 
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).
-        this._background = (new Background.SystemBackground()).actor;
+        this._background = new Background.SystemBackground();
         mainGroup.add_actor(this._background);
 
         // Clone the group that contains all of UI on the screen.  This is the
@@ -1592,8 +1592,9 @@ var ZoomRegion = class ZoomRegion {
     }
 };
 
-var Crosshairs = class Crosshairs {
-    constructor() {
+var Crosshairs = GObject.registerClass(
+class Crosshairs extends Clutter.Actor {
+    _init() {
 
         // Set the group containing the crosshairs to three times the desktop
         // size in case the crosshairs need to appear to be infinite in
@@ -1601,7 +1602,7 @@ var Crosshairs = class Crosshairs {
         let groupWidth = global.screen_width * 3;
         let groupHeight = global.screen_height * 3;
 
-        this._actor = new Clutter.Actor({
+        super._init({
             clip_to_allocation: false,
             width: groupWidth,
             height: groupHeight
@@ -1610,10 +1611,10 @@ var Crosshairs = class Crosshairs {
         this._horizRightHair = new Clutter.Actor();
         this._vertTopHair = new Clutter.Actor();
         this._vertBottomHair = new Clutter.Actor();
-        this._actor.add_actor(this._horizLeftHair);
-        this._actor.add_actor(this._horizRightHair);
-        this._actor.add_actor(this._vertTopHair);
-        this._actor.add_actor(this._vertBottomHair);
+        this.add_actor(this._horizLeftHair);
+        this.add_actor(this._horizRightHair);
+        this.add_actor(this._vertTopHair);
+        this.add_actor(this._vertBottomHair);
         this._clipSize = [0, 0];
         this._clones = [];
         this.reCenter();
@@ -1623,7 +1624,7 @@ var Crosshairs = class Crosshairs {
     }
 
     _monitorsChanged() {
-        this._actor.set_size(global.screen_width * 3, global.screen_height * 3);
+        this.set_size(global.screen_width * 3, global.screen_height * 3);
         this.reCenter();
     }
 
@@ -1644,12 +1645,12 @@ var Crosshairs = class Crosshairs {
         if (zoomRegion && magnifiedMouse) {
             let container = magnifiedMouse.get_parent();
             if (container) {
-                crosshairsActor = this._actor;
-                if (this._actor.get_parent() != null) {
-                    crosshairsActor = new Clutter.Clone({ source: this._actor });
+                crosshairsActor = this;
+                if (this.get_parent() != null) {
+                    crosshairsActor = new Clutter.Clone({ source: this });
                     this._clones.push(crosshairsActor);
                 }
-                crosshairsActor.visible = this._actor.visible;
+                crosshairsActor.visible = this.visible;
 
                 container.add_actor(crosshairsActor);
                 container.raise_child(magnifiedMouse, crosshairsActor);
@@ -1668,7 +1669,7 @@ var Crosshairs = class Crosshairs {
      * child actor if it was just a clone of the crosshairs actor.
      */
     removeFromParent(childActor) {
-        if (childActor == this._actor)
+        if (childActor == this)
             childActor.get_parent().remove_actor(childActor);
         else
             childActor.destroy();
@@ -1782,8 +1783,8 @@ var Crosshairs = class Crosshairs {
      * show:
      * Show the crosshairs.
      */
-    show() {
-        this._actor.show();
+    vfunc_show() {
+        super.vfunc_show();
         // Clones don't share visibility.
         for (let i = 0; i < this._clones.length; i++)
             this._clones[i].show();
@@ -1793,8 +1794,8 @@ var Crosshairs = class Crosshairs {
      * hide:
      * Hide the crosshairs.
      */
-    hide() {
-        this._actor.hide();
+    vfunc_hide() {
+        super.vfunc_hide();
         // Clones don't share visibility.
         for (let i = 0; i < this._clones.length; i++)
             this._clones[i].hide();
@@ -1808,7 +1809,7 @@ var Crosshairs = class Crosshairs {
      * @clipSize:  Optional.  If present, an array of the form [width, height].
      */
     reCenter(clipSize) {
-        let [groupWidth, groupHeight] = this._actor.get_size();
+        let [groupWidth, groupHeight] = this.get_size();
         let leftLength = this._horizLeftHair.get_width();
         let topLength = this._vertTopHair.get_height();
         let thickness = this._horizLeftHair.get_height();
@@ -1830,7 +1831,7 @@ var Crosshairs = class Crosshairs {
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
         this._vertBottomHair.set_position((groupWidth - thickness) / 2, bottom);
     }
-};
+});
 
 var MagShaderEffects = class MagShaderEffects {
     constructor(uiGroupClone) {
