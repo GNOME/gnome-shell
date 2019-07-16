@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, St } = imports.gi;
+const { Gio, GObject, St } = imports.gi;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -15,9 +15,11 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super('display-brightness-symbolic');
+var Indicator = GObject.registerClass({
+    GTypeName: 'Brightness_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                           (proxy, error) => {
                                               if (error) {
@@ -60,4 +62,4 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         if (visible)
             this._slider.value = this._proxy.Brightness / 100.0;
     }
-};
+});
