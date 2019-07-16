@@ -25,22 +25,25 @@ function _isToday(date) {
            now.getDate() == date.getDate();
 }
 
-var TodayButton = class TodayButton {
-    constructor(calendar) {
+var TodayButton = GObject.registerClass(
+class TodayButton extends St.Button {
+    _init(calendar) {
         // Having the ability to go to the current date if the user is already
         // on the current date can be confusing. So don't make the button reactive
         // until the selected date changes.
-        this.actor = new St.Button({ style_class: 'datemenu-today-button',
-                                     x_expand: true, x_align: St.Align.START,
-                                     can_focus: true,
-                                     reactive: false
-                                   });
-        this.actor.connect('clicked', () => {
+        super._init({
+            style_class: 'datemenu-today-button',
+            x_expand: true,
+            x_align: St.Align.START,
+            can_focus: true,
+            reactive: false
+        });
+        this.connect('clicked', () => {
             this._calendar.setDate(new Date(), false);
         });
 
         let hbox = new St.BoxLayout({ vertical: true });
-        this.actor.add_actor(hbox);
+        this.add_actor(hbox);
 
         this._dayLabel = new St.Label({ style_class: 'day-label',
                                         x_align: Clutter.ActorAlign.START });
@@ -53,7 +56,7 @@ var TodayButton = class TodayButton {
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.actor.reactive = !_isToday(datetime.toDate());
+            this.reactive = !_isToday(datetime.toDate());
         });
     }
 
@@ -73,21 +76,24 @@ var TodayButton = class TodayButton {
          * date, e.g. "Tuesday February 17 2015".
          */
         dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
-        this.actor.accessible_name = date.toLocaleFormat(dateFormat);
+        this.accessible_name = date.toLocaleFormat(dateFormat);
     }
-};
+});
 
-var WorldClocksSection = class WorldClocksSection {
-    constructor() {
+var WorldClocksSection = GObject.registerClass(
+class WorldClocksSection extends St.Button {
+    _init() {
+        super._init({
+            style_class: 'world-clocks-button',
+            x_fill: true,
+            can_focus: true
+        });
         this._clock = new GnomeDesktop.WallClock();
         this._clockNotifyId = 0;
 
         this._locations = [];
 
-        this.actor = new St.Button({ style_class: 'world-clocks-button',
-                                     x_fill: true,
-                                     can_focus: true });
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             if (this._clocksApp)
                 this._clocksApp.activate();
 
@@ -100,7 +106,7 @@ var WorldClocksSection = class WorldClocksSection {
                                      layout_manager: layout });
         layout.hookup_style(this._grid);
 
-        this.actor.child = this._grid;
+        this.child = this._grid;
 
         this._clocksApp = null;
         this._clocksProxy = new ClocksProxy(
@@ -125,7 +131,7 @@ var WorldClocksSection = class WorldClocksSection {
 
     _sync() {
         this._clocksApp = this._appSystem.lookup_app('org.gnome.clocks.desktop');
-        this.actor.visible = this._clocksApp != null;
+        this.visible = this._clocksApp != null;
     }
 
     _clocksChanged() {
@@ -152,7 +158,7 @@ var WorldClocksSection = class WorldClocksSection {
                                     x_align: Clutter.ActorAlign.START,
                                     text: title });
         layout.attach(header, 0, 0, 2, 1);
-        this.actor.label_actor = header;
+        this.label_actor = header;
 
         let localOffset = GLib.DateTime.new_now_local().get_utc_offset();
 
@@ -233,30 +239,34 @@ var WorldClocksSection = class WorldClocksSection {
         this._settings.set_value('locations',
             new GLib.Variant('av', this._clocksProxy.Locations));
     }
-};
+});
 
-var WeatherSection = class WeatherSection {
-    constructor() {
+var WeatherSection = GObject.registerClass(
+class WeatherSection extends St.Button {
+    _init() {
+        super._init({
+            style_class: 'weather-button',
+            x_fill: true,
+            can_focus: true
+        });
+
         this._weatherClient = new Weather.WeatherClient();
 
-        this.actor = new St.Button({ style_class: 'weather-button',
-                                     x_fill: true,
-                                     can_focus: true });
-        this.actor.connect('clicked', () => {
+        this.connect('clicked', () => {
             this._weatherClient.activateApp();
 
             Main.overview.hide();
             Main.panel.closeCalendar();
         });
-        this.actor.connect('notify::mapped', () => {
-            if (this.actor.mapped)
+        this.connect('notify::mapped', () => {
+            if (this.mapped)
                 this._weatherClient.update();
         });
 
         let box = new St.BoxLayout({ style_class: 'weather-box',
                                      vertical: true });
 
-        this.actor.child = box;
+        this.child = box;
 
         let titleBox = new St.BoxLayout();
         titleBox.add_child(new St.Label({ style_class: 'weather-header',
@@ -369,23 +379,27 @@ var WeatherSection = class WeatherSection {
     }
 
     _sync() {
-        this.actor.visible = this._weatherClient.available;
+        this.visible = this._weatherClient.available;
 
-        if (!this.actor.visible)
+        if (!this.visible)
             return;
 
         this._titleLocation.visible = this._weatherClient.hasLocation;
 
         this._updateForecasts();
     }
-};
+});
 
-var MessagesIndicator = class MessagesIndicator {
-    constructor() {
-        this.actor = new St.Icon({ icon_name: 'message-indicator-symbolic',
-                                   icon_size: 16,
-                                   visible: false, y_expand: true,
-                                   y_align: Clutter.ActorAlign.CENTER });
+var MessagesIndicator = GObject.registerClass(
+class MessagesIndicator extends St.Icon {
+    _init() {
+        super._init({
+            icon_name: 'message-indicator-symbolic',
+            icon_size: 16,
+            visible: false,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
 
         this._sources = [];
 
@@ -413,9 +427,9 @@ var MessagesIndicator = class MessagesIndicator {
         this._sources.forEach(source => count += source.unseenCount);
         count -= Main.messageTray.queueCount;
 
-        this.actor.visible = (count > 0);
+        this.visible = (count > 0);
     }
-};
+});
 
 var IndicatorPad = GObject.registerClass(
 class IndicatorPad extends St.Widget {
@@ -508,9 +522,9 @@ class DateMenuButton extends PanelMenu.Button {
         this._indicator = new MessagesIndicator();
 
         let box = new St.BoxLayout();
-        box.add_actor(new IndicatorPad(this._indicator.actor));
+        box.add_actor(new IndicatorPad(this._indicator));
         box.add_actor(this._clockDisplay);
-        box.add_actor(this._indicator.actor);
+        box.add_actor(this._indicator);
 
         this.label_actor = this._clockDisplay;
         this.add_actor(box);
@@ -544,19 +558,19 @@ class DateMenuButton extends PanelMenu.Button {
 
         // Fill up the first column
         this._messageList = new Calendar.CalendarMessageList();
-        hbox.add(this._messageList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
+        hbox.add(this._messageList, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Fill up the second column
-        let boxLayout = new CalendarColumnLayout(this._calendar.actor);
+        let boxLayout = new CalendarColumnLayout(this._calendar);
         vbox = new St.Widget({ style_class: 'datemenu-calendar-column',
                                layout_manager: boxLayout });
         boxLayout.hookup_style(vbox);
         hbox.add(vbox);
 
         this._date = new TodayButton(this._calendar);
-        vbox.add_actor(this._date.actor);
+        vbox.add_actor(this._date);
 
-        vbox.add_actor(this._calendar.actor);
+        vbox.add_actor(this._calendar);
 
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
                                                     x_expand: true, x_fill: true,
@@ -569,10 +583,10 @@ class DateMenuButton extends PanelMenu.Button {
         this._displaysSection.add_actor(displaysBox);
 
         this._clocksItem = new WorldClocksSection();
-        displaysBox.add(this._clocksItem.actor, { x_fill: true });
+        displaysBox.add(this._clocksItem, { x_fill: true });
 
         this._weatherItem = new WeatherSection();
-        displaysBox.add(this._weatherItem.actor, { x_fill: true });
+        displaysBox.add(this._weatherItem, { x_fill: true });
 
         // Done with hbox for calendar and event list
 

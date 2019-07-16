@@ -76,8 +76,8 @@ var AuthenticationDialog = GObject.registerClass({
             this._userAvatar = new UserWidget.Avatar(this._user,
                                                      { iconSize: DIALOG_ICON_SIZE,
                                                        styleClass: 'polkit-dialog-user-icon' });
-            this._userAvatar.actor.hide();
-            userBox.add(this._userAvatar.actor,
+            this._userAvatar.hide();
+            userBox.add(this._userAvatar,
                         { x_fill: true,
                           y_fill: false,
                           x_align: St.Align.END,
@@ -106,7 +106,7 @@ var AuthenticationDialog = GObject.registerClass({
                               { expand: true });
 
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
-        this._passwordBox.add(this._workSpinner.actor);
+        this._passwordBox.add(this._workSpinner);
 
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
@@ -305,7 +305,7 @@ var AuthenticationDialog = GObject.registerClass({
     _onUserChanged() {
         if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
-            this._userAvatar.actor.show();
+            this._userAvatar.show();
         }
     }
 
