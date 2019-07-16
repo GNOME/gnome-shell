@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-07-07 18:00+0530\n"
-"PO-Revision-Date: 2019-07-15 09:31+0530\n"
+"PO-Revision-Date: 2019-07-16 07:31+0530\n"
 "Last-Translator: Jor Teron <jor.teron@gmail.com>\n"
 "Language-Team: Karbi <mjw@li.org>\n"
 "Language: mjw\n"
@@ -129,7 +129,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "\"Log out\" menu user menu along do vek nangji."
+msgstr "“Log out” menu user menu along do vek nangji."
 
 #: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
@@ -329,11 +329,11 @@ msgstr "Homepage"
 
 #: js/extensionPrefs/main.js:193
 msgid "Visit extension homepage"
-msgstr ""
+msgstr "Extensions homepage lang rei tha"
 
 #: js/extensionPrefs/main.js:456
 msgid "No Extensions Installed"
-msgstr ""
+msgstr "Extensions thap thelang"
 
 #: js/extensionPrefs/main.js:466
 msgid ""
@@ -343,7 +343,7 @@ msgstr ""
 
 #: js/extensionPrefs/main.js:481
 msgid "Browse in Software"
-msgstr ""
+msgstr "Software long kelang"
 
 #: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:52
 #: js/ui/components/networkAgent.js:119 js/ui/components/polkitAgent.js:137
@@ -355,7 +355,7 @@ msgstr "Kethan"
 
 #: js/gdm/authPrompt.js:159 js/gdm/authPrompt.js:202 js/gdm/authPrompt.js:433
 msgid "Next"
-msgstr "Adunthu"
+msgstr "Dunthu"
 
 #: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:393 js/ui/unlockDialog.js:41
 msgid "Unlock"
@@ -364,7 +364,7 @@ msgstr "Ingpu-ji"
 #: js/gdm/authPrompt.js:200
 msgctxt "button"
 msgid "Sign In"
-msgstr ""
+msgstr "Sign In"
 
 #: js/gdm/loginDialog.js:300
 msgid "Choose Session"
@@ -382,7 +382,7 @@ msgstr "List long awe?"
 #: js/gdm/loginDialog.js:878
 #, javascript-format
 msgid "(e.g., user or %s)"
-msgstr ""
+msgstr "(e.g., user mate %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
@@ -413,7 +413,7 @@ msgstr ""
 #: js/misc/systemActions.js:88
 msgctxt "search-result"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:91
@@ -505,12 +505,12 @@ msgstr[1] "%d minute aphrang"
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "%d porphai aphrang"
-msgstr[1] "%d porphai aphrang"
+msgstr[0] "Porphai %d aphrang"
+msgstr[1] "Porphai %d aphrang"
 
 #: js/misc/util.js:182
 msgid "Yesterday"
-msgstr "Atumi"
+msgstr "Tumi"
 
 #: js/misc/util.js:184
 #, javascript-format
@@ -550,7 +550,7 @@ msgstr "%H∶%M"
 #: js/misc/util.js:228
 #, no-c-format
 msgid "Yesterday, %H∶%M"
-msgstr "Atumi, %H∶%M"
+msgstr "Tumi, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
@@ -585,7 +585,7 @@ msgstr "%l∶%M %p"
 #: js/misc/util.js:257
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "Atumi, %l∶%M %p"
+msgstr "Tumi, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
@@ -662,7 +662,7 @@ msgstr "Favourites long pen musi noi"
 
 #: js/ui/appDisplay.js:1764
 msgid "Add to Favorites"
-msgstr "Favourites long thap noi"
+msgstr "Favorites long thap noi"
 
 #: js/ui/appDisplay.js:1774 js/ui/panel.js:97
 msgid "Show Details"
@@ -714,7 +714,7 @@ msgstr "Settings"
 #: js/ui/calendar.js:40
 msgctxt "calendar-no-work"
 msgid "06"
-msgstr ""
+msgstr "06"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -787,7 +787,7 @@ msgstr "%OB %Y"
 
 #: js/ui/calendar.js:398
 msgid "Previous month"
-msgstr "Chu chklo"
+msgstr "Chu cheklo"
 
 #: js/ui/calendar.js:409
 msgid "Next month"
@@ -882,7 +882,7 @@ msgstr "Password:"
 
 #: js/ui/components/keyring.js:97
 msgid "Type again:"
-msgstr "Sonthot tok thu nanglangs:"
+msgstr "Sonthot tok thu nanglang:"
 
 #: js/ui/components/networkAgent.js:104
 msgid "Alternatively you can connect by pushing the “WPS” button on your router."
@@ -1182,13 +1182,13 @@ msgstr "Kaprek monit logged in dolang."
 #: js/ui/endSessionDialog.js:611
 #, javascript-format
 msgid "%s (remote)"
-msgstr ""
+msgstr "%s (remote)"
 
 #. Translators: Console here refers to a tty like a VT console
 #: js/ui/endSessionDialog.js:614
 #, javascript-format
 msgid "%s (console)"
-msgstr ""
+msgstr "%s (console)"
 
 #: js/ui/extensionDownloader.js:191
 msgid "Install"
@@ -1375,7 +1375,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:143
 msgid "Switch monitor"
-msgstr ""
+msgstr "Monitor kelar"
 
 #: js/ui/padOsd.js:144
 msgid "Assign keystroke"
@@ -1426,7 +1426,7 @@ msgstr ""
 
 #: js/ui/runDialog.js:58
 msgid "Enter a Command"
-msgstr ""
+msgstr "Atoi (command) kethap"
 
 #: js/ui/runDialog.js:98 js/ui/windowMenu.js:166
 msgid "Close"
@@ -1457,8 +1457,8 @@ msgstr[1] "Son %d birta kimi"
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
-msgstr[0] "%d kimi notification"
-msgstr[1] "Son %d kimi notification"
+msgstr[0] "%d notification kimi"
+msgstr[1] "Son %d notification kimi"
 
 #: js/ui/screenShield.js:446 js/ui/status/system.js:268
 msgid "Lock"
@@ -1552,7 +1552,7 @@ msgstr "Password ning chibi nangji"
 #: js/ui/shellMountOperation.js:403
 #, javascript-format
 msgid "Open %s"
-msgstr "Kangpu %s"
+msgstr "%s Kangpu"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:475
@@ -1616,7 +1616,7 @@ msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:47 js/ui/status/network.js:590
 msgid "Bluetooth Settings"
-msgstr ""
+msgstr "Bluwtooth amokha"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:127
@@ -1676,7 +1676,7 @@ msgstr ""
 
 #: js/ui/status/location.js:65
 msgid "Privacy Settings"
-msgstr ""
+msgstr "Privacy amokha"
 
 #: js/ui/status/location.js:170
 msgid "Location In Use"
@@ -1728,7 +1728,7 @@ msgstr ""
 #: js/ui/status/network.js:431
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr ""
+msgstr "%s chethan bomlo"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:438 js/ui/status/network.js:1294
@@ -1760,7 +1760,7 @@ msgstr "%s nonko awe"
 #: js/ui/status/network.js:456
 #, javascript-format
 msgid "%s Connection Failed"
-msgstr "%s chepho un-eh det"
+msgstr "%s Chepho un-eh det"
 
 #: js/ui/status/network.js:468
 msgid "Wired Settings"
@@ -1785,7 +1785,7 @@ msgstr ""
 
 #: js/ui/status/network.js:602
 msgid "Connect to Internet"
-msgstr ""
+msgstr "Internet pen chepho"
 
 #: js/ui/status/network.js:796
 msgid "Airplane Mode is On"
@@ -1801,7 +1801,7 @@ msgstr "Airplane Mode bon-noi"
 
 #: js/ui/status/network.js:807
 msgid "Wi-Fi is Off"
-msgstr "Wi-Fi ke bon si do"
+msgstr "Wi-Fi pamek chok si do"
 
 #: js/ui/status/network.js:808
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
@@ -2051,14 +2051,14 @@ msgstr "Displays pa-chepho"
 #.
 #: js/ui/switchMonitor.js:26
 msgid "External Only"
-msgstr ""
+msgstr "Hong pen anchot"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:31
 msgid "Built-in Only"
-msgstr ""
+msgstr "Kedun bang anchot"
 
 #: js/ui/unlockDialog.js:49
 msgid "Log in as another user"
@@ -2090,7 +2090,7 @@ msgstr "Nangli laso display settings pado kok po?"
 #.
 #: js/ui/windowManager.js:66
 msgid "Revert Settings"
-msgstr "Aphrang Settings si nangji"
+msgstr "Aphrang amokha si nangji"
 
 #: js/ui/windowManager.js:69
 msgid "Keep Changes"
@@ -2116,7 +2116,7 @@ msgstr "Pabi"
 
 #: js/ui/windowMenu.js:33
 msgid "Unmaximize"
-msgstr "pathe-ri"
+msgstr "Pathe-ri"
 
 #: js/ui/windowMenu.js:37
 msgid "Maximize"
@@ -2128,7 +2128,7 @@ msgstr "Te-rek"
 
 #: js/ui/windowMenu.js:50
 msgid "Resize"
-msgstr "Pathe-pabi"
+msgstr "Pathe-bi"
 
 #: js/ui/windowMenu.js:57
 msgid "Move Titlebar Onscreen"
@@ -2176,7 +2176,7 @@ msgstr "Ar-eh Monitor long pon noi"
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
-msgstr ""
+msgstr "Evolution Calendar"
 
 #: src/main.c:464
 msgid "Print version"
@@ -2222,8 +2222,8 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] "%u pen ase ke-tet"
-msgstr[1] "%u pen ase ke-tet"
+msgstr[0] "%u pen aseh ke-tet"
+msgstr[1] "%u pen aseh ke-tet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
