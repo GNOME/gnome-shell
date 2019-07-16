@@ -44,7 +44,7 @@ var UnlockDialog = GObject.registerClass({
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
 
-        this._promptBox.add_child(this._authPrompt.actor);
+        this._promptBox.add_child(this._authPrompt);
 
         this.allowCancel = false;
 

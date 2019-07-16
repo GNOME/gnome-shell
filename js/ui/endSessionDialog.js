@@ -207,10 +207,10 @@ function _setCheckBoxLabel(checkBox, text) {
 
     if (text) {
         label.set_text(text);
-        checkBox.actor.show();
+        checkBox.show();
     } else {
         label.set_text('');
-        checkBox.actor.hide();
+        checkBox.hide();
     }
 }
 
@@ -297,8 +297,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                             y_align: St.Align.START });
 
         this._checkBox = new CheckBox.CheckBox();
-        this._checkBox.actor.connect('clicked', this._sync.bind(this));
-        messageLayout.add(this._checkBox.actor);
+        this._checkBox.connect('clicked', this._sync.bind(this));
+        messageLayout.add(this._checkBox);
 
         this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-warning',
                                               text: _("Running on battery power: please plug in before installing updates.") });
@@ -376,12 +376,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let subject = dialogContent.subject;
 
         // Use different title when we are installing updates
-        if (dialogContent.subjectWithUpdates && this._checkBox.actor.checked)
+        if (dialogContent.subjectWithUpdates && this._checkBox.checked)
             subject = dialogContent.subjectWithUpdates;
 
         if (dialogContent.showBatteryWarning) {
             // Warn when running on battery power
-            if (this._powerProxy.OnBattery && this._checkBox.actor.checked)
+            if (this._powerProxy.OnBattery && this._checkBox.checked)
                 this._batteryWarning.opacity = 255;
             else
                 this._batteryWarning.opacity = 0;
@@ -429,7 +429,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             let avatarWidget = new UserWidget.Avatar(this._user,
                                                      { iconSize: _DIALOG_ICON_SIZE,
                                                        styleClass: dialogContent.iconStyleClass });
-            this._iconBin.child = avatarWidget.actor;
+            this._iconBin.child = avatarWidget;
             avatarWidget.update();
         }
 
@@ -485,13 +485,13 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         };
 
         // Offline update not available; just emit the signal
-        if (!this._checkBox.actor.visible) {
+        if (!this._checkBox.visible) {
             callback();
             return;
         }
 
         // Trigger the offline update as requested
-        if (this._checkBox.actor.checked) {
+        if (this._checkBox.checked) {
             switch (signal) {
             case "ConfirmedReboot":
                 this._triggerOfflineUpdateReboot(callback);
@@ -656,7 +656,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         let actor = new St.BoxLayout({ style_class: 'end-session-dialog-session-list-item',
                                        can_focus: true });
-        actor.add(avatar.actor);
+        actor.add(avatar);
 
         let nameLabel = new St.Label({ text: userLabelText,
                                        style_class: 'end-session-dialog-session-list-item-name',
@@ -754,14 +754,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
-        this._checkBox.actor.visible = (dialogContent.checkBoxText && updatePrepared && updatesAllowed);
-        this._checkBox.actor.checked = (updatePrepared && updateTriggered);
+        this._checkBox.visible = (dialogContent.checkBoxText && updatePrepared && updatesAllowed);
+        this._checkBox.checked = (updatePrepared && updateTriggered);
 
         // We show the warning either together with the checkbox, or when
         // updates have already been triggered, but the user doesn't have
         // enough permissions to cancel them.
         this._batteryWarning.visible = (dialogContent.showBatteryWarning &&
-                                        (this._checkBox.actor.visible || updatePrepared && updateTriggered && !updatesAllowed));
+                                        (this._checkBox.visible || updatePrepared && updateTriggered && !updatesAllowed));
 
         this._updateButtons();
 
