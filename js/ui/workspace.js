@@ -111,7 +111,7 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        this._windowClone = new Clutter.Clone({ source: realWindow });
+        this._windowClone = new Clutter.Actor({ content: realWindow.content });
         // We expect this to be used for all interaction rather than
         // this._windowClone; as the former is reactive and the latter
         // is not, this just works for most cases. However, for DND all
@@ -237,7 +237,7 @@ var WindowClone = GObject.registerClass({
     }
 
     _doAddAttachedDialog(metaWin, realWin) {
-        let clone = new Clutter.Clone({ source: realWin });
+        let clone = new Clutter.Actor({ content: realWin.content });
         clone._sizeChangedId = metaWin.connect('size-changed',
             this._onMetaWindowSizeChanged.bind(this));
         clone._posChangedId = metaWin.connect('position-changed',
