@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WorkspacesView */
+/* exported WorkspacesView, WorkspacesDisplay */
 
 const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const WindowManager = imports.ui.windowManager;
@@ -17,15 +16,16 @@ var AnimationType = {
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
-var WorkspacesViewBase = class {
-    constructor(monitorIndex) {
-        this.actor = new St.Widget({ style_class: 'workspaces-view',
-                                     reactive: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        global.focus_manager.add_group(this.actor);
+var WorkspacesViewBase = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT
+}, class WorkspacesViewBase extends St.Widget {
+    _init(monitorIndex) {
+        super._init({ style_class: 'workspaces-view', reactive: true });
+        this.connect('destroy', this._onDestroy.bind(this));
+        global.focus_manager.add_group(this);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
-        this.actor.set_size(0, 0);
+        this.set_size(0, 0);
 
         this._monitorIndex = monitorIndex;
 
@@ -60,10 +60,6 @@ var WorkspacesViewBase = class {
         this._setReservedSlot(null);
     }
 
-    destroy() {
-        this.actor.destroy();
-    }
-
     setFullGeometry(geom) {
         this._fullGeometry = geom;
         this._syncFullGeometry();
@@ -73,13 +69,14 @@ var WorkspacesViewBase = class {
         this._actualGeometry = geom;
         this._syncActualGeometry();
     }
-};
+});
 
-var WorkspacesView = class extends WorkspacesViewBase {
-    constructor(monitorIndex) {
+var WorkspacesView = GObject.registerClass(
+class WorkspacesView extends WorkspacesViewBase {
+    _init(monitorIndex) {
         let workspaceManager = global.workspace_manager;
 
-        super(monitorIndex);
+        super._init(monitorIndex);
 
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -112,8 +109,8 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
-                this.actor.set_clip(this._fullGeometry.x, this._fullGeometry.y,
-                                    this._fullGeometry.width, this._fullGeometry.height);
+                this.set_clip(this._fullGeometry.x, this._fullGeometry.y,
+                              this._fullGeometry.width, this._fullGeometry.height);
             });
 
         this._switchWorkspaceNotifyId =
@@ -153,7 +150,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
     }
 
     animateFromOverview(animationType) {
-        this.actor.remove_clip();
+        this.remove_clip();
 
         for (let w = 0; w < this._workspaces.length; w++) {
             if (animationType == AnimationType.ZOOM)
@@ -187,12 +184,12 @@ var WorkspacesView = class extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
-            workspace.actor.remove_all_transitions();
+            workspace.remove_all_transitions();
 
             let params = {};
             if (workspaceManager.layout_rows == -1)
                 params.y = (w - active) * this._fullGeometry.height;
-            else if (this.actor.text_direction == Clutter.TextDirection.RTL)
+            else if (this.text_direction == Clutter.TextDirection.RTL)
                 params.x = (active - w) * this._fullGeometry.width;
             else
                 params.x = (w - active) * this._fullGeometry.width;
@@ -212,9 +209,9 @@ var WorkspacesView = class extends WorkspacesViewBase {
                         this._updateVisibility();
                     };
                 }
-                workspace.actor.ease(easeParams);
+                workspace.ease(easeParams);
             } else {
-                workspace.actor.set(params);
+                workspace.set(params);
                 if (w == 0)
                     this._updateVisibility();
             }
@@ -228,12 +225,12 @@ var WorkspacesView = class extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
             if (this._animating || this._scrolling || this._gestureActive) {
-                workspace.actor.show();
+                workspace.show();
             } else {
                 if (this._inDrag)
-                    workspace.actor.visible = (Math.abs(w - active) <= 1);
+                    workspace.visible = (Math.abs(w - active) <= 1);
                 else
-                    workspace.actor.visible = (w == active);
+                    workspace.visible = (w == active);
             }
         }
     }
@@ -263,7 +260,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
             if (j >= this._workspaces.length) { /* added */
                 workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
-                this.actor.add_actor(workspace.actor);
+                this.add_actor(workspace);
                 this._workspaces[j] = workspace;
             } else  {
                 workspace = this._workspaces[j];
@@ -355,8 +352,8 @@ var WorkspacesView = class extends WorkspacesViewBase {
         let last = this._workspaces.length - 1;
 
         if (workspaceManager.layout_rows == -1) {
-            let firstWorkspaceY = this._workspaces[0].actor.y;
-            let lastWorkspaceY = this._workspaces[last].actor.y;
+            let firstWorkspaceY = this._workspaces[0].y;
+            let lastWorkspaceY = this._workspaces[last].y;
             let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
             let currentY = firstWorkspaceY;
@@ -365,12 +362,12 @@ var WorkspacesView = class extends WorkspacesViewBase {
             let dy = newY - currentY;
 
             for (let i = 0; i < this._workspaces.length; i++) {
-                this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].actor.y += dy;
+                this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
+                this._workspaces[i].y += dy;
             }
         } else {
-            let firstWorkspaceX = this._workspaces[0].actor.x;
-            let lastWorkspaceX = this._workspaces[last].actor.x;
+            let firstWorkspaceX = this._workspaces[0].x;
+            let lastWorkspaceX = this._workspaces[last].x;
             let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
 
             let currentX = firstWorkspaceX;
@@ -379,19 +376,19 @@ var WorkspacesView = class extends WorkspacesViewBase {
             let dx = newX - currentX;
 
             for (let i = 0; i < this._workspaces.length; i++) {
-                this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].actor.x += dx;
+                this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
+                this._workspaces[i].x += dx;
             }
         }
     }
-};
-Signals.addSignalMethods(WorkspacesView.prototype);
+});
 
-var ExtraWorkspaceView = class extends WorkspacesViewBase {
-    constructor(monitorIndex) {
-        super(monitorIndex);
+var ExtraWorkspaceView = GObject.registerClass(
+class ExtraWorkspaceView extends WorkspacesViewBase {
+    _init(monitorIndex) {
+        super._init(monitorIndex);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
-        this.actor.add_actor(this._workspace.actor);
+        this.add_actor(this._workspace);
     }
 
     _setReservedSlot(window) {
@@ -439,21 +436,14 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
 
     endTouchGesture() {
     }
-};
-
-var DelegateFocusNavigator = GObject.registerClass(
-class DelegateFocusNavigator extends St.Widget {
-    vfunc_navigate_focus(from, direction) {
-        return this._delegate.navigateFocus(from, direction);
-    }
 });
 
-var WorkspacesDisplay = class {
-    constructor() {
-        this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
-        this.actor._delegate = this;
-        this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
-        this.actor.connect('parent-set', this._parentSet.bind(this));
+var WorkspacesDisplay = GObject.registerClass(
+class WorkspacesDisplay extends St.Widget {
+    _init() {
+        super._init({ clip_to_allocation: true });
+        this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
+        this.connect('parent-set', this._parentSet.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -467,7 +457,7 @@ var WorkspacesDisplay = class {
                 Main.overview.hide();
         });
         Main.overview.addAction(clickAction);
-        this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
         panAction.connect('pan', this._onPan.bind(this));
@@ -490,7 +480,7 @@ var WorkspacesDisplay = class {
             this._endSwipeScroll();
         });
         Main.overview.addAction(panAction);
-        this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
         let switchGesture = new WindowManager.WorkspaceSwitchAction(allowedModes);
@@ -498,20 +488,15 @@ var WorkspacesDisplay = class {
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
         Main.overview.addAction(switchGesture);
-        this.actor.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('mapped', switchGesture, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         switchGesture = new WindowManager.TouchpadWorkspaceSwitchAction(global.stage, allowedModes);
         switchGesture.connect('motion', this._onSwitchWorkspaceMotion.bind(this));
         switchGesture.connect('activated', this._onSwitchWorkspaceActivated.bind(this));
         switchGesture.connect('cancel', this._endTouchGesture.bind(this));
-        this.actor.connect('notify::mapped', () => {
-            switchGesture.enabled = this.actor.mapped;
-        });
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
-
         this._workspacesViews = [];
-        switchGesture.enabled = this.actor.mapped;
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
@@ -525,12 +510,12 @@ var WorkspacesDisplay = class {
 
         this._fullGeometry = null;
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
         if (this._notifyOpacityId) {
-            let parent = this.actor.get_parent();
+            let parent = this.get_parent();
             if (parent)
                 parent.disconnect(this._notifyOpacityId);
             this._notifyOpacityId = 0;
@@ -546,11 +531,11 @@ var WorkspacesDisplay = class {
         let [dist_, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
         if (global.workspace_manager.layout_rows == -1)
-            adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
-        else if (this.actor.text_direction == Clutter.TextDirection.RTL)
-            adjustment.value += (dx / this.actor.width) * adjustment.page_size;
+            adjustment.value -= (dy / this.height) * adjustment.page_size;
+        else if (this.text_direction == Clutter.TextDirection.RTL)
+            adjustment.value += (dx / this.width) * adjustment.page_size;
         else
-            adjustment.value -= (dx / this.actor.width) * adjustment.page_size;
+            adjustment.value -= (dx / this.width) * adjustment.page_size;
         return false;
     }
 
@@ -583,11 +568,11 @@ var WorkspacesDisplay = class {
         let active = workspaceManager.get_active_workspace_index();
         let adjustment = this._scrollAdjustment;
         if (workspaceManager.layout_rows == -1)
-            adjustment.value = (active - yRel / this.actor.height) * adjustment.page_size;
-        else if (this.actor.text_direction == Clutter.TextDirection.RTL)
-            adjustment.value = (active + xRel / this.actor.width) * adjustment.page_size;
+            adjustment.value = (active - yRel / this.height) * adjustment.page_size;
+        else if (this.text_direction == Clutter.TextDirection.RTL)
+            adjustment.value = (active + xRel / this.width) * adjustment.page_size;
         else
-            adjustment.value = (active - xRel / this.actor.width) * adjustment.page_size;
+            adjustment.value = (active - xRel / this.width) * adjustment.page_size;
     }
 
     _onSwitchWorkspaceActivated(action, direction) {
@@ -600,8 +585,8 @@ var WorkspacesDisplay = class {
         this._endTouchGesture();
     }
 
-    navigateFocus(from, direction) {
-        return this._getPrimaryView().actor.navigate_focus(from, direction, false);
+    vfunc_navigate_focus(from, direction) {
+        return this._getPrimaryView().navigate_focus(from, direction, false);
     }
 
     show(fadeOnPrimary) {
@@ -677,7 +662,7 @@ var WorkspacesDisplay = class {
             else
                 view = new WorkspacesView(i);
 
-            view.actor.connect('scroll-event', this._onScrollEvent.bind(this));
+            view.connect('scroll-event', this._onScrollEvent.bind(this));
             if (i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
@@ -685,13 +670,13 @@ var WorkspacesDisplay = class {
             }
 
             // HACK: Avoid spurious allocation changes while updating views
-            view.actor.hide();
+            view.hide();
 
             this._workspacesViews.push(view);
-            Main.layoutManager.overviewGroup.add_actor(view.actor);
+            Main.layoutManager.overviewGroup.add_actor(view);
         }
 
-        this._workspacesViews.forEach(v => v.actor.show());
+        this._workspacesViews.forEach(v => v.show());
 
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
@@ -738,20 +723,20 @@ var WorkspacesDisplay = class {
 
         this._parentSetLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             this._parentSetLater = 0;
-            let newParent = this.actor.get_parent();
+            let newParent = this.get_parent();
             if (!newParent)
                 return;
 
             // This is kinda hackish - we want the primary view to
-            // appear as parent of this.actor, though in reality it
+            // appear as parent of this, though in reality it
             // is added directly to Main.layoutManager.overviewGroup
             this._notifyOpacityId = newParent.connect('notify::opacity', () => {
-                let opacity = this.actor.get_parent().opacity;
+                let opacity = this.get_parent().opacity;
                 let primaryView = this._getPrimaryView();
                 if (!primaryView)
                     return;
-                primaryView.actor.opacity = opacity;
-                primaryView.actor.visible = opacity != 0;
+                primaryView.opacity = opacity;
+                primaryView.visible = opacity != 0;
             });
         });
     }
@@ -779,8 +764,8 @@ var WorkspacesDisplay = class {
         if (!this._workspacesViews.length)
             return;
 
-        let [x, y] = this.actor.get_transformed_position();
-        let allocation = this.actor.allocation;
+        let [x, y] = this.get_transformed_position();
+        let allocation = this.allocation;
         let width = allocation.x2 - allocation.x1;
         let height = allocation.y2 - allocation.y1;
         let primaryGeometry = { x: x, y: y, width: width, height: height };
@@ -798,7 +783,7 @@ var WorkspacesDisplay = class {
     }
 
     _onScrollEvent(actor, event) {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._workspacesOnlyOnPrimary &&
@@ -829,7 +814,7 @@ var WorkspacesDisplay = class {
     }
 
     _onKeyPressEvent(actor, event) {
-        if (!this.actor.mapped)
+        if (!this.mapped)
             return Clutter.EVENT_PROPAGATE;
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
@@ -847,5 +832,4 @@ var WorkspacesDisplay = class {
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
     }
-};
-Signals.addSignalMethods(WorkspacesDisplay.prototype);
+});
