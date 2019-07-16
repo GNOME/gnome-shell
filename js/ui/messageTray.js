@@ -5,7 +5,6 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
@@ -523,13 +522,17 @@ var Notification = GObject.registerClass({
     }
 });
 
-var NotificationBanner =
-class NotificationBanner extends Calendar.NotificationMessage {
-    constructor(notification) {
-        super(notification);
+var NotificationBanner = GObject.registerClass({
+    Signals: {
+        'done-displaying': {},
+        'unfocused': {},
+    }
+}, class NotificationBanner extends Calendar.NotificationMessage {
+    _init(notification) {
+        super._init(notification);
 
-        this.actor.can_focus = false;
-        this.actor.add_style_class_name('notification-banner');
+        this.can_focus = false;
+        this.add_style_class_name('notification-banner');
 
         this._buttonBox = null;
 
@@ -616,7 +619,7 @@ class NotificationBanner extends Calendar.NotificationMessage {
 
         return this.addButton(button, callback);
     }
-};
+});
 
 var SourceActor = GObject.registerClass(
 class SourceActor extends St.Widget {
@@ -909,8 +912,20 @@ var Source = GObject.registerClass({
     }
 });
 
-var MessageTray = class MessageTray {
-    constructor() {
+var MessageTray = GObject.registerClass({
+    Signals: {
+        'queue-changed': {},
+        'source-added': { param_types: [Source.$gtype] },
+        'source-removed': { param_types: [Source.$gtype] },
+    }
+}, class MessageTray extends St.Widget {
+    _init() {
+        super._init({
+            visible: false,
+            clip_to_allocation: true,
+            layout_manager: new Clutter.BinLayout()
+        });
+
         this._presence = new GnomeSession.Presence((proxy, _error) => {
             this._onStatusChanged(proxy.status);
         });
@@ -927,18 +942,15 @@ var MessageTray = class MessageTray {
             // so fix up Clutter's view of the pointer position in
             // that case.
             let related = ev.get_related();
-            if (!related || this.actor.contains(related))
+            if (!related || this.contains(related))
                 global.sync_pointer();
         });
 
-        this.actor = new St.Widget({ visible: false,
-                                     clip_to_allocation: true,
-                                     layout_manager: new Clutter.BinLayout() });
         let constraint = new Layout.MonitorConstraint({ primary: true });
         Main.layoutManager.panelBox.bind_property('visible',
                                                   constraint, 'work-area',
                                                   GObject.BindingFlags.SYNC_CREATE);
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._bannerBin = new St.Widget({ name: 'notification-container',
                                           reactive: true,
@@ -952,7 +964,7 @@ var MessageTray = class MessageTray {
                                 this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
                                 this._onNotificationHoverChanged.bind(this));
-        this.actor.add_actor(this._bannerBin);
+        this.add_actor(this._bannerBin);
 
         this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
         this._notificationQueue = [];
@@ -981,7 +993,7 @@ var MessageTray = class MessageTray {
         this._notificationTimeoutId = 0;
         this._notificationRemoved = false;
 
-        Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
+        Main.layoutManager.addChrome(this, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
         global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
@@ -1024,11 +1036,11 @@ var MessageTray = class MessageTray {
     }
 
     _onDragBegin() {
-        Shell.util_set_hidden_from_pick(this.actor, true);
+        Shell.util_set_hidden_from_pick(this, true);
     }
 
     _onDragEnd() {
-        Shell.util_set_hidden_from_pick(this.actor, false);
+        Shell.util_set_hidden_from_pick(this, false);
     }
 
     get bannerAlignment() {
@@ -1273,7 +1285,7 @@ var MessageTray = class MessageTray {
     // at the present time.
     _updateState() {
         let hasMonitor = Main.layoutManager.primaryMonitor != null;
-        this.actor.visible = !this._bannerBlocked && hasMonitor && this._banner != null;
+        this.visible = !this._bannerBlocked && hasMonitor && this._banner != null;
         if (this._bannerBlocked || !hasMonitor)
             return;
 
@@ -1353,11 +1365,11 @@ var MessageTray = class MessageTray {
             this._updateState();
         });
 
-        this._bannerBin.add_actor(this._banner.actor);
+        this._bannerBin.add_actor(this._banner);
 
         this._bannerBin.opacity = 0;
-        this._bannerBin.y = -this._banner.actor.height;
-        this.actor.show();
+        this._bannerBin.y = -this._banner.height;
+        this.show();
 
         Meta.disable_unredirect_for_display(global.display);
         this._updateShowingNotification();
@@ -1511,9 +1523,9 @@ var MessageTray = class MessageTray {
         this._notificationRemoved = false;
         Meta.enable_unredirect_for_display(global.display);
 
-        this._banner.actor.destroy();
+        this._banner.destroy();
         this._banner = null;
-        this.actor.hide();
+        this.hide();
     }
 
     _expandActiveNotification() {
@@ -1535,8 +1547,7 @@ var MessageTray = class MessageTray {
     _ensureBannerFocused() {
         this._notificationFocusGrabber.grabFocus();
     }
-};
-Signals.addSignalMethods(MessageTray.prototype);
+});
 
 var SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {

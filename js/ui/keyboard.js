@@ -89,8 +89,10 @@ class KeyContainer extends St.Widget {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
-        super._init({ layout_manager: gridLayout,
-                      x_expand: true, y_expand: true });
+        super._init({
+            layout_manager: gridLayout,
+            x_expand: true, y_expand: true
+        });
         this._gridLayout = gridLayout;
         this._currentRow = 0;
         this._currentCol = 0;
@@ -160,24 +162,23 @@ class KeyContainer extends St.Widget {
     }
 });
 
-var Suggestions = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'word-suggestions',
-                                        vertical: false });
-        this.actor.show();
+var Suggestions = GObject.registerClass(
+class Suggestions extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'word-suggestions', vertical: false });
+        this.show();
     }
 
     add(word, callback) {
         let button = new St.Button({ label: word });
         button.connect('clicked', callback);
-        this.actor.add(button);
+        this.add(button);
     }
 
     clear() {
-        this.actor.remove_all_children();
+        this.remove_all_children();
     }
-};
-Signals.addSignalMethods(Suggestions.prototype);
+});
 
 var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     constructor(actor) {
@@ -242,17 +243,25 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     }
 };
 
-var Key = class Key {
-    constructor(key, extendedKeys) {
+var Key = GObject.registerClass({
+    Signals: {
+        'activated': {},
+        'long-press': {},
+        'pressed': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
+        'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
+    }
+}, class Key extends St.BoxLayout {
+    _init(key, extendedKeys) {
+        super._init({ style_class: 'key-container' });
+
         this.key = key || "";
         this.keyButton = this._makeKey(this.key);
 
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
          */
-        this.actor = new St.BoxLayout ({ style_class: 'key-container' });
-        this.actor.add(this.keyButton, { expand: true, x_fill: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.add(this.keyButton, { expand: true, x_fill: true });
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._extended_keys = extendedKeys;
         this._extended_keyboard = null;
@@ -460,8 +469,7 @@ var Key = class Key {
         else
             this.keyButton.remove_style_pseudo_class('latched');
     }
-};
-Signals.addSignalMethods(Key.prototype);
+});
 
 var KeyboardModel = class {
     constructor(groupName) {
@@ -589,7 +597,6 @@ var EmojiPager = GObject.registerClass({
             reactive: true,
             clip_to_allocation: true
         });
-
         this._sections = sections;
         this._nCols = nCols;
         this._nRows = nRows;
@@ -800,7 +807,7 @@ var EmojiPager = GObject.registerClass({
                 this.emit('emoji', str);
             });
 
-            gridLayout.attach(key.actor, col, row, 1, 1);
+            gridLayout.attach(key, col, row, 1, 1);
 
             col++;
             if (col >= this._nCols) {
@@ -842,7 +849,7 @@ var EmojiPager = GObject.registerClass({
         }
 
         let page = this._pages[nPage];
-        this.emit('page-changed', page.section, page.page, page.nPages);
+        this.emit('page-changed', page.section.label, page.page, page.nPages);
     }
 
     setCurrentSection(section, nPage) {
@@ -857,8 +864,20 @@ var EmojiPager = GObject.registerClass({
     }
 });
 
-var EmojiSelection = class EmojiSelection {
-    constructor() {
+var EmojiSelection = GObject.registerClass({
+    Signals: {
+        'emoji-selected': { param_types: [GObject.TYPE_STRING] },
+        'hide-request': {},
+        'toggle': {},
+    }
+}, class EmojiSelection extends St.BoxLayout {
+    _init() {
+        super._init({
+            style_class: 'emoji-panel',
+            x_expand: true, y_expand: true,
+            vertical: true
+        });
+
         this._sections = [
             { first: 'grinning face', label: '🙂️' },
             { first: 'selfie', label: '👍️' },
@@ -873,38 +892,34 @@ var EmojiSelection = class EmojiSelection {
 
         this._populateSections();
 
-        this.actor = new St.BoxLayout({ style_class: 'emoji-panel',
-                                        x_expand: true,
-                                        y_expand: true,
-                                        vertical: true });
-        this.actor.connect('notify::mapped', () => this._emojiPager.setCurrentPage(0));
+        this.connect('notify::mapped', () => this._emojiPager.setCurrentPage(0));
 
         this._emojiPager = new EmojiPager(this._sections, 11, 3);
-        this._emojiPager.connect('page-changed', (pager, section, page, nPages) => {
-            this._onPageChanged(section, page, nPages);
+        this._emojiPager.connect('page-changed', (pager, sectionLabel, page, nPages) => {
+            this._onPageChanged(sectionLabel, page, nPages);
         });
         this._emojiPager.connect('emoji', (pager, str) => {
             this.emit('emoji-selected', str);
         });
-        this.actor.add(this._emojiPager.actor, { expand: true });
+        this.add(this._emojiPager, { expand: true });
 
         this._pageIndicator = new PageIndicators.PageIndicators(false);
-        this.actor.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
+        this.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
         this._pageIndicator.setReactive(false);
 
         let bottomRow = this._createBottomRow();
-        this.actor.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
+        this.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
 
         this._emojiPager.setCurrentPage(0);
     }
 
-    _onPageChanged(section, page, nPages) {
+    _onPageChanged(sectionLabel, page, nPages) {
         this._pageIndicator.setNPages(nPages);
         this._pageIndicator.setCurrentPage(page);
 
         for (let i = 0; i < this._sections.length; i++) {
             let sect = this._sections[i];
-            sect.button.setLatched(section == sect);
+            sect.button.setLatched(sectionLabel.label == sect.label);
         }
     }
 
@@ -960,14 +975,14 @@ var EmojiSelection = class EmojiSelection {
         key = new Key('ABC', []);
         key.keyButton.add_style_class_name('default-key');
         key.connect('released', () => this.emit('toggle'));
-        row.appendKey(key.actor, 1.5);
+        row.appendKey(key, 1.5);
 
         for (let i = 0; i < this._sections.length; i++) {
             let section = this._sections[i];
 
             key = new Key(section.label, []);
             key.connect('released', () => this._emojiPager.setCurrentSection(section, 0));
-            row.appendKey(key.actor);
+            row.appendKey(key);
 
             section.button = key;
         }
@@ -978,7 +993,7 @@ var EmojiSelection = class EmojiSelection {
         key.connect('released', () => {
             this.emit('hide-request');
         });
-        row.appendKey(key.actor);
+        row.appendKey(key);
         row.layoutButtons();
 
         let actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
@@ -992,11 +1007,14 @@ var EmojiSelection = class EmojiSelection {
 
         return actor;
     }
-};
-Signals.addSignalMethods(EmojiSelection.prototype);
+});
 
-var Keypad = class Keypad {
-    constructor() {
+var Keypad = GObject.registerClass({
+    Signals: {
+        'keyval': { param_types: [GObject.TYPE_UINT] },
+    }
+}, class Keypad extends AspectContainer {
+    _init() {
         let keys = [
             { label: '1', keyval: Clutter.KEY_1, left: 0, top: 0 },
             { label: '2', keyval: Clutter.KEY_2, left: 1, top: 0 },
@@ -1012,14 +1030,16 @@ var Keypad = class Keypad {
             { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', left: 3, top: 1, height: 2 },
         ];
 
-        this.actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
-                                           x_expand: true, y_expand: true });
+        super._init({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true, y_expand: true
+        });
 
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
         this._box = new St.Widget({ layout_manager: gridLayout, x_expand: true, y_expand: true });
-        this.actor.add_child(this._box);
+        this.add_child(this._box);
 
         for (let i = 0; i < keys.length; i++) {
             let cur = keys[i];
@@ -1031,15 +1051,14 @@ var Keypad = class Keypad {
             let w, h;
             w = cur.width || 1;
             h = cur.height || 1;
-            gridLayout.attach(key.actor, cur.left, cur.top, w, h);
+            gridLayout.attach(key, cur.left, cur.top, w, h);
 
             key.connect('released', () => {
                 this.emit('keyval', cur.keyval);
             });
         }
     }
-};
-Signals.addSignalMethods(Keypad.prototype);
+});
 
 var KeyboardManager = class KeyBoardManager {
     constructor() {
@@ -1090,11 +1109,11 @@ var KeyboardManager = class KeyBoardManager {
     }
 
     get keyboardActor() {
-        return this._keyboard.actor;
+        return this._keyboard;
     }
 
     get visible() {
-        return this._keyboard && this._keyboard.actor.visible;
+        return this._keyboard && this._keyboard.visible;
     }
 
     open(monitor) {
@@ -1127,9 +1146,10 @@ var KeyboardManager = class KeyBoardManager {
     }
 };
 
-var Keyboard = class Keyboard {
-    constructor() {
-        this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true });
+var Keyboard = GObject.registerClass(
+class Keyboard extends St.BoxLayout {
+    _init() {
+        super._init({ name: 'keyboard', vertical: true });
         this._focusInExtendedKeys = false;
         this._emojiActive = false;
 
@@ -1174,11 +1194,7 @@ var Keyboard = class Keyboard {
 
         this._setupKeyboard();
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    destroy() {
-        this.actor.destroy();
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _connectSignal(obj, signal, callback) {
@@ -1191,7 +1207,7 @@ var Keyboard = class Keyboard {
     }
 
     get visible() {
-        return this._keyboardVisible && this.actor.visible;
+        return this._keyboardVisible && super.visible;
     }
 
     _onFocusPositionChanged(focusTracker) {
@@ -1212,8 +1228,8 @@ var Keyboard = class Keyboard {
         this._emojiSelection = null;
         this._keypad = null;
 
-        Main.layoutManager.untrackChrome(this.actor);
-        Main.layoutManager.keyboardBox.remove_actor(this.actor);
+        Main.layoutManager.untrackChrome(this);
+        Main.layoutManager.keyboardBox.remove_actor(this);
 
         if (this._languagePopup) {
             this._languagePopup.destroy();
@@ -1222,8 +1238,8 @@ var Keyboard = class Keyboard {
     }
 
     _setupKeyboard() {
-        Main.layoutManager.keyboardBox.add_actor(this.actor);
-        Main.layoutManager.trackChrome(this.actor);
+        Main.layoutManager.keyboardBox.add_actor(this);
+        Main.layoutManager.trackChrome(this);
 
         this._keyboardController = new KeyboardController();
 
@@ -1231,12 +1247,10 @@ var Keyboard = class Keyboard {
         this._currentPage = null;
 
         this._suggestions = new Suggestions();
-        this.actor.add(this._suggestions.actor,
-                       { x_align: St.Align.MIDDLE,
-                         x_fill: false });
+        this.add(this._suggestions, { x_align: St.Align.MIDDLE, x_fill: false });
 
         this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
-        this.actor.add(this._aspectContainer, { expand: true });
+        this.add(this._aspectContainer, { expand: true });
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
@@ -1245,16 +1259,16 @@ var Keyboard = class Keyboard {
             this._keyboardController.commitString(emoji);
         });
 
-        this._aspectContainer.add_child(this._emojiSelection.actor);
-        this._emojiSelection.actor.hide();
+        this._aspectContainer.add_child(this._emojiSelection);
+        this._emojiSelection.hide();
 
         this._keypad = new Keypad();
         this._connectSignal(this._keypad, 'keyval', (keypad, keyval) => {
             this._keyboardController.keyvalPress(keyval);
             this._keyboardController.keyvalRelease(keyval);
         });
-        this._aspectContainer.add_child(this._keypad.actor);
-        this._keypad.actor.hide();
+        this._aspectContainer.add_child(this._keypad);
+        this._keypad.hide();
         this._keypadVisible = false;
 
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
@@ -1263,7 +1277,7 @@ var Keyboard = class Keyboard {
         // Keyboard models are defined in LTR, we must override
         // the locale setting in order to avoid flipping the
         // keyboard on RTL locales.
-        this.actor.text_direction = Clutter.TextDirection.LTR;
+        this.text_direction = Clutter.TextDirection.LTR;
 
         this._connectSignal(this._keyboardController, 'active-group',
                             this._onGroupChanged.bind(this));
@@ -1368,7 +1382,7 @@ var Keyboard = class Keyboard {
                     this._setActiveLayer(0);
             });
 
-            layout.appendKey(button.actor, button.keyButton.keyWidth);
+            layout.appendKey(button, button.keyButton.keyWidth);
         }
     }
 
@@ -1439,7 +1453,7 @@ var Keyboard = class Keyboard {
                     /* Only hide the key actor, so the container still takes space */
                     extraButton.keyButton.hide();
                 } else {
-                    extraButton.actor.hide();
+                    extraButton.hide();
                 }
                 extraButton.setWidth(1.5);
             } else if (key.right && numKeys > 8) {
@@ -1450,7 +1464,7 @@ var Keyboard = class Keyboard {
                 extraButton.setWidth(1.5);
             }
 
-            layout.appendKey(extraButton.actor, extraButton.keyButton.keyWidth);
+            layout.appendKey(extraButton, extraButton.keyButton.keyWidth);
         }
     }
 
@@ -1461,7 +1475,7 @@ var Keyboard = class Keyboard {
 
     _setEmojiActive(active) {
         this._emojiActive = active;
-        this._emojiSelection.actor.visible = this._emojiActive;
+        this._emojiSelection.visible = this._emojiActive;
         this._updateCurrentPageVisible();
     }
 
@@ -1529,12 +1543,12 @@ var Keyboard = class Keyboard {
     _relayout() {
         let monitor = Main.layoutManager.keyboardMonitor;
 
-        if (this.actor == null || monitor == null)
+        if (!monitor)
             return;
 
         let maxHeight = monitor.height / 3;
-        this.actor.width = monitor.width;
-        this.actor.height = maxHeight;
+        this.width = monitor.width;
+        this.height = maxHeight;
     }
 
     _onGroupChanged() {
@@ -1543,7 +1557,7 @@ var Keyboard = class Keyboard {
     }
 
     _onKeyboardGroupsChanged() {
-        let nonGroupActors = [this._emojiSelection.actor, this._keypad.actor];
+        let nonGroupActors = [this._emojiSelection, this._keypad];
         this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
             c.destroy();
         });
@@ -1557,7 +1571,7 @@ var Keyboard = class Keyboard {
             return;
 
         this._keypadVisible = visible;
-        this._keypad.actor.visible = this._keypadVisible;
+        this._keypad.visible = this._keypadVisible;
         this._updateCurrentPageVisible();
     }
 
@@ -1692,7 +1706,7 @@ var Keyboard = class Keyboard {
         if (!this._suggestions)
             return;
         this._suggestions.add(text, callback);
-        this._suggestions.actor.show();
+        this._suggestions.show();
     }
 
     _clearShowIdle() {
@@ -1769,7 +1783,7 @@ var Keyboard = class Keyboard {
 
         this._oskFocusWindow = window;
     }
-};
+});
 
 var KeyboardController = class {
     constructor() {
