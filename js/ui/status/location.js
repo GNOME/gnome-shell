@@ -42,9 +42,11 @@ const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
 var AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
 
-var Indicator = class extends PanelMenu.SystemIndicator {
-    constructor() {
-        super();
+var Indicator = GObject.registerClass({
+    GTypeName: 'Location_Indicator'
+}, class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
 
         this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
         this._settings.connect(`changed::${ENABLED}`,
@@ -221,7 +223,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._permStoreProxy = proxy;
     }
-};
+});
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
