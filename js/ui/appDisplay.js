@@ -85,6 +85,44 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
+function _findBestFolderName(apps) {
+    let appInfos = apps.map(app => app.get_app_info());
+
+    let categoryCounter = {};
+    let commonCategories = [];
+
+    appInfos.reduce((categories, appInfo) => {
+        for (let category of appInfo.get_categories().split(';')) {
+            if (!(category in categoryCounter))
+                categoryCounter[category] = 0;
+
+            categoryCounter[category] += 1;
+
+            // If a category is present in all apps, its counter will
+            // reach appInfos.length
+            if (category.length > 0 &&
+                categoryCounter[category] == appInfos.length) {
+                categories.push(category);
+            }
+        }
+        return categories;
+    }, commonCategories);
+
+    for (let category of commonCategories) {
+        let keyfile = new GLib.KeyFile();
+        let path = 'desktop-directories/%s.directory'.format(category);
+
+        try {
+            keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
+            return keyfile.get_locale_string('Desktop Entry', 'Name', null);
+        } catch (e) {
+            continue;
+        }
+    }
+
+    return null;
+}
+
 class BaseAppView {
     constructor(params, gridParams) {
         if (this.constructor === BaseAppView)
@@ -922,6 +960,46 @@ var AllView = class AllView extends BaseAppView {
         this._nEventBlockerInhibits--;
         this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
     }
+
+    createFolder(apps, position=-1) {
+        let newFolderId = GLib.uuid_string_random();
+
+        let folders = this._folderSettings.get_strv('folder-children');
+        folders.push(newFolderId);
+        this._folderSettings.set_strv('folder-children', folders);
+
+        // Position the new folder before creating it
+        if (position >= 0) {
+            let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+            iconsData[newFolderId] = new GLib.Variant('a{sv}', {
+                'position': GLib.Variant.new_uint32(position),
+            });
+            this._gridSettings.set_value('icons-data',
+                new GLib.Variant('a{sv}', iconsData));
+        }
+
+        // Create the new folder. We are cannot use but Gio.Settings.new_with_path()
+        // for that.
+        let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
+        let newFolderSettings = Gio.Settings.new_with_path('org.gnome.desktop.app-folders.folder',
+                                                           newFolderPath);
+        if (!newFolderSettings) {
+            log('Error creating new folder');
+            return false;
+        }
+
+        let appItems = apps.map(id => this._items[id].app);
+        let folderName = _findBestFolderName(appItems);
+        if (!folderName)
+            folderName = _("Unnamed Folder");
+
+        newFolderSettings.delay();
+        newFolderSettings.set_string('name', folderName);
+        newFolderSettings.set_strv('apps', apps);
+        newFolderSettings.apply();
+
+        return true;
+    }
 };
 Signals.addSignalMethods(AllView.prototype);
 
@@ -1275,11 +1353,12 @@ var AppSearchProvider = class AppSearchProvider {
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor(folder, parentView) {
+    constructor(folder, id, parentView) {
         super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._id = id;
         this._folder = folder;
         this._parentView = parentView;
 
@@ -1464,7 +1543,21 @@ var FolderView = class FolderView extends BaseAppView {
 
         folderApps.splice(index, 1);
 
-        this._folder.set_strv('apps', folderApps);
+        // Remove the folder if this is the last app icon; otherwise,
+        // just remove the icon
+        if (folderApps.length == 0) {
+            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+            let folders = settings.get_strv('folder-children');
+            folders.splice(folders.indexOf(this._id), 1);
+            settings.set_strv('folder-children', folders);
+
+            // Resetting all keys deletes the relocatable schema
+            let keys = this._folder.settings_schema.list_keys();
+            for (let key of keys)
+                this._folder.reset(key);
+        } else {
+            this._folder.set_strv('apps', folderApps);
+        }
 
         return true;
     }
@@ -1713,7 +1806,7 @@ var FolderIcon = class FolderIcon extends BaseViewIcon {
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this._folderView = new FolderView(this._folder, parentView);
+        this._folderView = new FolderView(this._folder, id, parentView);
 
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
@@ -2319,6 +2412,17 @@ var AppIcon = class AppIcon extends BaseViewIcon {
         return source != this &&
                (source instanceof AppIcon) &&
                (this.view instanceof AllView);
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (!super.acceptDrop(source, actor, x, y, time))
+            return false;
+
+        let apps = [this.id, source.id];
+        let visibleItems = this.view.getAllItems().filter(item => item.actor.visible);
+        let position = visibleItems.indexOf(this);
+
+        return this.view.createFolder(apps, position);
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);
