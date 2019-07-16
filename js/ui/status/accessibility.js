@@ -103,7 +103,7 @@ class ATIndicator extends PanelMenu.Button {
     _buildItemExtended(string, initialValue, writable, onSet) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
         if (!writable)
-            widget.actor.reactive = false;
+            widget.reactive = false;
         else
             widget.connect('toggled', item => {
                 onSet(item.state);
