@@ -2,7 +2,6 @@
 /* exported Lightbox */
 
 const { Clutter, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Params = imports.misc.params;
 
@@ -89,8 +88,8 @@ var RadialShaderEffect = GObject.registerClass({
  *           - inhibitEvents: whether to inhibit events for @container
  *           - width: shade actor width
  *           - height: shade actor height
- *           - fadeInTime: milliseconds used to fade in
- *           - fadeOutTime: milliseconds used to fade out
+ *           - fadeFactor: fading opacity factor
+ *           - radialEffect: whether to enable the GLSL radial effect
  *
  * Lightbox creates a dark translucent "shade" actor to hide the
  * contents of @container, and allows you to specify particular actors
@@ -106,41 +105,50 @@ var RadialShaderEffect = GObject.registerClass({
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-var Lightbox = class Lightbox {
-    constructor(container, params) {
-        params = Params.parse(params, { inhibitEvents: false,
-                                        width: null,
-                                        height: null,
-                                        fadeFactor: DEFAULT_FADE_FACTOR,
-                                        radialEffect: false,
-                                      });
+var Lightbox = GObject.registerClass({
+    Properties: {
+        'light': GObject.ParamSpec.boolean(
+            'light', 'light', 'light', GObject.ParamFlags.READABLE, false),
+    }
+}, class Lightbox extends St.Bin {
+    _init(container, params) {
+        params = Params.parse(params, {
+            inhibitEvents: false,
+            width: 0,
+            height: 0,
+            fadeFactor: DEFAULT_FADE_FACTOR,
+            radialEffect: false,
+        });
 
+        super._init({
+            reactive: params.inhibitEvents,
+            width: params.width,
+            height: params.height,
+            visible: false
+        });
+
+        this._light = false;
         this._container = container;
         this._children = container.get_children();
         this._fadeFactor = params.fadeFactor;
-        this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && params.radialEffect;
-
-        this.actor = new St.Bin({ reactive: params.inhibitEvents });
+        this._radialEffect = params.radialEffect &&
+                             Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL);
 
         if (this._radialEffect)
-            this.actor.add_effect(new RadialShaderEffect({ name: 'radial' }));
+            this.add_effect(new RadialShaderEffect({ name: 'radial' }));
         else
-            this.actor.set({ opacity: 0, style_class: 'lightbox' });
+            this.set({ opacity: 0, style_class: 'lightbox' });
 
-        container.add_actor(this.actor);
-        this.actor.raise_top();
-        this.actor.hide();
-        this.light = false;
+        container.add_actor(this);
+        this.raise_top();
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
-        if (params.width && params.height) {
-            this.actor.width = params.width;
-            this.actor.height = params.height;
-        } else {
-            let constraint = new Clutter.BindConstraint({ source: container,
-                                                          coordinate: Clutter.BindCoordinate.ALL });
-            this.actor.add_constraint(constraint);
+        if (!params.width || !params.height) {
+            this.add_constraint(new Clutter.BindConstraint({
+                source: container,
+                coordinate: Clutter.BindCoordinate.ALL
+            }));
         }
 
         this._actorAddedSignalId = container.connect('actor-added', this._actorAdded.bind(this));
@@ -149,16 +157,20 @@ var Lightbox = class Lightbox {
         this._highlighted = null;
     }
 
+    get light() {
+        return this._light;
+    }
+
     _actorAdded(container, newChild) {
         let children = this._container.get_children();
-        let myIndex = children.indexOf(this.actor);
+        let myIndex = children.indexOf(this);
         let newChildIndex = children.indexOf(newChild);
 
         if (newChildIndex > myIndex) {
             // The child was added above the shade (presumably it was
             // made the new top-most child). Move it below the shade,
             // and add it to this._children as the new topmost actor.
-            newChild.lower(this.actor);
+            this._container.set_child_above_sibling(this, newChild);
             this._children.push(newChild);
         } else if (newChildIndex == 0) {
             // Bottom of stack
@@ -172,7 +184,7 @@ var Lightbox = class Lightbox {
     }
 
     lightOn(fadeInTime) {
-        this.actor.remove_all_transitions();
+        this.remove_all_transitions();
 
         let easeProps = {
             duration: fadeInTime || 0,
@@ -180,46 +192,46 @@ var Lightbox = class Lightbox {
         };
 
         let onComplete = () => {
-            this.light = true;
-            this.emit('light', this.light);
+            this._light = true;
+            this.notify('light');
         };
 
         if (this._radialEffect) {
-            this.actor.ease_property(
+            this.ease_property(
                 '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, easeProps);
             this.actor.ease_property(
                 '@effects.radial.sharpness', VIGNETTE_SHARPNESS,
                 Object.assign(easeProps, onComplete));
         } else {
-            this.actor.ease(Object.assign(easeProps, {
+            this.ease(Object.assign(easeProps, {
                 opacity: 255 * this._fadeFactor,
                 onComplete
             }));
         }
 
-        this.actor.show();
+        this.show();
     }
 
     lightOff(fadeOutTime) {
-        this.actor.remove_all_transitions();
+        this.remove_all_transitions();
 
-        this.light = false;
-        this.emit('light', this.light);
+        this._light = false;
+        this.notify('light');
 
         let easeProps = {
             duration: fadeOutTime || 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD
         };
 
-        let onComplete = () => this.actor.hide();
+        let onComplete = () => this.hide();
 
         if (this._radialEffect) {
-            this.actor.ease_property(
+            this.ease_property(
                 '@effects.radial.brightness', 1.0, easeProps);
-            this.actor.ease_property(
+            this.ease_property(
                 '@effects.radial.sharpness', 0.0, Object.assign(easeProps, onComplete));
         } else {
-            this.actor.ease(Object.assign(easeProps, { opacity: 0, onComplete }));
+            this.ease(Object.assign(easeProps, { opacity: 0, onComplete }));
         }
     }
 
@@ -250,7 +262,7 @@ var Lightbox = class Lightbox {
         // case we may need to indicate some *other* actor as the new
         // sibling of the to-be-lowered one.
 
-        let below = this.actor;
+        let below = this;
         for (let i = this._children.length - 1; i >= 0; i--) {
             if (this._children[i] == window)
                 this._children[i].raise_top();
@@ -264,25 +276,21 @@ var Lightbox = class Lightbox {
     }
 
     /**
-     * destroy:
-     *
-     * Destroys the lightbox.
-     */
-    destroy() {
-        this.actor.destroy();
-    }
-
-    /**
      * _onDestroy:
      *
      * This is called when the lightbox' actor is destroyed, either
      * by destroying its container or by explicitly calling this.destroy().
      */
     _onDestroy() {
-        this._container.disconnect(this._actorAddedSignalId);
-        this._container.disconnect(this._actorRemovedSignalId);
+        if (this._actorAddedSignalId) {
+            this._container.disconnect(this._actorAddedSignalId);
+            this._actorAddedSignalId = 0;
+        }
+        if (this._actorRemovedSignalId) {
+            this._container.disconnect(this._actorRemovedSignalId);
+            this._actorRemovedSignalId = 0;
+        }
 
         this.highlight(null);
     }
-};
-Signals.addSignalMethods(Lightbox.prototype);
+});
