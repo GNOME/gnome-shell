@@ -56,7 +56,6 @@ var BarLevel = GObject.registerClass({
             return;
 
         this._value = value;
-        this._value = value;
         this.notify('value');
         this.queue_repaint();
     }

@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService */
 
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const GrabHelper = imports.ui.grabHelper;
 const Lightbox = imports.ui.lightbox;
@@ -193,13 +192,13 @@ var ScreenshotService = class {
     PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
         pickPixel.show();
-        pickPixel.connect('finished', (pickPixel, coords) => {
-            if (coords) {
+        pickPixel.connect('finished', (pickPixel, x, y) => {
+            if (x > 0 && y > 0) {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)
                     return;
-                screenshot.pick_color(...coords, (o, res) => {
-                    let [success_, color] = screenshot.pick_color_finish(res);
+                screenshot.pick_color(x, y, (o, res) => {
+                    let [, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
                         color: GLib.Variant.new('(ddd)', [
@@ -219,48 +218,52 @@ var ScreenshotService = class {
     }
 };
 
-var SelectArea = class {
-    constructor() {
+var SelectArea = GObject.registerClass({
+    GTypeName: 'Screenshot_SelectArea',
+    Signals: { 'finished': { param_types: [Meta.Rectangle.$gtype] } }
+}, class SelectArea extends St.Widget {
+    _init() {
         this._startX = -1;
         this._startY = -1;
         this._lastX = 0;
         this._lastY = 0;
         this._result = null;
 
-        this._group = new St.Widget({ visible: false,
-                                      reactive: true,
-                                      x: 0,
-                                      y: 0 });
-        Main.uiGroup.add_actor(this._group);
+        super._init({
+            visible: false,
+            reactive: true,
+            x: 0, y: 0
+        });
+        Main.uiGroup.add_actor(this);
 
-        this._grabHelper = new GrabHelper.GrabHelper(this._group);
+        this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this._group.connect('button-press-event',
-                            this._onButtonPress.bind(this));
-        this._group.connect('button-release-event',
-                            this._onButtonRelease.bind(this));
-        this._group.connect('motion-event',
-                            this._onMotionEvent.bind(this));
+        this.connect('button-press-event',
+                     this._onButtonPress.bind(this));
+        this.connect('button-release-event',
+                     this._onButtonRelease.bind(this));
+        this.connect('motion-event',
+                     this._onMotionEvent.bind(this));
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._group.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._rubberband = new St.Widget({
             style_class: 'select-area-rubberband',
             visible: false
         });
-        this._group.add_actor(this._rubberband);
+        this.add_actor(this._rubberband);
     }
 
-    show() {
-        if (!this._grabHelper.grab({ actor: this._group,
+    vfunc_show() {
+        if (!this._grabHelper.grab({ actor: this,
                                      onUngrab: this._onUngrab.bind(this) }))
             return;
 
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
-        Main.uiGroup.set_child_above_sibling(this._group, null);
-        this._group.visible = true;
+        Main.uiGroup.set_child_above_sibling(this, null);
+        super.vfunc_show();
     }
 
     _getGeometry() {
@@ -299,7 +302,7 @@ var SelectArea = class {
 
     _onButtonRelease() {
         this._result = this._getGeometry();
-        this._group.ease({
+        this.ease({
             opacity: 0,
             duration: 200,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -313,39 +316,40 @@ var SelectArea = class {
         this.emit('finished', this._result);
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this._group.destroy();
+            this.destroy();
             return GLib.SOURCE_REMOVE;
         });
     }
-};
-Signals.addSignalMethods(SelectArea.prototype);
+});
 
-var PickPixel = class {
-    constructor() {
+var PickPixel = GObject.registerClass({
+    GTypeName: 'Screenshot_PickPixel',
+    Signals: { 'finished': { param_types: [GObject.TYPE_INT, GObject.TYPE_INT] } }
+}, class PickPixel extends St.Widget {
+    _init() {
+        super._init({ visible: false, reactive: true });
+
         this._result = null;
 
-        this._group = new St.Widget({ visible: false,
-                                      reactive: true });
-        Main.uiGroup.add_actor(this._group);
+        Main.uiGroup.add_actor(this);
 
-        this._grabHelper = new GrabHelper.GrabHelper(this._group);
+        this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this._group.connect('button-release-event',
-                            this._onButtonRelease.bind(this));
+        this.connect('button-release-event', this._onButtonRelease.bind(this));
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
-        this._group.add_constraint(constraint);
+        this.add_constraint(constraint);
     }
 
-    show() {
-        if (!this._grabHelper.grab({ actor: this._group,
+    vfunc_show() {
+        if (!this._grabHelper.grab({ actor: this,
                                      onUngrab: this._onUngrab.bind(this) }))
             return;
 
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
-        Main.uiGroup.set_child_above_sibling(this._group, null);
-        this._group.visible = true;
+        Main.uiGroup.set_child_above_sibling(this, null);
+        super.vfunc_show();
     }
 
     _onButtonRelease(actor, event) {
@@ -356,32 +360,28 @@ var PickPixel = class {
 
     _onUngrab() {
         global.display.set_cursor(Meta.Cursor.DEFAULT);
-        this.emit('finished', this._result);
+        let [x, y] = this._result || [-1, -1];
+        this.emit('finished', Math.round(x), Math.round(y));
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this._group.destroy();
+            this.destroy();
             return GLib.SOURCE_REMOVE;
         });
     }
-};
-Signals.addSignalMethods(PickPixel.prototype);
+});
 
 var FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
 
-var Flashspot = class extends Lightbox.Lightbox {
-    constructor(area) {
-        super(Main.uiGroup, { inhibitEvents: true,
-                              width: area.width,
-                              height: area.height });
-
-        this.actor.style_class = 'flashspot';
-        this.actor.set_position(area.x, area.y);
+var Flashspot = GObject.registerClass(
+class Flashspot extends Lightbox.Lightbox {
+    _init(area) {
+        super._init(Main.uiGroup, { inhibit_events: true, ...area });
+        this.style_class = 'flashspot';
     }
 
     fire(doneCallback) {
-        this.actor.show();
-        this.actor.opacity = 255;
-        this.actor.ease({
+        this.set({ visible: true, opacity: 255 });
+        this.ease({
             opacity: 0,
             duration: FLASHSPOT_ANIMATION_OUT_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -392,4 +392,4 @@ var Flashspot = class extends Lightbox.Lightbox {
             }
         });
     }
-};
+});

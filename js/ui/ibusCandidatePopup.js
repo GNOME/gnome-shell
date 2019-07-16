@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CandidatePopup */
 
-const { Clutter, IBus, St } = imports.gi;
-const Signals = imports.signals;
+const { Clutter, GObject, IBus, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -12,11 +11,23 @@ var MAX_CANDIDATES_PER_PAGE = 16;
 var DEFAULT_INDEX_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8',
                             '9', '0', 'a', 'b', 'c', 'd', 'e', 'f'];
 
-var CandidateArea = class CandidateArea {
-    constructor() {
-        this.actor = new St.BoxLayout({ vertical: true,
-                                        reactive: true,
-                                        visible: false });
+var CandidateArea = GObject.registerClass({
+    Signals: {
+        'candidate-clicked': { param_types: [GObject.TYPE_UINT,
+                                             GObject.TYPE_UINT,
+                                             Clutter.ModifierType.$gtype] },
+        'cursor-down': {},
+        'cursor-up': {},
+        'next-page': {},
+        'previous-page': {},
+    }
+}, class CandidateArea extends St.BoxLayout {
+    _init() {
+        super._init({
+            vertical: true,
+            reactive: true,
+            visible: false
+        });
         this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
             let box = new St.BoxLayout({ style_class: 'candidate-box',
@@ -27,7 +38,7 @@ var CandidateArea = class CandidateArea {
             box.add(box._indexLabel, { y_fill: false });
             box.add(box._candidateLabel, { y_fill: false });
             this._candidateBoxes.push(box);
-            this.actor.add(box);
+            this.add(box);
 
             let j = i;
             box.connect('button-release-event', (actor, event) => {
@@ -36,7 +47,7 @@ var CandidateArea = class CandidateArea {
             });
         }
 
-        this.actor.connect('scroll-event', (actor, event) => {
+        this.connect('scroll-event', (actor, event) => {
             let direction = event.get_scroll_direction();
             switch (direction) {
             case Clutter.ScrollDirection.UP:
@@ -59,7 +70,7 @@ var CandidateArea = class CandidateArea {
         this._nextButton.child = new St.Icon({ style_class: 'candidate-page-button-icon' });
         this._buttonBox.add(this._nextButton, { expand: true });
 
-        this.actor.add(this._buttonBox);
+        this.add(this._buttonBox);
 
         this._previousButton.connect('clicked', () => {
             this.emit('previous-page');
@@ -79,15 +90,15 @@ var CandidateArea = class CandidateArea {
         this._orientation = orientation;
 
         if (this._orientation == IBus.Orientation.HORIZONTAL) {
-            this.actor.vertical = false;
-            this.actor.remove_style_class_name('vertical');
-            this.actor.add_style_class_name('horizontal');
+            this.vertical = false;
+            this.remove_style_class_name('vertical');
+            this.add_style_class_name('horizontal');
             this._previousButton.child.icon_name = 'go-previous-symbolic';
             this._nextButton.child.icon_name = 'go-next-symbolic';
         } else {                // VERTICAL || SYSTEM
-            this.actor.vertical = true;
-            this.actor.add_style_class_name('vertical');
-            this.actor.remove_style_class_name('horizontal');
+            this.vertical = true;
+            this.add_style_class_name('vertical');
+            this.remove_style_class_name('horizontal');
             this._previousButton.child.icon_name = 'go-up-symbolic';
             this._nextButton.child.icon_name = 'go-down-symbolic';
         }
@@ -121,19 +132,19 @@ var CandidateArea = class CandidateArea {
         this._previousButton.reactive = wrapsAround || page > 0;
         this._nextButton.reactive = wrapsAround || page < nPages - 1;
     }
-};
-Signals.addSignalMethods(CandidateArea.prototype);
+});
 
-var CandidatePopup = class CandidatePopup {
-    constructor() {
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
-        this._boxPointer.visible = false;
-        this._boxPointer.style_class = 'candidate-popup-boxpointer';
-        Main.layoutManager.addChrome(this._boxPointer);
+var CandidatePopup = GObject.registerClass(
+class IbusCandidatePopup extends BoxPointer.BoxPointer {
+    _init() {
+        super._init(St.Side.TOP);
+        this.visible = false;
+        this.style_class = 'candidate-popup-boxpointer';
+        Main.layoutManager.addChrome(this);
 
         let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
                                      vertical: true });
-        this._boxPointer.bin.set_child(box);
+        this.bin.set_child(box);
 
         this._preeditText = new St.Label({ style_class: 'candidate-popup-text',
                                            visible: false });
@@ -144,7 +155,7 @@ var CandidatePopup = class CandidatePopup {
         box.add(this._auxText);
 
         this._candidateArea = new CandidateArea();
-        box.add(this._candidateArea.actor);
+        box.add(this._candidateArea);
 
         this._candidateArea.connect('previous-page', () => {
             this._panelService.page_up();
@@ -222,7 +233,7 @@ var CandidatePopup = class CandidatePopup {
             this._updateVisibility();
         });
         panelService.connect('update-lookup-table', (_ps, lookupTable, visible) => {
-            this._candidateArea.actor.visible = visible;
+            this._candidateArea.visible = visible;
             this._updateVisibility();
 
             let nCandidates = lookupTable.get_number_of_candidates();
@@ -258,37 +269,37 @@ var CandidatePopup = class CandidatePopup {
             this._candidateArea.updateButtons(lookupTable.is_round(), page, nPages);
         });
         panelService.connect('show-lookup-table', () => {
-            this._candidateArea.actor.show();
+            this._candidateArea.show();
             this._updateVisibility();
         });
         panelService.connect('hide-lookup-table', () => {
-            this._candidateArea.actor.hide();
+            this._candidateArea.hide();
             this._updateVisibility();
         });
         panelService.connect('focus-out', () => {
-            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
+            this.close(BoxPointer.PopupAnimation.NONE);
             Main.keyboard.resetSuggestions();
         });
     }
 
     _setDummyCursorGeometry(x, y, w, h) {
         Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
-        if (this._boxPointer.visible)
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
+        if (this.visible)
+            this.setPosition(Main.layoutManager.dummyCursor, 0);
     }
 
     _updateVisibility() {
         let isVisible = (!Main.keyboard.visible &&
                          (this._preeditText.visible ||
                           this._auxText.visible ||
-                          this._candidateArea.actor.visible));
+                          this._candidateArea.visible));
 
         if (isVisible) {
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
-            this._boxPointer.open(BoxPointer.PopupAnimation.NONE);
-            this._boxPointer.raise_top();
+            this.setPosition(Main.layoutManager.dummyCursor, 0);
+            this.open(BoxPointer.PopupAnimation.NONE);
+            this.raise_top();
         } else {
-            this._boxPointer.close(BoxPointer.PopupAnimation.NONE);
+            this.close(BoxPointer.PopupAnimation.NONE);
         }
     }
 
@@ -298,4 +309,4 @@ var CandidatePopup = class CandidatePopup {
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
     }
-};
+});
