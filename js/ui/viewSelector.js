@@ -123,9 +123,14 @@ var ShowOverviewAction = GObject.registerClass({
     }
 });
 
-var ViewSelector = class {
-    constructor(searchEntry, showAppsButton) {
-        this.actor = new Shell.Stack({ name: 'viewSelector' });
+var ViewSelector = GObject.registerClass({
+    Signals: {
+        'page-changed': {},
+        'page-empty': {},
+    }
+}, class ViewSelector extends Shell.Stack {
+    _init(searchEntry, showAppsButton) {
+        super._init({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
@@ -165,15 +170,15 @@ var ViewSelector = class {
         this._capturedEventId = 0;
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
+        this._workspacesPage = this._addPage(this._workspacesDisplay,
                                              _("Windows"), 'focus-windows-symbolic');
 
         this.appDisplay = new AppDisplay.AppDisplay();
-        this._appsPage = this._addPage(this.appDisplay.actor,
+        this._appsPage = this._addPage(this.appDisplay,
                                        _("Applications"), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResults();
-        this._searchPage = this._addPage(this._searchResults.actor,
+        this._searchPage = this._addPage(this._searchResults,
                                          _("Search"), 'edit-find-symbolic',
                                          { a11yFocus: this._entry });
 
@@ -184,9 +189,9 @@ var ViewSelector = class {
         this._focusTrap.connect('key-focus-in', () => {
             this._entry.grab_key_focus();
         });
-        this._searchResults.actor.add_actor(this._focusTrap);
+        this._searchResults.add_actor(this._focusTrap);
 
-        global.focus_manager.add_group(this._searchResults.actor);
+        global.focus_manager.add_group(this._searchResults);
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
@@ -310,11 +315,11 @@ var ViewSelector = class {
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
         else
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
-                proxy: this.actor,
+                proxy: this,
                 focusCallback: () => this._a11yFocusPage(page),
             });
         page.hide();
-        this.actor.add_actor(page);
+        this.add_actor(page);
         return page;
     }
 
@@ -454,7 +459,7 @@ var ViewSelector = class {
     _onStageKeyFocusChanged() {
         let focus = global.stage.get_key_focus();
         let appearFocused = (this._entry.contains(focus) ||
-                             this._searchResults.actor.contains(focus));
+                             this._searchResults.contains(focus));
 
         this._text.set_cursor_visible(appearFocused);
 
@@ -599,5 +604,4 @@ var ViewSelector = class {
         else
             return ViewPage.SEARCH;
     }
-};
-Signals.addSignalMethods(ViewSelector.prototype);
+});
