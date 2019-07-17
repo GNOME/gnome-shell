@@ -108,7 +108,7 @@ shell_secure_text_buffer_real_insert_text (ClutterTextBuffer *buffer,
 
   /* Actual text insertion */
   at = g_utf8_offset_to_pointer (self->text, position) - self->text;
-  g_memmove (self->text + at + n_bytes, self->text + at, self->text_bytes - at);
+  memmove (self->text + at + n_bytes, self->text + at, self->text_bytes - at);
   memcpy (self->text + at, chars, n_bytes);
 
   /* Book keeping */
@@ -138,7 +138,7 @@ shell_secure_text_buffer_real_delete_text (ClutterTextBuffer *buffer,
       start = g_utf8_offset_to_pointer (self->text, position) - self->text;
       end = g_utf8_offset_to_pointer (self->text, position + n_chars) - self->text;
 
-      g_memmove (self->text + start, self->text + end, self->text_bytes + 1 - end);
+      memmove (self->text + start, self->text + end, self->text_bytes + 1 - end);
       self->text_chars -= n_chars;
       self->text_bytes -= (end - start);
 
