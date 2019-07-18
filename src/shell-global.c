@@ -350,23 +350,31 @@ destroy_gjs_context (GjsContext *context)
 }
 
 static void
+shell_global_dispose (GObject *object)
+{
+  ShellGlobal *global = SHELL_GLOBAL (object);
+
+  g_clear_pointer (&global->js_context, destroy_gjs_context);
+
+  g_clear_object (&global->settings);
+  g_clear_object (&global->userdatadir_path);
+  g_clear_object (&global->runtime_state_path);
+
+  G_OBJECT_CLASS (shell_global_parent_class)->dispose (object);
+}
+
+static void
 shell_global_finalize (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  destroy_gjs_context (global->js_context);
-  g_object_unref (global->settings);
-
   the_object = NULL;
-
-  g_clear_object (&global->userdatadir_path);
-  g_clear_object (&global->runtime_state_path);
 
   g_free (global->session_mode);
   g_free (global->imagedir);
   g_free (global->userdatadir);
 
-  g_hash_table_unref (global->save_ops);
+  g_hash_table_destroy (global->save_ops);
 
   G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
 }
@@ -378,6 +386,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
+  gobject_class->dispose = shell_global_dispose;
   gobject_class->finalize = shell_global_finalize;
 
   shell_global_signals[NOTIFY_ERROR] =
