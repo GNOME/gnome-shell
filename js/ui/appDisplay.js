@@ -1155,6 +1155,11 @@ var FolderIcon = class FolderIcon {
     onDestroy() {
         this.view.actor.destroy();
 
+        if (this._spaceReadySignalId) {
+            this._parentView.disconnect(this._spaceReadySignalId);
+            this._spaceReadySignalId = 0;
+        }
+
         if (this._popup)
             this._popup.actor.destroy();
     }
@@ -1226,8 +1231,9 @@ var FolderIcon = class FolderIcon {
     }
 
     _openSpaceForPopup() {
-        let id = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(id);
+        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
+            this._parentView.disconnect(this._spaceReadySignalId);
+            this._spaceReadySignalId = 0;
             this._popup.popup();
             this._updatePopupPosition();
         });
