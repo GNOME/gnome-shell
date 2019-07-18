@@ -1136,11 +1136,7 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView();
 
-        this.actor.connect('clicked', () => {
-            this._ensurePopup();
-            this.view.actor.vscroll.adjustment.value = 0;
-            this._openSpaceForPopup();
-        });
+        this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
             if (!this.actor.mapped && this._popup)
@@ -1161,6 +1157,12 @@ var FolderIcon = class FolderIcon {
 
         if (this._popup)
             this._popup.actor.destroy();
+    }
+
+    open() {
+        this._ensurePopup();
+        this.view.actor.vscroll.adjustment.value = 0;
+        this._openSpaceForPopup();
     }
 
     getAppIds() {
