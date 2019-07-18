@@ -217,6 +217,35 @@ shell_global_get_property(GObject         *object,
 }
 
 static void
+shell_global_profiler_init (ShellGlobal *global)
+{
+  GjsProfiler *profiler;
+  const char *enabled;
+  const char *fd_str;
+  int fd = -1;
+
+  /* Sysprof uses the "GJS_TRACE_FD=N" environment variable to connect GJS
+   * profiler data to the combined Sysprof capture. Since we are in control of
+   * the GjsContext, we need to proxy this FD across to the GJS profiler.
+   */
+
+  fd_str = g_getenv ("GJS_TRACE_FD");
+  enabled = g_getenv ("GJS_ENABLE_PROFILER");
+  if (fd_str == NULL || *fd_str == '\0' || enabled == NULL || *enabled == '\0')
+    return;
+
+  profiler = gjs_context_get_profiler (global->js_context);
+  g_return_if_fail (profiler);
+
+  fd = atoi (fd_str);
+  if (fd > 2)
+    {
+      gjs_profiler_set_fd (profiler, fd);
+      gjs_profiler_start (profiler);
+    }
+}
+
+static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
@@ -309,6 +338,15 @@ shell_global_init (ShellGlobal *global)
   global->save_ops = g_hash_table_new_full (g_file_hash,
                                             (GEqualFunc) g_file_equal,
                                             g_object_unref, g_object_unref);
+
+  shell_global_profiler_init (global);
+}
+
+static void
+destroy_gjs_context (GjsContext *context)
+{
+  g_object_run_dispose (G_OBJECT (context));
+  g_object_unref (context);
 }
 
 static void
@@ -316,7 +354,7 @@ shell_global_finalize (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  g_clear_object (&global->js_context);
+  destroy_gjs_context (global->js_context);
   g_object_unref (global->settings);
 
   the_object = NULL;
@@ -534,7 +572,7 @@ shell_global_get (void)
 void
 _shell_global_destroy_gjs_context (ShellGlobal *self)
 {
-  g_clear_object (&self->js_context);
+  g_clear_pointer (&self->js_context, destroy_gjs_context);
 }
 
 static guint32
