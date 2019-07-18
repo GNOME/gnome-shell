@@ -285,6 +285,7 @@ var AllView = class AllView extends BaseAppView {
         this._eventBlocker.add_action(this._clickAction);
 
         this._displayingPopup = false;
+        this._currentPopupDestroyId = 0;
 
         this._availWidth = 0;
         this._availHeight = 0;
@@ -574,7 +575,22 @@ var AllView = class AllView extends BaseAppView {
         this._stack.add_actor(popup.actor);
         popup.connect('open-state-changed', (popup, isOpen) => {
             this._eventBlocker.reactive = isOpen;
-            this._currentPopup = isOpen ? popup : null;
+
+            if (this._currentPopup) {
+                this._currentPopup.actor.disconnect(this._currentPopupDestroyId);
+                this._currentPopupDestroyId = 0;
+            }
+
+            this._currentPopup = null;
+
+            if (isOpen) {
+                this._currentPopup = popup;
+                this._currentPopupDestroyId = popup.actor.connect('destroy', () => {
+                    this._currentPopup = null;
+                    this._currentPopupDestroyId = 0;
+                    this._eventBlocker.reactive = false;
+                });
+            }
             this._updateIconOpacities(isOpen);
             if (!isOpen)
                 this._closeSpaceForPopup();
