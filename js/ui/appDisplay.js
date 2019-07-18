@@ -330,6 +330,21 @@ var AllView = class AllView extends BaseAppView {
         super.removeAll();
     }
 
+    _redisplay() {
+        let openFolderId = null;
+        if (this._displayingPopup && this._currentPopup)
+            openFolderId = this._currentPopup._source.id;
+
+        super._redisplay();
+
+        if (openFolderId) {
+            let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
+
+            if (folderToReopen)
+                folderToReopen.open();
+        }
+    }
+
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
