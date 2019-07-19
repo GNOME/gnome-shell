@@ -571,17 +571,19 @@ shell_global_get (void)
 }
 
 /**
- * _shell_global_destroy_gjs_context: (skip)
+ * _shell_global_destroy: (skip)
  * @self: global object
  *
- * Destroys the GjsContext held by ShellGlobal, in order to break reference
- * counting cycles. (The GjsContext holds a reference to ShellGlobal because
- * it's available as window.global inside JS.)
+ * Destroys the #ShellGlobal, disposing child objects (such as the #GjsContext)
+ * in order to break reference counting cycles.
+ * The GjsContext holds a reference to ShellGlobal because it's available as
+ * window.global inside JS.
  */
 void
-_shell_global_destroy_gjs_context (ShellGlobal *self)
+_shell_global_destroy (ShellGlobal *global)
 {
-  g_clear_pointer (&self->js_context, destroy_gjs_context);
+  g_object_run_dispose (G_OBJECT (global));
+  g_object_unref (global);
 }
 
 static guint32
