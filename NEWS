@@ -1,3 +1,29 @@
+3.33.4
+======
+* Fix unintentional interference between gestures [Jonas; !598]
+* Fix unintentional loop while polkit dialog is active [Ray; !602]
+* Fix alt-tab icon size on HiDPI [Jonas; !587]
+* Style fixes and improvements [Frederik, Jakub; !610, #1446, #1449]
+* Fix style updates for non-background CSS properties [Florian; #1212]
+* Fix cursor visibility in screen recordings [Illya; #1208]
+* Add option for disabling the hot corner [Florian; #688320]
+* Use more fine-grained levels in battery indicator [Florian; !561, #1442]
+* Fix the calculation of the maximum number of app search results [Jonas; !110]
+* Handle horizontal workspace layout with gestures/animations [Florian; !575]
+* Improve handling of session mode extensions [Florian, Didier; #789852]
+* Misc. bug fixes and cleanups [Jonas, Florian, Sonny, Carlos, Mario, Benjamin,
+  Marco, Ting-Wei; !599, !600, !591, !606, !152, !607, !604, !495, !608, !611,
+  !614, !612, !615, !618, #369, !620, #774, !621, !616, #1065, !609, !626,
+  !491, !631, !632, !633, #1457]
+
+Contributors:
+  Benjamin Berg, Jonas Dreßler, Frederik Feichtmeier, Carlos Garnacho,
+  Illya Klymov, Ting-Wei Lan, Florian Müllner, Sonny Piers, Mario Sanchez Prada,
+  Didier Roche, Jakub Steiner, Ray Strode, Jor Teron, Marco Trevisan (Treviño)
+
+Translators:
+  Jordi Mas [ca], Jor Teron [mjw]
+
 3.33.3
 ======
 * Prepare for optional X11 [Carlos; !378]
