@@ -633,7 +633,7 @@ var Animation = class Animation {
     }
 
     load(callback) {
-        this._show = new GnomeDesktop.BGSlideShow({ filename: this.file.get_path() });
+        this._show = new GnomeDesktop.BGSlideShow({ file: this.file });
 
         this._show.load_async(null, (object, result) => {
             this.loaded = true;
