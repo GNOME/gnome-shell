@@ -23,7 +23,7 @@ gjs_req = '>= 1.57.3'
 gtk_req = '>= 3.15.0'
 mutter_req = '>= 3.33.4'
 polkit_req = '>= 0.100'
-schemas_req = '>= 3.27.90'
+schemas_req = '>= 3.33.1'
 startup_req = '>= 0.11'
 ibus_req = '>= 1.5.2'
 
