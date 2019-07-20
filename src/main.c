@@ -372,7 +372,7 @@ dump_gjs_stack_alarm_sigaction (int signo)
 static void
 dump_gjs_stack_on_signal_handler (int signo)
 {
-  struct sigaction sa = { 0 };
+  struct sigaction sa = { .sa_handler = dump_gjs_stack_alarm_sigaction };
   gsize i;
 
   /* Ignore all the signals starting this point, a part the one we'll raise
@@ -388,7 +388,6 @@ dump_gjs_stack_on_signal_handler (int signo)
 
   /* Waiting at least 5 seconds for the dumpstack, if it fails, we raise the error */
   caught_signal = signo;
-  sa.sa_handler = dump_gjs_stack_alarm_sigaction;
   sigemptyset (&sa.sa_mask);
   sigaction (SIGALRM, &sa, NULL);
 
@@ -402,10 +401,11 @@ dump_gjs_stack_on_signal_handler (int signo)
 static void
 dump_gjs_stack_on_signal (int signo)
 {
-  struct sigaction sa = { 0 };
+  struct sigaction sa = {
+    .sa_flags   = SA_RESETHAND | SA_NODEFER,
+    .sa_handler = dump_gjs_stack_on_signal_handler,
+  };
 
-  sa.sa_flags   = SA_RESETHAND | SA_NODEFER;
-  sa.sa_handler = dump_gjs_stack_on_signal_handler;
   sigemptyset (&sa.sa_mask);
 
   sigaction (signo, &sa, NULL);
