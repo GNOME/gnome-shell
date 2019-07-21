@@ -6,8 +6,8 @@
 
 #include <gjs/gjs.h>
 
-void _shell_global_init            (const char *first_property_name,
-                                    ...);
+ShellGlobal *_shell_global_init (const char *first_property_name,
+                                 ...);
 void _shell_global_set_plugin      (ShellGlobal  *global,
                                     MetaPlugin   *plugin);
 

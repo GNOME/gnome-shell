@@ -540,14 +540,16 @@ shell_global_class_init (ShellGlobalClass *klass)
  *
  * This call must be called before shell_global_get() and shouldn't be called
  * more than once.
+ *
+ * Return value: (transfer none): the singleton #ShellGlobal object
  */
-void
+ShellGlobal *
 _shell_global_init (const char *first_property_name,
                     ...)
 {
   va_list argument_list;
 
-  g_return_if_fail (the_object == NULL);
+  g_return_val_if_fail (the_object == NULL, the_object);
 
   va_start (argument_list, first_property_name);
   the_object = SHELL_GLOBAL (g_object_new_valist (SHELL_TYPE_GLOBAL,
@@ -555,6 +557,7 @@ _shell_global_init (const char *first_property_name,
                                                   argument_list));
   va_end (argument_list);
 
+  return the_object;
 }
 
 /**
