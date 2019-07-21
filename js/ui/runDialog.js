@@ -42,7 +42,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             // Developer brain backwards compatibility
             'restart': this._restart.bind(this),
 
-            'debugexit': () => Meta.quit(Meta.ExitCode.ERROR),
+            'debugexit': () => global.quit(Meta.ExitCode.ERROR),
 
             // rt is short for "reload theme"
             'rt': () => {

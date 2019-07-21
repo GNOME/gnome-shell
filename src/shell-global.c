@@ -78,6 +78,7 @@ struct _ShellGlobal {
 
   GHashTable *save_ops;
 
+  guint quit_idle;
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
@@ -353,6 +354,8 @@ static void
 shell_global_dispose (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
+
+  g_clear_handle_id (&global->quit_idle, g_source_remove);
 
   g_clear_pointer (&global->js_context, destroy_gjs_context);
 
@@ -1711,4 +1714,33 @@ void
 _shell_global_locate_pointer (ShellGlobal *global)
 {
   g_signal_emit (global, shell_global_signals[LOCATE_POINTER], 0);
+}
+
+static gboolean
+on_quit_idle (gpointer data)
+{
+  MetaExitCode exit_code = GPOINTER_TO_UINT (data);
+
+  g_object_run_dispose (G_OBJECT (the_object));
+  meta_quit (exit_code);
+
+  return FALSE;
+}
+
+/**
+ * shell_global_quit:
+ * @global: a #ShellGlobal
+ * @exit_code: the #MetaExitCode for quitting the process
+ *
+ * Quits the shell triggering the garbage collector and terminating mutter.
+ */
+void
+shell_global_quit (ShellGlobal  *global,
+                   MetaExitCode  exit_code)
+{
+  /* Since the global disposition will destroy the JS Context triggering the
+   * garbage collector, this can't be called directly by a Javascript call,
+   * so we do this in an idle, so that gjs isn't involved anymore on destroy */
+  if (!global->quit_idle)
+    global->quit_idle = g_idle_add (on_quit_idle, GUINT_TO_POINTER (exit_code));
 }

@@ -6,6 +6,7 @@
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
+#include <meta/main.h>
 #include <meta/meta-plugin.h>
 
 G_BEGIN_DECLS
@@ -92,6 +93,9 @@ void     shell_global_set_persistent_state      (ShellGlobal  *global,
 GVariant * shell_global_get_persistent_state    (ShellGlobal  *global,
                                                  const char   *property_type,
                                                  const char   *property_name);
+
+void     shell_global_quit                      (ShellGlobal  *global,
+                                                 MetaExitCode  exit_code);
 
 G_END_DECLS
 
