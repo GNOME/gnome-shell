@@ -126,7 +126,7 @@ main(int argc, char **argv)
   gjs_context_gc (js_context);
   gjs_context_gc (js_context);
 
-  g_object_unref (js_context);
+  _shell_global_destroy (global);
   g_free (script);
   exit (code);
 }
