@@ -1315,6 +1315,15 @@ var AppFolderPopup = class AppFolderPopup {
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._isOpen) {
+            this._isOpen = false;
+            this._grabHelper.ungrab({ actor: this.actor });
+            this._grabHelper = null;
+        }
     }
 
     _onKeyPress(actor, event) {
