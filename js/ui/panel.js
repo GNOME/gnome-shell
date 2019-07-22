@@ -203,7 +203,6 @@ var AppMenuButton = GObject.registerClass({
         this._busyNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
-        bin.connect('style-changed', this._onStyleChanged.bind(this));
         this.add_actor(bin);
 
         this.bind_property("reactive", this, "can-focus", 0);
@@ -238,9 +237,8 @@ var AppMenuButton = GObject.registerClass({
         this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
         this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
 
-        this._stop = true;
-
-        this._spinner = null;
+        this._spinner = new Animation.Spinner(PANEL_ICON_SIZE, true);
+        this._container.add_actor(this._spinner.actor);
 
         let menu = new AppMenu(this);
         this.setMenu(menu);
@@ -288,17 +286,6 @@ var AppMenuButton = GObject.registerClass({
                            } });
     }
 
-    _onStyleChanged(actor) {
-        let node = actor.get_theme_node();
-        let [success, icon] = node.lookup_url('spinner-image', false);
-        if (!success || (this._spinnerIcon && this._spinnerIcon.equal(icon)))
-            return;
-        this._spinnerIcon = icon;
-        this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
-        this._spinner.actor.hide();
-    }
-
     _syncIcon() {
         if (!this._targetApp)
             return;
@@ -315,34 +302,11 @@ var AppMenuButton = GObject.registerClass({
     }
 
     stopAnimation() {
-        if (this._stop)
-            return;
-
-        this._stop = true;
-
-        if (this._spinner == null)
-            return;
-
-        Tweener.addTween(this._spinner.actor,
-                         { opacity: 0,
-                           time: SPINNER_ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: () => {
-                               this._spinner.stop();
-                               this._spinner.actor.opacity = 255;
-                               this._spinner.actor.hide();
-                           }
-                         });
+        this._spinner.stop();
     }
 
     startAnimation() {
-        this._stop = false;
-
-        if (this._spinner == null)
-            return;
-
         this._spinner.play();
-        this._spinner.actor.show();
     }
 
     _onAppStateChanged(appSys, app) {
