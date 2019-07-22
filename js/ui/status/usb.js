@@ -42,18 +42,18 @@ var Indicator = new Lang.Class({
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'drive-removable-media-symbolic';
 
-        this._ProtectionSetting = false;
-        this._ProtectionLvlSetting = 0;
+        this._protectionSetting = false;
+        this._protectionLevelSetting = 0;
 
         this._settings = new Gio.Settings({ schema_id: PRIVACY_SCHEMA });
         this._settings.connect('changed::' + USB_PROTECTION,
                                this._onProtectionSettingChanged.bind(this));
         this._settings.connect('changed::' + USB_PROTECTION_LEVEL,
-                               this._onProtectionLvlSettingChanged.bind(this));
+                               this._onProtectionLevelSettingChanged.bind(this));
         this._onProtectionSettingChanged();
-        this._onProtectionLvlSettingChanged();
+        this._onProtectionLevelSettingChanged();
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem("USB Protection", true);
+        this._item = new PopupMenu.PopupSubMenuMenuItem(_("USB Protection"), true);
         this._item.icon.icon_name = 'drive-removable-media-symbolic';
         this._item.menu.addAction(_("Turn Off"), () => {
             this._settings.set_boolean(USB_PROTECTION, false);
@@ -86,17 +86,17 @@ var Indicator = new Lang.Class({
     },
 
     _onProtectionSettingChanged() {
-        this._ProtectionSetting = this._settings.get_boolean(USB_PROTECTION);
+        this._protectionSetting = this._settings.get_boolean(USB_PROTECTION);
         this._sessionUpdated();
     },
 
-    _onProtectionLvlSettingChanged() {
-        this._ProtectionLvlSetting = this._settings.get_uint(USB_PROTECTION_LEVEL);
+    _onProtectionLevelSettingChanged() {
+        this._protectionLevelSetting = this._settings.get_uint(USB_PROTECTION_LEVEL);
         this._sessionUpdated();
     },
 
     _isProtectionActive() {
-        return this._ProtectionSetting && this._proxyWorking;
+        return this._protectionSetting && this._proxyWorking;
     },
 
     _sessionUpdated() {
