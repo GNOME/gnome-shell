@@ -1324,6 +1324,7 @@ var ScreenShield = class {
             return;
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             this.lock(false);
+            return GLib.SOURCE_REMOVE;
         });
     }
 };

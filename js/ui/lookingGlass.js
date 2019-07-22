@@ -1011,7 +1011,10 @@ var LookingGlass = class LookingGlass {
     }
 
     _queueResize() {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => this._resize());
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._resize();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _resize() {

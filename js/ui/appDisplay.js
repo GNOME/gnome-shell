@@ -622,6 +622,7 @@ var AllView = class AllView extends BaseAppView {
                 this._grid.currentPage = 0;
                 this._pageIndicators.setNPages(this._grid.nPages());
                 this._pageIndicators.setCurrentPage(0);
+                return GLib.SOURCE_REMOVE;
             });
         }
 

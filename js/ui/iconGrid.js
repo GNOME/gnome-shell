@@ -768,6 +768,7 @@ var IconGrid = GObject.registerClass({
         for (let i in this._items) {
             this._items[i].icon.setIconSize(newIconSize);
         }
+        return GLib.SOURCE_REMOVE;
     }
 });
 
