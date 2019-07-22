@@ -1141,6 +1141,7 @@ var FolderIcon = class FolderIcon {
             this.view.actor.vscroll.adjustment.value = 0;
             this._openSpaceForPopup();
         });
+        this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
             if (!this.actor.mapped && this._popup)
                 this._popup.popdown();
@@ -1148,6 +1149,13 @@ var FolderIcon = class FolderIcon {
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
+    }
+
+    onDestroy() {
+        this.view.actor.destroy();
+
+        if (this._popup)
+            this._popup.actor.destroy();
     }
 
     getAppIds() {
@@ -1324,7 +1332,6 @@ var AppFolderPopup = class AppFolderPopup {
 
         global.focus_manager.add_group(this.actor);
 
-        source.actor.connect('destroy', () => this.actor.destroy());
         this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
             actionMode: Shell.ActionMode.POPUP
         });
