@@ -134,7 +134,7 @@ class BaseAppView {
 
     addItem(icon) {
         let id = icon.id;
-	if (this.hasItem(id))
+        if (this.hasItem(id))
             throw new Error(`icon with id ${id} already added to view`);
 
         this._allItems.push(icon);
