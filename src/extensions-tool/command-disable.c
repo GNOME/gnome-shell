@@ -29,33 +29,11 @@ static gboolean
 disable_extension (const char *uuid)
 {
   g_autoptr(GSettings) settings = get_shell_settings ();
-  g_auto(GStrv) extensions = NULL;
-  g_auto(GStrv) new_value = NULL;
-  const char **s;
-  guint n_extensions;
-  int i;
 
   if (settings == NULL)
     return FALSE;
 
-  if (!g_settings_is_writable (settings, "enabled-extensions"))
-    return FALSE;
-
-  extensions = g_settings_get_strv (settings, "enabled-extensions");
-
-  if (!g_strv_contains ((const char **)extensions, uuid))
-    return TRUE;
-
-  n_extensions = g_strv_length (extensions);
-  new_value = g_new0 (char *, n_extensions);
-  for (i = 0, s = (const char **)extensions; i < n_extensions; i++, s++)
-    if (!g_str_equal (*s, uuid))
-      new_value[i] = g_strdup (*s);
-
-  g_settings_set_strv (settings, "enabled-extensions", (const char **)new_value);
-  g_settings_sync ();
-
-  return TRUE;
+  return settings_list_remove (settings, "enabled-extensions", uuid);
 }
 
 int
