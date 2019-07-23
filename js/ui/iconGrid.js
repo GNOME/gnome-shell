@@ -206,6 +206,8 @@ var IconGrid = GObject.registerClass({
         this.rightPadding = 0;
         this.leftPadding = 0;
 
+        this._updateIconSizesLaterId = 0;
+
         this._items = [];
         this._clonesAnimating = [];
         // Pulled from CSS, but hardcode some defaults here
@@ -223,6 +225,14 @@ var IconGrid = GObject.registerClass({
 
         this.connect('actor-added', this._childAdded.bind(this));
         this.connect('actor-removed', this._childRemoved.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._updateIconSizesLaterId) {
+            Meta.later_remove (this._updateIconSizesLaterId);
+            this._updateIconSizesLaterId = 0;
+        }
     }
 
     _keyFocusIn(actor) {
@@ -757,12 +767,14 @@ var IconGrid = GObject.registerClass({
 
             this._updateSpacingForSize(availWidth, availHeight);
         }
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       this._updateIconSizes.bind(this));
+        if (!this._updateIconSizesLaterId)
+            this._updateIconSizesLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                                                          this._updateIconSizes.bind(this));
     }
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
     _updateIconSizes() {
+        this._updateIconSizesLaterId = 0;
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
         let newIconSize = Math.floor(ICON_SIZE * scale);
         for (let i in this._items) {

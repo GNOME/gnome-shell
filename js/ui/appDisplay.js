@@ -128,10 +128,14 @@ class BaseAppView {
         return this._allItems;
     }
 
+    hasItem(id) {
+        return this._items[id] !== undefined;
+    }
+
     addItem(icon) {
         let id = icon.id;
-        if (this._items[id] !== undefined)
-            return;
+	if (this.hasItem(id))
+            throw new Error(`icon with id ${id} already added to view`)
 
         this._allItems.push(icon);
         this._items[id] = icon;
@@ -281,6 +285,7 @@ var AllView = class AllView extends BaseAppView {
         this._eventBlocker.add_action(this._clickAction);
 
         this._displayingPopup = false;
+        this._currentPopupDestroyId = 0;
 
         this._availWidth = 0;
         this._availHeight = 0;
@@ -323,6 +328,21 @@ var AllView = class AllView extends BaseAppView {
     removeAll() {
         this.folderIcons = [];
         super.removeAll();
+    }
+
+    _redisplay() {
+        let openFolderId = null;
+        if (this._displayingPopup && this._currentPopup)
+            openFolderId = this._currentPopup._source.id;
+
+        super._redisplay();
+
+        if (openFolderId) {
+            let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
+
+            if (folderToReopen)
+                folderToReopen.open();
+        }
     }
 
     _itemNameChanged(item) {
@@ -371,6 +391,8 @@ var AllView = class AllView extends BaseAppView {
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
+            if (this.hasItem(id))
+                return;
             let path = this._folderSettings.path + 'folders/' + id + '/';
             let icon = new FolderIcon(id, path, this);
             icon.connect('name-changed', this._itemNameChanged.bind(this));
@@ -568,7 +590,22 @@ var AllView = class AllView extends BaseAppView {
         this._stack.add_actor(popup.actor);
         popup.connect('open-state-changed', (popup, isOpen) => {
             this._eventBlocker.reactive = isOpen;
-            this._currentPopup = isOpen ? popup : null;
+
+            if (this._currentPopup) {
+                this._currentPopup.actor.disconnect(this._currentPopupDestroyId);
+                this._currentPopupDestroyId = 0;
+            }
+
+            this._currentPopup = null;
+
+            if (isOpen) {
+                this._currentPopup = popup;
+                this._currentPopupDestroyId = popup.actor.connect('destroy', () => {
+                    this._currentPopup = null;
+                    this._currentPopupDestroyId = 0;
+                    this._eventBlocker.reactive = false;
+                });
+            }
             this._updateIconOpacities(isOpen);
             if (!isOpen)
                 this._closeSpaceForPopup();
@@ -1115,11 +1152,8 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView();
 
-        this.actor.connect('clicked', () => {
-            this._ensurePopup();
-            this.view.actor.vscroll.adjustment.value = 0;
-            this._openSpaceForPopup();
-        });
+        this.actor.connect('clicked', this.open.bind(this));
+        this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
             if (!this.actor.mapped && this._popup)
                 this._popup.popdown();
@@ -1127,6 +1161,24 @@ var FolderIcon = class FolderIcon {
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
+    }
+
+    onDestroy() {
+        this.view.actor.destroy();
+
+        if (this._spaceReadySignalId) {
+            this._parentView.disconnect(this._spaceReadySignalId);
+            this._spaceReadySignalId = 0;
+        }
+
+        if (this._popup)
+            this._popup.actor.destroy();
+    }
+
+    open() {
+        this._ensurePopup();
+        this.view.actor.vscroll.adjustment.value = 0;
+        this._openSpaceForPopup();
     }
 
     getAppIds() {
@@ -1151,6 +1203,9 @@ var FolderIcon = class FolderIcon {
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
+            if (this.view.hasItem(appId))
+                return;
+
             if (excludedApps.includes(appId))
                 return;
 
@@ -1193,8 +1248,9 @@ var FolderIcon = class FolderIcon {
     }
 
     _openSpaceForPopup() {
-        let id = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(id);
+        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
+            this._parentView.disconnect(this._spaceReadySignalId);
+            this._spaceReadySignalId = 0;
             this._popup.popup();
             this._updatePopupPosition();
         });
@@ -1300,12 +1356,20 @@ var AppFolderPopup = class AppFolderPopup {
 
         global.focus_manager.add_group(this.actor);
 
-        source.actor.connect('destroy', () => this.actor.destroy());
         this._grabHelper = new GrabHelper.GrabHelper(this.actor, {
             actionMode: Shell.ActionMode.POPUP
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._isOpen) {
+            this._isOpen = false;
+            this._grabHelper.ungrab({ actor: this.actor });
+            this._grabHelper = null;
+        }
     }
 
     _onKeyPress(actor, event) {
