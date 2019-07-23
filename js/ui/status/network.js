@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported NMApplet */
 const { Clutter, Gio, GLib, GObject, NM, St } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -67,7 +68,7 @@ function ssidToLabel(ssid) {
     return label;
 }
 
-function ensureActiveConnectionProps(active, client) {
+function ensureActiveConnectionProps(active) {
     if (!active._primaryDevice) {
         let devices = active.get_devices();
         if (devices.length > 0) {
@@ -149,7 +150,7 @@ var NMConnectionItem = class {
         this._sync();
     }
 
-    _connectionStateChanged(ac, newstate, reason) {
+    _connectionStateChanged(_ac, _newstate, _reason) {
         this._sync();
     }
 
@@ -222,7 +223,7 @@ var NMConnectionSection = class NMConnectionSection {
         return _("Connect");
     }
 
-    _connectionValid(connection) {
+    _connectionValid(_connection) {
         return true;
     }
 
@@ -377,7 +378,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         this._client.activate_connection_async(connection, this._device, null, null, null);
     }
 
-    deactivateConnection(activeConnection) {
+    deactivateConnection(_activeConnection) {
         this._device.disconnect(null);
     }
 
@@ -401,7 +402,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
                 let item = this._connectionItems.get(activeConnection.connection.get_uuid());
                 if (item) {
                     this._activeConnection = activeConnection;
-                    ensureActiveConnectionProps(this._activeConnection, this._client);
+                    ensureActiveConnectionProps(this._activeConnection);
                     item.setActiveConnection(this._activeConnection);
                 }
             }
@@ -1708,7 +1709,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
         this._source.notify(this._notification);
     }
 
-    _onActivationFailed(device, reason) {
+    _onActivationFailed(_device, _reason) {
         // XXX: nm-applet has no special text depending on reason
         // but I'm not sure of this generic message
         this._notify('network-error-symbolic',
@@ -1802,13 +1803,13 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
 
         connection = this._client.get_primary_connection();
         if (connection) {
-            ensureActiveConnectionProps(connection, this._client);
+            ensureActiveConnectionProps(connection);
             return connection;
         }
 
         connection = this._client.get_activating_connection();
         if (connection) {
-            ensureActiveConnectionProps(connection, this._client);
+            ensureActiveConnectionProps(connection);
             return connection;
         }
 
@@ -1845,7 +1846,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             a => (a instanceof NM.VpnConnection)
         );
         vpnConnections.forEach(a => {
-            ensureActiveConnectionProps(a, this._client);
+            ensureActiveConnectionProps(a);
         });
         this._vpnSection.setActiveConnections(vpnConnections);
 

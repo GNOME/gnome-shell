@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported BaseIcon, IconGrid, PaginatedIconGrid */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
@@ -71,14 +72,14 @@ class BaseIcon extends St.Bin {
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         // Return the actual height to keep the squared aspect
         return this.get_preferred_height(-1);
     }
 
     // This can be overridden by a subclass, or by the createIcon
     // parameter to _init()
-    createIcon(size) {
+    createIcon(_size) {
         throw new GObject.NotImplementedError(`createIcon in ${this.constructor.name}`);
     }
 
@@ -247,7 +248,7 @@ var IconGrid = GObject.registerClass({
         child.disconnect(child._iconGridKeyFocusInId);
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         if (this._fillParent)
             // Ignore all size requests of children and request a size of 0;
             // later we'll allocate as many children as fit the parent
@@ -797,7 +798,7 @@ var PaginatedIconGrid = GObject.registerClass({
         this._childrenPerPage = 0;
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let height = (this._availableHeightPerPageForItems() + this.bottomPadding + this.topPadding) * this._nPages + this._spaceBetweenPages * this._nPages;
         return [height, height];
     }
@@ -865,7 +866,7 @@ var PaginatedIconGrid = GObject.registerClass({
     }
 
     _computePages(availWidthPerPage, availHeightPerPage) {
-        let [nColumns, usedWidth] = this._computeLayout(availWidthPerPage);
+        let [nColumns, usedWidth_] = this._computeLayout(availWidthPerPage);
         let nRows;
         let children = this._getVisibleChildren();
         if (nColumns > 0)

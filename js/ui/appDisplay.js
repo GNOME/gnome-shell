@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported AppDisplay, AppSearchProvider */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -109,7 +110,7 @@ class BaseAppView {
         this._allItems = [];
     }
 
-    _childFocused(actor) {
+    _childFocused(_actor) {
         // Nothing by default
     }
 
@@ -546,7 +547,7 @@ var AllView = class AllView extends BaseAppView {
             return false;
         this._panning = true;
         this._clickAction.release();
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx_, dy] = action.get_motion_delta(0);
         let adjustment = this._adjustment;
         adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
         return false;
@@ -839,7 +840,7 @@ var AppDisplay = class AppDisplay {
             this._controls.add_actor(this._views[i].control);
 
             let viewIndex = i;
-            this._views[i].control.connect('clicked', actor => {
+            this._views[i].control.connect('clicked', () => {
                 this._showView(viewIndex);
                 global.settings.set_uint('app-picker-view', viewIndex);
             });
@@ -986,7 +987,7 @@ var AppSearchProvider = class AppSearchProvider {
         return results.slice(0, maxNumber);
     }
 
-    getInitialResultSet(terms, callback, cancellable) {
+    getInitialResultSet(terms, callback, _cancellable) {
         let query = terms.join(' ');
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
@@ -1066,7 +1067,7 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx_, dy] = action.get_motion_delta(0);
         let adjustment = this.actor.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
@@ -1109,7 +1110,7 @@ var FolderView = class FolderView extends BaseAppView {
     }
 
     usedWidth() {
-        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
+        let [availWidthPerPage] = this._getPageAvailableSize();
         return this._grid.usedWidth(availWidthPerPage);
     }
 
@@ -1586,12 +1587,12 @@ var AppIcon = class AppIcon {
         GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
     }
 
-    _onLeaveEvent(actor, event) {
+    _onLeaveEvent(_actor, _event) {
         this.actor.fake_release();
         this._removeMenuTimeout();
     }
 
-    _onButtonPress(actor, event) {
+    _onButtonPress(_actor, event) {
         let button = event.get_button();
         if (button == 1) {
             this._setPopupTimeout();
@@ -1864,7 +1865,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         return item;
     }
 
-    popup(activatingButton) {
+    popup(_activatingButton) {
         this._redisplay();
         this.open();
     }

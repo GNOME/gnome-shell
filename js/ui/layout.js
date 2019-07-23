@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported MonitorConstraint, LayoutManager */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -80,10 +81,12 @@ var MonitorConstraint = GObject.registerClass({
         this.notify('index');
     }
 
+    // eslint-disable-next-line camelcase
     get work_area() {
         return this._workArea;
     }
 
+    // eslint-disable-next-line camelcase
     set work_area(v) {
         if (v == this._workArea)
             return;
@@ -165,12 +168,12 @@ var Monitor = class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
-    vfunc_get_preferred_width (forHeight) {
+    vfunc_get_preferred_width (_forHeight) {
         let width = global.stage.width;
         return [width, width];
     }
 
-    vfunc_get_preferred_height (forWidth) {
+    vfunc_get_preferred_height (_forWidth) {
         let height = global.stage.height;
         return [height, height];
     }
@@ -1230,7 +1233,7 @@ var HotCorner = class HotCorner {
         }
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
@@ -1331,7 +1334,7 @@ var PressureBarrier = class PressureBarrier {
         let threshold = this._lastTime - this._timeout;
 
         while (i < this._barrierEvents.length) {
-            let [time, distance] = this._barrierEvents[i];
+            let [time, distance_] = this._barrierEvents[i];
             if (time >= threshold)
                 break;
             i++;
@@ -1340,14 +1343,14 @@ var PressureBarrier = class PressureBarrier {
         let firstNewEvent = i;
 
         for (i = 0; i < firstNewEvent; i++) {
-            let [time, distance] = this._barrierEvents[i];
+            let [time_, distance] = this._barrierEvents[i];
             this._currentPressure -= distance;
         }
 
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
     }
 
-    _onBarrierLeft(barrier, event) {
+    _onBarrierLeft(barrier, _event) {
         barrier._isHit = false;
         if (this._barriers.every(b => !b._isHit)) {
             this._reset();

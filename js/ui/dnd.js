@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported addDragMonitor, removeDragMonitor, makeDraggable */
 
 const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -503,7 +504,7 @@ var _Draggable = class _Draggable {
 
         while (target) {
             if (target._delegate && target._delegate.handleDragOver) {
-                let [r, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
+                let [r_, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
                 // We currently loop through all parents on drag-over even if one of the children has handled it.
                 // We can check the return value of the function and break the loop if it's true if we don't want
                 // to continue checking the parents.
@@ -575,7 +576,7 @@ var _Draggable = class _Draggable {
 
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
-                let [r, targX, targY] = target.transform_stage_point(dropX, dropY);
+                let [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
                 if (target._delegate.acceptDrop(this.actor._delegate,
                                                 this._dragActor,
                                                 targX,
@@ -613,15 +614,15 @@ var _Draggable = class _Draggable {
         if (this._dragActorSource && this._dragActorSource.visible) {
             // Snap the clone back to its source
             [x, y] = this._dragActorSource.get_transformed_position();
-            let [sourceScaledWidth, sourceScaledHeight] = this._dragActorSource.get_transformed_size();
+            let [sourceScaledWidth] = this._dragActorSource.get_transformed_size();
             scale = sourceScaledWidth ? this._dragActor.width / sourceScaledWidth : 0;
         } else if (this._dragOrigParent) {
             // Snap the actor back to its original position within
             // its parent, adjusting for the fact that the parent
             // may have been moved or scaled
             let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
-            let [parentWidth, parentHeight] = this._dragOrigParent.get_size();
-            let [parentScaledWidth, parentScaledHeight] = this._dragOrigParent.get_transformed_size();
+            let [parentWidth] = this._dragOrigParent.get_size();
+            let [parentScaledWidth] = this._dragOrigParent.get_transformed_size();
             let parentScale = 1.0;
             if (parentWidth != 0)
                 parentScale = parentScaledWidth / parentWidth;

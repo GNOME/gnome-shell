@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported ScreenshotService */
 
 const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -199,7 +200,7 @@ var ScreenshotService = class {
                 if (!screenshot)
                     return;
                 screenshot.pick_color(...coords, (o, res) => {
-                    let [success, color] = screenshot.pick_color_finish(res);
+                    let [success_, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
                         color: GLib.Variant.new('(ddd)', [
@@ -295,7 +296,7 @@ var SelectArea = class {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onButtonRelease(actor, event) {
+    _onButtonRelease() {
         this._result = this._getGeometry();
         Tweener.addTween(this._group,
                          { opacity: 0,

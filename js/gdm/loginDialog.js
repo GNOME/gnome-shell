@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported LoginDialog */
 /*
  * Copyright 2011 Red Hat, Inc
  *
@@ -372,7 +373,7 @@ var SessionMenuButton = class {
         }
 
         for (let i = 0; i < ids.length; i++) {
-            let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
+            let [sessionName, sessionDescription_] = Gdm.get_session_name_and_description(ids[i]);
 
             let id = ids[i];
             let item = new PopupMenu.PopupMenuItem(sessionName);
@@ -518,7 +519,7 @@ var LoginDialog = GObject.registerClass({
     _getBannerAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = this._bannerView.get_preferred_size();
+        let [, , natWidth, natHeight] = this._bannerView.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -532,7 +533,7 @@ var LoginDialog = GObject.registerClass({
     _getLogoBinAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = this._logoBin.get_preferred_size();
+        let [, , natWidth, natHeight] = this._logoBin.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -546,7 +547,7 @@ var LoginDialog = GObject.registerClass({
     _getCenterActorAllocation(dialogBox, actor) {
         let actorBox = new Clutter.ActorBox();
 
-        let [minWidth, minHeight, natWidth, natHeight] = actor.get_preferred_size();
+        let [, , natWidth, natHeight] = actor.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
         let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
 
@@ -648,7 +649,7 @@ var LoginDialog = GObject.registerClass({
 
                     // figure out how tall it would like to be and try to accommodate
                     // but don't let it get too close to the logo
-                    let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
+                    let [, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 
                     let maxWideHeight = dialogHeight - 3 * logoHeight;
                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
@@ -1241,7 +1242,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.cancel();
     }
 
-    addCharacter(unichar) {
+    addCharacter(_unichar) {
         // Don't allow type ahead at the login screen
     }
 

@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported BANNER_MESSAGE_KEY, BANNER_MESSAGE_TEXT_KEY, LOGO_KEY,
+            DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor */
 
 const { Clutter, Gio, GLib } = imports.gi;
 const Signals = imports.signals;
@@ -45,7 +47,7 @@ function fadeInActor(actor) {
 
     let hold = new Batch.Hold();
     actor.show();
-    let [minHeight, naturalHeight] = actor.get_preferred_height(-1);
+    let [, naturalHeight] = actor.get_preferred_height(-1);
 
     actor.opacity = 0;
     actor.set_height(0);
@@ -303,7 +305,7 @@ var ShellUserVerifier = class {
             });
     }
 
-    _oVirtUserAuthenticated(token) {
+    _oVirtUserAuthenticated(_token) {
         this._preemptingService = OVIRT_SERVICE_NAME;
         this.emit('ovirt-user-authenticated');
     }

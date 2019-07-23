@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported GnomeShell, ScreenSaverDBus */
 
 const { Gio, GLib, Meta, Shell } = imports.gi;
 
@@ -335,7 +336,7 @@ var ScreenSaverDBus = class {
         screenShield.connect('active-changed', shield => {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
         });
-        screenShield.connect('wake-up-screen', shield => {
+        screenShield.connect('wake-up-screen', () => {
             this._dbusImpl.emit_signal('WakeUpScreen', null);
         });
 

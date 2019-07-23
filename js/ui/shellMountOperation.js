@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported ShellMountOperation, GnomeShellMountOpHandler */
 
 const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -154,7 +155,7 @@ var ShellMountOperation = class {
         this._dialog.open();
     }
 
-    close(op) {
+    close(_op) {
         this._closeExistingDialog();
         this._processesDialog = null;
 
@@ -628,7 +629,7 @@ var GnomeShellMountOpHandler = class {
      * attempt went wrong.
      */
     AskPasswordAsync(params, invocation) {
-        let [id, message, iconName, defaultUser, defaultDomain, flags] = params;
+        let [id, message, iconName, defaultUser_, defaultDomain_, flags] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD)) {
             this._dialog.reaskPassword();
@@ -753,7 +754,7 @@ var GnomeShellMountOpHandler = class {
      * Closes a dialog previously opened by AskPassword, AskQuestion or ShowProcesses.
      * If no dialog is open, does nothing.
      */
-    Close(params, invocation) {
+    Close(_params, _invocation) {
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
         this._closeDialog();
     }

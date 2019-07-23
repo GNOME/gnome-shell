@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported LookingGlass */
 
 const { Clutter, Cogl, Gio, GLib,
         GObject, Meta, Pango, Shell, St } = imports.gi;
@@ -267,7 +268,7 @@ var ObjLink = class ObjLink {
         this._lookingGlass = lookingGlass;
     }
 
-    _onClicked(link) {
+    _onClicked() {
         this._lookingGlass.inspectObject(this._obj, this.actor);
     }
 };
@@ -519,7 +520,7 @@ var Inspector = GObject.registerClass({
 
         let primary = Main.layoutManager.primaryMonitor;
 
-        let [minWidth, minHeight, natWidth, natHeight] =
+        let [, , natWidth, natHeight] =
             this._eventHandler.get_preferred_size();
 
         let childBox = new Clutter.ActorBox();
@@ -856,7 +857,7 @@ var LookingGlass = class LookingGlass {
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
 
-        this._entry.clutter_text.connect('activate', (o, e) => {
+        this._entry.clutter_text.connect('activate', (o, _e) => {
             // Hide any completions we are currently showing
             this._hideCompletions();
 
@@ -942,7 +943,7 @@ var LookingGlass = class LookingGlass {
         // Setting the height to -1 allows us to get its actual preferred height rather than
         // whatever was last given in set_height by Tweener.
         this._completionActor.set_height(-1);
-        let [minHeight, naturalHeight] = this._completionActor.get_preferred_height(this._resultsArea.get_width());
+        let [, naturalHeight] = this._completionActor.get_preferred_height(this._resultsArea.get_width());
 
         // Don't reanimate if we are already visible
         if (this._completionActor.visible) {

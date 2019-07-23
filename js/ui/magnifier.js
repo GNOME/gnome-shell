@@ -107,8 +107,7 @@ var Magnifier = class Magnifier {
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
 
-        let mask;
-        [this.xMouse, this.yMouse, mask] = global.get_pointer();
+        [this.xMouse, this.yMouse] = global.get_pointer();
 
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
@@ -148,7 +147,7 @@ var Magnifier = class Magnifier {
     setActive(activate) {
         let isActive = this.isActive();
 
-        this._zoomRegions.forEach((zoomRegion, index, array) => {
+        this._zoomRegions.forEach(zoomRegion => {
             zoomRegion.setActive(activate);
         });
 
@@ -227,14 +226,14 @@ var Magnifier = class Magnifier {
      * @return      true.
      */
     scrollToMousePos() {
-        let [xMouse, yMouse, mask] = global.get_pointer();
+        let [xMouse, yMouse] = global.get_pointer();
 
         if (xMouse != this.xMouse || yMouse != this.yMouse) {
             this.xMouse = xMouse;
             this.yMouse = yMouse;
 
             let sysMouseOverAny = false;
-            this._zoomRegions.forEach((zoomRegion, index, array) => {
+            this._zoomRegions.forEach(zoomRegion => {
                 if (zoomRegion.scrollToMousePos())
                     sysMouseOverAny = true;
             });
@@ -332,7 +331,7 @@ var Magnifier = class Magnifier {
         this.setCrosshairsClip(clip);
 
         let theCrossHairs = this._crossHairs;
-        this._zoomRegions.forEach ((zoomRegion, index, array) => {
+        this._zoomRegions.forEach (zoomRegion => {
             zoomRegion.addCrosshairs(theCrossHairs);
         });
     }
@@ -360,7 +359,7 @@ var Magnifier = class Magnifier {
      */
     setCrosshairsColor(color) {
         if (this._crossHairs) {
-            let [res, clutterColor] = Clutter.Color.from_string(color);
+            let [res_, clutterColor] = Clutter.Color.from_string(color);
             this._crossHairs.setColor(clutterColor);
         }
     }
@@ -1515,7 +1514,7 @@ var ZoomRegion = class ZoomRegion {
     }
 
     _centerFromPointProportional(xPoint, yPoint) {
-        let [xRoi, yRoi, widthRoi, heightRoi] = this.getROI();
+        let [xRoi_, yRoi_, widthRoi, heightRoi] = this.getROI();
         let halfScreenWidth = global.screen_width / 2;
         let halfScreenHeight = global.screen_height / 2;
         // We want to pad with a constant distance after zooming, so divide

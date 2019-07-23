@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported WorkspacesView */
 
 const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -286,7 +287,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
             this._syncActualGeometry();
     }
 
-    _activeWorkspaceChanged(wm, from, to, direction) {
+    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         if (this._scrolling)
             return;
 
@@ -530,7 +531,7 @@ var WorkspacesDisplay = class {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
         if (global.workspace_manager.layout_rows == -1)
             adjustment.value -= (dy / this.actor.height) * adjustment.page_size;

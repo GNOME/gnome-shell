@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported AppSwitcherPopup, GroupCyclerPopup, WindowSwitcherPopup,
+            WindowCyclerPopup */
 
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -87,9 +89,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             let hPadding = leftPadding + rightPadding;
 
             let icon = this._items[this._selectedIndex];
-            let [posX, posY] = icon.get_transformed_position();
+            let [posX] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
-            let [childMinWidth, childNaturalWidth] = this._thumbnails.get_preferred_width(-1);
+            let [, childNaturalWidth] = this._thumbnails.get_preferred_width(-1);
             childBox.x1 = Math.max(primary.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
             if (childBox.x1 + childNaturalWidth > primary.x + primary.width - hPadding) {
                 let offset = childBox.x1 + childNaturalWidth - primary.width + hPadding;
@@ -103,7 +105,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 childBox.x2 = primary.x + primary.width - rightPadding;
             childBox.y1 = this._switcherList.allocation.y2 + spacing;
             this._thumbnails.addClones(primary.y + primary.height - bottomPadding - childBox.y1);
-            let [childMinHeight, childNaturalHeight] = this._thumbnails.get_preferred_height(-1);
+            let [, childNaturalHeight] = this._thumbnails.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.allocate(childBox, flags);
         }
@@ -469,7 +471,7 @@ var CyclerList = GObject.registerClass({
                'item-removed': { param_types: [GObject.TYPE_INT] },
                'item-highlighted': { param_types: [GObject.TYPE_INT] } },
 }, class CyclerList extends St.Widget {
-    highlight(index, justOutline) {
+    highlight(index, _justOutline) {
         this.emit('item-highlighted', index);
     }
 });
@@ -494,7 +496,7 @@ var CyclerPopup = GObject.registerClass({
         });
     }
 
-    _highlightItem(index, justOutline) {
+    _highlightItem(index, _justOutline) {
         this._highlight.window = this._items[index];
         global.window_group.set_child_above_sibling(this._highlight.actor, null);
     }
@@ -660,6 +662,7 @@ class AppIcon extends St.BoxLayout {
         this.add(this.label, { x_fill: false });
     }
 
+    // eslint-disable-next-line camelcase
     set_size(size) {
         this.icon = this.app.create_icon_texture(size);
         this._iconBin.child = this.icon;
@@ -801,7 +804,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _enterItem(index) {
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
         if (this._items[index].contains(pickedActor))
             this._itemEntered(index);
@@ -908,7 +911,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
             return;
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.get_theme_node().get_horizontal_padding() + this.get_theme_node().get_vertical_padding();
-        let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
+        let [, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
         let spacing = this._items[0].child.get_theme_node().get_length('spacing');
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported InputSourceIndicator */
 
 const { Clutter, Gio, GLib, GObject, IBus, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
@@ -657,7 +658,7 @@ var InputSourceManager = class {
         return false;
     }
 
-    _ibusSetContentType(im, purpose, hints) {
+    _ibusSetContentType(im, purpose, _hints) {
         if (purpose == IBus.InputPurpose.PASSWORD) {
             if (Object.keys(this._inputSources).length == Object.keys(this._ibusSources).length)
                 return;

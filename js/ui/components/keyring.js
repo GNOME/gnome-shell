@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { Clutter, Gcr, Gio, GObject, Pango, Shell, St } = imports.gi;
 
@@ -176,21 +177,21 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         return false;
     }
 
-    _onShowPassword(prompt) {
+    _onShowPassword() {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._passwordEntry.grab_key_focus();
     }
 
-    _onShowConfirm(prompt) {
+    _onShowConfirm() {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._continueButton.grab_key_focus();
     }
 
-    _onHidePrompt(prompt) {
+    _onHidePrompt() {
         this.close();
     }
 

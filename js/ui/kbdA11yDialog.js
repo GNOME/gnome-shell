@@ -1,3 +1,4 @@
+/* exported KbdA11yDialog */
 const { Clutter, Gio, GObject } = imports.gi;
 
 const Dialog = imports.ui.dialog;

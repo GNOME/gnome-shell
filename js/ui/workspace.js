@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Workspace */
 
 const { Atk, Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -72,11 +73,11 @@ class WindowCloneLayout extends Clutter.LayoutManager {
         return box;
     }
 
-    vfunc_get_preferred_height(container, forWidth) {
+    vfunc_get_preferred_height(_container, _forWidth) {
         return [this._boundingBox.height, this._boundingBox.height];
     }
 
-    vfunc_get_preferred_width(container, forHeight) {
+    vfunc_get_preferred_width(_container, _forHeight) {
         return [this._boundingBox.width, this._boundingBox.width];
     }
 
@@ -376,7 +377,7 @@ var WindowClone = GObject.registerClass({
         return false;
     }
 
-    _onClicked(action, actor) {
+    _onClicked() {
         this._activate();
     }
 
@@ -403,7 +404,7 @@ var WindowClone = GObject.registerClass({
         return true;
     }
 
-    _onDragBegin(draggable, time) {
+    _onDragBegin(_draggable, _time) {
         this._dragSlot = this._slot;
         [this.dragOrigX, this.dragOrigY] = this.get_position();
         this.dragOrigScale = this.scale_x;
@@ -419,11 +420,11 @@ var WindowClone = GObject.registerClass({
         this._workspace.acceptDrop(source, actor, x, y, time);
     }
 
-    _onDragCancelled(draggable, time) {
+    _onDragCancelled(_draggable, _time) {
         this.emit('drag-cancelled');
     }
 
-    _onDragEnd(draggable, time, snapback) {
+    _onDragEnd(_draggable, _time, _snapback) {
         this.inDrag = false;
 
         // We may not have a parent if DnD completed successfully, in
@@ -467,7 +468,7 @@ var WindowOverlay = class {
 
         this._maxTitleWidth = -1;
 
-        this._updateCaptionId = metaWindow.connect('notify::title', w => {
+        this._updateCaptionId = metaWindow.connect('notify::title', () => {
             this.title.text = this._getCaption();
             this.relayout(false);
         });
@@ -845,7 +846,7 @@ var LayoutStrategy = class {
     // row.width, row.height, row.fullWidth, row.fullHeight, and
     // (optionally) for each row in @layout.rows. This method is
     // intended to be called by subclasses.
-    _computeRowSizes(layout) {
+    _computeRowSizes(_layout) {
         throw new GObject.NotImplementedError(`_computeRowSizes in ${this.constructor.name}`);
     }
 
@@ -858,7 +859,7 @@ var LayoutStrategy = class {
     //  * gridWidth - The total width used by the grid, unscaled, unspaced.
     //  * gridHeight - The totial height used by the grid, unscaled, unspaced.
     //  * rows - A list of rows, which should be instantiated by _newRow.
-    computeLayout(windows, layout) {
+    computeLayout(_windows, _layout) {
         throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
     }
 
@@ -1407,7 +1408,7 @@ var Workspace = class {
     }
 
     _delayedWindowRepositioning() {
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
         let inWorkspace = (this._fullGeometry.x < x && x < this._fullGeometry.x + this._fullGeometry.width &&
@@ -1445,7 +1446,7 @@ var Workspace = class {
             // this point.)
             if (win) {
                 let [stageX, stageY] = clone.get_transformed_position();
-                let [stageWidth, stageHeight] = clone.get_transformed_size();
+                let [stageWidth] = clone.get_transformed_size();
                 win._overviewHint = {
                     x: stageX,
                     y: stageY,
@@ -1467,7 +1468,7 @@ var Workspace = class {
         }
 
         // setup new handler
-        let [x, y, mask] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         this._cursorX = x;
         this._cursorY = y;
 
@@ -1521,7 +1522,7 @@ var Workspace = class {
             return;
         }
 
-        let [clone, overlay] = this._addWindowClone(win, false);
+        let [clone, overlay_] = this._addWindowClone(win, false);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.actor.x;
@@ -1979,7 +1980,7 @@ var Workspace = class {
     }
 
     // Draggable target interface
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.shellWorkspaceLaunch)

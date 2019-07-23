@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported PadOsdService */
 
 const { Atk, Clutter, GDesktopEnums, Gio,
         GLib, GObject, Gtk, Meta, Rsvg, St } = imports.gi;
@@ -295,7 +296,7 @@ var PadDiagram = GObject.registerClass({
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
-        let [success, css, etag] = file.load_contents(null);
+        let [success_, css] = file.load_contents(null);
         if (css instanceof Uint8Array)
             css = imports.byteArray.toString(css);
         this._curEdited = null;
@@ -306,10 +307,12 @@ var PadDiagram = GObject.registerClass({
         super._init(params);
     }
 
+    // eslint-disable-next-line camelcase
     get left_handed() {
         return this._leftHanded;
     }
 
+    // eslint-disable-next-line camelcase
     set left_handed(leftHanded) {
         this._leftHanded = leftHanded;
     }
@@ -328,10 +331,12 @@ var PadDiagram = GObject.registerClass({
         this._handle = this._composeStyledDiagram();
     }
 
+    // eslint-disable-next-line camelcase
     get editor_actor() {
         return this._editorActor;
     }
 
+    // eslint-disable-next-line camelcase
     set editor_actor(actor) {
         actor.hide();
         this._editorActor = actor;
@@ -396,8 +401,8 @@ var PadDiagram = GObject.registerClass({
     }
 
     _allocateChild(child, x, y, direction) {
-        let [prefHeight, natHeight] = child.get_preferred_height(-1);
-        let [prefWidth, natWidth] = child.get_preferred_width(natHeight);
+        let [, natHeight] = child.get_preferred_height(-1);
+        let [, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
 
         if (direction == LTR) {
@@ -419,13 +424,13 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._labels.length; i++) {
             let [label, action, idx, dir] = this._labels[i];
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
-            let [label, action, idx, dir] = this._curEdited;
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [label_, action, idx, dir] = this._curEdited;
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -561,7 +566,7 @@ var PadDiagram = GObject.registerClass({
         if (str != null) {
             label.set_text(str);
 
-            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
         label.show();
@@ -789,13 +794,13 @@ var PadOsd = class {
         } else if (event.get_source_device() == this.padDevice &&
                    event.type() == Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
-                let [retval, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_event_details();
                 this._startStripActionEdition(number, UP, mode);
             }
         } else if (event.get_source_device() == this.padDevice &&
                    event.type() == Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
-                let [retval, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_event_details();
                 this._startRingActionEdition(number, CCW, mode);
             }
         }

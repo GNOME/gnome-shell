@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported PageIndicators, AnimatedPageIndicators */
 
 const { Clutter, GObject, St } = imports.gi;
 

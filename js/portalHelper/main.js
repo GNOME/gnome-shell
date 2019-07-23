@@ -1,3 +1,4 @@
+/* exported main */
 const Format = imports.format;
 const Gettext = imports.gettext;
 const { Gio, GLib, GObject, Gtk, Pango, Soup, WebKit2: WebKit } = imports.gi;
@@ -151,7 +152,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._webView.load_uri(this._originalUrl);
     }
 
-    vfunc_delete_event(event) {
+    vfunc_delete_event(_event) {
         if (this._recheckAtExit)
             this._doneCallback(PortalHelperResult.RECHECK);
         else
@@ -177,7 +178,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     }
 
-    _onLoadFailedWithTlsErrors(view, failingURI, certificate, errors) {
+    _onLoadFailedWithTlsErrors(view, failingURI, certificate, _errors) {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         let uri = new Soup.URI(failingURI);
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());

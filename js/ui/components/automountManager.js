@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { Gio, GLib } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -55,7 +56,7 @@ var AutomountManager = class {
         }
     }
 
-    _InhibitorsChanged(object, senderName, [inhibtor]) {
+    _InhibitorsChanged(_object, _senderName, [_inhibitor]) {
         this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
             (result, error) => {
                 if (!error) {

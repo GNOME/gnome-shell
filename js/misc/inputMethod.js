@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported InputMethod */
 const { Clutter, GLib, GObject, IBus } = imports.gi;
 
 const Keyboard = imports.ui.status.keyboard;
@@ -84,15 +85,15 @@ class InputMethod extends Clutter.InputMethod {
             this.emit('request-surrounding');
     }
 
-    _onCommitText(context, text) {
+    _onCommitText(_context, text) {
         this.commit(text.get_text());
     }
 
-    _onDeleteSurroundingText(context) {
+    _onDeleteSurroundingText() {
         this.delete_surrounding();
     }
 
-    _onUpdatePreeditText(context, text, pos, visible) {
+    _onUpdatePreeditText(_context, text, pos, visible) {
         if (text == null)
             return;
 
@@ -108,17 +109,17 @@ class InputMethod extends Clutter.InputMethod {
         this._preeditVisible = visible;
     }
 
-    _onShowPreeditText(context) {
+    _onShowPreeditText() {
         this._preeditVisible = true;
         this.set_preedit_text(this._preeditStr, this._preeditPos);
     }
 
-    _onHidePreeditText(context) {
+    _onHidePreeditText() {
         this.set_preedit_text(null, this._preeditPos);
         this._preeditVisible = false;
     }
 
-    _onForwardKeyEvent(context, keyval, keycode, state) {
+    _onForwardKeyEvent(_context, keyval, keycode, state) {
         let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
         state &= ~(IBus.ModifierType.RELEASE_MASK);
 

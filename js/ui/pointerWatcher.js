@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported getPointerWatcher */
 
 const { GLib, Meta } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -72,13 +73,13 @@ var PointerWatcher = class {
         }
     }
 
-    _onIdleMonitorBecameActive(monitor) {
+    _onIdleMonitorBecameActive() {
         this._idle = false;
         this._updatePointer();
         this._updateTimeout();
     }
 
-    _onIdleMonitorBecameIdle(monitor) {
+    _onIdleMonitorBecameIdle() {
         this._idle = true;
         this._idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         this._updateTimeout();
@@ -108,7 +109,7 @@ var PointerWatcher = class {
     }
 
     _updatePointer() {
-        let [x, y, mods] = global.get_pointer();
+        let [x, y] = global.get_pointer();
         if (this.pointerX == x && this.pointerY == y)
             return;
 

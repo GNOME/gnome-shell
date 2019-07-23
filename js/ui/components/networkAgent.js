@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -199,7 +200,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         return true;
     }
 
-    _getWirelessSecrets(secrets, wirelessSetting) {
+    _getWirelessSecrets(secrets, _wirelessSetting) {
         let wirelessSecuritySetting = this._connection.get_setting_wireless_security();
 
         if (this._settingName == '802-1x') {
@@ -385,7 +386,7 @@ var VPNRequestHandler = class {
         this._newStylePlugin = authHelper.externalUIMode;
 
         try {
-            let [success, pid, stdin, stdout, stderr] =
+            let [success_, pid, stdin, stdout, stderr] =
                 GLib.spawn_async_with_pipes(null, /* pwd */
                                             argv,
                                             null, /* envp */
@@ -444,7 +445,7 @@ var VPNRequestHandler = class {
         this._destroyed = true;
     }
 
-    _vpnChildFinished(pid, status, requestObj) {
+    _vpnChildFinished(pid, status, _requestObj) {
         this._childWatch = 0;
         if (this._newStylePlugin) {
             // For new style plugin, all work is done in the async reading functions
@@ -486,7 +487,7 @@ var VPNRequestHandler = class {
 
     _readStdoutOldStyle() {
         this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, (stream, result) => {
-            let [line, len] = this._dataStdout.read_line_finish_utf8(result);
+            let [line, len_] = this._dataStdout.read_line_finish_utf8(result);
 
             if (line == null) {
                 // end of file
@@ -541,7 +542,7 @@ var VPNRequestHandler = class {
                                 message: keyfile.get_string(VPN_UI_GROUP, 'Description'),
                                 secrets: [] };
 
-            let [groups, len] = keyfile.get_groups();
+            let [groups, len_] = keyfile.get_groups();
             for (let i = 0; i < groups.length; i++) {
                 if (groups[i] == VPN_UI_GROUP)
                     continue;

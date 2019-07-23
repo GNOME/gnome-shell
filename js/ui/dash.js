@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Dash */
 
 const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -241,14 +242,14 @@ class ShowAppsIcon extends DashItemContainer {
             this.setLabelText(_("Show Applications"));
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (!this._canRemoveApp(getAppFromSource(source)))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source, actor, x, y, time) {
+    acceptDrop(source, _actor, _x, _y, _time) {
         let app = getAppFromSource(source);
         if (!this._canRemoveApp(app))
             return false;
@@ -296,7 +297,7 @@ class DashActor extends St.Widget {
         this.set_allocation(box, flags);
 
         let [appIcons, showAppsButton] = this.get_children();
-        let [showAppsMinHeight, showAppsNatHeight] = showAppsButton.get_preferred_height(availWidth);
+        let [, showAppsNatHeight] = showAppsButton.get_preferred_height(availWidth);
 
         let childBox = new Clutter.ActorBox();
         childBox.x1 = contentBox.x1;
@@ -790,7 +791,7 @@ var Dash = class Dash {
         }
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, actor, x, y, _time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
@@ -868,7 +869,7 @@ var Dash = class Dash {
     }
 
     // Draggable target interface
-    acceptDrop(source, actor, x, y, time) {
+    acceptDrop(source, _actor, _x, _y, _time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps

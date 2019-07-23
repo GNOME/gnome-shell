@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported collectFromDatadirs, deleteGFile, recursivelyDeleteDir,
+            recursivelyMoveDir, loadInterfaceXML */
 
 const { Gio, GLib } = imports.gi;
 const Config = imports.misc.config;
@@ -84,7 +86,7 @@ function loadInterfaceXML(iface) {
     let f = Gio.File.new_for_uri(uri);
 
     try {
-        let [ok, bytes] = f.load_contents(null);
+        let [ok_, bytes] = f.load_contents(null);
         if (bytes instanceof Uint8Array)
             xml = imports.byteArray.toString(bytes);
         else

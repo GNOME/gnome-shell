@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported RunDialog */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
@@ -239,7 +240,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._errorMessage.set_text(message);
 
         if (!this._errorBox.visible) {
-            let [errorBoxMinHeight, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
+            let [, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
 
             let parentActor = this._errorBox.get_parent();
             Tweener.addTween(parentActor,

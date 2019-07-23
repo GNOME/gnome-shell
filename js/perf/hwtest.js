@@ -1,3 +1,12 @@
+/* exported run, script_desktopShown, script_overviewShowStart,
+            script_overviewShowDone, script_applicationsShowStart,
+            script_applicationsShowDone, script_mainViewDrawStart,
+            script_mainViewDrawDone, script_overviewDrawStart,
+            script_overviewDrawDone, script_redrawTestStart,
+            script_redrawTestDone, script_collectTimings,
+            script_geditLaunch, script_geditFirstFrame,
+            clutter_stagePaintStart, clutter_paintCompletedTimestamp */
+/* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^clutter"] }] */
 const { Clutter, Gio, Shell } = imports.gi;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
@@ -38,7 +47,7 @@ function waitAndDraw(milliseconds) {
     let timeline = new Clutter.Timeline({ duration: milliseconds });
     timeline.start();
 
-    timeline.connect('new-frame', (timeline, frame) => {
+    timeline.connect('new-frame', (_timeline, _frame) => {
         global.stage.queue_redraw();
     });
 
@@ -73,8 +82,8 @@ function extractBootTimestamp() {
     let result = null;
 
     let datastream = Gio.DataInputStream.new(sp.get_stdout_pipe());
-    while (true) {
-        let [line, length] = datastream.read_line_utf8(null);
+    while (true) { // eslint-disable-line no-constant-condition
+        let [line, length_] = datastream.read_line_utf8(null);
         if (line === null)
             break;
 
@@ -117,6 +126,7 @@ function *run() {
     yield Scripting.sleep(1000);
 
     Scripting.scriptEvent('applicationsShowStart');
+    // eslint-disable-next-line require-atomic-updates
     Main.overview._dash.showAppsButton.checked = true;
 
     yield Scripting.waitLeisure();
@@ -234,31 +244,31 @@ function script_applicationsShowDone(time) {
     METRICS.applicationsShowTime.value = time - applicationsShowStart;
 }
 
-function script_mainViewDrawStart(time) {
+function script_mainViewDrawStart(_time) {
     redrawTiming = 'mainView';
 }
 
-function script_mainViewDrawDone(time) {
+function script_mainViewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_overviewDrawStart(time) {
+function script_overviewDrawStart(_time) {
     redrawTiming = 'overview';
 }
 
-function script_overviewDrawDone(time) {
+function script_overviewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_redrawTestStart(time) {
+function script_redrawTestStart(_time) {
     redrawTiming = 'application';
 }
 
-function script_redrawTestDone(time) {
+function script_redrawTestDone(_time) {
     redrawTiming = null;
 }
 
-function script_collectTimings(time) {
+function script_collectTimings(_time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
         times.sort((a, b) => a - b);

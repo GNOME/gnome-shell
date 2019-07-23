@@ -1,4 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+/* exported BarLevel */
 
 const { Atk, Clutter, St } = imports.gi;
 const Signals = imports.signals;
@@ -172,27 +173,27 @@ var BarLevel = class {
         cr.$dispose();
     }
 
-    _getCurrentValue(actor) {
+    _getCurrentValue() {
         return this._value;
     }
 
-    _getOverdriveStart(actor) {
+    _getOverdriveStart() {
         return this._overdriveStart;
     }
 
-    _getMinimumValue(actor) {
+    _getMinimumValue() {
         return 0;
     }
 
-    _getMaximumValue(actor) {
+    _getMaximumValue() {
         return this._maxValue;
     }
 
-    _setCurrentValue(actor, value) {
+    _setCurrentValue(_actor, value) {
         this._value = value;
     }
 
-    _valueChanged(barLevel, value, property) {
+    _valueChanged() {
         this._customAccessible.notify("accessible-value");
     }
 

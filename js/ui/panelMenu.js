@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Button, SystemIndicator */
 
 const { Atk, Clutter, GObject, St } = imports.gi;
 const Signals = imports.signals;
@@ -33,7 +34,7 @@ class ButtonBox extends St.Widget {
         this._natHPadding = themeNode.get_length('-natural-hpadding');
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let child = this.get_first_child();
         let minimumSize, naturalSize;
 
@@ -48,7 +49,7 @@ class ButtonBox extends St.Widget {
         return [minimumSize, naturalSize];
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let child = this.get_first_child();
 
         if (child)
@@ -64,7 +65,7 @@ class ButtonBox extends St.Widget {
         if (!child)
             return;
 
-        let [minWidth, natWidth] = child.get_preferred_width(-1);
+        let [, natWidth] = child.get_preferred_width(-1);
 
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;

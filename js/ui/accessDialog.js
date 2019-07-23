@@ -1,3 +1,4 @@
+/* exported AccessDialogDBus */
 const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
@@ -79,7 +80,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         this._requestExported = this._request.export(connection, this._handle);
     }
 
-    CloseAsync(invocation, params) {
+    CloseAsync(invocation, _params) {
         if (this._invocation.get_sender() != invocation.get_sender()) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
@@ -132,7 +133,7 @@ var AccessDialogDBus = class {
             return;
         }
 
-        let [handle, appId, parentWindow, title, subtitle, body, options] = params;
+        let [handle, appId, parentWindow_, title, subtitle, body, options] = params;
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
         if (appId && `${appId}.desktop` != this._windowTracker.focus_app.id) {

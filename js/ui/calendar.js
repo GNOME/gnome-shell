@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Calendar, CalendarMessageList */
 
 const { Clutter, Gio, GLib, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -109,15 +110,15 @@ var EmptyEventSource = class EmptyEventSource {
     destroy() {
     }
 
-    requestRange(begin, end) {
+    requestRange(_begin, _end) {
     }
 
-    getEvents(begin, end) {
+    getEvents(_begin, _end) {
         let result = [];
         return result;
     }
 
-    hasEvents(day) {
+    hasEvents(_day) {
         return false;
     }
 };
@@ -220,13 +221,13 @@ var DBusEventSource = class DBusEventSource {
         this._lastRequestEnd = null;
     }
 
-    _onNameAppeared(owner) {
+    _onNameAppeared() {
         this._initialized = true;
         this._resetCache();
         this._loadEvents(true);
     }
 
-    _onNameVanished(oldOwner) {
+    _onNameVanished() {
         this._resetCache();
         this.emit('changed');
     }
@@ -235,7 +236,7 @@ var DBusEventSource = class DBusEventSource {
         this._loadEvents(false);
     }
 
-    _onEventsReceived(results, error) {
+    _onEventsReceived(results, _error) {
         let newEvents = [];
         let appointments = results[0] || [];
         for (let n = 0; n < appointments.length; n++) {
@@ -734,7 +735,7 @@ class NotificationMessage extends MessageList.Message {
             return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
     }
 
-    _onUpdated(n, clear) {
+    _onUpdated(n, _clear) {
         this.setIcon(this._getIcon());
         this.setTitle(n.title);
         this.setBody(n.bannerBodyText);

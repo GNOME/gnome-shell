@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported WorkspaceSwitcherPopup */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -26,7 +27,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         });
     }
 
-    _getPreferredSizeForOrientation(forSize) {
+    _getPreferredSizeForOrientation(_forSize) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let themeNode = this.get_theme_node();
 
@@ -38,7 +39,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
 
         let size = 0;
         for (let child of this.get_children()) {
-            let [childMinHeight, childNaturalHeight] = child.get_preferred_height(-1);
+            let [, childNaturalHeight] = child.get_preferred_height(-1);
             let height = childNaturalHeight * workArea.width / workArea.height;
 
             if (this._orientation == Clutter.Orientation.HORIZONTAL)
@@ -174,8 +175,8 @@ class WorkspaceSwitcherPopup extends St.Widget {
         }
 
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-        let [containerMinHeight, containerNatHeight] = this._container.get_preferred_height(global.screen_width);
-        let [containerMinWidth, containerNatWidth] = this._container.get_preferred_width(containerNatHeight);
+        let [, containerNatHeight] = this._container.get_preferred_height(global.screen_width);
+        let [, containerNatWidth] = this._container.get_preferred_width(containerNatHeight);
         this._container.x = workArea.x + Math.floor((workArea.width - containerNatWidth) / 2);
         this._container.y = workArea.y + Math.floor((workArea.height - containerNatHeight) / 2);
     }

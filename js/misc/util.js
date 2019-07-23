@@ -1,4 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
+            formatTime, formatTimeSpan, createTimeLabel, insertSorted,
+            makeCloseButton, ensureActorVisibleInScrollView */
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
@@ -75,7 +78,7 @@ function spawn(argv) {
 // occur when trying to parse or start the program.
 function spawnCommandLine(commandLine) {
     try {
-        let [success, argv] = GLib.shell_parse_argv(commandLine);
+        let [success_, argv] = GLib.shell_parse_argv(commandLine);
         trySpawn(argv);
     } catch (err) {
         _handleSpawnError(commandLine, err);
@@ -104,11 +107,11 @@ function spawnApp(argv) {
 // Runs @argv in the background. If launching @argv fails,
 // this will throw an error.
 function trySpawn(argv) {
-    var success, pid;
+    var success_, pid;
     try {
-        [success, pid] = GLib.spawn_async(null, argv, null,
-                                          GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                          null);
+        [success_, pid] = GLib.spawn_async(null, argv, null,
+                                           GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                                           null);
     } catch (err) {
         /* Rewrite the error in case of ENOENT */
         if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
@@ -139,10 +142,10 @@ function trySpawn(argv) {
 // Runs @commandLine in the background. If launching @commandLine
 // fails, this will throw an error.
 function trySpawnCommandLine(commandLine) {
-    let success, argv;
+    let success_, argv;
 
     try {
-        [success, argv] = GLib.shell_parse_argv(commandLine);
+        [success_, argv] = GLib.shell_parse_argv(commandLine);
     } catch (err) {
         // Replace "Error invoking GLib.shell_parse_argv: " with
         // something nicer
@@ -395,7 +398,7 @@ function makeCloseButton(boxpointer) {
 
 function ensureActorVisibleInScrollView(scrollView, actor) {
     let adjustment = scrollView.vscroll.adjustment;
-    let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+    let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
     let offset = 0;
     let vfade = scrollView.get_effect("fade");

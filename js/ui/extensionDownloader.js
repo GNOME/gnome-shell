@@ -1,4 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init, installExtension, uninstallExtension,
+            checkForUpdates, updateExtension */
 
 const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 
@@ -203,12 +205,12 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         this.contentLayout.add(content);
     }
 
-    _onCancelButtonPressed(button, event) {
+    _onCancelButtonPressed() {
         this.close();
         this._invocation.return_value(GLib.Variant.new('(s)', ['cancelled']));
     }
 
-    _onInstallButtonPressed(button, event) {
+    _onInstallButtonPressed() {
         let params = { shell_version: Config.PACKAGE_VERSION };
 
         let url = REPOSITORY_URL_DOWNLOAD.format(this._uuid);

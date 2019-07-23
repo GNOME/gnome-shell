@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Keyboard */
 
 const { Clutter, Gio, GLib, GObject, Meta, St } = imports.gi;
 const Signals = imports.signals;
@@ -100,7 +101,7 @@ class KeyContainer extends St.Widget {
         this._rows = [];
     }
 
-    appendRow(length) {
+    appendRow() {
         this._currentRow++;
         this._currentCol = 0;
 
@@ -474,7 +475,7 @@ var KeyboardModel = class {
 
     _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
-        let [success, contents] = file.load_contents(null);
+        let [success_, contents] = file.load_contents(null);
         if (contents instanceof Uint8Array)
             contents = imports.byteArray.toString(contents);
 
@@ -662,7 +663,7 @@ var EmojiPager = class EmojiPager {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx, dy_] = action.get_motion_delta(0);
         this.delta = this.delta + dx;
 
         if (this._currentKey != null) {
@@ -904,7 +905,7 @@ var EmojiSelection = class EmojiSelection {
 
     _populateSections() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/emoji.json');
-        let [success, contents] = file.load_contents(null);
+        let [success_, contents] = file.load_contents(null);
 
         if (contents instanceof Uint8Array)
             contents = imports.byteArray.toString(contents);
@@ -1171,7 +1172,7 @@ var Keyboard = class Keyboard {
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('hide', (selection) => this.hide());
+        this._emojiSelection.connect('hide', () => this.hide());
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });
@@ -1282,7 +1283,7 @@ var Keyboard = class Keyboard {
                     }
                 }
             });
-            button.connect('released', (actor, keyval, str) => {
+            button.connect('released', (actor, keyval, _str) => {
                 if (keyval != 0) {
                     if (button._keyvalPress)
                         this._keyboardController.keyvalRelease(keyval);
@@ -1467,7 +1468,7 @@ var Keyboard = class Keyboard {
         this._setActiveLayer(0);
     }
 
-    _onKeyboardGroupsChanged(keyboard) {
+    _onKeyboardGroupsChanged() {
         let nonGroupActors = [this._emojiSelection.actor, this._keypad.actor];
         this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
             c.destroy();
@@ -1729,7 +1730,7 @@ var KeyboardController = class {
         this.emit('groups-changed');
     }
 
-    _onSourceChanged(inputSourceManager, oldSource) {
+    _onSourceChanged(inputSourceManager, _oldSource) {
         let source = inputSourceManager.currentSource;
         this._currentSource = source;
         this.emit('active-group', source.id);

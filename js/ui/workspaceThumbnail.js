@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported WorkspaceThumbnail, ThumbnailsBox */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -200,16 +201,16 @@ var WindowClone = class {
         return Clutter.EVENT_STOP;
     }
 
-    _onDragBegin(draggable, time) {
+    _onDragBegin(_draggable, _time) {
         this.inDrag = true;
         this.emit('drag-begin');
     }
 
-    _onDragCancelled(draggable, time) {
+    _onDragCancelled(_draggable, _time) {
         this.emit('drag-cancelled');
     }
 
-    _onDragEnd(draggable, time, snapback) {
+    _onDragEnd(_draggable, _time, _snapback) {
         this.inDrag = false;
 
         // We may not have a parent if DnD completed successfully, in
@@ -465,7 +466,7 @@ var WorkspaceThumbnail = class {
             this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
     }
 
-    _onDestroy(actor) {
+    _onDestroy() {
         this.workspaceRemoved();
 
         if (this._bgManager) {
@@ -683,11 +684,11 @@ class ThumbnailsBox extends St.Widget {
     }
 
     _activateThumbnailAtPoint(stageX, stageY, time) {
-        let [r, x, y] = this.transform_stage_point(stageX, stageY);
+        let [r_, x_, y] = this.transform_stage_point(stageX, stageY);
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
-            let [w, h] = thumbnail.actor.get_transformed_size();
+            let [, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
                 thumbnail.activate(time);
                 break;
@@ -775,7 +776,7 @@ class ThumbnailsBox extends St.Widget {
             // Allow the reorder target to have a 10px "cut" into
             // each side of the thumbnail, to make dragging onto the
             // placeholder easier
-            let [w, h] = this._thumbnails[i].actor.get_transformed_size();
+            let [, h] = this._thumbnails[i].actor.get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
             let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
@@ -1123,7 +1124,7 @@ class ThumbnailsBox extends St.Widget {
         this._stateUpdateQueued = true;
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
@@ -1256,7 +1257,7 @@ class ThumbnailsBox extends St.Widget {
             }
 
             if (i == this._dropPlaceholderPos) {
-                let [minHeight, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
+                let [, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
                 childBox.x1 = x1;
                 childBox.x2 = x2;
                 childBox.y1 = Math.round(y);
@@ -1311,7 +1312,7 @@ class ThumbnailsBox extends St.Widget {
         this._indicator.allocate(childBox, flags);
     }
 
-    _activeWorkspaceChanged(wm, from, to, direction) {
+    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported loadRemoteSearchProviders */
 
 const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
 
@@ -221,7 +222,7 @@ var RemoteSearchProvider = class {
             gicon = Gio.icon_new_for_string(meta['gicon']);
         } else if (meta['icon-data']) {
             let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = meta['icon-data'];
+                 bitsPerSample, nChannels_, data] = meta['icon-data'];
             gicon = Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
                                                        bitsPerSample, width, height, rowStride);
         }
@@ -310,7 +311,7 @@ var RemoteSearchProvider = class {
         this.proxy.ActivateResultRemote(id);
     }
 
-    launchSearch(terms) {
+    launchSearch(_terms) {
         // the provider is not compatible with the new version of the interface, launch
         // the app itself but warn so we can catch the error in logs
         log(`Search provider ${this.appInfo.get_id()} does not implement LaunchSearch`);

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Panel */
 
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
@@ -446,14 +447,14 @@ class ActivitiesButton extends PanelMenu.Button {
         this._xdndTimeOut = 0;
     }
 
-    handleDragOver(source, actor, x, y, time) {
+    handleDragOver(source, _actor, _x, _y, _time) {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         if (this._xdndTimeOut != 0)
             Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT, () => {
-            this._xdndToggleOverview(actor);
+            this._xdndToggleOverview();
         });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
 
@@ -489,8 +490,8 @@ class ActivitiesButton extends PanelMenu.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _xdndToggleOverview(actor) {
-        let [x, y, mask] = global.get_pointer();
+    _xdndToggleOverview() {
+        let [x, y] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
         if (pickedActor == this && Main.overview.shouldToggleByCornerOrButton())
@@ -596,7 +597,7 @@ var PanelCorner = class {
 
             // Synchronize the locate button's pseudo classes with this corner
             this._buttonStyleChangedSignalId = button.connect('style-changed',
-                actor => {
+                () => {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.actor.set_style_pseudo_class(pseudoClass);
                 });
@@ -826,7 +827,7 @@ class Panel extends St.Widget {
         this._updatePanel();
     }
 
-    vfunc_get_preferred_width(forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let primaryMonitor = Main.layoutManager.primaryMonitor;
 
         if (primaryMonitor)
@@ -841,9 +842,9 @@ class Panel extends St.Widget {
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
 
-        let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
-        let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
-        let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
+        let [, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
+        let [, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
+        let [, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
 
         let sideWidth, centerWidth;
         centerWidth = centerNaturalWidth;
@@ -894,19 +895,18 @@ class Panel extends St.Widget {
         }
         this._rightBox.allocate(childBox, flags);
 
-        let cornerMinWidth, cornerMinHeight;
         let cornerWidth, cornerHeight;
 
-        [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
+        [, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
+        [, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
         childBox.x1 = 0;
         childBox.x2 = cornerWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
         this._leftCorner.actor.allocate(childBox, flags);
 
-        [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
+        [, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
+        [, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
         childBox.x1 = allocWidth - cornerWidth;
         childBox.x2 = allocWidth;
         childBox.y1 = allocHeight;

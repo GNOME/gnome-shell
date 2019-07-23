@@ -15,7 +15,7 @@ const RealmIface = loadInterfaceXML("org.freedesktop.realmd.Realm");
 const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
 
 var Manager = class {
-    constructor(parentActor) {
+    constructor() {
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',

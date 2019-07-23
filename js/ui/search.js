@@ -192,7 +192,7 @@ var SearchResultsBase = class {
         Main.overview.toggle();
     }
 
-    _setMoreCount(count) {
+    _setMoreCount(_count) {
     }
 
     _ensureResultActors(results, callback) {
@@ -560,7 +560,7 @@ var SearchResults = class {
     }
 
     _onPan(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+        let [dist_, dx_, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollView.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;

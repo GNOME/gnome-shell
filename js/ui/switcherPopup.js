@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported SwitcherPopup, SwitcherList */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -76,8 +77,8 @@ var SwitcherPopup = GObject.registerClass({
 
         // Allocate the switcherList
         // We select a size based on an icon size that does not overflow the screen
-        let [childMinHeight, childNaturalHeight] = this._switcherList.get_preferred_height(primary.width - hPadding);
-        let [childMinWidth, childNaturalWidth] = this._switcherList.get_preferred_width(childNaturalHeight);
+        let [, childNaturalHeight] = this._switcherList.get_preferred_height(primary.width - hPadding);
+        let [, childNaturalWidth] = this._switcherList.get_preferred_width(childNaturalHeight);
         childBox.x1 = Math.max(primary.x + leftPadding, primary.x + Math.floor((primary.width - childNaturalWidth) / 2));
         childBox.x2 = Math.min(primary.x + primary.width - rightPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
@@ -85,7 +86,7 @@ var SwitcherPopup = GObject.registerClass({
         this._switcherList.allocate(childBox, flags);
     }
 
-    _initialSelection(backward, binding) {
+    _initialSelection(backward, _binding) {
         if (backward)
             this._select(this._items.length - 1);
         else if (this._items.length == 1)
@@ -131,7 +132,7 @@ var SwitcherPopup = GObject.registerClass({
         // details.) So we check now. (Have to do this after updating
         // selection.)
         if (this._modifierMask) {
-            let [x, y, mods] = global.get_pointer();
+            let [x_, y_, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
                 this._finish(global.get_current_time());
                 return false;
@@ -161,7 +162,7 @@ var SwitcherPopup = GObject.registerClass({
         return mod(this._selectedIndex - 1, this._items.length);
     }
 
-    _keyPressHandler(keysym, action) {
+    _keyPressHandler(_keysym, _action) {
         throw new GObject.NotImplementedError(`_keyPressHandler in ${this.constructor.name}`);
     }
 
@@ -184,7 +185,7 @@ var SwitcherPopup = GObject.registerClass({
 
     _keyReleaseEvent(actor, event) {
         if (this._modifierMask) {
-            let [x, y, mods] = global.get_pointer();
+            let [x_, y_, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
 
             if (state == 0)
@@ -196,7 +197,7 @@ var SwitcherPopup = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    _clickedOutside(actor, event) {
+    _clickedOutside() {
         this.fadeAndDestroy();
         return Clutter.EVENT_PROPAGATE;
     }
@@ -296,7 +297,7 @@ var SwitcherPopup = GObject.registerClass({
         }
     }
 
-    _finish(timestamp) {
+    _finish(_timestamp) {
         this.fadeAndDestroy();
     }
 
@@ -437,10 +438,10 @@ var SwitcherList = GObject.registerClass({
         this._highlighted = index;
 
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
-        let [absItemX, absItemY] = this._items[index].get_transformed_position();
-        let [result, posX, posY] = this.transform_stage_point(absItemX, 0);
-        let [containerWidth, containerHeight] = this.get_transformed_size();
+        let [value] = adjustment.get_values();
+        let [absItemX] = this._items[index].get_transformed_position();
+        let [result_, posX, posY_] = this.transform_stage_point(absItemX, 0);
+        let [containerWidth] = this.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
             this._scrollToRight();
         else if (this._items[index].allocation.x1 - value < 0)
@@ -450,7 +451,7 @@ var SwitcherList = GObject.registerClass({
 
     _scrollToLeft() {
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+        let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[this._highlighted];
 
@@ -474,7 +475,7 @@ var SwitcherList = GObject.registerClass({
 
     _scrollToRight() {
         let adjustment = this._scrollView.hscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
+        let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[this._highlighted];
 
@@ -531,7 +532,7 @@ var SwitcherList = GObject.registerClass({
         return themeNode.adjust_preferred_width(maxChildMin, minListWidth);
     }
 
-    vfunc_get_preferred_height(forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let maxChildMin = 0;
         let maxChildNat = 0;
 
@@ -542,7 +543,7 @@ var SwitcherList = GObject.registerClass({
         }
 
         if (this._squareItems) {
-            let [childMin, childNat] = this._maxChildWidth(-1);
+            let [childMin] = this._maxChildWidth(-1);
             maxChildMin = Math.max(childMin, maxChildMin);
             maxChildNat = maxChildMin;
         }

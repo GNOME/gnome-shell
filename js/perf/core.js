@@ -1,4 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported run, script_overviewShowStart, script_overviewShowDone,
+            script_applicationsShowStart, script_applicationsShowDone,
+            script_afterShowHide, malloc_usedSize, glx_swapComplete,
+            clutter_stagePaintDone */
+/* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
 const System = imports.system;
 
@@ -121,9 +126,11 @@ function *run() {
 
     for (let i = 0; i < 2; i++) {
         Scripting.scriptEvent('applicationsShowStart');
+        // eslint-disable-next-line require-atomic-updates
         Main.overview._dash.showAppsButton.checked = true;
         yield Scripting.waitLeisure();
         Scripting.scriptEvent('applicationsShowDone');
+        // eslint-disable-next-line require-atomic-updates
         Main.overview._dash.showAppsButton.checked = false;
         yield Scripting.waitLeisure();
     }
@@ -147,7 +154,7 @@ function script_overviewShowStart(time) {
     overviewFrames = 0;
 }
 
-function script_overviewShowDone(time) {
+function script_overviewShowDone(_time) {
     // We've set up the state at the end of the zoom out, but we
     // need to wait for one more frame to paint before we count
     // ourselves as done.
@@ -166,7 +173,7 @@ function script_applicationsShowDone(time) {
         METRICS.applicationsShowTimeSubsequent.value = time - applicationsShowStart;
 }
 
-function script_afterShowHide(time) {
+function script_afterShowHide(_time) {
     if (overviewShowCount == 1) {
         METRICS.usedAfterOverview.value = mallocUsedSize;
     } else {

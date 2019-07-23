@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported CtrlAltTabManager */
 
 const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 
@@ -63,9 +64,8 @@ var CtrlAltTabManager = class CtrlAltTabManager {
         if (a.sortGroup != b.sortGroup)
             return a.sortGroup - b.sortGroup;
 
-        let ax, bx, y;
-        [ax, y] = a.proxy.get_transformed_position();
-        [bx, y] = b.proxy.get_transformed_position();
+        let [ax] = a.proxy.get_transformed_position();
+        let [bx] = b.proxy.get_transformed_position();
 
         return ax - bx;
     }

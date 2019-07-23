@@ -1,4 +1,5 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
+/* exported Slider */
 
 const { Atk, Clutter } = imports.gi;
 const Signals = imports.signals;
@@ -144,7 +145,7 @@ var Slider = class extends BarLevel.BarLevel {
         } else if (direction == Clutter.ScrollDirection.UP) {
             delta = SLIDER_SCROLL_STEP;
         } else if (direction == Clutter.ScrollDirection.SMOOTH) {
-            let [dx, dy] = event.get_scroll_delta();
+            let [, dy] = event.get_scroll_delta();
             // Even though the slider is horizontal, use dy to match
             // the UP/DOWN above.
             delta = -dy * SLIDER_SCROLL_STEP;
@@ -182,7 +183,7 @@ var Slider = class extends BarLevel.BarLevel {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _moveHandle(absX, absY) {
+    _moveHandle(absX, _absY) {
         let relX, sliderX;
         [sliderX] = this.actor.get_transformed_position();
         relX = absX - sliderX;
@@ -202,7 +203,7 @@ var Slider = class extends BarLevel.BarLevel {
         this.emit('value-changed', this._value);
     }
 
-    _getMinimumIncrement(actor) {
+    _getMinimumIncrement() {
         return 0.1;
     }
 };

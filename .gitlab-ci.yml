@@ -1,6 +1,5 @@
 stages:
  - review
- - source_check
  - build
  - test
 
@@ -26,7 +25,7 @@ check_commit_log:
 
 js_check:
     image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
-    stage: source_check
+    stage: review
     script:
         - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
@@ -38,6 +37,17 @@ js_check:
         paths:
             - ${JS_LOG}
         when: on_failure
+
+eslint:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/run-eslint.sh
+    <<: *only_default
+    artifacts:
+        paths:
+            - reports
+        when: always
 
 build:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v2

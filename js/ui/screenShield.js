@@ -762,8 +762,8 @@ var ScreenShield = class {
     }
 
     _onDragMotion() {
-        let [origX, origY] = this._dragAction.get_press_coords(0);
-        let [currentX, currentY] = this._dragAction.get_motion_coords(0);
+        let [, origY] = this._dragAction.get_press_coords(0);
+        let [, currentY] = this._dragAction.get_motion_coords(0);
 
         let newY = currentY - origY;
         newY = clamp(newY, -global.stage.height, 0);
@@ -773,12 +773,12 @@ var ScreenShield = class {
         return true;
     }
 
-    _onDragEnd(action, actor, eventX, eventY, modifiers) {
+    _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
         if (this._lockScreenState != MessageTray.State.HIDING)
             return;
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
-            let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
+            let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
             this._liftShield(true, -velocityY);
         } else {
             // restore the lock screen to its original place

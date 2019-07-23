@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported WindowManager */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
@@ -297,14 +298,14 @@ var WorkspaceTracker = class {
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     }
 
-    _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
+    _windowLeftMonitor(metaDisplay, monitorIndex, _metaWin) {
         // If the window left the primary monitor, that
         // might make that workspace empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
     }
 
-    _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
+    _windowEnteredMonitor(metaDisplay, monitorIndex, _metaWin) {
         // If the window entered the primary monitor, that
         // might make that workspace non-empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
@@ -559,14 +560,14 @@ var WorkspaceSwitchAction = GObject.registerClass({
         return (this._allowedModes & Main.actionMode);
     }
 
-    vfunc_gesture_progress(actor) {
+    vfunc_gesture_progress(_actor) {
         let [x, y] = this.get_motion_coords(0);
         let [xPress, yPress] = this.get_press_coords(0);
         this.emit('motion', x - xPress, y - yPress);
         return true;
     }
 
-    vfunc_gesture_cancel(actor) {
+    vfunc_gesture_cancel(_actor) {
         if (!this._swept)
             this.emit('cancel');
     }
@@ -608,7 +609,7 @@ var AppSwitchAction = GObject.registerClass({
         });
     }
 
-    vfunc_gesture_prepare(actor) {
+    vfunc_gesture_prepare(_actor) {
         if (Main.actionMode != Shell.ActionMode.NORMAL) {
             this.cancel();
             return false;
@@ -617,7 +618,7 @@ var AppSwitchAction = GObject.registerClass({
         return this.get_n_current_points() <= 4;
     }
 
-    vfunc_gesture_begin(actor) {
+    vfunc_gesture_begin(_actor) {
         // in milliseconds
         const LONG_PRESS_TIMEOUT = 250;
 
@@ -641,7 +642,7 @@ var AppSwitchAction = GObject.registerClass({
         return this.get_n_current_points() <= 4;
     }
 
-    vfunc_gesture_progress(actor) {
+    vfunc_gesture_progress(_actor) {
         const MOTION_THRESHOLD = 30;
 
         if (this.get_n_current_points() == 3) {
@@ -1430,7 +1431,7 @@ var WindowManager = class {
         }
     }
 
-    _sizeChangeWindow(shellwm, actor, whichChange, oldFrameRect, oldBufferRect) {
+    _sizeChangeWindow(shellwm, actor, whichChange, oldFrameRect, _oldBufferRect) {
         let types = [Meta.WindowType.NORMAL];
         if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_size_change(actor);
@@ -1443,7 +1444,7 @@ var WindowManager = class {
             shellwm.completed_size_change(actor);
     }
 
-    _prepareAnimationInfo(shellwm, actor, oldFrameRect, change) {
+    _prepareAnimationInfo(shellwm, actor, oldFrameRect, _change) {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
         let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
@@ -2035,7 +2036,7 @@ var WindowManager = class {
         this._tilePreview.show(window, tileRect, monitorIndex);
     }
 
-    _hideTilePreview(shellwm) {
+    _hideTilePreview() {
         if (!this._tilePreview)
             return;
         this._tilePreview.hide();
@@ -2103,11 +2104,11 @@ var WindowManager = class {
             app.activate();
     }
 
-    _toggleAppMenu(display, window, event, binding) {
+    _toggleAppMenu() {
         Main.panel.toggleAppMenu();
     }
 
-    _toggleCalendar(display, window, event, binding) {
+    _toggleCalendar() {
         Main.panel.toggleCalendar();
     }
 

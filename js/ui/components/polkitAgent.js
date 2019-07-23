@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { AccountsService, Clutter, Gio, GLib,
         GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
@@ -383,11 +384,11 @@ var AuthenticationAgent = class {
         this._currentDialog.performAuthentication();
     }
 
-    _onCancel(nativeAgent) {
+    _onCancel(_nativeAgent) {
         this._completeRequest(false);
     }
 
-    _onDialogDone(dialog, dismissed) {
+    _onDialogDone(_dialog, dismissed) {
         this._completeRequest(dismissed);
     }
 

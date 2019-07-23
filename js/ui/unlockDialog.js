@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported UnlockDialog */
 
 const { AccountsService, Atk, Clutter,
         Gdm, Gio, GLib, Meta, Shell, St } = imports.gi;
@@ -99,7 +100,7 @@ var UnlockDialog = class {
             this._authPrompt.cancel();
     }
 
-    _otherUserClicked(button, event) {
+    _otherUserClicked() {
         Gdm.goto_login_session_sync(null);
 
         this._authPrompt.cancel();

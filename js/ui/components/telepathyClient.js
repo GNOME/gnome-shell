@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Component */
 
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 const Lang = imports.lang;
@@ -41,7 +42,7 @@ var NotificationDirection = {
 };
 
 function makeMessageFromTpMessage(tpMessage, direction) {
-    let [text, flags] = tpMessage.to_text();
+    let [text, flags_] = tpMessage.to_text();
 
     let timestamp = tpMessage.get_sent_timestamp();
     if (timestamp == 0)
@@ -148,11 +149,11 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     vfunc_observe_channels(...args) {
-        let [account, conn, channels, dispatchOp, requests, context] = args;
+        let [account, conn, channels, dispatchOp_, requests_, context] = args;
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
-            let [targetHandle, targetHandleType] = channel.get_handle();
+            let [targetHandle_, targetHandleType] = channel.get_handle();
 
             if (channel.get_invalidated())
                 continue;
@@ -181,7 +182,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     vfunc_handle_channels(...args) {
-        let [account, conn, channels, requests, userActionTime, context] = args;
+        let [account, conn, channels, requests_, userActionTime_, context] = args;
         this._handlingChannels(account, conn, channels, true);
         context.accept();
     }
@@ -239,7 +240,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 
     _approveTextChannel(account, conn, channel, dispatchOp, context) {
-        let [targetHandle, targetHandleType] = channel.get_handle();
+        let [targetHandle_, targetHandleType] = channel.get_handle();
 
         if (targetHandleType != Tp.HandleType.CONTACT) {
             context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
@@ -260,7 +261,7 @@ class TelepathyClient extends Tp.BaseClient {
         context.accept();
     }
 
-    _delegatedChannelsCb(client, channels) {
+    _delegatedChannelsCb(_client, _channels) {
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
     }
@@ -427,7 +428,7 @@ var ChatSource = class extends MessageTray.Source {
     }
 
     _displayPendingMessages(logManager, result) {
-        let [success, events] = logManager.get_filtered_events_finish(result);
+        let [success_, events] = logManager.get_filtered_events_finish(result);
 
         let logMessages = events.map(makeMessageFromTplEvent);
         this._ensureNotification();
@@ -562,7 +563,7 @@ var ChatSource = class extends MessageTray.Source {
 
     // This is called for both messages we send from
     // our client and other clients as well.
-    _messageSent(channel, message, flags, token) {
+    _messageSent(channel, message, _flags, _token) {
         this._ensureNotification();
         message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
         this._notification.appendMessage(message);
@@ -600,7 +601,7 @@ var ChatSource = class extends MessageTray.Source {
         }
     }
 
-    _presenceChanged(contact, presence, status, message) {
+    _presenceChanged(_contact, _presence, _status, _message) {
         if (this._notification)
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,

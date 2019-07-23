@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported init, EndSessionDialog */
 /*
  * Copyright 2010-2016 Red Hat, Inc
  *
@@ -668,7 +669,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._loginManager.listSessions(result => {
             let n = 0;
             for (let i = 0; i < result.length; i++) {
-                let [id, uid, userName, seat, sessionPath] = result[i];
+                let [id_, uid_, userName, seat_, sessionPath] = result[i];
                 let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
                 if (proxy.Class != 'user')
@@ -734,7 +735,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let dialogContent = DialogContent[this._type];
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], (proxy, error) => {
+            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
                 this._onInhibitorLoaded(proxy);
             });
 
@@ -778,7 +779,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
     }
 
-    Close(parameters, invocation) {
+    Close(_parameters, _invocation) {
         this.close();
     }
 });

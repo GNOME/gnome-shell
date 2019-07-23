@@ -1,3 +1,4 @@
+/* exported PointerA11yTimeout */
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
@@ -85,7 +86,7 @@ var PointerA11yTimeout = class PointerA11yTimeout {
         Main.uiGroup.add_actor(pieTimer);
 
         manager.connect('ptr-a11y-timeout-started', (manager, device, type, timeout) => {
-            let [x, y, mods] = global.get_pointer();
+            let [x, y] = global.get_pointer();
             pieTimer.start(x, y, timeout);
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported ShellMagnifier */
 
 const Gio = imports.gi.Gio;
 const Main = imports.ui.main;
@@ -124,7 +125,7 @@ var ShellMagnifier = class ShellMagnifier {
         let zoomRegions = Main.magnifier.getZoomRegions();
         let objectPaths = [];
         let thoseZoomers = this._zoomers;
-        zoomRegions.forEach ((aZoomRegion, index, array) => {
+        zoomRegions.forEach (aZoomRegion => {
             let found = false;
             for (let objectPath in thoseZoomers) {
                 let proxyAndZoomRegion = thoseZoomers[objectPath];

@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported DateMenuButton */
 
 const { Clutter, GLib, GnomeDesktop,
         GObject, GWeather, Shell, St } = imports.gi;
@@ -249,12 +250,12 @@ var WeatherSection = class WeatherSection {
         let current = info;
         let infos = [info];
         for (let i = 0; i < forecasts.length; i++) {
-            let [ok, timestamp] = forecasts[i].get_value_update();
+            let [ok_, timestamp] = forecasts[i].get_value_update();
             let datetime = new Date(timestamp * 1000);
             if (!_isToday(datetime))
                 continue; // Ignore forecasts from other days
 
-            [ok, timestamp] = current.get_value_update();
+            [ok_, timestamp] = current.get_value_update();
             let currenttime = new Date(timestamp * 1000);
             if (currenttime.getHours() == datetime.getHours())
                 continue; // Enforce a minimum interval of 1h
@@ -275,7 +276,7 @@ var WeatherSection = class WeatherSection {
 
         let col = 0;
         infos.forEach(fc => {
-            let [ok, timestamp] = fc.get_value_update();
+            let [ok_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
                 timeOnly: true
             });
