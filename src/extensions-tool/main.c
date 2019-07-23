@@ -91,6 +91,67 @@ get_shell_settings (void)
   return g_settings_new_full (schema, NULL, NULL);
 }
 
+gboolean
+settings_list_add (GSettings  *settings,
+                   const char *key,
+                   const char *value)
+{
+  g_auto(GStrv) list = NULL;
+  g_auto(GStrv) new_value = NULL;
+  guint n_values;
+  int i;
+
+  if (!g_settings_is_writable (settings, key))
+    return FALSE;
+
+  list = g_settings_get_strv (settings, key);
+
+  if (g_strv_contains ((const char **)list, value))
+    return TRUE;
+
+  n_values = g_strv_length (list);
+  new_value = g_new0 (char *, n_values + 2);
+  for (i = 0; i < n_values; i++)
+    new_value[i] = g_strdup (list[i]);
+  new_value[i] = g_strdup (value);
+
+  g_settings_set_strv (settings, key, (const char **)new_value);
+  g_settings_sync ();
+
+  return TRUE;
+}
+
+gboolean
+settings_list_remove (GSettings  *settings,
+                      const char *key,
+                      const char *value)
+{
+  g_auto(GStrv) list = NULL;
+  g_auto(GStrv) new_value = NULL;
+  const char **s;
+  guint n_values;
+  int i;
+
+  if (!g_settings_is_writable (settings, key))
+    return FALSE;
+
+  list = g_settings_get_strv (settings, key);
+
+  if (!g_strv_contains ((const char **)list, value))
+    return TRUE;
+
+  n_values = g_strv_length (list);
+  new_value = g_new0 (char *, n_values);
+  for (i = 0, s = (const char **)list; i < n_values; i++, s++)
+    if (!g_str_equal (*s, value))
+      new_value[i] = g_strdup (*s);
+
+  g_settings_set_strv (settings, key, (const char **)new_value);
+  g_settings_sync ();
+
+  return TRUE;
+}
+
 void
 print_extension_info (GVariantDict  *info,
                       DisplayFormat  format)
