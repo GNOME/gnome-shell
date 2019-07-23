@@ -33,7 +33,8 @@ disable_extension (const char *uuid)
   if (settings == NULL)
     return FALSE;
 
-  return settings_list_remove (settings, "enabled-extensions", uuid);
+  return settings_list_remove (settings, "enabled-extensions", uuid) &&
+         settings_list_add (settings, "disabled-extensions", uuid);
 }
 
 int
