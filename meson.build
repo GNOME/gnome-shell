@@ -4,9 +4,14 @@ project('gnome-shell', 'c',
   license: 'GPLv2+'
 )
 
+split_version = meson.project_version().split('.')
+
 # We depend on a specific version of the libmutter API. The mutter variants of
 # the Cogl and Clutter libraries also use this API version.
-mutter_api_version = '4'
+# The API version is increased automatically each development cycle,
+# starting with 0 in 3.23.x
+api_version = (split_version[1].to_int() - 23) / 2
+mutter_api_version = '@0@'.format(api_version)
 
 clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
