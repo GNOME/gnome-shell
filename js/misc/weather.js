@@ -1,10 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Geoclue, Gio, GLib, GWeather } = imports.gi;
+const { Geoclue, Gio, GLib, GWeather, Shell } = imports.gi;
 const Signals = imports.signals;
 
 const PermissionStore = imports.misc.permissionStore;
-const Util = imports.misc.util;
+
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
+const WeatherIntegrationIface = loadInterfaceXML('org.gnome.Shell.WeatherIntegration');
+
+const WEATHER_BUS_NAME = 'org.gnome.Weather';
+const WEATHER_OBJECT_PATH = '/org/gnome/Weather';
+const WEATHER_INTEGRATION_IFACE = 'org.gnome.Shell.WeatherIntegration';
+
+const WEATHER_APP_ID = 'org.gnome.Weather.desktop';
 
 // Minimum time between updates to show loading indication
 var UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
@@ -66,17 +75,36 @@ var WeatherClient = class {
             this.emit('changed');
         });
 
-        this._weatherAppMon = new Util.AppSettingsMonitor('org.gnome.Weather.desktop',
-                                                          'org.gnome.Weather');
-        this._weatherAppMon.connect('available-changed', () => this.emit('changed'));
-        this._weatherAppMon.watchSetting('automatic-location',
-                                         this._onAutomaticLocationChanged.bind(this));
-        this._weatherAppMon.watchSetting('locations',
-                                         this._onLocationsChanged.bind(this));
+        this._weatherApp = null;
+        this._weatherProxy = null;
+
+        let nodeInfo = Gio.DBusNodeInfo.new_for_xml(WeatherIntegrationIface);
+        Gio.DBusProxy.new(
+            Gio.DBus.session,
+            Gio.DBusProxyFlags.DO_NOT_AUTO_START | Gio.DBusProxyFlags.GET_INVALIDATED_PROPERTIES,
+            nodeInfo.lookup_interface(WEATHER_INTEGRATION_IFACE),
+            WEATHER_BUS_NAME,
+            WEATHER_OBJECT_PATH,
+            WEATHER_INTEGRATION_IFACE,
+            null,
+            this._onWeatherProxyReady.bind(this));
+
+        this._settings = new Gio.Settings({
+            schema_id: 'org.gnome.shell.weather'
+        });
+        this._settings.connect('changed::automatic-location',
+            this._onAutomaticLocationChanged.bind(this));
+        this._settings.connect('changed::locations',
+            this._onLocationsChanged.bind(this));
+
+        this._appSystem = Shell.AppSystem.get_default();
+        this._appSystem.connect('installed-changed',
+            this._onInstalledChanged.bind(this));
+        this._onInstalledChanged();
     }
 
     get available() {
-        return this._weatherAppMon.available;
+        return this._weatherApp != null;
     }
 
     get loading() {
@@ -92,7 +120,8 @@ var WeatherClient = class {
     }
 
     activateApp() {
-        this._weatherAppMon.activateApp();
+        if (this._weatherApp)
+            this._weatherApp.activate();
     }
 
     update() {
@@ -112,6 +141,37 @@ var WeatherClient = class {
         return this._autoLocationRequested &&
                this._locationSettings.get_boolean('enabled') &&
                this._weatherAuthorized;
+    }
+
+    _onWeatherProxyReady(o, res) {
+        try {
+            this._weatherProxy = Gio.DBusProxy.new_finish(res);
+        } catch (e) {
+            log(`Failed to create GNOME Weather proxy: ${e}`);
+            return;
+        }
+
+        this._weatherProxy.connect('g-properties-changed',
+            this._onWeatherPropertiesChanged.bind(this));
+
+        if (this._weatherProxy.g_owner != null)
+            this._onWeatherPropertiesChanged();
+    }
+
+    _onWeatherPropertiesChanged() {
+        this._settings.set_boolean('automatic-location',
+            this._weatherProxy.AutomaticLocation);
+        this._settings.set_value('locations',
+            new GLib.Variant('av', this._weatherProxy.Locations));
+    }
+
+    _onInstalledChanged() {
+        let hadApp = (this._weatherApp != null);
+        this._weatherApp = this._appSystem.lookup_app(WEATHER_APP_ID);
+        let haveApp = (this._weatherApp != null);
+
+        if (hadApp !== haveApp)
+            this.emit('changed');
     }
 
     _loadInfo() {
