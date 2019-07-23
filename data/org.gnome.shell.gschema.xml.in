@@ -233,6 +233,25 @@
     </key>
   </schema>
 
+  <schema id="org.gnome.shell.weather" path="/org/gnome/shell/weather/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="automatic-location" type="b">
+      <summary>Automatic location</summary>
+      <description>
+        Whether to fetch the current location or not
+      </description>
+      <default>false</default>
+    </key>
+
+    <key name="locations" type="av">
+      <summary>Location</summary>
+      <description>
+        The location for which to show a forecast
+      </description>
+      <default>[]</default>
+    </key>
+  </schema>
+
   <!-- unused, change 00_org.gnome.shell.gschema.override instead -->
   <schema id="org.gnome.shell.overrides" path="/org/gnome/shell/overrides/"
 	  gettext-domain="@GETTEXT_PACKAGE@">

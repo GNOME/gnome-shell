@@ -1,0 +1,16 @@
+<node>
+
+  <!--
+      org.gnome.Shell.WeatherIntegration:
+      @short_description: Weather integration interface
+
+      The interface used for exporting location settings to GNOME Shell's
+      weather integration.
+  -->
+  <interface name="org.gnome.Shell.WeatherIntegration">
+
+  <property name="AutomaticLocation" type="b" access="read"/>
+  <property name="Locations" type="av" access="read"/>
+
+  </interface>
+</node>
