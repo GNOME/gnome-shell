@@ -158,8 +158,9 @@ var BaseAppView = new Lang.Class({
 
     addItem(icon) {
         let id = icon.id;
+
         if (this.hasItem(id))
-            throw new Error(`icon with id ${id} already added to view`)
+            throw new Error(`icon with id ${id} already added to view`);
 
         this._allItems.push(icon);
         this._items[id] = icon;
