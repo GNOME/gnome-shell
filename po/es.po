@@ -9,16 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-03-24 17:37+0000\n"
-"PO-Revision-Date: 2019-02-06 11:27+0100\n"
+"POT-Creation-Date: 2019-07-17 14:17+0000\n"
+"PO-Revision-Date: 2019-07-24 09:53+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: es <gnome-es-list@gnome.org>\n"
-"Language: es\n"
+"Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 3.31.90\n"
+"X-Generator: Gtranslator 3.32.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -748,12 +748,12 @@ msgstr "Añadir a los favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
-#: js/ui/appFavorites.js:141
+#: js/ui/appFavorites.js:149
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Se ha añadido %s a sus favoritos."
 
-#: js/ui/appFavorites.js:175
+#: js/ui/appFavorites.js:183
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
@@ -1108,23 +1108,23 @@ msgstr "Añadir relojes del mundo…"
 msgid "World Clocks"
 msgstr "Relojes del mundo"
 
-#: js/ui/dateMenu.js:222
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Meteorología"
 
-#: js/ui/dateMenu.js:305
+#: js/ui/dateMenu.js:311
 msgid "Select a location…"
 msgstr "Seleccionar ubicación…"
 
-#: js/ui/dateMenu.js:313
+#: js/ui/dateMenu.js:319
 msgid "Loading…"
 msgstr "Cargando…"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Go online for weather information"
 msgstr "Conectarse para obtener la información meteorológica"
 
-#: js/ui/dateMenu.js:325
+#: js/ui/dateMenu.js:331
 msgid "Weather information is currently unavailable"
 msgstr "La información meteorológica no está disponible actualmente."
 
@@ -1361,7 +1361,7 @@ msgstr "Dejar activada"
 #: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
 #: js/ui/status/network.js:1263
 msgid "Turn On"
-msgstr "Encender"
+msgstr "Encendido"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
 #: js/ui/status/network.js:128 js/ui/status/network.js:310
@@ -1373,7 +1373,7 @@ msgstr "Apagar"
 
 #: js/ui/kbdA11yDialog.js:65
 msgid "Leave Off"
-msgstr "Dejar desactivada"
+msgstr "Dejar desactivado"
 
 #: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
@@ -1511,27 +1511,18 @@ msgstr "Salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:471
+#: js/ui/panel.js:470
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:746
+#: js/ui/panel.js:745
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:867
+#: js/ui/panel.js:866
 msgid "Top Bar"
 msgstr "Barra superior"
-
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:285
-msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
 
 #: js/ui/runDialog.js:64
 msgid "Enter a Command"
@@ -1944,11 +1935,11 @@ msgid_plural "%s Modem Connections"
 msgstr[0] "%s conexión por módem"
 msgstr[1] "%s conexiones por módem"
 
-#: js/ui/status/network.js:1701
+#: js/ui/status/network.js:1705
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: js/ui/status/network.js:1702
+#: js/ui/status/network.js:1706
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -2154,7 +2145,7 @@ msgstr[1] "La configuración se revertirá en %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:662
+#: js/ui/windowManager.js:677
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2255,11 +2246,11 @@ msgstr "Desconocido"
 msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
 
-#: src/shell-keyring-prompt.c:730
+#: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
 msgstr "Las contraseñas no coinciden."
 
-#: src/shell-keyring-prompt.c:738
+#: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
 msgstr "La contraseña no puede estar vacía"
 
@@ -2288,6 +2279,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-intl"
 
 #~ msgid "network-workgroup"
 #~ msgstr "network-workgroup"
