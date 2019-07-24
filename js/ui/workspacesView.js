@@ -5,7 +5,6 @@ const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 
@@ -245,13 +244,10 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         this._animatingScroll = true;
 
-        Tweener.addTween(this.scrollAdjustment, {
-            value: index,
-            time: WORKSPACE_SWITCH_TIME / 1000,
-            transition: 'easeOutQuad',
-            onComplete: () => {
-                this._animatingScroll = false;
-            }
+        this.scrollAdjustment.ease(index, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: WORKSPACE_SWITCH_TIME,
+            onComplete: () => this._animatingScroll = false
         });
     }
 
