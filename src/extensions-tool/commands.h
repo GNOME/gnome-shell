@@ -26,6 +26,7 @@ G_BEGIN_DECLS
 
 int handle_enable     (int argc, char *argv[], gboolean do_help);
 int handle_disable    (int argc, char *argv[], gboolean do_help);
+int handle_reset      (int argc, char *argv[], gboolean do_help);
 int handle_list       (int argc, char *argv[], gboolean do_help);
 int handle_info       (int argc, char *argv[], gboolean do_help);
 int handle_prefs      (int argc, char *argv[], gboolean do_help);

@@ -5,7 +5,7 @@
 ################################################################################
 
 __gnome_extensions() {
-  local commands="version enable disable info install show list create pack prefs uninstall"
+  local commands="version enable disable reset info install show list create pack prefs uninstall"
   local COMMAND=${COMP_WORDS[1]}
 
   _init_completion -s || return
@@ -35,7 +35,7 @@ __gnome_extensions() {
         uninstall)
           local list_opt=--user
           ;;&
-        enable|disable|info|show|prefs|uninstall)
+        enable|disable|info|show|prefs|reset|uninstall)
           COMPREPLY=($(compgen -W "`gnome-extensions list $list_opt`" -- "$2"))
           return 0
           ;;
