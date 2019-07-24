@@ -244,6 +244,7 @@ usage (void)
   g_printerr ("  version   %s\n", _("Print version"));
   g_printerr ("  enable    %s\n", _("Enable extension"));
   g_printerr ("  disable   %s\n", _("Disable extension"));
+  g_printerr ("  reset     %s\n", _("Reset extension"));
   g_printerr ("  uninstall %s\n", _("Uninstall extension"));
   g_printerr ("  list      %s\n", _("List extensions"));
   g_printerr ("  info      %s\n", _("Show extension info"));
@@ -309,6 +310,8 @@ main (int argc, char *argv[])
     return handle_enable (argc, argv, do_help);
   else if (g_str_equal (command, "disable"))
     return handle_disable (argc, argv, do_help);
+  else if (g_str_equal (command, "reset"))
+    return handle_reset (argc, argv, do_help);
   else if (g_str_equal (command, "list"))
     return handle_list (argc, argv, do_help);
   else if (g_str_equal (command, "info"))

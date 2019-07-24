@@ -19,6 +19,8 @@ SYNOPSIS
 
 *gnome-extensions* disable 'UUID'
 
+*gnome-extensions* reset 'UUID'
+
 *gnome-extensions* info 'UUID'
 
 *gnome-extensions* show 'UUID'
@@ -61,6 +63,12 @@ If the extension is already enabled, the command will do nothing.
 Disables the extension identified by 'UUID'.
 +
 If the extension is not enabled, the command will do nothing.
+
+*reset* 'UUID'::
+Reset the extension identified by 'UUID'.
++
+The extension will be disabled in GNOME, but may be enabled by other sessions
+like GNOME Classic.
 
 *info* 'UUID'::
 Show details of the extension identified by 'UUID', including name,
