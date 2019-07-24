@@ -17,6 +17,7 @@ sources = [
   'command-list.c',
   'command-pack.c',
   'command-prefs.c',
+  'command-reset.c',
   'command-uninstall.c',
   'main.c'
 ]
