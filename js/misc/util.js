@@ -9,7 +9,6 @@ const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const Params = imports.misc.params;
 
 var SCROLL_TIME = 100;
@@ -426,10 +425,10 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
     else
         return;
 
-    Tweener.addTween(adjustment,
-                     { value: value,
-                       time: SCROLL_TIME / 1000,
-                       transition: 'easeOutQuad' });
+    adjustment.ease(value, {
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        duration: SCROLL_TIME
+    });
 }
 
 var AppSettingsMonitor = class {

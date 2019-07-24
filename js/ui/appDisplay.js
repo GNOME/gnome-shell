@@ -13,7 +13,6 @@ const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
-const Tweener = imports.ui.tweener;
 const Search = imports.ui.search;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
@@ -498,10 +497,11 @@ var AllView = class AllView extends BaseAppView {
         time = Math.min(time, PAGE_SWITCH_TIME);
 
         this._grid.currentPage = pageNumber;
-        Tweener.addTween(this._adjustment,
-                         { value: this._grid.getPageY(this._grid.currentPage),
-                           time: time / 1000,
-                           transition: 'easeOutQuad' });
+        this._adjustment.ease(this._grid.getPageY(pageNumber), {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: time
+        });
+
         this._pageIndicators.setCurrentPage(pageNumber);
     }
 
