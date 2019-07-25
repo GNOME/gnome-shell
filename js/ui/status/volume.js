@@ -36,12 +36,12 @@ var StreamSlider = class {
         this._soundSettings.connect(`changed::${ALLOW_AMPLIFIED_VOLUME_KEY}`, this._amplifySettingsChanged.bind(this));
         this._amplifySettingsChanged();
 
-        this._slider.connect('value-changed', this._sliderChanged.bind(this));
+        this._slider.connect('notify::value', this._sliderChanged.bind(this));
         this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
-        this.item.add(this._slider.actor, { expand: true });
+        this.item.add(this._slider, { expand: true });
         this.item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });
@@ -99,10 +99,11 @@ var StreamSlider = class {
         return this._slider.scroll(event);
     }
 
-    _sliderChanged(slider, value) {
+    _sliderChanged() {
         if (!this._stream)
             return;
 
+        let value = this._slider.value;
         let volume = value * this._control.get_vol_max_norm();
         let prevMuted = this._stream.is_muted;
         if (volume < 1) {
@@ -189,7 +190,7 @@ Signals.addSignalMethods(StreamSlider.prototype);
 var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Volume");
+        this._slider.accessible_name = _("Volume");
     }
 
     _connectStream(stream) {
@@ -237,7 +238,7 @@ var OutputStreamSlider = class extends StreamSlider {
 var InputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.actor.accessible_name = _("Microphone");
+        this._slider.accessible_name = _("Microphone");
         this._control.connect('stream-added', this._maybeShowInput.bind(this));
         this._control.connect('stream-removed', this._maybeShowInput.bind(this));
         this._icon.icon_name = 'audio-input-microphone-symbolic';

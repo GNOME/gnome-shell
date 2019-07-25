@@ -244,21 +244,24 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = class {
-    constructor(metaWorkspace) {
+var WorkspaceThumbnail = GObject.registerClass(
+class WorkspaceThumbnail extends St.Widget {
+    _init(metaWorkspace) {
+        super._init({
+            clip_to_allocation: true,
+            style_class: 'workspace-thumbnail'
+        });
+        this._delegate = this;
+
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
 
         this._removed = false;
 
-        this.actor = new St.Widget({ clip_to_allocation: true,
-                                     style_class: 'workspace-thumbnail' });
-        this.actor._delegate = this;
-
         this._contents = new Clutter.Actor();
-        this.actor.add_child(this._contents);
+        this.add_child(this._contents);
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._createBackground();
 
@@ -308,7 +311,7 @@ var WorkspaceThumbnail = class {
     }
 
     setPorthole(x, y, width, height) {
-        this.actor.set_size(width, height);
+        this.set_size(width, height);
         this._contents.set_position(-x, -y);
     }
 
@@ -336,7 +339,7 @@ var WorkspaceThumbnail = class {
 
     set slidePosition(slidePosition) {
         this._slidePosition = slidePosition;
-        this.actor.queue_relayout();
+        this.queue_relayout();
     }
 
     get slidePosition() {
@@ -345,7 +348,7 @@ var WorkspaceThumbnail = class {
 
     set collapseFraction(collapseFraction) {
         this._collapseFraction = collapseFraction;
-        this.actor.queue_relayout();
+        this.queue_relayout();
     }
 
     get collapseFraction() {
@@ -446,11 +449,6 @@ var WorkspaceThumbnail = class {
             this._doAddWindow(metaWin);
     }
 
-    destroy() {
-        if (this.actor)
-            this.actor.destroy();
-    }
-
     workspaceRemoved() {
         if (this._removed)
             return;
@@ -475,7 +473,6 @@ var WorkspaceThumbnail = class {
         }
 
         this._windows = [];
-        this.actor = null;
     }
 
     // Tests if @actor belongs to this workspace and monitor
@@ -590,8 +587,7 @@ var WorkspaceThumbnail = class {
 
         return false;
     }
-};
-Signals.addSignalMethods(WorkspaceThumbnail.prototype);
+});
 
 
 var ThumbnailsBox = GObject.registerClass(
@@ -688,8 +684,8 @@ class ThumbnailsBox extends St.Widget {
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
-            let [, h] = thumbnail.actor.get_transformed_size();
-            if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
+            let [, h] = thumbnail.get_transformed_size();
+            if (y >= thumbnail.y && y <= thumbnail.y + h) {
                 thumbnail.activate(time);
                 break;
             }
@@ -769,14 +765,14 @@ class ThumbnailsBox extends St.Widget {
         if (this._dropPlaceholderPos == 0)
             targetBase = this._dropPlaceholder.y;
         else
-            targetBase = this._thumbnails[0].actor.y;
+            targetBase = this._thumbnails[0].y;
         let targetTop = targetBase - spacing - WORKSPACE_CUT_SIZE;
         let length = this._thumbnails.length;
         for (let i = 0; i < length; i ++) {
             // Allow the reorder target to have a 10px "cut" into
             // each side of the thumbnail, to make dragging onto the
             // placeholder easier
-            let [, h] = this._thumbnails[i].actor.get_transformed_size();
+            let [, h] = this._thumbnails[i].get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
             let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
@@ -955,7 +951,7 @@ class ThumbnailsBox extends St.Widget {
             thumbnail.setPorthole(this._porthole.x, this._porthole.y,
                                   this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
-            this.add_actor(thumbnail.actor);
+            this.add_actor(thumbnail);
 
             if (start > 0 && this._spliceIndex == -1) {
                 // not the initial fill, and not splicing via DND
@@ -1289,8 +1285,8 @@ class ThumbnailsBox extends St.Widget {
             childBox.y1 = y1;
             childBox.y2 = y1 + portholeHeight;
 
-            thumbnail.actor.set_scale(roundedHScale, roundedVScale);
-            thumbnail.actor.allocate(childBox, flags);
+            thumbnail.set_scale(roundedHScale, roundedVScale);
+            thumbnail.allocate(childBox, flags);
 
             // We round the collapsing portion so that we don't get thumbnails resizing
             // during an animation due to differences in rounded, but leave the uncollapsed
@@ -1328,7 +1324,7 @@ class ThumbnailsBox extends St.Widget {
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
         this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
         Tweener.addTween(this,
-                         { indicatorY: thumbnail.actor.allocation.y1,
+                         { indicatorY: thumbnail.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
