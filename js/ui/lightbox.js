@@ -5,7 +5,6 @@ const { Clutter, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 var DEFAULT_FADE_FACTOR = 0.4;
 var VIGNETTE_BRIGHTNESS = 0.2;
@@ -175,29 +174,31 @@ var Lightbox = class Lightbox {
     show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
 
+        this.actor.remove_all_transitions();
+
+        let onComplete = () => {
+            this.shown = true;
+            this.emit('shown');
+        };
+
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: VIGNETTE_BRIGHTNESS,
-                               sharpness: VIGNETTE_SHARPNESS,
-                               time: fadeInTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.shown = true;
-                                   this.emit('shown');
-                               }
-                             });
+            this.actor.ease_property(
+                '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, {
+                    duration: fadeInTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
+            this.actor.ease_property(
+                '@effects.radial.sharpness', VIGNETTE_SHARPNESS, {
+                    duration: fadeInTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete
+                });
         } else {
-            this.actor.remove_all_transitions();
             this.actor.ease({
                 opacity: 255 * this._fadeFactor,
                 duration: fadeInTime,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this.shown = true;
-                    this.emit('shown');
-                }
+                onComplete
             });
         }
 
@@ -208,29 +209,28 @@ var Lightbox = class Lightbox {
         fadeOutTime = fadeOutTime || 0;
 
         this.shown = false;
+        this.actor.remove_all_transitions();
+
+        let onComplete = () => this.actor.hide();
 
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: 1.0,
-                               sharpness: 0.0,
-                               opacity: 0,
-                               time: fadeOutTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.hide();
-                               }
-                             });
+            this.actor.ease_property(
+                '@effects.radial.brightness', 1.0, {
+                    duration: fadeOutTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
+            this.actor.ease_property(
+                '@effects.radial.sharpness', 0.0, {
+                    duration: fadeOutTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete
+                });
         } else {
-            this.actor.remove_all_transitions();
             this.actor.ease({
                 opacity: 0,
                 duration: fadeOutTime,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this.actor.hide();
-                }
+                onComplete
             });
         }
     }
