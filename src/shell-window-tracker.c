@@ -103,7 +103,7 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                         "Focus App",
                                                         "Focused application",
                                                         SHELL_TYPE_APP,
-                                                        G_PARAM_READABLE));
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
                                    SHELL_TYPE_WINDOW_TRACKER,

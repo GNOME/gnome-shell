@@ -479,33 +479,37 @@ st_button_class_init (StButtonClass *klass)
   pspec = g_param_spec_string ("label",
                                "Label",
                                "Label of the button",
-                               NULL, G_PARAM_READWRITE);
+                               NULL,
+                               ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_LABEL, pspec);
 
   pspec = g_param_spec_flags ("button-mask",
                               "Button mask",
                               "Which buttons trigger the 'clicked' signal",
                               ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
-                              G_PARAM_READWRITE);
+                              ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_BUTTON_MASK, pspec);
 
   pspec = g_param_spec_boolean ("toggle-mode",
                                 "Toggle Mode",
                                 "Enable or disable toggling",
-                                FALSE, G_PARAM_READWRITE);
+                                FALSE,
+                                ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TOGGLE_MODE, pspec);
 
   pspec = g_param_spec_boolean ("checked",
                                 "Checked",
                                 "Indicates if a toggle button is \"on\""
                                 " or \"off\"",
-                                FALSE, G_PARAM_READWRITE);
+                                FALSE,
+                                ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHECKED, pspec);
 
   pspec = g_param_spec_boolean ("pressed",
                                 "Pressed",
                                 "Indicates if the button is pressed in",
-                                FALSE, G_PARAM_READABLE);
+                                FALSE,
+                                ST_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
 
 

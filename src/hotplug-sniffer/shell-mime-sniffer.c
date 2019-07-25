@@ -543,7 +543,7 @@ shell_mime_sniffer_class_init (ShellMimeSnifferClass *klass)
                          "File",
                          "The loaded file",
                          G_TYPE_FILE,
-                         G_PARAM_READWRITE);
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
 }
