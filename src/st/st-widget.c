@@ -989,7 +989,7 @@ st_widget_class_init (StWidgetClass *klass)
                                                       "The accessible role of this object",
                                                       ATK_TYPE_ROLE,
                                                       ATK_ROLE_INVALID,
-                                                      G_PARAM_READWRITE));
+                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 
   /**
