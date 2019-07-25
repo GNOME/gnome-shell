@@ -68,6 +68,7 @@ create_common() {
 
 if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   commit_range=origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...$CI_COMMIT_SHA
+  echo $commit_range
   list_commit_range_additions $commit_range > $LINE_CHANGES
 
   # Don't bother with running lint when no JS changed

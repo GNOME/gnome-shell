@@ -47,6 +47,7 @@ eslint:
     artifacts:
         paths:
             - reports
+            - changed-lines.txt
         when: always
 
 build:
