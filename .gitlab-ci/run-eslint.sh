@@ -67,7 +67,10 @@ create_common() {
 }
 
 if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
-  commit_range=origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...$CI_COMMIT_SHA
+  git fetch $CI_MERGE_REQUEST_PROJECT_URL.git $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+  branch_point=$(git merge-base HEAD FETCH_HEAD)
+  commit_range=$branch_point...$CI_COMMIT_SHA
+
   list_commit_range_additions $commit_range > $LINE_CHANGES
 
   # Don't bother with running lint when no JS changed
