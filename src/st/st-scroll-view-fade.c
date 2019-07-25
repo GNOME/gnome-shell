@@ -389,21 +389,21 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                                                        "Vertical Fade Offset",
                                                        "The height of the area which is faded at the edge",
                                                        0.f, G_MAXFLOAT, DEFAULT_FADE_OFFSET,
-                                                       G_PARAM_READWRITE));
+                                                       ST_PARAM_READWRITE));
   g_object_class_install_property (gobject_class,
                                    PROP_HFADE_OFFSET,
                                    g_param_spec_float ("hfade-offset",
                                                        "Horizontal Fade Offset",
                                                        "The width of the area which is faded at the edge",
                                                        0.f, G_MAXFLOAT, DEFAULT_FADE_OFFSET,
-                                                       G_PARAM_READWRITE));
+                                                       ST_PARAM_READWRITE));
   g_object_class_install_property (gobject_class,
                                    PROP_FADE_EDGES,
                                    g_param_spec_boolean ("fade-edges",
                                                          "Fade Edges",
                                                          "Whether the faded area should extend to the edges",
                                                          FALSE,
-                                                         G_PARAM_READWRITE));
+                                                         ST_PARAM_READWRITE));
 
 
 }
