@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "st-private.h"
 #include "st-scrollable.h"
 
 G_DEFINE_INTERFACE (StScrollable, st_scrollable, G_TYPE_OBJECT)
@@ -90,14 +91,14 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
                                                                 "StAdjustment",
                                                                 "Horizontal adjustment",
                                                                 ST_TYPE_ADJUSTMENT,
-                                                                G_PARAM_READWRITE));
+                                                                ST_PARAM_READWRITE));
 
       g_object_interface_install_property (g_iface,
                                            g_param_spec_object ("vadjustment",
                                                                 "StAdjustment",
                                                                 "Vertical adjustment",
                                                                 ST_TYPE_ADJUSTMENT,
-                                                                G_PARAM_READWRITE));
+                                                                ST_PARAM_READWRITE));
 
       initialized = TRUE;
     }

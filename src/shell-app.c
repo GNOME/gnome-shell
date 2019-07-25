@@ -1533,7 +1533,7 @@ shell_app_class_init(ShellAppClass *klass)
                                                       "Application state",
                                                       SHELL_TYPE_APP_STATE,
                                                       SHELL_APP_STATE_STOPPED,
-                                                      G_PARAM_READABLE));
+                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * ShellApp:busy:
@@ -1546,7 +1546,7 @@ shell_app_class_init(ShellAppClass *klass)
                                                          "Busy",
                                                          "Busy state",
                                                          FALSE,
-                                                         G_PARAM_READABLE));
+                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * ShellApp:id:

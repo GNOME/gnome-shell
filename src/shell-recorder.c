@@ -835,7 +835,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "Display",
                                                         "Display to record",
                                                         META_TYPE_DISPLAY,
-                                                        G_PARAM_WRITABLE));
+                                                        G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
                                    PROP_STAGE,
@@ -843,7 +843,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "Stage",
                                                         "Stage to record",
                                                         CLUTTER_TYPE_STAGE,
-                                                        G_PARAM_READWRITE));
+                                                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
                                    PROP_FRAMERATE,
@@ -853,7 +853,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                       0,
                                                       G_MAXINT,
                                                       DEFAULT_FRAMES_PER_SECOND,
-                                                      G_PARAM_READWRITE));
+                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
                                    PROP_PIPELINE,
@@ -861,7 +861,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "Pipeline",
                                                         "GStreamer pipeline description to encode recordings",
                                                         NULL,
-                                                        G_PARAM_READWRITE));
+                                                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
                                    PROP_FILE_TEMPLATE,
@@ -869,7 +869,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "File Template",
                                                         "The filename template to use for output files",
                                                         NULL,
-                                                        G_PARAM_READWRITE));
+                                                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class,
                                    PROP_DRAW_CURSOR,
@@ -877,7 +877,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                          "Draw Cursor",
                                                          "Whether to record the cursor",
                                                          TRUE,
-                                                         G_PARAM_READWRITE));
+                                                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 /* Sets the GstCaps (video format, in this case) on the stream

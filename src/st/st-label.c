@@ -268,13 +268,14 @@ st_label_class_init (StLabelClass *klass)
 			       "Clutter Text",
 			       "Internal ClutterText actor",
 			       CLUTTER_TYPE_TEXT,
-			       G_PARAM_READABLE);
+			       ST_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
 
   pspec = g_param_spec_string ("text",
                                "Text",
                                "Text of the label",
-                               NULL, G_PARAM_READWRITE);
+                               NULL,
+                               ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
 }
