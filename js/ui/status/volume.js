@@ -130,17 +130,16 @@ var StreamSlider = class {
 
     _updateVolume() {
         let muted = this._stream.is_muted;
-        this._slider.setValue(muted ? 0 : (this._stream.volume / this._control.get_vol_max_norm()));
+        this._slider.value = muted
+            ? 0 : (this._stream.volume / this._control.get_vol_max_norm());
         this.emit('stream-updated');
     }
 
     _amplifySettingsChanged() {
         this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
 
-        if (this._allowAmplified)
-            this._slider.setMaximumValue(this.getMaxLevel() / 100);
-        else
-            this._slider.setMaximumValue(1);
+        this._slider.maximum_level = this._allowAmplified
+            ? this.getMaxLevel() / 100 : 1;
 
         if (this._stream)
             this._updateVolume();
