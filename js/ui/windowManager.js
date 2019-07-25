@@ -12,7 +12,6 @@ const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
-const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
@@ -118,17 +117,18 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 var WindowDimmer = class {
     constructor(actor) {
         this._brightnessEffect = new Clutter.BrightnessContrastEffect({
+            name: 'dim',
             enabled: false
         });
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
         this._enabled = true;
-        this._dimFactor = 0.0;
     }
 
     _syncEnabled() {
+        let animating = this.actor.get_transition('@effects.dim.brightness') != null;
         let dimmed = this._brightnessEffect.brightness.red != 127;
-        this._brightnessEffect.enabled = (this._enabled && dimmed);
+        this._brightnessEffect.enabled = this._enabled && (animating || dimmed);
     }
 
     setEnabled(enabled) {
@@ -137,27 +137,16 @@ var WindowDimmer = class {
     }
 
     setDimmed(dimmed, animate) {
-        let factor = dimmed ? 1.0 : 0.0;
+        let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
+        let color = Clutter.Color.new(val, val, val, 255);
 
-        if (animate) {
-            Tweener.addTween(this, {
-                _dimFactor: factor,
-                time: (dimmed ? DIM_TIME : UNDIM_TIME) / 1000,
-                transition: 'linear',
-                onUpdate: () => {
-                    let val = 127 * (1 + this._dimFactor * DIM_BRIGHTNESS);
-                    let color = Clutter.Color.new(val, val, val, 255);
-                    this._brightnessEffect.brightness = color;
-                    this._syncEnabled();
-                }
-            });
-        } else {
-            this._dimFactor = factor;
-            let val = 127 * (1 + this._dimFactor * DIM_BRIGHTNESS);
-            let color = Clutter.Color.new(val, val, val, 255);
-            this._brightnessEffect.brightness = color;
-            this._syncEnabled();
-        }
+        this.actor.ease_property('@effects.dim.brightness', color, {
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
+            onComplete: () => this._syncEnabled()
+        });
+
+        this._syncEnabled();
     }
 };
 

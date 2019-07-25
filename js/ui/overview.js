@@ -13,7 +13,6 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
@@ -174,24 +173,28 @@ var Overview = class {
     _unshadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            Tweener.addTween(backgrounds[i],
-                             { brightness: 1.0,
-                               vignette_sharpness: 0.0,
-                               time: SHADE_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad'
-                             });
+            backgrounds[i].ease_property('brightness', 1.0, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
+            backgrounds[i].ease_property('vignette-sharpness', 0.0, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
     }
 
     _shadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            Tweener.addTween(backgrounds[i],
-                             { brightness: Lightbox.VIGNETTE_BRIGHTNESS,
-                               vignette_sharpness: Lightbox.VIGNETTE_SHARPNESS,
-                               time: SHADE_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad'
-                             });
+            backgrounds[i].ease_property('brightness', Lightbox.VIGNETTE_BRIGHTNESS, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
+            backgrounds[i].ease_property('vignette-sharpness', Lightbox.VIGNETTE_SHARPNESS, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
     }
 

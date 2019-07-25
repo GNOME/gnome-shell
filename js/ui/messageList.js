@@ -4,7 +4,6 @@ const MessageTray = imports.ui.messageTray;
 const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
-const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
 var MESSAGE_ANIMATION_TIME = 100;
@@ -440,10 +439,11 @@ var Message = class Message {
         }
 
         if (animate) {
-            Tweener.addTween(this._bodyStack.layout_manager,
-                             { expansion: 1,
-                               time: MessageTray.ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad' });
+            this._bodyStack.ease_property('@layout.expansion', 1, {
+                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: MessageTray.ANIMATION_TIME,
+            });
+
             this._actionBin.scale_y = 0;
             this._actionBin.ease({
                 scale_y: 1,
@@ -460,10 +460,11 @@ var Message = class Message {
 
     unexpand(animate) {
         if (animate) {
-            Tweener.addTween(this._bodyStack.layout_manager,
-                             { expansion: 0,
-                               time: MessageTray.ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad' });
+            this._bodyStack.ease_property('@layout.expansion', 0, {
+                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: MessageTray.ANIMATION_TIME,
+            });
+
             this._actionBin.ease({
                 scale_y: 0,
                 duration: MessageTray.ANIMATION_TIME,

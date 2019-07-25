@@ -7,7 +7,6 @@ const Mainloop = imports.mainloop;
 const BarLevel = imports.ui.barLevel;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 100;
@@ -113,10 +112,10 @@ var OsdWindow = class {
         this._level.visible = (value != undefined);
         if (value != undefined) {
             if (this.actor.visible)
-                Tweener.addTween(this._level,
-                                 { value: value,
-                                   time: LEVEL_ANIMATION_TIME / 1000,
-                                   transition: 'easeOutQuad' });
+                this._level.ease_property('value', value, {
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    duration: LEVEL_ANIMATION_TIME
+                });
             else
                 this._level.value = value;
         }
