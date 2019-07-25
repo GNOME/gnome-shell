@@ -244,8 +244,18 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = GObject.registerClass(
-class WorkspaceThumbnail extends St.Widget {
+var WorkspaceThumbnail = GObject.registerClass({
+    Properties: {
+        'collapse-fraction': GObject.ParamSpec.double(
+            'collapse-fraction', 'collapse-fraction', 'collapse-fraction',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+        'slide-position': GObject.ParamSpec.double(
+            'slide-position', 'slide-position', 'slide-position',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+    }
+}, class WorkspaceThumbnail extends St.Widget {
     _init(metaWorkspace) {
         super._init({
             clip_to_allocation: true,
@@ -337,21 +347,31 @@ class WorkspaceThumbnail extends St.Widget {
         }
     }
 
-    set slidePosition(slidePosition) {
+    // eslint-disable-next-line camelcase
+    set slide_position(slidePosition) {
+        if (this._slidePosition == slidePosition)
+            return;
         this._slidePosition = slidePosition;
+        this.notify('slide-position');
         this.queue_relayout();
     }
 
-    get slidePosition() {
+    // eslint-disable-next-line camelcase
+    get slide_position() {
         return this._slidePosition;
     }
 
-    set collapseFraction(collapseFraction) {
+    // eslint-disable-next-line camelcase
+    set collapse_fraction(collapseFraction) {
+        if (this._collapseFraction == collapseFraction)
+            return;
         this._collapseFraction = collapseFraction;
+        this.notify('collapse-fraction');
         this.queue_relayout();
     }
 
-    get collapseFraction() {
+    // eslint-disable-next-line camelcase
+    get collapse_fraction() {
         return this._collapseFraction;
     }
 
@@ -590,8 +610,18 @@ class WorkspaceThumbnail extends St.Widget {
 });
 
 
-var ThumbnailsBox = GObject.registerClass(
-class ThumbnailsBox extends St.Widget {
+var ThumbnailsBox = GObject.registerClass({
+    Properties: {
+        'indicator-y': GObject.ParamSpec.double(
+            'indicator-y', 'indicator-y', 'indicator-y',
+            GObject.ParamFlags.READWRITE,
+            0, Infinity, 0),
+        'scale': GObject.ParamSpec.double(
+            'scale', 'scale', 'scale',
+            GObject.ParamFlags.READWRITE,
+            0, Infinity, 0)
+    }
+}, class ThumbnailsBox extends St.Widget {
     _init() {
         super._init({ reactive: true,
                       style_class: 'workspace-thumbnails',
@@ -843,7 +873,7 @@ class ThumbnailsBox extends St.Widget {
             // an old one which just became empty)
             let thumbnail = this._thumbnails[newWorkspaceIndex];
             this._setThumbnailState(thumbnail, ThumbnailState.NEW);
-            thumbnail.slidePosition = 1;
+            thumbnail.slide_position = 1;
 
             this._queueUpdateStates();
 
@@ -956,7 +986,7 @@ class ThumbnailsBox extends St.Widget {
             if (start > 0 && this._spliceIndex == -1) {
                 // not the initial fill, and not splicing via DND
                 thumbnail.state = ThumbnailState.NEW;
-                thumbnail.slidePosition = 1; // start slid out
+                thumbnail.slide_position = 1; // start slid out
                 this._haveNewThumbnails = true;
             } else {
                 thumbnail.state = ThumbnailState.NORMAL;
@@ -999,7 +1029,11 @@ class ThumbnailsBox extends St.Widget {
     }
 
     set scale(scale) {
+        if (this._scale == scale)
+            return;
+
         this._scale = scale;
+        this.notify('scale');
         this.queue_relayout();
     }
 
@@ -1007,12 +1041,18 @@ class ThumbnailsBox extends St.Widget {
         return this._scale;
     }
 
-    set indicatorY(indicatorY) {
+    // eslint-disable-next-line camelcase
+    set indicator_y(indicatorY) {
+        if (this._indicatorY == indicatorY)
+            return;
+
         this._indicatorY = indicatorY;
+        this.notify('indicator-y');
         this.queue_relayout();
     }
 
-    get indicatorY() {
+    // eslint-disable-next-line camelcase
+    get indicator_y() {
         return this._indicatorY;
     }
 
@@ -1053,7 +1093,7 @@ class ThumbnailsBox extends St.Widget {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_OUT);
 
             Tweener.addTween(thumbnail,
-                             { slidePosition: 1,
+                             { slide_position: 1,
                                time: SLIDE_ANIMATION_TIME / 1000,
                                transition: 'linear',
                                onComplete: () => {
@@ -1071,7 +1111,7 @@ class ThumbnailsBox extends St.Widget {
         this._iterateStateThumbnails(ThumbnailState.ANIMATED_OUT, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
             Tweener.addTween(thumbnail,
-                             { collapseFraction: 1,
+                             { collapse_fraction: 1,
                                time: RESCALE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
@@ -1100,7 +1140,7 @@ class ThumbnailsBox extends St.Widget {
         this._iterateStateThumbnails(ThumbnailState.NEW, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
             Tweener.addTween(thumbnail,
-                             { slidePosition: 0,
+                             { slide_position: 0,
                                time: SLIDE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
@@ -1241,14 +1281,14 @@ class ThumbnailsBox extends St.Widget {
             let thumbnail = this._thumbnails[i];
 
             if (i > 0)
-                y += spacing - Math.round(thumbnail.collapseFraction * spacing);
+                y += spacing - Math.round(thumbnail.collapse_fraction * spacing);
 
             let x1, x2;
             if (rtl) {
-                x1 = box.x1 + slideOffset * thumbnail.slidePosition;
+                x1 = box.x1 + slideOffset * thumbnail.slide_position;
                 x2 = x1 + thumbnailWidth;
             } else {
-                x1 = box.x2 - thumbnailWidth + slideOffset * thumbnail.slidePosition;
+                x1 = box.x2 - thumbnailWidth + slideOffset * thumbnail.slide_position;
                 x2 = x1 + thumbnailWidth;
             }
 
@@ -1291,7 +1331,7 @@ class ThumbnailsBox extends St.Widget {
             // We round the collapsing portion so that we don't get thumbnails resizing
             // during an animation due to differences in rounded, but leave the uncollapsed
             // portion unrounded so that non-animating we end up with the right total
-            y += thumbnailHeight - Math.round(thumbnailHeight * thumbnail.collapseFraction);
+            y += thumbnailHeight - Math.round(thumbnailHeight * thumbnail.collapse_fraction);
         }
 
         if (rtl) {
@@ -1322,9 +1362,9 @@ class ThumbnailsBox extends St.Widget {
         this._animatingIndicator = true;
         let indicatorThemeNode = this._indicator.get_theme_node();
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
-        this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
+        this.indicator_y = this._indicator.allocation.y1 + indicatorTopFullBorder;
         Tweener.addTween(this,
-                         { indicatorY: thumbnail.allocation.y1,
+                         { indicator_y: thumbnail.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
