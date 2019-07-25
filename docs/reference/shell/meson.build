@@ -28,7 +28,7 @@ foreach iface : ifaces
     output: 'doc-gen-' + iface[1],
     command: [
       'gdbus-codegen',
-      '--interface-prefix=@0@.'.format(iface),
+      '--interface-prefix=@0@.'.format(iface[0]),
       '--generate-docbook', 'doc-gen',
       '--output-directory', '@OUTDIR@',
       '@INPUT@'
