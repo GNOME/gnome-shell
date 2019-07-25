@@ -3,9 +3,11 @@
             pauseTweens, resumeTweens, registerSpecialProperty,
             registerSpecialPropertyModifier, registerSpecialPropertySplitter */
 
-const { Clutter, GLib, Shell, St } = imports.gi;
+const { Clutter, GLib, Shell } = imports.gi;
 const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
+
+const { adjustAnimationTime } = imports.ui.environment;
 
 // This is a wrapper around imports.tweener.tweener that adds a bit of
 // Clutter integration. If the tweening target is a Clutter.Actor, then
@@ -50,10 +52,11 @@ function _wrapTweening(target, tweeningParameters) {
         }
     }
 
-    if (!St.Settings.get().enable_animations) {
-        tweeningParameters['time'] = 0.000001;
-        tweeningParameters['delay'] = 0.000001;
-    }
+    let { time, delay } = tweeningParameters;
+    if (!isNaN(time))
+        tweeningParameters['time'] = adjustAnimationTime(1000 * time) / 1000;
+    if (!isNaN(delay))
+        tweeningParameters['delay'] = adjustAnimationTime(1000 * delay) / 1000;
 
     _addHandler(target, tweeningParameters, 'onComplete', _tweenCompleted);
 }
@@ -211,9 +214,6 @@ var ClutterFrameTicker = class {
     }
 
     start() {
-        let settings = St.Settings.get();
-        if (settings.slow_down_factor > 0)
-            Tweener.setTimeScale(1 / settings.slow_down_factor);
         this._timeline.start();
         global.begin_work();
     }
