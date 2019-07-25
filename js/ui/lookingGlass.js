@@ -949,9 +949,10 @@ var LookingGlass = class LookingGlass {
         if (this._completionActor.visible) {
             this._completionActor.height = naturalHeight;
         } else {
+            let settings = St.Settings.get();
             this._completionActor.show();
             Tweener.removeTweens(this._completionActor);
-            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / St.get_slow_down_factor(),
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / settings.slow_down_factor,
                                                       transition: 'easeOutQuad',
                                                       height: naturalHeight,
                                                       opacity: 255
@@ -961,8 +962,9 @@ var LookingGlass = class LookingGlass {
 
     _hideCompletions() {
         if (this._completionActor) {
+            let settings = St.Settings.get();
             Tweener.removeTweens(this._completionActor);
-            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / St.get_slow_down_factor(),
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / settings.slow_down_factor,
                                                       transition: 'easeOutQuad',
                                                       height: 0,
                                                       opacity: 0,
@@ -1082,7 +1084,8 @@ var LookingGlass = class LookingGlass {
 
         // We inverse compensate for the slow-down so you can change the factor
         // through LookingGlass without long waits.
-        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
+        let settings = St.Settings.get();
+        Tweener.addTween(this.actor, { time: 0.5 / settings.slow_down_factor,
                                        transition: 'easeOutQuad',
                                        y: this._targetY
                                      });
@@ -1101,7 +1104,8 @@ var LookingGlass = class LookingGlass {
 
         Main.popModal(this._entry);
 
-        Tweener.addTween(this.actor, { time: Math.min(0.5 / St.get_slow_down_factor(), 0.5),
+        let settings = St.Settings.get();
+        Tweener.addTween(this.actor, { time: Math.min(0.5 / settings.slow_down_factor, 0.5),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
                                        onComplete: () => {

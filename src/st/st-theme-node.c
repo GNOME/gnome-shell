@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "st-settings.h"
 #include "st-theme-private.h"
 #include "st-theme-context.h"
 #include "st-theme-node-private.h"
@@ -38,8 +39,6 @@ static const ClutterColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
 static const ClutterColor DEFAULT_SUCCESS_COLOR = { 0x4e, 0x9a, 0x06, 0xff };
 static const ClutterColor DEFAULT_WARNING_COLOR = { 0xf5, 0x79, 0x3e, 0xff };
 static const ClutterColor DEFAULT_ERROR_COLOR = { 0xcc, 0x00, 0x00, 0xff };
-
-extern gfloat st_slow_down_factor;
 
 G_DEFINE_TYPE (StThemeNode, st_theme_node, G_TYPE_OBJECT)
 
@@ -2348,18 +2347,23 @@ st_theme_node_get_margin (StThemeNode *node,
 int
 st_theme_node_get_transition_duration (StThemeNode *node)
 {
+  StSettings *settings;
   gdouble value = 0.0;
+  gdouble factor;
 
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0);
 
+  settings = st_settings_get ();
+  g_object_get (settings, "slow-down-factor", &factor, NULL);
+
   if (node->transition_duration > -1)
-    return st_slow_down_factor * node->transition_duration;
+    return factor * node->transition_duration;
 
   st_theme_node_lookup_time (node, "transition-duration", FALSE, &value);
 
   node->transition_duration = (int)value;
 
-  return st_slow_down_factor * node->transition_duration;
+  return factor * node->transition_duration;
 }
 
 StIconStyle
