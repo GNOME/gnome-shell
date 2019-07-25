@@ -24,16 +24,31 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-var RadialShaderEffect = GObject.registerClass(
-class RadialShaderEffect extends Shell.GLSLEffect {
+var RadialShaderEffect = GObject.registerClass({
+    Properties: {
+        'brightness': GObject.ParamSpec.float(
+            'brightness', 'brightness', 'brightness',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 1
+        ),
+        'sharpness': GObject.ParamSpec.float(
+            'sharpness', 'sharpness', 'sharpness',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0
+        )
+    }
+}, class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {
+        this._brightness = undefined;
+        this._sharpness = undefined;
+
         super._init(params);
 
         this._brightnessLocation = this.get_uniform_location('brightness');
         this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
 
         this.brightness = 1.0;
-        this.vignetteSharpness = 0.0;
+        this.sharpness = 0.0;
     }
 
     vfunc_build_pipeline() {
@@ -46,19 +61,25 @@ class RadialShaderEffect extends Shell.GLSLEffect {
     }
 
     set brightness(v) {
+        if (this._brightness == v)
+            return;
         this._brightness = v;
         this.set_uniform_float(this._brightnessLocation,
                                1, [this._brightness]);
+        this.notify('brightness');
     }
 
-    get vignetteSharpness() {
+    get sharpness() {
         return this._sharpness;
     }
 
-    set vignetteSharpness(v) {
+    set sharpness(v) {
+        if (this._sharpness == v)
+            return;
         this._sharpness = v;
         this.set_uniform_float(this._sharpnessLocation,
                                1, [this._sharpness]);
+        this.notify('sharpness');
     }
 });
 
@@ -159,7 +180,7 @@ var Lightbox = class Lightbox {
             Tweener.removeTweens(effect);
             Tweener.addTween(effect,
                              { brightness: VIGNETTE_BRIGHTNESS,
-                               vignetteSharpness: VIGNETTE_SHARPNESS,
+                               sharpness: VIGNETTE_SHARPNESS,
                                time: fadeInTime / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
@@ -193,7 +214,7 @@ var Lightbox = class Lightbox {
             Tweener.removeTweens(effect);
             Tweener.addTween(effect,
                              { brightness: 1.0,
-                               vignetteSharpness: 0.0,
+                               sharpness: 0.0,
                                opacity: 0,
                                time: fadeOutTime / 1000,
                                transition: 'easeOutQuad',

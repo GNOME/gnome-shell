@@ -26,11 +26,21 @@ var SlideDirection = {
     RIGHT: 1
 };
 
-var SlideLayout = GObject.registerClass(
-class SlideLayout extends Clutter.FixedLayout {
+var SlideLayout = GObject.registerClass({
+    Properties: {
+        'slide-x': GObject.ParamSpec.double(
+            'slide-x', 'slide-x', 'slide-x',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 1),
+        'translation-x': GObject.ParamSpec.double(
+            'translation-x', 'translation-x', 'translation-x',
+            GObject.ParamFlags.READWRITE,
+            -Infinity, Infinity, 0)
+    }
+}, class SlideLayout extends Clutter.FixedLayout {
     _init(params) {
         this._slideX = 1;
-        this._translationX = undefined;
+        this._translationX = 0;
         this._direction = SlideDirection.LEFT;
 
         super._init(params);
@@ -70,12 +80,17 @@ class SlideLayout extends Clutter.FixedLayout {
         child.allocate(actorBox, flags);
     }
 
-    set slideX(value) {
+    // eslint-disable-next-line camelcase
+    set slide_x(value) {
+        if (this._slideX == value)
+            return;
         this._slideX = value;
+        this.notify('slide-x');
         this.layout_changed();
     }
 
-    get slideX() {
+    // eslint-disable-next-line camelcase
+    get slide_x() {
         return this._slideX;
     }
 
@@ -88,12 +103,17 @@ class SlideLayout extends Clutter.FixedLayout {
         return this._direction;
     }
 
-    set translationX(value) {
+    // eslint-disable-next-line camelcase
+    set translation_x(value) {
+        if (this._translationX == value)
+            return;
         this._translationX = value;
+        this.notify('translation-x');
         this.layout_changed();
     }
 
-    get translationX() {
+    // eslint-disable-next-line camelcase
+    get translation_x() {
         return this._translationX;
     }
 });
@@ -127,7 +147,7 @@ var SlidingControl = class {
     }
 
     _updateSlide() {
-        Tweener.addTween(this.layout, { slideX: this._getSlide(),
+        Tweener.addTween(this.layout, { slide_x: this._getSlide(),
                                         time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
                                         transition: 'easeOutQuad' });
     }
@@ -161,11 +181,11 @@ var SlidingControl = class {
             translationEnd = translation;
         }
 
-        if (this.layout.translationX == translationEnd)
+        if (this.layout.translation_x == translationEnd)
             return;
 
-        this.layout.translationX = translationStart;
-        Tweener.addTween(this.layout, { translationX: translationEnd,
+        this.layout.translation_x = translationStart;
+        Tweener.addTween(this.layout, { translation_x: translationEnd,
                                         time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
                                         transition: 'easeOutQuad' });
     }
@@ -213,13 +233,13 @@ var SlidingControl = class {
 
     slideIn() {
         this._visible = true;
-        // we will update slideX and the translation from pageEmpty
+        // we will update slide_x and the translation from pageEmpty
     }
 
     slideOut() {
         this._visible = false;
         this._updateTranslation();
-        // we will update slideX from pageEmpty
+        // we will update slide_x from pageEmpty
     }
 
     pageEmpty() {
@@ -227,7 +247,7 @@ var SlidingControl = class {
         // selector; this means we can now safely set the full slide for
         // the next page, since slideIn or slideOut might have been called,
         // changing the visiblity
-        this.layout.slideX = this._getSlide();
+        this.layout.slide_x = this._getSlide();
         this._updateTranslation();
     }
 };

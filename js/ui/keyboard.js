@@ -571,6 +571,12 @@ var FocusTracker = class {
 Signals.addSignalMethods(FocusTracker.prototype);
 
 var EmojiPager = GObject.registerClass({
+    Properties: {
+        'delta': GObject.ParamSpec.int(
+            'delta', 'delta', 'delta',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT32, 0)
+    },
     Signals: {
         'emoji': { param_types: [GObject.TYPE_STRING] },
         'page-changed': {
@@ -619,7 +625,11 @@ var EmojiPager = GObject.registerClass({
         else if (value < -this._width)
             value = -this._width;
 
+        if (this._delta == value)
+            return;
+
         this._delta = value;
+        this.notify('delta');
 
         if (value == 0)
             return;
