@@ -8,7 +8,6 @@ const Signals = imports.signals;
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 
@@ -1072,15 +1071,6 @@ var ThumbnailsBox = GObject.registerClass({
         }
     }
 
-    _tweenScale() {
-        Tweener.addTween(this,
-                         { scale: this._targetScale,
-                           time: RESCALE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: this._queueUpdateStates,
-                           onCompleteScope: this });
-    }
-
     _updateStates() {
         this._stateUpdateQueued = false;
 
@@ -1092,15 +1082,14 @@ var ThumbnailsBox = GObject.registerClass({
         this._iterateStateThumbnails(ThumbnailState.REMOVING, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_OUT);
 
-            Tweener.addTween(thumbnail,
-                             { slide_position: 1,
-                               time: SLIDE_ANIMATION_TIME / 1000,
-                               transition: 'linear',
-                               onComplete: () => {
-                                   this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
-                                   this._queueUpdateStates();
-                               }
-                             });
+            thumbnail.ease_property('slide-position', 1, {
+                duration: SLIDE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+                onComplete: () => {
+                    this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
+                    this._queueUpdateStates();
+                }
+            });
         });
 
         // As long as things are sliding out, don't proceed
@@ -1110,25 +1099,28 @@ var ThumbnailsBox = GObject.registerClass({
         // Once that's complete, we can start scaling to the new size and collapse any removed thumbnails
         this._iterateStateThumbnails(ThumbnailState.ANIMATED_OUT, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
-            Tweener.addTween(thumbnail,
-                             { collapse_fraction: 1,
-                               time: RESCALE_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this._stateCounts[thumbnail.state]--;
-                                   thumbnail.state = ThumbnailState.DESTROYED;
+            thumbnail.ease_property('collapse-fraction', 1, {
+                duration: RESCALE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._stateCounts[thumbnail.state]--;
+                    thumbnail.state = ThumbnailState.DESTROYED;
 
-                                   let index = this._thumbnails.indexOf(thumbnail);
-                                   this._thumbnails.splice(index, 1);
-                                   thumbnail.destroy();
+                    let index = this._thumbnails.indexOf(thumbnail);
+                    this._thumbnails.splice(index, 1);
+                    thumbnail.destroy();
 
-                                   this._queueUpdateStates();
-                               }
-                             });
+                    this._queueUpdateStates();
+                }
+            });
         });
 
         if (this._pendingScaleUpdate) {
-            this._tweenScale();
+            this.ease_property('scale', this._targetScale, {
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: RESCALE_ANIMATION_TIME,
+                onComplete: () => this._queueUpdateStates()
+            });
             this._pendingScaleUpdate = false;
         }
 
@@ -1139,14 +1131,13 @@ var ThumbnailsBox = GObject.registerClass({
         // And then slide in any new thumbnails
         this._iterateStateThumbnails(ThumbnailState.NEW, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
-            Tweener.addTween(thumbnail,
-                             { slide_position: 0,
-                               time: SLIDE_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
-                               }
-                             });
+            thumbnail.ease_property('slide-position', 0, {
+                duration: SLIDE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
+                }
+            });
         });
     }
 
@@ -1363,14 +1354,13 @@ var ThumbnailsBox = GObject.registerClass({
         let indicatorThemeNode = this._indicator.get_theme_node();
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
         this.indicator_y = this._indicator.allocation.y1 + indicatorTopFullBorder;
-        Tweener.addTween(this,
-                         { indicator_y: thumbnail.allocation.y1,
-                           time: WorkspacesView.WORKSPACE_SWITCH_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._animatingIndicator = false;
-                               this._queueUpdateStates();
-                           }
-                         });
+        this.ease_property('indicator-y', thumbnail.allocation.y1, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: WorkspacesView.WORKSPACE_SWITCH_TIME,
+            onComplete: () => {
+                this._animatingIndicator = false;
+                this._queueUpdateStates();
+            }
+        });
     }
 });

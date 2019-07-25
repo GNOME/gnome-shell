@@ -6,7 +6,6 @@ const { Clutter, GObject, Meta, St } = imports.gi;
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
@@ -147,9 +146,10 @@ var SlidingControl = class {
     }
 
     _updateSlide() {
-        Tweener.addTween(this.layout, { slide_x: this._getSlide(),
-                                        time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
-                                        transition: 'easeOutQuad' });
+        this.actor.ease_property('@layout.slide-x', this._getSlide(), {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+        });
     }
 
     getVisibleWidth() {
@@ -185,9 +185,10 @@ var SlidingControl = class {
             return;
 
         this.layout.translation_x = translationStart;
-        Tweener.addTween(this.layout, { translation_x: translationEnd,
-                                        time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
-                                        transition: 'easeOutQuad' });
+        this.actor.ease_property('@layout.translation-x', translationEnd, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+        });
     }
 
     _onOverviewHiding() {
