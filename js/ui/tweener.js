@@ -211,8 +211,9 @@ var ClutterFrameTicker = class {
     }
 
     start() {
-        if (St.get_slow_down_factor() > 0)
-            Tweener.setTimeScale(1 / St.get_slow_down_factor());
+        let settings = St.Settings.get();
+        if (settings.slow_down_factor > 0)
+            Tweener.setTimeScale(1 / settings.slow_down_factor);
         this._timeline.start();
         global.begin_work();
     }
