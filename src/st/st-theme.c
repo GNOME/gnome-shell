@@ -136,7 +136,7 @@ st_theme_class_init (StThemeClass *klass)
                                                         "Application Stylesheet",
                                                         "Stylesheet with application-specific styling",
                                                         G_TYPE_FILE,
-                                                        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                                                        ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
   /**
    * StTheme:theme-stylesheet:
@@ -150,7 +150,7 @@ st_theme_class_init (StThemeClass *klass)
                                                         "Theme Stylesheet",
                                                         "Stylesheet with theme-specific styling",
                                                         G_TYPE_FILE,
-                                                        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                                                        ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
   /**
    * StTheme:default-stylesheet:
@@ -164,7 +164,7 @@ st_theme_class_init (StThemeClass *klass)
                                                         "Default Stylesheet",
                                                         "Stylesheet with global default styling",
                                                         G_TYPE_FILE,
-                                                        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                                                        ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
   signals[STYLESHEETS_CHANGED] =
     g_signal_new ("custom-stylesheets-changed",
