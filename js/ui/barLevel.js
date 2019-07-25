@@ -1,37 +1,48 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported BarLevel */
 
-const { Atk, Clutter, St } = imports.gi;
-const Signals = imports.signals;
+const { Atk, Clutter, GObject, St } = imports.gi;
 
-var BarLevel = class {
-    constructor(value, params = {}) {
-        if (isNaN(value))
-            // Avoid spreading NaNs around
-            throw TypeError('The bar level value must be a number');
+var BarLevel = GObject.registerClass({
+    Properties: {
+        'value': GObject.ParamSpec.double(
+            'value', 'value', 'value',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+        'maximum-value': GObject.ParamSpec.double(
+            'maximum-value', 'maximum-value', 'maximum-value',
+            GObject.ParamFlags.READWRITE,
+            1, 2, 1),
+        'overdrive-start': GObject.ParamSpec.double(
+            'overdrive-start', 'overdrive-start', 'overdrive-start',
+            GObject.ParamFlags.READWRITE,
+            1, 2, 1)
+    }
+}, class BarLevel extends St.DrawingArea {
+    _init(params) {
         this._maxValue = 1;
-        this._value = Math.max(Math.min(value, this._maxValue), 0);
+        this._value = 0;
         this._overdriveStart = 1;
         this._barLevelWidth = 0;
 
-        this.actor = new St.DrawingArea({ styleClass: params['styleClass'] || 'barlevel',
-                                          can_focus: params['canFocus'] || false,
-                                          reactive: params['reactive'] || false,
-                                          accessible_role: params['accessibleRole'] || Atk.Role.LEVEL_BAR });
-        this.actor.connect('repaint', this._barLevelRepaint.bind(this));
-        this.actor.connect('allocation-changed', (actor, box) => {
+        let defaultParams = {
+            style_class: 'barlevel',
+            accessible_role: Atk.Role.LEVEL_BAR
+        };
+        super._init(Object.assign(defaultParams, params));
+        this.connect('allocation-changed', (actor, box) => {
             this._barLevelWidth = box.get_width();
         });
 
-        this._customAccessible = St.GenericAccessible.new_for_actor(this.actor);
-        this.actor.set_accessible(this._customAccessible);
+        this._customAccessible = St.GenericAccessible.new_for_actor(this);
+        this.set_accessible(this._customAccessible);
 
         this._customAccessible.connect('get-current-value', this._getCurrentValue.bind(this));
         this._customAccessible.connect('get-minimum-value', this._getMinimumValue.bind(this));
         this._customAccessible.connect('get-maximum-value', this._getMaximumValue.bind(this));
         this._customAccessible.connect('set-current-value', this._setCurrentValue.bind(this));
 
-        this.connect('value-changed', this._valueChanged.bind(this));
+        this.connect('notify::value', this._valueChanged.bind(this));
     }
 
     get value() {
@@ -39,16 +50,15 @@ var BarLevel = class {
     }
 
     set value(value) {
-        if (isNaN(value))
-            throw TypeError('The bar level value must be a number');
-
         value = Math.max(Math.min(value, this._maxValue), 0);
 
         if (this._value == value)
             return;
 
         this._value = value;
-        this.actor.queue_repaint();
+        this._value = value;
+        this.notify('value');
+        this.queue_repaint();
     }
 
     // eslint-disable-next-line camelcase
@@ -58,9 +68,6 @@ var BarLevel = class {
 
     // eslint-disable-next-line camelcase
     set maximum_value(value) {
-        if (isNaN(value))
-            throw TypeError('The bar level max value must be a number');
-
         value = Math.max(value, 1);
 
         if (this._maxValue == value)
@@ -68,7 +75,8 @@ var BarLevel = class {
 
         this._maxValue = value;
         this._overdriveStart = Math.min(this._overdriveStart, this._maxValue);
-        this.actor.queue_repaint();
+        this.notify('maximum-value');
+        this.queue_repaint();
     }
 
     // eslint-disable-next-line camelcase
@@ -78,9 +86,6 @@ var BarLevel = class {
 
     // eslint-disable-next-line camelcase
     set overdrive_start(value) {
-        if (isNaN(value))
-            throw TypeError('The overdrive limit value must be a number');
-
         if (this._overdriveStart == value)
             return;
 
@@ -89,13 +94,14 @@ var BarLevel = class {
                 `which is a number greater than the maximum allowed value ${this._maxValue}`);
 
         this._overdriveStart = value;
-        this.actor.queue_repaint();
+        this.notify('overdrive-start');
+        this.queue_repaint();
     }
 
-    _barLevelRepaint(area) {
-        let cr = area.get_context();
-        let themeNode = area.get_theme_node();
-        let [width, height] = area.get_surface_size();
+    vfunc_repaint() {
+        let cr = this.get_context();
+        let themeNode = this.get_theme_node();
+        let [width, height] = this.get_surface_size();
 
         let barLevelHeight = themeNode.get_length('-barlevel-height');
         let barLevelBorderRadius = Math.min(width, barLevelHeight) / 2;
@@ -225,5 +231,4 @@ var BarLevel = class {
     _valueChanged() {
         this._customAccessible.notify("accessible-value");
     }
-};
-Signals.addSignalMethods(BarLevel.prototype);
+});
