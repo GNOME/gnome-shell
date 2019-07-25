@@ -815,7 +815,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                                         "StScrollBar",
                                                         "Horizontal scroll indicator",
                                                         ST_TYPE_SCROLL_BAR,
-                                                        G_PARAM_READABLE));
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class,
                                    PROP_VSCROLL,
@@ -823,7 +823,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                                         "StScrollBar",
                                                         "Vertical scroll indicator",
                                                         ST_TYPE_SCROLL_BAR,
-                                                        G_PARAM_READABLE));
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 
   pspec = g_param_spec_enum ("vscrollbar-policy",
@@ -831,7 +831,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                              "When the vertical scrollbar is displayed",
                              ST_TYPE_POLICY_TYPE,
                              ST_POLICY_AUTOMATIC,
-                             G_PARAM_READWRITE);
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_VSCROLLBAR_POLICY, pspec);
 
   pspec = g_param_spec_enum ("hscrollbar-policy",
@@ -839,28 +839,28 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                              "When the horizontal scrollbar is displayed",
                              ST_TYPE_POLICY_TYPE,
                              ST_POLICY_AUTOMATIC,
-                             G_PARAM_READWRITE);
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_HSCROLLBAR_POLICY, pspec);
 
   pspec = g_param_spec_boolean ("hscrollbar-visible",
                                 "Horizontal Scrollbar Visibility",
                                 "Whether the horizontal scrollbar is visible",
                                 TRUE,
-                                G_PARAM_READABLE);
+                                G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_HSCROLLBAR_VISIBLE, pspec);
 
   pspec = g_param_spec_boolean ("vscrollbar-visible",
                                 "Vertical Scrollbar Visibility",
                                 "Whether the vertical scrollbar is visible",
                                 TRUE,
-                                G_PARAM_READABLE);
+                                G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, PROP_VSCROLLBAR_VISIBLE, pspec);
 
   pspec = g_param_spec_boolean ("enable-mouse-scrolling",
                                 "Enable Mouse Scrolling",
                                 "Enable automatic mouse wheel scrolling",
                                 TRUE,
-                                G_PARAM_READWRITE);
+                                G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class,
                                    PROP_MOUSE_SCROLL,
                                    pspec);
@@ -869,7 +869,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                 "Use Overlay Scrollbars",
                                 "Overlay scrollbars over the content",
                                 FALSE,
-                                G_PARAM_READWRITE);
+                                G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class,
                                    PROP_OVERLAY_SCROLLBARS,
                                    pspec);

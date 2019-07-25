@@ -937,28 +937,29 @@ st_entry_class_init (StEntryClass *klass)
 			       "Clutter Text",
 			       "Internal ClutterText actor",
 			       CLUTTER_TYPE_TEXT,
-			       G_PARAM_READABLE);
+			       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
 
   pspec = g_param_spec_object ("primary-icon",
 			       "Primary Icon",
 			       "Primary Icon actor",
 			       CLUTTER_TYPE_ACTOR,
-			       G_PARAM_READWRITE);
+			       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_PRIMARY_ICON, pspec);
 
   pspec = g_param_spec_object ("secondary-icon",
 			       "Secondary Icon",
 			       "Secondary Icon actor",
 			       CLUTTER_TYPE_ACTOR,
-			       G_PARAM_READWRITE);
+			       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_SECONDARY_ICON, pspec);
 
   pspec = g_param_spec_string ("hint-text",
                                "Hint Text",
                                "Text to display when the entry is not focused "
                                "and the text property is empty",
-                               NULL, G_PARAM_READWRITE);
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_HINT_TEXT, pspec);
 
   pspec = g_param_spec_object ("hint-actor",
@@ -966,13 +967,14 @@ st_entry_class_init (StEntryClass *klass)
                                "An actor to display when the entry is not focused "
                                "and the text property is empty",
                                CLUTTER_TYPE_ACTOR,
-                               G_PARAM_READWRITE);
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_HINT_ACTOR, pspec);
 
   pspec = g_param_spec_string ("text",
                                "Text",
                                "Text of the entry",
-                               NULL, G_PARAM_READWRITE);
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
   pspec = g_param_spec_enum ("input-purpose",
