@@ -32,7 +32,7 @@ var LevelBar = class extends BarLevel.BarLevel {
     set level(value) {
         this._level = Math.max(0, Math.min(value, this._maxLevel));
 
-        this.setValue(this._level / 100);
+        this.value = this._level / 100;
     }
 
     get maxLevel() {
@@ -42,7 +42,7 @@ var LevelBar = class extends BarLevel.BarLevel {
     set maxLevel(value) {
         this._maxLevel = Math.max(100, value);
 
-        this.setMaximumValue(this._maxLevel / 100);
+        this.maximum_level = this._maxLevel / 100;
     }
 };
 
