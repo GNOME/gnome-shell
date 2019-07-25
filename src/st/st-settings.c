@@ -23,6 +23,7 @@
 
 #include <gio/gio.h>
 
+#include "st-private.h"
 #include "st-settings.h"
 
 #define KEY_ENABLE_ANIMATIONS "enable-animations"
@@ -130,32 +131,32 @@ st_settings_class_init (StSettingsClass *klass)
                                                         "Enable animations",
                                                         "Enable animations",
                                                         TRUE,
-                                                        G_PARAM_READABLE);
+                                                        ST_PARAM_READABLE);
   props[PROP_PRIMARY_PASTE] = g_param_spec_boolean ("primary-paste",
                                                     "Primary paste",
                                                     "Primary paste",
                                                     TRUE,
-                                                    G_PARAM_READABLE);
+                                                    ST_PARAM_READABLE);
   props[PROP_DRAG_THRESHOLD] = g_param_spec_int ("drag-threshold",
                                                  "Drag threshold",
                                                  "Drag threshold",
                                                  0, G_MAXINT, 8,
-                                                 G_PARAM_READABLE);
+                                                 ST_PARAM_READABLE);
   props[PROP_GTK_THEME] = g_param_spec_string ("gtk-theme",
                                                "GTK+ Theme",
                                                "GTK+ Theme",
                                                "",
-                                               G_PARAM_READABLE);
+                                               ST_PARAM_READABLE);
   props[PROP_GTK_ICON_THEME] = g_param_spec_string ("gtk-icon-theme",
                                                     "GTK+ Icon Theme",
                                                     "GTK+ Icon Theme",
                                                     "",
-                                                    G_PARAM_READABLE);
+                                                    ST_PARAM_READABLE);
   props[PROP_MAGNIFIER_ACTIVE] = g_param_spec_boolean("magnifier-active",
                                                       "Magnifier is active",
                                                       "Weather the a11y magnifier is active",
                                                       FALSE,
-                                                      G_PARAM_READABLE);
+                                                      ST_PARAM_READABLE);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }

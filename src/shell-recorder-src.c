@@ -321,14 +321,14 @@ shell_recorder_src_class_init (ShellRecorderSrcClass *klass)
 						       "Caps",
 						       "Fixed GstCaps for the source",
 						       GST_TYPE_CAPS,
-						       G_PARAM_READWRITE));
+						       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (object_class,
                                    PROP_MEMORY_USED,
                                    g_param_spec_uint ("memory-used",
 						     "Memory Used",
 						     "Memory currently used by the queue (in kB)",
 						      0, G_MAXUINT, 0,
-						      G_PARAM_READABLE));
+						      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   gst_element_class_add_pad_template (element_class,
 				      gst_static_pad_template_get (&src_template));
 

@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include "st-private.h"
 #include "st-texture-cache.h"
 #include "st-theme.h"
 #include "st-theme-context.h"
@@ -114,7 +115,7 @@ st_theme_context_class_init (StThemeContextClass *klass)
                                                      "Scale factor",
                                                      "Integer scale factor used for high dpi scaling",
                                                      0, G_MAXINT, 1,
-                                                     G_PARAM_READABLE | G_PARAM_WRITABLE));
+                                                     ST_PARAM_READWRITE));
 
   signals[CHANGED] =
     g_signal_new ("changed",
