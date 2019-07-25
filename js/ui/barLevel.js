@@ -89,7 +89,6 @@ var BarLevel = class {
                 `which is a number greater than the maximum allowed value ${this._maxValue}`);
 
         this._overdriveStart = value;
-        this._value = Math.max(Math.min(value, this._maxValue), 0);
         this.actor.queue_repaint();
     }
 
