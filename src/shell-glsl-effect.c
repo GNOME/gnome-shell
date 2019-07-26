@@ -1,10 +1,10 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /**
- * SECTION:shell-glsl-quad
+ * SECTION:shell-glsl-effect
  * @short_description: Draw a rectangle using GLSL
  *
- * A #ShellGLSLQuad draws one single rectangle, sized to the allocation
+ * A #ShellGLSLEffect draws one single rectangle, sized to the allocation
  * box, but allows running custom GLSL to the vertex and fragment
  * stages of the graphic pipeline.
  *
@@ -16,30 +16,30 @@
 #include <cogl/cogl.h>
 #include "shell-glsl-effect.h"
 
-typedef struct _ShellGLSLQuadPrivate ShellGLSLQuadPrivate;
-struct _ShellGLSLQuadPrivate
+typedef struct _ShellGLSLEffectPrivate ShellGLSLEffectPrivate;
+struct _ShellGLSLEffectPrivate
 {
   CoglPipeline  *pipeline;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLQuad, shell_glsl_quad, CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_ACTOR);
 
 static gboolean
-shell_glsl_quad_get_paint_volume (ClutterActor       *actor,
-                                  ClutterPaintVolume *volume)
+shell_glsl_effect_get_paint_volume (ClutterActor       *actor,
+                                    ClutterPaintVolume *volume)
 {
   return clutter_paint_volume_set_from_allocation (volume, actor);
 }
 
 static void
-shell_glsl_quad_paint (ClutterActor *actor)
+shell_glsl_effect_paint (ClutterActor *actor)
 {
-  ShellGLSLQuad *self = SHELL_GLSL_QUAD (actor);
-  ShellGLSLQuadPrivate *priv;
+  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (actor);
+  ShellGLSLEffectPrivate *priv;
   guint8 paint_opacity;
   ClutterActorBox box;
 
-  priv = shell_glsl_quad_get_instance_private (self);
+  priv = shell_glsl_effect_get_instance_private (self);
 
   paint_opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_allocation_box (actor, &box);
@@ -57,8 +57,8 @@ shell_glsl_quad_paint (ClutterActor *actor)
 
 
 /**
- * shell_glsl_quad_add_glsl_snippet:
- * @quad: a #ShellGLSLQuad
+ * shell_glsl_effect_add_glsl_snippet:
+ * @effect: a #ShellGLSLEffect
  * @hook: where to insert the code
  * @declarations: GLSL declarations
  * @code: GLSL code
@@ -71,13 +71,13 @@ shell_glsl_quad_paint (ClutterActor *actor)
  * function.
  */
 void
-shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
-                                  ShellSnippetHook  hook,
-                                  const char       *declarations,
-                                  const char       *code,
-                                  gboolean          is_replace)
+shell_glsl_effect_add_glsl_snippet (ShellGLSLEffect  *effect,
+                                    ShellSnippetHook  hook,
+                                    const char       *declarations,
+                                    const char       *code,
+                                    gboolean          is_replace)
 {
-  ShellGLSLQuadClass *klass = SHELL_GLSL_QUAD_GET_CLASS (quad);
+  ShellGLSLEffectClass *klass = SHELL_GLSL_EFFECT_GET_CLASS (effect);
   CoglSnippet *snippet;
 
   g_return_if_fail (klass->base_pipeline != NULL);
@@ -102,41 +102,41 @@ shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
 }
 
 static void
-shell_glsl_quad_dispose (GObject *gobject)
+shell_glsl_effect_dispose (GObject *gobject)
 {
-  ShellGLSLQuad *self = SHELL_GLSL_QUAD (gobject);
-  ShellGLSLQuadPrivate *priv;
+  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (gobject);
+  ShellGLSLEffectPrivate *priv;
 
-  priv = shell_glsl_quad_get_instance_private (self);
+  priv = shell_glsl_effect_get_instance_private (self);
 
   g_clear_pointer (&priv->pipeline, cogl_object_unref);
 
-  G_OBJECT_CLASS (shell_glsl_quad_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (shell_glsl_effect_parent_class)->dispose (gobject);
 }
 
 static void
-shell_glsl_quad_init (ShellGLSLQuad *quad)
+shell_glsl_effect_init (ShellGLSLEffect *effect)
 {
 }
 
 static void
-shell_glsl_quad_constructed (GObject *object)
+shell_glsl_effect_constructed (GObject *object)
 {
-  ShellGLSLQuad *self;
-  ShellGLSLQuadClass *klass;
-  ShellGLSLQuadPrivate *priv;
+  ShellGLSLEffect *self;
+  ShellGLSLEffectClass *klass;
+  ShellGLSLEffectPrivate *priv;
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  G_OBJECT_CLASS (shell_glsl_quad_parent_class)->constructed (object);
+  G_OBJECT_CLASS (shell_glsl_effect_parent_class)->constructed (object);
 
   /* Note that, differently from ClutterBlurEffect, we are calling
      this inside constructed, not init, so klass points to the most-derived
-     GTypeClass, not ShellGLSLQuadClass.
+     GTypeClass, not ShellGLSLEffectClass.
   */
-  klass = SHELL_GLSL_QUAD_GET_CLASS (object);
-  self = SHELL_GLSL_QUAD (object);
-  priv = shell_glsl_quad_get_instance_private (self);
+  klass = SHELL_GLSL_EFFECT_GET_CLASS (object);
+  self = SHELL_GLSL_EFFECT (object);
+  priv = shell_glsl_effect_get_instance_private (self);
 
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
@@ -153,50 +153,50 @@ shell_glsl_quad_constructed (GObject *object)
 }
 
 static void
-shell_glsl_quad_class_init (ShellGLSLQuadClass *klass)
+shell_glsl_effect_class_init (ShellGLSLEffectClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->constructed = shell_glsl_quad_constructed;
-  gobject_class->dispose = shell_glsl_quad_dispose;
+  gobject_class->constructed = shell_glsl_effect_constructed;
+  gobject_class->dispose = shell_glsl_effect_dispose;
 
-  actor_class->get_paint_volume = shell_glsl_quad_get_paint_volume;
-  actor_class->paint = shell_glsl_quad_paint;
+  actor_class->get_paint_volume = shell_glsl_effect_get_paint_volume;
+  actor_class->paint = shell_glsl_effect_paint;
 }
 
 /**
- * shell_glsl_quad_get_uniform_location:
- * @quad: a #ShellGLSLQuad
+ * shell_glsl_effect_get_uniform_location:
+ * @effect: a #ShellGLSLEffect
  * @name: the uniform name
  *
  * Returns: the location of the uniform named @name, that can be
- *          passed to shell_glsl_quad_set_uniform_float().
+ *          passed to shell_glsl_effect_set_uniform_float().
  */
 int
-shell_glsl_quad_get_uniform_location (ShellGLSLQuad *quad,
-                                      const char    *name)
+shell_glsl_effect_get_uniform_location (ShellGLSLEffect *effect,
+                                        const char      *name)
 {
-  ShellGLSLQuadPrivate *priv = shell_glsl_quad_get_instance_private (quad);
+  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (effect);
   return cogl_pipeline_get_uniform_location (priv->pipeline, name);
 }
 
 /**
- * shell_glsl_quad_set_uniform_float:
- * @quad: a #ShellGLSLQuad
- * @uniform: the uniform location (as returned by shell_glsl_quad_get_uniform_location())
+ * shell_glsl_effect_set_uniform_float:
+ * @effect: a #ShellGLSLEffect
+ * @uniform: the uniform location (as returned by shell_glsl_effect_get_uniform_location())
  * @n_components: the number of components in the uniform (eg. 3 for a vec3)
  * @total_count: the total number of floats in @value
  * @value: (array length=total_count): the array of floats to set @uniform
  */
 void
-shell_glsl_quad_set_uniform_float (ShellGLSLQuad *quad,
-                                   int            uniform,
-                                   int            n_components,
-                                   int            total_count,
-                                   const float   *value)
+shell_glsl_effect_set_uniform_float (ShellGLSLEffect *effect,
+                                     int              uniform,
+                                     int              n_components,
+                                     int              total_count,
+                                     const float     *value)
 {
-  ShellGLSLQuadPrivate *priv = shell_glsl_quad_get_instance_private (quad);
+  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (effect);
   cogl_pipeline_set_uniform_float (priv->pipeline, uniform,
                                    n_components, total_count / n_components,
                                    value);

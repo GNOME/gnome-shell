@@ -25,7 +25,7 @@ float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
 var RadialShaderQuad = GObject.registerClass(
-class RadialShaderQuad extends Shell.GLSLQuad {
+class RadialShaderQuad extends Shell.GLSLEffect {
     _init(params) {
         super._init(params);
 

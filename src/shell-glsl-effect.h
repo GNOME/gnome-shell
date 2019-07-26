@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_GLSL_QUAD_H__
-#define __SHELL_GLSL_QUAD_H__
+#ifndef __SHELL_GLSL_EFFECT_H__
+#define __SHELL_GLSL_EFFECT_H__
 
 #include "st.h"
 #include <gtk/gtk.h>
@@ -26,31 +26,31 @@ typedef enum {
   SHELL_SNIPPET_HOOK_TEXTURE_LOOKUP
 } ShellSnippetHook;
 
-#define SHELL_TYPE_GLSL_QUAD (shell_glsl_quad_get_type ())
-G_DECLARE_DERIVABLE_TYPE (ShellGLSLQuad, shell_glsl_quad,
-                          SHELL, GLSL_QUAD, ClutterActor)
+#define SHELL_TYPE_GLSL_EFFECT (shell_glsl_effect_get_type ())
+G_DECLARE_DERIVABLE_TYPE (ShellGLSLEffect, shell_glsl_effect,
+                          SHELL, GLSL_EFFECT, ClutterActor)
 
-struct _ShellGLSLQuadClass
+struct _ShellGLSLEffectClass
 {
   ClutterActorClass parent_class;
 
   CoglPipeline *base_pipeline;
 
-  void (*build_pipeline) (ShellGLSLQuad *effect);
+  void (*build_pipeline) (ShellGLSLEffect *effect);
 };
 
-void shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
-                                       ShellSnippetHook  hook,
-                                       const char       *declarations,
-                                       const char       *code,
-                                       gboolean          is_replace);
+void shell_glsl_effect_add_glsl_snippet (ShellGLSLEffect  *effect,
+                                         ShellSnippetHook  hook,
+                                         const char       *declarations,
+                                         const char       *code,
+                                         gboolean          is_replace);
 
-int  shell_glsl_quad_get_uniform_location (ShellGLSLQuad *quad,
-                                           const char    *name);
-void shell_glsl_quad_set_uniform_float    (ShellGLSLQuad *quad,
-                                           int            uniform,
-                                           int            n_components,
-                                           int            total_count,
-                                           const float   *value);
+int  shell_glsl_effect_get_uniform_location (ShellGLSLEffect *effect,
+                                             const char      *name);
+void shell_glsl_effect_set_uniform_float    (ShellGLSLEffect *effect,
+                                             int              uniform,
+                                             int              n_components,
+                                             int              total_count,
+                                             const float     *value);
 
-#endif /* __SHELL_GLSL_QUAD_H__ */
+#endif /* __SHELL_GLSL_EFFECT_H__ */
