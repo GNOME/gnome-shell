@@ -113,6 +113,7 @@ enum
 {
  NOTIFY_ERROR,
  LOCATE_POINTER,
+ CLOSING,
  LAST_SIGNAL
 };
 
@@ -351,6 +352,7 @@ shell_global_init (ShellGlobal *global)
 static void
 destroy_gjs_context (GjsContext *context)
 {
+  g_signal_emit (the_object, shell_global_signals[CLOSING], 0);
   g_object_run_dispose (G_OBJECT (context));
   g_object_unref (context);
 }
@@ -359,6 +361,7 @@ static void
 shell_global_dispose (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
+
 
   g_clear_handle_id (&global->restart_idle, g_source_remove);
   g_clear_handle_id (&global->quit_idle, g_source_remove);
@@ -411,6 +414,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_STRING);
   shell_global_signals[LOCATE_POINTER] =
       g_signal_new ("locate-pointer",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
+  shell_global_signals[CLOSING] =
+      g_signal_new ("closing",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
