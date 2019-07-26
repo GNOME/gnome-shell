@@ -554,7 +554,7 @@ shell_global_class_init (ShellGlobalClass *klass)
  *
  * Return value: (transfer none): the singleton #ShellGlobal object
  */
-ShellGlobal *
+ShellGlobalSingleton *
 _shell_global_init (const char *first_property_name,
                     ...)
 {

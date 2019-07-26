@@ -362,7 +362,7 @@ list_modes (const char  *option_name,
             gpointer     data,
             GError     **error)
 {
-  ShellGlobal *global;
+  ShellGlobalSingleton *global;
   GjsContext *context;
   const char *script;
   int status;
@@ -432,9 +432,9 @@ GOptionEntry gnome_shell_options[] = {
 int
 main (int argc, char **argv)
 {
+  g_autoptr (ShellGlobalSingleton) global = NULL;
   GOptionContext *ctx;
   GError *error = NULL;
-  ShellGlobal *global;
   int ecode;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -499,7 +499,6 @@ main (int argc, char **argv)
 
   ecode = meta_run ();
   g_debug ("Doing final cleanup");
-  _shell_global_destroy (global);
 
   return ecode;
 }
