@@ -28,11 +28,11 @@ typedef enum {
 
 #define SHELL_TYPE_GLSL_EFFECT (shell_glsl_effect_get_type ())
 G_DECLARE_DERIVABLE_TYPE (ShellGLSLEffect, shell_glsl_effect,
-                          SHELL, GLSL_EFFECT, ClutterActor)
+                          SHELL, GLSL_EFFECT, ClutterOffscreenEffect)
 
 struct _ShellGLSLEffectClass
 {
-  ClutterActorClass parent_class;
+  ClutterOffscreenEffectClass parent_class;
 
   CoglPipeline *base_pipeline;
 

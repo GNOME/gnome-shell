@@ -2,13 +2,11 @@
 
 /**
  * SECTION:shell-glsl-effect
- * @short_description: Draw a rectangle using GLSL
+ * @short_description: An offscreen effect using GLSL
  *
- * A #ShellGLSLEffect draws one single rectangle, sized to the allocation
- * box, but allows running custom GLSL to the vertex and fragment
- * stages of the graphic pipeline.
- *
- * To ease writing the shader, a single texture layer is also used.
+ * A #ShellGLSLEffect is a #ClutterOffscreenEffect that allows
+ * running custom GLSL to the vertex and fragment stages of the
+ * graphic pipeline.
  */
 
 #include "config.h"
@@ -20,29 +18,65 @@ typedef struct _ShellGLSLEffectPrivate ShellGLSLEffectPrivate;
 struct _ShellGLSLEffectPrivate
 {
   CoglPipeline  *pipeline;
+
+  gint tex_width;
+  gint tex_height;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static gboolean
-shell_glsl_effect_get_paint_volume (ClutterActor       *actor,
-                                    ClutterPaintVolume *volume)
+shell_glsl_effect_pre_paint (ClutterEffect *effect)
 {
-  return clutter_paint_volume_set_from_allocation (volume, actor);
+  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
+  ClutterOffscreenEffect *offscreen_effect = CLUTTER_OFFSCREEN_EFFECT (effect);
+  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (self);
+  ClutterEffectClass *parent_class;
+  CoglHandle texture;
+  gboolean success;
+
+  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
+    return FALSE;
+
+  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    {
+      /* if we don't have support for GLSL shaders then we
+       * forcibly disable the ActorMeta
+       */
+      g_warning ("Unable to use the ShaderEffect: the graphics hardware "
+                 "or the current GL driver does not implement support "
+                 "for the GLSL shading language.");
+      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
+      return FALSE;
+    }
+
+  parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
+  success = parent_class->pre_paint (effect);
+
+  if (!success)
+    return FALSE;
+
+  texture = clutter_offscreen_effect_get_texture (offscreen_effect);
+  priv->tex_width = cogl_texture_get_width (texture);
+  priv->tex_height = cogl_texture_get_height (texture);
+
+  cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
+
+  return TRUE;
 }
 
 static void
-shell_glsl_effect_paint (ClutterActor *actor)
+shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect)
 {
-  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (actor);
+  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
   ShellGLSLEffectPrivate *priv;
+  ClutterActor *actor;
   guint8 paint_opacity;
-  ClutterActorBox box;
 
   priv = shell_glsl_effect_get_instance_private (self);
 
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
   paint_opacity = clutter_actor_get_paint_opacity (actor);
-  clutter_actor_get_allocation_box (actor, &box);
 
   cogl_pipeline_set_color4ub (priv->pipeline,
                               paint_opacity,
@@ -51,8 +85,8 @@ shell_glsl_effect_paint (ClutterActor *actor)
                               paint_opacity);
   cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
                                    priv->pipeline,
-                                   box.x1, box.y1,
-                                   box.x2, box.y2);
+                                   0, 0,
+                                   priv->tex_width, priv->tex_height);
 }
 
 
@@ -64,7 +98,7 @@ shell_glsl_effect_paint (ClutterActor *actor)
  * @code: GLSL code
  * @is_replace: wheter Cogl code should be replaced by the custom shader
  *
- * Adds a GLSL snippet to the pipeline used for drawing the actor texture.
+ * Adds a GLSL snippet to the pipeline used for drawing the effect texture.
  * See #CoglSnippet for details.
  *
  * This is only valid inside the a call to the build_pipeline() virtual
@@ -149,20 +183,23 @@ shell_glsl_effect_constructed (GObject *object)
 
   priv->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
-  cogl_pipeline_set_layer_null_texture (priv->pipeline, 0);
+  cogl_pipeline_set_layer_null_texture (klass->base_pipeline, 0);
 }
 
 static void
 shell_glsl_effect_class_init (ShellGLSLEffectClass *klass)
 {
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterOffscreenEffectClass *offscreen_class;
+
+  offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
+  offscreen_class->paint_target = shell_glsl_effect_paint_target;
+
+  effect_class->pre_paint = shell_glsl_effect_pre_paint;
 
   gobject_class->constructed = shell_glsl_effect_constructed;
   gobject_class->dispose = shell_glsl_effect_dispose;
-
-  actor_class->get_paint_volume = shell_glsl_effect_get_paint_volume;
-  actor_class->paint = shell_glsl_effect_paint;
 }
 
 /**
