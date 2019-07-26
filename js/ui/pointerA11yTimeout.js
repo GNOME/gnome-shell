@@ -17,6 +17,8 @@ class PieTimer extends St.DrawingArea {
             can_focus: false,
             reactive: false
         });
+
+        this.connect('notify::opacity', this.queue_repaint.bind(this));
     }
 
     vfunc_repaint() {
@@ -69,7 +71,6 @@ class PieTimer extends St.DrawingArea {
                          { opacity: 255,
                            time: duration / 1000,
                            transition: 'easeOutQuad',
-                           onUpdate: () => this.queue_repaint(),
                            onComplete: () => this.stop()
                           });
     }
