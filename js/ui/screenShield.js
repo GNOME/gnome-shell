@@ -5,7 +5,6 @@ const { AccountsService, Clutter, Cogl, Gio, GLib,
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
-const TweenerEquations = imports.tweener.equations;
 
 const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
@@ -736,14 +735,16 @@ var ScreenShield = class {
         for (let i = 0; i < arrows.length; i++) {
             arrows[i].opacity = 0;
             Tweener.addTween(arrows[i],
-                             { opacity: 0,
+                             { opacity: maxOpacity,
                                delay: (unitaryDelay * (N_ARROWS - (i + 1))) / 1000,
-                               time: ARROW_ANIMATION_TIME / 1000,
-                               transition(t, b, c, d) {
-                                   if (t < d / 2)
-                                       return TweenerEquations.easeOutQuad(t, 0, maxOpacity, d / 2);
-                                   else
-                                       return TweenerEquations.easeInQuad(t - d / 2, maxOpacity, -maxOpacity, d / 2);
+                               time: ARROW_ANIMATION_TIME / (2 * 1000),
+                               transition: 'easeOutQuad',
+                               onComplete: () => {
+                                   Tweener.addTween(arrors[i], {
+                                       opacity: 0,
+                                       time: ARROW_ANIMATION_TIME / (2 * 1000),
+                                       transition: 'easeInQuad'
+                                   });
                                }
                              });
         }
