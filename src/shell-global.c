@@ -1123,14 +1123,14 @@ pre_exec_close_fds(void)
 void 
 shell_global_reexec_self (ShellGlobal *global)
 {
-  GPtrArray *arr;
+  g_autoptr (GPtrArray) arr = NULL;
   gsize len;
 
 #if defined __linux__ || defined __sun
-  char *buf;
+  g_autofree char *buf = NULL;
+  g_autoptr (GError) error = NULL;
   char *buf_p;
   char *buf_end;
-  GError *error = NULL;
 
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
@@ -1146,7 +1146,8 @@ shell_global_reexec_self (ShellGlobal *global)
 
   g_ptr_array_add (arr, NULL);
 #elif defined __OpenBSD__
-  gchar **args, **args_p;
+  g_autoptr char **args = NULL;
+  gchar **args_p;
   gint mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
 
   if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
@@ -1156,7 +1157,6 @@ shell_global_reexec_self (ShellGlobal *global)
 
   if (sysctl (mib, G_N_ELEMENTS (mib), args, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    g_free (args);
     return;
   }
 
@@ -1167,7 +1167,7 @@ shell_global_reexec_self (ShellGlobal *global)
 
   g_ptr_array_add (arr, NULL);
 #elif defined __FreeBSD__
-  char *buf;
+  g_autoptr char *buf = NULL;
   char *buf_p;
   char *buf_end;
   gint mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_ARGS, getpid() };
@@ -1179,7 +1179,6 @@ shell_global_reexec_self (ShellGlobal *global)
 
   if (sysctl (mib, G_N_ELEMENTS (mib), buf, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    g_free (buf);
     return;
   }
 
@@ -1206,12 +1205,6 @@ shell_global_reexec_self (ShellGlobal *global)
 
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
-  g_ptr_array_free (arr, TRUE);
-#if defined __linux__ || defined __FreeBSD__
-  g_free (buf);
-#elif defined __OpenBSD__
-  g_free (args);
-#endif
 }
 
 /**
