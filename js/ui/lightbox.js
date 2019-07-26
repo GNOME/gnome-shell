@@ -24,8 +24,8 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-var RadialShaderQuad = GObject.registerClass(
-class RadialShaderQuad extends Shell.GLSLEffect {
+var RadialShaderEffect = GObject.registerClass(
+class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {
         super._init(params);
 
@@ -99,12 +99,13 @@ var Lightbox = class Lightbox {
         this._children = container.get_children();
         this._fadeFactor = params.fadeFactor;
         this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && params.radialEffect;
+
+        this.actor = new St.Bin({ reactive: params.inhibitEvents });
+
         if (this._radialEffect)
-            this.actor = new RadialShaderQuad({ reactive: params.inhibitEvents });
+            this.actor.add_effect(new RadialShaderEffect({ name: 'radial' }));
         else
-            this.actor = new St.Bin({ opacity: 0,
-                                      style_class: 'lightbox',
-                                      reactive: params.inhibitEvents });
+            this.actor.set({ opacity: 0, style_class: 'lightbox' });
 
         container.add_actor(this.actor);
         this.actor.raise_top();
@@ -155,7 +156,7 @@ var Lightbox = class Lightbox {
 
         Tweener.removeTweens(this.actor);
         if (this._radialEffect) {
-            Tweener.addTween(this.actor,
+            Tweener.addTween(this.actor.get_effect('radial'),
                              { brightness: VIGNETTE_BRIGHTNESS,
                                vignetteSharpness: VIGNETTE_SHARPNESS,
                                time: fadeInTime,
@@ -186,7 +187,7 @@ var Lightbox = class Lightbox {
         this.shown = false;
         Tweener.removeTweens(this.actor);
         if (this._radialEffect) {
-            Tweener.addTween(this.actor,
+            Tweener.addTween(this.actor.get_effect('radial'),
                              { brightness: 1.0,
                                vignetteSharpness: 0.0,
                                opacity: 0,
