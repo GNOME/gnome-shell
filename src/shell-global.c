@@ -80,6 +80,8 @@ struct _ShellGlobal {
 
   guint quit_idle;
   guint restart_idle;
+  GPtrArray *restart_args;
+
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
@@ -383,6 +385,8 @@ shell_global_finalize (GObject *object)
 
   g_hash_table_destroy (global->save_ops);
 
+  g_clear_pointer (&global->restart_args, g_ptr_array_unref);
+
   G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
 }
 
@@ -580,6 +584,21 @@ shell_global_get (void)
   return the_object;
 }
 
+static void
+maybe_restart_the_shell (GPtrArray *restart_args)
+{
+  if (!restart_args)
+    return;
+
+  if (the_object)
+    g_warning ("Shell global object %p has not been finalized before "
+               "restarting, something is leaking it", the_object);
+
+  g_print("Restarting %s\n",restart_args->pdata[0]);
+  execvp (restart_args->pdata[0], (char **) restart_args->pdata);
+  g_critical ("failed to reexec: %s", g_strerror (errno));
+}
+
 /**
  * _shell_global_destroy: (skip)
  * @self: global object
@@ -592,8 +611,13 @@ shell_global_get (void)
 void
 _shell_global_destroy (ShellGlobal *global)
 {
+  g_autoptr (GPtrArray) restart_args = NULL;
+  restart_args = g_steal_pointer (&global->restart_args);
+
   g_object_run_dispose (G_OBJECT (global));
   g_object_unref (global);
+
+  maybe_restart_the_shell (restart_args);
 }
 
 static guint32
@@ -1127,6 +1151,8 @@ try_restart (ShellGlobal *global)
   g_autoptr (GPtrArray) arr = NULL;
   gsize len;
 
+  g_assert_null (global->restart_args);
+
 #if defined __linux__ || defined __sun
   g_autofree char *buf = NULL;
   g_autoptr (GError) error = NULL;
@@ -1140,10 +1166,10 @@ try_restart (ShellGlobal *global)
     }
 
   buf_end = buf+len;
-  arr = g_ptr_array_new ();
+  arr = g_ptr_array_new_with_free_func (g_free);
   /* The cmdline file is NUL-separated */
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
-    g_ptr_array_add (arr, buf_p);
+    g_ptr_array_add (arr, g_strdup (buf_p));
 
   g_ptr_array_add (arr, NULL);
 #elif defined __OpenBSD__
@@ -1161,10 +1187,9 @@ try_restart (ShellGlobal *global)
     return FALSE;
   }
 
-  arr = g_ptr_array_new ();
-  for (args_p = args; *args_p != NULL; args_p++) {
-    g_ptr_array_add (arr, *args_p);
-  }
+  arr = g_ptr_array_new_with_free_func (g_free);
+  for (args_p = args; *args_p != NULL; args_p++)
+    g_ptr_array_add (arr, g_strdup (*args_p));
 
   g_ptr_array_add (arr, NULL);
 #elif defined __FreeBSD__
@@ -1184,10 +1209,10 @@ try_restart (ShellGlobal *global)
   }
 
   buf_end = buf+len;
-  arr = g_ptr_array_new ();
+  arr = g_ptr_array_new_with_free_func (g_free);
   /* The value returned by sysctl is NUL-separated */
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
-    g_ptr_array_add (arr, buf_p);
+    g_ptr_array_add (arr, g_strdup (buf_p));
 
   g_ptr_array_add (arr, NULL);
 #else
@@ -1201,11 +1226,19 @@ try_restart (ShellGlobal *global)
    */
   pre_exec_close_fds ();
 
+  /* Save the restart args so that maybe_restart_the_shell() can pick them
+   * to do the actual restarting when destroying the shell.
+   * Here we don't call shell_global_destroy() directly because closing the
+   * mutter display, stops the mutter loop we are in, and so the global destroy
+   * function will be eventually called as last thing, after we've cleaned
+   * up everything.
+   * However here we force the shell global dispostion, in order to release
+   * all the JS objects before destroying the mutter backend. */
+  global->restart_args = g_steal_pointer (&arr);
+  g_object_run_dispose (G_OBJECT (global));
+
   meta_display_close (shell_global_get_display (global),
                       shell_global_get_current_time (global));
-
-  execvp (arr->pdata[0], (char**)arr->pdata);
-  g_warning ("failed to reexec: %s", g_strerror (errno));
 
   return TRUE;
 }
