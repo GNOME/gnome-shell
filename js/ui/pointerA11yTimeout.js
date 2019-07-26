@@ -11,10 +11,12 @@ class PieTimer extends St.DrawingArea {
         this._y = 0;
         this._startTime = 0;
         this._duration = 0;
-        super._init( { style_class: 'pie-timer',
-                       visible: false,
-                       can_focus: false,
-                       reactive: false });
+        super._init({
+            style_class: 'pie-timer',
+            visible: false,
+            can_focus: false,
+            reactive: false
+        });
     }
 
     vfunc_repaint() {
