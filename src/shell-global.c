@@ -915,17 +915,17 @@ _shell_global_set_plugin (ShellGlobal *global,
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
 
-  g_signal_connect (global->stage, "notify::width",
-                    G_CALLBACK (global_stage_notify_width), global);
-  g_signal_connect (global->stage, "notify::height",
-                    G_CALLBACK (global_stage_notify_height), global);
+  g_signal_connect_object (global->stage, "notify::width",
+                           G_CALLBACK (global_stage_notify_width), global, 0);
+  g_signal_connect_object (global->stage, "notify::height",
+                           G_CALLBACK (global_stage_notify_height), global, 0);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
                                          global_stage_before_paint,
                                          global, NULL);
 
-  g_signal_connect (global->stage, "after-paint",
-                    G_CALLBACK (global_stage_after_paint), global);
+  g_signal_connect_object (global->stage, "after-paint",
+                           G_CALLBACK (global_stage_after_paint), global, 0);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
                                          global_stage_after_swap,
@@ -944,15 +944,15 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of frame, possibly including swap time",
                                "");
 
-  g_signal_connect (global->stage, "notify::key-focus",
-                    G_CALLBACK (focus_actor_changed), global);
-  g_signal_connect (global->meta_display, "notify::focus-window",
-                    G_CALLBACK (focus_window_changed), global);
+  g_signal_connect_object (global->stage, "notify::key-focus",
+                    G_CALLBACK (focus_actor_changed), global, 0);
+  g_signal_connect_object (global->meta_display, "notify::focus-window",
+                    G_CALLBACK (focus_window_changed), global, 0);
 
   backend = meta_get_backend ();
   settings = meta_backend_get_settings (backend);
-  g_signal_connect (settings, "ui-scaling-factor-changed",
-                    G_CALLBACK (ui_scaling_factor_changed), global);
+  g_signal_connect_object (settings, "ui-scaling-factor-changed",
+                           G_CALLBACK (ui_scaling_factor_changed), global, 0);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
