@@ -1175,7 +1175,7 @@ shell_global_notify_error (ShellGlobal  *global,
                            const char   *msg,
                            const char   *details)
 {
-  g_signal_emit_by_name (global, "notify-error", msg, details);
+  g_signal_emit (global, shell_global_signals[NOTIFY_ERROR], 0, msg, details);
 }
 
 /**
