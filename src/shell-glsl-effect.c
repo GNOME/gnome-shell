@@ -14,7 +14,7 @@
 #include "config.h"
 
 #include <cogl/cogl.h>
-#include "shell-glsl-quad.h"
+#include "shell-glsl-effect.h"
 
 typedef struct _ShellGLSLQuadPrivate ShellGLSLQuadPrivate;
 struct _ShellGLSLQuadPrivate
