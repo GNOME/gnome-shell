@@ -117,6 +117,8 @@ G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
 
 static guint shell_global_signals [LAST_SIGNAL] = { 0 };
 
+static gboolean on_meta_restart_requested (ShellGlobal *global);
+
 static void
 shell_global_set_property(GObject         *object,
                           guint            prop_id,
@@ -948,6 +950,9 @@ _shell_global_set_plugin (ShellGlobal *global,
                     G_CALLBACK (focus_actor_changed), global, 0);
   g_signal_connect_object (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global, 0);
+  g_signal_connect_object (global->meta_display, "restart",
+                           G_CALLBACK (on_meta_restart_requested), global,
+                           G_CONNECT_SWAPPED);
 
   backend = meta_get_backend ();
   settings = meta_backend_get_settings (backend);
@@ -1114,14 +1119,8 @@ pre_exec_close_fds(void)
   fdwalk (set_cloexec, GINT_TO_POINTER(3));
 }
 
-/**
- * shell_global_reexec_self:
- * @global: A #ShellGlobal
- * 
- * Restart the current process.  Only intended for development purposes. 
- */
-void 
-shell_global_reexec_self (ShellGlobal *global)
+static gboolean
+try_restart (ShellGlobal *global)
 {
   g_autoptr (GPtrArray) arr = NULL;
   gsize len;
@@ -1135,7 +1134,7 @@ shell_global_reexec_self (ShellGlobal *global)
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
       g_warning ("failed to get /proc/self/cmdline: %s", error->message);
-      return;
+      return FALSE;
     }
 
   buf_end = buf+len;
@@ -1151,13 +1150,13 @@ shell_global_reexec_self (ShellGlobal *global)
   gint mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
 
   if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
-    return;
+    return FALSE;
 
   args = g_malloc0 (len);
 
   if (sysctl (mib, G_N_ELEMENTS (mib), args, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    return;
+    return FALSE;
   }
 
   arr = g_ptr_array_new ();
@@ -1173,13 +1172,13 @@ shell_global_reexec_self (ShellGlobal *global)
   gint mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_ARGS, getpid() };
 
   if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
-    return;
+    return FALSE;
 
   buf = g_malloc0 (len);
 
   if (sysctl (mib, G_N_ELEMENTS (mib), buf, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    return;
+    return FALSE;
   }
 
   buf_end = buf+len;
@@ -1205,6 +1204,30 @@ shell_global_reexec_self (ShellGlobal *global)
 
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
+
+  return TRUE;
+}
+
+static gboolean
+on_meta_restart_requested (ShellGlobal *global)
+{
+  g_return_val_if_fail (!meta_is_wayland_compositor (), FALSE);
+
+  return try_restart (global);
+}
+
+/**
+ * shell_global_reexec_self:
+ * @global: A #ShellGlobal
+ *
+ * Restart the current process.  Only intended for development purposes.
+ */
+void
+shell_global_reexec_self (ShellGlobal *global)
+{
+  g_return_if_fail (!meta_is_wayland_compositor ());
+
+  try_restart (global);
 }
 
 /**
