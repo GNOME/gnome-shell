@@ -79,6 +79,7 @@ struct _ShellGlobal {
   GHashTable *save_ops;
 
   guint quit_idle;
+  guint restart_idle;
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
@@ -357,6 +358,7 @@ shell_global_dispose (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
+  g_clear_handle_id (&global->restart_idle, g_source_remove);
   g_clear_handle_id (&global->quit_idle, g_source_remove);
 
   g_clear_pointer (&global->js_context, destroy_gjs_context);
@@ -1216,6 +1218,17 @@ on_meta_restart_requested (ShellGlobal *global)
   return try_restart (global);
 }
 
+static gboolean
+on_restart_idle (gpointer data)
+{
+  ShellGlobal *global = data;
+
+  global->restart_idle = 0;
+  try_restart (global);
+
+  return FALSE;
+}
+
 /**
  * shell_global_reexec_self:
  * @global: A #ShellGlobal
@@ -1227,7 +1240,8 @@ shell_global_reexec_self (ShellGlobal *global)
 {
   g_return_if_fail (!meta_is_wayland_compositor ());
 
-  try_restart (global);
+  if (!global->restart_idle)
+    global->restart_idle = g_idle_add (on_restart_idle, global);
 }
 
 /**
