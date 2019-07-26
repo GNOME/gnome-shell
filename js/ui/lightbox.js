@@ -100,13 +100,9 @@ var Lightbox = class Lightbox {
         this._fadeFactor = params.fadeFactor;
         this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && params.radialEffect;
         if (this._radialEffect)
-            this.actor = new RadialShaderQuad({ x: 0,
-                                                y: 0,
-                                                reactive: params.inhibitEvents });
+            this.actor = new RadialShaderQuad({ reactive: params.inhibitEvents });
         else
-            this.actor = new St.Bin({ x: 0,
-                                      y: 0,
-                                      opacity: 0,
+            this.actor = new St.Bin({ opacity: 0,
                                       style_class: 'lightbox',
                                       reactive: params.inhibitEvents });
 
