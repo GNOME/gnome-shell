@@ -433,8 +433,8 @@ int
 main (int argc, char **argv)
 {
   g_autoptr (ShellGlobalSingleton) global = NULL;
-  GOptionContext *ctx;
-  GError *error = NULL;
+  g_autoptr (GOptionContext) ctx = NULL;
+  g_autoptr (GError) error = NULL;
   int ecode;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -449,10 +449,8 @@ main (int argc, char **argv)
   if (!g_option_context_parse (ctx, &argc, &argv, &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
-      exit (1);
+      return 1;
     }
-
-  g_option_context_free (ctx);
 
   meta_plugin_manager_set_plugin_type (gnome_shell_plugin_get_type ());
 
