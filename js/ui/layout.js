@@ -54,6 +54,8 @@ var MonitorConstraint = GObject.registerClass({
         this._workArea = false;
 
         super._init(props);
+
+        this.connect('notify::actor', this._onActorChanged.bind(this));
     }
 
     get primary() {
@@ -96,8 +98,8 @@ var MonitorConstraint = GObject.registerClass({
         this.notify('work-area');
     }
 
-    vfunc_set_actor(actor) {
-        if (actor) {
+    _onActorChanged() {
+        if (this.actor) {
             if (!this._monitorsChangedId) {
                 this._monitorsChangedId =
                     Main.layoutManager.connect('monitors-changed', () => {
@@ -121,8 +123,6 @@ var MonitorConstraint = GObject.registerClass({
                 global.display.disconnect(this._workareasChangedId);
             this._workareasChangedId = 0;
         }
-
-        super.vfunc_set_actor(actor);
     }
 
     vfunc_update_allocation(actor, actorBox) {
