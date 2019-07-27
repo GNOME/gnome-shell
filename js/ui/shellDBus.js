@@ -94,12 +94,6 @@ var GnomeShell = class {
         if (serializedIcon)
             icon = Gio.Icon.new_for_string(serializedIcon);
 
-        // Translate from percentages in the D-Bus API to floats
-        if (!isNaN(level))
-            level /= 100;
-        if (!isNaN(maxLevel))
-            maxLevel /= 100;
-
         Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
     }
 
