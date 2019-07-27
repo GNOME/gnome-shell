@@ -353,7 +353,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:251
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Habilita el mòsaic a les vores en deixar anar les finestres a les vores de la "
+"Habilita el mosaic a les vores en deixar anar les finestres a les vores de la "
 "pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:259
@@ -2107,7 +2107,7 @@ msgstr "Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:322
 msgid "Unknown Thunderbolt device"
-msgstr "Dispostiu Thunderbolt desconegut"
+msgstr "Dispositiu Thunderbolt desconegut"
 
 #: js/ui/status/thunderbolt.js:323
 msgid ""
@@ -2119,7 +2119,7 @@ msgstr ""
 
 #: js/ui/status/thunderbolt.js:326
 msgid "Unauthorized Thunderbolt device"
-msgstr "Dispostiu Thunderbolt no autoritzat"
+msgstr "Dispositiu Thunderbolt no autoritzat"
 
 #: js/ui/status/thunderbolt.js:327
 msgid ""
