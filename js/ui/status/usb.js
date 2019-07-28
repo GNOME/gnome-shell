@@ -48,7 +48,7 @@ var Indicator = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: PRIVACY_SCHEMA });
         this._settings.connect('changed::' + USB_PROTECTION,
                                this._onProtectionSettingChanged.bind(this));
-        this._settings.connect('changed::' + USB_PROTECTION_LEVEL,
+        this._settings.connect(`changed::${USB_PROTECTION_LEVEL}`,
                                this._onProtectionLevelSettingChanged.bind(this));
         this._onProtectionSettingChanged();
         this._onProtectionLevelSettingChanged();
