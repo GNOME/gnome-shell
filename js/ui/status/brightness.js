@@ -58,6 +58,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         let visible = this._proxy.Brightness >= 0;
         this._item.visible = visible;
         if (visible)
-            this._slider.setValue(this._proxy.Brightness / 100.0);
+            this._slider.value = this._proxy.Brightness / 100.0;
     }
 };
