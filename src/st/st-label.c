@@ -51,8 +51,12 @@ enum
   PROP_0,
 
   PROP_CLUTTER_TEXT,
-  PROP_TEXT
+  PROP_TEXT,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 struct _StLabelPrivate
 {
@@ -249,7 +253,6 @@ st_label_class_init (StLabelClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = st_label_set_property;
   gobject_class->get_property = st_label_get_property;
@@ -264,20 +267,21 @@ st_label_class_init (StLabelClass *klass)
   widget_class->resource_scale_changed = st_label_resource_scale_changed;
   widget_class->get_accessible_type = st_label_accessible_get_type;
 
-  pspec = g_param_spec_object ("clutter-text",
-			       "Clutter Text",
-			       "Internal ClutterText actor",
-			       CLUTTER_TYPE_TEXT,
-			       ST_PARAM_READABLE);
-  g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
+  props[PROP_CLUTTER_TEXT] =
+      g_param_spec_object ("clutter-text",
+                           "Clutter Text",
+                           "Internal ClutterText actor",
+                           CLUTTER_TYPE_TEXT,
+                           ST_PARAM_READABLE);
 
-  pspec = g_param_spec_string ("text",
-                               "Text",
-                               "Text of the label",
-                               NULL,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
+  props[PROP_TEXT] =
+      g_param_spec_string ("text",
+                           "Text",
+                           "Text of the label",
+                           NULL,
+                           ST_PARAM_READWRITE);
 
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
 
 static void
@@ -359,7 +363,7 @@ st_label_set_text (StLabel     *label,
 
       clutter_text_set_text (ctext, text);
 
-      g_object_notify (G_OBJECT (label), "text");
+      g_object_notify_by_pspec (G_OBJECT (label), props[PROP_TEXT]);
     }
 }
 

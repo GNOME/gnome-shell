@@ -54,8 +54,12 @@ enum
   PROP_BUTTON_MASK,
   PROP_TOGGLE_MODE,
   PROP_CHECKED,
-  PROP_PRESSED
+  PROP_PRESSED,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum
 {
@@ -458,7 +462,6 @@ st_button_class_init (StButtonClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = st_button_set_property;
   gobject_class->get_property = st_button_get_property;
@@ -476,41 +479,42 @@ st_button_class_init (StButtonClass *klass)
   widget_class->style_changed = st_button_style_changed;
   widget_class->get_accessible_type = st_button_accessible_get_type;
 
-  pspec = g_param_spec_string ("label",
-                               "Label",
-                               "Label of the button",
-                               NULL,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_LABEL, pspec);
+  props[PROP_LABEL] =
+    g_param_spec_string ("label",
+                         "Label",
+                         "Label of the button",
+                         NULL,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_flags ("button-mask",
-                              "Button mask",
-                              "Which buttons trigger the 'clicked' signal",
-                              ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
-                              ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_BUTTON_MASK, pspec);
+  props[PROP_BUTTON_MASK] =
+    g_param_spec_flags ("button-mask",
+                        "Button mask",
+                        "Which buttons trigger the 'clicked' signal",
+                        ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
+                        ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("toggle-mode",
-                                "Toggle Mode",
-                                "Enable or disable toggling",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TOGGLE_MODE, pspec);
+  props[PROP_TOGGLE_MODE] =
+    g_param_spec_boolean ("toggle-mode",
+                          "Toggle Mode",
+                          "Enable or disable toggling",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("checked",
-                                "Checked",
-                                "Indicates if a toggle button is \"on\""
-                                " or \"off\"",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHECKED, pspec);
+  props[PROP_CHECKED] =
+    g_param_spec_boolean ("checked",
+                          "Checked",
+                          "Indicates if a toggle button is \"on\" or \"off\"",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("pressed",
-                                "Pressed",
-                                "Indicates if the button is pressed in",
-                                FALSE,
-                                ST_PARAM_READABLE);
-  g_object_class_install_property (gobject_class, PROP_PRESSED, pspec);
+  props[PROP_PRESSED] =
+    g_param_spec_boolean ("pressed",
+                          "Pressed",
+                          "Indicates if the button is pressed in",
+                          FALSE,
+                          ST_PARAM_READABLE);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
 
   /**
@@ -631,7 +635,7 @@ st_button_set_label (StButton    *button,
   /* Fake a style change so that we reset the style properties on the label */
   st_widget_style_changed (ST_WIDGET (button));
 
-  g_object_notify (G_OBJECT (button), "label");
+  g_object_notify_by_pspec (G_OBJECT (button), props[PROP_LABEL]);
 }
 
 /**
@@ -670,7 +674,7 @@ st_button_set_button_mask (StButton     *button,
   priv = st_button_get_instance_private (button);
   priv->button_mask = mask;
 
-  g_object_notify (G_OBJECT (button), "button-mask");
+  g_object_notify_by_pspec (G_OBJECT (button), props[PROP_BUTTON_MASK]);
 }
 
 /**
@@ -708,7 +712,7 @@ st_button_set_toggle_mode (StButton *button,
   priv = st_button_get_instance_private (button);
   priv->is_toggle = toggle;
 
-  g_object_notify (G_OBJECT (button), "toggle-mode");
+  g_object_notify_by_pspec (G_OBJECT (button), props[PROP_TOGGLE_MODE]);
 }
 
 /**
@@ -754,7 +758,7 @@ st_button_set_checked (StButton *button,
         st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
     }
 
-  g_object_notify (G_OBJECT (button), "checked");
+  g_object_notify_by_pspec (G_OBJECT (button), props[PROP_CHECKED]);
 }
 
 /**
