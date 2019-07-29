@@ -116,7 +116,11 @@ enum {
   PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
   PROP_OVERLAY_SCROLLBARS,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 static void
 st_scroll_view_get_property (GObject    *object,
@@ -693,7 +697,8 @@ st_scroll_view_allocate (ClutterActor          *actor,
     {
       g_object_freeze_notify (G_OBJECT (actor));
       priv->hscrollbar_visible = hscrollbar_visible;
-      g_object_notify (G_OBJECT (actor), "hscrollbar-visible");
+      g_object_notify_by_pspec (G_OBJECT (actor),
+                                props[PROP_HSCROLLBAR_VISIBLE]);
       g_object_thaw_notify (G_OBJECT (actor));
     }
 
@@ -701,7 +706,8 @@ st_scroll_view_allocate (ClutterActor          *actor,
     {
       g_object_freeze_notify (G_OBJECT (actor));
       priv->vscrollbar_visible = vscrollbar_visible;
-      g_object_notify (G_OBJECT (actor), "vscrollbar-visible");
+      g_object_notify_by_pspec (G_OBJECT (actor),
+                                props[PROP_VSCROLLBAR_VISIBLE]);
       g_object_thaw_notify (G_OBJECT (actor));
     }
 
@@ -791,7 +797,6 @@ st_scroll_view_scroll_event (ClutterActor       *self,
 static void
 st_scroll_view_class_init (StScrollViewClass *klass)
 {
-  GParamSpec *pspec;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
@@ -810,70 +815,65 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 
   widget_class->style_changed = st_scroll_view_style_changed;
 
-  g_object_class_install_property (object_class,
-                                   PROP_HSCROLL,
-                                   g_param_spec_object ("hscroll",
-                                                        "StScrollBar",
-                                                        "Horizontal scroll indicator",
-                                                        ST_TYPE_SCROLL_BAR,
-                                                        ST_PARAM_READABLE));
+  props[PROP_HSCROLL] =
+    g_param_spec_object ("hscroll",
+                         "StScrollBar",
+                         "Horizontal scroll indicator",
+                         ST_TYPE_SCROLL_BAR,
+                         ST_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_VSCROLL,
-                                   g_param_spec_object ("vscroll",
-                                                        "StScrollBar",
-                                                        "Vertical scroll indicator",
-                                                        ST_TYPE_SCROLL_BAR,
-                                                        ST_PARAM_READABLE));
+  props[PROP_VSCROLL] =
+    g_param_spec_object ("vscroll",
+                         "StScrollBar",
+                         "Vertical scroll indicator",
+                         ST_TYPE_SCROLL_BAR,
+                         ST_PARAM_READABLE);
 
+  props[PROP_VSCROLLBAR_POLICY] =
+    g_param_spec_enum ("vscrollbar-policy",
+                       "Vertical Scrollbar Policy",
+                       "When the vertical scrollbar is displayed",
+                       ST_TYPE_POLICY_TYPE,
+                       ST_POLICY_AUTOMATIC,
+                       ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_enum ("vscrollbar-policy",
-                             "Vertical Scrollbar Policy",
-                             "When the vertical scrollbar is displayed",
-                             ST_TYPE_POLICY_TYPE,
-                             ST_POLICY_AUTOMATIC,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_VSCROLLBAR_POLICY, pspec);
+  props[PROP_HSCROLLBAR_POLICY] =
+    g_param_spec_enum ("hscrollbar-policy",
+                       "Horizontal Scrollbar Policy",
+                       "When the horizontal scrollbar is displayed",
+                       ST_TYPE_POLICY_TYPE,
+                       ST_POLICY_AUTOMATIC,
+                       ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_enum ("hscrollbar-policy",
-                             "Horizontal Scrollbar Policy",
-                             "When the horizontal scrollbar is displayed",
-                             ST_TYPE_POLICY_TYPE,
-                             ST_POLICY_AUTOMATIC,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_HSCROLLBAR_POLICY, pspec);
+  props[PROP_HSCROLLBAR_VISIBLE] =
+    g_param_spec_boolean ("hscrollbar-visible",
+                          "Horizontal Scrollbar Visibility",
+                          "Whether the horizontal scrollbar is visible",
+                          TRUE,
+                          ST_PARAM_READABLE);
 
-  pspec = g_param_spec_boolean ("hscrollbar-visible",
-                                "Horizontal Scrollbar Visibility",
-                                "Whether the horizontal scrollbar is visible",
-                                TRUE,
-                                ST_PARAM_READABLE);
-  g_object_class_install_property (object_class, PROP_HSCROLLBAR_VISIBLE, pspec);
+  props[PROP_VSCROLLBAR_VISIBLE] =
+    g_param_spec_boolean ("vscrollbar-visible",
+                          "Vertical Scrollbar Visibility",
+                          "Whether the vertical scrollbar is visible",
+                          TRUE,
+                          ST_PARAM_READABLE);
 
-  pspec = g_param_spec_boolean ("vscrollbar-visible",
-                                "Vertical Scrollbar Visibility",
-                                "Whether the vertical scrollbar is visible",
-                                TRUE,
-                                ST_PARAM_READABLE);
-  g_object_class_install_property (object_class, PROP_VSCROLLBAR_VISIBLE, pspec);
+  props[PROP_MOUSE_SCROLL] =
+    g_param_spec_boolean ("enable-mouse-scrolling",
+                          "Enable Mouse Scrolling",
+                          "Enable automatic mouse wheel scrolling",
+                          TRUE,
+                          ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("enable-mouse-scrolling",
-                                "Enable Mouse Scrolling",
-                                "Enable automatic mouse wheel scrolling",
-                                TRUE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class,
-                                   PROP_MOUSE_SCROLL,
-                                   pspec);
+  props[PROP_OVERLAY_SCROLLBARS] =
+    g_param_spec_boolean ("overlay-scrollbars",
+                          "Use Overlay Scrollbars",
+                          "Overlay scrollbars over the content",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("overlay-scrollbars",
-                                "Use Overlay Scrollbars",
-                                "Overlay scrollbars over the content",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class,
-                                   PROP_OVERLAY_SCROLLBARS,
-                                   pspec);
+  g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
@@ -1156,7 +1156,8 @@ st_scroll_view_set_overlay_scrollbars (StScrollView *scroll,
   if (priv->overlay_scrollbars != enabled)
     {
       priv->overlay_scrollbars = enabled;
-      g_object_notify (G_OBJECT (scroll), "overlay-scrollbars");
+      g_object_notify_by_pspec (G_OBJECT (scroll),
+                                props[PROP_OVERLAY_SCROLLBARS]);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));
     }
 }
@@ -1206,13 +1207,15 @@ st_scroll_view_set_policy (StScrollView   *scroll,
   if (priv->hscrollbar_policy != hscroll)
     {
       priv->hscrollbar_policy = hscroll;
-      g_object_notify ((GObject *) scroll, "hscrollbar-policy");
+      g_object_notify_by_pspec ((GObject *) scroll,
+                                props[PROP_HSCROLLBAR_POLICY]);
     }
 
   if (priv->vscrollbar_policy != vscroll)
     {
       priv->vscrollbar_policy = vscroll;
-      g_object_notify ((GObject *) scroll, "vscrollbar-policy");
+      g_object_notify_by_pspec ((GObject *) scroll,
+                                props[PROP_VSCROLLBAR_POLICY]);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));

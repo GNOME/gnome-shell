@@ -39,8 +39,12 @@ enum
   PROP_GICON,
   PROP_ICON_NAME,
   PROP_ICON_SIZE,
-  PROP_FALLBACK_ICON_NAME
+  PROP_FALLBACK_ICON_NAME,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 struct _StIconPrivate
 {
@@ -219,8 +223,6 @@ st_icon_resource_scale_changed (StWidget *widget)
 static void
 st_icon_class_init (StIconClass *klass)
 {
-  GParamSpec *pspec;
-
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
@@ -234,31 +236,35 @@ st_icon_class_init (StIconClass *klass)
   widget_class->style_changed = st_icon_style_changed;
   widget_class->resource_scale_changed = st_icon_resource_scale_changed;
 
-  pspec = g_param_spec_object ("gicon",
-                               "GIcon",
-                               "The GIcon shown by this icon actor",
-                               G_TYPE_ICON,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_GICON, pspec);
+  props[PROP_GICON] =
+    g_param_spec_object ("gicon",
+                         "GIcon",
+                         "The GIcon shown by this icon actor",
+                         G_TYPE_ICON,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_string ("icon-name",
-                               "Icon name",
-                               "An icon name",
-                               NULL, ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);
+  props[PROP_ICON_NAME] =
+    g_param_spec_string ("icon-name",
+                         "Icon name",
+                         "An icon name",
+                         NULL,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_int ("icon-size",
-                            "Icon size",
-                            "The size if the icon, if positive. Otherwise the size will be derived from the current style",
-                            -1, G_MAXINT, -1,
-                            ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_ICON_SIZE, pspec);
+  props[PROP_ICON_SIZE] =
+    g_param_spec_int ("icon-size",
+                      "Icon size",
+                      "The size if the icon, if positive. Otherwise the size will be derived from the current style",
+                      -1, G_MAXINT, -1,
+                      ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_string ("fallback-icon-name",
-                               "Fallback icon name",
-                               "A fallback icon name",
-                               NULL, ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_FALLBACK_ICON_NAME, pspec);
+  props[PROP_FALLBACK_ICON_NAME] =
+    g_param_spec_string ("fallback-icon-name",
+                         "Fallback icon name",
+                         "A fallback icon name",
+                         NULL,
+                         ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
@@ -528,8 +534,8 @@ st_icon_set_icon_name (StIcon      *icon,
 
   priv->gicon = gicon;
 
-  g_object_notify (G_OBJECT (icon), "gicon");
-  g_object_notify (G_OBJECT (icon), "icon-name");
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_ICON_NAME]);
 
   g_object_thaw_notify (G_OBJECT (icon));
 
@@ -573,7 +579,7 @@ st_icon_set_gicon (StIcon *icon, GIcon *gicon)
   if (gicon)
     icon->priv->gicon = g_object_ref (gicon);
 
-  g_object_notify (G_OBJECT (icon), "gicon");
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
 
   st_icon_update (icon);
 }
@@ -617,7 +623,7 @@ st_icon_set_icon_size (StIcon *icon,
       priv->prop_icon_size = size;
       if (st_icon_update_icon_size (icon))
         st_icon_update (icon);
-      g_object_notify (G_OBJECT (icon), "icon-size");
+      g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_ICON_SIZE]);
     }
 }
 
@@ -660,7 +666,7 @@ st_icon_set_fallback_icon_name (StIcon      *icon,
 
   priv->fallback_gicon = gicon;
 
-  g_object_notify (G_OBJECT (icon), "fallback-icon-name");
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_ICON_NAME]);
 
   st_icon_update (icon);
 }

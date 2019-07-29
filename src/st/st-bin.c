@@ -58,8 +58,12 @@ enum
   PROP_X_ALIGN,
   PROP_Y_ALIGN,
   PROP_X_FILL,
-  PROP_Y_FILL
+  PROP_Y_FILL,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
@@ -311,7 +315,6 @@ st_bin_class_init (StBinClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = st_bin_set_property;
   gobject_class->get_property = st_bin_get_property;
@@ -329,64 +332,66 @@ st_bin_class_init (StBinClass *klass)
    *
    * The child #ClutterActor of the #StBin container.
    */
-  pspec = g_param_spec_object ("child",
-                               "Child",
-                               "The child of the Bin",
-                               CLUTTER_TYPE_ACTOR,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD, pspec);
+  props[PROP_CHILD] =
+    g_param_spec_object ("child",
+                         "Child",
+                         "The child of the Bin",
+                         CLUTTER_TYPE_ACTOR,
+                         ST_PARAM_READWRITE);
 
   /**
    * StBin:x-align:
    *
    * The horizontal alignment of the #StBin child.
    */
-  pspec = g_param_spec_enum ("x-align",
-                             "X Align",
-                             "The horizontal alignment",
-                             ST_TYPE_ALIGN,
-                             ST_ALIGN_MIDDLE,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_X_ALIGN, pspec);
+  props[PROP_X_ALIGN] =
+    g_param_spec_enum ("x-align",
+                       "X Align",
+                       "The horizontal alignment",
+                       ST_TYPE_ALIGN,
+                       ST_ALIGN_MIDDLE,
+                       ST_PARAM_READWRITE);
 
   /**
    * StBin:y-align:
    *
    * The vertical alignment of the #StBin child.
    */
-  pspec = g_param_spec_enum ("y-align",
-                             "Y Align",
-                             "The vertical alignment",
-                             ST_TYPE_ALIGN,
-                             ST_ALIGN_MIDDLE,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_Y_ALIGN, pspec);
+  props[PROP_Y_ALIGN] =
+    g_param_spec_enum ("y-align",
+                       "Y Align",
+                       "The vertical alignment",
+                       ST_TYPE_ALIGN,
+                       ST_ALIGN_MIDDLE,
+                       ST_PARAM_READWRITE);
 
   /**
    * StBin:x-fill:
    *
    * Whether the child should fill the horizontal allocation
    */
-  pspec = g_param_spec_boolean ("x-fill",
-                                "X Fill",
-                                "Whether the child should fill the "
-                                "horizontal allocation",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_X_FILL, pspec);
+  props[PROP_X_FILL] =
+    g_param_spec_boolean ("x-fill",
+                          "X Fill",
+                          "Whether the child should fill the "
+                          "horizontal allocation",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
   /**
    * StBin:y-fill:
    *
    * Whether the child should fill the vertical allocation
    */
-  pspec = g_param_spec_boolean ("y-fill",
-                                "Y Fill",
-                                "Whether the child should fill the "
-                                "vertical allocation",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_Y_FILL, pspec);
+  props[PROP_Y_FILL] =
+    g_param_spec_boolean ("y-fill",
+                          "Y Fill",
+                          "Whether the child should fill the "
+                          "vertical allocation",
+                          FALSE,
+                          ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
 
 static void
@@ -447,7 +452,7 @@ st_bin_set_child (StBin        *bin,
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
 
-  g_object_notify (G_OBJECT (bin), "child");
+  g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_CHILD]);
 }
 
 /**
@@ -492,14 +497,14 @@ st_bin_set_alignment (StBin  *bin,
   if (priv->x_align != x_align)
     {
       priv->x_align = x_align;
-      g_object_notify (G_OBJECT (bin), "x-align");
+      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_X_ALIGN]);
       changed = TRUE;
     }
 
   if (priv->y_align != y_align)
     {
       priv->y_align = y_align;
-      g_object_notify (G_OBJECT (bin), "y-align");
+      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_Y_ALIGN]);
       changed = TRUE;
     }
 
@@ -564,7 +569,7 @@ st_bin_set_fill (StBin   *bin,
       priv->x_fill = x_fill;
       changed = TRUE;
 
-      g_object_notify (G_OBJECT (bin), "x-fill");
+      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_X_FILL]);
     }
 
   if (priv->y_fill != y_fill)
@@ -572,7 +577,7 @@ st_bin_set_fill (StBin   *bin,
       priv->y_fill = y_fill;
       changed = TRUE;
 
-      g_object_notify (G_OBJECT (bin), "y-fill");
+      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_Y_FILL]);
     }
 
   if (changed)
