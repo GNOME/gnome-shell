@@ -70,7 +70,11 @@ enum
   PROP_STEP_INC,
   PROP_PAGE_INC,
   PROP_PAGE_SIZE,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum
 {
@@ -206,72 +210,50 @@ st_adjustment_class_init (StAdjustmentClass *klass)
   object_class->get_property = st_adjustment_get_property;
   object_class->set_property = st_adjustment_set_property;
 
-  g_object_class_install_property (object_class,
-                                   PROP_LOWER,
-                                   g_param_spec_double ("lower",
-                                                        "Lower",
-                                                        "Lower bound",
-                                                        -G_MAXDOUBLE,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
-  g_object_class_install_property (object_class,
-                                   PROP_UPPER,
-                                   g_param_spec_double ("upper",
-                                                        "Upper",
-                                                        "Upper bound",
-                                                        -G_MAXDOUBLE,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
-  g_object_class_install_property (object_class,
-                                   PROP_VALUE,
-                                   g_param_spec_double ("value",
-                                                        "Value",
-                                                        "Current value",
-                                                        -G_MAXDOUBLE,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
-  g_object_class_install_property (object_class,
-                                   PROP_STEP_INC,
-                                   g_param_spec_double ("step-increment",
-                                                        "Step Increment",
-                                                        "Step increment",
-                                                        0.0,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
-  g_object_class_install_property (object_class,
-                                   PROP_PAGE_INC,
-                                   g_param_spec_double ("page-increment",
-                                                        "Page Increment",
-                                                        "Page increment",
-                                                        0.0,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
-  g_object_class_install_property (object_class,
-                                   PROP_PAGE_SIZE,
-                                   g_param_spec_double ("page-size",
-                                                        "Page Size",
-                                                        "Page size",
-                                                        0.0,
-                                                        G_MAXDOUBLE,
-                                                        0.0,
-                                                        ST_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT |
-                                                        G_PARAM_EXPLICIT_NOTIFY));
+  props[PROP_LOWER] =
+    g_param_spec_double ("lower", "Lower", "Lower bound",
+                         -G_MAXDOUBLE,  G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_UPPER] =
+    g_param_spec_double ("upper", "Upper", "Upper bound",
+                         -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_VALUE] =
+    g_param_spec_double ("value", "Value", "Current value",
+                         -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_STEP_INC] =
+    g_param_spec_double ("step-increment", "Step Increment", "Step increment",
+                         0.0, G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_PAGE_INC] =
+    g_param_spec_double ("page-increment", "Page Increment", "Page increment",
+                         0.0, G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  props[PROP_PAGE_SIZE] =
+    g_param_spec_double ("page-size", "Page Size", "Page size",
+                         0.0, G_MAXDOUBLE, 0.0,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT |
+                         G_PARAM_EXPLICIT_NOTIFY);
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
+
   /**
    * StAdjustment::changed:
    * @self: the #StAdjustment
@@ -342,7 +324,7 @@ st_adjustment_set_value (StAdjustment *adjustment,
     {
       priv->value = value;
 
-      g_object_notify (G_OBJECT (adjustment), "value");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_VALUE]);
     }
 }
 
@@ -376,7 +358,7 @@ st_adjustment_clamp_page (StAdjustment *adjustment,
     }
 
   if (changed)
-    g_object_notify (G_OBJECT (adjustment), "value");
+    g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_VALUE]);
 }
 
 static gboolean
@@ -391,7 +373,7 @@ st_adjustment_set_lower (StAdjustment *adjustment,
 
       g_signal_emit (adjustment, signals[CHANGED], 0);
 
-      g_object_notify (G_OBJECT (adjustment), "lower");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_LOWER]);
 
       /* Defer clamp until after construction. */
       if (!priv->is_constructing)
@@ -415,7 +397,7 @@ st_adjustment_set_upper (StAdjustment *adjustment,
 
       g_signal_emit (adjustment, signals[CHANGED], 0);
 
-      g_object_notify (G_OBJECT (adjustment), "upper");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_UPPER]);
 
       /* Defer clamp until after construction. */
       if (!priv->is_constructing)
@@ -439,7 +421,7 @@ st_adjustment_set_step_increment (StAdjustment *adjustment,
 
       g_signal_emit (adjustment, signals[CHANGED], 0);
 
-      g_object_notify (G_OBJECT (adjustment), "step-increment");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_STEP_INC]);
 
       return TRUE;
     }
@@ -459,7 +441,7 @@ st_adjustment_set_page_increment (StAdjustment *adjustment,
 
       g_signal_emit (adjustment, signals[CHANGED], 0);
 
-      g_object_notify (G_OBJECT (adjustment), "page-increment");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_PAGE_INC]);
 
       return TRUE;
     }
@@ -479,7 +461,7 @@ st_adjustment_set_page_size (StAdjustment *adjustment,
 
       g_signal_emit (adjustment, signals[CHANGED], 0);
 
-      g_object_notify (G_OBJECT (adjustment), "page_size");
+      g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_PAGE_SIZE]);
 
       /* Well explicitely clamp after construction. */
       if (!priv->is_constructing)
