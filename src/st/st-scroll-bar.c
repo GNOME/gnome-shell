@@ -79,8 +79,12 @@ enum
   PROP_0,
 
   PROP_ADJUSTMENT,
-  PROP_VERTICAL
+  PROP_VERTICAL,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum
 {
@@ -504,7 +508,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   object_class->get_property = st_scroll_bar_get_property;
   object_class->set_property = st_scroll_bar_set_property;
@@ -519,21 +522,19 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 
   widget_class->style_changed = st_scroll_bar_style_changed;
 
-  g_object_class_install_property
-                 (object_class,
-                 PROP_ADJUSTMENT,
-                 g_param_spec_object ("adjustment",
-                                      "Adjustment",
-                                      "The adjustment",
-                                      ST_TYPE_ADJUSTMENT,
-                                      ST_PARAM_READWRITE));
+  props[PROP_ADJUSTMENT] =
+    g_param_spec_object ("adjustment", "Adjustment", "The adjustment",
+                         ST_TYPE_ADJUSTMENT,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_boolean ("vertical",
-                                "Vertical Orientation",
-                                "Vertical Orientation",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_VERTICAL, pspec);
+  props[PROP_VERTICAL] =
+    g_param_spec_boolean ("vertical",
+                          "Vertical Orientation",
+                          "Vertical Orientation",
+                          FALSE,
+                          ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
 
   signals[SCROLL_START] =
     g_signal_new ("scroll-start",
@@ -959,7 +960,7 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
       clutter_actor_queue_relayout (CLUTTER_ACTOR (bar));
     }
 
-  g_object_notify (G_OBJECT (bar), "adjustment");
+  g_object_notify_by_pspec (G_OBJECT (bar), props[PROP_ADJUSTMENT]);
 }
 
 /**
