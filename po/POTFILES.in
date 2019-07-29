@@ -64,6 +64,7 @@ js/ui/status/remoteAccess.js
 js/ui/status/rfkill.js
 js/ui/status/system.js
 js/ui/status/thunderbolt.js
+js/ui/status/usbProtection.js
 js/ui/status/volume.js
 js/ui/switchMonitor.js
 js/ui/unlockDialog.js
