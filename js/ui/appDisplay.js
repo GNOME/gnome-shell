@@ -147,15 +147,8 @@ class BaseAppView {
         return this._allItems;
     }
 
-    hasItem(id) {
-        return this._items[id] !== undefined;
-    }
-
     addItem(icon) {
         let id = icon.id;
-        if (this.hasItem(id))
-            throw new Error(`icon with id ${id} already added to view`);
-
         this._allItems.push(icon);
         this._items[id] = icon;
     }
@@ -392,12 +385,13 @@ var AllView = class AllView extends BaseAppView {
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            if (this.hasItem(id))
-                return;
             let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = new FolderIcon(id, path, this);
-            icon.connect('name-changed', this._itemNameChanged.bind(this));
-            icon.connect('apps-changed', this._refilterApps.bind(this));
+            let icon = this._items[id];
+            if (!icon) {
+                icon = new FolderIcon(id, path, this);
+                icon.connect('name-changed', this._itemNameChanged.bind(this));
+                icon.connect('apps-changed', this._refilterApps.bind(this));
+            }
             newApps.push(icon);
             this.folderIcons.push(icon);
         });
@@ -1145,9 +1139,6 @@ var FolderView = class FolderView extends BaseAppView {
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
-            if (this.hasItem(appId))
-                 return;
-
             if (excludedApps.includes(appId))
                 return;
 
@@ -1156,6 +1147,9 @@ var FolderView = class FolderView extends BaseAppView {
                 return;
 
             if (!app.get_app_info().should_show())
+                return;
+
+            if (apps.some(appIcon => appIcon.id == appId))
                 return;
 
             let icon = new AppIcon(app);
