@@ -19,6 +19,7 @@
  */
 
 #include "st-image-content.h"
+#include "st-private.h"
 
 struct _StImageContent
 {
@@ -127,14 +128,14 @@ st_image_content_class_init (StImageContentClass *klass)
                             "Preferred Width",
                             "Preferred Width of the Content when painted",
                              -1, G_MAXINT, -1,
-                             G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+                             G_PARAM_CONSTRUCT_ONLY | ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PREFERRED_WIDTH, pspec);
 
   pspec = g_param_spec_int ("preferred-height",
                             "Preferred Height",
                             "Preferred Height of the Content when painted",
                              -1, G_MAXINT, -1,
-                             G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+                             G_PARAM_CONSTRUCT_ONLY | ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PREFERRED_HEIGHT, pspec);
 }
 
