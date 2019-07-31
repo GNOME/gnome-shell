@@ -88,12 +88,13 @@ class RadialShaderEffect extends Shell.GLSLEffect {
  */
 var Lightbox = class Lightbox {
     constructor(container, params) {
-        params = Params.parse(params, { inhibitEvents: false,
-                                        width: null,
-                                        height: null,
-                                        fadeFactor: DEFAULT_FADE_FACTOR,
-                                        radialEffect: false,
-                                      });
+        params = Params.parse(params, {
+            inhibitEvents: false,
+            width: null,
+            height: null,
+            fadeFactor: DEFAULT_FADE_FACTOR,
+            radialEffect: false,
+        });
 
         this._container = container;
         this._children = container.get_children();
@@ -118,8 +119,10 @@ var Lightbox = class Lightbox {
             this.actor.width = params.width;
             this.actor.height = params.height;
         } else {
-            let constraint = new Clutter.BindConstraint({ source: container,
-                                                          coordinate: Clutter.BindCoordinate.ALL });
+            let constraint = new Clutter.BindConstraint({
+                source: container,
+                coordinate: Clutter.BindCoordinate.ALL
+            });
             this.actor.add_constraint(constraint);
         }
 
@@ -157,27 +160,27 @@ var Lightbox = class Lightbox {
         if (this._radialEffect) {
             let effect = this.actor.get_effect('radial');
             Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: VIGNETTE_BRIGHTNESS,
-                               vignetteSharpness: VIGNETTE_SHARPNESS,
-                               time: fadeInTime,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.shown = true;
-                                   this.emit('shown');
-                               }
-                             });
+            Tweener.addTween(effect, {
+                brightness: VIGNETTE_BRIGHTNESS,
+                vignetteSharpness: VIGNETTE_SHARPNESS,
+                time: fadeInTime,
+                transition: 'easeOutQuad',
+                onComplete: () => {
+                    this.shown = true;
+                    this.emit('shown');
+                }
+            });
         } else {
             Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor,
-                             { opacity: 255 * this._fadeFactor,
-                               time: fadeInTime,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.shown = true;
-                                   this.emit('shown');
-                               }
-                             });
+            Tweener.addTween(this.actor, {
+                opacity: 255 * this._fadeFactor,
+                time: fadeInTime,
+                transition: 'easeOutQuad',
+                onComplete: () => {
+                    this.shown = true;
+                    this.emit('shown');
+                }
+            });
         }
 
         this.actor.show();
@@ -191,26 +194,26 @@ var Lightbox = class Lightbox {
         if (this._radialEffect) {
             let effect = this.actor.get_effect('radial');
             Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: 1.0,
-                               vignetteSharpness: 0.0,
-                               opacity: 0,
-                               time: fadeOutTime,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.hide();
-                               }
-                             });
+            Tweener.addTween(effect, {
+                brightness: 1.0,
+                vignetteSharpness: 0.0,
+                opacity: 0,
+                time: fadeOutTime,
+                transition: 'easeOutQuad',
+                    onComplete: () => {
+                        this.actor.hide();
+                    }
+            });
         } else {
             Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor,
-                             { opacity: 0,
-                               time: fadeOutTime,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.hide();
-                               }
-                             });
+            Tweener.addTween(this.actor, {
+                opacity: 0,
+                time: fadeOutTime,
+                transition: 'easeOutQuad',
+                onComplete: () => {
+                    this.actor.hide();
+                }
+            });
         }
     }
 
