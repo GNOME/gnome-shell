@@ -172,9 +172,12 @@ var Lightbox = class Lightbox {
     }
 
     show(fadeInTime) {
-        fadeInTime = fadeInTime || 0;
-
         this.actor.remove_all_transitions();
+
+        let easeProps = {
+            duration: fadeInTime || 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        };
 
         let onComplete = () => {
             this.shown = true;
@@ -183,21 +186,16 @@ var Lightbox = class Lightbox {
 
         if (this._radialEffect) {
             this.actor.ease_property(
-                '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, {
-                    duration: fadeInTime,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
-                });
+                '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, easeProps);
             this.actor.ease_property(
                 '@effects.radial.sharpness', VIGNETTE_SHARPNESS, {
-                    duration: fadeInTime,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    ...easeProps,
                     onComplete
                 });
         } else {
             this.actor.ease({
+                ...easeProps,
                 opacity: 255 * this._fadeFactor,
-                duration: fadeInTime,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete
             });
         }
@@ -206,32 +204,23 @@ var Lightbox = class Lightbox {
     }
 
     hide(fadeOutTime) {
-        fadeOutTime = fadeOutTime || 0;
-
         this.shown = false;
         this.actor.remove_all_transitions();
+
+        let easeProps = {
+            duration: fadeOutTime || 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        };
 
         let onComplete = () => this.actor.hide();
 
         if (this._radialEffect) {
             this.actor.ease_property(
-                '@effects.radial.brightness', 1.0, {
-                    duration: fadeOutTime,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
-                });
+                '@effects.radial.brightness', 1.0, easeProps);
             this.actor.ease_property(
-                '@effects.radial.sharpness', 0.0, {
-                    duration: fadeOutTime,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onComplete
-                });
+                '@effects.radial.sharpness', 0.0, { ...easeProps, onComplete });
         } else {
-            this.actor.ease({
-                opacity: 0,
-                duration: fadeOutTime,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete
-            });
+            this.actor.ease({ ...easeProps, opacity: 0, onComplete });
         }
     }
 
