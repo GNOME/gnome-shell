@@ -154,7 +154,7 @@ var WeatherClient = class {
         this._weatherProxy.connect('g-properties-changed',
             this._onWeatherPropertiesChanged.bind(this));
 
-        if (this._weatherProxy.g_owner != null)
+        if (this._weatherProxy.g_name_owner != null)
             this._onWeatherPropertiesChanged();
     }
 
