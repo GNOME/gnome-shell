@@ -1,0 +1,15 @@
+<node>
+
+  <!--
+      org.gnome.Shell.ClocksIntegration:
+      @short_description: Clocks integration interface
+
+      The interface used for exporting location settings to GNOME Shell's
+      world clocks integration.
+  -->
+  <interface name="org.gnome.Shell.ClocksIntegration">
+
+  <property name="Locations" type="av" access="read"/>
+
+  </interface>
+</node>
