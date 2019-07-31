@@ -123,9 +123,7 @@ static void on_enable_monitoring_key_changed (GSettings     *settings,
 static long
 get_time (void)
 {
-  GTimeVal tv;
-  g_get_current_time (&tv);
-  return tv.tv_sec;
+  return g_get_real_time () / G_TIME_SPAN_SECOND;
 }
 
 static void
