@@ -155,66 +155,48 @@ var Lightbox = class Lightbox {
     }
 
     show(fadeInTime) {
-        fadeInTime = fadeInTime || 0;
+        let tweenTarget = this.actor;
+        let showTweenParams = {
+            time: fadeInTime || 0,
+            transition: 'easeOutQuad',
+            onComplete: () => {
+                this.shown = true;
+                this.emit('shown');
+            }
+        };
 
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect, {
-                brightness: VIGNETTE_BRIGHTNESS,
-                vignetteSharpness: VIGNETTE_SHARPNESS,
-                time: fadeInTime,
-                transition: 'easeOutQuad',
-                onComplete: () => {
-                    this.shown = true;
-                    this.emit('shown');
-                }
-            });
+            tweenTarget = this.actor.get_effect('radial');
+            showTweenParams.brightness = VIGNETTE_BRIGHTNESS;
+            showTweenParams.vignetteSharpness = VIGNETTE_SHARPNESS;
         } else {
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor, {
-                opacity: 255 * this._fadeFactor,
-                time: fadeInTime,
-                transition: 'easeOutQuad',
-                onComplete: () => {
-                    this.shown = true;
-                    this.emit('shown');
-                }
-            });
+            showTweenParams.opacity = 255 * this._fadeFactor;
         }
+
+        Tweener.removeTweens(tweenTarget);
+        Tweener.addTween(tweenTarget, showTweenParams);
 
         this.actor.show();
     }
 
     hide(fadeOutTime) {
-        fadeOutTime = fadeOutTime || 0;
-
-        this.shown = false;
+        let tweenTarget = this.actor;
+        let hideTweenParams = {
+            opacity: 0,
+            time: fadeOutTime || 0,
+            transition: 'easeOutQuad',
+            onComplete: () => this.actor.hide()
+        };
 
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect, {
-                brightness: 1.0,
-                vignetteSharpness: 0.0,
-                opacity: 0,
-                time: fadeOutTime,
-                transition: 'easeOutQuad',
-                    onComplete: () => {
-                        this.actor.hide();
-                    }
-            });
-        } else {
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor, {
-                opacity: 0,
-                time: fadeOutTime,
-                transition: 'easeOutQuad',
-                onComplete: () => {
-                    this.actor.hide();
-                }
-            });
+            tweenTarget = this.actor.get_effect('radial');
+            hideTweenParams.brightness = 1.0;
+            hideTweenParams.vignetteSharpness = 0.0;
         }
+
+        this.shown = false;
+        Tweener.removeTweens(tweenTarget);
+        Tweener.addTween(tweenTarget, hideTweenParams);
     }
 
     _actorRemoved(container, child) {
