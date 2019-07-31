@@ -80,7 +80,11 @@ enum
   PROP_TEXT,
   PROP_INPUT_PURPOSE,
   PROP_INPUT_HINTS,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 /* signals */
 enum
@@ -910,7 +914,6 @@ st_entry_class_init (StEntryClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = st_entry_set_property;
   gobject_class->get_property = st_entry_get_property;
@@ -933,68 +936,67 @@ st_entry_class_init (StEntryClass *klass)
   widget_class->navigate_focus = st_entry_navigate_focus;
   widget_class->get_accessible_type = st_entry_accessible_get_type;
 
-  pspec = g_param_spec_object ("clutter-text",
-			       "Clutter Text",
-			       "Internal ClutterText actor",
-			       CLUTTER_TYPE_TEXT,
-			       ST_PARAM_READABLE);
-  g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
+  props[PROP_CLUTTER_TEXT] =
+    g_param_spec_object ("clutter-text",
+                         "Clutter Text",
+                         "Internal ClutterText actor",
+                         CLUTTER_TYPE_TEXT,
+                         ST_PARAM_READABLE);
 
-  pspec = g_param_spec_object ("primary-icon",
-			       "Primary Icon",
-			       "Primary Icon actor",
-			       CLUTTER_TYPE_ACTOR,
-			       ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_PRIMARY_ICON, pspec);
+  props[PROP_PRIMARY_ICON] =
+    g_param_spec_object ("primary-icon",
+                         "Primary Icon",
+                         "Primary Icon actor",
+                         CLUTTER_TYPE_ACTOR,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_object ("secondary-icon",
-			       "Secondary Icon",
-			       "Secondary Icon actor",
-			       CLUTTER_TYPE_ACTOR,
-			       ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_SECONDARY_ICON, pspec);
+  props[PROP_SECONDARY_ICON] =
+    g_param_spec_object ("secondary-icon",
+                         "Secondary Icon",
+                         "Secondary Icon actor",
+                         CLUTTER_TYPE_ACTOR,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_string ("hint-text",
-                               "Hint Text",
-                               "Text to display when the entry is not focused "
-                               "and the text property is empty",
-                               NULL,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_HINT_TEXT, pspec);
+  props[PROP_HINT_TEXT] =
+    g_param_spec_string ("hint-text",
+                         "Hint Text",
+                         "Text to display when the entry is not focused "
+                         "and the text property is empty",
+                         NULL,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_object ("hint-actor",
-                               "Hint Actor",
-                               "An actor to display when the entry is not focused "
-                               "and the text property is empty",
-                               CLUTTER_TYPE_ACTOR,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_HINT_ACTOR, pspec);
+  props[PROP_HINT_ACTOR] =
+    g_param_spec_object ("hint-actor",
+                         "Hint Actor",
+                         "An actor to display when the entry is not focused "
+                         "and the text property is empty",
+                         CLUTTER_TYPE_ACTOR,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_string ("text",
-                               "Text",
-                               "Text of the entry",
-                               NULL,
-                               ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
+  props[PROP_TEXT] =
+    g_param_spec_string ("text",
+                         "Text",
+                         "Text of the entry",
+                         NULL,
+                         ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_enum ("input-purpose",
-                             "Purpose",
-                             "Purpose of the text field",
-                             CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
-                             CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_INPUT_PURPOSE,
-                                   pspec);
+  props[PROP_INPUT_PURPOSE] =
+    g_param_spec_enum ("input-purpose",
+                       "Purpose",
+                       "Purpose of the text field",
+                       CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
+                       CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL,
+                       ST_PARAM_READWRITE);
 
-  pspec = g_param_spec_flags ("input-hints",
-                              "hints",
-                              "Hints for the text field behaviour",
-                              CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
-                              0, ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_INPUT_HINTS,
-                                   pspec);
+  props[PROP_INPUT_HINTS] =
+    g_param_spec_flags ("input-hints",
+                        "hints",
+                        "Hints for the text field behaviour",
+                        CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
+                        0,
+                        ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
   /* signals */
   /**
@@ -1132,7 +1134,7 @@ st_entry_set_text (StEntry     *entry,
 
   st_entry_update_hint_visibility (entry);
 
-  g_object_notify (G_OBJECT (entry), "text");
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
 }
 
 /**
@@ -1222,7 +1224,7 @@ st_entry_set_input_purpose (StEntry                    *entry,
     {
       clutter_text_set_input_purpose (editable, purpose);
 
-      g_object_notify (G_OBJECT (entry), "input-purpose");
+      g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_INPUT_PURPOSE]);
     }
 }
 
@@ -1267,7 +1269,7 @@ st_entry_set_input_hints (StEntry                      *entry,
     {
       clutter_text_set_input_hints (editable, hints);
 
-      g_object_notify (G_OBJECT (entry), "input-hints");
+      g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_INPUT_HINTS]);
     }
 }
 

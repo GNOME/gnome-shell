@@ -115,8 +115,12 @@ enum
   PROP_CAN_FOCUS,
   PROP_LABEL_ACTOR,
   PROP_ACCESSIBLE_ROLE,
-  PROP_ACCESSIBLE_NAME
+  PROP_ACCESSIBLE_NAME,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum
 {
@@ -834,7 +838,6 @@ st_widget_class_init (StWidgetClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = st_widget_set_property;
   gobject_class->get_property = st_widget_get_property;
@@ -869,25 +872,24 @@ st_widget_class_init (StWidgetClass *klass)
    * The pseudo-class of the actor. Typical values include "hover", "active",
    * "focus".
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_PSEUDO_CLASS,
-                                   g_param_spec_string ("pseudo-class",
-                                                        "Pseudo Class",
-                                                        "Pseudo class for styling",
-                                                        "",
-                                                        ST_PARAM_READWRITE));
+  props[PROP_PSEUDO_CLASS] =
+    g_param_spec_string ("pseudo-class",
+                         "Pseudo Class",
+                         "Pseudo class for styling",
+                         "",
+                         ST_PARAM_READWRITE);
+
   /**
    * StWidget:style-class:
    *
    * The style-class of the actor for use in styling.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_STYLE_CLASS,
-                                   g_param_spec_string ("style-class",
-                                                        "Style Class",
-                                                        "Style class for styling",
-                                                        "",
-                                                        ST_PARAM_READWRITE));
+  props[PROP_STYLE_CLASS] =
+    g_param_spec_string ("style-class",
+                         "Style Class",
+                         "Style class for styling",
+                         "",
+                         ST_PARAM_READWRITE);
 
   /**
    * StWidget:style:
@@ -895,13 +897,12 @@ st_widget_class_init (StWidgetClass *klass)
    * Inline style information for the actor as a ';'-separated list of
    * CSS properties.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_STYLE,
-                                   g_param_spec_string ("style",
-                                                        "Style",
-                                                        "Inline style string",
-                                                        "",
-                                                        ST_PARAM_READWRITE));
+  props[PROP_STYLE] =
+     g_param_spec_string ("style",
+                          "Style",
+                          "Inline style string",
+                          "",
+                          ST_PARAM_READWRITE);
 
   /**
    * StWidget:theme:
@@ -909,13 +910,12 @@ st_widget_class_init (StWidgetClass *klass)
    * A theme set on this actor overriding the global theming for this actor
    * and its descendants
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_THEME,
-                                   g_param_spec_object ("theme",
-                                                        "Theme",
-                                                        "Theme override",
-                                                        ST_TYPE_THEME,
-                                                        ST_PARAM_READWRITE));
+  props[PROP_THEME] =
+     g_param_spec_object ("theme",
+                          "Theme",
+                          "Theme override",
+                          ST_TYPE_THEME,
+                          ST_PARAM_READWRITE);
 
   /**
    * StWidget:track-hover:
@@ -926,14 +926,12 @@ st_widget_class_init (StWidgetClass *klass)
    * adjusted automatically as the pointer moves in and out of the
    * widget.
    */
-  pspec = g_param_spec_boolean ("track-hover",
-                                "Track hover",
-                                "Determines whether the widget tracks hover state",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_TRACK_HOVER,
-                                   pspec);
+  props[PROP_TRACK_HOVER] =
+     g_param_spec_object ("track-hover",
+                          "Track hover",
+                          "Determines whether the widget tracks hover state",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
   /**
    * StWidget:hover:
@@ -942,68 +940,63 @@ st_widget_class_init (StWidgetClass *klass)
    * only tracked automatically if #StWidget:track-hover is %TRUE, but you can
    * adjust it manually in any case.
    */
-  pspec = g_param_spec_boolean ("hover",
-                                "Hover",
-                                "Whether the pointer is hovering over the widget",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_HOVER,
-                                   pspec);
+  props[PROP_HOVER] =
+     g_param_spec_boolean ("hover",
+                           "Hover",
+                           "Whether the pointer is hovering over the widget",
+                           FALSE,
+                           ST_PARAM_READWRITE);
 
   /**
    * StWidget:can-focus:
    *
    * Whether or not the widget can be focused via keyboard navigation.
    */
-  pspec = g_param_spec_boolean ("can-focus",
-                                "Can focus",
-                                "Whether the widget can be focused via keyboard navigation",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_CAN_FOCUS,
-                                   pspec);
+  props[PROP_CAN_FOCUS] =
+     g_param_spec_boolean ("can-focus",
+                           "Can focus",
+                           "Whether the widget can be focused via keyboard navigation",
+                           FALSE,
+                           ST_PARAM_READWRITE);
 
   /**
    * ClutterActor:label-actor:
    *
    * An actor that labels this widget.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_LABEL_ACTOR,
-                                   g_param_spec_object ("label-actor",
-                                                        "Label",
-                                                        "Label that identifies this widget",
-                                                        CLUTTER_TYPE_ACTOR,
-                                                        ST_PARAM_READWRITE));
+  props[PROP_LABEL_ACTOR] =
+     g_param_spec_object ("label-actor",
+                          "Label",
+                          "Label that identifies this widget",
+                          CLUTTER_TYPE_ACTOR,
+                          ST_PARAM_READWRITE);
+
   /**
    * StWidget:accessible-role:
    *
    * The accessible role of this object
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_ACCESSIBLE_ROLE,
-                                   g_param_spec_enum ("accessible-role",
-                                                      "Accessible Role",
-                                                      "The accessible role of this object",
-                                                      ATK_TYPE_ROLE,
-                                                      ATK_ROLE_INVALID,
-                                                      ST_PARAM_READWRITE));
-
+  props[PROP_ACCESSIBLE_ROLE] =
+     g_param_spec_enum ("accessible-role",
+                        "Accessible Role",
+                        "The accessible role of this object",
+                        ATK_TYPE_ROLE,
+                        ATK_ROLE_INVALID,
+                        ST_PARAM_READWRITE);
 
   /**
    * StWidget:accessible-name:
    *
    * Object instance's name for assistive technology access.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_ACCESSIBLE_NAME,
-                                   g_param_spec_string ("accessible-name",
-                                                        "Accessible name",
-                                                        "Object instance's name for assistive technology access.",
-                                                        NULL,
-                                                        ST_PARAM_READWRITE));
+  props[PROP_ACCESSIBLE_NAME] =
+     g_param_spec_string ("accessible-name",
+                          "Accessible name",
+                          "Object instance's name for assistive technology access.",
+                          NULL,
+                          ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
   /**
    * StWidget::style-changed:
@@ -1077,7 +1070,7 @@ st_widget_set_theme (StWidget  *actor,
 
       st_widget_style_changed (actor);
 
-      g_object_notify (G_OBJECT (actor), "theme");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_THEME]);
     }
 }
 
@@ -1213,7 +1206,7 @@ st_widget_set_style_class_name (StWidget    *actor,
   if (set_class_list (&priv->style_class, style_class_list))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "style-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_STYLE_CLASS]);
     }
 }
 
@@ -1239,7 +1232,7 @@ st_widget_add_style_class_name (StWidget    *actor,
   if (add_class_name (&priv->style_class, style_class))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "style-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_STYLE_CLASS]);
     }
 }
 
@@ -1265,7 +1258,7 @@ st_widget_remove_style_class_name (StWidget    *actor,
   if (remove_class_name (&priv->style_class, style_class))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "style-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_STYLE_CLASS]);
     }
 }
 
@@ -1376,7 +1369,7 @@ st_widget_set_style_pseudo_class (StWidget    *actor,
   if (set_class_list (&priv->pseudo_class, pseudo_class_list))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "pseudo-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_PSEUDO_CLASS]);
     }
 }
 
@@ -1402,7 +1395,7 @@ st_widget_add_style_pseudo_class (StWidget    *actor,
   if (add_class_name (&priv->pseudo_class, pseudo_class))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "pseudo-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_PSEUDO_CLASS]);
     }
 }
 
@@ -1427,7 +1420,7 @@ st_widget_remove_style_pseudo_class (StWidget    *actor,
   if (remove_class_name (&priv->pseudo_class, pseudo_class))
     {
       st_widget_style_changed (actor);
-      g_object_notify (G_OBJECT (actor), "pseudo-class");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_PSEUDO_CLASS]);
     }
 }
 
@@ -1457,7 +1450,7 @@ st_widget_set_style (StWidget  *actor,
 
       st_widget_style_changed (actor);
 
-      g_object_notify (G_OBJECT (actor), "style");
+      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_STYLE]);
     }
 }
 
@@ -1907,7 +1900,7 @@ st_widget_set_track_hover (StWidget *widget,
   if (priv->track_hover != track_hover)
     {
       priv->track_hover = track_hover;
-      g_object_notify (G_OBJECT (widget), "track-hover");
+      g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_TRACK_HOVER]);
 
       if (priv->track_hover)
         st_widget_sync_hover (widget);
@@ -1962,7 +1955,7 @@ st_widget_set_hover (StWidget *widget,
         st_widget_add_style_pseudo_class (widget, "hover");
       else
         st_widget_remove_style_pseudo_class (widget, "hover");
-      g_object_notify (G_OBJECT (widget), "hover");
+      g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_HOVER]);
     }
 }
 
@@ -2029,7 +2022,7 @@ st_widget_set_can_focus (StWidget *widget,
   if (priv->can_focus != can_focus)
     {
       priv->can_focus = can_focus;
-      g_object_notify (G_OBJECT (widget), "can-focus");
+      g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_CAN_FOCUS]);
     }
 }
 
@@ -2526,7 +2519,7 @@ st_widget_set_label_actor (StWidget     *widget,
       else
         priv->label_actor = NULL;
 
-      g_object_notify (G_OBJECT (widget), "label-actor");
+      g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_LABEL_ACTOR]);
     }
 }
 
@@ -2559,7 +2552,7 @@ st_widget_set_accessible_name (StWidget    *widget,
     g_free (priv->accessible_name);
 
   priv->accessible_name = g_strdup (name);
-  g_object_notify (G_OBJECT (widget), "accessible-name");
+  g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_ACCESSIBLE_NAME]);
 }
 
 /**
@@ -2613,7 +2606,7 @@ st_widget_set_accessible_role (StWidget *widget,
   priv = st_widget_get_instance_private (widget);
   priv->accessible_role = role;
 
-  g_object_notify (G_OBJECT (widget), "accessible-role");
+  g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_ACCESSIBLE_ROLE]);
 }
 
 
