@@ -154,9 +154,10 @@ var Lightbox = class Lightbox {
     show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
 
-        Tweener.removeTweens(this.actor);
         if (this._radialEffect) {
-            Tweener.addTween(this.actor.get_effect('radial'),
+            let effect = this.actor.get_effect('radial');
+            Tweener.removeTweens(effect);
+            Tweener.addTween(effect,
                              { brightness: VIGNETTE_BRIGHTNESS,
                                vignetteSharpness: VIGNETTE_SHARPNESS,
                                time: fadeInTime,
@@ -167,6 +168,7 @@ var Lightbox = class Lightbox {
                                }
                              });
         } else {
+            Tweener.removeTweens(this.actor);
             Tweener.addTween(this.actor,
                              { opacity: 255 * this._fadeFactor,
                                time: fadeInTime,
@@ -185,9 +187,11 @@ var Lightbox = class Lightbox {
         fadeOutTime = fadeOutTime || 0;
 
         this.shown = false;
-        Tweener.removeTweens(this.actor);
+
         if (this._radialEffect) {
-            Tweener.addTween(this.actor.get_effect('radial'),
+            let effect = this.actor.get_effect('radial');
+            Tweener.removeTweens(effect);
+            Tweener.addTween(effect,
                              { brightness: 1.0,
                                vignetteSharpness: 0.0,
                                opacity: 0,
@@ -198,6 +202,7 @@ var Lightbox = class Lightbox {
                                }
                              });
         } else {
+            Tweener.removeTweens(this.actor);
             Tweener.addTween(this.actor,
                              { opacity: 0,
                                time: fadeOutTime,
