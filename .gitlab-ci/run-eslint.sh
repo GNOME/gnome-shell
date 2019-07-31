@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 OUTPUT_REGULAR=reports/lint-regular-report.txt
 OUTPUT_LEGACY=reports/lint-legacy-report.txt

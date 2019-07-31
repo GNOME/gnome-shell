@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 shell_branch=$(git describe --contains --all HEAD)
 mutter_target=
