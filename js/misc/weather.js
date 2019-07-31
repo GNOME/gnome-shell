@@ -153,12 +153,13 @@ var WeatherClient = class {
 
         this._weatherProxy.connect('g-properties-changed',
             this._onWeatherPropertiesChanged.bind(this));
-
-        if (this._weatherProxy.g_name_owner != null)
-            this._onWeatherPropertiesChanged();
+        this._onWeatherPropertiesChanged();
     }
 
     _onWeatherPropertiesChanged() {
+        if (this._weatherProxy.g_name_owner == null)
+            return;
+
         this._settings.set_boolean('automatic-location',
             this._weatherProxy.AutomaticLocation);
         this._settings.set_value('locations',
