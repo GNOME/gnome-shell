@@ -6,7 +6,6 @@
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -430,92 +429,3 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
         duration: SCROLL_TIME
     });
 }
-
-var AppSettingsMonitor = class {
-    constructor(appId, schemaId) {
-        this._appId = appId;
-        this._schemaId = schemaId;
-
-        this._app = null;
-        this._settings = null;
-        this._handlers = [];
-
-        this._schemaSource = Gio.SettingsSchemaSource.get_default();
-
-        this._appSystem = Shell.AppSystem.get_default();
-        this._appSystem.connect('installed-changed',
-                                this._onInstalledChanged.bind(this));
-        this._onInstalledChanged();
-    }
-
-    get available() {
-        return this._app != null && this._settings != null;
-    }
-
-    activateApp() {
-        if (this._app)
-            this._app.activate();
-    }
-
-    watchSetting(key, callback) {
-        let handler = { id: 0, key: key, callback: callback };
-        this._handlers.push(handler);
-
-        this._connectHandler(handler);
-    }
-
-    _connectHandler(handler) {
-        if (!this._settings || handler.id > 0)
-            return;
-
-        handler.id = this._settings.connect(`changed::${handler.key}`,
-                                            handler.callback);
-        handler.callback(this._settings, handler.key);
-    }
-
-    _disconnectHandler(handler) {
-        if (this._settings && handler.id > 0)
-            this._settings.disconnect(handler.id);
-        handler.id = 0;
-    }
-
-    _onInstalledChanged() {
-        let hadApp = (this._app != null);
-        this._app = this._appSystem.lookup_app(this._appId);
-        let haveApp = (this._app != null);
-
-        if (hadApp == haveApp)
-            return;
-
-        if (haveApp)
-            this._checkSettings();
-        else
-            this._setSettings(null);
-    }
-
-    _setSettings(settings) {
-        this._handlers.forEach((handler) => this._disconnectHandler(handler));
-
-        let hadSettings = (this._settings != null);
-        this._settings = settings;
-        let haveSettings = (this._settings != null);
-
-        this._handlers.forEach((handler) => this._connectHandler(handler));
-
-        if (hadSettings != haveSettings)
-            this.emit('available-changed');
-    }
-
-    _checkSettings() {
-        let schema = this._schemaSource.lookup(this._schemaId, true);
-        if (schema) {
-            this._setSettings(new Gio.Settings({ settings_schema: schema }));
-        } else if (this._app) {
-            Mainloop.timeout_add_seconds(1, () => {
-                this._checkSettings();
-                return GLib.SOURCE_REMOVE;
-            });
-        }
-    }
-};
-Signals.addSignalMethods(AppSettingsMonitor.prototype);
