@@ -27,6 +27,12 @@ var SlideDirection = {
 
 var SlideLayout = GObject.registerClass({
     Properties: {
+        'slide-direction': GObject.ParamSpec.int(
+            'slide-direction', 'slide-direction', 'slide-direction',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            Math.min(...Object.values(SlideDirection)),
+            Math.max(...Object.values(SlideDirection)),
+            SlideDirection.LEFT),
         'slide-x': GObject.ParamSpec.double(
             'slide-x', 'slide-x', 'slide-x',
             GObject.ParamFlags.READWRITE,
@@ -40,9 +46,9 @@ var SlideLayout = GObject.registerClass({
     _init(params) {
         this._slideX = 1;
         this._translationX = 0;
-        this._direction = SlideDirection.LEFT;
 
         super._init(params);
+        this.connect('notify::slide-direction', () => this.layout_changed());
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -66,7 +72,7 @@ var SlideLayout = GObject.registerClass({
         // Align the actor inside the clipped box, as the actor's alignment
         // flags only determine what to do if the allocated box is bigger
         // than the actor's box.
-        let realDirection = getRtlSlideDirection(this._direction, child);
+        let realDirection = getRtlSlideDirection(this.slide_direction, child);
         let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth)
                                                             : (availWidth - natWidth * this._slideX);
 
@@ -94,12 +100,15 @@ var SlideLayout = GObject.registerClass({
     }
 
     set slideDirection(direction) {
-        this._direction = direction;
-        this.layout_changed();
+        if (this.slide_direction == direction)
+            return;
+
+        this.slide_direction = direction;
+        this.notify('direction');
     }
 
     get slideDirection() {
-        return this._direction;
+        return this.slide_direction;
     }
 
     // eslint-disable-next-line camelcase
@@ -119,11 +128,11 @@ var SlideLayout = GObject.registerClass({
 
 var SlidingControl = GObject.registerClass(
 class SlidingControl extends St.Widget {
-    _init(params) {
-        params = Params.parse(params, { slideDirection: SlideDirection.LEFT });
-
-        this.layout = new SlideLayout();
-        this.layout.slideDirection = params.slideDirection;
+    _init(params = {}) {
+        this.layout = new SlideLayout({
+            slideDirection: SlideDirection.LEFT,
+            ...params
+        });
         super._init({
             layout_manager: this.layout,
             style_class: 'overview-controls',
