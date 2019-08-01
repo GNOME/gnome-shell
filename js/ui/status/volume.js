@@ -28,7 +28,7 @@ var StreamSlider = class {
     constructor(control) {
         this._control = control;
 
-        this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this.item = new PopupMenu.PopupBaseMenuItem({ activatable: false });
 
         this._slider = new Slider.Slider(0);
 
