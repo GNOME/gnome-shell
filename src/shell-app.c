@@ -604,6 +604,13 @@ shell_app_can_open_new_window (ShellApp *app)
   GDesktopAppInfo *desktop_info;
   const char * const *desktop_actions;
 
+  /* Never allow opening new windows for apps that are currently starting,
+     otherwise we'd return TRUE in the next check (app->running_state is NULL),
+     which would mean that while an app is starting, opening new windows is
+     always possible. */
+  if (app->state == SHELL_APP_STATE_STARTING)
+    return FALSE;
+
   /* Apps that are not running can always open new windows, because
      activating them would open the first one */
   if (!app->running_state)
