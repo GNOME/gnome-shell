@@ -603,6 +603,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
                 this._extension = ExtensionUtils.deserializeExtension(newState);
                 let state = (this._extension.state == ExtensionState.ENABLED);
                 this._switch.state = state;
+                this._switch.active = this._extension.isEnabled;
                 this._switch.sensitive = this._canToggle();
             });
 
@@ -672,7 +673,8 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._switch = new Gtk.Switch({
             valign: Gtk.Align.CENTER,
             sensitive: this._canToggle(),
-            state: this._extension.state === ExtensionState.ENABLED
+            state: this._extension.state === ExtensionState.ENABLED,
+            active: this._extension.isEnabled
         });
         this._switch.connect('notify::active', () => {
             if (this._switch.active)
