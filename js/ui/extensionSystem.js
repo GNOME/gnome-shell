@@ -363,10 +363,7 @@ var ExtensionManager = class {
             ? DISABLE_USER_EXTENSIONS_KEY
             : ENABLED_EXTENSIONS_KEY;
 
-        extension.canChange =
-            !hasError &&
-            global.settings.is_writable(changeKey) &&
-            (isMode || !modeOnly);
+        extension.canChange = global.settings.is_writable(ENABLED_EXTENSIONS_KEY);
     }
 
     _getEnabledExtensions() {
