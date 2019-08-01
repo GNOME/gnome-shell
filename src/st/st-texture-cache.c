@@ -151,6 +151,14 @@ on_icon_theme_changed (StSettings     *settings,
 }
 
 static void
+on_gtk_icon_theme_changed (GtkIconTheme   *icon_theme,
+                           StTextureCache *self)
+{
+  st_texture_cache_evict_icons (self);
+  g_signal_emit (self, signals[ICON_THEME_CHANGED], 0);
+}
+
+static void
 st_texture_cache_init (StTextureCache *self)
 {
   StSettings *settings;
@@ -160,6 +168,8 @@ st_texture_cache_init (StTextureCache *self)
   self->priv->icon_theme = gtk_icon_theme_new ();
   gtk_icon_theme_add_resource_path (self->priv->icon_theme,
                                     "/org/gnome/shell/theme/icons");
+  g_signal_connect (self->priv->icon_theme, "changed",
+                    G_CALLBACK (on_gtk_icon_theme_changed), self);
 
   settings = st_settings_get ();
   g_signal_connect (settings, "notify::gtk-icon-theme",
