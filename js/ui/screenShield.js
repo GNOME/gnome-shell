@@ -34,7 +34,7 @@ var ARROW_DRAG_THRESHOLD = 0.1;
 
 // Parameters for the arrow animation
 var N_ARROWS = 3;
-var ARROW_ANIMATION_TIME = 0.6;
+var ARROW_ANIMATION_TIME = 600;
 var ARROW_ANIMATION_PEAK_OPACITY = 0.4;
 var ARROW_IDLE_TIME = 30000; // ms
 
@@ -45,9 +45,9 @@ var SUMMARY_ICON_SIZE = 48;
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
 //   or when cancelling the dialog
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
-var STANDARD_FADE_TIME = 10;
-var MANUAL_FADE_TIME = 0.3;
-var CURTAIN_SLIDE_TIME = 0.3;
+var STANDARD_FADE_TIME = 10000;
+var MANUAL_FADE_TIME = 300;
+var CURTAIN_SLIDE_TIME = 300;
 
 var Clock = class {
     constructor() {
@@ -737,8 +737,8 @@ var ScreenShield = class {
             arrows[i].opacity = 0;
             Tweener.addTween(arrows[i],
                              { opacity: 0,
-                               delay: unitaryDelay * (N_ARROWS - (i + 1)),
-                               time: ARROW_ANIMATION_TIME,
+                               delay: (unitaryDelay * (N_ARROWS - (i + 1))) / 1000,
+                               time: ARROW_ANIMATION_TIME / 1000,
                                transition(t, b, c, d) {
                                    if (t < d / 2)
                                        return TweenerEquations.easeOutQuad(t, 0, maxOpacity, d / 2);
@@ -788,7 +788,7 @@ var ScreenShield = class {
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
-                               time: time,
+                               time: time / 1000,
                                transition: 'easeInQuad',
                                onComplete: () => {
                                    this._lockScreenGroup.fixed_position_set = false;
@@ -830,8 +830,10 @@ var ScreenShield = class {
         let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
 
         if (shouldLock) {
-            let lockTimeout = Math.max(STANDARD_FADE_TIME, this._settings.get_uint(LOCK_DELAY_KEY));
-            this._lockTimeoutId = Mainloop.timeout_add(lockTimeout * 1000,
+            let lockTimeout = Math.max(
+                STANDARD_FADE_TIME,
+                this._settings.get_uint(LOCK_DELAY_KEY) * 1000);
+            this._lockTimeoutId = Mainloop.timeout_add(lockTimeout,
                                                        () => {
                                                            this._lockTimeoutId = 0;
                                                            this.lock(false);
@@ -931,14 +933,14 @@ var ScreenShield = class {
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
             let delta = (h + this._lockScreenGroup.y);
-            let minVelocity = global.stage.height / (CURTAIN_SLIDE_TIME * 1000);
+            let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
 
             velocity = Math.max(minVelocity, velocity);
-            let time = (delta / velocity) / 1000;
+            let time = delta / velocity;
 
             Tweener.addTween(this._lockScreenGroup,
                              { y: -h,
-                               time: time,
+                               time: time / 1000,
                                transition: 'easeInQuad',
                                onComplete: this._hideLockScreenComplete.bind(this),
                              });
@@ -1004,7 +1006,7 @@ var ScreenShield = class {
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
-                               time: MANUAL_FADE_TIME,
+                               time: MANUAL_FADE_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this._lockScreenShown({ fadeToBlack: fadeToBlack,
@@ -1096,7 +1098,7 @@ var ScreenShield = class {
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
 
-            let id = Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, () => {
+            let id = Mainloop.timeout_add(MANUAL_FADE_TIME, () => {
                 this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
                 return GLib.SOURCE_REMOVE;
             });
@@ -1217,7 +1219,7 @@ var ScreenShield = class {
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
             scale_y: 0,
-            time: animate ? Overview.ANIMATION_TIME : 0,
+            time: animate ? Overview.ANIMATION_TIME / 1000 : 0,
             transition: 'easeOutQuad',
             onComplete: this._completeDeactivate.bind(this),
             onCompleteScope: this

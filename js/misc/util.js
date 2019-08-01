@@ -12,7 +12,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Params = imports.misc.params;
 
-var SCROLL_TIME = 0.1;
+var SCROLL_TIME = 100;
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\([^\\s()<>]+\\)';
@@ -428,7 +428,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
 
     Tweener.addTween(adjustment,
                      { value: value,
-                       time: SCROLL_TIME,
+                       time: SCROLL_TIME / 1000,
                        transition: 'easeOutQuad' });
 }
 

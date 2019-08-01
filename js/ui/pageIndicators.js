@@ -6,17 +6,17 @@ const { Clutter, GObject, St } = imports.gi;
 const Tweener = imports.ui.tweener;
 const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
 
-var INDICATORS_BASE_TIME = 0.25;
-var INDICATORS_BASE_TIME_OUT = 0.125;
-var INDICATORS_ANIMATION_DELAY = 0.125;
-var INDICATORS_ANIMATION_DELAY_OUT = 0.0625;
-var INDICATORS_ANIMATION_MAX_TIME = 0.75;
-var SWITCH_TIME = 0.4;
+var INDICATORS_BASE_TIME = 250;
+var INDICATORS_BASE_TIME_OUT = 125;
+var INDICATORS_ANIMATION_DELAY = 125;
+var INDICATORS_ANIMATION_DELAY_OUT = 62.5;
+var INDICATORS_ANIMATION_MAX_TIME = 750;
+var SWITCH_TIME = 400;
 var INDICATORS_ANIMATION_MAX_TIME_OUT =
     Math.min (SWITCH_TIME,
               ANIMATION_TIME_OUT + ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
-var ANIMATION_DELAY = 0.1;
+var ANIMATION_DELAY = 100;
 
 var PageIndicators = GObject.registerClass({
     Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } }
@@ -132,9 +132,9 @@ class AnimatedPageIndicators extends PageIndicators {
             children[i].translation_x = isAnimationIn ? offset : 0;
             Tweener.addTween(children[i], {
                 translation_x: isAnimationIn ? 0 : offset,
-                time: baseTime + delay * i,
+                time: (baseTime + delay * i) / 1000,
                 transition: 'easeInOutQuad',
-                delay: isAnimationIn ? ANIMATION_DELAY : 0
+                delay: isAnimationIn ? ANIMATION_DELAY / 1000 : 0
             });
         }
     }

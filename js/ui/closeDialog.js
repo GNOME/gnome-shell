@@ -8,7 +8,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 var FROZEN_WINDOW_BRIGHTNESS = -0.3;
-var DIALOG_TRANSITION_TIME = 0.15;
+var DIALOG_TRANSITION_TIME = 150;
 var ALIVE_TIMEOUT = 5000;
 
 var CloseDialog = GObject.registerClass({
@@ -152,7 +152,7 @@ var CloseDialog = GObject.registerClass({
         Tweener.addTween(this._dialog,
                          { scale_y: 1,
                            transition: 'linear',
-                           time: DIALOG_TRANSITION_TIME,
+                           time: DIALOG_TRANSITION_TIME / 1000,
                            onComplete: this._onFocusChanged.bind(this)
                          });
     }
@@ -179,7 +179,7 @@ var CloseDialog = GObject.registerClass({
         Tweener.addTween(dialog,
                          { scale_y: 0,
                            transition: 'linear',
-                           time: DIALOG_TRANSITION_TIME,
+                           time: DIALOG_TRANSITION_TIME / 1000,
                            onComplete: () => {
                                dialog.destroy();
                            }

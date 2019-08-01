@@ -12,10 +12,10 @@ const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
-var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
+var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
-var MESSAGE_FADE_OUT_ANIMATION_TIME = 0.5;
+var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
@@ -292,8 +292,8 @@ var AuthPrompt = class {
             } else {
                 Tweener.addTween(oldActor,
                                  { opacity: 0,
-                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME / 1000,
+                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY / 1000,
                                    transition: 'linear',
                                    onComplete: () => {
                                        if (wasSpinner) {
@@ -314,8 +314,8 @@ var AuthPrompt = class {
             else
                 Tweener.addTween(actor,
                                  { opacity: 255,
-                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME / 1000,
+                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY / 1000,
                                    transition: 'linear' });
         }
 
@@ -368,7 +368,7 @@ var AuthPrompt = class {
         Tweener.removeTweens(this._message);
         Tweener.addTween(this._message,
                          { opacity: 0,
-                           time: MESSAGE_FADE_OUT_ANIMATION_TIME,
+                           time: MESSAGE_FADE_OUT_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad'
                          });
     }

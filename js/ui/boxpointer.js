@@ -13,7 +13,7 @@ var PopupAnimation = {
     FULL:  ~0,
 };
 
-var POPUP_ANIMATION_TIME = 0.15;
+var POPUP_ANIMATION_TIME = 150;
 
 /**
  * BoxPointer:
@@ -115,7 +115,7 @@ var BoxPointer = GObject.registerClass({
                                      if (onComplete)
                                          onComplete();
                                  },
-                                 time: animationTime });
+                                 time: animationTime / 1000 });
     }
 
     close(animate, onComplete) {
@@ -153,7 +153,7 @@ var BoxPointer = GObject.registerClass({
                                  translation_x: translationX,
                                  translation_y: translationY,
                                  transition: 'linear',
-                                 time: animationTime,
+                                 time: animationTime / 1000,
                                  onComplete: () => {
                                      this.hide();
                                      this.opacity = 0;

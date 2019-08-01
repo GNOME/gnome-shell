@@ -324,7 +324,7 @@ var ViewSelector = class {
     _fadePageIn() {
         Tweener.addTween(this._activePage,
                          { opacity: 255,
-                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad'
                          });
     }
@@ -333,7 +333,7 @@ var ViewSelector = class {
         let oldPage = page;
         Tweener.addTween(page,
                          { opacity: 0,
-                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._animateIn(oldPage);
@@ -606,7 +606,7 @@ var ViewSelector = class {
     fadeIn() {
         let actor = this._activePage;
         Tweener.addTween(actor, { opacity: 255,
-                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
                                   transition: 'easeInQuad'
                                 });
     }
@@ -614,7 +614,7 @@ var ViewSelector = class {
     fadeHalf() {
         let actor = this._activePage;
         Tweener.addTween(actor, { opacity: 128,
-                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
                                   transition: 'easeOutQuad'
                                 });
     }

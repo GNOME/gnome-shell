@@ -13,9 +13,9 @@ const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 
-var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
+var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2;
 var KEY_LONG_PRESS_TIME = 250;
-var PANEL_SWITCH_ANIMATION_TIME = 0.5;
+var PANEL_SWITCH_ANIMATION_TIME = 500;
 var PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
@@ -695,7 +695,7 @@ var EmojiPager = class EmojiPager {
             Tweener.removeTweens(this);
             Tweener.addTween(this,
                              { delta: value,
-                               time: time,
+                               time: time / 1000,
                                transition: 'easeInOutQuad',
                                onComplete() {
                                    this.setCurrentPage(this.getFollowingPage());
@@ -711,7 +711,7 @@ var EmojiPager = class EmojiPager {
         Tweener.removeTweens(this);
         Tweener.addTween(this,
                          { delta: 0,
-                           time: time,
+                           time: time / 1000,
                            transition: 'easeInOutQuad',
                          });
     }
@@ -1656,14 +1656,14 @@ var Keyboard = class Keyboard {
         if (show) {
             Tweener.addTween(windowActor,
                              { y: windowActor.y - deltaY,
-                               time: Layout.KEYBOARD_ANIMATION_TIME,
+                               time: Layout.KEYBOARD_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: this._windowSlideAnimationComplete,
                                onCompleteParams: [window, -deltaY] });
         } else {
             Tweener.addTween(windowActor,
                              { y: windowActor.y + deltaY,
-                               time: Layout.KEYBOARD_ANIMATION_TIME,
+                               time: Layout.KEYBOARD_ANIMATION_TIME / 1000,
                                transition: 'easeInQuad',
                                onComplete: this._windowSlideAnimationComplete,
                                onCompleteParams: [window, deltaY] });
