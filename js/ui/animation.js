@@ -7,8 +7,8 @@ const Mainloop = imports.mainloop;
 const Tweener = imports.ui.tweener;
 
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
-var SPINNER_ANIMATION_TIME = 0.3;
-var SPINNER_ANIMATION_DELAY = 1.0;
+var SPINNER_ANIMATION_TIME = 300;
+var SPINNER_ANIMATION_DELAY = 1000;
 
 var Animation = class {
     constructor(file, width, height, speed) {
@@ -144,8 +144,8 @@ var Spinner = class extends AnimatedIcon {
             super.play();
             Tweener.addTween(this.actor, {
                 opacity: 255,
-                delay: SPINNER_ANIMATION_DELAY,
-                time: SPINNER_ANIMATION_TIME,
+                delay: SPINNER_ANIMATION_DELAY / 1000,
+                time: SPINNER_ANIMATION_TIME / 1000,
                 transition: 'linear'
             });
         } else {
@@ -160,7 +160,7 @@ var Spinner = class extends AnimatedIcon {
         if (this._animate) {
             Tweener.addTween(this.actor, {
                 opacity: 0,
-                time: SPINNER_ANIMATION_TIME,
+                time: SPINNER_ANIMATION_TIME / 1000,
                 transition: 'linear',
                 onComplete: () => {
                     super.stop();

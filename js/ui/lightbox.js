@@ -69,8 +69,8 @@ class RadialShaderEffect extends Shell.GLSLEffect {
  *           - inhibitEvents: whether to inhibit events for @container
  *           - width: shade actor width
  *           - height: shade actor height
- *           - fadeInTime: seconds used to fade in
- *           - fadeOutTime: seconds used to fade out
+ *           - fadeInTime: milliseconds used to fade in
+ *           - fadeOutTime: milliseconds used to fade out
  *
  * Lightbox creates a dark translucent "shade" actor to hide the
  * contents of @container, and allows you to specify particular actors
@@ -160,7 +160,7 @@ var Lightbox = class Lightbox {
             Tweener.addTween(effect,
                              { brightness: VIGNETTE_BRIGHTNESS,
                                vignetteSharpness: VIGNETTE_SHARPNESS,
-                               time: fadeInTime,
+                               time: fadeInTime / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this.shown = true;
@@ -171,7 +171,7 @@ var Lightbox = class Lightbox {
             Tweener.removeTweens(this.actor);
             Tweener.addTween(this.actor,
                              { opacity: 255 * this._fadeFactor,
-                               time: fadeInTime,
+                               time: fadeInTime / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this.shown = true;
@@ -195,7 +195,7 @@ var Lightbox = class Lightbox {
                              { brightness: 1.0,
                                vignetteSharpness: 0.0,
                                opacity: 0,
-                               time: fadeOutTime,
+                               time: fadeOutTime / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this.actor.hide();
@@ -205,7 +205,7 @@ var Lightbox = class Lightbox {
             Tweener.removeTweens(this.actor);
             Tweener.addTween(this.actor,
                              { opacity: 0,
-                               time: fadeOutTime,
+                               time: fadeOutTime / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this.actor.hide();

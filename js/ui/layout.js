@@ -14,9 +14,9 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const Ripples = imports.ui.ripples;
 
-var STARTUP_ANIMATION_TIME = 0.5;
-var KEYBOARD_ANIMATION_TIME = 0.15;
-var BACKGROUND_FADE_ANIMATION_TIME = 1.0;
+var STARTUP_ANIMATION_TIME = 500;
+var KEYBOARD_ANIMATION_TIME = 150;
+var BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
@@ -466,7 +466,7 @@ var LayoutManager = GObject.registerClass({
                 backgroundActor.opacity = 0;
                 Tweener.addTween(backgroundActor,
                                  { opacity: 255,
-                                   time: BACKGROUND_FADE_ANIMATION_TIME,
+                                   time: BACKGROUND_FADE_ANIMATION_TIME / 1000,
                                    transition: 'easeOutQuad' });
             }
         }
@@ -700,7 +700,7 @@ var LayoutManager = GObject.registerClass({
     _startupAnimationGreeter() {
         Tweener.addTween(this.panelBox,
                          { translation_y: 0,
-                           time: STARTUP_ANIMATION_TIME,
+                           time: STARTUP_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
                            onCompleteScope: this });
@@ -711,7 +711,7 @@ var LayoutManager = GObject.registerClass({
                          { scale_x: 1,
                            scale_y: 1,
                            opacity: 255,
-                           time: STARTUP_ANIMATION_TIME,
+                           time: STARTUP_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
                            onCompleteScope: this });
@@ -743,7 +743,7 @@ var LayoutManager = GObject.registerClass({
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: this.keyboardBox.height,
                            opacity: 255,
-                           time: KEYBOARD_ANIMATION_TIME,
+                           time: KEYBOARD_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: this._showKeyboardComplete,
                            onCompleteScope: this
@@ -769,7 +769,7 @@ var LayoutManager = GObject.registerClass({
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: 0,
                            opacity: 0,
-                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME / 1000,
                            transition: 'easeInQuad',
                            onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this

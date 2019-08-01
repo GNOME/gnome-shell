@@ -16,11 +16,11 @@ const Tweener = imports.ui.tweener;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
-var ANIMATION_TIME = 0.2;
-var NOTIFICATION_TIMEOUT = 4;
+var ANIMATION_TIME = 200;
+var NOTIFICATION_TIMEOUT = 4000;
 
-var HIDE_TIMEOUT = 0.2;
-var LONGER_HIDE_TIMEOUT = 0.6;
+var HIDE_TIMEOUT = 200;
+var LONGER_HIDE_TIMEOUT = 600;
 
 var MAX_NOTIFICATIONS_IN_QUEUE = 3;
 var MAX_NOTIFICATIONS_PER_SOURCE = 3;
@@ -1137,7 +1137,7 @@ var MessageTray = class MessageTray {
             // We wait just a little before hiding the message tray in case the user quickly moves the mouse back into it.
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
-            let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
+            let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT : HIDE_TIMEOUT;
             this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         }
@@ -1167,7 +1167,7 @@ var MessageTray = class MessageTray {
             x < this._notificationLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
             this._notificationLeftMouseX = -1;
-            this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
+            this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT,
                                                                    this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         } else {
@@ -1351,7 +1351,7 @@ var MessageTray = class MessageTray {
 
         let tweenParams = { y: 0,
                             _opacity: 255,
-                            time: ANIMATION_TIME,
+                            time: ANIMATION_TIME / 1000,
                             transition: 'easeOutBack',
                             onUpdate: this._clampOpacity,
                             onUpdateScope: this,
@@ -1364,7 +1364,7 @@ var MessageTray = class MessageTray {
 
     _showNotificationCompleted() {
         if (this._notification.urgency != Urgency.CRITICAL)
-            this._updateNotificationTimeout(NOTIFICATION_TIMEOUT * 1000);
+            this._updateNotificationTimeout(NOTIFICATION_TIMEOUT);
     }
 
     _updateNotificationTimeout(timeout) {
@@ -1422,7 +1422,7 @@ var MessageTray = class MessageTray {
             this._tween(this._bannerBin, '_notificationState', State.HIDDEN,
                         { y: -this._bannerBin.height,
                           _opacity: 0,
-                          time: ANIMATION_TIME,
+                          time: ANIMATION_TIME / 1000,
                           transition: 'easeOutBack',
                           onUpdate: this._clampOpacity,
                           onUpdateScope: this,
