@@ -15,8 +15,8 @@ const WorkspacesView = imports.ui.workspacesView;
 // The maximum size of a thumbnail is 1/10 the width and height of the screen
 let MAX_THUMBNAIL_SCALE = 1 / 10.;
 
-var RESCALE_ANIMATION_TIME = 0.2;
-var SLIDE_ANIMATION_TIME = 0.2;
+var RESCALE_ANIMATION_TIME = 200;
+var SLIDE_ANIMATION_TIME = 200;
 
 // When we create workspaces by dragging, we add a "cut" into the top and
 // bottom of each workspace so that the user doesn't have to hit the
@@ -1039,7 +1039,7 @@ class ThumbnailsBox extends St.Widget {
     _tweenScale() {
         Tweener.addTween(this,
                          { scale: this._targetScale,
-                           time: RESCALE_ANIMATION_TIME,
+                           time: RESCALE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: this._queueUpdateStates,
                            onCompleteScope: this });
@@ -1058,7 +1058,7 @@ class ThumbnailsBox extends St.Widget {
 
             Tweener.addTween(thumbnail,
                              { slidePosition: 1,
-                               time: SLIDE_ANIMATION_TIME,
+                               time: SLIDE_ANIMATION_TIME / 1000,
                                transition: 'linear',
                                onComplete: () => {
                                    this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
@@ -1076,7 +1076,7 @@ class ThumbnailsBox extends St.Widget {
             this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
             Tweener.addTween(thumbnail,
                              { collapseFraction: 1,
-                               time: RESCALE_ANIMATION_TIME,
+                               time: RESCALE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this._stateCounts[thumbnail.state]--;
@@ -1105,7 +1105,7 @@ class ThumbnailsBox extends St.Widget {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
             Tweener.addTween(thumbnail,
                              { slidePosition: 0,
-                               time: SLIDE_ANIMATION_TIME,
+                               time: SLIDE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
@@ -1329,7 +1329,7 @@ class ThumbnailsBox extends St.Widget {
         this.indicatorY = this._indicator.allocation.y1 + indicatorTopFullBorder;
         Tweener.addTween(this,
                          { indicatorY: thumbnail.actor.allocation.y1,
-                           time: WorkspacesView.WORKSPACE_SWITCH_TIME,
+                           time: WorkspacesView.WORKSPACE_SWITCH_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._animatingIndicator = false;

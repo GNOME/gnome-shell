@@ -17,8 +17,8 @@ var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
-var FADE_ANIMATION_TIME = 0.16;
-var CLONE_FADE_ANIMATION_TIME = 0.25;
+var FADE_ANIMATION_TIME = 160;
+var CLONE_FADE_ANIMATION_TIME = 250;
 
 var LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 var PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
@@ -54,7 +54,7 @@ function fadeInActor(actor) {
     Tweener.addTween(actor,
                      { opacity: 255,
                        height: naturalHeight,
-                       time: FADE_ANIMATION_TIME,
+                       time: FADE_ANIMATION_TIME / 1000,
                        transition: 'easeOutQuad',
                        onComplete() {
                            this.set_height(-1);
@@ -76,7 +76,7 @@ function fadeOutActor(actor) {
     Tweener.addTween(actor,
                      { opacity: 0,
                        height: 0,
-                       time: FADE_ANIMATION_TIME,
+                       time: FADE_ANIMATION_TIME / 1000,
                        transition: 'easeOutQuad',
                        onComplete() {
                            this.hide();
@@ -105,7 +105,7 @@ function cloneAndFadeOutActor(actor) {
     let hold = new Batch.Hold();
     Tweener.addTween(clone,
                      { opacity: 0,
-                       time: CLONE_FADE_ANIMATION_TIME,
+                       time: CLONE_FADE_ANIMATION_TIME / 1000,
                        transition: 'easeOutQuad',
                        onComplete() {
                            clone.destroy();

@@ -10,7 +10,7 @@ const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
-var SIDE_CONTROLS_ANIMATION_TIME = 0.16;
+var SIDE_CONTROLS_ANIMATION_TIME = 160;
 
 function getRtlSlideDirection(direction, actor) {
     let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
@@ -128,7 +128,7 @@ var SlidingControl = class {
 
     _updateSlide() {
         Tweener.addTween(this.layout, { slideX: this._getSlide(),
-                                        time: SIDE_CONTROLS_ANIMATION_TIME,
+                                        time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
                                         transition: 'easeOutQuad' });
     }
 
@@ -166,7 +166,7 @@ var SlidingControl = class {
 
         this.layout.translationX = translationStart;
         Tweener.addTween(this.layout, { translationX: translationEnd,
-                                        time: SIDE_CONTROLS_ANIMATION_TIME,
+                                        time: SIDE_CONTROLS_ANIMATION_TIME / 1000,
                                         transition: 'easeOutQuad' });
     }
 
@@ -197,14 +197,14 @@ var SlidingControl = class {
 
     fadeIn() {
         Tweener.addTween(this.actor, { opacity: 255,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                       time: SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
                                        transition: 'easeInQuad'
                                      });
     }
 
     fadeHalf() {
         Tweener.addTween(this.actor, { opacity: 128,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                       time: SIDE_CONTROLS_ANIMATION_TIME / (2 * 1000),
                                        transition: 'easeOutQuad'
                                      });
     }

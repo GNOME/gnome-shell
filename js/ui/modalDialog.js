@@ -10,8 +10,8 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-var OPEN_AND_CLOSE_TIME = 0.1;
-var FADE_OUT_DIALOG_TIME = 1.0;
+var OPEN_AND_CLOSE_TIME = 100;
+var FADE_OUT_DIALOG_TIME = 1000;
 
 var State = {
     OPENED: 0,
@@ -127,7 +127,7 @@ var ModalDialog = GObject.registerClass({
         this.show();
         Tweener.addTween(this,
                          { opacity: 255,
-                           time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
+                           time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME / 1000 : 0,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._setState(State.OPENED);
@@ -179,7 +179,7 @@ var ModalDialog = GObject.registerClass({
         if (this._shouldFadeOut)
             Tweener.addTween(this,
                              { opacity: 0,
-                               time: OPEN_AND_CLOSE_TIME,
+                               time: OPEN_AND_CLOSE_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: this._closeComplete.bind(this)
                              });
@@ -251,7 +251,7 @@ var ModalDialog = GObject.registerClass({
         this.popModal(timestamp);
         Tweener.addTween(this.dialogLayout,
                          { opacity: 0,
-                           time: FADE_OUT_DIALOG_TIME,
+                           time: FADE_OUT_DIALOG_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._setState(State.FADED_OUT);

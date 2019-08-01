@@ -9,8 +9,8 @@ const Tweener = imports.ui.tweener;
 
 var POPUP_DELAY_TIMEOUT = 150; // milliseconds
 
-var POPUP_SCROLL_TIME = 0.10; // seconds
-var POPUP_FADE_OUT_TIME = 0.1; // seconds
+var POPUP_SCROLL_TIME = 100; // milliseconds
+var POPUP_FADE_OUT_TIME = 100; // milliseconds
 
 var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 var NO_MODS_TIMEOUT = 1500; // milliseconds
@@ -286,7 +286,7 @@ var SwitcherPopup = GObject.registerClass({
         if (this.visible) {
             Tweener.addTween(this,
                              { opacity: 0,
-                               time: POPUP_FADE_OUT_TIME,
+                               time: POPUP_FADE_OUT_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    this.destroy();
@@ -463,7 +463,7 @@ var SwitcherList = GObject.registerClass({
         this._scrollableRight = true;
         Tweener.addTween(adjustment,
                          { value: value,
-                           time: POPUP_SCROLL_TIME,
+                           time: POPUP_SCROLL_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                if (this._highlighted == 0)
@@ -487,7 +487,7 @@ var SwitcherList = GObject.registerClass({
         this._scrollableLeft = true;
         Tweener.addTween(adjustment,
                          { value: value,
-                           time: POPUP_SCROLL_TIME,
+                           time: POPUP_SCROLL_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                if (this._highlighted == this._items.length - 1)

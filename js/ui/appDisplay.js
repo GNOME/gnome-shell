@@ -29,15 +29,15 @@ var MIN_ROWS = 4;
 var INACTIVE_GRID_OPACITY = 77;
 // This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
 // to not clash with other animations
-var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.24;
+var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 240;
 var FOLDER_SUBICON_FRACTION = .4;
 
 var MIN_FREQUENT_APPS_COUNT = 3;
 
-var VIEWS_SWITCH_TIME = 0.4;
-var VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
+var VIEWS_SWITCH_TIME = 400;
+var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
-var PAGE_SWITCH_TIME = 0.3;
+var PAGE_SWITCH_TIME = 300;
 
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
@@ -208,12 +208,12 @@ class BaseAppView {
         Tweener.removeTweens(this.actor);
         Tweener.removeTweens(this._grid);
 
-        let params = { time: VIEWS_SWITCH_TIME,
+        let params = { time: VIEWS_SWITCH_TIME / 1000,
                        transition: 'easeOutQuad' };
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             this.actor.show();
             params.opacity = 255;
-            params.delay = VIEWS_SWITCH_ANIMATION_DELAY;
+            params.delay = VIEWS_SWITCH_ANIMATION_DELAY / 1000;
         } else {
             params.opacity = 0;
             params.delay = 0;
@@ -451,7 +451,7 @@ var AllView = class AllView extends BaseAppView {
         if (this._currentPopup && this._displayingPopup &&
             animationDirection == IconGrid.AnimationDirection.OUT)
             Tweener.addTween(this._currentPopup.actor,
-                             { time: VIEWS_SWITCH_TIME,
+                             { time: VIEWS_SWITCH_TIME / 1000,
                                transition: 'easeOutQuad',
                                opacity: 0,
                                onComplete() {
@@ -490,9 +490,9 @@ var AllView = class AllView extends BaseAppView {
         // Only take the velocity into account on page changes, otherwise
         // return smoothly to the current page using the default velocity
         if (this._grid.currentPage != pageNumber) {
-            let minVelocity = totalHeight / (PAGE_SWITCH_TIME * 1000);
+            let minVelocity = totalHeight / PAGE_SWITCH_TIME;
             velocity = Math.max(minVelocity, velocity);
-            time = (diffToPage / velocity) / 1000;
+            time = diffToPage / velocity;
         } else {
             time = PAGE_SWITCH_TIME * diffToPage / totalHeight;
         }
@@ -503,7 +503,7 @@ var AllView = class AllView extends BaseAppView {
         this._grid.currentPage = pageNumber;
         Tweener.addTween(this._adjustment,
                          { value: this._grid.getPageY(this._grid.currentPage),
-                           time: time,
+                           time: time / 1000,
                            transition: 'easeOutQuad' });
         this._pageIndicators.setCurrentPage(pageNumber);
     }
@@ -626,7 +626,7 @@ var AllView = class AllView extends BaseAppView {
             else
                 opacity = 255;
             params = { opacity: opacity,
-                       time: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
+                       time: INACTIVE_GRID_OPACITY_ANIMATION_TIME / 1000,
                        transition: 'easeOutQuad' };
             Tweener.addTween(this._items[id].actor, params);
         }

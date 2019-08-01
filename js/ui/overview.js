@@ -17,12 +17,12 @@ const Tweener = imports.ui.tweener;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
-var ANIMATION_TIME = 0.25;
+var ANIMATION_TIME = 250;
 
 // Must be less than ANIMATION_TIME, since we switch to
 // or from the overview completely after ANIMATION_TIME,
 // and don't want the shading animation to get cut off
-var SHADE_ANIMATION_TIME = .20;
+var SHADE_ANIMATION_TIME = 200;
 
 var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
@@ -177,7 +177,7 @@ var Overview = class {
             Tweener.addTween(backgrounds[i],
                              { brightness: 1.0,
                                vignette_sharpness: 0.0,
-                               time: SHADE_ANIMATION_TIME,
+                               time: SHADE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad'
                              });
         }
@@ -189,7 +189,7 @@ var Overview = class {
             Tweener.addTween(backgrounds[i],
                              { brightness: Lightbox.VIGNETTE_BRIGHTNESS,
                                vignette_sharpness: Lightbox.VIGNETTE_SHARPNESS,
-                               time: SHADE_ANIMATION_TIME,
+                               time: SHADE_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad'
                              });
         }
@@ -429,7 +429,7 @@ var Overview = class {
         this._desktopFade.show();
         Tweener.addTween(this._desktopFade,
                          { opacity: 255,
-                           time: ANIMATION_TIME,
+                           time: ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad' });
     }
 
@@ -446,7 +446,7 @@ var Overview = class {
         this._desktopFade.show();
         Tweener.addTween(this._desktopFade,
                          { opacity: 0,
-                           time: ANIMATION_TIME,
+                           time: ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad'
                          });
     }
@@ -531,7 +531,7 @@ var Overview = class {
         Tweener.addTween(this._overview,
                          { opacity: 255,
                            transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
+                           time: ANIMATION_TIME / 1000,
                            onComplete: this._showDone,
                            onCompleteScope: this
                          });
@@ -595,7 +595,7 @@ var Overview = class {
         Tweener.addTween(this._overview,
                          { opacity: 0,
                            transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
+                           time: ANIMATION_TIME / 1000,
                            onComplete: this._hideDone,
                            onCompleteScope: this
                          });

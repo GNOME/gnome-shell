@@ -10,8 +10,8 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 var HIDE_TIMEOUT = 1500;
-var FADE_TIME = 0.1;
-var LEVEL_ANIMATION_TIME = 0.1;
+var FADE_TIME = 100;
+var LEVEL_ANIMATION_TIME = 100;
 
 var OsdWindowConstraint = GObject.registerClass(
 class OsdWindowConstraint extends Clutter.Constraint {
@@ -112,7 +112,7 @@ var OsdWindow = class {
             if (this.actor.visible)
                 Tweener.addTween(this._level,
                                  { value: value,
-                                   time: LEVEL_ANIMATION_TIME,
+                                   time: LEVEL_ANIMATION_TIME / 1000,
                                    transition: 'easeOutQuad' });
             else
                 this._level.value = value;
@@ -135,7 +135,7 @@ var OsdWindow = class {
 
             Tweener.addTween(this.actor,
                              { opacity: 255,
-                               time: FADE_TIME,
+                               time: FADE_TIME / 1000,
                                transition: 'easeOutQuad' });
         }
 
@@ -158,7 +158,7 @@ var OsdWindow = class {
         this._hideTimeoutId = 0;
         Tweener.addTween(this.actor,
                          { opacity: 0,
-                           time: FADE_TIME,
+                           time: FADE_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._reset();

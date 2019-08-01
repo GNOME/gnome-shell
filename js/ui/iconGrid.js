@@ -10,9 +10,9 @@ const Main = imports.ui.main;
 var ICON_SIZE = 96;
 var MIN_ICON_SIZE = 16;
 
-var EXTRA_SPACE_ANIMATION_TIME = 0.25;
+var EXTRA_SPACE_ANIMATION_TIME = 250;
 
-var ANIMATION_TIME_IN = 0.350;
+var ANIMATION_TIME_IN = 350;
 var ANIMATION_TIME_OUT = 1 / 2 * ANIMATION_TIME_IN;
 var ANIMATION_MAX_DELAY_FOR_ITEM = 2 / 3 * ANIMATION_TIME_IN;
 var ANIMATION_BASE_DELAY_FOR_ITEM = 1 / 4 * ANIMATION_MAX_DELAY_FOR_ITEM;
@@ -27,7 +27,7 @@ var AnimationDirection = {
 };
 
 var APPICON_ANIMATION_OUT_SCALE = 3;
-var APPICON_ANIMATION_OUT_TIME = 0.25;
+var APPICON_ANIMATION_OUT_TIME = 250;
 
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
@@ -170,7 +170,7 @@ function zoomOutActor(actor) {
     let containedY = clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
 
     Tweener.addTween(actorClone,
-                     { time: APPICON_ANIMATION_OUT_TIME,
+                     { time: APPICON_ANIMATION_OUT_TIME / 1000,
                        scale_x: APPICON_ANIMATION_OUT_SCALE,
                        scale_y: APPICON_ANIMATION_OUT_SCALE,
                        translation_x: containedX - scaledX,
@@ -460,14 +460,14 @@ var IconGrid = GObject.registerClass({
             let bounceUpTime = ANIMATION_TIME_IN / 4;
             let isLastItem = index == actors.length - 1;
             Tweener.addTween(actor,
-                             { time: bounceUpTime,
+                             { time: bounceUpTime / 1000,
                                transition: 'easeInOutQuad',
-                               delay: delay,
+                               delay: delay / 1000,
                                scale_x: ANIMATION_BOUNCE_ICON_SCALE,
                                scale_y: ANIMATION_BOUNCE_ICON_SCALE,
                                onComplete: () => {
                                    Tweener.addTween(actor,
-                                                    { time: ANIMATION_TIME_IN - bounceUpTime,
+                                                    { time: (ANIMATION_TIME_IN - bounceUpTime) / 1000,
                                                       transition: 'easeInOutQuad',
                                                       scale_x: 1,
                                                       scale_y: 1,
@@ -536,9 +536,9 @@ var IconGrid = GObject.registerClass({
 
                 let delay = (1 - (actor._distance - minDist) / normalization) * ANIMATION_MAX_DELAY_FOR_ITEM;
                 let [finalX, finalY]  = actor._transformedPosition;
-                movementParams = { time: ANIMATION_TIME_IN,
+                movementParams = { time: ANIMATION_TIME_IN / 1000,
                                    transition: 'easeInOutQuad',
-                                   delay: delay,
+                                   delay: delay / 1000,
                                    x: finalX,
                                    y: finalY,
                                    scale_x: 1,
@@ -547,9 +547,9 @@ var IconGrid = GObject.registerClass({
                                        if (isLastItem)
                                            this._animationDone();
                                    } };
-                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
+                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM / 1000,
                                transition: 'easeInOutQuad',
-                               delay: delay,
+                               delay: delay / 1000,
                                opacity: 255 };
             } else {
                 let isLastItem = actor._distance == maxDist;
@@ -558,9 +558,9 @@ var IconGrid = GObject.registerClass({
                 actorClone.set_position(startX, startY);
 
                 let delay = (actor._distance - minDist) / normalization * ANIMATION_MAX_DELAY_OUT_FOR_ITEM;
-                movementParams = { time: ANIMATION_TIME_OUT,
+                movementParams = { time: ANIMATION_TIME_OUT / 1000,
                                    transition: 'easeInOutQuad',
-                                   delay: delay,
+                                   delay: delay / 1000,
                                    x: adjustedSourcePositionX,
                                    y: adjustedSourcePositionY,
                                    scale_x: scaleX,
@@ -569,9 +569,9 @@ var IconGrid = GObject.registerClass({
                                        if (isLastItem)
                                            this._animationDone();
                                    } };
-                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
+                fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM / 1000,
                                transition: 'easeInOutQuad',
-                               delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
+                               delay: (ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM) / 1000,
                                opacity: 0 };
             }
 
@@ -983,7 +983,7 @@ var PaginatedIconGrid = GObject.registerClass({
         for (let i = 0; i < children.length; i++) {
             children[i].translation_y = 0;
             let params = { translation_y: translationY,
-                           time: EXTRA_SPACE_ANIMATION_TIME,
+                           time: EXTRA_SPACE_ANIMATION_TIME / 1000,
                            transition: 'easeInOutQuad'
                          };
             if (i == (children.length - 1))
@@ -1003,7 +1003,7 @@ var PaginatedIconGrid = GObject.registerClass({
                 continue;
             Tweener.addTween(this._translatedChildren[i],
                              { translation_y: 0,
-                               time: EXTRA_SPACE_ANIMATION_TIME,
+                               time: EXTRA_SPACE_ANIMATION_TIME / 1000,
                                transition: 'easeInOutQuad',
                                onComplete: () => this.emit('space-closed')
                              });

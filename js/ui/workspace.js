@@ -613,7 +613,7 @@ var WindowOverlay = class {
         let params = { x: x,
                        y: y,
                        width: width,
-                       time: Overview.ANIMATION_TIME,
+                       time: Overview.ANIMATION_TIME / 1000,
                        transition: 'easeOutQuad' };
 
         if (height !== undefined)
@@ -650,7 +650,7 @@ var WindowOverlay = class {
             a.opacity = 0;
             Tweener.addTween(a,
                              { opacity: 255,
-                               time: WINDOW_OVERLAY_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME / 1000,
                                transition: 'easeOutQuad' });
         });
     }
@@ -660,7 +660,7 @@ var WindowOverlay = class {
             a.opacity = 255;
             Tweener.addTween(a,
                              { opacity: 0,
-                               time: WINDOW_OVERLAY_FADE_TIME,
+                               time: WINDOW_OVERLAY_FADE_TIME / 1000,
                                transition: 'easeInQuad' });
         });
     }
@@ -1346,7 +1346,7 @@ var Workspace = class {
 
                     Tweener.addTween(clone,
                                      { opacity: 255,
-                                       time: Overview.ANIMATION_TIME,
+                                       time: Overview.ANIMATION_TIME / 1000,
                                        transition: 'easeInQuad'
                                      });
                 }
@@ -1389,7 +1389,7 @@ var Workspace = class {
                            y: y,
                            scale_x: scale,
                            scale_y: scale,
-                           time: Overview.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._showWindowOverlay(clone, overlay);
@@ -1695,7 +1695,7 @@ var Workspace = class {
             clone.x = origX;
             clone.y = origY;
             Tweener.addTween(clone,
-                             { time: time,
+                             { time: time / 1000,
                                opacity: opacity,
                                transition: 'easeOutQuad'
                              });
@@ -1749,7 +1749,7 @@ var Workspace = class {
                                y: origY,
                                scale_x: 1.0,
                                scale_y: 1.0,
-                               time: Overview.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME / 1000,
                                opacity: 255,
                                transition: 'easeOutQuad'
                              });
@@ -1759,7 +1759,7 @@ var Workspace = class {
                              { scale_x: 0,
                                scale_y: 0,
                                opacity: 0,
-                               time: Overview.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad'
                              });
         }

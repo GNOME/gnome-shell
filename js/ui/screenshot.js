@@ -367,7 +367,7 @@ var PickPixel = class {
 };
 Signals.addSignalMethods(PickPixel.prototype);
 
-var FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
+var FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
 
 var Flashspot = class extends Lightbox.Lightbox {
     constructor(area) {
@@ -384,7 +384,7 @@ var Flashspot = class extends Lightbox.Lightbox {
         this.actor.opacity = 255;
         Tweener.addTween(this.actor,
                          { opacity: 0,
-                           time: FLASHSPOT_ANIMATION_OUT_TIME,
+                           time: FLASHSPOT_ANIMATION_OUT_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                if (doneCallback)
