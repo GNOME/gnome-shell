@@ -604,10 +604,12 @@ shell_app_can_open_new_window (ShellApp *app)
   GDesktopAppInfo *desktop_info;
   const char * const *desktop_actions;
 
-  /* Apps that are not running can always open new windows, because
-     activating them would open the first one */
-  if (!app->running_state)
-    return TRUE;
+  /* Apps that are stopped can always open new windows, because
+   * activating them would open the first one; if they are starting,
+   * we cannot tell whether they can open additional windows until
+   * they are running */
+  if (app->state != SHELL_APP_STATE_RUNNING)
+    return app->state == SHELL_APP_STATE_STOPPED;
 
   state = app->running_state;
 
