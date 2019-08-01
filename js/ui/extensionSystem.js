@@ -239,6 +239,7 @@ var ExtensionManager = class {
             path: dir.get_path(),
             error: '',
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
+            willChange: false,
             canChange: false
         };
         this._extensions.set(uuid, extension);
@@ -363,10 +364,11 @@ var ExtensionManager = class {
             ? DISABLE_USER_EXTENSIONS_KEY
             : ENABLED_EXTENSIONS_KEY;
 
-        extension.canChange =
+        extension.willChange =
             !hasError &&
             global.settings.is_writable(changeKey) &&
             (isMode || !modeOnly);
+        extension.canChange = global.settings.is_writable(ENABLED_EXTENSIONS_KEY);
     }
 
     _getEnabledExtensions() {
