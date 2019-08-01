@@ -60,6 +60,11 @@ var PopupBaseMenuItem = GObject.registerClass({
                                             GObject.ParamFlags.READWRITE,
                                             GObject.TYPE_BOOLEAN,
                                             false),
+        'activatable': GObject.ParamSpec.boolean('activatable', 'activatable', 'activatable',
+                                                 GObject.ParamFlags.READWRITE |
+                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                 GObject.TYPE_BOOLEAN,
+                                                 true),
         'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
                                                GObject.ParamFlags.READWRITE,
                                                GObject.TYPE_BOOLEAN,
@@ -69,18 +74,21 @@ var PopupBaseMenuItem = GObject.registerClass({
         'activate': { param_types: [Clutter.Event.$gtype] },
     }
 }, class PopupBaseMenuItem extends St.BoxLayout {
-    _init(params) {
-        params = Params.parse (params, { reactive: true,
-                                         activate: true,
-                                         hover: true,
-                                         style_class: null,
-                                         can_focus: true
-                                       });
-        super._init({ style_class: 'popup-menu-item',
-                      reactive: params.reactive,
-                      track_hover: params.reactive,
-                      can_focus: params.can_focus,
-                      accessible_role: Atk.Role.MENU_ITEM });
+    _init(params = {}) {
+        params = {
+            reactive: true,
+            hover: true,
+            canFocus: true,
+            ...params
+        };
+
+        super._init({
+            styleClass: 'popup-menu-item',
+            trackHover: params.reactive,
+            activatable: params.reactive,
+            accessibleRole: Atk.Role.MENU_ITEM,
+            ...params
+        });
         this._delegate = this;
 
         this._ornament = Ornament.NONE;
@@ -89,22 +97,21 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._parent = null;
         this._active = false;
-        this._activatable = params.reactive && params.activate;
         this._sensitive = true;
 
-        if (!this._activatable)
+        if (!this.activatable)
             this.add_style_class_name('popup-inactive-menu-item');
 
         if (params.style_class)
             this.add_style_class_name(params.style_class);
 
-        if (this._activatable) {
+        if (this.activatable) {
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
             this.connect('touch-event', this._onTouchEvent.bind(this));
             this.connect('key-press-event', this._onKeyPressEvent.bind(this));
         }
-        if (params.reactive && params.hover)
+        if (this.reactive && this.hover)
             this.bind_property('hover', this, 'active', GObject.BindingFlags.SYNC_CREATE);
     }
 
@@ -219,7 +226,7 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     getSensitive() {
         let parentSensitive = this._parent ? this._parent.sensitive : true;
-        return this._activatable && this._sensitive && parentSensitive;
+        return this.activatable && this._sensitive && parentSensitive;
     }
 
     setSensitive(sensitive) {

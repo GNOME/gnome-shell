@@ -31,7 +31,7 @@ var Indicator = GObject.registerClass({
                                               this._sync();
                                           });
 
-        this._item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this._item = new PopupMenu.PopupBaseMenuItem({ activatable: false });
         this.menu.addMenuItem(this._item);
 
         this._slider = new Slider.Slider(0);

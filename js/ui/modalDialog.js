@@ -23,34 +23,54 @@ var State = {
 
 var ModalDialog = GObject.registerClass({
     Properties: {
+        'action-mode': GObject.ParamSpec.flags('action-mode',
+                                               'action-mode',
+                                               'action-mode',
+                                               GObject.ParamFlags.READWRITE |
+                                               GObject.ParamFlags.CONSTRUCT_ONLY,
+                                               Shell.ActionMode.$gtype,
+                                               Shell.ActionMode.SYSTEM_MODAL),
+        'destroy-on-close': GObject.ParamSpec.boolean('destroy-on-close',
+                                                      'destroy-on-close',
+                                                      'destroy-on-close',
+                                                      GObject.ParamFlags.READWRITE |
+                                                      GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                      true),
         'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
                                        GObject.ParamFlags.READABLE,
                                        Math.min(...Object.values(State)),
                                        Math.max(...Object.values(State)),
-                                       State.CLOSED)
+                                       State.CLOSED),
+        'shell-reactive': GObject.ParamSpec.boolean('shell-reactive',
+                                                    'shell-reactive',
+                                                    'shell-reactive',
+                                                    GObject.ParamFlags.READWRITE |
+                                                    GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                    false),
+        'should-fade-in': GObject.ParamSpec.boolean('should-fade-in',
+                                                    'should-fade-in',
+                                                    'should-fade-in',
+                                                    GObject.ParamFlags.READWRITE |
+                                                    GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                    true),
+        'should-fade-out': GObject.ParamSpec.boolean('should-fade-out',
+                                                     'should-fade-out',
+                                                     'should-fade-out',
+                                                     GObject.ParamFlags.READWRITE |
+                                                     GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                     true),
     },
     Signals: { 'opened': {}, 'closed': {} }
 }, class ModalDialog extends St.Widget {
-    _init(params) {
-        super._init({ visible: false,
-                      x: 0,
-                      y: 0,
-                      accessible_role: Atk.Role.DIALOG });
-
-        params = Params.parse(params, { shellReactive: false,
-                                        styleClass: null,
-                                        actionMode: Shell.ActionMode.SYSTEM_MODAL,
-                                        shouldFadeIn: true,
-                                        shouldFadeOut: true,
-                                        destroyOnClose: true });
+    _init(params = {}) {
+        super._init({
+            ...params,
+            visible: false,
+            accessible_role: Atk.Role.DIALOG,
+        });
 
         this._state = State.CLOSED;
         this._hasModal = false;
-        this._actionMode = params.actionMode;
-        this._shellReactive = params.shellReactive;
-        this._shouldFadeIn = params.shouldFadeIn;
-        this._shouldFadeOut = params.shouldFadeOut;
-        this._destroyOnClose = params.destroyOnClose;
 
         Main.layoutManager.modalDialogGroup.add_actor(this);
 
@@ -69,7 +89,7 @@ var ModalDialog = GObject.registerClass({
         this.contentLayout = this.dialogLayout.contentLayout;
         this.buttonLayout = this.dialogLayout.buttonLayout;
 
-        if (!this._shellReactive) {
+        if (!this.shell_reactive) {
             this._lightbox = new Lightbox.Lightbox(this,
                                                    { inhibitEvents: true,
                                                      radialEffect: true });
@@ -127,7 +147,7 @@ var ModalDialog = GObject.registerClass({
         this.show();
         Tweener.addTween(this,
                          { opacity: 255,
-                           time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
+                           time: this.should_fade_in ? OPEN_AND_CLOSE_TIME : 0,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this._setState(State.OPENED);
@@ -164,7 +184,7 @@ var ModalDialog = GObject.registerClass({
         this.hide();
         this.emit('closed');
 
-        if (this._destroyOnClose)
+        if (this.destroy_on_close)
             this.destroy();
     }
 
@@ -176,7 +196,7 @@ var ModalDialog = GObject.registerClass({
         this.popModal(timestamp);
         this._savedKeyFocus = null;
 
-        if (this._shouldFadeOut)
+        if (this.should_fade_out)
             Tweener.addTween(this,
                              { opacity: 0,
                                time: OPEN_AND_CLOSE_TIME,
@@ -202,7 +222,7 @@ var ModalDialog = GObject.registerClass({
         Main.popModal(this, timestamp);
         this._hasModal = false;
 
-        if (!this._shellReactive)
+        if (!this.shell_reactive)
             this._eventBlocker.raise_top();
     }
 
@@ -210,7 +230,7 @@ var ModalDialog = GObject.registerClass({
         if (this._hasModal)
             return true;
 
-        let params = { actionMode: this._actionMode };
+        let params = { actionMode: this.action_mode };
         if (timestamp)
             params['timestamp'] = timestamp;
         if (!Main.pushModal(this, params))
@@ -225,7 +245,7 @@ var ModalDialog = GObject.registerClass({
             focus.grab_key_focus();
         }
 
-        if (!this._shellReactive)
+        if (!this.shell_reactive)
             this._eventBlocker.lower_bottom();
         return true;
     }

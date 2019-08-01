@@ -184,27 +184,60 @@ function zoomOutActor(actor) {
 }
 
 var IconGrid = GObject.registerClass({
+    Properties: {
+        'row-limit': GObject.ParamSpec.int('row-limit',
+                                           'row-limit',
+                                           'row-limit',
+                                           GObject.ParamFlags.READWRITE |
+                                           GObject.ParamFlags.CONSTRUCT_ONLY,
+                                           0, GLib.MAXINT32, 0),
+        'column-limit': GObject.ParamSpec.int('column-limit',
+                                              'column-limit',
+                                              'column-limit',
+                                              GObject.ParamFlags.READWRITE |
+                                              GObject.ParamFlags.CONSTRUCT_ONLY,
+                                              0, GLib.MAXINT32, 0),
+        'min-rows': GObject.ParamSpec.int('min-rows',
+                                          'min-rows',
+                                          'min-rows',
+                                          GObject.ParamFlags.READWRITE |
+                                          GObject.ParamFlags.CONSTRUCT_ONLY,
+                                          0, GLib.MAXINT32, 1),
+        'min-columns': GObject.ParamSpec.int('min-columns',
+                                             'min-columns',
+                                             'min-columns',
+                                             GObject.ParamFlags.READWRITE |
+                                             GObject.ParamFlags.CONSTRUCT_ONLY,
+                                             0, GLib.MAXINT32, 1),
+        'fill-parent': GObject.ParamSpec.boolean('fill-parent',
+                                                 'fill-parent',
+                                                 'fill-parent',
+                                                 GObject.ParamFlags.READWRITE |
+                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                 false),
+        'pad-with-spacing': GObject.ParamSpec.boolean('pad-with-spacing',
+                                                      'pad-with-spacing',
+                                                      'pad-with-spacing',
+                                                      GObject.ParamFlags.READWRITE |
+                                                      GObject.ParamFlags.CONSTRUCT_ONLY,
+                                                      false),
+        'x-grid-align': GObject.ParamSpec.enum('x-grid-align',
+                                               'x-grid-align',
+                                               'x-grid-align',
+                                               GObject.ParamFlags.READWRITE |
+                                               GObject.ParamFlags.CONSTRUCT_ONLY,
+                                               St.Align.$gtype,
+                                               St.Align.MIDDLE),
+    },
     Signals: { 'animation-done': {},
                'child-focused': { param_types: [Clutter.Actor.$gtype] } },
 }, class IconGrid extends St.Widget {
-    _init(params) {
-        super._init({ style_class: 'icon-grid',
-                      y_align: Clutter.ActorAlign.START });
-
-        params = Params.parse(params, { rowLimit: null,
-                                        columnLimit: null,
-                                        minRows: 1,
-                                        minColumns: 1,
-                                        fillParent: false,
-                                        xAlign: St.Align.MIDDLE,
-                                        padWithSpacing: false });
-        this._rowLimit = params.rowLimit;
-        this._colLimit = params.columnLimit;
-        this._minRows = params.minRows;
-        this._minColumns = params.minColumns;
-        this._xAlign = params.xAlign;
-        this._fillParent = params.fillParent;
-        this._padWithSpacing = params.padWithSpacing;
+    _init(params = {}) {
+        super._init({
+            ...params,
+            styleClass: 'icon-grid',
+            yAlign: Clutter.ActorAlign.START
+        });
 
         this.topPadding = 0;
         this.bottomPadding = 0;
@@ -253,15 +286,15 @@ var IconGrid = GObject.registerClass({
     }
 
     vfunc_get_preferred_width(_forHeight) {
-        if (this._fillParent)
+        if (this.fill_parent)
             // Ignore all size requests of children and request a size of 0;
             // later we'll allocate as many children as fit the parent
             return [0, 0];
 
         let nChildren = this.get_n_children();
-        let nColumns = this._colLimit ? Math.min(this._colLimit,
-                                                 nChildren)
-                                      : nChildren;
+        let nColumns = this.column_limit ? Math.min(this.column_limit,
+                                                    nChildren)
+                                         : nChildren;
         let totalSpacing = Math.max(0, nColumns - 1) * this._getSpacing();
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
@@ -277,7 +310,7 @@ var IconGrid = GObject.registerClass({
     }
 
     vfunc_get_preferred_height(forWidth) {
-        if (this._fillParent)
+        if (this.fill_parent)
             // Ignore all size requests of children and request a size of 0;
             // later we'll allocate as many children as fit the parent
             return [0, 0];
@@ -298,8 +331,7 @@ var IconGrid = GObject.registerClass({
             nRows = Math.ceil(children.length / nColumns);
         else
             nRows = 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
+        nRows = Math.min(nRows, this.row_limit);
         let totalSpacing = Math.max(0, nRows - 1) * this._getSpacing();
         let height = nRows * this._getVItemSize() + totalSpacing + this.topPadding + this.bottomPadding;
 
@@ -312,7 +344,7 @@ var IconGrid = GObject.registerClass({
         let themeNode = this.get_theme_node();
         box = themeNode.get_content_box(box);
 
-        if (this._fillParent) {
+        if (this.fill_parent) {
             // Reset the passed in box to fill the parent
             let parentBox = this.get_parent().allocation;
             let gridBox = themeNode.get_content_box(parentBox);
@@ -326,7 +358,7 @@ var IconGrid = GObject.registerClass({
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
         let leftEmptySpace;
-        switch (this._xAlign) {
+        switch (this.x_grid_align) {
         case St.Align.START:
             leftEmptySpace = 0;
             break;
@@ -345,8 +377,8 @@ var IconGrid = GObject.registerClass({
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
-            if (this._rowLimit && rowIndex >= this._rowLimit ||
-                this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
+            if (this.row_limit && rowIndex >= this.row_limit ||
+                this.fill_parent && childBox.y2 > availHeight - this.bottomPadding) {
                 children[i].opacity = 0;
             } else {
                 if (!animating)
@@ -612,8 +644,8 @@ var IconGrid = GObject.registerClass({
         return this._computeLayout(rowWidth)[0];
     }
 
-    getRowLimit() {
-        return this._rowLimit;
+    get rowLimit() {
+        return this.row_limit;
     }
 
     _computeLayout(forWidth) {
@@ -623,7 +655,7 @@ var IconGrid = GObject.registerClass({
         let usedWidth = this.leftPadding + this.rightPadding;
         let spacing = this._getSpacing();
 
-        while ((this._colLimit == null || nColumns < this._colLimit) &&
+        while ((this.column_limit == 0 || nColumns < this.column_limit) &&
                (usedWidth + this._getHItemSize() <= forWidth)) {
             usedWidth += this._getHItemSize() + spacing;
             nColumns += 1;
@@ -647,8 +679,8 @@ var IconGrid = GObject.registerClass({
         let children = this._getVisibleChildren();
         let nColumns = (forWidth < 0) ? children.length : this._computeLayout(forWidth)[0];
         let nRows = (nColumns > 0) ? Math.ceil(children.length / nColumns) : 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
+        if (this.row_limit)
+            nRows = Math.min(nRows, this.row_limit);
         return nRows;
     }
 
@@ -720,25 +752,25 @@ var IconGrid = GObject.registerClass({
     }
 
     _updateSpacingForSize(availWidth, availHeight) {
-        let maxEmptyVArea = availHeight - this._minRows * this._getVItemSize();
-        let maxEmptyHArea = availWidth - this._minColumns * this._getHItemSize();
+        let maxEmptyVArea = availHeight - this.min_rows * this._getVItemSize();
+        let maxEmptyHArea = availWidth - this.min_columns * this._getHItemSize();
         let maxHSpacing, maxVSpacing;
 
-        if (this._padWithSpacing) {
+        if (this.pad_with_spacing) {
             // minRows + 1 because we want to put spacing before the first row, so it is like we have one more row
             // to divide the empty space
-            maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows + 1));
-            maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns + 1));
+            maxVSpacing = Math.floor(maxEmptyVArea / (this.min_rows + 1));
+            maxHSpacing = Math.floor(maxEmptyHArea / (this.min_columns + 1));
         } else {
-            if (this._minRows <=  1)
+            if (this.min_rows <=  1)
                 maxVSpacing = maxEmptyVArea;
             else
-                maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows - 1));
+                maxVSpacing = Math.floor(maxEmptyVArea / (this.min_rows - 1));
 
-            if (this._minColumns <=  1)
+            if (this.min_columns <=  1)
                 maxHSpacing = maxEmptyHArea;
             else
-                maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns - 1));
+                maxHSpacing = Math.floor(maxEmptyHArea / (this.min_columns - 1));
         }
 
         let maxSpacing = Math.min(maxHSpacing, maxVSpacing);
@@ -748,7 +780,7 @@ var IconGrid = GObject.registerClass({
         // is the spacing we get from CSS.
         let spacing = Math.max(this._spacing, maxSpacing);
         this.setSpacing(spacing);
-        if (this._padWithSpacing)
+        if (this.pad_with_spacing)
             this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
     }
 
@@ -761,12 +793,12 @@ var IconGrid = GObject.registerClass({
         this._fixedVItemSize = this._vItemSize;
         this._updateSpacingForSize(availWidth, availHeight);
 
-        if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
-            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
-            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
+        if (this.columnsForWidth(availWidth) < this.min_columns || this.rowsForHeight(availHeight) < this.min_rows) {
+            let neededWidth = this.usedWidthForNColumns(this.min_columns) - availWidth;
+            let neededHeight = this.usedHeightForNRows(this.min_rows) - availHeight;
 
-            let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this._minColumns)
-                                                                  : Math.ceil(neededHeight / this._minRows);
+            let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this.min_columns)
+                                                                  : Math.ceil(neededHeight / this.min_rows);
             this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
             this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
 
@@ -813,7 +845,7 @@ var PaginatedIconGrid = GObject.registerClass({
 
         this.set_allocation(box, flags);
 
-        if (this._fillParent) {
+        if (this.fill_parent) {
             // Reset the passed in box to fill the parent
             let parentBox = this.get_parent().allocation;
             let gridBox = this.get_theme_node().get_content_box(parentBox);
@@ -825,7 +857,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
         let leftEmptySpace;
-        switch (this._xAlign) {
+        switch (this.x_grid_align) {
         case St.Align.START:
             leftEmptySpace = 0;
             break;
@@ -877,8 +909,8 @@ var PaginatedIconGrid = GObject.registerClass({
             nRows = Math.ceil(children.length / nColumns);
         else
             nRows = 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
+        if (this.row_limit)
+            nRows = Math.min(nRows, this.row_limit);
 
         // We want to contain the grid inside the parent box with padding
         this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
