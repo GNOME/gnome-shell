@@ -94,8 +94,10 @@ var WeatherClient = class {
         });
         this._settings.connect('changed::automatic-location',
             this._onAutomaticLocationChanged.bind(this));
+        this._onAutomaticLocationChanged();
         this._settings.connect('changed::locations',
             this._onLocationsChanged.bind(this));
+        this._onLocationsChanged();
 
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('installed-changed',
@@ -259,8 +261,8 @@ var WeatherClient = class {
         this._setLocation(location);
     }
 
-    _onAutomaticLocationChanged(settings, key) {
-        let useAutoLocation = settings.get_boolean(key);
+    _onAutomaticLocationChanged() {
+        let useAutoLocation = this._settings.get_boolean('automatic-location');
         if (this._autoLocationRequested == useAutoLocation)
             return;
 
@@ -278,8 +280,9 @@ var WeatherClient = class {
             this._setLocation(this._mostRecentLocation);
     }
 
-    _onLocationsChanged(settings, key) {
-        let serialized = settings.get_value(key).deep_unpack().shift();
+    _onLocationsChanged() {
+        let locations = this._settings.get_value('locations').deep_unpack();
+        let serialized = locations.shift();
         let mostRecentLocation = null;
 
         if (serialized)
