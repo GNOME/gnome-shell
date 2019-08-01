@@ -1688,17 +1688,16 @@ var AppIcon = class AppIcon {
         let modifiers = event ? event.get_state() : 0;
         let isMiddleButton = button && button == Clutter.BUTTON_MIDDLE;
         let isCtrlPressed = (modifiers & Clutter.ModifierType.CONTROL_MASK) != 0;
-        let openNewWindow = this.app.can_open_new_window() &&
-                            this.app.state == Shell.AppState.RUNNING &&
-                            (isCtrlPressed || isMiddleButton);
+        let shouldOpenNewWindow = isCtrlPressed || isMiddleButton ||
+                                  (this.app.state == Shell.AppState.STOPPED);
+        let canOpenNewWindow = this.app.can_open_new_window();
 
-        if (this.app.state == Shell.AppState.STOPPED || openNewWindow)
+        if (shouldOpenNewWindow && canOpenNewWindow) {
             this.animateLaunch();
-
-        if (openNewWindow)
             this.app.open_new_window(-1);
-        else
+        } else {
             this.app.activate();
+        }
 
         Main.overview.hide();
     }
