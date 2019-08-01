@@ -927,11 +927,11 @@ st_widget_class_init (StWidgetClass *klass)
    * widget.
    */
   props[PROP_TRACK_HOVER] =
-     g_param_spec_object ("track-hover",
-                          "Track hover",
-                          "Determines whether the widget tracks hover state",
-                          FALSE,
-                          ST_PARAM_READWRITE);
+     g_param_spec_boolean ("track-hover",
+                           "Track hover",
+                           "Determines whether the widget tracks hover state",
+                           FALSE,
+                           ST_PARAM_READWRITE);
 
   /**
    * StWidget:hover:
