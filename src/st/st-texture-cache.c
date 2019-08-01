@@ -1567,3 +1567,11 @@ st_texture_cache_get_default (void)
     instance = g_object_new (ST_TYPE_TEXTURE_CACHE, NULL);
   return instance;
 }
+
+gboolean
+st_texture_cache_rescan_icon_theme (StTextureCache *cache)
+{
+  StTextureCachePrivate *priv = cache->priv;
+
+  return gtk_icon_theme_rescan_if_needed (priv->icon_theme);
+}
