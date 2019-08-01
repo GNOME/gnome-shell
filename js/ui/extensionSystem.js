@@ -44,8 +44,12 @@ var ExtensionManager = class {
         if (!extension)
             return;
 
-        if (extension.state != ExtensionState.ENABLED)
+        extension.isEnabled = this._enabledExtensions.includes(extension.uuid);
+
+        if (extension.state != ExtensionState.ENABLED) {
+            this.emit('extension-state-changed', extension);
             return;
+        }
 
         // "Rebase" the extension order by disabling and then enabling extensions
         // in order to help prevent conflicts.
@@ -93,8 +97,8 @@ var ExtensionManager = class {
 
         if (extension.state != ExtensionState.ERROR) {
             extension.state = ExtensionState.DISABLED;
-            this.emit('extension-state-changed', extension);
         }
+        this.emit('extension-state-changed', extension);
     }
 
     _callExtensionEnable(uuid) {
@@ -102,11 +106,15 @@ var ExtensionManager = class {
         if (!extension)
             return;
 
+        extension.isEnabled = this._enabledExtensions.includes(extension.uuid);
+
         if (extension.state == ExtensionState.INITIALIZED)
             this._callExtensionInit(uuid);
 
-        if (extension.state != ExtensionState.DISABLED)
+        if (extension.state != ExtensionState.DISABLED) {
+            this.emit('extension-state-changed', extension);
             return;
+        }
 
         this._extensionOrder.push(uuid);
 
@@ -122,6 +130,7 @@ var ExtensionManager = class {
                 if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                     continue; // not an error
                 log(`Failed to load stylesheet for extension ${uuid}: ${e.message}`);
+                this.emit('extension-state-changed', extension);
                 return;
             }
         }
@@ -251,12 +260,14 @@ var ExtensionManager = class {
         // Default to error, we set success as the last step
         extension.state = ExtensionState.ERROR;
 
+        let enabled = this._enabledExtensions.includes(extension.uuid);
+        extension.isEnabled = enabled;
+
         let checkVersion = !global.settings.get_boolean(EXTENSION_DISABLE_VERSION_CHECK_KEY);
 
         if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
             extension.state = ExtensionState.OUT_OF_DATE;
         } else {
-            let enabled = this._enabledExtensions.includes(extension.uuid);
             if (enabled) {
                 if (!this._callExtensionInit(extension.uuid))
                     return;
