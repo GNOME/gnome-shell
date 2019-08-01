@@ -40,6 +40,7 @@
 #include "st-enum-types.h"
 #include "st-private.h"
 #include "st-button.h"
+#include "st-settings.h"
 
 #define PAGING_INITIAL_REPEAT_TIMEOUT 500
 #define PAGING_SUBSEQUENT_REPEAT_TIMEOUT 200
@@ -95,8 +96,6 @@ enum
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
-
-extern gfloat st_slow_down_factor;
 
 static gboolean
 handle_button_press_event_cb (ClutterActor       *actor,
@@ -683,9 +682,11 @@ static gboolean
 trough_paging_cb (StScrollBar *self)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (self);
+  StSettings *settings;
   gfloat handle_pos, event_pos, tx, ty;
   gdouble value, new_value;
   gdouble page_increment;
+  gdouble slow_down_factor;
   gboolean ret;
 
   gulong mode;
@@ -776,13 +777,16 @@ trough_paging_cb (StScrollBar *self)
       clutter_timeline_stop (CLUTTER_TIMELINE (priv->paging_animation));
     }
 
+  settings = st_settings_get ();
+  g_object_get (settings, "slow-down-factor", &slow_down_factor, NULL);
+
   /* FIXME: Creating a new transition for each scroll is probably not the best
   * idea, but it's a lot less involved than extending the current animation */
   priv->paging_animation = g_object_new (CLUTTER_TYPE_PROPERTY_TRANSITION,
                                          "animatable", priv->adjustment,
                                          "property-name", "value",
 					 "interval", clutter_interval_new (G_TYPE_DOUBLE, value, new_value),
-                                         "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * st_slow_down_factor),
+                                         "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * slow_down_factor),
                                          "progress-mode", mode,
                                          NULL);
   g_signal_connect (priv->paging_animation, "stopped",

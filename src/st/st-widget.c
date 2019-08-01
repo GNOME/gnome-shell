@@ -133,8 +133,6 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
-gfloat st_slow_down_factor = 1.0;
-
 G_DEFINE_TYPE_WITH_PRIVATE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 #define ST_WIDGET_PRIVATE(w) ((StWidgetPrivate *)st_widget_get_instance_private (w))
 
@@ -2448,30 +2446,6 @@ st_describe_actor (ClutterActor *actor)
 
   return g_string_free (desc, FALSE);
 }
-
-/**
- * st_set_slow_down_factor:
- * @factor: new slow-down factor
- *
- * Set a global factor applied to all animation durations
- */
-void
-st_set_slow_down_factor (gfloat factor)
-{
-  st_slow_down_factor = factor;
-}
-
-/**
- * st_get_slow_down_factor:
- *
- * Returns: the global factor applied to all animation durations
- */
-gfloat
-st_get_slow_down_factor (void)
-{
-  return st_slow_down_factor;
-}
-
 
 /**
  * st_widget_get_label_actor:
