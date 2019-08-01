@@ -339,8 +339,10 @@ class GridSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
-                                             xAlign: St.Align.START });
+        this._grid = new IconGrid.IconGrid({
+            rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
+            xGridAlign: St.Align.START
+        });
 
         this._bin = new St.Bin({ x_align: St.Align.MIDDLE });
         this._bin.set_child(this._grid);
@@ -379,7 +381,7 @@ class GridSearchResults extends SearchResultsBase {
             return -1;
 
         let nCols = this._grid.columnsForWidth(width);
-        return nCols * this._grid.getRowLimit();
+        return nCols * this._grid.rowLimit;
     }
 
     _clearResultDisplay() {
