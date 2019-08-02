@@ -1988,6 +1988,8 @@ var Workspace = class {
     handleDragOver(source, _actor, _x, _y, _time) {
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
+        if (source.app)
+            return DND.DragMotionResult.COPY_DROP;
         if (source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
 
@@ -1995,6 +1997,9 @@ var Workspace = class {
     }
 
     acceptDrop(source, actor, x, y, time) {
+        let workspaceIndex = this.metaWorkspace
+                             ? this.metaWorkspace.index() : -1;
+
         if (source.realWindow) {
             let win = source.realWindow;
             if (this._isMyWindow(win))
@@ -2017,11 +2022,18 @@ var Workspace = class {
                 metaWindow.move_to_monitor(this.monitorIndex);
 
             let workspaceManager = global.workspace_manager;
-            let index = this.metaWorkspace ? this.metaWorkspace.index() : workspaceManager.get_active_workspace_index();
-            metaWindow.change_workspace_by_index(index, false);
+            workspaceIndex = workspaceIndex != -1
+                             ? workspaceIndex
+                             : workspaceManager.get_active_workspace_index();
+            metaWindow.change_workspace_by_index(workspaceIndex, false);
+            return true;
+        } else if (source.app) {
+            source.app.open_new_window(workspaceIndex);
             return true;
         } else if (source.shellWorkspaceLaunch) {
-            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
+            // Implement shellWorkspaceLaunch to allow extensions to define
+            // custom actions for their drag sources.
+            source.shellWorkspaceLaunch({ workspace: workspaceIndex,
                                           timestamp: time });
             return true;
         }
