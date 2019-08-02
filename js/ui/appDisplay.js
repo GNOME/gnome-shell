@@ -2220,6 +2220,9 @@ var AppIcon = class AppIcon {
     }
 
     shellWorkspaceLaunch(params) {
+        let { stack } = new Error();
+        log(`Usage of AppIcon.shellWorkspaceLaunch is deprecated\n${stack}`);
+
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
