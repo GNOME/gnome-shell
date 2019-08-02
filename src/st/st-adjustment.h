@@ -78,6 +78,14 @@ void          st_adjustment_get_values  (StAdjustment *adjustment,
 void          st_adjustment_adjust_for_scroll_event (StAdjustment *adjustment,
                                                      gdouble       delta);
 
+ClutterTransition * st_adjustment_get_transition    (StAdjustment      *adjustment,
+                                                     const char        *name);
+void                st_adjustment_add_transition    (StAdjustment      *adjustment,
+                                                     const char        *name,
+                                                     ClutterTransition *transition);
+void                st_adjustment_remove_transition (StAdjustment      *adjustment,
+                                                     const char        *name);
+
 G_END_DECLS
 
 #endif /* __ST_ADJUSTMENT_H__ */
