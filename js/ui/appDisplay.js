@@ -1707,13 +1707,6 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
-    shellWorkspaceLaunch(params) {
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
-
-        this.app.open_new_window(params.workspace);
-    }
-
     getDragActor() {
         return this.app.create_icon_texture(Main.overview.dashIconSize);
     }
