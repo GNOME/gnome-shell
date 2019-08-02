@@ -66,8 +66,6 @@ struct _StScrollBarPrivate
   guint             paging_source_id;
   guint             paging_event_no;
 
-  ClutterTransition *paging_animation;
-
   guint             vertical : 1;
 };
 
@@ -670,18 +668,11 @@ handle_button_press_event_cb (ClutterActor       *actor,
   return TRUE;
 }
 
-static void
-animation_completed_cb (ClutterTransition *animation,
-                        gboolean           is_finished,
-                        StScrollBarPrivate *priv)
-{
-  g_clear_object (&priv->paging_animation);
-}
-
 static gboolean
 trough_paging_cb (StScrollBar *self)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (self);
+  g_autoptr (ClutterTransition) transition = NULL;
   StSettings *settings;
   gfloat handle_pos, event_pos, tx, ty;
   gdouble value, new_value;
@@ -772,26 +763,22 @@ trough_paging_cb (StScrollBar *self)
       new_value = value - page_increment;
     }
 
-  if (priv->paging_animation)
-    {
-      clutter_timeline_stop (CLUTTER_TIMELINE (priv->paging_animation));
-    }
+  /* Stop existing transition, if one exists */
+  st_adjustment_remove_transition (priv->adjustment, "value");
 
   settings = st_settings_get ();
   g_object_get (settings, "slow-down-factor", &slow_down_factor, NULL);
 
   /* FIXME: Creating a new transition for each scroll is probably not the best
   * idea, but it's a lot less involved than extending the current animation */
-  priv->paging_animation = g_object_new (CLUTTER_TYPE_PROPERTY_TRANSITION,
-                                         "animatable", priv->adjustment,
-                                         "property-name", "value",
-					 "interval", clutter_interval_new (G_TYPE_DOUBLE, value, new_value),
-                                         "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * slow_down_factor),
-                                         "progress-mode", mode,
-                                         NULL);
-  g_signal_connect (priv->paging_animation, "stopped",
-                    G_CALLBACK (animation_completed_cb), priv);
-  clutter_timeline_start (CLUTTER_TIMELINE (priv->paging_animation));
+  transition = g_object_new (CLUTTER_TYPE_PROPERTY_TRANSITION,
+                             "property-name", "value",
+                             "interval", clutter_interval_new (G_TYPE_DOUBLE, value, new_value),
+                             "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * slow_down_factor),
+                             "progress-mode", mode,
+                             "remove-on-complete", TRUE,
+                             NULL);
+  st_adjustment_add_transition (priv->adjustment, "value", transition);
 
   return ret;
 }
