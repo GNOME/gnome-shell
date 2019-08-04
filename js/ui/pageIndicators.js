@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported PageIndicators, AnimatedPageIndicators */
 
-const { Clutter, GObject, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const Tweener = imports.ui.tweener;
 const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
@@ -97,7 +97,15 @@ class AnimatedPageIndicators extends PageIndicators {
         super._init(true);
 
         this.connect('notify::mapped', () => {
-            this.animateIndicators(AnimationDirection.IN);
+            if (!this.mapped)
+                return;
+
+            // Implicit animations are skipped for unmapped actors, and our
+            // children aren't mapped yet, so defer to a later handler
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this.animateIndicators(AnimationDirection.IN);
+                return GLib.SOURCE_REMOVE;
+            });
         });
     }
 
