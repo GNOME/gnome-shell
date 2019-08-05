@@ -14,6 +14,8 @@ desktopconf = configuration_data()
 # file when built in a non-system prefix
 desktopconf.set('bindir', bindir)
 desktopconf.set('VERSION', meson.project_version())
+desktopconf.set('systemd_hidden', have_systemd ? 'true' : 'false')
+
 foreach desktop_file : desktop_files
   i18n.merge_file('desktop',
     input: configure_file(
