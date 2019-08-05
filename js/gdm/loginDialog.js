@@ -34,8 +34,8 @@ const Realmd = imports.gdm.realmd;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
-const _FADE_ANIMATION_TIME = 0.25;
-const _SCROLL_ANIMATION_TIME = 0.5;
+const _FADE_ANIMATION_TIME = 250;
+const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
@@ -208,7 +208,7 @@ var UserList = class {
         Tweener.removeTweens(adjustment);
         Tweener.addTween (adjustment,
                           { value: value,
-                            time: _SCROLL_ANIMATION_TIME,
+                            time: _SCROLL_ANIMATION_TIME / 1000,
                             transition: 'easeOutQuad' });
     }
 
@@ -761,7 +761,7 @@ var LoginDialog = GObject.registerClass({
         this._bannerView.show();
         Tweener.addTween(this._bannerView,
                          { opacity: 255,
-                           time: _FADE_ANIMATION_TIME,
+                           time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad' });
     }
 
@@ -861,7 +861,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.actor.show();
         Tweener.addTween(this._authPrompt.actor,
                          { opacity: 255,
-                           time: _FADE_ANIMATION_TIME,
+                           time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad' });
         this._fadeInBannerView();
     }
@@ -912,7 +912,7 @@ var LoginDialog = GObject.registerClass({
 
         Tweener.addTween(this,
                          { opacity: 255,
-                           time: _FADE_ANIMATION_TIME,
+                           time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onUpdate: () => {
                                let children = Main.layoutManager.uiGroup.get_children();
@@ -940,7 +940,7 @@ var LoginDialog = GObject.registerClass({
     _startSession(serviceName) {
         Tweener.addTween(this,
                          { opacity: 0,
-                           time: _FADE_ANIMATION_TIME,
+                           time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onUpdate: () => {
                                let children = Main.layoutManager.uiGroup.get_children();

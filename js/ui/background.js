@@ -110,7 +110,7 @@ const COLOR_SHADING_TYPE_KEY = 'color-shading-type';
 const BACKGROUND_STYLE_KEY = 'picture-options';
 const PICTURE_URI_KEY = 'picture-uri';
 
-var FADE_ANIMATION_TIME = 1.0;
+var FADE_ANIMATION_TIME = 1000;
 
 // These parameters affect how often we redraw.
 // The first is how different (percent crossfaded) the slide show
@@ -712,7 +712,7 @@ var BackgroundManager = class BackgroundManager {
 
         Tweener.addTween(oldBackgroundActor,
                          { opacity: 0,
-                           time: FADE_ANIMATION_TIME,
+                           time: FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete() {
                                oldBackgroundActor.destroy();

@@ -34,7 +34,7 @@ var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = im
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
 var AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
-var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 0.2;
+var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
 var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
 function _getAutoCompleteGlobalKeywords() {
@@ -952,7 +952,7 @@ var LookingGlass = class LookingGlass {
             let settings = St.Settings.get();
             this._completionActor.show();
             Tweener.removeTweens(this._completionActor);
-            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / settings.slow_down_factor,
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / (1000 * settings.slow_down_factor),
                                                       transition: 'easeOutQuad',
                                                       height: naturalHeight,
                                                       opacity: 255
@@ -964,7 +964,7 @@ var LookingGlass = class LookingGlass {
         if (this._completionActor) {
             let settings = St.Settings.get();
             Tweener.removeTweens(this._completionActor);
-            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / settings.slow_down_factor,
+            Tweener.addTween(this._completionActor, { time: AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION / (1000 * settings.slow_down_factor),
                                                       transition: 'easeOutQuad',
                                                       height: 0,
                                                       opacity: 0,

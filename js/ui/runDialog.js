@@ -19,7 +19,7 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-var DIALOG_GROW_TIME = 0.1;
+var DIALOG_GROW_TIME = 100;
 
 var RunDialog = GObject.registerClass(
 class RunDialog extends ModalDialog.ModalDialog {
@@ -245,7 +245,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             let parentActor = this._errorBox.get_parent();
             Tweener.addTween(parentActor,
                              { height: parentActor.height + errorBoxNaturalHeight,
-                               time: DIALOG_GROW_TIME,
+                               time: DIALOG_GROW_TIME / 1000,
                                transition: 'easeOutQuad',
                                onComplete: () => {
                                    parentActor.set_height(-1);

@@ -12,9 +12,9 @@ const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-var DASH_ANIMATION_TIME = 0.2;
-var DASH_ITEM_LABEL_SHOW_TIME = 0.15;
-var DASH_ITEM_LABEL_HIDE_TIME = 0.1;
+var DASH_ANIMATION_TIME = 200;
+var DASH_ITEM_LABEL_SHOW_TIME = 150;
+var DASH_ITEM_LABEL_HIDE_TIME = 100;
 var DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
@@ -98,7 +98,7 @@ class DashItemContainer extends St.Widget {
         this.label.set_position(x, y);
         Tweener.addTween(this.label,
                          { opacity: 255,
-                           time: DASH_ITEM_LABEL_SHOW_TIME,
+                           time: DASH_ITEM_LABEL_SHOW_TIME / 1000,
                            transition: 'easeOutQuad',
                          });
     }
@@ -111,7 +111,7 @@ class DashItemContainer extends St.Widget {
     hideLabel() {
         Tweener.addTween(this.label,
                          { opacity: 0,
-                           time: DASH_ITEM_LABEL_HIDE_TIME,
+                           time: DASH_ITEM_LABEL_HIDE_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this.label.hide();
@@ -140,7 +140,7 @@ class DashItemContainer extends St.Widget {
         Tweener.addTween(this,
                          { childScale: 1.0,
                            childOpacity: 255,
-                           time: time,
+                           time: time / 1000,
                            transition: 'easeOutQuad'
                          });
     }
@@ -157,7 +157,7 @@ class DashItemContainer extends St.Widget {
         Tweener.addTween(this,
                          { childScale: 0.0,
                            childOpacity: 0,
-                           time: DASH_ANIMATION_TIME,
+                           time: DASH_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this.destroy();
@@ -637,7 +637,7 @@ var Dash = class Dash {
             Tweener.addTween(icon.icon,
                              { width: targetWidth,
                                height: targetHeight,
-                               time: DASH_ANIMATION_TIME,
+                               time: DASH_ANIMATION_TIME / 1000,
                                transition: 'easeOutQuad',
                              });
         }

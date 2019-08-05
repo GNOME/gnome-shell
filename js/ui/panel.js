@@ -265,7 +265,7 @@ var AppMenuButton = GObject.registerClass({
         Tweener.removeTweens(this);
         Tweener.addTween(this,
                          { opacity: 255,
-                           time: Overview.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad' });
     }
 
@@ -278,7 +278,7 @@ var AppMenuButton = GObject.registerClass({
         Tweener.removeTweens(this);
         Tweener.addTween(this,
                          { opacity: 0,
-                           time: Overview.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                this.hide();

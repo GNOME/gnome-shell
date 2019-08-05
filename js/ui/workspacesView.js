@@ -9,7 +9,7 @@ const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 
-var WORKSPACE_SWITCH_TIME = 0.25;
+var WORKSPACE_SWITCH_TIME = 250;
 
 var AnimationType = {
     ZOOM: 0,
@@ -200,7 +200,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
             if (showAnimation) {
                 let tweenParams = Object.assign(params, {
-                    time: WORKSPACE_SWITCH_TIME,
+                    time: WORKSPACE_SWITCH_TIME / 1000,
                     transition: 'easeOutQuad'
                 });
                 // we have to call _updateVisibility() once before the
@@ -247,7 +247,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
 
         Tweener.addTween(this.scrollAdjustment, {
             value: index,
-            time: WORKSPACE_SWITCH_TIME,
+            time: WORKSPACE_SWITCH_TIME / 1000,
             transition: 'easeOutQuad',
             onComplete: () => {
                 this._animatingScroll = false;

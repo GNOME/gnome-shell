@@ -7,7 +7,7 @@ const Mainloop = imports.mainloop;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-var ANIMATION_TIME = 0.1;
+var ANIMATION_TIME = 100;
 var DISPLAY_TIMEOUT = 600;
 
 var WorkspaceSwitcherPopupList = GObject.registerClass(
@@ -183,7 +183,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
 
     _show() {
         Tweener.addTween(this._container, { opacity: 255,
-                                            time: ANIMATION_TIME,
+                                            time: ANIMATION_TIME / 1000,
                                             transition: 'easeOutQuad'
                                            });
         this.show();
@@ -205,7 +205,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
         Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;
         Tweener.addTween(this._container, { opacity: 0.0,
-                                            time: ANIMATION_TIME,
+                                            time: ANIMATION_TIME / 1000,
                                             transition: 'easeOutQuad',
                                             onComplete: () => this.destroy()
                                            });

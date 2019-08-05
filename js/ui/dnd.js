@@ -9,11 +9,11 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 // Time to scale down to maxDragActorSize
-var SCALE_ANIMATION_TIME = 0.25;
+var SCALE_ANIMATION_TIME = 250;
 // Time to animate to original position on cancel
-var SNAP_BACK_ANIMATION_TIME = 0.25;
+var SNAP_BACK_ANIMATION_TIME = 250;
 // Time to animate to original position on success
-var REVERT_ANIMATION_TIME = 0.75;
+var REVERT_ANIMATION_TIME = 750;
 
 var DragMotionResult = {
     NO_DROP:   0,
@@ -433,7 +433,7 @@ var _Draggable = class _Draggable {
                 Tweener.addTween(this._dragActor,
                                  { scale_x: scale * origScale,
                                    scale_y: scale * origScale,
-                                   time: SCALE_ANIMATION_TIME,
+                                   time: SCALE_ANIMATION_TIME / 1000,
                                    transition: 'easeOutQuad',
                                    onUpdate: () => {
                                        let currentScale = this._dragActor.scale_x / origScale;
@@ -663,7 +663,7 @@ var _Draggable = class _Draggable {
                                y: snapBackY,
                                scale_x: snapBackScale,
                                scale_y: snapBackScale,
-                               time: SNAP_BACK_ANIMATION_TIME,
+                               time: SNAP_BACK_ANIMATION_TIME / 1000,
                              });
     }
 
@@ -677,7 +677,7 @@ var _Draggable = class _Draggable {
         this._dragActor.opacity = 0;
 
         this._animateDragEnd(eventTime,
-                             { time: REVERT_ANIMATION_TIME });
+                             { time: REVERT_ANIMATION_TIME / 1000 });
     }
 
     _animateDragEnd(eventTime, params) {
