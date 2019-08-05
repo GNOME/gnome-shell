@@ -39,6 +39,9 @@ var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
 var PAGE_SWITCH_TIME = 300;
 
+var APP_ICON_SCALE_IN_TIME = 0.5;
+var APP_ICON_SCALE_IN_DELAY = 0.7;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
@@ -82,6 +85,44 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
+function _findBestFolderName(apps) {
+    let appInfos = apps.map(app => app.get_app_info());
+
+    let categoryCounter = {};
+    let commonCategories = [];
+
+    appInfos.reduce((categories, appInfo) => {
+        for (let category of appInfo.get_categories().split(';')) {
+            if (!(category in categoryCounter))
+                categoryCounter[category] = 0;
+
+            categoryCounter[category] += 1;
+
+            // If a category is present in all apps, its counter will
+            // reach appInfos.length
+            if (category.length > 0 &&
+                categoryCounter[category] == appInfos.length) {
+                categories.push(category);
+            }
+        }
+        return categories;
+    }, commonCategories);
+
+    for (let category of commonCategories) {
+        let keyfile = new GLib.KeyFile();
+        let path = 'desktop-directories/%s.directory'.format(category);
+
+        try {
+            keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
+            return keyfile.get_locale_string('Desktop Entry', 'Name', null);
+        } catch (e) {
+            continue;
+        }
+    }
+
+    return null;
+}
+
 class BaseAppView {
     constructor(params, gridParams) {
         if (this.constructor === BaseAppView)
@@ -114,42 +155,76 @@ class BaseAppView {
         // Nothing by default
     }
 
-    removeAll() {
-        this._grid.destroyAll();
-        this._items = {};
-        this._allItems = [];
-    }
-
     _redisplay() {
-        this.removeAll();
-        this._loadApps();
+        let oldApps = this._allItems.slice();
+        let oldAppIds = oldApps.map(icon => icon.id);
+
+        let newApps = this._loadApps();
+        let newAppIds = newApps.map(icon => icon.id);
+
+        let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
+        let removedApps = oldApps.filter(icon => !newAppIds.includes(icon.id));
+
+        // Remove old app icons
+        removedApps.forEach(icon => {
+            let iconIndex = this._allItems.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 1);
+            this._grid.removeItem(icon);
+            delete this._items[icon.id];
+        });
+
+        // Add new app icons
+        addedApps.forEach(icon => {
+            let iconIndex = newApps.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 0, icon);
+            this._items[icon.id] = icon;
+        });
+
+        this._loadGrid();
     }
 
     getAllItems() {
         return this._allItems;
     }
 
-    hasItem(id) {
-        return this._items[id] !== undefined;
-    }
+    _loadGrid() {
+        this._allItems.forEach((item, index) => {
+            // Don't readd already added items
+            if (item.actor.get_parent())
+                return;
 
-    addItem(icon) {
-        let id = icon.id;
-        if (this.hasItem(id))
-            throw new Error(`icon with id ${id} already added to view`);
+            this._grid.addItem(item, index);
+        });
 
-        this._allItems.push(icon);
-        this._items[id] = icon;
-    }
+        this._allItems.forEach((item, index) => {
+            this._grid.set_child_at_index(item.actor, index);
+        });
 
-    _compareItems(a, b) {
-        return a.name.localeCompare(b.name);
-    }
-
-    loadGrid() {
-        this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => this._grid.addItem(item));
         this.emit('view-loaded');
+    }
+
+    moveItem(item, newPosition) {
+        let itemIndex = this._allItems.indexOf(item);
+
+        if (itemIndex == -1) {
+            log('Trying to move item %s that is not in this app view'.format(item.id));
+            return;
+        }
+
+        let visibleItems = this._allItems.filter(item => item.actor.visible);
+        let visibleIndex = visibleItems.indexOf(item);
+        if (newPosition > visibleIndex)
+            newPosition -= 1;
+
+        // Remove from the old position
+        this._allItems.splice(itemIndex, 1);
+
+        let realPosition = this._grid.moveItem(item, newPosition);
+        this._allItems.splice(realPosition, 0, item);
+
+        return realPosition;
     }
 
     _selectAppInternal(id) {
@@ -157,6 +232,14 @@ class BaseAppView {
             this._items[id].actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log(`No such application ${id}`);
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        return DND.DragMotionResult.NO_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        return false;
     }
 
     selectApp(id) {
@@ -222,6 +305,18 @@ class BaseAppView {
 
         Tweener.addTween(this._grid, params);
     }
+
+    canDropAt(x, y) {
+        return this._grid.canDropAt(x, y);
+    }
+
+    nudgeItemsAtIndex(index, dragLocation) {
+        this._grid.nudgeItemsAtIndex(index, dragLocation);
+    }
+
+    removeNudges() {
+        this._grid.removeNudges();
+    }
 }
 Signals.addSignalMethods(BaseAppView.prototype);
 
@@ -238,6 +333,7 @@ var AllView = class AllView extends BaseAppView {
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
         this.actor.add_actor(this._scrollView);
+        this._grid._delegate = this;
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
@@ -324,40 +420,23 @@ var AllView = class AllView extends BaseAppView {
         this._folderSettings.connect('changed::folder-children', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-    }
 
-    removeAll() {
-        this.folderIcons = [];
-        super.removeAll();
-    }
+        this._gridSettings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._gridChangedId = this._gridSettings.connect('changed::icons-data', () => {
+            if (!this._blockGridSettings)
+                Main.queueDeferredWork(this._redisplayWorkId);
+        });
 
-    _redisplay() {
-        let openFolderId = null;
-        if (this._displayingPopup && this._currentPopup)
-            openFolderId = this._currentPopup._source.id;
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
-        super._redisplay();
-
-        if (openFolderId) {
-            let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
-
-            if (folderToReopen)
-                folderToReopen.open();
-        }
-    }
-
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._allItems.indexOf(item);
-        this._allItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
-
-        this._grid.removeItem(item);
-        this._grid.addItem(item, newIdx);
+        this._nEventBlockerInhibits = 0;
+        this._popdownId = 0;
     }
 
     _refilterApps() {
+        let filteredApps = this._allItems.filter(icon => !icon.actor.visible);
+
         this._allItems.forEach(icon => {
             if (icon instanceof AppIcon)
                 icon.actor.visible = true;
@@ -370,6 +449,14 @@ var AllView = class AllView extends BaseAppView {
                 appIcon.actor.visible = false;
             });
         });
+
+        // Scale in app icons that weren't visible, but now are
+        this._allItems.filter(icon => {
+            return icon.actor.visible && filteredApps.includes(icon);
+        }).forEach(icon => {
+            if (icon instanceof AppIcon)
+                icon.scheduleScaleIn();
+        });
     }
 
     getAppInfos() {
@@ -377,6 +464,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
+        let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
@@ -390,16 +478,28 @@ var AllView = class AllView extends BaseAppView {
 
         let appSys = Shell.AppSystem.get_default();
 
+        this.folderIcons = [];
+        let appsInFolder = [];
+
+        let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+        let customPositionedIcons = [];
+
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            if (this.hasItem(id))
-                return;
             let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = new FolderIcon(id, path, this);
-            icon.connect('name-changed', this._itemNameChanged.bind(this));
-            icon.connect('apps-changed', this._refilterApps.bind(this));
-            this.addItem(icon);
+            let icon = this._items[id];
+            if (!icon) {
+                icon = new FolderIcon(id, path, this);
+                icon.connect('apps-changed', this._redisplay.bind(this));
+            }
             this.folderIcons.push(icon);
+
+            if (iconsData[id])
+                customPositionedIcons.push(icon);
+            else
+                newApps.push(icon);
+
+            icon.getAppIds().forEach(appId => appsInFolder.push(appId));
         });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -410,15 +510,83 @@ var AllView = class AllView extends BaseAppView {
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
+        // First, add only the app icons that do not have a custom position
+        // set. These icons will be sorted alphabetically.
         apps.forEach(appId => {
             let app = appSys.lookup_app(appId);
 
-            let icon = new AppIcon(app,
+            let icon = new AppIcon(app, this,
                                    { isDraggable: favoritesWritable });
-            this.addItem(icon);
+
+            if (iconsData[appId])
+                customPositionedIcons.push(icon);
+            else
+                newApps.push(icon);
+        });
+        newApps.sort((a, b) => a.name.localeCompare(b.name));
+
+        // The stored position is final. That means we need to add the custom
+        // icons in order (first to last) otherwise they end up with in the
+        // wrong position
+        customPositionedIcons.sort((a, b) => {
+            let indexA = iconsData[a.id].deep_unpack()['position'].deep_unpack();
+            let indexB = iconsData[b.id].deep_unpack()['position'].deep_unpack();
+
+            return indexA - indexB;
         });
 
-        this.loadGrid();
+        // Now add the icons with a custom position set. Because 'newApps' has
+        // literally all apps -- including the ones that will be hidden -- we
+        // need to translate from visible position to the real position.
+        let visibleApps = newApps.filter(app => !appsInFolder.includes(app.id));
+
+        customPositionedIcons.forEach((icon, index) => {
+            let iconData = iconsData[icon.id].deep_unpack();
+            let position = iconData['position'].deep_unpack();
+
+            // Because we are modifying 'newApps' here, compensate the number
+            // of added items by subtracting 'index'
+            let visibleAppAtPosition = visibleApps[position - index];
+            let realPosition = newApps.indexOf(visibleAppAtPosition);
+            newApps.splice(realPosition, 0, icon);
+        });
+
+        return newApps;
+    }
+
+    moveItem(item, position) {
+        let visibleApps = this._allItems.filter(icon => icon.actor.visible);
+        let oldPosition = visibleApps.indexOf(item);
+
+        if (oldPosition == position)
+            return;
+
+        super.moveItem(item, position);
+
+        if (position > oldPosition)
+            position -= 1;
+
+        // Update all custom icon positions to match what's visible
+        visibleApps = this._allItems.filter(icon => icon.actor.visible);
+        let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+        visibleApps.forEach((icon, index) => {
+            if (!iconsData[icon.id] || icon.id == item.id)
+                return;
+
+            iconsData[icon.id] = new GLib.Variant('a{sv}', {
+                'position': GLib.Variant.new_uint32(index),
+            });
+        });
+
+        iconsData[item.id] = new GLib.Variant('a{sv}', {
+            'position': GLib.Variant.new_uint32(position),
+        });
+        this._gridSettings.set_value('icons-data',
+            new GLib.Variant('a{sv}', iconsData));
+    }
+
+    _loadGrid() {
+        super._loadGrid();
         this._refilterApps();
     }
 
@@ -670,6 +838,188 @@ var AllView = class AllView extends BaseAppView {
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
     }
+
+    _handleDragOvershoot(dragEvent) {
+        let [gridX, gridY] = this.actor.get_transformed_position();
+        let [gridWidth, gridHeight] = this.actor.get_transformed_size();
+        let gridBottom = gridY + gridHeight;
+
+        // Within the grid boundaries, or already animating
+        if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
+            Tweener.isTweening(this._adjustment)) {
+                return;
+        }
+
+        // Moving above the grid
+        let currentY = this._adjustment.value;
+        if (dragEvent.y <= gridY && currentY > 0) {
+            this.goToPage(this._grid.currentPage - 1);
+            return;
+        }
+
+        // Moving below the grid
+        let maxY = this._adjustment.upper - this._adjustment.page_size;
+        if (dragEvent.y >= gridBottom && currentY < maxY) {
+            this.goToPage(this._grid.currentPage + 1);
+            return;
+        }
+    }
+
+    _schedulePopdown() {
+        if (this._popdownId > 0)
+            return;
+
+        this._popdownId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+            if (this._currentPopup)
+                this._currentPopup.popdown();
+            this._popdownId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _unschedulePopdown() {
+        if (this._popdownId > 0) {
+            GLib.source_remove(this._popdownId);
+            this._popdownId = 0;
+        }
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this)
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        let appIcon = dragEvent.source;
+
+        // When dragging from a folder, don't nudge items; instead,
+        // prevent DND entirely by returning NO_DROP
+        if (this._currentPopup) {
+            if (dragEvent.targetActor == this._grid ||
+                this._grid.contains(dragEvent.targetActor)) {
+                this._schedulePopdown();
+                return DND.DragMotionResult.NO_DROP;
+            } else {
+                this._unschedulePopdown();
+            }
+        } else {
+            // Handle the drag overshoot. When dragging to above the
+            // icon grid, move to the page above; when dragging below,
+            // move to the page below.
+            this._handleDragOvershoot(dragEvent);
+        }
+
+        if (dragEvent.targetActor != this._grid)
+            this.removeNudges();
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        this.removeNudges();
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        let sourceIndex = -1;
+        if (source.view == this) {
+            let visibleItems = this._allItems.filter(item => item.actor.visible);
+            sourceIndex = visibleItems.indexOf(source);
+        }
+
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        this.removeNudges();
+        if (source.view && source.view != this)
+            source.view.removeNudges();
+
+        if (index != -1) {
+            if (sourceIndex == -1 || (index != sourceIndex && index != sourceIndex + 1))
+                this.nudgeItemsAtIndex(index, dragLocation);
+
+            return DND.DragMotionResult.MOVE_DROP;
+        }
+
+        return DND.DragMotionResult.NO_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        if (index == -1)
+            return false;
+
+        if ((source instanceof AppIcon) &&
+            (source.view instanceof FolderView)) {
+            source.view.removeApp(source.app);
+            source = this._items[source.id];
+
+            if (this._currentPopup)
+                this._currentPopup.popdown();
+        }
+
+        source.undoScaleAndFade();
+
+        this.moveItem(source, index);
+        this.removeNudges();
+        return true;
+    }
+
+    inhibitEventBlocker() {
+        this._nEventBlockerInhibits++;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
+    }
+
+    uninhibitEventBlocker() {
+        this._nEventBlockerInhibits--;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
+    }
+
+    createFolder(apps, position=-1) {
+        let newFolderId = GLib.uuid_string_random();
+
+        let folders = this._folderSettings.get_strv('folder-children');
+        folders.push(newFolderId);
+        this._folderSettings.set_strv('folder-children', folders);
+
+        // Position the new folder before creating it
+        if (position >= 0) {
+            let iconsData = this._gridSettings.get_value('icons-data').deep_unpack();
+            iconsData[newFolderId] = new GLib.Variant('a{sv}', {
+                'position': GLib.Variant.new_uint32(position),
+            });
+            this._gridSettings.set_value('icons-data',
+                new GLib.Variant('a{sv}', iconsData));
+        }
+
+        // Create the new folder. We are cannot use but Gio.Settings.new_with_path()
+        // for that.
+        let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
+        let newFolderSettings = Gio.Settings.new_with_path('org.gnome.desktop.app-folders.folder',
+                                                           newFolderPath);
+        if (!newFolderSettings) {
+            log('Error creating new folder');
+            return false;
+        }
+
+        let appItems = apps.map(id => this._items[id].app);
+        let folderName = _findBestFolderName(appItems);
+        if (!folderName)
+            folderName = _("Unnamed Folder");
+
+        newFolderSettings.delay();
+        newFolderSettings.set_string('name', folderName);
+        newFolderSettings.set_strv('apps', apps);
+        newFolderSettings.apply();
+
+        return true;
+    }
 };
 Signals.addSignalMethods(AllView.prototype);
 
@@ -707,11 +1057,12 @@ var FrequentView = class FrequentView extends BaseAppView {
     }
 
     _loadApps() {
+        let apps = [];
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if (!hasUsefulData)
-            return;
+            return [];
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -724,10 +1075,12 @@ var FrequentView = class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i],
+            let appIcon = new AppIcon(mostUsed[i], this,
                                       { isDraggable: favoritesWritable });
-            this._grid.addItem(appIcon, -1);
+            apps.push(appIcon);
         }
+
+        return apps;
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1013,28 +1366,35 @@ var AppSearchProvider = class AppSearchProvider {
 
     createResultObject(resultMeta) {
         if (resultMeta.id.endsWith('.desktop'))
-            return new AppIcon(this._appSys.lookup_app(resultMeta['id']));
+            return new AppIcon(this._appSys.lookup_app(resultMeta['id']), null);
         else
             return new SystemActionIcon(this, resultMeta);
     }
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor() {
+    constructor(folder, id, parentView) {
         super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._id = id;
+        this._folder = folder;
+        this._parentView = parentView;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
         this.actor.add_actor(scrollableContainer);
+        this._grid._delegate = this;
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
+
+        this._folder.connect('changed', this._redisplay.bind(this));
+        this._redisplay();
     }
 
     _childFocused(actor) {
@@ -1097,6 +1457,47 @@ var FolderView = class FolderView extends BaseAppView {
         this.actor.set_height(this.usedHeight());
     }
 
+    handleDragOver(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let sourceIndex = this._allItems.indexOf(source);
+
+        this._parentView.removeNudges();
+        this.removeNudges();
+        if (index != -1 && index != sourceIndex && index != sourceIndex + 1)
+            this.nudgeItemsAtIndex(index, dragLocation);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        let [index, dragLocation] = this.canDropAt(x, y);
+        let success = index != -1;
+
+        source.undoScaleAndFade();
+
+        if (success) {
+            // If we're dragging from another folder, remove from the old folder
+            if (source.view != this &&
+                (source instanceof AppIcon) &&
+                (source.view instanceof FolderView)) {
+                source.view.removeApp(source.app);
+            }
+
+            // If the new app icon is not in this folder yet, add it; otherwise,
+            // just move the icon to the new position
+            let folderApps = this._folder.get_strv('apps');
+            if (!folderApps.includes(source.id)) {
+                folderApps.splice(index, 0, source.id);
+                this._folder.set_strv('apps', folderApps);
+            } else {
+                this.moveItem(source, index);
+            }
+        }
+
+        this.removeNudges();
+        return success;
+    }
+
     _getPageAvailableSize() {
         let pageBox = new Clutter.ActorBox();
         pageBox.x1 = pageBox.y1 = 0;
@@ -1127,89 +1528,12 @@ var FolderView = class FolderView extends BaseAppView {
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
-};
 
-var FolderIcon = class FolderIcon {
-    constructor(id, path, parentView) {
-        this.id = id;
-        this.name = '';
-        this._parentView = parentView;
-
-        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path: path });
-        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
-                                     button_mask: St.ButtonMask.ONE,
-                                     toggle_mode: true,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
-        this.actor._delegate = this;
-        // whether we need to update arrow side, position etc.
-        this._popupInvalidated = false;
-
-        this.icon = new IconGrid.BaseIcon('', {
-            createIcon: this._createIcon.bind(this),
-            setSizeManually: true
-        });
-        this.actor.set_child(this.icon);
-        this.actor.label_actor = this.icon.label;
-
-        this.view = new FolderView();
-
-        this.actor.connect('clicked', this.open.bind(this));
-        this.actor.connect('destroy', this.onDestroy.bind(this));
-        this.actor.connect('notify::mapped', () => {
-            if (!this.actor.mapped && this._popup)
-                this._popup.popdown();
-        });
-
-        this._folder.connect('changed', this._redisplay.bind(this));
-        this._redisplay();
-    }
-
-    onDestroy() {
-        this.view.actor.destroy();
-
-        if (this._spaceReadySignalId) {
-            this._parentView.disconnect(this._spaceReadySignalId);
-            this._spaceReadySignalId = 0;
-        }
-
-        if (this._popup)
-            this._popup.actor.destroy();
-    }
-
-    open() {
-        this._ensurePopup();
-        this.view.actor.vscroll.adjustment.value = 0;
-        this._openSpaceForPopup();
-    }
-
-    getAppIds() {
-        return this.view.getAllItems().map(item => item.id);
-    }
-
-    _updateName() {
-        let name = _getFolderName(this._folder);
-        if (this.name == name)
-            return;
-
-        this.name = name;
-        this.icon.label.text = this.name;
-        this.emit('name-changed');
-    }
-
-    _redisplay() {
-        this._updateName();
-
-        this.view.removeAll();
-
+    _loadApps() {
+        let apps = [];
         let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
-            if (this.view.hasItem(appId))
-                return;
-
             if (excludedApps.includes(appId))
                 return;
 
@@ -1220,8 +1544,11 @@ var FolderIcon = class FolderIcon {
             if (!app.get_app_info().should_show())
                 return;
 
-            let icon = new AppIcon(app);
-            this.view.addItem(icon);
+            if (apps.some(appIcon => appIcon.id == appId))
+                return;
+
+            let icon = new AppIcon(app, this);
+            apps.push(icon);
         };
 
         let folderApps = this._folder.get_strv('apps');
@@ -1237,47 +1564,422 @@ var FolderIcon = class FolderIcon {
             addAppId(appInfo.get_id());
         });
 
-        this.actor.visible = this.view.getAllItems().length > 0;
-        this.view.loadGrid();
+        return apps;
+    }
+
+    removeApp(app) {
+        let folderApps = this._folder.get_strv('apps');
+        let index = folderApps.indexOf(app.id);
+        if (index < 0)
+            return false;
+
+        folderApps.splice(index, 1);
+
+        // Remove the folder if this is the last app icon; otherwise,
+        // just remove the icon
+        if (folderApps.length == 0) {
+            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+            let folders = settings.get_strv('folder-children');
+            folders.splice(folders.indexOf(this._id), 1);
+            settings.set_strv('folder-children', folders);
+
+            // Resetting all keys deletes the relocatable schema
+            let keys = this._folder.settings_schema.list_keys();
+            for (let key of keys)
+                this._folder.reset(key);
+
+            // Remove the folder from the custom position list too
+            settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+            let iconsData = settings.get_value('icons-data').deep_unpack();
+            if (iconsData[this._id]) {
+                delete iconsData[this._id];
+                settings.set_value('icons-data',
+                    new GLib.Variant('a{sv}', iconsData));
+            }
+        } else {
+            this._folder.set_strv('apps', folderApps);
+        }
+
+        return true;
+    }
+
+    moveItem(item, newPosition) {
+        super.moveItem(item, newPosition);
+
+        let appIds = this._allItems.map(icon => icon.id);
+        this._folder.set_strv('apps', appIds);
+    }
+};
+
+var BaseViewIcon = class BaseViewIcon {
+    constructor(params, buttonParams) {
+        buttonParams = Params.parse(buttonParams, {
+            pivot_point: new Clutter.Point({x: 0.5, y: 0.5}),
+            reactive: true,
+            can_focus: true,
+            x_fill: true,
+            y_fill: true
+        }, true);
+
+        this.actor = new St.Button(buttonParams);
+        this.actor._delegate = this;
+
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        params = Params.parse(params, {
+            isDraggable: true,
+            hideWhileDragging: false
+        }, true);
+        let isDraggable = params['isDraggable'];
+        delete params['isDraggable'];
+
+        this._hasDndHover = false;
+
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable.connect('drag-begin', () => {
+                this._dragging = true;
+                this.scaleAndFade();
+                Main.overview.beginItemDrag(this);
+            });
+            this._draggable.connect('drag-cancelled', () => {
+                this._dragging = false;
+                Main.overview.cancelledItemDrag(this);
+            });
+            this._draggable.connect('drag-end', () => {
+                this._dragging = false;
+                this.undoScaleAndFade();
+                Main.overview.endItemDrag(this);
+            });
+        }
+
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._draggable && this._dragging) {
+            Main.overview.endItemDrag(this);
+            this.draggable = null;
+        }
+    }
+
+    _createIcon(iconSize) {
+        throw new GObject.NotImplementedError(`_createIcon in ${this.constructor.name}`);
+    }
+
+    _canDropAt(source) {
+        return false;
+    }
+
+    // Should be overriden by subclasses
+    _setHoveringByDnd(isHovering) {
+        if (isHovering)
+            this.actor.add_style_pseudo_class('drop');
+        else
+            this.actor.remove_style_pseudo_class('drop');
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        let target = dragEvent.targetActor;
+        let hoveringActor = target == this.actor || this.actor.contains(target);
+        let canDrop = this._canDropAt(dragEvent.source);
+        let hasDndHover = hoveringActor && canDrop;
+
+        if (this._hasDndHover != hasDndHover) {
+            this._setHoveringByDnd(hasDndHover);
+            this._hasDndHover = hasDndHover;
+        }
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        this.actor.remove_style_pseudo_class('drop');
+        DND.removeDragMonitor(this._dragMonitor);
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (source == this)
+            return DND.DragMotionResult.NO_DROP;
+
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        source.undoScaleAndFade();
+
+        this._setHoveringByDnd(false);
+
+        if (!this._canDropAt(source))
+            return false;
+
+        return true;
+    }
+
+    getDragActor() {
+        let iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: (this._icon.label != null),
+            setSizeManually: true
+        };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.setIconSize(this.icon.iconSize);
+
+        let bin = new St.Bin({ style_class: this.actor.style_class });
+        bin.set_child(icon);
+
+        return bin;
+    }
+
+    getDragActorSource() {
+        return this._icon.icon;
+    }
+
+    _scaleIn() {
+        this.actor.scale_x = 0;
+        this.actor.scale_y = 0;
+        this.actor.pivot_point = new Clutter.Point({ x: 0.5, y: 0.5 });
+
+        Tweener.addTween(this.actor, {
+            scale_x: 1,
+            scale_y: 1,
+            time: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            transition: (t, b, c, d) => {
+                // Similar to easeOutElastic, but less aggressive.
+                t /= d;
+                let p = 0.5;
+                return b + c * (Math.pow(2, -11 * t) * Math.sin(2 * Math.PI * (t - p / 4) / p) + 1);
+            }
+        });
+    }
+
+    _unscheduleScaleIn() {
+        if (this._scaleInId != 0) {
+            this.actor.disconnect(this._scaleInId);
+            this._scaleInId = 0;
+        }
+    }
+
+    scheduleScaleIn() {
+        if (this._scaleInId != 0)
+            return;
+
+        if (this.actor.mapped) {
+            this._scaleIn();
+        } else {
+            this._scaleInId = this.actor.connect('notify::mapped', () => {
+                this._unscheduleScaleIn();
+                this._scaleIn();
+            })
+        }
+    }
+
+    scaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = false;
+        this.actor.scale_x = 0.75;
+        this.actor.scale_y = 0.75;
+        this.actor.opacity = 128;
+        this.actor.restore_easing_state();
+    }
+
+    undoScaleAndFade() {
+        this.actor.save_easing_state();
+        this.actor.reactive = true;
+        this.actor.scale_x = 1.0;
+        this.actor.scale_y = 1.0;
+        this.actor.opacity = 255;
+        this.actor.restore_easing_state();
+    }
+
+    get icon() {
+        return this._icon;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get view() {
+        return this._view;
+    }
+}
+
+var FolderIcon = class FolderIcon extends BaseViewIcon {
+    constructor(id, path, parentView) {
+        super({ hideWhileDragging: true }, {
+            style_class: 'app-well-app app-folder',
+            toggle_mode: true
+        });
+
+        this._id = id;
+        this._name = '';
+        this._view = parentView;
+
+        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
+                                          path: path });
+
+        // whether we need to update arrow side, position etc.
+        this._popupInvalidated = false;
+
+        this._icon = new IconGrid.BaseIcon('', {
+            createIcon: this._createIcon.bind(this),
+            setSizeManually: true
+        });
+        this.actor.set_child(this.icon);
+        this.actor.label_actor = this.icon.label;
+
+        this._folderView = new FolderView(this._folder, id, parentView);
+
+        this.actor.connect('clicked', this.open.bind(this));
+        this.actor.connect('destroy', this.onDestroy.bind(this));
+        this.actor.connect('notify::mapped', () => {
+            if (!this.actor.mapped && this._popup)
+                this._popup.popdown();
+        });
+
+        this._folder.connect('changed', this._redisplay.bind(this));
+        this._redisplay();
+    }
+
+    onDestroy() {
+        this._folderView.actor.destroy();
+
+        if (this._spaceReadySignalId) {
+            this.view.disconnect(this._spaceReadySignalId);
+            this._spaceReadySignalId = 0;
+        }
+
+        if (this._popup)
+            this._popup.actor.destroy();
+    }
+
+    open() {
+        this._ensurePopup();
+        this._folderView.actor.vscroll.adjustment.value = 0;
+        this._openSpaceForPopup();
+    }
+
+    getAppIds() {
+        return this._folderView.getAllItems().map(item => item.id);
+    }
+
+    _onDragBegin() {
+        super._onDragBegin();
+        this.view.inhibitEventBlocker();
+    }
+
+    _onDragEnd() {
+        super._onDragEnd();
+        this.view.uninhibitEventBlocker();
+    }
+
+    _canDropAt(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        if (!global.settings.is_writable('favorite-apps'))
+            return false;
+
+        if (this._folder.get_strv('apps').includes(source.id))
+            return false
+
+        return true;
+    }
+
+    handleDragOver(source, actor, x, y, time) {
+        if (!this._canDropAt(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (!this._canDropAt(source)) {
+            source.undoScaleAndFade();
+            return true;
+        }
+
+        let app = source.app;
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        return true;
+    }
+
+    _updateName() {
+        let name = _getFolderName(this._folder);
+        if (this._name == name)
+            return;
+
+        this._name = name;
+        this.icon.label.text = name;
+        this.emit('name-changed');
+    }
+
+    _redisplay() {
+        this._updateName();
+        this.actor.visible = this._folderView.getAllItems().length > 0;
+        this.icon.update();
         this.emit('apps-changed');
     }
 
     _createIcon(iconSize) {
-        return this.view.createFolderIcon(iconSize, this);
+        return this._folderView.createFolderIcon(iconSize, this);
     }
 
     _popupHeight() {
-        let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
+        let usedHeight = this._folderView.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
         return usedHeight;
     }
 
     _openSpaceForPopup() {
-        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(this._spaceReadySignalId);
+        this._spaceReadySignalId = this.view.connect('space-ready', () => {
+            this.view.disconnect(this._spaceReadySignalId);
             this._spaceReadySignalId = 0;
             this._popup.popup();
             this._updatePopupPosition();
         });
-        this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
+        this.view.openSpaceForPopup(this, this._boxPointerArrowside, this._folderView.nRowsDisplayedAtOnce());
     }
 
     _calculateBoxPointerArrowSide() {
-        let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
+        let spaceTop = this.actor.y - this.view.getCurrentPageY();
+        let spaceBottom = this.view.actor.height - (spaceTop + this.actor.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
     }
 
     _updatePopupSize() {
         // StWidget delays style calculation until needed, make sure we use the correct values
-        this.view._grid.ensure_style();
+        this._folderView._grid.ensure_style();
 
         let offsetForEachSide = Math.ceil((this._popup.getOffset(St.Side.TOP) +
                                            this._popup.getOffset(St.Side.BOTTOM) -
                                            this._popup.getCloseButtonOverlap()) / 2);
         // Add extra padding to prevent boxpointer decorations and close button being cut off
-        this.view.setPaddingOffsets(offsetForEachSide);
-        this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
+        this._folderView.setPaddingOffsets(offsetForEachSide);
+        this._folderView.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
     }
 
     _updatePopupPosition() {
@@ -1296,7 +1998,7 @@ var FolderIcon = class FolderIcon {
         this._boxPointerArrowside = this._calculateBoxPointerArrowSide();
         if (!this._popup) {
             this._popup = new AppFolderPopup(this, this._boxPointerArrowside);
-            this._parentView.addFolderPopup(this._popup);
+            this.view.addFolderPopup(this._popup);
             this._popup.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
                     this.actor.checked = false;
@@ -1313,7 +2015,7 @@ var FolderIcon = class FolderIcon {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
         if (this._popup)
-            this.view.adaptToSize(width, height);
+            this._folderView.adaptToSize(width, height);
         this._popupInvalidated = true;
     }
 };
@@ -1322,7 +2024,7 @@ Signals.addSignalMethods(FolderIcon.prototype);
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
         this._source = source;
-        this._view = source.view;
+        this._view = source._folderView;
         this._arrowSide = side;
 
         this._isOpen = false;
@@ -1484,18 +2186,16 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = class AppIcon {
-    constructor(app, iconParams = {}) {
+var AppIcon = class AppIcon extends BaseViewIcon {
+    constructor(app, parentView, iconParams = {}) {
+        super(iconParams, {
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            style_class: 'app-well-app'
+        });
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
-
-        this.actor = new St.Button({ style_class: 'app-well-app',
-                                     reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
+        this._id = app.get_id();
+        this._name = app.get_name();
+        this._view = parentView;
 
         this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
                                     layout_manager: new Clutter.BinLayout(),
@@ -1510,15 +2210,14 @@ var AppIcon = class AppIcon {
         this._iconContainer.add_child(this._dot);
 
         this.actor._delegate = this;
+        this._scaleInId = 0;
+        this._folderPreviewId = 0;
 
-        // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
-        let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
-        this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
+        this._icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
         this.actor.label_actor = this.icon.label;
@@ -1532,24 +2231,8 @@ var AppIcon = class AppIcon {
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this.actor);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', () => {
-                this._dragging = false;
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        if (this._draggable)
+            this._draggable.connect('drag-begin', this._removeMenuTimeout.bind(this));
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
@@ -1559,12 +2242,15 @@ var AppIcon = class AppIcon {
     }
 
     _onDestroy() {
+        super._onDestroy();
+
+        if (this._folderPreviewId > 0) {
+            GLib.source_remove(this._folderPreviewId);
+            this._folderPreviewId = 0;
+        }
+
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
-        if (this._draggable && this._dragging) {
-            Main.overview.endItemDrag(this);
-            this.draggable = null;
-        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
     }
@@ -1714,18 +2400,73 @@ var AppIcon = class AppIcon {
         this.app.open_new_window(params.workspace);
     }
 
-    getDragActor() {
-        return this.app.create_icon_texture(Main.overview.dashIconSize);
-    }
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
-    getDragActorSource() {
-        return this.icon.icon;
-    }
-
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    }
+
+    _showFolderPreview() {
+        this.icon.label.opacity = 0;
+
+        // HACK!!!
+        this.icon._iconBin.save_easing_state();
+        this.icon._iconBin.scale_x = FOLDER_SUBICON_FRACTION;
+        this.icon._iconBin.scale_y = FOLDER_SUBICON_FRACTION;
+        this.icon._iconBin.restore_easing_state();
+    }
+
+    _hideFolderPreview() {
+        this.icon.label.opacity = 255;
+
+        // HACK!!!
+        this.icon._iconBin.save_easing_state();
+        this.icon._iconBin.scale_x = 1.0;
+        this.icon._iconBin.scale_y = 1.0;
+        this.icon._iconBin.restore_easing_state();
+    }
+
+    _setHoveringByDnd(hovering) {
+        if (hovering) {
+            if (this._folderPreviewId > 0)
+                return;
+
+            this._folderPreviewId =
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+                this._folderPreviewId = 0;
+
+                super._setHoveringByDnd(true);
+                this._showFolderPreview();
+
+                return GLib.SOURCE_REMOVE;
+            });
+        } else {
+            if (this._folderPreviewId > 0) {
+                GLib.source_remove(this._folderPreviewId);
+                this._folderPreviewId = 0;
+            }
+
+            super._setHoveringByDnd(false);
+            this._hideFolderPreview();
+        }
+    }
+
+    _canDropAt(source) {
+        return source != this &&
+               (source instanceof AppIcon) &&
+               (this.view instanceof AllView);
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (!super.acceptDrop(source, actor, x, y, time))
+            return false;
+
+        let apps = [this.id, source.id];
+        let visibleItems = this.view.getAllItems().filter(item => item.actor.visible);
+        let position = visibleItems.indexOf(this);
+
+        if (visibleItems.indexOf(source) < position)
+            position -= 1;
+
+        return this.view.createFolder(apps, position);
     }
 };
 Signals.addSignalMethods(AppIcon.prototype);

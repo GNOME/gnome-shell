@@ -29,6 +29,27 @@ var AnimationDirection = {
 var APPICON_ANIMATION_OUT_SCALE = 3;
 var APPICON_ANIMATION_OUT_TIME = 250;
 
+const LEFT_DIVIDER_LEEWAY = 30;
+const RIGHT_DIVIDER_LEEWAY = 30;
+
+const NUDGE_ANIMATION_TYPE = Clutter.AnimationMode.EASE_OUT_ELASTIC;
+const NUDGE_DURATION = 800;
+
+const NUDGE_RETURN_ANIMATION_TYPE = Clutter.AnimationMode.EASE_OUT_QUINT;
+const NUDGE_RETURN_DURATION = 300;
+
+const NUDGE_FACTOR = 0.33;
+
+const ICON_POSITION_DELAY = 25;
+
+var DragLocation = {
+    DEFAULT: 0,
+    ON_ICON: 1,
+    START_EDGE: 2,
+    END_EDGE: 3,
+    EMPTY_AREA: 4,
+}
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -141,6 +162,10 @@ class BaseIcon extends St.Bin {
         // styles like hover and running are not applied while
         // animating.
         zoomOutActor(this.child);
+    }
+
+    update() {
+        this._createIconTexture(this.iconSize);
     }
 });
 
@@ -342,6 +367,7 @@ var IconGrid = GObject.registerClass({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+        let nChanged = 0;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
@@ -351,7 +377,16 @@ var IconGrid = GObject.registerClass({
             } else {
                 if (!animating)
                     children[i].opacity = 255;
+
+                // Figure out how much delay to apply
+                if (!childBox.equal(children[i].get_allocation_box()))
+                    nChanged++;
+
+                children[i].save_easing_state();
+                children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+                children[i].set_easing_delay(ICON_POSITION_DELAY * nChanged);
                 children[i].allocate(childBox, flags);
+                children[i].restore_easing_state();
             }
 
             columnIndex++;
@@ -691,6 +726,22 @@ var IconGrid = GObject.registerClass({
             this.add_actor(item.actor);
     }
 
+    moveItem(item, newPosition) {
+        if (!this.contains(item.actor)) {
+            log('Cannot move item not contained by the IconGrid');
+            return;
+        }
+
+        let children = this.get_children();
+        let visibleChildren = children.filter(c => c.is_visible());
+        let visibleChildAtPosition = visibleChildren[newPosition];
+        let realPosition = children.indexOf(visibleChildAtPosition);
+
+        this.set_child_at_index(item.actor, realPosition);
+
+        return realPosition;
+    }
+
     removeItem(item) {
         this.remove_child(item.actor);
     }
@@ -787,6 +838,223 @@ var IconGrid = GObject.registerClass({
         }
         return GLib.SOURCE_REMOVE;
     }
+
+    // Drag n' Drop methods
+
+    nudgeItemsAtIndex(index, dragLocation) {
+        // No nudging when the cursor is in an empty area
+        if (dragLocation == DragLocation.EMPTY_AREA || dragLocation == DragLocation.ON_ICON)
+            return;
+
+        let children = this.get_children().filter(c => c.is_visible());
+        let nudgeIndex = index;
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+
+        if (dragLocation != DragLocation.START_EDGE) {
+            let leftItem = children[nudgeIndex - 1];
+            let offset = rtl ? Math.floor(this._hItemSize * NUDGE_FACTOR) : Math.floor(-this._hItemSize * NUDGE_FACTOR);
+            this._animateNudge(leftItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+        }
+
+        // Nudge the icon to the right if we are the first item or not at the
+        // end of row
+        if (dragLocation != DragLocation.END_EDGE) {
+            let rightItem = children[nudgeIndex];
+            let offset = rtl ? Math.floor(-this._hItemSize * NUDGE_FACTOR) : Math.floor(this._hItemSize * NUDGE_FACTOR);
+            this._animateNudge(rightItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+        }
+    }
+
+    removeNudges() {
+        let children = this.get_children().filter(c => c.is_visible());
+        for (let index = 0; index < children.length; index++) {
+            this._animateNudge(children[index],
+                               NUDGE_RETURN_ANIMATION_TYPE,
+                               NUDGE_RETURN_DURATION,
+                               0);
+        }
+    }
+
+    _animateNudge(item, animationType, duration, offset) {
+        if (!item)
+            return;
+
+        item.save_easing_state();
+        item.set_easing_mode(animationType);
+        item.set_easing_duration(duration);
+        item.translation_x = offset;
+        item.restore_easing_state();
+    }
+
+    // This function is overriden by the PaginatedIconGrid subclass so we can
+    // take into account the extra space when dragging from a folder
+    _calculateDndRow(y) {
+        let rowHeight = this._getVItemSize() + this._getSpacing();
+        return Math.floor(y / rowHeight);
+    }
+
+    // Returns the drop point index or -1 if we can't drop there
+    canDropAt(x, y) {
+        // This is an complex calculation, but in essence, we divide the grid
+        // as:
+        //
+        //  left empty space
+        //      |   left padding                          right padding
+        //      |     |        width without padding               |
+        // +--------+---+---------------------------------------+-----+
+        // |        |   |        |           |          |       |     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |--------+-----------+----------+-------|     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |--------+-----------+----------+-------|     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |--------+-----------+----------+-------|     |
+        // |        |   |        |           |          |       |     |
+        // |        |   |        |           |          |       |     |
+        // +--------+---+---------------------------------------+-----+
+        //
+        // The left empty space is immediately discarded, and ignored in all
+        // calculations.
+        //
+        // The width (with paddings) is used to determine if we're dragging
+        // over the left or right padding, and which column is being dragged
+        // on.
+        //
+        // Finally, the width without padding is used to figure out where in
+        // the icon (start edge, end edge, on it, etc) the cursor is.
+
+        let [nColumns, usedWidth] = this._computeLayout(this.width);
+
+        let leftEmptySpace;
+        switch (this._xAlign) {
+        case St.Align.START:
+            leftEmptySpace = 0;
+            break;
+        case St.Align.MIDDLE:
+            leftEmptySpace = Math.floor((this.width - usedWidth) / 2);
+            break;
+        case St.Align.END:
+            leftEmptySpace = availWidth - usedWidth;
+        }
+
+        x -= leftEmptySpace;
+        y -= this.topPadding;
+
+        let row = this._calculateDndRow(y);
+
+        // Correct sx to handle the left padding to correctly calculate
+        // the column
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+        let gridX = x - this.leftPadding;
+
+        let widthWithoutPadding = usedWidth - this.leftPadding - this.rightPadding;
+        let columnWidth = widthWithoutPadding / nColumns;
+
+        let column;
+        if (x < this.leftPadding)
+            column = 0;
+        else if (x > usedWidth - this.rightPadding)
+            column = nColumns - 1;
+        else
+            column = Math.floor(gridX / columnWidth);
+
+        let isFirstIcon = column == 0;
+        let isLastIcon = column == nColumns - 1;
+
+        // If we're outside of the grid, we are in an invalid drop location
+        if (x < 0 || x > usedWidth)
+            return [-1, DragLocation.DEFAULT];
+
+        let children = this.get_children().filter(c => c.is_visible());
+        let childIndex = Math.min((row * nColumns) + column, children.length);
+
+        // If we're above the grid vertically, we are in an invalid
+        // drop location
+        if (childIndex < 0)
+            return [-1, DragLocation.DEFAULT];
+
+        // If we're past the last visible element in the grid,
+        // we might be allowed to drop there.
+        if (childIndex >= children.length)
+            return [children.length, DragLocation.EMPTY_AREA];
+
+        let child = children[childIndex];
+        let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight] = child.get_preferred_size();
+
+        // This is the width of the cell that contains the icon
+        // (excluding spacing between cells)
+        let childIconWidth = Math.max(this._getHItemSize(), childNaturalWidth);
+
+        // Calculate the original position of the child icon (prior to nudging)
+        let childX;
+        if (rtl)
+            childX = widthWithoutPadding - (column * columnWidth) - childIconWidth;
+        else
+            childX = column * columnWidth;
+
+        let iconLeftX = childX + LEFT_DIVIDER_LEEWAY;
+        let iconRightX = childX + childIconWidth - RIGHT_DIVIDER_LEEWAY
+
+        let dropIndex;
+        let dragLocation;
+
+        x -= this.leftPadding;
+
+        if (x < iconLeftX) {
+            // We are to the left of the icon target
+            if (isFirstIcon || x < 0) {
+                // We are before the leftmost icon on the grid
+                if (rtl) {
+                    dropIndex = childIndex + 1;
+                    dragLocation = DragLocation.END_EDGE;
+                } else {
+                    dropIndex = childIndex;
+                    dragLocation = DragLocation.START_EDGE;
+                }
+            } else {
+                // We are between the previous icon (next in RTL) and this one
+                if (rtl)
+                    dropIndex = childIndex + 1;
+                else
+                    dropIndex = childIndex;
+
+                dragLocation = DragLocation.DEFAULT;
+            }
+        } else if (x >= iconRightX) {
+            // We are to the right of the icon target
+            if (childIndex >= children.length) {
+                // We are beyond the last valid icon
+                // (to the right of the app store / trash can, if present)
+                dropIndex = -1;
+                dragLocation = DragLocation.DEFAULT;
+            } else if (isLastIcon || x >= widthWithoutPadding) {
+                // We are beyond the rightmost icon on the grid
+                if (rtl) {
+                    dropIndex = childIndex;
+                    dragLocation = DragLocation.START_EDGE;
+                } else {
+                    dropIndex = childIndex + 1;
+                    dragLocation = DragLocation.END_EDGE;
+                }
+            } else {
+                // We are between this icon and the next one (previous in RTL)
+                if (rtl)
+                    dropIndex = childIndex;
+                else
+                    dropIndex = childIndex + 1;
+
+                dragLocation = DragLocation.DEFAULT;
+            }
+        } else {
+            // We are over the icon target area
+            dropIndex = childIndex;
+            dragLocation = DragLocation.ON_ICON;
+        }
+
+        return [dropIndex, dragLocation];
+    }
 });
 
 var PaginatedIconGrid = GObject.registerClass({
@@ -839,10 +1107,21 @@ var PaginatedIconGrid = GObject.registerClass({
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
+        let nChanged = 0;
 
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
+
+            // Figure out how much delay to apply
+            if (!childBox.equal(children[i].get_allocation_box()))
+                nChanged++;
+
+            children[i].save_easing_state();
+            children[i].set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+            children[i].set_easing_delay(ICON_POSITION_DELAY * nChanged);
             children[i].allocate(childBox, flags);
+            children[i].restore_easing_state();
+
             children[i].show();
 
             columnIndex++;
@@ -861,6 +1140,23 @@ var PaginatedIconGrid = GObject.registerClass({
     }
 
     // Overridden from IconGrid
+    _calculateDndRow(y) {
+        let row = super._calculateDndRow(y);
+
+        // If there's no extra space, just return the current value and maintain
+        // the same behavior when without a folder opened.
+        if (!this._extraSpaceData)
+            return row;
+
+        let [ baseRow, nRowsUp, nRowsDown ] = this._extraSpaceData;
+        let newRow = row + nRowsUp;
+
+        if (row > baseRow)
+            newRow -= nRowsDown;
+
+        return newRow;
+    }
+
     _getChildrenToAnimate() {
         let children = this._getVisibleChildren();
         let firstIndex = this._childrenPerPage * this.currentPage;

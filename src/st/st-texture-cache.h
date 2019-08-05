@@ -113,4 +113,6 @@ CoglTexture * st_texture_cache_load (StTextureCache       *cache,
                                      void                 *data,
                                      GError              **error);
 
+gboolean st_texture_cache_rescan_icon_theme (StTextureCache *cache);
+
 #endif /* __ST_TEXTURE_CACHE_H__ */
