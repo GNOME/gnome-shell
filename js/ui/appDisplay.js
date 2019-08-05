@@ -141,7 +141,18 @@ class BaseAppView {
             this._items[icon.id] = icon;
         });
 
-        this._updateGrid();
+        // Update this._grid items
+        this._allItems.sort(this._compareItems);
+
+        this._allItems.forEach((item, index) => {
+            // Don't readd already added items
+            if (item.actor.get_parent())
+                return;
+
+            this._grid.addItem(item, index);
+        });
+
+        this.emit('view-loaded');
     }
 
     getAllItems() {
@@ -163,20 +174,6 @@ class BaseAppView {
 
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
-    }
-
-    _updateGrid() {
-        this._allItems.sort(this._compareItems);
-
-        this._allItems.forEach((item, index) => {
-            // Don't readd already added items
-            if (item.actor.get_parent())
-                return;
-
-            this._grid.addItem(item, index);
-        });
-
-        this.emit('view-loaded');
     }
 
     _selectAppInternal(id) {
@@ -431,8 +428,8 @@ var AllView = class AllView extends BaseAppView {
         return newApps;
     }
 
-    _updateGrid() {
-        super._updateGrid();
+    _redisplay() {
+        super._redisplay();
         this._refilterApps();
     }
 
