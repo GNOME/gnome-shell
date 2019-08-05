@@ -14,6 +14,8 @@ desktopconf = configuration_data()
 # file when built in a non-system prefix
 desktopconf.set('bindir', bindir)
 desktopconf.set('VERSION', meson.project_version())
+desktopconf.set('systemd_hidden', have_systemd ? 'true' : 'false')
+
 foreach desktop_file : desktop_files
   i18n.merge_file('desktop',
     input: configure_file(
@@ -22,7 +24,7 @@ foreach desktop_file : desktop_files
       configuration: desktopconf
     ),
     output: desktop_file,
-    po_dir: '../po',
+    po_dir: po_dir,
     install: true,
     install_dir: desktopdir,
     type: 'desktop'
@@ -98,15 +100,23 @@ if have_systemd
   unitconf = configuration_data()
   unitconf.set('bindir', bindir)
 
-  unit = configure_file(
-    input: 'gnome-shell.service.in',
-    output: 'gnome-shell.service',
+  configure_file(
+    input: 'gnome-shell-x11.service.in',
+    output: 'gnome-shell-x11.service',
     configuration: unitconf,
     install_dir: systemduserunitdir
   )
 
-  units = files('gnome-shell-wayland.target',
-                'gnome-shell-x11.target')
+  configure_file(
+    input: 'gnome-shell-wayland.service.in',
+    output: 'gnome-shell-wayland.service',
+    configuration: unitconf,
+    install_dir: systemduserunitdir
+  )
+
+  units = files('gnome-shell-x11.target',
+                'gnome-shell-wayland.target',
+                'gnome-shell-disable-extensions.service')
 
   install_data(units, install_dir: systemduserunitdir)
 endif

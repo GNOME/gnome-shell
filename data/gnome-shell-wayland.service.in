@@ -1,0 +1,26 @@
+[Unit]
+Description=GNOME Shell on Wayland
+# On wayland, force a session shutdown
+OnFailure=gnome-shell-disable-extensions.service gnome-session-shutdown.target
+OnFailureJobMode=replace-irreversibly
+CollectMode=inactive-or-failed
+RefuseManualStart=on
+RefuseManualStop=on
+
+After=gnome-session-manager.target
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+# The units already conflict because they use the same BusName
+#Conflicts=gnome-shell-x11.service
+
+[Service]
+Type=dbus
+ExecStart=@bindir@/gnome-shell
+# Exit code 1 means we are probably *not* dealing with an extension failure
+SuccessExitStatus=1
+# On wayland we cannot restart
+Restart=no
+BusName=org.gnome.Shell

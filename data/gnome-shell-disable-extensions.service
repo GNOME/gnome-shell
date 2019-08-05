@@ -1,0 +1,14 @@
+[Unit]
+Description=Disable GNOME Shell extensions after failure
+DefaultDependencies=no
+
+# Only disable extensions for a short period of time after login.
+# This means we err on the side of failing the first login after a broken
+# extension was installed.
+Requisite=gnome-session-stable.timer
+
+[Service]
+Type=simple
+# Disable extensions
+ExecStart=gsettings set org.gnome.shell disable-user-extensions true
+Restart=no
