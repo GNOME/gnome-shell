@@ -10,7 +10,6 @@ const BoxPointer = imports.ui.boxpointer;
 const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 var Ornament = {
     NONE: 0,
@@ -1013,18 +1012,17 @@ var PopupSubMenu = class extends PopupMenuBase {
         if (animate) {
             let [, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            Tweener.addTween(this.actor,
-                             { _arrowRotation: targetAngle,
-                               height: naturalHeight,
-                               time: 0.25,
-                               onUpdate: () => {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
-                               },
-                               onComplete: () => {
-                                   this.actor.set_height(-1);
-                               }
-                             });
+            this.actor.ease({
+                height: naturalHeight,
+                duration: 250,
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+                onComplete: () => this.actor.set_height(-1)
+            });
+            this._arrow.ease({
+                rotation_angle_z: targetAngle,
+                duration: 250,
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+            });
         } else {
             this._arrow.rotation_angle_z = targetAngle;
         }
@@ -1044,19 +1042,20 @@ var PopupSubMenu = class extends PopupMenuBase {
             animate = false;
 
         if (animate) {
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            Tweener.addTween(this.actor,
-                             { _arrowRotation: 0,
-                               height: 0,
-                               time: 0.25,
-                               onUpdate: () => {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
-                               },
-                               onComplete: () => {
-                                   this.actor.hide();
-                                   this.actor.set_height(-1);
-                               },
-                             });
+            this.actor.ease({
+                height: 0,
+                duration: 250,
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+                onComplete: () => {
+                    this.actor.hide();
+                    this.actor.set_height(-1);
+                }
+            });
+            this._arrow.ease({
+                rotation_angle_z: 0,
+                duration: 250,
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+            });
         } else {
             this._arrow.rotation_angle_z = 0;
             this.actor.hide();

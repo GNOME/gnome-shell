@@ -11,7 +11,6 @@ const LoginManager = imports.misc.loginManager;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 const Ripples = imports.ui.ripples;
 
 var STARTUP_ANIMATION_TIME = 500;
@@ -464,10 +463,11 @@ var LayoutManager = GObject.registerClass({
                 let backgroundActor = this._bgManagers[i].backgroundActor;
                 backgroundActor.show();
                 backgroundActor.opacity = 0;
-                Tweener.addTween(backgroundActor,
-                                 { opacity: 255,
-                                   time: BACKGROUND_FADE_ANIMATION_TIME / 1000,
-                                   transition: 'easeOutQuad' });
+                backgroundActor.ease({
+                    opacity: 255,
+                    duration: BACKGROUND_FADE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
             }
         }
     }
@@ -698,23 +698,23 @@ var LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationGreeter() {
-        Tweener.addTween(this.panelBox,
-                         { translation_y: 0,
-                           time: STARTUP_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: this._startupAnimationComplete,
-                           onCompleteScope: this });
+        this.panelBox.ease({
+            translation_y: 0,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._startupAnimationComplete()
+        });
     }
 
     _startupAnimationSession() {
-        Tweener.addTween(this.uiGroup,
-                         { scale_x: 1,
-                           scale_y: 1,
-                           opacity: 255,
-                           time: STARTUP_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: this._startupAnimationComplete,
-                           onCompleteScope: this });
+        this.uiGroup.ease({
+            scale_x: 1,
+            scale_y: 1,
+            opacity: 255,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._startupAnimationComplete()
+        });
     }
 
     _startupAnimationComplete() {
@@ -740,14 +740,15 @@ var LayoutManager = GObject.registerClass({
 
     showKeyboard() {
         this.keyboardBox.show();
-        Tweener.addTween(this.keyboardBox,
-                         { anchor_y: this.keyboardBox.height,
-                           opacity: 255,
-                           time: KEYBOARD_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: this._showKeyboardComplete,
-                           onCompleteScope: this
-                         });
+        this.keyboardBox.ease({
+            anchor_y: this.keyboardBox.height,
+            opacity: 255,
+            duration: KEYBOARD_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._showKeyboardComplete();
+            }
+        });
         this.emit('keyboard-visible-changed', true);
     }
 
@@ -766,14 +767,16 @@ var LayoutManager = GObject.registerClass({
             this.keyboardBox.disconnect(this._keyboardHeightNotifyId);
             this._keyboardHeightNotifyId = 0;
         }
-        Tweener.addTween(this.keyboardBox,
-                         { anchor_y: 0,
-                           opacity: 0,
-                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME / 1000,
-                           transition: 'easeInQuad',
-                           onComplete: this._hideKeyboardComplete,
-                           onCompleteScope: this
-                         });
+        this.keyboardBox.ease({
+            anchor_y: 0,
+            opacity: 0,
+            duration: immediate ? 0
+                                : KEYBOARD_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            onComplete: () => {
+                this._hideKeyboardComplete();
+            }
+        });
 
         this.emit('keyboard-visible-changed', false);
     }

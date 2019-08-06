@@ -759,14 +759,15 @@ var LoginDialog = GObject.registerClass({
 
     _fadeInBannerView() {
         this._bannerView.show();
-        Tweener.addTween(this._bannerView,
-                         { opacity: 255,
-                           time: _FADE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad' });
+        this._bannerView.ease({
+            opacity: 255,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     _hideBannerView() {
-        Tweener.removeTweens(this._bannerView);
+        this._bannerView.remove_all_transitions();
         this._bannerView.opacity = 0;
         this._bannerView.hide();
     }
@@ -859,10 +860,11 @@ var LoginDialog = GObject.registerClass({
             return;
         this._authPrompt.actor.opacity = 0;
         this._authPrompt.actor.show();
-        Tweener.addTween(this._authPrompt.actor,
-                         { opacity: 255,
-                           time: _FADE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad' });
+        this._authPrompt.actor.ease({
+            opacity: 255,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
         this._fadeInBannerView();
     }
 
@@ -921,15 +923,16 @@ var LoginDialog = GObject.registerClass({
             return;
 
         this._bindOpacity();
-        Tweener.addTween(this,
-                         { opacity: 255,
-                           time: _FADE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
-                                   this._authPrompt.reset();
-                               this._unbindOpacity();
-                           } });
+        this.actor.ease({
+            opacity: 255,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+                    this._authPrompt.reset();
+                this._unbindOpacity();
+            }
+        });
     }
 
     _gotGreeterSessionProxy(proxy) {
@@ -943,14 +946,15 @@ var LoginDialog = GObject.registerClass({
 
     _startSession(serviceName) {
         this._bindOpacity();
-        Tweener.addTween(this,
-                         { opacity: 0,
-                           time: _FADE_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
-                               this._unbindOpacity();
-                           } });
+        this.actor.ease({
+            opacity: 0,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+                this._unbindOpacity();
+            }
+        });
     }
 
     _onSessionOpened(client, serviceName) {
@@ -1223,10 +1227,11 @@ var LoginDialog = GObject.registerClass({
 
         Main.pushModal(this, { actionMode: Shell.ActionMode.LOGIN_SCREEN });
 
-        Tweener.addTween(this,
-                         { opacity: 255,
-                           time: 1,
-                           transition: 'easeInQuad' });
+        this.ease({
+            opacity: 255,
+            duration: 1000,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
 
         return true;
     }

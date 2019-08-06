@@ -206,22 +206,24 @@ class BaseAppView {
     }
 
     animateSwitch(animationDirection) {
-        Tweener.removeTweens(this.actor);
-        Tweener.removeTweens(this._grid);
+        this.actor.remove_all_transitions();
+        this._grid.remove_all_transitions();
 
-        let params = { time: VIEWS_SWITCH_TIME / 1000,
-                       transition: 'easeOutQuad' };
+        let params = {
+            duration: VIEWS_SWITCH_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        };
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             this.actor.show();
             params.opacity = 255;
-            params.delay = VIEWS_SWITCH_ANIMATION_DELAY / 1000;
+            params.delay = VIEWS_SWITCH_ANIMATION_DELAY;
         } else {
             params.opacity = 0;
             params.delay = 0;
             params.onComplete = () => this.actor.hide();
         }
 
-        Tweener.addTween(this._grid, params);
+        this._grid.ease(params);
     }
 }
 Signals.addSignalMethods(BaseAppView.prototype);
@@ -439,13 +441,12 @@ var AllView = class AllView extends BaseAppView {
 
         if (this._currentPopup && this._displayingPopup &&
             animationDirection == IconGrid.AnimationDirection.OUT)
-            Tweener.addTween(this._currentPopup.actor,
-                             { time: VIEWS_SWITCH_TIME / 1000,
-                               transition: 'easeOutQuad',
-                               opacity: 0,
-                               onComplete() {
-                                   this.opacity = 255;
-                               } });
+            this._currentPopup.actor.ease({
+                opacity: 0,
+                duration: VIEWS_SWITCH_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => this.opacity = 255
+            });
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
             this._pageIndicators.animateIndicators(animationDirection);
@@ -615,15 +616,16 @@ var AllView = class AllView extends BaseAppView {
 
     _updateIconOpacities(folderOpen) {
         for (let id in this._items) {
-            let params, opacity;
+            let opacity;
             if (folderOpen && !this._items[id].actor.checked)
                 opacity =  INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
-            params = { opacity: opacity,
-                       time: INACTIVE_GRID_OPACITY_ANIMATION_TIME / 1000,
-                       transition: 'easeOutQuad' };
-            Tweener.addTween(this._items[id].actor, params);
+            this._items[id].actor.ease({
+                opacity: opacity,
+                duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
     }
 
@@ -831,7 +833,7 @@ var AppDisplay = class AppDisplay {
             if (this._controls.mapped)
                 return;
 
-            Tweener.removeTweens(this._controls);
+            this._controls.remove_all_transitions();
             this._controls.opacity = 255;
         });
 
@@ -897,11 +899,11 @@ var AppDisplay = class AppDisplay {
             finalOpacity = 0;
         }
 
-        Tweener.addTween(this._controls,
-                         { time: IconGrid.ANIMATION_TIME_IN,
-                           transition: 'easeInOutQuad',
-                           opacity: finalOpacity,
-                         });
+        this._controls.ease({
+            opacity: finalOpacity,
+            duration: IconGrid.ANIMATION_TIME_IN,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD
+        });
 
         currentView.animate(animationDirection, onComplete);
     }

@@ -429,19 +429,22 @@ var _Draggable = class _Draggable {
                 // to the final position because that tween would
                 // fight with updates as the user continues dragging
                 // the mouse; instead we do the position computations in
-                // an onUpdate() function.
-                Tweener.addTween(this._dragActor,
-                                 { scale_x: scale * origScale,
-                                   scale_y: scale * origScale,
-                                   time: SCALE_ANIMATION_TIME / 1000,
-                                   transition: 'easeOutQuad',
-                                   onUpdate: () => {
-                                       let currentScale = this._dragActor.scale_x / origScale;
-                                       this._dragOffsetX = currentScale * origDragOffsetX;
-                                       this._dragOffsetY = currentScale * origDragOffsetY;
-                                       this._dragActor.set_position(this._dragX + this._dragOffsetX,
-                                                                    this._dragY + this._dragOffsetY);
-                                   } });
+                // a ::new-frame handler.
+                this._dragActor.ease({
+                    scale_x: scale * origScale,
+                    scale_y: scale * origScale,
+                    duration: SCALE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
+
+                this._dragActor.get_transition('scale-x').connect('new-frame', () => {
+                    let currentScale = this._dragActor.scale_x / origScale;
+                    this._dragOffsetX = currentScale * origDragOffsetX;
+                    this._dragOffsetY = currentScale * origDragOffsetY;
+                    this._dragActor.set_position(
+                        this._dragX + this._dragOffsetX,
+                        this._dragY + this._dragOffsetY);
+                });
             }
         }
     }
@@ -658,13 +661,13 @@ var _Draggable = class _Draggable {
 
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 
-        this._animateDragEnd(eventTime,
-                             { x: snapBackX,
-                               y: snapBackY,
-                               scale_x: snapBackScale,
-                               scale_y: snapBackScale,
-                               time: SNAP_BACK_ANIMATION_TIME / 1000,
-                             });
+        this._animateDragEnd(eventTime, {
+            x: snapBackX,
+            y: snapBackY,
+            scale_x: snapBackScale,
+            scale_y: snapBackScale,
+            duration: SNAP_BACK_ANIMATION_TIME
+        });
     }
 
     _restoreDragActor(eventTime) {
@@ -676,21 +679,22 @@ var _Draggable = class _Draggable {
         this._dragActor.set_scale(restoreScale, restoreScale);
         this._dragActor.opacity = 0;
 
-        this._animateDragEnd(eventTime,
-                             { time: REVERT_ANIMATION_TIME / 1000 });
+        this._animateDragEnd(eventTime, {
+            duration: REVERT_ANIMATION_TIME
+        });
     }
 
     _animateDragEnd(eventTime, params) {
         this._animationInProgress = true;
 
-        params['opacity']          = this._dragOrigOpacity;
-        params['transition']       = 'easeOutQuad';
-        params['onComplete']       = this._onAnimationComplete;
-        params['onCompleteScope']  = this;
-        params['onCompleteParams'] = [this._dragActor, eventTime];
-
         // start the animation
-        Tweener.addTween(this._dragActor, params);
+        this._dragActor.ease(Object.assign(params, {
+            opacity: this._dragOrigOpacity,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._onAnimationComplete(this._dragActor, eventTime);
+            }
+        }));
     }
 
     _finishAnimation() {

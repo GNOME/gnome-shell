@@ -11,7 +11,6 @@ const OVirt = imports.gdm.oVirt;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
-const Tweener = imports.ui.tweener;
 
 var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
@@ -51,16 +50,16 @@ function fadeInActor(actor) {
 
     actor.opacity = 0;
     actor.set_height(0);
-    Tweener.addTween(actor,
-                     { opacity: 255,
-                       height: naturalHeight,
-                       time: FADE_ANIMATION_TIME / 1000,
-                       transition: 'easeOutQuad',
-                       onComplete() {
-                           this.set_height(-1);
-                           hold.release();
-                       },
-                     });
+    actor.ease({
+        opacity: 255,
+        height: naturalHeight,
+        duration: FADE_ANIMATION_TIME,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+            this.set_height(-1);
+            hold.release();
+        }
+    });
 
     return hold;
 }
@@ -73,17 +72,17 @@ function fadeOutActor(actor) {
     }
 
     let hold = new Batch.Hold();
-    Tweener.addTween(actor,
-                     { opacity: 0,
-                       height: 0,
-                       time: FADE_ANIMATION_TIME / 1000,
-                       transition: 'easeOutQuad',
-                       onComplete() {
-                           this.hide();
-                           this.set_height(-1);
-                           hold.release();
-                       },
-                     });
+    actor.ease({
+        opacity: 0,
+        height: 0,
+        duration: FADE_ANIMATION_TIME,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+            this.hide();
+            this.set_height(-1);
+            hold.release();
+        }
+    });
     return hold;
 }
 
@@ -103,15 +102,15 @@ function cloneAndFadeOutActor(actor) {
     clone.set_position(x, y);
 
     let hold = new Batch.Hold();
-    Tweener.addTween(clone,
-                     { opacity: 0,
-                       time: CLONE_FADE_ANIMATION_TIME / 1000,
-                       transition: 'easeOutQuad',
-                       onComplete() {
-                           clone.destroy();
-                           hold.release();
-                       }
-                     });
+    clone.ease({
+        opacity: 0,
+        duration: CLONE_FADE_ANIMATION_TIME,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+            clone.destroy();
+            hold.release();
+        }
+    });
     return hold;
 }
 

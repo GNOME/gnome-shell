@@ -10,7 +10,6 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var DASH_ANIMATION_TIME = 200;
 var DASH_ITEM_LABEL_SHOW_TIME = 150;
@@ -32,6 +31,9 @@ class DashItemContainer extends St.Widget {
     _init() {
         super._init({ style_class: 'dash-item-container',
                       pivot_point: new Clutter.Point({ x: .5, y: .5 }),
+                      scale_x: 0,
+                      scale_y: 0,
+                      opacity: 0,
                       x_expand: true,
                       x_align: Clutter.ActorAlign.CENTER });
 
@@ -42,9 +44,10 @@ class DashItemContainer extends St.Widget {
         this.label_actor = this.label;
 
         this.child = null;
-        this._childScale = 0;
-        this._childOpacity = 0;
         this.animatingOut = false;
+
+        this.connect('notify::scale-x', () => this.queue_relayout());
+        this.connect('notify::scale-y', () => this.queue_relayout());
 
         this.connect('destroy', () => {
             if (this.child != null)
@@ -96,11 +99,11 @@ class DashItemContainer extends St.Widget {
             x = stageX + this.get_width() + xOffset;
 
         this.label.set_position(x, y);
-        Tweener.addTween(this.label,
-                         { opacity: 255,
-                           time: DASH_ITEM_LABEL_SHOW_TIME / 1000,
-                           transition: 'easeOutQuad',
-                         });
+        this.label.ease({
+            opacity: 255,
+            duration: DASH_ITEM_LABEL_SHOW_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     setLabelText(text) {
@@ -109,14 +112,12 @@ class DashItemContainer extends St.Widget {
     }
 
     hideLabel() {
-        Tweener.addTween(this.label,
-                         { opacity: 0,
-                           time: DASH_ITEM_LABEL_HIDE_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this.label.hide();
-                           }
-                         });
+        this.label.ease({
+            opacity: 0,
+            duration: DASH_ITEM_LABEL_HIDE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.label.hide()
+        });
     }
 
     setChild(actor) {
@@ -127,9 +128,6 @@ class DashItemContainer extends St.Widget {
 
         this.child = actor;
         this.add_actor(this.child);
-
-        this.set_scale(this._childScale, this._childScale);
-        this.set_opacity(this._childOpacity);
     }
 
     show(animate) {
@@ -137,12 +135,13 @@ class DashItemContainer extends St.Widget {
             return;
 
         let time = animate ? DASH_ANIMATION_TIME : 0;
-        Tweener.addTween(this,
-                         { childScale: 1.0,
-                           childOpacity: 255,
-                           time: time / 1000,
-                           transition: 'easeOutQuad'
-                         });
+        this.ease({
+            scale_x: 1,
+            scale_y: 1,
+            opacity: 255,
+            duration: time,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     animateOutAndDestroy() {
@@ -154,37 +153,14 @@ class DashItemContainer extends St.Widget {
         }
 
         this.animatingOut = true;
-        Tweener.addTween(this,
-                         { childScale: 0.0,
-                           childOpacity: 0,
-                           time: DASH_ANIMATION_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               this.destroy();
-                           }
-                         });
-    }
-
-    set childScale(scale) {
-        this._childScale = scale;
-
-        this.set_scale(scale, scale);
-        this.queue_relayout();
-    }
-
-    get childScale() {
-        return this._childScale;
-    }
-
-    set childOpacity(opacity) {
-        this._childOpacity = opacity;
-
-        this.set_opacity(opacity);
-        this.queue_redraw();
-    }
-
-    get childOpacity() {
-        return this._childOpacity;
+        this.ease({
+            scale_x: 0,
+            scale_y: 0,
+            opacity: 0,
+            duration: DASH_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.destroy()
+        });
     }
 });
 
@@ -352,8 +328,7 @@ var Dash = class Dash {
         this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._showAppsIcon = new ShowAppsIcon();
-        this._showAppsIcon.childScale = 1;
-        this._showAppsIcon.childOpacity = 255;
+        this._showAppsIcon.show(false);
         this._showAppsIcon.icon.setIconSize(this.iconSize);
         this._hookUpLabel(this._showAppsIcon);
 
@@ -634,12 +609,12 @@ var Dash = class Dash {
             icon.icon.set_size(icon.icon.width * scale,
                                icon.icon.height * scale);
 
-            Tweener.addTween(icon.icon,
-                             { width: targetWidth,
-                               height: targetHeight,
-                               time: DASH_ANIMATION_TIME / 1000,
-                               transition: 'easeOutQuad',
-                             });
+            icon.icon.ease({
+                width: targetWidth,
+                height: targetHeight,
+                time: DASH_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            });
         }
     }
 
