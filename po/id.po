@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-07-24 17:07+0000\n"
-"PO-Revision-Date: 2019-07-26 18:24+0700\n"
+"POT-Creation-Date: 2019-07-31 19:09+0000\n"
+"PO-Revision-Date: 2019-08-06 17:48+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -349,35 +349,51 @@ msgstr ""
 "Bila berisi true, hanya jendela dari ruang kerja saat ini ditampilkan pada "
 "penukar. Bila tidak, semua jendela disertakan."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:239
+msgid "Automatic location"
+msgstr "Lokasi otomatis"
+
+#: data/org.gnome.shell.gschema.xml.in:240
+msgid "Whether to fetch the current location or not"
+msgstr "Apakah akan mengambil lokasi saat ini atau tidak"
+
+#: data/org.gnome.shell.gschema.xml.in:247
+msgid "Location"
+msgstr "Lokasi"
+
+#: data/org.gnome.shell.gschema.xml.in:248
+msgid "The location for which to show a forecast"
+msgstr "Lokasi yang menunjukkan perkiraan"
+
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid "Attach modal dialog to the parent window"
 msgstr "Mencantolkan dialog modal ke jendela induk"
 
-#: data/org.gnome.shell.gschema.xml.in:242
-#: data/org.gnome.shell.gschema.xml.in:251
-#: data/org.gnome.shell.gschema.xml.in:259
-#: data/org.gnome.shell.gschema.xml.in:267
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:261
+#: data/org.gnome.shell.gschema.xml.in:270
+#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:286
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Kunci ini menimpa kunci dalam org.gnome.mutter ketika menjalankan GNOME "
 "Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:269
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Memfungsikan pengubinan tepi ketika menjatuhkan jendela pada tepi layar"
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "Workspaces are managed dynamically"
 msgstr "Ruang kerja dikelola secara dinamis"
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:285
 msgid "Workspaces only on primary monitor"
 msgstr "Ruang kerja hanya pada monitor primer"
 
-#: data/org.gnome.shell.gschema.xml.in:274
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Tunda perubahan fokus dalam mode tetikus sampai penunjuk berhenti bergerak"
@@ -743,27 +759,27 @@ msgid "All"
 msgstr "Semua"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:1761 js/ui/panel.js:78
+#: js/ui/appDisplay.js:1771 js/ui/panel.js:78
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:1780 js/ui/panel.js:85
+#: js/ui/appDisplay.js:1790 js/ui/panel.js:85
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:1794
+#: js/ui/appDisplay.js:1804
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:1821 js/ui/dash.js:240
+#: js/ui/appDisplay.js:1831 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:1827
+#: js/ui/appDisplay.js:1837
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:1837 js/ui/panel.js:96
+#: js/ui/appDisplay.js:1847 js/ui/panel.js:96
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -793,7 +809,7 @@ msgstr "Headphone"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:246
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:240
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1464,10 +1480,6 @@ msgstr "Artis tak dikenal"
 #: js/ui/mpris.js:179
 msgid "Unknown title"
 msgstr "Judul tak dikenal"
-
-#: js/ui/osdWindow.js:23 js/ui/status/volume.js:198
-msgid "Volume"
-msgstr "Volume"
 
 #: js/ui/overview.js:74
 msgid "Undo"
@@ -2159,9 +2171,13 @@ msgstr "Autorisasi Thunderbolt galat"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
 
-#: js/ui/status/volume.js:132
+#: js/ui/status/volume.js:127
 msgid "Volume changed"
 msgstr "Volume diubah"
+
+#: js/ui/status/volume.js:192
+msgid "Volume"
+msgstr "Volume"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
