@@ -467,6 +467,7 @@ var AllView = class AllView extends BaseAppView {
         if (!this.actor.mapped) {
             this._adjustment.value = this._grid.getPageY(pageNumber);
             this._pageIndicators.setCurrentPage(pageNumber);
+            this._grid.currentPage = pageNumber;
             return;
         }
 
