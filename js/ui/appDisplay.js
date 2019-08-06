@@ -463,6 +463,12 @@ var AllView = class AllView extends BaseAppView {
         if (this._displayingPopup && this._currentPopup)
             this._currentPopup.popdown();
 
+        if (!this.actor.mapped) {
+            this._adjustment.value = this._grid.getPageY(pageNumber);
+            this._pageIndicators.setCurrentPage(pageNumber);
+            return;
+        }
+
         let velocity;
         if (!this._panning)
             velocity = 0;

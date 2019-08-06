@@ -906,25 +906,29 @@ var LoginDialog = GObject.registerClass({
         this._showPrompt();
     }
 
+    _bindOpacity() {
+        this._bindings = Main.layoutManager.uiGroup.get_children()
+            .filter(c => c != Main.layoutManager.screenShieldGroup)
+            .map(c => this.bind_property('opacity', c, 'opacity', 0));
+    }
+
+    _unbindOpacity() {
+        this._bindings.forEach(b => b.unbind());
+    }
+
     _loginScreenSessionActivated() {
         if (this.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
+        this._bindOpacity();
         Tweener.addTween(this,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
-                           onUpdate: () => {
-                               let children = Main.layoutManager.uiGroup.get_children();
-
-                               for (let i = 0; i < children.length; i++) {
-                                   if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.opacity;
-                               }
-                           },
                            onComplete: () => {
                                if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                                    this._authPrompt.reset();
+                               this._unbindOpacity();
                            } });
     }
 
@@ -938,20 +942,14 @@ var LoginDialog = GObject.registerClass({
     }
 
     _startSession(serviceName) {
+        this._bindOpacity();
         Tweener.addTween(this,
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME / 1000,
                            transition: 'easeOutQuad',
-                           onUpdate: () => {
-                               let children = Main.layoutManager.uiGroup.get_children();
-
-                               for (let i = 0; i < children.length; i++) {
-                                   if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.opacity;
-                               }
-                           },
                            onComplete: () => {
                                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+                               this._unbindOpacity();
                            } });
     }
 
