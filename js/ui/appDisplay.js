@@ -114,42 +114,43 @@ class BaseAppView {
         // Nothing by default
     }
 
-    removeAll() {
-        this._grid.destroyAll();
-        this._items = {};
-        this._allItems = [];
-    }
-
     _redisplay() {
-        this.removeAll();
-        this._loadApps();
+        let oldApps = this._allItems.slice();
+        let oldAppIds = oldApps.map(icon => icon.id);
+
+        let newApps = this._loadApps().sort(this._compareItems);
+        let newAppIds = newApps.map(icon => icon.id);
+
+        let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
+        let removedApps = oldApps.filter(icon => !newAppIds.includes(icon.id));
+
+        // Remove old app icons
+        removedApps.forEach(icon => {
+            let iconIndex = this._allItems.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 1);
+            this._grid.removeItem(icon);
+            delete this._items[icon.id];
+        });
+
+        // Add new app icons
+        addedApps.forEach(icon => {
+            let iconIndex = newApps.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 0, icon);
+            this._grid.addItem(icon, iconIndex);
+            this._items[icon.id] = icon;
+        });
+
+        this.emit('view-loaded');
     }
 
     getAllItems() {
         return this._allItems;
     }
 
-    hasItem(id) {
-        return this._items[id] !== undefined;
-    }
-
-    addItem(icon) {
-        let id = icon.id;
-        if (this.hasItem(id))
-            throw new Error(`icon with id ${id} already added to view`);
-
-        this._allItems.push(icon);
-        this._items[id] = icon;
-    }
-
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
-    }
-
-    loadGrid() {
-        this._allItems.sort(this._compareItems);
-        this._allItems.forEach(item => this._grid.addItem(item));
-        this.emit('view-loaded');
     }
 
     _selectAppInternal(id) {
@@ -326,24 +327,9 @@ var AllView = class AllView extends BaseAppView {
         });
     }
 
-    removeAll() {
-        this.folderIcons = [];
-        super.removeAll();
-    }
-
     _redisplay() {
-        let openFolderId = null;
-        if (this._displayingPopup && this._currentPopup)
-            openFolderId = this._currentPopup._source.id;
-
         super._redisplay();
-
-        if (openFolderId) {
-            let [folderToReopen] = this.folderIcons.filter(folder => folder.id == openFolderId);
-
-            if (folderToReopen)
-                folderToReopen.open();
-        }
+        this._refilterApps();
     }
 
     _itemNameChanged(item) {
@@ -377,6 +363,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
+        let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
@@ -390,15 +377,18 @@ var AllView = class AllView extends BaseAppView {
 
         let appSys = Shell.AppSystem.get_default();
 
+        this.folderIcons = [];
+
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            if (this.hasItem(id))
-                return;
             let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = new FolderIcon(id, path, this);
-            icon.connect('name-changed', this._itemNameChanged.bind(this));
-            icon.connect('apps-changed', this._refilterApps.bind(this));
-            this.addItem(icon);
+            let icon = this._items[id];
+            if (!icon) {
+                icon = new FolderIcon(id, path, this);
+                icon.connect('name-changed', this._itemNameChanged.bind(this));
+                icon.connect('apps-changed', this._redisplay.bind(this));
+            }
+            newApps.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -415,11 +405,10 @@ var AllView = class AllView extends BaseAppView {
 
             let icon = new AppIcon(app,
                                    { isDraggable: favoritesWritable });
-            this.addItem(icon);
+            newApps.push(icon);
         });
 
-        this.loadGrid();
-        this._refilterApps();
+        return newApps;
     }
 
     // Overridden from BaseAppView
@@ -706,12 +695,18 @@ var FrequentView = class FrequentView extends BaseAppView {
         return this._usage.get_most_used().length >= MIN_FREQUENT_APPS_COUNT;
     }
 
+    _compareItems() {
+        // The FrequentView does not need to be sorted alphabetically
+        return 0;
+    }
+
     _loadApps() {
+        let apps = [];
         let mostUsed = this._usage.get_most_used();
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if (!hasUsefulData)
-            return;
+            return [];
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -726,8 +721,10 @@ var FrequentView = class FrequentView extends BaseAppView {
                 continue;
             let appIcon = new AppIcon(mostUsed[i],
                                       { isDraggable: favoritesWritable });
-            this._grid.addItem(appIcon, -1);
+            apps.push(appIcon);
         }
+
+        return apps;
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1020,11 +1017,13 @@ var AppSearchProvider = class AppSearchProvider {
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor() {
+    constructor(folder, parentView) {
         super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._folder = folder;
+        this._parentView = parentView;
 
         this.actor = new St.ScrollView({ overlay_scrollbars: true });
         this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
@@ -1035,6 +1034,9 @@ var FolderView = class FolderView extends BaseAppView {
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
+
+        this._folder.connect('changed', this._redisplay.bind(this));
+        this._redisplay();
     }
 
     _childFocused(actor) {
@@ -1127,6 +1129,44 @@ var FolderView = class FolderView extends BaseAppView {
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
+
+    _loadApps() {
+        let apps = [];
+        let excludedApps = this._folder.get_strv('excluded-apps');
+        let appSys = Shell.AppSystem.get_default();
+        let addAppId = appId => {
+            if (excludedApps.includes(appId))
+                return;
+
+            let app = appSys.lookup_app(appId);
+            if (!app)
+                return;
+
+            if (!app.get_app_info().should_show())
+                return;
+
+            if (apps.some(appIcon => appIcon.id == appId))
+                return;
+
+            let icon = new AppIcon(app);
+            apps.push(icon);
+        };
+
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        let folderCategories = this._folder.get_strv('categories');
+        let appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
+        return apps;
+    }
 };
 
 var FolderIcon = class FolderIcon {
@@ -1154,7 +1194,7 @@ var FolderIcon = class FolderIcon {
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this.view = new FolderView();
+        this.view = new FolderView(this._folder, parentView);
 
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
@@ -1201,44 +1241,7 @@ var FolderIcon = class FolderIcon {
 
     _redisplay() {
         this._updateName();
-
-        this.view.removeAll();
-
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let appSys = Shell.AppSystem.get_default();
-        let addAppId = appId => {
-            if (this.view.hasItem(appId))
-                return;
-
-            if (excludedApps.includes(appId))
-                return;
-
-            let app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            if (!app.get_app_info().should_show())
-                return;
-
-            let icon = new AppIcon(app);
-            this.view.addItem(icon);
-        };
-
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
-        });
-
         this.actor.visible = this.view.getAllItems().length > 0;
-        this.view.loadGrid();
         this.emit('apps-changed');
     }
 
