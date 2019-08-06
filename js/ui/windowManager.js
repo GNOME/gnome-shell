@@ -12,7 +12,6 @@ const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
-const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
@@ -118,16 +117,18 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 var WindowDimmer = class {
     constructor(actor) {
         this._brightnessEffect = new Clutter.BrightnessContrastEffect({
+            name: 'dim',
             enabled: false
         });
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
         this._enabled = true;
-        this._dimFactor = 0.0;
     }
 
     _syncEnabled() {
-        this._brightnessEffect.enabled = (this._enabled && this._dimFactor > 0);
+        let animating = this.actor.get_transition('@effects.dim.brightness') != null;
+        let dimmed = this._brightnessEffect.brightness.red != 127;
+        this._brightnessEffect.enabled = this._enabled && (animating || dimmed);
     }
 
     setEnabled(enabled) {
@@ -135,14 +136,17 @@ var WindowDimmer = class {
         this._syncEnabled();
     }
 
-    set dimFactor(factor) {
-        this._dimFactor = factor;
-        this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
-        this._syncEnabled();
-    }
+    setDimmed(dimmed, animate) {
+        let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
+        let color = Clutter.Color.new(val, val, val, 255);
 
-    get dimFactor() {
-        return this._dimFactor;
+        this.actor.ease_property('@effects.dim.brightness', color, {
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
+            onComplete: () => this._syncEnabled()
+        });
+
+        this._syncEnabled();
     }
 };
 
@@ -1582,14 +1586,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 1.0,
-                               time: DIM_TIME / 1000,
-                               transition: 'linear'
-                             });
-        else
-            dimmer.dimFactor = 1.0;
+        dimmer.setDimmed(true, this._shouldAnimate());
     }
 
     _undimWindow(window) {
@@ -1599,13 +1596,7 @@ var WindowManager = class {
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        if (this._shouldAnimate())
-            Tweener.addTween(dimmer,
-                             { dimFactor: 0.0,
-                               time: UNDIM_TIME / 1000,
-                               transition: 'linear' });
-        else
-            dimmer.dimFactor = 0.0;
+        dimmer.setDimmed(false, this._shouldAnimate());
     }
 
     _mapWindow(shellwm, actor) {

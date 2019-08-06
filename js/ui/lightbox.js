@@ -5,7 +5,6 @@ const { Clutter, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 var DEFAULT_FADE_FACTOR = 0.4;
 var VIGNETTE_BRIGHTNESS = 0.2;
@@ -24,16 +23,31 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-var RadialShaderEffect = GObject.registerClass(
-class RadialShaderEffect extends Shell.GLSLEffect {
+var RadialShaderEffect = GObject.registerClass({
+    Properties: {
+        'brightness': GObject.ParamSpec.float(
+            'brightness', 'brightness', 'brightness',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 1
+        ),
+        'sharpness': GObject.ParamSpec.float(
+            'sharpness', 'sharpness', 'sharpness',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0
+        )
+    }
+}, class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {
+        this._brightness = undefined;
+        this._sharpness = undefined;
+
         super._init(params);
 
         this._brightnessLocation = this.get_uniform_location('brightness');
         this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
 
         this.brightness = 1.0;
-        this.vignetteSharpness = 0.0;
+        this.sharpness = 0.0;
     }
 
     vfunc_build_pipeline() {
@@ -46,19 +60,25 @@ class RadialShaderEffect extends Shell.GLSLEffect {
     }
 
     set brightness(v) {
+        if (this._brightness == v)
+            return;
         this._brightness = v;
         this.set_uniform_float(this._brightnessLocation,
                                1, [this._brightness]);
+        this.notify('brightness');
     }
 
-    get vignetteSharpness() {
+    get sharpness() {
         return this._sharpness;
     }
 
-    set vignetteSharpness(v) {
+    set sharpness(v) {
+        if (this._sharpness == v)
+            return;
         this._sharpness = v;
         this.set_uniform_float(this._sharpnessLocation,
                                1, [this._sharpness]);
+        this.notify('sharpness');
     }
 });
 
@@ -154,29 +174,31 @@ var Lightbox = class Lightbox {
     show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
 
+        this.actor.remove_all_transitions();
+
+        let onComplete = () => {
+            this.shown = true;
+            this.emit('shown');
+        };
+
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: VIGNETTE_BRIGHTNESS,
-                               vignetteSharpness: VIGNETTE_SHARPNESS,
-                               time: fadeInTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.shown = true;
-                                   this.emit('shown');
-                               }
-                             });
+            this.actor.ease_property(
+                '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, {
+                    duration: fadeInTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
+            this.actor.ease_property(
+                '@effects.radial.sharpness', VIGNETTE_SHARPNESS, {
+                    duration: fadeInTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete
+                });
         } else {
-            this.actor.remove_all_transitions();
             this.actor.ease({
                 opacity: 255 * this._fadeFactor,
                 duration: fadeInTime,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this.shown = true;
-                    this.emit('shown');
-                }
+                onComplete
             });
         }
 
@@ -187,29 +209,28 @@ var Lightbox = class Lightbox {
         fadeOutTime = fadeOutTime || 0;
 
         this.shown = false;
+        this.actor.remove_all_transitions();
+
+        let onComplete = () => this.actor.hide();
 
         if (this._radialEffect) {
-            let effect = this.actor.get_effect('radial');
-            Tweener.removeTweens(effect);
-            Tweener.addTween(effect,
-                             { brightness: 1.0,
-                               vignetteSharpness: 0.0,
-                               opacity: 0,
-                               time: fadeOutTime / 1000,
-                               transition: 'easeOutQuad',
-                               onComplete: () => {
-                                   this.actor.hide();
-                               }
-                             });
+            this.actor.ease_property(
+                '@effects.radial.brightness', 1.0, {
+                    duration: fadeOutTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                });
+            this.actor.ease_property(
+                '@effects.radial.sharpness', 0.0, {
+                    duration: fadeOutTime,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete
+                });
         } else {
-            this.actor.remove_all_transitions();
             this.actor.ease({
                 opacity: 0,
                 duration: fadeOutTime,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this.actor.hide();
-                }
+                onComplete
             });
         }
     }

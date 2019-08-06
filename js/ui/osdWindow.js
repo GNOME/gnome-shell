@@ -7,7 +7,6 @@ const Mainloop = imports.mainloop;
 const BarLevel = imports.ui.barLevel;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 100;
@@ -66,8 +65,11 @@ var OsdWindow = class {
         this._label = new St.Label();
         this._box.add(this._label);
 
-        this._level = new BarLevel.BarLevel(0, { styleClass: 'level' });
-        this._box.add(this._level.actor);
+        this._level = new BarLevel.BarLevel({
+            style_class: 'level',
+            value: 0
+        });
+        this._box.add(this._level);
 
         this._hideTimeoutId = 0;
         this._reset();
@@ -107,13 +109,13 @@ var OsdWindow = class {
     }
 
     setLevel(value) {
-        this._level.actor.visible = (value != undefined);
+        this._level.visible = (value != undefined);
         if (value != undefined) {
             if (this.actor.visible)
-                Tweener.addTween(this._level,
-                                 { value: value,
-                                   time: LEVEL_ANIMATION_TIME / 1000,
-                                   transition: 'easeOutQuad' });
+                this._level.ease_property('value', value, {
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    duration: LEVEL_ANIMATION_TIME
+                });
             else
                 this._level.value = value;
         }
