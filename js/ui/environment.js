@@ -64,7 +64,7 @@ function _trackTransition(transition, callback) {
     if (_easingTransitions.has(transition))
         transition.disconnect(_easingTransitions.get(transition));
 
-    let id = transition.connect('stopped', isFinished => {
+    let id = transition.connect('stopped', (t, isFinished) => {
         _easingTransitions.delete(transition);
         callback(isFinished);
     });
