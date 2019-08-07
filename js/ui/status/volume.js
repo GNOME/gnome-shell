@@ -139,7 +139,7 @@ var StreamSlider = class {
     _amplifySettingsChanged() {
         this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
 
-        this._slider.maximum_level = this._allowAmplified
+        this._slider.maximum_value = this._allowAmplified
             ? this.getMaxLevel() : 1;
 
         if (this._stream)
