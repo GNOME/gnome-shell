@@ -58,20 +58,6 @@ function _patchLayoutClass(layoutClass, styleProps) {
     };
 }
 
-let _easingTransitions = new Map();
-
-function _trackTransition(transition, callback) {
-    if (_easingTransitions.has(transition))
-        transition.disconnect(_easingTransitions.get(transition));
-
-    let id = transition.connect('stopped', (t, isFinished) => {
-        _easingTransitions.delete(transition);
-        callback(isFinished);
-    });
-
-    _easingTransitions.set(transition, id);
-}
-
 function _makeEaseCallback(params) {
     let onComplete = params.onComplete;
     delete params.onComplete;
@@ -136,7 +122,7 @@ function _easeActor(actor, params) {
         let transition = actor.get_transition(animatedProps[0]);
 
         if (transition)
-            _trackTransition(transition, callback);
+            transition.connect('stopped', (t, finished) => callback(finished));
         else
             callback(true);
     }
@@ -180,7 +166,7 @@ function _easeActorProperty(actor, propName, target, params) {
     transition.set_to(target);
 
     if (callback)
-        _trackTransition(transition, callback);
+        transition.connect('stopped', (t, finished) => callback(finished));
 }
 
 function _loggingFunc(...args) {
