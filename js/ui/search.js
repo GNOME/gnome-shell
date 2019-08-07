@@ -348,7 +348,10 @@ var GridSearchResults = class extends SearchResultsBase {
         // Make sure the maximum number of results calculated by
         // _getMaxDisplayedResults() is updated after width changes.
         this._notifyAllocationId = this.actor.connect('notify::allocation', () => {
-            super.updateSearch(...args);
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                super.updateSearch(...args);
+                return GLib.SOURCE_REMOVE;
+            });
         });
 
         super.updateSearch(...args);
