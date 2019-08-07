@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
@@ -348,7 +348,10 @@ var GridSearchResults = class extends SearchResultsBase {
         // Make sure the maximum number of results calculated by
         // _getMaxDisplayedResults() is updated after width changes.
         this._notifyAllocationId = this.actor.connect('notify::allocation', () => {
-            super.updateSearch(...args);
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                super.updateSearch(...args);
+                return GLib.SOURCE_REMOVE;
+            });
         });
 
         super.updateSearch(...args);
