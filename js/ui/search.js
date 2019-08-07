@@ -245,7 +245,9 @@ var SearchResultsBase = class {
             callback();
         } else {
             let maxResults = this._getMaxDisplayedResults();
-            let results = this.provider.filterResults(providerResults, maxResults);
+            let results = maxResults > -1
+                ? this.provider.filterResults(providerResults, maxResults)
+                : providerResults;
             let moreCount = Math.max(providerResults.length - results.length, 0);
 
             this._ensureResultActors(results, successful => {
@@ -353,8 +355,11 @@ var GridSearchResults = class extends SearchResultsBase {
     }
 
     _getMaxDisplayedResults() {
-        let allocation = this.actor.allocation;
-        let nCols = this._grid.columnsForWidth(allocation.x2 - allocation.x1);
+        let width = this.actor.allocation.x2 - this.actor.allocation.x1
+        if (width == 0)
+            return -1;
+
+        let nCols = this._grid.columnsForWidth(width);
         return nCols * this._grid.getRowLimit();
     }
 
