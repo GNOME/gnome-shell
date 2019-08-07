@@ -8,7 +8,7 @@ var BarLevel = GObject.registerClass({
         'value': GObject.ParamSpec.double(
             'value', 'value', 'value',
             GObject.ParamFlags.READWRITE,
-            0, 1, 0),
+            0, 2, 0),
         'maximum-value': GObject.ParamSpec.double(
             'maximum-value', 'maximum-value', 'maximum-value',
             GObject.ParamFlags.READWRITE,
