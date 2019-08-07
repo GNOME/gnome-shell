@@ -458,16 +458,15 @@ var SwitcherList = GObject.registerClass({
             value = Math.max(upper, item.allocation.x2 - pageSize);
 
         this._scrollableRight = true;
-        Tweener.addTween(adjustment,
-                         { value: value,
-                           time: POPUP_SCROLL_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               if (this._highlighted == 0)
-                                   this._scrollableLeft = false;
-                               this.queue_relayout();
-                           }
-                         });
+        adjustment.ease(value, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: POPUP_SCROLL_TIME,
+            onComplete: () => {
+                if (this._highlighted == 0)
+                    this._scrollableLeft = false;
+                this.queue_relayout();
+            }
+        });
     }
 
     _scrollToRight() {
@@ -482,16 +481,15 @@ var SwitcherList = GObject.registerClass({
             value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableLeft = true;
-        Tweener.addTween(adjustment,
-                         { value: value,
-                           time: POPUP_SCROLL_TIME / 1000,
-                           transition: 'easeOutQuad',
-                           onComplete: () => {
-                               if (this._highlighted == this._items.length - 1)
-                                   this._scrollableRight = false;
-                               this.queue_relayout();
-                           }
-                         });
+        adjustment.ease(value, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: POPUP_SCROLL_TIME,
+            onComplete: () => {
+                if (this._highlighted == this._items.length - 1)
+                    this._scrollableRight = false;
+                this.queue_relayout();
+            }
+        });
     }
 
     _itemActivated(n) {

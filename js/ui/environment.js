@@ -220,6 +220,11 @@ function init() {
     Clutter.Actor.prototype.ease_property = function(propName, target, params) {
         _easeActorProperty(this, propName, target, params);
     };
+    St.Adjustment.prototype.ease = function(target, params) {
+        // we're not an actor of course, but we implement the same
+        // transition API as Clutter.Actor, so this works anyway
+        _easeActorProperty(this, 'value', target, params);
+    };
 
     Clutter.Actor.prototype.toString = function() {
         return St.describe_actor(this);

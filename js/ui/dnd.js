@@ -6,7 +6,6 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Tweener = imports.ui.tweener;
 
 // Time to scale down to maxDragActorSize
 var SCALE_ANIMATION_TIME = 250;
@@ -112,9 +111,6 @@ var _Draggable = class _Draggable {
         if (event.get_button() != 1)
             return Clutter.EVENT_PROPAGATE;
 
-        if (Tweener.getTweenCount(actor))
-            return Clutter.EVENT_PROPAGATE;
-
         this._buttonDown = true;
         this._grabActor(event.get_device());
 
@@ -138,9 +134,6 @@ var _Draggable = class _Draggable {
 
         if (event.type() != Clutter.EventType.TOUCH_BEGIN ||
             !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (Tweener.getTweenCount(actor))
             return Clutter.EVENT_PROPAGATE;
 
         this._buttonDown = true;

@@ -84,7 +84,6 @@ don't use.
 
     const Main = imports.ui.main;
     const Params = imports.misc.params;
-    const Tweener = imports.ui.tweener;
     const Util = imports.misc.util;
 ```
 The alphabetical ordering should be done independently of the location of the
@@ -277,34 +276,49 @@ If your usage of an object is like a hash table (and thus conceptually the keys
 can have special chars in them), don't use quotes, but use brackets: `{ bar: 42
 }`, `foo['bar']`.
 
-## Getters, setters, and Tweener
+## Animations
 
-Getters and setters should be used when you are dealing with an API that is
-designed around setting properties, like Tweener. If you want to animate an
-arbitrary property, create a getter and setter, and use Tweener to animate the
-property.
+Most objects that are animated are actors, and most properties used in animations
+are animatable, which means they can use implicit animations:
+
 ```javascript
-    var ANIMATION_TIME = 2000;
+    moveActor(actor, x, y) {
+        actor.ease({
+            x,
+            y,
+            duration: 500, // ms
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
+    }
+```
 
-    var MyClass = class {
-        constructor() {
-            this.actor = new St.BoxLayout();
-            this._position = 0;
-        }
+The above is a convenience wrapper around the actual Clutter API, and should generally
+be preferred over the more verbose:
 
-        get position() {
-            return this._position;
-        }
+```javascript
+    moveActor(actor, x, y) {
+        actor.save_easing_state();
 
-        set position(value) {
-            this._position = value;
-            this.actor.set_position(value, value);
-        }
-    };
+        actor.set_easing_duration(500);
+        actor.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+        actor.set({
+            x,
+            y
+        });
 
-    let myThing = new MyClass();
-    Tweener.addTween(myThing,
-                     { position: 100,
-                       time: ANIMATION_TIME,
-                       transition: 'easeOutQuad' });
+        actor.restore_easing_state();
+    }
+```
+
+There is a similar convenience API around Clutter.PropertyTransition to animate
+actor (or actor meta) properties that cannot use implicit animations:
+
+```javascript
+    desaturateActor(actor, desaturate) {
+        let factor = desaturate ? 1.0 : 0.0;
+        actor.ease_property('@effects.desaturate.factor', factor, {
+            duration: 500, // ms
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
+    }
 ```

@@ -31,7 +31,6 @@ const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Realmd = imports.gdm.realmd;
-const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 const _FADE_ANIMATION_TIME = 250;
@@ -205,11 +204,10 @@ var UserList = class {
         let adjustment = this.actor.get_vscroll_bar().get_adjustment();
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
-        Tweener.removeTweens(adjustment);
-        Tweener.addTween (adjustment,
-                          { value: value,
-                            time: _SCROLL_ANIMATION_TIME / 1000,
-                            transition: 'easeOutQuad' });
+        adjustment.ease(value, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: _SCROLL_ANIMATION_TIME
+        });
     }
 
     jumpToItem(item) {
