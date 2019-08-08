@@ -3,6 +3,7 @@
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
+const EditableLabel = imports.ui.editableLabel;
 const Params = imports.misc.params;
 const Main = imports.ui.main;
 
@@ -33,6 +34,7 @@ class BaseIcon extends St.Bin {
     _init(label, params) {
         params = Params.parse(params, { createIcon: null,
                                         setSizeManually: false,
+                                        editable: false,
                                         showLabel: true });
 
         let styleClass = 'overview-icon';
@@ -55,7 +57,16 @@ class BaseIcon extends St.Bin {
         this._box.add_actor(this._iconBin);
 
         if (params.showLabel) {
-            this.label = new St.Label({ text: label });
+            let labelParams = {
+                text: label,
+                style_class: 'overview-icon-label'
+            };
+
+            if (params.editable)
+                this.label = new EditableLabel.EditableLabel(labelParams);
+            else
+                this.label = new St.Label(labelParams);
+
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER

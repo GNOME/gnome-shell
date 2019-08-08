@@ -1434,6 +1434,7 @@ var FolderIcon = class FolderIcon {
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
+            editable: true,
             setSizeManually: true
         });
         this.actor.set_child(this.icon);
@@ -1455,6 +1456,9 @@ var FolderIcon = class FolderIcon {
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
+
+        this.icon.label.connect('label-edit-update', this._onLabelUpdate.bind(this));
+        this.icon.label.connect('label-edit-cancel', this._onLabelCancel.bind(this));
     }
 
     onDestroy() {
@@ -1548,6 +1552,16 @@ var FolderIcon = class FolderIcon {
         }
 
         return true;
+    }
+
+    _onLabelUpdate(label, newText) {
+        this._folder.set_boolean('translatable', false);
+        this._folder.set_string('name', newText);
+        this._updateName();
+    }
+
+    _onLabelCancel() {
+        this.icon.sync_hover();
     }
 
     _updateName() {
