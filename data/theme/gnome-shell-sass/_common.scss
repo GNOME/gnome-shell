@@ -101,6 +101,27 @@ StEntry {
   }
 }
 
+/* Editable Label */
+.overview-icon-label {
+    padding: 0;
+
+    border: transparent;
+    border-width: 1px;
+    background-color: transparent;
+
+    &:focus {
+    	background-color: $base_color;
+  	border-width: 1px;
+  	border-radius: $button_radius;
+        color: $fg_color;
+    }
+
+    &:highlighted,
+    &:focus:highlighted {
+  	border-radius: $button_radius;
+    }
+}
+
 
 /* Scrollbars */
 
