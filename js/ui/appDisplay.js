@@ -2034,9 +2034,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 !actions.includes('new-window')) {
                 this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                 this._newWindowMenuItem.connect('activate', () => {
-                    if (this._source.app.state == Shell.AppState.STOPPED)
-                        this._source.animateLaunch();
-
+                    this._source.animateLaunch();
                     this._source.app.open_new_window(-1);
                     this.emit('activate-window', null);
                 });
@@ -2048,9 +2046,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 !actions.includes('activate-discrete-gpu')) {
                 this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                 this._onDiscreteGpuMenuItem.connect('activate', () => {
-                    if (this._source.app.state == Shell.AppState.STOPPED)
-                        this._source.animateLaunch();
-
+                    this._source.animateLaunch();
                     this._source.app.launch(0, -1, true);
                     this.emit('activate-window', null);
                 });
@@ -2060,8 +2056,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 let action = actions[i];
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
                 item.connect('activate', (emitter, event) => {
-                    if (action == 'new-window' &&
-                        this._source.app.state == Shell.AppState.STOPPED)
+                    if (action == 'new-window')
                         this._source.animateLaunch();
 
                     this._source.app.launch_action(action, event.get_time(), -1);
