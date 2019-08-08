@@ -545,12 +545,12 @@ var IconGrid = GObject.registerClass({
                     scale_y: 1,
                     duration: ANIMATION_TIME_IN,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                    onComplete: () => {
-                        if (isLastItem)
-                            this._animationDone();
-                    }
+                    delay
                 };
+
+                if (isLastItem)
+                    movementParams.onComplete = this._animationDone.bind(this);
+
                 fadeParams = {
                     opacity: 255,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
@@ -571,13 +571,12 @@ var IconGrid = GObject.registerClass({
                     scale_y: scaleY,
                     duration: ANIMATION_TIME_OUT,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                    onComplete: () => {
-                        if (isLastItem) {
-                            this._animationDone();
-                        }
-                    }
+                    delay
                 };
+
+                if (isLastItem)
+                    movementParams.onComplete = this._animationDone.bind(this);
+
                 fadeParams = {
                     opacity: 0,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
