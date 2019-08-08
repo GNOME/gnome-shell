@@ -334,7 +334,7 @@ var ViewSelector = class {
             opacity: 0,
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._animateIn(oldPage)
+            onStopped: () => this._animateIn(oldPage)
         });
     }
 
