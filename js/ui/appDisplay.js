@@ -2060,6 +2060,10 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 let action = actions[i];
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
                 item.connect('activate', (emitter, event) => {
+                    if (action == 'new-window' &&
+                        this._source.app.state == Shell.AppState.STOPPED)
+                        this._source.animateLaunch();
+
                     this._source.app.launch_action(action, event.get_time(), -1);
                     this.emit('activate-window', null);
                 });
