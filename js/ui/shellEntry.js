@@ -27,42 +27,13 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this.addMenuItem(item);
         this._pasteItem = item;
 
-        this._passwordItem = null;
-
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-    }
-
-    _makePasswordItem() {
-        let item = new PopupMenu.PopupMenuItem('');
-        item.connect('activate', this._onPasswordActivated.bind(this));
-        this.addMenuItem(item);
-        this._passwordItem = item;
-    }
-
-    get isPassword() {
-        return this._passwordItem != null;
-    }
-
-    set isPassword(v) {
-        if (v == this.isPassword)
-            return;
-
-        if (v) {
-            this._makePasswordItem();
-            this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
-        } else {
-            this._passwordItem.destroy();
-            this._passwordItem = null;
-            this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
-        }
     }
 
     open(animate) {
         this._updatePasteItem();
         this._updateCopyItem();
-        if (this._passwordItem)
-            this._updatePasswordItem();
 
         super.open(animate);
         this._entry.add_style_pseudo_class('focus');
@@ -85,14 +56,6 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
             });
     }
 
-    _updatePasswordItem() {
-        let textHidden = (this._entry.clutter_text.password_char);
-        if (textHidden)
-            this._passwordItem.label.set_text(_("Show Text"));
-        else
-            this._passwordItem.label.set_text(_("Hide Text"));
-    }
-
     _onCopyActivated() {
         let selection = this._entry.clutter_text.get_selection();
         this._clipboard.set_text(St.ClipboardType.CLIPBOARD, selection);
@@ -107,11 +70,6 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
                 let pos = this._entry.clutter_text.get_cursor_position();
                 this._entry.clutter_text.insert_text(text, pos);
             });
-    }
-
-    _onPasswordActivated() {
-        let visible = !!(this._entry.clutter_text.password_char);
-        this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }
 };
 
@@ -145,10 +103,9 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse (params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse (params, { actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
-    entry.menu.isPassword = params.isPassword;
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
                                                         { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);

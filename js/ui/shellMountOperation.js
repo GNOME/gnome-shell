@@ -322,12 +322,11 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._pimLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
                                             text: _("PIM Number"),
                                             y_align: Clutter.ActorAlign.CENTER });
-            this._pimEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                            can_focus: true,
-                                            x_expand: true });
+            this._pimEntry = new St.PasswordEntry({ style_class: 'prompt-dialog-password-entry',
+                                                    can_focus: true,
+                                                    x_expand: true });
             this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-            this._pimEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
-            ShellEntry.addContextMenu(this._pimEntry, { isPassword: true });
+            ShellEntry.addContextMenu(this._pimEntry);
 
             if (rtl) {
                 layout.attach(this._pimEntry, 0, 0, 1, 1);
@@ -351,12 +350,11 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._passwordLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
                                              text: _("Password"),
                                              y_align: Clutter.ActorAlign.CENTER });
-        this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                             can_focus: true,
-                                             x_expand: true });
+        this._passwordEntry = new St.PasswordEntry({ style_class: 'prompt-dialog-password-entry',
+                                                     can_focus: true,
+                                                     x_expand: true });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-        this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
-        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+        ShellEntry.addContextMenu(this._passwordEntry);
         this.setInitialKeyFocus(this._passwordEntry);
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordEntry.secondary_icon = this._workSpinner.actor;

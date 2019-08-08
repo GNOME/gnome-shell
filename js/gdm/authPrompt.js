@@ -90,9 +90,9 @@ var AuthPrompt = class {
                          x_fill: false,
                          y_fill: true,
                          x_align: St.Align.START });
-        this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
-                                     can_focus: true });
-        ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
+        this._entry = new St.PasswordEntry({ style_class: 'login-dialog-prompt-entry',
+                                             can_focus: true });
+        ShellEntry.addContextMenu(this._entry, { actionMode: Shell.ActionMode.NONE });
 
         this.actor.add(this._entry,
                        { expand: true,
@@ -189,7 +189,6 @@ var AuthPrompt = class {
             this._preemptiveAnswer = null;
             return;
         }
-        this.setPasswordChar(passwordChar);
         this.setQuestion(question);
 
         if (passwordChar) {
@@ -333,11 +332,6 @@ var AuthPrompt = class {
     clear() {
         this._entry.text = '';
         this.stopSpinning();
-    }
-
-    setPasswordChar(passwordChar) {
-        this._entry.clutter_text.set_password_char(passwordChar);
-        this._entry.menu.isPassword = passwordChar != '';
     }
 
     setQuestion(question) {
