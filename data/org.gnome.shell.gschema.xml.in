@@ -228,6 +228,17 @@
     </key>
   </schema>
 
+  <schema id="org.gnome.shell.world-clocks" path="/org/gnome/shell/world-clocks/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="locations" type="av">
+      <summary>Locations</summary>
+      <description>
+        The locations to show in world clocks
+      </description>
+      <default>[]</default>
+    </key>
+  </schema>
+
   <schema id="org.gnome.shell.weather" path="/org/gnome/shell/weather/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="automatic-location" type="b">
