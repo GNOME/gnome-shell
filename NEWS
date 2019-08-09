@@ -1,3 +1,28 @@
+3.33.90
+=======
+* Implement DND app picker folder management [Georges; !643, !645, !664, !671]
+* Make Clocks/Weather integration work with sandboxed apps [Florian; #1158]
+* Support startup via systemd user instance [Benjamin; !507]
+* Replace Tweener with Clutter animations [Florian; !663, !22, !666, !668, !669]
+* Minimize travel distance in overview animation [Sergey; !267]
+* Rescan icon theme when installed apps changed [Georges; !661]
+* Consistently animate new window actions [Jonas; !662, !673]
+* Misc. bug fixes and cleanups [Florian, Daniel, Ray, Bastien, Jonas, Niels,
+  Marco, Georges; !635, !636, !637, #1462, !628, !640, !641, !627, !644, !647,
+  !385, #1474, !651, #1144, !646, !653, !652, !655, #1482, !656, $654, !665,
+  !667, !670, #1357, !672, !657, #1507, !674, !677]
+
+Contributors:
+  Benjamin Berg, Sergey Bugaev, Jonas Dreßler, Niels De Graef, Florian Müllner,
+  Georges Basile Stavracas Neto, Bastien Nocera, Ray Strode,
+  Marco Trevisan (Treviño), verdre, Daniel van Vugt
+
+Translators:
+  Asier Sarasua Garmendia [eu], Rafael Fontenelle [pt_BR],
+  Kristjan SCHMIDT [eo], Jor Teron [mjw], Daniel Mustieles [es],
+  Kukuh Syafaat [id], Jordi Mas [ca], Fabio Tomat [fur], Daniel Șerbănescu [ro],
+  Anders Jonsson [sv]
+
 3.33.4
 ======
 * Fix unintentional interference between gestures [Jonas; !598]
