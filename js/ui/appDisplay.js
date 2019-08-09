@@ -1433,10 +1433,10 @@ var FolderIcon = class FolderIcon {
 
         this.view = new FolderView(this._folder, id, parentView);
 
-        Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
+        this._itemDragBeginId = Main.overview.connect(
+            'item-drag-begin', this._onDragBegin.bind(this));
+        this._itemDragEndId = Main.overview.connect(
+            'item-drag-end', this._onDragEnd.bind(this));
 
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
@@ -1450,6 +1450,9 @@ var FolderIcon = class FolderIcon {
     }
 
     onDestroy() {
+        Main.overview.disconnect(this._itemDragBeginId);
+        Main.overview.disconnect(this._itemDragEndId);
+
         this.view.actor.destroy();
 
         if (this._spaceReadySignalId) {
@@ -1870,8 +1873,10 @@ var AppIcon = class AppIcon {
             });
         }
 
-        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        this._itemDragBeginId = Main.overview.connect(
+            'item-drag-begin', this._onDragBegin.bind(this));
+        this._itemDragEndId = Main.overview.connect(
+            'item-drag-end', this._onDragEnd.bind(this));
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
 
@@ -1883,15 +1888,19 @@ var AppIcon = class AppIcon {
     }
 
     _onDestroy() {
+        Main.overview.disconnect(this._itemDragBeginId);
+        Main.overview.disconnect(this._itemDragEndId);
+
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
         }
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
-        if (this._draggable && this._dragging) {
-            Main.overview.endItemDrag(this);
-            this.draggable = null;
+        if (this._draggable) {
+            if (this._dragging)
+                Main.overview.endItemDrag(this);
+            this._draggable = null;
         }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
