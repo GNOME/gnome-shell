@@ -57,11 +57,9 @@ var PopupBaseMenuItem = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean('active', 'active', 'active',
                                             GObject.ParamFlags.READWRITE,
-                                            GObject.TYPE_BOOLEAN,
                                             false),
         'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
                                                GObject.ParamFlags.READWRITE,
-                                               GObject.TYPE_BOOLEAN,
                                                true),
     },
     Signals: {
