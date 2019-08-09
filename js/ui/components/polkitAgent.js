@@ -101,6 +101,7 @@ var AuthenticationDialog = GObject.registerClass({
                                                      text: "",
                                                      can_focus: true });
         ShellEntry.addContextMenu(this._passwordEntry);
+        this._passwordEntry.connect("notify::caps-lock-warning", this._onCapsLockWarning.bind(this));
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
@@ -110,6 +111,13 @@ var AuthenticationDialog = GObject.registerClass({
 
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
+
+        this._capsLockWarningLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
+                                                    text: 'Caps lock in on.' });
+        this._capsLockWarningLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._capsLockWarningLabel.clutter_text.line_wrap = true;
+        content.messageBox.add(this._capsLockWarningLabel, { x_fill: false, x_align: St.Align.START });
+        this._capsLockWarningLabel.hide();
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -202,6 +210,15 @@ var AuthenticationDialog = GObject.registerClass({
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
         this._setWorking(!sensitive);
+    }
+
+    _onCapsLockWarning () {
+        let showCapsLockWarning = this._passwordEntry.get_caps_lock_feedback();
+
+        if (showCapsLockWarning)
+            this._capsLockWarningLabel.show();
+        else
+            this._capsLockWarningLabel.hide();
     }
 
     _onEntryActivate() {
