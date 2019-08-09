@@ -1897,9 +1897,10 @@ var AppIcon = class AppIcon {
         }
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
-        if (this._draggable && this._dragging) {
-            Main.overview.endItemDrag(this);
-            this.draggable = null;
+        if (this._draggable) {
+            if (this._dragging)
+                Main.overview.endItemDrag(this);
+            this._draggable = null;
         }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
