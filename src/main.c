@@ -334,10 +334,6 @@ default_log_handler (const char     *log_domain,
                      const char     *message,
                      gpointer        data)
 {
-  GTimeVal now;
-
-  g_get_current_time (&now);
-
   if (!log_domain || !g_str_has_prefix (log_domain, "tp-glib"))
     g_log_default_handler (log_domain, log_level, message, data);
 

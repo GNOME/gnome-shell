@@ -21,24 +21,20 @@
 static void
 print_debug (const gchar *format, ...)
 {
-  gchar *s;
+  g_autofree char *s = NULL;
+  g_autofree char *timestamp = NULL;
+  g_autoptr (GDateTime) now = NULL;
   va_list ap;
-  gchar timebuf[64];
-  GTimeVal now;
-  time_t now_t;
-  struct tm broken_down;
 
-  g_get_current_time (&now);
-  now_t = now.tv_sec;
-  localtime_r (&now_t, &broken_down);
-  strftime (timebuf, sizeof timebuf, "%H:%M:%S", &broken_down);
+  now = g_date_time_new_now_local ();
+  timestamp = g_date_time_format (now, "%H:%M:%S");
 
   va_start (ap, format);
   s = g_strdup_vprintf (format, ap);
   va_end (ap);
 
-  g_print ("ShellPolkitAuthenticationAgent: %s.%03d: %s\n", timebuf, (gint) (now.tv_usec / 1000), s);
-  g_free (s);
+  g_print ("ShellPolkitAuthenticationAgent: %s.%03d: %s\n",
+           timestamp, g_date_time_get_microsecond (now), s);
 }
 #else
 static void
