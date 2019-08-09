@@ -48,6 +48,7 @@ void                st_password_entry_show_password              (StPasswordEntr
 void                st_password_entry_hide_password              (StPasswordEntry *entry);
 void                st_password_entry_toggle_peek_password       (StPasswordEntry *entry);
 void                st_password_entry_disable_password_peek_icon (StPasswordEntry *entry);
+gboolean            st_password_entry_get_caps_lock_feedback     (StPasswordEntry *entry);
 
 G_END_DECLS
 

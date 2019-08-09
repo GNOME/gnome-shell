@@ -25,6 +25,18 @@
 
 #define ST_PASSWORD_ENTRY_PRIV(x) st_password_entry_get_instance_private ((StPasswordEntry *) x)
 
+/* properties */
+enum
+{
+  PROP_0,
+
+  PROP_CAPS_LOCK_WARNING,
+
+  N_PROPS
+};
+
+static GParamSpec *props[N_PROPS] = { NULL, };
+
 struct _StPasswordEntryPrivate
 {
   ClutterActor *peek_password_icon;
@@ -33,6 +45,26 @@ struct _StPasswordEntryPrivate
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StPasswordEntry, st_password_entry, ST_TYPE_ENTRY);
+
+static void
+st_password_entry_get_property (GObject    *gobject,
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
+{
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_CAPS_LOCK_WARNING:
+      g_value_set_boolean (value, priv->capslock_warning_shown);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
 
 static void
 update_caps_lock_warning_visibility (ClutterKeymap *keymap,
@@ -45,6 +77,8 @@ update_caps_lock_warning_visibility (ClutterKeymap *keymap,
     priv->capslock_warning_shown = TRUE;
   else
     priv->capslock_warning_shown = FALSE;
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_CAPS_LOCK_WARNING]);
 }
 
 static void
@@ -71,9 +105,18 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   StEntryClass *st_entry_class = ST_ENTRY_CLASS (klass);
 
+  gobject_class->get_property = st_password_entry_get_property;
   gobject_class->dispose = st_password_entry_dispose;
 
   st_entry_class->secondary_icon_clicked = st_password_entry_secondary_icon_clicked;
+
+  props[PROP_CAPS_LOCK_WARNING] = g_param_spec_boolean ("caps-lock-warning",
+                                                        "Caps lock warning",
+                                                        "Whether to show the capslock-warning",
+                                                        FALSE,
+                                                        ST_PARAM_READABLE);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
 
 static void
@@ -244,4 +287,21 @@ st_password_entry_disable_password_peek_icon (StPasswordEntry *entry)
 
   //TODO: How to disable the secondary_icon_clicked signal handler here?
   st_entry_set_secondary_icon (ST_ENTRY (entry), NULL);
+}
+
+/**
+ * st_password_entry_get_caps_lock_feedback:
+ * @entry: a #StPasswordEntry
+ *
+ * Returns whether to show the caps lock warning based on the caps
+ * lock key status.
+ */
+gboolean
+st_password_entry_get_caps_lock_feedback (StPasswordEntry *entry)
+{
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (entry);
+
+  g_return_val_if_fail (ST_IS_PASSWORD_ENTRY (entry), FALSE);
+
+  return priv->capslock_warning_shown;
 }
