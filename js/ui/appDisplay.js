@@ -1520,7 +1520,7 @@ var FolderIcon = class FolderIcon {
 
     acceptDrop(source) {
         if (!this._canAccept(source))
-            return true;
+            return false;
 
         let app = source.app;
         let folderApps = this._folder.get_strv('apps');
