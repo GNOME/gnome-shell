@@ -123,8 +123,17 @@ function _easeActor(actor, params) {
 
         if (transition)
             transition.connect('stopped', (t, finished) => callback(finished));
-        else
+        else {
+            let actorDestroyed = false;
+            let destroyId = actor.connect('destroy', () => actorDestroyed = true);
+
             callback(true);
+
+            if (actorDestroyed)
+                return;
+
+            actor.disconnect(destroyId);
+        }
     }
 
     actor.restore_easing_state();
