@@ -117,6 +117,7 @@ function _easeActor(actor, params) {
     animatedProps.forEach(p => actor.remove_transition(p));
 
     actor.set(params);
+    actor.restore_easing_state();
 
     if (callback) {
         let transition = actor.get_transition(animatedProps[0]);
@@ -126,8 +127,6 @@ function _easeActor(actor, params) {
         else
             callback(true);
     }
-
-    actor.restore_easing_state();
 }
 
 function _easeActorProperty(actor, propName, target, params) {
