@@ -453,7 +453,7 @@ var WorkspacesDisplay = class {
         this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
         this.actor._delegate = this;
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
-        this.actor.connect('parent-set', this._parentSet.bind(this));
+        this._parentSetId = this.actor.connect('parent-set', this._parentSet.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -524,6 +524,27 @@ var WorkspacesDisplay = class {
         this._keyPressEventId = 0;
 
         this._fullGeometry = null;
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._parentSetId) {
+            this.actor.disconnect(this._parentSetId);
+            this._parentSetId = 0;
+        }
+
+        if (this._notifyOpacityId) {
+            let parent = this.actor.get_parent();
+            if (parent)
+                parent.disconnect(this._notifyOpacityId);
+            this._notifyOpacityId = 0;
+        }
+
+        if (this._parentSetLater) {
+            Meta.later_remove(this._parentSetLater);
+            this._parentSetLater = 0;
+        }
     }
 
     _onPan(action) {
@@ -717,7 +738,11 @@ var WorkspacesDisplay = class {
             oldParent.disconnect(this._notifyOpacityId);
         this._notifyOpacityId = 0;
 
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+        if (this._parentSetLater)
+            return;
+
+        this._parentSetLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            delete this._parentSetLater;
             let newParent = this.actor.get_parent();
             if (!newParent)
                 return;
