@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, St } = imports.gi;
+const { Gio, GObject, St } = imports.gi;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -33,7 +33,8 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(this._item);
 
         this._slider = new Slider.Slider(0);
-        this._slider.connect('notify::value', this._sliderChanged.bind(this));
+        this._sliderChangedId = this._slider.connect('notify::value',
+            this._sliderChanged.bind(this));
         this._slider.accessible_name = _("Brightness");
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
@@ -54,10 +55,16 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._proxy.Brightness = percent;
     }
 
+    _changeSlider(value) {
+        GObject.signal_handler_block(this._slider, this._sliderChangedId);
+        this._slider.value = value;
+        GObject.signal_handler_unblock(this._slider, this._sliderChangedId);
+    }
+
     _sync() {
         let visible = this._proxy.Brightness >= 0;
         this._item.visible = visible;
         if (visible)
-            this._slider.value = this._proxy.Brightness / 100.0;
+            this._changeSlider(this._proxy.Brightness / 100.0);
     }
 };
