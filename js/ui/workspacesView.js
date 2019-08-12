@@ -497,6 +497,22 @@ var WorkspacesDisplay = new Lang.Class({
         this._keyPressEventId = 0;
 
         this._fullGeometry = null;
+
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    },
+
+    _onDestroy() {
+        if (this._notifyOpacityId) {
+            let parent = this.actor.get_parent();
+            if (parent)
+                parent.disconnect(this._notifyOpacityId);
+            this._notifyOpacityId = 0;
+        }
+
+        if (this._parentSetLater) {
+            Meta.later_remove(this._parentSetLater);
+            this._parentSetLater = 0;
+        }
     },
 
     _onPan(action) {
@@ -639,7 +655,11 @@ var WorkspacesDisplay = new Lang.Class({
             oldParent.disconnect(this._notifyOpacityId);
         this._notifyOpacityId = 0;
 
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+        if (this._parentSetLater)
+            return;
+
+        this._parentSetLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._parentSetLater = 0;
             let newParent = this.actor.get_parent();
             if (!newParent)
                 return;
