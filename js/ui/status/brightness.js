@@ -35,6 +35,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._slider = new Slider.Slider(0);
         this._slider.connect('notify::value', this._sliderChanged.bind(this));
         this._slider.accessible_name = _("Brightness");
+        this._ignoreSliderChange = false;
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });
@@ -50,14 +51,23 @@ var Indicator = class extends PanelMenu.SystemIndicator {
     }
 
     _sliderChanged() {
+        if (this._slider._ignoreSliderChange)
+            return;
+
         let percent = this._slider.value * 100;
         this._proxy.Brightness = percent;
+    }
+
+    _changeSlider(value) {
+        this._slider._ignoreSliderChange = true;
+        this._slider.value = value;
+        this._slider._ignoreSliderChange = false;
     }
 
     _sync() {
         let visible = this._proxy.Brightness >= 0;
         this._item.visible = visible;
         if (visible)
-            this._slider.value = this._proxy.Brightness / 100.0;
+            this._changeSlider(this._proxy.Brightness / 100.0);
     }
 };
