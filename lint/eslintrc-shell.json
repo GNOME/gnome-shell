@@ -40,6 +40,9 @@
                 "C_": false,
                 "N_": false,
                 "ngettext": false
+            },
+            "parserOptions": {
+                "ecmaVersion": 2018
             }
         }
     ]
