@@ -16,8 +16,14 @@ run_eslint() {
   ARGS_LEGACY='--config lint/eslintrc-legacy.json'
 
   local extra_args=ARGS_$1
-  local output=OUTPUT_$1
-  eslint -f unix ${!extra_args} -o ${!output} js
+  local output_var=OUTPUT_$1
+  local output=${!output_var}
+
+  # ensure output exists even if eslint doesn't report any errors
+  mkdir -p $(dirname $output)
+  touch $output
+
+  eslint -f unix ${!extra_args} -o $output js
 }
 
 list_commit_range_additions() {
