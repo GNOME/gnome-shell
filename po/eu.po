@@ -8,8 +8,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-08 16:00+0000\n"
-"PO-Revision-Date: 2019-08-11 10:00+0100\n"
+"POT-Creation-Date: 2019-08-12 19:40+0000\n"
+"PO-Revision-Date: 2019-08-14 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -685,40 +685,44 @@ msgstr "Ukatu sarbidea"
 msgid "Grant Access"
 msgstr "Baimendu sarbidea"
 
-#: js/ui/appDisplay.js:805
+#: js/ui/appDisplay.js:854
+msgid "Unnamed Folder"
+msgstr "Izenik gabeko karpeta"
+
+#: js/ui/appDisplay.js:874
 msgid "Frequently used applications will appear here"
 msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
 
-#: js/ui/appDisplay.js:928
+#: js/ui/appDisplay.js:997
 msgid "Frequent"
 msgstr "Askotan"
 
-#: js/ui/appDisplay.js:935
+#: js/ui/appDisplay.js:1004
 msgid "All"
 msgstr "Denak"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2016 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Leiho irekiak"
 
-#: js/ui/appDisplay.js:2035 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "_Leiho berria"
 
-#: js/ui/appDisplay.js:2049
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Abiarazi eskainitako txartel grafikoa erabiliz"
 
-#: js/ui/appDisplay.js:2080 js/ui/dash.js:216
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: js/ui/appDisplay.js:2086
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
-#: js/ui/appDisplay.js:2096 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Erakutsi xehetasunak"
 
@@ -891,7 +895,7 @@ msgstr "Garbitu"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "“%s“(e)k ez du erantzuten."
+msgstr "“%s”(e)k ez du erantzuten."
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -999,7 +1003,7 @@ msgstr "PIN kodea behar da"
 
 #: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:703
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "PIN kodea behar da bandazabal mugikorreko gailuarentzako"
+msgstr "PIN kodea behar da banda zabal mugikorreko gailuarentzako"
 
 #: js/ui/components/networkAgent.js:336
 msgid "PIN: "
@@ -1050,13 +1054,13 @@ msgstr "%s orain %s izenarekin ezagutzen da"
 msgid "Windows"
 msgstr "Leihoak"
 
-#: js/ui/dash.js:177 js/ui/dash.js:218
+#: js/ui/dash.js:201 js/ui/dash.js:242
 msgid "Show Applications"
 msgstr "Erakutsi aplikazioak"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:366
+#: js/ui/dash.js:390
 msgid "Dash"
 msgstr "Atrakagarria"
 
@@ -1253,13 +1257,13 @@ msgstr "Instalatu"
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Deskargatu eta instalatu “%s“ extensions.gnome.org gunetik?"
+msgstr "Deskargatu eta instalatu “%s” extensions.gnome.org gunetik?"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:79
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
-msgstr "“%s“(e)k laster-teklak galarazi nahi ditu"
+msgstr "“%s”(e)k laster-teklak galarazi nahi ditu"
 
 #: js/ui/inhibitShortcutsDialog.js:80
 msgid "Application wants to inhibit shortcuts"
@@ -1539,15 +1543,15 @@ msgstr "Ezin da blokeatu"
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
-#: js/ui/search.js:639
+#: js/ui/search.js:647
 msgid "Searching…"
 msgstr "Bilatzen…"
 
-#: js/ui/search.js:641
+#: js/ui/search.js:649
 msgid "No results."
 msgstr "Emaitzarik ez."
 
-#: js/ui/search.js:765
+#: js/ui/search.js:773
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1825,7 +1829,7 @@ msgstr "Haridunaren ezarpenak"
 
 #: js/ui/status/network.js:512
 msgid "Mobile Broadband Settings"
-msgstr "Bandazabal mugikorraren ezarpenak"
+msgstr "Banda zabal mugikorraren ezarpenak"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:559 js/ui/status/network.js:1300
@@ -1870,7 +1874,7 @@ msgstr "Piztu haririk gabekoa"
 
 #: js/ui/status/network.js:835
 msgid "Wi-Fi Networks"
-msgstr "Wi-Fi sareak"
+msgstr "Wifi sareak"
 
 #: js/ui/status/network.js:837
 msgid "Select a network"
@@ -2238,19 +2242,19 @@ msgstr "Eraman eskuineko pantailara"
 msgid "Evolution Calendar"
 msgstr "Evolution egutegia"
 
-#: src/main.c:464
+#: src/main.c:460
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
 
-#: src/main.c:470
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "GDMk erabiltzen duen modua saio-hasierako pantailarako"
 
-#: src/main.c:476
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Erabili modu jakin bat, adib. “gdm“, saioa hasteko pantailarako"
 
-#: src/main.c:482
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "Zerrendatu modu posibleak"
 
@@ -2272,7 +2276,7 @@ msgstr "Pasahitzak ez datoz bat"
 msgid "Password cannot be blank"
 msgstr "Pasahitza ezin da hutsa izan"
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 
