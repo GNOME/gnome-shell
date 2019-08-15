@@ -612,3 +612,54 @@ shell_util_check_cloexec_fds (void)
   fdwalk (check_cloexec, NULL);
   g_info ("Open fd CLOEXEC check complete");
 }
+
+static gboolean
+shell_util_systemd_call (const gchar *command,
+                         const char  *unit,
+                         const char  *mode,
+                         GError     **error)
+{
+  g_autoptr(GDBusConnection) connection = NULL;
+  g_autoptr(GVariant)        reply = NULL;
+  GError *bus_error = NULL;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+
+  if (connection == NULL)
+    return FALSE;
+
+  reply = g_dbus_connection_call_sync (connection,
+                                       "org.freedesktop.systemd1",
+                                       "/org/freedesktop/systemd1",
+                                       "org.freedesktop.systemd1.Manager",
+                                       command,
+                                       g_variant_new ("(ss)",
+                                                      unit, mode),
+                                       NULL,
+                                       G_DBUS_CALL_FLAGS_NONE,
+                                       -1, NULL, &bus_error);
+
+  if (bus_error != NULL)
+    {
+      g_propagate_error (error, bus_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+shell_util_start_systemd_unit (const char  *unit,
+                               const char  *mode,
+                               GError     **error)
+{
+  return shell_util_systemd_call ("StartUnit", unit, mode, error);
+}
+
+gboolean
+shell_util_stop_systemd_unit (const char  *unit,
+                              const char  *mode,
+                              GError     **error)
+{
+  return shell_util_systemd_call ("StopUnit", unit, mode, error);
+}
