@@ -61,7 +61,7 @@ var IBusManager = class {
 
     _spawn(extraArgs = []) {
         try {
-            let cmdLine = ['ibus-daemon', '--panel', 'disable', '--xim', ...extraArgs];
+            let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
             Gio.Subprocess.new(cmdLine, Gio.SubprocessFlags.NONE);
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
