@@ -59,13 +59,22 @@ var IBusManager = class {
         this._spawn();
     }
 
-    _spawn() {
+    _spawn(extraArgs) {
         try {
-            Gio.Subprocess.new(['ibus-daemon', '--xim', '--panel', 'disable'],
-                               Gio.SubprocessFlags.NONE);
+            let cmdLine = ['ibus-daemon', '--panel', 'disable'];
+            if (extraArgs)
+                cmdLine = cmdLine.concat(extraArgs);
+            Gio.Subprocess.new(cmdLine, Gio.SubprocessFlags.NONE);
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
         }
+    }
+
+    restartDaemon(extraArgs) {
+        let args = ['-r'];
+        if (extraArgs)
+            args = args.concat(extraArgs);
+        this._spawn(args);
     }
 
     _clear() {
@@ -80,8 +89,6 @@ var IBusManager = class {
         this._currentEngineName = null;
 
         this.emit('ready', false);
-
-        this._spawn();
     }
 
     _onConnected() {
