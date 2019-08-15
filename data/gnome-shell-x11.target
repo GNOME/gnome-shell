@@ -6,5 +6,6 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
+Requires=gnome-session-x11-services.target
 Requires=gnome-shell-x11.service
 After=gnome-shell-x11.service
