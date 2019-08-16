@@ -937,7 +937,8 @@ shell_global_begin_modal (ShellGlobal       *global,
     return FALSE;
 
   global->has_modal = meta_plugin_begin_modal (global->plugin, options, timestamp);
-  sync_input_region (global);
+  if (!meta_is_wayland_compositor ())
+    sync_input_region (global);
   return global->has_modal;
 }
 
@@ -967,7 +968,8 @@ shell_global_end_modal (ShellGlobal *global,
     meta_display_focus_default_window (global->meta_display,
                                        get_current_time_maybe_roundtrip (global));
 
-  sync_input_region (global);
+  if (!meta_is_wayland_compositor ())
+    sync_input_region (global);
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
