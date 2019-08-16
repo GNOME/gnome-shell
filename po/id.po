@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-07-31 19:09+0000\n"
-"PO-Revision-Date: 2019-08-06 17:48+0700\n"
+"POT-Creation-Date: 2019-08-12 19:40+0000\n"
+"PO-Revision-Date: 2019-08-16 15:37+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -272,54 +272,47 @@ msgid "Keybinding to focus the active notification."
 msgstr "Kombinasi tombol untuk fokus pada pemberitahuan yang aktif."
 
 #: data/org.gnome.shell.gschema.xml.in:155
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Pengikatan tombol yang mengistirahatkan dan melanjutkan semua tween yang "
-"sedang berjalan, untuk tujuan pengawakutuan"
-
-#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Switch to application 1"
 msgstr "Beralih ke aplikasi 1"
 
-#: data/org.gnome.shell.gschema.xml.in:164
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Switch to application 2"
 msgstr "Beralih ke aplikasi 2"
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Switch to application 3"
 msgstr "Beralih ke aplikasi 3"
 
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Switch to application 4"
 msgstr "Beralih ke aplikasi 4"
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:171
 msgid "Switch to application 5"
 msgstr "Beralih ke aplikasi 5"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Switch to application 6"
 msgstr "Beralih ke aplikasi 6"
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Switch to application 7"
 msgstr "Beralih ke aplikasi 7"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:183
 msgid "Switch to application 8"
 msgstr "Beralih ke aplikasi 8"
 
-#: data/org.gnome.shell.gschema.xml.in:192
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Switch to application 9"
 msgstr "Beralih ke aplikasi 9"
 
-#: data/org.gnome.shell.gschema.xml.in:201
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Limit switcher to current workspace."
 msgstr "Batasi pengalih ke ruang kerja saat ini."
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -327,11 +320,11 @@ msgstr ""
 "Bila berisi true, hanya aplikasi yang punya jendela pada ruang kerja saat "
 "ini ditampilkan pada penukar. Bila tidak, semua aplikasi disertakan."
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "The application icon mode."
 msgstr "Mode ikon aplikasi."
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -341,7 +334,7 @@ msgstr ""
 "adalah \"thumbnail-only\" (menampilkan gambar mini dari jendela), \"app-icon-"
 "only\" (hanya menampilkan ikon aplikasi), atau \"both\" (keduanya)."
 
-#: data/org.gnome.shell.gschema.xml.in:229
+#: data/org.gnome.shell.gschema.xml.in:224
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -349,51 +342,59 @@ msgstr ""
 "Bila berisi true, hanya jendela dari ruang kerja saat ini ditampilkan pada "
 "penukar. Bila tidak, semua jendela disertakan."
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:234
+msgid "Locations"
+msgstr "Lokasi"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "The locations to show in world clocks"
+msgstr "Lokasi untuk ditampilkan di jam dunia"
+
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid "Automatic location"
 msgstr "Lokasi otomatis"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Whether to fetch the current location or not"
 msgstr "Apakah akan mengambil lokasi saat ini atau tidak"
 
-#: data/org.gnome.shell.gschema.xml.in:247
+#: data/org.gnome.shell.gschema.xml.in:253
 msgid "Location"
 msgstr "Lokasi"
 
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:254
 msgid "The location for which to show a forecast"
 msgstr "Lokasi yang menunjukkan perkiraan"
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
 msgstr "Mencantolkan dialog modal ke jendela induk"
 
-#: data/org.gnome.shell.gschema.xml.in:261
-#: data/org.gnome.shell.gschema.xml.in:270
-#: data/org.gnome.shell.gschema.xml.in:278
-#: data/org.gnome.shell.gschema.xml.in:286
-#: data/org.gnome.shell.gschema.xml.in:294
+#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:300
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Kunci ini menimpa kunci dalam org.gnome.mutter ketika menjalankan GNOME "
 "Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:269
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Memfungsikan pengubinan tepi ketika menjatuhkan jendela pada tepi layar"
 
-#: data/org.gnome.shell.gschema.xml.in:277
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Workspaces are managed dynamically"
 msgstr "Ruang kerja dikelola secara dinamis"
 
-#: data/org.gnome.shell.gschema.xml.in:285
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Workspaces only on primary monitor"
 msgstr "Ruang kerja hanya pada monitor primer"
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Tunda perubahan fokus dalam mode tetikus sampai penunjuk berhenti bergerak"
@@ -456,7 +457,7 @@ msgstr ""
 "Kami sangat menyesal, tetapi tidak mungkin mendapatkan daftar ekstensi yang "
 "dipasang. Pastikan Anda masuk ke GNOME dan coba lagi."
 
-#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:53
+#: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
@@ -464,28 +465,28 @@ msgstr ""
 msgid "Cancel"
 msgstr "Batal"
 
-#: js/gdm/authPrompt.js:159 js/gdm/authPrompt.js:202 js/gdm/authPrompt.js:433
+#: js/gdm/authPrompt.js:158 js/gdm/authPrompt.js:201 js/gdm/authPrompt.js:433
 msgid "Next"
 msgstr "Selanjutnya"
 
-#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:394
+#: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:394
 #: js/ui/unlockDialog.js:42
 msgid "Unlock"
 msgstr "Buka Kunci"
 
-#: js/gdm/authPrompt.js:200
+#: js/gdm/authPrompt.js:199
 msgctxt "button"
 msgid "Sign In"
 msgstr "Masuk"
 
-#: js/gdm/loginDialog.js:301
+#: js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Pilih Sesi"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:445
+#: js/gdm/loginDialog.js:443
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
@@ -508,7 +509,7 @@ msgstr "Nama pengguna: "
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
-#: js/gdm/util.js:339
+#: js/gdm/util.js:338
 msgid "Authentication error"
 msgstr "Galat autentikasi"
 
@@ -517,7 +518,7 @@ msgstr "Galat autentikasi"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:474
+#: js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(atau gesekkan jari)"
 
@@ -587,65 +588,65 @@ msgstr "Kunci Orientasi"
 msgid "lock orientation;screen;rotation"
 msgstr "kunci orientasi;layar;rotasi"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:117
 msgid "Command not found"
 msgstr "Perintah tidak ditemukan"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:150
 msgid "Could not parse command:"
 msgstr "Tak dapat mengurai perintah:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:158
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Eksekusi \"%s\" gagal:"
 
-#: js/misc/util.js:177
+#: js/misc/util.js:175
 msgid "Just now"
 msgstr "Baru saja"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:177
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d menit yang lalu"
 msgstr[1] "%d menit yang lalu"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:180
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d jam yang lalu"
 msgstr[1] "%d jam yang lalu"
 
-#: js/misc/util.js:185
+#: js/misc/util.js:183
 msgid "Yesterday"
 msgstr "Kemarin"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:185
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d hari yang lalu"
 msgstr[1] "%d hari yang lalu"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:188
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d minggu yang lalu"
 msgstr[1] "%d minggu yang lalu"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:191
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d bulan yang lalu"
 msgstr[1] "%d bulan yang lalu"
 
-#: js/misc/util.js:195
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -653,20 +654,20 @@ msgstr[0] "%d tahun yang lalu"
 msgstr[1] "%d tahun yang lalu"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:225
+#: js/misc/util.js:223
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:231
+#: js/misc/util.js:229
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Kemarin, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:237
+#: js/misc/util.js:235
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -674,7 +675,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:243
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%d %B, %H∶%M"
@@ -682,26 +683,26 @@ msgstr "%d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:249
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:254
+#: js/misc/util.js:252
 msgid "%l∶%M %p"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:260
+#: js/misc/util.js:258
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Kemarin, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:266
+#: js/misc/util.js:264
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -709,7 +710,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:272
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
@@ -717,7 +718,7 @@ msgstr "%d %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:278
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
@@ -746,40 +747,44 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:684
+#: js/ui/appDisplay.js:854
+msgid "Unnamed Folder"
+msgstr "Folder Tanpa Nama"
+
+#: js/ui/appDisplay.js:874
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: js/ui/appDisplay.js:799
+#: js/ui/appDisplay.js:997
 msgid "Frequent"
 msgstr "Sering"
 
-#: js/ui/appDisplay.js:806
+#: js/ui/appDisplay.js:1004
 msgid "All"
 msgstr "Semua"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:1771 js/ui/panel.js:78
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:1790 js/ui/panel.js:85
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:1804
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:1831 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:1837
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:1847 js/ui/panel.js:96
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -809,7 +814,7 @@ msgstr "Headphone"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:240
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -949,12 +954,12 @@ msgid "Clear"
 msgstr "Bersihkan"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "\"%s\" tidak merespon."
 
-#: js/ui/closeDialog.js:44
+#: js/ui/closeDialog.js:43
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -962,11 +967,11 @@ msgstr ""
 "Anda dapat memilih untuk menunggu sebentar untuk melanjutkan atau memaksa "
 "aplikasi keluar."
 
-#: js/ui/closeDialog.js:60
+#: js/ui/closeDialog.js:59
 msgid "Force Quit"
 msgstr "Tutup Paksa"
 
-#: js/ui/closeDialog.js:63
+#: js/ui/closeDialog.js:62
 msgid "Wait"
 msgstr "Tunggu"
 
@@ -1113,7 +1118,7 @@ msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 msgid "%s is now known as %s"
 msgstr "%s sekarang dikenal sebagai %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:170
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:169
 msgid "Windows"
 msgstr "Jendela"
 
@@ -1123,7 +1128,7 @@ msgstr "Tampilkan Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:391
+#: js/ui/dash.js:390
 msgid "Dash"
 msgstr "Dash"
 
@@ -1132,7 +1137,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:63
+#: js/ui/dateMenu.js:68
 msgid "%B %-d %Y"
 msgstr "%e %B %Y"
 
@@ -1140,35 +1145,35 @@ msgstr "%e %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:70
+#: js/ui/dateMenu.js:75
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
-#: js/ui/dateMenu.js:132
+#: js/ui/dateMenu.js:149
 msgid "Add world clocks…"
 msgstr "Tambah jam dunia…"
 
-#: js/ui/dateMenu.js:133
+#: js/ui/dateMenu.js:150
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:229
+#: js/ui/dateMenu.js:265
 msgid "Weather"
 msgstr "Cuaca"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:348
 msgid "Select a location…"
 msgstr "Pilih lokasi…"
 
-#: js/ui/dateMenu.js:320
+#: js/ui/dateMenu.js:356
 msgid "Loading…"
 msgstr "Memuat…"
 
-#: js/ui/dateMenu.js:330
+#: js/ui/dateMenu.js:366
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:332
+#: js/ui/dateMenu.js:368
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
@@ -1417,59 +1422,59 @@ msgstr "Matikan"
 msgid "Leave Off"
 msgstr "Biarkan Mati"
 
-#: js/ui/keyboard.js:201
+#: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
 msgstr "Pengaturan Wilayah & Bahasa"
 
-#: js/ui/lookingGlass.js:621
+#: js/ui/lookingGlass.js:624
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:676
+#: js/ui/lookingGlass.js:679
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s tidak menampilkan galat apa pun."
 
-#: js/ui/lookingGlass.js:682
+#: js/ui/lookingGlass.js:685
 msgid "Hide Errors"
 msgstr "Sembunyikan Galat"
 
-#: js/ui/lookingGlass.js:686 js/ui/lookingGlass.js:745
+#: js/ui/lookingGlass.js:689 js/ui/lookingGlass.js:748
 msgid "Show Errors"
 msgstr "Tampilkan Galat"
 
-#: js/ui/lookingGlass.js:695
+#: js/ui/lookingGlass.js:698
 msgid "Enabled"
 msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:698 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:701 subprojects/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: js/ui/lookingGlass.js:700
+#: js/ui/lookingGlass.js:703
 msgid "Error"
 msgstr "Galat"
 
-#: js/ui/lookingGlass.js:702
+#: js/ui/lookingGlass.js:705
 msgid "Out of date"
 msgstr "Kadaluarsa"
 
-#: js/ui/lookingGlass.js:704
+#: js/ui/lookingGlass.js:707
 msgid "Downloading"
 msgstr "Mengunduh"
 
-#: js/ui/lookingGlass.js:727
+#: js/ui/lookingGlass.js:730
 msgid "View Source"
 msgstr "Tilik Sumber"
 
-#: js/ui/lookingGlass.js:736
+#: js/ui/lookingGlass.js:739
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: js/ui/messageTray.js:1480
+#: js/ui/messageTray.js:1462
 msgid "System Information"
 msgstr "Informasi Sistem"
 
@@ -1481,13 +1486,13 @@ msgstr "Artis tak dikenal"
 msgid "Unknown title"
 msgstr "Judul tak dikenal"
 
-#: js/ui/overview.js:74
+#: js/ui/overview.js:73
 msgid "Undo"
 msgstr "Batal"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:101
+#: js/ui/overview.js:100
 msgid "Overview"
 msgstr "Gambaran"
 
@@ -1495,7 +1500,7 @@ msgstr "Gambaran"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:227
+#: js/ui/overview.js:230
 msgid "Type to search…"
 msgstr "Ketik untuk mencari…"
 
@@ -1543,30 +1548,30 @@ msgstr "Tekan Esc untuk keluar"
 msgid "Press any key to exit"
 msgstr "Tekan tombol apa saja untuk keluar"
 
-#: js/ui/panel.js:112
+#: js/ui/panel.js:111
 msgid "Quit"
 msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:429
+#: js/ui/panel.js:428
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: js/ui/panel.js:702
+#: js/ui/panel.js:701
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:821
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Bar Atas"
 
-#: js/ui/runDialog.js:59
+#: js/ui/runDialog.js:58
 msgid "Enter a Command"
 msgstr "Ketikkan Perintah"
 
-#: js/ui/runDialog.js:99 js/ui/windowMenu.js:167
+#: js/ui/runDialog.js:98 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "Tutup"
 
@@ -1580,29 +1585,29 @@ msgstr "Memulai ulang…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:75
+#: js/ui/screenShield.js:73
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: js/ui/screenShield.js:131
+#: js/ui/screenShield.js:129
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d pesan baru"
 msgstr[1] "%d pesan baru"
 
-#: js/ui/screenShield.js:133
+#: js/ui/screenShield.js:131
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 msgstr[1] "%d pemberitahuan baru"
 
-#: js/ui/screenShield.js:446 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:269
 msgid "Lock"
 msgstr "Kunci"
 
-#: js/ui/screenShield.js:710
+#: js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
@@ -1621,15 +1626,15 @@ msgstr "Tak bisa mengunci"
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: js/ui/search.js:639
+#: js/ui/search.js:647
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: js/ui/search.js:641
+#: js/ui/search.js:649
 msgid "No results."
 msgstr "Tak ada yang cocok."
 
-#: js/ui/search.js:765
+#: js/ui/search.js:773
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2171,11 +2176,11 @@ msgstr "Autorisasi Thunderbolt galat"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
 
-#: js/ui/status/volume.js:127
+#: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Volume diubah"
 
-#: js/ui/status/volume.js:192
+#: js/ui/status/volume.js:193
 msgid "Volume"
 msgstr "Volume"
 
@@ -2215,11 +2220,11 @@ msgstr "Masuk sebagai pengguna lain"
 msgid "Unlock Window"
 msgstr "Buka Kunci Jendela"
 
-#: js/ui/viewSelector.js:174
+#: js/ui/viewSelector.js:173
 msgid "Applications"
 msgstr "Aplikasi"
 
-#: js/ui/viewSelector.js:178
+#: js/ui/viewSelector.js:177
 msgid "Search"
 msgstr "Cari"
 
@@ -2228,22 +2233,22 @@ msgstr "Cari"
 msgid "“%s” is ready"
 msgstr "“%s” siap"
 
-#: js/ui/windowManager.js:55
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Apakah Anda ingin mempertahankan pengaturan tampilan ini?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:67
+#: js/ui/windowManager.js:66
 msgid "Revert Settings"
 msgstr "Balikkan Tatanan"
 
-#: js/ui/windowManager.js:70
+#: js/ui/windowManager.js:69
 msgid "Keep Changes"
 msgstr "Simpan Perubahan"
 
-#: js/ui/windowManager.js:88
+#: js/ui/windowManager.js:87
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2252,7 +2257,7 @@ msgstr[1] "Perubahan tatanan akan dikembalikan dalam %d detik"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:678
+#: js/ui/windowManager.js:683
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2325,19 +2330,19 @@ msgstr "Pindahkan ke Monitor Kanan"
 msgid "Evolution Calendar"
 msgstr "Evolution Kalender"
 
-#: src/main.c:464
+#: src/main.c:460
 msgid "Print version"
 msgstr "Versi Cetak"
 
-#: src/main.c:470
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "Mode yang dipakai oleh layar log masuk GDM"
 
-#: src/main.c:476
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 
-#: src/main.c:482
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
@@ -2359,7 +2364,7 @@ msgstr "Sandi tidak cocok."
 msgid "Password cannot be blank"
 msgstr "Sandi tidak boleh kosong"
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog autentikasi ditolak oleh pengguna"
 
@@ -2384,6 +2389,13 @@ msgstr[1] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Pengikatan tombol yang mengistirahatkan dan melanjutkan semua tween yang "
+#~ "sedang berjalan, untuk tujuan pengawakutuan"
 
 #~ msgid "Which keyboard to use"
 #~ msgstr "Papan tik mana yang akan dipakai"
