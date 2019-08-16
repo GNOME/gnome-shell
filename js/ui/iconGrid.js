@@ -226,7 +226,7 @@ var IconGrid = GObject.registerClass({
         // swarming into the void ...
         this.connect('notify::mapped', () => {
             if (!this.mapped)
-                this._cancelAnimation();
+                this._resetAnimationActors();
         });
 
         this.connect('actor-added', this._childAdded.bind(this));
@@ -417,18 +417,17 @@ var IconGrid = GObject.registerClass({
         return this._getVisibleChildren();
     }
 
-    _cancelAnimation() {
-        this._clonesAnimating.forEach(clone => clone.destroy());
-        this._clonesAnimating = [];
-    }
-
-    _animationDone() {
+    _resetAnimationActors() {
         this._clonesAnimating.forEach(clone => {
             clone.source.reactive = true;
             clone.source.opacity = 255;
             clone.destroy();
         });
         this._clonesAnimating = [];
+    }
+
+    _animationDone() {
+        this._resetAnimationActors();
         this.emit('animation-done');
     }
 
@@ -437,7 +436,7 @@ var IconGrid = GObject.registerClass({
             throw new GObject.NotImplementedError("Pulse animation only implements " +
                                                   "'in' animation direction");
 
-        this._cancelAnimation();
+        this._resetAnimationActors();
 
         let actors = this._getChildrenToAnimate();
         if (actors.length == 0) {
@@ -485,7 +484,7 @@ var IconGrid = GObject.registerClass({
     }
 
     animateSpring(animationDirection, sourceActor) {
-        this._cancelAnimation();
+        this._resetAnimationActors();
 
         let actors = this._getChildrenToAnimate();
         if (actors.length == 0) {
@@ -546,12 +545,12 @@ var IconGrid = GObject.registerClass({
                     scale_y: 1,
                     duration: ANIMATION_TIME_IN,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                    onComplete: () => {
-                        if (isLastItem)
-                            this._animationDone();
-                    }
+                    delay
                 };
+
+                if (isLastItem)
+                    movementParams.onComplete = this._animationDone.bind(this);
+
                 fadeParams = {
                     opacity: 255,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
@@ -572,13 +571,12 @@ var IconGrid = GObject.registerClass({
                     scale_y: scaleY,
                     duration: ANIMATION_TIME_OUT,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                    onComplete: () => {
-                        if (isLastItem) {
-                            this._animationDone();
-                        }
-                    }
+                    delay
                 };
+
+                if (isLastItem)
+                    movementParams.onComplete = this._animationDone.bind(this);
+
                 fadeParams = {
                     opacity: 0,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
