@@ -154,6 +154,7 @@ def enable_extension(uuid):
 
     extensions.append(uuid)
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
+    Gio.Settings.sync()
     print("%r is now enabled." % (uuid,), file=sys.stderr)
 
 def disable_extension(uuid):
@@ -170,6 +171,7 @@ def disable_extension(uuid):
         extensions.remove(uuid)
 
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
+    Gio.Settings.sync()
     print("%r is now disabled." % (uuid,), file=sys.stderr)
 
 def reload_extension(uuid):
