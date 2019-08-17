@@ -100,6 +100,7 @@ var WindowClone = GObject.registerClass({
         'drag-cancelled': {},
         'drag-end': {},
         'hide-chrome': {},
+        'hide-chrome-after-timeout': {},
         'selected': { param_types: [GObject.TYPE_UINT] },
         'show-chrome': {},
         'size-changed': {}
@@ -169,7 +170,7 @@ var WindowClone = GObject.registerClass({
         this.connect('enter-event', () => this.emit('show-chrome'));
         this.connect('key-focus-in', () => this.emit('show-chrome'));
 
-        this.connect('leave-event', () => this.emit('hide-chrome'));
+        this.connect('leave-event', () => this.emit('hide-chrome-after-timeout'));
         this.connect('key-focus-out', () => this.emit('hide-chrome'));
 
         this._draggable = DND.makeDraggable(this,
@@ -481,7 +482,8 @@ var WindowOverlay = class {
 
         windowClone.connect('destroy', this._onDestroy.bind(this));
         windowClone.connect('show-chrome', this._onShowChrome.bind(this));
-        windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
+        windowClone.connect('hide-chrome-after-timeout', this._onHideChromeAfterTimeout.bind(this));
+        windowClone.connect('hide-chrome', () => this.hideOverlay());
 
         this.title.hide();
         this.closeButton.hide();
@@ -678,7 +680,7 @@ var WindowOverlay = class {
         this.emit('chrome-visible');
     }
 
-    _onHideChrome() {
+    _onHideChromeAfterTimeout() {
         if (this._idleHideOverlayId != 0)
             Mainloop.source_remove(this._idleHideOverlayId);
 
