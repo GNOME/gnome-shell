@@ -125,7 +125,7 @@ var WindowClone = GObject.registerClass({
         // to compensate all over the place we insert a ClutterActor into
         // the hierarchy that is sized to only the visible portion.
         super._init({
-            reactive: true,
+            reactive: false,
             can_focus: true,
             accessible_role: Atk.Role.PUSH_BUTTON,
             layout_manager: new WindowCloneLayout()
@@ -138,8 +138,6 @@ var WindowClone = GObject.registerClass({
         this._delegate = this;
 
         this.slotId = 0;
-        this._slot = [0, 0, 0, 0];
-        this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
         this._windowClone._sizeChangedId = this.metaWindow.connect('size-changed',
@@ -189,17 +187,6 @@ var WindowClone = GObject.registerClass({
 
     vfunc_has_overlaps() {
         return this.hasAttachedDialogs();
-    }
-
-    set slot(slot) {
-        this._slot = slot;
-    }
-
-    get slot() {
-        if (this.inDrag)
-            return this._dragSlot;
-        else
-            return this._slot;
     }
 
     deleteAll() {
@@ -405,7 +392,6 @@ var WindowClone = GObject.registerClass({
     }
 
     _onDragBegin(_draggable, _time) {
-        this._dragSlot = this._slot;
         this.inDrag = true;
         this.emit('drag-begin');
     }
@@ -440,162 +426,166 @@ var WindowClone = GObject.registerClass({
     }
 });
 
+var MaxWidthLabel = GObject.registerClass(
+class MaxWidthLabel extends St.Label {
+    _init(params) {
+        super._init(params);
 
-/**
- * @windowClone: Corresponding window clone
- * @parentActor: The actor which will be the parent of all overlay items
- *               such as the close button and window caption
- */
-var WindowOverlay = class {
-    constructor(windowClone, parentActor) {
+        this.maxWidth = -1;
+    }
+
+    vfunc_allocate(box, flags) {
+        let availWidth = box.x2 - box.x1;
+        let adjustedBox = box;
+
+        if (this.maxWidth > 0 && availWidth > this.maxWidth) {
+            let excessWidth = availWidth - this.maxWidth;
+            adjustedBox.x1 += Math.floor(excessWidth / 2);
+            adjustedBox.x2 -= Math.floor(excessWidth / 2);
+        }
+
+        super.vfunc_allocate(adjustedBox, flags);
+    }
+});
+
+const WindowOverlay = GObject.registerClass(
+class WindowOverlay extends Clutter.Actor {
+    _init(windowClone) {
+        super._init({ visible: false });
+
+        let relativeContainer = new Clutter.Actor();
+        let constraint = new Clutter.BindConstraint({
+            source: this,
+            coordinate: Clutter.BindCoordinate.SIZE
+        });
+        relativeContainer.add_constraint(constraint);
+
         let metaWindow = windowClone.metaWindow;
-
         this._windowClone = windowClone;
-        this._parentActor = parentActor;
-        this._hidden = false;
 
         this._idleHideOverlayId = 0;
 
-        this.borderSize = 0;
-        this.border = new St.Bin({ style_class: 'window-clone-border' });
-
-        this.title = new St.Label({ style_class: 'window-caption',
-                                    text: this._getCaption(),
-                                    reactive: true });
-        this.title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        windowClone.label_actor = this.title;
-
-        this._maxTitleWidth = -1;
-
-        this._updateCaptionId = metaWindow.connect('notify::title', () => {
-            this.title.text = this._getCaption();
-            this.relayout(false);
+        this._borderSize = 0;
+        this._border = new St.Widget({ style_class: 'window-clone-border' });
+        this._borderConstraint = new Clutter.BindConstraint({
+            source: relativeContainer,
+            coordinate: Clutter.BindCoordinate.SIZE
         });
+        this._border.add_constraint(this._borderConstraint);
+        constraint = new Clutter.AlignConstraint({
+            source: relativeContainer,
+            align_axis: Clutter.AlignAxis.BOTH,
+            factor: 0.5
+        });
+        this._border.add_constraint(constraint);
+        this._border.connect('style-changed',
+                            this._onBorderStyleChanged.bind(this));
 
-        this.closeButton = new St.Button({ style_class: 'window-close' });
-        this.closeButton.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
-        this.closeButton._overlap = 0;
+        this._title = new MaxWidthLabel({
+            style_class: 'window-caption',
+            text: this._getCaption(),
+            reactive: true
+        });
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        windowClone.label_actor = this._title;
+        this._updateCaptionId = metaWindow.connect('notify::title', () => {
+            this._title.text = this._getCaption();
+        });
+        constraint = new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            factor: 0.5
+        });
+        this._title.add_constraint(constraint);
+        constraint = new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            factor: 1
+        });
+        this._title.add_constraint(constraint);
 
-        this.closeButton.connect('clicked', () => this._windowClone.deleteAll());
+        this._closeButton = new St.Button({ style_class: 'window-close' });
+        this._closeButton.set_child(new St.Icon({ icon_name: 'window-close-symbolic' }));
+        this._closeButton.connect('clicked', () => this._windowClone.deleteAll());
+        constraint = new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            factor: 1
+        });
+        this._closeButton.add_constraint(constraint);
+        constraint = new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            factor: 0
+        });
+        this._closeButton.add_constraint(constraint);
 
-        windowClone.connect('destroy', this._onDestroy.bind(this));
-        windowClone.connect('show-chrome', this._onShowChrome.bind(this));
-        windowClone.connect('hide-chrome-after-timeout', this._onHideChromeAfterTimeout.bind(this));
-        windowClone.connect('hide-chrome', () => this.hideOverlay());
-
-        this.title.hide();
-        this.closeButton.hide();
+        windowClone.connect('destroy', this._onCloneDestroy.bind(this));
+        windowClone.connect('show-chrome', () => this.fadeIn());
+        windowClone.connect('hide-chrome', () => this.fadeOut());
+        windowClone.connect('hide-chrome-after-timeout',
+                            this._onHideChromeAfterTimeout.bind(this));
 
         // Don't block drop targets
-        Shell.util_set_hidden_from_pick(this.border, true);
+        Shell.util_set_hidden_from_pick(this._border, true);
 
-        parentActor.add_actor(this.border);
-        parentActor.add_actor(this.title);
-        parentActor.add_actor(this.closeButton);
-        this.title.connect('style-changed',
-                           this._onStyleChanged.bind(this));
-        this.closeButton.connect('style-changed',
-                                 this._onStyleChanged.bind(this));
-        this.border.connect('style-changed',
-                            this._onStyleChanged.bind(this));
-
-        // Force a style change if we are already on a stage - otherwise
-        // the signal will be emitted normally when we are added
-        if (parentActor.get_stage())
-            this._onStyleChanged();
+        relativeContainer.add_child(this._border);
+        relativeContainer.add_child(this._title);
+        relativeContainer.add_child(this._closeButton);
+        this.add_child(relativeContainer);
     }
 
-    hide() {
-        this._hidden = true;
+    fadeIn() {
+        this.remove_transition('opacity');
+        if (this.visible)
+            return;
 
-        this.hideOverlay();
+        this.opacity = 0;
+        this.show();
+        this.ease({
+            opacity: 255,
+            duration: WINDOW_OVERLAY_FADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => { this.opacity = 255 }
+        });
     }
 
-    show() {
-        this._hidden = false;
+    fadeOut() {
+        this.remove_transition('opacity');
+        if (!this.visible)
+            return;
 
-        if (this._windowClone['has-pointer'])
-            this._animateVisible();
+        this.opacity = 255;
+        this.ease({
+            opacity: 0,
+            duration: WINDOW_OVERLAY_FADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => this.hide()
+        });
     }
 
+    // Returns: [height of top chrome, height of bottom chrome]
     chromeHeights() {
-        return [Math.max(this.borderSize, this.closeButton.height - this.closeButton._overlap),
-                (this.title.height - this.borderSize) / 2];
+        this._border.ensure_style();
+        return [this._borderSize + this._closeButton.height / 2,
+                this._borderSize + this._title.height / 2];
     }
 
+    // Returns: [width of left chrome, width of right chrome]
     chromeWidths() {
-        return [this.borderSize,
-                Math.max(this.borderSize, this.closeButton.width - this.closeButton._overlap)];
+        this._border.ensure_style();
+        return [this._borderSize,
+                this._borderSize + this._closeButton.width / 2];
     }
 
     setMaxChromeWidth(max) {
-        if (this._maxTitleWidth == max)
+        if (this._title.maxWidth == max)
             return;
 
-        this._maxTitleWidth = max;
-    }
-
-    relayout(animate) {
-        let button = this.closeButton;
-        let title = this.title;
-        let border = this.border;
-
-        button.remove_all_transitions();
-        border.remove_all_transitions();
-        title.remove_all_transitions();
-
-        let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
-
-        let layout = Meta.prefs_get_button_layout();
-        let side = layout.left_buttons.includes(Meta.ButtonFunction.CLOSE) ? St.Side.LEFT : St.Side.RIGHT;
-
-        let buttonX;
-        let buttonY = cloneY - (button.height - button._overlap);
-        if (side == St.Side.LEFT)
-            buttonX = cloneX - (button.width - button._overlap);
-        else
-            buttonX = cloneX + (cloneWidth - button._overlap);
-
-        if (animate)
-            this._animateOverlayActor(button, Math.floor(buttonX), Math.floor(buttonY), button.width);
-        else
-            button.set_position(Math.floor(buttonX), Math.floor(buttonY));
-
-        // Clutter.Actor.get_preferred_width() will return the fixed width if
-        // one is set, so we need to reset the width by calling set_width(-1),
-        // to forward the call down to StLabel.
-        // We also need to save and restore the current width, otherwise the
-        // animation starts from the wrong point.
-        let prevTitleWidth = title.width;
-        title.set_width(-1);
-
-        let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
-        let titleWidth = Math.max(titleMinWidth,
-                                  Math.min(titleNatWidth, this._maxTitleWidth));
-        title.width = prevTitleWidth;
-
-        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
-        let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
-
-        if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
-        } else {
-            title.width = titleWidth;
-            title.set_position(Math.floor(titleX), Math.floor(titleY));
-        }
-
-        let borderX = cloneX - this.borderSize;
-        let borderY = cloneY - this.borderSize;
-        let borderWidth = cloneWidth + 2 * this.borderSize;
-        let borderHeight = cloneHeight + 2 * this.borderSize;
-
-        if (animate) {
-            this._animateOverlayActor(this.border, borderX, borderY,
-                                      borderWidth, borderHeight);
-        } else {
-            this.border.set_position(borderX, borderY);
-            this.border.set_size(borderWidth, borderHeight);
-        }
+        this._title.maxWidth = max;
     }
 
     _getCaption() {
@@ -608,117 +598,46 @@ var WindowOverlay = class {
         return app.get_name();
     }
 
-    _animateOverlayActor(actor, x, y, width, height) {
-        let params = {
-            x, y, width,
-            duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
-        };
-
-        if (height !== undefined)
-            params.height = height;
-
-        actor.ease(params);
-    }
-
     _windowCanClose() {
         return this._windowClone.metaWindow.can_close() &&
                !this._windowClone.hasAttachedDialogs();
     }
 
-    _onDestroy() {
-        if (this._idleHideOverlayId > 0) {
+    _onCloneDestroy() {
+        if (this._idleHideOverlayId != 0) {
             Mainloop.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
         }
+
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
-        this.title.destroy();
-        this.closeButton.destroy();
-        this.border.destroy();
-    }
-
-    _animateVisible() {
-        this._parentActor.raise_top();
-
-        let toAnimate = [this.border, this.title];
-        if (this._windowCanClose())
-            toAnimate.push(this.closeButton);
-
-        toAnimate.forEach(a => {
-            a.show();
-            a.opacity = 0;
-            a.ease({
-                opacity: 255,
-                duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
-            });
-        });
-    }
-
-    _animateInvisible() {
-        [this.closeButton, this.border, this.title].forEach(a => {
-            a.opacity = 255;
-            a.ease({
-                opacity: 0,
-                duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD
-            });
-        });
-    }
-
-    _onShowChrome() {
-        // We might get enter events on the clone while the overlay is
-        // hidden, e.g. during animations, we ignore these events,
-        // as the close button will be shown as needed when the overlays
-        // are shown again
-        if (this._hidden)
-            return;
-
-        this._animateVisible();
-        this.emit('chrome-visible');
     }
 
     _onHideChromeAfterTimeout() {
         if (this._idleHideOverlayId != 0)
             Mainloop.source_remove(this._idleHideOverlayId);
 
-        this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
-        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
-    }
+        this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
+            if (this._closeButton['has-pointer'] ||
+                this._title['has-pointer'])
+                return GLib.SOURCE_CONTINUE;
 
-    _idleHideOverlay() {
-        if (this.closeButton['has-pointer'] ||
-            this.title['has-pointer'])
-            return GLib.SOURCE_CONTINUE;
+            if (!this._windowClone['has-pointer'])
+                this.fadeOut();
 
-        if (!this._windowClone['has-pointer'])
-            this._animateInvisible();
-
-        this._idleHideOverlayId = 0;
-        return GLib.SOURCE_REMOVE;
-    }
-
-    hideOverlay() {
-        if (this._idleHideOverlayId > 0) {
-            Mainloop.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
-        }
-        this.closeButton.hide();
-        this.border.hide();
-        this.title.hide();
+            return GLib.SOURCE_REMOVE;
+        });
+
+        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');
     }
 
-    _onStyleChanged() {
-        let closeNode = this.closeButton.get_theme_node();
-        this.closeButton._overlap = closeNode.get_length('-shell-close-overlap');
+    _onBorderStyleChanged() {
+        let borderNode = this._border.get_theme_node();
+        this._borderSize = borderNode.get_border_width(St.Side.TOP);
 
-        let borderNode = this.border.get_theme_node();
-        this.borderSize = borderNode.get_border_width(St.Side.TOP);
-
-        this._parentActor.queue_relayout();
+        this._borderConstraint.offset = this._borderSize * 2;
     }
-};
-Signals.addSignalMethods(WindowOverlay.prototype);
+});
 
 var WindowPositionFlags = {
     NONE: 0,
@@ -1325,16 +1244,12 @@ var Workspace = class {
 
             let cloneWidth = clone.width * scale;
             let cloneHeight = clone.height * scale;
-            clone.slot = [x, y, cloneWidth, cloneHeight];
 
             let cloneCenter = x + cloneWidth / 2;
             let maxChromeWidth = 2 * Math.min(
                 cloneCenter - area.x,
                 area.x + area.width - cloneCenter);
             clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
-
-            if (clone.overlay && (initialPositioning || !clone.positioned))
-                clone.overlay.hide();
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1368,13 +1283,16 @@ var Workspace = class {
 
                 this._animateClone(clone, clone.overlay, x, y, scale);
             } else {
-                // cancel any active tweens (otherwise they might override our changes)
                 clone.remove_all_transitions();
+                clone.overlay.remove_all_transitions();
+
                 clone.set_position(x, y);
                 clone.set_scale(scale, scale);
                 clone.set_opacity(255);
-                clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, clone.overlay);
+
+                clone.overlay.set_position(x, y);
+                clone.overlay.set_size(cloneWidth, cloneHeight);
+                clone.reactive = true;
             }
         }
     }
@@ -1399,25 +1317,22 @@ var Workspace = class {
     }
 
     _animateClone(clone, overlay, x, y, scale) {
+        clone.reactive = false;
         clone.ease({
             x, y,
             scale_x: scale,
             scale_y: scale,
             duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._showWindowOverlay(clone, overlay);
-            }
+            onStopped: () => { clone.reactive = true }
         });
-        clone.overlay.relayout(true);
-    }
-
-    _showWindowOverlay(clone, overlay) {
-        if (clone.inDrag)
-            return;
-
-        if (overlay && overlay._hidden)
-            overlay.show();
+        clone.overlay.ease({
+            x, y,
+            width: clone.width * scale,
+            height: clone.height * scale,
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
 
     _delayedWindowRepositioning() {
@@ -1543,12 +1458,12 @@ var Workspace = class {
             let scale = win._overviewHint.scale;
             delete win._overviewHint;
 
-            clone.slot = [x, y, clone.width * scale, clone.height * scale];
             clone.positioned = true;
 
             clone.set_position(x, y);
             clone.set_scale(scale, scale);
-            clone.overlay.relayout(false);
+            clone.overlay.set_position(x, y);
+            clone.overlay.set_size(clone.width * scale, clone.height * scale);
         }
 
         this._currentLayout = null;
@@ -1859,15 +1774,16 @@ var Workspace = class {
         });
 
         this.actor.add_actor(clone);
+        this._windowOverlaysGroup.add_actor(overlay);
 
-        overlay.connect('chrome-visible', () => {
+        overlay.connect('show', () => {
             let focus = global.stage.key_focus;
             if (focus == null || this.actor.contains(focus))
                 clone.grab_key_focus();
 
             this._windowOverlays.forEach(o => {
                 if (o != overlay)
-                    o.hideOverlay();
+                    o.fadeOut();
             });
         });
 
@@ -1889,7 +1805,9 @@ var Workspace = class {
         if (index == -1)
             return null;
 
-        this._windowOverlays.splice(index, 1);
+        let overlay = this._windowOverlays.splice(index, 1).pop();
+        overlay.destroy();
+
         return this._windows.splice(index, 1).pop();
     }
 

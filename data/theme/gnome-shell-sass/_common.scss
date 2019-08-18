@@ -1252,7 +1252,6 @@ StScrollBar {
   border: 2px solid $selected_bg_color;
   height: 24px;
   width: 24px;
-  -shell-close-overlap: 11px;
   box-shadow: -1px 1px 5px 0px transparentize(black, 0.5);
 
   &:hover {
