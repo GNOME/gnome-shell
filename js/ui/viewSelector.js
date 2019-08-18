@@ -577,7 +577,8 @@ var ViewSelector = class {
     _onCapturedEvent(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
             let source = event.get_source();
-            if (source != this._text &&
+            if (this._text.has_key_focus() &&
+                source != this._text &&
                 this._text.text == '' &&
                 !this._text.has_preedit () &&
                 !Main.layoutManager.keyboardBox.contains(source)) {
