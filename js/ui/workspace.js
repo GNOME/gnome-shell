@@ -1764,7 +1764,6 @@ var Workspace = class {
         });
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
-            overlay.show();
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
