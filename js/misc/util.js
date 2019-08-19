@@ -313,7 +313,8 @@ function lowerBound(array, val, cmp) {
     if (array.length == 0)
         return 0;
 
-    min = 0; max = array.length;
+    min = 0;
+    max = array.length;
     while (min < (max - 1)) {
         mid = Math.floor((min + max) / 2);
         v = cmp(array[mid], val);
