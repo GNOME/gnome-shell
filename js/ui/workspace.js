@@ -406,8 +406,6 @@ var WindowClone = GObject.registerClass({
 
     _onDragBegin(_draggable, _time) {
         this._dragSlot = this._slot;
-        [this.dragOrigX, this.dragOrigY] = this.get_position();
-        this.dragOrigScale = this.scale_x;
         this.inDrag = true;
         this.emit('drag-begin');
     }
