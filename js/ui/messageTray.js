@@ -735,8 +735,9 @@ var Source = class Source {
     }
 
     get narrowestPrivacyScope() {
-        return this.notifications.every(n => n.privacyScope == PrivacyScope.SYSTEM) ? PrivacyScope.SYSTEM
-                                                                                    : PrivacyScope.USER;
+        return this.notifications.every(n => n.privacyScope == PrivacyScope.SYSTEM)
+            ? PrivacyScope.SYSTEM
+            : PrivacyScope.USER;
     }
 
     setTitle(newTitle) {

@@ -976,8 +976,8 @@ class InputSourceIndicator extends PanelMenu.Button {
                 item.prop = prop;
                 radioGroup.push(item);
                 item.radioGroup = radioGroup;
-                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED ?
-                                 PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
+                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED
+                    ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
                 item.connect('activate', () => {
                     if (item.prop.get_state() == IBus.PropState.CHECKED)
                         return;

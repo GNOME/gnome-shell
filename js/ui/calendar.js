@@ -581,8 +581,9 @@ var Calendar = class Calendar {
             if (row == 2)
                 styleClass = `calendar-day-top ${styleClass}`;
 
-            let leftMost = rtl ? iter.getDay() == (this._weekStart + 6) % 7
-                               : iter.getDay() == this._weekStart;
+            let leftMost = rtl
+                ? iter.getDay() == (this._weekStart + 6) % 7
+                : iter.getDay() == this._weekStart;
             if (leftMost)
                 styleClass = `calendar-day-left ${styleClass}`;
 
@@ -680,8 +681,9 @@ var EventMessage = class EventMessage extends MessageList.Message {
              */
             title = C_("event list time", "All Day");
         } else {
-            let date = this._event.date >= periodBegin ? this._event.date
-                                                       : this._event.end;
+            let date = this._event.date >= periodBegin
+                ? this._event.date
+                : this._event.end;
             title = Util.formatTime(date, { timeOnly: true });
         }
 

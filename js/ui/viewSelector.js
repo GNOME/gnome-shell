@@ -389,8 +389,8 @@ var ViewSelector = class {
     }
 
     _onShowAppsButtonToggled() {
-        this._showPage(this._showAppsButton.checked ?
-                       this._appsPage : this._workspacesPage);
+        this._showPage(this._showAppsButton.checked
+            ? this._appsPage : this._workspacesPage);
     }
 
     _onStageKeyPress(actor, event) {
@@ -424,8 +424,9 @@ var ViewSelector = class {
     }
 
     _searchCancelled() {
-        this._showPage(this._showAppsButton.checked ? this._appsPage
-                                                    : this._workspacesPage);
+        this._showPage(this._showAppsButton.checked
+            ? this._appsPage
+            : this._workspacesPage);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits

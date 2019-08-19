@@ -244,8 +244,9 @@ const SystemActions = GObject.registerClass({
 
     _updateOrientationLockIcon() {
         let locked = this._orientationSettings.get_boolean('orientation-lock');
-        let iconName = locked ? 'rotation-locked-symbolic'
-                              : 'rotation-allowed-symbolic';
+        let iconName = locked
+            ? 'rotation-locked-symbolic'
+            : 'rotation-allowed-symbolic';
         this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName = iconName;
 
         this.notify('orientation-lock-icon');

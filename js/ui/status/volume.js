@@ -228,9 +228,9 @@ var OutputStreamSlider = class extends StreamSlider {
     }
 
     _updateSliderIcon() {
-        this._icon.icon_name = (this._hasHeadphones ?
-                                'audio-headphones-symbolic' :
-                                'audio-speakers-symbolic');
+        this._icon.icon_name = (this._hasHeadphones
+            ? 'audio-headphones-symbolic'
+            : 'audio-speakers-symbolic');
     }
 
     _portChanged() {

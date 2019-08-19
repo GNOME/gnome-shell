@@ -673,8 +673,8 @@ var ChatNotification = class extends MessageTray.Notification {
                         { datetime: GLib.DateTime.new_from_unix_local (message.timestamp),
                           bannerMarkup: true });
 
-        let group = (message.direction == NotificationDirection.RECEIVED ?
-                     'received' : 'sent');
+        let group = (message.direction == NotificationDirection.RECEIVED
+            ? 'received' : 'sent');
 
         this._append({ body: messageBody,
                        group: group,
@@ -696,8 +696,8 @@ var ChatNotification = class extends MessageTray.Notification {
         // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
         // we'll keep SCROLLBACK_IDLE_LENGTH messages.
 
-        let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
-            SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
+        let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME)
+            ? SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
 
         let filteredHistory = this.messages.filter(item => item.realMessage);
         if (filteredHistory.length > maxLength) {

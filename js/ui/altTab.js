@@ -437,8 +437,8 @@ class CyclerHighlight {
         if (this._clone.source)
             this._clone.source.sync_visibility();
 
-        let windowActor = this._window ? this._window.get_compositor_private()
-                                       : null;
+        let windowActor = this._window
+            ? this._window.get_compositor_private() : null;
 
         if (windowActor)
             windowActor.hide();
@@ -1014,9 +1014,9 @@ class WindowIcon extends St.BoxLayout {
     }
 
     _createAppIcon(app, size) {
-        let appIcon = app ? app.create_icon_texture(size)
-                          : new St.Icon({ icon_name: 'icon-missing',
-                                          icon_size: size });
+        let appIcon = app
+            ? app.create_icon_texture(size)
+            : new St.Icon({ icon_name: 'icon-missing', icon_size: size });
         appIcon.x_expand = appIcon.y_expand = true;
         appIcon.x_align = appIcon.y_align = Clutter.ActorAlign.END;
 
