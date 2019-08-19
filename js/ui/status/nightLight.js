@@ -58,10 +58,12 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         let visible = this._proxy.NightLightActive;
         let disabled = this._proxy.DisabledUntilTomorrow;
 
-        this._item.label.text = disabled ? _("Night Light Disabled")
-                                         : _("Night Light On");
-        this._disableItem.label.text = disabled ? _("Resume")
-                                                : _("Disable Until Tomorrow");
+        this._item.label.text = disabled
+            ? _("Night Light Disabled")
+            : _("Night Light On");
+        this._disableItem.label.text = disabled
+            ? _("Resume")
+            : _("Disable Until Tomorrow");
         this._item.visible = this._indicator.visible = visible;
     }
 };

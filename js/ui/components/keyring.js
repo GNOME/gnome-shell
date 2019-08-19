@@ -232,8 +232,9 @@ var KeyringPrompter = class {
     constructor() {
         this._prompter = new Gcr.SystemPrompter();
         this._prompter.connect('new-prompt', () => {
-            let dialog = this._enabled ? new KeyringDialog()
-                                       : new KeyringDummyDialog();
+            let dialog = this._enabled
+                ? new KeyringDialog()
+                : new KeyringDummyDialog();
             this._currentPrompt = dialog.prompt;
             return this._currentPrompt;
         });

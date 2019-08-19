@@ -1107,8 +1107,9 @@ var AppDisplay = class AppDisplay {
             else
                 this._views[i].control.remove_style_pseudo_class('checked');
 
-            let animationDirection = i == activeIndex ? IconGrid.AnimationDirection.IN :
-                                                        IconGrid.AnimationDirection.OUT;
+            let animationDirection = i == activeIndex
+                ? IconGrid.AnimationDirection.IN
+                : IconGrid.AnimationDirection.OUT;
             this._views[i].view.animateSwitch(animationDirection);
         }
     }
@@ -2398,8 +2399,8 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             );
 
         windows.forEach(window => {
-            let title = window.title ? window.title
-                                     : this._source.app.get_name();
+            let title = window.title
+                ? window.title : this._source.app.get_name();
             let item = this._appendMenuItem(title);
             item.connect('activate', () => {
                 this.emit('activate-window', window);
