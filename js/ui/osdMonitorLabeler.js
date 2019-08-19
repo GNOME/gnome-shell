@@ -66,7 +66,7 @@ var OsdMonitorLabeler = class {
 
     _trackClient(client) {
         if (this._client)
-            return (this._client == client);
+            return this._client == client;
 
         this._client = client;
         this._clientWatchId = Gio.bus_watch_name(Gio.BusType.SESSION, client, 0, null,

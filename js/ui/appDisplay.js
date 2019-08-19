@@ -456,7 +456,7 @@ var AllView = GObject.registerClass({
         let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
-                (appInfo.get_id()); // catch invalid file encodings
+                appInfo.get_id(); // catch invalid file encodings
             } catch (e) {
                 return false;
             }

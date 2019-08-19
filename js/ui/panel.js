@@ -118,7 +118,7 @@ class AppMenu extends PopupMenu.PopupMenu {
 
     _updateDetailsVisibility() {
         let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
-        this._detailsItem.visible = (sw != null);
+        this._detailsItem.visible = sw != null;
     }
 
     isEmpty() {
@@ -369,21 +369,21 @@ var AppMenuButton = GObject.registerClass({
             }
         }
 
-        let visible = (this._targetApp != null && !Main.overview.visibleTarget);
+        let visible = this._targetApp != null && !Main.overview.visibleTarget;
         if (visible)
             this.fadeIn();
         else
             this.fadeOut();
 
-        let isBusy = (this._targetApp != null &&
+        let isBusy = this._targetApp != null &&
                       (this._targetApp.get_state() == Shell.AppState.STARTING ||
-                       this._targetApp.get_busy()));
+                       this._targetApp.get_busy());
         if (isBusy)
             this.startAnimation();
         else
             this.stopAnimation();
 
-        this.reactive = (visible && !isBusy);
+        this.reactive = visible && !isBusy;
 
         this._syncIcon();
         this.menu.setApp(this._targetApp);
@@ -530,8 +530,8 @@ class PanelCorner extends St.DrawingArea {
         if (index < 0)
             return null;
 
-        if (!(children[index].has_style_class_name('panel-menu')) &&
-            !(children[index].has_style_class_name('panel-button')))
+        if (!children[index].has_style_class_name('panel-menu') &&
+            !children[index].has_style_class_name('panel-button'))
             return this._findRightmostButton(children[index]);
 
         return children[index];
@@ -555,8 +555,8 @@ class PanelCorner extends St.DrawingArea {
         if (index == children.length)
             return null;
 
-        if (!(children[index].has_style_class_name('panel-menu')) &&
-            !(children[index].has_style_class_name('panel-button')))
+        if (!children[index].has_style_class_name('panel-menu') &&
+            !children[index].has_style_class_name('panel-button'))
             return this._findLeftmostButton(children[index]);
 
         return children[index];

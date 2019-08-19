@@ -87,10 +87,10 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
-        this._passwordLabel = new St.Label(({
+        this._passwordLabel = new St.Label({
             style_class: 'prompt-dialog-password-label',
             y_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
         this._passwordBox.add_child(this._passwordLabel);
         this._passwordEntry = new St.Entry({
             style_class: 'prompt-dialog-password-entry',

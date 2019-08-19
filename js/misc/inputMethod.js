@@ -129,7 +129,7 @@ class InputMethod extends Clutter.InputMethod {
 
     _onForwardKeyEvent(_context, keyval, keycode, state) {
         let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
-        state &= ~(IBus.ModifierType.RELEASE_MASK);
+        state &= ~IBus.ModifierType.RELEASE_MASK;
 
         let curEvent = Clutter.get_current_event();
         let time;

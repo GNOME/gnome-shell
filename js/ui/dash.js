@@ -851,7 +851,7 @@ var Dash = GObject.registerClass({
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
 
-        let srcIsFavorite = (favPos != -1);
+        let srcIsFavorite = favPos != -1;
 
         if (srcIsFavorite)
             return DND.DragMotionResult.MOVE_DROP;
@@ -874,7 +874,7 @@ var Dash = GObject.registerClass({
 
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
-        let srcIsFavorite = (id in favorites);
+        let srcIsFavorite = id in favorites;
 
         let favPos = 0;
         let children = this._box.get_children();
