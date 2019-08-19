@@ -614,11 +614,12 @@ static void
 sync_input_region (ShellGlobal *global)
 {
   MetaDisplay *display = global->meta_display;
+  MetaX11Display *x11_display = meta_display_get_x11_display (display);
 
   if (global->has_modal)
-    meta_set_stage_input_region (display, None);
+    meta_x11_display_set_stage_input_region (x11_display, None);
   else
-    meta_set_stage_input_region (display, global->input_region);
+    meta_x11_display_set_stage_input_region (x11_display, global->input_region);
 }
 
 /**
@@ -937,7 +938,8 @@ shell_global_begin_modal (ShellGlobal       *global,
     return FALSE;
 
   global->has_modal = meta_plugin_begin_modal (global->plugin, options, timestamp);
-  sync_input_region (global);
+  if (!meta_is_wayland_compositor ())
+    sync_input_region (global);
   return global->has_modal;
 }
 
@@ -967,7 +969,8 @@ shell_global_end_modal (ShellGlobal *global,
     meta_display_focus_default_window (global->meta_display,
                                        get_current_time_maybe_roundtrip (global));
 
-  sync_input_region (global);
+  if (!meta_is_wayland_compositor ())
+    sync_input_region (global);
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
