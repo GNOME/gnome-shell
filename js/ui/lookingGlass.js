@@ -240,7 +240,7 @@ var Notebook = class Notebook {
 Signals.addSignalMethods(Notebook.prototype);
 
 function objectToString(o) {
-    if (typeof(o) == typeof(objectToString)) {
+    if (typeof o == typeof objectToString) {
         // special case this since the default is way, way too verbose
         return '<js function>';
     } else {
@@ -369,7 +369,7 @@ var ObjInspector = class ObjInspector {
 
         let hbox = new St.BoxLayout({ style_class: 'lg-obj-inspector-title' });
         this._container.add_actor(hbox);
-        let label = new St.Label({ text: 'Inspecting: %s: %s'.format(typeof(obj),
+        let label = new St.Label({ text: 'Inspecting: %s: %s'.format(typeof obj,
                                                                      objectToString(obj)) });
         label.single_line_mode = true;
         hbox.add(label, { expand: true, y_fill: false });
@@ -387,7 +387,7 @@ var ObjInspector = class ObjInspector {
         button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
         button.connect('clicked', this.close.bind(this));
         hbox.add(button);
-        if (typeof(obj) == typeof({})) {
+        if (typeof obj == typeof {}) {
             let properties = [];
             for (let propName in obj) {
                 properties.push(propName);
