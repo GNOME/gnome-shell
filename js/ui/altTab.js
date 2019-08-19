@@ -415,7 +415,7 @@ class CyclerHighlight extends St.Widget {
         this.add_actor(this._highlight);
 
         let coordinate = Clutter.BindCoordinate.ALL;
-        let constraint = new Clutter.BindConstraint({ coordinate: coordinate });
+        let constraint = new Clutter.BindConstraint({ coordinate });
         this._clone.bind_property('source', constraint, 'source', 0);
 
         this.add_constraint(constraint);
