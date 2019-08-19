@@ -62,7 +62,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
         this.thumbnailsVisible = false;
 
-        let apps = Shell.AppSystem.get_default().get_running ();
+        let apps = Shell.AppSystem.get_default().get_running();
 
         if (apps.length == 0)
             return;
@@ -369,11 +369,11 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         });
         this._thumbnails = null;
         if (this._switcherList._items[this._selectedIndex])
-            this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
+            this._switcherList._items[this._selectedIndex].remove_accessible_state(Atk.StateType.EXPANDED);
     }
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailList(this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
@@ -398,7 +398,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             }
         });
 
-        this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
+        this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
     }
 });
 
@@ -693,7 +693,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app (w) == appIcon.app
+                w => windowTracker.get_window_app(w) == appIcon.app
             );
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
@@ -853,7 +853,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
         else
-            item.add_accessible_state (Atk.StateType.EXPANDABLE);
+            item.add_accessible_state(Atk.StateType.EXPANDABLE);
     }
 
     _removeIcon(app) {

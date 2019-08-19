@@ -473,7 +473,7 @@ class EmptyPlaceholder extends Gtk.Box {
         this.add(image);
 
         let label = new Gtk.Label({
-            label: `<b><span size="x-large">${_("No Extensions Installed" )}</span></b>`,
+            label: `<b><span size="x-large">${_("No Extensions Installed")}</span></b>`,
             use_markup: true,
             visible: true
         });
