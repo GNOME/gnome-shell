@@ -2,7 +2,6 @@
 /* exported Workspace */
 
 const { Atk, Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
@@ -636,7 +635,7 @@ var WindowOverlay = class {
 
     _onDestroy() {
         if (this._idleHideOverlayId > 0) {
-            Mainloop.source_remove(this._idleHideOverlayId);
+            GLib.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
         }
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
@@ -688,7 +687,7 @@ var WindowOverlay = class {
 
     _onHideChrome() {
         if (this._idleHideOverlayId == 0) {
-            this._idleHideOverlayId = Mainloop.timeout_add(WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
+            this._idleHideOverlayId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
             GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
         }
     }
@@ -705,7 +704,7 @@ var WindowOverlay = class {
 
     hideOverlay() {
         if (this._idleHideOverlayId > 0) {
-            Mainloop.source_remove(this._idleHideOverlayId);
+            GLib.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
         }
         this.closeButton.hide();
@@ -1269,7 +1268,7 @@ var Workspace = class {
 
     _realRecalculateWindowPositions(flags) {
         if (this._repositionWindowsId > 0) {
-            Mainloop.source_remove(this._repositionWindowsId);
+            GLib.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
 
@@ -1479,7 +1478,7 @@ var Workspace = class {
 
         // remove old handler
         if (this._repositionWindowsId > 0) {
-            Mainloop.source_remove(this._repositionWindowsId);
+            GLib.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
 
@@ -1489,7 +1488,7 @@ var Workspace = class {
         this._cursorY = y;
 
         this._currentLayout = null;
-        this._repositionWindowsId = Mainloop.timeout_add(WINDOW_REPOSITIONING_DELAY,
+        this._repositionWindowsId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WINDOW_REPOSITIONING_DELAY,
             this._delayedWindowRepositioning.bind(this));
         GLib.Source.set_name_by_id(this._repositionWindowsId, '[gnome-shell] this._delayedWindowRepositioning');
     }
@@ -1503,7 +1502,7 @@ var Workspace = class {
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            let id = Mainloop.idle_add(() => {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 if (this.actor &&
                     metaWin.get_compositor_private() &&
                     metaWin.get_workspace() == this.metaWorkspace)
@@ -1649,7 +1648,7 @@ var Workspace = class {
             this._windows[i].remove_all_transitions();
 
         if (this._repositionWindowsId > 0) {
-            Mainloop.source_remove(this._repositionWindowsId);
+            GLib.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
 
@@ -1734,7 +1733,7 @@ var Workspace = class {
             this._windows[i].remove_all_transitions();
 
         if (this._repositionWindowsId > 0) {
-            Mainloop.source_remove(this._repositionWindowsId);
+            GLib.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
         this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
@@ -1795,7 +1794,7 @@ var Workspace = class {
         global.display.disconnect(this._windowLeftMonitorId);
 
         if (this._repositionWindowsId > 0) {
-            Mainloop.source_remove(this._repositionWindowsId);
+            GLib.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
 

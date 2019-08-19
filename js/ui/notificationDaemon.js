@@ -2,7 +2,6 @@
 /* exported NotificationDaemon */
 
 const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const Config = imports.misc.config;
 const Main = imports.ui.main;
@@ -171,7 +170,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
-            let idleId = Mainloop.idle_add(() => {
+            let idleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
                 return GLib.SOURCE_REMOVE;
             });

@@ -2,7 +2,6 @@
 /* exported SwitcherPopup, SwitcherList */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 
@@ -142,13 +141,15 @@ var SwitcherPopup = GObject.registerClass({
 
         // We delay showing the popup so that fast Alt+Tab users aren't
         // disturbed by the popup briefly flashing.
-        this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
-                                                           () => {
-                                                               Main.osdWindowManager.hideAll();
-                                                               this.opacity = 255;
-                                                               this._initialDelayTimeoutId = 0;
-                                                               return GLib.SOURCE_REMOVE;
-                                                           });
+        this._initialDelayTimeoutId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT,
+            POPUP_DELAY_TIMEOUT,
+            () => {
+                Main.osdWindowManager.hideAll();
+                this.opacity = 255;
+                this._initialDelayTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._initialDelayTimeoutId, '[gnome-shell] Main.osdWindow.cancel');
         return true;
     }
@@ -249,9 +250,9 @@ var SwitcherPopup = GObject.registerClass({
         this.mouseActive = false;
 
         if (this._motionTimeoutId != 0)
-            Mainloop.source_remove(this._motionTimeoutId);
+            GLib.source_remove(this._motionTimeoutId);
 
-        this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
+        this._motionTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
         GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     }
 
@@ -263,14 +264,16 @@ var SwitcherPopup = GObject.registerClass({
 
     _resetNoModsTimeout() {
         if (this._noModsTimeoutId != 0)
-            Mainloop.source_remove(this._noModsTimeoutId);
+            GLib.source_remove(this._noModsTimeoutId);
 
-        this._noModsTimeoutId = Mainloop.timeout_add(NO_MODS_TIMEOUT,
-                                                     () => {
-                                                         this._finish(global.get_current_time());
-                                                         this._noModsTimeoutId = 0;
-                                                         return GLib.SOURCE_REMOVE;
-                                                     });
+        this._noModsTimeoutId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT,
+            NO_MODS_TIMEOUT,
+            () => {
+                this._finish(global.get_current_time());
+                this._noModsTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _popModal() {
@@ -302,11 +305,11 @@ var SwitcherPopup = GObject.registerClass({
         this._popModal();
 
         if (this._motionTimeoutId != 0)
-            Mainloop.source_remove(this._motionTimeoutId);
+            GLib.source_remove(this._motionTimeoutId);
         if (this._initialDelayTimeoutId != 0)
-            Mainloop.source_remove(this._initialDelayTimeoutId);
+            GLib.source_remove(this._initialDelayTimeoutId);
         if (this._noModsTimeoutId != 0)
-            Mainloop.source_remove(this._noModsTimeoutId);
+            GLib.source_remove(this._noModsTimeoutId);
     }
 
     _select(num) {

@@ -3,7 +3,6 @@
 
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
-const Mainloop = imports.mainloop;
 
 const Animation = imports.ui.animation;
 const Config = imports.misc.config;
@@ -451,8 +450,8 @@ class ActivitiesButton extends PanelMenu.Button {
             return DND.DragMotionResult.CONTINUE;
 
         if (this._xdndTimeOut != 0)
-            Mainloop.source_remove(this._xdndTimeOut);
-        this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT, () => {
+            GLib.source_remove(this._xdndTimeOut);
+        this._xdndTimeOut = GLib.timeout_add(GLib.PRIORITY_DEFAULT, BUTTON_DND_ACTIVATION_TIMEOUT, () => {
             this._xdndToggleOverview();
         });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
@@ -496,7 +495,7 @@ class ActivitiesButton extends PanelMenu.Button {
         if (pickedActor == this && Main.overview.shouldToggleByCornerOrButton())
             Main.overview.toggle();
 
-        Mainloop.source_remove(this._xdndTimeOut);
+        GLib.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
         return GLib.SOURCE_REMOVE;
     }

@@ -4,7 +4,6 @@
    SystemNotificationSource, MessageTray */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
@@ -1091,7 +1090,7 @@ var MessageTray = class MessageTray {
     _resetNotificationLeftTimeout() {
         this._useLongerNotificationLeftTimeout = false;
         if (this._notificationLeftTimeoutId) {
-            Mainloop.source_remove(this._notificationLeftTimeoutId);
+            GLib.source_remove(this._notificationLeftTimeoutId);
             this._notificationLeftTimeoutId = 0;
             this._notificationLeftMouseX = -1;
             this._notificationLeftMouseY = -1;
@@ -1137,7 +1136,7 @@ var MessageTray = class MessageTray {
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
             let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT : HIDE_TIMEOUT;
-            this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, this._onNotificationLeftTimeout.bind(this));
+            this._notificationLeftTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout, this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         }
     }
@@ -1166,8 +1165,10 @@ var MessageTray = class MessageTray {
             x < this._notificationLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
             this._notificationLeftMouseX = -1;
-            this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT,
-                                                                   this._onNotificationLeftTimeout.bind(this));
+            this._notificationLeftTimeoutId = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
+                LONGER_HIDE_TIMEOUT,
+                this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         } else {
             this._notificationLeftTimeoutId = 0;
@@ -1345,13 +1346,13 @@ var MessageTray = class MessageTray {
 
     _updateNotificationTimeout(timeout) {
         if (this._notificationTimeoutId) {
-            Mainloop.source_remove(this._notificationTimeoutId);
+            GLib.source_remove(this._notificationTimeoutId);
             this._notificationTimeoutId = 0;
         }
         if (timeout > 0) {
             this._notificationTimeoutId =
-                Mainloop.timeout_add(timeout,
-                                     this._notificationTimeout.bind(this));
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout,
+                    this._notificationTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationTimeoutId, '[gnome-shell] this._notificationTimeout');
         }
     }

@@ -3,7 +3,6 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
-const Mainloop = imports.mainloop;
 
 const AppFavorites = imports.ui.appFavorites;
 const BoxPointer = imports.ui.boxpointer;
@@ -1639,14 +1638,14 @@ var FolderIcon = class FolderIcon {
 
     _removeMenuTimeout() {
         if (this._popupTimeoutId > 0) {
-            Mainloop.source_remove(this._popupTimeoutId);
+            GLib.source_remove(this._popupTimeoutId);
             this._popupTimeoutId = 0;
         }
     }
 
     _setPopupTimeout() {
         this._removeMenuTimeout();
-        this._popupTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT, () => {
+        this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
             this._popupTimeoutId = 0;
             this._popupRenamePopup();
             return GLib.SOURCE_REMOVE;
@@ -2076,7 +2075,7 @@ var AppIcon = class AppIcon {
 
     _removeMenuTimeout() {
         if (this._menuTimeoutId > 0) {
-            Mainloop.source_remove(this._menuTimeoutId);
+            GLib.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
         }
     }
@@ -2090,7 +2089,7 @@ var AppIcon = class AppIcon {
 
     _setPopupTimeout() {
         this._removeMenuTimeout();
-        this._menuTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT, () => {
+        this._menuTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
             this._menuTimeoutId = 0;
             this.popupMenu();
             return GLib.SOURCE_REMOVE;

@@ -3,7 +3,6 @@
 
 const { Clutter, Cogl, Gio, GLib,
         GObject, Meta, Pango, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const System = imports.system;
 
@@ -20,7 +19,6 @@ const CHEVRON = '>>> ';
 /* Imports...feel free to add here as needed */
 var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi; ' +
                     'const Main = imports.ui.main; ' +
-                    'const Mainloop = imports.mainloop; ' +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */
                     'const stage = global.stage; ' +
@@ -821,7 +819,7 @@ var LookingGlass = class LookingGlass {
         gcIcon.connect('button-press-event', () => {
             gcIcon.icon_name = 'user-trash';
             System.gc();
-            this._timeoutId = Mainloop.timeout_add(500, () => {
+            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
                 gcIcon.icon_name = 'user-trash-full';
                 this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;

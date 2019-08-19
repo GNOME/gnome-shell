@@ -2,7 +2,6 @@
 /* exported getIBusManager */
 
 const { Gio, GLib, IBus } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
@@ -216,21 +215,23 @@ var IBusManager = class {
             return;
 
         if (this._preloadEnginesId != 0) {
-            Mainloop.source_remove(this._preloadEnginesId);
+            GLib.source_remove(this._preloadEnginesId);
             this._preloadEnginesId = 0;
         }
 
         this._preloadEnginesId =
-            Mainloop.timeout_add_seconds(this._PRELOAD_ENGINES_DELAY_TIME,
-                                         () => {
-                                             this._ibus.preload_engines_async(
-                                                 ids,
-                                                 -1,
-                                                 null,
-                                                 null);
-                                             this._preloadEnginesId = 0;
-                                             return GLib.SOURCE_REMOVE;
-                                         });
+            GLib.timeout_add_seconds(
+                GLib.PRIORITY_DEFAULT,
+                this._PRELOAD_ENGINES_DELAY_TIME,
+                () => {
+                    this._ibus.preload_engines_async(
+                        ids,
+                        -1,
+                        null,
+                        null);
+                    this._preloadEnginesId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
     }
 };
 Signals.addSignalMethods(IBusManager.prototype);
