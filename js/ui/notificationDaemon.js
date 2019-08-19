@@ -346,8 +346,9 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         notification.setTransient(!!hints['transient']);
 
         let privacyScope = (hints['x-gnome-privacy-scope'] || 'user');
-        notification.setPrivacyScope(privacyScope == 'system' ? MessageTray.PrivacyScope.SYSTEM
-                                                              : MessageTray.PrivacyScope.USER);
+        notification.setPrivacyScope(privacyScope == 'system'
+            ? MessageTray.PrivacyScope.SYSTEM
+            : MessageTray.PrivacyScope.USER);
 
         let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);
@@ -554,8 +555,9 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
             this.setUrgency(urgency != undefined ? urgency : MessageTray.Urgency.NORMAL);
         } else if (urgent) {
-            this.setUrgency(urgent.unpack() ? MessageTray.Urgency.CRITICAL
-                            : MessageTray.Urgency.NORMAL);
+            this.setUrgency(urgent.unpack()
+                ? MessageTray.Urgency.CRITICAL
+                : MessageTray.Urgency.NORMAL);
         } else {
             this.setUrgency(MessageTray.Urgency.NORMAL);
         }

@@ -126,12 +126,14 @@ class AnimatedPageIndicators extends PageIndicators {
             offset = children[0].width;
 
         let isAnimationIn = animationDirection == AnimationDirection.IN;
-        let delay = isAnimationIn ? INDICATORS_ANIMATION_DELAY :
-                                    INDICATORS_ANIMATION_DELAY_OUT;
+        let delay = isAnimationIn
+            ? INDICATORS_ANIMATION_DELAY
+            : INDICATORS_ANIMATION_DELAY_OUT;
         let baseTime = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
         let totalAnimationTime = baseTime + delay * this._nPages;
-        let maxTime = isAnimationIn ? INDICATORS_ANIMATION_MAX_TIME :
-                                      INDICATORS_ANIMATION_MAX_TIME_OUT;
+        let maxTime = isAnimationIn
+            ? INDICATORS_ANIMATION_MAX_TIME
+            : INDICATORS_ANIMATION_MAX_TIME_OUT;
         if (totalAnimationTime > maxTime)
             delay -= (totalAnimationTime - maxTime) / this._nPages;
 

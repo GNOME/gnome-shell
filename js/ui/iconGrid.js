@@ -273,9 +273,9 @@ var IconGrid = GObject.registerClass({
             return [0, 0];
 
         let nChildren = this.get_n_children();
-        let nColumns = this._colLimit ? Math.min(this._colLimit,
-                                                 nChildren)
-                                      : nChildren;
+        let nColumns = this._colLimit
+            ? Math.min(this._colLimit, nChildren)
+            : nChildren;
         let totalSpacing = Math.max(0, nColumns - 1) * this._getSpacing();
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
@@ -787,8 +787,9 @@ var IconGrid = GObject.registerClass({
             let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
             let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
 
-            let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this._minColumns)
-                                                                  : Math.ceil(neededHeight / this._minRows);
+            let neededSpacePerItem = (neededWidth > neededHeight)
+                ? Math.ceil(neededWidth / this._minColumns)
+                : Math.ceil(neededHeight / this._minRows);
             this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
             this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
 
@@ -963,8 +964,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let childrenPerRow = this._childrenPerPage / this._rowsPerPage;
         let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
 
-        let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1
-                                               : sourceRow;
+        let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1 : sourceRow;
         let nRowsBelow = this._rowsPerPage - nRowsAbove;
 
         let nRowsUp, nRowsDown;

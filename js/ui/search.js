@@ -710,8 +710,9 @@ var SearchResults = class {
     navigateFocus(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == St.DirectionType.TAB_BACKWARD ||
-            direction == (rtl ? St.DirectionType.RIGHT
-                              : St.DirectionType.LEFT) ||
+            direction == (rtl
+                ? St.DirectionType.RIGHT
+                : St.DirectionType.LEFT) ||
             direction == St.DirectionType.UP) {
             this.actor.navigate_focus(null, direction, false);
             return;

@@ -71,8 +71,9 @@ var MediaMessage = class MediaMessage extends MessageList.Message {
         }
 
         let isPlaying = this._player.status == 'Playing';
-        let iconName = isPlaying ? 'media-playback-pause-symbolic'
-                                 : 'media-playback-start-symbolic';
+        let iconName = isPlaying
+            ? 'media-playback-pause-symbolic'
+            : 'media-playback-start-symbolic';
         this._playPauseButton.child.icon_name = iconName;
 
         this._updateNavButton(this._prevButton, this._player.canGoPrevious);

@@ -14,8 +14,8 @@ var SIDE_CONTROLS_ANIMATION_TIME = 160;
 function getRtlSlideDirection(direction, actor) {
     let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
     if (rtl)
-        direction = (direction == SlideDirection.LEFT) ?
-            SlideDirection.RIGHT : SlideDirection.LEFT;
+        direction = (direction == SlideDirection.LEFT)
+            ? SlideDirection.RIGHT : SlideDirection.LEFT;
 
     return direction;
 }
@@ -67,8 +67,9 @@ var SlideLayout = GObject.registerClass({
         // flags only determine what to do if the allocated box is bigger
         // than the actor's box.
         let realDirection = getRtlSlideDirection(this._direction, child);
-        let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth)
-                                                            : (availWidth - natWidth * this._slideX);
+        let alignX = (realDirection == SlideDirection.LEFT)
+            ? availWidth - natWidth
+            : availWidth - natWidth * this._slideX;
 
         let actorBox = new Clutter.ActorBox();
         actorBox.x1 = box.x1 + alignX + this._translationX;

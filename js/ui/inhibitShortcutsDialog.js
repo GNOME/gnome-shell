@@ -76,8 +76,9 @@ var InhibitShortcutsDialog = GObject.registerClass({
         let name = this._app ? this._app.get_name() : this._window.title;
 
         /* Translators: %s is an application name like "Settings" */
-        let title = name ? _("%s wants to inhibit shortcuts").format(name)
-                         : _("Application wants to inhibit shortcuts");
+        let title = name
+            ? _("%s wants to inhibit shortcuts").format(name)
+            : _("Application wants to inhibit shortcuts");
         let icon = new Gio.ThemedIcon({ name: 'dialog-warning-symbolic' });
 
         let contentParams = { icon, title };
