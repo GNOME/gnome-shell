@@ -164,9 +164,9 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         if (value.length == 64) {
             // must be composed of hexadecimal digits only
             for (let i = 0; i < 64; i++) {
-                if (!((value[i] >= 'a' && value[i] <= 'f')
-                      || (value[i] >= 'A' && value[i] <= 'F')
-                      || (value[i] >= '0' && value[i] <= '9')))
+                if (!((value[i] >= 'a' && value[i] <= 'f') ||
+                      (value[i] >= 'A' && value[i] <= 'F') ||
+                      (value[i] >= '0' && value[i] <= '9')))
                     return false;
             }
             return true;
@@ -180,15 +180,15 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         if (secret.wep_key_type == NM.WepKeyType.KEY) {
             if (value.length == 10 || value.length == 26) {
                 for (let i = 0; i < value.length; i++) {
-                    if (!((value[i] >= 'a' && value[i] <= 'f')
-                          || (value[i] >= 'A' && value[i] <= 'F')
-                          || (value[i] >= '0' && value[i] <= '9')))
+                    if (!((value[i] >= 'a' && value[i] <= 'f') ||
+                          (value[i] >= 'A' && value[i] <= 'F') ||
+                          (value[i] >= '0' && value[i] <= '9')))
                         return false;
                 }
             } else if (value.length == 5 || value.length == 13) {
                 for (let i = 0; i < value.length; i++) {
-                    if (!((value[i] >= 'a' && value[i] <= 'z')
-                          || (value[i] >= 'A' && value[i] <= 'Z')))
+                    if (!((value[i] >= 'a' && value[i] <= 'z') ||
+                          (value[i] >= 'A' && value[i] <= 'Z')))
                         return false;
                 }
             } else {

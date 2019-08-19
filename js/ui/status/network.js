@@ -909,8 +909,8 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             this._client.activate_connection_async(connection, this._device, null, null, null);
         } else {
             let accessPoints = network.accessPoints;
-            if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
-                || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
+            if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT) ||
+                (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
                 Util.spawn(['gnome-control-center', 'wifi', 'connect-8021x-wifi',
