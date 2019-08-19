@@ -667,7 +667,7 @@ var Extensions = GObject.registerClass({
         if (this._numExtensions == 0)
             this._extensionsList.remove_actor(this._noExtensions);
 
-        this._numExtensions ++;
+        this._numExtensions++;
         this._extensionsList.add(extensionDisplay);
     }
 
@@ -692,7 +692,7 @@ var Extensions = GObject.registerClass({
             let errors = extension.errors;
             let errorDisplay = new St.BoxLayout({ vertical: true });
             if (errors && errors.length) {
-                for (let i = 0; i < errors.length; i ++)
+                for (let i = 0; i < errors.length; i++)
                     errorDisplay.add(new St.Label({ text: errors[i] }));
             } else {
                 /* Translators: argument is an extension UUID. */

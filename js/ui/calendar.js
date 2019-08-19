@@ -351,7 +351,7 @@ var Calendar = GObject.registerClass({
             reactive: true
         });
 
-        this._buildHeader ();
+        this._buildHeader();
     }
 
     // @eventSource: is an object implementing the EventSource API, e.g. the

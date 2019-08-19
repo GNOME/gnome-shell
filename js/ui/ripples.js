@@ -53,7 +53,7 @@ var Ripples = class Ripples {
         ripple.visible = true;
         ripple.opacity = 255 * Math.sqrt(startOpacity);
         ripple.scale_x = ripple.scale_y = startScale;
-        ripple.set_translation( - this._px * ripple.width, - this._py * ripple.height, 0.0);
+        ripple.set_translation(-this._px * ripple.width, -this._py * ripple.height, 0.0);
 
         ripple.ease({
             opacity: 0,

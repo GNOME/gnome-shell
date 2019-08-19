@@ -68,7 +68,7 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
-        params = Params.parse (params, {
+        params = Params.parse(params, {
             reactive: true,
             activate: true,
             hover: true,
@@ -1177,7 +1177,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         } else {
             this.remove_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(null);
-            this.remove_accessible_state (Atk.StateType.EXPANDED);
+            this.remove_accessible_state(Atk.StateType.EXPANDED);
             this.remove_style_pseudo_class('checked');
         }
     }

@@ -801,7 +801,7 @@ var ThumbnailsBox = GObject.registerClass({
             targetBase = this._thumbnails[0].y;
         let targetTop = targetBase - spacing - WORKSPACE_CUT_SIZE;
         let length = this._thumbnails.length;
-        for (let i = 0; i < length; i ++) {
+        for (let i = 0; i < length; i++) {
             // Allow the reorder target to have a 10px "cut" into
             // each side of the thumbnail, to make dragging onto the
             // placeholder easier
@@ -1216,7 +1216,7 @@ var ThumbnailsBox = GObject.registerClass({
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
 
-        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
+        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
 
         if (this._thumbnails.length == 0) // not visible
             return;
@@ -1258,7 +1258,7 @@ var ThumbnailsBox = GObject.registerClass({
 
         let slideOffset; // X offset when thumbnail is fully slid offscreen
         if (rtl)
-            slideOffset = - (thumbnailWidth + themeNode.get_padding(St.Side.LEFT));
+            slideOffset = -(thumbnailWidth + themeNode.get_padding(St.Side.LEFT));
         else
             slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
