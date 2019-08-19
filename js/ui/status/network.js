@@ -874,7 +874,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline headline' });
         this._airplaneText = new St.Label({ style_class: 'nm-dialog-airplane-text' });
 
-        let airplaneSubStack = new St.Widget({ layout_manager: new Clutter.BinLayout });
+        let airplaneSubStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._airplaneButton = new St.Button({ style_class: 'modal-dialog-button button' });
         this._airplaneButton.connect('clicked', () => {
             if (this._rfkill.airplaneMode)
