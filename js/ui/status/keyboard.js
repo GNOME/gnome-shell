@@ -233,7 +233,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
             let id = layouts[i];
             if (variants[i])
                 id += `+${variants[i]}`;
-            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id: id });
+            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id });
         }
         return sourcesList;
     }
@@ -266,7 +266,7 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
 
         for (let i = 0; i < nSources; i++) {
             let [type, id] = sources.get_child_value(i).deep_unpack();
-            sourcesList.push({ type: type, id: id });
+            sourcesList.push({ type, id });
         }
         return sourcesList;
     }
@@ -562,14 +562,14 @@ var InputSourceManager = class {
             }
 
             if (exists)
-                infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+                infosList.push({ type, id, displayName, shortName });
         }
 
         if (infosList.length == 0) {
             let type = INPUT_SOURCE_TYPE_XKB;
             let id = KeyboardManager.DEFAULT_LAYOUT;
             let [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
-            infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+            infosList.push({ type, id, displayName, shortName });
         }
 
         let inputSourcesByShortName = {};

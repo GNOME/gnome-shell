@@ -84,8 +84,8 @@ var XdndHandler = class {
             this._cursorWindowClone.raise_top();
 
         let dragEvent = {
-            x: x,
-            y: y,
+            x,
+            y,
             dragActor: this._cursorWindowClone ? this._cursorWindowClone : this._dummy,
             source: this,
             targetActor: pickedActor

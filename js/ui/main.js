@@ -490,11 +490,11 @@ function pushModal(actor, params) {
                 modalActorFocusStack[index].prevFocus = null;
         });
     }
-    modalActorFocusStack.push({ actor: actor,
+    modalActorFocusStack.push({ actor,
                                 destroyId: actorDestroyId,
-                                prevFocus: prevFocus,
-                                prevFocusDestroyId: prevFocusDestroyId,
-                                actionMode: actionMode });
+                                prevFocus,
+                                prevFocusDestroyId,
+                                actionMode });
 
     actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
@@ -687,8 +687,8 @@ function _queueBeforeRedraw(workId) {
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
     let workId = `${(++_deferredWorkSequence)}`;
-    _deferredWorkData[workId] = { 'actor': actor,
-                                  'callback': callback };
+    _deferredWorkData[workId] = { actor,
+                                  callback };
     actor.connect('notify::mapped', () => {
         if (!(actor.mapped && _deferredWorkQueue.includes(workId)))
             return;

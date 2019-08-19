@@ -487,7 +487,7 @@ var IconGrid = GObject.registerClass({
                 scale_y: ANIMATION_BOUNCE_ICON_SCALE,
                 duration: bounceUpTime,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                delay: delay,
+                delay,
                 onComplete: () => {
                     let duration = ANIMATION_TIME_IN - bounceUpTime;
                     actor.ease({
