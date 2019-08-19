@@ -19,9 +19,9 @@ function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
          IBus.MICRO_VERSION >= requiredMicro))
         return;
 
-    throw "Found IBus version %d.%d.%d but required is %d.%d.%d".
-        format(IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MINOR_VERSION,
-               requiredMajor, requiredMinor, requiredMicro);
+    throw "Found IBus version %d.%d.%d but required is %d.%d.%d"
+        .format(IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MINOR_VERSION,
+                requiredMajor, requiredMinor, requiredMicro);
 }
 
 function getIBusManager() {
