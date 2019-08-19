@@ -20,7 +20,7 @@ function FprintManager() {
                                    g_interface_info: FprintManagerInfo,
                                    g_name: 'net.reactivated.Fprint',
                                    g_object_path: '/net/reactivated/Fprint/Manager',
-                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
 
     try {
         self.init(null);

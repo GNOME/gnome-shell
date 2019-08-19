@@ -235,7 +235,7 @@ var LabelExpanderLayout = GObject.registerClass({
 
         let visibleIndex = this._expansion > 0 ? 1 : 0;
         for (let i = 0; this._container && i < this._container.get_n_children(); i++)
-            this._container.get_child_at_index(i).visible = (i == visibleIndex);
+            this._container.get_child_at_index(i).visible = i == visibleIndex;
 
         this.layout_changed();
     }
@@ -382,7 +382,7 @@ var Message = GObject.registerClass({
 
     setIcon(actor) {
         this._iconBin.child = actor;
-        this._iconBin.visible = (actor != null);
+        this._iconBin.visible = actor != null;
     }
 
     setSecondaryActor(actor) {
@@ -453,7 +453,7 @@ var Message = GObject.registerClass({
     expand(animate) {
         this.expanded = true;
 
-        this._actionBin.visible = (this._actionBin.get_n_children() > 0);
+        this._actionBin.visible = this._actionBin.get_n_children() > 0;
 
         if (this._bodyStack.get_n_children() < 2) {
             this._expandedLabel = new URLHighlighter(this._bodyText,

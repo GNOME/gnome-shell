@@ -118,7 +118,7 @@ var CandidateArea = GObject.registerClass({
             if (!visible)
                 continue;
 
-            box._indexLabel.text = ((indexes && indexes[i]) ? indexes[i] : DEFAULT_INDEX_LABELS[i]);
+            box._indexLabel.text = indexes && indexes[i] ? indexes[i] : DEFAULT_INDEX_LABELS[i];
             box._candidateLabel.text = candidates[i];
         }
 
@@ -250,7 +250,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             let cursorPos = lookupTable.get_cursor_pos();
             let pageSize = lookupTable.get_page_size();
             let nPages = Math.ceil(nCandidates / pageSize);
-            let page = ((cursorPos == 0) ? 0 : Math.floor(cursorPos / pageSize));
+            let page = cursorPos == 0 ? 0 : Math.floor(cursorPos / pageSize);
             let startIndex = page * pageSize;
             let endIndex = Math.min((page + 1) * pageSize, nCandidates);
 
@@ -301,10 +301,10 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
     }
 
     _updateVisibility() {
-        let isVisible = (!Main.keyboard.visible &&
+        let isVisible = !Main.keyboard.visible &&
                          (this._preeditText.visible ||
                           this._auxText.visible ||
-                          this._candidateArea.visible));
+                          this._candidateArea.visible);
 
         if (isVisible) {
             this.setPosition(this._dummyCursor, 0);

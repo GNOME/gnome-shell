@@ -218,7 +218,7 @@ function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
     // bus object, etc.
-    (new EndSessionDialog());
+    new EndSessionDialog();
 }
 
 var EndSessionDialog = GObject.registerClass(
@@ -366,7 +366,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _sync() {
-        let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
+        let open = this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED;
         if (!open)
             return;
 
@@ -566,7 +566,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
             let currentTime = GLib.get_monotonic_time();
-            let secondsElapsed = ((currentTime - startTime) / 1000000);
+            let secondsElapsed = (currentTime - startTime) / 1000000;
 
             this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
             if (this._secondsLeft > 0) {
@@ -754,14 +754,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
-        this._checkBox.visible = (dialogContent.checkBoxText && updatePrepared && updatesAllowed);
-        this._checkBox.checked = (updatePrepared && updateTriggered);
+        this._checkBox.visible = dialogContent.checkBoxText && updatePrepared && updatesAllowed;
+        this._checkBox.checked = updatePrepared && updateTriggered;
 
         // We show the warning either together with the checkbox, or when
         // updates have already been triggered, but the user doesn't have
         // enough permissions to cancel them.
-        this._batteryWarning.visible = (dialogContent.showBatteryWarning &&
-                                        (this._checkBox.visible || updatePrepared && updateTriggered && !updatesAllowed));
+        this._batteryWarning.visible = dialogContent.showBatteryWarning &&
+                                        (this._checkBox.visible || updatePrepared && updateTriggered && !updatesAllowed);
 
         this._updateButtons();
 
