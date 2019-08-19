@@ -264,7 +264,7 @@ var Magnifier = class Magnifier {
         zoomRegion.setViewPort(viewPort);
 
         // We ignore the redundant width/height on the ROI
-        let fixedROI = new Object(roi);
+        let fixedROI = Object.create(roi);
         fixedROI.width = viewPort.width / xMagFactor;
         fixedROI.height = viewPort.height / yMagFactor;
         zoomRegion.setROI(fixedROI);
