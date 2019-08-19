@@ -435,7 +435,7 @@ var Notification = GObject.registerClass({
     // @label: the label for the action's button
     // @callback: the callback for the action
     addAction(label, callback) {
-        this.actions.push({ label: label, callback: callback });
+        this.actions.push({ label, callback });
     }
 
     get acknowledged() {
@@ -609,7 +609,7 @@ var NotificationBanner = GObject.registerClass({
 
     addAction(label, callback) {
         let button = new St.Button({ style_class: 'notification-button',
-                                     label: label,
+                                     label,
                                      x_expand: true,
                                      can_focus: true });
 
@@ -750,7 +750,7 @@ var Source = GObject.registerClass({
     }
 }, class Source extends GObject.Object {
     _init(title, iconName) {
-        super._init({ title: title });
+        super._init({ title });
 
         this.SOURCE_ICON_SIZE = 48;
 

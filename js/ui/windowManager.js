@@ -1466,7 +1466,7 @@ var WindowManager = class {
         this._resizePending.add(actor);
         actor.__animationInfo = { clone: actorClone,
                                   oldRect: oldFrameRect,
-                                  destroyId: destroyId };
+                                  destroyId };
     }
 
     _sizeChangedWindow(shellwm, actor) {
