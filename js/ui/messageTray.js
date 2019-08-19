@@ -1162,7 +1162,7 @@ var MessageTray = GObject.registerClass({
             // indicator in the panel; however do make an exception for CRITICAL
             // notifications, as only banner mode allows expansion.
             let bannerCount = this._notification ? 1 : 0;
-            let full = (this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE);
+            let full = this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE;
             if (!full || notification.urgency == Urgency.CRITICAL) {
                 notification.connect('destroy',
                                      this._onNotificationDestroy.bind(this));
@@ -1309,7 +1309,7 @@ var MessageTray = GObject.registerClass({
             let nextNotification = this._notificationQueue[0] || null;
             if (hasNotifications && nextNotification) {
                 let limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
-                let showNextNotification = (!limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL);
+                let showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL;
                 if (showNextNotification)
                     this._showNotification();
             }
@@ -1319,7 +1319,7 @@ var MessageTray = GObject.registerClass({
                            this._notification.urgency != Urgency.CRITICAL &&
                            !this._banner.focused &&
                            !this._pointerInNotification) || this._notificationExpired;
-            let mustClose = (this._notificationRemoved || !hasNotifications || expired);
+            let mustClose = this._notificationRemoved || !hasNotifications || expired;
 
             if (mustClose) {
                 let animate = hasNotifications && !this._notificationRemoved;
