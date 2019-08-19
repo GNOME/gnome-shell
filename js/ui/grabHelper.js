@@ -292,7 +292,7 @@ var GrabHelper = class GrabHelper {
         let touchEnd = type == Clutter.EventType.TOUCH_END;
         let touch = touchUpdate || touchBegin || touchEnd;
 
-        if (touch && !global.display.is_pointer_emulating_sequence (event.get_event_sequence()))
+        if (touch && !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
 
         if (this._ignoreUntilRelease && (motion || release || touch)) {

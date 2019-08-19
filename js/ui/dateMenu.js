@@ -72,14 +72,14 @@ class TodayButton extends St.Button {
          * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
          * "February 17 2015".
          */
-        let dateFormat = Shell.util_translate_time_string (N_("%B %-d %Y"));
+        let dateFormat = Shell.util_translate_time_string(N_("%B %-d %Y"));
         this._dateLabel.set_text(date.toLocaleFormat(dateFormat));
 
         /* Translators: This is the accessible name of the date button shown
          * below the time in the shell; it should combine the weekday and the
          * date, e.g. "Tuesday February 17 2015".
          */
-        dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
+        dateFormat = Shell.util_translate_time_string(N_("%A %B %e %Y"));
         this.accessible_name = date.toLocaleFormat(dateFormat);
     }
 });
@@ -538,7 +538,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         this.label_actor = this._clockDisplay;
         this.add_actor(box);
-        this.add_style_class_name ('clock-display');
+        this.add_style_class_name('clock-display');
 
         let layout = new FreezableBinLayout();
         let bin = new St.Widget({ layout_manager: layout });

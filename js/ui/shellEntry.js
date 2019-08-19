@@ -145,7 +145,7 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse (params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
     entry.menu.isPassword = params.isPassword;
