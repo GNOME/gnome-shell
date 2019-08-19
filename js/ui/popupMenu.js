@@ -613,8 +613,8 @@ var PopupMenuBase = class {
         while (childBeforeIndex >= 0 && !isPopupMenuItemVisible(children[childBeforeIndex]))
             childBeforeIndex--;
 
-        if (childBeforeIndex < 0
-            || children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
+        if (childBeforeIndex < 0 ||
+            children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
             menuItem.actor.hide();
             return;
         }
@@ -624,8 +624,8 @@ var PopupMenuBase = class {
         while (childAfterIndex < children.length && !isPopupMenuItemVisible(children[childAfterIndex]))
             childAfterIndex++;
 
-        if (childAfterIndex >= children.length
-            || children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
+        if (childAfterIndex >= children.length ||
+            children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
             menuItem.actor.hide();
             return;
         }

@@ -172,8 +172,8 @@ var BoxPointer = GObject.registerClass({
         let borderWidth = themeNode.get_length('-arrow-border-width');
         minSize += borderWidth * 2;
         natSize += borderWidth * 2;
-        if ((!isWidth && (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM))
-            || (isWidth && (this._arrowSide == St.Side.LEFT || this._arrowSide == St.Side.RIGHT))) {
+        if ((!isWidth && (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM)) ||
+            (isWidth && (this._arrowSide == St.Side.LEFT || this._arrowSide == St.Side.RIGHT))) {
             let rise = themeNode.get_length('-arrow-rise');
             minSize += rise;
             natSize += rise;
