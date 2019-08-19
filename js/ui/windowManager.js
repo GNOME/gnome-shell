@@ -1022,7 +1022,6 @@ var WindowManager = class {
                                                 (proxy, error) => {
                                                     if (error) {
                                                         log(error.message);
-                                                        return;
                                                     }
                                                 });
 
@@ -1682,7 +1681,6 @@ var WindowManager = class {
             break;
         default:
             shellwm.completed_map(actor);
-            return;
         }
     }
 
@@ -1763,7 +1761,6 @@ var WindowManager = class {
             break;
         default:
             shellwm.completed_destroy(actor);
-            return;
         }
     }
 
