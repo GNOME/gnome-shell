@@ -1976,7 +1976,6 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             // or we get to full connectivity through other means
         } else if (result == PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);
-            return;
         } else if (result == PortalHelperResult.RECHECK) {
             this._client.check_connectivity_async(null, (client, result) => {
                 try {

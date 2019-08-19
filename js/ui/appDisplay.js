@@ -752,7 +752,6 @@ var AllView = class AllView extends BaseAppView {
         let maxY = this._adjustment.upper - this._adjustment.page_size;
         if (dragEvent.y >= gridBottom && currentY < maxY) {
             this.goToPage(this._grid.currentPage + 1);
-            return;
         }
     }
 
