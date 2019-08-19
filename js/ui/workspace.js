@@ -948,7 +948,7 @@ var LayoutStrategy = class {
             y += row.height * row.additionalScale + this._rowSpacing;
         }
 
-        compensation = compensation / 2;
+        compensation /= 2;
 
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
