@@ -233,7 +233,7 @@ var ActionEditor = GObject.registerClass({
         this._actionComboBox.setAction(this._currentAction);
         this._updateKeybindingEntryState();
 
-        let isButton = (action == Meta.PadActionType.BUTTON);
+        let isButton = action == Meta.PadActionType.BUTTON;
         this._actionComboBox.setButtonActionsActive(isButton);
     }
 
@@ -344,19 +344,19 @@ var PadDiagram = GObject.registerClass({
     }
 
     _wrappingSvgHeader() {
-        return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
-                '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
-                'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
-                `width="${ // " (give xgettext the paired quotes it expects)
-                    this._imageWidth
-                }" height="${this._imageHeight}"> ` + // "
-                '<style type="text/css">');
+        return '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
+               '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
+               'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
+               `width="${ // " (give xgettext the paired quotes it expects)
+                   this._imageWidth
+               }" height="${this._imageHeight}"> ` + // "
+               '<style type="text/css">';
     }
 
     _wrappingSvgFooter() {
-        return ('</style>' +
+        return '</style>' +
                 '<xi:include href="' + this._imagePath + '" />' +
-                '</svg>');
+                '</svg>';
     }
 
     _cssString() {
@@ -852,15 +852,15 @@ var PadOsd = GObject.registerClass({
         if (!this._editedAction)
             return false;
 
-        return (this._editedAction.type == type &&
+        return this._editedAction.type == type &&
                 this._editedAction.number == number &&
-                this._editedAction.dir == dir);
+                this._editedAction.dir == dir;
     }
 
     _followUpActionEdition(str) {
         let { type, dir, number, mode } = this._editedAction;
-        let hasNextAction = (type == Meta.PadActionType.RING && dir == CCW ||
-                             type == Meta.PadActionType.STRIP && dir == UP);
+        let hasNextAction = type == Meta.PadActionType.RING && dir == CCW ||
+                             type == Meta.PadActionType.STRIP && dir == UP;
         if (!hasNextAction)
             return false;
 

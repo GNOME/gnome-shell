@@ -20,7 +20,7 @@ var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 var NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
-    return (dateA.getYear() == dateB.getYear());
+    return dateA.getYear() == dateB.getYear();
 }
 
 function sameMonth(dateA, dateB) {
@@ -712,15 +712,15 @@ class EventMessage extends MessageList.Message {
 
     vfunc_style_changed() {
         let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
-        this._icon.opacity = (iconVisible ? 255 : 0);
+        this._icon.opacity = iconVisible ? 255 : 0;
         super.vfunc_style_changed();
     }
 
     _formatEventTime() {
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
-        let allDay = (this._event.allDay || (this._event.date <= periodBegin &&
-                                             this._event.end >= periodEnd));
+        let allDay = this._event.allDay || (this._event.date <= periodBegin &&
+                                             this._event.end >= periodEnd);
         let title;
         if (allDay) {
             /* Translators: Shown in calendar event list for all day events
@@ -910,7 +910,7 @@ class EventsSection extends MessageList.MessageListSection {
 
     _appInstalledChanged() {
         this._calendarApp = undefined;
-        this._title.reactive = (this._getCalendarApp() != null);
+        this._title.reactive = this._getCalendarApp() != null;
     }
 
     _getCalendarApp() {

@@ -157,7 +157,7 @@ class WorldClocksSection extends St.Button {
         });
 
         let layout = this._grid.layout_manager;
-        let title = (this._locations.length == 0)
+        let title = this._locations.length == 0
             ? _("Add world clocks…")
             : _("World Clocks");
         let header = new St.Label({ style_class: 'world-clocks-header',
@@ -182,8 +182,8 @@ class WorldClocksSection extends St.Button {
 
             let otherOffset = this._getTimeAtLocation(l).get_utc_offset();
             let offset = (otherOffset - localOffset) / GLib.TIME_SPAN_HOUR;
-            let fmt = (Math.trunc(offset) == offset) ? '%s%.0f' : '%s%.1f';
-            let prefix = (offset >= 0) ? '+' : '-';
+            let fmt = Math.trunc(offset) == offset ? '%s%.0f' : '%s%.1f';
+            let prefix = offset >= 0 ? '+' : '-';
             let tz = new St.Label({ style_class: 'world-clocks-timezone',
                                     text: fmt.format(prefix, Math.abs(offset)),
                                     x_align: Clutter.ActorAlign.END,
@@ -438,7 +438,7 @@ class MessagesIndicator extends St.Icon {
         this._sources.forEach(source => (count += source.unseenCount));
         count -= Main.messageTray.queueCount;
 
-        this.visible = (count > 0);
+        this.visible = count > 0;
     }
 });
 

@@ -208,8 +208,8 @@ var NMConnectionSection = class NMConnectionSection {
     _sync() {
         let nItems = this._connectionItems.size;
 
-        this._radioSection.actor.visible = (nItems > 1);
-        this._labelSection.actor.visible = (nItems == 1);
+        this._radioSection.actor.visible = nItems > 1;
+        this._labelSection.actor.visible = nItems == 1;
 
         this.item.label.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
@@ -392,7 +392,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
 
     _sync() {
         let nItems = this._connectionItems.size;
-        this._autoConnectItem.visible = (nItems == 0);
+        this._autoConnectItem.visible = nItems == 0;
         this._deactivateItem.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
@@ -823,7 +823,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         } else {
             this._airplaneBox.hide();
 
-            this._noNetworksBox.visible = (this._networks.length == 0);
+            this._noNetworksBox.visible = this._networks.length == 0;
         }
 
         if (this._noNetworksBox.visible)
@@ -1473,7 +1473,7 @@ var NMVpnSection = class extends NMConnectionSection {
 
     _sync() {
         let nItems = this._connectionItems.size;
-        this.item.visible = (nItems > 0);
+        this.item.visible = nItems > 0;
 
         super._sync();
     }
@@ -1855,7 +1855,7 @@ class Indicator extends PanelMenu.SystemIndicator {
     _syncVpnConnections() {
         let activeConnections = this._client.get_active_connections() || [];
         let vpnConnections = activeConnections.filter(
-            a => (a instanceof NM.VpnConnection)
+            a => a instanceof NM.VpnConnection
         );
         vpnConnections.forEach(a => {
             ensureActiveConnectionProps(a);
@@ -2068,6 +2068,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
 
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
-        this._vpnIndicator.visible = (this._vpnIndicator.icon_name != '');
+        this._vpnIndicator.visible = this._vpnIndicator.icon_name != '';
     }
 });
