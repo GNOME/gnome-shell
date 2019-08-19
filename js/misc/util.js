@@ -121,8 +121,7 @@ function trySpawn(argv) {
             // We are only interested in the part in the parentheses. (And
             // we can't pattern match the text, since it gets localized.)
             let message = err.message.replace(/.*\((.+)\)/, '$1');
-            throw new (err.constructor)({ code: err.code,
-                                          message: message });
+            throw new (err.constructor)({ code: err.code, message });
         } else {
             throw err;
         }

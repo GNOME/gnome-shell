@@ -84,8 +84,8 @@ var XdndHandler = class {
             Main.uiGroup.set_child_above_sibling(this._cursorWindowClone, null);
 
         let dragEvent = {
-            x: x,
-            y: y,
+            x,
+            y,
             dragActor: this._cursorWindowClone ? this._cursorWindowClone : this._dummy,
             source: this,
             targetActor: pickedActor

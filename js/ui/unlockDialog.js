@@ -95,7 +95,7 @@ var UnlockDialog = GObject.registerClass({
             userName = null;
         }
 
-        this._authPrompt.begin({ userName: userName });
+        this._authPrompt.begin({ userName });
     }
 
     _escape() {

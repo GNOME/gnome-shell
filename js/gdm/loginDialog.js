@@ -1134,8 +1134,7 @@ var LoginDialog = GObject.registerClass({
         let userName = item.user.get_user_name();
         let hold = new Batch.Hold();
 
-        this._authPrompt.begin({ userName: userName,
-                                 hold: hold });
+        this._authPrompt.begin({ userName, hold });
         return hold;
     }
 
