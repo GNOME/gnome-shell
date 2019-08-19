@@ -201,13 +201,13 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 hints['image-data'] = hints['icon_data'];
         }
 
-        let ndata = { appName: appName,
-                      icon: icon,
-                      summary: summary,
-                      body: body,
-                      actions: actions,
-                      hints: hints,
-                      timeout: timeout };
+        let ndata = { appName,
+                      icon,
+                      summary,
+                      body,
+                      actions,
+                      hints,
+                      timeout };
         if (replacesId != 0 && this._notifications[replacesId]) {
             ndata.id = id = replacesId;
             ndata.notification = this._notifications[replacesId].notification;
@@ -299,7 +299,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         else if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
 
-        notification.update(summary, body, { gicon: gicon,
+        notification.update(summary, body, { gicon,
                                              bannerMarkup: true,
                                              clear: true,
                                              soundFile: hints['sound-file'],

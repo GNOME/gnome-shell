@@ -445,7 +445,7 @@ var Background = GObject.registerClass({
 
     _loadAnimation(file) {
         this._cache.getAnimation({
-            file: file,
+            file,
             settingsSchema: this._settings.schema_id,
             onLoaded: animation => {
                 this._animation = animation;
@@ -593,11 +593,11 @@ var BackgroundSource = class BackgroundSource {
 
         if (!(monitorIndex in this._backgrounds)) {
             let background = new Background({
-                monitorIndex: monitorIndex,
+                monitorIndex,
                 layoutManager: this._layoutManager,
                 settings: this._settings,
-                file: file,
-                style: style
+                file,
+                style
             });
 
             background._changedId = background.connect('bg-changed', () => {

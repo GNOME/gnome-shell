@@ -1950,7 +1950,7 @@ class Workspace extends St.Widget {
             if (numColumns == lastLayout.numColumns)
                 break;
 
-            let layout = { area: area, strategy: strategy, numRows: numRows, numColumns: numColumns };
+            let layout = { area, strategy, numRows, numColumns };
             strategy.computeLayout(windows, layout);
             strategy.computeScaleAndSpace(layout);
 

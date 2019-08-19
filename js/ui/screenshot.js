@@ -184,7 +184,7 @@ var ScreenshotService = class {
                                             "Invalid params");
             return;
         }
-        let flashspot = new Flashspot({ x: x, y: y, width: width, height: height });
+        let flashspot = new Flashspot({ x, y, width, height });
         flashspot.fire();
         invocation.return_value(null);
     }

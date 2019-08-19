@@ -49,10 +49,10 @@ function makeMessageFromTpMessage(tpMessage, direction) {
 
     return {
         messageType: tpMessage.get_message_type(),
-        text: text,
+        text,
         sender: tpMessage.sender.alias,
-        timestamp: timestamp,
-        direction: direction
+        timestamp,
+        direction
     };
 }
 
@@ -66,7 +66,7 @@ function makeMessageFromTplEvent(event) {
         text: event.get_message(),
         sender: event.get_sender().get_alias(),
         timestamp: event.get_timestamp(),
-        direction: direction
+        direction
     };
 }
 
@@ -350,7 +350,7 @@ class ChatSource extends MessageTray.Source {
     getIcon() {
         let file = this._contact.get_avatar_file();
         if (file)
-            return new Gio.FileIcon({ file: file });
+            return new Gio.FileIcon({ file });
         else
             return new Gio.ThemedIcon({ name: 'avatar-default' });
     }
@@ -683,10 +683,10 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             ? 'received' : 'sent');
 
         this._append({ body: messageBody,
-                       group: group,
-                       styles: styles,
+                       group,
+                       styles,
                        timestamp: message.timestamp,
-                       noTimestamp: noTimestamp });
+                       noTimestamp });
     }
 
     _filterMessages() {
