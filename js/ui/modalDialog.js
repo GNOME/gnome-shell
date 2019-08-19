@@ -253,7 +253,7 @@ var ModalDialog = GObject.registerClass({
             opacity: 0,
             duration: FADE_OUT_DIALOG_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.state = State.FADED_OUT
+            onComplete: () => (this.state = State.FADED_OUT)
         });
     }
 });

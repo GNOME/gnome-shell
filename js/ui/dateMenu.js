@@ -412,7 +412,7 @@ var MessagesIndicator = class MessagesIndicator {
 
     _updateCount() {
         let count = 0;
-        this._sources.forEach(source => count += source.unseenCount);
+        this._sources.forEach(source => (count += source.unseenCount));
         count -= Main.messageTray.queueCount;
 
         this.actor.visible = (count > 0);

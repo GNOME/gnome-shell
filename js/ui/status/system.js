@@ -33,7 +33,7 @@ var AltSwitcher = class {
 
         this.actor = new St.Bin();
         this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('notify::mapped', () => this._flipped = false);
+        this.actor.connect('notify::mapped', () => (this._flipped = false));
     }
 
     _sync() {

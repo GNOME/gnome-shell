@@ -505,7 +505,7 @@ var AllView = class AllView extends BaseAppView {
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => this.opacity = 255
+                onComplete: () => (this.opacity = 255)
             });
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)

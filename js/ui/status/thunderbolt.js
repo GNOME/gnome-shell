@@ -260,7 +260,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Thunderbolt"),
                                                   'thunderbolt-symbolic');
-            this._source.connect('destroy', () => this._source = null);
+            this._source.connect('destroy', () => (this._source = null));
 
             Main.messageTray.add(this._source);
         }
