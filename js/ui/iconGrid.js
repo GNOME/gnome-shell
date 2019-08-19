@@ -246,7 +246,7 @@ var IconGrid = GObject.registerClass({
 
     _onDestroy() {
         if (this._updateIconSizesLaterId) {
-            Meta.later_remove (this._updateIconSizesLaterId);
+            Meta.later_remove(this._updateIconSizesLaterId);
             this._updateIconSizesLaterId = 0;
         }
     }
