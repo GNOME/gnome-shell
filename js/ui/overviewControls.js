@@ -168,7 +168,7 @@ class SlidingControl extends St.Widget {
         let visibleWidth = this.getVisibleWidth();
 
         if (direction == SlideDirection.LEFT)
-            return - visibleWidth;
+            return -visibleWidth;
         else
             return visibleWidth;
     }

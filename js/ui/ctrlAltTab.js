@@ -86,7 +86,7 @@ var CtrlAltTabManager = class CtrlAltTabManager {
             for (let i = 0; i < windows.length; i++) {
                 let icon = null;
                 let iconName = null;
-                if (windows[i].get_window_type () == Meta.WindowType.DESKTOP) {
+                if (windows[i].get_window_type() == Meta.WindowType.DESKTOP) {
                     iconName = 'video-display-symbolic';
                 } else {
                     let app = windowTracker.get_window_app(windows[i]);
@@ -100,7 +100,7 @@ var CtrlAltTabManager = class CtrlAltTabManager {
 
                 items.push({ name: windows[i].title,
                              proxy: windows[i].get_compositor_private(),
-                             focusCallback: function(timestamp) {
+                             focusCallback: function (timestamp) {
                                  Main.activateWindow(this, timestamp);
                              }.bind(windows[i]),
                              iconActor: icon,

@@ -200,8 +200,8 @@ function _collect(scriptModule, outputFile) {
         let raw = f.replace(null, false,
                             Gio.FileCreateFlags.NONE,
                             null);
-        let out = Gio.BufferedOutputStream.new_sized (raw, 4096);
-        Shell.write_string_to_stream (out, "{\n");
+        let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
+        Shell.write_string_to_stream(out, "{\n");
 
         Shell.write_string_to_stream(out, '"events":\n');
         Shell.PerfLog.get_default().dump_events(out);
@@ -250,10 +250,10 @@ function _collect(scriptModule, outputFile) {
         }
         Shell.write_string_to_stream(out, ' ]');
 
-        Shell.write_string_to_stream (out, ',\n"log":\n');
+        Shell.write_string_to_stream(out, ',\n"log":\n');
         Shell.PerfLog.get_default().dump_log(out);
 
-        Shell.write_string_to_stream (out, '\n}\n');
+        Shell.write_string_to_stream(out, '\n}\n');
         out.close(null);
     } else {
         let metrics = [];
@@ -262,13 +262,13 @@ function _collect(scriptModule, outputFile) {
 
         metrics.sort();
 
-        print ('------------------------------------------------------------');
+        print('------------------------------------------------------------');
         for (let i = 0; i < metrics.length; i++) {
             let metric = metrics[i];
-            print (`# ${scriptModule.METRICS[metric].description}`);
-            print (`${metric}: ${scriptModule.METRICS[metric].value}${scriptModule.METRICS[metric].units}`);
+            print(`# ${scriptModule.METRICS[metric].description}`);
+            print(`${metric}: ${scriptModule.METRICS[metric].value}${scriptModule.METRICS[metric].units}`);
         }
-        print ('------------------------------------------------------------');
+        print('------------------------------------------------------------');
     }
 }
 

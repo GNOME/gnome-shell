@@ -167,12 +167,12 @@ var Monitor = class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
-    vfunc_get_preferred_width (_forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let width = global.stage.width;
         return [width, width];
     }
 
-    vfunc_get_preferred_height (_forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let height = global.stage.height;
         return [height, height];
     }
