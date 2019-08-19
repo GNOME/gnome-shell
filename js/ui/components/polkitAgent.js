@@ -65,8 +65,8 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         if (userIsRoot) {
-            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
-                                            text: userRealName }));
+            let userLabel = new St.Label({ style_class: 'polkit-dialog-user-root-label',
+                                           text: userRealName });
             content.messageBox.add_child(userLabel);
         } else {
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
@@ -77,12 +77,12 @@ var AuthenticationDialog = GObject.registerClass({
                                                        styleClass: 'polkit-dialog-user-icon' });
             this._userAvatar.hide();
             userBox.add_child(this._userAvatar);
-            let userLabel = new St.Label(({
+            let userLabel = new St.Label({
                 style_class: 'polkit-dialog-user-label',
                 text: userRealName,
                 x_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
-            }));
+            });
             userBox.add_child(userLabel);
         }
 
@@ -90,10 +90,10 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
-        this._passwordLabel = new St.Label(({
+        this._passwordLabel = new St.Label({
             style_class: 'prompt-dialog-password-label',
             y_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
         this._passwordBox.add_child(this._passwordLabel);
         this._passwordEntry = new St.Entry({
             style_class: 'prompt-dialog-password-entry',

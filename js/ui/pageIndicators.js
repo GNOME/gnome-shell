@@ -81,7 +81,7 @@ var PageIndicators = GObject.registerClass({
                 children[i].destroy();
         }
         this._nPages = nPages;
-        this.visible = (this._nPages > 1);
+        this.visible = this._nPages > 1;
     }
 
     setCurrentPage(currentPage) {

@@ -23,7 +23,7 @@ function OVirtCredentials() {
                                    g_interface_info: OVirtCredentialsInfo,
                                    g_name: 'org.ovirt.vdsm.Credentials',
                                    g_object_path: '/org/ovirt/vdsm/Credentials',
-                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
     self.init(null);
     return self;
 }

@@ -199,7 +199,7 @@ function _initializeUI() {
     layoutManager.init();
     overview.init();
 
-    (new PointerA11yTimeout.PointerA11yTimeout());
+    new PointerA11yTimeout.PointerA11yTimeout();
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
@@ -600,7 +600,7 @@ function openRunDialog() {
 function activateWindow(window, time, workspaceNum) {
     let workspaceManager = global.workspace_manager;
     let activeWorkspaceNum = workspaceManager.get_active_workspace_index();
-    let windowWorkspaceNum = (workspaceNum !== undefined) ? workspaceNum : window.get_workspace().index();
+    let windowWorkspaceNum = workspaceNum !== undefined ? workspaceNum : window.get_workspace().index();
 
     if (!time)
         time = global.get_current_time();
@@ -686,7 +686,7 @@ function _queueBeforeRedraw(workId) {
  */
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
-    let workId = `${(++_deferredWorkSequence)}`;
+    let workId = `${++_deferredWorkSequence}`;
     _deferredWorkData[workId] = { actor,
                                   callback };
     actor.connect('notify::mapped', () => {

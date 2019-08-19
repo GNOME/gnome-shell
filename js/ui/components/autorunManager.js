@@ -41,7 +41,7 @@ function isMountRootHidden(root) {
     let path = root.get_path();
 
     // skip any mounts in hidden directory hierarchies
-    return (path.includes('/.'));
+    return path.includes('/.');
 }
 
 function isMountNonLocal(mount) {
@@ -52,7 +52,7 @@ function isMountNonLocal(mount) {
     if (volume == null)
         return true;
 
-    return (volume.get_identifier("class") == "network");
+    return volume.get_identifier("class") == "network";
 }
 
 function startAppForMount(app, mount) {
@@ -125,7 +125,7 @@ var ContentTypeDiscoverer = class {
     _emitCallback(mount, contentTypes = []) {
         // we're not interested in win32 software content types here
         contentTypes = contentTypes.filter(
-            type => (type != 'x-content/win32-software')
+            type => type != 'x-content/win32-software'
         );
 
         let apps = [];
@@ -202,7 +202,7 @@ var AutorunDispatcher = class {
     }
 
     _getSourceForMount(mount) {
-        let filtered = this._sources.filter(source => (source.mount == mount));
+        let filtered = this._sources.filter(source => source.mount == mount);
 
         // we always make sure not to add two sources for the same
         // mount in addMount(), so it's safe to assume filtered.length

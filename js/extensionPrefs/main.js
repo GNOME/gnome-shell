@@ -490,7 +490,7 @@ class EmptyPlaceholder extends Gtk.Box {
             visible: true,
             max_width_chars: 50,
             hexpand: true,
-            vexpand: (appInfo == null),
+            vexpand: appInfo == null,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.START,
         });
@@ -577,7 +577,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
                     return;
 
                 this._extension = ExtensionUtils.deserializeExtension(newState);
-                let state = (this._extension.state == ExtensionState.ENABLED);
+                let state = this._extension.state == ExtensionState.ENABLED;
 
                 this._switch.block_signal_handler(this._notifyActiveId);
                 this._switch.state = state;
