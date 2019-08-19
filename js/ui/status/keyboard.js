@@ -1032,7 +1032,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                 break;
 
             default:
-                log ('IBus property %s has invalid type %d'.format(prop.get_key(), type));
+                log('IBus property %s has invalid type %d'.format(prop.get_key(), type));
                 continue;
             }
 

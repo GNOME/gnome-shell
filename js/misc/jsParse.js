@@ -136,7 +136,7 @@ function getAllProps(obj) {
     if (obj === null || obj === undefined)
         return [];
 
-    return Object.getOwnPropertyNames(obj).concat( getAllProps(Object.getPrototypeOf(obj)) );
+    return Object.getOwnPropertyNames(obj).concat(getAllProps(Object.getPrototypeOf(obj)));
 }
 
 // Given a string _expr_, returns all methods
@@ -160,7 +160,7 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
     if (typeof obj === 'object') {
         let allProps = getAllProps(obj);
         // Get only things we are allowed to complete following a '.'
-        allProps = allProps.filter( isValidPropertyName );
+        allProps = allProps.filter(isValidPropertyName);
 
         // Make sure propsUnique contains one key for every
         // property so we end up with a unique list of properties
@@ -208,8 +208,8 @@ function isUnsafeExpression(str) {
     // If there is, it might be an unsafe assignment.
 
     let prunedStr = removeLiterals(str);
-    prunedStr = prunedStr.replace(/[=!]==/g, '');    //replace === and !== with nothing
-    prunedStr = prunedStr.replace(/[=<>!]=/g, '');    //replace ==, <=, >=, != with nothing
+    prunedStr = prunedStr.replace(/[=!]==/g, '');    // replace === and !== with nothing
+    prunedStr = prunedStr.replace(/[=<>!]=/g, '');    // replace ==, <=, >=, != with nothing
 
     if (prunedStr.match(/[=]/)) {
         return true;

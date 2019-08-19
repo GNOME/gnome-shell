@@ -55,7 +55,7 @@ var TouchpadShowOverviewAction = class {
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-            this.emit('activated', event.get_gesture_pinch_scale ());
+            this.emit('activated', event.get_gesture_pinch_scale());
 
         return Clutter.EVENT_STOP;
     }
@@ -583,7 +583,7 @@ var ViewSelector = GObject.registerClass({
             if (source != this._text &&
                 this._text.has_key_focus() &&
                 this._text.text == '' &&
-                !this._text.has_preedit () &&
+                !this._text.has_preedit() &&
                 !Main.layoutManager.keyboardBox.contains(source)) {
                 // the user clicked outside after activating the entry, but
                 // with no search term entered and no keyboard button pressed

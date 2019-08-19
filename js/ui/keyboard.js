@@ -403,7 +403,7 @@ var Key = GObject.registerClass({
 
     _makeKey(key) {
         let label = GLib.markup_escape_text(key, -1);
-        let button = new St.Button ({
+        let button = new St.Button({
             label: label,
             style_class: 'keyboard-key',
             x_expand: true,
@@ -1538,7 +1538,7 @@ class Keyboard extends St.BoxLayout {
         for (let i = 0; i < rows.length; ++i) {
             layout.appendRow();
             let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
-            this._mergeRowKeys (layout, pre, rows[i], post, numLevels);
+            this._mergeRowKeys(layout, pre, rows[i], post, numLevels);
         }
     }
 
@@ -1810,8 +1810,8 @@ var KeyboardController = class {
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
                                                                  this._onSourceChanged.bind(this));
-        this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
-                                                                    this._onSourcesModified.bind(this));
+        this._sourcesModifiedId = this._inputSourceManager.connect('sources-changed',
+                                                                   this._onSourcesModified.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
         Main.inputMethod.connect('notify::content-purpose',

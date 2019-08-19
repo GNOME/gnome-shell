@@ -436,11 +436,11 @@ class ActivitiesButton extends PanelMenu.Button {
 
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
-            this.add_accessible_state (Atk.StateType.CHECKED);
+            this.add_accessible_state(Atk.StateType.CHECKED);
         });
         Main.overview.connect('hiding', () => {
             this.remove_style_pseudo_class('overview');
-            this.remove_accessible_state (Atk.StateType.CHECKED);
+            this.remove_accessible_state(Atk.StateType.CHECKED);
         });
 
         this._xdndTimeOut = 0;
@@ -646,7 +646,7 @@ class PanelCorner extends St.DrawingArea {
             Clutter.cairo_set_source_color(cr, backgroundColor);
 
             cr.save();
-            cr.translate(xOffsetDirection * offset, - offset);
+            cr.translate(xOffsetDirection * offset, -offset);
             cr.appendPath(savedPath);
             cr.fill();
             cr.restore();

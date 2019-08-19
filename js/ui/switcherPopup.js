@@ -588,7 +588,7 @@ function drawArrow(area, side) {
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();
 
-    let [width, height] = area.get_surface_size ();
+    let [width, height] = area.get_surface_size();
     let cr = area.get_context();
 
     cr.setLineWidth(1.0);
