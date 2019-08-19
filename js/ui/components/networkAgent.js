@@ -56,7 +56,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
             secret.entry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                           text: secret.value, can_focus: reactive,
-                                          reactive: reactive,
+                                          reactive,
                                           x_expand: true });
             ShellEntry.addContextMenu(secret.entry,
                                       { isPassword: secret.password });
@@ -553,7 +553,7 @@ var VPNRequestHandler = class {
                     contentOverride.secrets.push({
                         label: keyfile.get_string(groups[i], 'Label'),
                         key: groups[i],
-                        value: value,
+                        value,
                         password: keyfile.get_boolean(groups[i], 'IsSecret'),
                     });
                 } else {
