@@ -462,7 +462,7 @@ class ControlsManager extends St.Widget {
     _updateWorkspacesGeometry() {
         let [x, y] = this.get_transformed_position();
         let [width, height] = this.get_transformed_size();
-        let geometry = { x: x, y: y, width: width, height: height };
+        let geometry = { x, y, width, height };
 
         let spacing = this.get_theme_node().get_length('spacing');
         let dashWidth = this._dashSlider.getVisibleWidth() + spacing;

@@ -697,7 +697,7 @@ class WorkspacesDisplay extends St.Widget {
 
     _getMonitorIndexForEvent(event) {
         let [x, y] = event.get_coords();
-        let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
+        let rect = new Meta.Rectangle({ x, y, width: 1, height: 1 });
         return global.display.get_monitor_index_for_rect(rect);
     }
 
@@ -766,7 +766,7 @@ class WorkspacesDisplay extends St.Widget {
         let allocation = this.allocation;
         let width = allocation.x2 - allocation.x1;
         let height = allocation.y2 - allocation.y1;
-        let primaryGeometry = { x: x, y: y, width: width, height: height };
+        let primaryGeometry = { x, y, width, height };
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {

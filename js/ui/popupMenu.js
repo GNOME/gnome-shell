@@ -269,7 +269,7 @@ class PopupMenuItem extends PopupBaseMenuItem {
     _init(text, params) {
         super._init(params);
 
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this.add_child(this.label);
         this.label_actor = this.label;
     }
@@ -330,7 +330,7 @@ var PopupSwitchMenuItem = GObject.registerClass({
     _init(text, active, params) {
         super._init(params);
 
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this._switch = new Switch(active);
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
@@ -416,7 +416,7 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         this._icon = new St.Icon({ style_class: 'popup-menu-icon',
                                    x_align: Clutter.ActorAlign.END });
         this.add_child(this._icon);
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this.add_child(this.label);
         this.label_actor = this.label;
 
@@ -1129,7 +1129,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
             this.add_child(this.icon);
         }
 
-        this.label = new St.Label({ text: text,
+        this.label = new St.Label({ text,
                                     y_expand: true,
                                     y_align: Clutter.ActorAlign.CENTER });
         this.add_child(this.label);
@@ -1251,7 +1251,7 @@ var PopupMenuManager = class {
             return;
 
         let menudata = {
-            menu:              menu,
+            menu,
             openStateChangeId: menu.connect('open-state-changed', this._onMenuOpenState.bind(this)),
             destroyId:         menu.connect('destroy', this._onMenuDestroy.bind(this)),
             enterId:           0,

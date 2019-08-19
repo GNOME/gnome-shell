@@ -86,12 +86,12 @@ var AutoComplete = class AutoComplete {
             let currTime = global.get_current_time();
             if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
                 this._processCompletionRequest({ tabType: 'double',
-                                                 completions: completions,
-                                                 attrHead: attrHead });
+                                                 completions,
+                                                 attrHead });
             } else {
                 this._processCompletionRequest({ tabType: 'single',
-                                                 completions: completions,
-                                                 attrHead: attrHead });
+                                                 completions,
+                                                 attrHead });
             }
             this._lastTabTime = currTime;
         }
@@ -141,9 +141,9 @@ var Notebook = GObject.registerClass({
         scrollview.get_hscroll_bar().hide();
         scrollview.add_actor(child);
 
-        let tabData = { child: child,
-                        labelBox: labelBox,
-                        label: label,
+        let tabData = { child,
+                        labelBox,
+                        label,
                         scrollView: scrollview,
                         _scrollToBottom: false };
         this._tabs.push(tabData);

@@ -404,7 +404,7 @@ var Key = GObject.registerClass({
     _makeKey(key) {
         let label = GLib.markup_escape_text(key, -1);
         let button = new St.Button({
-            label: label,
+            label,
             style_class: 'keyboard-key',
             x_expand: true,
         });
