@@ -1,5 +1,5 @@
 /* exported PointerA11yTimeout */
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GObject, Meta, St } = imports.gi;
 const Main = imports.ui.main;
 const Cairo = imports.cairo;
 
