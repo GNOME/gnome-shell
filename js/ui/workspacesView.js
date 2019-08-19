@@ -247,7 +247,7 @@ var WorkspacesView = class extends WorkspacesViewBase {
         this.scrollAdjustment.ease(index, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: WORKSPACE_SWITCH_TIME,
-            onComplete: () => this._animatingScroll = false
+            onComplete: () => (this._animatingScroll = false)
         });
     }
 

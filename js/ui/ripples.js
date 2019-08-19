@@ -67,7 +67,7 @@ var Ripples = class Ripples {
             delay,
             duration,
             mode: Clutter.AnimationMode.LINEAR,
-            onComplete: () => ripple.visible = false
+            onComplete: () => (ripple.visible = false)
         });
     }
 

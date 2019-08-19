@@ -57,7 +57,7 @@ function waitAndDraw(milliseconds) {
             cb();
     });
 
-    return callback => cb = callback;
+    return callback => (cb = callback);
 }
 
 function waitSignal(object, signal) {
@@ -69,7 +69,7 @@ function waitSignal(object, signal) {
             cb();
     });
 
-    return callback => cb = callback;
+    return callback => (cb = callback);
 }
 
 function extractBootTimestamp() {

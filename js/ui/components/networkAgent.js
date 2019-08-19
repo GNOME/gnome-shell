@@ -624,7 +624,7 @@ var NetworkAgent = class {
         this._pluginDir = Gio.file_new_for_path(Config.VPNDIR);
         try {
             let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
-            monitor.connect('changed', () => this._vpnCacheBuilt = false);
+            monitor.connect('changed', () => (this._vpnCacheBuilt = false));
         } catch (e) {
             log(`Failed to create monitor for VPN plugin dir: ${e.message}`);
         }

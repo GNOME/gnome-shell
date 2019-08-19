@@ -1676,7 +1676,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                                                   'network-transmit-receive');
             this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
-            this._source.connect('destroy', () => this._source = null);
+            this._source.connect('destroy', () => (this._source = null));
             Main.messageTray.add(this._source);
         }
     }
