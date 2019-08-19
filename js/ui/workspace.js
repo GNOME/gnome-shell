@@ -1985,7 +1985,7 @@ var Workspace = class {
     }
 
     _onCloneSelected(clone, time) {
-        let wsIndex = undefined;
+        let wsIndex;
         if (this.metaWorkspace)
             wsIndex = this.metaWorkspace.index();
         Main.activateWindow(clone.metaWindow, time, wsIndex);
