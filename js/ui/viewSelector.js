@@ -458,8 +458,8 @@ var ViewSelector = GObject.registerClass({
 
     _onStageKeyFocusChanged() {
         let focus = global.stage.get_key_focus();
-        let appearFocused = (this._entry.contains(focus) ||
-                             this._searchResults.contains(focus));
+        let appearFocused = this._entry.contains(focus) ||
+                             this._searchResults.contains(focus);
 
         this._text.set_cursor_visible(appearFocused);
 
@@ -517,7 +517,7 @@ var ViewSelector = GObject.registerClass({
     _onTextChanged() {
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        this._searchActive = (terms.length > 0);
+        this._searchActive = terms.length > 0;
         this._searchResults.setTerms(terms);
 
         if (this._searchActive) {

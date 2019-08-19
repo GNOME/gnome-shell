@@ -37,10 +37,10 @@ var EdgeDragAction = GObject.registerClass({
         let [x, y] = this.get_press_coords(0);
         let monitorRect = this._getMonitorRect(x, y);
 
-        return ((this._side == St.Side.LEFT && x < monitorRect.x + EDGE_THRESHOLD) ||
+        return (this._side == St.Side.LEFT && x < monitorRect.x + EDGE_THRESHOLD) ||
                 (this._side == St.Side.RIGHT && x > monitorRect.x + monitorRect.width - EDGE_THRESHOLD) ||
                 (this._side == St.Side.TOP && y < monitorRect.y + EDGE_THRESHOLD) ||
-                (this._side == St.Side.BOTTOM && y > monitorRect.y + monitorRect.height - EDGE_THRESHOLD));
+                (this._side == St.Side.BOTTOM && y > monitorRect.y + monitorRect.height - EDGE_THRESHOLD);
     }
 
     vfunc_gesture_progress(_actor) {

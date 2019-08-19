@@ -169,7 +169,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             return true;
         }
 
-        return (value.length >= 8 && value.length <= 63);
+        return value.length >= 8 && value.length <= 63;
     }
 
     _validateStaticWep(secret) {

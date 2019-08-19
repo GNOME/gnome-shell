@@ -154,7 +154,7 @@ var Button = GObject.registerClass({
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
             let group = global.focus_manager.get_group(this);
             if (group) {
-                let direction = (symbol == Clutter.KEY_Left) ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
+                let direction = symbol == Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
                 group.navigate_focus(this, direction, false);
                 return Clutter.EVENT_STOP;
             }
@@ -179,7 +179,7 @@ var Button = GObject.registerClass({
         // measures are in logical pixels, so make sure to consider the scale
         // factor when computing max-height
         let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
-        this.menu.actor.style = ('max-height: %spx;').format(maxHeight);
+        this.menu.actor.style = 'max-height: %spx;'.format(maxHeight);
     }
 
     _onDestroy() {

@@ -131,7 +131,7 @@ class ATIndicator extends PanelMenu.Button {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
         let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
-        let hasHC = (gtkTheme == HIGH_CONTRAST_THEME);
+        let hasHC = gtkTheme == HIGH_CONTRAST_THEME;
         let highContrast = this._buildItemExtended(
             _("High Contrast"),
             hasHC,
@@ -174,7 +174,7 @@ class ATIndicator extends PanelMenu.Button {
     _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-        let initialSetting = (factor > 1.0);
+        let initialSetting = factor > 1.0;
         let widget = this._buildItemExtended(_("Large Text"),
             initialSetting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
@@ -189,7 +189,7 @@ class ATIndicator extends PanelMenu.Button {
 
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-            let active = (factor > 1.0);
+            let active = factor > 1.0;
             widget.setToggleState(active);
 
             this._queueSyncMenuVisibility();
