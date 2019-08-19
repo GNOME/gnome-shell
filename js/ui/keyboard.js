@@ -362,8 +362,8 @@ var Key = GObject.registerClass({
 
     _onCapturedEvent(actor, event) {
         let type = event.type();
-        let press = (type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN);
-        let release = (type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END);
+        let press = type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN;
+        let release = type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END;
 
         if (event.get_source() == this._boxPointer.bin ||
             this._boxPointer.bin.contains(event.get_source()))
@@ -1350,7 +1350,7 @@ class Keyboard extends St.BoxLayout {
              * basically). We however make things consistent by skipping that
              * second level.
              */
-            let level = (i >= 1 && levels.length == 3) ? i + 1 : i;
+            let level = i >= 1 && levels.length == 3 ? i + 1 : i;
 
             let layout = new KeyContainer();
             layout.shiftKeys = [];
@@ -1439,7 +1439,7 @@ class Keyboard extends St.BoxLayout {
                 if (switchToLevel != null) {
                     this._setActiveLayer(switchToLevel);
                     // Shift only gets latched on long press
-                    this._latched = (switchToLevel != 1);
+                    this._latched = switchToLevel != 1;
                 } else if (keyval != null) {
                     this._keyboardController.keyvalPress(keyval);
                 }
@@ -1609,7 +1609,7 @@ class Keyboard extends St.BoxLayout {
         else if (state == Clutter.InputPanelState.ON)
             enabled = true;
         else if (state == Clutter.InputPanelState.TOGGLE)
-            enabled = (this._keyboardVisible == false);
+            enabled = this._keyboardVisible == false;
         else
             return;
 

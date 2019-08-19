@@ -679,7 +679,7 @@ var SearchResultsView = GObject.registerClass({
     _updateSearchProgress() {
         let haveResults = this._providers.some(provider => {
             let display = provider.display;
-            return (display.getFirstResult() != null);
+            return display.getFirstResult() != null;
         });
 
         this._scrollView.visible = haveResults;
