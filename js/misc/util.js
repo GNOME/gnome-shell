@@ -5,7 +5,6 @@
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
-const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
