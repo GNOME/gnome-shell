@@ -48,7 +48,7 @@ class InputMethod extends Clutter.InputMethod {
 
     _onConnected() {
         this._cancellable = new Gio.Cancellable();
-        this._ibus.create_input_context_async ('gnome-shell', -1,
+        this._ibus.create_input_context_async('gnome-shell', -1,
             this._cancellable, this._setContext.bind(this));
     }
 

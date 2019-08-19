@@ -46,8 +46,8 @@ var EdgeDragAction = GObject.registerClass({
     vfunc_gesture_progress(_actor) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
-        let offsetX = Math.abs (x - startX);
-        let offsetY = Math.abs (y - startY);
+        let offsetX = Math.abs(x - startX);
+        let offsetY = Math.abs(y - startY);
 
         if (offsetX < EDGE_THRESHOLD && offsetY < EDGE_THRESHOLD)
             return true;
