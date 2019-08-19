@@ -70,7 +70,7 @@ var IntrospectService = class {
 
         for (let app of apps) {
             let appInfo = {};
-            let isAppActive = (focusedApp == app);
+            let isAppActive = focusedApp == app;
 
             if (!this._isStandaloneApp(app))
                 continue;
@@ -104,10 +104,10 @@ var IntrospectService = class {
             return false;
 
         let type = window.get_window_type();
-        return (type == Meta.WindowType.NORMAL ||
+        return type == Meta.WindowType.NORMAL ||
                 type == Meta.WindowType.DIALOG ||
                 type == Meta.WindowType.MODAL_DIALOG ||
-                type == Meta.WindowType.UTILITY);
+                type == Meta.WindowType.UTILITY;
     }
 
     GetRunningApplicationsAsync(params, invocation) {
@@ -152,7 +152,7 @@ var IntrospectService = class {
                     'app-id': GLib.Variant.new('s', app.get_id()),
                     'client-type': GLib.Variant.new('u', window.get_client_type()),
                     'is-hidden': GLib.Variant.new('b', window.is_hidden()),
-                    'has-focus': GLib.Variant.new('b', (window == focusWindow)),
+                    'has-focus': GLib.Variant.new('b', window == focusWindow),
                     'width': GLib.Variant.new('u', frameRect.width),
                     'height': GLib.Variant.new('u', frameRect.height),
                 };

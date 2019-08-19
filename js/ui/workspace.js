@@ -399,7 +399,7 @@ var WindowClone = GObject.registerClass({
 
     vfunc_key_press_event(keyEvent) {
         let symbol = keyEvent.keyval;
-        let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
+        let isEnter = symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter;
         if (isEnter) {
             this._activate();
             return true;
@@ -1111,10 +1111,10 @@ function rectEqual(one, two) {
     if (!one || !two)
         return false;
 
-    return (one.x == two.x &&
+    return one.x == two.x &&
             one.y == two.y &&
             one.width == two.width &&
-            one.height == two.height);
+            one.height == two.height;
 }
 
 /**
@@ -1448,9 +1448,9 @@ class Workspace extends St.Widget {
     _delayedWindowRepositioning() {
         let [x, y] = global.get_pointer();
 
-        let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
-        let inWorkspace = (this._fullGeometry.x < x && x < this._fullGeometry.x + this._fullGeometry.width &&
-                           this._fullGeometry.y < y && y < this._fullGeometry.y + this._fullGeometry.height);
+        let pointerHasMoved = this._cursorX != x && this._cursorY != y;
+        let inWorkspace = this._fullGeometry.x < x && x < this._fullGeometry.x + this._fullGeometry.width &&
+                           this._fullGeometry.y < y && y < this._fullGeometry.y + this._fullGeometry.height;
 
         if (pointerHasMoved && inWorkspace) {
             // store current cursor position

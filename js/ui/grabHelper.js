@@ -195,7 +195,7 @@ var GrabHelper = class GrabHelper {
     }
 
     _takeModalGrab() {
-        let firstGrab = (this._modalCount == 0);
+        let firstGrab = this._modalCount == 0;
         if (firstGrab) {
             if (!Main.pushModal(this._owner, this._modalParams))
                 return false;

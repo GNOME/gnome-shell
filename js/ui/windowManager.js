@@ -402,8 +402,8 @@ class TilePreview extends St.Widget {
         if (this._rect && this._rect.equal(tileRect))
             return;
 
-        let changeMonitor = (this._monitorIndex == -1 ||
-                             this._monitorIndex != monitorIndex);
+        let changeMonitor = this._monitorIndex == -1 ||
+                             this._monitorIndex != monitorIndex;
 
         this._monitorIndex = monitorIndex;
         this._rect = tileRect;
@@ -527,7 +527,7 @@ var TouchpadWorkspaceSwitchAction = class {
 
             // Scale deltas up a bit to make it feel snappier
             this._dx += dx * 2;
-            if (!(this._touchpadSettings.get_boolean('natural-scroll')))
+            if (!this._touchpadSettings.get_boolean('natural-scroll'))
                 this._dy -= dy * 2;
             else
                 this._dy += dy * 2;
@@ -569,7 +569,7 @@ var WorkspaceSwitchAction = GObject.registerClass({
         if (!super.vfunc_gesture_prepare(actor))
             return false;
 
-        return (this._allowedModes & Main.actionMode);
+        return this._allowedModes & Main.actionMode;
     }
 
     vfunc_gesture_progress(_actor) {
@@ -1179,8 +1179,8 @@ var WindowManager = class {
             let win = actor.metaWindow;
             let workspaceManager = global.workspace_manager;
             let activeWorkspace = workspaceManager.get_active_workspace();
-            return (!win.is_override_redirect() &&
-                    win.located_on_workspace(activeWorkspace));
+            return !win.is_override_redirect() &&
+                    win.located_on_workspace(activeWorkspace);
         });
 
         if (windows.length == 0)

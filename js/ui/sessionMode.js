@@ -156,8 +156,8 @@ function listModes() {
 var SessionMode = class {
     constructor() {
         _loadModes();
-        let isPrimary = (_modes[global.session_mode] &&
-                         _modes[global.session_mode].isPrimary);
+        let isPrimary = _modes[global.session_mode] &&
+                         _modes[global.session_mode].isPrimary;
         let mode = isPrimary ? global.session_mode : 'user';
         this._modeStack = [mode];
         this._sync();

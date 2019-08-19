@@ -62,8 +62,8 @@ class DwellClickIndicator extends PanelMenu.Button {
 
     _syncMenuVisibility() {
         this.visible =
-          (this._a11ySettings.get_boolean(KEY_DWELL_CLICK_ENABLED) &&
-           this._a11ySettings.get_string(KEY_DWELL_MODE) == DWELL_MODE_WINDOW);
+          this._a11ySettings.get_boolean(KEY_DWELL_CLICK_ENABLED) &&
+           this._a11ySettings.get_string(KEY_DWELL_MODE) == DWELL_MODE_WINDOW;
 
         return GLib.SOURCE_REMOVE;
     }
