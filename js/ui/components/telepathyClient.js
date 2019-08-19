@@ -676,7 +676,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
 
         if (message.direction == NotificationDirection.RECEIVED)
             this.update(this.source.title, messageBody,
-                        { datetime: GLib.DateTime.new_from_unix_local (message.timestamp),
+                        { datetime: GLib.DateTime.new_from_unix_local(message.timestamp),
                           bannerMarkup: true });
 
         let group = (message.direction == NotificationDirection.RECEIVED

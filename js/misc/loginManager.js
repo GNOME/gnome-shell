@@ -103,7 +103,7 @@ var LoginManagerSystemd = class {
 
     getCurrentSessionProxy(callback) {
         if (this._currentSession) {
-            callback (this._currentSession);
+            callback(this._currentSession);
             return;
         }
 
