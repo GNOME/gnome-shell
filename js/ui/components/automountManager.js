@@ -222,7 +222,7 @@ var AutomountManager = class {
             delete volume._allowAutorunExpireId;
         }
         this._volumeQueue =
-            this._volumeQueue.filter(element => (element != volume));
+            this._volumeQueue.filter(element => element != volume);
     }
 
     _reaskPassword(volume) {

@@ -82,7 +82,7 @@ class Animation extends St.Bin {
         if (oldFrameActor)
             oldFrameActor.hide();
 
-        this._frame = (frame % this._animations.get_n_children());
+        this._frame = frame % this._animations.get_n_children();
 
         let newFrameActor = this._animations.get_child_at_index(this._frame);
         if (newFrameActor)

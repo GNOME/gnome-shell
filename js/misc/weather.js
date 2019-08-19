@@ -169,9 +169,9 @@ var WeatherClient = class {
     }
 
     _onInstalledChanged() {
-        let hadApp = (this._weatherApp != null);
+        let hadApp = this._weatherApp != null;
         this._weatherApp = this._appSystem.lookup_app(WEATHER_APP_ID);
-        let haveApp = (this._weatherApp != null);
+        let haveApp = this._weatherApp != null;
 
         if (hadApp !== haveApp)
             this.emit('changed');
@@ -205,7 +205,7 @@ var WeatherClient = class {
 
         this._weatherInfo.abort();
         this._weatherInfo.set_location(location);
-        this._locationValid = (location != null);
+        this._locationValid = location != null;
 
         this._weatherInfo.set_enabled_providers(location ? this._providers : 0);
 

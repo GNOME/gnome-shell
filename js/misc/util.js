@@ -121,7 +121,7 @@ function trySpawn(argv) {
             // We are only interested in the part in the parentheses. (And
             // we can't pattern match the text, since it gets localized.)
             let message = err.message.replace(/.*\((.+)\)/, '$1');
-            throw new (err.constructor)({ code: err.code, message });
+            throw new err.constructor({ code: err.code, message });
         } else {
             throw err;
         }
@@ -329,7 +329,7 @@ function lowerBound(array, val, cmp) {
             max = mid;
     }
 
-    return (min == max || cmp(array[min], val) < 0) ? max : min;
+    return min == max || cmp(array[min], val) < 0 ? max : min;
 }
 
 // insertSorted:
