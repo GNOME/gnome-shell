@@ -142,7 +142,7 @@ var IBusManager = class {
             });
             this._panelService.connect('focus-in', (panel, path) => {
                 if (!GLib.str_has_suffix(path, '/InputContext_1'))
-                    this.emit ('focus-in');
+                    this.emit('focus-in');
             });
             this._panelService.connect('focus-out', () => this.emit('focus-out'));
 

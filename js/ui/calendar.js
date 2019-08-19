@@ -390,7 +390,7 @@ var Calendar = GObject.registerClass({
             reactive: true
         });
 
-        this._buildHeader ();
+        this._buildHeader();
     }
 
     setEventSource(eventSource) {
