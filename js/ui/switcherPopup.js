@@ -570,7 +570,7 @@ var SwitcherList = GObject.registerClass({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._leftArrow.allocate(childBox, flags);
-        this._leftArrow.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
+        this._leftArrow.opacity = this._scrollableLeft && scrollable ? 255 : 0;
 
         arrowWidth = Math.floor(rightPadding / 3);
         arrowHeight = arrowWidth * 2;
@@ -579,7 +579,7 @@ var SwitcherList = GObject.registerClass({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._rightArrow.allocate(childBox, flags);
-        this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
+        this._rightArrow.opacity = this._scrollableRight && scrollable ? 255 : 0;
     }
 });
 

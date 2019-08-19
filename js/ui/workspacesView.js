@@ -228,9 +228,9 @@ class WorkspacesView extends WorkspacesViewBase {
             if (this._animating || this._scrolling || this._gestureActive)
                 workspace.show();
             else if (this._inDrag)
-                workspace.visible = (Math.abs(w - active) <= 1);
+                workspace.visible = Math.abs(w - active) <= 1;
             else
-                workspace.visible = (w == active);
+                workspace.visible = w == active;
         }
     }
 
@@ -753,7 +753,7 @@ class WorkspacesDisplay extends St.Widget {
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = (i == this._primaryIndex) ? this._fullGeometry : monitors[i];
+            let geometry = i == this._primaryIndex ? this._fullGeometry : monitors[i];
             this._workspacesViews[i].setFullGeometry(geometry);
         }
     }
@@ -770,7 +770,7 @@ class WorkspacesDisplay extends St.Widget {
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = (i == this._primaryIndex) ? primaryGeometry : monitors[i];
+            let geometry = i == this._primaryIndex ? primaryGeometry : monitors[i];
             this._workspacesViews[i].setActualGeometry(geometry);
         }
     }

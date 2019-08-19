@@ -806,7 +806,7 @@ var ThumbnailsBox = GObject.registerClass({
             let [, h] = this._thumbnails[i].get_transformed_size();
             let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
             let nextTargetBase = targetBase + h + spacing;
-            let nextTargetTop =  nextTargetBase - spacing - ((i == length - 1) ? 0 : WORKSPACE_CUT_SIZE);
+            let nextTargetTop =  nextTargetBase - spacing - (i == length - 1 ? 0 : WORKSPACE_CUT_SIZE);
 
             // Expand the target to include the placeholder, if it exists.
             if (i == this._dropPlaceholderPos)
@@ -1215,7 +1215,7 @@ var ThumbnailsBox = GObject.registerClass({
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
 
-        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
 
         if (this._thumbnails.length == 0) // not visible
             return;
@@ -1350,7 +1350,7 @@ var ThumbnailsBox = GObject.registerClass({
         childBox.x1 -= indicatorLeftFullBorder;
         childBox.x2 += indicatorRightFullBorder;
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
-        childBox.y2 = (indicatorY2 ? indicatorY2 : (indicatorY1 + thumbnailHeight)) + indicatorBottomFullBorder;
+        childBox.y2 = (indicatorY2 ? indicatorY2 : indicatorY1 + thumbnailHeight) + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
     }
 

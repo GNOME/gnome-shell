@@ -96,9 +96,9 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         }
 
         if (this.prompt.confirm_visible) {
-            var label = new St.Label(({ style_class: 'prompt-dialog-password-label',
-                                        x_align: Clutter.ActorAlign.START,
-                                        y_align: Clutter.ActorAlign.CENTER }));
+            var label = new St.Label({ style_class: 'prompt-dialog-password-label',
+                                       x_align: Clutter.ActorAlign.START,
+                                       y_align: Clutter.ActorAlign.CENTER });
             label.set_text(_("Type again:"));
             this._confirmEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                                 text: '',

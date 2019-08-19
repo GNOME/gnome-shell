@@ -98,8 +98,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         let hwAirplaneMode = this._manager.hwAirplaneMode;
         let showAirplaneMode = this._manager.shouldShowAirplaneMode;
 
-        this._indicator.visible = (airplaneMode && showAirplaneMode);
-        this._item.visible = (airplaneMode && showAirplaneMode);
+        this._indicator.visible = airplaneMode && showAirplaneMode;
+        this._item.visible = airplaneMode && showAirplaneMode;
         this._offItem.setSensitive(!hwAirplaneMode);
 
         if (hwAirplaneMode)

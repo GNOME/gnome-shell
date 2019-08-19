@@ -12,9 +12,9 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 var SIDE_CONTROLS_ANIMATION_TIME = 160;
 
 function getRtlSlideDirection(direction, actor) {
-    let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
+    let rtl = actor.text_direction == Clutter.TextDirection.RTL;
     if (rtl) {
-        direction = (direction == SlideDirection.LEFT)
+        direction = direction == SlideDirection.LEFT
             ? SlideDirection.RIGHT : SlideDirection.LEFT;
     }
     return direction;
@@ -67,7 +67,7 @@ var SlideLayout = GObject.registerClass({
         // flags only determine what to do if the allocated box is bigger
         // than the actor's box.
         let realDirection = getRtlSlideDirection(this._direction, child);
-        let alignX = (realDirection == SlideDirection.LEFT)
+        let alignX = realDirection == SlideDirection.LEFT
             ? availWidth - natWidth
             : availWidth - natWidth * this._slideX;
 
@@ -178,7 +178,7 @@ class SlidingControl extends St.Widget {
         let translationEnd = 0;
         let translation = this._getTranslation();
 
-        let shouldShow = (this._getSlide() > 0);
+        let shouldShow = this._getSlide() > 0;
         if (shouldShow)
             translationStart = translation;
         else
@@ -489,9 +489,9 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS);
-        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
+        let dashVisible = activePage == ViewSelector.ViewPage.WINDOWS ||
+                           activePage == ViewSelector.ViewPage.APPS;
+        let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
 
         if (dashVisible)
             this._dashSlider.slideIn();
@@ -509,7 +509,7 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        this._dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
+        this._dashSpacer.visible = activePage == ViewSelector.ViewPage.WINDOWS;
     }
 
     _onPageEmpty() {
