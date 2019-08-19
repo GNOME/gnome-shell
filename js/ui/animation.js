@@ -10,7 +10,7 @@ var SPINNER_ANIMATION_DELAY = 1000;
 var Animation = GObject.registerClass(
 class Animation extends St.Bin {
     _init(file, width, height, speed) {
-        super._init({ width: width, height: height });
+        super._init({ width, height });
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));

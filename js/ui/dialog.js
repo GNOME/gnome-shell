@@ -117,7 +117,7 @@ class Dialog extends St.Widget {
                                      can_focus: true,
                                      x_expand: true,
                                      y_expand: true,
-                                     label: label });
+                                     label });
         button.connect('clicked', action);
 
         buttonInfo['button'] = button;

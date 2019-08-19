@@ -104,7 +104,7 @@ var CtrlAltTabManager = class CtrlAltTabManager {
                                  Main.activateWindow(windows[i], timestamp);
                              },
                              iconActor: icon,
-                             iconName: iconName,
+                             iconName,
                              sortGroup: SortGroup.MIDDLE });
             }
         }

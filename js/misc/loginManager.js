@@ -185,7 +185,7 @@ var LoginManagerSystemd = class {
                 try {
                     let [outVariant_, fdList] = proxy.call_with_unix_fd_list_finish(result);
                     fd = fdList.steal_fds()[0];
-                    callback(new Gio.UnixInputStream({ fd: fd }));
+                    callback(new Gio.UnixInputStream({ fd }));
                 } catch (e) {
                     logError(e, "Error getting systemd inhibitor");
                     callback(null);

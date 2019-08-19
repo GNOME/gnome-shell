@@ -710,7 +710,7 @@ var AllView = GObject.registerClass({
             else
                 opacity = 255;
             this._items[id].ease({
-                opacity: opacity,
+                opacity,
                 duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
             });
@@ -1029,14 +1029,14 @@ class AppDisplay extends St.BoxLayout {
                                  style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
-        this._views[Views.FREQUENT] = { 'view': view, 'control': button };
+        this._views[Views.FREQUENT] = { view, 'control': button };
 
         view = new AllView();
         button = new St.Button({ label: _("All"),
                                  style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
-        this._views[Views.ALL] = { 'view': view, 'control': button };
+        this._views[Views.ALL] = { view, 'control': button };
 
         this._viewStackLayout = new ViewStackLayout();
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
@@ -1472,7 +1472,7 @@ var FolderIcon = GObject.registerClass({
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path: path });
+                                          path });
         this._delegate = this;
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
