@@ -272,7 +272,7 @@ var ShellUserVerifier = class {
         let interval = this._getIntervalForMessage(message);
 
         this.hasPendingMessages = true;
-        this._messageQueue.push({ text: message, type: messageType, interval: interval });
+        this._messageQueue.push({ text: message, type: messageType, interval });
         this._queueMessageTimeout();
     }
 

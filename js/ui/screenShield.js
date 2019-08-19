@@ -600,7 +600,7 @@ var ScreenShield = class {
                                      height: monitor.height });
 
         let bgManager = new Background.BackgroundManager({ container: widget,
-                                                           monitorIndex: monitorIndex,
+                                                           monitorIndex,
                                                            controlPosition: false,
                                                            settingsSchema: SCREENSAVER_SCHEMA });
 
@@ -1026,8 +1026,7 @@ var ScreenShield = class {
             });
         } else {
             this._lockScreenGroup.fixed_position_set = false;
-            this._lockScreenShown({ fadeToBlack: fadeToBlack,
-                                    animateFade: false });
+            this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
         this._lockScreenGroup.grab_key_focus();
