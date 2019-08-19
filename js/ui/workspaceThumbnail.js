@@ -2,7 +2,6 @@
 /* exported WorkspaceThumbnail, ThumbnailsBox */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -389,7 +388,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            let id = Mainloop.idle_add(() => {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 if (!this._removed &&
                     metaWin.get_compositor_private() &&
                     metaWin.get_workspace() == this.metaWorkspace)

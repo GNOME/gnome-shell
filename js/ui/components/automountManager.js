@@ -2,7 +2,6 @@
 /* exported Component */
 
 const { Gio, GLib } = imports.gi;
-const Mainloop = imports.mainloop;
 const Params = imports.misc.params;
 
 const GnomeSession = imports.misc.gnomeSession;
@@ -39,7 +38,7 @@ var AutomountManager = class {
         this._driveDisconnectedId = this._volumeMonitor.connect('drive-disconnected', this._onDriveDisconnected.bind(this));
         this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', this._onDriveEjectButton.bind(this));
 
-        this._mountAllId = Mainloop.idle_add(this._startupMountAll.bind(this));
+        this._mountAllId = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._startupMountAll.bind(this));
         GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     }
 
@@ -51,7 +50,7 @@ var AutomountManager = class {
         this._volumeMonitor.disconnect(this._driveEjectButtonId);
 
         if (this._mountAllId > 0) {
-            Mainloop.source_remove(this._mountAllId);
+            GLib.source_remove(this._mountAllId);
             this._mountAllId = 0;
         }
     }
@@ -220,7 +219,7 @@ var AutomountManager = class {
 
     _onVolumeRemoved(monitor, volume) {
         if (volume._allowAutorunExpireId && volume._allowAutorunExpireId > 0) {
-            Mainloop.source_remove(volume._allowAutorunExpireId);
+            GLib.source_remove(volume._allowAutorunExpireId);
             delete volume._allowAutorunExpireId;
         }
         this._volumeQueue = 
@@ -249,7 +248,7 @@ var AutomountManager = class {
     }
 
     _allowAutorunExpire(volume) {
-        let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
+        let id = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
             volume.allowAutorun = false;
             delete volume._allowAutorunExpireId;
             return GLib.SOURCE_REMOVE;

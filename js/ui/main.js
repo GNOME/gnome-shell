@@ -9,7 +9,6 @@
             initializeDeferredWork, getThemeStylesheet, setThemeStylesheet */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const AccessDialog = imports.ui.accessDialog;
 const AudioDeviceSelection = imports.ui.audioDeviceSelection;
@@ -620,7 +619,7 @@ function _runDeferredWork(workId) {
     _deferredWorkQueue.splice(index, 1);
     _deferredWorkData[workId].callback();
     if (_deferredWorkQueue.length == 0 && _deferredTimeoutId > 0) {
-        Mainloop.source_remove(_deferredTimeoutId);
+        GLib.source_remove(_deferredTimeoutId);
         _deferredTimeoutId = 0;
     }
 }
@@ -708,7 +707,7 @@ function queueDeferredWork(workId) {
         _queueBeforeRedraw(workId);
         return;
     } else if (_deferredTimeoutId == 0) {
-        _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, () => {
+        _deferredTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, DEFERRED_TIMEOUT_SECONDS, () => {
             _runAllDeferredWork();
             _deferredTimeoutId = 0;
             return GLib.SOURCE_REMOVE;

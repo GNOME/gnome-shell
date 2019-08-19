@@ -2,7 +2,6 @@
 /* exported OsdWindowManager */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const BarLevel = imports.ui.barLevel;
 const Layout = imports.ui.layout;
@@ -143,9 +142,9 @@ var OsdWindow = class {
         }
 
         if (this._hideTimeoutId)
-            Mainloop.source_remove(this._hideTimeoutId);
-        this._hideTimeoutId = Mainloop.timeout_add(HIDE_TIMEOUT,
-                                                   this._hide.bind(this));
+            GLib.source_remove(this._hideTimeoutId);
+        this._hideTimeoutId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT, HIDE_TIMEOUT, this._hide.bind(this));
         GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
     }
 
@@ -153,7 +152,7 @@ var OsdWindow = class {
         if (!this._hideTimeoutId)
             return;
 
-        Mainloop.source_remove(this._hideTimeoutId);
+        GLib.source_remove(this._hideTimeoutId);
         this._hide();
     }
 

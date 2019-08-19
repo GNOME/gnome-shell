@@ -17,8 +17,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const Mainloop = imports.mainloop;
-
 const { AccountsService, Clutter, Gio,
         GLib, GObject, Pango, Polkit, Shell, St }  = imports.gi;
 
@@ -565,7 +563,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
 
-        this._timerId = Mainloop.timeout_add_seconds(1, () => {
+        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
             let currentTime = GLib.get_monotonic_time();
             let secondsElapsed = ((currentTime - startTime) / 1000000);
 
@@ -587,7 +585,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
     _stopTimer() {
         if (this._timerId > 0) {
-            Mainloop.source_remove(this._timerId);
+            GLib.source_remove(this._timerId);
             this._timerId = 0;
         }
 

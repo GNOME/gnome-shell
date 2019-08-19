@@ -2,7 +2,6 @@
 /* exported WorkspaceSwitcherPopup */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 
@@ -195,14 +194,14 @@ class WorkspaceSwitcherPopup extends St.Widget {
 
         this._redisplay();
         if (this._timeoutId != 0)
-            Mainloop.source_remove(this._timeoutId);
-        this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, this._onTimeout.bind(this));
+            GLib.source_remove(this._timeoutId);
+        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISPLAY_TIMEOUT, this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
         this._show();
     }
 
     _onTimeout() {
-        Mainloop.source_remove(this._timeoutId);
+        GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
         this._container.ease({
             opacity: 0.0,
@@ -215,7 +214,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
 
     _onDestroy() {
         if (this._timeoutId)
-            Mainloop.source_remove(this._timeoutId);
+            GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
 
         let workspaceManager = global.workspace_manager;

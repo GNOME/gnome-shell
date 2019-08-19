@@ -3,7 +3,6 @@
             WindowCyclerPopup */
 
 const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
@@ -292,7 +291,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         if (this._thumbnails)
             this._destroyThumbnails();
         if (this._thumbnailTimeoutId != 0)
-            Mainloop.source_remove(this._thumbnailTimeoutId);
+            GLib.source_remove(this._thumbnailTimeoutId);
     }
 
     /**
@@ -327,7 +326,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         }
 
         if (this._thumbnailTimeoutId != 0) {
-            Mainloop.source_remove(this._thumbnailTimeoutId);
+            GLib.source_remove(this._thumbnailTimeoutId);
             this._thumbnailTimeoutId = 0;
         }
 
@@ -344,7 +343,8 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._thumbnails.highlight(window, forceAppFocus);
         } else if (this._items[this._selectedIndex].cachedWindows.length > 1 &&
                    !forceAppFocus) {
-            this._thumbnailTimeoutId = Mainloop.timeout_add (
+            this._thumbnailTimeoutId = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
                 THUMBNAIL_POPUP_TIME,
                 this._timeoutPopupThumbnails.bind(this));
             GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
@@ -712,7 +712,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _onDestroy() {
         if (this._mouseTimeOutId != 0)
-            Mainloop.source_remove(this._mouseTimeOutId);
+            GLib.source_remove(this._mouseTimeOutId);
 
         this.icons.forEach(icon => {
             icon.app.disconnect(icon._stateChangedId);
@@ -791,14 +791,16 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     // activation when the thumbnail list is open
     _onItemEnter(index) {
         if (this._mouseTimeOutId != 0)
-            Mainloop.source_remove(this._mouseTimeOutId);
+            GLib.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
-            this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
-                                                        () => {
-                                                            this._enterItem(index);
-                                                            this._mouseTimeOutId = 0;
-                                                            return GLib.SOURCE_REMOVE;
-                                                        });
+            this._mouseTimeOutId = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
+                APP_ICON_HOVER_TIMEOUT,
+                () => {
+                    this._enterItem(index);
+                    this._mouseTimeOutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else {
             this._itemEntered(index);
