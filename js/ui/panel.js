@@ -57,8 +57,7 @@ function _unpremultiply(color) {
     let red = Math.min((color.red * 255 + 127) / color.alpha, 255);
     let green = Math.min((color.green * 255 + 127) / color.alpha, 255);
     let blue = Math.min((color.blue * 255 + 127) / color.alpha, 255);
-    return new Clutter.Color({ red: red, green: green,
-                               blue: blue, alpha: color.alpha });
+    return new Clutter.Color({ red, green, blue, alpha: color.alpha });
 }
 
 class AppMenu extends PopupMenu.PopupMenu {
