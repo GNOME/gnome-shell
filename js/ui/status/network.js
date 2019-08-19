@@ -1016,7 +1016,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     }
 
     _networkCompare(network, accessPoint) {
-        if (!network.ssid.equal (accessPoint.get_ssid()))
+        if (!network.ssid.equal(accessPoint.get_ssid()))
             return false;
         if (network.mode != accessPoint.mode)
             return false;

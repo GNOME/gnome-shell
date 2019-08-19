@@ -204,7 +204,7 @@ function _initializeUI() {
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
     global.display.connect('overlay-key', () => {
-        if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
+        if (!_a11ySettings.get_boolean(STICKY_KEYS_ENABLE))
             overview.toggle();
     });
 
@@ -374,11 +374,13 @@ function _loadOskLayouts() {
  * Reloads the theme CSS file
  */
 function loadTheme() {
-    let themeContext = St.ThemeContext.get_for_stage (global.stage);
+    let themeContext = St.ThemeContext.get_for_stage(global.stage);
     let previousTheme = themeContext.get_theme();
 
-    let theme = new St.Theme ({ application_stylesheet: _cssStylesheet,
-                                default_stylesheet: _defaultCssStylesheet });
+    let theme = new St.Theme({
+        application_stylesheet: _cssStylesheet,
+        default_stylesheet: _defaultCssStylesheet
+    });
 
     if (theme.default_stylesheet == null)
         throw new Error("No valid stylesheet found for '%s'".format(sessionMode.stylesheetName));
@@ -390,7 +392,7 @@ function loadTheme() {
             theme.load_stylesheet(customStylesheets[i]);
     }
 
-    themeContext.set_theme (theme);
+    themeContext.set_theme(theme);
 }
 
 /**

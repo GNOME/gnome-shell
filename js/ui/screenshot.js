@@ -172,7 +172,7 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_area (x, y, width, height, stream,
+        screenshot.screenshot_area(x, y, width, height, stream,
             (o, res) => {
                 try {
                     let [result, area] =
@@ -180,7 +180,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
@@ -193,7 +193,7 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_window (includeFrame, includeCursor, stream,
+        screenshot.screenshot_window(includeFrame, includeCursor, stream,
             (o, res) => {
                 try {
                     let [result, area] =
@@ -201,7 +201,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
@@ -222,7 +222,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
