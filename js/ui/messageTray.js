@@ -153,6 +153,7 @@ var NotificationPolicy = class NotificationPolicy {
     // Do nothing for the default policy. These methods are only useful for the
     // GSettings policy.
     store() { }
+
     destroy() { }
 
     get enable() {
