@@ -244,7 +244,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
         this._orientationLockAction.connect('clicked', () => {
-            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE),
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockOrientation();
         });
         item.add(this._orientationLockAction, { expand: true, x_fill: false });
