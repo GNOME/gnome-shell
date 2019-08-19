@@ -877,9 +877,9 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
 
-        this._labels = new Array();
-        this._thumbnailBins = new Array();
-        this._clones = new Array();
+        this._labels = [];
+        this._thumbnailBins = [];
+        this._clones = [];
         this._windows = windows;
 
         for (let i = 0; i < windows.length; i++) {
@@ -940,7 +940,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
         }
 
         // Make sure we only do this once
-        this._thumbnailBins = new Array();
+        this._thumbnailBins = [];
     }
 
     _removeThumbnail(source, clone) {

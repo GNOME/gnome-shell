@@ -104,9 +104,10 @@ class KeyContainer extends St.Widget {
         this._currentRow++;
         this._currentCol = 0;
 
-        let row = new Object();
-        row.keys = [];
-        row.width = 0;
+        let row = {
+            keys: [],
+            width: 0,
+        };
         this._rows.push(row);
     }
 
