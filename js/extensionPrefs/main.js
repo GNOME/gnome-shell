@@ -126,7 +126,7 @@ class Application extends Gtk.Application {
 
         let buffer = new Gtk.TextBuffer({ text: errortext });
         let textview = new Gtk.TextView({
-            buffer: buffer,
+            buffer,
             wrap_mode: Gtk.WrapMode.WORD,
             monospace: true,
             editable: false,

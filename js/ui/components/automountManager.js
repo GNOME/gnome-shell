@@ -230,7 +230,7 @@ var AutomountManager = class {
         let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
         let operation =
             new ShellMountOperation.ShellMountOperation(volume,
-                                                        { existingDialog: existingDialog });
+                                                        { existingDialog });
         this._mountVolume(volume, operation);
     }
 

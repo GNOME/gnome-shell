@@ -19,7 +19,7 @@ var REPOSITORY_URL_UPDATE   = `${REPOSITORY_URL_BASE}/update-info/`;
 let _httpSession;
 
 function installExtension(uuid, invocation) {
-    let params = { uuid: uuid,
+    let params = { uuid,
                    shell_version: Config.PACKAGE_VERSION };
 
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);

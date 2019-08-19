@@ -456,7 +456,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                         this._confirm(signal);
                     });
                 },
-                label: label,
+                label,
             });
         }
 

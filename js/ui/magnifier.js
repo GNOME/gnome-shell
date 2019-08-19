@@ -858,8 +858,8 @@ var ZoomRegion = class ZoomRegion {
      *                  of the magnified view.
      */
     setMagFactor(xMagFactor, yMagFactor) {
-        this._changeROI({ xMagFactor: xMagFactor,
-                          yMagFactor: yMagFactor,
+        this._changeROI({ xMagFactor,
+                          yMagFactor,
                           redoCursorTracking: this._followingCursor });
     }
 
