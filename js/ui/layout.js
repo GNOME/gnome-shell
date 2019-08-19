@@ -194,7 +194,7 @@ var LayoutManager = GObject.registerClass({
     _init() {
         super._init();
 
-        this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+        this._rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;

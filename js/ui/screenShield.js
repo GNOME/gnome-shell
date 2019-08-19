@@ -671,12 +671,12 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.SHOWN)
             return Clutter.EVENT_PROPAGATE;
 
-        let isEnter = (symbol == Clutter.KEY_Return ||
+        let isEnter = symbol == Clutter.KEY_Return ||
                        symbol == Clutter.KEY_KP_Enter ||
-                       symbol == Clutter.KEY_ISO_Enter);
-        let isEscape = (symbol == Clutter.KEY_Escape);
-        let isLiftChar = (GLib.unichar_isprint(unichar) &&
-                          (this._isLocked || !GLib.unichar_isgraph(unichar)));
+                       symbol == Clutter.KEY_ISO_Enter;
+        let isEscape = symbol == Clutter.KEY_Escape;
+        let isLiftChar = GLib.unichar_isprint(unichar) &&
+                          (this._isLocked || !GLib.unichar_isgraph(unichar));
         if (!isEnter && !isEscape && !isLiftChar)
             return Clutter.EVENT_PROPAGATE;
 
@@ -711,8 +711,8 @@ var ScreenShield = class {
     _syncInhibitor() {
         let lockEnabled = this._settings.get_boolean(LOCK_ENABLED_KEY);
         let lockLocked = this._lockSettings.get_boolean(DISABLE_LOCK_KEY);
-        let inhibit = (this._loginSession && this._loginSession.Active &&
-                       !this._isActive && lockEnabled && !lockLocked);
+        let inhibit = this._loginSession && this._loginSession.Active &&
+                       !this._isActive && lockEnabled && !lockLocked;
         if (inhibit) {
             this._loginManager.inhibit(_("GNOME needs to lock the screen"),
                 inhibitor => {
@@ -793,7 +793,7 @@ var ScreenShield = class {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
             let h = global.stage.height;
-            let duration = MANUAL_FADE_TIME * (-this._lockScreenGroup.y) / h;
+            let duration = MANUAL_FADE_TIME * -this._lockScreenGroup.y / h;
             this._lockScreenGroup.remove_all_transitions();
             this._lockScreenGroup.ease({
                 y: 0,
@@ -945,7 +945,7 @@ var ScreenShield = class {
             // use the same speed regardless of original position
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
-            let delta = (h + this._lockScreenGroup.y);
+            let delta = h + this._lockScreenGroup.y;
             let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
 
             velocity = Math.max(minVelocity, velocity);

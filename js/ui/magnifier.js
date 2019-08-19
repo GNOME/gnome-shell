@@ -118,7 +118,7 @@ var Magnifier = class Magnifier {
         });
 
         // Export to dbus.
-        (new MagnifierDBus.ShellMagnifier());
+        new MagnifierDBus.ShellMagnifier();
         this.setActive(St.Settings.get().magnifier_active);
     }
 
@@ -466,7 +466,7 @@ var Magnifier = class Magnifier {
     getCrosshairsClip() {
         if (this._crossHairs) {
             let [clipWidth, clipHeight] = this._crossHairs.getClip();
-            return (clipWidth > 0 && clipHeight > 0);
+            return clipWidth > 0 && clipHeight > 0;
         } else {
             return false;
         }
@@ -1420,10 +1420,9 @@ var ZoomRegion = class ZoomRegion {
             let xMouse = this._magnifier.xMouse;
             let yMouse = this._magnifier.yMouse;
 
-            mouseIsOver = (
+            mouseIsOver =
                 xMouse >= this._viewPortX && xMouse < (this._viewPortX + this._viewPortWidth) &&
-                yMouse >= this._viewPortY && yMouse < (this._viewPortY + this._viewPortHeight)
-            );
+                yMouse >= this._viewPortY && yMouse < (this._viewPortY + this._viewPortHeight);
         }
         return mouseIsOver;
     }
@@ -1495,14 +1494,14 @@ var ZoomRegion = class ZoomRegion {
         let yRoiBottom = yRoi + heightRoi - cursorHeight;
 
         if (xPoint < xRoi)
-            xPos -= (xRoi - xPoint);
+            xPos -= xRoi - xPoint;
         else if (xPoint > xRoiRight)
-            xPos += (xPoint - xRoiRight);
+            xPos += xPoint - xRoiRight;
 
         if (yPoint < yRoi)
-            yPos -= (yRoi - yPoint);
+            yPos -= yRoi - yPoint;
         else if (yPoint > yRoiBottom)
-            yPos += (yPoint - yRoiBottom);
+            yPos += yPoint - yRoiBottom;
 
         return [xPos, yPos];
     }
@@ -1868,8 +1867,8 @@ var MagShaderEffects = class MagShaderEffects {
         // it modifies the brightness and/or contrast.
         let [cRed, cGreen, cBlue] = this._brightnessContrast.get_contrast();
         this._brightnessContrast.set_enabled(
-            (bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE ||
-             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE)
+            bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE ||
+             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE
         );
     }
 

@@ -181,7 +181,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             return -1;
 
         // finally, if both providers are found, return their order in the list
-        return (idxA - idxB);
+        return idxA - idxB;
     });
 
     callback(loadedProviders);

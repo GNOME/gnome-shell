@@ -678,8 +678,8 @@ var IconGrid = GObject.registerClass({
 
     nRows(forWidth) {
         let children = this._getVisibleChildren();
-        let nColumns = (forWidth < 0) ? children.length : this._computeLayout(forWidth)[0];
-        let nRows = (nColumns > 0) ? Math.ceil(children.length / nColumns) : 0;
+        let nColumns = forWidth < 0 ? children.length : this._computeLayout(forWidth)[0];
+        let nRows = nColumns > 0 ? Math.ceil(children.length / nColumns) : 0;
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
         return nRows;
@@ -798,7 +798,7 @@ var IconGrid = GObject.registerClass({
             let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
             let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
 
-            let neededSpacePerItem = (neededWidth > neededHeight)
+            let neededSpacePerItem = neededWidth > neededHeight
                 ? Math.ceil(neededWidth / this._minColumns)
                 : Math.ceil(neededHeight / this._minRows);
             this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
@@ -976,7 +976,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let childrenPerRow = this._childrenPerPage / this._rowsPerPage;
         let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
 
-        let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1 : sourceRow;
+        let nRowsAbove = side == St.Side.TOP ? sourceRow + 1 : sourceRow;
         let nRowsBelow = this._rowsPerPage - nRowsAbove;
 
         let nRowsUp, nRowsDown;

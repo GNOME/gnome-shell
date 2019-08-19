@@ -93,7 +93,7 @@ class Indicator extends PanelMenu.SystemIndicator {
                                            this._getMaxAccuracyLevel());
 
         authorizer.authorize(accuracyLevel => {
-            let ret = (accuracyLevel != GeoclueAccuracyLevel.NONE);
+            let ret = accuracyLevel != GeoclueAccuracyLevel.NONE;
             invocation.return_value(GLib.Variant.new('(bu)',
                                                      [ret, accuracyLevel]));
         });

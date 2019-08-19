@@ -19,7 +19,7 @@ const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 
-const HAVE_TP = (Tp != null && Tpl != null);
+const HAVE_TP = Tp != null && Tpl != null;
 
 // See Notification.appendMessage
 var SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
@@ -158,7 +158,7 @@ class TelepathyClient extends Tp.BaseClient {
                 continue;
 
             /* Only observe contact text channels */
-            if ((!(channel instanceof Tp.TextChannel)) ||
+            if (!(channel instanceof Tp.TextChannel) ||
                targetHandleType != Tp.HandleType.CONTACT)
                 continue;
 
@@ -683,8 +683,8 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
                           bannerMarkup: true });
         }
 
-        let group = (message.direction == NotificationDirection.RECEIVED
-            ? 'received' : 'sent');
+        let group = message.direction == NotificationDirection.RECEIVED
+            ? 'received' : 'sent';
 
         this._append({ body: messageBody,
                        group,
@@ -698,7 +698,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             return;
 
         let lastMessageTime = this.messages[0].timestamp;
-        let currentTime = (Date.now() / 1000);
+        let currentTime = Date.now() / 1000;
 
         // Keep the scrollback from growing too long. If the most
         // recent message (before the one we just added) is within
@@ -706,7 +706,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
         // SCROLLBACK_RECENT_LENGTH previous messages. Otherwise
         // we'll keep SCROLLBACK_IDLE_LENGTH messages.
 
-        let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME)
+        let maxLength = lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME
             ? SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
 
         let filteredHistory = this.messages.filter(item => item.realMessage);
@@ -729,7 +729,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
      *  noTimestamp: suppress timestamp signal?
      */
     _append(props) {
-        let currentTime = (Date.now() / 1000);
+        let currentTime = Date.now() / 1000;
         props = Params.parse(props, { body: null,
                                       group: null,
                                       styles: [],
