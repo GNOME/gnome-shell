@@ -43,7 +43,7 @@ class Dialog extends St.Widget {
         });
         this._dialog.add_child(this.contentLayout);
 
-        this.buttonLayout = new St.Widget ({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
+        this.buttonLayout = new St.Widget({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
         this._dialog.add_child(this.buttonLayout);
     }
 
@@ -96,7 +96,7 @@ class Dialog extends St.Widget {
     }
 
     addContent(actor) {
-        this.contentLayout.add (actor, { expand: true });
+        this.contentLayout.add(actor, { expand: true });
     }
 
     addButton(buttonInfo) {

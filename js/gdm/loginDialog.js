@@ -125,7 +125,7 @@ var UserListItem = GObject.registerClass({
 
         let startTime = GLib.get_monotonic_time();
 
-        this._timedLoginTimeoutId = GLib.timeout_add (GLib.PRIORITY_DEFAULT, 33,
+        this._timedLoginTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 33,
             () => {
                 let currentTime = GLib.get_monotonic_time();
                 let elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
@@ -509,7 +509,7 @@ var LoginDialog = GObject.registerClass({
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
             (list, sessionId) => {
-                this._greeter.call_select_session_sync (sessionId, null);
+                this._greeter.call_select_session_sync(sessionId, null);
             });
         this._sessionMenuButton.opacity = 0;
         this._sessionMenuButton.show();

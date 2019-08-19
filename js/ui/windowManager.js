@@ -534,7 +534,7 @@ var TouchpadWorkspaceSwitchAction = class {
 
             this.emit('motion', this._dx, this._dy);
         } else {
-            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && ! this._checkActivated()) ||
+            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && !this._checkActivated()) ||
                 event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
                 this.emit('cancel');
 
@@ -635,7 +635,7 @@ var AppSwitchAction = GObject.registerClass({
         const LONG_PRESS_TIMEOUT = 250;
 
         let nPoints = this.get_n_current_points();
-        let event = this.get_last_event (nPoints - 1);
+        let event = this.get_last_event(nPoints - 1);
 
         if (nPoints == 3) {
             this._longPressStartTime = event.get_time();
@@ -1029,7 +1029,7 @@ var WindowManager = class {
         global.display.connect('pad-mode-switch', (display, pad, group, mode) => {
             let labels = [];
 
-            //FIXME: Fix num buttons
+            // FIXME: Fix num buttons
             for (let i = 0; i < 50; i++) {
                 let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
                 labels.push(str ? str : '');
@@ -1192,7 +1192,7 @@ var WindowManager = class {
         if (focusWindow == null) {
             nextWindow = windows[0].metaWindow;
         } else {
-            let index = this._lookupIndex (windows, focusWindow) + 1;
+            let index = this._lookupIndex(windows, focusWindow) + 1;
 
             if (index >= windows.length)
                 index = 0;
@@ -1853,7 +1853,7 @@ var WindowManager = class {
         wgroup.add_actor(switchData.container);
 
         let workspaceManager = global.workspace_manager;
-        let curWs = workspaceManager.get_workspace_by_index (from);
+        let curWs = workspaceManager.get_workspace_by_index(from);
 
         for (let dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
@@ -2187,7 +2187,7 @@ var WindowManager = class {
             window.change_workspace(workspace);
 
             global.display.clear_mouse_mode();
-            workspace.activate_with_focus (window, global.get_current_time());
+            workspace.activate_with_focus(window, global.get_current_time());
         }
     }
 

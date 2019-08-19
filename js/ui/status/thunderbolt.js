@@ -124,7 +124,7 @@ var Client = class {
         });
     }
 
-    get authMode () {
+    get authMode() {
         return this._proxy.AuthMode;
     }
 };

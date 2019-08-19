@@ -150,7 +150,7 @@ var _Draggable = class _Draggable {
         if (touchSequence)
             pointer.sequence_grab(touchSequence, actor);
         else if (pointer)
-            pointer.grab (actor);
+            pointer.grab(actor);
 
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
@@ -171,7 +171,7 @@ var _Draggable = class _Draggable {
         }
 
         if (this._touchSequence)
-            this._grabbedDevice.sequence_ungrab (this._touchSequence);
+            this._grabbedDevice.sequence_ungrab(this._touchSequence);
         else
             this._grabbedDevice.ungrab();
 

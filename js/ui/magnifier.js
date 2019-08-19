@@ -330,7 +330,7 @@ var Magnifier = class Magnifier {
         this.setCrosshairsClip(clip);
 
         let theCrossHairs = this._crossHairs;
-        this._zoomRegions.forEach (zoomRegion => {
+        this._zoomRegions.forEach(zoomRegion => {
             zoomRegion.addCrosshairs(theCrossHairs);
         });
     }
@@ -472,7 +472,7 @@ var Magnifier = class Magnifier {
         }
     }
 
-    //// Private methods ////
+    // Private methods //
 
     _updateMouseSprite() {
         this._updateSpriteTexture();
@@ -986,7 +986,7 @@ var ZoomRegion = class ZoomRegion {
     setLensMode(lensMode) {
         this._lensMode = lensMode;
         if (!this._lensMode)
-            this.setScreenPosition (this._screenPosition);
+            this.setScreenPosition(this._screenPosition);
     }
 
     /**
@@ -1272,7 +1272,7 @@ var ZoomRegion = class ZoomRegion {
         return contrast;
     }
 
-    //// Private methods ////
+    // Private methods //
 
     _createActors() {
         // The root actor for the zoom region
@@ -1280,7 +1280,7 @@ var ZoomRegion = class ZoomRegion {
         global.stage.add_actor(this._magView);
 
         // hide the magnified region from CLUTTER_PICK_ALL
-        Shell.util_set_hidden_from_pick (this._magView, true);
+        Shell.util_set_hidden_from_pick(this._magView, true);
 
         // Add a group to clip the contents of the magnified view.
         let mainGroup = new Clutter.Actor({ clip_to_allocation: true });
@@ -1320,7 +1320,7 @@ var ZoomRegion = class ZoomRegion {
 
     _destroyActors() {
         if (this._mouseActor == this._mouseSourceActor)
-            this._mouseActor.get_parent().remove_actor (this._mouseActor);
+            this._mouseActor.get_parent().remove_actor(this._mouseActor);
         if (this._crossHairs)
             this._crossHairs.removeFromParent(this._crossHairsActor);
 
