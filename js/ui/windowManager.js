@@ -2124,7 +2124,7 @@ var WindowManager = class {
                 else
                     direction = Meta.MotionDirection.LEFT;
             } else {
-                if (vertical)
+                if (vertical) // eslint-disable-line no-lonely-if
                     direction = Meta.MotionDirection.DOWN;
                 else if (rtl)
                     direction = Meta.MotionDirection.LEFT;
