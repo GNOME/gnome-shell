@@ -777,11 +777,12 @@ class NotificationMessage extends MessageList.Message {
     }
 
     _getIcon() {
-        if (this.notification.gicon)
+        if (this.notification.gicon) {
             return new St.Icon({ gicon: this.notification.gicon,
                                  icon_size: MESSAGE_ICON_SIZE });
-        else
+        } else {
             return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
+        }
     }
 
     _onUpdated(n, _clear) {
@@ -860,14 +861,15 @@ class EventsSection extends MessageList.MessageListSection {
 
         let dayFormat;
         let now = new Date();
-        if (sameYear(this._date, now))
+        if (sameYear(this._date, now)) {
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %-d"));
-        else
+        } else {
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %-d, %Y"));
+        }
         this._title.label = this._date.toLocaleFormat(dayFormat);
     }
 

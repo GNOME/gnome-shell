@@ -339,10 +339,11 @@ var LayoutManager = GObject.registerClass({
 
         this.monitors = [];
         let nMonitors = display.get_n_monitors();
-        for (let i = 0; i < nMonitors; i++)
+        for (let i = 0; i < nMonitors; i++) {
             this.monitors.push(new Monitor(i,
                                            display.get_monitor_geometry(i),
                                            display.get_monitor_scale(i)));
+        }
 
         if (nMonitors == 0) {
             this.primaryIndex = this.bottomIndex = -1;
@@ -970,9 +971,10 @@ var LayoutManager = GObject.registerClass({
         if (this._startingUp)
             return;
 
-        if (!this._updateRegionIdle)
+        if (!this._updateRegionIdle) {
             this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                     this._updateRegions.bind(this));
+        }
     }
 
     _getWindowActorsForWorkspace(workspace) {

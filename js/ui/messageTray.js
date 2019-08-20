@@ -900,9 +900,10 @@ var Source = GObject.registerClass({
     }
 
     destroyNonResidentNotifications() {
-        for (let i = this.notifications.length - 1; i >= 0; i--)
+        for (let i = this.notifications.length - 1; i >= 0; i--) {
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
+        }
     }
 });
 

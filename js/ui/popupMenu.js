@@ -19,9 +19,10 @@ var Ornament = {
 };
 
 function isPopupMenuItemVisible(child) {
-    if (child._delegate instanceof PopupMenuSection)
+    if (child._delegate instanceof PopupMenuSection) {
         if (child._delegate.isEmpty())
             return false;
+    }
     return child.visible;
 }
 
@@ -809,9 +810,10 @@ var PopupMenu = class extends PopupMenuBase {
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
 
-        if (this.sourceActor)
+        if (this.sourceActor) {
             this._keyPressId = this.sourceActor.connect('key-press-event',
                                                         this._onKeyPress.bind(this));
+        }
 
         this._openedSubMenu = null;
     }
