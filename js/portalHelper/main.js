@@ -11,13 +11,13 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
-    RECHECK: 2
+    RECHECK: 2,
 };
 
 const PortalHelperSecurityLevel = {
     NOT_YET_DETERMINED: 0,
     SECURE: 1,
-    INSECURE: 2
+    INSECURE: 2,
 };
 
 const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';

@@ -90,7 +90,7 @@ var WeatherClient = class {
             this._onWeatherProxyReady.bind(this));
 
         this._settings = new Gio.Settings({
-            schema_id: 'org.gnome.shell.weather'
+            schema_id: 'org.gnome.shell.weather',
         });
         this._settings.connect('changed::automatic-location',
             this._onAutomaticLocationChanged.bind(this));

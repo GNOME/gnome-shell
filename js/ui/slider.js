@@ -10,8 +10,8 @@ var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 var Slider = GObject.registerClass({
     Signals: {
         'drag-begin': {},
-        'drag-end': {}
-    }
+        'drag-end': {},
+    },
 }, class Slider extends BarLevel.BarLevel {
     _init(value) {
         super._init({

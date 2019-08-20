@@ -74,8 +74,8 @@ const SystemActions = GObject.registerClass({
                                                           'orientation-lock-icon',
                                                           'orientation-lock-icon',
                                                           GObject.ParamFlags.READWRITE,
-                                                          null)
-    }
+                                                          null),
+    },
 }, class SystemActions extends GObject.Object {
     _init() {
         super._init();
@@ -90,7 +90,7 @@ const SystemActions = GObject.registerClass({
             iconName: 'system-shutdown-symbolic',
             // Translators: A list of keywords that match the power-off action, separated by semicolons
             keywords: _("power off;shutdown;reboot;restart").split(/[; ]/),
-            available: false
+            available: false,
         });
         this._actions.set(LOCK_SCREEN_ACTION_ID, {
             // Translators: The name of the lock screen action in search
@@ -98,7 +98,7 @@ const SystemActions = GObject.registerClass({
             iconName: 'system-lock-screen-symbolic',
             // Translators: A list of keywords that match the lock screen action, separated by semicolons
             keywords: _("lock screen").split(/[; ]/),
-            available: false
+            available: false,
         });
         this._actions.set(LOGOUT_ACTION_ID, {
             // Translators: The name of the logout action in search
@@ -106,7 +106,7 @@ const SystemActions = GObject.registerClass({
             iconName: 'application-exit-symbolic',
             // Translators: A list of keywords that match the logout action, separated by semicolons
             keywords: _("logout;log out;sign off").split(/[; ]/),
-            available: false
+            available: false,
         });
         this._actions.set(SUSPEND_ACTION_ID, {
             // Translators: The name of the suspend action in search
@@ -114,7 +114,7 @@ const SystemActions = GObject.registerClass({
             iconName: 'media-playback-pause-symbolic',
             // Translators: A list of keywords that match the suspend action, separated by semicolons
             keywords: _("suspend;sleep").split(/[; ]/),
-            available: false
+            available: false,
         });
         this._actions.set(SWITCH_USER_ACTION_ID, {
             // Translators: The name of the switch user action in search
@@ -122,7 +122,7 @@ const SystemActions = GObject.registerClass({
             iconName: 'system-switch-user-symbolic',
             // Translators: A list of keywords that match the switch user action, separated by semicolons
             keywords: _("switch user").split(/[; ]/),
-            available: false
+            available: false,
         });
         this._actions.set(LOCK_ORIENTATION_ACTION_ID, {
             // Translators: The name of the lock orientation action in search
@@ -130,7 +130,7 @@ const SystemActions = GObject.registerClass({
             iconName: '',
             // Translators: A list of keywords that match the lock orientation action, separated by semicolons
             keywords: _("lock orientation;screen;rotation").split(/[; ]/),
-            available: false
+            available: false,
         });
 
         this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
