@@ -771,15 +771,16 @@ var ZoomRegion = class ZoomRegion {
     }
 
     _updateScreenPosition() {
-        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE)
+        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE) {
             this._setViewPort({
                 x: this._viewPortX,
                 y: this._viewPortY,
                 width: this._viewPortWidth,
                 height: this._viewPortHeight
             });
-        else
+        } else {
             this.setScreenPosition(this._screenPosition);
+        }
     }
 
     _updateFocus(caller, event) {
@@ -1400,11 +1401,12 @@ var ZoomRegion = class ZoomRegion {
         // If in lens mode, move the magnified view such that it is centered
         // over the actual mouse. However, in full screen mode, the "lens" is
         // the size of the screen -- pointless to move such a large lens around.
-        if (this._lensMode && !this._isFullScreen())
+        if (this._lensMode && !this._isFullScreen()) {
             this._setViewPort({ x: this._xCenter - this._viewPortWidth / 2,
                                 y: this._yCenter - this._viewPortHeight / 2,
                                 width: this._viewPortWidth,
                                 height: this._viewPortHeight }, true);
+        }
 
         this._updateCloneGeometry();
         this._updateMousePosition();

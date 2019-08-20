@@ -203,9 +203,10 @@ class WorldClocksSection extends St.Button {
         }
 
         if (this._grid.get_n_children() > 1) {
-            if (!this._clockNotifyId)
+            if (!this._clockNotifyId) {
                 this._clockNotifyId =
                     this._clock.connect('notify::clock', this._updateLabels.bind(this));
+            }
             this._updateLabels();
         } else {
             if (this._clockNotifyId)
