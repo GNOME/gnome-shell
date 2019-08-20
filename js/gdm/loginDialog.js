@@ -702,9 +702,8 @@ var LoginDialog = GObject.registerClass({
         }
 
         // Finally hand out the allocations
-        if (bannerAllocation) {
+        if (bannerAllocation)
             this._bannerView.allocate(bannerAllocation, flags);
-        }
 
         if (authPromptAllocation)
             this._authPrompt.allocate(authPromptAllocation, flags);
@@ -820,9 +819,9 @@ var LoginDialog = GObject.registerClass({
 
     _resetGreeterProxy() {
         if (GLib.getenv('GDM_GREETER_TEST') != '1') {
-            if (this._greeter) {
+            if (this._greeter)
                 this._greeter.run_dispose();
-            }
+
             this._greeter = this._gdmClient.get_greeter_sync(null);
 
             this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
@@ -1039,9 +1038,8 @@ var LoginDialog = GObject.registerClass({
 
                      () => {
                          // If we're just starting out, start on the right item.
-                         if (!this._userManager.is_loaded) {
+                         if (!this._userManager.is_loaded)
                              this._userList.jumpToItem(loginItem);
-                         }
                      },
 
                      () => {
@@ -1092,9 +1090,8 @@ var LoginDialog = GObject.registerClass({
         // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
             if (event.type() == Clutter.EventType.KEY_PRESS ||
-               event.type() == Clutter.EventType.BUTTON_PRESS) {
+                event.type() == Clutter.EventType.BUTTON_PRESS)
                 this._startTimedLogin(userName, seconds);
-            }
 
             return Clutter.EVENT_PROPAGATE;
         });
@@ -1201,9 +1198,8 @@ var LoginDialog = GObject.registerClass({
 
         let users = this._userManager.list_users();
 
-        for (let i = 0; i < users.length; i++) {
+        for (let i = 0; i < users.length; i++)
             this._userList.addUser(users[i]);
-        }
 
         this._updateDisableUserList();
 
