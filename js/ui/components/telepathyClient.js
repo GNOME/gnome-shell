@@ -248,7 +248,7 @@ class TelepathyClient extends Tp.BaseClient {
         }
 
         // Approve private text channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this, (dispatchOp, result) => {
+        dispatchOp.claim_with_async(this, (o, result) => {
             try {
                 dispatchOp.claim_with_finish(result);
                 this._handlingChannels(account, conn, [channel], false);

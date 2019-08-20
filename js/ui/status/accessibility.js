@@ -186,7 +186,7 @@ class ATIndicator extends PanelMenu.Button {
             });
 
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
-            let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
+            factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = (factor > 1.0);
             widget.setToggleState(active);
 

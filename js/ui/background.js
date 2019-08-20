@@ -145,7 +145,7 @@ var BackgroundCache = class BackgroundCache {
 
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
-                        (obj, file, otherFile, eventType) => {
+                        (obj, theFile, otherFile, eventType) => {
                             // Ignore CHANGED and CREATED events, since in both cases
                             // we'll get a CHANGES_DONE_HINT event when done.
                             if (eventType != Gio.FileMonitorEvent.CHANGED &&
