@@ -82,11 +82,11 @@ var HistoryManager = class {
 
     _onEntryKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Up) {
+        if (symbol == Clutter.KEY_Up)
             return this._setPrevItem(entry.get_text());
-        } else if (symbol == Clutter.KEY_Down) {
+        else if (symbol == Clutter.KEY_Down)
             return this._setNextItem(entry.get_text());
-        }
+
         return Clutter.EVENT_PROPAGATE;
     }
 

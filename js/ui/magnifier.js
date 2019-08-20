@@ -623,9 +623,8 @@ var Magnifier = class Magnifier {
 
     _updateLensMode() {
         // Applies only to the first zoom region.
-        if (this._zoomRegions.length) {
+        if (this._zoomRegions.length)
             this._zoomRegions[0].setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
-        }
     }
 
     _updateClampMode() {
@@ -1182,9 +1181,8 @@ var ZoomRegion = class ZoomRegion {
 
         // If the crossHairs is not already within a larger container, add it
         // to this zoom region.  Otherwise, add a clone.
-        if (crossHairs && this.isActive()) {
+        if (crossHairs && this.isActive())
             this._crossHairsActor = crossHairs.addToZoomRegion(this, this._mouseActor);
-        }
     }
 
     /**
@@ -1448,13 +1446,12 @@ var ZoomRegion = class ZoomRegion {
         let xMouse = this._magnifier.xMouse;
         let yMouse = this._magnifier.yMouse;
 
-        if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL) {
+        if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL)
             return this._centerFromPointProportional(xMouse, yMouse);
-        } else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH) {
+        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH)
             return this._centerFromPointPush(xMouse, yMouse);
-        } else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED) {
+        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED)
             return this._centerFromPointCentered(xMouse, yMouse);
-        }
 
         return null; // Should never be hit
     }

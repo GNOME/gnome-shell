@@ -247,11 +247,10 @@ var BoxPointer = GObject.registerClass({
             let [absX, absY] = this.get_transformed_position();
 
             if (this._arrowSide == St.Side.TOP ||
-                this._arrowSide == St.Side.BOTTOM) {
+                this._arrowSide == St.Side.BOTTOM)
                 this._arrowOrigin = sourceX - absX + sourceWidth / 2;
-            } else {
+            else
                 this._arrowOrigin = sourceY - absY + sourceHeight / 2;
-            }
         }
 
         let borderWidth = themeNode.get_length('-arrow-border-width');
@@ -266,20 +265,19 @@ var BoxPointer = GObject.registerClass({
 
         let [width, height] = area.get_surface_size();
         let [boxWidth, boxHeight] = [width, height];
-        if (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM) {
+        if (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM)
             boxHeight -= rise;
-        } else {
+        else
             boxWidth -= rise;
-        }
+
         let cr = area.get_context();
 
         // Translate so that box goes from 0,0 to boxWidth,boxHeight,
         // with the arrow poking out of that
-        if (this._arrowSide == St.Side.TOP) {
+        if (this._arrowSide == St.Side.TOP)
             cr.translate(0, rise);
-        } else if (this._arrowSide == St.Side.LEFT) {
+        else if (this._arrowSide == St.Side.LEFT)
             cr.translate(rise, 0);
-        }
 
         let [x1, y1] = [halfBorder, halfBorder];
         let [x2, y2] = [boxWidth - halfBorder, boxHeight - halfBorder];

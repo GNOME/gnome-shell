@@ -270,9 +270,9 @@ var Background = GObject.registerClass({
 
         let i;
         let keys = Object.keys(this._fileWatches);
-        for (i = 0; i < keys.length; i++) {
+        for (i = 0; i < keys.length; i++)
             this._cache.disconnect(this._fileWatches[keys[i]]);
-        }
+
         this._fileWatches = null;
 
         if (this._timezoneChangedId != 0)

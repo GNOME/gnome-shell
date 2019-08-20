@@ -245,11 +245,10 @@ var AutorunDispatcher = class {
         let success = false;
         let app = null;
 
-        if (setting == AutorunSetting.RUN) {
+        if (setting == AutorunSetting.RUN)
             app = Gio.app_info_get_default_for_type(contentTypes[0], false);
-        } else if (setting == AutorunSetting.FILES) {
+        else if (setting == AutorunSetting.FILES)
             app = Gio.app_info_get_default_for_type('inode/directory', false);
-        }
 
         if (app)
             success = startAppForMount(app, mount);
