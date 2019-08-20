@@ -37,7 +37,7 @@ var CHAT_EXPAND_LINES = 12;
 
 var NotificationDirection = {
     SENT: 'chat-sent',
-    RECEIVED: 'chat-received'
+    RECEIVED: 'chat-received',
 };
 
 function makeMessageFromTpMessage(tpMessage, direction) {
@@ -52,7 +52,7 @@ function makeMessageFromTpMessage(tpMessage, direction) {
         text,
         sender: tpMessage.sender.alias,
         timestamp,
-        direction
+        direction,
     };
 }
 
@@ -66,7 +66,7 @@ function makeMessageFromTplEvent(event) {
         text: event.get_message(),
         sender: event.get_sender().get_alias(),
         timestamp: event.get_timestamp(),
-        direction
+        direction,
     };
 }
 
@@ -635,7 +635,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
         'message-removed': { param_types: [Tp.Message.$gtype] },
         'message-added': { param_types: [Tp.Message.$gtype] },
         'timestamp-changed': { param_types: [Tp.Message.$gtype] },
-    }
+    },
 }, class ChatNotification extends MessageTray.Notification {
     _init(source) {
         super._init(source, source.title, null,

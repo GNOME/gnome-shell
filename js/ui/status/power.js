@@ -123,7 +123,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         // default fallbacks
         let gicon = new Gio.ThemedIcon({
             name: icon,
-            use_default_fallbacks: false
+            use_default_fallbacks: false,
         });
 
         this._indicator.gicon = gicon;

@@ -159,7 +159,7 @@ var SearchResultsBase = GObject.registerClass({
             'focus-child', 'focus-child', 'focus-child',
             GObject.ParamFlags.READABLE,
             Clutter.Actor.$gtype),
-    }
+    },
 }, class SearchResultsBase extends St.BoxLayout {
     _init(provider, resultsView) {
         super._init({ style_class: 'search-section', vertical: true });
@@ -426,7 +426,7 @@ class GridSearchResults extends SearchResultsBase {
 });
 
 var SearchResultsView = GObject.registerClass({
-    Signals: { 'terms-changed': {} }
+    Signals: { 'terms-changed': {} },
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
         super._init({ name: 'searchResults', vertical: true });

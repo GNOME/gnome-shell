@@ -27,7 +27,7 @@ class DashIcon extends AppDisplay.AppIcon {
     _init(app) {
         super._init(app, {
             setSizeManually: true,
-            showLabel: false
+            showLabel: false,
         });
     }
 
@@ -125,7 +125,7 @@ class DashItemContainer extends St.Widget {
         this.label.ease({
             opacity: 255,
             duration: DASH_ITEM_LABEL_SHOW_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -139,7 +139,7 @@ class DashItemContainer extends St.Widget {
             opacity: 0,
             duration: DASH_ITEM_LABEL_HIDE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.label.hide()
+            onComplete: () => this.label.hide(),
         });
     }
 
@@ -163,7 +163,7 @@ class DashItemContainer extends St.Widget {
             scale_y: 1,
             opacity: 255,
             duration: time,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -182,7 +182,7 @@ class DashItemContainer extends St.Widget {
             opacity: 0,
             duration: DASH_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.destroy()
+            onComplete: () => this.destroy(),
         });
     }
 });
@@ -334,7 +334,7 @@ class DashActor extends St.Widget {
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 var Dash = GObject.registerClass({
-    Signals: { 'icon-size-changed': {} }
+    Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Bin {
     _init() {
         this._maxHeight = -1;
@@ -397,7 +397,7 @@ var Dash = GObject.registerClass({
     _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this)
+            dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
 
@@ -629,7 +629,7 @@ var Dash = GObject.registerClass({
                 width: targetWidth,
                 height: targetHeight,
                 duration: DASH_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }

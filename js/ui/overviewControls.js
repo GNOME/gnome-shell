@@ -22,7 +22,7 @@ function getRtlSlideDirection(direction, actor) {
 
 var SlideDirection = {
     LEFT: 0,
-    RIGHT: 1
+    RIGHT: 1,
 };
 
 var SlideLayout = GObject.registerClass({
@@ -34,8 +34,8 @@ var SlideLayout = GObject.registerClass({
         'translation-x': GObject.ParamSpec.double(
             'translation-x', 'translation-x', 'translation-x',
             GObject.ParamFlags.READWRITE,
-            -Infinity, Infinity, 0)
-    }
+            -Infinity, Infinity, 0),
+    },
 }, class SlideLayout extends Clutter.FixedLayout {
     _init(params) {
         this._slideX = 1;
@@ -128,7 +128,7 @@ class SlidingControl extends St.Widget {
         super._init({
             layout_manager: this.layout,
             style_class: 'overview-controls',
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
 
         this._visible = true;
@@ -223,7 +223,7 @@ class SlidingControl extends St.Widget {
         this.ease({
             opacity: 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
     }
 
@@ -231,7 +231,7 @@ class SlidingControl extends St.Widget {
         this.ease({
             opacity: 128,
             duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -428,7 +428,7 @@ class ControlsManager extends St.Widget {
             layout_manager: layout,
             x_expand: true,
             y_expand: true,
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
 
         this.dash = new Dash.Dash();

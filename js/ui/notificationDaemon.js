@@ -23,13 +23,13 @@ var NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     APP_CLOSED: 3,
-    UNDEFINED: 4
+    UNDEFINED: 4,
 };
 
 var Urgency = {
     LOW: 0,
     NORMAL: 1,
-    CRITICAL: 2
+    CRITICAL: 2,
 };
 
 const rewriteRules = {
@@ -39,8 +39,8 @@ const rewriteRules = {
         { pattern:     /^XChat: New public message from: (\S*) \((.*)\)$/,
           replacement: '$2 <$1>' },
         { pattern:     /^XChat: Highlighted message from: (\S*) \((.*)\)$/,
-          replacement: '$2 <$1>' }
-    ]
+          replacement: '$2 <$1>' },
+    ],
 };
 
 var FdoNotificationDaemon = class FdoNotificationDaemon {
@@ -384,7 +384,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             Config.PACKAGE_NAME,
             'GNOME',
             Config.PACKAGE_VERSION,
-            '1.2'
+            '1.2',
         ];
     }
 
@@ -534,7 +534,7 @@ const PRIORITY_URGENCY_MAP = {
     low: MessageTray.Urgency.LOW,
     normal: MessageTray.Urgency.NORMAL,
     high: MessageTray.Urgency.HIGH,
-    urgent: MessageTray.Urgency.CRITICAL
+    urgent: MessageTray.Urgency.CRITICAL,
 };
 
 var GtkNotificationDaemonNotification = GObject.registerClass(

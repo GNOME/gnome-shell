@@ -158,7 +158,7 @@ class Spinner extends AnimatedIcon {
                 opacity: 255,
                 delay: SPINNER_ANIMATION_DELAY,
                 duration: SPINNER_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.LINEAR
+                mode: Clutter.AnimationMode.LINEAR,
             });
         } else {
             this.opacity = 255;
@@ -174,7 +174,7 @@ class Spinner extends AnimatedIcon {
                 opacity: 0,
                 duration: SPINNER_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.LINEAR,
-                onComplete: () => super.stop()
+                onComplete: () => super.stop(),
             });
         } else {
             this.opacity = 0;

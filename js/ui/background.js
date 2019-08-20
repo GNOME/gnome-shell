@@ -222,7 +222,7 @@ function getBackgroundCache() {
 }
 
 var Background = GObject.registerClass({
-    Signals: { 'loaded': {}, 'bg-changed': {} }
+    Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
     _init(params) {
         params = Params.parse(params, { monitorIndex: 0,
@@ -456,7 +456,7 @@ var Background = GObject.registerClass({
 
                 this._updateAnimation();
                 this._watchFile(file);
-            }
+            },
         });
     }
 
@@ -500,7 +500,7 @@ var Background = GObject.registerClass({
 let _systemBackground;
 
 var SystemBackground = GObject.registerClass({
-    Signals: { 'loaded': {} }
+    Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
@@ -514,7 +514,7 @@ var SystemBackground = GObject.registerClass({
         super._init({
             meta_display: global.display,
             monitor: 0,
-            background: _systemBackground
+            background: _systemBackground,
         });
 
         let cache = Meta.BackgroundImageCache.get_default();
@@ -596,7 +596,7 @@ var BackgroundSource = class BackgroundSource {
                 layoutManager: this._layoutManager,
                 settings: this._settings,
                 file,
-                style
+                style,
             });
 
             background._changedId = background.connect('bg-changed', () => {
@@ -713,7 +713,7 @@ var BackgroundManager = class BackgroundManager {
             opacity: 0,
             duration: FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => oldBackgroundActor.destroy()
+            onComplete: () => oldBackgroundActor.destroy(),
         });
     }
 

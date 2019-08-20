@@ -23,19 +23,19 @@ const N_WIGGLES = 3;
 
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
-    UNLOCK_OR_LOG_IN: 1
+    UNLOCK_OR_LOG_IN: 1,
 };
 
 var AuthPromptStatus = {
     NOT_VERIFYING: 0,
     VERIFYING: 1,
     VERIFICATION_FAILED: 2,
-    VERIFICATION_SUCCEEDED: 3
+    VERIFICATION_SUCCEEDED: 3,
 };
 
 var BeginRequestType = {
     PROVIDE_USERNAME: 0,
-    DONT_PROVIDE_USERNAME: 1
+    DONT_PROVIDE_USERNAME: 1,
 };
 
 var AuthPrompt = GObject.registerClass({
@@ -45,12 +45,12 @@ var AuthPrompt = GObject.registerClass({
         'next': {},
         'prompted': {},
         'reset': { param_types: [GObject.TYPE_UINT] },
-    }
+    },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
         super._init({
             style_class: 'login-dialog-prompt-layout',
-            vertical: true
+            vertical: true,
         });
 
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
@@ -321,7 +321,7 @@ var AuthPrompt = GObject.registerClass({
                             if (this._spinner)
                                 this._spinner.stop();
                         }
-                    }
+                    },
                 });
             }
         }
@@ -337,7 +337,7 @@ var AuthPrompt = GObject.registerClass({
                     opacity: 255,
                     duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
                     delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
-                    mode: Clutter.AnimationMode.LINEAR
+                    mode: Clutter.AnimationMode.LINEAR,
                 });
             }
         }
@@ -392,7 +392,7 @@ var AuthPrompt = GObject.registerClass({
         this._message.ease({
             opacity: 0,
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
