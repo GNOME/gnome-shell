@@ -84,27 +84,24 @@ function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
     let openBrace = ({ ')': '(', ']': '[' })[closeBrace];
 
-    function findTheBrace(expr, offset) {
-        if (offset < 0) {
-            return -1;
-        }
+    return findTheBrace(expr, offset - 1, openBrace, closeBrace);
+}
 
-        if (expr.charAt(offset) == openBrace) {
-            return offset;
-        }
-        if (expr.charAt(offset).match(/['"]/)) {
-            return findTheBrace(expr, findMatchingQuote(expr, offset) - 1);
-        }
-        if (expr.charAt(offset) == '/') {
-            return findTheBrace(expr, findMatchingSlash(expr, offset) - 1);
-        }
-        if (expr.charAt(offset) == closeBrace) {
-            return findTheBrace(expr, findTheBrace(expr, offset - 1) - 1);
-        }
+function findTheBrace(expr, offset, openBrace, closeBrace) {
+    if (offset < 0)
+        return -1;
 
-        return findTheBrace(expr, offset - 1);
+    if (expr.charAt(offset) == openBrace)
+        return offset;
 
-    }
+    if (expr.charAt(offset).match(/['"]/))
+        return findTheBrace(expr, findMatchingQuote(expr, offset) - 1);
+
+    if (expr.charAt(offset) == '/')
+        return findTheBrace(expr, findMatchingSlash(expr, offset) - 1);
+
+    if (expr.charAt(offset) == closeBrace)
+        return findTheBrace(expr, findTheBrace(expr, offset - 1) - 1);
 
     return findTheBrace(expr, offset - 1);
 }
@@ -189,24 +186,26 @@ function getCommonPrefix(words) {
     return word;
 }
 
+// Remove any blocks that are quoted or are in a regex
+function removeLiterals(str) {
+    if (str.length == 0)
+        return '';
+
+    let currChar = str.charAt(str.length - 1);
+    if (currChar == '"' || currChar == '\'') {
+        return removeLiterals(
+            str.slice(0, findMatchingQuote(str, str.length - 1)));
+    } else if (currChar == '/') {
+        return removeLiterals(
+            str.slice(0, findMatchingSlash(str, str.length - 1)));
+    }
+
+    return removeLiterals(str.slice(0, str.length - 1)) + currChar;
+}
+
 // Returns true if there is reason to think that eval(str)
 // will modify the global scope
 function isUnsafeExpression(str) {
-    // Remove any blocks that are quoted or are in a regex
-    function removeLiterals(str) {
-        if (str.length == 0) {
-            return '';
-        }
-
-        let currChar = str.charAt(str.length - 1);
-        if (currChar == '"' || currChar == '\'') {
-            return removeLiterals(str.slice(0, findMatchingQuote(str, str.length - 1)));
-        } else if (currChar == '/') {
-            return removeLiterals(str.slice(0, findMatchingSlash(str, str.length - 1)));
-        }
-
-        return removeLiterals(str.slice(0, str.length - 1)) + currChar;
-    }
 
     // Check for any sort of assignment
     // The strategy used is dumb: remove any quotes
