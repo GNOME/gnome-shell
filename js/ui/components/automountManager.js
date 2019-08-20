@@ -109,7 +109,7 @@ var AutomountManager = class {
         // mount operation object
         if (drive.can_stop()) {
             drive.stop(Gio.MountUnmountFlags.FORCE, null, null,
-                (drive, res) => {
+                (o, res) => {
                     try {
                         drive.stop_finish(res);
                     } catch (e) {
@@ -118,7 +118,7 @@ var AutomountManager = class {
                 });
         } else if (drive.can_eject()) {
             drive.eject_with_operation(Gio.MountUnmountFlags.FORCE, null, null,
-                (drive, res) => {
+                (o, res) => {
                     try {
                         drive.eject_with_operation_finish(res);
                     } catch (e) {

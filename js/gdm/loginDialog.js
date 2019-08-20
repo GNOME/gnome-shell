@@ -984,7 +984,7 @@ var LoginDialog = GObject.registerClass({
         let hold = new Batch.Hold();
         let signalId = this._userList.connect('item-added',
             () => {
-                let item = this._userList.getItemFromUserName(userName);
+                item = this._userList.getItemFromUserName(userName);
 
                 if (item)
                     hold.release();
