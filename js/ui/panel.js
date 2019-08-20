@@ -343,9 +343,10 @@ var AppMenuButton = GObject.registerClass({
         if (focusedApp && focusedApp.is_on_workspace(workspace))
             return focusedApp;
 
-        for (let i = 0; i < this._startingApps.length; i++)
+        for (let i = 0; i < this._startingApps.length; i++) {
             if (this._startingApps[i].is_on_workspace(workspace))
                 return this._startingApps[i];
+        }
 
         return null;
     }
@@ -470,9 +471,10 @@ class ActivitiesButton extends PanelMenu.Button {
 
     vfunc_event(event) {
         if (event.type() == Clutter.EventType.TOUCH_END ||
-            event.type() == Clutter.EventType.BUTTON_RELEASE)
+            event.type() == Clutter.EventType.BUTTON_RELEASE) {
             if (Main.overview.shouldToggleByCornerOrButton())
                 Main.overview.toggle();
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -622,14 +624,15 @@ class PanelCorner extends St.DrawingArea {
         cr.setOperator(Cairo.Operator.SOURCE);
 
         cr.moveTo(0, offsetY);
-        if (this._side == St.Side.LEFT)
+        if (this._side == St.Side.LEFT) {
             cr.arc(cornerRadius,
                    borderWidth + cornerRadius,
                    cornerRadius, Math.PI, 3 * Math.PI / 2);
-        else
+        } else {
             cr.arc(0,
                    borderWidth + cornerRadius,
                    cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
+        }
         cr.lineTo(cornerRadius, offsetY);
         cr.closePath();
 

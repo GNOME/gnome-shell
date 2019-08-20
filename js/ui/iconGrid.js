@@ -455,9 +455,10 @@ var IconGrid = GObject.registerClass({
     }
 
     animatePulse(animationDirection) {
-        if (animationDirection != AnimationDirection.IN)
+        if (animationDirection != AnimationDirection.IN) {
             throw new GObject.NotImplementedError("Pulse animation only implements " +
                                                   "'in' animation direction");
+        }
 
         this._resetAnimationActors();
 
@@ -805,9 +806,10 @@ var IconGrid = GObject.registerClass({
 
             this._updateSpacingForSize(availWidth, availHeight);
         }
-        if (!this._updateIconSizesLaterId)
+        if (!this._updateIconSizesLaterId) {
             this._updateIconSizesLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                           this._updateIconSizes.bind(this));
+        }
     }
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up

@@ -16,15 +16,17 @@ class AltSwitcher extends St.Bin {
         super._init();
         this._standard = standard;
         this._standard.connect('notify::visible', this._sync.bind(this));
-        if (this._standard instanceof St.Button)
+        if (this._standard instanceof St.Button) {
             this._standard.connect('clicked',
                                    () => this._clickAction.release());
+        }
 
         this._alternate = alternate;
         this._alternate.connect('notify::visible', this._sync.bind(this));
-        if (this._alternate instanceof St.Button)
+        if (this._alternate instanceof St.Button) {
             this._alternate.connect('clicked',
                                     () => this._clickAction.release());
+        }
 
         this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
 

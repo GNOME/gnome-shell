@@ -231,11 +231,12 @@ class TelepathyClient extends Tp.BaseClient {
             return;
         }
 
-        if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT)
+        if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT) {
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
-        else
+        } else {
             context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
                                         message: 'Unsupported channel type' }));
+        }
     }
 
     _approveTextChannel(account, conn, channel, dispatchOp, context) {
@@ -386,10 +387,11 @@ class ChatSource extends MessageTray.Source {
 
     _updateAvatarIcon() {
         this.iconUpdated();
-        if (this._notifiction)
+        if (this._notifiction) {
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
                                       { gicon: this.getIcon() });
+        }
     }
 
     open() {
@@ -601,10 +603,11 @@ class ChatSource extends MessageTray.Source {
     }
 
     _presenceChanged(_contact, _presence, _status, _message) {
-        if (this._notification)
+        if (this._notification) {
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
                                       { secondaryGIcon: this.getSecondaryIcon() });
+        }
     }
 
     _pendingRemoved(channel, message) {
@@ -674,10 +677,11 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             styles.push('chat-action');
         }
 
-        if (message.direction == NotificationDirection.RECEIVED)
+        if (message.direction == NotificationDirection.RECEIVED) {
             this.update(this.source.title, messageBody,
                         { datetime: GLib.DateTime.new_from_unix_local(message.timestamp),
                           bannerMarkup: true });
+        }
 
         let group = (message.direction == NotificationDirection.RECEIVED
             ? 'received' : 'sent');

@@ -101,12 +101,13 @@ class ATIndicator extends PanelMenu.Button {
 
     _buildItemExtended(string, initialValue, writable, onSet) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
-        if (!writable)
+        if (!writable) {
             widget.reactive = false;
-        else
+        } else {
             widget.connect('toggled', item => {
                 onSet(item.state);
             });
+        }
         return widget;
     }
 
@@ -178,11 +179,12 @@ class ATIndicator extends PanelMenu.Button {
             initialSetting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             enabled => {
-                if (enabled)
+                if (enabled) {
                     settings.set_double(
                         KEY_TEXT_SCALING_FACTOR, DPI_FACTOR_LARGE);
-                else
+                } else {
                     settings.reset(KEY_TEXT_SCALING_FACTOR);
+                }
             });
 
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {

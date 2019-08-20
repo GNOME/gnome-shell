@@ -53,9 +53,10 @@ class SearchResult extends St.Button {
     activate() {
         this.provider.activateResult(this.metaInfo.id, this._resultsView.terms);
 
-        if (this.metaInfo.clipboardText)
+        if (this.metaInfo.clipboardText) {
             St.Clipboard.get_default().set_text(
                 St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
+        }
         Main.overview.toggle();
     }
 });
@@ -545,19 +546,20 @@ var SearchResultsView = GObject.registerClass({
             provider.searchInProgress = true;
 
             let previousProviderResults = previousResults[provider.id];
-            if (this._isSubSearch && previousProviderResults)
+            if (this._isSubSearch && previousProviderResults) {
                 provider.getSubsearchResultSet(previousProviderResults,
                                                this._terms,
                                                results => {
                                                    this._gotResults(results, provider);
                                                },
                                                this._cancellable);
-            else
+            } else {
                 provider.getInitialResultSet(this._terms,
                                              results => {
                                                  this._gotResults(results, provider);
                                              },
                                              this._cancellable);
+            }
         });
 
         this._updateSearchProgress();

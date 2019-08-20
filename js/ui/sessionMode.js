@@ -143,9 +143,10 @@ function listModes() {
     let loop = new GLib.MainLoop(null, false);
     let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         let names = Object.getOwnPropertyNames(_modes);
-        for (let i = 0; i < names.length; i++)
+        for (let i = 0; i < names.length; i++) {
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
+        }
         loop.quit();
     });
     GLib.Source.set_name_by_id(id, '[gnome-shell] listModes');
@@ -188,11 +189,12 @@ var SessionMode = class {
     _sync() {
         let params = _modes[this.currentMode];
         let defaults;
-        if (params.parentMode)
+        if (params.parentMode) {
             defaults = Params.parse(_modes[params.parentMode],
                                     _modes[DEFAULT_MODE]);
-        else
+        } else {
             defaults = _modes[DEFAULT_MODE];
+        }
         params = Params.parse(params, defaults);
 
         // A simplified version of Lang.copyProperties, handles
