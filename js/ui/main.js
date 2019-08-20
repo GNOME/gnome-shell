@@ -296,7 +296,7 @@ function _getStylesheet(name) {
     let dataDirs = GLib.get_system_data_dirs();
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'theme', name]);
-        let stylesheet = Gio.file_new_for_path(path);
+        stylesheet = Gio.file_new_for_path(path);
         if (stylesheet.query_exists(null))
             return stylesheet;
     }

@@ -157,10 +157,10 @@ var IBusManager = class {
             } catch (e) {
             }
             // If an engine is already active we need to get its properties
-            this._ibus.get_global_engine_async(-1, this._cancellable, (_bus, result) => {
+            this._ibus.get_global_engine_async(-1, this._cancellable, (_bus, res) => {
                 let engine;
                 try {
-                    engine = this._ibus.get_global_engine_async_finish(result);
+                    engine = this._ibus.get_global_engine_async_finish(res);
                     if (!engine)
                         return;
                 } catch (e) {

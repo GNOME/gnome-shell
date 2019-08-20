@@ -245,7 +245,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 return;
             }
 
-            let [pid] = result;
+            [pid] = result;
             source = this._getSource(appName, pid, ndata, sender, null);
 
             this._senderToPid[sender] = pid;

@@ -509,7 +509,7 @@ var SwitcherList = GObject.registerClass({
             maxChildNat = Math.max(childNat, maxChildNat);
 
             if (this._squareItems) {
-                let [childMin, childNat] = this._items[i].get_preferred_height(-1);
+                [childMin, childNat] = this._items[i].get_preferred_height(-1);
                 maxChildMin = Math.max(childMin, maxChildMin);
                 maxChildNat = Math.max(childNat, maxChildNat);
             }

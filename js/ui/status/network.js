@@ -271,7 +271,7 @@ var NMConnectionSection = class NMConnectionSection {
             return;
 
         item.connect('icon-changed', () => this._iconChanged());
-        item.connect('activation-failed', (item, reason) => {
+        item.connect('activation-failed', (o, reason) => {
             this.emit('activation-failed', reason);
         });
         item.connect('name-changed', this._sync.bind(this));
@@ -1987,9 +1987,9 @@ class Indicator extends PanelMenu.SystemIndicator {
         } else if (result == PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);
         } else if (result == PortalHelperResult.RECHECK) {
-            this._client.check_connectivity_async(null, (client, result) => {
+            this._client.check_connectivity_async(null, (client, res) => {
                 try {
-                    let state = client.check_connectivity_finish(result);
+                    let state = client.check_connectivity_finish(res);
                     if (state >= NM.ConnectivityState.FULL)
                         this._closeConnectivityCheck(path);
                 } catch (e) { }
