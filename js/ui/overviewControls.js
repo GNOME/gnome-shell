@@ -13,10 +13,10 @@ var SIDE_CONTROLS_ANIMATION_TIME = 160;
 
 function getRtlSlideDirection(direction, actor) {
     let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
-    if (rtl)
+    if (rtl) {
         direction = (direction == SlideDirection.LEFT)
             ? SlideDirection.RIGHT : SlideDirection.LEFT;
-
+    }
     return direction;
 }
 

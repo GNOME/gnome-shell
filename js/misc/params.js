@@ -17,9 +17,10 @@
 // @params and @defaults
 function parse(params = {}, defaults, allowExtras) {
     if (!allowExtras) {
-        for (let prop in params)
+        for (let prop in params) {
             if (!(prop in defaults))
                 throw new Error(`Unrecognized parameter "${prop}"`);
+        }
     }
 
     let defaultsCopy = Object.assign({}, defaults);

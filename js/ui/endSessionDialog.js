@@ -681,11 +681,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                     continue;
 
                 let sessionId = GLib.getenv('XDG_SESSION_ID');
-                if (!sessionId)
+                if (!sessionId) {
                     this._loginManager.getCurrentSessionProxy(currentSessionProxy => {
                         sessionId = currentSessionProxy.Id;
                         log(`endSessionDialog: No XDG_SESSION_ID, fetched from logind: ${sessionId}`);
                     });
+                }
 
                 if (proxy.Id == sessionId)
                     continue;

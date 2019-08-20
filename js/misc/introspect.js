@@ -164,9 +164,10 @@ var IntrospectService = class {
                 if (wmClass != null)
                     windowsList[windowId]['wm-class'] = GLib.Variant.new('s', wmClass);
 
-                if (sandboxedAppId != null)
+                if (sandboxedAppId != null) {
                     windowsList[windowId]['sandboxed-app-id'] =
                         GLib.Variant.new('s', sandboxedAppId);
+                }
             }
         }
         invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
