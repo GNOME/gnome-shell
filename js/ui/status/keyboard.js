@@ -437,13 +437,13 @@ var InputSourceManager = class {
 
         this.emit('current-source-changed', oldSource);
 
-        for (let i = 1; i < this._mruSources.length; ++i)
+        for (let i = 1; i < this._mruSources.length; ++i) {
             if (this._mruSources[i] == newSource) {
                 let currentSource = this._mruSources.splice(i, 1);
                 this._mruSources = currentSource.concat(this._mruSources);
                 break;
             }
-
+        }
         this._changePerWindowSource();
     }
 
@@ -516,12 +516,13 @@ var InputSourceManager = class {
 
         let mruSources = [];
         for (let i = 0; i < this._mruSources.length; i++) {
-            for (let j = 0; j < sourcesList.length; j++)
+            for (let j = 0; j < sourcesList.length; j++) {
                 if (this._mruSources[i].type == sourcesList[j].type &&
                     this._mruSources[i].id == sourcesList[j].id) {
                     mruSources = mruSources.concat(sourcesList.splice(j, 1));
                     break;
                 }
+            }
         }
         this._mruSources = mruSources.concat(sourcesList);
     }

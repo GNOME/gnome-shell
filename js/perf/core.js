@@ -94,11 +94,12 @@ function *run() {
             let config = WINDOW_CONFIGS[i / 2];
             yield Scripting.destroyTestWindows();
 
-            for (let k = 0; k < config.count; k++)
+            for (let k = 0; k < config.count; k++) {
                 yield Scripting.createTestWindow({ width: config.width,
                                                    height: config.height,
                                                    alpha: config.alpha,
                                                    maximized: config.maximized });
+            }
 
             yield Scripting.waitTestWindows();
             yield Scripting.sleep(1000);

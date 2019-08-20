@@ -40,7 +40,7 @@ function _patchContainerClass(containerClass) {
 }
 
 function _patchLayoutClass(layoutClass, styleProps) {
-    if (styleProps)
+    if (styleProps) {
         layoutClass.prototype.hookup_style = function (container) {
             container.connect('style-changed', () => {
                 let node = container.get_theme_node();
