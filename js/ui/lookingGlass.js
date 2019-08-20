@@ -443,7 +443,7 @@ class ObjInspector extends St.ScrollView {
                 scale_x: 1,
                 scale_y: 1,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: 200
+                duration: 200,
             });
         } else {
             this.set_scale(1, 1);
@@ -790,7 +790,7 @@ class LookingGlass extends St.BoxLayout {
             style_class: 'lg-dialog',
             vertical: true,
             visible: false,
-            reactive: true
+            reactive: true,
         });
 
         this._borderPaintTarget = null;
@@ -994,7 +994,7 @@ class LookingGlass extends St.BoxLayout {
                 height: naturalHeight,
                 opacity: 255,
                 duration,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -1011,7 +1011,7 @@ class LookingGlass extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._completionActor.hide();
-                }
+                },
             });
         }
     }
@@ -1130,7 +1130,7 @@ class LookingGlass extends St.BoxLayout {
         this.ease({
             y: this._targetY,
             duration,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         this._windowList.update();
@@ -1156,7 +1156,7 @@ class LookingGlass extends St.BoxLayout {
             y: this._hiddenY,
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.hide()
+            onComplete: () => this.hide(),
         });
     }
 

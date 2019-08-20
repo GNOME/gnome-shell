@@ -17,7 +17,7 @@ var State = {
     CLOSED: 1,
     OPENING: 2,
     CLOSING: 3,
-    FADED_OUT: 4
+    FADED_OUT: 4,
 };
 
 var ModalDialog = GObject.registerClass({
@@ -26,9 +26,9 @@ var ModalDialog = GObject.registerClass({
                                        GObject.ParamFlags.READABLE,
                                        Math.min(...Object.values(State)),
                                        Math.max(...Object.values(State)),
-                                       State.CLOSED)
+                                       State.CLOSED),
     },
-    Signals: { 'opened': {}, 'closed': {} }
+    Signals: { 'opened': {}, 'closed': {} },
 }, class ModalDialog extends St.Widget {
     _init(params) {
         super._init({ visible: false,
@@ -134,7 +134,7 @@ var ModalDialog = GObject.registerClass({
             onComplete: () => {
                 this._setState(State.OPENED);
                 this.emit('opened');
-            }
+            },
         });
     }
 
@@ -183,7 +183,7 @@ var ModalDialog = GObject.registerClass({
                 opacity: 0,
                 duration: OPEN_AND_CLOSE_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => this._closeComplete()
+                onComplete: () => this._closeComplete(),
             });
         } else {
             this._closeComplete();
@@ -256,7 +256,7 @@ var ModalDialog = GObject.registerClass({
             opacity: 0,
             duration: FADE_OUT_DIALOG_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this.state = State.FADED_OUT)
+            onComplete: () => (this.state = State.FADED_OUT),
         });
     }
 });

@@ -22,7 +22,7 @@ var ANIMATION_BOUNCE_ICON_SCALE = 1.1;
 
 var AnimationDirection = {
     IN: 0,
-    OUT: 1
+    OUT: 1,
 };
 
 var APPICON_ANIMATION_OUT_SCALE = 3;
@@ -59,7 +59,7 @@ class BaseIcon extends St.Bin {
             this.label = new St.Label({ text: label });
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
-                y_align: Clutter.ActorAlign.CENTER
+                y_align: Clutter.ActorAlign.CENTER,
             });
             this._box.add_actor(this.label);
         } else {
@@ -190,7 +190,7 @@ function zoomOutActorAtPos(actor, x, y) {
         opacity: 0,
         duration: APPICON_ANIMATION_OUT_TIME,
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => actorClone.destroy()
+        onComplete: () => actorClone.destroy(),
     });
 }
 
@@ -500,9 +500,9 @@ var IconGrid = GObject.registerClass({
                             if (isLastItem)
                                 this._animationDone();
                             actor.reactive = true;
-                        }
+                        },
                     });
-                }
+                },
             });
         }
     }
@@ -569,7 +569,7 @@ var IconGrid = GObject.registerClass({
                     scale_y: 1,
                     duration: ANIMATION_TIME_IN,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
 
                 if (isLastItem)
@@ -579,7 +579,7 @@ var IconGrid = GObject.registerClass({
                     opacity: 255,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
             } else {
                 let isLastItem = actor._distance == maxDist;
@@ -595,7 +595,7 @@ var IconGrid = GObject.registerClass({
                     scale_y: scaleY,
                     duration: ANIMATION_TIME_OUT,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
 
                 if (isLastItem)
@@ -605,7 +605,7 @@ var IconGrid = GObject.registerClass({
                     opacity: 0,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM
+                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
                 };
             }
 
@@ -1019,7 +1019,7 @@ var PaginatedIconGrid = GObject.registerClass({
             let params = {
                 translation_y: translationY,
                 duration: EXTRA_SPACE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
             };
             if (i == (children.length - 1))
                 params.onComplete = () => this.emit('space-opened');
@@ -1040,7 +1040,7 @@ var PaginatedIconGrid = GObject.registerClass({
                 translation_y: 0,
                 duration: EXTRA_SPACE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                onComplete: () => this.emit('space-closed')
+                onComplete: () => this.emit('space-closed'),
             });
         }
     }

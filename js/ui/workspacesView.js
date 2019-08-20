@@ -11,13 +11,13 @@ var WORKSPACE_SWITCH_TIME = 250;
 
 var AnimationType = {
     ZOOM: 0,
-    FADE: 1
+    FADE: 1,
 };
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 var WorkspacesViewBase = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
         super._init({ style_class: 'workspaces-view', reactive: true });
@@ -197,7 +197,7 @@ class WorkspacesView extends WorkspacesViewBase {
             if (showAnimation) {
                 let easeParams = Object.assign(params, {
                     duration: WORKSPACE_SWITCH_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
                 // we have to call _updateVisibility() once before the
                 // animation and once afterwards - it does not really
@@ -243,7 +243,7 @@ class WorkspacesView extends WorkspacesViewBase {
         this.scrollAdjustment.ease(index, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: WORKSPACE_SWITCH_TIME,
-            onComplete: () => (this._animatingScroll = false)
+            onComplete: () => (this._animatingScroll = false),
         });
     }
 

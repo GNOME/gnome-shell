@@ -20,7 +20,7 @@ var AutorunSetting = {
     RUN: 0,
     IGNORE: 1,
     FILES: 2,
-    ASK: 3
+    ASK: 3,
 };
 
 // misc utils

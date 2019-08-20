@@ -30,7 +30,7 @@ function primaryModifier(mask) {
 }
 
 var SwitcherPopup = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class SwitcherPopup extends St.Widget {
     _init(items) {
         super._init({ style_class: 'switcher-popup',
@@ -286,7 +286,7 @@ var SwitcherPopup = GObject.registerClass({
                 opacity: 0,
                 duration: POPUP_FADE_OUT_TIME,
                 mode: Clutter.Animation.EASE_OUT_QUAD,
-                onComplete: () => this.destroy()
+                onComplete: () => this.destroy(),
             });
         } else {
             this.destroy();
@@ -464,7 +464,7 @@ var SwitcherList = GObject.registerClass({
                 if (this._highlighted == 0)
                     this._scrollableLeft = false;
                 this.queue_relayout();
-            }
+            },
         });
     }
 
@@ -487,7 +487,7 @@ var SwitcherList = GObject.registerClass({
                 if (this._highlighted == this._items.length - 1)
                     this._scrollableRight = false;
                 this.queue_relayout();
-            }
+            },
         });
     }
 

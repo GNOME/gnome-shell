@@ -267,7 +267,7 @@ var AppMenuButton = GObject.registerClass({
         this.ease({
             opacity: 255,
             duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -282,7 +282,7 @@ var AppMenuButton = GObject.registerClass({
             opacity: 0,
             mode: Clutter.Animation.EASE_OUT_QUAD,
             duration: Overview.ANIMATION_TIME,
-            onComplete: () => this.hide()
+            onComplete: () => this.hide(),
         });
     }
 
@@ -1105,7 +1105,7 @@ class Panel extends St.Widget {
         let boxes = {
             left: this._leftBox,
             center: this._centerBox,
-            right: this._rightBox
+            right: this._rightBox,
         };
         let boxContainer = boxes[box] || this._rightBox;
         this.statusArea[role] = indicator;

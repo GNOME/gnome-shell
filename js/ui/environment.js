@@ -269,7 +269,7 @@ function init() {
             let { stack } = new Error();
             log(`Usage of object.actor is deprecated for ${klass}\n${stack}`);
             return this;
-        }
+        },
     });
 
     St.set_slow_down_factor = function (factor) {
