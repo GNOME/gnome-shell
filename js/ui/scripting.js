@@ -317,7 +317,7 @@ async function runPerfScript(scriptModule, outputFile) {
 
     for (let step of scriptModule.run()) {
         try {
-            await step;
+            await step; // eslint-disable-line no-await-in-loop
         } catch (err) {
             log(`Script failed: ${err}\n${err.stack}`);
             Meta.exit(Meta.ExitCode.ERROR);
