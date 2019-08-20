@@ -203,7 +203,7 @@ class SystemIndicator extends St.BoxLayout {
         super._init({
             style_class: 'panel-status-indicators-box',
             reactive: true,
-            visible: false
+            visible: false,
         });
         this.menu = new PopupMenu.PopupMenuSection();
     }

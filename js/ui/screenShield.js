@@ -89,13 +89,13 @@ class ScreenShieldClock extends St.BoxLayout {
 });
 
 var NotificationsBox = GObject.registerClass({
-    Signals: { 'wake-up-screen': {} }
+    Signals: { 'wake-up-screen': {} },
 }, class NotificationsBox extends St.BoxLayout {
     _init() {
         super._init({
             vertical: true,
             name: 'screenShieldNotifications',
-            style_class: 'screen-shield-notifications-container'
+            style_class: 'screen-shield-notifications-container',
         });
 
         this._scrollView = new St.ScrollView({ hscrollbar_policy: St.PolicyType.NEVER });
@@ -264,7 +264,7 @@ var NotificationsBox = GObject.registerClass({
                 onComplete: () => {
                     this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
                     widget.set_height(-1);
-                }
+                },
             });
 
             this._updateVisibility();
@@ -751,9 +751,9 @@ var ScreenShield = class {
                     arrows[i].ease({
                         opacity: 0,
                         duration: ARROW_ANIMATION_TIME / 2,
-                        mode: Clutter.AnimationMode.EASE_IN_QUAD
+                        mode: Clutter.AnimationMode.EASE_IN_QUAD,
                     });
-                }
+                },
             });
         }
 
@@ -802,7 +802,7 @@ var ScreenShield = class {
                 onComplete: () => {
                     this._lockScreenGroup.fixed_position_set = false;
                     this._lockScreenState = MessageTray.State.SHOWN;
-                }
+                },
             });
 
             this._maybeCancelDialog();
@@ -955,7 +955,7 @@ var ScreenShield = class {
                 y: -h,
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => this._hideLockScreenComplete()
+                onComplete: () => this._hideLockScreenComplete(),
             });
         } else {
             this._hideLockScreenComplete();
@@ -1022,7 +1022,7 @@ var ScreenShield = class {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._lockScreenShown({ fadeToBlack, animateFade: true });
-                }
+                },
             });
         } else {
             this._lockScreenGroup.fixed_position_set = false;
@@ -1229,7 +1229,7 @@ var ScreenShield = class {
             scale_y: 0,
             duration: animate ? Overview.ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._completeDeactivate()
+            onComplete: () => this._completeDeactivate(),
         });
     }
 
