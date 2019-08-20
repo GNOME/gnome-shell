@@ -230,10 +230,10 @@ var NotificationsBox = GObject.registerClass({
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add_child(obj.sourceBox);
 
-        obj.sourceCountChangedId = source.connect('notify::count', source => {
+        obj.sourceCountChangedId = source.connect('notify::count', () => {
             this._countChanged(source, obj);
         });
-        obj.sourceTitleChangedId = source.connect('notify::title', source => {
+        obj.sourceTitleChangedId = source.connect('notify::title', () => {
             this._titleChanged(source, obj);
         });
         obj.policyChangedId = source.policy.connect('notify', (policy, pspec) => {
@@ -242,7 +242,7 @@ var NotificationsBox = GObject.registerClass({
             else
                 this._detailedChanged(source, obj);
         });
-        obj.sourceDestroyId = source.connect('destroy', source => {
+        obj.sourceDestroyId = source.connect('destroy', () => {
             this._onSourceDestroy(source, obj);
         });
 

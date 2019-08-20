@@ -423,10 +423,10 @@ class ObjInspector extends St.ScrollView {
                 } catch (e) {
                     link = new St.Label({ text: '<error>' });
                 }
-                let hbox = new St.BoxLayout();
-                hbox.add(new St.Label({ text: `${propName}: ` }));
-                hbox.add(link);
-                this._container.add_actor(hbox);
+                let box = new St.BoxLayout();
+                box.add(new St.Label({ text: `${propName}: ` }));
+                box.add(link);
+                this._container.add_actor(box);
             }
         }
     }

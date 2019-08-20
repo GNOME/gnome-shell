@@ -155,7 +155,7 @@ var _Draggable = class _Draggable {
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
 
-        this._capturedEventId = global.stage.connect('captured-event', (actor, event) => {
+        this._capturedEventId = global.stage.connect('captured-event', (o, event) => {
             let device = event.get_device();
             if (device != this._grabbedDevice &&
                 device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)

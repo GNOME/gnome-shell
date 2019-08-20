@@ -48,7 +48,7 @@ var WindowAttentionHandler = class {
         source.showNotification(notification);
 
         source.signalIDs.push(window.connect('notify::title', () => {
-            let [title, banner] = this._getTitleAndBanner(app, window);
+            [title, banner] = this._getTitleAndBanner(app, window);
             notification.update(title, banner);
         }));
     }
