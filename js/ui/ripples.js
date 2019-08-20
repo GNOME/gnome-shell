@@ -59,7 +59,7 @@ var Ripples = class Ripples {
             opacity: 0,
             delay,
             duration,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
         ripple.ease({
             scale_x: finalScale,
@@ -67,7 +67,7 @@ var Ripples = class Ripples {
             delay,
             duration,
             mode: Clutter.AnimationMode.LINEAR,
-            onComplete: () => (ripple.visible = false)
+            onComplete: () => (ripple.visible = false),
         });
     }
 

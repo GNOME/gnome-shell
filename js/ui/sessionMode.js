@@ -34,9 +34,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: []
+            right: [],
         },
-        panelStyle: null
+        panelStyle: null,
     },
 
     'gdm': {
@@ -48,9 +48,9 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
         },
-        panelStyle: 'login-screen'
+        panelStyle: 'login-screen',
     },
 
     'lock-screen': {
@@ -61,9 +61,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['aggregateMenu']
+            right: ['aggregateMenu'],
         },
-        panelStyle: 'lock-screen'
+        panelStyle: 'lock-screen',
     },
 
     'unlock-dialog': {
@@ -73,9 +73,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
         },
-        panelStyle: 'unlock-screen'
+        panelStyle: 'unlock-screen',
     },
 
     'user': {
@@ -101,9 +101,9 @@ const _modes = {
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
-        }
-    }
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
+        },
+    },
 };
 
 function _loadMode(file, info) {

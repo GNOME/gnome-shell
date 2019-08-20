@@ -16,7 +16,7 @@ var DIALOG_ICON_SIZE = 48;
 var WORK_SPINNER_ICON_SIZE = 16;
 
 var AuthenticationDialog = GObject.registerClass({
-    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } }
+    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
     _init(actionId, body, cookie, userNames) {
         super._init({ styleClass: 'prompt-dialog' });

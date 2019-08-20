@@ -79,7 +79,7 @@ function _getCalendarDayAbbreviation(dayNumber) {
         /* Translators: Calendar grid abbreviation for Friday */
         NC_("grid friday", "F"),
         /* Translators: Calendar grid abbreviation for Saturday */
-        NC_("grid saturday", "S")
+        NC_("grid saturday", "S"),
     ];
     return Shell.util_translate_time_string(abbreviations[dayNumber]);
 }
@@ -313,7 +313,7 @@ var DBusEventSource = class DBusEventSource {
 Signals.addSignalMethods(DBusEventSource.prototype);
 
 var Calendar = GObject.registerClass({
-    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } }
+    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
 }, class Calendar extends St.Widget {
     _init() {
         this._weekStart = Shell.util_get_week_start();
@@ -348,7 +348,7 @@ var Calendar = GObject.registerClass({
         super._init({
             style_class: 'calendar',
             layout_manager: new Clutter.TableLayout(),
-            reactive: true
+            reactive: true,
         });
 
         this._buildHeader();
@@ -920,7 +920,7 @@ class NotificationTimeLabel extends St.Label {
         super._init({
             style_class: 'event-time',
             x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.END
+            y_align: Clutter.ActorAlign.END,
         });
         this._datetime = datetime;
     }
@@ -1067,7 +1067,7 @@ class CalendarMessageList extends St.Widget {
             style_class: 'message-list',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         this._placeholder = new Placeholder();
@@ -1077,9 +1077,11 @@ class CalendarMessageList extends St.Widget {
                                      x_expand: true, y_expand: true });
         this.add_actor(box);
 
-        this._scrollView = new St.ScrollView({ style_class: 'vfade',
-                                               overlay_scrollbars: true,
-                                               x_expand: true, y_expand: true, });
+        this._scrollView = new St.ScrollView({
+            style_class: 'vfade',
+            overlay_scrollbars: true,
+            x_expand: true, y_expand: true,
+        });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 

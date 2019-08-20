@@ -66,7 +66,7 @@ var PopupBaseMenuItem = GObject.registerClass({
     },
     Signals: {
         'activate': { param_types: [Clutter.Event.$gtype] },
-    }
+    },
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
         params = Params.parse(params, {
@@ -326,7 +326,7 @@ class Switch extends St.Bin {
 });
 
 var PopupSwitchMenuItem = GObject.registerClass({
-    Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] }, },
+    Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class PopupSwitchMenuItem extends PopupBaseMenuItem {
     _init(text, active, params) {
         super._init(params);
@@ -1032,12 +1032,12 @@ var PopupSubMenu = class extends PopupMenuBase {
                 height: naturalHeight,
                 duration: 250,
                 mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onComplete: () => this.actor.set_height(-1)
+                onComplete: () => this.actor.set_height(-1),
             });
             this._arrow.ease({
                 rotation_angle_z: targetAngle,
                 duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
             });
         } else {
             this._arrow.rotation_angle_z = targetAngle;
@@ -1065,12 +1065,12 @@ var PopupSubMenu = class extends PopupMenuBase {
                 onComplete: () => {
                     this.actor.hide();
                     this.actor.set_height(-1);
-                }
+                },
             });
             this._arrow.ease({
                 rotation_angle_z: 0,
                 duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
             });
         } else {
             this._arrow.rotation_angle_z = 0;
@@ -1257,7 +1257,7 @@ var PopupMenuManager = class {
             openStateChangeId: menu.connect('open-state-changed', this._onMenuOpenState.bind(this)),
             destroyId:         menu.connect('destroy', this._onMenuDestroy.bind(this)),
             enterId:           0,
-            focusInId:         0
+            focusInId:         0,
         };
 
         let source = menu.sourceActor;
