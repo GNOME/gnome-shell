@@ -507,7 +507,7 @@ var PopupMenuBase = class {
             menuItem = new PopupMenuItem(title);
 
         this.addMenuItem(menuItem);
-        menuItem.connect('activate', (menuItem, event) => {
+        menuItem.connect('activate', (o, event) => {
             callback(event);
         });
 
@@ -565,7 +565,7 @@ var PopupMenuBase = class {
     }
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('notify::active', menuItem => {
+        menuItem._activeChangeId = menuItem.connect('notify::active', () => {
             let active = menuItem.active;
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
@@ -589,7 +589,7 @@ var PopupMenuBase = class {
                     menuItem.actor.grab_key_focus();
             }
         });
-        menuItem._activateId = menuItem.connect_after('activate', (menuItem, _event) => {
+        menuItem._activateId = menuItem.connect_after('activate', () => {
             this.emit('activate', menuItem);
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
         });
@@ -602,7 +602,7 @@ var PopupMenuBase = class {
         // the menuItem may have, called destroyId
         // (FIXME: in the future it may make sense to have container objects
         // like PopupMenuManager does)
-        menuItem._popupMenuDestroyId = menuItem.connect('destroy', menuItem => {
+        menuItem._popupMenuDestroyId = menuItem.connect('destroy', () => {
             menuItem.disconnect(menuItem._popupMenuDestroyId);
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);

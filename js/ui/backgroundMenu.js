@@ -35,7 +35,7 @@ function addBackgroundMenu(actor, layoutManager) {
     }
 
     let clickAction = new Clutter.ClickAction();
-    clickAction.connect('long-press', (action, actor, state) => {
+    clickAction.connect('long-press', (action, theActor, state) => {
         if (state == Clutter.LongPressState.QUERY)
             return ((action.get_button() == 0 ||
                      action.get_button() == 1) &&

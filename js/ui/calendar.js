@@ -954,7 +954,7 @@ class NotificationSection extends MessageList.MessageListSection {
             notificationAddedId: 0,
         };
 
-        obj.destroyId = source.connect('destroy', source => {
+        obj.destroyId = source.connect('destroy', () => {
             this._onSourceDestroy(source, obj);
         });
         obj.notificationAddedId = source.connect('notification-added',
@@ -1128,7 +1128,7 @@ class CalendarMessageList extends St.Widget {
             Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
         }));
 
-        connectionsIds.push(section.connect('destroy', (section) => {
+        connectionsIds.push(section.connect('destroy', () => {
             connectionsIds.forEach(id => section.disconnect(id));
             this._sectionList.remove_actor(section);
         }));

@@ -30,7 +30,8 @@ var WINDOW_ANIMATION_TIME = 250;
 var DIM_BRIGHTNESS = -0.3;
 var DIM_TIME = 500;
 var UNDIM_TIME = 250;
-var MOTION_THRESHOLD = 100;
+var WS_MOTION_THRESHOLD = 100;
+var APP_MOTION_THRESHOLD = 30;
 
 var ONE_SECOND = 1000; // in ms
 
@@ -493,13 +494,13 @@ var TouchpadWorkspaceSwitchAction = class {
     _checkActivated() {
         let dir;
 
-        if (this._dy < -MOTION_THRESHOLD)
+        if (this._dy < -WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.DOWN;
-        else if (this._dy > MOTION_THRESHOLD)
+        else if (this._dy > WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.UP;
-        else if (this._dx < -MOTION_THRESHOLD)
+        else if (this._dx < -WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.RIGHT;
-        else if (this._dx > MOTION_THRESHOLD)
+        else if (this._dx > WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.LEFT;
         else
             return false;
@@ -586,8 +587,8 @@ var WorkspaceSwitchAction = GObject.registerClass({
     vfunc_swipe(actor, direction) {
         let [x, y] = this.get_motion_coords(0);
         let [xPress, yPress] = this.get_press_coords(0);
-        if (Math.abs(x - xPress) < MOTION_THRESHOLD &&
-            Math.abs(y - yPress) < MOTION_THRESHOLD) {
+        if (Math.abs(x - xPress) < WS_MOTION_THRESHOLD &&
+            Math.abs(y - yPress) < WS_MOTION_THRESHOLD) {
             this.emit('cancel');
             return;
         }
@@ -654,15 +655,14 @@ var AppSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_progress(_actor) {
-        const MOTION_THRESHOLD = 30;
 
         if (this.get_n_current_points() == 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
                 let [startX, startY] = this.get_press_coords(i);
                 let [x, y] = this.get_motion_coords(i);
 
-                if (Math.abs(x - startX) > MOTION_THRESHOLD ||
-                    Math.abs(y - startY) > MOTION_THRESHOLD)
+                if (Math.abs(x - startX) > APP_MOTION_THRESHOLD ||
+                    Math.abs(y - startY) > APP_MOTION_THRESHOLD)
                     return false;
             }
 

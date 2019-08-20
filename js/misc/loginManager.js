@@ -110,14 +110,14 @@ var LoginManagerSystemd = class {
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
-            let [session, objectPath_] = this._userProxy.Display;
+            let [session, objectPath] = this._userProxy.Display;
             if (session) {
                 log(`Will monitor session ${session}`);
                 sessionId = session;
             } else {
                 log('Failed to find "Display" session; are we the greeter?');
 
-                for (let [session, objectPath] of this._userProxy.Sessions) {
+                for ([session, objectPath] of this._userProxy.Sessions) {
                     let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
                                                                'org.freedesktop.login1',
                                                                objectPath);

@@ -115,7 +115,8 @@ var ContentTypeDiscoverer = class {
 
             let hotplugSniffer = new HotplugSniffer();
             hotplugSniffer.SniffURIRemote(root.get_uri(),
-                ([contentTypes]) => {
+                result => {
+                    [contentTypes] = result;
                     this._emitCallback(mount, contentTypes);
                 });
         }
@@ -166,7 +167,7 @@ var AutorunManager = class {
         if (!this._session.SessionIsActive)
             return;
 
-        let discoverer = new ContentTypeDiscoverer((mount, apps, contentTypes) => {
+        let discoverer = new ContentTypeDiscoverer((m, apps, contentTypes) => {
             this._dispatcher.addMount(mount, apps, contentTypes);
         });
         discoverer.guessContentTypes(mount);
