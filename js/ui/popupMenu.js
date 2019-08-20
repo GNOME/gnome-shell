@@ -718,10 +718,11 @@ var PopupMenuBase = class {
                 this.disconnect(openStateChangeId);
                 menuItem.disconnect(destroyId);
             });
-        } else if (menuItem instanceof PopupBaseMenuItem)
+        } else if (menuItem instanceof PopupBaseMenuItem) {
             this._connectItemSignals(menuItem);
-        else
+        } else {
             throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
+        }
 
         menuItem._setParent(this);
 
