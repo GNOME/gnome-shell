@@ -85,11 +85,10 @@ var ShowOverviewAction = GObject.registerClass({
         for (let i = 0; i < this.get_n_current_points(); i++) {
             let x, y;
 
-            if (motion == true) {
+            if (motion == true)
                 [x, y] = this.get_motion_coords(i);
-            } else {
+            else
                 [x, y] = this.get_press_coords(i);
-            }
 
             if (i == 0) {
                 minX = maxX = x;

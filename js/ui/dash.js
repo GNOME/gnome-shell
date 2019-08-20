@@ -16,11 +16,10 @@ var DASH_ITEM_LABEL_HIDE_TIME = 100;
 var DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
-    if (source instanceof AppDisplay.AppIcon) {
+    if (source instanceof AppDisplay.AppIcon)
         return source.app;
-    } else {
+    else
         return null;
-    }
 }
 
 var DashIcon = GObject.registerClass(
@@ -755,9 +754,8 @@ var Dash = GObject.registerClass({
         if (!this._shownInitially)
             this._shownInitially = true;
 
-        for (let i = 0; i < addedItems.length; i++) {
+        for (let i = 0; i < addedItems.length; i++)
             addedItems[i].item.show(animate);
-        }
 
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache
@@ -865,9 +863,8 @@ var Dash = GObject.registerClass({
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
-        if (app == null || app.is_window_backed()) {
+        if (app == null || app.is_window_backed())
             return false;
-        }
 
         if (!global.settings.is_writable('favorite-apps'))
             return false;
