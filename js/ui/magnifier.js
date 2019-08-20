@@ -776,7 +776,7 @@ var ZoomRegion = class ZoomRegion {
                 x: this._viewPortX,
                 y: this._viewPortY,
                 width: this._viewPortWidth,
-                height: this._viewPortHeight
+                height: this._viewPortHeight,
             });
         } else {
             this.setScreenPosition(this._screenPosition);
@@ -1599,7 +1599,7 @@ class Crosshairs extends Clutter.Actor {
         super._init({
             clip_to_allocation: false,
             width: groupWidth,
-            height: groupHeight
+            height: groupHeight,
         });
         this._horizLeftHair = new Clutter.Actor();
         this._horizRightHair = new Clutter.Actor();

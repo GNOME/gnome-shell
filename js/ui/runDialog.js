@@ -249,7 +249,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 onComplete: () => {
                     parentActor.set_height(-1);
                     this._errorBox.show();
-                }
+                },
             });
         }
     }

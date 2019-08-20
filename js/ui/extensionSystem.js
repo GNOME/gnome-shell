@@ -236,7 +236,7 @@ var ExtensionManager = class {
             path: dir.get_path(),
             error: '',
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
-            canChange: false
+            canChange: false,
         };
         this._extensions.set(uuid, extension);
 

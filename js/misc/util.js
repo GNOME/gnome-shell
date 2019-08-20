@@ -424,7 +424,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
 
     adjustment.ease(value, {
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        duration: SCROLL_TIME
+        duration: SCROLL_TIME,
     });
 }
 
@@ -456,8 +456,8 @@ function wiggle(actor, params) {
                         duration: params.duration,
                         mode: Clutter.AnimationMode.EASE_IN_QUAD,
                     });
-                }
+                },
             });
-        }
+        },
     });
 }
