@@ -68,10 +68,11 @@ var XdndHandler = class {
             // Make sure that the clone has the same position as the source
             this._cursorWindowClone.add_constraint(constraintPosition);
         } else {
-            if (this._cursorWindowClone) {
-                this._cursorWindowClone.destroy();
-                this._cursorWindowClone = null;
-            }
+            if (!this._cursorWindowClone)
+                return;
+
+            this._cursorWindowClone.destroy();
+            this._cursorWindowClone = null;
         }
     }
 
