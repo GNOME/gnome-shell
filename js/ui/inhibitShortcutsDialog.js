@@ -18,8 +18,8 @@ var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 var InhibitShortcutsDialog = GObject.registerClass({
     Implements: [Meta.InhibitShortcutsDialog],
     Properties: {
-        'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog)
-    }
+        'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog),
+    },
 }, class InhibitShortcutsDialog extends GObject.Object {
     _init(window) {
         super._init();

@@ -263,7 +263,7 @@ var InputStreamSlider = class extends StreamSlider {
             // as recording because they show the input level
             let skippedApps = [
                 'org.gnome.VolumeControl',
-                'org.PulseAudio.pavucontrol'
+                'org.PulseAudio.pavucontrol',
             ];
 
             showInput = this._control.get_source_outputs().some(output => {
