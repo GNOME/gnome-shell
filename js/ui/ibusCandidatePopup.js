@@ -215,9 +215,10 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             this._preeditText.text = text.get_text();
 
             let attrs = text.get_attributes();
-            if (attrs)
+            if (attrs) {
                 this._setTextAttributes(this._preeditText.clutter_text,
                                         attrs);
+            }
         });
         panelService.connect('show-preedit-text', () => {
             this._preeditText.show();
@@ -316,8 +317,9 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
 
     _setTextAttributes(clutterText, ibusAttrList) {
         let attr;
-        for (let i = 0; (attr = ibusAttrList.get(i)); ++i)
+        for (let i = 0; (attr = ibusAttrList.get(i)); ++i) {
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
+        }
     }
 });

@@ -233,9 +233,10 @@ const SystemActions = GObject.registerClass({
 
     _updateOrientationLock() {
         let available = false;
-        if (this._sensorProxy.g_name_owner)
+        if (this._sensorProxy.g_name_owner) {
             available = this._sensorProxy.HasAccelerometer &&
                         this._monitorManager.get_is_builtin_display_on();
+        }
 
         this._actions.get(LOCK_ORIENTATION_ACTION_ID).available = available;
 
@@ -273,9 +274,10 @@ const SystemActions = GObject.registerClass({
 
         let results = [];
 
-        for (let [key, { available, keywords }] of this._actions)
+        for (let [key, { available, keywords }] of this._actions) {
             if (available && terms.every(t => keywords.some(k => k.startsWith(t))))
                 results.push(key);
+        }
 
         return results;
     }

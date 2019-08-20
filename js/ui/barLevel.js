@@ -88,9 +88,10 @@ var BarLevel = GObject.registerClass({
         if (this._overdriveStart == value)
             return;
 
-        if (value > this._maxValue)
+        if (value > this._maxValue) {
             throw new Error(`Tried to set overdrive value to ${value}, ` +
                 `which is a number greater than the maximum allowed value ${this._maxValue}`);
+        }
 
         this._overdriveStart = value;
         this.notify('overdrive-start');

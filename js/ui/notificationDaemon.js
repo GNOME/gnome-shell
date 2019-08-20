@@ -310,12 +310,13 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i + 1]];
-                if (actionId == 'default')
+                if (actionId == 'default') {
                     hasDefaultAction = true;
-                else
+                } else {
                     notification.addAction(label, () => {
                         this._emitActionInvoked(ndata.id, actionId);
                     });
+                }
             }
         }
 
@@ -427,13 +428,14 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         else
             this.useNotificationIcon = true;
 
-        if (sender)
+        if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
                                                               Gio.BusNameWatcherFlags.NONE,
                                                               null,
                                                               this._onNameVanished.bind(this));
-        else
+        } else {
             this._nameWatcherId = 0;
+        }
     }
 
     _createPolicy() {
