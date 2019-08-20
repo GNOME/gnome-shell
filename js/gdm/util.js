@@ -571,9 +571,8 @@ var ShellUserVerifier = class {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (this.serviceIsForeground(serviceName)) {
+        if (this.serviceIsForeground(serviceName))
             this._verificationFailed(true);
-        }
     }
 };
 Signals.addSignalMethods(ShellUserVerifier.prototype);

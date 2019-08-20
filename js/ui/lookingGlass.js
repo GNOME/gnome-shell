@@ -54,9 +54,9 @@ var AutoComplete = class AutoComplete {
     }
 
     _processCompletionRequest(event) {
-        if (event.completions.length == 0) {
+        if (event.completions.length == 0)
             return;
-        }
+
         // Unique match = go ahead and complete; multiple matches + single tab = complete the common starting string;
         // multiple matches + double tab = emit a suggest event with all possible options
         if (event.completions.length == 1) {
@@ -78,9 +78,9 @@ var AutoComplete = class AutoComplete {
     _entryKeyPressEvent(actor, event) {
         let cursorPos = this._entry.clutter_text.get_cursor_position();
         let text = this._entry.get_text();
-        if (cursorPos != -1) {
+        if (cursorPos != -1)
             text = text.slice(0, cursorPos);
-        }
+
         if (event.get_key_symbol() == Clutter.Tab) {
             let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
             let currTime = global.get_current_time();
@@ -224,18 +224,16 @@ var Notebook = GObject.registerClass({
 
     nextTab() {
         let nextIndex = this._selectedIndex;
-        if (nextIndex < this._tabs.length - 1) {
+        if (nextIndex < this._tabs.length - 1)
             ++nextIndex;
-        }
 
         this.selectIndex(nextIndex);
     }
 
     prevTab() {
         let prevIndex = this._selectedIndex;
-        if (prevIndex > 0) {
+        if (prevIndex > 0)
             --prevIndex;
-        }
 
         this.selectIndex(prevIndex);
     }
@@ -412,9 +410,8 @@ class ObjInspector extends St.ScrollView {
         hbox.add(button);
         if (typeof obj == typeof {}) {
             let properties = [];
-            for (let propName in obj) {
+            for (let propName in obj)
                 properties.push(propName);
-            }
             properties.sort();
 
             for (let i = 0; i < properties.length; i++) {
@@ -1097,20 +1094,18 @@ class LookingGlass extends St.BoxLayout {
     vfunc_key_press_event(keyPressEvent) {
         let symbol = keyPressEvent.keyval;
         if (symbol == Clutter.Escape) {
-            if (this._objInspector.visible) {
+            if (this._objInspector.visible)
                 this._objInspector.close();
-            } else {
+            else
                 this.close();
-            }
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
         if (keyPressEvent.modifier_state & Clutter.ModifierType.CONTROL_MASK) {
-            if (symbol == Clutter.KEY_Page_Up) {
+            if (symbol == Clutter.KEY_Page_Up)
                 this._notebook.prevTab();
-            } else if (symbol == Clutter.KEY_Page_Down) {
+            else if (symbol == Clutter.KEY_Page_Down)
                 this._notebook.nextTab();
-            }
         }
         return Clutter.EVENT_PROPAGATE;
     }

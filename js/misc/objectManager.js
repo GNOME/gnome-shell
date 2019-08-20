@@ -192,9 +192,8 @@ var ObjectManager = class {
     _onNameAppeared() {
         this._managerProxy.GetManagedObjectsRemote((result, error) => {
             if (!result) {
-                if (error) {
+                if (error)
                     logError(error, `could not get remote objects for service ${this._serviceName} path ${this._managerPath}`);
-                }
 
                 this._tryToCompleteLoad();
                 return;
