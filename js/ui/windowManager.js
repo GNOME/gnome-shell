@@ -1022,9 +1022,8 @@ var WindowManager = class {
         this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
                                                 GSD_WACOM_OBJECT_PATH,
                                                 (proxy, error) => {
-                                                    if (error) {
+                                                    if (error)
                                                         log(error.message);
-                                                    }
                                                 });
 
         global.display.connect('pad-mode-switch', (display, pad, group, mode) => {
@@ -1169,9 +1168,8 @@ var WindowManager = class {
 
     _lookupIndex(windows, metaWindow) {
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].metaWindow == metaWindow) {
+            if (windows[i].metaWindow == metaWindow)
                 return i;
-            }
         }
         return -1;
     }

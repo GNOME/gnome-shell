@@ -87,9 +87,8 @@ class ListSearchResult extends SearchResult {
 
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
-        if (icon) {
+        if (icon)
             titleBox.add(icon);
-        }
 
         let title = new St.Label({
             text: this.metaInfo['name'],
@@ -685,11 +684,10 @@ var SearchResultsView = GObject.registerClass({
         this._statusBin.visible = !haveResults;
 
         if (!haveResults) {
-            if (this.searchInProgress) {
+            if (this.searchInProgress)
                 this._statusText.set_text(_("Searching…"));
-            } else {
+            else
                 this._statusText.set_text(_("No results."));
-            }
         }
     }
 

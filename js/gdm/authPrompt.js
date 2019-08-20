@@ -78,11 +78,10 @@ var AuthPrompt = GObject.registerClass({
         this.connect('next', () => {
             this.updateSensitivity(false);
             this.startSpinning();
-            if (this._queryingService) {
+            if (this._queryingService)
                 this._userVerifier.answerQuery(this._queryingService, this._entry.text);
-            } else {
+            else
                 this._preemptiveAnswer = this._entry.text;
-            }
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -525,9 +524,9 @@ var AuthPrompt = GObject.registerClass({
     }
 
     cancel() {
-        if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
+        if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
-        }
+
         this.reset();
         this.emit('cancelled');
     }
