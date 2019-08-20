@@ -112,13 +112,12 @@ var Batch = class extends Task {
         for (let i = 0; i < tasks.length; i++) {
             let task;
 
-            if (tasks[i] instanceof Task) {
+            if (tasks[i] instanceof Task)
                 task = tasks[i];
-            } else if (typeof tasks[i] == 'function') {
+            else if (typeof tasks[i] == 'function')
                 task = new Task(scope, tasks[i]);
-            } else {
+            else
                 throw new Error('Batch tasks must be functions or Task, Hold or Batch objects');
-            }
 
             this.tasks.push(task);
         }
@@ -129,9 +128,8 @@ var Batch = class extends Task {
     }
 
     runTask() {
-        if (!(this._currentTaskIndex in this.tasks)) {
+        if (!(this._currentTaskIndex in this.tasks))
             return null;
-        }
 
         return this.tasks[this._currentTaskIndex].run();
     }
@@ -179,9 +177,8 @@ var ConcurrentBatch = class extends Batch {
     process() {
         let hold = this.runTask();
 
-        if (hold) {
+        if (hold)
             this.hold.acquireUntilAfter(hold);
-        }
 
         // Regardless of the state of the just run task,
         // fire off the next one, so all the tasks can run

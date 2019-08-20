@@ -362,9 +362,8 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
            if the reason is no secrets, as that indicates the user
            cancelled the agent dialog */
         if (newstate == NM.DeviceState.FAILED &&
-            reason != NM.DeviceStateReason.NO_SECRETS) {
+            reason != NM.DeviceStateReason.NO_SECRETS)
             this.emit('activation-failed', reason);
-        }
 
         this._sync();
     }
@@ -1053,9 +1052,8 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     _checkConnections(network, accessPoint) {
         this._connections.forEach(connection => {
             if (accessPoint.connection_valid(connection) &&
-                !network.connections.includes(connection)) {
+                !network.connections.includes(connection))
                 network.connections.push(connection);
-            }
         });
     }
 
@@ -1241,9 +1239,8 @@ var NMDeviceWireless = class {
            if the reason is no secrets, as that indicates the user
            cancelled the agent dialog */
         if (newstate == NM.DeviceState.FAILED &&
-            reason != NM.DeviceStateReason.NO_SECRETS) {
+            reason != NM.DeviceStateReason.NO_SECRETS)
             this.emit('activation-failed', reason);
-        }
 
         this._sync();
     }
@@ -1511,9 +1508,9 @@ var NMVpnSection = class extends NMConnectionSection {
 
     setActiveConnections(vpnConnections) {
         let connections = this._connectionItems.values();
-        for (let item of connections) {
+        for (let item of connections)
             item.setActiveConnection(null);
-        }
+
         vpnConnections.forEach(a => {
             if (a.connection) {
                 let item = this._connectionItems.get(a.connection.get_uuid());

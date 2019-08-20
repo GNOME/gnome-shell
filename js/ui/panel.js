@@ -708,16 +708,15 @@ class AggregateMenu extends PanelMenu.Button {
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.add_child(this._indicators);
 
-        if (Config.HAVE_NETWORKMANAGER) {
+        if (Config.HAVE_NETWORKMANAGER)
             this._network = new imports.ui.status.network.NMApplet();
-        } else {
+        else
             this._network = null;
-        }
-        if (Config.HAVE_BLUETOOTH) {
+
+        if (Config.HAVE_BLUETOOTH)
             this._bluetooth = new imports.ui.status.bluetooth.Indicator();
-        } else {
+        else
             this._bluetooth = null;
-        }
 
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._power = new imports.ui.status.power.Indicator();
@@ -734,12 +733,10 @@ class AggregateMenu extends PanelMenu.Button {
         this._indicators.add_child(this._screencast);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
-        if (this._network) {
+        if (this._network)
             this._indicators.add_child(this._network);
-        }
-        if (this._bluetooth) {
+        if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
-        }
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
@@ -749,12 +746,12 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        if (this._network) {
+        if (this._network)
             this.menu.addMenuItem(this._network.menu);
-        }
-        if (this._bluetooth) {
+
+        if (this._bluetooth)
             this.menu.addMenuItem(this._bluetooth.menu);
-        }
+
         this.menu.addMenuItem(this._remoteAccess.menu);
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
