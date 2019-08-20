@@ -162,7 +162,7 @@ var ScreenshotService = class {
     SelectAreaAsync(params, invocation) {
         let selectArea = new SelectArea();
         selectArea.show();
-        selectArea.connect('finished', (selectArea, areaRectangle) => {
+        selectArea.connect('finished', (o, areaRectangle) => {
             if (areaRectangle) {
                 let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
                                                      areaRectangle.width, areaRectangle.height);
@@ -192,7 +192,7 @@ var ScreenshotService = class {
     PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
         pickPixel.show();
-        pickPixel.connect('finished', (pickPixel, coords) => {
+        pickPixel.connect('finished', (obj, coords) => {
             if (coords) {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)

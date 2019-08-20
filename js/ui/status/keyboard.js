@@ -986,16 +986,16 @@ class InputSourceIndicator extends PanelMenu.Button {
                         return;
 
                     let group = item.radioGroup;
-                    for (let i = 0; i < group.length; ++i) {
-                        if (group[i] == item) {
+                    for (let j = 0; j < group.length; ++j) {
+                        if (group[j] == item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
                             ibusManager.activateProperty(item.prop.get_key(),
                                                          IBus.PropState.CHECKED);
                         } else {
-                            group[i].setOrnament(PopupMenu.Ornament.NONE);
-                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
-                            ibusManager.activateProperty(group[i].prop.get_key(),
+                            group[j].setOrnament(PopupMenu.Ornament.NONE);
+                            group[j].prop.set_state(IBus.PropState.UNCHECKED);
+                            ibusManager.activateProperty(group[j].prop.get_key(),
                                                          IBus.PropState.UNCHECKED);
                         }
                     }

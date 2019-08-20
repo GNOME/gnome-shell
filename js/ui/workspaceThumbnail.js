@@ -508,7 +508,7 @@ var WorkspaceThumbnail = GObject.registerClass({
     _addWindowClone(win) {
         let clone = new WindowClone(win);
 
-        clone.connect('selected', (clone, time) => {
+        clone.connect('selected', (o, time) => {
             this.activate(time);
         });
         clone.connect('drag-begin', () => {
