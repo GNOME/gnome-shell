@@ -124,7 +124,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     _init() {
         super._init({
             name: WINDOW_DIMMER_EFFECT_NAME,
-            enabled: false
+            enabled: false,
         });
         this._enabled = true;
     }
@@ -147,7 +147,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
         this.actor.ease_property(`@effects.${this.name}.brightness`, color, {
             mode: Clutter.AnimationMode.LINEAR,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
-            onComplete: () => this._syncEnabled()
+            onComplete: () => this._syncEnabled(),
         });
 
         this._syncEnabled();
@@ -432,7 +432,7 @@ class TilePreview extends St.Widget {
             height: tileRect.height,
             opacity: 255,
             duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -445,7 +445,7 @@ class TilePreview extends St.Widget {
             opacity: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._reset()
+            onComplete: () => this._reset(),
         });
     }
 
@@ -1149,7 +1149,7 @@ var WindowManager = class {
             y: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._finishWorkspaceSwitch(switchData)
+            onComplete: () => this._finishWorkspaceSwitch(switchData),
         });
     }
 
@@ -1328,7 +1328,7 @@ var WindowManager = class {
                         this._minimizeWindowDone(shellwm, actor);
                     else
                         this._minimizeWindowOverwritten(shellwm, actor);
-                }
+                },
             });
         } else {
             let xDest, yDest, xScale, yScale;
@@ -1359,7 +1359,7 @@ var WindowManager = class {
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_EXPO,
-                onStopped: () => this._minimizeWindowDone(shellwm, actor)
+                onStopped: () => this._minimizeWindowDone(shellwm, actor),
             });
         }
     }
@@ -1393,7 +1393,7 @@ var WindowManager = class {
                 opacity: 255,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._unminimizeWindowDone(shellwm, actor)
+                onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         } else {
             let [success, geom] = actor.meta_window.get_icon_geometry();
@@ -1425,7 +1425,7 @@ var WindowManager = class {
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_EXPO,
-                onStopped: () => this._unminimizeWindowDone(shellwm, actor)
+                onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         }
     }
@@ -1499,7 +1499,7 @@ var WindowManager = class {
             scale_y: scaleY,
             opacity: 0,
             duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         actor.translation_x = -targetRect.x + sourceRect.x;
@@ -1517,7 +1517,7 @@ var WindowManager = class {
             translation_y: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._sizeChangeWindowDone(shellwm, actor)
+            onStopped: () => this._sizeChangeWindowDone(shellwm, actor),
         });
 
         // Now unfreeze actor updates, to get it to the new size.
@@ -1644,7 +1644,7 @@ var WindowManager = class {
                 scale_y: 1,
                 duration: SHOW_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onStopped: () => this._mapWindowDone(shellwm, actor)
+                onStopped: () => this._mapWindowDone(shellwm, actor),
             });
             break;
         case Meta.WindowType.MODAL_DIALOG:
@@ -1661,7 +1661,7 @@ var WindowManager = class {
                 scale_y: 1,
                 duration: DIALOG_SHOW_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._mapWindowDone(shellwm, actor)
+                onStopped: () => this._mapWindowDone(shellwm, actor),
             });
             break;
         default:
@@ -1715,7 +1715,7 @@ var WindowManager = class {
                 scale_y: 0.8,
                 duration: DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._destroyWindowDone(shellwm, actor)
+                onStopped: () => this._destroyWindowDone(shellwm, actor),
             });
             break;
         case Meta.WindowType.MODAL_DIALOG:
@@ -1735,7 +1735,7 @@ var WindowManager = class {
                 scale_y: 0,
                 duration: DIALOG_DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._destroyWindowDone(shellwm, actor)
+                onStopped: () => this._destroyWindowDone(shellwm, actor),
             });
             break;
         default:
@@ -1981,7 +1981,7 @@ var WindowManager = class {
             y: yDest,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._switchWorkspaceDone(shellwm)
+            onComplete: () => this._switchWorkspaceDone(shellwm),
         });
     }
 

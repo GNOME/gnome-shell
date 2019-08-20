@@ -154,7 +154,7 @@ var IntrospectService = class {
                     'is-hidden': GLib.Variant.new('b', window.is_hidden()),
                     'has-focus': GLib.Variant.new('b', (window == focusWindow)),
                     'width': GLib.Variant.new('u', frameRect.width),
-                    'height': GLib.Variant.new('u', frameRect.height)
+                    'height': GLib.Variant.new('u', frameRect.height),
                 };
 
                 // These properties may not be available for all windows:

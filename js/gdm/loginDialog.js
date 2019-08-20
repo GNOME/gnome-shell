@@ -39,7 +39,7 @@ const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
 var UserListItem = GObject.registerClass({
-    Signals: { 'activate': {} }
+    Signals: { 'activate': {} },
 }, class UserListItem extends St.Button {
     _init(user) {
         let layout = new St.BoxLayout({
@@ -159,7 +159,7 @@ var UserList = GObject.registerClass({
     Signals: {
         'activate': { param_types: [UserListItem.$gtype] },
         'item-added': { param_types: [UserListItem.$gtype] },
-    }
+    },
 }, class UserList extends St.ScrollView {
     _init() {
         super._init({
@@ -224,7 +224,7 @@ var UserList = GObject.registerClass({
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         adjustment.ease(value, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: _SCROLL_ANIMATION_TIME
+            duration: _SCROLL_ANIMATION_TIME,
         });
     }
 
@@ -307,7 +307,7 @@ var UserList = GObject.registerClass({
 });
 
 var SessionMenuButton = GObject.registerClass({
-    Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } }
+    Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } },
 }, class SessionMenuButton extends St.Bin {
     _init() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
@@ -318,7 +318,7 @@ var SessionMenuButton = GObject.registerClass({
             can_focus: true,
             accessible_name: _("Choose Session"),
             accessible_role: Atk.Role.MENU,
-            child: gearIcon
+            child: gearIcon,
         });
 
         super._init({ child: button });
@@ -776,7 +776,7 @@ var LoginDialog = GObject.registerClass({
         this._bannerView.ease({
             opacity: 255,
             duration: _FADE_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -877,7 +877,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.ease({
             opacity: 255,
             duration: _FADE_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
         this._fadeInBannerView();
     }
@@ -945,7 +945,7 @@ var LoginDialog = GObject.registerClass({
                 if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                     this._authPrompt.reset();
                 this._unbindOpacity();
-            }
+            },
         });
     }
 
@@ -967,7 +967,7 @@ var LoginDialog = GObject.registerClass({
             onComplete: () => {
                 this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
                 this._unbindOpacity();
-            }
+            },
         });
     }
 
@@ -1240,7 +1240,7 @@ var LoginDialog = GObject.registerClass({
         this.ease({
             opacity: 255,
             duration: 1000,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
 
         return true;

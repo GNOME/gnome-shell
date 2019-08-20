@@ -365,7 +365,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             onComplete: () => {
                 thumbnailsActor.destroy();
                 this.thumbnailsVisible = false;
-            }
+            },
         });
         this._thumbnails = null;
         if (this._switcherList._items[this._selectedIndex])
@@ -395,7 +395,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.thumbnailsVisible = true;
-            }
+            },
         });
 
         this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
@@ -474,7 +474,7 @@ var CyclerList = GObject.registerClass({
 });
 
 var CyclerPopup = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class CyclerPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();

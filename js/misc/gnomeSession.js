@@ -11,7 +11,7 @@ var PresenceStatus = {
     AVAILABLE: 0,
     INVISIBLE: 1,
     BUSY: 2,
-    IDLE: 3
+    IDLE: 3,
 };
 
 var PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);

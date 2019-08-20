@@ -12,7 +12,7 @@ var POPUP_APPICON_SIZE = 96;
 var SortGroup = {
     TOP:    0,
     MIDDLE: 1,
-    BOTTOM: 2
+    BOTTOM: 2,
 };
 
 var CtrlAltTabManager = class CtrlAltTabManager {
