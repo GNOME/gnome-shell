@@ -311,9 +311,8 @@ var Key = GObject.registerClass({
     _press(key) {
         this.emit('activated');
 
-        if (key != this.key || this._extended_keys.length == 0) {
+        if (key != this.key || this._extended_keys.length == 0)
             this.emit('pressed', this._getKeyval(key), key);
-        }
 
         if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,

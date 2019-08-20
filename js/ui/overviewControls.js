@@ -179,11 +179,10 @@ class SlidingControl extends St.Widget {
         let translation = this._getTranslation();
 
         let shouldShow = (this._getSlide() > 0);
-        if (shouldShow) {
+        if (shouldShow)
             translationStart = translation;
-        } else {
+        else
             translationEnd = translation;
-        }
 
         if (this.layout.translation_x == translationEnd)
             return;
