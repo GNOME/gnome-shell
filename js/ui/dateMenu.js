@@ -635,11 +635,11 @@ class DateMenuButton extends PanelMenu.Button {
     _sessionUpdated() {
         let eventSource;
         let showEvents = Main.sessionMode.showCalendarEvents;
-        if (showEvents) {
+        if (showEvents)
             eventSource = this._getEventSource();
-        } else {
+        else
             eventSource = new Calendar.EmptyEventSource();
-        }
+
         this._setEventSource(eventSource);
 
         // Displays are not actually expected to launch Settings when activated

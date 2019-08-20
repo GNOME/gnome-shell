@@ -856,11 +856,10 @@ var Source = GObject.registerClass({
         notification.acknowledged = false;
         this.pushNotification(notification);
 
-        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
+        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
             this.emit('notification-show', notification);
-        } else {
+        else
             notification.playSound();
-        }
     }
 
     notify(propName) {

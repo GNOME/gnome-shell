@@ -110,9 +110,8 @@ function _findBestFolderName(apps) {
             // If a category is present in all apps, its counter will
             // reach appInfos.length
             if (category.length > 0 &&
-                categoryCounter[category] == appInfos.length) {
+                categoryCounter[category] == appInfos.length)
                 categories.push(category);
-            }
         }
         return categories;
     }, commonCategories);
@@ -763,9 +762,8 @@ var AllView = GObject.registerClass({
 
         // Within the grid boundaries, or already animating
         if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
-            this._adjustment.get_transition('value') != null) {
+            this._adjustment.get_transition('value') != null)
             return;
-        }
 
         // Moving above the grid
         let currentY = this._adjustment.value;
@@ -776,9 +774,8 @@ var AllView = GObject.registerClass({
 
         // Moving below the grid
         let maxY = this._adjustment.upper - this._adjustment.page_size;
-        if (dragEvent.y >= gridBottom && currentY < maxY) {
+        if (dragEvent.y >= gridBottom && currentY < maxY)
             this.goToPage(this._grid.currentPage + 1);
-        }
     }
 
     _onDragBegin() {
@@ -2256,11 +2253,10 @@ var AppIcon = GObject.registerClass({
     }
 
     activateWindow(metaWindow) {
-        if (metaWindow) {
+        if (metaWindow)
             Main.activateWindow(metaWindow);
-        } else {
+        else
             Main.overview.hide();
-        }
     }
 
     _onMenuPoppedDown() {

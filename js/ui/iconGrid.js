@@ -815,9 +815,9 @@ var IconGrid = GObject.registerClass({
         this._updateIconSizesLaterId = 0;
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
         let newIconSize = Math.floor(ICON_SIZE * scale);
-        for (let i in this._items) {
+        for (let i in this._items)
             this._items[i].icon.setIconSize(newIconSize);
-        }
+
         return GLib.SOURCE_REMOVE;
     }
 });
@@ -879,9 +879,9 @@ var PaginatedIconGrid = GObject.registerClass({
             children[i].show();
 
             columnIndex++;
-            if (columnIndex == nColumns) {
+            if (columnIndex == nColumns)
                 columnIndex = 0;
-            }
+
             if (columnIndex == 0) {
                 y += this._getVItemSize() + spacing;
                 if ((i + 1) % this._childrenPerPage == 0)

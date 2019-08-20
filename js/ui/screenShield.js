@@ -123,9 +123,8 @@ var NotificationsBox = GObject.registerClass({
         }
 
         let items = this._sources.entries();
-        for (let [source, obj] of items) {
+        for (let [source, obj] of items)
             this._removeSource(source, obj);
-        }
     }
 
     _updateVisibility() {
@@ -205,11 +204,10 @@ var NotificationsBox = GObject.registerClass({
     }
 
     _showSource(source, obj, box) {
-        if (obj.detailed) {
+        if (obj.detailed)
             [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
-        } else {
+        else
             [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
-        }
 
         box.visible = obj.visible && (source.unseenCount > 0);
     }
@@ -704,9 +702,8 @@ var ScreenShield = class {
         this._lockScreenScrollCounter += delta;
 
         // 7 standard scrolls to lift up
-        if (this._lockScreenScrollCounter > 35) {
+        if (this._lockScreenScrollCounter > 35)
             this._liftShield(true, 0);
-        }
 
         return Clutter.EVENT_STOP;
     }

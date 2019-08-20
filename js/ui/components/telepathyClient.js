@@ -349,11 +349,10 @@ class ChatSource extends MessageTray.Source {
 
     getIcon() {
         let file = this._contact.get_avatar_file();
-        if (file) {
+        if (file)
             return new Gio.FileIcon({ file: file });
-        } else {
+        else
             return new Gio.ThemedIcon({ name: 'avatar-default' });
-        }
     }
 
     getSecondaryIcon() {
