@@ -60,11 +60,11 @@ var ExtensionManager = class {
         let orderReversed = order.slice().reverse();
 
         for (let i = 0; i < orderReversed.length; i++) {
-            let uuid = orderReversed[i];
+            let otherUuid = orderReversed[i];
             try {
-                this.lookup(uuid).stateObj.disable();
+                this.lookup(otherUuid).stateObj.disable();
             } catch (e) {
-                this.logExtensionError(uuid, e);
+                this.logExtensionError(otherUuid, e);
             }
         }
 
@@ -81,11 +81,11 @@ var ExtensionManager = class {
         }
 
         for (let i = 0; i < order.length; i++) {
-            let uuid = order[i];
+            let otherUuid = order[i];
             try {
-                this.lookup(uuid).stateObj.enable();
+                this.lookup(otherUuid).stateObj.enable();
             } catch (e) {
-                this.logExtensionError(uuid, e);
+                this.logExtensionError(otherUuid, e);
             }
         }
 

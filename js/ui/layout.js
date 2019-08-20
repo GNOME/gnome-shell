@@ -469,8 +469,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _updateBackgrounds() {
-        let i;
-        for (i = 0; i < this._bgManagers.length; i++)
+        for (let i = 0; i < this._bgManagers.length; i++)
             this._bgManagers[i].destroy();
 
         this._bgManagers = [];

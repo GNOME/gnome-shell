@@ -47,11 +47,11 @@ var WeatherClient = class {
                 return;
             }
 
-            this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
-                if (error)
-                    log(`Error looking up permission: ${error.message}`);
+            this._permStore.LookupRemote('gnome', 'geolocation', (res, err) => {
+                if (err)
+                    log(`Error looking up permission: ${err.message}`);
 
-                let [perms, data] = error ? [{}, null] : res;
+                let [perms, data] = err ? [{}, null] : res;
                 let  params = ['gnome', 'geolocation', false, data, perms];
                 this._onPermStoreChanged(this._permStore, '', params);
             });
