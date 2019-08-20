@@ -36,10 +36,11 @@ function addBackgroundMenu(actor, layoutManager) {
 
     let clickAction = new Clutter.ClickAction();
     clickAction.connect('long-press', (action, theActor, state) => {
-        if (state == Clutter.LongPressState.QUERY)
+        if (state == Clutter.LongPressState.QUERY) {
             return ((action.get_button() == 0 ||
                      action.get_button() == 1) &&
                     !actor._backgroundMenu.isOpen);
+        }
         if (state == Clutter.LongPressState.ACTIVATE) {
             let [x, y] = action.get_coords();
             openMenu(x, y);

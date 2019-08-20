@@ -40,7 +40,7 @@ function _patchContainerClass(containerClass) {
 }
 
 function _patchLayoutClass(layoutClass, styleProps) {
-    if (styleProps)
+    if (styleProps) {
         layoutClass.prototype.hookup_style = function (container) {
             container.connect('style-changed', () => {
                 let node = container.get_theme_node();
@@ -51,6 +51,7 @@ function _patchLayoutClass(layoutClass, styleProps) {
                 }
             });
         };
+    }
     layoutClass.prototype.child_set = function (actor, props) {
         let meta = this.get_child_meta(actor.get_parent(), actor);
         for (let prop in props)

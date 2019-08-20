@@ -49,9 +49,10 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
         });
         this.contentLayout.add_child(this._selectionBox);
 
-        if (Main.sessionMode.allowSettings)
+        if (Main.sessionMode.allowSettings) {
             this.addButton({ action: this._openSettings.bind(this),
                              label: _("Sound Settings") });
+        }
         this.addButton({ action: this.close.bind(this),
                          label: _("Cancel"),
                          key: Clutter.Escape });

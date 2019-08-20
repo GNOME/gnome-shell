@@ -1202,11 +1202,12 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _updatePorthole() {
-        if (!Main.layoutManager.primaryMonitor)
+        if (!Main.layoutManager.primaryMonitor) {
             this._porthole = { width: global.stage.width, height: global.stage.height,
                                x: global.stage.x, y: global.stage.y };
-        else
+        } else {
             this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        }
 
         this.queue_relayout();
     }

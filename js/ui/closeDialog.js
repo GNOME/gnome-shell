@@ -124,11 +124,12 @@ var CloseDialog = GObject.registerClass({
         if (this._tracked === shouldTrack)
             return;
 
-        if (shouldTrack)
+        if (shouldTrack) {
             Main.layoutManager.trackChrome(this._dialog,
                                            { affectsInputRegion: true });
-        else
+        } else {
             Main.layoutManager.untrackChrome(this._dialog);
+        }
 
         // The buttons are broken when they aren't added to the input region,
         // so disable them properly in that case

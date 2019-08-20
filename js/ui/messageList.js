@@ -150,10 +150,11 @@ class URLHighlighter extends St.Label {
             findPos = i;
         }
         if (findPos != -1) {
-            for (let i = 0; i < this._urls.length; i++)
+            for (let i = 0; i < this._urls.length; i++) {
                 if (findPos >= this._urls[i].pos &&
                     this._urls[i].pos + this._urls[i].url.length > findPos)
                     return i;
+            }
         }
         return -1;
     }
@@ -170,20 +171,22 @@ class ScaleLayout extends Clutter.BinLayout {
         if (this._container == container)
             return;
 
-        if (this._container)
+        if (this._container) {
             for (let id of this._signals)
                 this._container.disconnect(id);
+        }
 
         this._container = container;
         this._signals = [];
 
-        if (this._container)
+        if (this._container) {
             for (let signal of ['notify::scale-x', 'notify::scale-y']) {
                 let id = this._container.connect(signal, () => {
                     this.layout_changed();
                 });
                 this._signals.push(id);
             }
+        }
     }
 
     vfunc_get_preferred_width(container, forHeight) {

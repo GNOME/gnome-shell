@@ -171,23 +171,28 @@ function formatTimeSpan(date) {
 
     if (minutesAgo < 5)
         return _("Just now");
-    if (hoursAgo < 1)
+    if (hoursAgo < 1) {
         return Gettext.ngettext("%d minute ago",
                                 "%d minutes ago", minutesAgo).format(minutesAgo);
-    if (daysAgo < 1)
+    }
+    if (daysAgo < 1) {
         return Gettext.ngettext("%d hour ago",
                                 "%d hours ago", hoursAgo).format(hoursAgo);
+    }
     if (daysAgo < 2)
         return _("Yesterday");
-    if (daysAgo < 15)
+    if (daysAgo < 15) {
         return Gettext.ngettext("%d day ago",
                                 "%d days ago", daysAgo).format(daysAgo);
-    if (weeksAgo < 8)
+    }
+    if (weeksAgo < 8) {
         return Gettext.ngettext("%d week ago",
                                 "%d weeks ago", weeksAgo).format(weeksAgo);
-    if (yearsAgo < 1)
+    }
+    if (yearsAgo < 1) {
         return Gettext.ngettext("%d month ago",
                                 "%d months ago", monthsAgo).format(monthsAgo);
+    }
     return Gettext.ngettext("%d year ago",
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
