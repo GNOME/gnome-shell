@@ -61,11 +61,12 @@ function addDragMonitor(monitor) {
 }
 
 function removeDragMonitor(monitor) {
-    for (let i = 0; i < dragMonitors.length; i++)
+    for (let i = 0; i < dragMonitors.length; i++) {
         if (dragMonitors[i] == monitor) {
             dragMonitors.splice(i, 1);
             return;
         }
+    }
 }
 
 var _Draggable = class _Draggable {
@@ -555,7 +556,7 @@ var _Draggable = class _Draggable {
         };
         for (let i = 0; i < dragMonitors.length; i++) {
             let dropFunc = dragMonitors[i].dragDrop;
-            if (dropFunc)
+            if (dropFunc) {
                 switch (dropFunc(dropEvent)) {
                 case DragDropResult.FAILURE:
                 case DragDropResult.SUCCESS:
@@ -563,6 +564,7 @@ var _Draggable = class _Draggable {
                 case DragDropResult.CONTINUE:
                     continue;
                 }
+            }
         }
 
         // At this point it is too late to cancel a drag by destroying

@@ -199,9 +199,10 @@ var AuthRobot = class {
          */
         this._enrolling = this._devicesToEnroll.length > 0;
 
-        if (this._enrolling)
+        if (this._enrolling) {
             GLib.idle_add(GLib.PRIORITY_DEFAULT,
                           this._enrollDevicesIdle.bind(this));
+        }
     }
 
     _enrollDevicesIdle() {
