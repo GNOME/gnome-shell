@@ -997,9 +997,10 @@ class WindowIcon extends St.BoxLayout {
             size = WINDOW_PREVIEW_SIZE;
             this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
 
-            if (this.app)
+            if (this.app) {
                 this._icon.add_actor(this._createAppIcon(this.app,
                                                          APP_ICON_SIZE_SMALL));
+            }
             break;
 
         case AppIconMode.APP_ICON_ONLY:

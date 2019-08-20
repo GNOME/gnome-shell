@@ -113,13 +113,14 @@ class OsdWindow extends St.Widget {
     setLevel(value) {
         this._level.visible = (value != undefined);
         if (value != undefined) {
-            if (this.visible)
+            if (this.visible) {
                 this._level.ease_property('value', value, {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                     duration: LEVEL_ANIMATION_TIME
                 });
-            else
+            } else {
                 this._level.value = value;
+            }
         }
     }
 

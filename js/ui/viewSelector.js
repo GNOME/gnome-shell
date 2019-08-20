@@ -310,13 +310,14 @@ var ViewSelector = GObject.registerClass({
 
         let page = new St.Bin({ child: actor });
 
-        if (params.a11yFocus)
+        if (params.a11yFocus) {
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
-        else
+        } else {
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
                 proxy: this,
                 focusCallback: () => this._a11yFocusPage(page),
             });
+        }
         page.hide();
         this.add_actor(page);
         return page;
@@ -524,9 +525,10 @@ var ViewSelector = GObject.registerClass({
 
             this._entry.set_secondary_icon(this._clearIcon);
 
-            if (this._iconClickedId == 0)
+            if (this._iconClickedId == 0) {
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                                                           this.reset.bind(this));
+            }
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);
