@@ -326,9 +326,8 @@ class DBusEventSource extends EventSourceBase {
         for (let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
 
-            if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
+            if (_dateIntervalsOverlap(event.date, event.end, begin, end))
                 result.push(event);
-            }
         }
         result.sort((event1, event2) => {
             // sort events by end time on ending day

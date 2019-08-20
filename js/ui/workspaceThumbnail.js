@@ -293,9 +293,8 @@ var WorkspaceThumbnail = GObject.registerClass({
             this._allWindows.push(windows[i].meta_window);
             this._minimizedChangedIds.push(minimizedChangedId);
 
-            if (this._isMyWindow(windows[i]) && this._isOverviewWindow(windows[i])) {
+            if (this._isMyWindow(windows[i]) && this._isOverviewWindow(windows[i]))
                 this._addWindowClone(windows[i]);
-            }
         }
 
         // Track window changes
@@ -450,15 +449,13 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
-        if (monitorIndex == this.monitorIndex) {
+        if (monitorIndex == this.monitorIndex)
             this._doAddWindow(metaWin);
-        }
     }
 
     _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
-        if (monitorIndex == this.monitorIndex) {
+        if (monitorIndex == this.monitorIndex)
             this._doRemoveWindow(metaWin);
-        }
     }
 
     _updateMinimized(metaWin) {

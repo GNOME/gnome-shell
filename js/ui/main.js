@@ -248,12 +248,12 @@ function _initializeUI() {
     }
 
     layoutManager.connect('startup-complete', () => {
-        if (actionMode == Shell.ActionMode.NONE) {
+        if (actionMode == Shell.ActionMode.NONE)
             actionMode = Shell.ActionMode.NORMAL;
-        }
-        if (screenShield) {
+
+        if (screenShield)
             screenShield.lockIfWasLocked();
-        }
+
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
@@ -573,16 +573,16 @@ function popModal(actor, timestamp) {
 }
 
 function createLookingGlass() {
-    if (lookingGlass == null) {
+    if (lookingGlass == null)
         lookingGlass = new LookingGlass.LookingGlass();
-    }
+
     return lookingGlass;
 }
 
 function openRunDialog() {
-    if (runDialog == null) {
+    if (runDialog == null)
         runDialog = new RunDialog.RunDialog();
-    }
+
     runDialog.open();
 }
 

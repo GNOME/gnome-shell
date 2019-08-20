@@ -722,9 +722,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _setIconSize() {
         let j = 0;
-        while (this._items.length > 1 && this._items[j].style_class != 'item-box') {
+        while (this._items.length > 1 && this._items[j].style_class != 'item-box')
             j++;
-        }
+
         let themeNode = this._items[j].get_theme_node();
         this._list.ensure_style();
 

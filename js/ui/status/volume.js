@@ -59,9 +59,8 @@ var StreamSlider = class {
     }
 
     set stream(stream) {
-        if (this._stream) {
+        if (this._stream)
             this._disconnectStream(this._stream);
-        }
 
         this._stream = stream;
 

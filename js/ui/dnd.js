@@ -258,11 +258,11 @@ var _Draggable = class _Draggable {
         } else if (event.type() == Clutter.EventType.MOTION ||
                    (event.type() == Clutter.EventType.TOUCH_UPDATE &&
                     global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
-            if (this._dragActor && this._dragState == DragState.DRAGGING) {
+            if (this._dragActor && this._dragState == DragState.DRAGGING)
                 return this._updateDragPosition(event);
-            } else if (this._dragActor == null && this._dragState != DragState.CANCELLED) {
+            else if (this._dragActor == null && this._dragState != DragState.CANCELLED)
                 return this._maybeStartDrag(event);
-            }
+
         // We intercept KEY_PRESS event so that we can process Esc key press to cancel
         // dragging and ignore all other key presses.
         } else if (event.type() == Clutter.EventType.KEY_PRESS && this._dragState == DragState.DRAGGING) {

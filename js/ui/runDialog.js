@@ -175,11 +175,10 @@ class RunDialog extends ModalDialog.ModalDialog {
     }
 
     _getCompletion(text) {
-        if (text.includes('/')) {
+        if (text.includes('/'))
             return this._pathCompleter.get_completion_suffix(text);
-        } else {
+        else
             return this._getCommandCompletion(text);
-        }
     }
 
     _run(input, inTerminal) {
