@@ -134,10 +134,10 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
             this._permStore.LookupRemote(APP_PERMISSIONS_TABLE,
                                          APP_PERMISSIONS_ID,
-                (res, error) => {
-                    if (error) {
+                (res, err) => {
+                    if (err) {
                         this._dialog.open();
-                        log(error.message);
+                        log(err.message);
                         return;
                     }
 
