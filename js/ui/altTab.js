@@ -111,14 +111,12 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _initialSelection(backward, binding) {
         if (binding == 'switch-group') {
-            if (backward) {
+            if (backward)
                 this._select(0, this._items[0].cachedWindows.length - 1);
-            } else {
-                if (this._items[0].cachedWindows.length > 1)
-                    this._select(0, 1);
-                else
-                    this._select(0, 0);
-            }
+            else if (this._items[0].cachedWindows.length > 1)
+                this._select(0, 1);
+            else
+                this._select(0, 0);
         } else if (binding == 'switch-group-backward') {
             this._select(0, this._items[0].cachedWindows.length - 1);
         } else if (binding == 'switch-applications-backward') {
@@ -193,15 +191,14 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
+        } else if (keysym == Clutter.KEY_Left) {
+            this._select(this._previous());
+        } else if (keysym == Clutter.KEY_Right) {
+            this._select(this._next());
+        } else if (keysym == Clutter.KEY_Down) {
+            this._select(this._selectedIndex, 0);
         } else {
-            if (keysym === Clutter.KEY_Left)
-                this._select(this._previous());
-            else if (keysym === Clutter.KEY_Right)
-                this._select(this._next());
-            else if (keysym === Clutter.KEY_Down)
-                this._select(this._selectedIndex, 0);
-            else
-                return Clutter.EVENT_PROPAGATE;
+            return Clutter.EVENT_PROPAGATE;
         }
 
         return Clutter.EVENT_STOP;
@@ -591,20 +588,18 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _keyPressHandler(keysym, action) {
-        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
+        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
             this._select(this._next());
-        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
+        else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD)
             this._select(this._previous());
-        } else {
-            if (keysym === Clutter.KEY_Left)
-                this._select(this._previous());
-            else if (keysym === Clutter.KEY_Right)
-                this._select(this._next());
-            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
-                this._closeWindow(this._selectedIndex);
-            else
-                return Clutter.EVENT_PROPAGATE;
-        }
+        else if (keysym == Clutter.KEY_Left)
+            this._select(this._previous());
+        else if (keysym == Clutter.KEY_Right)
+            this._select(this._next());
+        else if (keysym == Clutter.KEY_w || keysym == Clutter.KEY_F4)
+            this._closeWindow(this._selectedIndex);
+        else
+            return Clutter.EVENT_PROPAGATE;
 
         return Clutter.EVENT_STOP;
     }
