@@ -72,11 +72,10 @@ var SmartcardManager = class {
             if ('IsInserted' in properties.deep_unpack()) {
                 this._updateToken(token);
 
-                if (token.IsInserted) {
+                if (token.IsInserted)
                     this.emit('smartcard-inserted', token);
-                } else {
+                else
                     this.emit('smartcard-removed', token);
-                }
             }
         });
 

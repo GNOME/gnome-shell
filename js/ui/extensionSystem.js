@@ -200,9 +200,8 @@ var ExtensionManager = class {
 
     createExtensionObject(uuid, dir, type) {
         let metadataFile = dir.get_child('metadata.json');
-        if (!metadataFile.query_exists(null)) {
+        if (!metadataFile.query_exists(null))
             throw new Error('Missing metadata.json');
-        }
 
         let metadataContents, success_;
         try {
@@ -222,14 +221,12 @@ var ExtensionManager = class {
         let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
         for (let i = 0; i < requiredProperties.length; i++) {
             let prop = requiredProperties[i];
-            if (!meta[prop]) {
+            if (!meta[prop])
                 throw new Error(`missing "${prop}" property in metadata.json`);
-            }
         }
 
-        if (uuid != meta.uuid) {
+        if (uuid != meta.uuid)
             throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
-        }
 
         let extension = {
             metadata: meta,

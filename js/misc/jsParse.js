@@ -11,9 +11,8 @@ function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
     let attrHead = '';
-    if (globalCompletionList == null) {
+    if (globalCompletionList == null)
         globalCompletionList = [];
-    }
 
     let offset = getExpressionOffset(text, text.length - 1);
     if (offset >= 0) {
@@ -59,9 +58,8 @@ function isStopChar(c) {
 function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\') {
+        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\')
             return i;
-        }
     }
     return -1;
 }
@@ -69,9 +67,8 @@ function findMatchingQuote(expr, offset) {
 // Given the ending position of a regex, find where it starts
 function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\') {
+        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\')
             return i;
-        }
     }
     return -1;
 }
@@ -117,13 +114,11 @@ function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
 
-        if (isStopChar(currChar)) {
+        if (isStopChar(currChar))
             return offset + 1;
-        }
 
-        if (currChar.match(/[)\]]/)) {
+        if (currChar.match(/[)\]]/))
             offset = findMatchingBrace(expr, offset);
-        }
 
         --offset;
     }
@@ -140,9 +135,9 @@ function isValidPropertyName(w) {
 // To get all properties (enumerable and not), we need to walk
 // the prototype chain ourselves
 function getAllProps(obj) {
-    if (obj === null || obj === undefined) {
+    if (obj === null || obj === undefined)
         return [];
-    }
+
     return Object.getOwnPropertyNames(obj).concat( getAllProps(Object.getPrototypeOf(obj)) );
 }
 
