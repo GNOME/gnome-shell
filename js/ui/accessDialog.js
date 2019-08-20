@@ -13,7 +13,7 @@ const AccessIface = loadInterfaceXML('org.freedesktop.impl.portal.Access');
 var DialogResponse = {
     OK: 0,
     CANCEL: 1,
-    CLOSED: 2
+    CLOSED: 2,
 };
 
 var AccessDialog = GObject.registerClass(

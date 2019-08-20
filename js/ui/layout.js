@@ -44,7 +44,7 @@ var MonitorConstraint = GObject.registerClass({
         'work-area': GObject.ParamSpec.boolean('work-area',
                                                'Work-area', 'Track monitor\'s work-area',
                                                GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                               false)
+                                               false),
     },
 }, class MonitorConstraint extends Clutter.Constraint {
     _init(props) {
@@ -181,7 +181,7 @@ class UiActor extends St.Widget {
 const defaultParams = {
     trackFullscreen: false,
     affectsStruts: false,
-    affectsInputRegion: true
+    affectsInputRegion: true,
 };
 
 var LayoutManager = GObject.registerClass({
@@ -273,7 +273,7 @@ var LayoutManager = GObject.registerClass({
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.interface'
+            schema_id: 'org.gnome.desktop.interface',
         });
 
         this._interfaceSettings.connect('changed::enable-hot-corners',
@@ -463,7 +463,7 @@ var LayoutManager = GObject.registerClass({
                 backgroundActor.ease({
                     opacity: 255,
                     duration: BACKGROUND_FADE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
             }
         }
@@ -698,7 +698,7 @@ var LayoutManager = GObject.registerClass({
             translation_y: 0,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete()
+            onComplete: () => this._startupAnimationComplete(),
         });
     }
 
@@ -709,7 +709,7 @@ var LayoutManager = GObject.registerClass({
             opacity: 255,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete()
+            onComplete: () => this._startupAnimationComplete(),
         });
     }
 
@@ -743,7 +743,7 @@ var LayoutManager = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._showKeyboardComplete();
-            }
+            },
         });
         this.emit('keyboard-visible-changed', true);
     }
@@ -770,7 +770,7 @@ var LayoutManager = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
             onComplete: () => {
                 this._hideKeyboardComplete();
-            }
+            },
         });
 
         this.emit('keyboard-visible-changed', false);
@@ -1188,7 +1188,7 @@ class HotCorner extends Clutter.Actor {
                 y: this._y,
                 width: 3,
                 height: 3,
-                reactive: true
+                reactive: true,
             });
 
             this._corner = new Clutter.Actor({ name: 'hot-corner',

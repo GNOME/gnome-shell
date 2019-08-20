@@ -88,7 +88,7 @@ var XdndHandler = class {
             y,
             dragActor: this._cursorWindowClone ? this._cursorWindowClone : this._dummy,
             source: this,
-            targetActor: pickedActor
+            targetActor: pickedActor,
         };
 
         for (let i = 0; i < DND.dragMonitors.length; i++) {

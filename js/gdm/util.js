@@ -37,7 +37,7 @@ var MessageType = {
     NONE: 0,
     ERROR: 1,
     INFO: 2,
-    HINT: 3
+    HINT: 3,
 };
 
 function fadeInActor(actor) {
@@ -58,7 +58,7 @@ function fadeInActor(actor) {
         onComplete: () => {
             this.set_height(-1);
             hold.release();
-        }
+        },
     });
 
     return hold;
@@ -81,7 +81,7 @@ function fadeOutActor(actor) {
             this.hide();
             this.set_height(-1);
             hold.release();
-        }
+        },
     });
     return hold;
 }
@@ -109,7 +109,7 @@ function cloneAndFadeOutActor(actor) {
         onComplete: () => {
             clone.destroy();
             hold.release();
-        }
+        },
     });
     return hold;
 }

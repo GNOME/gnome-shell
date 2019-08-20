@@ -159,8 +159,8 @@ var MessageDialogContent = GObject.registerClass({
         'body': GObject.ParamSpec.string('body', 'body', 'body',
                                          GObject.ParamFlags.READWRITE |
                                          GObject.ParamFlags.CONSTRUCT,
-                                         null)
-    }
+                                         null),
+    },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
         this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
@@ -211,7 +211,7 @@ var MessageDialogContent = GObject.registerClass({
     set icon(icon) {
         this._icon.set({
             gicon: icon,
-            visible: icon != null
+            visible: icon != null,
         });
         this.notify('icon');
     }
@@ -231,7 +231,7 @@ var MessageDialogContent = GObject.registerClass({
     _setLabel(label, prop, value) {
         label.set({
             text: value || '',
-            visible: value != null
+            visible: value != null,
         });
         this.notify(prop);
     }
