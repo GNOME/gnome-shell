@@ -39,7 +39,7 @@ class TodayButton extends St.Button {
             style_class: 'datemenu-today-button',
             x_expand: true,
             can_focus: true,
-            reactive: false
+            reactive: false,
         });
 
         let hbox = new St.BoxLayout({ vertical: true });
@@ -115,7 +115,7 @@ class WorldClocksSection extends St.Button {
             Gio.DBusProxyFlags.DO_NOT_AUTO_START | Gio.DBusProxyFlags.GET_INVALIDATED_PROPERTIES);
 
         this._settings = new Gio.Settings({
-            schema_id: 'org.gnome.shell.world-clocks'
+            schema_id: 'org.gnome.shell.world-clocks',
         });
         this._settings.connect('changed', this._clocksChanged.bind(this));
         this._clocksChanged();
@@ -335,7 +335,7 @@ class WeatherSection extends St.Button {
         infos.forEach(fc => {
             let [ok_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
-                timeOnly: true
+                timeOnly: true,
             });
 
             let icon = new St.Icon({ style_class: 'weather-forecast-icon',
@@ -409,7 +409,7 @@ class MessagesIndicator extends St.Icon {
             icon_size: 16,
             visible: false,
             y_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._sources = [];

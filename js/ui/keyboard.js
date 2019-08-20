@@ -92,7 +92,7 @@ class KeyContainer extends St.Widget {
         super._init({
             layout_manager: gridLayout,
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
         this._gridLayout = gridLayout;
         this._currentRow = 0;
@@ -120,7 +120,7 @@ class KeyContainer extends St.Widget {
             left: this._currentCol,
             top: this._currentRow,
             width,
-            height
+            height,
         };
 
         let row = this._rows[this._rows.length - 1];
@@ -255,7 +255,7 @@ var Key = GObject.registerClass({
         'long-press': {},
         'pressed': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
         'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
-    }
+    },
 }, class Key extends St.BoxLayout {
     _init(key, extendedKeys) {
         super._init({ style_class: 'key-container' });
@@ -587,20 +587,20 @@ var EmojiPager = GObject.registerClass({
         'delta': GObject.ParamSpec.int(
             'delta', 'delta', 'delta',
             GObject.ParamFlags.READWRITE,
-            GLib.MININT32, GLib.MAXINT32, 0)
+            GLib.MININT32, GLib.MAXINT32, 0),
     },
     Signals: {
         'emoji': { param_types: [GObject.TYPE_STRING] },
         'page-changed': {
-            param_types: [GObject.TYPE_INT, GObject.TYPE_INT, GObject.TYPE_INT]
-        }
-    }
+            param_types: [GObject.TYPE_INT, GObject.TYPE_INT, GObject.TYPE_INT],
+        },
+    },
 }, class EmojiPager extends St.Widget {
     _init(sections, nCols, nRows) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             reactive: true,
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
         this._sections = sections;
         this._nCols = nCols;
@@ -728,7 +728,7 @@ var EmojiPager = GObject.registerClass({
                 duration: time,
                 onComplete: () => {
                     this.setCurrentPage(this.getFollowingPage());
-                }
+                },
             });
         }
     }
@@ -874,14 +874,14 @@ var EmojiSelection = GObject.registerClass({
         'emoji-selected': { param_types: [GObject.TYPE_STRING] },
         'close-request': {},
         'toggle': {},
-    }
+    },
 }, class EmojiSelection extends St.BoxLayout {
     _init() {
         super._init({
             style_class: 'emoji-panel',
             x_expand: true,
             y_expand: true,
-            vertical: true
+            vertical: true,
         });
 
         this._sections = [
@@ -1028,7 +1028,7 @@ var EmojiSelection = GObject.registerClass({
 var Keypad = GObject.registerClass({
     Signals: {
         'keyval': { param_types: [GObject.TYPE_UINT] },
-    }
+    },
 }, class Keypad extends AspectContainer {
     _init() {
         let keys = [
@@ -1049,7 +1049,7 @@ var Keypad = GObject.registerClass({
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -1754,7 +1754,7 @@ class Keyboard extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, -deltaY);
-                }
+                },
             });
         } else {
             windowActor.ease({
@@ -1763,7 +1763,7 @@ class Keyboard extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, deltaY);
-                }
+                },
             });
         }
     }

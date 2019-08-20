@@ -128,7 +128,7 @@ const DialogType = {
     SHUTDOWN: 1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */,
     RESTART: 2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */,
     UPDATE_RESTART: 3,
-    UPGRADE_RESTART: 4
+    UPGRADE_RESTART: 4,
 };
 
 const DialogContent = {
@@ -136,7 +136,7 @@ const DialogContent = {
     1 /* DialogType.SHUTDOWN */: shutdownDialogContent,
     2 /* DialogType.RESTART */: restartDialogContent,
     3 /* DialogType.UPDATE_RESTART */: restartUpdateDialogContent,
-    4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent
+    4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent,
 };
 
 var MAX_USERS_IN_SESSION_DIALOG = 5;

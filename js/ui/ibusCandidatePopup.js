@@ -20,13 +20,13 @@ var CandidateArea = GObject.registerClass({
         'cursor-up': {},
         'next-page': {},
         'previous-page': {},
-    }
+    },
 }, class CandidateArea extends St.BoxLayout {
     _init() {
         super._init({
             vertical: true,
             reactive: true,
-            visible: false
+            visible: false,
         });
         this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {

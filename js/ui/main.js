@@ -258,7 +258,7 @@ function _initializeUI() {
             sessionMode.currentMode != 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
                 'MESSAGE': `GNOME Shell started at ${_startDate}`,
-                'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID
+                'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
             });
         }
 
@@ -379,7 +379,7 @@ function loadTheme() {
 
     let theme = new St.Theme({
         application_stylesheet: _cssStylesheet,
-        default_stylesheet: _defaultCssStylesheet
+        default_stylesheet: _defaultCssStylesheet,
     });
 
     if (theme.default_stylesheet == null)

@@ -183,7 +183,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
         this._container.ease({
             opacity: 255,
             duration: ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
         this.show();
     }
@@ -207,7 +207,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
             opacity: 0.0,
             duration: ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.destroy()
+            onComplete: () => this.destroy(),
         });
         return GLib.SOURCE_REMOVE;
     }

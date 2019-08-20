@@ -18,7 +18,7 @@ var DragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
-    CONTINUE:  3
+    CONTINUE:  3,
 };
 
 var DragState = {
@@ -30,13 +30,13 @@ var DragState = {
 var DRAG_CURSOR_MAP = {
     0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
     1: Meta.Cursor.DND_COPY,
-    2: Meta.Cursor.DND_MOVE
+    2: Meta.Cursor.DND_MOVE,
 };
 
 var DragDropResult = {
     FAILURE:  0,
     SUCCESS:  1,
-    CONTINUE: 2
+    CONTINUE: 2,
 };
 var dragMonitors = [];
 
@@ -428,7 +428,7 @@ var _Draggable = class _Draggable {
                     scale_x: scale * origScale,
                     scale_y: scale * origScale,
                     duration: SCALE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
 
                 this._dragActor.get_transition('scale-x').connect('new-frame', () => {
@@ -473,7 +473,7 @@ var _Draggable = class _Draggable {
             y: this._dragY,
             dragActor: this._dragActor,
             source: this.actor._delegate,
-            targetActor: target
+            targetActor: target,
         };
 
         let targetActorDestroyHandlerId;
@@ -552,7 +552,7 @@ var _Draggable = class _Draggable {
         let dropEvent = {
             dropActor: this._dragActor,
             targetActor: target,
-            clutterEvent: event
+            clutterEvent: event,
         };
         for (let i = 0; i < dragMonitors.length; i++) {
             let dropFunc = dragMonitors[i].dragDrop;
@@ -665,7 +665,7 @@ var _Draggable = class _Draggable {
             y: snapBackY,
             scale_x: snapBackScale,
             scale_y: snapBackScale,
-            duration: SNAP_BACK_ANIMATION_TIME
+            duration: SNAP_BACK_ANIMATION_TIME,
         });
     }
 
@@ -679,7 +679,7 @@ var _Draggable = class _Draggable {
         this._dragActor.opacity = 0;
 
         this._animateDragEnd(eventTime, {
-            duration: REVERT_ANIMATION_TIME
+            duration: REVERT_ANIMATION_TIME,
         });
     }
 
@@ -692,7 +692,7 @@ var _Draggable = class _Draggable {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._onAnimationComplete(this._dragActor, eventTime);
-            }
+            },
         }));
     }
 
