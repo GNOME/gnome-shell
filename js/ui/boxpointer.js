@@ -108,7 +108,7 @@ var BoxPointer = GObject.registerClass({
                 this._muteInput = false;
                 if (onComplete)
                     onComplete();
-            }
+            },
         });
     }
 
@@ -156,7 +156,7 @@ var BoxPointer = GObject.registerClass({
                 this.translation_y = 0;
                 if (onComplete)
                     onComplete();
-            }
+            },
         });
     }
 

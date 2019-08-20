@@ -114,7 +114,7 @@ function *run() {
     Scripting.scriptEvent('desktopShown');
 
     let interfaceSettings = new Gio.Settings({
-        schema_id: 'org.gnome.desktop.interface'
+        schema_id: 'org.gnome.desktop.interface',
     });
     interfaceSettings.set_boolean('enable-animations', false);
 

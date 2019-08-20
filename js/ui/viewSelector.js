@@ -20,7 +20,7 @@ var PINCH_GESTURE_THRESHOLD = 0.7;
 var ViewPage = {
     WINDOWS: 1,
     APPS: 2,
-    SEARCH: 3
+    SEARCH: 3,
 };
 
 var FocusTrap = GObject.registerClass(
@@ -126,7 +126,7 @@ var ViewSelector = GObject.registerClass({
     Signals: {
         'page-changed': {},
         'page-empty': {},
-    }
+    },
 }, class ViewSelector extends Shell.Stack {
     _init(searchEntry, showAppsButton) {
         super._init({
@@ -327,7 +327,7 @@ var ViewSelector = GObject.registerClass({
         this._activePage.ease({
             opacity: 255,
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -337,7 +337,7 @@ var ViewSelector = GObject.registerClass({
             opacity: 0,
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._animateIn(oldPage)
+            onStopped: () => this._animateIn(oldPage),
         });
     }
 

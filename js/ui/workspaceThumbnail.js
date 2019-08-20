@@ -49,13 +49,13 @@ var WindowClone = GObject.registerClass({
         'drag-cancelled': {},
         'drag-end': {},
         'selected': { param_types: [GObject.TYPE_UINT] },
-    }
+    },
 }, class WindowClone extends Clutter.Actor {
     _init(realWindow) {
         let clone = new Clutter.Clone({ source: realWindow });
         super._init({
             layout_manager: new PrimaryActorLayout(clone),
-            reactive: true
+            reactive: true,
         });
         this._delegate = this;
 
@@ -235,7 +235,7 @@ var ThumbnailState = {
     ANIMATING_OUT:  4,
     ANIMATED_OUT:   5,
     COLLAPSING:     6,
-    DESTROYED:      7
+    DESTROYED:      7,
 };
 
 /**
@@ -251,12 +251,12 @@ var WorkspaceThumbnail = GObject.registerClass({
             'slide-position', 'slide-position', 'slide-position',
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
-    }
+    },
 }, class WorkspaceThumbnail extends St.Widget {
     _init(metaWorkspace) {
         super._init({
             clip_to_allocation: true,
-            style_class: 'workspace-thumbnail'
+            style_class: 'workspace-thumbnail',
         });
         this._delegate = this;
 
@@ -623,8 +623,8 @@ var ThumbnailsBox = GObject.registerClass({
         'scale': GObject.ParamSpec.double(
             'scale', 'scale', 'scale',
             GObject.ParamFlags.READWRITE,
-            0, Infinity, 0)
-    }
+            0, Infinity, 0),
+    },
 }, class ThumbnailsBox extends St.Widget {
     _init() {
         super._init({ reactive: true,
@@ -739,7 +739,7 @@ var ThumbnailsBox = GObject.registerClass({
     _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this)
+            dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
     }
@@ -1102,7 +1102,7 @@ var ThumbnailsBox = GObject.registerClass({
                 onComplete: () => {
                     this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
                     this._queueUpdateStates();
-                }
+                },
             });
         });
 
@@ -1125,7 +1125,7 @@ var ThumbnailsBox = GObject.registerClass({
                     thumbnail.destroy();
 
                     this._queueUpdateStates();
-                }
+                },
             });
         });
 
@@ -1133,7 +1133,7 @@ var ThumbnailsBox = GObject.registerClass({
             this.ease_property('scale', this._targetScale, {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 duration: RESCALE_ANIMATION_TIME,
-                onComplete: () => this._queueUpdateStates()
+                onComplete: () => this._queueUpdateStates(),
             });
             this._pendingScaleUpdate = false;
         }
@@ -1150,7 +1150,7 @@ var ThumbnailsBox = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
-                }
+                },
             });
         });
     }
@@ -1369,7 +1369,7 @@ var ThumbnailsBox = GObject.registerClass({
             onComplete: () => {
                 this._animatingIndicator = false;
                 this._queueUpdateStates();
-            }
+            },
         });
     }
 });

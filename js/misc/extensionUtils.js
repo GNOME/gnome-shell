@@ -15,7 +15,7 @@ const Config = imports.misc.config;
 
 var ExtensionType = {
     SYSTEM: 1,
-    PER_USER: 2
+    PER_USER: 2,
 };
 
 var ExtensionState = {
@@ -28,7 +28,7 @@ var ExtensionState = {
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.
-    UNINSTALLED: 99
+    UNINSTALLED: 99,
 };
 
 const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'canChange'];

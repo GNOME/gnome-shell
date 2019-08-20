@@ -44,7 +44,7 @@ function _setLabelsForMessage(content, message) {
 /* -------------------------------------------------------- */
 
 var ListItem = GObject.registerClass({
-    Signals: { 'activate': {} }
+    Signals: { 'activate': {} },
 }, class ListItem extends St.Button {
     _init(app) {
         let layout = new St.BoxLayout({ vertical: false });
@@ -257,7 +257,7 @@ class ShellUnmountNotifier extends MessageTray.Source {
 });
 
 var ShellMountQuestionDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init(icon) {
         super._init({ styleClass: 'mount-dialog' });
@@ -278,7 +278,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                                            GObject.TYPE_BOOLEAN,
                                            GObject.TYPE_BOOLEAN,
                                            GObject.TYPE_BOOLEAN,
-                                           GObject.TYPE_UINT] } }
+                                           GObject.TYPE_UINT] } },
 }, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
     _init(message, icon, flags) {
         let strings = message.split('\n');
@@ -489,7 +489,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 });
 
 var ShellProcessesDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init(icon) {
         super._init({ styleClass: 'mount-dialog' });
@@ -555,7 +555,7 @@ var ShellMountOperationType = {
     NONE: 0,
     ASK_PASSWORD: 1,
     ASK_QUESTION: 2,
-    SHOW_PROCESSES: 3
+    SHOW_PROCESSES: 3,
 };
 
 var GnomeShellMountOpHandler = class {

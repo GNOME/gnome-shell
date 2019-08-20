@@ -27,13 +27,13 @@ var Status = {
     CONNECTED: 'connected',
     AUTHORIZING: 'authorizing',
     AUTH_ERROR: 'auth-error',
-    AUTHORIZED: 'authorized'
+    AUTHORIZED: 'authorized',
 };
 
 var Policy = {
     DEFAULT: 'default',
     MANUAL: 'manual',
-    AUTO: 'auto'
+    AUTO: 'auto',
 };
 
 var AuthCtrl = {
@@ -42,7 +42,7 @@ var AuthCtrl = {
 
 var AuthMode = {
     DISABLED: 'disabled',
-    ENABLED: 'enabled'
+    ENABLED: 'enabled',
 };
 
 const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';

@@ -101,7 +101,7 @@ var WindowClone = GObject.registerClass({
         'hide-chrome': {},
         'selected': { param_types: [GObject.TYPE_UINT] },
         'show-chrome': {},
-        'size-changed': {}
+        'size-changed': {},
     },
 }, class WindowClone extends St.Widget {
     _init(realWindow, workspace) {
@@ -126,7 +126,7 @@ var WindowClone = GObject.registerClass({
             reactive: true,
             can_focus: true,
             accessible_role: Atk.Role.PUSH_BUTTON,
-            layout_manager: new WindowCloneLayout()
+            layout_manager: new WindowCloneLayout(),
         });
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
@@ -645,7 +645,7 @@ var WindowOverlay = class {
         let params = {
             x, y, width,
             duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
 
         if (height !== undefined)
@@ -683,7 +683,7 @@ var WindowOverlay = class {
             a.ease({
                 opacity: 255,
                 duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         });
     }
@@ -694,7 +694,7 @@ var WindowOverlay = class {
             a.ease({
                 opacity: 0,
                 duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
             });
         });
     }
@@ -756,7 +756,7 @@ Signals.addSignalMethods(WindowOverlay.prototype);
 var WindowPositionFlags = {
     NONE: 0,
     INITIAL: 1 << 0,
-    ANIMATE: 1 << 1
+    ANIMATE: 1 << 1,
 };
 
 // Window Thumbnail Layout Algorithm
@@ -1384,7 +1384,7 @@ class Workspace extends St.Widget {
                     clone.ease({
                         opacity: 255,
                         mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                        duration: Overview.ANIMATION_TIME
+                        duration: Overview.ANIMATION_TIME,
                     });
                 }
 
@@ -1429,7 +1429,7 @@ class Workspace extends St.Widget {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._showWindowOverlay(clone, overlay);
-            }
+            },
         });
         clone.overlay.relayout(true);
     }
@@ -1485,7 +1485,7 @@ class Workspace extends St.Widget {
                 win._overviewHint = {
                     x: stageX,
                     y: stageY,
-                    scale: stageWidth / clone.width
+                    scale: stageWidth / clone.width,
                 };
             }
             clone.destroy();
@@ -1727,7 +1727,7 @@ class Workspace extends St.Widget {
             clone.ease({
                 opacity,
                 duration,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         } else {
             // The window is hidden
@@ -1779,7 +1779,7 @@ class Workspace extends St.Widget {
                 scale_y: 1,
                 opacity: 255,
                 duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         } else {
             // The window is hidden, make it shrink and fade it out
@@ -1788,7 +1788,7 @@ class Workspace extends St.Widget {
                 scale_y: 0,
                 opacity: 0,
                 duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -2030,7 +2030,7 @@ class Workspace extends St.Widget {
             win._overviewHint = {
                 x: actor.x,
                 y: actor.y,
-                scale: actor.scale_x
+                scale: actor.scale_x,
             };
 
             let metaWindow = win.get_meta_window();
