@@ -728,9 +728,10 @@ var Dash = GObject.registerClass({
             }
         }
 
-        for (let i = 0; i < addedItems.length; i++)
+        for (let i = 0; i < addedItems.length; i++) {
             this._box.insert_child_at_index(addedItems[i].item,
                                             addedItems[i].pos);
+        }
 
         for (let i = 0; i < removedActors.length; i++) {
             let item = removedActors[i];

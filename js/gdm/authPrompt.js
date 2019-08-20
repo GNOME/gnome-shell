@@ -330,15 +330,16 @@ var AuthPrompt = GObject.registerClass({
             if (isSpinner)
                 this._spinner.play();
 
-            if (!animate)
+            if (!animate) {
                 actor.opacity = 255;
-            else
+            } else {
                 actor.ease({
                     opacity: 255,
                     duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
                     delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
                     mode: Clutter.AnimationMode.LINEAR
                 });
+            }
         }
 
         this._defaultButtonWellActor = actor;
