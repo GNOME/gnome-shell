@@ -1,4 +1,5 @@
 rules:
+  eqeqeq: off
   indent:
     - error
     - 4
