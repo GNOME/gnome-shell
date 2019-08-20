@@ -2212,10 +2212,11 @@ var WindowManager = class {
 
             this._resizePopup.set(rect, displayW, displayH);
         } else {
-            if (this._resizePopup) {
-                this._resizePopup.destroy();
-                this._resizePopup = null;
-            }
+            if (!this._resizePopup)
+                return;
+
+            this._resizePopup.destroy();
+            this._resizePopup = null;
         }
     }
 };
