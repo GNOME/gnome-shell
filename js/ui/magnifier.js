@@ -451,15 +451,11 @@ var Magnifier = class Magnifier {
      * @clip:   Flag to indicate whether to clip the crosshairs.
      */
     setCrosshairsClip(clip) {
-        if (clip) {
-            if (this._crossHairs)
-                this._crossHairs.setClip(CROSSHAIRS_CLIP_SIZE);
-        } else {
-            // Setting no clipping on crosshairs means a zero sized clip
-            // rectangle.
-            if (this._crossHairs)
-                this._crossHairs.setClip([0, 0]);
-        }
+        if (!this._crossHairs)
+            return;
+
+        // Setting no clipping on crosshairs means a zero sized clip rectangle.
+        this._crossHairs.setClip(clip ? CROSSHAIRS_CLIP_SIZE : [0, 0]);
     }
 
     /**
