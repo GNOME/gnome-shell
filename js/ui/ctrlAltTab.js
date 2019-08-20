@@ -90,12 +90,13 @@ var CtrlAltTabManager = class CtrlAltTabManager {
                     iconName = 'video-display-symbolic';
                 } else {
                     let app = windowTracker.get_window_app(windows[i]);
-                    if (app)
+                    if (app) {
                         icon = app.create_icon_texture(POPUP_APPICON_SIZE);
-                    else
+                    } else {
                         icon = textureCache.bind_cairo_surface_property(windows[i],
                                                                         'icon',
                                                                         POPUP_APPICON_SIZE);
+                    }
                 }
 
                 items.push({ name: windows[i].title,

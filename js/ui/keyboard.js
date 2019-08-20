@@ -1307,9 +1307,10 @@ class Keyboard extends St.BoxLayout {
         this._connectSignal(global.stage, 'notify::key-focus',
             this._onKeyFocusChanged.bind(this));
 
-        if (Meta.is_wayland_compositor())
+        if (Meta.is_wayland_compositor()) {
             this._connectSignal(this._keyboardController, 'emoji-visible',
                 this._onEmojiKeyVisible.bind(this));
+        }
 
         this._relayout();
     }

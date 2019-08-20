@@ -161,9 +161,10 @@ var NMConnectionItem = class {
 
         this._activeConnection = activeConnection;
 
-        if (this._activeConnection)
+        if (this._activeConnection) {
             this._activeConnectionChangedId = this._activeConnection.connect('notify::state',
                                                                              this._connectionStateChanged.bind(this));
+        }
 
         this._sync();
     }
@@ -1441,9 +1442,10 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
 
         this._activeConnection = activeConnection;
 
-        if (this._activeConnection)
+        if (this._activeConnection) {
             this._activeConnectionChangedId = this._activeConnection.connect('vpn-state-changed',
                                                                              this._connectionStateChanged.bind(this));
+        }
 
         this._sync();
     }
