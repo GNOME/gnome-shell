@@ -174,11 +174,10 @@ function script_applicationsShowDone(time) {
 }
 
 function script_afterShowHide(_time) {
-    if (overviewShowCount == 1) {
+    if (overviewShowCount == 1)
         METRICS.usedAfterOverview.value = mallocUsedSize;
-    } else {
+    else
         METRICS.leakedAfterOverview.value = mallocUsedSize - METRICS.usedAfterOverview.value;
-    }
 }
 
 function malloc_usedSize(time, bytes) {
