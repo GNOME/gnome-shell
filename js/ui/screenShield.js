@@ -1044,9 +1044,10 @@ var ScreenShield = class {
             this._animateArrows();
         }
 
-        if (!this._arrowWatchId)
+        if (!this._arrowWatchId) {
             this._arrowWatchId = this.idleMonitor.add_idle_watch(ARROW_IDLE_TIME,
                                                                  this._pauseArrowAnimation.bind(this));
+        }
     }
 
     _pauseArrowAnimation() {

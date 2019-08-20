@@ -55,9 +55,10 @@ function _getCategories(info) {
 }
 
 function _listsIntersect(a, b) {
-    for (let itemA of a)
+    for (let itemA of a) {
         if (b.includes(itemA))
             return true;
+    }
     return false;
 }
 
@@ -525,13 +526,14 @@ var AllView = GObject.registerClass({
         super.animateSwitch(animationDirection);
 
         if (this._currentPopup && this._displayingPopup &&
-            animationDirection == IconGrid.AnimationDirection.OUT)
+            animationDirection == IconGrid.AnimationDirection.OUT) {
             this._currentPopup.ease({
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => (this.opacity = 255)
             });
+        }
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
             this._pageIndicators.animateIndicators(animationDirection);
@@ -2478,11 +2480,12 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             w => !w.skip_taskbar
         );
 
-        if (windows.length > 0)
+        if (windows.length > 0) {
             this.addMenuItem(
                 /* Translators: This is the heading of a list of open windows */
                 new PopupMenu.PopupSeparatorMenuItem(_("Open Windows"))
             );
+        }
 
         windows.forEach(window => {
             let title = window.title
