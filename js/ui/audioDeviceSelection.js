@@ -9,13 +9,13 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 var AudioDevice = {
     HEADPHONES: 1 << 0,
     HEADSET:    1 << 1,
-    MICROPHONE: 1 << 2
+    MICROPHONE: 1 << 2,
 };
 
 const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
 var AudioDeviceSelectionDialog = GObject.registerClass({
-    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } }
+    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } },
 }, class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
     _init(devices) {
         super._init({ styleClass: 'audio-device-selection-dialog' });

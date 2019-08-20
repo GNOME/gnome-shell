@@ -25,7 +25,7 @@ var GeoclueAccuracyLevel = {
     CITY: 4,
     NEIGHBORHOOD: 5,
     STREET: 6,
-    EXACT: 8
+    EXACT: 8,
 };
 
 function accuracyLevelToString(accuracyLevel) {
@@ -345,7 +345,7 @@ var AppAuthorizer = class {
 };
 
 var GeolocationDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_UINT] } }
+    Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
     _init(name, subtitle, reqAccuracyLevel) {
         super._init({ styleClass: 'geolocation-dialog' });

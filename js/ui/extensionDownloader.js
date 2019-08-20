@@ -199,8 +199,8 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         let content = new Dialog.MessageDialogContent({
             title: _("Download and install “%s” from extensions.gnome.org?").format(info.name),
             icon: new Gio.FileIcon({
-                file: Gio.File.new_for_uri(`${REPOSITORY_URL_BASE}${info.icon}`)
-            })
+                file: Gio.File.new_for_uri(`${REPOSITORY_URL_BASE}${info.icon}`),
+            }),
         });
 
         this.contentLayout.add(content);

@@ -20,7 +20,7 @@ const NMConnectionCategory = {
     WIRED: 'wired',
     WIRELESS: 'wireless',
     WWAN: 'wwan',
-    VPN: 'vpn'
+    VPN: 'vpn',
 };
 
 const NMAccessPointSecurity = {
@@ -29,7 +29,7 @@ const NMAccessPointSecurity = {
     WPA_PSK: 3,
     WPA2_PSK: 4,
     WPA_ENT: 5,
-    WPA2_ENT: 6
+    WPA2_ENT: 6,
 };
 
 var MAX_DEVICE_ITEMS = 4;
@@ -42,7 +42,7 @@ const NM80211ApSecurityFlags = NM['80211ApSecurityFlags'];
 var PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
-    RECHECK: 2
+    RECHECK: 2,
 };
 
 const PortalHelperIface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
@@ -620,7 +620,7 @@ var NMDeviceBluetooth = class extends NMConnectionDevice {
 var NMWirelessDialogItem = GObject.registerClass({
     Signals: {
         'selected': {},
-    }
+    },
 }, class NMWirelessDialogItem extends St.BoxLayout {
     _init(network) {
         this._network = network;

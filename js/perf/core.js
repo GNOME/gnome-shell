@@ -57,7 +57,7 @@ var METRICS = {
       units: "us" },
     applicationsShowTimeSubsequent:
     { description: "Time to switch to applications view, second time",
-      units: "us" }
+      units: "us" },
 };
 
 let WINDOW_CONFIGS = [
@@ -67,7 +67,7 @@ let WINDOW_CONFIGS = [
     { width: 640, height: 480, alpha: false, maximized: true,  count: 5,  metric: 'overviewFps5Maximized' },
     { width: 640, height: 480, alpha: false, maximized: true,  count: 10, metric: 'overviewFps10Maximized' },
     { width: 640, height: 480, alpha: true,  maximized: false, count: 5,  metric: 'overviewFps5Alpha' },
-    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' }
+    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' },
 ];
 
 function *run() {
