@@ -28,7 +28,7 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         this._indicator = null;
         this._menuSection = null;
 
-        controller.connect('new-handle', (controller, handle) => {
+        controller.connect('new-handle', (o, handle) => {
             this._onNewHandle(handle);
         });
     }

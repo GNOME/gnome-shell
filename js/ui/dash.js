@@ -481,7 +481,7 @@ var Dash = GObject.registerClass({
         let appIcon = new DashIcon(app);
 
         appIcon.connect('menu-state-changed',
-                        (appIcon, opened) => {
+                        (o, opened) => {
                             this._itemMenuStateChanged(item, opened);
                         });
 
