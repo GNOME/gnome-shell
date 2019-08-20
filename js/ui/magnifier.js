@@ -346,6 +346,7 @@ var Magnifier = class Magnifier {
                 this.addCrosshairs();
             this._crossHairs.show();
         } else {
+            // eslint-disable-next-line no-lonely-if
             if (this._crossHairs)
                 this._crossHairs.hide();
         }

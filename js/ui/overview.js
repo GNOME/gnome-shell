@@ -534,6 +534,7 @@ var Overview = class {
                 }
             }
         } else {
+            // eslint-disable-next-line no-lonely-if
             if (this._modal) {
                 Main.popModal(this._overview);
                 this._modal = false;

@@ -250,7 +250,7 @@ function formatTime(time, params) {
             format = N_("%B %-d %Y, %H\u2236%M");
     } else {
         // Show only the time if date is on today
-        if (daysAgo < 1 || params.timeOnly)
+        if (daysAgo < 1 || params.timeOnly) // eslint-disable-line no-lonely-if
             /* Translators: Time in 12h format */
             format = N_("%l\u2236%M %p");
         // Show the word "Yesterday" and time if date is on yesterday
