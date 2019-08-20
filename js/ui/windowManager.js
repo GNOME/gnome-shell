@@ -630,9 +630,9 @@ var AppSwitchAction = GObject.registerClass({
         let nPoints = this.get_n_current_points();
         let event = this.get_last_event (nPoints - 1);
 
-        if (nPoints == 3)
+        if (nPoints == 3) {
             this._longPressStartTime = event.get_time();
-        else if (nPoints == 4) {
+        } else if (nPoints == 4) {
             // Check whether the 4th finger press happens after a 3-finger long press,
             // this only needs to be checked on the first 4th finger press
             if (this._longPressStartTime != null &&

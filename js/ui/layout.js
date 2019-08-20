@@ -1075,16 +1075,17 @@ var LayoutManager = GObject.registerClass({
                         side = Meta.Side.RIGHT;
                     else
                         continue;
-                } else if (x1 <= monitor.x)
+                } else if (x1 <= monitor.x) {
                     side = Meta.Side.LEFT;
-                else if (y1 <= monitor.y)
+                } else if (y1 <= monitor.y) {
                     side = Meta.Side.TOP;
-                else if (x2 >= monitor.x + monitor.width)
+                } else if (x2 >= monitor.x + monitor.width) {
                     side = Meta.Side.RIGHT;
-                else if (y2 >= monitor.y + monitor.height)
+                } else if (y2 >= monitor.y + monitor.height) {
                     side = Meta.Side.BOTTOM;
-                else
+                } else {
                     continue;
+                }
 
                 let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1 });
                 let strut = new Meta.Strut({ rect: strutRect, side: side });

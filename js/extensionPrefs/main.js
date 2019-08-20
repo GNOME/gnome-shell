@@ -285,8 +285,9 @@ var Application = GObject.registerClass({
                     log(`Failed to connect to shell proxy: ${e}`);
                     this._mainStack.add_named(new NoShellPlaceholder(), 'noshell');
                     this._mainStack.visible_child_name = 'noshell';
-                } else
+                } else {
                     throw e;
+                }
                 return;
             }
 
