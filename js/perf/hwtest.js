@@ -137,9 +137,9 @@ function *run() {
     Main.overview.hide();
     yield Scripting.waitLeisure();
 
-    ////////////////////////////////////////
-    // Tests of redraw speed
-    ////////////////////////////////////////
+    // --------------------- //
+    // Tests of redraw speed //
+    // --------------------- //
 
     global.frame_timestamps = true;
     global.frame_finish_timestamp = true;
@@ -185,8 +185,6 @@ function *run() {
     global.frame_finish_timestamp = false;
 
     yield Scripting.sleep(1000);
-
-    ////////////////////////////////////////
 
     let appSys = Shell.AppSystem.get_default();
     let app = appSys.lookup_app('org.gnome.gedit.desktop');
