@@ -481,15 +481,13 @@ var Overview = class {
 
         if (this._shown) {
             let shouldBeModal = !this._inXdndDrag;
-            if (shouldBeModal) {
-                if (!this._modal) {
-                    if (Main.pushModal(this._overview,
-                                       { actionMode: Shell.ActionMode.OVERVIEW })) {
-                        this._modal = true;
-                    } else {
-                        this.hide();
-                        return false;
-                    }
+            if (shouldBeModal && !this._modal) {
+                let actionMode = Shell.ActionMode.OVERVIEW;
+                if (Main.pushModal(this._overview, { actionMode })) {
+                    this._modal = true;
+                } else {
+                    this.hide();
+                    return false;
                 }
             }
         } else {
