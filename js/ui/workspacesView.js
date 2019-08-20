@@ -224,14 +224,13 @@ class WorkspacesView extends WorkspacesViewBase {
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            if (this._animating || this._scrolling || this._gestureActive) {
+
+            if (this._animating || this._scrolling || this._gestureActive)
                 workspace.show();
-            } else {
-                if (this._inDrag)
-                    workspace.visible = (Math.abs(w - active) <= 1);
-                else
-                    workspace.visible = (w == active);
-            }
+            else if (this._inDrag)
+                workspace.visible = (Math.abs(w - active) <= 1);
+            else
+                workspace.visible = (w == active);
         }
     }
 
