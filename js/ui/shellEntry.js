@@ -41,7 +41,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     get isPassword() {
-        return this._passwordItem != null;
+        return this._entry.input_purpose == Clutter.InputContentPurpose.PASSWORD;
     }
 
     set isPassword(v) {
