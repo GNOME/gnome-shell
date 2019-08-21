@@ -43,6 +43,7 @@ var EntryMenu = new Lang.Class({
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
+        this._updatePasswordItem();
     },
 
     get isPassword() {
