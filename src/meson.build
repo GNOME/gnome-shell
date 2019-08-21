@@ -6,6 +6,10 @@ subdir('hotplug-sniffer')
 subdir('st')
 subdir('tray')
 
+if get_option('extensions_tool')
+  subdir('extensions-tool')
+endif
+
 script_data = configuration_data()
 script_data.set('bindir', bindir)
 script_data.set('datadir', datadir)
@@ -16,7 +20,13 @@ script_data.set('pkglibdir', pkglibdir)
 script_data.set('PYTHON', python.path())
 script_data.set('VERSION', meson.project_version())
 
-foreach tool : ['gnome-shell-extension-tool', 'gnome-shell-perf-tool']
+script_tools = ['gnome-shell-perf-tool']
+
+if get_option('extensions_tool')
+  script_tools += 'gnome-shell-extension-tool'
+endif
+
+foreach tool : script_tools
   configure_file(
     input: tool + '.in',
     output: tool,

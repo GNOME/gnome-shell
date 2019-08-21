@@ -132,8 +132,19 @@ else
   have_systemd = false
 endif
 
+if get_option('extensions_tool')
+  autoar_dep = dependency('gnome-autoar-0')
+  json_dep = dependency('json-glib-1.0')
+endif
+
+bash_completion = dependency('bash-completion', required: false)
+
 if get_option('man')
   xsltproc = find_program('xsltproc')
+
+  if get_option('extensions_tool')
+    a2x = find_program('a2x')
+  endif
 
   subdir('man')
 endif

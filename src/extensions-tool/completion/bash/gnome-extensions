@@ -1,0 +1,83 @@
+
+# Check for bash
+[ -z "$BASH_VERSION" ] && return
+
+################################################################################
+
+__gnome_extensions() {
+  local commands="version enable disable reset info install show list create pack prefs uninstall"
+  local COMMAND=${COMP_WORDS[1]}
+
+  _init_completion -s || return
+
+  case "${COMP_CWORD}" in
+    1)
+      COMPREPLY=($(compgen -W "help $commands" -- "$2"))
+      return 0
+      ;;
+
+    2)
+      case "$COMMAND" in
+        help)
+          COMPREPLY=($(compgen -W "$commands" -- "$2"))
+          return 0
+          ;;
+
+        disable)
+          local list_opt=--enabled
+          ;;&
+        enable)
+          local list_opt=--disabled
+          ;;&
+        prefs)
+          local list_opt=--prefs
+          ;;&
+        uninstall)
+          local list_opt=--user
+          ;;&
+        enable|disable|info|show|prefs|reset|uninstall)
+          COMPREPLY=($(compgen -W "`gnome-extensions list $list_opt`" -- "$2"))
+          return 0
+          ;;
+      esac
+      ;;
+  esac
+
+  case "$COMMAND" in
+    pack)
+      case "$prev" in
+        --podir|--out-dir|-o)
+          _filedir -d
+          return 0
+          ;;
+        --schema)
+          _filedir gschema.xml
+          return 0
+          ;;
+        --extra-source)
+          _filedir
+          return 0
+          ;;
+      esac
+      ;;
+    install)
+      if [[ $cur != -* ]]
+      then
+          _filedir zip
+          return 0
+      fi
+      ;;
+  esac
+
+  # Stop if we are currently waiting for an option value
+  $split && return
+
+  # Otherwise, get the supported options for ${COMMAND} (if any)
+  COMPREPLY=($(compgen -W "$(_parse_help $1 "help $COMMAND")" -- "$2"))
+  [[ $COMPREPLY == *= ]] && compopt -o nospace
+  return 0
+}
+
+################################################################################
+
+complete -F __gnome_extensions gnome-extensions
