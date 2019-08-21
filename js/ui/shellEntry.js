@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
@@ -10,12 +11,18 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_SHOW_PASSWORD_KEY = 'disable-show-password';
+
 var EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
     Extends: PopupMenu.PopupMenu,
 
     _init(entry) {
         this.parent(entry, 0, St.Side.TOP);
+
+        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._lockdownSettings.connect('changed::' + DISABLE_SHOW_PASSWORD_KEY, this._resetPasswordItem.bind(this));
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -46,6 +53,22 @@ var EntryMenu = new Lang.Class({
         this._updatePasswordItem();
     },
 
+    _resetPasswordItem() {
+        let passwordDisabled = this._lockdownSettings.get_boolean(DISABLE_SHOW_PASSWORD_KEY);
+
+        if (!this.isPassword || passwordDisabled) {
+            if (this._passwordItem) {
+                this._passwordItem.destroy();
+                this._passwordItem = null;
+            }
+            if (this.isPassword)
+                this._entry.clutter_text.set_password_char('\u25cf');
+        } else if (this.isPassword && !passwordDisabled) {
+            if (!this._passwordItem)
+                this._makePasswordItem();
+        }
+    },
+
     get isPassword() {
         return this._entry.input_purpose == Clutter.InputContentPurpose.PASSWORD;
     },
@@ -54,14 +77,12 @@ var EntryMenu = new Lang.Class({
         if (v == this.isPassword)
             return;
 
-        if (v) {
-            this._makePasswordItem();
+        if (v)
             this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
-        } else {
-            this._passwordItem.destroy();
-            this._passwordItem = null;
+        else
             this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
-        }
+
+        this._resetPasswordItem();
     },
 
     open(animate) {
