@@ -1,3 +1,21 @@
+3.33.91
+=======
+* Fix regression when adjusting brightness [Florian; #1500]
+* Fix pointer a11y timeout animation [Jonas D.; #1533]
+* Add new extensions CLI tool [Florian; #1234]
+* Only track top-level windows [Carlos; #556]
+* Misc. bug fixes and cleanups [Jonas D., Jonas Å., Piotr, Florian;
+  !678, !682, !686]
+
+Contributors:
+  Jonas Ådahl, Jonas Dreßler, Carlos Garnacho, Florian Müllner
+
+Translators:
+  Asier Sarasua Garmendia [eu], Sveinn í Felli [is], Anders Jonsson [sv],
+  Jordi Mas [ca], Kukuh Syafaat [id], Florentina Mușat [ro], Jiri Grönroos [fi],
+  Aurimas Černius [lt], Daniel Mustieles [es], Piotr Drąg [pl],
+  Danial Behzadi [fa]
+
 3.33.90
 =======
 * Implement DND app picker folder management [Georges; !643, !645, !664, !671]
