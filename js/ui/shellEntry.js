@@ -41,6 +41,19 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this._updatePasswordItem();
     }
 
+    _resetPasswordItem() {
+        if (!this.isPassword) {
+            if (this._passwordItem) {
+                this._passwordItem.destroy();
+                this._passwordItem = null;
+            }
+            this._entry.clutter_text.set_password_char('\u25cf');
+        } else {
+            if (!this._passwordItem)
+                this._makePasswordItem();
+        }
+    }
+
     get isPassword() {
         return this._entry.input_purpose == Clutter.InputContentPurpose.PASSWORD;
     }
@@ -49,14 +62,12 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         if (v == this.isPassword)
             return;
 
-        if (v) {
-            this._makePasswordItem();
+        if (v)
             this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
-        } else {
-            this._passwordItem.destroy();
-            this._passwordItem = null;
+        else
             this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
-        }
+
+        this._resetPasswordItem();
     }
 
     open(animate) {
