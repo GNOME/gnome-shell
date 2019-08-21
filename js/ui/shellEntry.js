@@ -1,16 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addContextMenu */
 
-const { Clutter, Shell, St } = imports.gi;
+const { Clutter, Gio, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_SHOW_PASSWORD_KEY = 'disable-show-password';
+
 var EntryMenu = class extends PopupMenu.PopupMenu {
     constructor(entry) {
         super(entry, 0, St.Side.TOP);
+
+        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._lockdownSettings.connect('changed::' + DISABLE_SHOW_PASSWORD_KEY, this._resetPasswordItem.bind(this));
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -42,13 +48,15 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _resetPasswordItem() {
-        if (!this.isPassword) {
+        let passwordDisabled = this._lockdownSettings.get_boolean(DISABLE_SHOW_PASSWORD_KEY);
+
+        if (!this.isPassword || passwordDisabled) {
             if (this._passwordItem) {
                 this._passwordItem.destroy();
                 this._passwordItem = null;
             }
             this._entry.clutter_text.set_password_char('\u25cf');
-        } else {
+        } else if (this.isPassword && !passwordDisabled) {
             if (!this._passwordItem)
                 this._makePasswordItem();
         }
