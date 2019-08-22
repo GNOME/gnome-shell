@@ -8,8 +8,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-12 19:40+0000\n"
-"PO-Revision-Date: 2019-08-14 10:00+0100\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-22 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -44,7 +44,7 @@ msgid "Open the application menu"
 msgstr "Ireki aplikazioen menua"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Shell-en hedapenak"
 
@@ -145,13 +145,13 @@ msgstr "Ikuskatzailearen elkarrizketa-koadroaren historia"
 
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Erakutsi beti erabiltzaile-menuko “Amaitu saioa“ menu-elementua."
+msgstr "Erakutsi beti erabiltzaile-menuko “Amaitu saioa” menu-elementua."
 
 #: data/org.gnome.shell.gschema.xml.in:79
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
-msgstr "Gako honek “Amaitu saioa“ menu-elementua automatikoki ezkutatzea gainidazten du, saio bakarreko egoeran."
+msgstr "Gako honek “Amaitu saioa” menu-elementua automatikoki ezkutatzea gainidazten du, saio bakarreko egoeran."
 
 #: data/org.gnome.shell.gschema.xml.in:86
 msgid ""
@@ -164,7 +164,7 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr "Shell-ak pasahitza eskatuko du zifratutako gailu bat edo urruneko fitxategi-sistema bat muntatzen denean. Pasahitza geroago erabiltzeko gorde badaiteke, “Gogoratu pasahitza“ kontrol-laukia agertuko da. Gako honek kontrol-laukiaren egoera lehenetsia ezartzen du."
+msgstr "Shell-ak pasahitza eskatuko du zifratutako gailu bat edo urruneko fitxategi-sistema bat muntatzen denean. Pasahitza geroago erabiltzeko gorde badaiteke, “Gogoratu pasahitza” kontrol-laukia agertuko da. Gako honek kontrol-laukiaren egoera lehenetsia ezartzen du."
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -199,12 +199,12 @@ msgstr "Aplikazioen menua irekitzeko laster-tekla."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "“Erakutsi aplikazioak“ bista irekitzeko laster-tekla"
+msgstr "“Erakutsi aplikazioak” bista irekitzeko laster-tekla"
 
 #: data/org.gnome.shell.gschema.xml.in:127
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr "Jarduerak ikuspegi orokorraren “Erakutsi aplikazioak“ ikuspegia irekitzeko laster-tekla."
+msgstr "Jarduerak ikuspegi orokorraren “Erakutsi aplikazioak” ikuspegia irekitzeko laster-tekla."
 
 #: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the overview"
@@ -286,7 +286,7 @@ msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
-msgstr "Leihoak aldatzaileak nola erakusten diren konfiguratzen du. Aukera posibleak “thumbnail-only“ (leihoaren miniatura erakustea), “app-icon-only“ (aplikazio-ikonoa erakustea soilik) edo “both“ (biak)."
+msgstr "Leihoak aldatzaileak nola erakusten diren konfiguratzen du. Aukera posibleak “thumbnail-only” (leihoaren miniatura erakustea), “app-icon-only” (aplikazio-ikonoa erakustea soilik) edo “both” (biak)."
 
 #: data/org.gnome.shell.gschema.xml.in:224
 msgid ""
@@ -351,48 +351,48 @@ msgstr "Fokuaren aldaketaren atzerapena saguaren moduan erakusleak mugitzeari ut
 msgid "Network Login"
 msgstr "Sareko saio-hasiera"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Zerbait gaizki joan da"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr "Barkatu, arazo bat gertatu da: hedapen honen ezarpenak ezin dira erakutsi. Arazoa hedapenaren egileei jakinarazi diezaiezun gomendatzen dizugu."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Xehetasun teknikoak"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Kopiatze-errorea"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Webgune nagusia"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Bisitatu hedapenaren webgunea"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Ez dago hedapenik instalatuta"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
 msgstr "Hedapenak instalatzeko, Software edo <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> erabili daiteke."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Arakatu softwarean"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -1695,7 +1695,7 @@ msgstr "Desaktibatuta"
 msgid "On"
 msgstr "Aktibatuta"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Distira"
 
@@ -1968,11 +1968,11 @@ msgstr "Sareko konexioa aktibatzeak huts egin du"
 
 #: js/ui/status/nightLight.js:61
 msgid "Night Light Disabled"
-msgstr "“Gaueko argia“ desgaituta"
+msgstr "“Gaueko argia” desgaituta"
 
 #: js/ui/status/nightLight.js:62
 msgid "Night Light On"
-msgstr "“Gaueko argia“ aktibatuta"
+msgstr "“Gaueko argia” aktibatuta"
 
 #: js/ui/status/nightLight.js:63
 msgid "Resume"
@@ -2242,9 +2242,314 @@ msgstr "Eraman eskuineko pantailara"
 msgid "Evolution Calendar"
 msgstr "Evolution egutegia"
 
-#: src/main.c:460
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr "Izenak kate laburra izan behar du (hobe deskribatzailea bada).\n"
+"Adibideak: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Izena"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr "Deskribapena zure hedapenak egiten duena azaltzen duen esaldi bakarra da.\n"
+"Adibideak: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Azalpena"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr "UUIDa zure hedapenaren identifikatzaile esklusiboa da.\n"
+"Posta elektronikoko helbide baten formatukoa izan behar du (klikirekitzeko@asier.adibidea.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "Hedapen berriaren identifikatzaile bakarra"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "IZENA"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Hedapen berriaren izena, erabiltzaileak ikusiko duena"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESKRIBAPENA"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Hedapenak egiten duenaren deskribapen laburra"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Sartu hedapenaren informazioa dinamikoki"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Sortu hedapen berria"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argumentu ezezagunak"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "UUIDa, izena eta deskribapena derrigorrezkoak dira"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Desgaitu hedapen bat"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Ez da UUIDrik eman"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "UUID bat baino gehiago eman da"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Gaitu hedapen bat"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Hedapenen informazioa erakusten du"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Gainidatzi lehendik dagoen hedapena"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "HEDAPEN_PAKETEA\t"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instalatu hedapen-paketea"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Ez da hedapen-paketerik zehaztu"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Hedapen-pakete bat baino gehiago zehaztu da"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Erakutsi erabiltzaileak instalatutako hedapenak"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Erakutsi sistemak instalatutako hedapenak"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Erakutsi gaitutako hedapenak"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Erakutsi desgaitutako hedapenak"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Erakutsi hobespenak dituzten hedapenak"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Inprimatu hedapenaren xehetasunak"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Zerrendatu instalatutako hedapenak"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "FITXATEGIA"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Paketean sartuko zen iturburu gehigarria"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "ESKEMA\t"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Sartu behar den GSettings eskema"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIREKTORIOA"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Itzulpenak dituen direktorioa"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMEINUA"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Itzulpenetarako erabiliko den gettext domeinua"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Gainidatzi lehendik dagoen pakete bat"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Paketea sortzeko direktorioa"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "ITURBURU_DIREKTORIOA"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Sortu hedapen-pakete bat"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Iturburu-direktorio bat baino gehiago zehaztu da"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Hedapenaren hobespenak irekitzen ditu"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Berrezarri hedapen bat"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Desinstalatu hedapen bat"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Bide-izena"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URLa"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Jatorrizko egilea"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Bertsioa"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Egoera"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "“version” ez du argumenturik hartzen"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Erabilera:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Erakutsi bertsioaren informazioa eta irten"
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "KOMANDOA"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGUMENTUAK…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Komandoak:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Erakutsi laguntza"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
+
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Gaitu hedapena"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Desgaitu hedapena"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Berrezarri hedapena"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Desinstalatu hedapena"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Zerrendatu hedapenak"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Erakutsi hedapenaren informazioa"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Ireki hedapenaren hobespenak"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Sortu hedapena"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Paketatu hedapena"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Instalatu hedapen-paketea"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Erabili %s laguntza xehea lortzeko.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
