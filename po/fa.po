@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Mahyar Moghimi <mahyar.moqimi@gmail.com>, 2010.
 # Arash Mousavi <mousavi.arash@gmail.com>, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
+# Danial behzadi <dani.behzi@ubuntu.com>, 2018, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-09 14:45+0000\n"
-"PO-Revision-Date: 2019-08-17 15:35+0430\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-22 16:40+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -44,7 +45,7 @@ msgstr "نمایش همهٔ برنامه‌ها"
 msgid "Open the application menu"
 msgstr "گشودن فهرست برنامه"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:4 js/extensionPrefs/main.js:208
+#: data/gnome-shell-extension-prefs.desktop.in.in:4 js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "افزونه‌های پوسته"
 
@@ -78,12 +79,12 @@ msgstr "شناسه‌های UUID افزونه‌ها جهت فعال‌سازی"
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension D-Bus methods on org.gnome.Shell."
+"should be loaded. Any extension that wants to be loaded needs to be in this list. "
+"You can also manipulate this list with the EnableExtension and DisableExtension D-"
+"Bus methods on org.gnome.Shell."
 msgstr ""
-"افزونه‌های گنوم‌شل مشخصهٔ UUID دارند؛ این کلید، افزونه‌هایی که باید بار شوند را "
-"فهرست می‌کند. هر افزونه‌ای که می‌خواهد بار شود، باید در این فهرست باشد. شما همچنین "
+"افزونه‌های گنوم‌شل مشخصهٔ UUID دارند؛ این کلید، افزونه‌هایی که باید بار شوند را فهرست "
+"می‌کند. هر افزونه‌ای که می‌خواهد بار شود، باید در این فهرست باشد. شما همچنین "
 "می‌توانید این فهرست را از طریق EnableExtension و DisableExtension (روش‌های D-Bus) "
 "در org.gnome.Shell نیز بسازید."
 
@@ -101,8 +102,8 @@ msgid ""
 msgstr ""
 "افزونه‌های پوستهٔ گنوم شل شناسه‌ای یکتا دارند؛ این کلید، افزونه‌هایی که باید غیرفعّال "
 "شوند را فهرست می‌کند، حتا اگر به عنوان بخشی از حالت فعلی بار شده باشند. می‌توانید "
-"این فهرست را از طریق روش‌های دی‌باس EnableExtension و DisableExtension در org."
-"gnome.Shell نیز تغییر دهید."
+"این فهرست را از طریق روش‌های دی‌باس EnableExtension و DisableExtension در org.gnome."
+"Shell نیز تغییر دهید."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -177,15 +178,13 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a “Remember "
-"Password” checkbox will be present. This key sets the default state of the "
-"checkbox."
+"The shell will request a password when an encrypted device or a remote filesystem "
+"is mounted. If the password can be saved for future use a “Remember Password” "
+"checkbox will be present. This key sets the default state of the checkbox."
 msgstr ""
-"هنگامی که دستگاهی رمزنگاری شده یا سامانه‌پرونده‌ای دوردست سوار می‌شود، پوسته "
-"درخواست گذرواژه می‌کند. اگر گذرواژه را بتوان برای استفادهٔ آینده ذخیره کرد، گزینهٔ "
-"«به‌خاطر سپردن گذرواژه» موجود خواهد بود. این کلید، حالت پیش‌گزیدهٔ این گزینه را "
-"تنظیم می‌کند."
+"هنگامی که دستگاهی رمزنگاری شده یا سامانه‌پرونده‌ای دوردست سوار می‌شود، پوسته درخواست "
+"گذرواژه می‌کند. اگر گذرواژه را بتوان برای استفادهٔ آینده ذخیره کرد، گزینهٔ «به‌خاطر "
+"سپردن گذرواژه» موجود خواهد بود. این کلید، حالت پیش‌گزیدهٔ این گزینه را تنظیم می‌کند."
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid "Whether the default Bluetooth adapter had set up devices associated to it"
@@ -193,10 +192,9 @@ msgstr "اینکه آداپتور بلوتوث پیش‌فرض دستگاه‌ه
 
 #: data/org.gnome.shell.gschema.xml.in:97
 msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default adapter. "
-"This will be reset if the default adapter is ever seen not to have devices "
-"associated to it."
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is powered, "
+"or if there were devices set up associated with the default adapter. This will be "
+"reset if the default adapter is ever seen not to have devices associated to it."
 msgstr ""
 "شل تنها زمانی فهرست بلوتوث را نمایش می‌دهد که آداپتور بلوتوث روشن باشد، یا "
 "دستگاه‌هایی به گونه‌ای تنظیم شده باشند که به آداپتور پیش‌فرض متصل شوند."
@@ -377,11 +375,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "ورود به سامانه شبکه"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "اشتباهی صورت گرفت"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this extension "
 "can’t be displayed. We recommend that you report the issue to the extension "
@@ -390,27 +388,27 @@ msgstr ""
 "متأسّفیم، ولی مشکلی وجود داشت: تنظیمات این افزونه نمی‌تواند نشان داده شوند. توصیه "
 "می‌کنیم مشکل را به نگارندهٔ افزونه گزارش دهید."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "جزئیات فنّی"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "رونوشت از خطا"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "صفحهٔ خانگی"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "هیچ افزونه‌ای نصب نشده است"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -418,11 +416,11 @@ msgstr ""
 "افزونه‌ها می‌توانند از نرم‌افزارها یا <a href=\"https://extensions.gnome.org"
 "\">پایگاه افزونه‌های گنوم</a> نصب شوند."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "مرور در نرم‌افزارها"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -649,19 +647,17 @@ msgstr "%A، %OH∶%OM"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:241
-#, fuzzy, no-c-format
-#| msgid "%B %d, %H∶%M"
+#, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%d %B، %OH∶%OM"
+msgstr "%-Od %OB، %OH∶%OM"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:247
-#, fuzzy, no-c-format
-#| msgid "%B %d %Y, %H∶%M"
+#, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%Od %OB %OY، %OH:%OM"
+msgstr "%-Od %OB %OY، %OH:%OM"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:252
@@ -686,19 +682,17 @@ msgstr "%A، %OH:%OM"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:270
-#, fuzzy, no-c-format
-#| msgid "%B %d, %l∶%M %p"
+#, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%Od %B، %OH:%OM"
+msgstr "%-Od %OB، %Ol:%OM %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:276
-#, fuzzy, no-c-format
-#| msgid "%B %d %Y, %l∶%M %p"
+#, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%Od %B، %OH:%OM"
+msgstr "%-Od %OB %OY، %Ol:%OM %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:40
@@ -740,27 +734,27 @@ msgid "All"
 msgstr "همه"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2224 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "گشودن پنجره‌‌ها"
 
-#: js/ui/appDisplay.js:2243 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "پنجرهٔ جدید"
 
-#: js/ui/appDisplay.js:2255
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "اجرا با کارت گرافیک اختصاصی"
 
-#: js/ui/appDisplay.js:2284 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "حذف از مورد پسندها"
 
-#: js/ui/appDisplay.js:2290
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "اضافه کردن به مورد پسندها"
 
-#: js/ui/appDisplay.js:2300 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "نمایش جزئیات"
 
@@ -908,18 +902,14 @@ msgid "All Day"
 msgstr "تمام روز"
 
 #: js/ui/calendar.js:813
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A %Od %B"
+msgstr "%A %-Od %OB"
 
 #: js/ui/calendar.js:817
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A %Od %B %Oy"
+msgstr "%A %-Od %OB %OY"
 
 #: js/ui/calendar.js:1040
 msgid "No Notifications"
@@ -1112,10 +1102,8 @@ msgstr "دَش"
 #. * "February 17 2015".
 #.
 #: js/ui/dateMenu.js:68
-#, fuzzy
-#| msgid "%B %e %Y"
 msgid "%B %-d %Y"
-msgstr "%Od %B %OY"
+msgstr "%-Od %OB %OY"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1270,8 +1258,8 @@ msgstr "راه‌اندازی دوباره و نصب ارتقا"
 #: js/ui/endSessionDialog.js:117
 #, javascript-format
 msgid ""
-"%s %s will be installed after restart. Upgrade installation can take a long "
-"time: ensure that you have backed up and that the computer is plugged in."
+"%s %s will be installed after restart. Upgrade installation can take a long time: "
+"ensure that you have backed up and that the computer is plugged in."
 msgstr ""
 "پس از راه‌اندازی دوباره %s %s نصب خواهد شد. نصب ارتقا ممکن است زمان زیادی بطول "
 "بکشد: مطمئن شوید که پشتیبان دارید و رایانه به برق متصل است."
@@ -1343,8 +1331,8 @@ msgstr "کلیدهای آهسته خاموش شدند"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the Slow "
+"Keys feature, which affects the way your keyboard works."
 msgstr ""
 "دکمهٔ تبدیل را ۸ ثانیه نگه داشتید. این میان‌بری برای ویژگی دکمه‌های آهسته است که بر "
 "نحوهٔ کار صفحه‌کلیدتان اثر می‌گذارد."
@@ -1368,8 +1356,7 @@ msgstr ""
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a row. "
-"This turns off the Sticky Keys feature, which affects the way your keyboard "
-"works."
+"This turns off the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
 "دو کلید را هم‌زمان فشرده یا کلید تبدیل را ۵ بار پشت سر هم زدید. این میان‌بری برای "
 "ویژگی کلید‌های چسبان است که بر نحوهٔ کار صفحه‌کلیدتان اثر می‌گذارد."
@@ -1752,7 +1739,7 @@ msgstr "خاموش"
 msgid "On"
 msgstr "روشن"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "روشنایی"
 
@@ -2123,8 +2110,8 @@ msgstr "افزارهٔ تاندربولت ناشناخته"
 
 #: js/ui/status/thunderbolt.js:323
 msgid ""
-"New device has been detected while you were away. Please disconnect and "
-"reconnect the device to start using it."
+"New device has been detected while you were away. Please disconnect and reconnect "
+"the device to start using it."
 msgstr ""
 "هنگام نبودنتان، افزارهٔ جدید شناسایی شد. لطفاً برای شروع به استفاده از آن، قطعش "
 "کرده و دوباره وصل کنید."
@@ -2134,8 +2121,7 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "افزارهٔ تاندربولت تأییدنشده"
 
 #: js/ui/status/thunderbolt.js:327
-msgid ""
-"New device has been detected and needs to be authorized by an administrator."
+msgid "New device has been detected and needs to be authorized by an administrator."
 msgstr "افزارهٔ جدیدی شناسایی شده و نیازه به تأیید هویت توسّط یک مدیر دارد."
 
 #: js/ui/status/thunderbolt.js:333
@@ -2301,19 +2287,319 @@ msgstr "انتقال به نمایشگر سمت راست"
 msgid "Evolution Calendar"
 msgstr "تقویم اوولوشن"
 
-#: src/main.c:464
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"نام باید رشته‌ای بسیار کوتاه و توصیفی باشد.\n"
+"مانند: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "نام"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"شرح تک‌جمله‌ای است که توضیح می‌دهد افزونه‌تان چه می‌کند.\n"
+"مانند: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "شرح"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example."
+"com)\n"
+msgstr ""
+"شناسهٔ یکتا، شناسهٔ بی‌تکراری برای افزونه‌تان است.\n"
+"این شناسه باید در قالب یک نشانی رایانامه باشد (clicktofocus@janedoe.example.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "شناسهٔ یکتای افزونهٔ جدید"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NAME"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "نام قابل مشاهده توسّط کاربر برای افزونهٔ جدید"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESCRIPTION"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "شرح کوتاهی از کارکرد افزونه"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "اطّلاعات افزونه را به صورت تعاملی وارد کنید"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "ایجاد افزونه‌ای جدید"
+
+#: src/extensions-tool/command-create.c:275 src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "آرگومان ناشناخته"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "شناسهٔ یکتا، نام و شرح مورد نیازند"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "غیرفعّال کردن یک افزونه"
+
+#: src/extensions-tool/command-disable.c:74 src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96 src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74 src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "هیچ شناسهٔ یکتایی داده نشده"
+
+#: src/extensions-tool/command-disable.c:79 src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101 src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79 src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "بیش از یک شناسهٔ یکتا داده شده"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "فعّال کردن یک افزونه"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "نمایش اطّلاعات افزونه"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "بازنویسی روی افزونهٔ موجود"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "نصب یک دستهٔ افزونه"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "هیچ دستهٔ افزونه‌ای مشخّص نشده است"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "بیش از یک دسته افزونه مشخّص شده"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "نمایش افزونه‌های نصب شده توسّط کاربر"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "نمایش افزونه‌های نصب شده توسّط سامانه"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "نمایش افزونه‌های فعّال"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "نمایش افزونه‌های غیرفعّال"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "نمایش افزونه‌های با ترجیحات"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "چاپ جزییات افزونه"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "فهرست افزونه‌های نصب‌شده"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "FILE"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "منبع اضافی برای قرار گرفتن در دسته"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEMA"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "یک شمای Gsettings که باید شامل شود"
+
+#: src/extensions-tool/command-pack.c:457 src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIRECTORY"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "شاخه‌ای که ترجمه‌ها پیدا می‌شوند"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMAIN"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "دامنهٔ gettext برای استفاده توسّط ترجمه‌ها"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "بازنویسی روی یک بستهٔ موجود"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "شاخه‌ای که بسته باید ایجاد شود"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "SOURCE_DIRECTORY"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "ایجاد یک دستهٔ افزونه"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "بیش از یک شاخهٔ منبع مشخّص شده"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "ترجیحات افزونه را می‌گشاید"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "بازنشانی یک افزونه"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "حذف نصب یک افزونه"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "مسیر"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "نشانی"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "گارندهٔ اصلی"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "نگارش"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "وضعیت"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "«نگارش» آرگومانی نمی‌گیرد"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "استفاده:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "چاپ اطّلاعات نگارش و خروج."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "COMMAND"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "دستورات:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "چاپ راهنما"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "چاپ نسخه"
 
-#: src/main.c:470
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "فعّال کردن افزونه"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "غیرفعّال کردن افزونه"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "بازنشانی افزونه"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "حذف نصب افزونه"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "فهرست افزونه‌ها"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "نمایش اطّلاعات افزونه"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "گشودن ترجیحات افزونه"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "ایجاد افزونه"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "بسته‌بندی افزونه"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "نصب دستهٔ افزونه"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "برای گرفتن راهنمای با جزییات از %s استفاده کنید.\n"
+
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "حالت استفاده شده توسط GDM برای صفحه ورود به سامانه"
 
-#: src/main.c:476
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "استفاده از یک حالت مشخص، مثلاً gdm برای صفحهٔ ورود"
 
-#: src/main.c:482
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "فهرست کردن حالت‌های ممکن"
 
@@ -2335,7 +2621,7 @@ msgstr "گذرواژه‌های منطبق نیستند."
 msgid "Password cannot be blank"
 msgstr "گذرواژه نمی‌تواند خالی باشد"
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
@@ -2408,9 +2694,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "evolution"
 #~ msgstr "evolution"
-
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "ترجیحات افزونه‌های گنوم‌شل"
 
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "تغییر مسیر برای تایید هویت وب"
@@ -2605,8 +2888,7 @@ msgstr "صداهای سامانه"
 #~ msgstr "این حساب قبلا به کارگزار متصل شده است"
 
 #~ msgid "Connection has been replaced by a new connection using the same resource"
-#~ msgstr ""
-#~ "اتصال توسط یک اتصال جدید که از منبع مشابه استفاده می‌کند، جایگزین شده است"
+#~ msgstr "اتصال توسط یک اتصال جدید که از منبع مشابه استفاده می‌کند، جایگزین شده است"
 
 #~ msgid "The account already exists on the server"
 #~ msgstr "حساب از قبل بر روی کارگزار وجود دارد"
@@ -2627,8 +2909,8 @@ msgstr "صداهای سامانه"
 #~ "The length of the server certificate, or the depth of the server certificate "
 #~ "chain, exceed the limits imposed by the cryptography library"
 #~ msgstr ""
-#~ "اندازه گواهینامه کارگزار، یا عمق حلقه‌ی گواهینامه کارگزار، از محدودیت اعمال "
-#~ "شده توسط کتابخانه cryptography تجاوز کرد"
+#~ "اندازه گواهینامه کارگزار، یا عمق حلقه‌ی گواهینامه کارگزار، از محدودیت اعمال شده "
+#~ "توسط کتابخانه cryptography تجاوز کرد"
 
 #~ msgid "Internal error"
 #~ msgstr "خطای داخلی"
@@ -2735,8 +3017,8 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Please confirm whether the Passkey '%06d' matches the one on the device."
 #~ msgstr ""
-#~ "لطفا تایید کنید که آیا کلید عبور مربوط به «%I06d» با همتای آن در دستگاه "
-#~ "مطابقت دارد یا خیر."
+#~ "لطفا تایید کنید که آیا کلید عبور مربوط به «%I06d» با همتای آن در دستگاه مطابقت "
+#~ "دارد یا خیر."
 
 #~ msgid "Matches"
 #~ msgstr "منطبق شد"
@@ -2773,8 +3055,7 @@ msgstr "صداهای سامانه"
 #~ msgstr "ضبط یک تصویربرداری از صفحه‌نمایش"
 
 #~ msgid "Whether to collect stats about applications usage"
-#~ msgstr ""
-#~ "اینکه اطلاعات برنامه‌ها درباره‌ی میزان استفاده از منابع جمع‌آوری شود یا خیر"
+#~ msgstr "اینکه اطلاعات برنامه‌ها درباره‌ی میزان استفاده از منابع جمع‌آوری شود یا خیر"
 
 #~ msgid ""
 #~ "The shell normally monitors active applications in order to present the most "
@@ -2799,8 +3080,8 @@ msgstr "صداهای سامانه"
 #~ "Internally used to store the last session presence status for the user. The "
 #~ "value here is from the GsmPresenceStatus enumeration."
 #~ msgstr ""
-#~ "به‌طور داخلی برای ذخیره آخرین نشستی که کاربر در آن وضعیت حاضر داشته است "
-#~ "استفاده می‌شود. مقدار اینجا از محاسبه GsmPresenceStatus است."
+#~ "به‌طور داخلی برای ذخیره آخرین نشستی که کاربر در آن وضعیت حاضر داشته است استفاده "
+#~ "می‌شود. مقدار اینجا از محاسبه GsmPresenceStatus است."
 
 #~ msgid "Keybinding to toggle the screen recorder"
 #~ msgstr "کلید مقید برای تغییر وضعیت ضبط کننده‌ی صفحه"
@@ -2826,38 +3107,35 @@ msgstr "صداهای سامانه"
 #~ "used for gst-launch. The pipeline should have an unconnected sink pad where "
 #~ "the recorded video is recorded. It will normally have a unconnected source "
 #~ "pad; output from that pad will be written into the output file. However the "
-#~ "pipeline can also take care of its own output - this might be used to send "
-#~ "the output to an icecast server via shout2send or similar. When unset or set "
-#~ "to an empty value, the default pipeline will be used. This is currently "
-#~ "'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads="
-#~ "%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as "
-#~ "a placeholder for a guess at the optimal thread count on the system."
+#~ "pipeline can also take care of its own output - this might be used to send the "
+#~ "output to an icecast server via shout2send or similar. When unset or set to an "
+#~ "empty value, the default pipeline will be used. This is currently 'vp8enc "
+#~ "min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+#~ "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
+#~ "placeholder for a guess at the optimal thread count on the system."
 #~ msgstr ""
 #~ "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 #~ "used for gst-launch. The pipeline should have an unconnected sink pad where "
 #~ "the recorded video is recorded. It will normally have a unconnected source "
 #~ "pad; output from that pad will be written into the output file. However the "
-#~ "pipeline can also take care of its own output - this might be used to send "
-#~ "the output to an icecast server via shout2send or similar. When unset or set "
-#~ "to an empty value, the default pipeline will be used. This is currently "
-#~ "'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads="
-#~ "%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as "
-#~ "a placeholder for a guess at the optimal thread count on the system."
+#~ "pipeline can also take care of its own output - this might be used to send the "
+#~ "output to an icecast server via shout2send or similar. When unset or set to an "
+#~ "empty value, the default pipeline will be used. This is currently 'vp8enc "
+#~ "min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+#~ "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
+#~ "placeholder for a guess at the optimal thread count on the system."
 
 #~ msgid "File extension used for storing the screencast"
 #~ msgstr "پسوند پرونده‌ی قابل استفاده برای ذخیره تصویربرداری از صفحه‌نمایش"
 
 #~ msgid ""
 #~ "The filename for recorded screencasts will be a unique filename based on the "
-#~ "current date, and use this extension. It should be changed when recording to "
-#~ "a different container format."
+#~ "current date, and use this extension. It should be changed when recording to a "
+#~ "different container format."
 #~ msgstr ""
 #~ "نام پرونده‌ی ضبط شده برای تصویربرداری از صفحه‌نمایش یکتا و براساس تاریخ جاری "
 #~ "خواهد بود و از این افزونه استفاده خواهد کرد. اگر در زمان ضبط از قالب دیگری "
 #~ "استفاده کنید باید تغییر کند."
-
-#~ msgid "Extension"
-#~ msgstr "افزونه"
 
 #~| msgid "Session..."
 #~ msgid "Session…"
