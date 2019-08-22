@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-12 19:40+0000\n"
-"PO-Revision-Date: 2019-08-20 12:07+0200\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-22 13:02+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -45,7 +45,7 @@ msgid "Open the application menu"
 msgstr "Abrir el menú de la aplicación"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Extensiones de la Shell"
 
@@ -350,12 +350,10 @@ msgstr ""
 "trabajo actual. Si no, se incluyen todas las ventanas."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#| msgid "Location"
 msgid "Locations"
 msgstr "Ubicaciones"
 
 #: data/org.gnome.shell.gschema.xml.in:235
-#| msgid "The location for which to show a forecast"
 msgid "The locations to show in world clocks"
 msgstr "Las ubicaciones que mostrar en los relojes del mundo"
 
@@ -412,11 +410,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Algo ha fallado"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -425,27 +423,27 @@ msgstr ""
 "Ha habido un problema: no se puede mostrar la configuración para esta "
 "extensión. Se recomienda que informe del error a los autores de la extensión."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Detalles técnicos"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Copiar error"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Página web"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "No hay extensiones instaladas"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -453,11 +451,11 @@ msgstr ""
 "Las extensiones se puede instalar mediante software o <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Buscar en Software"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -755,7 +753,6 @@ msgid "Grant Access"
 msgstr "Conceder acceso"
 
 #: js/ui/appDisplay.js:854
-#| msgid "Home Folder"
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
@@ -1789,7 +1786,7 @@ msgstr "Desconectado"
 msgid "On"
 msgstr "Encendido"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Brillo"
 
@@ -2341,9 +2338,351 @@ msgstr "Mover a la pantalla de la derecha"
 msgid "Evolution Calendar"
 msgstr "Calendario de Evolution"
 
-#: src/main.c:460
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"El nombre debe ser una cadena (descriptiva) muy corta.\n"
+"Algunos ejemplos: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Nombre"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"La descripción es una única frase para explicar qué hace su extensión.\n"
+"Algunos ejemplos: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Descripción"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"El UUID es un identificador único global para su extensión.\n"
+"Normalmente debe estar en formato de dirección de correo electrónico "
+"(pulsarparaenfocar@usuario.ejemplo.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "El identificador único de la nueva extensión"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NOMBRE"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "El nombre visible por el usuario de esta extensión"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESCRIPCIÓN"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Una breve descripción de qué hace la extensión"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Introduzca la información de la extensión interactivamente"
+
+#: src/extensions-tool/command-create.c:258
+#| msgid "Disable user extensions"
+msgid "Create a new extension"
+msgstr "Crear una extensión nueva"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+#| msgid "Unknown artist"
+msgid "Unknown arguments"
+msgstr "Argumentos desconocidos"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "Se necesita el UUID, el nombre y la descripción"
+
+#: src/extensions-tool/command-disable.c:57
+#| msgid "Disable user extensions"
+msgid "Disable an extension"
+msgstr "Desactivar una extensión"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "No se ha especificado el UUID"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Se ha proporcionado más de un UUID"
+
+#: src/extensions-tool/command-enable.c:57
+#| msgid "Disable user extensions"
+msgid "Enable an extension"
+msgstr "Activar una extensión"
+
+#: src/extensions-tool/command-info.c:79
+#| msgid "No extensions installed"
+msgid "Show extensions info"
+msgstr "Mostrar información de las extensiones"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Sobrescribir una extensión que ya exista"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr ""
+
+#: src/extensions-tool/command-install.c:184
+#, fuzzy
+#| msgid "UUIDs of extensions to enable"
+msgid "Install an extension bundle"
+msgstr "UUID de las extensiones que activar"
+
+#: src/extensions-tool/command-install.c:201
+#, fuzzy
+#| msgid "No extensions installed"
+msgid "No extension bundle specified"
+msgstr "No hay extensiones instaladas"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr ""
+
+#: src/extensions-tool/command-list.c:118
+#| msgid "Shell Extensions"
+msgid "Show user-installed extensions"
+msgstr "Mostrar las extensiones de usuario instaladas"
+
+#: src/extensions-tool/command-list.c:121
+#| msgid "Shell Extensions"
+msgid "Show system-installed extensions"
+msgstr "Mostrar las extensiones del sistema instaladas"
+
+#: src/extensions-tool/command-list.c:124
+#| msgid "Shell Extensions"
+msgid "Show enabled extensions"
+msgstr "Mostrar extensiones activadas"
+
+#: src/extensions-tool/command-list.c:127
+#| msgid "Disable user extensions"
+msgid "Show disabled extensions"
+msgstr "Mostrar extensiones desactivadas"
+
+#: src/extensions-tool/command-list.c:130
+#| msgid "GNOME Shell Extension Preferences"
+msgid "Show extensions with preferences"
+msgstr "Mostrar extensiones con preferencias"
+
+#: src/extensions-tool/command-list.c:133
+#| msgid "Visit extension homepage"
+msgid "Print extension details"
+msgstr "Mostrar detalles de la extensión"
+
+#: src/extensions-tool/command-list.c:141
+#| msgid "Disable user extensions"
+msgid "List installed extensions"
+msgstr "Listar las extensiones instaladas"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "ARCHIVO"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr ""
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "ESQUEMA"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Se debe incluir un esquema de GSettings"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "CARPETA"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "La carpeta donde están las traducciones"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINIO"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "El dominio de gettext que usar para las traducciones"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Sobrescribir un paquete existente"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "La carpeta donde se debe crear el paquete"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "CARPETA_FUENTE"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr ""
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Se ha especificado más de una carpeta fuente"
+
+#: src/extensions-tool/command-prefs.c:90
+#| msgid "GNOME Shell Extension Preferences"
+msgid "Opens extension preferences"
+msgstr "abre las preferencias de la extensión"
+
+#: src/extensions-tool/command-reset.c:57
+#| msgid "Disable user extensions"
+msgid "Reset an extension"
+msgstr "Restablecer una extensión"
+
+#: src/extensions-tool/command-uninstall.c:72
+#| msgid "Disable user extensions"
+msgid "Uninstall an extension"
+msgstr "Desinstalar una extensión"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Ruta"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Autor original"
+
+#: src/extensions-tool/main.c:184
+#| msgid "Session"
+msgid "Version"
+msgstr "Versión"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Estado"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "«version» no lleva argumentos"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Uso:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Mostrar información de la versión y salir."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "COMANDO"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Comandos:"
+
+#: src/extensions-tool/main.c:243
+#| msgid "Print version"
+msgid "Print help"
+msgstr "Mostrar ayuda"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Imprimir versión"
+
+#: src/extensions-tool/main.c:245
+#| msgid "Extension"
+msgid "Enable extension"
+msgstr "Activar extensión"
+
+#: src/extensions-tool/main.c:246
+#| msgid "Disable user extensions"
+msgid "Disable extension"
+msgstr "Desactivar extensión"
+
+#: src/extensions-tool/main.c:247
+#| msgid "Disable user extensions"
+msgid "Reset extension"
+msgstr "Restablecer extensión"
+
+#: src/extensions-tool/main.c:248
+#| msgid "Disable user extensions"
+msgid "Uninstall extension"
+msgstr "Desinstalar extensión"
+
+#: src/extensions-tool/main.c:249
+#| msgid "Disable user extensions"
+msgid "List extensions"
+msgstr "Listar extensiones"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+#| msgid "No extensions installed"
+msgid "Show extension info"
+msgstr "Mostrar información de la extensión"
+
+#: src/extensions-tool/main.c:252
+#| msgid "GNOME Shell Extension Preferences"
+msgid "Open extension preferences"
+msgstr "Abrir las preferencias de la extensión"
+
+#: src/extensions-tool/main.c:253
+#| msgid "Extension"
+msgid "Create extension"
+msgstr "Crear extensión"
+
+#: src/extensions-tool/main.c:254
+#, fuzzy
+#| msgid "Extension"
+msgid "Package extension"
+msgstr "Extensión"
+
+#: src/extensions-tool/main.c:255
+#, fuzzy
+#| msgid "UUIDs of extensions to enable"
+msgid "Install extension bundle"
+msgstr "UUID de las extensiones que activar"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Use %s para obtener ayuda detallada.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2472,9 +2811,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Media"
 #~ msgstr "Medios"
-
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "Preferencias de las extensiones de GNOME Shell"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
@@ -2763,9 +3099,6 @@ msgstr "Sonidos del sistema"
 #~ "Esta clave sobrescribe la clave en org.gnome.desktop.wm.preferences al "
 #~ "ejecutar GNOME Shell."
 
-#~ msgid "Extension"
-#~ msgstr "Extensión"
-
 #~ msgid "Select an extension to configure using the combobox above."
 #~ msgstr ""
 #~ "Seleccione una extensión que configurar usando la caja combinada de "
@@ -2870,9 +3203,6 @@ msgstr "Sonidos del sistema"
 #~ msgstr ""
 #~ "Usado internamente para guardar el último estado de presencia de la "
 #~ "sesión del usuario. El valor aquí es de la GsmPresenceStatus."
-
-#~ msgid "Session"
-#~ msgstr "Sesión"
 
 #~ msgid "Click Log Out to quit these applications and log out of the system."
 #~ msgstr ""
