@@ -50,9 +50,14 @@ var PieTimer = GObject.registerClass({
         cr.setLineJoin(Cairo.LineJoin.ROUND);
         cr.translate(width / 2, height / 2);
 
-        cr.moveTo(0, 0);
+        if (this._angle < 2 * Math.PI)
+            cr.moveTo(0, 0);
+
         cr.arc(0, 0, radius - borderWidth, startAngle, endAngle);
-        cr.lineTo(0, 0);
+
+        if (this._angle < 2 * Math.PI)
+            cr.lineTo(0, 0);
+
         cr.closePath();
 
         cr.setLineWidth(0);
