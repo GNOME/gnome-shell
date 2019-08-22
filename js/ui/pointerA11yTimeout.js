@@ -110,8 +110,10 @@ var PointerA11yTimeout = class PointerA11yTimeout {
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
-        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type) => {
-            pieTimer.stop();
+        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type, clicked) => {
+            if (!clicked)
+                pieTimer.stop();
+
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.DEFAULT);
         });
