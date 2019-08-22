@@ -12,8 +12,6 @@ var PieTimer = GObject.registerClass({
     }
 }, class PieTimer extends St.DrawingArea {
     _init() {
-        this._x = 0;
-        this._y = 0;
         this._angle = 0;
         super._init({
             style_class: 'pie-timer',
