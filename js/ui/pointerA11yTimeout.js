@@ -69,12 +69,19 @@ var PieTimer = GObject.registerClass({
     start(x, y, duration) {
         this.remove_all_transitions();
 
+        this.opacity = 0;
         this.x = x - this.width / 2;
         this.y = y - this.height / 2;
         this._angle = 0;
 
         this.show();
         Main.uiGroup.set_child_above_sibling(this, null);
+
+        this.ease({
+            opacity: 255,
+            duration: duration / 4,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
 
         this.ease_property('angle', 2 * Math.PI, {
             duration,
