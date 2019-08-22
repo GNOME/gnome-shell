@@ -3,6 +3,8 @@ const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Main = imports.ui.main;
 const Cairo = imports.cairo;
 
+const SUCCESS_ZOOM_OUT_DURATION = 150;
+
 var PieTimer = GObject.registerClass({
     Properties: {
         'angle': GObject.ParamSpec.double(
@@ -19,6 +21,8 @@ var PieTimer = GObject.registerClass({
             can_focus: false,
             reactive: false
         });
+
+        this.set_pivot_point(0.5, 0.5);
     }
 
     get angle() {
@@ -77,6 +81,8 @@ var PieTimer = GObject.registerClass({
         this.opacity = 0;
         this.x = x - this.width / 2;
         this.y = y - this.height / 2;
+        this.scale_y = 1;
+        this.scale_x = 1;
         this._angle = 0;
 
         this.show();
@@ -91,7 +97,18 @@ var PieTimer = GObject.registerClass({
         this.ease_property('angle', 2 * Math.PI, {
             duration,
             mode: Clutter.AnimationMode.LINEAR,
-            onComplete: () => this.stop()
+            onComplete: this._onTransitionComplete.bind(this)
+        });
+    }
+
+    _onTransitionComplete() {
+        this.ease({
+            scale_x: 2,
+            scale_y: 2,
+            opacity: 0,
+            duration: SUCCESS_ZOOM_OUT_DURATION,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => this.hide()
         });
     }
 
