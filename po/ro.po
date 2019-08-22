@@ -10,10 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-12 19:40+0000\n"
-"PO-Revision-Date: 2019-08-18 14:20+0300\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
-"com>\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-22 10:05+0200\n"
+"Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
 "Language: ro\n"
@@ -52,7 +51,7 @@ msgid "Open the application menu"
 msgstr "Arată meniul aplicației"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Extensii pentru vizualizatorul activităților"
 
@@ -413,11 +412,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Logare prin rețea"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Ceva nu a funcționat cum trebuie"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -427,27 +426,27 @@ msgstr ""
 "extensie nu pot fi afișate. Vă recomandăm să raportați problema autorilor "
 "extensiei."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Detalii tehnice"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Eroare la copiere"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Pagină principală"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Vizitează pagina principală a extensiei"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Nicio extensie instalată"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -455,11 +454,11 @@ msgstr ""
 "Extensii pot fi instalate prin intermediul Aplicații sau <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Navighați în Aplicații"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -1806,7 +1805,7 @@ msgstr "Oprit"
 msgid "On"
 msgstr "Pornit"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Luminozitate"
 
@@ -2362,9 +2361,319 @@ msgstr "Mută fereastra cu un monitor spre dreapta"
 msgid "Evolution Calendar"
 msgstr "Calendar Evolution"
 
-#: src/main.c:460
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Numele ar trebui să fie un șir foarte scurt (ideal descriptiv).\n"
+"Exemple: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Nume"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Descrierea este o explicație într-o singură propoziție despre ce face "
+"extensia.\n"
+"Exemple: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Descriere"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID-ul este un identificator global unic pentru extensie.\n"
+"Aceasta ar trebui să fie în formatul unei adrese de email "
+"(clicktofocus@janedoe.example.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "Identificatorul unic al noii extensii"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NUME"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Numele vizibil de utilizator pentru noua extensie"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESCRIERE"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "O scurtă descriere despre ce face extensia"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Introdu informațiile extensiei interactiv"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Creează o nouă extensie"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argumente necunoscute"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "UUID-ul, numele și descrierea sunt necesare"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Dezactivează o extensie"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Niciun UUID dat"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Mai mult de un UUID dat"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Activează o extensie"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Arată informații despre extensii"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Suprascrie o extensie existentă"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "PACHET_EXTENSIE"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instalează un pachet de extensii"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Niciun pachet de extensii specificat"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Mai mult de un pachet de extensii specificat"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Arată extensiile instalate de utilizator"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Arată extensiile instalate de sistem"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Arată extensiile activate"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Arată extensiile dezactivate"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Arată extensiile cu preferințe"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Tipărește detaliile extensiei"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Listează extensiile instalate"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "FIȘIER"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Sursă adițională de inclus în pachet"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEMĂ"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "O schemă GSettings care ar trebui inclusă"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIRECTOR"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Directorul unde se găsesc traducerile"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMENIU"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Domeniu gettext de folosit pentru traduceri"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Suprascrie un pachet existent"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Directorul unde pachetul ar trebui creat"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "DIRECTOR_SURSĂ"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Creează un pachet de extensii"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Mai mult de un director sursă specificat"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Deschide preferințele extensiei"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Restabilește o extensie"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Dezinstalează o extensie"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Cale"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Autor original"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Versiune"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Stare"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "„version” nu primește argumente"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Utilizare:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Tipărește informațiile versiunii și ieși."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "COMANDĂ"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGUMENTE…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Comenzi:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Tipărește ajutorul"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Tipărește versiunea"
+
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Activează extensia"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Dezactivează extensia"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Restabilește extensia"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Dezinstalează extensia"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Listează extensiile"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Arată informații despre extensie"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Deschide preferințele extensiei"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Creează extensie"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Împachetează extensia"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Instalează pachetul de extensii"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Utilizați %s pentru a obține ajutor detaliat.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2462,9 +2771,6 @@ msgstr "Sunete de sistem"
 #~ msgid "Feels like %s."
 #~ msgstr "Percepută ca %s."
 
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "Preferințele extensiei Vizualizatorul activităților GNOME"
-
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "Vizualizatorul activităților GNOME (compozitor wayland)"
 
@@ -2500,9 +2806,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
-
-#~ msgid "Extension"
-#~ msgstr "Extensie"
 
 #~ msgctxt "list sunday"
 #~ msgid "Su"
@@ -2830,11 +3133,6 @@ msgstr "Sunete de sistem"
 #~ "Numele de fișier ale înregistrărilor de ecran vor fi unice, bazate pe "
 #~ "data curentă și vor folosi această extensie. Ar trebui să fie modificată "
 #~ "când se înregistrează într-un format de container diferit."
-
-#, fuzzy
-#~| msgid "Session..."
-#~ msgid "Session"
-#~ msgstr "Sesiune..."
 
 #, fuzzy
 #~| msgid "Power Off"
