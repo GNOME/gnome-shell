@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-09 14:45+0000\n"
-"PO-Revision-Date: 2019-08-20 19:15+0200\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-23 18:39+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -46,7 +46,7 @@ msgid "Open the application menu"
 msgstr "Otwarcie menu programu"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Rozszerzenia powłoki"
 
@@ -403,11 +403,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Logowanie do sieci"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Coś się nie powiodło"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -416,27 +416,27 @@ msgstr ""
 "Wystąpił problem: nie można wyświetlić ustawień tego rozszerzenia. Zalecamy "
 "zgłoszenie problemu autorom rozszerzenia."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Informacje techniczne"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Skopiuj błąd"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Strona WWW"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Otwiera stronę WWW rozszerzenia"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Nie zainstalowano rozszerzeń"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -444,11 +444,11 @@ msgstr ""
 "Można instalować rozszerzenia przez Menedżera oprogramowania lub stronę <a "
 "href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Przeglądaj w Menedżerze oprogramowania"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -775,27 +775,27 @@ msgid "All"
 msgstr "Wszystkie"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2224 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Otwarte okna"
 
-#: js/ui/appDisplay.js:2243 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: js/ui/appDisplay.js:2255
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Uruchom za pomocą dedykowanej karty graficznej"
 
-#: js/ui/appDisplay.js:2284 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: js/ui/appDisplay.js:2290
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
-#: js/ui/appDisplay.js:2300 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Wyświetl szczegóły"
 
@@ -1694,8 +1694,8 @@ msgstr "Używa plików kluczy"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
-"Do odblokowania woluminu używającego plików kluczy należy użyć narzędzia "
-"<i>%s</i>."
+"Do odblokowania woluminu używającego plików kluczy należy użyć narzędzia <i>"
+"%s</i>."
 
 #: js/ui/shellMountOperation.js:323
 msgid "PIM Number"
@@ -1800,7 +1800,7 @@ msgstr "Wyłączone"
 msgid "On"
 msgstr "Włączone"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Jasność"
 
@@ -2355,19 +2355,327 @@ msgstr "Przenieś na prawy monitor"
 msgid "Evolution Calendar"
 msgstr "Kalendarz programu Evolution"
 
-#: src/main.c:464
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Nazwa jest być bardzo krótkim (najlepiej opisowym) napisem.\n"
+"Przykłady: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Nazwa"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Opis jest jednozdaniowym wyjaśnieniem działania rozszerzenia.\n"
+"Przykłady: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Opis"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID to globalnie unikalny identyfikator rozszerzenia.\n"
+"Musi być w formacie adresu e-mail (kliknięcie-aktywuje@alicja.example.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "Unikalny identyfikator nowego rozszerzenia"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NAZWA"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Widoczna dla użytkownika nazwa nowego rozszerzenia"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "OPIS"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Krótki opis działania rozszerzenia"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Interaktywnie wprowadza informacje o rozszerzeniu"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Tworzy nowe rozszerzenie"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Nieznane parametry"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "UUID, nazwa i opis są wymagane"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Wyłącza rozszerzenie"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Nie podano UUID"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Podano więcej niż jeden UUID"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Włącza rozszerzenie"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Wyświetla informacje o rozszerzeniach"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Zastępuje istniejące rozszerzenie"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "PAKIET_ROZSZERZENIA"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instaluje pakiet rozszerzenia"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Nie podano pakietu rozszerzenia"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Podano więcej niż jeden pakiet rozszerzenia"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Wyświetla rozszerzenia zainstalowane przez użytkownika"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Wyświetla rozszerzenia zainstalowane w systemie"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Wyświetla włączone rozszerzenia"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Wyświetla wyłączone rozszerzenia"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Wyświetla rozszerzenia z preferencjami"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Wyświetla informacje o rozszerzeniu"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Wyświetla listę zainstalowanych rozszerzeń"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "PLIK"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Dodatkowe źródło do dołączenia do pakietu"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEMAT"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Schemat GSettings, który ma zostać dołączony"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "KATALOG"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Katalog z tłumaczeniami"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMENA"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Domena gettext używana dla tłumaczeń"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Zastępuje istniejący pakiet"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Katalog, w którym utworzyć pakiet"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "KATALOG_ŹRÓDŁOWY"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Tworzy pakiet rozszerzenia"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Podano więcej niż jeden katalog źródłowy"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Otwiera preferencje rozszerzenia"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Przywraca rozszerzenie"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Odinstalowuje rozszerzenie"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Ścieżka"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "Adres URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Oryginalny autor"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Wersja"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Stan"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "Opcja „version” nie przyjmuje parametrów"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Użycie:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Wyświetla informacje o wersji i kończy działanie."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "POLECENIE"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[PARAMETRY…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Polecenia:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Wyświetla pomoc"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: src/main.c:470
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Włącza rozszerzenie"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Wyłącza rozszerzenie"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Przywraca rozszerzenie"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Odinstalowuje rozszerzenie"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Wyświetla listę rozszerzeń"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Wyświetla informacje o rozszerzeniu"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Otwiera preferencje rozszerzenia"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Tworzy rozszerzenie"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Tworzy pakiet z rozszerzeniem"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Instaluje pakiet rozszerzenia"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Polecenie %s wyświetli szczegółową pomoc.\n"
+
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "Tryb używany przez GDM dla ekranu logowania"
 
-#: src/main.c:476
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Używa podanego trybu, np. „gdm” dla ekranu logowania"
 
-#: src/main.c:482
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "Wyświetla listę możliwych trybów"
 
@@ -2389,7 +2697,7 @@ msgstr "Hasła się nie zgadzają."
 msgid "Password cannot be blank"
 msgstr "Hasło nie może być puste"
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Okno uwierzytelniania zostało odrzucone przez użytkownika"
 
