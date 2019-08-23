@@ -2347,19 +2347,19 @@ msgstr "Gainidatzi lehendik dagoen hedapena"
 
 #: src/extensions-tool/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr "HEDAPEN_PAKETEA\t"
+msgstr "HEDAPEN_BILDUMA"
 
 #: src/extensions-tool/command-install.c:184
 msgid "Install an extension bundle"
-msgstr "Instalatu hedapen-paketea"
+msgstr "Instalatu hedapen-bilduma"
 
 #: src/extensions-tool/command-install.c:201
 msgid "No extension bundle specified"
-msgstr "Ez da hedapen-paketerik zehaztu"
+msgstr "Ez da hedapen-bildumarik zehaztu"
 
 #: src/extensions-tool/command-install.c:207
 msgid "More than one extension bundle specified"
-msgstr "Hedapen-pakete bat baino gehiago zehaztu da"
+msgstr "Hedapen-bilduma bat baino gehiago zehaztu da"
 
 #: src/extensions-tool/command-list.c:118
 msgid "Show user-installed extensions"
@@ -2395,7 +2395,7 @@ msgstr "FITXATEGIA"
 
 #: src/extensions-tool/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr "Paketean sartuko zen iturburu gehigarria"
+msgstr "Bilduman sartuko zen iturburu gehigarria"
 
 #: src/extensions-tool/command-pack.c:454
 msgid "SCHEMA"
@@ -2436,7 +2436,7 @@ msgstr "ITURBURU_DIREKTORIOA"
 
 #: src/extensions-tool/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr "Sortu hedapen-pakete bat"
+msgstr "Sortu hedapen-bilduma bat"
 
 #: src/extensions-tool/command-pack.c:500
 msgid "More than one source directory specified"
@@ -2544,7 +2544,7 @@ msgstr "Paketatu hedapena"
 
 #: src/extensions-tool/main.c:255
 msgid "Install extension bundle"
-msgstr "Instalatu hedapen-paketea"
+msgstr "Instalatu hedapen-bilduma"
 
 #: src/extensions-tool/main.c:257
 #, c-format
