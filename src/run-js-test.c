@@ -30,11 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <clutter/x11/clutter-x11.h>
-#include <gdk/gdkx.h>
 #include <girepository.h>
 #include <gjs/gjs.h>
-#include <gtk/gtk.h>
 
 #include "shell-global.h"
 #include "shell-global-private.h"
@@ -58,17 +55,6 @@ main(int argc, char **argv)
   char *title;
   gsize len;
   int code;
-
-  gdk_set_allowed_backends("x11");
-
-  gtk_init (&argc, &argv);
-
-  clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-
-  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
-    return 1;
-
-  gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
 
   context = g_option_context_new (NULL);
 
