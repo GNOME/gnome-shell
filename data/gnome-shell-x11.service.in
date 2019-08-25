@@ -21,7 +21,7 @@ StartLimitIntervalSec=15s
 StartLimitBurst=3
 
 [Service]
-Type=dbus
+Type=notify
 ExecStart=@bindir@/gnome-shell
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
@@ -29,4 +29,3 @@ SuccessExitStatus=1
 Restart=always
 # Do not wait before restarting the shell
 RestartSec=0ms
-BusName=org.gnome.Shell

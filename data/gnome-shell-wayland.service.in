@@ -17,10 +17,9 @@ Before=gnome-session-initialized.target
 #Conflicts=gnome-shell-x11.service
 
 [Service]
-Type=dbus
+Type=notify
 ExecStart=@bindir@/gnome-shell
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
 # On wayland we cannot restart
 Restart=no
-BusName=org.gnome.Shell
