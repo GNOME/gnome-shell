@@ -17,6 +17,7 @@ var PieTimer = GObject.registerClass({
         this._angle = 0;
         super._init({
             style_class: 'pie-timer',
+            opacity: 0,
             visible: false,
             can_focus: false,
             reactive: false
@@ -76,17 +77,9 @@ var PieTimer = GObject.registerClass({
     }
 
     start(x, y, duration) {
-        this.remove_all_transitions();
-
-        this.opacity = 0;
         this.x = x - this.width / 2;
         this.y = y - this.height / 2;
-        this.scale_y = 1;
-        this.scale_x = 1;
-        this._angle = 0;
-
         this.show();
-        Main.uiGroup.set_child_above_sibling(this, null);
 
         this.ease({
             opacity: 255,
@@ -108,33 +101,31 @@ var PieTimer = GObject.registerClass({
             opacity: 0,
             duration: SUCCESS_ZOOM_OUT_DURATION,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this.hide()
+            onStopped: () => this.destroy()
         });
-    }
-
-    stop() {
-        this.remove_all_transitions();
-        this.hide();
     }
 });
 
 var PointerA11yTimeout = class PointerA11yTimeout {
     constructor() {
         let manager = Clutter.DeviceManager.get_default();
-        let pieTimer = new PieTimer();
-
-        Main.uiGroup.add_actor(pieTimer);
 
         manager.connect('ptr-a11y-timeout-started', (manager, device, type, timeout) => {
             let [x, y] = global.get_pointer();
-            pieTimer.start(x, y, timeout);
+
+            this._pieTimer = new PieTimer();
+            Main.uiGroup.add_actor(this._pieTimer);
+            Main.uiGroup.set_child_above_sibling(this._pieTimer, null);
+
+            this._pieTimer.start(x, y, timeout);
+
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
         manager.connect('ptr-a11y-timeout-stopped', (manager, device, type, clicked) => {
             if (!clicked)
-                pieTimer.stop();
+                this._pieTimer.destroy();
 
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.DEFAULT);
