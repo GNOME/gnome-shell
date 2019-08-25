@@ -545,7 +545,7 @@ main (int argc, char **argv)
   /* Make sure our assumptions about resolution are correct */
   g_object_set (clutter_settings_get_default (), "font-dpi", -1, NULL);
 
-  file = g_file_new_for_path ("test-theme.css");
+  file = g_file_new_for_uri ("resource:///org/gnome/shell/tests/test-theme.css");
   theme = st_theme_new (file, NULL, NULL);
   g_object_unref (file);
 

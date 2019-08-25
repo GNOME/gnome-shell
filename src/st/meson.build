@@ -133,8 +133,13 @@ libst_dep = declare_dependency(link_with: libst,
   sources: st_enums[1]
 )
 
+test_resources = gnome.compile_resources('resources',
+  'test-theme.gresource.xml',
+  source_dir: '.'
+)
+
 test_theme = executable('test-theme',
-  sources: 'test-theme.c',
+  sources: ['test-theme.c', test_resources],
   c_args: st_cflags,
   dependencies: [mutter_dep, gtk_dep],
   build_rpath: mutter_typelibdir,
