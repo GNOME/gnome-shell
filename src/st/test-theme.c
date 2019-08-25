@@ -25,6 +25,7 @@
 #include "st-button.h"
 #include <math.h>
 #include <string.h>
+#include <meta/main.h>
 
 static ClutterActor *stage;
 static StThemeNode *root;
@@ -536,11 +537,16 @@ main (int argc, char **argv)
   StThemeContext *context;
   PangoFontDescription *font_desc;
   GFile *file;
+  g_autofree char *cwd = NULL;
 
   gtk_init (&argc, &argv);
 
-  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
-    return 1;
+  /* meta_init() cds to $HOME */
+  cwd = g_get_current_dir ();
+
+  meta_test_init ();
+
+  chdir (cwd);
 
   /* Make sure our assumptions about resolution are correct */
   g_object_set (clutter_settings_get_default (), "font-dpi", -1, NULL);

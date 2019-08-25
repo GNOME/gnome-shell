@@ -136,7 +136,7 @@ libst_dep = declare_dependency(link_with: libst,
 test_theme = executable('test-theme',
   sources: 'test-theme.c',
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep],
+  dependencies: [mutter_dep, gtk_dep],
   build_rpath: mutter_typelibdir,
   link_with: libst
 )
