@@ -69,6 +69,7 @@ test:
     stage: test
     before_script:
         - ninja -C mutter/build install
+        - glib-compile-schemas /usr/share/glib-2.0/schemas
     script:
         - xvfb-run meson test -C build --no-rebuild
     <<: *only_default
