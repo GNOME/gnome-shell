@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-12 19:40+0000\n"
-"PO-Revision-Date: 2019-08-15 09:21+0200\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-25 21:53+0200\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -46,7 +46,7 @@ msgid "Open the application menu"
 msgstr "Obre el menú d'aplicació"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Extensions del Shell"
 
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inici de sessió de xarxa"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Alguna cosa ha anat malament"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -428,27 +428,27 @@ msgstr ""
 "Hi ha un problema: no es poden mostrar els paràmetres per a aquesta "
 "extensió. Us recomanem que informeu del problema als autors de l'extensió."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Detalls tècnics"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Copia l'error"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Pàgina d'inici"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Visiteu la pàgina d'inici de l'extensió"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "No hi ha cap extensió instal·lada"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -456,11 +456,11 @@ msgstr ""
 "Les extensions es poden instal·lar amb el Programari o a <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Navega al Programari"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -1794,7 +1794,7 @@ msgstr "Desactivat"
 msgid "On"
 msgstr "Activat"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Brillantor"
 
@@ -2348,9 +2348,317 @@ msgstr "Mou a la pantalla de la dreta"
 msgid "Evolution Calendar"
 msgstr "Calendari de l'Evolution"
 
-#: src/main.c:460
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"El nom ha de ser una cadena molt curta (idealment descriptiva).\n"
+"Per exemple: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Nom"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"La descripció és una explicació d'una frase del què fa l'extensió.\n"
+"Per exemple: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Descripció"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"L'UUID és un identificador únic global per l'extensió\n"
+"Ha de tenir el format d'una adreça de correu (exemple@softcatala.org)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "L'identificador únic de l'extensió nova"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NOM"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "El nom visible a l'usuari de l'extensió nova"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESCRIPCIÓ"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Una descripció curta del que fa l'extensió"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Introduïu la informació de l'extensió interactivament"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Crea una extensió nova"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Arguments desconeguts"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "Calen l'UUID, el nom i la descripció"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Inhabilita una extensió"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "No s'ha donat un UUID"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "S'han donat més d'un UUID"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Habilita una extensió"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Mostra la informació de les extensions"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Sobreescriu una extensió existent"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instal·la un paquet d'extensió"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "No s'ha especificat cap paquet d'extensió"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "S'ha especificat més un paquet d'extensió"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Mostra les extensions d'usuari instal·lades"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Mostra les extensions del sistema instal·lades"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Mostra les extensions habilitades"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Mostra les extensions inhabilitades"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Mostra les extensions amb preferències"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Mostra els detalls de l'extensió"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Llista les extensions instal·lades"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "FITXER"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Font a addicional a incloure al paquet"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "ESQUEMA"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Un esquema del GSettings a incloure"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIRECTORI"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "El directori on es troben les traduccions"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINI"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "El domini del gettext per a les traduccions"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Sobreescriu el paquet existent"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Directori on s'ha de crear el paquet"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "DIRECTORI_FONT"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Crea un paquet d'extensió"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "S'han especificat més d'un directori font"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Obre les preferències de l'extensió"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Reinicia una extensió"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Desinstal·la una extensió"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Camí"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Autor original"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Versió"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Comarca"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "«version» no té arguments"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Ús:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Mostra la informació de la versió i surt."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "ORDRE"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Ordres:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Mostra l'ajuda"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Mostra la versió"
+
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Habilita l'extensió"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Inhabilita l'extensió"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Reinicia l'extensió"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Desinstal·la l'extensió"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Llista les extensions"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Mostra la informació de l'extensió"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Obre les preferències de l'extensió"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Crea extensió"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Paquet d'extensió"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Instal·la un paquet d'extensió"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Feu servir %s per obtenir ajuda detallada.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2483,9 +2791,6 @@ msgstr "Sons del sistema"
 
 #~ msgid "Not In Use"
 #~ msgstr "No s'usa"
-
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "Preferències de les extensions del GNOME Shell"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Mostra el número de la setmana al calendari"
