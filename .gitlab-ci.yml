@@ -67,6 +67,8 @@ build:
 test:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v2
     stage: test
+    variables:
+        XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
     before_script:
         - ninja -C mutter/build install
         - glib-compile-schemas /usr/share/glib-2.0/schemas
