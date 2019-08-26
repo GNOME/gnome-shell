@@ -5,7 +5,6 @@
 #include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-plugin.h>
-#include <meta/meta-shaped-texture.h>
 #include <meta/meta-cursor-tracker.h>
 #include <st/st.h>
 
@@ -457,7 +456,6 @@ grab_window_screenshot (ClutterActor *stage,
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
-  MetaShapedTexture *stex;
   MetaRectangle rect;
   cairo_rectangle_int_t clip;
 
@@ -477,8 +475,8 @@ grab_window_screenshot (ClutterActor *stage,
   clip.width = priv->screenshot_area.width = rect.width;
   clip.height = priv->screenshot_area.height = rect.height;
 
-  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  priv->image = meta_shaped_texture_get_image (stex, &clip);
+  priv->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
+                                             &clip);
   priv->datetime = g_date_time_new_now_local ();
 
   if (priv->include_cursor)
