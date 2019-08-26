@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-21 23:18+0000\n"
-"PO-Revision-Date: 2019-08-22 13:02+0200\n"
+"POT-Creation-Date: 2019-08-22 13:06+0000\n"
+"PO-Revision-Date: 2019-08-26 12:25+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -2399,13 +2399,11 @@ msgid "Enter extension information interactively"
 msgstr "Introduzca la información de la extensión interactivamente"
 
 #: src/extensions-tool/command-create.c:258
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
 msgstr "Crear una extensión nueva"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
 msgstr "Argumentos desconocidos"
 
@@ -2414,7 +2412,6 @@ msgid "UUID, name and description are required"
 msgstr "Se necesita el UUID, el nombre y la descripción"
 
 #: src/extensions-tool/command-disable.c:57
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
 msgstr "Desactivar una extensión"
 
@@ -2437,12 +2434,10 @@ msgid "More than one UUID given"
 msgstr "Se ha proporcionado más de un UUID"
 
 #: src/extensions-tool/command-enable.c:57
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
 msgstr "Activar una extensión"
 
 #: src/extensions-tool/command-info.c:79
-#| msgid "No extensions installed"
 msgid "Show extensions info"
 msgstr "Mostrar información de las extensiones"
 
@@ -2452,56 +2447,47 @@ msgstr "Sobrescribir una extensión que ya exista"
 
 #: src/extensions-tool/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "EXTENSION_BUNDLE"
 
 #: src/extensions-tool/command-install.c:184
-#, fuzzy
 #| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
-msgstr "UUID de las extensiones que activar"
+msgstr "Instalar un conjunto de extensiones"
 
 #: src/extensions-tool/command-install.c:201
-#, fuzzy
 #| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "No hay extensiones instaladas"
+msgstr "No se ha especificado un conjunto de extensiones"
 
 #: src/extensions-tool/command-install.c:207
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "Se ha especificado más de un conjunto de extensiones"
 
 #: src/extensions-tool/command-list.c:118
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
 msgstr "Mostrar las extensiones de usuario instaladas"
 
 #: src/extensions-tool/command-list.c:121
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
 msgstr "Mostrar las extensiones del sistema instaladas"
 
 #: src/extensions-tool/command-list.c:124
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
 msgstr "Mostrar extensiones activadas"
 
 #: src/extensions-tool/command-list.c:127
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
 msgstr "Mostrar extensiones desactivadas"
 
 #: src/extensions-tool/command-list.c:130
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
 msgstr "Mostrar extensiones con preferencias"
 
 #: src/extensions-tool/command-list.c:133
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
 msgstr "Mostrar detalles de la extensión"
 
 #: src/extensions-tool/command-list.c:141
-#| msgid "Disable user extensions"
 msgid "List installed extensions"
 msgstr "Listar las extensiones instaladas"
 
@@ -2511,7 +2497,7 @@ msgstr "ARCHIVO"
 
 #: src/extensions-tool/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "Fuente adicional que incluir en el conjunto"
 
 #: src/extensions-tool/command-pack.c:454
 msgid "SCHEMA"
@@ -2552,24 +2538,21 @@ msgstr "CARPETA_FUENTE"
 
 #: src/extensions-tool/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Crear un conjunto de extensiones"
 
 #: src/extensions-tool/command-pack.c:500
 msgid "More than one source directory specified"
 msgstr "Se ha especificado más de una carpeta fuente"
 
 #: src/extensions-tool/command-prefs.c:90
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
 msgstr "abre las preferencias de la extensión"
 
 #: src/extensions-tool/command-reset.c:57
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
 msgstr "Restablecer una extensión"
 
 #: src/extensions-tool/command-uninstall.c:72
-#| msgid "Disable user extensions"
 msgid "Uninstall an extension"
 msgstr "Desinstalar una extensión"
 
@@ -2586,7 +2569,6 @@ msgid "Original author"
 msgstr "Autor original"
 
 #: src/extensions-tool/main.c:184
-#| msgid "Session"
 msgid "Version"
 msgstr "Versión"
 
@@ -2619,7 +2601,6 @@ msgid "Commands:"
 msgstr "Comandos:"
 
 #: src/extensions-tool/main.c:243
-#| msgid "Print version"
 msgid "Print help"
 msgstr "Mostrar ayuda"
 
@@ -2628,56 +2609,46 @@ msgid "Print version"
 msgstr "Imprimir versión"
 
 #: src/extensions-tool/main.c:245
-#| msgid "Extension"
 msgid "Enable extension"
 msgstr "Activar extensión"
 
 #: src/extensions-tool/main.c:246
-#| msgid "Disable user extensions"
 msgid "Disable extension"
 msgstr "Desactivar extensión"
 
 #: src/extensions-tool/main.c:247
-#| msgid "Disable user extensions"
 msgid "Reset extension"
 msgstr "Restablecer extensión"
 
 #: src/extensions-tool/main.c:248
-#| msgid "Disable user extensions"
 msgid "Uninstall extension"
 msgstr "Desinstalar extensión"
 
 #: src/extensions-tool/main.c:249
-#| msgid "Disable user extensions"
 msgid "List extensions"
 msgstr "Listar extensiones"
 
 #: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
-#| msgid "No extensions installed"
 msgid "Show extension info"
 msgstr "Mostrar información de la extensión"
 
 #: src/extensions-tool/main.c:252
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Open extension preferences"
 msgstr "Abrir las preferencias de la extensión"
 
 #: src/extensions-tool/main.c:253
-#| msgid "Extension"
 msgid "Create extension"
 msgstr "Crear extensión"
 
 #: src/extensions-tool/main.c:254
-#, fuzzy
 #| msgid "Extension"
 msgid "Package extension"
-msgstr "Extensión"
+msgstr "Extensión del paquete"
 
 #: src/extensions-tool/main.c:255
-#, fuzzy
 #| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
-msgstr "UUID de las extensiones que activar"
+msgstr "Instalar conjunto de extensiones"
 
 #: src/extensions-tool/main.c:257
 #, c-format
