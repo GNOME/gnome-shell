@@ -20,7 +20,6 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <meta/meta-shaped-texture.h>
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -430,14 +429,12 @@ ClutterContent *
 shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                          MetaRectangle   *window_rect)
 {
-  MetaShapedTexture *texture;
   ClutterContent *content;
   cairo_surface_t *surface;
   cairo_rectangle_int_t clip;
   gfloat actor_x, actor_y;
   gfloat resource_scale;
 
-  texture = meta_window_actor_get_texture (window_actor);
   clutter_actor_get_position (CLUTTER_ACTOR (window_actor), &actor_x, &actor_y);
 
   if (!clutter_actor_get_resource_scale (CLUTTER_ACTOR (window_actor),
@@ -453,7 +450,7 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   clip.width = ceilf (window_rect->width * resource_scale);
   clip.height = ceilf (window_rect->height * resource_scale);
 
-  surface = meta_shaped_texture_get_image (texture, &clip);
+  surface = meta_window_actor_get_image (window_actor, &clip);
 
   content = clutter_canvas_new ();
   clutter_canvas_set_size (CLUTTER_CANVAS (content),
