@@ -3,9 +3,9 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
-# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2017.
-# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011, 2012.
 # Hideki Yamane <henrich@debian.org>, 2011.
+# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011, 2012.
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2017.
 # Takanori MATSUURA <t.matsuu@gmail.com>, 2012.
 # Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013.
 # Ikuya Awashiro <ikuya@fruitsbasket.info>, 2014.
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-08-21 23:18+0000\n"
-"PO-Revision-Date: 2019-03-07 20:09+0900\n"
+"PO-Revision-Date: 2019-08-27 19:40+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -96,18 +96,11 @@ msgstr ""
 "DisableExtensions といった DBus メソッドでも操作できます。"
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
-msgstr "有効にする拡張機能の UUID"
+msgstr "強制的に無効にする拡張機能の UUID"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 #, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -115,10 +108,11 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、ロードしたい拡"
-"張機能の UUID のリストです。ロードしたい拡張機能はこのリストに含めなければな"
-"りません。このリストは org.gnome.Shell の EnableExtensions や "
-"DisableExtensions といった DBus メソッドでも操作できます。"
+"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、現在のモードの"
+"一部としてロードされる場合でも無効化したい拡張機能の UUID のリストです。このリ"
+"ストは org.gnome.Shell の EnableExtensions や DisableExtensions といった "
+"DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定より優先"
+"されます。"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -348,10 +342,8 @@ msgstr ""
 "します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Locations"
-msgstr "位置情報サービス使用中"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:235
 msgid "The locations to show in world clocks"
@@ -366,10 +358,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Location"
-msgstr "位置情報サービス使用中"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:254
 msgid "The location for which to show a forecast"
@@ -558,10 +548,8 @@ msgstr "ログアウト"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:108
-#, fuzzy
-#| msgid "logout;sign off"
 msgid "logout;log out;sign off"
-msgstr "logout;sign off;ログアウト;サインオフ"
+msgstr "logout;log out;sign off;ログアウト;サインオフ"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -766,10 +754,8 @@ msgstr "すべて"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2233 js/ui/panel.js:77
-#, fuzzy
-#| msgid "Windows"
 msgid "Open Windows"
-msgstr "ウィンドウ"
+msgstr ""
 
 #: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
@@ -986,14 +972,12 @@ msgid "External drive disconnected"
 msgstr "外付けドライブが外されました"
 
 #: js/ui/components/automountManager.js:210
-#, fuzzy
-#| msgid "Unable to lock"
 msgid "Unable to unlock volume"
-msgstr "ロックできません"
+msgstr "ボリュームをロック解除できません"
 
 #: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
-msgstr ""
+msgstr "インストールされているバージョンの udisks は PIM の設定に対応していません"
 
 #: js/ui/components/autorunManager.js:330
 #, javascript-format
@@ -1647,20 +1631,16 @@ msgid "Hide Text"
 msgstr "文字を非表示"
 
 #: js/ui/shellMountOperation.js:304
-#, fuzzy
-#| msgid "Volume"
 msgid "Hidden Volume"
-msgstr "音量"
+msgstr "隠しボリューム"
 
 #: js/ui/shellMountOperation.js:307
 msgid "Windows System Volume"
-msgstr ""
+msgstr "Windows システムボリューム"
 
 #: js/ui/shellMountOperation.js:310
-#, fuzzy
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
-msgstr "マウスキー"
+msgstr "キーファイルを使用する"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:316
@@ -1671,11 +1651,11 @@ msgstr ""
 
 #: js/ui/shellMountOperation.js:323
 msgid "PIM Number"
-msgstr ""
+msgstr "PIM 数値"
 
 #: js/ui/shellMountOperation.js:341
 msgid "The PIM must be a number or empty."
-msgstr ""
+msgstr "PIM は数字か空である必要があります。"
 
 #: js/ui/shellMountOperation.js:352
 msgid "Password"
@@ -1687,23 +1667,21 @@ msgstr "パスワードを保存"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:404
-#, fuzzy, javascript-format
-#| msgid "Open with %s"
+#, javascript-format
 msgid "Open %s"
-msgstr "%s で開く"
+msgstr "%s を開く"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:476
-#, fuzzy, javascript-format
-#| msgid "Unable to lock"
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "ロックできません"
+msgstr "%s を起動できません"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:478
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr ""
+msgstr "%s アプリケーションが見つかりません"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -2327,7 +2305,7 @@ msgstr ""
 
 #: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: src/extensions-tool/command-create.c:203
 #, c-format
@@ -2338,7 +2316,7 @@ msgstr ""
 
 #: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
 #: src/extensions-tool/command-create.c:217
 msgid ""
@@ -2372,27 +2350,21 @@ msgid "Enter extension information interactively"
 msgstr ""
 
 #: src/extensions-tool/command-create.c:258
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
-msgstr "拡張機能を無効化"
+msgstr "新しい拡張機能を作成する"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#, fuzzy
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
-msgstr "不明なアーティスト"
+msgstr "不明な引数です"
 
 #: src/extensions-tool/command-create.c:284
 msgid "UUID, name and description are required"
 msgstr ""
 
 #: src/extensions-tool/command-disable.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能を無効にする"
 
 #: src/extensions-tool/command-disable.c:74
 #: src/extensions-tool/command-enable.c:74
@@ -2413,16 +2385,12 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: src/extensions-tool/command-enable.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能を有効にする"
 
 #: src/extensions-tool/command-info.c:79
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "Show extensions info"
-msgstr "機能拡張はインストールされていません"
+msgstr "拡張機能の情報を表示する"
 
 #: src/extensions-tool/command-install.c:173
 msgid "Overwrite an existing extension"
@@ -2433,62 +2401,44 @@ msgid "EXTENSION_BUNDLE"
 msgstr ""
 
 #: src/extensions-tool/command-install.c:184
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
-msgstr "有効にする拡張機能の UUID"
+msgstr ""
 
 #: src/extensions-tool/command-install.c:201
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "機能拡張はインストールされていません"
+msgstr ""
 
 #: src/extensions-tool/command-install.c:207
 msgid "More than one extension bundle specified"
 msgstr ""
 
 #: src/extensions-tool/command-list.c:118
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
-msgstr "Shell 拡張機能"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:121
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
-msgstr "Shell 拡張機能"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:124
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
-msgstr "Shell 拡張機能"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:127
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
-msgstr "拡張機能を無効化"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:130
-#, fuzzy
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
-msgstr "GNOME Shell 拡張機能設定"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:133
-#, fuzzy
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
-msgstr "拡張機能のホームページを開く"
+msgstr ""
 
 #: src/extensions-tool/command-list.c:141
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "List installed extensions"
-msgstr "拡張機能を無効化"
+msgstr "インストールされた拡張機能一覧を表示する"
 
 #: src/extensions-tool/command-pack.c:450
 msgid "FILE"
@@ -2541,25 +2491,19 @@ msgstr ""
 
 #: src/extensions-tool/command-pack.c:500
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "ソースディレクトリが複数指定されています"
 
 #: src/extensions-tool/command-prefs.c:90
-#, fuzzy
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
-msgstr "GNOME Shell 拡張機能設定"
+msgstr "拡張機能の設定を開く"
 
 #: src/extensions-tool/command-reset.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能をリセットする"
 
 #: src/extensions-tool/command-uninstall.c:72
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Uninstall an extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能をアンインストールする"
 
 #: src/extensions-tool/main.c:175
 msgid "Path"
@@ -2567,33 +2511,31 @@ msgstr ""
 
 #: src/extensions-tool/main.c:178
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/extensions-tool/main.c:181
 msgid "Original author"
-msgstr ""
+msgstr "オリジナルの作者"
 
 #: src/extensions-tool/main.c:184
-#, fuzzy
-#| msgid "Print version"
 msgid "Version"
-msgstr "バージョンを表示"
+msgstr "バージョン"
 
 #: src/extensions-tool/main.c:187
 msgid "State"
-msgstr ""
+msgstr "状態"
 
 #: src/extensions-tool/main.c:221
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "“version”は引数を取りません"
 
 #: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
 msgid "Usage:"
-msgstr ""
+msgstr "使用法:"
 
 #: src/extensions-tool/main.c:226
 msgid "Print version information and exit."
-msgstr ""
+msgstr "バージョン情報を表示して終了します。"
 
 #: src/extensions-tool/main.c:240
 msgid "COMMAND"
@@ -2605,82 +2547,60 @@ msgstr ""
 
 #: src/extensions-tool/main.c:242
 msgid "Commands:"
-msgstr ""
+msgstr "コマンド:"
 
 #: src/extensions-tool/main.c:243
-#, fuzzy
-#| msgid "Print version"
 msgid "Print help"
-msgstr "バージョンを表示"
+msgstr "ヘルプを表示する"
 
 #: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
-msgstr "バージョンを表示"
+msgstr "バージョンを表示する"
 
 #: src/extensions-tool/main.c:245
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Enable extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能を有効にする"
 
 #: src/extensions-tool/main.c:246
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Disable extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能を無効にする"
 
 #: src/extensions-tool/main.c:247
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Reset extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能をリセットする"
 
 #: src/extensions-tool/main.c:248
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Uninstall extension"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能をアンインストールする"
 
 #: src/extensions-tool/main.c:249
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "List extensions"
-msgstr "拡張機能を無効化"
+msgstr "拡張機能一覧を表示する"
 
 #: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "Show extension info"
-msgstr "機能拡張はインストールされていません"
+msgstr "拡張機能の情報を表示する"
 
 #: src/extensions-tool/main.c:252
-#, fuzzy
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Open extension preferences"
-msgstr "GNOME Shell 拡張機能設定"
+msgstr "拡張機能の設定を開く"
 
 #: src/extensions-tool/main.c:253
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Create extension"
-msgstr "Shell 拡張機能"
+msgstr "拡張機能を作成する"
 
 #: src/extensions-tool/main.c:254
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Package extension"
-msgstr "Shell 拡張機能"
+msgstr ""
 
 #: src/extensions-tool/main.c:255
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
-msgstr "有効にする拡張機能の UUID"
+msgstr ""
 
 #: src/extensions-tool/main.c:257
 #, c-format
 msgid "Use %s to get detailed help.\n"
-msgstr ""
+msgstr "%s を使用すると詳細なヘルプが表示されます。\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
