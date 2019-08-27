@@ -3,6 +3,8 @@ const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Main = imports.ui.main;
 const Cairo = imports.cairo;
 
+const SUCCESS_ZOOM_OUT_DURATION = 150;
+
 var PieTimer = GObject.registerClass({
     Properties: {
         'angle': GObject.ParamSpec.double(
@@ -12,15 +14,16 @@ var PieTimer = GObject.registerClass({
     }
 }, class PieTimer extends St.DrawingArea {
     _init() {
-        this._x = 0;
-        this._y = 0;
         this._angle = 0;
         super._init({
             style_class: 'pie-timer',
+            opacity: 0,
             visible: false,
             can_focus: false,
             reactive: false
         });
+
+        this.set_pivot_point(0.5, 0.5);
     }
 
     get angle() {
@@ -52,9 +55,14 @@ var PieTimer = GObject.registerClass({
         cr.setLineJoin(Cairo.LineJoin.ROUND);
         cr.translate(width / 2, height / 2);
 
-        cr.moveTo(0, 0);
+        if (this._angle < 2 * Math.PI)
+            cr.moveTo(0, 0);
+
         cr.arc(0, 0, radius - borderWidth, startAngle, endAngle);
-        cr.lineTo(0, 0);
+
+        if (this._angle < 2 * Math.PI)
+            cr.lineTo(0, 0);
+
         cr.closePath();
 
         cr.setLineWidth(0);
@@ -69,44 +77,56 @@ var PieTimer = GObject.registerClass({
     }
 
     start(x, y, duration) {
-        this.remove_all_transitions();
-
         this.x = x - this.width / 2;
         this.y = y - this.height / 2;
-        this._angle = 0;
-
         this.show();
-        Main.uiGroup.set_child_above_sibling(this, null);
+
+        this.ease({
+            opacity: 255,
+            duration: duration / 4,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD
+        });
 
         this.ease_property('angle', 2 * Math.PI, {
             duration,
             mode: Clutter.AnimationMode.LINEAR,
-            onComplete: () => this.stop()
+            onComplete: this._onTransitionComplete.bind(this)
         });
     }
 
-    stop() {
-        this.remove_all_transitions();
-        this.hide();
+    _onTransitionComplete() {
+        this.ease({
+            scale_x: 2,
+            scale_y: 2,
+            opacity: 0,
+            duration: SUCCESS_ZOOM_OUT_DURATION,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => this.destroy()
+        });
     }
 });
 
 var PointerA11yTimeout = class PointerA11yTimeout {
     constructor() {
         let manager = Clutter.DeviceManager.get_default();
-        let pieTimer = new PieTimer();
-
-        Main.uiGroup.add_actor(pieTimer);
 
         manager.connect('ptr-a11y-timeout-started', (manager, device, type, timeout) => {
             let [x, y] = global.get_pointer();
-            pieTimer.start(x, y, timeout);
+
+            this._pieTimer = new PieTimer();
+            Main.uiGroup.add_actor(this._pieTimer);
+            Main.uiGroup.set_child_above_sibling(this._pieTimer, null);
+
+            this._pieTimer.start(x, y, timeout);
+
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
-        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type) => {
-            pieTimer.stop();
+        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type, clicked) => {
+            if (!clicked)
+                this._pieTimer.destroy();
+
             if (type == Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.DEFAULT);
         });
