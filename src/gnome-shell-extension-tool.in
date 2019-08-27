@@ -20,7 +20,7 @@ def disable_extension(uuid):
     extension_command(["disable", uuid])
 
 def reload_extension(uuid):
-    print("Reloading extensions does not wokr correctly and is no longer supported",
+    print("Reloading extensions does not work correctly and is no longer supported",
           file=sys.stderr)
 
 def main():
