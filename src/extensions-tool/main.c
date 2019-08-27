@@ -236,6 +236,10 @@ handle_version (int argc, char *argv[], gboolean do_help)
 static void
 usage (void)
 {
+  g_autofree char *help_command = NULL;
+
+  help_command = g_strdup_printf ("gnome-extensions help %s", _("COMMAND"));
+
   g_printerr ("%s\n", _("Usage:"));
   g_printerr ("  gnome-extensions %s %s\n", _("COMMAND"), _("[ARGS…]"));
   g_printerr ("\n");
@@ -254,7 +258,7 @@ usage (void)
   g_printerr ("  pack      %s\n", _("Package extension"));
   g_printerr ("  install   %s\n", _("Install extension bundle"));
   g_printerr ("\n");
-  g_printerr (_("Use %s to get detailed help.\n"), "“gnome-extensions help COMMAND”");
+  g_printerr (_("Use “%s” to get detailed help.\n"), help_command);
 }
 
 int
