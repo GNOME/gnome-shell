@@ -1075,7 +1075,7 @@ var CalendarMessageList = class CalendarMessageList {
         });
         box.add_actor(this._clearButton);
 
-        this._placeholder.actor.bind_property('visible',
+        this._placeholder.bind_property('visible',
             this._clearButton, 'visible',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
@@ -1104,7 +1104,7 @@ var CalendarMessageList = class CalendarMessageList {
             visibleId: 0,
             emptyChangedId: 0,
             canClearChangedId: 0,
-            keyFocusId: 0
+            messageFocusedId: 0
         };
         obj.destroyId = section.actor.connect('destroy', () => {
             this._removeSection(section);
@@ -1115,8 +1115,8 @@ var CalendarMessageList = class CalendarMessageList {
                                              this._sync.bind(this));
         obj.canClearChangedId = section.connect('can-clear-changed',
                                                 this._sync.bind(this));
-        obj.keyFocusId = section.connect('key-focus-in',
-                                         this._onKeyFocusIn.bind(this));
+        obj.messageFocusedId = section.connect('message-focused',
+            this._onMessageFocused.bind(this));
 
         this._sections.set(section, obj);
         this._sectionList.add_actor(section.actor);
@@ -1129,15 +1129,15 @@ var CalendarMessageList = class CalendarMessageList {
         section.actor.disconnect(obj.visibleId);
         section.disconnect(obj.emptyChangedId);
         section.disconnect(obj.canClearChangedId);
-        section.disconnect(obj.keyFocusId);
+        section.disconnect(obj.messageFocusedId);
 
         this._sections.delete(section);
         this._sectionList.remove_actor(section.actor);
         this._sync();
     }
 
-    _onKeyFocusIn(section, actor) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+    _onMessageFocused(_section, messageActor) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
     }
 
     _sync() {
