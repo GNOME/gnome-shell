@@ -977,7 +977,7 @@ var EmojiSelection = class EmojiSelection {
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
-            this.emit('hide');
+            this.emit('close-request');
         });
         row.appendKey(key.actor);
         row.layoutButtons();
@@ -1076,9 +1076,9 @@ var Keyboard = class Keyboard {
                 return;
 
             if (focused)
-                this.show(Main.layoutManager.focusIndex);
+                this.open(Main.layoutManager.focusIndex);
             else
-                this.hide();
+                this.close();
         });
 
         Meta.get_backend().connect('last-device-changed',
@@ -1187,7 +1187,7 @@ var Keyboard = class Keyboard {
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('hide', () => this.hide());
+        this._emojiSelection.connect('close-request', () => this.close());
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });
@@ -1235,13 +1235,13 @@ var Keyboard = class Keyboard {
             return;
 
         if (!(focus instanceof Clutter.Text)) {
-            this.hide();
+            this.close();
             return;
         }
 
         if (!this._showIdleId) {
             this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-                this.show(Main.layoutManager.focusIndex);
+                this.open(Main.layoutManager.focusIndex);
                 this._showIdleId = 0;
                 return GLib.SOURCE_REMOVE;
             });
@@ -1357,7 +1357,7 @@ var Keyboard = class Keyboard {
                 if (keyval != null)
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
-                    this.hide();
+                    this.close();
                 else if (action == 'languageMenu')
                     this._popupLanguageMenu(actor);
                 else if (action == 'emoji')
@@ -1523,9 +1523,9 @@ var Keyboard = class Keyboard {
             return;
 
         if (enabled)
-            this.show(Main.layoutManager.focusIndex);
+            this.open(Main.layoutManager.focusIndex);
         else
-            this.hide();
+            this.close();
     }
 
     _setActiveLayer(activeLevel) {
@@ -1565,7 +1565,7 @@ var Keyboard = class Keyboard {
         this._keyboardRestingId = 0;
     }
 
-    show(monitor) {
+    open(monitor) {
         if (!this._enabled)
             return;
 
@@ -1585,13 +1585,13 @@ var Keyboard = class Keyboard {
                                                    KEYBOARD_REST_TIME,
                                                    () => {
                                                        this._clearKeyboardRestTimer();
-                                                       this._show(monitor);
+                                                       this._open(monitor);
                                                        return GLib.SOURCE_REMOVE;
                                                    });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
-    _show(monitor) {
+    _open(monitor) {
         if (!this._keyboardRequested)
             return;
 
@@ -1607,7 +1607,7 @@ var Keyboard = class Keyboard {
         }
     }
 
-    hide() {
+    close() {
         if (!this._enabled)
             return;
 
@@ -1622,13 +1622,13 @@ var Keyboard = class Keyboard {
                                                    KEYBOARD_REST_TIME,
                                                    () => {
                                                        this._clearKeyboardRestTimer();
-                                                       this._hide();
+                                                       this._close();
                                                        return GLib.SOURCE_REMOVE;
                                                    });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
-    _hide() {
+    _close() {
         if (this._keyboardRequested)
             return;
 
