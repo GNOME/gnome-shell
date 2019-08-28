@@ -142,6 +142,7 @@ var SearchResultsBase = class {
         this._resultsView = resultsView;
 
         this._terms = [];
+        this._focusChild = null;
 
         this.actor = new St.BoxLayout({ style_class: 'search-section',
                                         vertical: true });
@@ -181,8 +182,15 @@ var SearchResultsBase = class {
         this.actor.hide();
     }
 
+    get focusChild() {
+        return this._focusChild;
+    }
+
     _keyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+        if (this._focusChild == actor)
+            return;
+        this._focusChild = actor;
+        this.emit('focus-child-changed');
     }
 
     _activateResult(result, id) {
@@ -574,8 +582,8 @@ var SearchResults = class {
         return false;
     }
 
-    _keyFocusIn(provider, actor) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+    _focusChildChanged(provider) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, provider.focusChild);
     }
 
     _ensureProviderDisplay(provider) {
@@ -588,7 +596,7 @@ var SearchResults = class {
         else
             providerDisplay = new GridSearchResults(provider, this);
 
-        providerDisplay.connect('key-focus-in', this._keyFocusIn.bind(this));
+        providerDisplay.connect('focus-child-changed', this._focusChildChanged.bind(this));
         providerDisplay.actor.hide();
         this._content.add(providerDisplay.actor);
         provider.display = providerDisplay;
