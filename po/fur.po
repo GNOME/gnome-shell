@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-07-24 17:07+0000\n"
-"PO-Revision-Date: 2019-07-28 09:36+0200\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-08-28 11:18+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -43,7 +43,7 @@ msgid "Open the application menu"
 msgstr "Vierç il menù aplicazions"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Estensions Shell"
 
@@ -266,54 +266,47 @@ msgid "Keybinding to focus the active notification."
 msgstr "Tast rapit associât par meti a fûc la notifiche ative."
 
 #: data/org.gnome.shell.gschema.xml.in:155
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Associazion di tascj par meti in pause e ripiâ ducj i tween in esecuzion, "
-"par motîfs di debug"
-
-#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Switch to application 1"
 msgstr "Passe ae aplicazion 1"
 
-#: data/org.gnome.shell.gschema.xml.in:164
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Switch to application 2"
 msgstr "Passe ae aplicazion 2"
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Switch to application 3"
 msgstr "Passe ae aplicazion 3"
 
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Switch to application 4"
 msgstr "Passe ae aplicazion 4"
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:171
 msgid "Switch to application 5"
 msgstr "Passe ae aplicazion 5"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Switch to application 6"
 msgstr "Passe ae aplicazion 6"
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Switch to application 7"
 msgstr "Passe ae aplicazion 7"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:183
 msgid "Switch to application 8"
 msgstr "Passe ae aplicazion 8"
 
-#: data/org.gnome.shell.gschema.xml.in:192
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Switch to application 9"
 msgstr "Passe ae aplicazion 9"
 
-#: data/org.gnome.shell.gschema.xml.in:201
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Limit switcher to current workspace."
 msgstr "Limite il seletôr al spazi di lavôr in ûs."
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -321,11 +314,11 @@ msgstr ""
 "Se vêr, nome lis aplicazions che a àn barcons tal spazi di lavôr curint a "
 "son mostrâts tal seletôr. Se no, dutis lis aplicazions a vegnin includudis."
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "The application icon mode."
 msgstr "La modalitât de icone de aplicazion."
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -336,7 +329,7 @@ msgstr ""
 "barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o "
 "“both” (al mostre ducj e doi)."
 
-#: data/org.gnome.shell.gschema.xml.in:229
+#: data/org.gnome.shell.gschema.xml.in:224
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -344,36 +337,60 @@ msgstr ""
 "Se vêr, nome i barcons dal spazi di lavôr curint a vegnin mostrâts intal "
 "seletôr. Se no, ducj i barcons a vegnin includûts."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:234
+msgid "Locations"
+msgstr "Posizions"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "The locations to show in world clocks"
+msgstr "I lûcs di mostrâ tai orlois mondiâi"
+
+#: data/org.gnome.shell.gschema.xml.in:245
+msgid "Automatic location"
+msgstr "Ubicazion automatiche"
+
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Whether to fetch the current location or not"
+msgstr "Indiche se recuperâ la posizion atuâl o mancul"
+
+#: data/org.gnome.shell.gschema.xml.in:253
+msgid "Location"
+msgstr "Posizion"
+
+#: data/org.gnome.shell.gschema.xml.in:254
+msgid "The location for which to show a forecast"
+msgstr "Il lûc che di chel mostrâ lis previsions"
+
+#: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
 msgstr "Lee il barcon modâl al barcon gjenitôr"
 
-#: data/org.gnome.shell.gschema.xml.in:242
-#: data/org.gnome.shell.gschema.xml.in:251
-#: data/org.gnome.shell.gschema.xml.in:259
 #: data/org.gnome.shell.gschema.xml.in:267
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:300
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Cheste clâf e sorplante chê in org.gnome.mutter cuant che al è in esecuzion "
 "GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Abilite la tasseladure sul ôr cuant che si strissine i barcons tal ôr dal "
 "visôr"
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Workspaces are managed dynamically"
 msgstr "I spazis di vore a son ministrât in maniere dinamiche"
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Workspaces only on primary monitor"
 msgstr "Spazis di lavôr dome sul visôr principâl"
 
-#: data/org.gnome.shell.gschema.xml.in:274
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Tardâ il cambiament dal focus te modalitât mouse fintant che il pontadôr no "
@@ -383,11 +400,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Acès di rêt"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Alc al è lât stuart"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -397,27 +414,27 @@ msgstr ""
 "puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
 "estension."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Detais tecnics"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Copie erôr"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Pagjine principâl"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Visite la pagjine principâl de estension"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Nissune estension instalade"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -425,11 +442,11 @@ msgstr ""
 "Si puedin instalâ lis estension cun Software o cun <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Esplore in Software"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -437,7 +454,7 @@ msgstr ""
 "Nus displâs, ma nol è stât pussibil otignî la liste des estensions "
 "instaladis. Controle di jessi jentrât in GNOME e torne prove."
 
-#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:53
+#: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
@@ -445,28 +462,28 @@ msgstr ""
 msgid "Cancel"
 msgstr "Anule"
 
-#: js/gdm/authPrompt.js:159 js/gdm/authPrompt.js:202 js/gdm/authPrompt.js:433
+#: js/gdm/authPrompt.js:158 js/gdm/authPrompt.js:201 js/gdm/authPrompt.js:433
 msgid "Next"
 msgstr "Indenant"
 
-#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:394
+#: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:394
 #: js/ui/unlockDialog.js:42
 msgid "Unlock"
 msgstr "Sbloche"
 
-#: js/gdm/authPrompt.js:200
+#: js/gdm/authPrompt.js:199
 msgctxt "button"
 msgid "Sign In"
 msgstr "Jentre"
 
-#: js/gdm/loginDialog.js:301
+#: js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Selezione Session"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:445
+#: js/gdm/loginDialog.js:443
 msgid "Not listed?"
 msgstr "No in liste?"
 
@@ -489,7 +506,7 @@ msgstr "Non utent: "
 msgid "Login Window"
 msgstr "Barcon di acès"
 
-#: js/gdm/util.js:339
+#: js/gdm/util.js:338
 msgid "Authentication error"
 msgstr "Erôr di autenticazion"
 
@@ -498,7 +515,7 @@ msgstr "Erôr di autenticazion"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:474
+#: js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(o passe cul dêt)"
 
@@ -568,65 +585,65 @@ msgstr "Bloc orientament"
 msgid "lock orientation;screen;rotation"
 msgstr "bloc orientament;schermi;rotazion"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:117
 msgid "Command not found"
 msgstr "Comant no cjatât"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:150
 msgid "Could not parse command:"
 msgstr "Impussibil analizâ il comant:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:158
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Esecuzion di '%s' falide:"
 
-#: js/misc/util.js:177
+#: js/misc/util.js:175
 msgid "Just now"
 msgstr "Propite cumò"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:177
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minût indaûr"
 msgstr[1] "%d minûts indaûr"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:180
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ore indaûr"
 msgstr[1] "%d oris indaûr"
 
-#: js/misc/util.js:185
+#: js/misc/util.js:183
 msgid "Yesterday"
 msgstr "Îr"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:185
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d zornade indaûr"
 msgstr[1] "%d zornadis indaûr"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:188
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d setemane indaûr"
 msgstr[1] "%d setemanis indaûr"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:191
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d mês indaûr"
 msgstr[1] "%d mês indaûr"
 
-#: js/misc/util.js:195
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -634,20 +651,20 @@ msgstr[0] "%d an indaûr"
 msgstr[1] "%d agns indaûr"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:225
+#: js/misc/util.js:223
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:231
+#: js/misc/util.js:229
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Îr, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:237
+#: js/misc/util.js:235
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -655,7 +672,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:243
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d di %B, %H∶%M"
@@ -663,26 +680,26 @@ msgstr "%-d di %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:249
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d di %B dal %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:254
+#: js/misc/util.js:252
 msgid "%l∶%M %p"
 msgstr "%I∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:260
+#: js/misc/util.js:258
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Îr, %I∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:266
+#: js/misc/util.js:264
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %I∶%M %p"
@@ -690,7 +707,7 @@ msgstr "%A, %I∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:272
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d di %B, %I∶%M %p"
@@ -698,7 +715,7 @@ msgstr "%-d di %B, %I∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:278
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d di %B dal %Y, %I∶%M %p"
@@ -727,40 +744,44 @@ msgstr "Dinee acès"
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
-#: js/ui/appDisplay.js:684
+#: js/ui/appDisplay.js:854
+msgid "Unnamed Folder"
+msgstr "Cartele cence non"
+
+#: js/ui/appDisplay.js:874
 msgid "Frequently used applications will appear here"
 msgstr "Lis aplicazions dopradis dispès a vignaran mostradis culì"
 
-#: js/ui/appDisplay.js:799
+#: js/ui/appDisplay.js:997
 msgid "Frequent"
 msgstr "Dispès"
 
-#: js/ui/appDisplay.js:806
+#: js/ui/appDisplay.js:1004
 msgid "All"
 msgstr "Dutis"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:1761 js/ui/panel.js:78
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Barcons vierts"
 
-#: js/ui/appDisplay.js:1780 js/ui/panel.js:85
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:1794
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Invie doprant une schede grafiche dedicade"
 
-#: js/ui/appDisplay.js:1821 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:1827
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:1837 js/ui/panel.js:96
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Mostre Detais"
 
@@ -790,7 +811,7 @@ msgstr "Cufis"
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:246
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -930,12 +951,12 @@ msgid "Clear"
 msgstr "Nete"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "“%s” nol rispuint."
 
-#: js/ui/closeDialog.js:44
+#: js/ui/closeDialog.js:43
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -943,11 +964,11 @@ msgstr ""
 "Si pues sielzi di spietâ un tic che al continui o sfuarçâ la aplicazion a "
 "jessî dal dut."
 
-#: js/ui/closeDialog.js:60
+#: js/ui/closeDialog.js:59
 msgid "Force Quit"
 msgstr "Sfuarce jessude"
 
-#: js/ui/closeDialog.js:63
+#: js/ui/closeDialog.js:62
 msgid "Wait"
 msgstr "Spiete"
 
@@ -1093,7 +1114,7 @@ msgstr "Mi displâs, no je lade drete. Prove di gnûf."
 msgid "%s is now known as %s"
 msgstr "L'utent %s al è cognossût cumò come %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:170
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:169
 msgid "Windows"
 msgstr "Barcons"
 
@@ -1103,7 +1124,7 @@ msgstr "Mostre Aplicazions"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:391
+#: js/ui/dash.js:390
 msgid "Dash"
 msgstr "Dash"
 
@@ -1112,7 +1133,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:63
+#: js/ui/dateMenu.js:68
 msgid "%B %-d %Y"
 msgstr "%-d di %B dal %Y"
 
@@ -1120,35 +1141,35 @@ msgstr "%-d di %B dal %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:70
+#: js/ui/dateMenu.js:75
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#: js/ui/dateMenu.js:132
+#: js/ui/dateMenu.js:149
 msgid "Add world clocks…"
 msgstr "Zonte orlois mondiâi…"
 
-#: js/ui/dateMenu.js:133
+#: js/ui/dateMenu.js:150
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:229
+#: js/ui/dateMenu.js:265
 msgid "Weather"
 msgstr "Timp"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:348
 msgid "Select a location…"
 msgstr "Selezione une posizion…"
 
-#: js/ui/dateMenu.js:320
+#: js/ui/dateMenu.js:356
 msgid "Loading…"
 msgstr "Daûr a cjariâ…"
 
-#: js/ui/dateMenu.js:330
+#: js/ui/dateMenu.js:366
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:332
+#: js/ui/dateMenu.js:368
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -1399,59 +1420,59 @@ msgstr "Distude"
 msgid "Leave Off"
 msgstr "Lasse disativât"
 
-#: js/ui/keyboard.js:201
+#: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
 msgstr "Impostazions regjon e lenghe"
 
-#: js/ui/lookingGlass.js:621
+#: js/ui/lookingGlass.js:624
 msgid "No extensions installed"
 msgstr "Nissune estension instalade"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:676
+#: js/ui/lookingGlass.js:679
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nol a dât fûr nissun erôr."
 
-#: js/ui/lookingGlass.js:682
+#: js/ui/lookingGlass.js:685
 msgid "Hide Errors"
 msgstr "Tapone Erôrs"
 
-#: js/ui/lookingGlass.js:686 js/ui/lookingGlass.js:745
+#: js/ui/lookingGlass.js:689 js/ui/lookingGlass.js:748
 msgid "Show Errors"
 msgstr "Mostre Erôrs"
 
-#: js/ui/lookingGlass.js:695
+#: js/ui/lookingGlass.js:698
 msgid "Enabled"
 msgstr "Abilitât"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:698 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:701 subprojects/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Disabilitât"
 
-#: js/ui/lookingGlass.js:700
+#: js/ui/lookingGlass.js:703
 msgid "Error"
 msgstr "Erôr"
 
-#: js/ui/lookingGlass.js:702
+#: js/ui/lookingGlass.js:705
 msgid "Out of date"
 msgstr "No inzornât"
 
-#: js/ui/lookingGlass.js:704
+#: js/ui/lookingGlass.js:707
 msgid "Downloading"
 msgstr "Daur a scjamâ"
 
-#: js/ui/lookingGlass.js:727
+#: js/ui/lookingGlass.js:730
 msgid "View Source"
 msgstr "Viôt sorzint"
 
-#: js/ui/lookingGlass.js:736
+#: js/ui/lookingGlass.js:739
 msgid "Web Page"
 msgstr "Pagjine Web"
 
-#: js/ui/messageTray.js:1480
+#: js/ui/messageTray.js:1462
 msgid "System Information"
 msgstr "Informazion di sisteme"
 
@@ -1463,17 +1484,13 @@ msgstr "Artist no cognossût"
 msgid "Unknown title"
 msgstr "Titul no cognossût"
 
-#: js/ui/osdWindow.js:23 js/ui/status/volume.js:198
-msgid "Volume"
-msgstr "Volum"
-
-#: js/ui/overview.js:74
+#: js/ui/overview.js:73
 msgid "Undo"
 msgstr "Anule"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:101
+#: js/ui/overview.js:100
 msgid "Overview"
 msgstr "Panoramiche"
 
@@ -1481,7 +1498,7 @@ msgstr "Panoramiche"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:227
+#: js/ui/overview.js:230
 msgid "Type to search…"
 msgstr "Scrîf par cirî…"
 
@@ -1530,30 +1547,30 @@ msgstr "Frache Esc par jessî"
 msgid "Press any key to exit"
 msgstr "Frache un tast par jessî"
 
-#: js/ui/panel.js:112
+#: js/ui/panel.js:111
 msgid "Quit"
 msgstr "Jes"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:429
+#: js/ui/panel.js:428
 msgid "Activities"
 msgstr "Ativitâts"
 
-#: js/ui/panel.js:702
+#: js/ui/panel.js:701
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sisteme"
 
-#: js/ui/panel.js:821
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Sbare parsore"
 
-#: js/ui/runDialog.js:59
+#: js/ui/runDialog.js:58
 msgid "Enter a Command"
 msgstr "Scrîf un comant"
 
-#: js/ui/runDialog.js:99 js/ui/windowMenu.js:167
+#: js/ui/runDialog.js:98 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "Siere"
 
@@ -1568,29 +1585,29 @@ msgstr "Daûr a tornâ a inviâ…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:75
+#: js/ui/screenShield.js:73
 msgid "%A, %B %d"
 msgstr "%A, %d di %B"
 
-#: js/ui/screenShield.js:131
+#: js/ui/screenShield.js:129
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d gnûf messaç"
 msgstr[1] "%d gnûfs messaçs"
 
-#: js/ui/screenShield.js:133
+#: js/ui/screenShield.js:131
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d gnove notifiche"
 msgstr[1] "%d gnovis modifichis"
 
-#: js/ui/screenShield.js:446 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:269
 msgid "Lock"
 msgstr "Bloche"
 
-#: js/ui/screenShield.js:710
+#: js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME al à di blocâ il visôr"
 
@@ -1609,16 +1626,16 @@ msgstr "Impussibil blocâ"
 msgid "Lock was blocked by an application"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
-#: js/ui/search.js:639
+#: js/ui/search.js:647
 msgid "Searching…"
 msgstr "Daûr a cirî…"
 
-#: js/ui/search.js:641
+#: js/ui/search.js:649
 msgid "No results."
 msgstr "Nissun risultât."
 
 # o ancjemò %d
-#: js/ui/search.js:765
+#: js/ui/search.js:773
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1764,7 +1781,7 @@ msgstr "Distudât"
 msgid "On"
 msgstr "Impiât"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Luminositât"
 
@@ -2163,9 +2180,13 @@ msgstr "Erôr di autorizazion di Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impussibil autorizâ il dispositîf Thunderbolt: %s"
 
-#: js/ui/status/volume.js:132
+#: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Volum modificât"
+
+#: js/ui/status/volume.js:193
+msgid "Volume"
+msgstr "Volum"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2203,11 +2224,11 @@ msgstr "Jentre come altri utent"
 msgid "Unlock Window"
 msgstr "Sbloche barcon"
 
-#: js/ui/viewSelector.js:174
+#: js/ui/viewSelector.js:173
 msgid "Applications"
 msgstr "Aplicazions"
 
-#: js/ui/viewSelector.js:178
+#: js/ui/viewSelector.js:177
 msgid "Search"
 msgstr "Cîr"
 
@@ -2216,22 +2237,22 @@ msgstr "Cîr"
 msgid "“%s” is ready"
 msgstr "“%s” al è pront"
 
-#: js/ui/windowManager.js:55
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Vûstu tignî chestis impostazions di visôr?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:67
+#: js/ui/windowManager.js:66
 msgid "Revert Settings"
 msgstr "Ripristine impostazions"
 
-#: js/ui/windowManager.js:70
+#: js/ui/windowManager.js:69
 msgid "Keep Changes"
 msgstr "Ten lis modifichis"
 
-#: js/ui/windowManager.js:88
+#: js/ui/windowManager.js:87
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2242,7 +2263,7 @@ msgstr[1] ""
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:678
+#: js/ui/windowManager.js:683
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2315,19 +2336,329 @@ msgstr "Sposte tal visôr a drete"
 msgid "Evolution Calendar"
 msgstr "Calendari di Evolution"
 
-#: src/main.c:464
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Il non al à di jessi une stringhe (descritive in mût ideâl) une vore curte.\n"
+"Esemplis a son: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Non "
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"La descrizion e je une spiegazion fate di une frase singule su ce che la "
+"estension e fâs.\n"
+"Esemplis a son: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Descrizion"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"Il UUID al è un identificadôr unic e globâl pe tô estension.\n"
+"Chest al à di jessi tal formât di une direzion e-mail "
+"(clicparfocalizâ@titedalfari.esempli.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "L'identificadôr univoc de gnove estension"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NON"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Il non visibil dal utent de gnove estension"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESCRIZION"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Une curte descrizion di ce che la estension e fâs"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Inserìs lis informazions de estension in maniere interative"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Cree une gnove estension"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argoments no cognossûts"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "A coventin UUID, non e descrizion"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Disabilite une estension"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Nissun UUID indicât"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Plui di un UUID indicât"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Abilite une estension"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Mostre informazions de estension"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Sorescrîf une estension esistente"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instale un complès di estensions"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Nissun complès di estensions specificât"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Plui di un complès di estensions specificât"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Mostre estensions instaladis dal utent"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Mostre estensions instaladis dal sisteme"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Mostre estensions abilitadis"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Mostre estensions disabilitadis"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Mostre lis estensions cu lis preferencis"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Stampe detais de estension"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Liste lis estensions instaladis"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "FILE"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Sorzint adizionâl di includi tal complès"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEME"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Un scheme di GSettings che al à di jessi includût"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "CARTELE"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "La cartele dulà cjatâ lis traduzions"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINI"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Il domini di gettext di doprâ pes traduzions"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Sorescrîf un pachet esistent"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "La cartele dulà che il pachet al à die jessi creât"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "CARTELE_SORZINT"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Cree un complès di estensions"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Plui di une cartele sorzint specificade"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Al vierç lis preferencis de estension"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Azere une estension"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Disinstale une estension"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Percors"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Autôr origjinâl"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Version"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Stât"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "“version” no vûl nissun argoment"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Ûs:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Stampe informazions su la version e jes."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "COMANT"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Comants:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Stampe jutori"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Stampe version"
 
-#: src/main.c:470
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Abilite estension"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Disabilite estension"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Azere estension"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Disinstale estension"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Liste lis estensions"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Mostre informazions de estension"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Vierç preferencis de estension"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Cree estension"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Estension dal pachet"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Instale complès di estensions"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Dopre %s par vê un jutori detaiât.\n"
+
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "Modalitât doprade da GDM pe videade di acès"
 
-#: src/main.c:476
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di acès"
 
-#: src/main.c:482
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
@@ -2349,7 +2680,7 @@ msgstr "Lis password no corispuindin."
 msgid "Password cannot be blank"
 msgstr "La password no pues jessi vueide"
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialic di autenticazion anulât dal utent"
 
@@ -2374,6 +2705,13 @@ msgstr[1] "%u jentradis"
 #: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Suns di sisteme"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Associazion di tascj par meti in pause e ripiâ ducj i tween in esecuzion, "
+#~ "par motîfs di debug"
 
 #~ msgid "Which keyboard to use"
 #~ msgstr "Cuale tastiere doprâ"
@@ -2436,9 +2774,6 @@ msgstr "Suns di sisteme"
 
 #~ msgid "Media"
 #~ msgstr "Supuart"
-
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "Preferencis Estensions di GNOME Shell"
 
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "Indreçament pe autenticazion web"
