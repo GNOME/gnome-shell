@@ -1111,8 +1111,8 @@ var CalendarMessageList = class CalendarMessageList {
                                              this._sync.bind(this));
         obj.canClearChangedId = section.connect('can-clear-changed',
                                                 this._sync.bind(this));
-        obj.keyFocusId = section.connect('key-focus-in',
-                                         this._onKeyFocusIn.bind(this));
+        obj.keyFocusId = section.connect('message-focused',
+            this._onMessageKeyFocusIn.bind(this));
 
         this._sections.set(section, obj);
         this._sectionList.add_actor(section.actor);
@@ -1132,8 +1132,8 @@ var CalendarMessageList = class CalendarMessageList {
         this._sync();
     }
 
-    _onKeyFocusIn(section, actor) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+    _onMessageKeyFocusIn(_section, messageActor) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
     }
 
     _sync() {
