@@ -1078,7 +1078,7 @@ var WindowManager = class {
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         let bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         bottomDragAction.connect('activated', () => {
-            Main.keyboard.show(Main.layoutManager.bottomIndex);
+            Main.keyboard.open(Main.layoutManager.bottomIndex);
         });
         Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
             bottomDragAction.cancel();

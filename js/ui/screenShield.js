@@ -556,11 +556,11 @@ var ScreenShield = class {
         this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                    { inhibitEvents: true,
                                                      fadeFactor: 1 });
-        this._longLightbox.connect('shown', this._onLongLightboxShown.bind(this));
+        this._longLightbox.connect('light', this._onLongLightbox.bind(this));
         this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                     { inhibitEvents: true,
                                                       fadeFactor: 1 });
-        this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
+        this._shortLightbox.connect('light', this._onShortLightbox.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
         this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
@@ -847,7 +847,7 @@ var ScreenShield = class {
 
     _activateFade(lightbox, time) {
         Main.uiGroup.set_child_above_sibling(lightbox.actor, null);
-        lightbox.show(time);
+        lightbox.lightOn(time);
 
         if (this._becameActiveId == 0)
             this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive.bind(this));
@@ -876,19 +876,21 @@ var ScreenShield = class {
         this._becameActiveId = 0;
 
         if (this._isActive || this._isLocked) {
-            this._longLightbox.hide();
-            this._shortLightbox.hide();
+            this._longLightbox.lightOff();
+            this._shortLightbox.lightOff();
         } else {
             this.deactivate(false);
         }
     }
 
-    _onLongLightboxShown() {
-        this.activate(false);
+    _onLongLightbox(lightBox) {
+        if (lightBox.light)
+            this.activate(false);
     }
 
-    _onShortLightboxShown() {
-        this._completeLockScreenShown();
+    _onShortLightbox(lightBox) {
+        if (lightBox.light)
+            this._completeLockScreenShown();
     }
 
     showDialog() {
@@ -1230,8 +1232,8 @@ var ScreenShield = class {
             this._dialog = null;
         }
 
-        this._longLightbox.hide();
-        this._shortLightbox.hide();
+        this._longLightbox.lightOff();
+        this._shortLightbox.lightOff();
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
