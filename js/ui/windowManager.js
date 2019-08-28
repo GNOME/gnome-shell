@@ -40,6 +40,8 @@ const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
+const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
+
 var DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _init(wm) {
@@ -114,21 +116,20 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var WindowDimmer = class {
-    constructor(actor) {
-        this._brightnessEffect = new Clutter.BrightnessContrastEffect({
-            name: 'dim',
+var WindowDimmer = GObject.registerClass(
+class WindowDimmer extends Clutter.BrightnessContrastEffect {
+    _init() {
+        super._init({
+            name: WINDOW_DIMMER_EFFECT_NAME,
             enabled: false
         });
-        actor.add_effect(this._brightnessEffect);
-        this.actor = actor;
         this._enabled = true;
     }
 
     _syncEnabled() {
-        let animating = this.actor.get_transition('@effects.dim.brightness') != null;
-        let dimmed = this._brightnessEffect.brightness.red != 127;
-        this._brightnessEffect.enabled = this._enabled && (animating || dimmed);
+        let animating = this.actor.get_transition('@effects.%s.brightness'.format(this.name)) != null;
+        let dimmed = this.brightness.red != 127;
+        this.enabled = this._enabled && (animating || dimmed);
     }
 
     setEnabled(enabled) {
@@ -140,7 +141,7 @@ var WindowDimmer = class {
         let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
         let color = Clutter.Color.new(val, val, val, 255);
 
-        this.actor.ease_property('@effects.dim.brightness', color, {
+        this.actor.ease_property('@effects.%s.brightness'.format(this.name), color, {
             mode: Clutter.AnimationMode.LINEAR,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
             onComplete: () => this._syncEnabled()
@@ -148,20 +149,19 @@ var WindowDimmer = class {
 
         this._syncEnabled();
     }
-};
+});
 
 function getWindowDimmer(actor) {
     let enabled = Meta.prefs_get_attach_modal_dialogs();
-    if (actor._windowDimmer)
-        actor._windowDimmer.setEnabled(enabled);
+    let effect = actor.get_effect(WINDOW_DIMMER_EFFECT_NAME);
 
-    if (enabled) {
-        if (!actor._windowDimmer)
-            actor._windowDimmer = new WindowDimmer(actor);
-        return actor._windowDimmer;
-    } else {
-        return null;
+    if (effect) {
+        effect.setEnabled(enabled);
+    } else if (enabled) {
+        effect = new WindowDimmer();
+        actor.add_effect(effect);
     }
+    return effect;
 }
 
 /*
