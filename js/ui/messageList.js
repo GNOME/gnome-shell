@@ -539,8 +539,8 @@ var MessageListSection = class MessageListSection {
         this._sync();
     }
 
-    _onKeyFocusIn(actor) {
-        this.emit('key-focus-in', actor);
+    _onKeyFocusIn(messageActor) {
+        this.emit('message-focused', messageActor);
     }
 
     get allowed() {

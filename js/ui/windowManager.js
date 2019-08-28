@@ -388,7 +388,7 @@ var TilePreview = class {
         this._showing = false;
     }
 
-    show(window, tileRect, monitorIndex) {
+    open(window, tileRect, monitorIndex) {
         let windowActor = window.get_compositor_private();
         if (!windowActor)
             return;
@@ -432,7 +432,7 @@ var TilePreview = class {
         });
     }
 
-    hide() {
+    close() {
         if (!this._showing)
             return;
 
@@ -1089,7 +1089,7 @@ var WindowManager = class {
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         let bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         bottomDragAction.connect('activated', () => {
-            Main.keyboard.show(Main.layoutManager.bottomIndex);
+            Main.keyboard.open(Main.layoutManager.bottomIndex);
         });
         Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
             bottomDragAction.cancel();
@@ -2045,13 +2045,13 @@ var WindowManager = class {
     _showTilePreview(shellwm, window, tileRect, monitorIndex) {
         if (!this._tilePreview)
             this._tilePreview = new TilePreview();
-        this._tilePreview.show(window, tileRect, monitorIndex);
+        this._tilePreview.open(window, tileRect, monitorIndex);
     }
 
     _hideTilePreview() {
         if (!this._tilePreview)
             return;
-        this._tilePreview.hide();
+        this._tilePreview.close();
     }
 
     _showWindowMenu(shellwm, window, menu, rect) {
