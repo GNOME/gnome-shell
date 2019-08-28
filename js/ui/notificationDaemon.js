@@ -723,7 +723,11 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
     constructor() {
         this._sources = {};
 
-        this._loadNotifications();
+        try {
+            this._loadNotifications();
+        } catch (e) {
+            logError(e, "Failed to load saved notifications");
+        }
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GtkNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/Notifications');
