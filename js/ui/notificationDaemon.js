@@ -750,29 +750,33 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
     _loadNotifications() {
         this._isLoading = true;
 
-        let value = global.get_persistent_state('a(sa(sv))', 'notifications');
-        if (value) {
-            let sources = value.deep_unpack();
-            sources.forEach(([appId, notifications]) => {
-                if (notifications.length == 0)
-                    return;
-
-                let source;
-                try {
-                    source = this._ensureAppSource(appId);
-                } catch (e) {
-                    if (e instanceof InvalidAppError)
+        try {
+            let value = global.get_persistent_state('a(sa(sv))', 'notifications');
+            if (value) {
+                let sources = value.deep_unpack();
+                sources.forEach(([appId, notifications]) => {
+                    if (notifications.length == 0)
                         return;
-                    throw e;
-                }
 
-                notifications.forEach(([notificationId, notification]) => {
-                    source.addNotification(notificationId, notification.deep_unpack(), false);
+                    let source;
+                    try {
+                        source = this._ensureAppSource(appId);
+                    } catch (e) {
+                        if (e instanceof InvalidAppError)
+                            return;
+                        throw e;
+                    }
+
+                    notifications.forEach(([notificationId, notification]) => {
+                        source.addNotification(notificationId, notification.deep_unpack(), false);
+                    });
                 });
-            });
+            }
+        } catch (e) {
+            logError(e, 'Failed to load saved notifications');
+        } finally {
+            this._isLoading = false;
         }
-
-        this._isLoading = false;
     }
 
     _saveNotifications() {
