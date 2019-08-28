@@ -130,7 +130,7 @@ var Lightbox = class Lightbox {
         container.add_actor(this.actor);
         this.actor.raise_top();
         this.actor.hide();
-        this.shown = false;
+        this.light = false;
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
 
@@ -171,14 +171,14 @@ var Lightbox = class Lightbox {
         }
     }
 
-    show(fadeInTime) {
+    lightOn(fadeInTime) {
         fadeInTime = fadeInTime || 0;
 
         this.actor.remove_all_transitions();
 
         let onComplete = () => {
-            this.shown = true;
-            this.emit('shown');
+            this.light = true;
+            this.emit('light', this.light);
         };
 
         if (this._radialEffect) {
@@ -205,10 +205,11 @@ var Lightbox = class Lightbox {
         this.actor.show();
     }
 
-    hide(fadeOutTime) {
+    lightOff(fadeOutTime) {
         fadeOutTime = fadeOutTime || 0;
 
-        this.shown = false;
+        this.light = false;
+        this.emit('light', this.light);
         this.actor.remove_all_transitions();
 
         let onComplete = () => this.actor.hide();
