@@ -189,7 +189,7 @@ function _initializeUI() {
 
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
-    keyboard = new Keyboard.Keyboard();
+    keyboard = new Keyboard.KeyboardManager();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
