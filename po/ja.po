@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"POT-Creation-Date: 2019-08-27 11:26+0000\n"
 "PO-Revision-Date: 2019-08-27 19:40+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -109,10 +109,10 @@ msgid ""
 "extensions” setting."
 msgstr ""
 "GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、現在のモードの"
-"一部としてロードされる場合でも無効化したい拡張機能の UUID のリストです。このリ"
-"ストは org.gnome.Shell の EnableExtensions や DisableExtensions といった "
-"DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定より優先"
-"されます。"
+"一部としてロードされる場合でも無効化したい拡張機能の UUID のリストです。この"
+"リストは org.gnome.Shell の EnableExtensions や DisableExtensions といった "
+"DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定より優先さ"
+"れます。"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -977,7 +977,8 @@ msgstr "ボリュームをロック解除できません"
 
 #: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
-msgstr "インストールされているバージョンの udisks は PIM の設定に対応していません"
+msgstr ""
+"インストールされているバージョンの udisks は PIM の設定に対応していません"
 
 #: js/ui/components/autorunManager.js:330
 #, javascript-format
