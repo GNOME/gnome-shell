@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-08-27 11:26+0000\n"
-"PO-Revision-Date: 2019-08-27 19:40+0900\n"
+"PO-Revision-Date: 2019-08-29 20:44+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -755,7 +755,7 @@ msgstr "すべて"
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
-msgstr ""
+msgstr "開いているウィンドウ"
 
 #: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
@@ -1649,6 +1649,8 @@ msgstr "キーファイルを使用する"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを"
+"使用します。"
 
 #: js/ui/shellMountOperation.js:323
 msgid "PIM Number"
@@ -1757,15 +1759,15 @@ msgstr "明るさ"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr ""
+msgstr "シングルクリック"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
-msgstr ""
+msgstr "ダブルクリック"
 
 #: js/ui/status/dwellClick.js:23
 msgid "Drag"
-msgstr ""
+msgstr "ドラッグ"
 
 #: js/ui/status/dwellClick.js:28
 msgid "Secondary Click"
@@ -1773,7 +1775,7 @@ msgstr ""
 
 #: js/ui/status/dwellClick.js:37
 msgid "Dwell Click"
-msgstr ""
+msgstr "自動クリック"
 
 #: js/ui/status/keyboard.js:814
 msgid "Keyboard"
@@ -2352,7 +2354,7 @@ msgstr ""
 
 #: src/extensions-tool/command-create.c:258
 msgid "Create a new extension"
-msgstr "新しい拡張機能を作成する"
+msgstr "新しい拡張機能を作成します"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
@@ -2365,7 +2367,7 @@ msgstr ""
 
 #: src/extensions-tool/command-disable.c:57
 msgid "Disable an extension"
-msgstr "拡張機能を無効にする"
+msgstr "拡張機能を無効にします"
 
 #: src/extensions-tool/command-disable.c:74
 #: src/extensions-tool/command-enable.c:74
@@ -2387,15 +2389,15 @@ msgstr ""
 
 #: src/extensions-tool/command-enable.c:57
 msgid "Enable an extension"
-msgstr "拡張機能を有効にする"
+msgstr "拡張機能を有効にします"
 
 #: src/extensions-tool/command-info.c:79
 msgid "Show extensions info"
-msgstr "拡張機能の情報を表示する"
+msgstr "拡張機能の情報を表示します"
 
 #: src/extensions-tool/command-install.c:173
 msgid "Overwrite an existing extension"
-msgstr ""
+msgstr "既存の拡張機能を上書きする"
 
 #: src/extensions-tool/command-install.c:175
 msgid "EXTENSION_BUNDLE"
@@ -2415,31 +2417,31 @@ msgstr ""
 
 #: src/extensions-tool/command-list.c:118
 msgid "Show user-installed extensions"
-msgstr ""
+msgstr "ユーザーがインストールした拡張機能を表示する"
 
 #: src/extensions-tool/command-list.c:121
 msgid "Show system-installed extensions"
-msgstr ""
+msgstr "システムにインストールされた拡張機能を表示する"
 
 #: src/extensions-tool/command-list.c:124
 msgid "Show enabled extensions"
-msgstr ""
+msgstr "有効化された拡張機能を表示する"
 
 #: src/extensions-tool/command-list.c:127
 msgid "Show disabled extensions"
-msgstr ""
+msgstr "無効化された拡張機能を表示する"
 
 #: src/extensions-tool/command-list.c:130
 msgid "Show extensions with preferences"
-msgstr ""
+msgstr "設定画面付きの拡張機能を表示する"
 
 #: src/extensions-tool/command-list.c:133
 msgid "Print extension details"
-msgstr ""
+msgstr "拡張機能の詳細を表示する"
 
 #: src/extensions-tool/command-list.c:141
 msgid "List installed extensions"
-msgstr "インストールされた拡張機能一覧を表示する"
+msgstr "インストールされた拡張機能一覧を表示します"
 
 #: src/extensions-tool/command-pack.c:450
 msgid "FILE"
@@ -2496,19 +2498,19 @@ msgstr "ソースディレクトリが複数指定されています"
 
 #: src/extensions-tool/command-prefs.c:90
 msgid "Opens extension preferences"
-msgstr "拡張機能の設定を開く"
+msgstr "拡張機能の設定を開きます"
 
 #: src/extensions-tool/command-reset.c:57
 msgid "Reset an extension"
-msgstr "拡張機能をリセットする"
+msgstr "拡張機能をリセットします"
 
 #: src/extensions-tool/command-uninstall.c:72
 msgid "Uninstall an extension"
-msgstr "拡張機能をアンインストールする"
+msgstr "拡張機能をアンインストールします"
 
 #: src/extensions-tool/main.c:175
 msgid "Path"
-msgstr ""
+msgstr "パス"
 
 #: src/extensions-tool/main.c:178
 msgid "URL"
