@@ -8,3 +8,5 @@ Before=gnome-session-initialized.target
 
 Requires=gnome-shell-x11.service
 After=gnome-shell-x11.service
+
+Wants=gnome-shell-extensions-disabled-warning.service

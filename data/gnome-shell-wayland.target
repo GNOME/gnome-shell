@@ -8,3 +8,5 @@ Before=gnome-session-initialized.target
 
 Requires=gnome-shell-wayland.service
 After=gnome-shell-wayland.service
+
+Wants=gnome-shell-extensions-disabled-warning.service
