@@ -34,6 +34,12 @@ var Ripples = class Ripples {
         this._ripple3.set_pivot_point(px, py);
     }
 
+    destroy() {
+        this._ripple1.destroy();
+        this._ripple2.destroy();
+        this._ripple3.destroy();
+    }
+
     _animRipple(ripple, delay, duration, startScale, startOpacity, finalScale) {
         // We draw a ripple by using a source image and animating it scaling
         // outwards and fading away. We want the ripples to move linearly
