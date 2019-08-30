@@ -15,30 +15,62 @@ var AVATAR_ICON_SIZE = 64;
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
 var Avatar = GObject.registerClass({
-    GTypeName: 'UserWidget_Avatar'
+    GTypeName: 'UserWidget_Avatar',
+    Properties: {
+        'icon-size': GObject.ParamSpec.int(
+            'icon-size', 'icon-size', 'icon-size',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT32, AVATAR_ICON_SIZE),
+    }
 }, class Avatar extends St.Bin {
     _init(user, params) {
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
                                         styleClass: 'user-icon' });
 
         super._init({
             style_class: params.styleClass,
-            track_hover: params.reactive,
             reactive: params.reactive,
-            width: params.iconSize * themeContext.scaleFactor,
-            height: params.iconSize * themeContext.scaleFactor
+            icon_size: params.iconSize,
         });
 
-        this._iconSize = params.iconSize;
+        this.bind_property('reactive', this, 'track-hover',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('reactive', this, 'can-focus',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this.bind_property('width', this, 'height', 0);
+        this.bind_property_full('icon-size', this, 'width',
+            GObject.BindingFlags.SYNC_CREATE, (binding, from, _to) => {
+                // Gjs can't handle properly setting 'to' value, so manually set
+                // the target property value. Ideally we should set the GValue
+                // and return true.
+                let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+                this[binding.target_property] = from * scaleFactor;
+                return false;
+        }, () => {});
+
         this._user = user;
 
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
-        this._scaleFactorChangeId =
-            themeContext.connect('notify::scale-factor', this.update.bind(this));
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        this._scaleFactorChangeId = themeContext.connect(
+            'notify::scale-factor', () => this.notify('icon-size'));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    // eslint-disable-next-line camelcase
+    get icon_size() {
+        return this._iconSize;
+    }
+
+    // eslint-disable-next-line camelcase
+    set icon_size(size) {
+        if (this._iconSize && this._iconSize == size)
+            return;
+        this._iconSize = size;
+        this.notify('icon-size');
     }
 
     _onDestroy() {
@@ -50,7 +82,6 @@ var Avatar = GObject.registerClass({
     }
 
     setSensitive(sensitive) {
-        this.can_focus = sensitive;
         this.reactive = sensitive;
     }
 
@@ -59,19 +90,20 @@ var Avatar = GObject.registerClass({
         if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
             iconFile = null;
 
-        if (iconFile) {
+        if (this.child) {
+            this.child.destroy();
             this.child = null;
-            let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-            this.set_size(
-                this._iconSize * scaleFactor,
-                this._iconSize * scaleFactor);
+        }
+
+        if (iconFile) {
             this.style = `
                 background-image: url("${iconFile}");
                 background-size: cover;`;
         } else {
             this.style = null;
-            this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                       icon_size: this._iconSize });
+            this.child = new St.Icon({ icon_name: 'avatar-default-symbolic' });
+            this.bind_property('icon-size', this.child, 'icon-size',
+                GObject.BindingFlags.SYNC_CREATE);
         }
     }
 });
