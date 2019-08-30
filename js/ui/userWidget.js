@@ -25,7 +25,6 @@ var Avatar = GObject.registerClass({
 
         super._init({
             style_class: params.styleClass,
-            track_hover: params.reactive,
             reactive: params.reactive,
             width: params.iconSize * themeContext.scaleFactor,
             height: params.iconSize * themeContext.scaleFactor
@@ -33,6 +32,11 @@ var Avatar = GObject.registerClass({
 
         this._iconSize = params.iconSize;
         this._user = user;
+
+        this.bind_property('reactive', this, 'track-hover',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('reactive', this, 'can-focus',
+            GObject.BindingFlags.SYNC_CREATE);
 
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
         this._scaleFactorChangeId =
@@ -50,7 +54,6 @@ var Avatar = GObject.registerClass({
     }
 
     setSensitive(sensitive) {
-        this.can_focus = sensitive;
         this.reactive = sensitive;
     }
 
