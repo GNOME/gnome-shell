@@ -1224,6 +1224,8 @@ var HotCorner = class HotCorner {
 
         if (this.actor)
             this.actor.destroy();
+
+        this._ripples.destroy();
     }
 
     _toggleOverview() {
