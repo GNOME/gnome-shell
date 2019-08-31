@@ -1082,6 +1082,9 @@ class CalendarMessageList extends St.Widget {
         });
         box.add_actor(this._clearButton);
 
+        this._placeholder.bind_property('visible', this._clearButton, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
                                                y_expand: true,
@@ -1130,7 +1133,6 @@ class CalendarMessageList extends St.Widget {
 
         let empty = sections.every(s => s.empty || !s.visible);
         this._placeholder.visible = empty;
-        this._clearButton.visible = !empty;
 
         let canClear = sections.some(s => s.canClear && s.visible);
         this._clearButton.reactive = canClear;
