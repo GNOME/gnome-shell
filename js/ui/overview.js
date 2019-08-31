@@ -141,6 +141,15 @@ var Overview = class {
         this._sessionUpdated();
     }
 
+    get visible() {
+        return this._visible;
+    }
+
+    set visible(visible) {
+        if (this._visible != visible)
+            this.toggle();
+    }
+
     _createOverview() {
         if (this._overview)
             return;
@@ -162,7 +171,7 @@ var Overview = class {
 
         this._activationTime = 0;
 
-        this.visible = false;           // animating to overview, in overview, animating out
+        this._visible = false;          // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
@@ -534,10 +543,10 @@ var Overview = class {
 
 
     _animateVisible() {
-        if (this.visible || this.animationInProgress)
+        if (this._visible || this.animationInProgress)
             return;
 
-        this.visible = true;
+        this._visible = true;
         this.animationInProgress = true;
         this.visibleTarget = true;
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
@@ -600,7 +609,7 @@ var Overview = class {
     }
 
     _animateNotVisible() {
-        if (!this.visible || this.animationInProgress)
+        if (!this._visible || this.animationInProgress)
             return;
 
         this.animationInProgress = true;
@@ -630,7 +639,7 @@ var Overview = class {
         this._desktopFade.hide();
         this._coverPane.hide();
 
-        this.visible = false;
+        this._visible = false;
         this.animationInProgress = false;
 
         this.emit('hidden');
@@ -647,7 +656,7 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        if (this.visible)
+        if (this._visible)
             this.hide();
         else
             this.show();
