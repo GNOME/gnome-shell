@@ -366,6 +366,10 @@ var Calendar = class Calendar {
         this._update();
     }
 
+    get selectedDate() {
+        return new Date(this._selectedDate);
+    }
+
     // Sets the calendar to show a specific date
     setDate(date) {
         if (sameDay(date, this._selectedDate))
@@ -373,7 +377,7 @@ var Calendar = class Calendar {
 
         this._selectedDate = date;
         this._update();
-        this.emit('selected-date-changed', new Date(this._selectedDate));
+        this.emit('selected-date-changed');
     }
 
     updateTimeZone() {
