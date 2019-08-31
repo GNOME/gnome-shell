@@ -155,6 +155,18 @@ var Overview = class {
         return this._overview.viewSelector;
     }
 
+    get animationInProgress() {
+        return this._animationInProgress;
+    }
+
+    get visible() {
+        return this._visible;
+    }
+
+    get visibleTarget() {
+        return this._visibleTarget;
+    }
+
     _createOverview() {
         if (this._overview)
             return;
@@ -176,11 +188,11 @@ var Overview = class {
 
         this._activationTime = 0;
 
-        this.visible = false;           // animating to overview, in overview, animating out
+        this._visible = false;          // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
         this._modal = false;            // have a modal grab
-        this.animationInProgress = false;
-        this.visibleTarget = false;
+        this._animationInProgress = false;
+        this._visibleTarget = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -492,7 +504,7 @@ var Overview = class {
     // the overview if the user both triggered the hot corner and
     // clicked the Activities button.
     shouldToggleByCornerOrButton() {
-        if (this.animationInProgress)
+        if (this._animationInProgress)
             return false;
         if (this._inItemDrag || this._inWindowDrag)
             return false;
@@ -506,7 +518,7 @@ var Overview = class {
         // We delay grab changes during animation so that when removing the
         // overview we don't have a problem with the release of a press/release
         // going to an application.
-        if (this.animationInProgress)
+        if (this._animationInProgress)
             return true;
 
         if (this._shown) {
@@ -548,12 +560,12 @@ var Overview = class {
 
 
     _animateVisible() {
-        if (this.visible || this.animationInProgress)
+        if (this._visible || this._animationInProgress)
             return;
 
-        this.visible = true;
-        this.animationInProgress = true;
-        this.visibleTarget = true;
+        this._visible = true;
+        this._animationInProgress = true;
+        this._visibleTarget = true;
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_display(global.display);
@@ -574,7 +586,7 @@ var Overview = class {
     }
 
     _showDone() {
-        this.animationInProgress = false;
+        this._animationInProgress = false;
         this._desktopFade.hide();
         this._coverPane.hide();
 
@@ -614,11 +626,11 @@ var Overview = class {
     }
 
     _animateNotVisible() {
-        if (!this.visible || this.animationInProgress)
+        if (!this._visible || this._animationInProgress)
             return;
 
-        this.animationInProgress = true;
-        this.visibleTarget = false;
+        this._animationInProgress = true;
+        this._visibleTarget = false;
 
         this.viewSelector.animateFromOverview();
 
@@ -644,8 +656,8 @@ var Overview = class {
         this._desktopFade.hide();
         this._coverPane.hide();
 
-        this.visible = false;
-        this.animationInProgress = false;
+        this._visible = false;
+        this._animationInProgress = false;
 
         this.emit('hidden');
         // Handle any calls to show* while we were hiding
@@ -661,7 +673,7 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        if (this.visible)
+        if (this._visible)
             this.hide();
         else
             this.show();
