@@ -230,8 +230,9 @@ class BaseAppView {
 
     _doSpringAnimation(animationDirection) {
         this._grid.opacity = 255;
-        this._grid.animateSpring(animationDirection,
-                                 Main.overview.getShowAppsButton());
+        this._grid.animateSpring(
+            animationDirection,
+            Main.overview.showAppsButton);
     }
 
     animate(animationDirection, onComplete) {
