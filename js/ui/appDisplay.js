@@ -285,6 +285,7 @@ var AllView = class AllView extends BaseAppView {
                                                y_fill: false,
                                                reactive: true,
                                                y_align: St.Align.START });
+
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
         this.actor.add_actor(this._scrollView);
@@ -1228,22 +1229,31 @@ var FolderView = class FolderView extends BaseAppView {
         this._parentView = parentView;
         this._grid._delegate = this;
 
-        this.actor = new St.ScrollView({ overlay_scrollbars: true });
-        this.actor.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this.actor = new St.Widget();
+        this._scrollView = new St.ScrollView({
+            overlay_scrollbars: true,
+            x_fill: true,
+            y_fill: true,
+            x_expand: true,
+            y_expand: true
+        });
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this.actor.add_actor(this._scrollView);
+
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid);
-        this.actor.add_actor(scrollableContainer);
+        this._scrollView.add_actor(scrollableContainer);
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
-        this.actor.add_action(action);
+        this._scrollView.add_action(action);
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
     }
 
     _childFocused(actor) {
-        Util.ensureActorVisibleInScrollView(this.actor, actor);
+        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     }
 
     // Overridden from BaseAppView
@@ -1273,8 +1283,8 @@ var FolderView = class FolderView extends BaseAppView {
 
     _onPan(action) {
         let [dist_, dx_, dy] = action.get_motion_delta(0);
-        let adjustment = this.actor.vscroll.adjustment;
-        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        let adjustment = this._scrollView.vscroll.adjustment;
+        adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
         return false;
     }
 
@@ -1290,7 +1300,7 @@ var FolderView = class FolderView extends BaseAppView {
         // effect to look good, so use the unadjusted padding
         let fadeOffset = Math.min(this._grid.topPadding,
                                   this._grid.bottomPadding);
-        this.actor.update_fade_effect(fadeOffset, 0);
+        this._scrollView.update_fade_effect(fadeOffset, 0);
 
         // Set extra padding to avoid popup or close button being cut off
         this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
@@ -1298,8 +1308,8 @@ var FolderView = class FolderView extends BaseAppView {
         this._grid.leftPadding = Math.max(this._grid.leftPadding - this._offsetForEachSide, 0);
         this._grid.rightPadding = Math.max(this._grid.rightPadding - this._offsetForEachSide, 0);
 
-        this.actor.set_width(this.usedWidth());
-        this.actor.set_height(this.usedHeight());
+        this._scrollView.set_width(this.usedWidth());
+        this._scrollView.set_height(this.usedHeight());
     }
 
     _getPageAvailableSize() {
@@ -1476,7 +1486,7 @@ var FolderIcon = class FolderIcon {
     open() {
         this._removeMenuTimeout();
         this._ensurePopup();
-        this.view.actor.vscroll.adjustment.value = 0;
+        this.view._scrollView.vscroll.adjustment.value = 0;
         this._openSpaceForPopup();
     }
 
