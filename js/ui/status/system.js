@@ -140,15 +140,6 @@ var Indicator = GObject.registerClass({
         this._sessionUpdated();
     }
 
-    _updateActionsVisibility() {
-        let visible = (this._settingsAction.visible ||
-                       this._orientationLockAction.visible ||
-                       this._lockScreenAction.visible ||
-                       this._altSwitcher.visible);
-
-        this.buttonGroup.visible = visible;
-    }
-
     _sessionUpdated() {
         this._settingsAction.visible = Main.sessionMode.allowSettings;
     }
@@ -305,14 +296,18 @@ var Indicator = GObject.registerClass({
 
         this.menu.addMenuItem(item);
 
+        let visibilityGroup = [
+            this._settingsAction,
+            this._orientationLockAction,
+            this._lockScreenAction,
+            this._altSwitcher
+        ];
 
-        this._settingsAction.connect('notify::visible',
-                                     () => this._updateActionsVisibility());
-        this._orientationLockAction.connect('notify::visible',
-                                            () => this._updateActionsVisibility());
-        this._lockScreenAction.connect('notify::visible',
-                                       () => this._updateActionsVisibility());
-        this._altSwitcher.connect('notify::visible', () => this._updateActionsVisibility());
+        for (let actor of visibilityGroup) {
+            actor.connect('notify::visible', () => {
+                this.buttonGroup.visible = visibilityGroup.some(a => a.visible);
+            });
+        }
     }
 
     _onSettingsClicked() {
