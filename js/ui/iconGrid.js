@@ -427,7 +427,7 @@ var IconGrid = GObject.registerClass({
      * set of items to be animated.
      */
     _getChildrenToAnimate() {
-        return this._getVisibleChildren();
+        return this._getVisibleChildren().filter(child => child.opacity > 0);
     }
 
     _resetAnimationActors() {
@@ -884,7 +884,7 @@ var PaginatedIconGrid = GObject.registerClass({
 
     // Overridden from IconGrid
     _getChildrenToAnimate() {
-        let children = this._getVisibleChildren();
+        let children = super._getChildrenToAnimate();
         let firstIndex = this._childrenPerPage * this.currentPage;
         let lastIndex = firstIndex + this._childrenPerPage;
 
