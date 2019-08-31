@@ -1082,8 +1082,7 @@ class CalendarMessageList extends St.Widget {
                                             can_focus: true });
         this._clearButton.set_x_align(Clutter.ActorAlign.END);
         this._clearButton.connect('clicked', () => {
-            let sections = [...this._sections.keys()];
-            sections.forEach((s) => s.clear());
+            this._sectionList.get_children().forEach(s => s.clear());
         });
         box.add_actor(this._clearButton);
 
@@ -1091,8 +1090,9 @@ class CalendarMessageList extends St.Widget {
                                                vertical: true,
                                                y_expand: true,
                                                y_align: Clutter.ActorAlign.START });
+        this._sectionList.connect('actor-added', this._sync.bind(this));
+        this._sectionList.connect('actor-removed', this._sync.bind(this));
         this._scrollView.add_actor(this._sectionList);
-        this._sections = new Map();
 
         this._mediaSection = new Mpris.MediaSection();
         this._addSection(this._mediaSection);
@@ -1107,46 +1107,26 @@ class CalendarMessageList extends St.Widget {
     }
 
     _addSection(section) {
-        let obj = {
-            destroyId: 0,
-            visibleId: 0,
-            emptyNotifyId: 0,
-            canClearNotifyId: 0,
-            messageFocusedId: 0
-        };
-        obj.destroyId = section.connect('destroy', () => {
-            this._removeSection(section);
-        });
-        obj.visibleId = section.connect('notify::visible', this._sync.bind(this));
-        obj.emptyNotifyId = section.connect('notify::empty', this._sync.bind(this));
-        obj.canClearNotifyId = section.connect('notify::can-clear', this._sync.bind(this));
-        obj.messageFocusedId = section.connect('message-focused',
-            this._onMessageFocused.bind(this));
+        let connectionsIds = [];
 
-        this._sections.set(section, obj);
+        for (let prop of ['visible', 'empty', 'can-clear']) {
+            connectionsIds.push(
+                section.connect('notify::%s'.format(prop), this._sync.bind(this)));
+        }
+        connectionsIds.push(section.connect('message-focused', (_s, messageActor) => {
+            Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
+        }));
+
+        connectionsIds.push(section.connect('destroy', (section) => {
+            connectionsIds.forEach(id => section.disconnect(id));
+            this._sectionList.remove_actor(section);
+        }));
+
         this._sectionList.add_actor(section);
-        this._sync();
-    }
-
-    _removeSection(section) {
-        let obj = this._sections.get(section);
-        section.disconnect(obj.destroyId);
-        section.disconnect(obj.visibleId);
-        section.disconnect(obj.emptyNotifyId);
-        section.disconnect(obj.canClearNotifyId);
-        section.disconnect(obj.messageFocusedId);
-
-        this._sections.delete(section);
-        this._sectionList.remove_actor(section);
-        this._sync();
-    }
-
-    _onMessageFocused(_section, messageActor) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
     }
 
     _sync() {
-        let sections = [...this._sections.keys()];
+        let sections = this._sectionList.get_children();
         let visible = sections.some(s => s.allowed);
         this.visible = visible;
         if (!visible)
@@ -1165,8 +1145,7 @@ class CalendarMessageList extends St.Widget {
     }
 
     setDate(date) {
-        for (let section of this._sections.keys())
-            section.setDate(date);
+        this._sectionList.get_children().forEach(s => s.setDate(date));
         this._placeholder.setDate(date);
     }
 });
