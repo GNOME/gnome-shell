@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Overview */
 
-const { Clutter, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
@@ -76,9 +76,65 @@ var ShellInfo = class {
     }
 };
 
+var OverviewActor = GObject.registerClass(
+class OverviewActor extends St.BoxLayout {
+    _init() {
+        super._init({
+            name: 'overview',
+            /* Translators: This is the main view to select
+                activities. See also note for "Activities" string. */
+            accessible_name: _("Overview"),
+            vertical: true
+        });
+
+        this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
+
+        // Add a clone of the panel to the overview so spacing and such is
+        // automatic
+        let panelGhost = new St.Bin({
+            child: new Clutter.Clone({ source: Main.panel }),
+            reactive: false,
+            opacity: 0
+        });
+        this.add_actor(panelGhost);
+
+        this._searchEntry = new St.Entry({
+            style_class: 'search-entry',
+            /* Translators: this is the text displayed
+               in the search entry when no search is
+               active; it should not exceed ~30
+               characters. */
+            hint_text: _("Type to search…"),
+            track_hover: true,
+            can_focus: true
+        });
+        let searchEntryBin = new St.Bin({
+            child: this._searchEntry,
+            x_align: St.Align.MIDDLE
+        });
+        this.add_actor(searchEntryBin);
+
+        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
+
+        // Add our same-line elements after the search entry
+        this.add(this._controls.actor, { y_fill: true, expand: true });
+    }
+
+    get dash() {
+        return this._controls.dash;
+    }
+
+    get searchEntry() {
+        return this._searchEntry;
+    }
+
+    get viewSelector() {
+        return this._controls.viewSelector;
+    }
+});
+
 var Overview = class {
     constructor() {
-        this._overviewCreated = false;
         this._initCalled = false;
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
@@ -86,21 +142,11 @@ var Overview = class {
     }
 
     _createOverview() {
-        if (this._overviewCreated)
+        if (this._overview)
             return;
 
         if (this.isDummy)
             return;
-
-        this._overviewCreated = true;
-
-        this._overview = new St.BoxLayout({ name: 'overview',
-                                            /* Translators: This is the main view to select
-                                               activities. See also note for "Activities" string. */
-                                            accessible_name: _("Overview"),
-                                            vertical: true });
-        this._overview.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
-        this._overview._delegate = this;
 
         // The main Background actors are inside global.window_group which are
         // hidden when displaying the overview, so we create a new
@@ -129,9 +175,6 @@ var Overview = class {
                                               reactive: true });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
         this._coverPane.connect('event', () => Clutter.EVENT_STOP);
-
-        Main.layoutManager.overviewGroup.add_child(this._overview);
-
         this._coverPane.hide();
 
         // XDND
@@ -213,40 +256,11 @@ var Overview = class {
         if (this.isDummy)
             return;
 
+        this._overview = new OverviewActor();
+        this._overview._delegate = this;
+        Main.layoutManager.overviewGroup.add_child(this._overview);
+
         this._shellInfo = new ShellInfo();
-
-        // Add a clone of the panel to the overview so spacing and such is
-        // automatic
-        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel }),
-                                        reactive: false,
-                                        opacity: 0 });
-        this._overview.add_actor(this._panelGhost);
-
-        this._searchEntry = new St.Entry({ style_class: 'search-entry',
-                                           /* Translators: this is the text displayed
-                                              in the search entry when no search is
-                                              active; it should not exceed ~30
-                                              characters. */
-                                           hint_text: _("Type to search…"),
-                                           track_hover: true,
-                                           can_focus: true });
-        this._searchEntryBin = new St.Bin({ child: this._searchEntry,
-                                            x_align: St.Align.MIDDLE });
-        this._overview.add_actor(this._searchEntryBin);
-
-        // Create controls
-        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
-        this._dash = this._controls.dash;
-        this.viewSelector = this._controls.viewSelector;
-
-        // Add our same-line elements after the search entry
-        this._overview.add(this._controls.actor, { y_fill: true, expand: true });
-
-        // TODO - recalculate everything when desktop size changes
-        this.dashIconSize = this._dash.iconSize;
-        this._dash.connect('icon-size-changed', () => {
-            this.dashIconSize = this._dash.iconSize;
-        });
 
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         this._relayout();
@@ -424,7 +438,7 @@ var Overview = class {
 
     focusSearch() {
         this.show();
-        this._searchEntry.grab_key_focus();
+        this._overview.searchEntry.grab_key_focus();
     }
 
     fadeInDesktop() {
@@ -466,7 +480,7 @@ var Overview = class {
             return false;
         if (this._inItemDrag || this._inWindowDrag)
             return false;
-        if (this._activationTime == 0 ||
+        if (!this._activationTime ||
             GLib.get_monotonic_time() / GLib.USEC_PER_SEC - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
             return true;
         return false;
@@ -639,8 +653,27 @@ var Overview = class {
             this.show();
     }
 
-    getShowAppsButton() {
-        return this._dash.showAppsButton;
+    get dash() {
+        return this._overview.dash;
+    }
+
+    get _dash() {
+        let { stack } = new Error();
+        log('Usage of Overview.\'_dash\' is deprecated, use \'dash\' property instead');
+        log(stack);
+        return this.dash;
+    }
+
+    get showAppsButton() {
+        return this.dash.showAppsButton;
+    }
+
+    get dashIconSize() {
+        return this.dash.iconSize;
+    }
+
+    get viewSelector() {
+        return this._overview.viewSelector;
     }
 };
 Signals.addSignalMethods(Overview.prototype);
