@@ -414,7 +414,7 @@ var IconGrid = GObject.registerClass({
      * set of items to be animated.
      */
     _getChildrenToAnimate() {
-        return this._getVisibleChildren();
+        return this._getVisibleChildren().filter(icon => icon.has_allocation());
     }
 
     _resetAnimationActors() {
