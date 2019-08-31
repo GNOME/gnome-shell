@@ -230,8 +230,9 @@ class BaseAppView {
 
     _doSpringAnimation(animationDirection) {
         this._grid.opacity = 255;
-        this._grid.animateSpring(animationDirection,
-                                 Main.overview.getShowAppsButton());
+        this._grid.animateSpring(
+            animationDirection,
+            Main.overview.dash.showAppsButton);
     }
 
     animate(animationDirection, onComplete) {
@@ -2239,7 +2240,7 @@ var AppIcon = class AppIcon {
     }
 
     getDragActor() {
-        return this.app.create_icon_texture(Main.overview.dashIconSize);
+        return this.app.create_icon_texture(Main.overview.dash.iconSize);
     }
 
     // Returns the original actor that should align with the actor
