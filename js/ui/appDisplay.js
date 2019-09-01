@@ -1637,6 +1637,12 @@ var FolderIcon = class FolderIcon {
 };
 Signals.addSignalMethods(FolderIcon.prototype);
 
+var RenameFolderPopup = GObject.registerClass(
+class RenameFolderPopup extends BoxPointer.BoxPointer {
+    _init(folder) {
+    }
+});
+
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
         this._source = source;
