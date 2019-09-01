@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-02-05 11:40+0000\n"
-"PO-Revision-Date: 2019-02-06 12:01+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"POT-Creation-Date: 2019-08-09 14:45+0000\n"
+"PO-Revision-Date: 2019-08-14 13:58+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -48,7 +48,7 @@ msgid "Open the application menu"
 msgstr "Otevřít nabídku aplikací"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:221
+#: js/extensionPrefs/main.js:208
 msgid "Shell Extensions"
 msgstr "Rozšíření pro Shell"
 
@@ -93,10 +93,35 @@ msgstr ""
 "EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
+#, fuzzy
+#| msgid "UUIDs of extensions to enable"
+msgid "UUIDs of extensions to force disabling"
+msgstr "UUID rozšíření, která se mají zapnout"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+#, fuzzy
+#| msgid ""
+#| "GNOME Shell extensions have a UUID property; this key lists extensions "
+#| "which should be loaded. Any extension that wants to be loaded needs to be "
+#| "in this list. You can also manipulate this list with the EnableExtension "
+#| "and DisableExtension D-Bus methods on org.gnome.Shell."
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"Rozšíření GNOME Shell mají vlastnost UUID; tento klíč je seznamem rozšíření, "
+"která by měla být načítána. Každé rozšíření, které má být načítáno, musí být "
+"na tomto seznamu. S tímto seznamem můžete pracovat také pomocí metod "
+"EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
 msgstr "Zakázat uživatelská rozšíření"
 
-#: data/org.gnome.shell.gschema.xml.in:27
+#: data/org.gnome.shell.gschema.xml.in:38
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
@@ -104,11 +129,11 @@ msgstr ""
 "Zakázat všechna rozšíření, která uživatel zapnul, bez vlivu na nastavení "
 "„enabled-extension“."
 
-#: data/org.gnome.shell.gschema.xml.in:34
+#: data/org.gnome.shell.gschema.xml.in:45
 msgid "Disables the validation of extension version compatibility"
 msgstr "Vypíná kontrolu kompatibility verze rozšíření"
 
-#: data/org.gnome.shell.gschema.xml.in:35
+#: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -118,11 +143,11 @@ msgstr ""
 "verze. Zapnutím této volby zakážete tuto kontrolu a rozšíření se budou "
 "zkoušet načíst bez ohledu na to, jakou verzi podporují."
 
-#: data/org.gnome.shell.gschema.xml.in:43
+#: data/org.gnome.shell.gschema.xml.in:54
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Seznam ID souborů desktop oblíbených aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:44
+#: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -130,28 +155,28 @@ msgstr ""
 "Aplikace odpovídající těmto identifikátorům budou zobrazeny oblasti "
 "oblíbených."
 
-#: data/org.gnome.shell.gschema.xml.in:51
+#: data/org.gnome.shell.gschema.xml.in:62
 msgid "App Picker View"
 msgstr "Stránka ve výběru aplikace"
 
-#: data/org.gnome.shell.gschema.xml.in:52
+#: data/org.gnome.shell.gschema.xml.in:63
 msgid "Index of the currently selected view in the application picker."
 msgstr "Číslo aktuálně zvolené stránky ve výběru aplikací."
 
-#: data/org.gnome.shell.gschema.xml.in:58
+#: data/org.gnome.shell.gschema.xml.in:69
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historie příkazového dialogového okna (Alt-F2)"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:63
+#: data/org.gnome.shell.gschema.xml.in:74
 msgid "History for the looking glass dialog"
 msgstr "Historie dialogového okna „looking glass“ (Alt-F2)"
 
-#: data/org.gnome.shell.gschema.xml.in:67
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "V nabídce uživatele vždy zobrazovat položku „Odhlásit“."
 
-#: data/org.gnome.shell.gschema.xml.in:68
+#: data/org.gnome.shell.gschema.xml.in:79
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -159,14 +184,14 @@ msgstr ""
 "Tento klíč ruší automatické skrývání položky nabídky „Odhlásit“ v situacích "
 "s jedním uživatelem a jedním sezením."
 
-#: data/org.gnome.shell.gschema.xml.in:75
+#: data/org.gnome.shell.gschema.xml.in:86
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Zdali si pamatovat heslo k připojování šifrovaných či vzdálených souborových "
 "systémů"
 
-#: data/org.gnome.shell.gschema.xml.in:76
+#: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -178,12 +203,12 @@ msgstr ""
 "zaškrtávací pole „Pamatovat si heslo“. Tento klíč určuje výchozí stav této "
 "volby."
 
-#: data/org.gnome.shell.gschema.xml.in:85
+#: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr "Zda měl adaptér Bluetooth nastavená zařízení pro spolupráci s ním"
 
-#: data/org.gnome.shell.gschema.xml.in:86
+#: data/org.gnome.shell.gschema.xml.in:97
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
 "powered, or if there were devices set up associated with the default "
@@ -195,11 +220,11 @@ msgstr ""
 "výchozím adaptérem. Nabídka zmizí, když se zjistí, že výchozí adaptér nemá "
 "přiřazená žádná zařízení."
 
-#: data/org.gnome.shell.gschema.xml.in:95
+#: data/org.gnome.shell.gschema.xml.in:106
 msgid "Enable introspection API"
 msgstr "Povolit API introspekce"
 
-#: data/org.gnome.shell.gschema.xml.in:96
+#: data/org.gnome.shell.gschema.xml.in:107
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
@@ -207,105 +232,90 @@ msgstr ""
 "Povolit API na sběrnici D-Bus, které umožňuje introspekci stavu aplikace v "
 "shellu."
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:119
 msgid "Keybinding to open the application menu"
 msgstr "Klávesová zkratka otevírající nabidku aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:110
+#: data/org.gnome.shell.gschema.xml.in:120
 msgid "Keybinding to open the application menu."
 msgstr "Klávesová zkratka sloužící k otevření nabídky aplikací."
 
-#: data/org.gnome.shell.gschema.xml.in:116
+#: data/org.gnome.shell.gschema.xml.in:126
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klávesová zkratka otevírající zobrazení aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:117
+#: data/org.gnome.shell.gschema.xml.in:127
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klávesová zkratka sloužící k otevření seznamu aplikací v Přehledu činností."
 
-#: data/org.gnome.shell.gschema.xml.in:124
+#: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the overview"
 msgstr "Klávesová zkratka otevírající přehled"
 
-#: data/org.gnome.shell.gschema.xml.in:125
+#: data/org.gnome.shell.gschema.xml.in:135
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klávesová zkratka sloužící k otevření přehledu činností"
 
-#: data/org.gnome.shell.gschema.xml.in:131
+#: data/org.gnome.shell.gschema.xml.in:141
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klávesová zkratka přepínající viditelnost seznamu upozornění"
 
-#: data/org.gnome.shell.gschema.xml.in:132
+#: data/org.gnome.shell.gschema.xml.in:142
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klávesová zkratka sloužící k přepnutí viditelnosti seznamu upozornění."
 
-#: data/org.gnome.shell.gschema.xml.in:138
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to focus the active notification"
 msgstr "Klávesová zkratka zaměřující aktivního upozornění"
 
-#: data/org.gnome.shell.gschema.xml.in:139
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to focus the active notification."
 msgstr "Klávesová zkratka sloužící k zaměření aktivního upozornění."
 
-#: data/org.gnome.shell.gschema.xml.in:145
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Klávesová zkratka k pozastavení a opětovnému spuštění všech běžících animací "
-"tweens; pro účely ladění"
-
-#: data/org.gnome.shell.gschema.xml.in:150
+#: data/org.gnome.shell.gschema.xml.in:155
 msgid "Switch to application 1"
 msgstr "Přepnout do aplikace 1"
 
-#: data/org.gnome.shell.gschema.xml.in:154
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Switch to application 2"
 msgstr "Přepnout do aplikace 2"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Switch to application 3"
 msgstr "Přepnout do aplikace 3"
 
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Switch to application 4"
 msgstr "Přepnout do aplikace 4"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:171
 msgid "Switch to application 5"
 msgstr "Přepnout do aplikace 5"
 
-#: data/org.gnome.shell.gschema.xml.in:170
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Switch to application 6"
 msgstr "Přepnout do aplikace 6"
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Switch to application 7"
 msgstr "Přepnout do aplikace 7"
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:183
 msgid "Switch to application 8"
 msgstr "Přepnout do aplikace 8"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Switch to application 9"
 msgstr "Přepnout do aplikace 9"
 
-#: data/org.gnome.shell.gschema.xml.in:190
-msgid "Which keyboard to use"
-msgstr "Která klávesnice se má používat"
-
-#: data/org.gnome.shell.gschema.xml.in:191
-msgid "The type of keyboard to use."
-msgstr "Typ klávesnice, který se má používat."
-
-#: data/org.gnome.shell.gschema.xml.in:202
-#: data/org.gnome.shell.gschema.xml.in:229
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Limit switcher to current workspace."
 msgstr "Omezit přepínání jen na aktuální plochu"
 
-#: data/org.gnome.shell.gschema.xml.in:203
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -313,11 +323,11 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači aplikací jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuty všechny aplikace."
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "The application icon mode."
 msgstr "Režim ikon aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:221
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -327,7 +337,7 @@ msgstr ""
 "only“ (zobrazí náhled okna), „app-icon-only“ (zobrazí pouze ikonu aplikace) "
 "a „both“ (zobrazí náhled i ikonu)."
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:224
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -335,32 +345,60 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači oken jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuta všechna okna."
 
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:234
+#, fuzzy
+#| msgid "Location In Use"
+msgid "Locations"
+msgstr "Zjišťování polohy se používá"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "The locations to show in world clocks"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:245
+msgid "Automatic location"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Whether to fetch the current location or not"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:253
+#, fuzzy
+#| msgid "Location In Use"
+msgid "Location"
+msgstr "Zjišťování polohy se používá"
+
+#: data/org.gnome.shell.gschema.xml.in:254
+msgid "The location for which to show a forecast"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
 msgstr "Modální dialogová okna připojovat k rodičovskému oknu"
 
-#: data/org.gnome.shell.gschema.xml.in:243
-#: data/org.gnome.shell.gschema.xml.in:252
-#: data/org.gnome.shell.gschema.xml.in:260
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:267
 #: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:300
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Když běží GNOME Shell, tento klíč přepíše klíč v org.gnome.mutter"
 
-#: data/org.gnome.shell.gschema.xml.in:251
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Okna upuštěná u okraje obrazovky nechat řadit jako dlaždice"
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Workspaces are managed dynamically"
 msgstr "Pracovní plochy jsou spravovány dynamicky"
 
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Workspaces only on primary monitor"
 msgstr "Pracovní plochy jen na hlavním monitoru"
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukazatele"
 
@@ -368,16 +406,11 @@ msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukaza
 msgid "Network Login"
 msgstr "Přihlášení do sítě"
 
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
-msgid "network-workgroup"
-msgstr "network-workgroup"
-
-#: js/extensionPrefs/main.js:121
+#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
 msgid "Something’s gone wrong"
 msgstr "Něco se stalo špatně"
 
-#: js/extensionPrefs/main.js:128
+#: js/extensionPrefs/main.js:108
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -386,27 +419,27 @@ msgstr ""
 "Omlouváme se, ale vyskytl se problém: nastavení pro toto rozšíření nelze "
 "zobrazit. Doporučujeme problém nahlásit autorovi rozšíření."
 
-#: js/extensionPrefs/main.js:135
+#: js/extensionPrefs/main.js:115
 msgid "Technical Details"
 msgstr "Technické podrobnosti"
 
-#: js/extensionPrefs/main.js:170
+#: js/extensionPrefs/main.js:150
 msgid "Copy Error"
 msgstr "Zkopírovat chybu"
 
-#: js/extensionPrefs/main.js:190
+#: js/extensionPrefs/main.js:177
 msgid "Homepage"
 msgstr "Domovská stránka"
 
-#: js/extensionPrefs/main.js:191
+#: js/extensionPrefs/main.js:178
 msgid "Visit extension homepage"
 msgstr "Navštívit domovskou stránku rozšíření"
 
-#: js/extensionPrefs/main.js:454
+#: js/extensionPrefs/main.js:473
 msgid "No Extensions Installed"
 msgstr "Nejsou nainstalována žádná rozšíření"
 
-#: js/extensionPrefs/main.js:464
+#: js/extensionPrefs/main.js:483
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -414,45 +447,52 @@ msgstr ""
 "Rozšíření je možné instalovat pomocí aplikace Software nebo přes <a href="
 "\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:479
+#: js/extensionPrefs/main.js:498
 msgid "Browse in Software"
 msgstr "Procházet v Softwaru"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:60
-#: js/ui/components/networkAgent.js:125 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:193
-#: js/ui/shellMountOperation.js:330 js/ui/status/network.js:894
+#: js/extensionPrefs/main.js:538
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+
+#: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
+#: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
+#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
+#: js/ui/status/network.js:899
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: js/gdm/authPrompt.js:162 js/gdm/authPrompt.js:205 js/gdm/authPrompt.js:437
+#: js/gdm/authPrompt.js:158 js/gdm/authPrompt.js:201 js/gdm/authPrompt.js:433
 msgid "Next"
 msgstr "Další"
 
-#: js/gdm/authPrompt.js:201 js/ui/shellMountOperation.js:334
-#: js/ui/unlockDialog.js:55
+#: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:394
+#: js/ui/unlockDialog.js:42
 msgid "Unlock"
 msgstr "Odemknout"
 
-#: js/gdm/authPrompt.js:203
+#: js/gdm/authPrompt.js:199
 msgctxt "button"
 msgid "Sign In"
 msgstr "Přihlásit se"
 
-#: js/gdm/loginDialog.js:311
+#: js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Vybrat sezení"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:454
+#: js/gdm/loginDialog.js:443
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:888
+#: js/gdm/loginDialog.js:879
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
@@ -460,16 +500,16 @@ msgstr "(např. uživatel nebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:251
-#: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:289
+#: js/gdm/loginDialog.js:884 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:284
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: js/gdm/loginDialog.js:1231
+#: js/gdm/loginDialog.js:1219
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
-#: js/gdm/util.js:342
+#: js/gdm/util.js:338
 msgid "Authentication error"
 msgstr "Chyba ověření"
 
@@ -478,31 +518,31 @@ msgstr "Chyba ověření"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:482
+#: js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(nebo otiskněte prst)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:89
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Vypnout"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart"
 msgstr ""
 "vypnout;vypnutí;restart;restartování;restartovat;reboot;znovu zavést systém;"
 "zavedení systému;natažení systému;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zamknout obrazovku"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr ""
 "zamknout obrazovku;zamknout počítač;uzamknout obrazovku;uzamknout počítač;"
@@ -511,35 +551,35 @@ msgstr ""
 "obrazovky;zamčení počítače;uzamčení obrazovky;uzamčení počítače;"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:108
+#: js/misc/systemActions.js:105
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odhlásit se"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:111
-msgid "logout;sign off"
+#: js/misc/systemActions.js:108
+msgid "logout;log out;sign off"
 msgstr "odhlásit se;odhlášení;odlogovat se;odlogování;"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:113
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Uspat do paměti"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "uspat do paměti;režim spánku;"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:121
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Přepnout uživatele"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "přepnout uživatele;přepnutí uživatele;"
 
@@ -558,26 +598,26 @@ msgstr ""
 "otočení;zamknutí orientace;uzamknutí otočení;uzamknutí orientace;zamčení "
 "otočení;zamčení orientace;uzamčení otočení;uzamčení orientace;"
 
-#: js/misc/util.js:122
+#: js/misc/util.js:117
 msgid "Command not found"
 msgstr "Příkaz nenalezen"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:155
+#: js/misc/util.js:150
 msgid "Could not parse command:"
 msgstr "Nelze analyzovat příkaz:"
 
-#: js/misc/util.js:163
+#: js/misc/util.js:158
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
-#: js/misc/util.js:180
+#: js/misc/util.js:175
 msgid "Just now"
 msgstr "právě teď"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:177
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -585,7 +625,7 @@ msgstr[0] "před minutou"
 msgstr[1] "před %d minutami"
 msgstr[2] "před %d minutami"
 
-#: js/misc/util.js:185
+#: js/misc/util.js:180
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -593,11 +633,11 @@ msgstr[0] "před hodinou"
 msgstr[1] "před %d hodinami"
 msgstr[2] "před %d hodinami"
 
-#: js/misc/util.js:188
+#: js/misc/util.js:183
 msgid "Yesterday"
 msgstr "včera"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:185
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -605,7 +645,7 @@ msgstr[0] "před %d dnem"
 msgstr[1] "před %d dny"
 msgstr[2] "před %d dny"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:188
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -613,7 +653,7 @@ msgstr[0] "před týdnem"
 msgstr[1] "před %d týdny"
 msgstr[2] "před %d týdny"
 
-#: js/misc/util.js:196
+#: js/misc/util.js:191
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -621,7 +661,7 @@ msgstr[0] "před měsícem"
 msgstr[1] "před %d měsíci"
 msgstr[2] "před %d měsíci"
 
-#: js/misc/util.js:198
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -630,20 +670,20 @@ msgstr[1] "před %d roky"
 msgstr[2] "před %d lety"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:228
+#: js/misc/util.js:223
 msgid "%H∶%M"
 msgstr "%k∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:234
+#: js/misc/util.js:229
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "včera, %k∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:240
+#: js/misc/util.js:235
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A %k∶%M"
@@ -651,7 +691,7 @@ msgstr "%A %k∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:246
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%e. %B %k∶%M"
@@ -659,26 +699,26 @@ msgstr "%e. %B %k∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:252
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%e. %B %Y, %k∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:257
+#: js/misc/util.js:252
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:263
+#: js/misc/util.js:258
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "včera %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:269
+#: js/misc/util.js:264
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A %l∶%M %p"
@@ -686,7 +726,7 @@ msgstr "%A %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:275
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%e. %B %l∶%M %p"
@@ -694,17 +734,17 @@ msgstr "%e. %B %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:281
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%e. %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:46
+#: js/portalHelper/main.js:40
 msgid "Hotspot Login"
 msgstr "Přihlášení k přístupovému bodu"
 
-#: js/portalHelper/main.js:92
+#: js/portalHelper/main.js:86
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -714,90 +754,99 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:42 js/ui/status/location.js:364
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:362
 msgid "Deny Access"
 msgstr "Zamítnout přístup"
 
-#: js/ui/accessDialog.js:43 js/ui/status/location.js:367
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:365
 msgid "Grant Access"
 msgstr "Schválit přístup"
 
-#: js/ui/appDisplay.js:780
+#: js/ui/appDisplay.js:854
+msgid "Unnamed Folder"
+msgstr "Nepojmenovaná složka"
+
+#: js/ui/appDisplay.js:874
 msgid "Frequently used applications will appear here"
 msgstr "Zde se objeví často používané aplikace"
 
-#: js/ui/appDisplay.js:895
+#: js/ui/appDisplay.js:997
 msgid "Frequent"
 msgstr "Časté"
 
-#: js/ui/appDisplay.js:902
+#: js/ui/appDisplay.js:1004
 msgid "All"
 msgstr "Všechny"
 
-#: js/ui/appDisplay.js:1857
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:2224 js/ui/panel.js:77
+msgid "Open Windows"
+msgstr "Otevřená okna"
+
+#: js/ui/appDisplay.js:2243 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:1871
+#: js/ui/appDisplay.js:2255
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Spustit pomocí vyhrazené grafické karty"
 
-#: js/ui/appDisplay.js:1898 js/ui/dash.js:246
+#: js/ui/appDisplay.js:2284 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: js/ui/appDisplay.js:1904
+#: js/ui/appDisplay.js:2290
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: js/ui/appDisplay.js:1914
+#: js/ui/appDisplay.js:2300 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
-#: js/ui/appFavorites.js:139
+#: js/ui/appFavorites.js:150
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
-#: js/ui/appFavorites.js:173
+#: js/ui/appFavorites.js:184
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
 
-#: js/ui/audioDeviceSelection.js:47
+#: js/ui/audioDeviceSelection.js:40
 msgid "Select Audio Device"
 msgstr "Výběr zvukového zařízení"
 
-#: js/ui/audioDeviceSelection.js:58
+#: js/ui/audioDeviceSelection.js:51
 msgid "Sound Settings"
 msgstr "Nastavení zvuku"
 
-#: js/ui/audioDeviceSelection.js:67
+#: js/ui/audioDeviceSelection.js:60
 msgid "Headphones"
 msgstr "Sluchátka"
 
-#: js/ui/audioDeviceSelection.js:69
+#: js/ui/audioDeviceSelection.js:62
 msgid "Headset"
 msgstr "Sluchátka s mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:71 js/ui/status/volume.js:250
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: js/ui/backgroundMenu.js:15
+#: js/ui/backgroundMenu.js:14
 msgid "Change Background…"
 msgstr "Změnit pozadí…"
 
-#: js/ui/backgroundMenu.js:17 js/ui/status/nightLight.js:43
+#: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:44
 msgid "Display Settings"
 msgstr "Nastavení displeje"
 
-#: js/ui/backgroundMenu.js:18
+#: js/ui/backgroundMenu.js:17
 msgid "Settings"
 msgstr "Nastavení"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:42
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -807,43 +856,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Ne"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
 msgstr "Po"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Út"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "St"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:79
+#: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Čt"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:81
+#: js/ui/calendar.js:80
 msgctxt "grid friday"
 msgid "F"
 msgstr "Pá"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:83
+#: js/ui/calendar.js:82
 msgctxt "grid saturday"
 msgid "S"
 msgstr "So"
@@ -854,7 +903,7 @@ msgstr "So"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:346
+#: js/ui/calendar.js:330
 msgid "%OB"
 msgstr "%OB"
 
@@ -867,65 +916,65 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:356
+#: js/ui/calendar.js:340
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:413
+#: js/ui/calendar.js:397
 msgid "Previous month"
 msgstr "Předchozí měsíc"
 
-#: js/ui/calendar.js:424
+#: js/ui/calendar.js:408
 msgid "Next month"
 msgstr "Následující měsíc"
 
-#: js/ui/calendar.js:578
+#: js/ui/calendar.js:558
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%e"
 
-#: js/ui/calendar.js:633
+#: js/ui/calendar.js:613
 msgid "Week %V"
 msgstr "%V. týden"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:681
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celý den"
 
-#: js/ui/calendar.js:833
+#: js/ui/calendar.js:813
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %e. %B"
 
-#: js/ui/calendar.js:837
+#: js/ui/calendar.js:817
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: js/ui/calendar.js:1060
+#: js/ui/calendar.js:1040
 msgid "No Notifications"
 msgstr "Nejsou žádná upozornění"
 
-#: js/ui/calendar.js:1063
+#: js/ui/calendar.js:1043
 msgid "No Events"
 msgstr "Nejsou žádné události"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1069
 msgid "Clear"
 msgstr "Vymazat"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:47
+#: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "Aplikace „%s“ neodpovídá."
 
-#: js/ui/closeDialog.js:48
+#: js/ui/closeDialog.js:43
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -933,74 +982,84 @@ msgstr ""
 "Můžete si vybrat, jestli chvilku počkat, zda bude normálně pokračovat, nebo "
 "ji násilně celou ukončit."
 
-#: js/ui/closeDialog.js:64
+#: js/ui/closeDialog.js:59
 msgid "Force Quit"
 msgstr "Vynutit ukončení"
 
-#: js/ui/closeDialog.js:67
+#: js/ui/closeDialog.js:62
 msgid "Wait"
 msgstr "Počkat"
 
-#: js/ui/components/automountManager.js:89
+#: js/ui/components/automountManager.js:88
 msgid "External drive connected"
 msgstr "Externí svazek připojen"
 
-#: js/ui/components/automountManager.js:101
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
-#: js/ui/components/autorunManager.js:335
+#: js/ui/components/automountManager.js:210
+#, fuzzy
+#| msgid "Unable to lock"
+msgid "Unable to unlock volume"
+msgstr "Nelze uzamknout obrazovku"
+
+#: js/ui/components/automountManager.js:211
+msgid "The installed udisks version does not support the PIM setting"
+msgstr ""
+
+#: js/ui/components/autorunManager.js:330
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otevřít pomocí %s"
 
-#: js/ui/components/keyring.js:84 js/ui/components/polkitAgent.js:265
+#: js/ui/components/keyring.js:67 js/ui/components/polkitAgent.js:257
 msgid "Password:"
 msgstr "Heslo:"
 
-#: js/ui/components/keyring.js:115
+#: js/ui/components/keyring.js:98
 msgid "Type again:"
 msgstr "Napište znovu:"
 
-#: js/ui/components/networkAgent.js:110
+#: js/ui/components/networkAgent.js:105
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Případně se můžete připojit zmáčknutím tlačítka „WPS“ na směrovači."
 
-#: js/ui/components/networkAgent.js:120 js/ui/status/network.js:225
-#: js/ui/status/network.js:315 js/ui/status/network.js:897
+#: js/ui/components/networkAgent.js:115 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:902
 msgid "Connect"
 msgstr "Připojit"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:219 js/ui/components/networkAgent.js:231
-#: js/ui/components/networkAgent.js:254 js/ui/components/networkAgent.js:273
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:303
+#: js/ui/components/networkAgent.js:215 js/ui/components/networkAgent.js:227
+#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:268
+#: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:298
 msgid "Password: "
 msgstr "Heslo: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:224
+#: js/ui/components/networkAgent.js:220
 msgid "Key: "
 msgstr "Klíč: "
 
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:252 js/ui/components/networkAgent.js:274
 msgid "Private key password: "
 msgstr "Heslo soukromého klíče: "
 
-#: js/ui/components/networkAgent.js:277
+#: js/ui/components/networkAgent.js:272
 msgid "Identity: "
 msgstr "Indentita: "
 
-#: js/ui/components/networkAgent.js:291
+#: js/ui/components/networkAgent.js:286
 msgid "Service: "
 msgstr "Služba: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:688
 msgid "Authentication required by wireless network"
 msgstr "K bezdrátové síti je vyžadováno ověření"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:316 js/ui/components/networkAgent.js:689
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1009,53 +1068,53 @@ msgstr ""
 "Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací "
 "klíče."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:693
 msgid "Wired 802.1X authentication"
 msgstr "Ověření připojení po drátu 802.1X"
 
-#: js/ui/components/networkAgent.js:327
+#: js/ui/components/networkAgent.js:322
 msgid "Network name: "
 msgstr "Název sítě: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:327 js/ui/components/networkAgent.js:697
 msgid "DSL authentication"
 msgstr "Ověření DSL"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:702
 msgid "PIN code required"
 msgstr "Požadován kód PIN"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:708
+#: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:703
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pro mobilní širokopásmové zařízení je vyžadován kód PIN"
 
-#: js/ui/components/networkAgent.js:341
+#: js/ui/components/networkAgent.js:336
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:714
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:709
 msgid "Mobile broadband network password"
 msgstr "Heslo k mobilní širokopásmové síti"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:698
-#: js/ui/components/networkAgent.js:702 js/ui/components/networkAgent.js:715
+#: js/ui/components/networkAgent.js:344 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:698 js/ui/components/networkAgent.js:710
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
 
-#: js/ui/components/networkAgent.js:682 js/ui/status/network.js:1671
+#: js/ui/components/networkAgent.js:677 js/ui/status/network.js:1675
 msgid "Network Manager"
 msgstr "Network Manager"
 
-#: js/ui/components/polkitAgent.js:44
+#: js/ui/components/polkitAgent.js:36
 msgid "Authentication Required"
 msgstr "Je vyžadováno ověření"
 
-#: js/ui/components/polkitAgent.js:72
+#: js/ui/components/polkitAgent.js:64
 msgid "Administrator"
 msgstr "Správce"
 
-#: js/ui/components/polkitAgent.js:149
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Ověřit"
 
@@ -1063,28 +1122,28 @@ msgstr "Ověřit"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:251 js/ui/shellMountOperation.js:314
+#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:375
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:785
+#: js/ui/components/telepathyClient.js:777
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s je teď znám jako %s"
 
-#: js/ui/ctrlAltTab.js:25 js/ui/viewSelector.js:176
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:169
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:207 js/ui/dash.js:248
+#: js/ui/dash.js:201 js/ui/dash.js:242
 msgid "Show Applications"
 msgstr "Zobrazit aplikace"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:397
+#: js/ui/dash.js:390
 msgid "Dash"
 msgstr "Oblíbené"
 
@@ -1094,7 +1153,7 @@ msgstr "Oblíbené"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:74
+#: js/ui/dateMenu.js:68
 msgid "%B %-d %Y"
 msgstr "%e. %B %Y"
 
@@ -1103,50 +1162,50 @@ msgstr "%e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:81
+#: js/ui/dateMenu.js:75
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y"
 
-#: js/ui/dateMenu.js:143
+#: js/ui/dateMenu.js:149
 msgid "Add world clocks…"
 msgstr "Přidat světový čas…"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:150
 msgid "World Clocks"
 msgstr "Světové hodiny"
 
-#: js/ui/dateMenu.js:234
+#: js/ui/dateMenu.js:265
 msgid "Weather"
 msgstr "Počasí"
 
-#: js/ui/dateMenu.js:317
+#: js/ui/dateMenu.js:348
 msgid "Select a location…"
 msgstr "Vybrat místo…"
 
-#: js/ui/dateMenu.js:325
+#: js/ui/dateMenu.js:356
 msgid "Loading…"
 msgstr "Načítá se…"
 
-#: js/ui/dateMenu.js:335
+#: js/ui/dateMenu.js:366
 msgid "Go online for weather information"
 msgstr "Připojit se kvůli informacím o počasí"
 
-#: js/ui/dateMenu.js:337
+#: js/ui/dateMenu.js:368
 msgid "Weather information is currently unavailable"
 msgstr "Informace o počasí nejsou nyní dostupné"
 
-#: js/ui/endSessionDialog.js:49
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásit uživatele %s"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odhlášení"
 
-#: js/ui/endSessionDialog.js:52
+#: js/ui/endSessionDialog.js:42
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1154,7 +1213,7 @@ msgstr[0] "Uživatel %s bude automaticky odhlášen za %d sekundu."
 msgstr[1] "Uživatel %s bude automaticky odhlášen za %d sekundy."
 msgstr[2] "Uživatel %s bude automaticky odhlášen za %d sekund."
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1162,22 +1221,22 @@ msgstr[0] "Budete automaticky odhlášeni za %d sekundu."
 msgstr[1] "Budete automaticky odhlášeni za %d sekundy."
 msgstr[2] "Budete automaticky odhlášeni za %d sekund."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:53
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásit"
 
-#: js/ui/endSessionDialog.js:69
+#: js/ui/endSessionDialog.js:59
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutí"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:60
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Nainstalovat aktualizace a vypnout"
 
-#: js/ui/endSessionDialog.js:72
+#: js/ui/endSessionDialog.js:62
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1185,27 +1244,27 @@ msgstr[0] "Systém bude automaticky vypnut za %d sekundu."
 msgstr[1] "Systém bude automaticky vypnut za %d sekundy."
 msgstr[2] "Systém bude automaticky vypnut za %d sekund."
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:66
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Nainstalovat čekající aktualizace softwaru"
 
-#: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:69 js/ui/endSessionDialog.js:86
 msgctxt "button"
 msgid "Restart"
 msgstr "Restartovat"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:71
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:78
 msgctxt "title"
 msgid "Restart"
 msgstr "Restart"
 
-#: js/ui/endSessionDialog.js:90
+#: js/ui/endSessionDialog.js:80
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1213,12 +1272,12 @@ msgstr[0] "Systém bude automaticky restartován za %d sekundu."
 msgstr[1] "Systém bude automaticky restartován za %d sekundy."
 msgstr[2] "Systém bude automaticky restartován za %d sekund."
 
-#: js/ui/endSessionDialog.js:104
+#: js/ui/endSessionDialog.js:94
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Restartovat a nainstalovat aktualizace"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:96
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1233,22 +1292,22 @@ msgstr[2] ""
 "Systém bude automaticky restartován za %d sekund a poté se nainstalují "
 "aktualizace."
 
-#: js/ui/endSessionDialog.js:112 js/ui/endSessionDialog.js:132
+#: js/ui/endSessionDialog.js:102 js/ui/endSessionDialog.js:122
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Restartovat a nainstalovat"
 
-#: js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:103
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Nainstalovat a vypnout"
 
-#: js/ui/endSessionDialog.js:114
+#: js/ui/endSessionDialog.js:104
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Po nainstalování aktualizací vypnout"
 
-#: js/ui/endSessionDialog.js:122
+#: js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Restartovat a nainstalovat povýšení"
@@ -1256,7 +1315,7 @@ msgstr "Restartovat a nainstalovat povýšení"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:127
+#: js/ui/endSessionDialog.js:117
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1266,61 +1325,61 @@ msgstr ""
 "může zabrat hodně času: zkontrolujte, že máte vše zazálohováno a že počítač "
 "je připojen do elektriky."
 
-#: js/ui/endSessionDialog.js:316
+#: js/ui/endSessionDialog.js:306
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Počítač běží na baterii: před instalací jej prosím připojte k napájení."
 
-#: js/ui/endSessionDialog.js:333
+#: js/ui/endSessionDialog.js:323
 msgid "Some applications are busy or have unsaved work."
 msgstr "Některé aplikace jsou zaneprázdněny nebo obsahují neuloženou práci."
 
-#: js/ui/endSessionDialog.js:340
+#: js/ui/endSessionDialog.js:330
 msgid "Other users are logged in."
 msgstr "Jsou přihlášeni jiní uživatelé."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:621
+#: js/ui/endSessionDialog.js:647
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:624
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
 
-#: js/ui/extensionDownloader.js:197
+#: js/ui/extensionDownloader.js:193
 msgid "Install"
 msgstr "Instalovat"
 
-#: js/ui/extensionDownloader.js:202
+#: js/ui/extensionDownloader.js:199
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:56
+#: js/ui/inhibitShortcutsDialog.js:79
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
 msgstr "%s chce znemožnit klávesové zkratky"
 
-#: js/ui/inhibitShortcutsDialog.js:57
+#: js/ui/inhibitShortcutsDialog.js:80
 msgid "Application wants to inhibit shortcuts"
 msgstr "Aplikace chce znemožnit klávesové zkratky"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:66
+#: js/ui/inhibitShortcutsDialog.js:89
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Obnovit klávesové zkratky můžete zmáčknutím %s."
 
-#: js/ui/inhibitShortcutsDialog.js:71
+#: js/ui/inhibitShortcutsDialog.js:94
 msgid "Deny"
 msgstr "Zamítnout"
 
-#: js/ui/inhibitShortcutsDialog.js:77
+#: js/ui/inhibitShortcutsDialog.js:101
 msgid "Allow"
 msgstr "Umožnit"
 
@@ -1373,15 +1432,15 @@ msgid "Leave On"
 msgstr "Ponechat zapnuté"
 
 #: js/ui/kbdA11yDialog.js:58 js/ui/status/bluetooth.js:134
-#: js/ui/status/network.js:1270
+#: js/ui/status/network.js:1274
 msgid "Turn On"
 msgstr "Zapnout"
 
 #: js/ui/kbdA11yDialog.js:66 js/ui/status/bluetooth.js:134
-#: js/ui/status/network.js:134 js/ui/status/network.js:316
-#: js/ui/status/network.js:1270 js/ui/status/network.js:1382
-#: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
-#: js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:132 js/ui/status/network.js:315
+#: js/ui/status/network.js:1274 js/ui/status/network.js:1386
+#: js/ui/status/nightLight.js:40 js/ui/status/rfkill.js:80
+#: js/ui/status/rfkill.js:107
 msgid "Turn Off"
 msgstr "Vypnout"
 
@@ -1389,81 +1448,77 @@ msgstr "Vypnout"
 msgid "Leave Off"
 msgstr "Ponechat vypnuté"
 
-#: js/ui/keyboard.js:190
+#: js/ui/keyboard.js:200
 msgid "Region & Language Settings"
 msgstr "Nastavení regionu a jazyka"
 
-#: js/ui/lookingGlass.js:627
+#: js/ui/lookingGlass.js:624
 msgid "No extensions installed"
 msgstr "Nejsou nainstalována žádná rozšíření"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:681
+#: js/ui/lookingGlass.js:679
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "Rozšíření %s nevyvolalo žádné chyby."
 
-#: js/ui/lookingGlass.js:687
+#: js/ui/lookingGlass.js:685
 msgid "Hide Errors"
 msgstr "Skrývat chyby"
 
-#: js/ui/lookingGlass.js:691 js/ui/lookingGlass.js:751
+#: js/ui/lookingGlass.js:689 js/ui/lookingGlass.js:748
 msgid "Show Errors"
 msgstr "Zobrazovat chyby"
 
-#: js/ui/lookingGlass.js:700
+#: js/ui/lookingGlass.js:698
 msgid "Enabled"
 msgstr "Povoleno"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:703 subprojects/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:701 subprojects/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: js/ui/lookingGlass.js:705
+#: js/ui/lookingGlass.js:703
 msgid "Error"
 msgstr "Chyba"
 
-#: js/ui/lookingGlass.js:707
+#: js/ui/lookingGlass.js:705
 msgid "Out of date"
 msgstr "Neaktuální"
 
-#: js/ui/lookingGlass.js:709
+#: js/ui/lookingGlass.js:707
 msgid "Downloading"
 msgstr "Stahování"
 
-#: js/ui/lookingGlass.js:733
+#: js/ui/lookingGlass.js:730
 msgid "View Source"
 msgstr "Zobrazit zdroj"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:739
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/messageTray.js:1483
+#: js/ui/messageTray.js:1462
 msgid "System Information"
 msgstr "Informace o systému"
 
-#: js/ui/mpris.js:179
+#: js/ui/mpris.js:178
 msgid "Unknown artist"
 msgstr "Neznámý umělec"
 
-#: js/ui/mpris.js:180
+#: js/ui/mpris.js:179
 msgid "Unknown title"
 msgstr "Neznámý název"
 
-#: js/ui/osdWindow.js:26 js/ui/status/volume.js:202
-msgid "Volume"
-msgstr "Hlasitost"
-
-#: js/ui/overview.js:78
+#: js/ui/overview.js:73
 msgid "Undo"
 msgstr "Zpět"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:105
+#: js/ui/overview.js:100
 msgid "Overview"
 msgstr "Přehled"
 
@@ -1471,105 +1526,96 @@ msgstr "Přehled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:231
+#: js/ui/overview.js:230
 msgid "Type to search…"
 msgstr "Vyhledávejte psaním…"
 
-#: js/ui/padOsd.js:102
+#: js/ui/padOsd.js:93
 msgid "New shortcut…"
 msgstr "Nová klávesová zkratka…"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:142
 msgid "Application defined"
 msgstr "Definováno aplikací"
 
-#: js/ui/padOsd.js:152
+#: js/ui/padOsd.js:143
 msgid "Show on-screen help"
 msgstr "Zobrazit nápovědu na obrazovce"
 
-#: js/ui/padOsd.js:153
+#: js/ui/padOsd.js:144
 msgid "Switch monitor"
 msgstr "Přepnout monitor"
 
-#: js/ui/padOsd.js:154
+#: js/ui/padOsd.js:145
 msgid "Assign keystroke"
 msgstr "Přířadit klávesu"
 
-#: js/ui/padOsd.js:219
+#: js/ui/padOsd.js:210
 msgid "Done"
 msgstr "Hotovo"
 
-#: js/ui/padOsd.js:731
+#: js/ui/padOsd.js:728
 msgid "Edit…"
 msgstr "Upravit…"
 
-#: js/ui/padOsd.js:773 js/ui/padOsd.js:878
+#: js/ui/padOsd.js:769 js/ui/padOsd.js:874
 msgid "None"
 msgstr "Źádná"
 
-#: js/ui/padOsd.js:832
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "Zmáčkněte tlačítko pro nastavení"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "Zmáčknutím Esc ukončíte"
 
-#: js/ui/padOsd.js:836
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "Zmáčknutím klávesy ukončíte"
 
-#: js/ui/panel.js:358
+#: js/ui/panel.js:111
 msgid "Quit"
 msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:410
+#: js/ui/panel.js:428
 msgid "Activities"
 msgstr "Činnosti"
 
-#: js/ui/panel.js:685
+#: js/ui/panel.js:701
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systém"
 
-#: js/ui/panel.js:808
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Horní lišta"
 
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:289
-msgid "toggle-switch-us"
-msgstr "toggle-switch-intl"
-
-#: js/ui/runDialog.js:70
+#: js/ui/runDialog.js:58
 msgid "Enter a Command"
 msgstr "Zadejte příkaz:"
 
-#: js/ui/runDialog.js:110 js/ui/windowMenu.js:169
+#: js/ui/runDialog.js:98 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "Zavřít"
 
-#: js/ui/runDialog.js:272
+#: js/ui/runDialog.js:260
 msgid "Restart is not available on Wayland"
 msgstr "Restart není na Waylandu k dispozici"
 
-#: js/ui/runDialog.js:277
+#: js/ui/runDialog.js:265
 msgid "Restarting…"
 msgstr "Restartuje se…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:86
+#: js/ui/screenShield.js:73
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: js/ui/screenShield.js:142
+#: js/ui/screenShield.js:129
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1577,7 +1623,7 @@ msgstr[0] "%d nová zpráva"
 msgstr[1] "%d nové zprávy"
 msgstr[2] "%d nových zpráv"
 
-#: js/ui/screenShield.js:144
+#: js/ui/screenShield.js:131
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1585,11 +1631,11 @@ msgstr[0] "%d nové upozornění"
 msgstr[1] "%d nová upozornění"
 msgstr[2] "%d nových upozornění"
 
-#: js/ui/screenShield.js:458 js/ui/status/system.js:291
+#: js/ui/screenShield.js:444 js/ui/status/system.js:269
 msgid "Lock"
 msgstr "Uzamknout"
 
-#: js/ui/screenShield.js:722
+#: js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME potřebuje uzamknout obrazovku"
 
@@ -1600,23 +1646,23 @@ msgstr "GNOME potřebuje uzamknout obrazovku"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:843 js/ui/screenShield.js:1316
+#: js/ui/screenShield.js:822 js/ui/screenShield.js:1294
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
 
-#: js/ui/screenShield.js:844 js/ui/screenShield.js:1317
+#: js/ui/screenShield.js:823 js/ui/screenShield.js:1295
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
-#: js/ui/search.js:644
+#: js/ui/search.js:647
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: js/ui/search.js:646
+#: js/ui/search.js:649
 msgid "No results."
 msgstr "Žádné výsledky."
 
-#: js/ui/search.js:770
+#: js/ui/search.js:773
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1640,55 +1686,104 @@ msgstr "Zobrazit text"
 msgid "Hide Text"
 msgstr "Skrýt text"
 
-#: js/ui/shellMountOperation.js:301
+#: js/ui/shellMountOperation.js:304
+#| msgid "Volume"
+msgid "Hidden Volume"
+msgstr "Skrytý svazek"
+
+#: js/ui/shellMountOperation.js:307
+msgid "Windows System Volume"
+msgstr ""
+
+#: js/ui/shellMountOperation.js:310
+#, fuzzy
+#| msgid "Mouse Keys"
+msgid "Uses Keyfiles"
+msgstr "Myš klávesnicí"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:316
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:323
+msgid "PIM Number"
+msgstr "Číslo PIM"
+
+#: js/ui/shellMountOperation.js:341
+msgid "The PIM must be a number or empty."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:352
 msgid "Password"
 msgstr "Heslo"
 
-#: js/ui/shellMountOperation.js:322
+#: js/ui/shellMountOperation.js:382
 msgid "Remember Password"
 msgstr "Pamatovat si heslo"
 
-#: js/ui/status/accessibility.js:39
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:404
+#, javascript-format
+msgid "Open %s"
+msgstr "Otevřít %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:476
+#, javascript-format
+#| msgid "Unable to lock"
+msgid "Unable to start %s"
+msgstr "Nelze spustit %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:478
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr ""
+
+#: js/ui/status/accessibility.js:36
 msgid "Accessibility"
 msgstr "Zpřístupnění"
 
-#: js/ui/status/accessibility.js:54
+#: js/ui/status/accessibility.js:51
 msgid "Zoom"
 msgstr "Zvětšení"
 
-#: js/ui/status/accessibility.js:61
+#: js/ui/status/accessibility.js:58
 msgid "Screen Reader"
 msgstr "Čtečka obrazovky"
 
-#: js/ui/status/accessibility.js:65
+#: js/ui/status/accessibility.js:62
 msgid "Screen Keyboard"
 msgstr "Klávesnice na obrazovce"
 
-#: js/ui/status/accessibility.js:69
+#: js/ui/status/accessibility.js:66
 msgid "Visual Alerts"
 msgstr "Vizuální upozornění"
 
-#: js/ui/status/accessibility.js:72
+#: js/ui/status/accessibility.js:69
 msgid "Sticky Keys"
 msgstr "Lepící klávesy"
 
-#: js/ui/status/accessibility.js:75
+#: js/ui/status/accessibility.js:72
 msgid "Slow Keys"
 msgstr "Pomalé klávesy"
 
-#: js/ui/status/accessibility.js:78
+#: js/ui/status/accessibility.js:75
 msgid "Bounce Keys"
 msgstr "Vícenásobné stisky kláves"
 
-#: js/ui/status/accessibility.js:81
+#: js/ui/status/accessibility.js:78
 msgid "Mouse Keys"
 msgstr "Myš klávesnicí"
 
-#: js/ui/status/accessibility.js:155
+#: js/ui/status/accessibility.js:136
 msgid "High Contrast"
 msgstr "Vysoký kontrast"
 
-#: js/ui/status/accessibility.js:186
+#: js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
@@ -1721,62 +1816,82 @@ msgstr "Zapnuto"
 msgid "Brightness"
 msgstr "Jas"
 
-#: js/ui/status/keyboard.js:819
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr ""
+
+#: js/ui/status/keyboard.js:814
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: js/ui/status/keyboard.js:841
+#: js/ui/status/keyboard.js:836
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: js/ui/status/location.js:68 js/ui/status/location.js:176
+#: js/ui/status/location.js:64 js/ui/status/location.js:172
 msgid "Location Enabled"
 msgstr "Zjišťování polohy je povoleno"
 
-#: js/ui/status/location.js:69 js/ui/status/location.js:177
+#: js/ui/status/location.js:65 js/ui/status/location.js:173
 msgid "Disable"
 msgstr "Zakázát"
 
-#: js/ui/status/location.js:70
+#: js/ui/status/location.js:66
 msgid "Privacy Settings"
 msgstr "Nastavení ochrany osobních údajů"
 
-#: js/ui/status/location.js:175
+#: js/ui/status/location.js:171
 msgid "Location In Use"
 msgstr "Zjišťování polohy se používá"
 
-#: js/ui/status/location.js:179
+#: js/ui/status/location.js:175
 msgid "Location Disabled"
 msgstr "Zjišťování polohy je zakázáno"
 
-#: js/ui/status/location.js:180
+#: js/ui/status/location.js:176
 msgid "Enable"
 msgstr "Povolit"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:357
+#: js/ui/status/location.js:355
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Schválit pro %s přístup k vaší poloze?"
 
-#: js/ui/status/location.js:358
+#: js/ui/status/location.js:356
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Přístup ke službám pro určování polohy lze kdykoliv změnit v nastavení "
 "soukromí."
 
-#: js/ui/status/network.js:72
+#: js/ui/status/network.js:67
 msgid "<unknown>"
 msgstr "<neznámé>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:422 js/ui/status/network.js:1299
+#: js/ui/status/network.js:421 js/ui/status/network.js:1303
 #, javascript-format
 msgid "%s Off"
 msgstr "%s je vypnuto"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:425
+#: js/ui/status/network.js:424
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s je připojeno"
@@ -1784,50 +1899,50 @@ msgstr "%s je připojeno"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:430
+#: js/ui/status/network.js:429
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s není spravováno"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:433
+#: js/ui/status/network.js:432
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s se odpojuje"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:440 js/ui/status/network.js:1291
+#: js/ui/status/network.js:439 js/ui/status/network.js:1295
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s se připojuje"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:443
+#: js/ui/status/network.js:442
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s požaduje ověření"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:451
+#: js/ui/status/network.js:450
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Schází firmware pro %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s je nedostupné"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:458
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s selhalo připojení"
 
-#: js/ui/status/network.js:470
+#: js/ui/status/network.js:469
 msgid "Wired Settings"
 msgstr "Nastavení připojení po drátu"
 
@@ -1836,7 +1951,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Nastavení mobilní širokopásmové sítě"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:559 js/ui/status/network.js:1296
+#: js/ui/status/network.js:559 js/ui/status/network.js:1300
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s je hardwarově zakázáno"
@@ -1852,96 +1967,96 @@ msgstr "%s je zakázáno"
 msgid "Connect to Internet"
 msgstr "Připojit k Internetu"
 
-#: js/ui/status/network.js:792
+#: js/ui/status/network.js:797
 msgid "Airplane Mode is On"
 msgstr "Režim „letadlo“ je zapnutý"
 
-#: js/ui/status/network.js:793
+#: js/ui/status/network.js:798
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Když je zapnutý režim „letadlo“, je WiFi zakázána."
 
-#: js/ui/status/network.js:794
+#: js/ui/status/network.js:799
 msgid "Turn Off Airplane Mode"
 msgstr "Vypnout režim „letadlo“"
 
-#: js/ui/status/network.js:803
+#: js/ui/status/network.js:808
 msgid "Wi-Fi is Off"
 msgstr "WiFi je vypnutá"
 
-#: js/ui/status/network.js:804
+#: js/ui/status/network.js:809
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Abyste se připojili k síti, je zapotřebí zapnout WiFi."
 
-#: js/ui/status/network.js:805
+#: js/ui/status/network.js:810
 msgid "Turn On Wi-Fi"
 msgstr "Zapnout WiFi"
 
-#: js/ui/status/network.js:830
+#: js/ui/status/network.js:835
 msgid "Wi-Fi Networks"
 msgstr "Sítě WiFi"
 
-#: js/ui/status/network.js:832
+#: js/ui/status/network.js:837
 msgid "Select a network"
 msgstr "Vyberte síť"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:866
 msgid "No Networks"
 msgstr "Žádné sítě"
 
-#: js/ui/status/network.js:882 js/ui/status/rfkill.js:104
+#: js/ui/status/network.js:887 js/ui/status/rfkill.js:105
 msgid "Use hardware switch to turn off"
 msgstr "K vypnutí použijte fyzický vypínač"
 
-#: js/ui/status/network.js:1158
+#: js/ui/status/network.js:1163
 msgid "Select Network"
 msgstr "Vybrat síť"
 
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1169
 msgid "Wi-Fi Settings"
 msgstr "Nastavení WiFi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1287
+#: js/ui/status/network.js:1291
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s je aktivní přístupový bod"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1302
+#: js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s není připojeno"
 
-#: js/ui/status/network.js:1399
+#: js/ui/status/network.js:1403
 msgid "connecting…"
 msgstr "připojuje se…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1402
+#: js/ui/status/network.js:1406
 msgid "authentication required"
 msgstr "je požadováno ověření"
 
-#: js/ui/status/network.js:1404
+#: js/ui/status/network.js:1408
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: js/ui/status/network.js:1454
+#: js/ui/status/network.js:1458
 msgid "VPN Settings"
 msgstr "Nastavení VPN"
 
-#: js/ui/status/network.js:1471
+#: js/ui/status/network.js:1475
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1481
+#: js/ui/status/network.js:1485
 msgid "VPN Off"
 msgstr "VPN je vypnuta"
 
-#: js/ui/status/network.js:1542 js/ui/status/rfkill.js:82
+#: js/ui/status/network.js:1546 js/ui/status/rfkill.js:83
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: js/ui/status/network.js:1571
+#: js/ui/status/network.js:1575
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1949,7 +2064,7 @@ msgstr[0] "%s drátové připojení"
 msgstr[1] "%s drátová připojení"
 msgstr[2] "%s drátových připojení"
 
-#: js/ui/status/network.js:1575
+#: js/ui/status/network.js:1579
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1957,7 +2072,7 @@ msgstr[0] "%s bezdrátové připojení"
 msgstr[1] "%s bezdrátová připojení"
 msgstr[2] "%s bezdrátových připojení"
 
-#: js/ui/status/network.js:1579
+#: js/ui/status/network.js:1583
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1965,113 +2080,113 @@ msgstr[0] "%s modemové připojení"
 msgstr[1] "%s modemová připojení"
 msgstr[2] "%s modemových připojení"
 
-#: js/ui/status/network.js:1708
+#: js/ui/status/network.js:1716
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: js/ui/status/network.js:1709
+#: js/ui/status/network.js:1717
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
-#: js/ui/status/nightLight.js:60
+#: js/ui/status/nightLight.js:61
 msgid "Night Light Disabled"
 msgstr "Noční osvětlení vypnuto"
 
-#: js/ui/status/nightLight.js:61
+#: js/ui/status/nightLight.js:62
 msgid "Night Light On"
 msgstr "Noční osvětlení zapnuto"
 
-#: js/ui/status/nightLight.js:62
+#: js/ui/status/nightLight.js:63
 msgid "Resume"
 msgstr "Pokračovat"
 
-#: js/ui/status/nightLight.js:63
+#: js/ui/status/nightLight.js:64
 msgid "Disable Until Tomorrow"
 msgstr "Vypnout do zítřka"
 
-#: js/ui/status/power.js:48
+#: js/ui/status/power.js:46
 msgid "Power Settings"
 msgstr "Nastavení napájení"
 
-#: js/ui/status/power.js:64
+#: js/ui/status/power.js:62
 msgid "Fully Charged"
 msgstr "Plně nabito"
 
-#: js/ui/status/power.js:70
+#: js/ui/status/power.js:68
 msgid "Not Charging"
 msgstr "Nedobíjí se"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:73 js/ui/status/power.js:79
+#: js/ui/status/power.js:71 js/ui/status/power.js:77
 msgid "Estimating…"
 msgstr "Odhaduje se…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:87
+#: js/ui/status/power.js:85
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Zbývá %d∶%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:92
+#: js/ui/status/power.js:90
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d do nabití (%d %%)"
 
-#: js/ui/status/power.js:120 js/ui/status/power.js:122
+#: js/ui/status/power.js:135 js/ui/status/power.js:137
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/remoteAccess.js:42
+#: js/ui/status/remoteAccess.js:43
 msgid "Screen is Being Shared"
 msgstr "Obrazovka je sdílena"
 
-#: js/ui/status/remoteAccess.js:44
+#: js/ui/status/remoteAccess.js:45
 msgid "Turn off"
 msgstr "Vypnout"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
-#: js/ui/status/rfkill.js:77
+#: js/ui/status/rfkill.js:78
 msgid "Airplane Mode On"
 msgstr "Režim „letadlo“ je zapnutý"
 
-#: js/ui/status/system.js:224
+#: js/ui/status/system.js:201
 msgid "Switch User"
 msgstr "Přepnout uživatele"
 
-#: js/ui/status/system.js:236
+#: js/ui/status/system.js:213
 msgid "Log Out"
 msgstr "Odhlásit se"
 
-#: js/ui/status/system.js:248
+#: js/ui/status/system.js:225
 msgid "Account Settings"
 msgstr "Nastavení účtu"
 
-#: js/ui/status/system.js:276
+#: js/ui/status/system.js:254
 msgid "Orientation Lock"
 msgstr "Zámek otočení"
 
-#: js/ui/status/system.js:302
+#: js/ui/status/system.js:280
 msgid "Suspend"
 msgstr "Uspat do paměti"
 
-#: js/ui/status/system.js:312
+#: js/ui/status/system.js:290
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: js/ui/status/thunderbolt.js:264
+#: js/ui/status/thunderbolt.js:261
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:322
 msgid "Unknown Thunderbolt device"
 msgstr "Neznámé zařízení Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:326
+#: js/ui/status/thunderbolt.js:323
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2079,93 +2194,97 @@ msgstr ""
 "Zatímco jste byli pryč, bylo nalezeno nové zařízení. Odpojte jej prosím a "
 "znovu připojte, abyste jej mohli používat."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:326
 msgid "Unauthorized Thunderbolt device"
 msgstr "Neověřené zařízení Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:327
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Bylo zjištěno nové zařízení a je třeba jej ověřit správcem."
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:333
 msgid "Thunderbolt authorization error"
 msgstr "Chyba ověření Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:337
+#: js/ui/status/thunderbolt.js:334
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nezdařilo se provést ověření zařízení Thunderbolt: %s"
 
-#: js/ui/status/volume.js:136
+#: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Hlasitost změněna"
+
+#: js/ui/status/volume.js:193
+msgid "Volume"
+msgstr "Hlasitost"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:19
+#: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Duplikovat"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:24
+#: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Sloučit displeje"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:29
+#: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Jen externí"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:34
+#: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Jen vestavěné"
 
-#: js/ui/unlockDialog.js:63
+#: js/ui/unlockDialog.js:50
 msgid "Log in as another user"
 msgstr "Přihlásit se jako jiný uživatel"
 
-#: js/ui/unlockDialog.js:80
+#: js/ui/unlockDialog.js:67
 msgid "Unlock Window"
 msgstr "Odemykací okno"
 
-#: js/ui/viewSelector.js:180
+#: js/ui/viewSelector.js:173
 msgid "Applications"
 msgstr "Aplikace"
 
-#: js/ui/viewSelector.js:184
+#: js/ui/viewSelector.js:177
 msgid "Search"
 msgstr "Hledat"
 
-#: js/ui/windowAttentionHandler.js:19
+#: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "Připraveno „%s“"
 
-#: js/ui/windowManager.js:60
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Chcete zachovat nastavení displeje?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:66
 msgid "Revert Settings"
 msgstr "Obnovit původní"
 
-#: js/ui/windowManager.js:75
+#: js/ui/windowManager.js:69
 msgid "Keep Changes"
 msgstr "Zachovat"
 
-#: js/ui/windowManager.js:93
+#: js/ui/windowManager.js:87
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2175,72 +2294,72 @@ msgstr[2] "Nastavení se obnoví na původní za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:669
+#: js/ui/windowManager.js:683
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: js/ui/windowMenu.js:29
+#: js/ui/windowMenu.js:27
 msgid "Minimize"
 msgstr "Minimalizovat"
 
-#: js/ui/windowMenu.js:36
+#: js/ui/windowMenu.js:34
 msgid "Unmaximize"
 msgstr "Zrušit maximalizaci"
 
-#: js/ui/windowMenu.js:40
+#: js/ui/windowMenu.js:38
 msgid "Maximize"
 msgstr "Maximalizovat"
 
-#: js/ui/windowMenu.js:47
+#: js/ui/windowMenu.js:45
 msgid "Move"
 msgstr "Přesunout"
 
-#: js/ui/windowMenu.js:53
+#: js/ui/windowMenu.js:51
 msgid "Resize"
 msgstr "Změnit velikost"
 
-#: js/ui/windowMenu.js:60
+#: js/ui/windowMenu.js:58
 msgid "Move Titlebar Onscreen"
 msgstr "Posunout záhlaví na obrazovku"
 
-#: js/ui/windowMenu.js:65
+#: js/ui/windowMenu.js:63
 msgid "Always on Top"
 msgstr "Vždy nahoře"
 
-#: js/ui/windowMenu.js:84
+#: js/ui/windowMenu.js:82
 msgid "Always on Visible Workspace"
 msgstr "Vždy na viditelné ploše"
 
-#: js/ui/windowMenu.js:98
+#: js/ui/windowMenu.js:96
 msgid "Move to Workspace Left"
 msgstr "Přesunout o plochu doleva"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:102
 msgid "Move to Workspace Right"
 msgstr "Přesunout o plochu doprava"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:108
 msgid "Move to Workspace Up"
 msgstr "Přesunout o plochu výš"
 
-#: js/ui/windowMenu.js:116
+#: js/ui/windowMenu.js:114
 msgid "Move to Workspace Down"
 msgstr "Přesunout o plochu níž"
 
-#: js/ui/windowMenu.js:134
+#: js/ui/windowMenu.js:132
 msgid "Move to Monitor Up"
 msgstr "Přesunout o monitor výš"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:141
 msgid "Move to Monitor Down"
 msgstr "Přesunout o monitor níž"
 
-#: js/ui/windowMenu.js:152
+#: js/ui/windowMenu.js:150
 msgid "Move to Monitor Left"
 msgstr "Přesunout o monitor doleva"
 
-#: js/ui/windowMenu.js:161
+#: js/ui/windowMenu.js:159
 msgid "Move to Monitor Right"
 msgstr "Přesunout o monitor doprava"
 
@@ -2248,42 +2367,37 @@ msgstr "Přesunout o monitor doprava"
 msgid "Evolution Calendar"
 msgstr "Kalendář Evolution"
 
-#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-#: src/calendar-server/evolution-calendar.desktop.in:6
-msgid "evolution"
-msgstr "evolution"
-
-#: src/main.c:408
+#: src/main.c:464
 msgid "Print version"
 msgstr "Vypsat verzi"
 
-#: src/main.c:414
+#: src/main.c:470
 msgid "Mode used by GDM for login screen"
 msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
-#: src/main.c:420
+#: src/main.c:476
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
 
-#: src/main.c:426
+#: src/main.c:482
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
-#: src/shell-app.c:266
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: src/shell-app.c:517
+#: src/shell-app.c:515
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nelze spustit „%s“"
 
-#: src/shell-keyring-prompt.c:730
+#: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
 msgstr "Hesla si neodpovídají."
 
-#: src/shell-keyring-prompt.c:738
+#: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
 msgstr "Heslo nemůže být prázdné."
 
@@ -2293,7 +2407,7 @@ msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1873
+#: subprojects/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2303,7 +2417,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1883
+#: subprojects/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2311,6 +2425,28 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: subprojects/gvc/gvc-mixer-control.c:2738
+#: subprojects/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Systémové zvuky"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Klávesová zkratka k pozastavení a opětovnému spuštění všech běžících "
+#~ "animací tweens; pro účely ladění"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "Která klávesnice se má používat"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "Typ klávesnice, který se má používat."
+
+#~ msgid "network-workgroup"
+#~ msgstr "network-workgroup"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-intl"
+
+#~ msgid "evolution"
+#~ msgstr "evolution"
