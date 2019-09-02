@@ -25,6 +25,10 @@ function _isToday(date) {
            now.getDate() == date.getDate();
 }
 
+function _gDateTimeToDate(datetime) {
+    return new Date(datetime.to_unix() * 1000 + datetime.get_microsecond() / 1000);
+}
+
 var TodayButton = class TodayButton {
     constructor(calendar) {
         // Having the ability to go to the current date if the user is already
@@ -52,10 +56,10 @@ var TodayButton = class TodayButton {
         hbox.add_actor(this._dateLabel);
 
         this._calendar = calendar;
-        this._calendar.connect('selected-date-changed', (calendar, date) => {
+        this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.actor.reactive = !_isToday(date);
+            this.actor.reactive = !_isToday(_gDateTimeToDate(datetime));
         });
     }
 
@@ -529,11 +533,11 @@ class DateMenuButton extends PanelMenu.Button {
         bin.add_actor(hbox);
 
         this._calendar = new Calendar.Calendar();
-        this._calendar.connect('selected-date-changed',
-                               (calendar, date) => {
-                                   layout.frozen = !_isToday(date);
-                                   this._messageList.setDate(date);
-                               });
+        this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
+            let date = _gDateTimeToDate(datetime);
+            layout.frozen = !_isToday(date);
+            this._messageList.setDate(date);
+        });
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
