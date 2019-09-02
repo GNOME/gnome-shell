@@ -140,8 +140,11 @@ var UnlockDialog = GObject.registerClass({
         if (this._isModal)
             return true;
 
-        if (!Main.pushModal(this, { timestamp: timestamp,
-            actionMode: Shell.ActionMode.UNLOCK_SCREEN }))
+        let modalParams = {
+            timestamp,
+            actionMode: Shell.ActionMode.UNLOCK_SCREEN,
+        };
+        if (!Main.pushModal(this, modalParams))
             return false;
 
         this._isModal = true;
