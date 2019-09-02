@@ -574,7 +574,7 @@ var EmojiPager = GObject.registerClass({
         'delta': GObject.ParamSpec.int(
             'delta', 'delta', 'delta',
             GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT32, 0)
+            GLib.MININT32, GLib.MAXINT32, 0)
     },
     Signals: {
         'emoji': { param_types: [GObject.TYPE_STRING] },
