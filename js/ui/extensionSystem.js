@@ -194,7 +194,7 @@ var ExtensionManager = class {
             extension.errors = [];
         extension.errors.push(message);
 
-        log('Extension "%s" had error: %s'.format(uuid, message));
+        logError(error, `Extension ${uuid}`);
         this.emit('extension-state-changed', extension);
     }
 
