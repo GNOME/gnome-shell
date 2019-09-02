@@ -168,9 +168,38 @@ function _easeActorProperty(actor, propName, target, params) {
         transition.connect('stopped', (t, finished) => callback(finished));
 }
 
-function _loggingFunc(...args) {
-    let fields = { 'MESSAGE': args.join(', ') };
+function _logStructured(logLevel, message, extraFields = {}) {
+    if (!Object.values(GLib.LogLevelFlags).includes(logLevel)) {
+        _logStructured(GLib.LogLevelFlags.LEVEL_WARNING,
+            'logLevel is not a valid GLib.LogLevelFlags');
+        return;
+    }
+
     let domain = "GNOME Shell";
+    let fields = {
+        'SYSLOG_IDENTIFIER': 'org.gnome.Shell',
+        'MESSAGE': `${message}`,
+    };
+
+    let thisFile = null;
+    let { stack } = new Error();
+    for (let stackLine of stack.split('\n')) {
+        stackLine = stackLine.replace('resource:///org/gnome/Shell/', '');
+        let [code, line] = stackLine.split(':');
+        let [func, file] = code.split(/@(.+)/);
+
+        if (!thisFile || thisFile === file) {
+            thisFile = file;
+            continue;
+        }
+
+        fields = Object.assign(fields, {
+            'CODE_FILE': file,
+            'CODE_LINE': line,
+            'CODE_FUNC': func,
+        });
+        break;
+    }
 
     // If the caller is an extension, add it as metadata
     let extension = imports.misc.extensionUtils.getCurrentExtension();
@@ -180,7 +209,7 @@ function _loggingFunc(...args) {
         fields['GNOME_SHELL_EXTENSION_NAME'] = extension.metadata.name;
     }
 
-    GLib.log_structured(domain, GLib.LogLevelFlags.LEVEL_MESSAGE, fields);
+    GLib.log_structured(domain, logLevel, Object.assign(fields, extraFields));
 }
 
 function init() {
@@ -188,7 +217,14 @@ function init() {
     // browser convention of having that namespace be called 'window'.)
     window.global = Shell.Global.get();
 
-    window.log = _loggingFunc;
+    for (let domain of ['error', 'critical', 'warning', 'message', 'info', 'debug']) {
+        window[domain] = (...args) => {
+            _logStructured(GLib.LogLevelFlags[`LEVEL_${domain.toUpperCase()}`], args);
+        };
+    }
+
+    window.log = window.message;
+    window.logStructured = _logStructured;
 
     window._ = Gettext.gettext;
     window.C_ = Gettext.pgettext;
