@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService */
 
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Graphene, Gio, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const GrabHelper = imports.ui.grabHelper;
@@ -198,7 +198,7 @@ var ScreenshotService = class {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)
                     return;
-                screenshot.pick_color(...coords, (o, res) => {
+                screenshot.pick_color(coords.x, coords.y, (_o, res) => {
                     let [success_, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
@@ -349,7 +349,8 @@ var PickPixel = class {
     }
 
     _onButtonRelease(actor, event) {
-        this._result = event.get_coords();
+        let [x, y] = event.get_coords();
+        this._result = new Graphene.Point({ x, y });
         this._grabHelper.ungrab();
         return Clutter.EVENT_PROPAGATE;
     }
