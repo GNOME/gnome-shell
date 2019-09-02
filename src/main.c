@@ -336,39 +336,55 @@ shell_init_debug (const char *debug_env)
                                        G_N_ELEMENTS (keys));
 }
 
-static void
-default_log_handler (const char     *log_domain,
-                     GLogLevelFlags  log_level,
-                     const char     *message,
-                     gpointer        data)
+static GLogWriterOutput
+default_log_writer (GLogLevelFlags   log_level,
+                    const GLogField *fields,
+                    gsize            n_fields,
+                    gpointer         user_data)
 {
-  if (!log_domain || !g_str_has_prefix (log_domain, "tp-glib"))
-    g_log_default_handler (log_domain, log_level, message, data);
+  const char *log_domain = NULL;
+  GLogWriterOutput output = {0};
+  int i;
 
-  /* Filter out Gjs logs, those already have the stack */
-  if (log_domain && strcmp (log_domain, "Gjs") == 0)
-    return;
+  for (i = 0; i < n_fields; i++)
+    {
+      if (g_strcmp0 (fields[i].key, "GLIB_DOMAIN") == 0)
+        {
+          log_domain = fields[i].value;
+          break;
+        }
+    }
+
+  if (!log_domain || !g_str_has_prefix (log_domain, "tp-glib"))
+    output = g_log_writer_default (log_level, fields, n_fields, user_data);
 
   if ((_shell_debug & SHELL_DEBUG_BACKTRACE_WARNINGS) &&
       ((log_level & G_LOG_LEVEL_CRITICAL) ||
        (log_level & G_LOG_LEVEL_WARNING)))
-    gjs_dumpstack ();
+    {
+      /* Filter out Gjs logs, those already have the stack */
+      if (g_strcmp0 (log_domain, "Gjs") != 0)
+        gjs_dumpstack ();
+    }
+
+  return output;
 }
 
-static void
-shut_up (const char     *domain,
-         GLogLevelFlags  level,
-         const char     *message,
-         gpointer        user_data)
+static GLogWriterOutput
+shut_up (GLogLevelFlags   log_level,
+         const GLogField *fields,
+         gsize            n_fields,
+         gpointer         user_data)
 {
+  return (GLogWriterOutput) {0};
 }
 
 static void
 dump_gjs_stack_alarm_sigaction (int signo)
 {
-  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_log_set_writer_func (g_log_writer_default, NULL, NULL);
   g_warning ("Failed to dump Javascript stack, got stuck");
-  g_log_set_default_handler (default_log_handler, NULL);
+  g_log_set_writer_func (default_log_writer, NULL, NULL);
 
   raise (caught_signal);
 }
@@ -433,7 +449,7 @@ list_modes (const char  *option_name,
    * ShellGlobal has some GTK+ dependencies, so initialize GTK+; we
    * don't really care if it fails though (e.g. when running from a tty),
    * so we mute all warnings */
-  g_log_set_default_handler (shut_up, NULL);
+  g_log_set_writer_func (shut_up, NULL, NULL);
   gtk_init_check (NULL, NULL);
 
   _shell_global_init (NULL);
@@ -538,7 +554,7 @@ main (int argc, char **argv)
   shell_introspection_init ();
   shell_fonts_init ();
 
-  g_log_set_default_handler (default_log_handler, NULL);
+  g_log_set_writer_func (default_log_writer, NULL, NULL);
 
   /* Initialize the global object */
   if (session_mode == NULL)
