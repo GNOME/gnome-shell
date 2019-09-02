@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-09 14:45+0000\n"
-"PO-Revision-Date: 2019-08-14 13:58+0200\n"
-"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
+"POT-Creation-Date: 2019-09-01 21:21+0000\n"
+"PO-Revision-Date: 2019-09-02 08:52+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -48,7 +48,7 @@ msgid "Open the application menu"
 msgstr "Otevřít nabídku aplikací"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Rozšíření pro Shell"
 
@@ -93,18 +93,10 @@ msgstr ""
 "EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
-msgstr "UUID rozšíření, která se mají zapnout"
+msgstr "UUID rozšíření, která se mají nuceně vypnout"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -113,9 +105,10 @@ msgid ""
 "extensions” setting."
 msgstr ""
 "Rozšíření GNOME Shell mají vlastnost UUID; tento klíč je seznamem rozšíření, "
-"která by měla být načítána. Každé rozšíření, které má být načítáno, musí být "
-"na tomto seznamu. S tímto seznamem můžete pracovat také pomocí metod "
-"EnableExtension a DisableExtension sběrnice DBus na org.gnome.Shell."
+"která by měla být vypnutá, i když se načtou jako součást aktuálního režimu. "
+"S tímto seznamem můžete pracovat také pomocí metod EnableExtension a "
+"DisableExtension sběrnice DBus na org.gnome.Shell. Tento klíč má přednost "
+"před nastavením „enabled-extensions“."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -346,32 +339,28 @@ msgstr ""
 "pracovní ploše. V opačném případě jsou zahrnuta všechna okna."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Locations"
-msgstr "Zjišťování polohy se používá"
+msgstr "Místa"
 
 #: data/org.gnome.shell.gschema.xml.in:235
 msgid "The locations to show in world clocks"
-msgstr ""
+msgstr "Místa, která se mají zobrazovat ve světových časech"
 
 #: data/org.gnome.shell.gschema.xml.in:245
 msgid "Automatic location"
-msgstr ""
+msgstr "Automatické místo"
 
 #: data/org.gnome.shell.gschema.xml.in:246
 msgid "Whether to fetch the current location or not"
-msgstr ""
+msgstr "Zda si zjistit, či ne, aktuální místo"
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Location"
-msgstr "Zjišťování polohy se používá"
+msgstr "Místo"
 
 #: data/org.gnome.shell.gschema.xml.in:254
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "Místo, pro které se má zobrazovat předpověď počasí"
 
 #: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
@@ -406,11 +395,11 @@ msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukaza
 msgid "Network Login"
 msgstr "Přihlášení do sítě"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Něco se stalo špatně"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -419,27 +408,27 @@ msgstr ""
 "Omlouváme se, ale vyskytl se problém: nastavení pro toto rozšíření nelze "
 "zobrazit. Doporučujeme problém nahlásit autorovi rozšíření."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Technické podrobnosti"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Zkopírovat chybu"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Domovská stránka"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Navštívit domovskou stránku rozšíření"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Nejsou nainstalována žádná rozšíření"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -447,19 +436,21 @@ msgstr ""
 "Rozšíření je možné instalovat pomocí aplikace Software nebo přes <a href="
 "\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Procházet v Softwaru"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"Bohužel, ale není možné získat seznam nainstalovaných rozšíření. Ujistěte "
+"se, že jste přihlášení do GNOME, a zkuste to znovu."
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/endSessionDialog.js:448 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
 #: js/ui/status/network.js:899
 msgid "Cancel"
@@ -779,27 +770,27 @@ msgid "All"
 msgstr "Všechny"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2224 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Otevřená okna"
 
-#: js/ui/appDisplay.js:2243 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:2255
+#: js/ui/appDisplay.js:2264
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Spustit pomocí vyhrazené grafické karty"
 
-#: js/ui/appDisplay.js:2284 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: js/ui/appDisplay.js:2290
+#: js/ui/appDisplay.js:2299
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: js/ui/appDisplay.js:2300 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
@@ -999,14 +990,12 @@ msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
 #: js/ui/components/automountManager.js:210
-#, fuzzy
-#| msgid "Unable to lock"
 msgid "Unable to unlock volume"
-msgstr "Nelze uzamknout obrazovku"
+msgstr "Nelze uzamknout svazek"
 
 #: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
-msgstr ""
+msgstr "Nainstalovaná verze udisks nepodporuje nastavení PIM"
 
 #: js/ui/components/autorunManager.js:330
 #, javascript-format
@@ -1339,13 +1328,13 @@ msgid "Other users are logged in."
 msgstr "Jsou přihlášeni jiní uživatelé."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:647
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:650
+#: js/ui/endSessionDialog.js:653
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
@@ -1528,7 +1517,7 @@ msgstr "Přehled"
 #. characters.
 #: js/ui/overview.js:230
 msgid "Type to search…"
-msgstr "Vyhledávejte psaním…"
+msgstr "vyhledávejte psaním…"
 
 #: js/ui/padOsd.js:93
 msgid "New shortcut…"
@@ -1687,19 +1676,16 @@ msgid "Hide Text"
 msgstr "Skrýt text"
 
 #: js/ui/shellMountOperation.js:304
-#| msgid "Volume"
 msgid "Hidden Volume"
 msgstr "Skrytý svazek"
 
 #: js/ui/shellMountOperation.js:307
 msgid "Windows System Volume"
-msgstr ""
+msgstr "Systémový svazek Windows"
 
 #: js/ui/shellMountOperation.js:310
-#, fuzzy
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
-msgstr "Myš klávesnicí"
+msgstr "Používat soubory s klíči"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:316
@@ -1707,6 +1693,8 @@ msgstr "Myš klávesnicí"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"K odemknutí svazku, který používá soubory s klíči, místo toho použijte "
+"pomůcku <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:323
 msgid "PIM Number"
@@ -1714,7 +1702,7 @@ msgstr "Číslo PIM"
 
 #: js/ui/shellMountOperation.js:341
 msgid "The PIM must be a number or empty."
-msgstr ""
+msgstr "PIM musí být číslo nebo prázdné."
 
 #: js/ui/shellMountOperation.js:352
 msgid "Password"
@@ -1733,7 +1721,6 @@ msgstr "Otevřít %s"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:476
 #, javascript-format
-#| msgid "Unable to lock"
 msgid "Unable to start %s"
 msgstr "Nelze spustit %s"
 
@@ -1741,7 +1728,7 @@ msgstr "Nelze spustit %s"
 #: js/ui/shellMountOperation.js:478
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr ""
+msgstr "Nezdařilo se najít aplikaci %s"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -1812,29 +1799,29 @@ msgstr "Vypnuto"
 msgid "On"
 msgstr "Zapnuto"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Jas"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr ""
+msgstr "Jednoduché kliknutí"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
-msgstr ""
+msgstr "Dvojité kliknutí"
 
 #: js/ui/status/dwellClick.js:23
 msgid "Drag"
-msgstr ""
+msgstr "Tažení"
 
 #: js/ui/status/dwellClick.js:28
 msgid "Secondary Click"
-msgstr ""
+msgstr "Druhé kliknutí"
 
 #: js/ui/status/dwellClick.js:37
 msgid "Dwell Click"
-msgstr ""
+msgstr "Kliknutí posečkáním"
 
 #: js/ui/status/keyboard.js:814
 msgid "Keyboard"
@@ -2367,19 +2354,327 @@ msgstr "Přesunout o monitor doprava"
 msgid "Evolution Calendar"
 msgstr "Kalendář Evolution"
 
-#: src/main.c:464
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Název by měl být velmi krátký (nejlépe samopopisný) řetězec.\n"
+"Příklady: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Název"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Popis by měl jednou větou vysvětlit, co vaše rozšíření vlastně dělá.\n"
+"Příklady: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Popis"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID je globálně jedinečnou identifikací vašeho rozšíření.\n"
+"Měl by být ve formátu e-mailové adresy (clicktofocus@janedoe.example.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "Jednoznačná identifikace nového rozšíření"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NÁZEV"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Název nového rozšíření, jak jej uvidí uživatel"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "POPIS"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Krátký popis toho, co rozšíření vlastně dělá"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Zadat informace o rozšíření interaktivně"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Vytvořit nové rozšíření"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Neznámý argument"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "Jsou vyžadovány UUID, název a popis"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Zakázat rozšíření"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Nebylo zadáno žádné UUID"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Bylo zadáno více než jedno UUID"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Povolit rozšíření"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Zobrazit informace o rozšíření"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Přepsat stávající rozšíření"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "BALÍČEK_S_ROZŠÍŘENÍM"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Nainstalovat balíček s rozšířením"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Nebyl zadán žádný balíček s rozšířením"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Bylo zadáno více balíčků s rozšířením naráz"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Zobrazit rozšíření nainstalovaná pro uživatele"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Zobrazit rozšíření nainstalovaná pro systém"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Zobrazit povolená rošíření"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Zobrazit zakázaná rozšíření"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Zobrazit rozšíření s předvolbami"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Vypsat podrobnosti o rozšíření"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Vypsat nainstalovaná rozšíření"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "SOUBOR"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Dodatečný zdroj, který se má přibalit"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHÉMA"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Schéma GSettings, které se má přibalit"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "SLOŽKA"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Složka, ve které se nacházejí jazykové překlady"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMÉNA"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Doména gettext, která se má použít pro překlady"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Přepsat stávající balíček"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Složka, ve které se má balíček vytvořit"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "ZDROJOVÁ_SLOŽKA"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Vytvořit balíček s rozšířením"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Bylo zadáno více zdrojových složek naráz"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Otevřít předvolby rozšíření"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Uvést rozšíření od výchozího stavu"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Odinstalovat rozšíření"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Cesta"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "Adresa URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Původní autor"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Verze"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Stav"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "„version“ nepřebírá žádné argumenty"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Použití:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Vypsat informace o verzi a skončit."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "PŘÍKAZ"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARGUMENTY…]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Příkazy"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Vypsat nápovědu"
+
+#: src/extensions-tool/main.c:244 src/main.c:468
 msgid "Print version"
 msgstr "Vypsat verzi"
 
-#: src/main.c:470
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Povolit rozšíření"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Zakázat rozšíření"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Uvést rozšíření do výchozího stavu"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Odinstalovat rozšíření"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Vypsat rozšíření"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Zobrazit informace o rozšíření"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Otevřít předvolby rozšíření"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Vytvořit rozšíření"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Zabalit rozšíření"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Nainstalovat balíček s rozšířením"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Použijte %s k vypsání podrobné nápovědy.\n"
+
+#: src/main.c:474
 msgid "Mode used by GDM for login screen"
 msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
-#: src/main.c:476
+#: src/main.c:480
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
 
-#: src/main.c:482
+#: src/main.c:486
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
@@ -2401,7 +2696,7 @@ msgstr "Hesla si neodpovídají."
 msgid "Password cannot be blank"
 msgstr "Heslo nemůže být prázdné."
 
-#: src/shell-polkit-authentication-agent.c:348
+#: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
 
