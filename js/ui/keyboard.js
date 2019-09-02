@@ -921,7 +921,7 @@ var EmojiSelection = GObject.registerClass({
 
         for (let i = 0; i < this._sections.length; i++) {
             let sect = this._sections[i];
-            sect.button.setLatched(sectionLabel.label == sect.label);
+            sect.button.setLatched(sectionLabel == sect.label);
         }
     }
 
