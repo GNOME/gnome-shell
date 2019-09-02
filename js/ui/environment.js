@@ -262,6 +262,14 @@ function init() {
         return Shell.util_format_date(format, this.getTime());
     };
 
+    Date.prototype.toGDateTime = function() {
+        return GLib.DateTime.new_from_unix_local(this.getTime() / 1000);
+    };
+
+    GLib.DateTime.prototype.toDate = function() {
+        return new Date(this.to_unix() * 1000 + this.get_microsecond() / 1000);
+    };
+
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
     if (slowdownEnv) {
         let factor = parseFloat(slowdownEnv);
