@@ -39,7 +39,13 @@
                 "_": false,
                 "C_": false,
                 "N_": false,
-                "ngettext": false
+                "ngettext": false,
+                "error": false,
+                "critical": false,
+                "warning": false,
+                "message": false,
+                "info": false,
+                "debug": false
             }
         }
     ]
