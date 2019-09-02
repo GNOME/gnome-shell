@@ -373,7 +373,10 @@ var Calendar = class Calendar {
 
         this._selectedDate = date;
         this._update();
-        this.emit('selected-date-changed', new Date(this._selectedDate));
+
+        let datetime = GLib.DateTime.new_from_unix_local(
+            this._selectedDate.getTime() / 1000);
+        this.emit('selected-date-changed', datetime);
     }
 
     updateTimeZone() {
