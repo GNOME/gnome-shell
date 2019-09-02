@@ -754,7 +754,7 @@ var BackgroundManager = class BackgroundManager {
         let background = this._backgroundSource.getBackground(this._monitorIndex);
         let backgroundActor = new Meta.BackgroundActor({ meta_display: global.display,
                                                          monitor: this._monitorIndex,
-                                                         background: background,
+                                                         background,
                                                          vignette: this._vignette,
                                                          vignette_sharpness: 0.5,
                                                          brightness: 0.5,
