@@ -504,9 +504,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log(`error: ${msg}: ${details}`);
+        console.warn(`error: ${msg}: ${details}`);
     else
-        log(`error: ${msg}`);
+        console.warn(`error: ${msg}`);
 
     notify(msg, details);
 }
