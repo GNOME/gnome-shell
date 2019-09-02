@@ -373,7 +373,7 @@ var Calendar = class Calendar {
 
         this._selectedDate = date;
         this._update();
-        this.emit('selected-date-changed', new Date(this._selectedDate));
+        this.emit('selected-date-changed', this._selectedDate.toGDateTime());
     }
 
     updateTimeZone() {
