@@ -198,7 +198,7 @@ var ScreenshotService = class {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)
                     return;
-                screenshot.pick_color(...coords, (o, res) => {
+                screenshot.pick_color(coords.x, coords.y, (_o, res) => {
                     let [success_, color] = screenshot.pick_color_finish(res);
                     let { red, green, blue } = color;
                     let retval = GLib.Variant.new('(a{sv})', [{
@@ -349,7 +349,8 @@ var PickPixel = class {
     }
 
     _onButtonRelease(actor, event) {
-        this._result = event.get_coords();
+        let [x, y] = event.get_coords();
+        this._result = new Clutter.Point({ x, y });
         this._grabHelper.ungrab();
         return Clutter.EVENT_PROPAGATE;
     }
