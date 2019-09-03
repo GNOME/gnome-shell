@@ -1110,7 +1110,7 @@ class CalendarMessageList extends St.Widget {
 
         for (let prop of ['visible', 'empty', 'can-clear']) {
             connectionsIds.push(
-                section.connect('notify::%s'.format(prop), this._sync.bind(this)));
+                section.connect(`notify::${prop}`, this._sync.bind(this)));
         }
         connectionsIds.push(section.connect('message-focused', (_s, messageActor) => {
             Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
