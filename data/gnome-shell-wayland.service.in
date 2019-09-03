@@ -23,3 +23,5 @@ ExecStart=@bindir@/gnome-shell
 SuccessExitStatus=1
 # On wayland we cannot restart
 Restart=no
+# Kill any stubborn child processes after this long
+TimeoutStopSec=5
