@@ -41,7 +41,7 @@
       </description>
     </key>
     <key name="disable-extension-version-validation" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Disables the validation of extension version compatibility</summary>
       <description>
         GNOME Shell will only load extensions that claim to support the current
