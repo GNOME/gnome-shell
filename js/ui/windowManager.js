@@ -127,7 +127,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     }
 
     _syncEnabled() {
-        let animating = this.actor.get_transition('@effects.%s.brightness'.format(this.name)) != null;
+        let animating = this.actor.get_transition(`@effects.${this.name}.brightness`) != null;
         let dimmed = this.brightness.red != 127;
         this.enabled = this._enabled && (animating || dimmed);
     }
