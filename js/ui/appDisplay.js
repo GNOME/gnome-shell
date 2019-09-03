@@ -1438,6 +1438,13 @@ var FolderIcon = class FolderIcon {
         this._itemDragEndId = Main.overview.connect(
             'item-drag-end', this._onDragEnd.bind(this));
 
+        this._popupTimeoutId = 0;
+
+        this.actor.connect('leave-event', this._onLeaveEvent.bind(this));
+        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
+        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
+        this.actor.connect('popup-menu', this._popupRenamePopup.bind(this));
+
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
@@ -1462,9 +1469,12 @@ var FolderIcon = class FolderIcon {
 
         if (this._popup)
             this._popup.actor.destroy();
+
+        this._removeMenuTimeout();
     }
 
     open() {
+        this._removeMenuTimeout();
         this._ensurePopup();
         this.view.actor.vscroll.adjustment.value = 0;
         this._openSpaceForPopup();
@@ -1627,6 +1637,60 @@ var FolderIcon = class FolderIcon {
         this._popupInvalidated = false;
     }
 
+    _removeMenuTimeout() {
+        if (this._popupTimeoutId > 0) {
+            Mainloop.source_remove(this._popupTimeoutId);
+            this._popupTimeoutId = 0;
+        }
+    }
+
+    _setPopupTimeout() {
+        this._removeMenuTimeout();
+        this._popupTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT, () => {
+            this._popupTimeoutId = 0;
+            this.popupMenu();
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(this._popupTimeoutId, '[gnome-shell] this.popupMenu');
+    }
+
+    _onLeaveEvent(_actor, _event) {
+        this.actor.fake_release();
+        this._removeMenuTimeout();
+    }
+
+    _onButtonPress(_actor, event) {
+        let button = event.get_button();
+        if (button == 1) {
+            this._setPopupTimeout();
+        } else if (button == 3) {
+            this._popupRenamePopup();
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onTouchEvent(actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
+            this._setPopupTimeout();
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _popupRenamePopup() {
+        this._removeMenuTimeout();
+        this.actor.fake_release();
+
+        if (!this._renamePopup) {
+            this._renamePopup = new RenameFolderPopup(this._folder);
+            this._renamePopup.setPosition(this.actor, 0.5);
+            Main.uiGroup.add_actor(this._renamePopup);
+        }
+
+        this.actor.set_hover(true);
+        this._renamePopup.popup();
+    }
+
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
@@ -1640,6 +1704,102 @@ Signals.addSignalMethods(FolderIcon.prototype);
 var RenameFolderPopup = GObject.registerClass(
 class RenameFolderPopup extends BoxPointer.BoxPointer {
     _init(folder) {
+        super._init(St.Side.BOTTOM, {
+            x_fill: true,
+            y_fill: true,
+            x_expand: true,
+            x_align: St.Align.START,
+        });
+
+        this.style_class = 'popup-menu popup-menu-boxpointer';
+
+        this._folder = folder;
+
+        this._isOpen = false;
+
+        let box = new St.BoxLayout({ style_class: 'rename-folder-popup-box'});
+        this.bin.set_child(box);
+
+        // Entry
+        this._entry = new St.Entry({
+            x_expand: true,
+            width: 200,
+        });
+        box.add_child(this._entry);
+
+        this._entry.clutter_text.connect('notify::text',
+                                         this._validate.bind(this));
+        this._entry.clutter_text.connect('activate',
+                                         this._updateFolderName.bind(this));
+
+        // Rename button
+        this._button = new St.Button({
+            style_class: 'button',
+            reactive: true,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            can_focus: true,
+            label: _("Rename"),
+        });
+        box.add_child(this._button);
+
+        this._button.connect('clicked', this._updateFolderName.bind(this));
+
+        this._grabHelper = new GrabHelper.GrabHelper(this, {
+            actionMode: Shell.ActionMode.POPUP
+        });
+        this._grabHelper.addActor(Main.layoutManager.overviewGroup);
+    }
+
+    popup() {
+        if (this._isOpen)
+            return;
+
+        this._isOpen = this._grabHelper.grab({
+            actor: this,
+            onUngrab: this.popdown.bind(this),
+        });
+
+        if (!this._isOpen)
+            return;
+
+        let folderName = this._folder.get_string('name');
+
+        this._entry.text = folderName;
+        this._entry.clutter_text.set_selection(0, folderName.length);
+
+        this.open(BoxPointer.PopupAnimation.FADE | BoxPointer.PopupAnimation.SLIDE);
+    }
+
+    popdown() {
+        if (!this._isOpen)
+            return;
+
+        this._grabHelper.ungrab({ actor: this });
+
+        this.close(BoxPointer.PopupAnimation.FADE | BoxPointer.PopupAnimation.SLIDE);
+        this._isOpen = false;
+    }
+
+    _validFolderName() {
+        let folderName = this._folder.get_string('name');
+        let newFolderName = this._entry.text.trim();
+
+        return newFolderName.length > 0 && folderName != newFolderName;
+    }
+
+    _validate() {
+        let validName = this._validFolderName();
+
+        this._button.reactive = validName;
+    }
+
+    _updateFolderName() {
+        if (!this._validFolderName())
+            return;
+
+        let newFolderName = this._entry.text.trim();
+        this._folder.set_string('name', newFolderName);
+        this.popdown();
     }
 });
 
