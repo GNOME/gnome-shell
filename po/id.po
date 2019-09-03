@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-12 19:40+0000\n"
-"PO-Revision-Date: 2019-08-16 15:37+0700\n"
+"POT-Creation-Date: 2019-08-21 23:18+0000\n"
+"PO-Revision-Date: 2019-09-03 19:18+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -47,7 +47,7 @@ msgid "Open the application menu"
 msgstr "Buka menu aplikasi"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:208
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Ekstensi Shell"
 
@@ -403,11 +403,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Log Masuk Jaringan"
 
-#: js/extensionPrefs/main.js:101 js/extensionPrefs/main.js:531
+#: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:534
 msgid "Something’s gone wrong"
 msgstr "Ada yang tidak beres"
 
-#: js/extensionPrefs/main.js:108
+#: js/extensionPrefs/main.js:111
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -417,27 +417,27 @@ msgstr ""
 "tidak dapat ditampilkan. Kami menyarankan Anda melaporkan masalah ini kepada "
 "penulis ekstensi."
 
-#: js/extensionPrefs/main.js:115
+#: js/extensionPrefs/main.js:118
 msgid "Technical Details"
 msgstr "Detail Teknis"
 
-#: js/extensionPrefs/main.js:150
+#: js/extensionPrefs/main.js:153
 msgid "Copy Error"
 msgstr "Salin Galat"
 
-#: js/extensionPrefs/main.js:177
+#: js/extensionPrefs/main.js:180
 msgid "Homepage"
 msgstr "Halaman Web"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:181
 msgid "Visit extension homepage"
 msgstr "Kunjungi halaman web ekstensi"
 
-#: js/extensionPrefs/main.js:473
+#: js/extensionPrefs/main.js:476
 msgid "No Extensions Installed"
 msgstr "Tak Ada Ekstensi Terpasang"
 
-#: js/extensionPrefs/main.js:483
+#: js/extensionPrefs/main.js:486
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -445,11 +445,11 @@ msgstr ""
 "Ekstensi dapat dipasang melalui Perangkat Lunak atau <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:498
+#: js/extensionPrefs/main.js:501
 msgid "Browse in Software"
 msgstr "Ramban di Perangkat Lunak"
 
-#: js/extensionPrefs/main.js:538
+#: js/extensionPrefs/main.js:541
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -1780,7 +1780,7 @@ msgstr "Mati"
 msgid "On"
 msgstr "Hidup"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:38
 msgid "Brightness"
 msgstr "Kecerahan"
 
@@ -2330,9 +2330,318 @@ msgstr "Pindahkan ke Monitor Kanan"
 msgid "Evolution Calendar"
 msgstr "Evolution Kalender"
 
-#: src/main.c:460
+#: src/extensions-tool/command-create.c:189
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Nama harus berupa string yang sangat pendek (idealnya deskriptif).\n"
+"Contohnya adalah: %s"
+
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+msgid "Name"
+msgstr "Nama"
+
+#: src/extensions-tool/command-create.c:203
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Deskripsi adalah penjelasan satu kalimat tentang apa yang dilakukan ekstensi "
+"Anda.\n"
+"Contohnya adalah: %s"
+
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+msgid "Description"
+msgstr "Deskripsi"
+
+#: src/extensions-tool/command-create.c:217
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID adalah pengidentifikasi unik secara global untuk ekstensi Anda.\n"
+"Ini harus dalam format alamat surel (clicktofocus@janedoe.example.com)\n"
+
+#: src/extensions-tool/command-create.c:239
+msgid "The unique identifier of the new extension"
+msgstr "Pengidentifikasi unik ekstensi baru"
+
+#: src/extensions-tool/command-create.c:242
+msgid "NAME"
+msgstr "NAMA"
+
+#: src/extensions-tool/command-create.c:243
+msgid "The user-visible name of the new extension"
+msgstr "Nama ekstensi baru yang dapat dilihat pengguna"
+
+#: src/extensions-tool/command-create.c:245
+msgid "DESCRIPTION"
+msgstr "DESKRIPSI"
+
+#: src/extensions-tool/command-create.c:247
+msgid "A short description of what the extension does"
+msgstr "Deskripsi singkat tentang apa yang dilakukan ekstensi"
+
+#: src/extensions-tool/command-create.c:250
+msgid "Enter extension information interactively"
+msgstr "Masukkan informasi ekstensi secara interaktif"
+
+#: src/extensions-tool/command-create.c:258
+msgid "Create a new extension"
+msgstr "Buat ekstensi baru"
+
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argumen tak dikenal"
+
+#: src/extensions-tool/command-create.c:284
+msgid "UUID, name and description are required"
+msgstr "Diperlukan UUID, nama, dan deskripsi"
+
+#: src/extensions-tool/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Nonaktifkan ekstensi"
+
+#: src/extensions-tool/command-disable.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Tidak ada UUID yang diberikan"
+
+#: src/extensions-tool/command-disable.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Lebih dari satu UUID diberikan"
+
+#: src/extensions-tool/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Aktifkan ekstensi"
+
+#: src/extensions-tool/command-info.c:79
+msgid "Show extensions info"
+msgstr "Tampilkan info ekstensi"
+
+#: src/extensions-tool/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Timpa ekstensi yang ada"
+
+#: src/extensions-tool/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "BUNDEL_EKSTENSI"
+
+#: src/extensions-tool/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Pasang bundel ekstensi"
+
+#: src/extensions-tool/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Tidak ada bundel ekstensi yang ditentukan"
+
+#: src/extensions-tool/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Lebih dari satu bundel ekstensi ditentukan"
+
+#: src/extensions-tool/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Tampilkan ekstensi yang dipasang pengguna"
+
+#: src/extensions-tool/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Tampilkan ekstensi yang dipasang sistem"
+
+#: src/extensions-tool/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Tampilkan ekstensi yang diaktifkan"
+
+#: src/extensions-tool/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Tampilkan ekstensi yang dinonaktifkan"
+
+#: src/extensions-tool/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Tampilkan ekstensi dengan preferensi"
+
+#: src/extensions-tool/command-list.c:133
+msgid "Print extension details"
+msgstr "Cetak detail ekstensi"
+
+#: src/extensions-tool/command-list.c:141
+msgid "List installed extensions"
+msgstr "Daftar ekstensi yang dipasang"
+
+#: src/extensions-tool/command-pack.c:450
+msgid "FILE"
+msgstr "BERKAS"
+
+#: src/extensions-tool/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Sumber tambahan untuk disertakan dalam bundel"
+
+#: src/extensions-tool/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SKEMA"
+
+#: src/extensions-tool/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Skema GSettings yang harus dimasukkan"
+
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIREKTORI"
+
+#: src/extensions-tool/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Direktori tempat terjemahan ditemukan"
+
+#: src/extensions-tool/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMAIN"
+
+#: src/extensions-tool/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Domain gettext yang digunakan untuk terjemahan"
+
+#: src/extensions-tool/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Timpa paket yang ada"
+
+#: src/extensions-tool/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Direktori tempat paket harus dibuat"
+
+#: src/extensions-tool/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "DIREKTORI_SUMBER"
+
+#: src/extensions-tool/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Buat bundel ekstensi"
+
+#: src/extensions-tool/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Lebih dari satu direktori sumber ditentukan"
+
+#: src/extensions-tool/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Buka preferensi ekstensi"
+
+#: src/extensions-tool/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Atur ulang ekstensi"
+
+#: src/extensions-tool/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Hapus ekstensi"
+
+#: src/extensions-tool/main.c:175
+msgid "Path"
+msgstr "Path"
+
+#: src/extensions-tool/main.c:178
+msgid "URL"
+msgstr "URL"
+
+#: src/extensions-tool/main.c:181
+msgid "Original author"
+msgstr "Penulis asli"
+
+#: src/extensions-tool/main.c:184
+msgid "Version"
+msgstr "Versi"
+
+#: src/extensions-tool/main.c:187
+msgid "State"
+msgstr "Kondisi"
+
+#: src/extensions-tool/main.c:221
+msgid "“version” takes no arguments"
+msgstr "\"version\" tak menerima argumen"
+
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+msgid "Usage:"
+msgstr "Pemakaian:"
+
+#: src/extensions-tool/main.c:226
+msgid "Print version information and exit."
+msgstr "Cetak informasi versi dan keluar."
+
+#: src/extensions-tool/main.c:240
+msgid "COMMAND"
+msgstr "PERINTAH"
+
+#: src/extensions-tool/main.c:240
+msgid "[ARGS…]"
+msgstr "[ARG...]"
+
+#: src/extensions-tool/main.c:242
+msgid "Commands:"
+msgstr "Perintah:"
+
+#: src/extensions-tool/main.c:243
+msgid "Print help"
+msgstr "Cetak bantuan"
+
+#: src/extensions-tool/main.c:244 src/main.c:460
 msgid "Print version"
 msgstr "Versi Cetak"
+
+#: src/extensions-tool/main.c:245
+msgid "Enable extension"
+msgstr "Aktifkan ekstensi"
+
+#: src/extensions-tool/main.c:246
+msgid "Disable extension"
+msgstr "Nonaktifkan ekstensi"
+
+#: src/extensions-tool/main.c:247
+msgid "Reset extension"
+msgstr "Atur ulang ekstensi"
+
+#: src/extensions-tool/main.c:248
+msgid "Uninstall extension"
+msgstr "Hapus ekstensi"
+
+#: src/extensions-tool/main.c:249
+msgid "List extensions"
+msgstr "Daftar ekstensi"
+
+#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+msgid "Show extension info"
+msgstr "Tampilkan info ekstensi"
+
+#: src/extensions-tool/main.c:252
+msgid "Open extension preferences"
+msgstr "Buka preferensi ekstensi"
+
+#: src/extensions-tool/main.c:253
+msgid "Create extension"
+msgstr "Buat ekstensi"
+
+#: src/extensions-tool/main.c:254
+msgid "Package extension"
+msgstr "Ekstensi Paket"
+
+#: src/extensions-tool/main.c:255
+msgid "Install extension bundle"
+msgstr "Pasang bundel ekstensi"
+
+#: src/extensions-tool/main.c:257
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "Gunakan %s untuk mendapatkan bantuan terperinci.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
