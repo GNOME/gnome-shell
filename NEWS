@@ -1,3 +1,23 @@
+3.33.92
+=======
+* Animate pointer a11y pie timer [Jonas D.; !688]
+* Fix restarting shell in systemd user session [Benjamin; !690]
+* Misc. bug fixes and cleanups [Florian, Jonas D., Jonas Å., Will;
+  !691, !689, !692, #1552, !698]
+
+Contributors:
+  Jonas Ådahl, Benjamin Berg, Piotr Drąg, Jonas Dreßler, Florian Müllner,
+  Will Thompson
+
+Translators:
+  Daniel Șerbănescu [ro], Danial Behzadi [fa], Daniel Mustieles [es],
+  Jiri Grönroos [fi], Asier Sarasua Garmendia [eu], Piotr Drąg [pl],
+  Rūdolfs Mazurs [lv], Anders Jonsson [sv], Fran Dieguez [gl], Jordi Mas [ca],
+  Matej Urbančič [sl], Zander Brown [en_GB], Ryuta Fujii [ja], Tim Sabsch [de],
+  Fabio Tomat [fur], Pawan Chitrakar [ne], A S Alam [pa], Changwoo Ryu [ko],
+  Aurimas Černius [lt], Daniel Rusek [cs], Marek Černocký [cs],
+  Kukuh Syafaat [id], Goran Vidović [hr], Rafael Fontenelle [pt_BR]
+
 3.33.91
 =======
 * Fix regression when adjusting brightness [Florian; #1500]
