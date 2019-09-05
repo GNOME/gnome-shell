@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, Gvc, St } = imports.gi;
+const { Clutter, Gio, GObject, Gvc, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -36,7 +36,8 @@ var StreamSlider = class {
         this._soundSettings.connect(`changed::${ALLOW_AMPLIFIED_VOLUME_KEY}`, this._amplifySettingsChanged.bind(this));
         this._amplifySettingsChanged();
 
-        this._slider.connect('notify::value', this._sliderChanged.bind(this));
+        this._sliderChangedId = this._slider.connect('notify::value',
+                                                     this._sliderChanged.bind(this));
         this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
@@ -129,10 +130,16 @@ var StreamSlider = class {
                                this._volumeCancellable);
     }
 
+    _changeSlider(value) {
+        GObject.signal_handler_block(this._slider, this._sliderChangedId);
+        this._slider.value = value;
+        GObject.signal_handler_unblock(this._slider, this._sliderChangedId);
+    }
+
     _updateVolume() {
         let muted = this._stream.is_muted;
-        this._slider.value = muted
-            ? 0 : (this._stream.volume / this._control.get_vol_max_norm());
+        this._changeSlider(muted
+            ? 0 : (this._stream.volume / this._control.get_vol_max_norm()));
         this.emit('stream-updated');
     }
 
