@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
-# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2016.
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2017.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011, 2012.
 # Hideki Yamane <henrich@debian.org>, 2011.
 # Takanori MATSUURA <t.matsuu@gmail.com>, 2012.
 # Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013.
 # Ikuya Awashiro <ikuya@fruitsbasket.info>, 2014.
 # IWAI, Masaharu <iwaim.sub@gmail.com>, 2015.
+# sicklylife <translation@sicklylife.jp>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-06-14 16:48+0000\n"
-"PO-Revision-Date: 2017-09-09 11:14+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
+"PO-Revision-Date: 2019-09-05 00:00+0900\n"
+"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -393,24 +394,17 @@ msgstr "(あるいは指でスワイプする)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
-#, fuzzy
-#| msgid "Power Off"
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "電源オフ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-#, fuzzy
-#| msgid "power off;shutdown"
 msgid "power off;shutdown;reboot;restart"
-msgstr "power off;shutdown;電源オフ;シャットダウン"
+msgstr "power off;shutdown;reboot;restart;電源オフ;シャットダウン;リブート;リスタート;再起動"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock screen"
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "画面ロック"
@@ -422,8 +416,6 @@ msgstr "lock screen;画面ロック"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
-#| msgid "Log Out"
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "ログアウト"
@@ -446,8 +438,6 @@ msgstr "suspend;sleep;サスペンド;スリープ"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
-#, fuzzy
-#| msgid "Switch User"
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ユーザーの切り替え"
@@ -459,19 +449,14 @@ msgstr "switch user;ユーザー切り替え"
 
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock orientation"
 msgctxt "search-result"
 msgid "Lock Orientation"
 msgstr "画面回転ロック"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-#, fuzzy
-#| msgid "lock orientation"
 msgid "lock orientation;screen;rotation"
-msgstr "lock orientation;画面回転;自動回転"
+msgstr "lock orientation;画面回転;自動回転;スクリーン;画面;回転"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -535,7 +520,7 @@ msgstr[0] "%d年前"
 #. Translators: Time in 24h format
 #: js/misc/util.js:228
 msgid "%H∶%M"
-msgstr "%H∶%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
@@ -549,7 +534,7 @@ msgstr "昨日 %H:%M"
 #: js/misc/util.js:240
 #, no-c-format
 msgid "%A, %H∶%M"
-msgstr "%A %H∶%M"
+msgstr "%A %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -557,7 +542,7 @@ msgstr "%A %H∶%M"
 #: js/misc/util.js:246
 #, no-c-format
 msgid "%B %d, %H∶%M"
-msgstr "%B%-e日 %H∶%M"
+msgstr "%B%-e日 %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -565,26 +550,26 @@ msgstr "%B%-e日 %H∶%M"
 #: js/misc/util.js:252
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
-msgstr "%Y年%B%-e日 %H∶%M"
+msgstr "%Y年%B%-e日 %H:%M"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:257
 msgid "%l∶%M %p"
-msgstr "%p%l∶%M"
+msgstr "%p %l:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/util.js:263
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "昨日 %p%l∶%M"
+msgstr "昨日 %p %l:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:269
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A %p%l∶%M"
+msgstr "%A %p %l:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -592,7 +577,7 @@ msgstr "%A %p%l∶%M"
 #: js/misc/util.js:275
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
-msgstr "%B%-e日 %p%l∶%M"
+msgstr "%B%-e日 %p%l:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -600,7 +585,7 @@ msgstr "%B%-e日 %p%l∶%M"
 #: js/misc/util.js:281
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
-msgstr "%Y年%B%-e日 %p%l∶%M"
+msgstr "%Y年%B%-e日 %p%l:%M"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:66
@@ -826,7 +811,7 @@ msgstr "すべてクリア"
 #: js/ui/closeDialog.js:50
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "”%s” の応答がありません。"
+msgstr "”%s”の応答がありません。"
 
 #: js/ui/closeDialog.js:51
 msgid ""
@@ -903,7 +888,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"無線ネットワーク ”%s” にアクセスするにはパスワードか、または暗号化キーが必要"
+"無線ネットワーク”%s”にアクセスするにはパスワードか、または暗号化キーが必要"
 "です。"
 
 #: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
@@ -938,7 +923,7 @@ msgstr "モバイルブロードバンドネットワークのパスワード"
 #: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "”%s” への接続にはパスワードが必要です。"
+msgstr "”%s”への接続にはパスワードが必要です。"
 
 #: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1693
 msgid "Network Manager"
@@ -1019,7 +1004,7 @@ msgstr "天気"
 #: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
-msgstr ""
+msgstr "終日 %s。"
 
 #. Translators: %s is a weather condition like "Clear sky"; see
 #. libgweather for the possible condition strings. If at all
@@ -1028,7 +1013,7 @@ msgstr ""
 #: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
-msgstr ""
+msgstr "%s → %s。"
 
 #. Translators: %s is a weather condition like "Clear sky"; see
 #. libgweather for the possible condition strings. If at all
@@ -1037,7 +1022,7 @@ msgstr ""
 #: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
-msgstr ""
+msgstr "%s → %s → %s。"
 
 #: js/ui/dateMenu.js:314
 msgid "Select a location…"
@@ -1051,7 +1036,7 @@ msgstr "ロードしています…"
 #: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
-msgstr ""
+msgstr "体感温度 %s。"
 
 #: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
@@ -1208,7 +1193,7 @@ msgstr "インストール"
 #: js/ui/extensionDownloader.js:206
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "extensions.gnome.org から ”%s” をダウンロードしてインストールしますか?"
+msgstr "extensions.gnome.org から”%s”をダウンロードしてインストールしますか?"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:59
@@ -1235,40 +1220,32 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned On"
-msgstr "スローキー"
+msgstr "スローキーをオンにする"
 
 #: js/ui/kbdA11yDialog.js:34
-#, fuzzy
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned Off"
-msgstr "スローキー"
+msgstr "スローキーをオフにする"
 
 #: js/ui/kbdA11yDialog.js:35
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
+msgstr "[SHIFT] キーを8秒間押下しました。これはスローキー機能のショートカットとして、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned On"
-msgstr "固定キー"
+msgstr "固定キーをオンにする"
 
 #: js/ui/kbdA11yDialog.js:43
-#, fuzzy
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned Off"
-msgstr "固定キー"
+msgstr "固定キーをオフにする"
 
 #: js/ui/kbdA11yDialog.js:45
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
+msgstr "[SHIFT] キーを連続して5回押下しました。これは固定キー機能のショートカットとして、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:47
 msgid ""
@@ -1276,10 +1253,12 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
+"同時に2つのキーを押下したか、あるいは [SHIFT] "
+"キーを連続して5回押下しました。これは固定キー機能を無効にし、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:59
 msgid "Leave On"
-msgstr ""
+msgstr "オンのままにする"
 
 #: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
 #: js/ui/status/network.js:1283
@@ -1296,11 +1275,11 @@ msgstr "オフにする"
 
 #: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
-msgstr ""
+msgstr "オフのままにする"
 
 #: js/ui/keyboard.js:198
 msgid "Region & Language Settings"
-msgstr ""
+msgstr "地域と言語の設定"
 
 #: js/ui/lookingGlass.js:644
 msgid "No extensions installed"
@@ -1382,23 +1361,19 @@ msgstr "検索ワードを入力…"
 
 #: js/ui/padOsd.js:105
 msgid "New shortcut…"
-msgstr ""
+msgstr "新しいショートカット…"
 
 #: js/ui/padOsd.js:156
-#, fuzzy
-#| msgid "Applications"
 msgid "Application defined"
-msgstr "アプリケーション"
+msgstr ""
 
 #: js/ui/padOsd.js:157
 msgid "Show on-screen help"
 msgstr ""
 
 #: js/ui/padOsd.js:158
-#, fuzzy
-#| msgid "Switch User"
 msgid "Switch monitor"
-msgstr "ユーザーの切り替え"
+msgstr "モニターの切り替え"
 
 #: js/ui/padOsd.js:159
 msgid "Assign keystroke"
@@ -1410,7 +1385,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:740
 msgid "Edit…"
-msgstr ""
+msgstr "編集…"
 
 #: js/ui/padOsd.js:782 js/ui/padOsd.js:887
 msgid "None"
@@ -1901,13 +1876,13 @@ msgstr "残量推計中…"
 #: js/ui/status/power.js:98
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "残り %d∶%02d (%d %%)"
+msgstr "残り %d:%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "充電完了まで %d∶%02d (%d %%)"
+msgstr "充電完了まで %d:%02d (%d %%)"
 
 #: js/ui/status/power.js:131 js/ui/status/power.js:133
 #, javascript-format
@@ -1947,22 +1922,22 @@ msgstr "電源オフ"
 
 #: js/ui/status/thunderbolt.js:294
 msgid "Thunderbolt"
-msgstr ""
+msgstr "Thunderbolt"
 
 #. we are done
 #: js/ui/status/thunderbolt.js:350
 msgid "Unknown Thunderbolt device"
-msgstr ""
+msgstr "不明な Thunderbolt デバイス"
 
 #: js/ui/status/thunderbolt.js:351
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
+msgstr "離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度切断し、再接続してください。"
 
 #: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
-msgstr ""
+msgstr "Thunderbolt 認証エラー"
 
 #: js/ui/status/thunderbolt.js:357
 #, javascript-format
@@ -2024,7 +1999,7 @@ msgstr "検索"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "”%s” は準備完了です"
+msgstr "”%s”は準備完了です"
 
 #: js/ui/windowManager.js:72
 msgid "Do you want to keep these display settings?"
