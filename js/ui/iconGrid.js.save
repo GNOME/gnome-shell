@@ -247,23 +247,10 @@ var IconGrid = GObject.registerClass({
 
     _childAdded(grid, child) {
         child._iconGridKeyFocusInId = child.connect('key-focus-in', this._keyFocusIn.bind(this));
-
-        child._paintVisible = child.opacity > 0;
-        child._opacityChangedId = child.connect('notify::opacity', () => {
-            let paintVisible = child._paintVisible;
-            child._paintVisible = child.opacity > 0;
-            if (paintVisible !== child._paintVisible)
-                this.queue_relayout();
-        });
     }
 
     _childRemoved(grid, child) {
         child.disconnect(child._iconGridKeyFocusInId);
-        delete child._iconGridKeyFocusInId;
-
-        child.disconnect(child._opacityChangedId);
-        delete child._opacityChangedId;
-        delete child._paintVisible;
     }
 
     vfunc_get_preferred_width(_forHeight) {
@@ -321,6 +308,7 @@ var IconGrid = GObject.registerClass({
     }
 
     vfunc_allocate(box, flags) {
+        log("GRID: alloc");
         this.set_allocation(box, flags);
 
         let themeNode = this.get_theme_node();
@@ -384,6 +372,8 @@ var IconGrid = GObject.registerClass({
     }
 
     vfunc_get_paint_volume(paintVolume) {
+        log("GRID: getting paint vol update");
+
         // Setting the paint volume does not make sense when we don't have
         // any allocation
         if (!this.has_allocation())
@@ -440,6 +430,8 @@ var IconGrid = GObject.registerClass({
     }
 
     _animationDone() {
+
+        log("GRID: animation is done");
         this._resetAnimationActors();
         this.emit('animation-done');
     }
