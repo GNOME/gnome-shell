@@ -847,7 +847,10 @@ var LookingGlass = class LookingGlass {
         this._entryArea = new St.BoxLayout({ name: 'EntryArea' });
         this._evalBox.add_actor(this._entryArea);
 
-        let label = new St.Label({ text: CHEVRON });
+        let label = new St.Label({
+            text: CHEVRON,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._entryArea.add(label);
 
         this._entry = new St.Entry({ can_focus: true });
