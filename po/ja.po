@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-27 11:26+0000\n"
+"POT-Creation-Date: 2019-09-05 13:45+0000\n"
 "PO-Revision-Date: 2019-08-29 20:44+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -453,7 +453,7 @@ msgstr ""
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/endSessionDialog.js:448 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
 #: js/ui/status/network.js:899
 msgid "Cancel"
@@ -803,7 +803,7 @@ msgstr "ヘッドフォン"
 msgid "Headset"
 msgstr "ヘッドセット"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:248
 msgid "Microphone"
 msgstr "マイク"
 
@@ -1293,13 +1293,13 @@ msgid "Other users are logged in."
 msgstr "他のユーザーがログインしています。"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:647
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (リモート)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:650
+#: js/ui/endSessionDialog.js:653
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (コンソール)"
@@ -1649,8 +1649,8 @@ msgstr "キーファイルを使用する"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
-"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを"
-"使用します。"
+"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを使"
+"用します。"
 
 #: js/ui/shellMountOperation.js:323
 msgid "PIM Number"
@@ -2146,11 +2146,11 @@ msgstr "Thunderbolt 認証エラー"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt デバイスを認証できませんでした: %s"
 
-#: js/ui/status/volume.js:128
+#: js/ui/status/volume.js:129
 msgid "Volume changed"
 msgstr "音量変更しました"
 
-#: js/ui/status/volume.js:193
+#: js/ui/status/volume.js:200
 msgid "Volume"
 msgstr "音量"
 
@@ -2203,22 +2203,22 @@ msgstr "検索"
 msgid "“%s” is ready"
 msgstr "”%s”は準備完了です"
 
-#: js/ui/windowManager.js:54
+#: js/ui/windowManager.js:55
 msgid "Do you want to keep these display settings?"
 msgstr "このディスプレイ設定を保存しますか?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:66
+#: js/ui/windowManager.js:67
 msgid "Revert Settings"
 msgstr "設定を元に戻す"
 
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Keep Changes"
 msgstr "変更を保存"
 
-#: js/ui/windowManager.js:87
+#: js/ui/windowManager.js:88
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2226,7 +2226,7 @@ msgstr[0] "%d 秒後に元の設定に戻ります"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:683
+#: js/ui/windowManager.js:684
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2556,7 +2556,7 @@ msgstr "コマンド:"
 msgid "Print help"
 msgstr "ヘルプを表示する"
 
-#: src/extensions-tool/main.c:244 src/main.c:460
+#: src/extensions-tool/main.c:244 src/main.c:468
 msgid "Print version"
 msgstr "バージョンを表示する"
 
@@ -2605,15 +2605,15 @@ msgstr ""
 msgid "Use %s to get detailed help.\n"
 msgstr "%s を使用すると詳細なヘルプが表示されます。\n"
 
-#: src/main.c:466
+#: src/main.c:474
 msgid "Mode used by GDM for login screen"
 msgstr "ログイン画面で GDM が使用するモード"
 
-#: src/main.c:472
+#: src/main.c:480
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "指定したモードを使用する (例: ログイン画面用の“gdm”)"
 
-#: src/main.c:478
+#: src/main.c:486
 msgid "List possible modes"
 msgstr "使用可能なモードを一覧表示する"
 
