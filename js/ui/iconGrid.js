@@ -247,11 +247,23 @@ var IconGrid = GObject.registerClass({
 
     _childAdded(grid, child) {
         child._iconGridKeyFocusInId = child.connect('key-focus-in', this._keyFocusIn.bind(this));
+
+        child._paintVisible = child.opacity > 0;
+        child._opacityChangedId = child.connect('notify::opacity', () => {
+            let paintVisible = child._paintVisible;
+            child._paintVisible = child.opacity > 0;
+            if (paintVisible !== child._paintVisible)
+                this.queue_relayout();
+        });
     }
 
     _childRemoved(grid, child) {
         child.disconnect(child._iconGridKeyFocusInId);
         delete child._iconGridKeyFocusInId;
+
+        child.disconnect(child._opacityChangedId);
+        delete child._opacityChangedId;
+        delete child._paintVisible;
     }
 
     vfunc_get_preferred_width(_forHeight) {
