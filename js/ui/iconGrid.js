@@ -428,6 +428,7 @@ var IconGrid = GObject.registerClass({
 
     _animationDone() {
         this._resetAnimationActors();
+        this.queue_relayout();
         this.emit('animation-done');
     }
 
