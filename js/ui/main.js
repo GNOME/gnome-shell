@@ -86,6 +86,7 @@ var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
+let _startTime;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -120,6 +121,8 @@ function _sessionUpdated() {
 }
 
 function start() {
+    _startTime = GLib.get_monotonic_time();
+
     // These are here so we don't break compatibility.
     global.logError = window.log;
     global.log = window.log;
@@ -256,6 +259,9 @@ function _initializeUI() {
 
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
+            let timePassedMs = (GLib.get_monotonic_time() - _startTime) / 1000;
+            log(`GNOME Shell startup took ${timePassedMs}ms`);
+
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
                 'MESSAGE': `GNOME Shell started at ${_startDate}`,
                 'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
