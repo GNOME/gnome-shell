@@ -10,7 +10,7 @@ const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML, deleteGFile } = imports.misc.fileUtils;
 
 const { ExtensionState } = ExtensionUtils;
 
@@ -219,10 +219,33 @@ var Application = GObject.registerClass({
                             Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
+        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        this._window.add(vbox);
+
+        this.disabledInfobar = new Gtk.InfoBar({
+            message_type: Gtk.MessageType.ERROR,
+            revealed: false,
+            show_close_button: true
+        });
+        this.disabledInfobar.connect('response',  () => {
+            this.disabledInfobar.revealed = false;
+        });
+        let contentArea = this.disabledInfobar.get_content_area();
+        let label = new Gtk.Label({
+            label: _('A problem was detected and extensions were automatically disabled. It is recommended to disable or reconfigure any extensions that may have caused the issue before re-enabling them at the top.'),
+            ellipsize: Pango.EllipsizeMode.END,
+            wrap: true,
+            lines: 2,
+            xalign: 0,
+            margin: 6
+        });
+        contentArea.add(label);
+        vbox.add(this.disabledInfobar);
+
         this._mainStack = new Gtk.Stack({
             transition_type: Gtk.StackTransitionType.CROSSFADE
         });
-        this._window.add(this._mainStack);
+        vbox.add(this._mainStack);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
 
@@ -338,6 +361,20 @@ var Application = GObject.registerClass({
         let args = commandLine.get_arguments();
 
         if (args.length) {
+            if (args[0] == '--disabled-warning') {
+                if (!this._settings.is_writable('disable-user-extensions'))
+                    this.quit();
+
+                this.disabledInfobar.set_revealed(true);
+
+                let file = GLib.build_filenamev ([GLib.get_user_config_dir(), 'gnome-shell-extensions-disabled-warning']);
+                let gfile = Gio.File.new_for_path(file);
+                if (gfile.query_exists(null))
+                    deleteGFile(gfile);
+
+                return 0;
+            }
+
             let uuid = args[0];
 
             this._skipMainWindow = true;
@@ -574,8 +611,11 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
                 this._extension = ExtensionUtils.deserializeExtension(newState);
                 let state = (this._extension.state == ExtensionState.ENABLED);
+                this._switch.freeze_notify();
                 this._switch.state = state;
+                this._switch.active = this._extension.isRequested;
                 this._switch.sensitive = this._canToggle();
+                this._switch.thaw_notify();
             });
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -644,7 +684,6 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._switch = new Gtk.Switch({
             valign: Gtk.Align.CENTER,
             sensitive: this._canToggle(),
-            state: this._extension.state === ExtensionState.ENABLED
         });
         this._switch.connect('notify::active', () => {
             if (this._switch.active)
@@ -653,6 +692,11 @@ class ExtensionRow extends Gtk.ListBoxRow {
                 this._app.shellProxy.DisableExtensionRemote(this.uuid);
         });
         this._switch.connect('state-set', () => true);
+        this._switch.freeze_notify();
+        this._switch.state = this._extension.state === ExtensionState.ENABLED;
+        this._switch.active = this._extension.isRequested;
+        this._switch.thaw_notify();
+
         hbox.add(this._switch);
     }
 

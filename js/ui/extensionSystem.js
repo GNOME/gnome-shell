@@ -22,6 +22,7 @@ var ExtensionManager = class {
 
         this._extensions = new Map();
         this._enabledExtensions = [];
+        this._requestedExtensions = [];
         this._extensionOrder = [];
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
@@ -250,6 +251,9 @@ var ExtensionManager = class {
         // Default to error, we set success as the last step
         extension.state = ExtensionState.ERROR;
 
+        let requested = this._requestedExtensions.includes(extension.uuid);
+        extension.isRequested = requested;
+
         let checkVersion = !global.settings.get_boolean(EXTENSION_DISABLE_VERSION_CHECK_KEY);
 
         if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
@@ -363,10 +367,7 @@ var ExtensionManager = class {
             ? DISABLE_USER_EXTENSIONS_KEY
             : ENABLED_EXTENSIONS_KEY;
 
-        extension.canChange =
-            !hasError &&
-            global.settings.is_writable(changeKey) &&
-            (isMode || !modeOnly);
+        extension.canChange = global.settings.is_writable(ENABLED_EXTENSIONS_KEY);
     }
 
     _getEnabledExtensions() {
@@ -374,6 +375,14 @@ var ExtensionManager = class {
 
         if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
             extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
+
+        // filter out 'disabled-extensions' which takes precedence
+        let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+        return extensions.filter(item => !disabledExtensions.includes(item));
+    }
+
+    _getRequestedExtensions() {
+        let extensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 
         // filter out 'disabled-extensions' which takes precedence
         let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
@@ -390,6 +399,16 @@ var ExtensionManager = class {
 
         if (!this._enabled)
             return;
+
+        // Updated requested state and emit change notifications
+        this._requestedExtensions = this._getRequestedExtensions();
+        for (let extension of this._extensions.values()) {
+            let requested = this._requestedExtensions.includes(extension.uuid);
+            if (extension.isRequested == requested)
+                continue;
+            extension.isRequested = requested;
+            this.emit('extension-state-changed', extension);
+        }
 
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
@@ -451,6 +470,7 @@ var ExtensionManager = class {
             this._onSettingsWritableChanged.bind(this));
 
         this._enabledExtensions = this._getEnabledExtensions();
+        this._requestedExtensions = this._getRequestedExtensions();
 
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
         FileUtils.collectFromDatadirs('extensions', true, (dir, info) => {
@@ -512,8 +532,9 @@ var ExtensionManager = class {
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initted)
+            if (this._initted) {
                 this._enabledExtensions = this._getEnabledExtensions();
+            }
             this._enableAllExtensions();
         } else {
             this._disableAllExtensions();
