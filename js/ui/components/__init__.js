@@ -1,5 +1,8 @@
 /* exported ComponentManager */
+const GLib = imports.gi.GLib;
 const Main = imports.ui.main;
+
+const COMPONENT_LOAD_SLOW_MS = 250;
 
 var ComponentManager = class {
     constructor() {
@@ -48,9 +51,15 @@ var ComponentManager = class {
     }
 
     _enableComponent(name) {
+        let startTime = GLib.get_monotonic_time();
+
         let component = this._ensureComponent(name);
         if (component)
             component.enable();
+
+        let timePassedMs = (GLib.get_monotonic_time() - startTime) / 1000;
+        if (timePassedMs > COMPONENT_LOAD_SLOW_MS)
+            log(`Loading component ${name} took long: ${timePassedMs}ms`);
     }
 
     _disableComponent(name) {
