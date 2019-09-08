@@ -1,0 +1,184 @@
+/* Calendar */
+
+// calendar popover
+#calendarArea {
+	padding: 0.75em 1.0em;
+}
+
+.calendar {
+	margin-bottom: 1em;
+}
+
+.calendar,
+.datemenu-today-button,
+.datemenu-displays-box,
+.message-list-sections {
+	margin: 0 1.5em;
+}
+
+.datemenu-calendar-column { spacing: 0.5em; }
+.datemenu-displays-section { padding-bottom: 3em; }
+.datemenu-displays-box { spacing: 1em; }
+
+.datemenu-calendar-column {
+	border: 0 solid $_bubble_borders_color;
+	&:ltr { border-left-width: 1px; }
+	&:rtl { border-right-width: 1px; }
+}
+
+.datemenu-today-button,
+.world-clocks-button,
+.weather-button,
+.events-section-title {
+	border-radius: 4px;
+	padding: .4em;
+}
+
+.message-list-section-list:ltr {
+	padding-left: .4em;
+}
+
+.message-list-section-list:rtl {
+	padding-right: .4em;
+}
+
+.datemenu-today-button,
+.world-clocks-button,
+.weather-button,
+.events-section-title {
+	&:hover, &:focus { background-color: $_hover_bg_color }
+	&:active { background-color: $_active_bg_color }
+}
+
+.datemenu-today-button .day-label {
+}
+
+.datemenu-today-button .date-label {
+	font-size: 1.5em;
+	font-weight: 300;
+}
+
+// world clocks
+.world-clocks-header,
+.weather-header,
+.events-section-title {
+	color: darken($fg_color,40%);
+	font-weight: bold;
+}
+
+.weather-header.location {
+	font-weight: normal;
+	font-size: 0.9em;
+}
+
+.world-clocks-grid,
+.weather-grid {
+	spacing-rows: 0.4em;
+	spacing-columns: 0.8em;
+}
+
+.weather-box {
+	spacing: 0.4em;
+}
+
+.world-clocks-city {
+	font-weight: bold;
+	font-size: 0.9em;
+}
+
+.world-clocks-time {
+	color: darken($fg_color,20%);
+	font-feature-settings: "tnum";
+	font-size: 1.2em;
+}
+
+.world-clocks-timezone {
+	color: $fg_color;
+	font-feature-settings: "tnum";
+	font-size: 0.9em;
+}
+
+.weather-forecast-icon {
+	icon-size: 2.18em;
+}
+
+.weather-forecast-time {
+	color: darken($fg_color,40%);
+	font-size: 0.8em;
+}
+
+.calendar-month-label {
+	color: lighten($fg_color,5%);
+	font-weight: bold;
+	padding: 8px 0;
+	&:focus {}
+}
+
+.pager-button {
+	background-color: transparent;
+	width: 32px;
+	border-radius: 4px;
+	&:hover, &:focus { background-color: $_hover_bg_color; }
+	&:active { background-color: transparentize($fg_color, 0.84); }
+}
+
+.calendar-change-month-back StIcon, .calendar-change-month-forward StIcon { // arrows
+	icon-size: $base_icon_size;
+}
+
+.calendar-day-base {
+	font-size: 80%;
+	text-align: center;
+	width: 2.4em; height: 2.4em;
+	padding: 0.1em;
+	margin: 2px;
+	border-radius: 1.4em;
+	font-feature-settings: "tnum";
+	&:hover, &:focus { background-color: $_hover_bg_color; }
+	&:active,&:selected {
+		color: lighten($selected_fg_color,5%);
+		background-color: $selected_bg_color;
+		border-color: transparent; //avoid jumparound due to today
+	}
+	&.calendar-day-heading {  //day of week heading
+		color: lighten($fg_color,5%);
+		margin-top: 1em;
+		font-size: 70%;
+	}
+}
+.calendar-day { //border collapse hack - see calendar.js
+	border-width: 0;
+}
+.calendar-day-top { border-top-width: 1px; }
+.calendar-day-left { border-left-width: 1px; }
+.calendar-work-day {
+
+}
+.calendar-nonwork-day {
+	color: $insensitive_fg_color;
+}
+.calendar-today {
+	font-weight: bold;
+	//color: lighten($fg_color,10%);
+	//background-color: darken($bg_color,5%);
+	border: 1px solid $_bubble_borders_color;
+}
+.calendar-day-with-events {
+	color: lighten($fg_color,10%);
+	font-weight: bold;
+	background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg");
+}
+.calendar-other-month-day {
+	color: transparentize($fg_color ,0.5);
+	opacity: 0.5;
+}
+.calendar-week-number {
+	font-size: 70%;
+	font-weight: bold;
+	width: 2.3em; height: 1.8em;
+	border-radius: 2px;
+	padding: 0.5em 0 0;
+	margin: 6px;
+	background-color: $_bubble_borders_color;
+	color: $fg_color;
+}

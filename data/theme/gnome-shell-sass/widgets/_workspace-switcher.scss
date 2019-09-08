@@ -1,0 +1,53 @@
+/* Workspace Switcher */
+.workspace-switcher-group { padding: $base_padding; }
+
+.workspace-switcher-container {
+	@extend %osd_panel;
+}
+
+.workspace-switcher {
+	background: transparent;
+	border: 0px;
+	border-radius: 0px;
+	padding: 0px;
+	spacing: $base_spacing * 2;
+}
+
+.ws-switcher-active-up, .ws-switcher-active-down,
+.ws-switcher-active-left, .ws-switcher-active-right {
+	height: 50px;
+	background-color: $selected_bg_color;
+	color: $selected_fg_color;
+	background-size: 32px;
+	border-radius: 8px;
+}
+
+.ws-switcher-box {
+	height: 50px;
+	border: 1px solid transparentize($osd_fg_color,0.9);
+	background: transparent;
+	border-radius: 8px;
+}
+
+// Workspace pager
+.workspace-thumbnails { //container ala dash
+	color: $osd_fg_color;
+	background-color: transparentize($osd_bg_color, 0.1);
+	border: none;
+	visible-width: 32px; //amount visible before hover
+	spacing: 11px;
+	padding: 8px;
+	border-radius: 9px 0 0 9px;
+	//border-width: 1px 0 1px 1px; //fixme: can't have non unoform borders :(
+	&:rtl { border-radius: 0 9px 9px 0;}
+
+	.placeholder {
+		background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+		background-size: contain;
+		height: 24px;
+	}
+}
+.workspace-thumbnail-indicator {
+	border: 2px solid $selected_bg_color;
+	padding: 1px;
+}

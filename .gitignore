@@ -20,6 +20,8 @@ data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
 data/org.gnome.Shell.PortalHelper.desktop
 data/org.gnome.Shell.PortalHelper.service
+data/theme/*.css
+data/theme/*.css.map
 data/theme/.sass-cache
 docs/reference/*/*.args
 docs/reference/*/*.bak
@@ -28,7 +30,7 @@ docs/reference/*/*.interfaces
 docs/reference/*/*.prerequisites
 docs/reference/*/*.sgml
 docs/reference/*/*.signals
-docs/reference/*/*.stamp
+docs/reference/*/*.stampl/merge_requests
 docs/reference/*/*.txt
 docs/reference/*/*.types
 docs/reference/*/html/
