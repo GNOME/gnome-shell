@@ -1,0 +1,86 @@
+/* OVERVIEW */
+
+#overview {
+	spacing: 24px;
+}
+
+.overview-controls {
+	padding-bottom: 32px;
+}
+
+// Search entry
+.search-entry, %search_entry {
+	width: 320px;
+	padding: 7px 9px;
+	border-radius: 18px;
+	color: $fg_color;
+	background-color: $base_color;
+	border-color: $borders_color;
+	&:focus {
+		padding: 6px 8px;
+		border-width: 2px;
+		border-color: $selected_bg_color;
+	}
+
+	.search-entry-icon { 
+		icon-size: $base_icon_size;
+		padding: 0 4px;
+		color: $fg_color;
+	}
+
+	&:hover, &:focus {
+		.search-entry-icon { color: transparentize($fg_color,.3); }
+	}
+}
+
+// Windows
+
+.window-picker { //container around window thumbnails
+	-horizontal-spacing: $base_spacing * 4;
+	-vertical-spacing: $base_spacing * 4;
+	padding: 0 16px 16px;
+
+	&.external-monitor { padding: 16px; }
+}
+
+.window-clone-border {
+	$_bg: transparentize(white, 0.65);
+	border: 7px solid $_bg;
+	border-radius: $modal_radius;
+	// For window decorations with round corners we can't match
+	// the exact shape when the window is scaled. So apply a shadow
+	// to fix that case
+	box-shadow: inset 0 0 0 1px $_bg;
+}
+
+// titles
+.window-caption {
+	spacing: 25px;
+	color: $selected_fg_color;
+	background-color: $selected_bg_color;
+	border-radius: 8px;
+	padding: 4px 12px;
+}
+
+// close icon
+.window-close {
+	background-color: $selected_bg_color;
+	color: white;
+	border-radius: 24px;
+	border: 2px solid $selected_bg_color;
+	height: 24px;
+	width: 24px;
+	-shell-close-overlap: 11px;
+	box-shadow: -1px 1px 5px 0px transparentize(black, 0.5);
+
+	&:hover {
+		background-color: lighten($selected_bg_color, 5%);
+		border-color: lighten($selected_bg_color, 5%);
+	}
+
+	&:active {
+		background-color: darken($selected_bg_color, 5%);
+		border-color: darken($selected_bg_color, 5%);
+	}
+}
+

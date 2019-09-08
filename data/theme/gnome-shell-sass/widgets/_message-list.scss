@@ -1,0 +1,89 @@
+/* Message List */
+
+.message-list {
+	width: 31.5em;
+}
+
+.message-list-clear-button.button {
+	@extend %button;
+	margin: 1.5em 1.5em 0;
+}
+
+.message-list-sections {
+	spacing: 1em;
+}
+
+.message-list-section,
+.message-list-section-list {
+	spacing: 0.4em;
+}
+
+.message {
+	border: 1px solid $_bubble_borders_color;
+	background-color: lighten($bg_color, 2%);
+	&:hover,&:focus { background-color: $_hover_bg_color; }
+	&:active { background-color: transparentize($fg_color, 0.84) }
+	border-radius: 5px;
+}
+
+.message-icon-bin {
+	padding: 0.68em 0.2em 0.68em 0.68em;
+	&:rtl { padding: 0.68em 0.68em 0.68em 0.2em; }
+}
+
+.message-icon-bin > StIcon {
+	color: $fg_color;
+	icon-size: $base_icon_size;
+	-st-icon-style: symbolic;
+}
+
+.message-icon-bin > .fallback-window-icon {
+	width: $base_icon_size;
+	height: $base_icon_size;
+}
+
+.message-secondary-bin {
+	padding: 0 0.82em;;
+}
+
+.message-secondary-bin > .event-time {
+	color: $fg_color;
+	font-size: 0.7em;
+	/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
+	padding-bottom: 0.13em;
+}
+
+.message-secondary-bin > StIcon {
+	icon-size: $base_icon_size;
+}
+
+.message-title {
+	color: $fg_color;
+}
+
+.message-content {
+	color: darken($fg_color, 10%);
+	padding: 10px;
+}
+
+.message-media-control {
+	padding: $base_padding;
+	color: lighten($fg_color, 15%);
+
+	&:last-child:ltr { padding-right: 18px; }
+	&:last-child:rtl { padding-left: 18px; }
+	&:hover { color: $fg_color; }
+	&:insensitive { color: darken($fg_color,40%); }
+}
+
+.media-message-cover-icon {
+	icon-size: 48px !important;
+	&.fallback {
+		color: lighten($fg_color,10%);
+		background-color: $bg_color;
+		border: 1px solid $bg_color;
+		border-radius: 2px;
+		icon-size: 32px !important;
+		padding: 6px;
+	}
+}

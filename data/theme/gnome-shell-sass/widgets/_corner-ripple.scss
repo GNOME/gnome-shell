@@ -1,0 +1,20 @@
+
+// Activities Ripples
+.ripple-box {
+	width: 52px;
+	height: 52px;
+	border-radius: 0 0 52px 0; // radius the size of the box give us the curve
+	background-color: lighten(transparentize($selected_bg_color, 0.7), 40%);
+	box-shadow: 0 0 2px 2px lighten($selected_bg_color, 20%);
+}
+
+.ripple-box:rtl { border-radius: 0 0 0 52px; } // just a simple change to the border radius position
+
+// Pointer location
+.ripple-pointer-location {
+	width: 50px;
+	height: 50px;
+	border-radius: 25px 25px 25px 25px; // radius the size of the box give us the curve
+	background-color: lighten(transparentize($selected_bg_color, 0.7), 30%);
+	box-shadow: 0 0 2px 2px lighten($selected_bg_color, 20%);
+}

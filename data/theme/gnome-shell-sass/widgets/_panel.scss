@@ -1,0 +1,88 @@
+/* Top Bar */
+// a.k.a. the panel
+
+$panel_corner_radius: $base_radius + 1px;
+$panel_bg_color: if($variant == 'light', #fff, #000);
+$panel_fg_color: if($variant == 'light', #2e3436, darken($fg_color, 10%));
+$panel_height: 1.86em;
+
+#panel {
+	background-color: $panel_bg_color;
+	font-weight: bold;
+	height: $panel_height;
+	font-feature-settings: "tnum";
+
+	&.unlock-screen,
+	&.login-screen,
+	&.lock-screen {
+		background-color: transparent;
+	}
+
+	#panelLeft, #panelCenter { // spacing between activities<>app menu and such
+		spacing: $base_spacing;
+	}
+
+	.panel-corner {
+		-panel_corner_radius: $panel_corner_radius;
+		-panel-corner-background-color: $panel_bg_color;
+		-panel-corner-border-width: 2px;
+		-panel-corner-border-color: transparent;
+
+		&:active, &:overview, &:focus {
+			-panel-corner-border-color: lighten($selected_bg_color,5%);
+		}
+
+		&.lock-screen, &.login-screen, &.unlock-screen {
+			-panel_corner_radius: 0;
+			-panel-corner-background-color: transparent;
+			-panel-corner-border-color: transparent;
+		}
+	}
+
+	.panel-button {
+		-natural-hpadding: $base_padding;
+		-minimum-hpadding: 6px;
+		font-weight: bold;
+		color: $panel_fg_color;
+
+		.app-menu-icon {
+			-st-icon-style: symbolic;
+			margin-left: 4px;
+			margin-right: 4px;
+			//dimensions of the icon are hardcoded
+		}
+
+		&:hover {
+			color: lighten($panel_fg_color, 20%);
+		}
+
+		&:active, &:overview, &:focus, &:checked {
+			// Trick due to St limitations. It needs a background to draw
+			// a box-shadow
+			background-color: rgba(0, 0, 0, 0.01);
+			box-shadow: inset 0 -2px 0px lighten($selected_bg_color,5%);
+			color: lighten($panel_fg_color, 20%);
+		}
+
+		.system-status-icon { icon-size: $base_icon_size; padding: 0 5px; }
+		.unlock-screen &,
+		.login-screen &,
+		.lock-screen & {
+			color: lighten($fg_color, 10%);
+			&:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
+		}
+	}
+
+	.panel-status-indicators-box,
+	.panel-status-menu-box {
+		spacing: 2px;
+	}
+
+	// spacing between power icon and (optional) percentage label
+	.power-status.panel-status-indicators-box {
+		spacing: 0;
+	}
+
+	.screencast-indicator,
+	.remote-access-indicator { color: $warning_color; }
+}

@@ -1,0 +1,44 @@
+
+
+
+/* DASHBOARD */
+
+#dash {
+
+	color: $osd_fg_color;
+	background-color: transparentize($osd_bg_color, 0.1);
+	border: none;
+	font-size: 9pt;
+	padding: 4px 0;
+	border-radius: 0px 9px 9px 0px;
+
+	&:rtl {
+		border-radius: 9px 0 0 9px;
+	}
+
+	.placeholder {
+		background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+		background-size: contain;
+		height: 24px;
+	}
+
+	.empty-dash-drop-target {
+		width: 24px;
+		height: 24px;
+	}
+
+}
+
+.dash-item-container > StWidget {
+	padding: 4px 8px;
+}
+
+.dash-label { //osd tooltip
+	border-radius: 7px;
+	padding: 4px 12px;
+	color: $osd_fg_color;
+	background-color: transparentize($osd_bg_color,0.05);
+	border: 1px solid $osd_outer_borders_color;
+	text-align: center;
+	-x-offset: 8px;
+}
