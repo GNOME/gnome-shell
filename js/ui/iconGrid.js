@@ -251,6 +251,7 @@ var IconGrid = GObject.registerClass({
 
     _childRemoved(grid, child) {
         child.disconnect(child._iconGridKeyFocusInId);
+        delete child._iconGridKeyFocusInId;
     }
 
     vfunc_get_preferred_width(_forHeight) {
