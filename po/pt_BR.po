@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-21 23:18+0000\n"
-"PO-Revision-Date: 2019-09-03 16:23-0300\n"
+"POT-Creation-Date: 2019-09-09 20:24+0000\n"
+"PO-Revision-Date: 2019-09-09 19:41-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -362,7 +362,6 @@ msgstr ""
 "trabalho atual. Caso contrário, todos as janelas serão incluídas."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#| msgid "Location In Use"
 msgid "Locations"
 msgstr "Localizações"
 
@@ -379,7 +378,6 @@ msgid "Whether to fetch the current location or not"
 msgstr "Se deve-se obter a localização atual ou não"
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#| msgid "Location In Use"
 msgid "Location"
 msgstr "Localização"
 
@@ -479,7 +477,7 @@ msgstr ""
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/endSessionDialog.js:448 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
 #: js/ui/status/network.js:899
 msgid "Cancel"
@@ -783,28 +781,33 @@ msgstr "Frequente"
 msgid "All"
 msgstr "Todos"
 
+#: js/ui/appDisplay.js:1751
+#| msgid "Username: "
+msgid "Rename"
+msgstr "Renomear"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Abrir janelas"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nova janela"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -834,7 +837,7 @@ msgstr "Fones de ouvido"
 msgid "Headset"
 msgstr "Fone de ouvido com microfone"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:248
 msgid "Microphone"
 msgstr "Microfone"
 
@@ -1336,13 +1339,13 @@ msgid "Other users are logged in."
 msgstr "Outros usuários estão com sessão aberta."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:647
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:650
+#: js/ui/endSessionDialog.js:653
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1497,7 +1500,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Informações do sistema"
 
@@ -1626,7 +1629,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nova notificação"
 msgstr[1] "%d novas notificações"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -1649,15 +1652,15 @@ msgstr "Não foi possível bloquear"
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Pesquisando…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Nenhum resultado."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2143,27 +2146,27 @@ msgstr "Desativar"
 msgid "Airplane Mode On"
 msgstr "Modo avião ligado"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Alternar usuário"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Configurações de conta"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Bloqueio de orientação"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Suspender"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Desligar"
 
@@ -2203,11 +2206,11 @@ msgstr "Erro de autorização de thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Não foi possível autorizar o dispositivo Thunderbolt: %s"
 
-#: js/ui/status/volume.js:128
+#: js/ui/status/volume.js:129
 msgid "Volume changed"
 msgstr "Volume alterado"
 
-#: js/ui/status/volume.js:193
+#: js/ui/status/volume.js:200
 msgid "Volume"
 msgstr "Volume"
 
@@ -2262,22 +2265,22 @@ msgstr "“%s” está pronto"
 
 # Título de janela de confirmação; Se grande demais, pode ser exibida com "..."
 # Vide: https://bugzilla.gnome.org/show_bug.cgi?id=786331
-#: js/ui/windowManager.js:54
+#: js/ui/windowManager.js:55
 msgid "Do you want to keep these display settings?"
 msgstr "Deseja manter essas configurações da tela?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:66
+#: js/ui/windowManager.js:67
 msgid "Revert Settings"
 msgstr "Reverter configurações"
 
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Keep Changes"
 msgstr "Manter alterações"
 
-#: js/ui/windowManager.js:87
+#: js/ui/windowManager.js:88
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2286,7 +2289,7 @@ msgstr[1] "Alterações nas configurações serão revertidas em %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:683
+#: js/ui/windowManager.js:684
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2420,13 +2423,11 @@ msgid "Enter extension information interactively"
 msgstr "Insira as informações da extensão interativamente"
 
 #: src/extensions-tool/command-create.c:258
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
 msgstr "Cria uma nova extensão"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
 msgstr "Argumentos desconhecidos"
 
@@ -2435,7 +2436,6 @@ msgid "UUID, name and description are required"
 msgstr "UUID, nome e descrição são necessários"
 
 #: src/extensions-tool/command-disable.c:57
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
 msgstr "Desabilita uma extensão"
 
@@ -2458,12 +2458,10 @@ msgid "More than one UUID given"
 msgstr "Mais de um UUID fornecido"
 
 #: src/extensions-tool/command-enable.c:57
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
 msgstr "Habilita uma extensão"
 
 #: src/extensions-tool/command-info.c:79
-#| msgid "No extensions installed"
 msgid "Show extensions info"
 msgstr "Mostra informações das extensões"
 
@@ -2476,12 +2474,10 @@ msgid "EXTENSION_BUNDLE"
 msgstr "PACOTE_EXTENSÃO"
 
 #: src/extensions-tool/command-install.c:184
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
 msgstr "Instala um pacote de extensão"
 
 #: src/extensions-tool/command-install.c:201
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
 msgstr "Nenhum pacote de extensão especificado"
 
@@ -2490,37 +2486,30 @@ msgid "More than one extension bundle specified"
 msgstr "Mais de um pacote de extensão especificado"
 
 #: src/extensions-tool/command-list.c:118
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
 msgstr "Mostra extensões instaladas pelo usuário"
 
 #: src/extensions-tool/command-list.c:121
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
 msgstr "Mostra extensões instaladas pelo sistema"
 
 #: src/extensions-tool/command-list.c:124
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
 msgstr "Mostra extensões habilitadas"
 
 #: src/extensions-tool/command-list.c:127
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
 msgstr "Mostra extensões desabilitadas"
 
 #: src/extensions-tool/command-list.c:130
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
 msgstr "Mostra extensões com preferências"
 
 #: src/extensions-tool/command-list.c:133
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
 msgstr "Mostra detalhes da extensão"
 
 #: src/extensions-tool/command-list.c:141
-#| msgid "Disable user extensions"
 msgid "List installed extensions"
 msgstr "Lista extensões instaladas"
 
@@ -2578,17 +2567,14 @@ msgid "More than one source directory specified"
 msgstr "Mais de um diretório fonte especificado"
 
 #: src/extensions-tool/command-prefs.c:90
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
 msgstr "Abre as preferências da extensão"
 
 #: src/extensions-tool/command-reset.c:57
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
 msgstr "Redefine uma extensão"
 
 #: src/extensions-tool/command-uninstall.c:72
-#| msgid "Disable user extensions"
 msgid "Uninstall an extension"
 msgstr "Desinstala uma extensão"
 
@@ -2605,7 +2591,6 @@ msgid "Original author"
 msgstr "Autor original"
 
 #: src/extensions-tool/main.c:184
-#| msgid "Print version"
 msgid "Version"
 msgstr "Versão"
 
@@ -2638,61 +2623,50 @@ msgid "Commands:"
 msgstr "Comandos"
 
 #: src/extensions-tool/main.c:243
-#| msgid "Print version"
 msgid "Print help"
 msgstr "Exibe essa ajuda"
 
-#: src/extensions-tool/main.c:244 src/main.c:460
+#: src/extensions-tool/main.c:244 src/main.c:468
 msgid "Print version"
 msgstr "Exibe a versão"
 
 #: src/extensions-tool/main.c:245
-#| msgid "Disable user extensions"
 msgid "Enable extension"
 msgstr "Habilita extensão"
 
 #: src/extensions-tool/main.c:246
-#| msgid "Disable user extensions"
 msgid "Disable extension"
 msgstr "Desabilita extensão"
 
 #: src/extensions-tool/main.c:247
-#| msgid "Disable user extensions"
 msgid "Reset extension"
 msgstr "Redefine extensão"
 
 #: src/extensions-tool/main.c:248
-#| msgid "Disable user extensions"
 msgid "Uninstall extension"
 msgstr "Desinstala extensão"
 
 #: src/extensions-tool/main.c:249
-#| msgid "Disable user extensions"
 msgid "List extensions"
 msgstr "Lista extensões"
 
 #: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
-#| msgid "No extensions installed"
 msgid "Show extension info"
 msgstr "Mostra informações de extensão"
 
 #: src/extensions-tool/main.c:252
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Open extension preferences"
 msgstr "Abre preferências de extensão"
 
 #: src/extensions-tool/main.c:253
-#| msgid "Shell Extensions"
 msgid "Create extension"
 msgstr "Cria extensão"
 
 #: src/extensions-tool/main.c:254
-#| msgid "Shell Extensions"
 msgid "Package extension"
 msgstr "Empacota extensão"
 
 #: src/extensions-tool/main.c:255
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
 msgstr "Instala pacote de extensão"
 
@@ -2701,16 +2675,16 @@ msgstr "Instala pacote de extensão"
 msgid "Use %s to get detailed help.\n"
 msgstr "Use %s para obter ajuda detalhada.\n"
 
-#: src/main.c:466
+#: src/main.c:474
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado pelo GDM para a tela de início de sessão"
 
-#: src/main.c:472
+#: src/main.c:480
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Utilizar um modo específico, ex.: “gdm” para a tela de início de sessão"
 
-#: src/main.c:478
+#: src/main.c:486
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
