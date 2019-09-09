@@ -1438,6 +1438,13 @@ var FolderIcon = class FolderIcon {
         this._itemDragEndId = Main.overview.connect(
             'item-drag-end', this._onDragEnd.bind(this));
 
+        this._popupTimeoutId = 0;
+
+        this.actor.connect('leave-event', this._onLeaveEvent.bind(this));
+        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
+        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
+        this.actor.connect('popup-menu', this._popupRenamePopup.bind(this));
+
         this.actor.connect('clicked', this.open.bind(this));
         this.actor.connect('destroy', this.onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => {
@@ -1462,9 +1469,12 @@ var FolderIcon = class FolderIcon {
 
         if (this._popup)
             this._popup.actor.destroy();
+
+        this._removeMenuTimeout();
     }
 
     open() {
+        this._removeMenuTimeout();
         this._ensurePopup();
         this.view.actor.vscroll.adjustment.value = 0;
         this._openSpaceForPopup();
@@ -1627,6 +1637,76 @@ var FolderIcon = class FolderIcon {
         this._popupInvalidated = false;
     }
 
+    _removeMenuTimeout() {
+        if (this._popupTimeoutId > 0) {
+            Mainloop.source_remove(this._popupTimeoutId);
+            this._popupTimeoutId = 0;
+        }
+    }
+
+    _setPopupTimeout() {
+        this._removeMenuTimeout();
+        this._popupTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT, () => {
+            this._popupTimeoutId = 0;
+            this._popupRenamePopup();
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(this._popupTimeoutId,
+                                   '[gnome-shell] this._popupRenamePopup');
+    }
+
+    _onLeaveEvent(_actor, _event) {
+        this.actor.fake_release();
+        this._removeMenuTimeout();
+    }
+
+    _onButtonPress(_actor, event) {
+        let button = event.get_button();
+        if (button == 1) {
+            this._setPopupTimeout();
+        } else if (button == 3) {
+            this._popupRenamePopup();
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onTouchEvent(actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
+            this._setPopupTimeout();
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _popupRenamePopup() {
+        this._removeMenuTimeout();
+        this.actor.fake_release();
+
+        if (!this._menu) {
+            this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
+
+            this._menu = new RenameFolderMenu(this, this._folder);
+            this._menuManager.addMenu(this._menu);
+
+            this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
+                if (!isPoppedUp)
+                    this.actor.sync_hover();
+            });
+            let id = Main.overview.connect('hiding', () => {
+                this._menu.close();
+            });
+            this.actor.connect('destroy', () => {
+                Main.overview.disconnect(id);
+            });
+
+            this._menuManager.addMenu(this._menu);
+        }
+
+        this.actor.set_hover(true);
+        this._menu.popup();
+        this._menuManager.ignoreRelease();
+    }
+
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
@@ -1636,6 +1716,90 @@ var FolderIcon = class FolderIcon {
     }
 };
 Signals.addSignalMethods(FolderIcon.prototype);
+
+var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
+    constructor(source, folder) {
+        super(source.actor, 0.5, St.Side.BOTTOM);
+
+        this._source = source;
+        this._folder = folder;
+
+        // We want to keep the item hovered while the menu is up
+        this.blockSourceEvents = true;
+
+        let box = new St.BoxLayout({ style_class: 'rename-folder-popup-box' });
+        this.box.add_child(box);
+
+        // Entry
+        this._entry = new St.Entry({
+            x_expand: true,
+            width: 200,
+        });
+        box.add_child(this._entry);
+
+        this._entry.clutter_text.connect('notify::text',
+                                         this._validate.bind(this));
+        this._entry.clutter_text.connect('activate',
+                                         this._updateFolderName.bind(this));
+
+        // Rename button
+        this._button = new St.Button({
+            style_class: 'button',
+            reactive: true,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            can_focus: true,
+            label: _("Rename"),
+        });
+        box.add_child(this._button);
+
+        this._button.connect('clicked', this._updateFolderName.bind(this));
+
+        // Chain our visibility and lifecycle to that of the source
+        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
+            if (!source.actor.mapped)
+                this.close();
+        });
+        source.actor.connect('destroy', () => {
+            source.actor.disconnect(this._sourceMappedId);
+            this.destroy();
+        });
+
+        Main.uiGroup.add_actor(this.actor);
+    }
+
+    popup() {
+        let folderName = _getFolderName(this._folder);
+
+        this._entry.text = folderName;
+        this._entry.clutter_text.set_selection(0, folderName.length);
+
+        this.open();
+    }
+
+    _isValidFolderName() {
+        let folderName = _getFolderName(this._folder);
+        let newFolderName = this._entry.text.trim();
+
+        return newFolderName.length > 0 && newFolderName != folderName;
+    }
+
+    _validate() {
+        let isValid = this._isValidFolderName();
+
+        this._button.reactive = isValid;
+    }
+
+    _updateFolderName() {
+        if (!this._isValidFolderName())
+            return;
+
+        let newFolderName = this._entry.text.trim();
+        this._folder.set_string('name', newFolderName);
+        this._folder.set_boolean('translate', false);
+        this.close();
+    }
+};
+Signals.addSignalMethods(RenameFolderMenu.prototype);
 
 var AppFolderPopup = class AppFolderPopup {
     constructor(source, side) {
