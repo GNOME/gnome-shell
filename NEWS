@@ -1,3 +1,17 @@
+3.34.0
+======
+* Handle startup/shutdown of misc X11 services [Carlos; !680]
+* Fix sound volume mute/unmute [Iain; #1557]
+* Correctly terminate pasted text [Carlos; #1570]
+
+Contributors:
+  Carlos Garnacho, Iain Lane
+
+Translators:
+  Tom Tryfonidis [el], Milo Casagrande [it], Ryuta Fujii [ja],
+  Efstathios Iosifidis [el], Carmen Bianca BAKKER [eo], Sabri Ünal [tr],
+  Dušan Kazik [sk], Balázs Meskó [hu], Claude Paroz [fr]
+
 3.33.92
 =======
 * Animate pointer a11y pie timer [Jonas D.; !688]
