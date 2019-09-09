@@ -567,6 +567,10 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._extension = extension;
         this._prefsModule = null;
 
+        this.connect('destroy', this._onDestroy.bind(this));
+
+        this._buildUI();
+
         this._extensionStateChangedId = this._app.shellProxy.connectSignal(
             'ExtensionStateChanged', (p, sender, [uuid, newState]) => {
                 if (this.uuid !== uuid)
@@ -574,13 +578,13 @@ class ExtensionRow extends Gtk.ListBoxRow {
 
                 this._extension = ExtensionUtils.deserializeExtension(newState);
                 let state = (this._extension.state == ExtensionState.ENABLED);
+
+                GObject.signal_handler_block(this._switch, this._notifyActiveId);
                 this._switch.state = state;
+                GObject.signal_handler_unblock(this._switch, this._notifyActiveId);
+
                 this._switch.sensitive = this._canToggle();
             });
-
-        this.connect('destroy', this._onDestroy.bind(this));
-
-        this._buildUI();
     }
 
     get uuid() {
@@ -646,7 +650,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
             sensitive: this._canToggle(),
             state: this._extension.state === ExtensionState.ENABLED
         });
-        this._switch.connect('notify::active', () => {
+        this._notifyActiveId = this._switch.connect('notify::active', () => {
             if (this._switch.active)
                 this._app.shellProxy.EnableExtensionRemote(this.uuid);
             else
