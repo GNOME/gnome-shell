@@ -83,8 +83,8 @@ class WindowCloneLayout extends Clutter.LayoutManager {
     vfunc_allocate(container, box, flags) {
         container.get_children().forEach(child => {
             let realWindow;
-            if (child == container._delegate._windowClone)
-                realWindow = container._delegate.realWindow;
+            if (child == container._windowClone)
+                realWindow = container.realWindow;
             else
                 realWindow = child.source;
 
@@ -104,7 +104,7 @@ var WindowClone = GObject.registerClass({
         'show-chrome': {},
         'size-changed': {}
     },
-}, class WindowClone extends St.Widget {
+}, class WorkspaceWindowClone extends St.Widget {
     _init(realWindow, workspace) {
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
@@ -354,6 +354,11 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = null;
         this._delegate = null;
 
+        if (this._longPressLater) {
+            Meta.later_remove(this._longPressLater);
+            delete this._longPressLater;
+        }
+
         if (this.inDrag) {
             this.emit('drag-end');
             this.inDrag = false;
@@ -388,9 +393,13 @@ var WindowClone = GObject.registerClass({
             let event = Clutter.get_current_event();
             this._dragTouchSequence = event.get_event_sequence();
 
+            if (this._longPressLater)
+                return true;
+
             // A click cancels a long-press before any click handler is
             // run - make sure to not start a drag in that case
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._longPressLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                delete this._longPressLater;
                 if (this._selected)
                     return;
                 let [x, y] = action.get_coords();
@@ -1090,10 +1099,8 @@ const WorkspaceActor = GObject.registerClass(
 class WorkspaceActor extends St.Widget {
     vfunc_get_focus_chain() {
         return this.get_children().filter(c => c.visible).sort((a, b) => {
-            let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate : null;
-            let cloneB = (b._delegate && b._delegate instanceof WindowClone) ? b._delegate : null;
-            if (cloneA && cloneB)
-                return cloneA.slotId - cloneB.slotId;
+            if (a instanceof WindowClone && b instanceof WindowClone)
+                return a.slotId - b.slotId;
 
             return 0;
         });

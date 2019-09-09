@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Calendar, CalendarMessageList */
 
-const { Clutter, Gio, GLib, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -1075,6 +1075,10 @@ var CalendarMessageList = class CalendarMessageList {
         });
         box.add_actor(this._clearButton);
 
+        this._placeholder.actor.bind_property('visible',
+            this._clearButton, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
                                                y_expand: true,
@@ -1145,7 +1149,6 @@ var CalendarMessageList = class CalendarMessageList {
 
         let empty = sections.every(s => s.empty || !s.actor.visible);
         this._placeholder.actor.visible = empty;
-        this._clearButton.visible = !empty;
 
         let canClear = sections.some(s => s.canClear && s.actor.visible);
         this._clearButton.reactive = canClear;
