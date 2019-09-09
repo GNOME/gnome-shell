@@ -111,8 +111,6 @@ var ExtensionManager = class {
         if (extension.state != ExtensionState.DISABLED)
             return;
 
-        this._extensionOrder.push(uuid);
-
         let stylesheetNames = [`${global.session_mode}.css`, 'stylesheet.css'];
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
         for (let i = 0; i < stylesheetNames.length; i++) {
@@ -132,6 +130,7 @@ var ExtensionManager = class {
         try {
             extension.stateObj.enable();
             extension.state = ExtensionState.ENABLED;
+            this._extensionOrder.push(uuid);
             this.emit('extension-state-changed', extension);
         } catch (e) {
             if (extension.stylesheet) {
