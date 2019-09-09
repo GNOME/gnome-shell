@@ -567,6 +567,10 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._extension = extension;
         this._prefsModule = null;
 
+        this.connect('destroy', this._onDestroy.bind(this));
+
+        this._buildUI();
+
         this._extensionStateChangedId = this._app.shellProxy.connectSignal(
             'ExtensionStateChanged', (p, sender, [uuid, newState]) => {
                 if (this.uuid !== uuid)
@@ -577,10 +581,6 @@ class ExtensionRow extends Gtk.ListBoxRow {
                 this._switch.state = state;
                 this._switch.sensitive = this._canToggle();
             });
-
-        this.connect('destroy', this._onDestroy.bind(this));
-
-        this._buildUI();
     }
 
     get uuid() {
