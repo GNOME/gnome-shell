@@ -128,14 +128,22 @@ transfer_cb (MetaSelection *selection,
              GAsyncResult  *res,
              TransferData  *data)
 {
-  const gchar *text = NULL;
+  gchar *text = NULL;
 
   if (meta_selection_transfer_finish (selection, res, NULL))
-    text = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->stream));
+    {
+      gsize data_size;
+
+      data_size =
+        g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (data->stream));
+      text = g_new0 (char, data_size + 1);
+      memcpy (text, g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->stream)), data_size);
+    }
 
   data->callback (data->clipboard, text, data->user_data);
   g_object_unref (data->stream);
   g_free (data);
+  g_free (text);
 }
 
 /**
