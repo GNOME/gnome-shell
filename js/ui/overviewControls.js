@@ -146,6 +146,9 @@ var SlidingControl = class {
     }
 
     _updateSlide() {
+        if (!Main.overview.visible)
+            return;
+
         this.actor.ease_property('@layout.slide-x', this._getSlide(), {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
