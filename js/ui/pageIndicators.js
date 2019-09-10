@@ -97,17 +97,25 @@ var AnimatedPageIndicators = GObject.registerClass(
 class AnimatedPageIndicators extends PageIndicators {
     _init() {
         super._init();
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
 
-        this.connect('notify::mapped', () => {
-            if (!this.mapped)
-                return;
+    _onDestroy() {
+        if (this.animateLater) {
+            Meta.later_remove(this.animateLater);
+            this.animateLater = 0;
+        }
+    }
 
-            // Implicit animations are skipped for unmapped actors, and our
-            // children aren't mapped yet, so defer to a later handler
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this.animateIndicators(AnimationDirection.IN);
-                return GLib.SOURCE_REMOVE;
-            });
+    vfunc_map() {
+        super.vfunc_map();
+
+        // Implicit animations are skipped for unmapped actors, and our
+        // children aren't mapped yet, so defer to a later handler
+        this.animateLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this.animateLater = 0;
+            this.animateIndicators(AnimationDirection.IN);
+            return GLib.SOURCE_REMOVE;
         });
     }
 

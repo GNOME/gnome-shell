@@ -239,13 +239,6 @@ var SelectArea = GObject.registerClass({
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this.connect('button-press-event',
-                     this._onButtonPress.bind(this));
-        this.connect('button-release-event',
-                     this._onButtonRelease.bind(this));
-        this.connect('motion-event',
-                     this._onMotionEvent.bind(this));
-
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this.add_constraint(constraint);
@@ -276,11 +269,11 @@ var SelectArea = GObject.registerClass({
         });
     }
 
-    _onMotionEvent(actor, event) {
+    vfunc_motion_event(motionEvent) {
         if (this._startX == -1 || this._startY == -1 || this._result)
             return Clutter.EVENT_PROPAGATE;
 
-        [this._lastX, this._lastY] = event.get_coords();
+        [this._lastX, this._lastY] = [motionEvent.x, motionEvent.y];
         this._lastX = Math.floor(this._lastX);
         this._lastY = Math.floor(this._lastY);
         let geometry = this._getGeometry();
@@ -292,8 +285,8 @@ var SelectArea = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onButtonPress(actor, event) {
-        [this._startX, this._startY] = event.get_coords();
+    vfunc_button_press_event(buttonEvent) {
+        [this._startX, this._startY] = [buttonEvent.x, buttonEvent.y];
         this._startX = Math.floor(this._startX);
         this._startY = Math.floor(this._startY);
         this._rubberband.set_position(this._startX, this._startY);
@@ -301,7 +294,7 @@ var SelectArea = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onButtonRelease() {
+    vfunc_button_release_event() {
         this._result = this._getGeometry();
         this.ease({
             opacity: 0,
@@ -336,8 +329,6 @@ var PickPixel = GObject.registerClass({
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        this.connect('button-release-event', this._onButtonRelease.bind(this));
-
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this.add_constraint(constraint);
@@ -353,8 +344,8 @@ var PickPixel = GObject.registerClass({
         super.vfunc_show();
     }
 
-    _onButtonRelease(actor, event) {
-        let [x, y] = event.get_coords();
+    vfunc_button_release_event(buttonEvent) {
+        let {x, y} = buttonEvent;
         this._result = new Clutter.Point({ x, y });
         this._grabHelper.ungrab();
         return Clutter.EVENT_PROPAGATE;

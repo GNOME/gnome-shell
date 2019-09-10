@@ -55,57 +55,62 @@ class URLHighlighter extends St.Label {
         this.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
 
         this.setMarkup(text, allowMarkup);
-        this.connect('button-press-event', (actor, event) => {
-            // Don't try to URL highlight when invisible.
-            // The MessageTray doesn't actually hide us, so
-            // we need to check for paint opacities as well.
-            if (!actor.visible || actor.get_paint_opacity() == 0)
-                return Clutter.EVENT_PROPAGATE;
+    }
 
-            // Keep Notification.actor from seeing this and taking
-            // a pointer grab, which would block our button-release-event
-            // handler, if an URL is clicked
-            return this._findUrlAtPos(event) != -1;
-        });
-        this.connect('button-release-event', (actor, event) => {
-            if (!actor.visible || actor.get_paint_opacity() == 0)
-                return Clutter.EVENT_PROPAGATE;
-
-            let urlId = this._findUrlAtPos(event);
-            if (urlId != -1) {
-                let url = this._urls[urlId].url;
-                if (!url.includes(':'))
-                    url = 'http://' + url;
-
-                Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context(0, -1));
-                return Clutter.EVENT_STOP;
-            }
+    vfunc_button_press_event(buttonEvent) {
+        // Don't try to URL highlight when invisible.
+        // The MessageTray doesn't actually hide us, so
+        // we need to check for paint opacities as well.
+        if (!this.visible || this.get_paint_opacity() == 0)
             return Clutter.EVENT_PROPAGATE;
-        });
-        this.connect('motion-event', (actor, event) => {
-            if (!actor.visible || actor.get_paint_opacity() == 0)
-                return Clutter.EVENT_PROPAGATE;
 
-            let urlId = this._findUrlAtPos(event);
-            if (urlId != -1 && !this._cursorChanged) {
-                global.display.set_cursor(Meta.Cursor.POINTING_HAND);
-                this._cursorChanged = true;
-            } else if (urlId == -1) {
-                global.display.set_cursor(Meta.Cursor.DEFAULT);
-                this._cursorChanged = false;
-            }
-            return Clutter.EVENT_PROPAGATE;
-        });
-        this.connect('leave-event', () => {
-            if (!this.visible || this.get_paint_opacity() == 0)
-                return Clutter.EVENT_PROPAGATE;
+        // Keep Notification from seeing this and taking
+        // a pointer grab, which would block our button-release-event
+        // handler, if an URL is clicked
+        return this._findUrlAtPos(buttonEvent) != -1;
+    }
 
-            if (this._cursorChanged) {
-                this._cursorChanged = false;
-                global.display.set_cursor(Meta.Cursor.DEFAULT);
-            }
+    vfunc_button_release_event(buttonEvent) {
+        if (!this.visible || this.get_paint_opacity() == 0)
             return Clutter.EVENT_PROPAGATE;
-        });
+
+        let urlId = this._findUrlAtPos(buttonEvent);
+        if (urlId != -1) {
+            let url = this._urls[urlId].url;
+            if (!url.includes(':'))
+                url = 'http://' + url;
+
+            Gio.app_info_launch_default_for_uri(
+                url, global.create_app_launch_context(0, -1));
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_motion_event(motionEvent) {
+        if (!this.visible || this.get_paint_opacity() == 0)
+            return Clutter.EVENT_PROPAGATE;
+
+        let urlId = this._findUrlAtPos(motionEvent);
+        if (urlId != -1 && !this._cursorChanged) {
+            global.display.set_cursor(Meta.Cursor.POINTING_HAND);
+            this._cursorChanged = true;
+        } else if (urlId == -1) {
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this._cursorChanged = false;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_leave_event(crossingEvent) {
+        if (!this.visible || this.get_paint_opacity() == 0)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (this._cursorChanged) {
+            this._cursorChanged = false;
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
+        }
+        return super.vfunc_leave_event(crossingEvent);
     }
 
     setMarkup(text, allowMarkup) {
@@ -134,7 +139,7 @@ class URLHighlighter extends St.Label {
     }
 
     _findUrlAtPos(event) {
-        let [x, y] = event.get_coords();
+        let {x, y} = event;
         [, x, y] = this.transform_stage_point(x, y);
         let findPos = -1;
         for (let i = 0; i < this.clutter_text.text.length; i++) {
@@ -308,8 +313,6 @@ var Message = GObject.registerClass({
         this.expanded = false;
         this._useBodyMarkup = false;
 
-        this.connect('key-press-event', this._onKeyPressed.bind(this));
-
         let vbox = new St.BoxLayout({ vertical: true });
         this.set_child(vbox);
 
@@ -362,7 +365,6 @@ var Message = GObject.registerClass({
         this._closeButton.connect('clicked', this.close.bind(this));
         let actorHoverId = this.connect('notify::hover', this._sync.bind(this));
         this._closeButton.connect('destroy', this.disconnect.bind(this, actorHoverId));
-        this.connect('clicked', this._onClicked.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
         this._sync();
     }
@@ -507,14 +509,11 @@ var Message = GObject.registerClass({
         this._closeButton.reactive = visible;
     }
 
-    _onClicked() {
-    }
-
     _onDestroy() {
     }
 
-    _onKeyPressed(a, event) {
-        let keysym = event.get_key_symbol();
+    vfunc_key_press_event(keyEvent) {
+        let keysym = keyEvent.keyval;
 
         if (keysym == Clutter.KEY_Delete ||
             keysym == Clutter.KEY_KP_Delete) {

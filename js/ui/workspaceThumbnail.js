@@ -74,9 +74,6 @@ var WindowClone = GObject.registerClass({
         });
         this._onPositionChanged();
 
-        this.connect('button-release-event', this._onButtonRelease.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
-
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._draggable = DND.makeDraggable(this,
@@ -184,18 +181,22 @@ var WindowClone = GObject.registerClass({
         }
     }
 
-    _onButtonRelease(actor, event) {
-        this.emit('selected', event.get_time());
+    vfunc_button_press_event() {
+        return Clutter.EVENT_STOP;
+    }
+
+    vfunc_button_release_event(buttonEvent) {
+        this.emit('selected', buttonEvent.time);
 
         return Clutter.EVENT_STOP;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCH_END ||
-            !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type != Clutter.EventType.TOUCH_END ||
+            !global.display.is_pointer_emulating_sequence(touchEvent.sequence))
             return Clutter.EVENT_PROPAGATE;
 
-        this.emit('selected', event.get_time());
+        this.emit('selected', touchEvent.time);
         return Clutter.EVENT_STOP;
     }
 
@@ -667,10 +668,6 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._thumbnails = [];
 
-        this.connect('button-press-event', () => Clutter.EVENT_STOP);
-        this.connect('button-release-event', this._onButtonRelease.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
-
         Main.overview.connect('showing',
                               this._createThumbnails.bind(this));
         Main.overview.connect('hidden',
@@ -727,17 +724,17 @@ var ThumbnailsBox = GObject.registerClass({
             thumbnail.activate(time);
     }
 
-    _onButtonRelease(actor, event) {
-        let [stageX, stageY] = event.get_coords();
-        this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
+    vfunc_button_release_event(buttonEvent) {
+        let { x, y } = buttonEvent;
+        this._activateThumbnailAtPoint(x, y, buttonEvent.time);
         return Clutter.EVENT_STOP;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END &&
-            global.display.is_pointer_emulating_sequence(event.get_event_sequence())) {
-            let [stageX, stageY] = event.get_coords();
-            this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type == Clutter.EventType.TOUCH_END &&
+            global.display.is_pointer_emulating_sequence(touchEvent.sequence)) {
+            let { x, y } = touchEvent;
+            this._activateThumbnailAtPoint(x, y, touchEvent.time);
         }
 
         return Clutter.EVENT_STOP;

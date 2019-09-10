@@ -47,7 +47,7 @@ var StreamSlider = class {
             return this._slider.startDragging(event);
         });
         this.item.connect('key-press-event', (actor, event) => {
-            return this._slider.onKeyPressEvent(actor, event);
+            return this._slider.emit('key-press-event', event);
         });
 
         this._stream = null;
@@ -362,12 +362,10 @@ var Indicator = GObject.registerClass({
         });
 
         this.menu.addMenuItem(this._volumeMenu);
-
-        this.connect('scroll-event', this._onScrollEvent.bind(this));
     }
 
-    _onScrollEvent(actor, event) {
-        let result = this._volumeMenu.scroll(event);
+    vfunc_scroll_event() {
+        let result = this._volumeMenu.scroll(Clutter.get_current_event());
         if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
             return result;
 

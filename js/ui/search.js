@@ -55,8 +55,10 @@ var SearchResult = GObject.registerClass({
             x_align: St.Align.START,
             y_fill: true
         });
+    }
 
-        this.connect('clicked', this.activate.bind(this));
+    vfunc_clicked() {
+        this.activate();
     }
 
     get provider() {
