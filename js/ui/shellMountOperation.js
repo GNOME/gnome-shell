@@ -71,11 +71,9 @@ var ListItem = GObject.registerClass({
         let labelBin = new St.Bin({ y_align: St.Align.MIDDLE,
                                     child: this._nameLabel });
         layout.add(labelBin);
-
-        this.connect('clicked', this._onClicked.bind(this));
     }
 
-    _onClicked() {
+    vfunc_clicked() {
         this.emit('activate');
         this._app.activate();
     }
