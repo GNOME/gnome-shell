@@ -1,24 +1,6 @@
 /* Message List */
 
 
-// common style
-%message_box {
-	border: 1px solid $bubble_borders_color;
-	border-radius:$base_border_radius + 2px;
-	background-color: lighten($bg_color, 5%);
-	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
-	padding: $base_padding;
-	margin: $base_margin;
-
-	&:hover,&:focus {
-		background-color: $hover_bg_color;
-		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
-		margin-top: $base_margin - 1px;
-		margin-bottom: $base_margin + 1px;
-	}
-	&:active { background-color: transparentize($fg_color, 0.84) }
-}
-
 // main list
 .message-list {
 	width: 31.5em;
@@ -47,14 +29,44 @@
 	}
 }
 
-// message list item
+// message bubbles
 .message {
-	@extend %message_box;
+	border: 1px solid $bubble_borders_color;
+	border-radius:$base_border_radius + 2px;
+	background-color: lighten($bg_color, 5%);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	// padding: $base_padding;
+	padding: 0;
+	margin: $base_margin;
+
+	&:hover,
+	&:focus {
+		background-color: $hover_bg_color;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+		margin-top: $base_margin - 1px;
+		margin-bottom: $base_margin + 1px;
+	}
+	&:active { background-color: transparentize($fg_color, 0.84) }
+}
+
+// title
+.message-title {
+	color: $fg_color;
+	font-weight: bold;
+	margin-bottom:4px;
+}
+
+// content
+.message-content {
+	color: darken($fg_color, 10%);
+	padding: $base_padding 0;
+	margin:$base_margin * 2;
 }
 
 // message icon
 .message-icon-bin {
-	padding: $base_padding;
+	// padding: $base_padding;
+	margin:$base_padding 0;
 
 	&:rtl {
 		padding: $base_padding;
@@ -66,7 +78,7 @@
 		icon-size: $base_icon_size * 2;
 		-st-icon-style: symbolic;
 
-		margin: $base_margin;
+		padding:$base_padding;
 	}
 
 	// fallback
@@ -94,39 +106,39 @@
 	}
 }
 
-// title
-.message-title {
-	color: $fg_color;
-	font-weight: bold;
-	margin-bottom:4px;
-}
-
-.message-content {
-	color: darken($fg_color, 10%);
-	padding: $base_padding 0;
-	margin:0 $base_margin * 2;
-}
-
 /* Media Controls */
 .message-media-control {
-	padding: $base_padding * 2;
-	color: lighten($fg_color, 15%);
+	padding: $base_padding * 2 $base_padding * 4;
+	color: darken($fg_color, 15%);
+	// border: 0 solid $borders_color;
+	// border-left-width:1px;
 
-	&:last-child:ltr { padding-right: $base_padding * 3; }
-	&:last-child:rtl { padding-left: $base_padding * 3; }
-	&:hover { color: $fg_color; }
+	&:hover { 
+		background-color: lighten($hover_bg_color, 5%);
+		color: $fg_color;
+
+		&:last-child:ltr {
+			border-radius: 0 $base_border_radius $base_border_radius 0;
+		}
+		&:last-child:rtl {
+			border-radius: $base_border_radius 0 0 $base_border_radius;
+		}
+	}
 	&:insensitive { color: darken($fg_color,40%); }
 }
 
 // album-art
 .media-message-cover-icon {
-	icon-size: 48px !important;
+	icon-size: $base_icon_size * 2 !important; // 48px
+	border-radius: $base_border_radius;
+
+	// when there is no artwork
 	&.fallback {
 		color: darken($fg_color, 10%);
 		background-color: $bg_color;
-		border: 1px solid $bg_color;
-		border-radius: 2px;
-		icon-size: 32px !important;
-		padding: $base_padding;
+		border: 1px solid transparent;
+		border-radius: $base_border_radius;
+		icon-size: $base_icon_size * 2 !important;
+		padding: $base_padding * 2;
 	}
 }
