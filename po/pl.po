@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-21 23:18+0000\n"
-"PO-Revision-Date: 2019-08-23 18:39+0200\n"
+"POT-Creation-Date: 2019-09-09 20:24+0000\n"
+"PO-Revision-Date: 2019-09-10 17:57+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -458,7 +458,7 @@ msgstr ""
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/endSessionDialog.js:448 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
 #: js/ui/status/network.js:899
 msgid "Cancel"
@@ -774,28 +774,32 @@ msgstr "Często używane"
 msgid "All"
 msgstr "Wszystkie"
 
+#: js/ui/appDisplay.js:1751
+msgid "Rename"
+msgstr "Zmień nazwę"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Otwarte okna"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Uruchom za pomocą dedykowanej karty graficznej"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Wyświetl szczegóły"
 
@@ -825,7 +829,7 @@ msgstr "Słuchawki"
 msgid "Headset"
 msgstr "Słuchawki z mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:248
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1330,13 +1334,13 @@ msgid "Other users are logged in."
 msgstr "Inni użytkownicy są zalogowani."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:647
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (zdalnie)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:650
+#: js/ui/endSessionDialog.js:653
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsola)"
@@ -1490,7 +1494,7 @@ msgstr "Wyświetl źródło"
 msgid "Web Page"
 msgstr "Strona WWW"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Informacje systemowe"
 
@@ -1621,7 +1625,7 @@ msgstr[0] "%d nowe powiadomienie"
 msgstr[1] "%d nowe powiadomienia"
 msgstr[2] "%d nowych powiadomień"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
@@ -1644,15 +1648,15 @@ msgstr "Nie można zablokować"
 msgid "Lock was blocked by an application"
 msgstr "Blokowanie zostało zablokowane przez program"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Wyszukiwanie…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Brak wyników."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2141,27 +2145,27 @@ msgstr "Wyłącz"
 msgid "Airplane Mode On"
 msgstr "Włączono tryb samolotowy"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Przełącz użytkownika"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Wyloguj się"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Ustawienia konta"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Blokada orientacji"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Uśpij"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
@@ -2200,11 +2204,11 @@ msgstr "Błąd upoważnienia Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nie można upoważnić urządzenia Thunderbolt: %s"
 
-#: js/ui/status/volume.js:128
+#: js/ui/status/volume.js:129
 msgid "Volume changed"
 msgstr "Zmieniono głośność"
 
-#: js/ui/status/volume.js:193
+#: js/ui/status/volume.js:200
 msgid "Volume"
 msgstr "Głośność"
 
@@ -2257,22 +2261,22 @@ msgstr "Wyszukiwanie"
 msgid "“%s” is ready"
 msgstr "Okno „%s” jest gotowe"
 
-#: js/ui/windowManager.js:54
+#: js/ui/windowManager.js:55
 msgid "Do you want to keep these display settings?"
 msgstr "Zachować te ustawienia ekranu?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:66
+#: js/ui/windowManager.js:67
 msgid "Revert Settings"
 msgstr "Przywróć ustawienia"
 
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Keep Changes"
 msgstr "Zachowaj zmiany"
 
-#: js/ui/windowManager.js:87
+#: js/ui/windowManager.js:88
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2282,7 +2286,7 @@ msgstr[2] "Zmienione ustawienia zostaną przywrócone za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:683
+#: js/ui/windowManager.js:684
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d×%d"
@@ -2618,7 +2622,7 @@ msgstr "Polecenia:"
 msgid "Print help"
 msgstr "Wyświetla pomoc"
 
-#: src/extensions-tool/main.c:244 src/main.c:460
+#: src/extensions-tool/main.c:244 src/main.c:468
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
@@ -2667,15 +2671,15 @@ msgstr "Instaluje pakiet rozszerzenia"
 msgid "Use %s to get detailed help.\n"
 msgstr "Polecenie %s wyświetli szczegółową pomoc.\n"
 
-#: src/main.c:466
+#: src/main.c:474
 msgid "Mode used by GDM for login screen"
 msgstr "Tryb używany przez GDM dla ekranu logowania"
 
-#: src/main.c:472
+#: src/main.c:480
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Używa podanego trybu, np. „gdm” dla ekranu logowania"
 
-#: src/main.c:478
+#: src/main.c:486
 msgid "List possible modes"
 msgstr "Wyświetla listę możliwych trybów"
 
