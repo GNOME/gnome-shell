@@ -93,7 +93,7 @@ st_enums = gnome.mkenums_simple('st-enum-types',
 #endif'''
 )
 
-st_gir_sources = st_sources + st_private_headers + st_headers + st_enums
+st_gir_sources = st_sources + st_headers + st_enums
 
 data_to_c = find_program(meson.source_root() + '/src/data-to-c.pl')
 
