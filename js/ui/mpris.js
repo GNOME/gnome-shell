@@ -49,7 +49,7 @@ class MediaMessage extends MessageList.Message {
         this._update();
     }
 
-    _onClicked() {
+    vfunc_clicked() {
         this._player.raise();
         Main.panel.closeCalendar();
     }

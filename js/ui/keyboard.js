@@ -895,8 +895,6 @@ var EmojiSelection = GObject.registerClass({
 
         this._populateSections();
 
-        this.connect('notify::mapped', () => this._emojiPager.setCurrentPage(0));
-
         this._emojiPager = new EmojiPager(this._sections, 11, 3);
         this._emojiPager.connect('page-changed', (pager, sectionLabel, page, nPages) => {
             this._onPageChanged(sectionLabel, page, nPages);
@@ -915,6 +913,16 @@ var EmojiSelection = GObject.registerClass({
         let bottomRow = this._createBottomRow();
         this.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
 
+        this._emojiPager.setCurrentPage(0);
+    }
+
+    vfunc_map() {
+        this._emojiPager.setCurrentPage(0);
+        super.vfunc_map();
+    }
+
+    vfunc_unmap() {
+        super.vfunc_unmap();
         this._emojiPager.setCurrentPage(0);
     }
 

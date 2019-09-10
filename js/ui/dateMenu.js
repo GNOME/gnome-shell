@@ -42,9 +42,6 @@ class TodayButton extends St.Button {
             can_focus: true,
             reactive: false
         });
-        this.connect('clicked', () => {
-            this._calendar.setDate(new Date(), false);
-        });
 
         let hbox = new St.BoxLayout({ vertical: true });
         this.add_actor(hbox);
@@ -62,6 +59,10 @@ class TodayButton extends St.Button {
             // current date.
             this.reactive = !_isToday(_gDateTimeToDate(datetime));
         });
+    }
+
+    vfunc_clicked() {
+        this._calendar.setDate(new Date(), false);
     }
 
     setDate(date) {
@@ -97,14 +98,6 @@ class WorldClocksSection extends St.Button {
 
         this._locations = [];
 
-        this.connect('clicked', () => {
-            if (this._clocksApp)
-                this._clocksApp.activate();
-
-            Main.overview.hide();
-            Main.panel.closeCalendar();
-        });
-
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this._grid = new St.Widget({ style_class: 'world-clocks-grid',
                                      layout_manager: layout });
@@ -131,6 +124,14 @@ class WorldClocksSection extends St.Button {
         this._appSystem.connect('installed-changed',
             this._sync.bind(this));
         this._sync();
+    }
+
+    vfunc_clicked() {
+        if (this._clocksApp)
+            this._clocksApp.activate();
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     }
 
     _sync() {
@@ -257,17 +258,6 @@ class WeatherSection extends St.Button {
 
         this._weatherClient = new Weather.WeatherClient();
 
-        this.connect('clicked', () => {
-            this._weatherClient.activateApp();
-
-            Main.overview.hide();
-            Main.panel.closeCalendar();
-        });
-        this.connect('notify::mapped', () => {
-            if (this.mapped)
-                this._weatherClient.update();
-        });
-
         let box = new St.BoxLayout({ style_class: 'weather-box',
                                      vertical: true });
 
@@ -292,6 +282,18 @@ class WeatherSection extends St.Button {
 
         this._weatherClient.connect('changed', this._sync.bind(this));
         this._sync();
+    }
+
+    vfunc_map() {
+        this._weatherClient.update();
+        super.vfunc_map();
+    }
+
+    vfunc_clicked() {
+        this._weatherClient.activateApp();
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     }
 
     _getInfos() {

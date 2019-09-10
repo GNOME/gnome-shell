@@ -264,13 +264,12 @@ class ObjLink extends St.Button {
             label: text
         });
         this.get_child().single_line_mode = true;
-        this.connect('clicked', this._onClicked.bind(this));
 
         this._obj = o;
         this._lookingGlass = lookingGlass;
     }
 
-    _onClicked() {
+    vfunc_clicked() {
         this._lookingGlass.inspectObject(this._obj, this);
     }
 });
@@ -797,8 +796,6 @@ class LookingGlass extends St.BoxLayout {
         // Sort of magic, but...eh.
         this._maxItems = 150;
 
-        this.connect('key-press-event', this._globalKeyPressEvent.bind(this));
-
         this._interfaceSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._interfaceSettings.connect('changed::monospace-font-name',
                                         this._updateFont.bind(this));
@@ -1076,9 +1073,8 @@ class LookingGlass extends St.BoxLayout {
     }
 
     // Handle key events which are relevant for all tabs of the LookingGlass
-    _globalKeyPressEvent(actor, event) {
-        let symbol = event.get_key_symbol();
-        let modifierState = event.get_state();
+    vfunc_key_press_event(keyPressEvent) {
+        let symbol = keyPressEvent.keyval;
         if (symbol == Clutter.Escape) {
             if (this._objInspector.visible) {
                 this._objInspector.close();
@@ -1088,7 +1084,7 @@ class LookingGlass extends St.BoxLayout {
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
-        if (modifierState & Clutter.ModifierType.CONTROL_MASK) {
+        if (keyPressEvent.modifier_state & Clutter.ModifierType.CONTROL_MASK) {
             if (symbol == Clutter.KEY_Page_Up) {
                 this._notebook.prevTab();
             } else if (symbol == Clutter.KEY_Page_Down) {
