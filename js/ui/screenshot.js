@@ -271,7 +271,7 @@ var SelectArea = class {
     }
 
     _onMotionEvent(actor, event) {
-        if (this._startX == -1 || this._startY == -1)
+        if (this._startX == -1 || this._startY == -1 || this._result)
             return Clutter.EVENT_PROPAGATE;
 
         [this._lastX, this._lastY] = event.get_coords();
