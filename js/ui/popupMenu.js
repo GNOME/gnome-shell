@@ -97,12 +97,6 @@ var PopupBaseMenuItem = GObject.registerClass({
         if (params.style_class)
             this.add_style_class_name(params.style_class);
 
-        if (this._activatable) {
-            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
-            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
-            this.connect('touch-event', this._onTouchEvent.bind(this));
-            this.connect('key-press-event', this._onKeyPressEvent.bind(this));
-        }
         if (params.reactive && params.hover)
             this.bind_property('hover', this, 'active', GObject.BindingFlags.SYNC_CREATE);
     }
@@ -124,32 +118,44 @@ var PopupBaseMenuItem = GObject.registerClass({
         this._parent = parent;
     }
 
-    _onButtonPressEvent() {
+    vfunc_button_press_event(buttonEvent) {
+        if (!this._activatable)
+            return super.vfunc_button_press_event(buttonEvent);
+
         // This is the CSS active state
         this.add_style_pseudo_class('active');
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onButtonReleaseEvent(actor, event) {
+    vfunc_button_release_event(buttonEvent) {
+        if (!this._activatable)
+            return super.vfunc_button_release_event(buttonEvent);
+
         this.remove_style_pseudo_class('active');
-        this.activate(event);
+        this.activate(Clutter.get_current_event());
         return Clutter.EVENT_STOP;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END) {
+    vfunc_touch_event(touchEvent) {
+        if (!this._activatable)
+            return super.vfunc_touch_event(touchEvent);
+
+        if (touchEvent.type == Clutter.EventType.TOUCH_END) {
             this.remove_style_pseudo_class('active');
-            this.activate(event);
+            this.activate(Clutter.get_current_event());
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN) {
+        } else if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN) {
             // This is the CSS active state
             this.add_style_pseudo_class('active');
         }
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onKeyPressEvent(actor, event) {
-        let state = event.get_state();
+    vfunc_key_press_event(keyEvent) {
+        if (!this._activatable)
+            return super.vfunc_key_press_event(keyEvent);
+
+        let state = keyEvent.modifier_state;
 
         // if user has a modifier down (except capslock and numlock)
         // then don't handle the key press here
@@ -160,9 +166,9 @@ var PopupBaseMenuItem = GObject.registerClass({
         if (state)
             return Clutter.EVENT_PROPAGATE;
 
-        let symbol = event.get_key_symbol();
+        let symbol = keyEvent.keyval;
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
-            this.activate(event);
+            this.activate(Clutter.get_current_event());
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
@@ -1185,8 +1191,8 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         return this.menu.isOpen;
     }
 
-    _onKeyPressEvent(actor, event) {
-        let symbol = event.get_key_symbol();
+    vfunc_key_press_event(keyPressEvent) {
+        let symbol = keyPressEvent.keyval;
 
         if (symbol == Clutter.KEY_Right) {
             this._setOpenState(true);
@@ -1197,14 +1203,14 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
             return Clutter.EVENT_STOP;
         }
 
-        return super._onKeyPressEvent(actor, event);
+        return super.vfunc_key_press_event(keyPressEvent);
     }
 
     activate(_event) {
         this._setOpenState(true);
     }
 
-    _onButtonReleaseEvent() {
+    vfunc_button_release_event() {
         // Since we override the parent, we need to manage what the parent does
         // with the active style class
         this.remove_style_pseudo_class('active');
@@ -1212,8 +1218,8 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END) {
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type == Clutter.EventType.TOUCH_END) {
             // Since we override the parent, we need to manage what the parent does
             // with the active style class
             this.remove_style_pseudo_class('active');

@@ -46,10 +46,16 @@ var BoxPointer = GObject.registerClass({
         this.add_actor(this._border);
         this.bin.raise(this._border);
         this._sourceAlignment = 0.5;
-        this._capturedEventId = 0;
-        this._muteInput();
+        this._muteInput = true;
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    vfunc_captured_event() {
+        if (this._muteInput)
+            return Clutter.EVENT_STOP;
+
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _onDestroy() {
@@ -61,19 +67,6 @@ var BoxPointer = GObject.registerClass({
 
     get arrowSide() {
         return this._arrowSide;
-    }
-
-    _muteInput() {
-        if (this._capturedEventId == 0)
-            this._capturedEventId = this.connect('captured-event',
-                                                 () => Clutter.EVENT_STOP);
-    }
-
-    _unmuteInput() {
-        if (this._capturedEventId != 0) {
-            this.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
     }
 
     open(animate, onComplete) {
@@ -112,7 +105,7 @@ var BoxPointer = GObject.registerClass({
             duration: animationTime,
             mode: Clutter.AnimationMode.LINEAR,
             onComplete: () => {
-                this._unmuteInput();
+                this._muteInput = false;
                 if (onComplete)
                     onComplete();
             }
@@ -147,7 +140,7 @@ var BoxPointer = GObject.registerClass({
             }
         }
 
-        this._muteInput();
+        this._muteInput = true;
 
         this.remove_all_transitions();
         this.ease({

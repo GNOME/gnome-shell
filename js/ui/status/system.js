@@ -34,7 +34,16 @@ class AltSwitcher extends St.Bin {
         this._clickAction.connect('long-press', this._onLongPress.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('notify::mapped', () => (this._flipped = false));
+    }
+
+    vfunc_map() {
+        super.vfunc_map();
+        this._flipped = false;
+    }
+
+    vfunc_unmap() {
+        super.vfunc_unmap();
+        this._flipped = false;
     }
 
     _sync() {
