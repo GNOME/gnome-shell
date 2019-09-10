@@ -1,12 +1,7 @@
 /* Modal Dialogs */
 
-
-.headline { font-size: 110%; }
-.lightbox { background-color: black; }
-.flashspot { background-color: white; }
-
 .modal-dialog {
-	border-radius: $base_radius + 4px;;
+	border-radius: $base_border_radius + 4px;;
 	@extend %bubble_panel;
 
 	.modal-dialog-content-box {
@@ -21,7 +16,7 @@
 
 	.run-dialog-button-box { padding-top: 1em; }
 	.run-dialog-label {
-		@include fontsize($font_size + 1.1);
+		@include fontsize($base_font_size + 1.1);
 		font-weight: normal;
 		color: $fg_color;
 		padding-bottom: .4em;
@@ -30,7 +25,7 @@
 
 .mount-dialog-subject,
 .end-session-dialog-subject { //this should be a generic header class
-	@include fontsize($font_size * 1.3);
+	@include fontsize($base_font_size * 1.3);
 }
 
 .modal-dialog-linked-button {
@@ -49,8 +44,8 @@
 }
 
 .message-dialog-icon {
-	min-width: 48px;
-	icon-size: 48px;
+	min-width: $base_icon_size * 3;
+	icon-size: $base_icon_size * 3;
 }
 
 .message-dialog-title {
@@ -62,85 +57,10 @@
 	font-weight: bold;
 }
 
-/* End Session Dialog */
-.end-session-dialog {
-	spacing: 42px;
-	border: 1px solid $_bubble_borders_color;
-}
-
-.end-session-dialog-list {
-		padding-top: 20px;
-}
-
-.end-session-dialog-layout {
-	padding-left: 17px;
-	&:rtl { padding-right: 17px; }
-}
-
-.end-session-dialog-description {
-	width: 28em;
-	padding-bottom: 10px;
-	&:rtl {
-		text-align: right;
-	}
-}
-
-.end-session-dialog-warning {
-	width: 28em;
-	color: $warning_color;
-	padding-top: 6px;
-	&:rtl {
-		text-align: right;
-	}
-}
-
-.end-session-dialog-logout-icon {
-	border-radius: 99px;
-	width: 48px;
-	height: 48px;
-	background-size: contain;
-}
-
-.end-session-dialog-shutdown-icon {
-	color: $fg_color;
-	width: 48px;
-	height: 48px;
-}
-
-.end-session-dialog-inhibitor-layout {
-	spacing: $base_spacing * 4;
-	max-height: 200px;
-	padding-right: 65px;
-	padding-left: 65px;
-}
-
-.end-session-dialog-session-list,
-.end-session-dialog-app-list {
-	spacing: 1em;
-}
-
-.end-session-dialog-list-header {
-	font-weight: bold;
-	&:rtl { text-align: right; }
-}
-
-.end-session-dialog-app-list-item,
-.end-session-dialog-session-list-item {
-	spacing: 1em;
-}
-
-.end-session-dialog-app-list-item-name,
-.end-session-dialog-session-list-item-name {
-	font-weight: bold;
-}
-
-.end-session-dialog-app-list-item-description {
-	color: darken($fg_color,5%);
-	font-size: 10pt;
-}
-
 /* ShellMountOperation Dialogs */
-.shell-mount-operation-icon { icon-size: 48px; }
+.shell-mount-operation-icon {
+	icon-size: $base_icon_size * 3;
+}
 
 .mount-dialog {
 	spacing: 24px;
@@ -299,9 +219,9 @@
 }
 
 .audio-selection-device {
-	border: 1px solid $_bubble_borders_color;
+	border: 1px solid $bubble_borders_color;
 	border-radius: 12px;
-	&:hover,&:focus { background-color: $_hover_bg_color; }
+	&:hover,&:focus { background-color: $hover_bg_color; }
 	&:active { 
 		background-color: $selected_bg_color;
 		color: $selected_fg_color;
@@ -314,7 +234,7 @@
 }
 
 .audio-selection-device-icon {
-	icon-size: 64px;
+	icon-size: $base_icon_size * 4;
 }
 
 /* Access Dialog */
@@ -353,46 +273,3 @@
 	spacing-rows: 15px;
 	spacing-columns: 1em;
 }
-
-/* Network Dialogs */
-
-.nm-dialog {
-	@extend %bubble_panel;
-	max-height: 34em;
-	min-height: 31em;
-	min-width: 32em;
-}
-
-.nm-dialog-content {
-	spacing: 20px;
-	padding: 24px;
-}
-.nm-dialog-header-hbox { spacing: 10px; }
-.nm-dialog-airplane-box { spacing: 12px; }
-
-.nm-dialog-airplane-headline {
-	font-weight: bold;
-	text-align: center;
-}
-
-.nm-dialog-airplane-text { color: $fg_color; }
-.nm-dialog-header-icon { icon-size: 32px; }
-.nm-dialog-scroll-view { border: 2px solid $borders_color; }
-.nm-dialog-header { font-weight: bold; }
-
-.nm-dialog-item {
-	font-size: 110%;
-	border-bottom: 1px solid $borders_color;
-	padding: $base_padding;
-	spacing: 20px;
-}
-
-.nm-dialog-item:selected {
-	background-color: $selected_bg_color;
-	color: $selected_fg_color;
-}
-
-.nm-dialog-icons { spacing: .5em; }
-.nm-dialog-icon { icon-size: 16px; }
-.no-networks-label { color: #999999; }
-.no-networks-box { spacing: 12px; }

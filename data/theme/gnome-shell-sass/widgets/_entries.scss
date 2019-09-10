@@ -1,8 +1,7 @@
 /* Entries */
-$entry_radius: $base_radius;
 
 StEntry {
-	border-radius: $entry_radius;
+	border-radius: $base_border_radius;
 	padding: 4px;
 	border-width: 1px;
 	color: $fg_color;

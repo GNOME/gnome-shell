@@ -1,44 +1,73 @@
+/* Dash */
 
-
-
-/* DASHBOARD */
+$dash_placeholder_size: 24px;
 
 #dash {
-
-	color: $osd_fg_color;
-	background-color: transparentize($osd_bg_color, 0.1);
-	border: none;
-	font-size: 9pt;
+	@extend %overview_panel;
+	font-size: $base_font_size - 2pt;
 	padding: 4px 0;
-	border-radius: 0px 9px 9px 0px;
+	border-radius: 0px $dialog_border_radius $dialog_border_radius 0px;
 
 	&:rtl {
-		border-radius: 9px 0 0 9px;
+		border-radius: $dialog_border_radius 0 0 $dialog_border_radius;
 	}
 
 	.placeholder {
 		background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
 		background-size: contain;
-		height: 24px;
+		height: $dash_placeholder_size;
 	}
 
 	.empty-dash-drop-target {
-		width: 24px;
-		height: 24px;
+		width: $dash_placeholder_size;
+		height: $dash_placeholder_size;
 	}
-
 }
 
 .dash-item-container > StWidget {
 	padding: 4px 8px;
 }
 
-.dash-label { //osd tooltip
+// OSD Tooltip
+.dash-label {
 	border-radius: 7px;
 	padding: 4px 12px;
 	color: $osd_fg_color;
 	background-color: transparentize($osd_bg_color,0.05);
 	border: 1px solid $osd_outer_borders_color;
 	text-align: center;
-	-x-offset: 8px;
+	-x-offset: 8px; // distance from the dash edge
+}
+
+// Show apps button
+.show-apps {
+	background-color: transparent;
+	color: $osd_fg_color;
+
+	& .overview-icon {
+		@extend %icon_tile;
+		color: $osd_fg_color;
+	}
+
+	&:hover .overview-icon,
+	&:focus .overview-icon,
+	&:selected .overview-icon {
+		background-color: transparentize($osd_fg_color,0.9);
+		color: $osd_fg_color;
+	}
+
+	&:drop .overview-icon {
+		background-color: transparentize($selected_bg_color,.15);
+	}
+
+	&:active .overview-icon,
+	&:checked .overview-icon {
+		background-color: darken($osd_bg_color,10%);
+	}
+}
+
+.show-apps:checked .show-apps-icon,
+.show-apps:focus .show-apps-icon {
+	color: $fg_color;
+	transition-duration: 100ms;
 }

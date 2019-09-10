@@ -1,14 +1,16 @@
 /* Popovers/Menus */
 
+$popover_width: 15em;
+
 .popup-menu {
-	min-width: 15em;
+	min-width: $popover_width;
 	color: $fg_color;
-	border-color: $_bubble_borders_color;
+	border-color: $bubble_borders_color;
 
 	.popup-menu-arrow { } //defined globally in the TOP BAR
 	.popup-sub-menu {
 		background-color: darken($bg_color,5%);
-		box-shadow: inset 0 -1px 0px $_bubble_borders_color;
+		box-shadow: inset 0 -1px 0px $bubble_borders_color;
 	}
 
 	.popup-menu-content { padding: 1em 0em; }
@@ -19,7 +21,7 @@
 		&:rtl { padding: .4em 0em .4em 1.75em; }
 		&:checked {
 			background-color: $bg_color;
-			box-shadow: inset 0 -1px 0px $_bubble_borders_color;
+			box-shadow: inset 0 -1px 0px $bubble_borders_color;
 			font-weight: bold;
 		}
 		&.selected {
@@ -33,11 +35,13 @@
 		&:insensitive { color: transparentize($fg_color,.5); }
 	}
 
-	.popup-inactive-menu-item { //all icons and other graphical elements
+	//all icons and other graphical elements
+	.popup-inactive-menu-item {
 		color: $fg_color;
 
 		&:insensitive { color: transparentize($fg_color,0.5); }
 	}
+
 	//.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is
 	&.panel-menu {
 		-boxpointer-gap: 4px;
@@ -49,9 +53,10 @@
 	text-align: right;
 	width: 1.2em;
 }
+
 .popup-menu-boxpointer,
 .candidate-popup-boxpointer {
-	-arrow-border-radius: $base_radius+4;
+	-arrow-border-radius: $base_border_radius+4;
 	-arrow-background-color: $bg_color;
 	-arrow-border-width: 1px;
 	-arrow-border-color: if($variant=='light', transparentize(black, 0.6), $borders_color);
@@ -65,7 +70,7 @@
 	height: 1px; //not really the whole box
 	margin: 6px 64px;
 	background-color: transparent;
-	border-color: $_bubble_borders_color;
+	border-color: $bubble_borders_color;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 }
@@ -75,17 +80,14 @@
 .popup-menu-icon { icon-size: $base_icon_size; }
 
 
-
 // Background menu
 .background-menu { -boxpointer-gap: 4px; -arrow-rise: 0px; }
 
 /* fallback menu
-- odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
-	app menu inside the main app window itself rather than the top bar
+- odd thing for styling App menu when apparently not running under shell. Light Adwaita styled app menu inside the main app window itself rather than the top bar
 */
 
 // a little unstructured mess:
-
 #appMenu {
 	spacing: $base_spacing;
 
@@ -101,10 +103,16 @@
 	min-width: 21em;
 	.popup-menu-icon { padding: 0 4px; }
 	.popup-sub-menu .popup-menu-item > :first-child {
-		&:ltr { /* 12px spacing + 2*4px padding */
-						padding-left: 20px; margin-left: 1.09em; }
-		&:rtl { /* 12px spacing + 2*4px padding */
-						padding-right: 20px; margin-right: 1.09em; }
+		&:ltr {
+			// 12px spacing + 2*4px padding
+			padding-left: 20px; 
+			margin-left: 1.09em;
+		}
+		&:rtl {
+			// 12px spacing + 2*4px padding
+			padding-right: 20px;
+			margin-right: 1.09em;
+		}
 	}
 }
 
@@ -114,10 +122,10 @@
 	color: $fg_color;
 	border-radius: 32px; /* wish we could do 50% */
 	padding: 13px;
-	border: 1px solid $_bubble_borders_color;
+	border: 1px solid $bubble_borders_color;
 
 	&:hover, &:focus {
-		background-color: $_hover_bg_color;
+		background-color: $hover_bg_color;
 		color: $fg_color;
 		border: none;
 		padding: 14px;

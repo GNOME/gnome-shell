@@ -1,18 +1,18 @@
 /* On-screen Keyboard */
 
-$_key_bg: opacify(lighten($osd_bg_color, 9%), 1);
-$_default_key_bg: opacify($osd_bg_color, 1);
+$key_bg: opacify(lighten($osd_bg_color, 9%), 1);
+$default_key_bg: opacify($osd_bg_color, 1);
 
 #keyboard {
 	background-color: transparentize($osd_bg_color, 0.3);
 
 	.page-indicator {
-			padding: 4px;
+		padding: 4px;
 
-			.page-indicator-icon {
-					width: 6px;
-					height: 6px
-			}
+		.page-indicator-icon {
+				width: 6px;
+				height: 6px
+		}
 	}
 }
 
@@ -22,17 +22,17 @@ $_default_key_bg: opacify($osd_bg_color, 1);
 }
 
 .keyboard-key {
-	background-color: $_key_bg;
-	border-radius: $base_radius;
+	background-color: $key_bg;
+	border-radius: $base_border_radius;
 	border: 1px solid $osd_outer_borders_color;
 	color: $osd_fg_color;
-	font-size: $font_size + 5pt;
+	font-size: $base_font_size + 5pt;
 	min-height: 1.2em;
 	min-width: 1.2em;
 
 	&:focus { @include button(focus); }
-	&:hover, &:checked { background-color: lighten($_key_bg, 3%); }
-	&:active { background-color: darken($_key_bg, 2%); }
+	&:hover, &:checked { background-color: lighten($key_bg, 3%); }
+	&:active { background-color: darken($key_bg, 2%); }
 	&:grayed { //FIXME
 		background-color: $osd_bg_color;
 		color: $osd_fg_color;
@@ -41,10 +41,10 @@ $_default_key_bg: opacify($osd_bg_color, 1);
 
 	&.default-key {
 		border-color: $osd_outer_borders_color;
-		background-color: $_default_key_bg;
+		background-color: $default_key_bg;
 		background-size: 20px;
-		&:hover, &:checked { background-color: lighten($_default_key_bg, 3%); }
-		&:active { background-color: darken($_default_key_bg, 2%); }
+		&:hover, &:checked { background-color: lighten($default_key_bg, 3%); }
+		&:active { background-color: darken($default_key_bg, 2%); }
 	}
 
 	// enter key is suggested-action
@@ -94,7 +94,7 @@ $_default_key_bg: opacify($osd_bg_color, 1);
 
 // suggestions
 .word-suggestions {
-	font-size: $font_size + 3pt;
+	font-size: $base_font_size + 3pt;
 	spacing: 12px;
 	min-height: 20pt;
 }

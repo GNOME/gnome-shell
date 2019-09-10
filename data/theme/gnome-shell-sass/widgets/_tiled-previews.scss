@@ -1,6 +1,6 @@
 
 /* Tiled window previews */
-$tile_corner_radius: $base_radius + 1px;
+$tile_corner_radius: $base_border_radius + 1px;
 .tile-preview {
 	background-color: transparentize($selected_bg_color,0.5);
 	border: 1px solid $selected_bg_color;

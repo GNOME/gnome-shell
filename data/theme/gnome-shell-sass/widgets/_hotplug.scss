@@ -22,7 +22,7 @@
 .hotplug-resident-mount {
 	spacing: $base_spacing * 2;
 	border-radius: 4px;
-	&:hover { background-color: $_hover_bg_color; }
+	&:hover { background-color: $hover_bg_color; }
 }
 
 .hotplug-resident-mount-label {

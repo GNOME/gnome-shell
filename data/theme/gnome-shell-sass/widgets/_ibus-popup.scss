@@ -1,6 +1,4 @@
-
 // IBus Candidate Popup
-
 .candidate-popup-content {
 	padding: 0.5em;
 	spacing: 0.3em;
@@ -13,7 +11,7 @@
 
 .candidate-box {
 	padding: 0.3em 0.5em 0.3em 0.5em;
-	border-radius: $base_radius;
+	border-radius: $base_border_radius;
 	&:selected,&:hover { background-color: $selected_bg_color; color: $selected_fg_color; }
 }
 
@@ -27,6 +25,6 @@
 	padding: 4px;
 }
 
-.candidate-page-button-previous { border-radius: $base_radius 0px 0px $base_radius; border-right-width: 0; }
-.candidate-page-button-next { border-radius: 0px $base_radius $base_radius 0px;  }
+.candidate-page-button-previous { border-radius: $base_border_radius 0px 0px $base_border_radius; border-right-width: 0; }
+.candidate-page-button-next { border-radius: 0px $base_border_radius $base_border_radius 0px;  }
 .candidate-page-button-icon { icon-size: 1em; }

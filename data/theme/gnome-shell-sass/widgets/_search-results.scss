@@ -1,4 +1,4 @@
-//search results
+/* Search */
 
 #searchResultsContent {
 	max-width: 1000px;
@@ -7,23 +7,24 @@
 }
 
 .search-section {
-	// background-color: red;
-	padding:$base_padding;
-	spacing: 0;  // This should be equal to #searchResultsContent spacing
-}
-
-.search-section-content {
-	background-color: lighten($osd_bg_color, 5%);
-	border-radius: $base_radius * 3;
+	background-color: transparentize(lighten($osd_bg_color, 5%), 0.2);
+	border-radius: $base_border_radius * 3;
 	border: 1px solid $osd_outer_borders_color;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
 	color: $osd_fg_color;
 	text-shadow: 1px rgba(0,0,0,0.3);
 	padding: $base_padding;
-	spacing: 0; // This is the space between the provider icon and the results container
+	margin-bottom: $base_padding;
+	spacing:0;
 }
 
-.search-statustext { // "no results"
+
+.search-section-content {
+	spacing: 0;
+}
+
+// "no results"
+.search-statustext { 
 	font-size: 2em;
 	font-weight: bold;
 	color: $osd_fg_color;
@@ -31,15 +32,65 @@
 
 .search-section-separator { 
 	// height: 2px; background-color: rgba(255, 255, 255, 0.2);
-	height: 0px; 
-	background-color: rgba(255, 255, 255, 0);
+	height: 0; 
+	background-color:transparent;
 }
 
 .search-section:last-child .search-section-separator { background-color: transparent; }
 
+// Search results with icons
+.grid-search-result {
+	> .overview-icon {
+		@extend %icon_tile;
+		color: $osd_fg_color;
+	}
+
+	> .overview-icon.overview-icon-with-label {
+		padding: 10px 8px 5px 8px;
+		background-color:red;
+		spacing: $base_spacing;
+	}
+
+	&:hover,
+	&:focus,
+	&:selected {
+		.overview-icon {
+			// background-color: transparentize($osd_bg_color,0.8);
+			background-color: red;
+			color: $osd_fg_color;
+		}
+	}
+
+	&:drop .overview-icon {
+		background-color: transparentize($selected_bg_color,.15);
+	}
+
+	&:active .overview-icon,
+	&:checked .overview-icon {
+		background-color: transparentize(darken($osd_bg_color,10%), 0.5);
+	}
+}
+
 // Search results
 .list-search-results {
 	spacing: $base_spacing;
+}
+
+.list-search-result {
+	@extend %icon_tile;
+	spacing: 0;
+	color: $osd_fg_color;
+	
+	&:focus,
+	&:selected,
+	&:hover {
+		background-color: transparentize($osd_fg_color,.9);
+		transition-duration: 200ms;
+	}
+	&:active,
+	&:checked {
+		background-color: transparentize(darken($osd_bg_color,10%),.1);
+	}
 }
 
 .list-search-result-content {
@@ -66,6 +117,20 @@
 	spacing: 20px;
 }
 
+// icons
 .search-provider-icon {
-	padding: $base_padding;
+	@extend %icon_tile;
+	padding: 0;
+	spacing: 0;
+	
+	&:focus,
+	&:selected,
+	&:hover {
+		background-color: transparentize($osd_fg_color,.9);
+		transition-duration: 200ms;
+	}
+	&:active,
+	&:checked {
+		background-color: transparentize(darken($osd_bg_color,10%),.1);
+	}
 }

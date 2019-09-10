@@ -1,5 +1,7 @@
 /* Workspace Switcher */
-.workspace-switcher-group { padding: $base_padding; }
+.workspace-switcher-group {
+	padding: $base_padding;
+}
 
 .workspace-switcher-container {
 	@extend %osd_panel;
@@ -13,33 +15,35 @@
 	spacing: $base_spacing * 2;
 }
 
-.ws-switcher-active-up, .ws-switcher-active-down,
-.ws-switcher-active-left, .ws-switcher-active-right {
+.ws-switcher-active-up,
+.ws-switcher-active-down,
+.ws-switcher-active-left,
+.ws-switcher-active-right {
 	height: 50px;
 	background-color: $selected_bg_color;
 	color: $selected_fg_color;
 	background-size: 32px;
-	border-radius: 8px;
+	border-radius: $base_border_radius + 3px;
 }
 
 .ws-switcher-box {
 	height: 50px;
 	border: 1px solid transparentize($osd_fg_color,0.9);
 	background: transparent;
-	border-radius: 8px;
+	border-radius: $base_border_radius + 3px;
 }
 
-// Workspace pager
-.workspace-thumbnails { //container ala dash
-	color: $osd_fg_color;
-	background-color: transparentize($osd_bg_color, 0.1);
-	border: none;
+/* Workspace pager */
+
+// thumbnails in overview
+.workspace-thumbnails { 
+	@extend %overview_panel;
 	visible-width: 32px; //amount visible before hover
 	spacing: 11px;
 	padding: 8px;
-	border-radius: 9px 0 0 9px;
+	border-radius: $dialog_border_radius 0 0 $dialog_border_radius;
 	//border-width: 1px 0 1px 1px; //fixme: can't have non unoform borders :(
-	&:rtl { border-radius: 0 9px 9px 0;}
+	&:rtl { border-radius: 0 $dialog_border_radius $dialog_border_radius 0;}
 
 	.placeholder {
 		background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
@@ -47,7 +51,10 @@
 		height: 24px;
 	}
 }
+
+// selected indicator
 .workspace-thumbnail-indicator {
 	border: 2px solid $selected_bg_color;
+	border-radius: 2px;
 	padding: 1px;
 }
