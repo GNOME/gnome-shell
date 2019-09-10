@@ -906,7 +906,9 @@ var EmojiSelection = GObject.registerClass({
         });
         this.add(this._emojiPager, { expand: true });
 
-        this._pageIndicator = new PageIndicators.PageIndicators(false);
+        this._pageIndicator = new PageIndicators.PageIndicators(
+            Clutter.Orientation.HORIZONTAL
+        );
         this.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
         this._pageIndicator.setReactive(false);
 
