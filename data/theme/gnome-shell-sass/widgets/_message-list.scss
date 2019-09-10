@@ -75,7 +75,7 @@
 }
 
 .message-secondary-bin > .event-time {
-	color: $fg_color;
+	color: transparentize($fg_color, 0.5);
 	font-size: 80%;
 	text-align: right;
 	/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
