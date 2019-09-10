@@ -28,6 +28,7 @@
 #include <libintl.h>
 #include <string.h>
 #define HANDLE_LIBICAL_MEMORY
+#define EDS_DISABLE_DEPRECATED
 #include <libecal/libecal.h>
 
 #undef CALENDAR_ENABLE_DEBUG
