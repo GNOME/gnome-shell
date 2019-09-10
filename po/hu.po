@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-05 13:45+0000\n"
-"PO-Revision-Date: 2019-09-07 20:24+0200\n"
-"Last-Translator: Balázs Meskó <mesko.balazs at fsf dot hu>\n"
+"POT-Creation-Date: 2019-09-09 20:24+0000\n"
+"PO-Revision-Date: 2019-09-10 06:39+0200\n"
+"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -93,16 +93,10 @@ msgstr ""
 "EnableExtension és DisableExtension D-Bus metódusaival is manipulálhatja."
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
 msgstr "A kényszerítetten letiltandó kiterjesztések UUID azonosítói"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -348,7 +342,6 @@ msgstr ""
 "megjelenítve a váltón. Egyébként minden ablak fel lesz véve."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#| msgid "Location In Use"
 msgid "Locations"
 msgstr "Helyek"
 
@@ -365,7 +358,6 @@ msgid "Whether to fetch the current location or not"
 msgstr "Lekérje-e a jelenlegi helyet"
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#| msgid "Location In Use"
 msgid "Location"
 msgstr "Hely"
 
@@ -769,28 +761,33 @@ msgstr "Gyakori"
 msgid "All"
 msgstr "Összes"
 
+#: js/ui/appDisplay.js:1751
+#| msgid "Username: "
+msgid "Rename"
+msgstr "Átnevezés"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Ablakok megnyitása"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Új ablak"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Futtatás a dedikált videokártyával"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Részletek megjelenítése"
 
@@ -1481,7 +1478,7 @@ msgstr "Forrás megtekintése"
 msgid "Web Page"
 msgstr "Weblap"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -1610,7 +1607,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d új értesítés"
 msgstr[1] "%d új értesítés"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Zárolás"
 
@@ -1633,15 +1630,15 @@ msgstr "Nem lehet zárolni"
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Nincs találat."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2125,27 +2122,27 @@ msgstr "Kikapcsolás"
 msgid "Airplane Mode On"
 msgstr "Repülőgép mód be"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Fiókbeállítások"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Tájolás zárolása"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
@@ -2398,13 +2395,11 @@ msgid "Enter extension information interactively"
 msgstr "Adja meg a kiterjesztés információit interaktív módon"
 
 #: src/extensions-tool/command-create.c:258
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
 msgstr "Új kiterjesztés létrehozása"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
 msgstr "Ismeretlen argumentumok"
 
@@ -2413,7 +2408,6 @@ msgid "UUID, name and description are required"
 msgstr "A UUID, név és leírás kötelező"
 
 #: src/extensions-tool/command-disable.c:57
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
 msgstr "Kiterjesztés letiltása"
 
@@ -2436,12 +2430,10 @@ msgid "More than one UUID given"
 msgstr "Több mint egy UUID lett megadva"
 
 #: src/extensions-tool/command-enable.c:57
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
 msgstr "Kiterjesztés engedélyezése"
 
 #: src/extensions-tool/command-info.c:79
-#| msgid "No extensions installed"
 msgid "Show extensions info"
 msgstr "Kiterjesztésinformációk megjelenítése"
 
@@ -2454,12 +2446,10 @@ msgid "EXTENSION_BUNDLE"
 msgstr "KITERJESZTÉSCSOMAG"
 
 #: src/extensions-tool/command-install.c:184
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
 msgstr "Kiterjesztéscsomag telepítése"
 
 #: src/extensions-tool/command-install.c:201
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
 msgstr "Nincs megadva kiterjesztéscsomag"
 
@@ -2468,22 +2458,18 @@ msgid "More than one extension bundle specified"
 msgstr "Több mint egy kiterjesztéscsomag lett megadva"
 
 #: src/extensions-tool/command-list.c:118
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
 msgstr "Felhasználó által telepített kiterjesztések megjelenítése"
 
 #: src/extensions-tool/command-list.c:121
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
 msgstr "Rendszer által telepített kiterjesztések megjelenítése"
 
 #: src/extensions-tool/command-list.c:124
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
 msgstr "Engedélyezett kiterjesztések megjelenítése"
 
 #: src/extensions-tool/command-list.c:127
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
 msgstr "Letiltott kiterjesztések megjelenítése"
 
@@ -2492,12 +2478,10 @@ msgid "Show extensions with preferences"
 msgstr "Beállításokkal rendelkező kiterjesztések megjelenítése"
 
 #: src/extensions-tool/command-list.c:133
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
 msgstr "Kiterjesztés részleteinek kiírása"
 
 #: src/extensions-tool/command-list.c:141
-#| msgid "Disable user extensions"
 msgid "List installed extensions"
 msgstr "Telepített kiterjesztések felsorolása"
 
@@ -2559,12 +2543,10 @@ msgid "Opens extension preferences"
 msgstr "Megnyitja a kiterjesztés beállításait"
 
 #: src/extensions-tool/command-reset.c:57
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
 msgstr "Kiterjesztés visszaállítása"
 
 #: src/extensions-tool/command-uninstall.c:72
-#| msgid "Disable user extensions"
 msgid "Uninstall an extension"
 msgstr "Kiterjesztés eltávolítása"
 
@@ -2581,7 +2563,6 @@ msgid "Original author"
 msgstr "Eredeti szerző"
 
 #: src/extensions-tool/main.c:184
-#| msgid "Print version"
 msgid "Version"
 msgstr "Verzió"
 
@@ -2614,7 +2595,6 @@ msgid "Commands:"
 msgstr "Parancsok:"
 
 #: src/extensions-tool/main.c:243
-#| msgid "Print version"
 msgid "Print help"
 msgstr "Súgó kiírása"
 
@@ -2623,32 +2603,26 @@ msgid "Print version"
 msgstr "Verzió kiírása"
 
 #: src/extensions-tool/main.c:245
-#| msgid "Disable user extensions"
 msgid "Enable extension"
 msgstr "Kiterjesztés engedélyezése"
 
 #: src/extensions-tool/main.c:246
-#| msgid "Disable user extensions"
 msgid "Disable extension"
 msgstr "Kiterjesztés letiltása"
 
 #: src/extensions-tool/main.c:247
-#| msgid "Disable user extensions"
 msgid "Reset extension"
 msgstr "Kiterjesztés visszaállítása"
 
 #: src/extensions-tool/main.c:248
-#| msgid "Disable user extensions"
 msgid "Uninstall extension"
 msgstr "Kiterjesztés eltávolítása"
 
 #: src/extensions-tool/main.c:249
-#| msgid "Disable user extensions"
 msgid "List extensions"
 msgstr "Kiterjesztések felsorolása"
 
 #: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
-#| msgid "No extensions installed"
 msgid "Show extension info"
 msgstr "Kiterjesztésinformációk megjelenítése"
 
@@ -2657,17 +2631,14 @@ msgid "Open extension preferences"
 msgstr "Kiterjesztésbeállítások megnyitása"
 
 #: src/extensions-tool/main.c:253
-#| msgid "Shell Extensions"
 msgid "Create extension"
 msgstr "Kiterjesztés létrehozása"
 
 #: src/extensions-tool/main.c:254
-#| msgid "Shell Extensions"
 msgid "Package extension"
 msgstr "Kiterjesztés csomagolása"
 
 #: src/extensions-tool/main.c:255
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
 msgstr "Kiterjesztéscsomag telepítése"
 
