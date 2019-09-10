@@ -14,7 +14,6 @@ st_headers = [
   'st-icon-colors.h',
   'st-image-content.h',
   'st-label.h',
-  'st-private.h',
   'st-scrollable.h',
   'st-scroll-bar.h',
   'st-scroll-view.h',
