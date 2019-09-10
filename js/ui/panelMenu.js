@@ -100,9 +100,6 @@ var Button = GObject.registerClass({
                       accessible_name: nameText ? nameText : "",
                       accessible_role: Atk.Role.MENU });
 
-        this.connect('event', this._onEvent.bind(this));
-        this.connect('notify::visible', this._onVisibilityChanged.bind(this));
-
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
@@ -131,7 +128,7 @@ var Button = GObject.registerClass({
         this.emit('menu-set');
     }
 
-    _onEvent(actor, event) {
+    vfunc_event(event) {
         if (this.menu &&
             (event.type() == Clutter.EventType.TOUCH_BEGIN ||
              event.type() == Clutter.EventType.BUTTON_PRESS))
@@ -140,11 +137,10 @@ var Button = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onVisibilityChanged() {
-        if (!this.menu)
-            return;
+    vfunc_hide() {
+        super.vfunc_hide();
 
-        if (!this.visible)
+        if (this.menu)
             this.menu.close();
     }
 

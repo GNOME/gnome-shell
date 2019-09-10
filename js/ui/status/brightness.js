@@ -47,7 +47,7 @@ var Indicator = GObject.registerClass({
             return this._slider.startDragging(event);
         });
         this._item.connect('key-press-event', (actor, event) => {
-            return this._slider.onKeyPressEvent(actor, event);
+            return this._slider.emit('key-press-event', event);
         });
 
     }
