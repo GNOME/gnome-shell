@@ -44,16 +44,17 @@ var PadChooser = GObject.registerClass({
         this._ensureMenu(groupDevices);
 
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('clicked', actor => {
-            if (actor.get_checked()) {
-                if (this._padChooserMenu != null)
-                    this._padChooserMenu.open(true);
-                else
-                    this.set_checked(false);
-            } else {
-                this._padChooserMenu.close(true);
-            }
-        });
+    }
+
+    vfunc_clicked() {
+        if (this.get_checked()) {
+            if (this._padChooserMenu != null)
+                this._padChooserMenu.open(true);
+            else
+                this.set_checked(false);
+        } else {
+            this._padChooserMenu.close(true);
+        }
     }
 
     _ensureMenu(devices) {
@@ -93,10 +94,9 @@ var KeybindingEntry = GObject.registerClass({
 }, class KeybindingEntry extends St.Entry {
     _init() {
         super._init({ hint_text: _("New shortcut…"), style: 'width: 10em' });
-        this.connect('captured-event', this._onCapturedEvent.bind(this));
     }
 
-    _onCapturedEvent(actor, event) {
+    vfunc_captured_event(event) {
         if (event.type() != Clutter.EventType.KEY_PRESS)
             return Clutter.EVENT_PROPAGATE;
 
@@ -116,7 +116,6 @@ var ActionComboBox = GObject.registerClass({
 }, class ActionComboBox extends St.Button {
     _init() {
         super._init({ style_class: 'button' });
-        this.connect('clicked', this._onButtonClicked.bind(this));
         this.set_toggle_mode(true);
 
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -182,7 +181,7 @@ var ActionComboBox = GObject.registerClass({
         this._editMenu.close(true);
     }
 
-    _onButtonClicked() {
+    vfunc_clicked() {
         if (this.get_checked())
             this.popup();
         else
