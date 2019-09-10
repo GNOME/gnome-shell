@@ -129,41 +129,6 @@ shell_util_get_transformed_allocation (ClutterActor    *actor,
 }
 
 /**
- * shell_util_format_date:
- * @format: a strftime-style string format, as parsed by
- *   g_date_time_format()
- * @time_ms: milliseconds since 1970-01-01 00:00:00 UTC; the
- *   value returned by Date.getTime()
- *
- * Formats a date for the current locale. This should be
- * used instead of the Spidermonkey Date.toLocaleFormat()
- * extension because Date.toLocaleFormat() is buggy for
- * Unicode format strings:
- * https://bugzilla.mozilla.org/show_bug.cgi?id=508783
- *
- * Return value: the formatted date. If the date is
- *  outside of the range of a GDateTime (which contains
- *  any plausible dates we actually care about), will
- *  return an empty string.
- */
-char *
-shell_util_format_date (const char *format,
-                        gint64      time_ms)
-{
-  GDateTime *datetime;
-  char *result;
-
-  datetime = g_date_time_new_from_unix_local (time_ms / 1000);
-  if (!datetime) /* time_ms is out of range of GDateTime */
-    return g_strdup ("");
-
-  result = g_date_time_format (datetime, format);
-
-  g_date_time_unref (datetime);
-  return result;
-}
-
-/**
  * shell_util_get_week_start:
  *
  * Gets the first week day for the current locale, expressed as a
