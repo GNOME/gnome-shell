@@ -26,9 +26,9 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 /* Global Values */
 
 // padding, margin and spacing
-$base_padding: 12px;
+$base_padding: 6px;
 $base_margin: 4px;
-$base_spacing: 4px;
+$base_spacing: 6px;
 
 // border radii
 $base_border_radius: 5px;
@@ -76,6 +76,7 @@ stage {
 @import 'widgets/keyboard';
 @import 'widgets/login-dialog';
 @import 'widgets/looking-glass';
+@import 'widgets/message-list';
 @import 'widgets/message-tray';
 @import 'widgets/misc';
 @import 'widgets/network-dialog';
@@ -102,7 +103,7 @@ stage {
 	background-color: $osd_bg_color;
 	border: 1px solid $osd_outer_borders_color;
 	border-radius: $base_border_radius * 3;
-	padding: $base_padding;
+	padding: $base_padding * 2;
 }
 
 // Overview panels
@@ -117,7 +118,7 @@ stage {
 	background-color: transparent; // no background
 	color: $osd_fg_color;
 	border-radius: $base_border_radius + 4px;
-	padding: $base_padding * 0.5;
+	padding: $base_padding;
 	border: 2px solid transparent;
 	transition-duration: 100ms;
 	text-align: center;
@@ -163,7 +164,7 @@ stage {
 %bubble_button {
 	border-right-width: 1px;
 	@include button(normal, $c:$bg_color, $tc:$fg_color);
-	padding: $base_padding;
+	padding: $base_padding * 2;
 	border-top: 1px solid $bubble_borders_color;
 
 	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }

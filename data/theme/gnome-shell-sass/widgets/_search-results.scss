@@ -2,7 +2,7 @@
 
 #searchResultsContent {
 	max-width: 1000px;
-	padding: $base_padding;
+	padding: $base_padding * 2;
 	spacing: 0;
 }
 
@@ -13,7 +13,7 @@
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
 	color: $osd_fg_color;
 	text-shadow: 1px rgba(0,0,0,0.3);
-	padding: $base_padding;
+	padding: $base_padding * 2;
 	margin-bottom: $base_padding;
 	spacing:0;
 }

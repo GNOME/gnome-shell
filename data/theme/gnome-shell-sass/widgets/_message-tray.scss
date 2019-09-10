@@ -7,7 +7,7 @@ $notification_banner_width: 34em;
 .notification-banner {
 	font-size: $base_font_size;
 	width: $notification_banner_width;
-	margin: 5px;
+	margin: $base_margin;
 	border-radius: $dialog_border_radius;
 	border: if($variant == 'light', none, $bubble_borders_color);
 	min-height: $notification_banner_height;
