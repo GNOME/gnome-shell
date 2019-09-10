@@ -47,19 +47,6 @@ var CandidateArea = GObject.registerClass({
             });
         }
 
-        this.connect('scroll-event', (actor, event) => {
-            let direction = event.get_scroll_direction();
-            switch (direction) {
-            case Clutter.ScrollDirection.UP:
-                this.emit('cursor-up');
-                break;
-            case Clutter.ScrollDirection.DOWN:
-                this.emit('cursor-down');
-                break;
-            }
-            return Clutter.EVENT_PROPAGATE;
-        });
-
         this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
 
         this._previousButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-previous button' });
@@ -81,6 +68,18 @@ var CandidateArea = GObject.registerClass({
 
         this._orientation = -1;
         this._cursorPosition = 0;
+    }
+
+    vfunc_scroll_event(scrollEvent) {
+        switch (scrollEvent.direction) {
+        case Clutter.ScrollDirection.UP:
+            this.emit('cursor-up');
+            break;
+        case Clutter.ScrollDirection.DOWN:
+            this.emit('cursor-down');
+            break;
+        }
+        return Clutter.EVENT_PROPAGATE;
     }
 
     setOrientation(orientation) {

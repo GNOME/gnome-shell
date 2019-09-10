@@ -1212,8 +1212,6 @@ class HotCorner extends Clutter.Actor {
                 this._corner.set_position(0, 0);
             }
 
-            this.connect('leave-event', this._onEnvironsLeft.bind(this));
-
             this._corner.connect('enter-event',
                                  this._onCornerEntered.bind(this));
             this._corner.connect('leave-event',
@@ -1263,8 +1261,8 @@ class HotCorner extends Clutter.Actor {
         return Clutter.EVENT_STOP;
     }
 
-    _onEnvironsLeft(actor, event) {
-        if (event.get_related() != this._corner)
+    vfunc_leave_event(crossingEvent) {
+        if (crossingEvent.related != this._corner)
             this._entered = false;
         return Clutter.EVENT_PROPAGATE;
     }

@@ -81,11 +81,6 @@ var AuthPrompt = GObject.registerClass({
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('key-press-event', (actor, event) => {
-            if (event.get_key_symbol() == Clutter.KEY_Escape)
-                this.cancel();
-            return Clutter.EVENT_PROPAGATE;
-        });
 
         this._userWell = new St.Bin({ x_fill: true, x_align: St.Align.START });
         this.add(this._userWell, {
@@ -143,6 +138,12 @@ var AuthPrompt = GObject.registerClass({
     _onDestroy() {
         this._userVerifier.destroy();
         this._userVerifier = null;
+    }
+
+    vfunc_key_press_event(keyPressEvent) {
+        if (keyPressEvent.keyval == Clutter.KEY_Escape)
+            this.cancel();
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _initButtons() {

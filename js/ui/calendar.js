@@ -352,8 +352,6 @@ var Calendar = GObject.registerClass({
             reactive: true
         });
 
-        this.connect('scroll-event', this._onScroll.bind(this));
-
         this._buildHeader ();
     }
 
@@ -446,8 +444,8 @@ var Calendar = GObject.registerClass({
         this._firstDayIndex = this.get_n_children();
     }
 
-    _onScroll(actor, event) {
-        switch (event.get_scroll_direction()) {
+    vfunc_scroll_event(scrollEvent) {
+        switch (scrollEvent.direction) {
         case Clutter.ScrollDirection.UP:
         case Clutter.ScrollDirection.LEFT:
             this._onPrevMonthButtonClicked();
@@ -668,11 +666,12 @@ class EventMessage extends MessageList.Message {
 
         this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
         this.setIcon(this._icon);
+    }
 
-        this.connect('style-changed', () => {
-            let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
-            this._icon.opacity = (iconVisible ? 255 : 0);
-        });
+    vfunc_style_changed() {
+        let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
+        this._icon.opacity = (iconVisible ? 255 : 0);
+        super.vfunc_style_changed();
     }
 
     _formatEventTime() {
@@ -750,7 +749,7 @@ class NotificationMessage extends MessageList.Message {
         this.setUseBodyMarkup(n.bannerBodyMarkup);
     }
 
-    _onClicked() {
+    vfunc_clicked() {
         this.notification.activate();
     }
 
@@ -910,6 +909,23 @@ class EventsSection extends MessageList.MessageListSection {
     }
 });
 
+var TimeLabel = GObject.registerClass(
+class NotificationTimeLabel extends St.Label {
+    _init(datetime) {
+        super._init({
+            style_class: 'event-time',
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.END
+        });
+        this._datetime = datetime;
+    }
+
+    vfunc_map() {
+        this.text = Util.formatTimeSpan(this._datetime);
+        super.vfunc_map();
+    }
+});
+
 var NotificationSection = GObject.registerClass(
 class NotificationSection extends MessageList.MessageListSection {
     _init() {
@@ -922,24 +938,11 @@ class NotificationSection extends MessageList.MessageListSection {
         Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source);
         });
-
-        this.connect('notify::mapped', this._onMapped.bind(this));
     }
 
     get allowed() {
         return Main.sessionMode.hasNotifications &&
                !Main.sessionMode.isGreeter;
-    }
-
-    _createTimeLabel(datetime) {
-        let label = new St.Label({ style_class: 'event-time',
-                                   x_align: Clutter.ActorAlign.START,
-                                   y_align: Clutter.ActorAlign.END });
-        label.connect('notify::mapped', () => {
-            if (label.mapped)
-                label.text = Util.formatTimeSpan(datetime);
-        });
-        return label;
     }
 
     _sourceAdded(tray, source) {
@@ -959,12 +962,12 @@ class NotificationSection extends MessageList.MessageListSection {
 
     _onNotificationAdded(source, notification) {
         let message = new NotificationMessage(notification);
-        message.setSecondaryActor(this._createTimeLabel(notification.datetime));
+        message.setSecondaryActor(new TimeLabel(notification.datetime));
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
 
         let updatedId = notification.connect('updated', () => {
-            message.setSecondaryActor(this._createTimeLabel(notification.datetime));
+            message.setSecondaryActor(new TimeLabel(notification.datetime));
             this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
         });
         let destroyId = notification.connect('destroy', () => {
@@ -995,14 +998,12 @@ class NotificationSection extends MessageList.MessageListSection {
         this._sources.delete(source);
     }
 
-    _onMapped() {
-        if (!this.mapped)
-            return;
-
+    vfunc_map() {
         this._messages.forEach(message => {
             if (message.notification.urgency != MessageTray.Urgency.CRITICAL)
                 message.notification.acknowledged = true;
         });
+        super.vfunc_map();
     }
 
     _shouldShow() {

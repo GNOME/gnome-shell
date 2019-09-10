@@ -74,7 +74,6 @@ var UserListItem = GObject.registerClass({
                                                  visible: false });
         layout.add(this._timedLoginIndicator);
 
-        this.connect('clicked', this._onClicked.bind(this));
         this._onUserChanged();
     }
 
@@ -103,7 +102,7 @@ var UserListItem = GObject.registerClass({
         this.user.disconnect(this._userChangedId);
     }
 
-    _onClicked() {
+    vfunc_clicked() {
         this.emit('activate');
     }
 
@@ -173,8 +172,10 @@ var UserList = GObject.registerClass({
 
         this.add_actor(this._box);
         this._items = {};
+    }
 
-        this.connect('key-focus-in', this._moveFocusToItems.bind(this));
+    vfunc_key_focus_in() {
+        this._moveFocusToItems();
     }
 
     _moveFocusToItems() {
