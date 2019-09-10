@@ -52,49 +52,59 @@
 	@extend %message_box;
 }
 
+// message icon
 .message-icon-bin {
-	padding: 0.68em 0.2em 0.68em 0.68em;
-	&:rtl { padding: 0.68em 0.68em 0.68em 0.2em; }
-}
+	padding: $base_padding;
 
-.message-icon-bin > StIcon {
-	color: $fg_color;
-	icon-size: $base_icon_size * 2;
-	-st-icon-style: symbolic;
+	&:rtl {
+		padding: $base_padding;
+	}
 
-	margin:$base_margin;
-}
+	// icon size and color
+	> StIcon {
+		color: $fg_color;
+		icon-size: $base_icon_size * 2;
+		-st-icon-style: symbolic;
 
-.message-icon-bin > .fallback-window-icon {
-	width: $base_icon_size;
-	height: $base_icon_size;
+		margin: $base_margin;
+	}
+
+	// fallback
+	> .fallback-window-icon {
+		width: $base_icon_size;
+		height: $base_icon_size;
+	}
 }
 
 .message-secondary-bin {
-	padding: 0 0.82em;;
-}
+	padding: 0;
 
-.message-secondary-bin > .event-time {
-	color: transparentize($fg_color, 0.5);
-	font-size: 80%;
-	text-align: right;
-	/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
-	padding-bottom: 0.13em;
-}
+	> StIcon {
+		icon-size: $base_icon_size;
+	}
 
-.message-secondary-bin > StIcon {
-	icon-size: $base_icon_size;
+	// notification time stamp
+	> .event-time {
+		color: transparentize($fg_color, 0.5);
+		font-size: 80%;
+		text-align: right;
+		margin: 0 $base_margin * 2;
+		/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
+		padding-bottom: $base_padding;
+	}
 }
 
 // title
 .message-title {
 	color: $fg_color;
 	font-weight: bold;
+	margin-bottom:4px;
 }
 
 .message-content {
 	color: darken($fg_color, 10%);
-	padding: 10px;
+	padding: $base_padding 0;
+	margin:0 $base_margin * 2;
 }
 
 /* Media Controls */
