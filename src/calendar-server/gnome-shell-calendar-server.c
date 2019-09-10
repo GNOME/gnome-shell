@@ -34,7 +34,10 @@
 #include <gio/gio.h>
 
 #define HANDLE_LIBICAL_MEMORY
+#define EDS_DISABLE_DEPRECATED
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #include <libecal/libecal.h>
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 #include "calendar-sources.h"
 

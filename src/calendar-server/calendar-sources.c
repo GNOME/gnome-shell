@@ -28,7 +28,10 @@
 #include <libintl.h>
 #include <string.h>
 #define HANDLE_LIBICAL_MEMORY
+#define EDS_DISABLE_DEPRECATED
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #include <libecal/libecal.h>
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 #undef CALENDAR_ENABLE_DEBUG
 #include "calendar-debug.h"
