@@ -373,18 +373,6 @@ var AllView = GObject.registerClass({
             this._displayingPopup = false;
         });
 
-        this.connect('notify::mapped', () => {
-            if (this.mapped) {
-                this._keyPressEventId =
-                    global.stage.connect('key-press-event',
-                                         this._onKeyPressEvent.bind(this));
-            } else {
-                if (this._keyPressEventId)
-                    global.stage.disconnect(this._keyPressEventId);
-                this._keyPressEventId = 0;
-            }
-        });
-
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
@@ -399,6 +387,21 @@ var AllView = GObject.registerClass({
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this._nEventBlockerInhibits = 0;
+    }
+
+    vfunc_map() {
+        this._keyPressEventId =
+            global.stage.connect('key-press-event',
+                this._onKeyPressEvent.bind(this));
+        super.vfunc_map();
+    }
+
+    vfunc_unmap() {
+        if (this._keyPressEventId) {
+            global.stage.disconnect(this._keyPressEventId);
+            this._keyPressEventId = 0;
+        }
+        super.vfunc_unmap();
     }
 
     _redisplay() {
@@ -904,11 +907,11 @@ class FrequentView extends BaseAppView {
         this._noFrequentAppsLabel.hide();
 
         this._usage = Shell.AppUsage.get_default();
+    }
 
-        this.connect('notify::mapped', () => {
-            if (this.mapped)
-                this._redisplay();
-        });
+    vfunc_map() {
+        this._redisplay();
+        super.vfunc_map();
     }
 
     hasUsefulData() {
@@ -1486,17 +1489,9 @@ var FolderIcon = GObject.registerClass({
 
         this._popupTimeoutId = 0;
 
-        this.connect('leave-event', this._onLeaveEvent.bind(this));
-        this.connect('button-press-event', this._onButtonPress.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
         this.connect('popup-menu', this._popupRenamePopup.bind(this));
 
-        this.connect('clicked', this.open.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('notify::mapped', () => {
-            if (!this.mapped && this._popup)
-                this._popup.popdown();
-        });
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
@@ -1517,6 +1512,17 @@ var FolderIcon = GObject.registerClass({
             this._popup.destroy();
 
         this._removeMenuTimeout();
+    }
+
+    vfunc_clicked() {
+        this.open();
+    }
+
+    vfunc_unmap() {
+        super.vfunc_unmap();
+
+        if (this._popup)
+            this._popup.popdown();
     }
 
     open() {
@@ -1701,24 +1707,29 @@ var FolderIcon = GObject.registerClass({
                                    '[gnome-shell] this._popupRenamePopup');
     }
 
-    _onLeaveEvent(_actor, _event) {
+    vfunc_leave_event(crossingEvent) {
+        let ret = super.vfunc_leave_event(crossingEvent);
         this.fake_release();
         this._removeMenuTimeout();
+        return ret;
     }
 
-    _onButtonPress(_actor, event) {
-        let button = event.get_button();
-        if (button == 1) {
+    vfunc_button_press_event(buttonEvent) {
+        super.vfunc_button_press_event(buttonEvent);
+
+        if (buttonEvent.button == 1) {
             this._setPopupTimeout();
-        } else if (button == 3) {
+        } else if (buttonEvent.button == 3) {
             this._popupRenamePopup();
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
+    vfunc_touch_event(touchEvent) {
+        super.vfunc_touch_event(touchEvent);
+
+        if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
             this._setPopupTimeout();
 
         return Clutter.EVENT_PROPAGATE;
@@ -1912,7 +1923,6 @@ var AppFolderPopup = GObject.registerClass({
             actionMode: Shell.ActionMode.POPUP
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
-        this.connect('key-press-event', this._onKeyPress.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -1924,8 +1934,8 @@ var AppFolderPopup = GObject.registerClass({
         }
     }
 
-    _onKeyPress(actor, event) {
-        if (global.stage.get_key_focus() != actor)
+    vfunc_key_press_event(keyEvent) {
+        if (global.stage.get_key_focus() != this)
             return Clutter.EVENT_PROPAGATE;
 
         // Since we need to only grab focus on one item child when the user
@@ -1947,7 +1957,7 @@ var AppFolderPopup = GObject.registerClass({
         // languages
         let direction;
         let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
-        switch (event.get_key_symbol()) {
+        switch (keyEvent.keyval) {
         case Clutter.Down:
             direction = St.DirectionType.TAB_FORWARD;
             break;
@@ -1967,7 +1977,7 @@ var AppFolderPopup = GObject.registerClass({
         default:
             return Clutter.EVENT_PROPAGATE;
         }
-        return actor.navigate_focus(null, direction, false);
+        return this.navigate_focus(null, direction, false);
     }
 
     toggle() {
@@ -2085,10 +2095,6 @@ var AppIcon = GObject.registerClass({
 
         this.label_actor = this.icon.label;
 
-        this.connect('leave-event', this._onLeaveEvent.bind(this));
-        this.connect('button-press-event', this._onButtonPress.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
-        this.connect('clicked', this._onClicked.bind(this));
         this.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
         this._menu = null;
@@ -2174,30 +2180,34 @@ var AppIcon = GObject.registerClass({
         GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
     }
 
-    _onLeaveEvent(_actor, _event) {
+    vfunc_leave_event(crossingEvent) {
+        let ret = super.vfunc_leave_event(crossingEvent);
+
         this.fake_release();
         this._removeMenuTimeout();
+        return ret;
     }
 
-    _onButtonPress(_actor, event) {
-        let button = event.get_button();
-        if (button == 1) {
+    vfunc_button_press_event(buttonEvent) {
+        super.vfunc_button_press_event(buttonEvent);
+        if (buttonEvent.button == 1) {
             this._setPopupTimeout();
-        } else if (button == 3) {
+        } else if (buttonEvent.button == 3) {
             this.popupMenu();
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
+    vfunc_touch_event(touchEvent) {
+        super.vfunc_touch_event(touchEvent);
+        if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
             this._setPopupTimeout();
 
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onClicked(actor, button) {
+    vfunc_clicked(button) {
         this._removeMenuTimeout();
         this.activate(button);
     }

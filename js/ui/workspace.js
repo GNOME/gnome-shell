@@ -163,13 +163,6 @@ var WindowClone = GObject.registerClass({
         clickAction.connect('long-press', this._onLongPress.bind(this));
         this.add_action(clickAction);
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('key-press-event', this._onKeyPress.bind(this));
-
-        this.connect('enter-event', () => this.emit('show-chrome'));
-        this.connect('key-focus-in', () => this.emit('show-chrome'));
-
-        this.connect('leave-event', () => this.emit('hide-chrome'));
-        this.connect('key-focus-out', () => this.emit('hide-chrome'));
 
         this._draggable = DND.makeDraggable(this,
                                             { restoreOnSuccess: true,
@@ -369,8 +362,28 @@ var WindowClone = GObject.registerClass({
         this.emit('selected', global.get_current_time());
     }
 
-    _onKeyPress(actor, event) {
-        let symbol = event.get_key_symbol();
+    vfunc_enter_event(crossingEvent) {
+        this.emit('show-chrome');
+        return super.vfunc_enter_event(crossingEvent);
+    }
+
+    vfunc_leave_event(crossingEvent) {
+        this.emit('hide-chrome');
+        return super.vfunc_leave_event(crossingEvent);
+    }
+
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
+        this.emit('show-chrome');
+    }
+
+    vfunc_key_focus_out() {
+        super.vfunc_key_focus_out();
+        this.emit('hide-chrome');
+    }
+
+    vfunc_key_press_event(keyEvent) {
+        let symbol = keyEvent.keyval;
         let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
         if (isEnter) {
             this._activate();
@@ -1168,11 +1181,11 @@ class Workspace extends St.Widget {
 
         this._positionWindowsFlags = 0;
         this._positionWindowsId = 0;
+    }
 
-        this.connect('notify::mapped', () => {
-            if (this.mapped)
-                this._syncActualGeometry();
-        });
+    vfunc_map() {
+        super.vfunc_map();
+        this._syncActualGeometry();
     }
 
     vfunc_get_focus_chain() {

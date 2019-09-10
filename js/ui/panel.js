@@ -430,9 +430,6 @@ class ActivitiesButton extends PanelMenu.Button {
 
         this.label_actor = this._label;
 
-        this.connect('captured-event', this._onCapturedEvent.bind(this));
-        this.connect_after('key-release-event', this._onKeyRelease.bind(this));
-
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
             this.add_accessible_state (Atk.StateType.CHECKED);
@@ -459,7 +456,7 @@ class ActivitiesButton extends PanelMenu.Button {
         return DND.DragMotionResult.CONTINUE;
     }
 
-    _onCapturedEvent(actor, event) {
+    vfunc_captured_event(event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS ||
             event.type() == Clutter.EventType.TOUCH_BEGIN) {
             if (!Main.overview.shouldToggleByCornerOrButton())
@@ -468,9 +465,7 @@ class ActivitiesButton extends PanelMenu.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onEvent(actor, event) {
-        super._onEvent(actor, event);
-
+    vfunc_event(event) {
         if (event.type() == Clutter.EventType.TOUCH_END ||
             event.type() == Clutter.EventType.BUTTON_RELEASE)
             if (Main.overview.shouldToggleByCornerOrButton())
@@ -479,13 +474,16 @@ class ActivitiesButton extends PanelMenu.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onKeyRelease(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
-            if (Main.overview.shouldToggleByCornerOrButton())
-                Main.overview.toggle();
+    vfunc_key_release_event(keyEvent) {
+        let ret = super.vfunc_key_release_event(keyEvent);
+        if (ret == Clutter.EVENT_PROPAGATE) {
+            let symbol = keyEvent.keyval;
+            if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
+                if (Main.overview.shouldToggleByCornerOrButton())
+                    Main.overview.toggle();
+            }
         }
-        return Clutter.EVENT_PROPAGATE;
+        return ret;
     }
 
     _xdndToggleOverview() {
@@ -804,10 +802,6 @@ class Panel extends St.Widget {
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
         this.add_child(this._rightCorner);
 
-        this.connect('button-press-event', this._onButtonPress.bind(this));
-        this.connect('touch-event', this._onButtonPress.bind(this));
-        this.connect('key-press-event', this._onKeyPress.bind(this));
-
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
         });
@@ -912,45 +906,48 @@ class Panel extends St.Widget {
         this._rightCorner.allocate(childBox, flags);
     }
 
-    _onButtonPress(actor, event) {
+    _tryDragWindow(event) {
         if (Main.modalCount > 0)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.get_source() != actor)
+        if (event.source != this)
             return Clutter.EVENT_PROPAGATE;
 
-        let type = event.type();
-        let isPress = type == Clutter.EventType.BUTTON_PRESS;
-        if (!isPress && type != Clutter.EventType.TOUCH_BEGIN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let button = isPress ? event.get_button() : -1;
-        if (isPress && button != 1)
-            return Clutter.EVENT_PROPAGATE;
-
-        let [stageX, stageY] = event.get_coords();
-
-        let dragWindow = this._getDraggableWindowForPosition(stageX);
+        let { x, y } = event;
+        let dragWindow = this._getDraggableWindowForPosition(x);
 
         if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
 
-        global.display.begin_grab_op(dragWindow,
-                                     Meta.GrabOp.MOVING,
-                                     false, /* pointer grab */
-                                     true, /* frame action */
-                                     button,
-                                     event.get_state(),
-                                     event.get_time(),
-                                     stageX, stageY);
-
-        return Clutter.EVENT_STOP;
+        return global.display.begin_grab_op(
+            dragWindow,
+            Meta.GrabOp.MOVING,
+            false, /* pointer grab */
+            true, /* frame action */
+            event.button || -1,
+            event.modifier_state,
+            event.time,
+            x, y) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
     }
 
-    _onKeyPress(actor, event) {
-        let symbol = event.get_key_symbol();
+    vfunc_button_press_event(buttonEvent) {
+        if (buttonEvent.button != 1)
+            return Clutter.EVENT_PROPAGATE;
+
+        return this._tryDragWindow(buttonEvent);
+    }
+
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type != Clutter.EventType.TOUCH_BEGIN)
+            return Clutter.EVENT_PROPAGATE;
+
+        return this._tryDragWindow(touchEvent);
+    }
+
+    vfunc_key_press_event(keyEvent) {
+        let symbol = keyEvent.keyval;
         if (symbol == Clutter.KEY_Escape) {
-            global.display.focus_default_window(event.get_time());
+            global.display.focus_default_window(keyEvent.time);
             return Clutter.EVENT_STOP;
         }
 
