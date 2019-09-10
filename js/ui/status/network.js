@@ -630,7 +630,6 @@ var NMWirelessDialogItem = GObject.registerClass({
                       can_focus: true,
                       reactive: true });
 
-        this.connect('key-focus-in', () => this.emit('selected'));
         let action = new Clutter.ClickAction();
         action.connect('clicked', () => this.grab_key_focus());
         this.add_action(action);
@@ -657,6 +656,10 @@ var NMWirelessDialogItem = GObject.registerClass({
         this._icons.add_actor(this._signalIcon);
 
         this._sync();
+    }
+
+    vfunc_key_focus_in() {
+        this.emit('selected');
     }
 
     _sync() {

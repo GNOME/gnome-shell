@@ -443,7 +443,6 @@ class WorkspacesDisplay extends St.Widget {
     _init() {
         super._init({ clip_to_allocation: true });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
-        this.connect('parent-set', this._parentSet.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -713,7 +712,7 @@ class WorkspacesDisplay extends St.Widget {
         return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
     }
 
-    _parentSet(actor, oldParent) {
+    vfunc_parent_set(oldParent) {
         if (oldParent && this._notifyOpacityId)
             oldParent.disconnect(this._notifyOpacityId);
         this._notifyOpacityId = 0;
