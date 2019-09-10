@@ -40,7 +40,7 @@ $panel_height: 1.86em;
 	}
 
 	.panel-button {
-		-natural-hpadding: $base_padding;
+		-natural-hpadding: $base_padding * 2;
 		-minimum-hpadding: 6px;
 		font-weight: bold;
 		color: $panel_fg_color;

@@ -1,29 +1,55 @@
 /* Message List */
 
-.message-list {
-	width: 31.5em;
+
+// common style
+%message_box {
+	border: 1px solid $bubble_borders_color;
+	border-radius:$base_border_radius + 2px;
+	background-color: lighten($bg_color, 5%);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	padding: $base_padding;
+	margin: $base_margin;
+
+	&:hover,&:focus {
+		background-color: $hover_bg_color;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+		margin-top: $base_margin - 1px;
+		margin-bottom: $base_margin + 1px;
+	}
+	&:active { background-color: transparentize($fg_color, 0.84) }
 }
 
-.message-list-clear-button.button {
-	@extend %button;
-	margin: 1.5em 1.5em 0;
+// main list
+.message-list {
+	width: 31.5em;
+	padding: $base_padding * 2;
 }
 
 .message-list-sections {
-	spacing: 1em;
+	margin:0;
+	spacing: $base_spacing;
 }
 
 .message-list-section,
 .message-list-section-list {
-	spacing: 0.4em;
+	spacing: $base_spacing;
 }
 
+.message-list-section-list {
+	&:ltr {padding:0;}
+	&:rtl {padding:0;}
+}
+
+// clear button
+.message-list-clear-button {
+	.button {
+		@extend %button;
+	}
+}
+
+// message list item
 .message {
-	border: 1px solid $bubble_borders_color;
-	background-color: lighten($bg_color, 2%);
-	&:hover,&:focus { background-color: $hover_bg_color; }
-	&:active { background-color: transparentize($fg_color, 0.84) }
-	border-radius: 5px;
+	@extend %message_box;
 }
 
 .message-icon-bin {
@@ -33,8 +59,10 @@
 
 .message-icon-bin > StIcon {
 	color: $fg_color;
-	icon-size: $base_icon_size;
+	icon-size: $base_icon_size * 2;
 	-st-icon-style: symbolic;
+
+	margin:$base_margin;
 }
 
 .message-icon-bin > .fallback-window-icon {
@@ -48,7 +76,8 @@
 
 .message-secondary-bin > .event-time {
 	color: $fg_color;
-	font-size: 0.7em;
+	font-size: 80%;
+	text-align: right;
 	/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
 	padding-bottom: 0.13em;
 }
@@ -57,8 +86,10 @@
 	icon-size: $base_icon_size;
 }
 
+// title
 .message-title {
 	color: $fg_color;
+	font-weight: bold;
 }
 
 .message-content {
@@ -66,24 +97,26 @@
 	padding: 10px;
 }
 
+/* Media Controls */
 .message-media-control {
-	padding: $base_padding;
+	padding: $base_padding * 2;
 	color: lighten($fg_color, 15%);
 
-	&:last-child:ltr { padding-right: 18px; }
-	&:last-child:rtl { padding-left: 18px; }
+	&:last-child:ltr { padding-right: $base_padding * 3; }
+	&:last-child:rtl { padding-left: $base_padding * 3; }
 	&:hover { color: $fg_color; }
 	&:insensitive { color: darken($fg_color,40%); }
 }
 
+// album-art
 .media-message-cover-icon {
 	icon-size: 48px !important;
 	&.fallback {
-		color: lighten($fg_color,10%);
+		color: darken($fg_color, 10%);
 		background-color: $bg_color;
 		border: 1px solid $bg_color;
 		border-radius: 2px;
 		icon-size: 32px !important;
-		padding: 6px;
+		padding: $base_padding;
 	}
 }

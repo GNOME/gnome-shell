@@ -37,25 +37,12 @@
 	padding: .4em;
 }
 
-/* Message List */
-.message-list-sections {
-	margin:0;
-}
-
-.message-list-section-list:ltr {
-	padding-left: .4em;
-}
-
-.message-list-section-list:rtl {
-	padding-right: .4em;
-}
-
 /* Calendar */
 .calendar {
 	@extend %calendar_box;
 	margin:0;
 	margin-bottom: $base_padding;
-	padding:$base_padding * 0.5;
+	padding:$base_padding;
 }
 
 .datemenu-today-button,
@@ -191,7 +178,7 @@ $calendar_day_size: 32px;
 /* Weather */
 .weather-box {
 	spacing: 0.4em;
-	padding:$base_padding * 0.5;
+	padding:$base_padding;
 }
 
 .weather-header.location {
@@ -209,7 +196,7 @@ $calendar_day_size: 32px;
 }
 
 .world-clocks-grid {
-	padding:$base_padding * 0.5;
+	padding:$base_padding;
 }
 
 .world-clocks-grid,

@@ -17,7 +17,7 @@
 
 	.labels { spacing: $base_spacing; }
 	.notebook-tab {
-		-natural-hpadding: $base_padding;
+		-natural-hpadding: $base_padding * 2;
 		-minimum-hpadding: 6px;
 		font-weight: bold;
 		color: $fg_color;

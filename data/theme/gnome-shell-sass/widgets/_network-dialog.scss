@@ -40,7 +40,7 @@
 .nm-dialog-item {
 	font-size: $base_font_size;
 	border-bottom: 1px solid $borders_color;
-	padding: $base_padding;
+	padding: $base_padding * 2;
 	spacing: 0px;
 	&:selected {
 		background-color: $selected_bg_color;

@@ -46,7 +46,7 @@ $app_grid_fg_color: #fff;
 			color: $app_grid_fg_color;
 		}
 	}
-	
+
 	&:hover .overview-icon,
 	&:focus .overview-icon,
 	&:selected .overview-icon {
@@ -93,9 +93,9 @@ $app_grid_fg_color: #fff;
 
 .app-folder-popup-bin { padding: 5px; }
 .app-folder-icon {
-	padding: 5px;
-	spacing-rows: 5px;
-	spacing-columns: 5px;
+	padding: $base_padding;
+	spacing-rows: $base_spacing;
+	spacing-columns: $base_spacing;
 }
 
 
