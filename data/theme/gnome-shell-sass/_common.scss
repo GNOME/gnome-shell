@@ -23,40 +23,45 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* GLOBALS */
+/* Global Values */
 
-// common values
+// padding, margin and spacing
 $base_padding: 12px;
 $base_margin: 4px;
 $base_spacing: 4px;
 
-// common radii
-$base_radius: 5px;
+// border radii
+$base_border_radius: 5px;
 
-$modal_radius: $base_radius + 4px;
+$dialog_border_radius: $base_border_radius + 4px;
 
-$_trough_color: transparentize($fg_color, 0.9);
-$_bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$_hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 3%));
-$_active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
+// non-standard colors
+$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
 
-// common fonts
-$font_size: 11pt;
+$active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
+
+// hover
+$hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 3%));
+$hover_fg_color: lighten($fg_color,if($variant=='light', 5%, 3%));
+$hover_borders_color: lighten($borders_color,if($variant=='light', 5%, 3%));
+
+// fonts
+$base_font_size: 11pt;
 $font_family: Cantarell, Sans-Serif;
 
 // icons
-$base_icon_size: 1.09em;
+// $base_icon_size: 1.09em;
+$base_icon_size: 16px;
 
-// stage
+// Stage
 stage {
 	font-family: $font_family;
-	@include fontsize($font_size);
+	@include fontsize($base_font_size);
 	color: $fg_color;
 }
 
 /* WIDGETS */
 @import 'widgets/app-grid';
-@import 'widgets/app-icons';
 @import 'widgets/app-switcher';
 @import 'widgets/buttons';
 @import 'widgets/calendar';
@@ -64,6 +69,7 @@ stage {
 @import 'widgets/corner-ripple';
 @import 'widgets/dash';
 @import 'widgets/dialogs';
+@import 'widgets/end-session-dialog';
 @import 'widgets/entries';
 @import 'widgets/hotplug';
 @import 'widgets/ibus-popup';
@@ -72,17 +78,20 @@ stage {
 @import 'widgets/looking-glass';
 @import 'widgets/message-tray';
 @import 'widgets/misc';
+@import 'widgets/network-dialog';
 @import 'widgets/osd';
 @import 'widgets/overview';
 @import 'widgets/panel';
 @import 'widgets/popovers';
 @import 'widgets/screen-shield';
 @import 'widgets/scrollbars';
+@import 'widgets/search-entry';
 @import 'widgets/search-results';
 @import 'widgets/search-results';
 @import 'widgets/slider';
 @import 'widgets/switches';
 @import 'widgets/tiled-previews';
+@import 'widgets/window-picker';
 @import 'widgets/workspace-switcher';
 
 // Common Stylings
@@ -92,16 +101,24 @@ stage {
 	color: $osd_fg_color;
 	background-color: $osd_bg_color;
 	border: 1px solid $osd_outer_borders_color;
-	border-radius: $base_radius * 3;
+	border-radius: $base_border_radius * 3;
 	padding: $base_padding;
+}
+
+// Overview panels
+%overview_panel {
+	color: $osd_fg_color;
+	background-color: transparentize($osd_bg_color, 0.1);
+	border: none;
 }
 
 // icon tiles
 %icon_tile {
+	background-color: transparent; // no background
 	color: $osd_fg_color;
-	border-radius: $base_radius + 4px;
-	padding: 6px;
-	border: 1px solid transparent;
+	border-radius: $base_border_radius + 4px;
+	padding: $base_padding * 0.5;
+	border: 2px solid transparent;
 	transition-duration: 100ms;
 	text-align: center;
 }
@@ -122,9 +139,9 @@ stage {
 
 		&, &:hover, &:focus, &:active, &:disabled { 
 			box-shadow: none;
-			border-color: $_bubble_borders_color;
+			border-color: $bubble_borders_color;
 		}
-		&:hover { background-color: $_hover_bg_color; }
+		&:hover { background-color: $hover_bg_color; }
 		&:active { 
 			background-color: $selected_bg_color;
 			color: $selected_fg_color;
@@ -137,7 +154,7 @@ stage {
 %bubble_entry {
 	color: $fg_color;
 	background-color: darken($bg_color, 2%);
-	border-color: $_bubble_borders_color;
+	border-color: $bubble_borders_color;
 	box-shadow: none;
 	&:focus { border: 2px solid $selected_bg_color; }
 }
@@ -147,36 +164,35 @@ stage {
 	border-right-width: 1px;
 	@include button(normal, $c:$bg_color, $tc:$fg_color);
 	padding: $base_padding;
-	border-top: 1px solid $_bubble_borders_color;
+	border-top: 1px solid $bubble_borders_color;
 
 	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }
-	&:hover { @include button(hover, $c:$_hover_bg_color, $tc:$fg_color); }
-	&:focus { @include button(focus, $c:$_hover_bg_color, $tc:$fg_color); }
-	&:active { @include button(active, $c:$_active_bg_color, $tc:$fg_color); }
+	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color); }
+	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color); }
+	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color); }
 
 	&:first-child {
-		border-radius: 0px 0px 0px $modal_radius;
+		border-radius: 0px 0px 0px $dialog_border_radius;
 	}
 	&:last-child {
 		border-right-width: 0px;
-		border-radius: 0px 0px $modal_radius 0px;
+		border-radius: 0px 0px $dialog_border_radius 0px;
 	}
 	&:first-child:last-child {
 		border-right-width: 0px;
-		border-radius: 0px 0px $modal_radius $modal_radius;
+		border-radius: 0px 0px $dialog_border_radius $dialog_border_radius;
 	}
 }
 
-
 // button styling
 %button {
-	border-radius: $base_radius;
+	border-radius: $base_border_radius;
 	border-width: 1px;
 	min-height: 22px;
 	padding: calc($base_padding * 0.25) calc($base_padding * 2);
 	@include button(normal);
-	&:focus { @include button(focus, $c:$_hover_bg_color, $tc:$fg_color); }
-	&:hover { @include button(hover, $c:$_hover_bg_color, $tc:$fg_color); }
+	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color); }
+	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color); }
 	&:insensitive { @include button(insensitive); }
-	&:active { @include button(active, $c:$_active_bg_color, $tc:$fg_color); }
+	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color); }
 }

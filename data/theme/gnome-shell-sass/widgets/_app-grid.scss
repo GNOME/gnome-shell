@@ -1,8 +1,7 @@
-/* App Vault/Grid */
+/* App Grid */
 
 $app_icon_size: 96px;
 $app_icon_padding: 20px;
-
 
 // app icons
 .icon-grid {
@@ -10,22 +9,160 @@ $app_icon_padding: 20px;
 	-shell-grid-horizontal-item-size: calc($app_icon_size + ($app_icon_padding * 2));
 	-shell-grid-vertical-item-size: calc($app_icon_size + ($app_icon_padding * 2));
 
-	.overview-icon { icon-size: $app_icon_size; }
+	.overview-icon {
+		icon-size: $app_icon_size;
+	}
 }
+
 //.app-display { spacing: 20px; }
 
+/* App Icons */
+
+$app_grid_fg_color: #fff;
+
+// Outline for low res icons
+.lowres-icon {
+	icon-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+// Dropshadow for large icons
+.icon-dropshadow {
+	icon-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+// Icon tiles in the app grid
+.app-well-app,
+.app-folder {
+
+	.overview-icon {
+		color: $app_grid_fg_color !important;
+		@extend %icon_tile;
+	}
+
+	&:hover,
+	&:selected {
+		.overview-icon {
+			background-color: transparentize($osd_bg_color,0.7);
+			color: $app_grid_fg_color;
+		}
+	}
+	
+	&:hover .overview-icon,
+	&:focus .overview-icon,
+	&:selected .overview-icon {
+		background-color: transparentize($osd_fg_color,0.9);
+		color: $osd_fg_color;
+	}
+
+	&:focus {
+		.overview-icon {
+			background-color: transparentize($selected_bg_color,0.5);
+			border-color: $selected_bg_color;
+			color: $app_grid_fg_color;
+		}
+	}
+
+	&:drop {
+		.overview-icon {
+			background-color: transparentize($selected_bg_color,.15);
+		}
+	}
+
+	&:active,
+	&:checked {
+		.overview-icon {
+			background-color: transparentize(darken($osd_bg_color,10%), 0.5);
+		}
+	}
+}
+
+/* App Folders */
+.app-folder {
+	.overview-icon {
+		@extend %icon_tile;
+	}
+}
+
+//expanded folder
+.app-folder-popup {
+	-arrow-border-radius: 8px;
+	-arrow-background-color: transparentize(darken($osd_bg_color,10%), 0.5);
+	-arrow-base: 24px;
+	-arrow-rise: 11px;
+}
+
+.app-folder-popup-bin { padding: 5px; }
+.app-folder-icon {
+	padding: 5px;
+	spacing-rows: 5px;
+	spacing-columns: 5px;
+}
+
+
+// Running app indicator (also shown in dash)
+.app-well-app-running-dot {
+	height: 5px;
+	width: 5px;
+	border-radius:5px;
+	background-color: $osd_fg_color;
+	margin-bottom: 1px;
+}
+
+// App Grid pagination indicators
+.page-indicator {
+	padding: 15px 20px;
+
+	.page-indicator-icon {
+		width: 12px;
+		height: 12px;
+		background-color: transparent;
+		border: 2px solid rgba(255, 255, 255, 0.4);
+		border-radius: 12px;
+	}
+
+	&:hover .page-indicator-icon { border-color: white; }
+	&:active .page-indicator-icon { border: none; margin: 2px; background-color: white; }
+	&:checked .page-indicator-icon,
+	&:checked:active .page-indicator-icon { background-color: white;}
+}
+
+
+// Some hacks I don't even know
+.all-apps,
+.frequent-apps > StBoxLayout {
+	// horizontal padding to make sure scrollbars or dash don't overlap content
+	padding: 0px 88px 10px 88px;
+}
+
+.app-well-app > .overview-icon.overview-icon-with-label {
+	padding: 10px 8px 5px 8px;
+	spacing: $base_spacing;
+}
+
+// Label when no frequent apps
+.no-frequent-applications-label { 
+	font-size: 2em;
+	font-weight: bold;
+	color: $osd_fg_color;
+}
+
+// shutdown and other actions in the grid
 .system-action-icon {
 	background-color: rgba(0,0,0,0.8);
-	color: white;
+	color: #fff;
 	border-radius: 50%;
 	icon-size: calc($app_icon_size * 0.5);
 }
 
-.app-view-controls { //favorties | all toggle container
+/* Frequent | All toggle */
+
+// container
+.app-view-controls { 
 	padding-bottom: 32px;
 }
 
-.app-view-control { //favorties | all toggle button
+// buttons
+.app-view-control { 
 	padding: 4px 32px;
 	margin: 0 4px;
 	&, &:hover, &:checked { @include button(undecorated); }

@@ -1,9 +1,9 @@
 /* Top Bar */
 // a.k.a. the panel
 
-$panel_corner_radius: $base_radius + 1px;
+$panel_corner_radius: $base_border_radius + 1px;
 $panel_bg_color: if($variant == 'light', #fff, #000);
-$panel_fg_color: if($variant == 'light', #2e3436, darken($fg_color, 10%));
+$panel_fg_color: if($variant == 'light', $fg_color, darken($fg_color, 10%));
 $panel_height: 1.86em;
 
 #panel {

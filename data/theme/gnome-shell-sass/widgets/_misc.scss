@@ -36,3 +36,20 @@
 		color: lighten($osd_fg_color,30%);
 	}
 }
+
+// Input Source Switcher
+.input-source-switcher-symbol {
+	font-size: 34pt;
+	width: 96px;
+	height: 96px;
+}
+
+// Window cycler highlight
+.cycler-highlight {
+	border: 5px solid $selected_bg_color;
+}
+
+
+.headline { font-size: 110%; }
+.lightbox { background-color: black; }
+.flashspot { background-color: white; }
