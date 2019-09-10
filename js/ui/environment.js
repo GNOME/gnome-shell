@@ -139,6 +139,11 @@ function _easeActorProperty(actor, propName, target, params) {
         params.duration = adjustAnimationTime(params.duration);
     let duration = Math.floor(params.duration || 0);
 
+    // Copy Clutter's behavior for implicit animations, see
+    // should_skip_implicit_transition()
+    if (actor instanceof Clutter.Actor && !actor.mapped)
+        duration = 0;
+
     let callback = _makeEaseCallback(params);
 
     // cancel overwritten transition
