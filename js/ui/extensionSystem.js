@@ -121,7 +121,7 @@ var ExtensionManager = class {
             } catch (e) {
                 if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                     continue; // not an error
-                log(`Failed to load stylesheet for extension ${uuid}: ${e.message}`);
+                this.logExtensionError(uuid, e);
                 return;
             }
         }
