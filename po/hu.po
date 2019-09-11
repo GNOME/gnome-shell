@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-09 20:24+0000\n"
-"PO-Revision-Date: 2019-09-10 06:39+0200\n"
+"POT-Creation-Date: 2019-09-11 17:13+0000\n"
+"PO-Revision-Date: 2019-09-11 22:11+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -762,7 +762,6 @@ msgid "All"
 msgstr "Összes"
 
 #: js/ui/appDisplay.js:1751
-#| msgid "Username: "
 msgid "Rename"
 msgstr "Átnevezés"
 
@@ -2574,7 +2573,7 @@ msgstr "Állapot"
 msgid "“version” takes no arguments"
 msgstr "a „version” nem fogad argumentumokat"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
 msgid "Usage:"
 msgstr "Használat:"
 
@@ -2582,70 +2581,71 @@ msgstr "Használat:"
 msgid "Print version information and exit."
 msgstr "Verzióinformációk kiírása és kilépés."
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
 msgstr "PARANCS"
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:244
 msgid "[ARGS…]"
 msgstr "[ARGUMENTUMOK…]"
 
-#: src/extensions-tool/main.c:242
+#: src/extensions-tool/main.c:246
 msgid "Commands:"
 msgstr "Parancsok:"
 
-#: src/extensions-tool/main.c:243
+#: src/extensions-tool/main.c:247
 msgid "Print help"
 msgstr "Súgó kiírása"
 
-#: src/extensions-tool/main.c:244 src/main.c:468
+#: src/extensions-tool/main.c:248 src/main.c:468
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/extensions-tool/main.c:245
+#: src/extensions-tool/main.c:249
 msgid "Enable extension"
 msgstr "Kiterjesztés engedélyezése"
 
-#: src/extensions-tool/main.c:246
+#: src/extensions-tool/main.c:250
 msgid "Disable extension"
 msgstr "Kiterjesztés letiltása"
 
-#: src/extensions-tool/main.c:247
+#: src/extensions-tool/main.c:251
 msgid "Reset extension"
 msgstr "Kiterjesztés visszaállítása"
 
-#: src/extensions-tool/main.c:248
+#: src/extensions-tool/main.c:252
 msgid "Uninstall extension"
 msgstr "Kiterjesztés eltávolítása"
 
-#: src/extensions-tool/main.c:249
+#: src/extensions-tool/main.c:253
 msgid "List extensions"
 msgstr "Kiterjesztések felsorolása"
 
-#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
 msgid "Show extension info"
 msgstr "Kiterjesztésinformációk megjelenítése"
 
-#: src/extensions-tool/main.c:252
+#: src/extensions-tool/main.c:256
 msgid "Open extension preferences"
 msgstr "Kiterjesztésbeállítások megnyitása"
 
-#: src/extensions-tool/main.c:253
+#: src/extensions-tool/main.c:257
 msgid "Create extension"
 msgstr "Kiterjesztés létrehozása"
 
-#: src/extensions-tool/main.c:254
+#: src/extensions-tool/main.c:258
 msgid "Package extension"
 msgstr "Kiterjesztés csomagolása"
 
-#: src/extensions-tool/main.c:255
+#: src/extensions-tool/main.c:259
 msgid "Install extension bundle"
 msgstr "Kiterjesztéscsomag telepítése"
 
-#: src/extensions-tool/main.c:257
+#: src/extensions-tool/main.c:261
 #, c-format
-msgid "Use %s to get detailed help.\n"
-msgstr "Részletes súgóhoz használja ezt: %s.\n"
+#| msgid "Use %s to get detailed help.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Részletes súgóhoz használja ezt: „%s”.\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
