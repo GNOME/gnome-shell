@@ -1701,7 +1701,7 @@ var FolderIcon = class FolderIcon {
         }
 
         this.actor.set_hover(true);
-        this._menu.popup();
+        this._menu.open();
         this._menuManager.ignoreRelease();
     }
 
@@ -1741,6 +1741,16 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         });
         item.add_child(this._entry);
 
+        // Focus and update the text entry on menu pop-up
+        item.connect('notify::active', () => {
+            if (item.active) {
+                this._entry.text = _getFolderName(this._folder);
+                this._entry.clutter_text.set_selection(0, -1);
+                this._entry.clutter_text.grab_key_focus();
+            }
+        });
+        this.focusActor = item;
+
         this._entry.clutter_text.connect('notify::text',
                                          this._validate.bind(this));
         this._entry.clutter_text.connect('activate',
@@ -1769,15 +1779,6 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         });
 
         Main.uiGroup.add_actor(this.actor);
-    }
-
-    popup() {
-        let folderName = _getFolderName(this._folder);
-
-        this._entry.text = folderName;
-        this._entry.clutter_text.set_selection(0, folderName.length);
-
-        this.open();
     }
 
     _isValidFolderName() {
