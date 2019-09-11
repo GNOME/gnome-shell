@@ -27,7 +27,7 @@ class KbdA11yDialog extends GObject.Object {
 
         if (whatChanged & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) {
             key = KEY_SLOW_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) ? true : false;
+            enabled = (newFlags & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) > 0;
             title = enabled ?
                     _("Slow Keys Turned On") :
                     _("Slow Keys Turned Off");
@@ -36,7 +36,7 @@ class KbdA11yDialog extends GObject.Object {
 
         } else  if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) ? true : false;
+            enabled = (newFlags & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
             title = enabled ?
                     _("Sticky Keys Turned On") :
                     _("Sticky Keys Turned Off");

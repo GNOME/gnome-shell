@@ -217,7 +217,7 @@ function isUnsafeExpression(str) {
     prunedStr = prunedStr.replace(/[=!]==/g, '');    //replace === and !== with nothing
     prunedStr = prunedStr.replace(/[=<>!]=/g, '');    //replace ==, <=, >=, != with nothing
 
-    if (prunedStr.match(/=/)) {
+    if (prunedStr.match(/[=]/)) {
         return true;
     } else if (prunedStr.match(/;/)) {
         // If we contain a semicolon not inside of a quote/regex, assume we're unsafe as well

@@ -688,15 +688,15 @@ var EventMessage = class EventMessage extends MessageList.Message {
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
         if (this._event.date < periodBegin && !this._event.allDay) {
             if (rtl)
-                title = title + ELLIPSIS_CHAR;
+                title = `${title}${ELLIPSIS_CHAR}`;
             else
-                title = ELLIPSIS_CHAR + title;
+                title = `${ELLIPSIS_CHAR}${title}`;
         }
         if (this._event.end > periodEnd && !this._event.allDay) {
             if (rtl)
-                title = ELLIPSIS_CHAR + title;
+                title = `${ELLIPSIS_CHAR}${title}`;
             else
-                title = title + ELLIPSIS_CHAR;
+                title = `${title}${ELLIPSIS_CHAR}`;
         }
         return title;
     }

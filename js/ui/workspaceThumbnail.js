@@ -711,14 +711,12 @@ var ThumbnailsBox = GObject.registerClass({
     _activateThumbnailAtPoint(stageX, stageY, time) {
         let [r_, x_, y] = this.transform_stage_point(stageX, stageY);
 
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            let thumbnail = this._thumbnails[i];
-            let [, h] = thumbnail.get_transformed_size();
-            if (y >= thumbnail.y && y <= thumbnail.y + h) {
-                thumbnail.activate(time);
-                break;
-            }
-        }
+        let thumbnail = this._thumbnails.find(t => {
+            let [, h] = t.get_transformed_size();
+            return y >= t.y && y <= t.y + h;
+        });
+        if (thumbnail)
+            thumbnail.activate(time);
     }
 
     _onButtonRelease(actor, event) {
@@ -1340,15 +1338,9 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
-        let thumbnail;
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
-        for (let i = 0; i < this._thumbnails.length; i++) {
-            if (this._thumbnails[i].metaWorkspace == activeWorkspace) {
-                thumbnail = this._thumbnails[i];
-                break;
-            }
-        }
+        let thumbnail = this._thumbnails.find(t => t.metaWorkspace == activeWorkspace);
 
         this._animatingIndicator = true;
         let indicatorThemeNode = this._indicator.get_theme_node();
