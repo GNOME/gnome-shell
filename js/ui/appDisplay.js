@@ -1717,7 +1717,6 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
     constructor(source, folder) {
         super(source.actor, 0.5, St.Side.BOTTOM);
 
-        this._source = source;
         this._folder = folder;
 
         // We want to keep the item hovered while the menu is up
