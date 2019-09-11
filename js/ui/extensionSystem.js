@@ -98,6 +98,9 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
         if (!extension)
             return;
@@ -302,6 +305,9 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
         if (!extension)
             throw new Error("Extension was not properly created. Call createExtensionObject first");
@@ -385,9 +391,6 @@ var ExtensionManager = class {
     _onEnabledExtensionsChanged() {
         let newEnabledExtensions = this._getEnabledExtensions();
 
-        if (!this._enabled)
-            return;
-
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
         newEnabledExtensions.filter(
@@ -426,11 +429,9 @@ var ExtensionManager = class {
             this.reloadExtension(extension);
         this._enabledExtensions = this._getEnabledExtensions();
 
-        if (Main.sessionMode.allowExtensions) {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
+        this._enabledExtensions.forEach(uuid => {
+            this._callExtensionEnable(uuid);
+        });
     }
 
     _loadExtensions() {
