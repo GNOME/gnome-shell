@@ -57,17 +57,16 @@ class WindowCloneLayout extends Clutter.LayoutManager {
         // has an extra set of "padding" around it that we need to trim
         // down.
 
-        // The outer rect (from which we compute the bounding box)
-        // paradoxically is the smaller rectangle, containing the positions
-        // of the visible frame. The input rect contains everything,
-        // including the invisible border padding.
-        let inputRect = window.get_buffer_rect();
+        // The bounding box is based on the (visible) frame rect, while
+        // the buffer rect contains everything, including the invisible
+        // border padding.
+        let bufferRect = window.get_buffer_rect();
 
         let box = new Clutter.ActorBox();
 
-        box.set_origin(inputRect.x - this._boundingBox.x,
-                       inputRect.y - this._boundingBox.y);
-        box.set_size(inputRect.width, inputRect.height);
+        box.set_origin(bufferRect.x - this._boundingBox.x,
+                       bufferRect.y - this._boundingBox.y);
+        box.set_size(bufferRect.width, bufferRect.height);
 
         return box;
     }
