@@ -303,11 +303,10 @@ var ExtensionManager = class {
 
     _callExtensionInit(uuid) {
         let extension = this.lookup(uuid);
-        let dir = extension.dir;
-
         if (!extension)
             throw new Error("Extension was not properly created. Call createExtensionObject first");
 
+        let dir = extension.dir;
         let extensionJs = dir.get_child('extension.js');
         if (!extensionJs.query_exists(null)) {
             this.logExtensionError(uuid, new Error('Missing extension.js'));
