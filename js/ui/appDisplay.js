@@ -1732,6 +1732,9 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         });
         box.add_child(this._entry);
 
+        // Focus the text entry on menu pop-up
+        this.focusActor = this._entry.clutter_text;
+
         this._entry.clutter_text.connect('notify::text',
                                          this._validate.bind(this));
         this._entry.clutter_text.connect('activate',
