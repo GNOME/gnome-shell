@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-09 20:24+0000\n"
-"PO-Revision-Date: 2019-09-10 17:57+0200\n"
+"POT-Creation-Date: 2019-09-11 17:13+0000\n"
+"PO-Revision-Date: 2019-09-11 19:21+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -2598,7 +2598,7 @@ msgstr "Stan"
 msgid "“version” takes no arguments"
 msgstr "Opcja „version” nie przyjmuje parametrów"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
 msgid "Usage:"
 msgstr "Użycie:"
 
@@ -2606,70 +2606,70 @@ msgstr "Użycie:"
 msgid "Print version information and exit."
 msgstr "Wyświetla informacje o wersji i kończy działanie."
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
 msgstr "POLECENIE"
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:244
 msgid "[ARGS…]"
 msgstr "[PARAMETRY…]"
 
-#: src/extensions-tool/main.c:242
+#: src/extensions-tool/main.c:246
 msgid "Commands:"
 msgstr "Polecenia:"
 
-#: src/extensions-tool/main.c:243
+#: src/extensions-tool/main.c:247
 msgid "Print help"
 msgstr "Wyświetla pomoc"
 
-#: src/extensions-tool/main.c:244 src/main.c:468
+#: src/extensions-tool/main.c:248 src/main.c:468
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: src/extensions-tool/main.c:245
+#: src/extensions-tool/main.c:249
 msgid "Enable extension"
 msgstr "Włącza rozszerzenie"
 
-#: src/extensions-tool/main.c:246
+#: src/extensions-tool/main.c:250
 msgid "Disable extension"
 msgstr "Wyłącza rozszerzenie"
 
-#: src/extensions-tool/main.c:247
+#: src/extensions-tool/main.c:251
 msgid "Reset extension"
 msgstr "Przywraca rozszerzenie"
 
-#: src/extensions-tool/main.c:248
+#: src/extensions-tool/main.c:252
 msgid "Uninstall extension"
 msgstr "Odinstalowuje rozszerzenie"
 
-#: src/extensions-tool/main.c:249
+#: src/extensions-tool/main.c:253
 msgid "List extensions"
 msgstr "Wyświetla listę rozszerzeń"
 
-#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
 msgid "Show extension info"
 msgstr "Wyświetla informacje o rozszerzeniu"
 
-#: src/extensions-tool/main.c:252
+#: src/extensions-tool/main.c:256
 msgid "Open extension preferences"
 msgstr "Otwiera preferencje rozszerzenia"
 
-#: src/extensions-tool/main.c:253
+#: src/extensions-tool/main.c:257
 msgid "Create extension"
 msgstr "Tworzy rozszerzenie"
 
-#: src/extensions-tool/main.c:254
+#: src/extensions-tool/main.c:258
 msgid "Package extension"
 msgstr "Tworzy pakiet z rozszerzeniem"
 
-#: src/extensions-tool/main.c:255
+#: src/extensions-tool/main.c:259
 msgid "Install extension bundle"
 msgstr "Instaluje pakiet rozszerzenia"
 
-#: src/extensions-tool/main.c:257
+#: src/extensions-tool/main.c:261
 #, c-format
-msgid "Use %s to get detailed help.\n"
-msgstr "Polecenie %s wyświetli szczegółową pomoc.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Polecenie „%s” wyświetli szczegółową pomoc.\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
