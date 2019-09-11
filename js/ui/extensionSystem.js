@@ -17,7 +17,7 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 var ExtensionManager = class {
     constructor() {
-        this._initted = false;
+        this._initialized = false;
         this._enabled = false;
 
         this._extensions = new Map();
@@ -479,9 +479,9 @@ var ExtensionManager = class {
         if (this._enabled)
             return;
 
-        if (!this._initted) {
+        if (!this._initialized) {
             this._loadExtensions();
-            this._initted = true;
+            this._initialized = true;
         } else {
             this._enabledExtensions.forEach(uuid => {
                 this._callExtensionEnable(uuid);
@@ -494,7 +494,7 @@ var ExtensionManager = class {
         if (!this._enabled)
             return;
 
-        if (this._initted) {
+        if (this._initialized) {
             this._extensionOrder.slice().reverse().forEach(uuid => {
                 this._callExtensionDisable(uuid);
             });
@@ -509,7 +509,7 @@ var ExtensionManager = class {
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initted)
+            if (this._initialized)
                 this._enabledExtensions = this._getEnabledExtensions();
             this._enableAllExtensions();
         } else {
