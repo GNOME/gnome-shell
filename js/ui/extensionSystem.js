@@ -509,8 +509,8 @@ var ExtensionManager = class {
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initialized)
-                this._enabledExtensions = this._getEnabledExtensions();
+            // Take care of added or removed sessionMode extensions
+            this._onEnabledExtensionsChanged();
             this._enableAllExtensions();
         } else {
             this._disableAllExtensions();
