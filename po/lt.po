@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-08-21 23:18+0000\n"
-"PO-Revision-Date: 2019-09-01 22:32+0300\n"
+"POT-Creation-Date: 2019-09-11 17:13+0000\n"
+"PO-Revision-Date: 2019-09-11 22:37+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -452,7 +452,7 @@ msgstr ""
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:120 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:189
+#: js/ui/endSessionDialog.js:448 js/ui/extensionDownloader.js:189
 #: js/ui/shellMountOperation.js:390 js/ui/shellMountOperation.js:399
 #: js/ui/status/network.js:899
 msgid "Cancel"
@@ -761,28 +761,33 @@ msgstr "Dažnai naudojamos"
 msgid "All"
 msgstr "Visos"
 
+#: js/ui/appDisplay.js:1751
+#| msgid "Username: "
+msgid "Rename"
+msgstr "Pervadinti"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Atverti langai"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Paleisti naudojant dedikuotą grafikos kortą"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Pridėti prie mėgstamų"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Rodyti detalią informaciją"
 
@@ -812,7 +817,7 @@ msgstr "Ausinės"
 msgid "Headset"
 msgstr "Ausinės su mikrofonu"
 
-#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:241
+#: js/ui/audioDeviceSelection.js:64 js/ui/status/volume.js:248
 msgid "Microphone"
 msgstr "Mikrofonas"
 
@@ -1317,13 +1322,13 @@ msgid "Other users are logged in."
 msgstr "Yra prisijungusių kitų naudotojų"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:647
+#: js/ui/endSessionDialog.js:650
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (nutolęs)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:650
+#: js/ui/endSessionDialog.js:653
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (komandų eilutė)"
@@ -1476,7 +1481,7 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -1607,7 +1612,7 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Užrakinti"
 
@@ -1630,15 +1635,15 @@ msgstr "Nepavyksta užrakinti"
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Ieškoma…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Nerasta atitikmenų."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2126,27 +2131,27 @@ msgstr "Išjungti"
 msgid "Airplane Mode On"
 msgstr "Skrydžio veiksena įjungta"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Paskyros nustatymai"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Padėties užrakinimas"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Pristabdyti"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Išjungti"
 
@@ -2184,11 +2189,11 @@ msgstr "Thunderbolt autorizacijos klaida"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nepavyko autorizuoti Thunderbolt įrenginio: %s"
 
-#: js/ui/status/volume.js:128
+#: js/ui/status/volume.js:129
 msgid "Volume changed"
 msgstr "Garsumas pakeistas"
 
-#: js/ui/status/volume.js:193
+#: js/ui/status/volume.js:200
 msgid "Volume"
 msgstr "Garsumas"
 
@@ -2241,22 +2246,22 @@ msgstr "Ieškoti"
 msgid "“%s” is ready"
 msgstr "„%s“ yra pasirengusi"
 
-#: js/ui/windowManager.js:54
+#: js/ui/windowManager.js:55
 msgid "Do you want to keep these display settings?"
 msgstr "Ar norite įrašyti šiuos vaizduoklio nustatymus?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:66
+#: js/ui/windowManager.js:67
 msgid "Revert Settings"
 msgstr "Grąžinti nustatymus"
 
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Keep Changes"
 msgstr "Įrašyti pakeitimus"
 
-#: js/ui/windowManager.js:87
+#: js/ui/windowManager.js:88
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2266,7 +2271,7 @@ msgstr[2] "Pakeitimai bus grąžinti po %d sekundžių"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:683
+#: js/ui/windowManager.js:684
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2399,13 +2404,11 @@ msgid "Enter extension information interactively"
 msgstr "Įveskite plėtinio informaciją interaktyviai"
 
 #: src/extensions-tool/command-create.c:258
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
 msgstr "Sukurti naują plėtinį"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
 msgstr "Nežinomi argumentai"
 
@@ -2414,7 +2417,6 @@ msgid "UUID, name and description are required"
 msgstr "UUID, pavadinimas ir aprašymas yra būtini"
 
 #: src/extensions-tool/command-disable.c:57
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
 msgstr "Išjungti plėtinį"
 
@@ -2437,12 +2439,10 @@ msgid "More than one UUID given"
 msgstr "Pateiktas daugiau nei vienas UUID"
 
 #: src/extensions-tool/command-enable.c:57
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
 msgstr "Išjungti plėtinį"
 
 #: src/extensions-tool/command-info.c:79
-#| msgid "No extensions installed"
 msgid "Show extensions info"
 msgstr "Rodyti plėtinio informaciją"
 
@@ -2455,12 +2455,10 @@ msgid "EXTENSION_BUNDLE"
 msgstr "PLĖTINIO_RYŠULYS"
 
 #: src/extensions-tool/command-install.c:184
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
 msgstr "Įdiegti plėtinio ryšulį"
 
 #: src/extensions-tool/command-install.c:201
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
 msgstr "Nenurodytas plėtinio ryšulys"
 
@@ -2469,37 +2467,30 @@ msgid "More than one extension bundle specified"
 msgstr "Nurodytas daugiau nei vienas plėtinio ryšulys"
 
 #: src/extensions-tool/command-list.c:118
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
 msgstr "Rodyti naudotojo įdiegtus plėtinius"
 
 #: src/extensions-tool/command-list.c:121
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
 msgstr "Rodyti sistemoje įdiegtus plėtinius"
 
 #: src/extensions-tool/command-list.c:124
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
 msgstr "Rodyti įjungtus plėtinius"
 
 #: src/extensions-tool/command-list.c:127
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
 msgstr "Rodyti išjungtus plėtinius"
 
 #: src/extensions-tool/command-list.c:130
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
 msgstr "Rodyti plėtinius su nuostatomis"
 
 #: src/extensions-tool/command-list.c:133
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
 msgstr "Atspausdinti plėtinio informaciją"
 
 #: src/extensions-tool/command-list.c:141
-#| msgid "Disable user extensions"
 msgid "List installed extensions"
 msgstr "Išvardinti įdiegtus plėtinius"
 
@@ -2557,17 +2548,14 @@ msgid "More than one source directory specified"
 msgstr "Nurodytas daugiau nei vienas kodo aplankas"
 
 #: src/extensions-tool/command-prefs.c:90
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
 msgstr "Atveria plėtinio nuostatas"
 
 #: src/extensions-tool/command-reset.c:57
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
 msgstr "Atstatyti plėtinį"
 
 #: src/extensions-tool/command-uninstall.c:72
-#| msgid "Disable user extensions"
 msgid "Uninstall an extension"
 msgstr "Išdiegti plėtinį"
 
@@ -2584,7 +2572,6 @@ msgid "Original author"
 msgstr "Pradinis autorius"
 
 #: src/extensions-tool/main.c:184
-#| msgid "Print version"
 msgid "Version"
 msgstr "Versija"
 
@@ -2596,7 +2583,7 @@ msgstr "Būsena"
 msgid "“version” takes no arguments"
 msgstr "„version“ nepriima argumentų"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
 msgid "Usage:"
 msgstr "Naudojimas:"
 
@@ -2604,91 +2591,81 @@ msgstr "Naudojimas:"
 msgid "Print version information and exit."
 msgstr "Atspausdinti versijos informaciją ir išeiti."
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
 msgstr "KOMANDA"
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:244
 msgid "[ARGS…]"
 msgstr "[ARG…]"
 
-#: src/extensions-tool/main.c:242
+#: src/extensions-tool/main.c:246
 msgid "Commands:"
 msgstr "Komandos:"
 
-#: src/extensions-tool/main.c:243
-#| msgid "Print version"
+#: src/extensions-tool/main.c:247
 msgid "Print help"
 msgstr "Atspausdinti žinyną"
 
-#: src/extensions-tool/main.c:244 src/main.c:460
+#: src/extensions-tool/main.c:248 src/main.c:468
 msgid "Print version"
 msgstr "Išvesti versijos numerį"
 
-#: src/extensions-tool/main.c:245
-#| msgid "Disable user extensions"
+#: src/extensions-tool/main.c:249
 msgid "Enable extension"
 msgstr "Įjungti ]plėtinį"
 
-#: src/extensions-tool/main.c:246
-#| msgid "Disable user extensions"
+#: src/extensions-tool/main.c:250
 msgid "Disable extension"
 msgstr "Išjungti plėtinį"
 
-#: src/extensions-tool/main.c:247
-#| msgid "Disable user extensions"
+#: src/extensions-tool/main.c:251
 msgid "Reset extension"
 msgstr "Atstatyti plėtinį"
 
-#: src/extensions-tool/main.c:248
-#| msgid "Disable user extensions"
+#: src/extensions-tool/main.c:252
 msgid "Uninstall extension"
 msgstr "Išdiegti plėtinį"
 
-#: src/extensions-tool/main.c:249
-#| msgid "Disable user extensions"
+#: src/extensions-tool/main.c:253
 msgid "List extensions"
 msgstr "Išvardinti plėtinius"
 
-#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
-#| msgid "No extensions installed"
+#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
 msgid "Show extension info"
 msgstr "Rodyti plėtinio informaciją"
 
-#: src/extensions-tool/main.c:252
-#| msgid "GNOME Shell Extension Preferences"
+#: src/extensions-tool/main.c:256
 msgid "Open extension preferences"
 msgstr "Atverti plėtinio nuostatas"
 
-#: src/extensions-tool/main.c:253
-#| msgid "Shell Extensions"
+#: src/extensions-tool/main.c:257
 msgid "Create extension"
 msgstr "Sukurti plėtinį"
 
-#: src/extensions-tool/main.c:254
-#| msgid "Shell Extensions"
+#: src/extensions-tool/main.c:258
 msgid "Package extension"
 msgstr "Supakuoti plėtinį"
 
-#: src/extensions-tool/main.c:255
-#| msgid "UUIDs of extensions to enable"
+#: src/extensions-tool/main.c:259
 msgid "Install extension bundle"
 msgstr "Įdiegti plėtinio ryšulį"
 
-#: src/extensions-tool/main.c:257
+#: src/extensions-tool/main.c:261
 #, c-format
-msgid "Use %s to get detailed help.\n"
-msgstr "Detalesnį žinyną gausite panaudoję %s\n"
+#| msgid "Use %s to get detailed help.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Detalesnį žinyną gausite panaudoję „%s“.\n"
 
-#: src/main.c:466
+#: src/main.c:474
 msgid "Mode used by GDM for login screen"
 msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
-#: src/main.c:472
+#: src/main.c:480
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
-#: src/main.c:478
+#: src/main.c:486
 msgid "List possible modes"
 msgstr "Išvardinti galimas veiksenas"
 
