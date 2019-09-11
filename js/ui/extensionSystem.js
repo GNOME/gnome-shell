@@ -306,7 +306,7 @@ var ExtensionManager = class {
         let dir = extension.dir;
 
         if (!extension)
-            throw new Error("Extension was not properly created. Call loadExtension first");
+            throw new Error("Extension was not properly created. Call createExtensionObject first");
 
         let extensionJs = dir.get_child('extension.js');
         if (!extensionJs.query_exists(null)) {
