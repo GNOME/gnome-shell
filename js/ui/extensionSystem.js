@@ -130,14 +130,12 @@ var ExtensionManager = class {
             extension.stateObj.enable();
             extension.state = ExtensionState.ENABLED;
             this.emit('extension-state-changed', extension);
-            return;
         } catch (e) {
             if (extension.stylesheet) {
                 theme.unload_stylesheet(extension.stylesheet);
                 delete extension.stylesheet;
             }
             this.logExtensionError(uuid, e);
-            return;
         }
     }
 
