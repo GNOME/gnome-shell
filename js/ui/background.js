@@ -441,20 +441,21 @@ var Background = class Background {
     }
 
     _loadAnimation(file) {
-        this._cache.getAnimation({ file: file,
-                                   settingsSchema: this._settings.schema_id,
-                                   onLoaded: animation => {
-                                       this._animation = animation;
+        this._cache.getAnimation({
+            file: file,
+            settingsSchema: this._settings.schema_id,
+            onLoaded: animation => {
+                this._animation = animation;
 
-                                       if (!this._animation || this._cancellable.is_cancelled()) {
-                                           this._setLoaded();
-                                           return;
-                                       }
+                if (!this._animation || this._cancellable.is_cancelled()) {
+                    this._setLoaded();
+                    return;
+                }
 
-                                       this._updateAnimation();
-                                       this._watchFile(file);
-                                   }
-                                 });
+                this._updateAnimation();
+                this._watchFile(file);
+            }
+        });
     }
 
     _loadImage(file) {
@@ -748,13 +749,14 @@ var BackgroundManager = class BackgroundManager {
 
     _createBackgroundActor() {
         let background = this._backgroundSource.getBackground(this._monitorIndex);
-        let backgroundActor = new Meta.BackgroundActor({ meta_display: global.display,
-                                                         monitor: this._monitorIndex,
-                                                         background: background.background,
-                                                         vignette: this._vignette,
-                                                         vignette_sharpness: 0.5,
-                                                         brightness: 0.5,
-                                                       });
+        let backgroundActor = new Meta.BackgroundActor({
+            meta_display: global.display,
+            monitor: this._monitorIndex,
+            background: background.background,
+            vignette: this._vignette,
+            vignette_sharpness: 0.5,
+            brightness: 0.5,
+        });
 
         this._container.add_child(backgroundActor);
 

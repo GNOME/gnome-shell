@@ -429,13 +429,14 @@ var ScreenShield = class {
         this.actor = Main.layoutManager.screenShieldGroup;
 
         this._lockScreenState = MessageTray.State.HIDDEN;
-        this._lockScreenGroup = new St.Widget({ x_expand: true,
-                                                y_expand: true,
-                                                reactive: true,
-                                                can_focus: true,
-                                                name: 'lockScreenGroup',
-                                                visible: false,
-                                              });
+        this._lockScreenGroup = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            can_focus: true,
+            name: 'lockScreenGroup',
+            visible: false,
+        });
         this._lockScreenGroup.connect('key-press-event',
                                       this._onLockScreenKeyPress.bind(this));
         this._lockScreenGroup.connect('scroll-event',

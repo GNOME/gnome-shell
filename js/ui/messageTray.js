@@ -136,13 +136,14 @@ var FocusGrabber = class FocusGrabber {
 // A notification without a policy object will inherit the default one.
 var NotificationPolicy = class NotificationPolicy {
     constructor(params) {
-        params = Params.parse(params, { enable: true,
-                                        enableSound: true,
-                                        showBanners: true,
-                                        forceExpanded: false,
-                                        showInLockScreen: true,
-                                        detailsInLockScreen: false
-                                      });
+        params = Params.parse(params, {
+            enable: true,
+            enableSound: true,
+            showBanners: true,
+            forceExpanded: false,
+            showInLockScreen: true,
+            detailsInLockScreen: false,
+        });
         Object.getOwnPropertyNames(params).forEach(key => {
             let desc = Object.getOwnPropertyDescriptor(params, key);
             Object.defineProperty(this, `_${key}`, desc);

@@ -1073,13 +1073,14 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
             this._resortItems();
         } else {
-            network = { ssid: accessPoint.get_ssid(),
-                        mode: accessPoint.mode,
-                        security: this._getApSecurityType(accessPoint),
-                        connections: [],
-                        item: null,
-                        accessPoints: [accessPoint]
-                      };
+            network = {
+                ssid: accessPoint.get_ssid(),
+                mode: accessPoint.mode,
+                security: this._getApSecurityType(accessPoint),
+                connections: [],
+                item: null,
+                accessPoints: [accessPoint],
+            };
             network.ssidText = ssidToLabel(network.ssid);
             this._checkConnections(network, accessPoint);
 

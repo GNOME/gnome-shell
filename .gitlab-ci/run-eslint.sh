@@ -66,6 +66,10 @@ create_common() {
   rm $OUTPUT_FINAL.tmp
 }
 
+# Disable MR handling for now. We aren't ready to enforce
+# non-legacy style just yet ...
+unset CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
 if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   git fetch $CI_MERGE_REQUEST_PROJECT_URL.git $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
   branch_point=$(git merge-base HEAD FETCH_HEAD)
@@ -86,12 +90,16 @@ run_eslint LEGACY
 echo Done.
 create_common
 
+if ! is_empty $OUTPUT_FINAL; then
+  cat $OUTPUT_FINAL
+  exit 1
+fi
+
 # Just show the report and succeed when not testing a MR
 if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
-  cat $OUTPUT_FINAL
   exit 0
 fi
 
-copy_matched_lines $OUTPUT_FINAL $LINE_CHANGES $OUTPUT_MR
+copy_matched_lines $OUTPUT_REGULAR $LINE_CHANGES $OUTPUT_MR
 cat $OUTPUT_MR
 is_empty $OUTPUT_MR

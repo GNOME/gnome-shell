@@ -238,11 +238,12 @@ var LayoutManager = GObject.registerClass({
                                              reactive: true });
         this.addChrome(this.overviewGroup);
 
-        this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
-                                                 visible: false,
-                                                 clip_to_allocation: true,
-                                                 layout_manager: new Clutter.BinLayout(),
-                                               });
+        this.screenShieldGroup = new St.Widget({
+            name: 'screenShieldGroup',
+            visible: false,
+            clip_to_allocation: true,
+            layout_manager: new Clutter.BinLayout(),
+        });
         this.addChrome(this.screenShieldGroup);
 
         this.panelBox = new St.BoxLayout({ name: 'panelBox',
@@ -860,7 +861,7 @@ var LayoutManager = GObject.registerClass({
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
         for (let prop in defaultParams) {
-            if (!params.hasOwnProperty(prop))
+            if (!Object.prototype.hasOwnProperty.call(params, prop))
                 params[prop] = ancestorData[prop];
         }
 

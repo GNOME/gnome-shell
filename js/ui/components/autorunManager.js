@@ -325,10 +325,10 @@ var AutorunNotification = class extends MessageTray.Notification {
                                  style_class: 'hotplug-notification-item-icon' });
         box.add(icon);
 
-        let label = new St.Bin({ y_align: St.Align.MIDDLE,
-                                 child: new St.Label
-                                 ({ text: _("Open with %s").format(app.get_name()) })
-                               });
+        let label = new St.Bin({
+            y_align: St.Align.MIDDLE,
+            child: new St.Label({ text: _("Open with %s").format(app.get_name()) }),
+        });
         box.add(label);
 
         let button = new St.Button({ child: box,

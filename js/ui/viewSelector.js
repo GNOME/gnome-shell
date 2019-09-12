@@ -309,12 +309,10 @@ var ViewSelector = class {
         if (params.a11yFocus)
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
         else
-            Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon,
-                                            { proxy: this.actor,
-                                              focusCallback: () => {
-                                                  this._a11yFocusPage(page);
-                                              }
-                                            });
+            Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
+                proxy: this.actor,
+                focusCallback: () => this._a11yFocusPage(page),
+            });
         page.hide();
         this.actor.add_actor(page);
         return page;

@@ -94,9 +94,11 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         this._errorBox.hide();
 
-        this.setButtons([{ action: this.close.bind(this),
-                           label: _("Close"),
-                           key: Clutter.Escape }]);
+        this.setButtons([{
+            action: this.close.bind(this),
+            label: _("Close"),
+            key: Clutter.Escape,
+        }]);
 
         this._pathCompleter = new Gio.FilenameCompleter();
 

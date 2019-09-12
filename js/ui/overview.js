@@ -42,9 +42,10 @@ var ShellInfo = class {
     }
 
     setMessage(text, options) {
-        options = Params.parse(options, { undoCallback: null,
-                                          forFeedback: false
-                                        });
+        options = Params.parse(options, {
+            undoCallback: null,
+            forFeedback: false,
+        });
 
         let undoCallback = options.undoCallback;
         let forFeedback = options.forFeedback;

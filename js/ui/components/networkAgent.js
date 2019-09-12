@@ -112,16 +112,17 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                                         expand: true });
         }
 
-        this._okButton = { label: _("Connect"),
-                           action: this._onOk.bind(this),
-                           default: true
-                         };
+        this._okButton = {
+            label: _("Connect"),
+            action: this._onOk.bind(this),
+            default: true,
+        };
 
-        this.setButtons([{ label: _("Cancel"),
-                           action: this.cancel.bind(this),
-                           key: Clutter.KEY_Escape,
-                         },
-                         this._okButton]);
+        this.setButtons([{
+            label: _("Cancel"),
+            action: this.cancel.bind(this),
+            key: Clutter.KEY_Escape,
+        }, this._okButton]);
 
         this._updateOkButton();
     }
@@ -551,11 +552,12 @@ var VPNRequestHandler = class {
                 let shouldAsk = keyfile.get_boolean(groups[i], 'ShouldAsk');
 
                 if (shouldAsk) {
-                    contentOverride.secrets.push({ label: keyfile.get_string(groups[i], 'Label'),
-                                                   key: groups[i],
-                                                   value: value,
-                                                   password: keyfile.get_boolean(groups[i], 'IsSecret')
-                                                 });
+                    contentOverride.secrets.push({
+                        label: keyfile.get_string(groups[i], 'Label'),
+                        key: groups[i],
+                        value: value,
+                        password: keyfile.get_boolean(groups[i], 'IsSecret'),
+                    });
                 } else {
                     if (!value.length) // Ignore empty secrets
                         continue;
@@ -609,10 +611,11 @@ Signals.addSignalMethods(VPNRequestHandler.prototype);
 
 var NetworkAgent = class {
     constructor() {
-        this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
-                                                capabilities: NM.SecretAgentCapabilities.VPN_HINTS,
-                                                auto_register: false
-                                              });
+        this._native = new Shell.NetworkAgent({
+            identifier: 'org.gnome.Shell.NetworkAgent',
+            capabilities: NM.SecretAgentCapabilities.VPN_HINTS,
+            auto_register: false,
+        });
 
         this._dialogs = { };
         this._vpnRequests = { };

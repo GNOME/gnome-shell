@@ -67,12 +67,13 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
-        params = Params.parse (params, { reactive: true,
-                                         activate: true,
-                                         hover: true,
-                                         style_class: null,
-                                         can_focus: true
-                                       });
+        params = Params.parse (params, {
+            reactive: true,
+            activate: true,
+            hover: true,
+            style_class: null,
+            can_focus: true,
+        });
         super._init({ style_class: 'popup-menu-item',
                       reactive: params.reactive,
                       track_hover: params.reactive,
@@ -331,9 +332,10 @@ var PopupSwitchMenuItem = GObject.registerClass({
         this._statusBin = new St.Bin({ x_align: St.Align.END });
         this.add(this._statusBin, { expand: true, x_align: St.Align.END });
 
-        this._statusLabel = new St.Label({ text: '',
-                                           style_class: 'popup-status-menu-item'
-                                         });
+        this._statusLabel = new St.Label({
+            text: '',
+            style_class: 'popup-status-menu-item',
+        });
         this._statusBin.child = this._switch;
     }
 
