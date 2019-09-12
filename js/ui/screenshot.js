@@ -116,8 +116,8 @@ var ScreenshotService = class {
                 try {
                     let [result, area, filenameUsed] =
                         screenshot.screenshot_area_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotComplete(
+                        result, area, filenameUsed, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -134,8 +134,8 @@ var ScreenshotService = class {
                 try {
                     let [result, area, filenameUsed] =
                         screenshot.screenshot_window_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotComplete(
+                        result, area, filenameUsed, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -152,8 +152,8 @@ var ScreenshotService = class {
                 try {
                     let [result, area, filenameUsed] =
                         screenshot.screenshot_finish(res);
-                    this._onScreenshotComplete(result, area, filenameUsed,
-                                               flash, invocation);
+                    this._onScreenshotComplete(
+                        result, area, filenameUsed, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }

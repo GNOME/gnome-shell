@@ -179,8 +179,8 @@ class ATIndicator extends PanelMenu.Button {
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             enabled => {
                 if (enabled)
-                    settings.set_double(KEY_TEXT_SCALING_FACTOR,
-                                        DPI_FACTOR_LARGE);
+                    settings.set_double(
+                        KEY_TEXT_SCALING_FACTOR, DPI_FACTOR_LARGE);
                 else
                     settings.reset(KEY_TEXT_SCALING_FACTOR);
             });
