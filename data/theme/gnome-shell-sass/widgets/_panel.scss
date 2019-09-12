@@ -2,8 +2,8 @@
 // a.k.a. the panel
 
 $panel_corner_radius: $base_border_radius + 1px;
-$panel_bg_color: if($variant == 'light', #fff, #000);
-$panel_fg_color: if($variant == 'light', $fg_color, darken($fg_color, 10%));
+$panel_bg_color: if($variant == 'light', rgba(0,0,0,0.9), #000);
+$panel_fg_color: if($variant == 'light', darken($bg_color, 15%), darken($fg_color, 10%));
 $panel_height: 1.86em;
 
 
@@ -20,7 +20,7 @@ $panel_height: 1.86em;
 		background-color: transparent;
 	}
 
-	// spacing between activities<>app menu and such
+	// spacing between activities, app menu and such
 	#panelLeft, #panelCenter {
 		spacing: $base_spacing;
 	}

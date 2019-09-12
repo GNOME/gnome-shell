@@ -33,11 +33,19 @@ $base_spacing: 6px;
 // border radii
 $base_border_radius: 5px;
 
+<<<<<<< HEAD
 $modal_radius:$base_border_radius * 2;
 
 // non-standard colors
 $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
 // $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
+=======
+$dialog_border_radius:$base_border_radius * 2 + 4px;
+
+// non-standard colors
+// $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+$bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
+>>>>>>> de7edaff5... theme: OSD refinements; overview and panel refinements
 
 
 // hover
@@ -110,6 +118,7 @@ stage {
 
 
 // osd panels
+
 %osd_panel {
 	color: $osd_fg_color;
 	background-color: $osd_bg_color;
