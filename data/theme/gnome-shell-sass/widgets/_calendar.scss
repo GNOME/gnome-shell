@@ -10,28 +10,63 @@
 	border: 1px solid $bubble_borders_color;
 	border-radius:$base_border_radius + 2px;
 	background-color: lighten($bg_color, 5%);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	// padding: $base_padding;
+	padding: 0;
+	margin: $base_margin;
+
+	&:hover,
+	&:focus {
+		background-color: $hover_bg_color;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+		margin-top: $base_margin - 1px;
+		margin-bottom: $base_margin + 1px;
+	}
+	&:active { background-color: transparentize($fg_color, 0.84) }
 }
 
 
-.datemenu-today-button,
-.datemenu-displays-box {
+// today button
+.datemenu-today-button {
 	margin:0;
+
+	// weekday label
+	.day-label {
+		font-size: $base_font_size + 1pt;
+		font-weight: bold;
+	}
+
+	// date label
+	.date-label {
+		font-size: $base_font_size * 1.5;
+		font-weight: 1000;
+	}
 }
 
-.datemenu-calendar-column { spacing: 0.5em; }
-.datemenu-displays-section { padding-bottom: 3em; }
-.datemenu-displays-box { spacing: 1em; }
-
+// calendar column
 .datemenu-calendar-column {
+	spacing: 0;
 	border: 0 solid $bubble_borders_color;
-	&:ltr { border-left-width: 1px; }app_icon_size
+	padding: $base_padding + $base_margin;
+	padding-bottom: 3em;
+
+	&:ltr { border-left-width: 1px; }
 	&:rtl { border-right-width: 1px; }
-	padding: 0 12px;
+
+	&:hover, &:focus { background-color: $hover_bg_color }
+	&:active { background-color: $active_bg_color }
+
+	.datemenu-displays-section {
+		margin:0;
+	}
+
+	.datemenu-displays-box {
+		spacing: $base_spacing;
+		margin:0;
+	}
 }
 
 .datemenu-today-button,
-.world-clocks-button,
-.weather-button,
 .events-section-title {
 	border-radius: 4px;
 	padding: .4em;
@@ -40,35 +75,28 @@
 /* Calendar */
 .calendar {
 	@extend %calendar_box;
-	margin:0;
-	margin-bottom: $base_padding;
+	margin:$base_margin;
+	margin-bottom: $base_padding + $base_margin	;
 	padding:$base_padding;
+
+	// month
+	.calendar-month-label {
+		color: lighten($fg_color,5%);
+		font-weight: bold;
+		padding: 8px 0;
+		&:focus {}
+	}
+
+	// prev/next month icons
+	.calendar-change-month-back StIcon,
+	.calendar-change-month-forward StIcon {
+		icon-size: $base_icon_size;
+	}
 }
 
-.datemenu-today-button,
-.world-clocks-button,
-.weather-button,
 .events-section-title {
-	&:hover, &:focus { background-color: $hover_bg_color }
-	&:active { background-color: $active_bg_color }
 }
 
-.datemenu-today-button .day-label {
-	font-size: $base_font_size + 1pt;
-	font-weight: bold;
-}
-
-.datemenu-today-button .date-label {
-	font-size: $base_font_size * 1.5;
-	font-weight: 1000;
-}
-
-.calendar-month-label {
-	color: lighten($fg_color,5%);
-	font-weight: bold;
-	padding: 8px 0;
-	&:focus {}
-}
 
 .pager-button {
 	background-color: transparent;
@@ -79,11 +107,6 @@
 	&:active { background-color: transparentize($fg_color, 0.84); }
 }
 
-// prev/next month icons
-.calendar-change-month-back StIcon,
-.calendar-change-month-forward StIcon {
-	icon-size: $base_icon_size;
-}
 
 $calendar_day_size: 32px;
 
@@ -173,6 +196,7 @@ $calendar_day_size: 32px;
 .world-clocks-button,
 .weather-button {
 	@extend %calendar_box;
+	padding:$base_padding;
 }
 
 /* Weather */

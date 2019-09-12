@@ -1,5 +1,5 @@
 /* Message List */
-
+// a.k.a. notifications in the menu
 
 // main list
 .message-list {
@@ -24,6 +24,7 @@
 
 // clear button
 .message-list-clear-button {
+	margin:$base_margin;
 	.button {
 		@extend %button;
 	}
@@ -47,63 +48,69 @@
 		margin-bottom: $base_margin + 1px;
 	}
 	&:active { background-color: transparentize($fg_color, 0.84) }
-}
 
-// title
-.message-title {
-	color: $fg_color;
-	font-weight: bold;
-	margin-bottom:4px;
-}
-
-// content
-.message-content {
-	color: darken($fg_color, 10%);
-	padding: $base_padding 0;
-	margin:$base_margin * 2;
-}
-
-// message icon
-.message-icon-bin {
-	// padding: $base_padding;
-	margin:$base_padding 0;
-
-	&:rtl {
-		padding: $base_padding;
-	}
-
-	// icon size and color
-	> StIcon {
+	// title
+	.message-title {
 		color: $fg_color;
-		icon-size: $base_icon_size * 2;
-		-st-icon-style: symbolic;
-
-		padding:$base_padding;
+		font-weight: bold;
+		margin-bottom:4px;
 	}
 
-	// fallback
-	> .fallback-window-icon {
-		width: $base_icon_size;
-		height: $base_icon_size;
+	// content
+	.message-content {
+		color: darken($fg_color, 10%);
+		padding: $base_padding 0;
+		margin:$base_margin * 2;
+		&:ltr {
+			margin-left: $base_margin;
+			padding-right:$base_padding;
+		}
+		&:rtl {
+			margin-right: $base_margin;
+			padding-left:$base_padding;
+		}
 	}
-}
 
-.message-secondary-bin {
-	padding: 0;
+	// message icon
+	.message-icon-bin {
+		// padding: $base_padding;
+		margin:$base_padding 0;
 
-	> StIcon {
-		icon-size: $base_icon_size;
+		&:rtl {
+			padding: $base_padding;
+		}
+
+		// icon size and color
+		> StIcon {
+			color: $fg_color;
+			icon-size: $base_icon_size * 2; // 32px
+			-st-icon-style: symbolic;
+
+			padding:$base_padding;
+		}
+
+		// fallback
+		> .fallback-window-icon {
+			width: $base_icon_size;
+			height: $base_icon_size;
+		}
 	}
 
-	// notification time stamp
-	> .event-time {
-		color: transparentize($fg_color, 0.5);
-		font-size: 80%;
-		text-align: right;
-		margin: 0 $base_margin * 2;
-		/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
-		padding-bottom: $base_padding;
+	// secondary container in title box
+	.message-secondary-bin {
+		padding: 0;
+
+		// notification time stamp
+		> .event-time {
+			color: transparentize($fg_color, 0.5);
+			font-size: 80%;
+			text-align: right;
+			margin: 0 $base_margin * 2;
+			/* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
+			padding-bottom: $base_padding;
+		}
 	}
+
 }
 
 /* Media Controls */
@@ -112,6 +119,7 @@
 	color: darken($fg_color, 15%);
 	// border: 0 solid $borders_color;
 	// border-left-width:1px;
+
 
 	&:hover { 
 		background-color: lighten($hover_bg_color, 5%);
@@ -124,6 +132,12 @@
 			border-radius: $base_border_radius 0 0 $base_border_radius;
 		}
 	}
+
+	&:active { 
+		background-color: darken($hover_bg_color, 2%);
+		color: $fg_color;
+	}
+
 	&:insensitive { color: darken($fg_color,40%); }
 }
 
