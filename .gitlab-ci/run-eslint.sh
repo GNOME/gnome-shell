@@ -96,6 +96,6 @@ if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   exit 0
 fi
 
-copy_matched_lines $OUTPUT_FINAL $LINE_CHANGES $OUTPUT_MR
+copy_matched_lines $OUTPUT_REGULAR $LINE_CHANGES $OUTPUT_MR
 cat $OUTPUT_MR
 is_empty $OUTPUT_MR
