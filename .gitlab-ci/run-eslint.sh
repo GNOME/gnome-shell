@@ -66,6 +66,10 @@ create_common() {
   rm $OUTPUT_FINAL.tmp
 }
 
+# Disable MR handling for now. We aren't ready to enforce
+# non-legacy style just yet ...
+unset CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
 if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   git fetch $CI_MERGE_REQUEST_PROJECT_URL.git $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
   branch_point=$(git merge-base HEAD FETCH_HEAD)
