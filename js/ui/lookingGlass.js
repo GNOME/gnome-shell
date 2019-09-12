@@ -304,6 +304,9 @@ var WindowList = class WindowList {
     }
 
     _updateWindowList() {
+        if (!this._lookingGlass.isOpen)
+            return;
+
         this.actor.destroy_all_children();
         let windows = global.get_window_actors();
         let tracker = Shell.WindowTracker.get_default();
@@ -334,6 +337,10 @@ var WindowList = class WindowList {
                 propsBox.add(new St.Label({ text: '<untracked>' }));
             }
         }
+    }
+
+    update() {
+        this._updateWindowList();
     }
 };
 Signals.addSignalMethods(WindowList.prototype);
@@ -1099,6 +1106,8 @@ var LookingGlass = class LookingGlass {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD
         });
+
+        this._windowList.update();
     }
 
     close() {
@@ -1123,6 +1132,10 @@ var LookingGlass = class LookingGlass {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this.actor.hide()
         });
+    }
+
+    get isOpen() {
+        return this._open;
     }
 };
 Signals.addSignalMethods(LookingGlass.prototype);
