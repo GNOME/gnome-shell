@@ -1884,15 +1884,17 @@ var AppFolderPopup = class AppFolderPopup {
             direction = St.DirectionType.TAB_FORWARD;
             break;
         case Clutter.Right:
-            direction = isLtr ? St.DirectionType.TAB_FORWARD :
-                                    St.DirectionType.TAB_BACKWARD;
+            direction = isLtr
+                ? St.DirectionType.TAB_FORWARD
+                : St.DirectionType.TAB_BACKWARD;
             break;
         case Clutter.Up:
             direction = St.DirectionType.TAB_BACKWARD;
             break;
         case Clutter.Left:
-            direction = isLtr ? St.DirectionType.TAB_BACKWARD :
-                                    St.DirectionType.TAB_FORWARD;
+            direction = isLtr
+                ? St.DirectionType.TAB_BACKWARD
+                : St.DirectionType.TAB_FORWARD;
             break;
         default:
             return Clutter.EVENT_PROPAGATE;

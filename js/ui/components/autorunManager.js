@@ -117,9 +117,9 @@ var ContentTypeDiscoverer = class {
 
             let hotplugSniffer = new HotplugSniffer();
             hotplugSniffer.SniffURIRemote(root.get_uri(),
-                 ([contentTypes]) => {
-                     this._emitCallback(mount, contentTypes);
-                 });
+                ([contentTypes]) => {
+                    this._emitCallback(mount, contentTypes);
+                });
         }
     }
 
