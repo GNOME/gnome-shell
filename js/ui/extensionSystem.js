@@ -305,7 +305,7 @@ var ExtensionManager = class {
 
     _callExtensionInit(uuid) {
         if (!Main.sessionMode.allowExtensions)
-            return;
+            return false;
 
         let extension = this.lookup(uuid);
         if (!extension)
