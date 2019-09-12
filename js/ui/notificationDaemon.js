@@ -618,7 +618,7 @@ function getPlatformData() {
 
 function InvalidAppError() {}
 
-var GtkNotificationDaemonAppSource = 
+var GtkNotificationDaemonAppSource =
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
     constructor(appId) {
         let objectPath = objectPathFromAppId(appId);
