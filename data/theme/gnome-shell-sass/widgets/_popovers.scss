@@ -1,24 +1,24 @@
 /* Popovers/Menus */
 
-$popover_width: 15em;
-
 .popup-menu {
-	min-width: $popover_width;
+	min-width: 15em;
 	color: $fg_color;
 	border-color: $bubble_borders_color;
 
-	.popup-menu-arrow { } //defined globally in the TOP BAR
 	.popup-sub-menu {
 		background-color: darken($bg_color,5%);
 		box-shadow: inset 0 -1px 0px $bubble_borders_color;
 	}
 
-	.popup-menu-content { padding: 1em 0em; }
+	.popup-menu-content { padding: calc(#{$base_padding} * 2 + #{$base_margin}) 0; }
+
+	// menu items
 	.popup-menu-item {
-		spacing: 12px;
+		spacing: $base_padding;
 
 		&:ltr { padding: .4em 1.75em .4em 0em; }
 		&:rtl { padding: .4em 0em .4em 1.75em; }
+
 		&:checked {
 			background-color: $bg_color;
 			box-shadow: inset 0 -1px 0px $bubble_borders_color;
@@ -35,7 +35,7 @@ $popover_width: 15em;
 		&:insensitive { color: transparentize($fg_color,.5); }
 	}
 
-	//all icons and other graphical elements
+	// all icons and other graphical elements
 	.popup-inactive-menu-item {
 		color: $fg_color;
 
@@ -44,9 +44,13 @@ $popover_width: 15em;
 
 	//.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is
 	&.panel-menu {
-		-boxpointer-gap: 4px;
+		-boxpointer-gap: $base_margin; // distance from the panel
 		margin-bottom: 1.75em;
 	}
+
+	// symbolic icons in popover
+	.popup-menu-arrow,
+	.popup-menu-icon { icon-size: $base_icon_size; }
 }
 
 .popup-menu-ornament {
@@ -59,81 +63,73 @@ $popover_width: 15em;
 	-arrow-border-radius: $base_border_radius+4;
 	-arrow-background-color: $bg_color;
 	-arrow-border-width: 1px;
-	-arrow-border-color: if($variant=='light', transparentize(black, 0.6), $borders_color);
+	-arrow-border-color: if($variant=='light', rgba(0,0,0,0.6), $borders_color);
 	-arrow-base: 24px;
 	-arrow-rise: 11px;
-	-arrow-box-shadow: 0 1px 3px black; //dreaming. bug #689995
+	-arrow-box-shadow: 0 1px 3px rgba(0,0,0,0.5); //dreaming. bug #689995
 }
 
 .popup-separator-menu-item {
 	//-margin-horizontal: 24px;
 	height: 1px; //not really the whole box
-	margin: 6px 64px;
+	// margin: 6px 64px;
+	margin: 6px 0;
 	background-color: transparent;
 	border-color: $bubble_borders_color;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 }
 
-// not really top bar only
-.popup-menu-arrow { icon-size: $base_icon_size; }
-.popup-menu-icon { icon-size: $base_icon_size; }
-
-
-// Background menu
-.background-menu { -boxpointer-gap: 4px; -arrow-rise: 0px; }
+// Desktop background menu
+.background-menu { -boxpointer-gap: $base_margin; -arrow-rise: 0px; }
 
 /* fallback menu
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled app menu inside the main app window itself rather than the top bar
 */
 
-// a little unstructured mess:
-#appMenu {
-	spacing: $base_spacing;
-
-	.label-shadow { color: transparent; }
-}
-
+// App menu
 .app-menu,
 .app-well-menu {
 	max-width: 27.25em;
 }
 
+// System status menu
 .aggregate-menu {
 	min-width: 21em;
+
 	.popup-menu-icon { padding: 0 4px; }
+
 	.popup-sub-menu .popup-menu-item > :first-child {
+		// account for icons in submenus with padding
 		&:ltr {
-			// 12px spacing + 2*4px padding
-			padding-left: 20px; 
-			margin-left: 1.09em;
+			padding-left: $base_padding + $base_margin * 2; 
+			margin-left: $base_icon_size;
 		}
 		&:rtl {
-			// 12px spacing + 2*4px padding
-			padding-right: 20px;
-			margin-right: 1.09em;
+			padding-right: $base_padding + $base_margin * 2; ;
+			margin-right: $base_icon_size;
 		}
 	}
-}
 
-// lock screen, shutdown, etc. buttons
-.system-menu-action {
-	-st-icon-style: symbolic;
-	color: $fg_color;
-	border-radius: 32px; /* wish we could do 50% */
-	padding: 13px;
-	border: 1px solid $bubble_borders_color;
-
-	&:hover, &:focus {
-		background-color: $hover_bg_color;
+	// lock screen, shutdown, etc. buttons
+	.system-menu-action {
+		-st-icon-style: symbolic;
 		color: $fg_color;
-		border: none;
-		padding: 14px;
-	}
-	&:active { 
-		background-color: $selected_bg_color;
-		color: $selected_fg_color;
-	}
+		border-radius: 32px; /* wish we could do 50% */
+		padding: 13px;
+		border: 1px solid $bubble_borders_color;
 
-	& > StIcon { icon-size: $base_icon_size; }
+		&:hover, &:focus {
+			background-color: $hover_bg_color;
+			color: $fg_color;
+			border: none;
+			padding: 14px;
+		}
+		&:active { 
+			background-color: $selected_bg_color;
+			color: $selected_fg_color;
+		}
+
+		& > StIcon { icon-size: $base_icon_size; }
+	}
 }
