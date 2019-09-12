@@ -17,7 +17,7 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 var ExtensionManager = class {
     constructor() {
-        this._initted = false;
+        this._initialized = false;
         this._enabled = false;
 
         this._extensions = new Map();
@@ -98,6 +98,9 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
         if (!extension)
             return;
@@ -107,8 +110,6 @@ var ExtensionManager = class {
 
         if (extension.state != ExtensionState.DISABLED)
             return;
-
-        this._extensionOrder.push(uuid);
 
         let stylesheetNames = [`${global.session_mode}.css`, 'stylesheet.css'];
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
@@ -121,7 +122,7 @@ var ExtensionManager = class {
             } catch (e) {
                 if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                     continue; // not an error
-                log(`Failed to load stylesheet for extension ${uuid}: ${e.message}`);
+                this.logExtensionError(uuid, e);
                 return;
             }
         }
@@ -129,15 +130,14 @@ var ExtensionManager = class {
         try {
             extension.stateObj.enable();
             extension.state = ExtensionState.ENABLED;
+            this._extensionOrder.push(uuid);
             this.emit('extension-state-changed', extension);
-            return;
         } catch (e) {
             if (extension.stylesheet) {
                 theme.unload_stylesheet(extension.stylesheet);
                 delete extension.stylesheet;
             }
             this.logExtensionError(uuid, e);
-            return;
         }
     }
 
@@ -304,12 +304,14 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return;
+
         let extension = this.lookup(uuid);
-        let dir = extension.dir;
-
         if (!extension)
-            throw new Error("Extension was not properly created. Call loadExtension first");
+            throw new Error("Extension was not properly created. Call createExtensionObject first");
 
+        let dir = extension.dir;
         let extensionJs = dir.get_child('extension.js');
         if (!extensionJs.query_exists(null)) {
             this.logExtensionError(uuid, new Error('Missing extension.js'));
@@ -388,9 +390,6 @@ var ExtensionManager = class {
     _onEnabledExtensionsChanged() {
         let newEnabledExtensions = this._getEnabledExtensions();
 
-        if (!this._enabled)
-            return;
-
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
         newEnabledExtensions.filter(
@@ -401,9 +400,9 @@ var ExtensionManager = class {
 
         // Find and disable all the newly disabled extensions: UUIDs found in the
         // old setting, but not in the new one.
-        this._enabledExtensions.filter(
-            item => !newEnabledExtensions.includes(item)
-        ).forEach(uuid => {
+        this._extensionOrder.filter(
+            uuid => !newEnabledExtensions.includes(uuid)
+        ).reverse().forEach(uuid => {
             this._callExtensionDisable(uuid);
         });
 
@@ -418,22 +417,19 @@ var ExtensionManager = class {
     }
 
     _onVersionValidationChanged() {
-        // we want to reload all extensions, but only enable
-        // extensions when allowed by the sessionMode, so
-        // temporarily disable them all
-        this._enabledExtensions = [];
+        // Disabling extensions modifies the order array, so use a copy
+        let extensionOrder = this._extensionOrder.slice();
 
-        // The loop modifies the extensions map, so iterate over a copy
-        let extensions = [...this._extensions.values()];
-        for (let extension of extensions)
-            this.reloadExtension(extension);
-        this._enabledExtensions = this._getEnabledExtensions();
+        // Disable enabled extensions in the reverse order first to avoid
+        // the "rebasing" done in _callExtensionDisable...
+        extensionOrder.slice().reverse().forEach(uuid => {
+            this._callExtensionDisable(uuid);
+        });
 
-        if (Main.sessionMode.allowExtensions) {
-            this._enabledExtensions.forEach(uuid => {
-                this._callExtensionEnable(uuid);
-            });
-        }
+        // ...and then reload and enable extensions in the correct order again.
+        [...this._extensions.values()].sort((a, b) => {
+            return extensionOrder.indexOf(a.uuid) - extensionOrder.indexOf(b.uuid);
+        }).forEach(extension => this.reloadExtension(extension));
     }
 
     _loadExtensions() {
@@ -482,9 +478,9 @@ var ExtensionManager = class {
         if (this._enabled)
             return;
 
-        if (!this._initted) {
+        if (!this._initialized) {
             this._loadExtensions();
-            this._initted = true;
+            this._initialized = true;
         } else {
             this._enabledExtensions.forEach(uuid => {
                 this._callExtensionEnable(uuid);
@@ -497,7 +493,7 @@ var ExtensionManager = class {
         if (!this._enabled)
             return;
 
-        if (this._initted) {
+        if (this._initialized) {
             this._extensionOrder.slice().reverse().forEach(uuid => {
                 this._callExtensionDisable(uuid);
             });
@@ -512,8 +508,8 @@ var ExtensionManager = class {
         // property; it might make sense to make enabledExtensions independent
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
-            if (this._initted)
-                this._enabledExtensions = this._getEnabledExtensions();
+            // Take care of added or removed sessionMode extensions
+            this._onEnabledExtensionsChanged();
             this._enableAllExtensions();
         } else {
             this._disableAllExtensions();
