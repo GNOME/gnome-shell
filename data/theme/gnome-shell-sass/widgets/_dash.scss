@@ -5,11 +5,14 @@ $dash_placeholder_size: 24px;
 #dash {
 	@extend %overview_panel;
 	font-size: $base_font_size - 2pt;
-	padding: 4px 0;
-	border-radius: 0px $dialog_border_radius $dialog_border_radius 0px;
+	padding: $base_padding 0;
 
-	&:rtl {
+	//fixme: can't have non uniform borders :(
+	border-radius: 0 $dialog_border_radius $dialog_border_radius 0; 
+	border-left-width: 0 !important;
+	&:rtl { 
 		border-radius: $dialog_border_radius 0 0 $dialog_border_radius;
+		border-right-width: 0 !important;
 	}
 
 	.placeholder {
@@ -25,18 +28,19 @@ $dash_placeholder_size: 24px;
 }
 
 .dash-item-container > StWidget {
-	padding: 4px 8px;
+	padding: $base_padding $base_padding * 2;
 }
 
 // OSD Tooltip
 .dash-label {
-	border-radius: 7px;
-	padding: 4px 12px;
+	border-radius: $base_border_radius + 2px;
+	padding: $base_padding $base_padding + 2px;
 	color: $osd_fg_color;
 	background-color: transparentize($osd_bg_color,0.05);
-	border: 1px solid $osd_outer_borders_color;
+	border:none;
+	box-shadow:0 0 0 1px $osd_outer_borders_color;
 	text-align: center;
-	-x-offset: 8px; // distance from the dash edge
+	-x-offset: $base_margin * 2; // distance from the dash edge
 }
 
 // Show apps button

@@ -33,10 +33,11 @@ $base_spacing: 6px;
 // border radii
 $base_border_radius: 5px;
 
-$dialog_border_radius: $base_border_radius + 4px;
+$dialog_border_radius:$base_border_radius * 2 + 4px;
 
 // non-standard colors
-$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+// $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+$bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
 
 $active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 
@@ -98,19 +99,21 @@ stage {
 // Common Stylings
 
 // osd panels
+
 %osd_panel {
 	color: $osd_fg_color;
 	background-color: $osd_bg_color;
 	border: 1px solid $osd_outer_borders_color;
-	border-radius: $base_border_radius * 3;
+	border-radius: $base_border_radius * 2 + 4px;
 	padding: $base_padding * 2;
 }
 
-// Overview panels
+// Overview panels 
+// for the dash and workspace switcher
 %overview_panel {
 	color: $osd_fg_color;
-	background-color: transparentize($osd_bg_color, 0.1);
-	border: none;
+	background-color: transparentize($osd_bg_color, 0.2);
+	border: 1px solid $osd_outer_borders_color;
 }
 
 // icon tiles
@@ -128,7 +131,7 @@ stage {
 %bubble_panel {
 	color: $fg_color;
 	background-color: $bg_color;
-	border: 1px solid if($variant=='light', transparentize(black, 0.6), $borders_color);
+	border: 1px solid if($variant=='light', rgba(0,0,0, 0.6), $borders_color);
 
 	// entry
 	StEntry { @extend %bubble_entry; }
