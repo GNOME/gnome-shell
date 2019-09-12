@@ -2,7 +2,6 @@
 /* exported WindowManager */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const AltTab = imports.ui.altTab;
@@ -71,13 +70,13 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
                                           action: this._onSuccess.bind(this),
                                           default: true });
 
-        this._timeoutId = Mainloop.timeout_add(ONE_SECOND, this._tick.bind(this));
+        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ONE_SECOND, this._tick.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._tick');
     }
 
     close(timestamp) {
         if (this._timeoutId > 0) {
-            Mainloop.source_remove(this._timeoutId);
+            GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
 
@@ -281,9 +280,9 @@ var WorkspaceTracker = class {
 
     keepWorkspaceAlive(workspace, duration) {
         if (workspace._keepAliveId)
-            Mainloop.source_remove(workspace._keepAliveId);
+            GLib.source_remove(workspace._keepAliveId);
 
-        workspace._keepAliveId = Mainloop.timeout_add(duration, () => {
+        workspace._keepAliveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, duration, () => {
             workspace._keepAliveId = 0;
             this._queueCheckWorkspaces();
             return GLib.SOURCE_REMOVE;
@@ -294,7 +293,7 @@ var WorkspaceTracker = class {
     _windowRemoved(workspace, window) {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
-        let id = Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, () => {
+        let id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
             if (workspace._lastRemovedWindow == window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();

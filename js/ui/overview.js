@@ -2,7 +2,6 @@
 /* exported Overview */
 
 const { Clutter, GLib, Meta, Shell, St } = imports.gi;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -300,7 +299,7 @@ var Overview = class {
 
     _resetWindowSwitchTimeout() {
         if (this._windowSwitchTimeoutId != 0) {
-            Mainloop.source_remove(this._windowSwitchTimeoutId);
+            GLib.source_remove(this._windowSwitchTimeoutId);
             this._windowSwitchTimeoutId = 0;
         }
     }
@@ -323,7 +322,9 @@ var Overview = class {
 
         if (targetIsWindow) {
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
-            this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
+            this._windowSwitchTimeoutId = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
+                DND_WINDOW_SWITCH_TIMEOUT,
                 () => {
                     this._windowSwitchTimeoutId = 0;
                     Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,

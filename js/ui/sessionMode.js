@@ -2,7 +2,6 @@
 /* exported SessionMode, listModes */
 
 const GLib = imports.gi.GLib;
-const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const FileUtils = imports.misc.fileUtils;
@@ -141,15 +140,16 @@ function _loadModes() {
 
 function listModes() {
     _loadModes();
-    let id = Mainloop.idle_add(() => {
+    let loop = new GLib.MainLoop(null, false);
+    let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         let names = Object.getOwnPropertyNames(_modes);
         for (let i = 0; i < names.length; i++)
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
-        Mainloop.quit('listModes');
+        loop.quit();
     });
     GLib.Source.set_name_by_id(id, '[gnome-shell] listModes');
-    Mainloop.run('listModes');
+    loop.run();
 }
 
 var SessionMode = class {

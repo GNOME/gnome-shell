@@ -2,8 +2,7 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, St } = imports.gi;
-const Mainloop = imports.mainloop;
+const { Clutter, GLib, St } = imports.gi;
 
 function test() {
     let stage = new Clutter.Stage({ width: 400, height: 400 });
@@ -39,7 +38,7 @@ function test() {
     let entryHintBoth = new St.Entry({ style: 'border: 1px solid black; text-shadow: 0 2px red;',
                                        hint_actor: hintActor2 });
     let idx = 0;
-    Mainloop.timeout_add_seconds(1, function() {
+    GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, function() {
         idx++;
 
         if (idx % 2 == 0)

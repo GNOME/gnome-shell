@@ -2,7 +2,6 @@
 /* exported Animation, AnimatedIcon, Spinner */
 
 const { Clutter, GLib, Gio, St } = imports.gi;
-const Mainloop = imports.mainloop;
 
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var SPINNER_ANIMATION_TIME = 300;
@@ -45,7 +44,7 @@ var Animation = class {
 
     stop() {
         if (this._timeoutId > 0) {
-            Mainloop.source_remove(this._timeoutId);
+            GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
 

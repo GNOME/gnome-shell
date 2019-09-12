@@ -2,8 +2,7 @@
 
 imports.gi.versions.Gtk = '3.0';
 
-const Gtk = imports.gi.Gtk;
-const Mainloop = imports.mainloop;
+const { GLib, Gtk } = imports.gi;
 
 function nextTitle() {
     let length = Math.random() * 20;
@@ -26,7 +25,7 @@ function main() {
     });
     win.present();
 
-    Mainloop.timeout_add(5000, function() {
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 5000, function() {
         win.title = nextTitle();
         return true;
     });
