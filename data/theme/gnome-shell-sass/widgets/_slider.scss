@@ -1,8 +1,10 @@
 /* Slider */
 
+$slider_size: 16px;
+
 .slider {
-	height: 16px;
-	-barlevel-height: 4px;
+	height: $slider_size;
+	-barlevel-height: $slider_size * 0.25;
 	-barlevel-background-color: lighten($borders_color, 5%); //background of the trough
 	-barlevel-border-color: $borders_color; //trough border color
 	-barlevel-active-background-color: $selected_bg_color; //active trough fill
@@ -11,10 +13,10 @@
 	-barlevel-overdrive-border-color: $borders_color;
 	-barlevel-overdrive-separator-width:1px;
 	-barlevel-border-width: 1px;
-	-slider-handle-radius: 8px;
+	-slider-handle-radius: $slider_size * 0.5;
 	-slider-handle-border-width: 1px;
 	-slider-handle-border-color: $borders_color;
-	color: if($variant == 'light', lighten($bg_color, 10%), darken($bg_color,4%));
+	color: if($variant == 'light', lighten($bg_color, 10%), $fg_color);
 	&:hover { color: $hover_bg_color; }
 	&:active { color: $active_bg_color; }
 }

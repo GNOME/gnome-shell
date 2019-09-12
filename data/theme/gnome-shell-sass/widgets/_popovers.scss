@@ -135,5 +135,5 @@ $popover_width: 15em;
 		color: $selected_fg_color;
 	}
 
-	& > StIcon { icon-size: 16px; }
+	& > StIcon { icon-size: $base_icon_size; }
 }
