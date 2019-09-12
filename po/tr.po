@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-05 17:18+0000\n"
+"POT-Creation-Date: 2019-09-12 00:13+0000\n"
 "PO-Revision-Date: 2019-09-07 10:16+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -53,7 +53,8 @@ msgstr "Tüm uygulamaları göster"
 msgid "Open the application menu"
 msgstr "Uygulama menüsünü aç"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:4 js/extensionPrefs/main.js:211
+#: data/gnome-shell-extension-prefs.desktop.in.in:4
+#: js/extensionPrefs/main.js:211
 msgid "Shell Extensions"
 msgstr "Kabuk Uzantıları"
 
@@ -94,9 +95,10 @@ msgid ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "GNOME Kabuğu uzantılarında UUID adlı bir özellik bulunur; bu anahtar, "
-"yüklenmesi gereken uzantıları listeler. Yüklenmesi istenen her tür uzantının bu "
-"listede olması gerekir. Ayrıca bu listeyi, org.gnome.Shell üzerindeki "
-"EnableExtension ve DisableExtension DBus yöntemleri ile de değiştirebilirsiniz."
+"yüklenmesi gereken uzantıları listeler. Yüklenmesi istenen her tür uzantının "
+"bu listede olması gerekir. Ayrıca bu listeyi, org.gnome.Shell üzerindeki "
+"EnableExtension ve DisableExtension DBus yöntemleri ile de "
+"değiştirebilirsiniz."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -110,11 +112,12 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"GNOME Kabuğu uzantılarında UUID adlı bir özellik bulunur; bu anahtar, geçerli "
-"kipin bir parçası olarak yüklenmiş olsa bile devre dışı bırakılması gereken "
-"uzantıları listeler. Bu listeyi, org.gnome.Shell üzerindeki EnableExtension ve "
-"DisableExtension D-Bus yöntemleriyle de değiştirebilirsiniz. Bu anahtar "
-"“enabled-extensions” ayarına göre önceliklidir."
+"GNOME Kabuğu uzantılarında UUID adlı bir özellik bulunur; bu anahtar, "
+"geçerli kipin bir parçası olarak yüklenmiş olsa bile devre dışı bırakılması "
+"gereken uzantıları listeler. Bu listeyi, org.gnome.Shell üzerindeki "
+"EnableExtension ve DisableExtension D-Bus yöntemleriyle de "
+"değiştirebilirsiniz. Bu anahtar “enabled-extensions” ayarına göre "
+"önceliklidir."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -134,9 +137,9 @@ msgstr "Uzantının sürüm uyumu doğrulamasını devre dışı bırak"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
-"GNOME Shell will only load extensions that claim to support the current running "
-"version. Enabling this option will disable this check and try to load all "
-"extensions regardless of the versions they claim to support."
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
 msgstr ""
 "GNOME Kabuğu yalnızca şu andaki çalışan sürümü desteklediklerini ileri süren "
 "uzantıları yükleyecektir. Bu seçeneği etkinleştirmek bu denetimi devre dışı "
@@ -184,37 +187,41 @@ msgstr ""
 "gizlenmesini önler."
 
 #: data/org.gnome.shell.gschema.xml.in:86
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "Şifreli ya da uzak dosya sistemlerini bağlamak için parolanın anımsanması"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Şifreli ya da uzak dosya sistemlerini bağlamak için parolanın anımsanması"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a “Remember "
-"Password” checkbox will be present. This key sets the default state of the "
-"checkbox."
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
 msgstr ""
 "Kabuk, şifreli bir aygıt ya da uzak dosya sistemi bağlandığında parola "
 "isteyecek. Eğer parola gelecekte kullanılmak üzere kaydedilebiliyorsa, "
-"“Parolayı Anımsa” onay kutusu sunulacak. Bu anahtar, onay kutusunun öntanımlı "
-"durumunu belirler."
+"“Parolayı Anımsa” onay kutusu sunulacak. Bu anahtar, onay kutusunun "
+"öntanımlı durumunu belirler."
 
 #: data/org.gnome.shell.gschema.xml.in:96
-msgid "Whether the default Bluetooth adapter had set up devices associated to it"
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr ""
-"Öntanımlı Bluetooth bağdaştırıcının ayarlanmış ilişkili aygıtlara sahip olması"
+"Öntanımlı Bluetooth bağdaştırıcının ayarlanmış ilişkili aygıtlara sahip "
+"olması"
 
 #: data/org.gnome.shell.gschema.xml.in:97
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default adapter. "
-"This will be reset if the default adapter is ever seen not to have devices "
-"associated to it."
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
 msgstr ""
 "Kabuk, yalnızca gücü açık bir Bluetooth bağdaştırıcı varsa ya da öntanımlı "
-"bağdaştırıcı ile ilişkili olarak ayarlanmış aygıtlar varsa bir Bluetooth menü "
-"ögesi gösterecektir. Eğer öntanımlı bağdaştırıcıyla ilşkili aygıtların olmadığı "
-"görülecek olursa bu durum sıfırlanacaktır."
+"bağdaştırıcı ile ilişkili olarak ayarlanmış aygıtlar varsa bir Bluetooth "
+"menü ögesi gösterecektir. Eğer öntanımlı bağdaştırıcıyla ilşkili aygıtların "
+"olmadığı görülecek olursa bu durum sıfırlanacaktır."
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid "Enable introspection API"
@@ -307,14 +314,15 @@ msgstr "Uygulama 8ʼe geç"
 msgid "Switch to application 9"
 msgstr "Uygulama 9ʼa geç"
 
-#: data/org.gnome.shell.gschema.xml.in:196 data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Limit switcher to current workspace."
 msgstr "Geçiş menüsünü geçerli çalışma alanıyla sınırla."
 
 #: data/org.gnome.shell.gschema.xml.in:197
 msgid ""
-"If true, only applications that have windows on the current workspace are shown "
-"in the switcher. Otherwise, all applications are included."
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 "Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanında penceresi olan "
 "uygulamalar geçiş menüsünde gösterilir. Aksi halde, tüm uygulamalar "
@@ -326,13 +334,13 @@ msgstr "Uygulama simge kipi."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities are "
-"“thumbnail-only” (shows a thumbnail of the window), “app-icon-only” (shows only "
-"the application icon) or “both”."
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
-"Pencerelerin değiştiricideki gösterim biçimini yapılandırır. Uygun olasılıklar; "
-"“thumbnail-only” (pencerenin küçük bir resmini gösterir), “app-icon-"
-"only” (yalnızca uygulama simgesini gösterir) ya da “both” (her ikisi) "
+"Pencerelerin değiştiricideki gösterim biçimini yapılandırır. Uygun "
+"olasılıklar; “thumbnail-only” (pencerenin küçük bir resmini gösterir), “app-"
+"icon-only” (yalnızca uygulama simgesini gösterir) ya da “both” (her ikisi) "
 "değerleridir."
 
 #: data/org.gnome.shell.gschema.xml.in:224
@@ -340,8 +348,8 @@ msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
-"Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanındaki pencereler geçiş "
-"menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
+"Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanındaki pencereler "
+"geçiş menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
 
 #: data/org.gnome.shell.gschema.xml.in:234
 msgid "Locations"
@@ -371,17 +379,21 @@ msgstr "Hava durumunun gösterileceği konum"
 msgid "Attach modal dialog to the parent window"
 msgstr "Yardımcı iletişim penceresini üst pencereye iliştir"
 
-#: data/org.gnome.shell.gschema.xml.in:267 data/org.gnome.shell.gschema.xml.in:276
-#: data/org.gnome.shell.gschema.xml.in:284 data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
 #: data/org.gnome.shell.gschema.xml.in:300
-msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
-"Bu anahtar, GNOME Shell çalışırken org.gnome.mutter içindeki anahtarı geçersiz "
-"kılar."
+"Bu anahtar, GNOME Shell çalışırken org.gnome.mutter içindeki anahtarı "
+"geçersiz kılar."
 
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Pencereler ekran kenarlarında bırakıldığında kenar döşemeyi etkinleştir"
+msgstr ""
+"Pencereler ekran kenarlarında bırakıldığında kenar döşemeyi etkinleştir"
 
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Workspaces are managed dynamically"
@@ -393,7 +405,8 @@ msgstr "Çalışma alanları yalnızca birincil ekranda"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Fare kipinde odak değişikliklerini işaretçi hareketi durana kadar beklet"
+msgstr ""
+"Fare kipinde odak değişikliklerini işaretçi hareketi durana kadar beklet"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -405,12 +418,12 @@ msgstr "Bir şeyler ters gitti"
 
 #: js/extensionPrefs/main.js:111
 msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this extension "
-"can’t be displayed. We recommend that you report the issue to the extension "
-"authors."
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
 msgstr ""
-"Çok üzgünüz ancak sorun oluştu: bu uzantı için ayarlar görüntülenemiyor. Sorunu "
-"uzantı yazarlarına bildirmenizi öneririz."
+"Çok üzgünüz ancak sorun oluştu: bu uzantı için ayarlar görüntülenemiyor. "
+"Sorunu uzantı yazarlarına bildirmenizi öneririz."
 
 #: js/extensionPrefs/main.js:118
 msgid "Technical Details"
@@ -752,28 +765,33 @@ msgstr "Sık Sık"
 msgid "All"
 msgstr "Tümü"
 
+#: js/ui/appDisplay.js:1751
+#| msgid "Username: "
+msgid "Rename"
+msgstr "Yeniden Adlandır"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Açık Pencereler"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Adanmış Ekran Kartıyla Başlat"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -994,7 +1012,8 @@ msgid "Type again:"
 msgstr "Yeniden yaz:"
 
 #: js/ui/components/networkAgent.js:105
-msgid "Alternatively you can connect by pushing the “WPS” button on your router."
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
 "bağlayabilirsiniz."
@@ -1035,7 +1054,8 @@ msgstr "Kablosuz ağ için kimlik doğrulama gerekiyor"
 #: js/ui/components/networkAgent.js:316 js/ui/components/networkAgent.js:689
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network “%s”."
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
 msgstr ""
 "“%s” kablosuz ağına erişmek için parola veya şifreleme anahtarları gerekiyor."
 
@@ -1244,8 +1264,8 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"Sistem %d saniye içinde kendiliğinden yeniden başlayacak ve güncelleştirmeleri "
-"kuracak."
+"Sistem %d saniye içinde kendiliğinden yeniden başlayacak ve "
+"güncelleştirmeleri kuracak."
 
 #: js/ui/endSessionDialog.js:102 js/ui/endSessionDialog.js:122
 msgctxt "button"
@@ -1277,8 +1297,8 @@ msgid ""
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
 "Bilgisayarınız yeniden başladıktan sonra %s %s kurulacak. Yükseltme kurulumu "
-"uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize takılı "
-"olduğundan emin olun."
+"uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize "
+"takılı olduğundan emin olun."
 
 #: js/ui/endSessionDialog.js:306
 msgid "Running on battery power: please plug in before installing updates."
@@ -1364,20 +1384,20 @@ msgstr "Yapışkan Tuşlar Kapalı"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
-"You just pressed the Shift key 5 times in a row. This is the shortcut for the "
-"Sticky Keys feature, which affects the way your keyboard works."
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Shift tuşuna art arda 5 kez bastınız. Bu, klavyenizin çalışma yolunu etkileyen "
-"Yapışkan Tuşlar özelliğinin kısayoludur."
+"Shift tuşuna art arda 5 kez bastınız. Bu, klavyenizin çalışma yolunu "
+"etkileyen Yapışkan Tuşlar özelliğinin kısayoludur."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
-"You just pressed two keys at once, or pressed the Shift key 5 times in a row. "
-"This turns off the Sticky Keys feature, which affects the way your keyboard "
-"works."
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
 msgstr ""
-"İki tuşa aynı anda veya Shift tuşuna art arda 5 kez bastınız. Bu, klavyenizin "
-"çalışma yolunu etkileyen Yapışkan Tuşlar özelliğini kapatır."
+"İki tuşa aynı anda veya Shift tuşuna art arda 5 kez bastınız. Bu, "
+"klavyenizin çalışma yolunu etkileyen Yapışkan Tuşlar özelliğini kapatır."
 
 #: js/ui/kbdA11yDialog.js:58
 msgid "Leave On"
@@ -1452,7 +1472,7 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Sistem Bilgisi"
 
@@ -1579,7 +1599,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Kilitle"
 
@@ -1602,15 +1622,15 @@ msgstr "Kilitlenemedi"
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Aranıyor…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Sonuç yok."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1647,7 +1667,8 @@ msgstr "Anahtar Dosyaları Kullanır"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:316
 #, javascript-format
-msgid "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>%s</i> aracını "
 "kullanın."
@@ -2087,27 +2108,27 @@ msgstr "Kapat"
 msgid "Airplane Mode On"
 msgstr "Uçak Kipi Açık"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Hesap Ayarları"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Yönelim Kilidi"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Beklet"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Kapat"
 
@@ -2328,8 +2349,8 @@ msgstr "Açıklama"
 #: src/extensions-tool/command-create.c:217
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe.example."
-"com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 "UUID, uzantınız için genel ve benzersiz tanımlayıcıdır.\n"
 "E-posta biçiminde olmalıdır (clicktofocus@janedoe.example.com)\n"
@@ -2362,7 +2383,8 @@ msgstr "Uzantı bilgisini etkileşimli olarak gir"
 msgid "Create a new extension"
 msgstr "Yeni uzantı oluştur"
 
-#: src/extensions-tool/command-create.c:275 src/extensions-tool/command-list.c:158
+#: src/extensions-tool/command-create.c:275
+#: src/extensions-tool/command-list.c:158
 msgid "Unknown arguments"
 msgstr "Bilinmeyen argüman"
 
@@ -2375,15 +2397,19 @@ msgid "Disable an extension"
 msgstr "Uzantı devre dışı bırak"
 
 #: src/extensions-tool/command-disable.c:74
-#: src/extensions-tool/command-enable.c:74 src/extensions-tool/command-info.c:96
-#: src/extensions-tool/command-prefs.c:107 src/extensions-tool/command-reset.c:74
+#: src/extensions-tool/command-enable.c:74
+#: src/extensions-tool/command-info.c:96
+#: src/extensions-tool/command-prefs.c:107
+#: src/extensions-tool/command-reset.c:74
 #: src/extensions-tool/command-uninstall.c:89
 msgid "No UUID given"
 msgstr "Verilen UUID yok"
 
 #: src/extensions-tool/command-disable.c:79
-#: src/extensions-tool/command-enable.c:79 src/extensions-tool/command-info.c:101
-#: src/extensions-tool/command-prefs.c:112 src/extensions-tool/command-reset.c:79
+#: src/extensions-tool/command-enable.c:79
+#: src/extensions-tool/command-info.c:101
+#: src/extensions-tool/command-prefs.c:112
+#: src/extensions-tool/command-reset.c:79
 #: src/extensions-tool/command-uninstall.c:94
 msgid "More than one UUID given"
 msgstr "Birden ÇOK UUID verildi"
@@ -2460,7 +2486,8 @@ msgstr "ŞEMA"
 msgid "A GSettings schema that should be included"
 msgstr "İçerilmesi gereken GSettings şeması"
 
-#: src/extensions-tool/command-pack.c:457 src/extensions-tool/command-pack.c:468
+#: src/extensions-tool/command-pack.c:457
+#: src/extensions-tool/command-pack.c:468
 msgid "DIRECTORY"
 msgstr "DİZİN"
 
@@ -2532,7 +2559,7 @@ msgstr "Durum"
 msgid "“version” takes no arguments"
 msgstr "“version” hiçbir argüman almaz"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
 msgid "Usage:"
 msgstr "Kullanım:"
 
@@ -2540,70 +2567,70 @@ msgstr "Kullanım:"
 msgid "Print version information and exit."
 msgstr "Sürüm bilgisini yazdır ve çık."
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
 msgstr "KOMUT"
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:244
 msgid "[ARGS…]"
 msgstr "[ARGÜMANLAR…]"
 
-#: src/extensions-tool/main.c:242
+#: src/extensions-tool/main.c:246
 msgid "Commands:"
 msgstr "Komutlar:"
 
-#: src/extensions-tool/main.c:243
+#: src/extensions-tool/main.c:247
 msgid "Print help"
 msgstr "Yardımı yazdır"
 
-#: src/extensions-tool/main.c:244 src/main.c:468
+#: src/extensions-tool/main.c:248 src/main.c:468
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
-#: src/extensions-tool/main.c:245
+#: src/extensions-tool/main.c:249
 msgid "Enable extension"
 msgstr "Uzantıyı etkinleştir"
 
-#: src/extensions-tool/main.c:246
+#: src/extensions-tool/main.c:250
 msgid "Disable extension"
 msgstr "Uzantıyı devre dışı bırak"
 
-#: src/extensions-tool/main.c:247
+#: src/extensions-tool/main.c:251
 msgid "Reset extension"
 msgstr "Uzantıyı sıfırla"
 
-#: src/extensions-tool/main.c:248
+#: src/extensions-tool/main.c:252
 msgid "Uninstall extension"
 msgstr "Uzantıyı kaldır"
 
-#: src/extensions-tool/main.c:249
+#: src/extensions-tool/main.c:253
 msgid "List extensions"
 msgstr "Uzantıları listele"
 
-#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
 msgid "Show extension info"
 msgstr "Uzantı bilgisini göster"
 
-#: src/extensions-tool/main.c:252
+#: src/extensions-tool/main.c:256
 msgid "Open extension preferences"
 msgstr "GNOME Kabuğu Uzantı Tercihleri"
 
-#: src/extensions-tool/main.c:253
+#: src/extensions-tool/main.c:257
 msgid "Create extension"
 msgstr "Uzantı oluştur"
 
-#: src/extensions-tool/main.c:254
+#: src/extensions-tool/main.c:258
 msgid "Package extension"
 msgstr "Uzantıyı paketle"
 
-#: src/extensions-tool/main.c:255
+#: src/extensions-tool/main.c:259
 msgid "Install extension bundle"
 msgstr "Uzantı demetini yükle"
 
-#: src/extensions-tool/main.c:257
-#, c-format
-msgid "Use %s to get detailed help.\n"
-msgstr "Ayrıntılı yardım almak için %s kullan.\n"
+#: src/extensions-tool/main.c:261
+#| msgid "Use %s to get detailed help.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Ayrıntılı yardım almak için “%s” kullanın.\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
@@ -2660,7 +2687,8 @@ msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
 #~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging purposes"
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
 #~ msgstr ""
 #~ "Hata ayıklama amacıyla, çalışmakta olan tüm ara çerçeveleri duraklatan ve "
 #~ "devam ettiren tuş bağı"
@@ -2877,12 +2905,12 @@ msgstr "Sistem Sesleri"
 #~ msgid ""
 #~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 #~ msgstr ""
-#~ "Sertifika güvensiz bir şifreleme algoritması kullanıyor ya da kriptografik "
-#~ "olarak zayıf"
+#~ "Sertifika güvensiz bir şifreleme algoritması kullanıyor ya da "
+#~ "kriptografik olarak zayıf"
 
 #~ msgid ""
-#~ "The length of the server certificate, or the depth of the server certificate "
-#~ "chain, exceed the limits imposed by the cryptography library"
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
 #~ msgstr ""
 #~ "Sunucu sertifikasının uzunluğu ya da sunucu sertifikası zincirinin "
 #~ "derinliği, şifreleme kütüphanesi tarafından koyulan sınırları aşıyor"
