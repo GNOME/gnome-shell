@@ -86,9 +86,13 @@ run_eslint LEGACY
 echo Done.
 create_common
 
+if ! is_empty $OUTPUT_FINAL; then
+  cat $OUTPUT_FINAL
+  exit 1
+fi
+
 # Just show the report and succeed when not testing a MR
 if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
-  cat $OUTPUT_FINAL
   exit 0
 fi
 
