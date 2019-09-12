@@ -903,7 +903,7 @@ var LayoutStrategy = class {
     computeWindowSlots(layout, area) {
         this._computeRowSizes(layout);
 
-        let { rows: rows, scale: scale } = layout;
+        let { rows, scale } = layout;
 
         let slots = [];
 
@@ -978,7 +978,7 @@ var LayoutStrategy = class {
 
 var UnalignedLayoutStrategy = class extends LayoutStrategy {
     _computeRowSizes(layout) {
-        let { rows: rows, scale: scale } = layout;
+        let { rows, scale } = layout;
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
             row.width = row.fullWidth * scale + (row.windows.length - 1) * this._columnSpacing;
