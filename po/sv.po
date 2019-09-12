@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-09 20:24+0000\n"
-"PO-Revision-Date: 2019-09-11 01:52+0200\n"
+"POT-Creation-Date: 2019-09-11 17:13+0000\n"
+"PO-Revision-Date: 2019-09-13 00:15+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -2568,7 +2568,7 @@ msgstr "Tillstånd"
 msgid "“version” takes no arguments"
 msgstr "”version” tar inga argument"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:239
+#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
 msgid "Usage:"
 msgstr "Användning:"
 
@@ -2576,70 +2576,70 @@ msgstr "Användning:"
 msgid "Print version information and exit."
 msgstr "Skriv ut versionsinformation och avsluta."
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
 msgstr "KOMMANDO"
 
-#: src/extensions-tool/main.c:240
+#: src/extensions-tool/main.c:244
 msgid "[ARGS…]"
 msgstr "[ARGUMENT…]"
 
-#: src/extensions-tool/main.c:242
+#: src/extensions-tool/main.c:246
 msgid "Commands:"
 msgstr "Kommandon:"
 
-#: src/extensions-tool/main.c:243
+#: src/extensions-tool/main.c:247
 msgid "Print help"
 msgstr "Skriv ut hjälp"
 
-#: src/extensions-tool/main.c:244 src/main.c:468
+#: src/extensions-tool/main.c:248 src/main.c:468
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: src/extensions-tool/main.c:245
+#: src/extensions-tool/main.c:249
 msgid "Enable extension"
 msgstr "Aktivera tillägg"
 
-#: src/extensions-tool/main.c:246
+#: src/extensions-tool/main.c:250
 msgid "Disable extension"
 msgstr "Inaktivera tillägg"
 
-#: src/extensions-tool/main.c:247
+#: src/extensions-tool/main.c:251
 msgid "Reset extension"
 msgstr "Återställ tillägg"
 
-#: src/extensions-tool/main.c:248
+#: src/extensions-tool/main.c:252
 msgid "Uninstall extension"
 msgstr "Avinstallera tillägg"
 
-#: src/extensions-tool/main.c:249
+#: src/extensions-tool/main.c:253
 msgid "List extensions"
 msgstr "Lista tillägg"
 
-#: src/extensions-tool/main.c:250 src/extensions-tool/main.c:251
+#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
 msgid "Show extension info"
 msgstr "Visa info för tillägg"
 
-#: src/extensions-tool/main.c:252
+#: src/extensions-tool/main.c:256
 msgid "Open extension preferences"
 msgstr "Öppna inställningar för tillägg"
 
-#: src/extensions-tool/main.c:253
+#: src/extensions-tool/main.c:257
 msgid "Create extension"
 msgstr "Skapa tillägg"
 
-#: src/extensions-tool/main.c:254
+#: src/extensions-tool/main.c:258
 msgid "Package extension"
 msgstr "Paketera tillägg"
 
-#: src/extensions-tool/main.c:255
+#: src/extensions-tool/main.c:259
 msgid "Install extension bundle"
 msgstr "Installera tilläggsbunt"
 
-#: src/extensions-tool/main.c:257
+#: src/extensions-tool/main.c:261
 #, c-format
-msgid "Use %s to get detailed help.\n"
-msgstr "Använd %s för att få detaljerad hjälp.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Använd ”%s” för att få detaljerad hjälp.\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
