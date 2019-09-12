@@ -202,7 +202,7 @@ var ShellMountOperation = class {
     _onShowUnmountProgress(op, message, timeLeft, bytesLeft) {
         if (!this._notifier)
             this._notifier = new ShellUnmountNotifier();
-            
+
         if (bytesLeft == 0)
             this._notifier.done(message);
         else

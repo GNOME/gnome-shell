@@ -335,7 +335,7 @@ class NotificationApplicationPolicy extends NotificationPolicy {
 // event sound is played when the notification is shown (if the policy for
 // @source allows playing sounds).
 //
-// [1] https://developer.gnome.org/notification-spec/#markup 
+// [1] https://developer.gnome.org/notification-spec/#markup
 var Notification = class Notification {
     constructor(source, title, banner, params) {
         this.source = source;

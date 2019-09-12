@@ -28,7 +28,7 @@ var HistoryManager = class {
         this._entry = params.entry;
 
         if (this._entry) {
-            this._entry.connect('key-press-event', 
+            this._entry.connect('key-press-event',
                                 this._onEntryKeyPress.bind(this));
         }
     }
