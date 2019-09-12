@@ -541,15 +541,15 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         super(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
 
-        let { "title": title,
-              "body": body,
-              "icon": gicon,
-              "urgent": urgent,
-              "priority": priority,
-              "buttons": buttons,
+        let { title,
+              body,
+              icon: gicon,
+              urgent,
+              priority,
+              buttons,
               "default-action": defaultAction,
               "default-action-target": defaultActionTarget,
-              "timestamp": time } = notification;
+              timestamp: time } = notification;
 
         if (priority) {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
@@ -590,8 +590,8 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
     }
 
     _onButtonClicked(button) {
-        let { 'action': action, 'target': actionTarget } = button;
-        this._activateAction(action.unpack(), actionTarget);
+        let { action, target } = button;
+        this._activateAction(action.unpack(), target);
     }
 
     activate() {
