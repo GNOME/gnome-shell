@@ -1735,10 +1735,10 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         // Focus the text entry on menu pop-up
         this.focusActor = this._entry.clutter_text;
 
-        this._entry.clutter_text.connect('notify::text',
-                                         this._validate.bind(this));
-        this._entry.clutter_text.connect('activate',
-                                         this._updateFolderName.bind(this));
+        this._entry.clutter_text.connect(
+            'notify::text', this._validate.bind(this));
+        this._entry.clutter_text.connect(
+            'activate', this._updateFolderName.bind(this));
 
         // Rename button
         this._button = new St.Button({
@@ -1746,7 +1746,7 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
             reactive: true,
             button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
             can_focus: true,
-            label: _("Rename"),
+            label: _('Rename'),
         });
         box.add_child(this._button);
 
