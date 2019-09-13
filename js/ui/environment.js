@@ -10,7 +10,7 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
-const { Clutter, GLib, Shell, St } = imports.gi;
+const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 
 // We can't import shell JS modules yet, because they may have
@@ -58,21 +58,25 @@ function _patchLayoutClass(layoutClass, styleProps) {
     };
 }
 
-function _makeEaseCallback(params) {
+function _makeEaseCallback(params, cleanup) {
     let onComplete = params.onComplete;
     delete params.onComplete;
 
     let onStopped = params.onStopped;
     delete params.onStopped;
 
-    if (!onComplete && !onStopped)
-        return null;
+    if (!onComplete && !onStopped) {
+        return _isFinished => {
+            cleanup();
+        };
+    }
 
     return isFinished => {
         if (onStopped)
             onStopped(isFinished);
         if (onComplete && isFinished)
             onComplete();
+        cleanup();
     };
 }
 
@@ -110,7 +114,10 @@ function _easeActor(actor, params) {
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
-    let callback = _makeEaseCallback(params);
+    Meta.disable_unredirect_for_display(global.display);
+
+    let cleanup = () => { Meta.enable_unredirect_for_display(global.display); };
+    let callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
     let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
@@ -119,13 +126,13 @@ function _easeActor(actor, params) {
     actor.set(params);
     actor.restore_easing_state();
 
-    if (callback) {
-        let transition = actor.get_transition(animatedProps[0]);
-
-        if (transition)
-            transition.connect('stopped', (t, finished) => callback(finished));
-        else
-            callback(true);
+    let transition = actor.get_transition(animatedProps[0]);
+    if (transition) {
+        transition.connect('stopped', (t, finished) => {
+            callback(finished);
+        });
+    } else {
+        callback(true);
     }
 }
 
@@ -144,7 +151,10 @@ function _easeActorProperty(actor, propName, target, params) {
     if (actor instanceof Clutter.Actor && !actor.mapped)
         duration = 0;
 
-    let callback = _makeEaseCallback(params);
+    Meta.disable_unredirect_for_display(global.display);
+
+    let cleanup = () => { Meta.enable_unredirect_for_display(global.display); };
+    let callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
     actor.remove_transition(propName);
@@ -153,8 +163,7 @@ function _easeActorProperty(actor, propName, target, params) {
         let [obj, prop] = _getPropertyTarget(actor, propName);
         obj[prop] = target;
 
-        if (callback)
-            callback(true);
+        callback(true);
 
         return;
     }
@@ -169,8 +178,11 @@ function _easeActorProperty(actor, propName, target, params) {
 
     transition.set_to(target);
 
-    if (callback)
-        transition.connect('stopped', (t, finished) => callback(finished));
+    Meta.disable_unredirect_for_display(global.display);
+
+    transition.connect('stopped', (_t, finished) => {
+        callback(finished);
+    });
 }
 
 function _loggingFunc(...args) {
