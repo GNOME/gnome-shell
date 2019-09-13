@@ -1725,15 +1725,21 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
 
-        let box = new St.BoxLayout({ style_class: 'rename-folder-popup-box' });
-        this.box.add_child(box);
+        let item = new PopupMenu.PopupMenuItem('', {
+            style_class: 'rename-folder-popup-box',
+            reactive: false
+        });
+        item.label.destroy();
+        item.setOrnament(PopupMenu.Ornament.HIDDEN);
+        item.remove_style_class_name('popup-menu-item');
+        this.addMenuItem(item);
 
         // Entry
         this._entry = new St.Entry({
             x_expand: true,
             width: 200,
         });
-        box.add_child(this._entry);
+        item.add_child(this._entry);
 
         this._entry.clutter_text.connect('notify::text',
                                          this._validate.bind(this));
@@ -1748,7 +1754,7 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
             can_focus: true,
             label: _("Rename"),
         });
-        box.add_child(this._button);
+        item.add_child(this._button);
 
         this._button.connect('clicked', this._updateFolderName.bind(this));
 
