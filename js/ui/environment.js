@@ -10,7 +10,7 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
-const { Clutter, GLib, Shell, St } = imports.gi;
+const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 
 // We can't import shell JS modules yet, because they may have
@@ -119,12 +119,21 @@ function _easeActor(actor, params) {
     actor.set(params);
     actor.restore_easing_state();
 
-    if (callback) {
-        let transition = actor.get_transition(animatedProps[0]);
-
-        if (transition)
-            transition.connect('stopped', (t, finished) => callback(finished));
-        else
+    let transition = actor.get_transition(animatedProps[0]);
+    if (transition) {
+        Meta.disable_unredirect_for_display(global.display);
+        if (callback) {
+            transition.connect('stopped', (t, finished) => {
+                callback(finished);
+                Meta.enable_unredirect_for_display(global.display);
+            });
+        } else {
+            transition.connect('stopped', (t, finished) => {
+                Meta.enable_unredirect_for_display(global.display);
+            });
+        }
+    } else {
+        if (callback)
             callback(true);
     }
 }
@@ -169,8 +178,18 @@ function _easeActorProperty(actor, propName, target, params) {
 
     transition.set_to(target);
 
-    if (callback)
-        transition.connect('stopped', (t, finished) => callback(finished));
+    Meta.disable_unredirect_for_display(global.display);
+
+    if (callback) {
+        transition.connect('stopped', (t, finished) => {
+            callback(finished);
+            Meta.enable_unredirect_for_display(global.display);
+        });
+    } else {
+        transition.connect('stopped', () => {
+            Meta.enable_unredirect_for_display(global.display);
+        });
+    }
 }
 
 function _loggingFunc(...args) {
