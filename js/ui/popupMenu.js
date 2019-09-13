@@ -15,6 +15,7 @@ var Ornament = {
     NONE: 0,
     DOT: 1,
     CHECK: 2,
+    HIDDEN: 3,
 };
 
 function isPopupMenuItemVisible(child) {
@@ -248,8 +249,9 @@ var PopupBaseMenuItem = GObject.registerClass({
         } else if (ornament == Ornament.CHECK) {
             this._ornamentLabel.text = '\u2713';
             this.add_accessible_state(Atk.StateType.CHECKED);
-        } else if (ornament == Ornament.NONE) {
+        } else if (ornament == Ornament.NONE || ornament == Ornament.HIDDEN) {
             this._ornamentLabel.text = '';
+            this._ornamentLabel.visible = (ornament != Ornament.HIDDEN);
             this.remove_accessible_state(Atk.StateType.CHECKED);
         }
     }
