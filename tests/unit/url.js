@@ -42,6 +42,8 @@ const tests = [
       output: [ { url: 'https://www.gnome.org/(some_url,_with_very_unusual_characters)', pos: 0 } ] },
     { input: 'https://www.gnome.org/(some_url_with_unbalanced_parenthesis',
       output: [ { url: 'https://www.gnome.org/', pos: 0 } ] },
+    { input: 'https://www.gnome.org/‎ plus trailing junk',
+      output: [ { url: 'https://www.gnome.org/', pos: 0 } ] },
 
     { input: 'Visit http://www.gnome.org/ and http://developer.gnome.org',
       output: [ { url: 'http://www.gnome.org/', pos: 6 },
