@@ -1696,8 +1696,6 @@ var FolderIcon = class FolderIcon {
             this.actor.connect('destroy', () => {
                 Main.overview.disconnect(id);
             });
-
-            this._menuManager.addMenu(this._menu);
         }
 
         this.actor.set_hover(true);
