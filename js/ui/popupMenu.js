@@ -428,6 +428,7 @@ var PopupMenuBase = class {
             throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
 
         this.sourceActor = sourceActor;
+        this.focusActor = sourceActor;
         this._parent = null;
 
         if (styleClass !== undefined) {
@@ -1300,10 +1301,11 @@ var PopupMenuManager = class {
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
-                                    onUngrab: isUser => {
-                                        this._closeMenu(isUser, menu);
-                                    } });
+            this._grabHelper.grab({
+                actor: menu.actor,
+                focus: menu.focusActor,
+                onUngrab: isUser => this._closeMenu(isUser, menu),
+            });
         } else {
             this._grabHelper.ungrab({ actor: menu.actor });
         }
