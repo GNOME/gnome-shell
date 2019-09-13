@@ -1726,6 +1726,7 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
 
         let box = new St.BoxLayout({ style_class: 'rename-folder-popup-box' });
         this.box.add_child(box);
+        box._delegate = this;
 
         // Entry
         this._entry = new St.Entry({
