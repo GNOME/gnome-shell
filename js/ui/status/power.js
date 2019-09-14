@@ -110,7 +110,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         // The icons
         let chargingState = this._proxy.State == UPower.DeviceState.CHARGING
             ? '-charging' : '';
-        let fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
+        let fillLevel = 10 * Math.ceil(this._proxy.Percentage / 10);
         let icon = this._proxy.State == UPower.DeviceState.FULLY_CHARGED
             ? 'battery-level-100-charged-symbolic'
             : `battery-level-${fillLevel}${chargingState}-symbolic`;
