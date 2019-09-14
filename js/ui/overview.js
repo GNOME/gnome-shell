@@ -452,7 +452,7 @@ var Overview = class {
         this._desktopFade.show();
         this._desktopFade.ease({
             opacity: 0,
-            mode: Clutter.Animates.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME
         });
     }
