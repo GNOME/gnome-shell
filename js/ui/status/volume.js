@@ -259,18 +259,17 @@ var InputStreamSlider = class extends StreamSlider {
     _maybeShowInput() {
         // only show input widgets if any application is recording audio
         let showInput = false;
-        let recordingApps = this._control.get_source_outputs();
-        if (this._stream && recordingApps) {
-            for (let i = 0; i < recordingApps.length; i++) {
-                let outputStream = recordingApps[i];
-                let id = outputStream.get_application_id();
-                // but skip gnome-volume-control and pavucontrol
-                // (that appear as recording because they show the input level)
-                if (!id || (id != 'org.gnome.VolumeControl' && id != 'org.PulseAudio.pavucontrol')) {
-                    showInput = true;
-                    break;
-                }
-            }
+        if (this._stream) {
+            // skip gnome-volume-control and pavucontrol which appear
+            // as recording because they show the input level
+            let skippedApps = [
+                'org.gnome.VolumeControl',
+                'org.PulseAudio.pavucontrol'
+            ];
+
+            showInput = this._control.get_source_outputs().some(output => {
+                return !skippedApps.includes(output.get_application_id());
+            });
         }
 
         this._showInput = showInput;
