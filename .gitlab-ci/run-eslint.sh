@@ -76,10 +76,13 @@ create_common() {
 # non-legacy style just yet ...
 unset CI_MERGE_REQUEST_TARGET_BRANCH_NAME
 
-if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
-  git fetch $CI_MERGE_REQUEST_PROJECT_URL.git $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+REMOTE=${1:-$CI_MERGE_REQUEST_PROJECT_URL.git}
+BRANCH_NAME=${2:-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+
+if [ "$BRANCH_NAME" ]; then
+  git fetch $REMOTE $BRANCH_NAME
   branch_point=$(git merge-base HEAD FETCH_HEAD)
-  commit_range=$branch_point...$CI_COMMIT_SHA
+  commit_range=$branch_point...HEAD
 
   list_commit_range_additions $commit_range > $LINE_CHANGES
 
@@ -102,7 +105,7 @@ if ! is_empty $OUTPUT_FINAL; then
 fi
 
 # Just show the report and succeed when not testing a MR
-if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
+if [ -z "$BRANCH_NAME" ]; then
   exit 0
 fi
 
