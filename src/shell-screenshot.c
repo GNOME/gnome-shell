@@ -458,6 +458,7 @@ grab_window_screenshot (ClutterActor *stage,
   gfloat actor_x, actor_y;
   MetaRectangle rect;
   cairo_rectangle_int_t clip;
+  int geometry_scale;
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   clutter_actor_get_position (window_actor, &actor_x, &actor_y);
@@ -474,6 +475,16 @@ grab_window_screenshot (ClutterActor *stage,
 
   clip.width = priv->screenshot_area.width = rect.width;
   clip.height = priv->screenshot_area.height = rect.height;
+
+  geometry_scale =
+    meta_window_actor_get_geometry_scale (META_WINDOW_ACTOR (window_actor));
+
+  clip = (MetaRectangle) {
+    .x = clip.x / geometry_scale,
+    .y = clip.y / geometry_scale,
+    .width = clip.width / geometry_scale,
+    .height = clip.height / geometry_scale,
+  };
 
   priv->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
                                              &clip);
