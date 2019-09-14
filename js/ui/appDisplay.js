@@ -1699,7 +1699,7 @@ var FolderIcon = class FolderIcon {
         }
 
         this.actor.set_hover(true);
-        this._menu.popup();
+        this._menu.open();
         this._menuManager.ignoreRelease();
     }
 
@@ -1713,27 +1713,23 @@ var FolderIcon = class FolderIcon {
 };
 Signals.addSignalMethods(FolderIcon.prototype);
 
-var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
-    constructor(source, folder) {
-        super(source.actor, 0.5, St.Side.BOTTOM);
+var RenameFolderMenuItem = GObject.registerClass(
+class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
+    _init(folder) {
+        super._init({
+            style_class: 'rename-folder-popup-item',
+            reactive: false,
+        });
+        this.setOrnament(PopupMenu.Ornament.HIDDEN);
 
         this._folder = folder;
-
-        // We want to keep the item hovered while the menu is up
-        this.blockSourceEvents = true;
-
-        let box = new St.BoxLayout({ style_class: 'rename-folder-popup-box' });
-        this.box.add_child(box);
 
         // Entry
         this._entry = new St.Entry({
             x_expand: true,
             width: 200,
         });
-        box.add_child(this._entry);
-
-        // Focus the text entry on menu pop-up
-        this.focusActor = this._entry.clutter_text;
+        this.add_child(this._entry);
 
         this._entry.clutter_text.connect(
             'notify::text', this._validate.bind(this));
@@ -1748,30 +1744,20 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
             can_focus: true,
             label: _('Rename'),
         });
-        box.add_child(this._button);
+        this.add_child(this._button);
 
         this._button.connect('clicked', this._updateFolderName.bind(this));
-
-        // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
-            if (!source.actor.mapped)
-                this.close();
-        });
-        source.actor.connect('destroy', () => {
-            source.actor.disconnect(this._sourceMappedId);
-            this.destroy();
-        });
-
-        Main.uiGroup.add_actor(this.actor);
     }
 
-    popup() {
-        let folderName = _getFolderName(this._folder);
+    vfunc_map() {
+        this._entry.text = _getFolderName(this._folder);
+        this._entry.clutter_text.set_selection(0, -1);
+        super.vfunc_map();
+    }
 
-        this._entry.text = folderName;
-        this._entry.clutter_text.set_selection(0, folderName.length);
-
-        this.open();
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
+        this._entry.clutter_text.grab_key_focus();
     }
 
     _isValidFolderName() {
@@ -1794,7 +1780,35 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
         let newFolderName = this._entry.text.trim();
         this._folder.set_string('name', newFolderName);
         this._folder.set_boolean('translate', false);
-        this.close();
+        this.activate(Clutter.get_current_event());
+    }
+});
+
+var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
+    constructor(source, folder) {
+        super(source.actor, 0.5, St.Side.BOTTOM);
+        this.actor.add_style_class_name('rename-folder-popup');
+
+        // We want to keep the item hovered while the menu is up
+        this.blockSourceEvents = true;
+
+        let menuItem = new RenameFolderMenuItem(folder);
+        this.addMenuItem(menuItem);
+
+        // Focus the text entry on menu pop-up
+        this.focusActor = menuItem;
+
+        // Chain our visibility and lifecycle to that of the source
+        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
+            if (!source.actor.mapped)
+                this.close();
+        });
+        source.actor.connect('destroy', () => {
+            source.actor.disconnect(this._sourceMappedId);
+            this.destroy();
+        });
+
+        Main.uiGroup.add_actor(this.actor);
     }
 };
 Signals.addSignalMethods(RenameFolderMenu.prototype);
