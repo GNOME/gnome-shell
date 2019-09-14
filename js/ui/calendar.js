@@ -1071,7 +1071,7 @@ var CalendarMessageList = class CalendarMessageList {
         this._clearButton.set_x_align(Clutter.ActorAlign.END);
         this._clearButton.connect('clicked', () => {
             let sections = [...this._sections.keys()];
-            sections.forEach((s) => s.clear());
+            sections.forEach(s => s.clear());
         });
         box.add_actor(this._clearButton);
 
