@@ -178,7 +178,7 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
         }
 
         let waitId = 0;
-        let id = global.display.connect('grab-op-end', (display) => {
+        let id = global.display.connect('grab-op-end', display => {
             display.disconnect(id);
             GLib.source_remove(waitId);
 

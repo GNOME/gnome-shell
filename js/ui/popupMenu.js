@@ -549,7 +549,7 @@ var PopupMenuBase = class {
     }
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('notify::active', (menuItem) => {
+        menuItem._activeChangeId = menuItem.connect('notify::active', menuItem => {
             let active = menuItem.active;
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)

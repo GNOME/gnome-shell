@@ -713,7 +713,7 @@ var WindowManager = class {
         this._isWorkspacePrepended = false;
 
         this._switchData = null;
-        this._shellwm.connect('kill-switch-workspace', (shellwm) => {
+        this._shellwm.connect('kill-switch-workspace', shellwm => {
             if (this._switchData) {
                 if (this._switchData.inProgress)
                     this._switchWorkspaceDone(shellwm);

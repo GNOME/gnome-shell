@@ -1043,7 +1043,7 @@ class WindowList extends SwitcherPopup.SwitcherList {
             this.addItem(icon, icon.label);
             this.icons.push(icon);
 
-            icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
+            icon._unmanagedSignalId = icon.window.connect('unmanaged', window => {
                 this._removeWindow(window);
             });
         }

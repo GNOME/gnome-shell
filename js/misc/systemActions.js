@@ -269,7 +269,7 @@ const SystemActions = GObject.registerClass({
 
     getMatchingActions(terms) {
         // terms is a list of strings
-        terms = terms.map((term) => term.toLowerCase());
+        terms = terms.map(term => term.toLowerCase());
 
         let results = [];
 
