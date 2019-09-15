@@ -202,7 +202,6 @@ var ConsecutiveBatch = class extends Batch {
                 hold.disconnect(signalId);
                 this.nextTask();
             });
-            return;
         } else {
             // This task finished, process the next one
             this.nextTask();

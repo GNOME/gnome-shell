@@ -583,7 +583,7 @@ var ChatSource = class extends MessageTray.Source {
 
         let msg = Tp.ClientMessage.new_text(type, text);
         this._channel.send_message_async(msg, 0, (src, result) => {
-            this._channel.send_message_finish(result); 
+            this._channel.send_message_finish(result);
         });
     }
 
@@ -653,7 +653,7 @@ var ChatNotification = class extends MessageTray.Notification {
      *   sender: the name of the sender,
      *   timestamp: the time the message was sent
      *   direction: a #NotificationDirection
-     * 
+     *
      * @noTimestamp: Whether to add a timestamp. If %true, no timestamp
      *   will be added, regardless of the difference since the
      *   last timestamp

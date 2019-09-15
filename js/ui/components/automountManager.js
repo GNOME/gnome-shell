@@ -156,7 +156,7 @@ var AutomountManager = class {
             !volume.should_automount() ||
             !volume.can_mount()) {
             // allow the autorun to run anyway; this can happen if the
-            // mount gets added programmatically later, even if 
+            // mount gets added programmatically later, even if
             // should_automount() or can_mount() are false, like for
             // blank optical media.
             this._allowAutorun(volume);
@@ -222,14 +222,14 @@ var AutomountManager = class {
             GLib.source_remove(volume._allowAutorunExpireId);
             delete volume._allowAutorunExpireId;
         }
-        this._volumeQueue = 
+        this._volumeQueue =
             this._volumeQueue.filter(element => (element != volume));
     }
 
     _reaskPassword(volume) {
         let prevOperation = this._activeOperations.get(volume);
         let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
-        let operation = 
+        let operation =
             new ShellMountOperation.ShellMountOperation(volume,
                                                         { existingDialog: existingDialog });
         this._mountVolume(volume, operation);

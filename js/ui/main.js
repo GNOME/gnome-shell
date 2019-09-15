@@ -705,7 +705,6 @@ function queueDeferredWork(workId) {
         _deferredWorkQueue.push(workId);
     if (data.actor.mapped) {
         _queueBeforeRedraw(workId);
-        return;
     } else if (_deferredTimeoutId == 0) {
         _deferredTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, DEFERRED_TIMEOUT_SECONDS, () => {
             _runAllDeferredWork();

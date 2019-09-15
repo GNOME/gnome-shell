@@ -172,7 +172,7 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
 
         // Make sure propsUnique contains one key for every
         // property so we end up with a unique list of properties
-        allProps.map(p => propsUnique[p] = null);
+        allProps.map(p => (propsUnique[p] = null));
     }
     return Object.keys(propsUnique).sort();
 }

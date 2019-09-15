@@ -84,9 +84,9 @@ function _findProviderForSid(sid) {
 }
 
 
-//------------------------------------------------------------------------------
-// Support for the old ModemManager interface (MM < 0.7)
-//------------------------------------------------------------------------------
+// ----------------------------------------------------- //
+// Support for the old ModemManager interface (MM < 0.7) //
+// ----------------------------------------------------- //
 
 
 // The following are not the complete interfaces, just the methods we need
@@ -182,9 +182,9 @@ var ModemCdma = class {
 Signals.addSignalMethods(ModemCdma.prototype);
 
 
-//------------------------------------------------------------------------------
-// Support for the new ModemManager1 interface (MM >= 0.7)
-//------------------------------------------------------------------------------
+// ------------------------------------------------------- //
+// Support for the new ModemManager1 interface (MM >= 0.7) //
+// ------------------------------------------------------- //
 
 const BroadbandModemInterface = loadInterfaceXML('org.freedesktop.ModemManager1.Modem');
 const BroadbandModemProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemInterface);

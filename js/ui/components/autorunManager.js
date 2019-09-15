@@ -63,7 +63,7 @@ function startAppForMount(app, mount) {
     files.push(root);
 
     try {
-        retval = app.launch(files, 
+        retval = app.launch(files,
                             global.create_app_launch_context(0, -1));
     } catch (e) {
         log(`Unable to launch the application ${app.get_name()}: ${e}`);
@@ -71,8 +71,6 @@ function startAppForMount(app, mount) {
 
     return retval;
 }
-
-/******************************************/
 
 const HotplugSnifferIface = loadInterfaceXML('org.gnome.Shell.HotplugSniffer');
 const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
@@ -215,11 +213,11 @@ var AutorunDispatcher = class {
     }
 
     _addSource(mount, apps) {
-        // if we already have a source showing for this 
+        // if we already have a source showing for this
         // mount, return
         if (this._getSourceForMount(mount))
             return;
-     
+
         // add a new source
         this._sources.push(new AutorunSource(this._manager, mount, apps));
     }
@@ -264,7 +262,7 @@ var AutorunDispatcher = class {
 
     removeMount(mount) {
         let source = this._getSourceForMount(mount);
-        
+
         // if we aren't tracking this mount, don't do anything
         if (!source)
             return;

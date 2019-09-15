@@ -909,8 +909,8 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             this._client.activate_connection_async(connection, this._device, null, null, null);
         } else {
             let accessPoints = network.accessPoints;
-            if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
-                || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
+            if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT) ||
+                (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
                 Util.spawn(['gnome-control-center', 'wifi', 'connect-8021x-wifi',
@@ -1676,7 +1676,7 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
                                                   'network-transmit-receive');
             this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
-            this._source.connect('destroy', () => this._source = null);
+            this._source.connect('destroy', () => (this._source = null));
             Main.messageTray.add(this._source);
         }
     }
@@ -1976,7 +1976,6 @@ var NMApplet = class extends PanelMenu.SystemIndicator {
             // or we get to full connectivity through other means
         } else if (result == PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);
-            return;
         } else if (result == PortalHelperResult.RECHECK) {
             this._client.check_connectivity_async(null, (client, result) => {
                 try {

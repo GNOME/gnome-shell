@@ -156,12 +156,12 @@ var AuthRobot = class {
 
         /* check if authorization is enabled in the daemon. if not
          * we won't even bother authorizing, because we will only
-         * get an error back. The exact contents of AuthMode might 
+         * get an error back. The exact contents of AuthMode might
          * change in the future, but must contain AuthMode.ENABLED
          * if it is enabled. */
         if (!cli.authMode.split('|').includes(AuthMode.ENABLED))
             return;
-        
+
         /* check if we should enroll the device */
         let res = [false];
         this.emit('enroll-device', dev, res);
@@ -260,7 +260,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Thunderbolt"),
                                                   'thunderbolt-symbolic');
-            this._source.connect('destroy', () => this._source = null);
+            this._source.connect('destroy', () => (this._source = null));
 
             Main.messageTray.add(this._source);
         }

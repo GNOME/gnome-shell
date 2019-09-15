@@ -286,7 +286,7 @@ var ExtensionManager = class {
     reloadExtension(oldExtension) {
         // Grab the things we'll need to pass to createExtensionObject
         // to reload it.
-        let { uuid: uuid, dir: dir, type: type } = oldExtension;
+        let { uuid, dir, type } = oldExtension;
 
         // Then unload the old extension.
         this.unloadExtension(oldExtension);

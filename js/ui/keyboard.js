@@ -104,9 +104,10 @@ class KeyContainer extends St.Widget {
         this._currentRow++;
         this._currentCol = 0;
 
-        let row = new Object();
-        row.keys = [];
-        row.width = 0;
+        let row = {
+            keys: [],
+            width: 0,
+        };
         this._rows.push(row);
     }
 
@@ -1080,7 +1081,7 @@ var Keyboard = class Keyboard {
                 this.hide();
         });
 
-        Meta.get_backend().connect('last-device-changed', 
+        Meta.get_backend().connect('last-device-changed',
             (backend, deviceId) => {
                 let manager = Clutter.DeviceManager.get_default();
                 let device = manager.get_device(deviceId);

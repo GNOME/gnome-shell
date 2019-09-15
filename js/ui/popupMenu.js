@@ -549,7 +549,7 @@ var PopupMenuBase = class {
     }
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('notify::active', (menuItem) => {
+        menuItem._activeChangeId = menuItem.connect('notify::active', menuItem => {
             let active = menuItem.active;
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
@@ -613,8 +613,8 @@ var PopupMenuBase = class {
         while (childBeforeIndex >= 0 && !isPopupMenuItemVisible(children[childBeforeIndex]))
             childBeforeIndex--;
 
-        if (childBeforeIndex < 0
-            || children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
+        if (childBeforeIndex < 0 ||
+            children[childBeforeIndex]._delegate instanceof PopupSeparatorMenuItem) {
             menuItem.actor.hide();
             return;
         }
@@ -624,8 +624,8 @@ var PopupMenuBase = class {
         while (childAfterIndex < children.length && !isPopupMenuItemVisible(children[childAfterIndex]))
             childAfterIndex++;
 
-        if (childAfterIndex >= children.length
-            || children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
+        if (childAfterIndex >= children.length ||
+            children[childAfterIndex]._delegate instanceof PopupSeparatorMenuItem) {
             menuItem.actor.hide();
             return;
         }
@@ -718,10 +718,11 @@ var PopupMenuBase = class {
                 this.disconnect(openStateChangeId);
                 menuItem.disconnect(destroyId);
             });
-        } else if (menuItem instanceof PopupBaseMenuItem)
+        } else if (menuItem instanceof PopupBaseMenuItem) {
             this._connectItemSignals(menuItem);
-        else
+        } else {
             throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
+        }
 
         menuItem._setParent(this);
 

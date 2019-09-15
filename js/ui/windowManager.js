@@ -630,9 +630,9 @@ var AppSwitchAction = GObject.registerClass({
         let nPoints = this.get_n_current_points();
         let event = this.get_last_event (nPoints - 1);
 
-        if (nPoints == 3)
+        if (nPoints == 3) {
             this._longPressStartTime = event.get_time();
-        else if (nPoints == 4) {
+        } else if (nPoints == 4) {
             // Check whether the 4th finger press happens after a 3-finger long press,
             // this only needs to be checked on the first 4th finger press
             if (this._longPressStartTime != null &&
@@ -713,7 +713,7 @@ var WindowManager = class {
         this._isWorkspacePrepended = false;
 
         this._switchData = null;
-        this._shellwm.connect('kill-switch-workspace', (shellwm) => {
+        this._shellwm.connect('kill-switch-workspace', shellwm => {
             if (this._switchData) {
                 if (this._switchData.inProgress)
                     this._switchWorkspaceDone(shellwm);
@@ -1022,7 +1022,6 @@ var WindowManager = class {
                                                 (proxy, error) => {
                                                     if (error) {
                                                         log(error.message);
-                                                        return;
                                                     }
                                                 });
 
@@ -1115,7 +1114,7 @@ var WindowManager = class {
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
         this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
-        this._currentPadOsd.connect('closed', () => this._currentPadOsd = null);
+        this._currentPadOsd.connect('closed', () => (this._currentPadOsd = null));
 
         return this._currentPadOsd.actor;
     }
@@ -1682,7 +1681,6 @@ var WindowManager = class {
             break;
         default:
             shellwm.completed_map(actor);
-            return;
         }
     }
 
@@ -1763,7 +1761,6 @@ var WindowManager = class {
             break;
         default:
             shellwm.completed_destroy(actor);
-            return;
         }
     }
 

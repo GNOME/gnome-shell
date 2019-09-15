@@ -505,7 +505,7 @@ var AllView = class AllView extends BaseAppView {
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => this.opacity = 255
+                onComplete: () => (this.opacity = 255)
             });
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
@@ -752,7 +752,6 @@ var AllView = class AllView extends BaseAppView {
         let maxY = this._adjustment.upper - this._adjustment.page_size;
         if (dragEvent.y >= gridBottom && currentY < maxY) {
             this.goToPage(this._grid.currentPage + 1);
-            return;
         }
     }
 

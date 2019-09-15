@@ -881,7 +881,7 @@ var LookingGlass = class LookingGlass {
             return true;
         });
 
-        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY, 
+        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
                                                      entry: this._entry.clutter_text });
 
         this._autoComplete = new AutoComplete(this._entry);
