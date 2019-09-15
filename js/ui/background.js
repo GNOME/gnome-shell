@@ -403,6 +403,7 @@ var Background = GObject.registerClass({
                 if (numPendingImages == 0)
                     finish();
             } else {
+                // eslint-disable-next-line no-loop-func
                 let id = image.connect('loaded', () => {
                     image.disconnect(id);
                     numPendingImages--;
