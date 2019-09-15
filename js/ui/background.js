@@ -239,6 +239,7 @@ var Background = GObject.registerClass({
         this._monitorIndex = params.monitorIndex;
         this._layoutManager = params.layoutManager;
         this._fileWatches = {};
+        this._numPendingImages = 0;
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
@@ -394,19 +395,19 @@ var Background = GObject.registerClass({
         };
 
         let cache = Meta.BackgroundImageCache.get_default();
-        let numPendingImages = files.length;
+        this._numPendingImages = files.length;
         for (let i = 0; i < files.length; i++) {
             this._watchFile(files[i]);
             let image = cache.load(files[i]);
             if (image.is_loaded()) {
-                numPendingImages--;
-                if (numPendingImages == 0)
+                this._numPendingImages--;
+                if (this._numPendingImages == 0)
                     finish();
             } else {
                 let id = image.connect('loaded', () => {
                     image.disconnect(id);
-                    numPendingImages--;
-                    if (numPendingImages == 0)
+                    this._numPendingImages--;
+                    if (this._numPendingImages == 0)
                         finish();
                 });
             }
