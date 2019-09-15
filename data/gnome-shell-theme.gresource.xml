@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell/theme">
+    <file>automatic-updates-off-symbolic.svg</file>
+    <file>automatic-updates-on-symbolic.svg</file>
+    <file>automatic-updates-scheduled-symbolic.svg</file>
     <file>calendar-today.svg</file>
     <file>checkbox-focused.svg</file>
     <file>checkbox-off-focused.svg</file>

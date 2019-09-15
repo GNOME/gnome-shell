@@ -728,10 +728,17 @@ class AggregateMenu extends PanelMenu.Button {
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
+        if (Main.sessionMode.components.includes('updates'))
+            this._automaticUpdates = new imports.ui.status.automaticUpdates.Indicator();
+        else
+            this._automaticUpdates = null;
+
         this._indicators.add_child(this._thunderbolt.indicators);
         this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._location.indicators);
         this._indicators.add_child(this._nightLight.indicators);
+        if (this._automaticUpdates)
+            this._indicators.add_child(this._automaticUpdates.indicators);
         if (this._network) {
             this._indicators.add_child(this._network.indicators);
         }
@@ -750,6 +757,8 @@ class AggregateMenu extends PanelMenu.Button {
         if (this._network) {
             this.menu.addMenuItem(this._network.menu);
         }
+        if (this._automaticUpdates)
+            this.menu.addMenuItem(this._automaticUpdates.menu);
         if (this._bluetooth) {
             this.menu.addMenuItem(this._bluetooth.menu);
         }

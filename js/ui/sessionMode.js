@@ -94,9 +94,11 @@ const _modes = {
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
         components: Config.HAVE_NETWORKMANAGER ?
                     ['networkAgent', 'polkitAgent', 'telepathyClient',
-                     'keyring', 'autorunManager', 'automountManager'] :
+                     'keyring', 'autorunManager', 'automountManager',
+                     'updates'] :
                     ['polkitAgent', 'telepathyClient',
-                     'keyring', 'autorunManager', 'automountManager'],
+                     'keyring', 'autorunManager', 'automountManager',
+                     'updates'],
 
         panel: {
             left: ['activities', 'appMenu'],

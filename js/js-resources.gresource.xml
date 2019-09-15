@@ -9,6 +9,7 @@
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
 
+    <file>misc/updateManager.js</file>
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
@@ -119,9 +120,11 @@
     <file>ui/components/networkAgent.js</file>
     <file>ui/components/polkitAgent.js</file>
     <file>ui/components/telepathyClient.js</file>
+    <file>ui/components/updates.js</file>
     <file>ui/components/keyring.js</file>
 
     <file>ui/status/accessibility.js</file>
+    <file>ui/status/automaticUpdates.js</file>
     <file>ui/status/brightness.js</file>
     <file>ui/status/dwellClick.js</file>
     <file>ui/status/location.js</file>
