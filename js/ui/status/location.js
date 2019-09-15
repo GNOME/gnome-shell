@@ -168,8 +168,9 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
     _updateMenuLabels() {
         if (this._settings.get_boolean(ENABLED)) {
-            this._item.label.text = this._indicator.visible ? _("Location In Use")
-                                                            : _("Location Enabled");
+            this._item.label.text = this._indicator.visible
+                ? _("Location In Use")
+                : _("Location Enabled");
             this._onOffAction.label.text = _("Disable");
         } else {
             this._item.label.text = _("Location Disabled");

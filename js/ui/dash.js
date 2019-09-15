@@ -703,8 +703,8 @@ var Dash = class Dash {
             }
 
             // App moved
-            let nextApp = newApps.length > newIndex + 1 ? newApps[newIndex + 1]
-                                                        : null;
+            let nextApp = newApps.length > newIndex + 1
+                ? newApps[newIndex + 1] : null;
             let insertHere = nextApp && nextApp == oldApp;
             let alreadyRemoved = removedActors.reduce((result, actor) => {
                 let removedApp = actor.child._delegate.app;

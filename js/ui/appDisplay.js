@@ -1107,8 +1107,9 @@ var AppDisplay = class AppDisplay {
             else
                 this._views[i].control.remove_style_pseudo_class('checked');
 
-            let animationDirection = i == activeIndex ? IconGrid.AnimationDirection.IN :
-                                                        IconGrid.AnimationDirection.OUT;
+            let animationDirection = i == activeIndex
+                ? IconGrid.AnimationDirection.IN
+                : IconGrid.AnimationDirection.OUT;
             this._views[i].view.animateSwitch(animationDirection);
         }
     }
@@ -1884,15 +1885,17 @@ var AppFolderPopup = class AppFolderPopup {
             direction = St.DirectionType.TAB_FORWARD;
             break;
         case Clutter.Right:
-            direction = isLtr ? St.DirectionType.TAB_FORWARD :
-                                    St.DirectionType.TAB_BACKWARD;
+            direction = isLtr
+                ? St.DirectionType.TAB_FORWARD
+                : St.DirectionType.TAB_BACKWARD;
             break;
         case Clutter.Up:
             direction = St.DirectionType.TAB_BACKWARD;
             break;
         case Clutter.Left:
-            direction = isLtr ? St.DirectionType.TAB_BACKWARD :
-                                    St.DirectionType.TAB_FORWARD;
+            direction = isLtr
+                ? St.DirectionType.TAB_BACKWARD
+                : St.DirectionType.TAB_FORWARD;
             break;
         default:
             return Clutter.EVENT_PROPAGATE;
@@ -2396,8 +2399,8 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             );
 
         windows.forEach(window => {
-            let title = window.title ? window.title
-                                     : this._source.app.get_name();
+            let title = window.title
+                ? window.title : this._source.app.get_name();
             let item = this._appendMenuItem(title);
             item.connect('activate', () => {
                 this.emit('activate-window', window);

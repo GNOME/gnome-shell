@@ -148,8 +148,9 @@ var WorldClocksSection = class WorldClocksSection {
         });
 
         let layout = this._grid.layout_manager;
-        let title = (this._locations.length == 0) ? _("Add world clocks…")
-                                                  : _("World Clocks");
+        let title = (this._locations.length == 0)
+            ? _("Add world clocks…")
+            : _("World Clocks");
         let header = new St.Label({ style_class: 'world-clocks-header',
                                     x_align: Clutter.ActorAlign.START,
                                     text: title });

@@ -1306,8 +1306,9 @@ var PopupMenuManager = class {
     }
 
     _changeMenu(newMenu) {
-        newMenu.open(this.activeMenu ? BoxPointer.PopupAnimation.FADE
-                                     : BoxPointer.PopupAnimation.FULL);
+        newMenu.open(this.activeMenu
+            ? BoxPointer.PopupAnimation.FADE
+            : BoxPointer.PopupAnimation.FULL);
     }
 
     _onMenuSourceEnter(menu) {

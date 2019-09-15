@@ -771,8 +771,7 @@ var LayoutManager = GObject.registerClass({
         this.keyboardBox.ease({
             anchor_y: 0,
             opacity: 0,
-            duration: immediate ? 0
-                                : KEYBOARD_ANIMATION_TIME,
+            duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
             onComplete: () => {
                 this._hideKeyboardComplete();
@@ -856,8 +855,9 @@ var LayoutManager = GObject.registerClass({
             index = this._findActor(ancestor);
         }
 
-        let ancestorData = ancestor ? this._trackedActors[index]
-                                    : defaultParams;
+        let ancestorData = ancestor
+            ? this._trackedActors[index]
+            : defaultParams;
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
         for (let prop in defaultParams) {
