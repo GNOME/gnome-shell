@@ -2208,6 +2208,10 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
+    animateLaunchAtPos(x, y) {
+        this.icon.animateZoomOutAtPos(x, y);
+    }
+
     scaleIn() {
         this.actor.scale_x = 0;
         this.actor.scale_y = 0;

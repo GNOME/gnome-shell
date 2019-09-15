@@ -142,6 +142,10 @@ class BaseIcon extends St.Bin {
         zoomOutActor(this.child);
     }
 
+    animateZoomOutAtPos(x, y) {
+        zoomOutActorAtPos(this.child, x, y);
+    }
+
     update() {
         this._createIconTexture(this.iconSize);
     }
@@ -152,10 +156,15 @@ function clamp(value, min, max) {
 }
 
 function zoomOutActor(actor) {
+    let [x, y] = actor.get_transformed_position();
+    zoomOutActorAtPos(actor, x, y);
+}
+
+function zoomOutActorAtPos(actor, x, y) {
     let actorClone = new Clutter.Clone({ source: actor,
                                          reactive: false });
     let [width, height] = actor.get_transformed_size();
-    let [x, y] = actor.get_transformed_position();
+
     actorClone.set_size(width, height);
     actorClone.set_position(x, y);
     actorClone.opacity = 255;
