@@ -13,16 +13,16 @@
 # Mathieu Stumpf <psychoslave@culture-libre.org>, 2013.
 # Alain Lojewski <allomervan@gmail.com>, 2014-2018.
 # Erwan Georget <egeorget@opmbx.org>, 2016.
-# Claude Paroz <claude@2xlibre.net>, 2010-2011, 2016, 2019.
 # Julien Humbert <julroy67@gmail.com>, 2019.
 # Charles Monzat <charles.monzat@free.fr>, 2016-2019.
+# Claude Paroz <claude@2xlibre.net>, 2010-2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-05 17:18+0000\n"
-"PO-Revision-Date: 2019-09-08 17:44+0200\n"
+"POT-Creation-Date: 2019-09-10 06:48+0000\n"
+"PO-Revision-Date: 2019-09-10 10:33+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -30,6 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 3.32.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -784,28 +785,32 @@ msgstr "Fréquemment utilisées"
 msgid "All"
 msgstr "Toutes"
 
+#: js/ui/appDisplay.js:1751
+msgid "Rename"
+msgstr "Renommer"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2233 js/ui/panel.js:77
+#: js/ui/appDisplay.js:2397 js/ui/panel.js:77
 msgid "Open Windows"
 msgstr "Fenêtres ouvertes"
 
-#: js/ui/appDisplay.js:2252 js/ui/panel.js:84
+#: js/ui/appDisplay.js:2416 js/ui/panel.js:84
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
-#: js/ui/appDisplay.js:2264
+#: js/ui/appDisplay.js:2428
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Démarrer en utilisant la carte graphique dédiée"
 
-#: js/ui/appDisplay.js:2293 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2457 js/ui/dash.js:240
 msgid "Remove from Favorites"
 msgstr "Enlever des favoris"
 
-#: js/ui/appDisplay.js:2299
+#: js/ui/appDisplay.js:2463
 msgid "Add to Favorites"
 msgstr "Ajouter aux favoris"
 
-#: js/ui/appDisplay.js:2309 js/ui/panel.js:95
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:95
 msgid "Show Details"
 msgstr "Afficher les détails"
 
@@ -1523,7 +1528,7 @@ msgstr "Afficher la source"
 msgid "Web Page"
 msgstr "Page Web"
 
-#: js/ui/messageTray.js:1462
+#: js/ui/messageTray.js:1461
 msgid "System Information"
 msgstr "Informations du système"
 
@@ -1652,7 +1657,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nouvelle notification"
 msgstr[1] "%d nouvelles notifications"
 
-#: js/ui/screenShield.js:444 js/ui/status/system.js:269
+#: js/ui/screenShield.js:444 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Verrouiller"
 
@@ -1675,15 +1680,15 @@ msgstr "Impossible de verrouiller"
 msgid "Lock was blocked by an application"
 msgstr "Le verrouillage a été bloqué par une application"
 
-#: js/ui/search.js:647
+#: js/ui/search.js:668
 msgid "Searching…"
 msgstr "Recherche…"
 
-#: js/ui/search.js:649
+#: js/ui/search.js:670
 msgid "No results."
 msgstr "Aucun résultat."
 
-#: js/ui/search.js:773
+#: js/ui/search.js:794
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1839,7 +1844,7 @@ msgstr "Clic simple"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
-msgstr "Double clic"
+msgstr "Double-clic"
 
 #: js/ui/status/dwellClick.js:23
 msgid "Drag"
@@ -2168,27 +2173,27 @@ msgstr "Éteindre"
 msgid "Airplane Mode On"
 msgstr "Mode avion activé"
 
-#: js/ui/status/system.js:201
+#: js/ui/status/system.js:192
 msgid "Switch User"
 msgstr "Changer d’utilisateur"
 
-#: js/ui/status/system.js:213
+#: js/ui/status/system.js:204
 msgid "Log Out"
 msgstr "Fermer la session"
 
-#: js/ui/status/system.js:225
+#: js/ui/status/system.js:216
 msgid "Account Settings"
 msgstr "Paramètres du compte"
 
-#: js/ui/status/system.js:254
+#: js/ui/status/system.js:245
 msgid "Orientation Lock"
 msgstr "Verrouillage de l’orientation"
 
-#: js/ui/status/system.js:280
+#: js/ui/status/system.js:271
 msgid "Suspend"
 msgstr "Mettre en veille"
 
-#: js/ui/status/system.js:290
+#: js/ui/status/system.js:281
 msgid "Power Off"
 msgstr "Éteindre"
 
@@ -2417,7 +2422,7 @@ msgid ""
 msgstr ""
 "L’UUID est un identifiant globalement unique pour votre extension.\n"
 "Son format doit correspondre à celui d’une adresse électronique "
-"(clicpourfocus@toto.example.com)\n"
+"(clicpourfocus@toto.exemple.com)\n"
 
 #: src/extensions-tool/command-create.c:239
 msgid "The unique identifier of the new extension"
@@ -2548,7 +2553,7 @@ msgstr "SCHÉMA"
 
 #: src/extensions-tool/command-pack.c:455
 msgid "A GSettings schema that should be included"
-msgstr "Un schéma GSettings qui doit être inclu"
+msgstr "Un schéma GSettings qui doit être inclus"
 
 #: src/extensions-tool/command-pack.c:457
 #: src/extensions-tool/command-pack.c:468
