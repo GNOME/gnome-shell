@@ -42,7 +42,7 @@ $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0
 $active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 
 // hover
-$hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 3%));
+$hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 5%));
 $hover_fg_color: lighten($fg_color,if($variant=='light', 5%, 3%));
 $hover_borders_color: lighten($borders_color,if($variant=='light', 5%, 3%));
 
