@@ -561,7 +561,7 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     // Draggable target interface used only by ThumbnailsBox
-    handleDragOverInternal(source, time) {
+    handleDragOverInternal(source, actor, time) {
         if (source == Main.xdndHandler) {
             this.metaWorkspace.activate(time);
             return DND.DragMotionResult.CONTINUE;
@@ -572,13 +572,15 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         if (source.realWindow && !this._isMyWindow(source.realWindow))
             return DND.DragMotionResult.MOVE_DROP;
-        if (source.shellWorkspaceLaunch)
+        if (source.app && source.app.can_open_new_window())
+            return DND.DragMotionResult.COPY_DROP;
+        if (!source.app && source.shellWorkspaceLaunch)
             return DND.DragMotionResult.COPY_DROP;
 
         return DND.DragMotionResult.CONTINUE;
     }
 
-    acceptDropInternal(source, time) {
+    acceptDropInternal(source, actor, time) {
         if (this.state > ThumbnailState.NORMAL)
             return false;
 
@@ -597,8 +599,16 @@ var WorkspaceThumbnail = GObject.registerClass({
 
             metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
             return true;
-        } else if (source.shellWorkspaceLaunch) {
-            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
+        } else if (source.app && source.app.can_open_new_window()) {
+            if (source.animateLaunchAtPos)
+                source.animateLaunchAtPos(actor.x, actor.y);
+
+            source.app.open_new_window(this.metaWorkspace.index());
+            return true;
+        } else if (!source.app && source.shellWorkspaceLaunch) {
+            // While unused in our own drag sources, shellWorkspaceLaunch allows
+            // extensions to define custom actions for their drag sources.
+            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace.index(),
                                           timestamp: time });
             return true;
         }
@@ -779,7 +789,10 @@ var ThumbnailsBox = GObject.registerClass({
 
     // Draggable target interface
     handleDragOver(source, actor, x, y, time) {
-        if (!source.realWindow && !source.shellWorkspaceLaunch && source != Main.xdndHandler)
+        if (!source.realWindow &&
+            (!source.app || !source.app.can_open_new_window()) &&
+            (source.app || !source.shellWorkspaceLaunch) &&
+            source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         let canCreateWorkspaces = Meta.prefs_get_dynamic_workspaces();
@@ -825,7 +838,7 @@ var ThumbnailsBox = GObject.registerClass({
         }
 
         if (this._dropWorkspace != -1)
-            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, actor, time);
         else if (this._dropPlaceholderPos != -1)
             return source.realWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
@@ -834,9 +847,11 @@ var ThumbnailsBox = GObject.registerClass({
 
     acceptDrop(source, actor, x, y, time) {
         if (this._dropWorkspace != -1) {
-            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
+            return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, actor, time);
         } else if (this._dropPlaceholderPos != -1) {
-            if (!source.realWindow && !source.shellWorkspaceLaunch)
+            if (!source.realWindow &&
+                (!source.app || !source.app.can_open_new_window()) &&
+                (source.app || !source.shellWorkspaceLaunch))
                 return false;
 
             let isWindow = !!source.realWindow;
@@ -853,9 +868,19 @@ var ThumbnailsBox = GObject.registerClass({
                 if (source.metaWindow.get_monitor() != thumbMonitor)
                     source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
-            } else if (source.shellWorkspaceLaunch) {
+            } else if (source.app && source.app.can_open_new_window()) {
+                if (source.animateLaunchAtPos)
+                    source.animateLaunchAtPos(actor.x, actor.y);
+
+                source.app.open_new_window(newWorkspaceIndex);
+            } else if (!source.app && source.shellWorkspaceLaunch) {
+                // While unused in our own drag sources, shellWorkspaceLaunch allows
+                // extensions to define custom actions for their drag sources.
                 source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
                                               timestamp: time });
+            }
+
+            if (source.app || (!source.app && source.shellWorkspaceLaunch)) {
                 // This new workspace will be automatically removed if the application fails
                 // to open its first window within some time, as tracked by Shell.WindowTracker.
                 // Here, we only add a very brief timeout to avoid the _immediate_ removal of the

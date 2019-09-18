@@ -2208,6 +2208,10 @@ var AppIcon = class AppIcon {
         this.icon.animateZoomOut();
     }
 
+    animateLaunchAtPos(x, y) {
+        this.icon.animateZoomOutAtPos(x, y);
+    }
+
     scaleIn() {
         this.actor.scale_x = 0;
         this.actor.scale_y = 0;
@@ -2222,6 +2226,9 @@ var AppIcon = class AppIcon {
     }
 
     shellWorkspaceLaunch(params) {
+        let { stack } = new Error();
+        log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
+
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
