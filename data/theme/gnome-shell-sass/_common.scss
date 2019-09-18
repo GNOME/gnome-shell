@@ -33,11 +33,11 @@ $base_spacing: 6px;
 // border radii
 $base_border_radius: 5px;
 
-$dialog_border_radius:$base_border_radius * 2 + 4px;
+$dialog_border_radius:$base_border_radius * 2;
 
 // non-standard colors
-// $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
+$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
+// $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
 
 $active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 
@@ -140,11 +140,12 @@ stage {
 	.button {
 		background-color: $bg_color;
 		color: $fg_color;
+		box-shadow: none;
 
 		&, &:hover, &:focus, &:active, &:disabled { 
-			box-shadow: none;
 			border-color: $bubble_borders_color;
 		}
+
 		&:hover { background-color: $hover_bg_color; }
 		&:active { 
 			background-color: $selected_bg_color;
@@ -165,10 +166,11 @@ stage {
 
 // buttons in dialogs
 %bubble_button {
-	border-right-width: 1px;
 	@include button(normal, $c:$bg_color, $tc:$fg_color);
 	padding: $base_padding * 2;
+	border-right-width: 1px;
 	border-top: 1px solid $bubble_borders_color;
+	box-shadow:none !important;
 
 	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }
 	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color); }

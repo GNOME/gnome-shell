@@ -4,23 +4,23 @@
 
 @function _widget_edge($c:$borders_edge) {
 // outer highlight "used" on most widgets
-  @return 0 1px $c;
+	@return 0 1px $c;
 }
 
 // provide font size in rem, with px fallback
 @mixin fontsize($size: 24, $base: 16) {
-  font-size: round($size) + pt;
-  //font-size: ($size / $base) * 1rem;
+	font-size: round($size) + pt;
+	//font-size: ($size / $base) * 1rem;
 }
 
 @mixin _shadows($shadow1, $shadow2:none, $shadow3:none, $shadow4:none) {
 //
 // Helper function to stack up to 4 box-shadows;
 //
-  @if $shadow4!=none { box-shadow: $shadow1, $shadow2, $shadow3, $shadow4; }
-  @else if $shadow3!=none { box-shadow: $shadow1, $shadow2, $shadow3; }
-  @else if $shadow2!=none { box-shadow: $shadow1, $shadow2; }
-  @else { box-shadow: $shadow1; }
+	@if $shadow4!=none { box-shadow: $shadow1, $shadow2, $shadow3, $shadow4; }
+	@else if $shadow3!=none { box-shadow: $shadow1, $shadow2, $shadow3; }
+	@else if $shadow2!=none { box-shadow: $shadow1, $shadow2; }
+	@else { box-shadow: $shadow1; }
 }
 
 // entries
@@ -38,29 +38,29 @@
 // normal, focus, insensitive
 //
 
-  @if $t==normal {
-    background-color: $base_color;
-    border-color: $borders_color;
+	@if $t==normal {
+		background-color: $base_color;
+		border-color: $borders_color;
 
-  }
-  @if $t==focus {
-    border-color: if($fc==$selected_bg_color,
-                     $selected_borders_color,
-                     darken($fc,35%));
-  }
-  @if $t==hover { }
-  @if $t==insensitive {
-    color: $insensitive_fg_color;
-    border-color: $insensitive_bg_color;
-    box-shadow: none;
-  }
+	}
+	@if $t==focus {
+		border-color: if($fc==$selected_bg_color,
+										 $selected_borders_color,
+										 darken($fc,35%));
+	}
+	@if $t==hover { }
+	@if $t==insensitive {
+		color: $insensitive_fg_color;
+		border-color: $insensitive_bg_color;
+		box-shadow: none;
+	}
 }
 
 // buttons
 
 @function _border_color ($c) { @return darken($c,25%); } // colored buttons want
-                                                         // the border form the
-                                                         // base color
+																												 // the border form the
+																												 // base color
 
 @function _text_shadow_color ($tc:$fg_color, $bg:$bg_color) {
 //
@@ -69,9 +69,9 @@
 // $tc is the text color
 // $bg is the background color
 //
-  $_lbg: lightness($bg)/100%;
-  @if lightness($tc)<50% { @return rgba(255,255,255,1-$_lbg/($_lbg*1.3)); }
-  @else { @return rgba(0,0,0,$_lbg*0.8); }
+	$_lbg: lightness($bg)/100%;
+	@if lightness($tc)<50% { @return rgba(255,255,255,1-$_lbg/($_lbg*1.3)); }
+	@else { @return rgba(0,0,0,$_lbg*0.8); }
 }
 
 @function _button_hilight_color($c) {
@@ -80,11 +80,11 @@
 //
 // $c: base color;
 //
-  @if lightness($c)>90% { @return white; }
-  @else if lightness($c)>80% { @return rgba(255,255,255, 0.3); }
-  @else if lightness($c)>50% { @return rgba(255,255,255, 0.5); }
-  @else if lightness($c)>40% { @return rgba(255,255,255, 0.7); }
-  @else { @return rgba(255,255,255, 0.9); }
+	@if lightness($c)>90% { @return white; }
+	@else if lightness($c)>80% { @return rgba(255,255,255, 0.3); }
+	@else if lightness($c)>50% { @return rgba(255,255,255, 0.5); }
+	@else if lightness($c)>40% { @return rgba(255,255,255, 0.7); }
+	@else { @return rgba(255,255,255, 0.9); }
 }
 
 @mixin _button_text_shadow ($tc:$fg_color, $bg:$bg_color) {
@@ -96,16 +96,16 @@
 // TODO: this functions needs a way to deal with special cases
 //
 
-  $_shadow: _text_shadow_color($tc, $bg);
+	$_shadow: _text_shadow_color($tc, $bg);
 
-  @if lightness($tc)<50% {
-    text-shadow: 0 1px $_shadow;
-    icon-shadow: 0 1px $_shadow;
-  }
-  @else {
-    text-shadow: 0 -1px $_shadow;
-    icon-shadow: 0 -1px $_shadow;
-  }
+	@if lightness($tc)<50% {
+		text-shadow: 0 1px $_shadow;
+		icon-shadow: 0 1px $_shadow;
+	}
+	@else {
+		text-shadow: 0 -1px $_shadow;
+		icon-shadow: 0 -1px $_shadow;
+	}
 }
 
 @mixin button($t, $c:$bg_color, $tc:$fg_color, $edge: $borders_edge) {
@@ -124,79 +124,67 @@
 // osd, osd-hover, osd-active, osd-insensitive, osd-backdrop, undecorated
 //
 
-  $_hilight_color: _button_hilight_color($c);
-  $_button_edge: if($edge == none, none, _widget_edge($edge));
-  $_blank_edge: if($edge == none, none, _widget_edge(transparentize($edge,1)));
-  $_button_shadow: 0 1px 2px transparentize($shadow_color, 0.03);
+	$_hilight_color: _button_hilight_color($c);
+	$_button_edge: if($edge == none, none, _widget_edge($edge));
+	$_blank_edge: if($edge == none, none, _widget_edge(transparentize($edge,1)));
+	$_button_shadow: 0 1px 2px transparentize($shadow_color, 0.03);
 
-  @if $t==normal {
-  //
-  // normal button
-  //
+	// normal button
+	@if $t==normal {
+		color: $tc;
+		background-color: $c;
+		border-color: $borders_color;
+		box-shadow: $_button_shadow;
+		text-shadow: 0 1px black;
+		icon-shadow: 0 1px black;
+	}
 
-    color: $tc;
-    background-color: $c;
-    border-color: $borders_color;
-    box-shadow: $_button_shadow;
-    text-shadow: 0 1px black;
-    icon-shadow: 0 1px black;
-  }
-  @if $t==focus {
-  //
-  // focused button
-  //  
-    color: $tc;
-    text-shadow: 0 1px black;
-    icon-shadow: 0 1px black;
-    box-shadow: inset 0px 0px 0px 2px $selected_bg_color;
-    //border-color: $selected_bg_color;
-  }
+	// focused button
+	@if $t==focus {
+		color: $tc;
+		text-shadow: 0 1px black;
+		icon-shadow: 0 1px black;
+		box-shadow: inset 0 0 0 2px $selected_bg_color;
+		//border-color: $selected_bg_color;
+	}
 
-  @else if $t==hover {
-  //
-  // active osd button
-  //
-    color: $tc;
-    border-color: $borders_color;
-    background-color: $c;
-    box-shadow: $_button_shadow;
-    text-shadow: 0 1px black;
-    icon-shadow: 0 1px black;
+	// active osd button
+	@else if $t==hover {
+		color: $tc;
+		border-color: $borders_color;
+		background-color: $c;
+		box-shadow: $_button_shadow;
+		text-shadow: 0 1px black;
+		icon-shadow: 0 1px black;
+	}
 
-  }
-  @else if $t==active {
-  //
-  // active osd button
-  //
-    color: $tc;
-    border-color: $borders_color;
-    background-color: $c;
-    text-shadow: none;
-    icon-shadow: none;
-    box-shadow: none;
-  }
-  @else if $t==insensitive {
+	// active osd button
+	@else if $t==active {
+		color: $tc;
+		border-color: $borders_color;
+		background-color: $c;
+		text-shadow: none;
+		icon-shadow: none;
+		box-shadow: none;
+	}
 
-    color: $insensitive_fg_color;
-    border-color: $insensitive_borders_color;
-    background-color: $insensitive_bg_color;
-    box-shadow: none;
-    text-shadow: none;
-    icon-shadow: none;
-  }
-  @else if $t==undecorated {
-  //
-  // reset
-  //
-    border-color: transparent;
-    background-color: transparent;
-    background-image: none;
+	// insensitive button
+	@else if $t==insensitive {
+		color: $insensitive_fg_color;
+		border-color: $insensitive_borders_color;
+		background-color: $insensitive_bg_color;
+		box-shadow: none;
+		text-shadow: none;
+		icon-shadow: none;
+	}
 
-    @include _shadows(inset 0 1px rgba(255,255,255,1),
-                      $_blank_edge);
-
-    text-shadow: none;
-    icon-shadow: none;
-  }
+	// reset
+	@else if $t==undecorated {
+		border-color: transparent;
+		background-color: transparent;
+		background-image: none;
+		@include _shadows(inset 0 1px rgba(255,255,255,1),$_blank_edge);
+		text-shadow: none;
+		icon-shadow: none;
+	}
 }
-
