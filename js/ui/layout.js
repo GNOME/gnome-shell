@@ -1006,10 +1006,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _updateRegions() {
-        if (this._updateRegionIdle) {
-            Meta.later_remove(this._updateRegionIdle);
-            delete this._updateRegionIdle;
-        }
+        this._updateRegionIdle = 0;
 
         // No need to update when we have a modal.
         if (Main.modalCount > 0)
