@@ -127,7 +127,8 @@ var IntrospectService = class {
         let apps = this._appSystem.get_running();
         let windowsList = {};
 
-        if (!this._isIntrospectEnabled()) {
+        if (!this._isIntrospectEnabled() &&
+            !this._isSenderWhitelisted(invocation.get_sender())) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'App introspection not allowed');
