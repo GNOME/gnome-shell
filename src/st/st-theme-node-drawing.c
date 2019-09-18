@@ -1472,6 +1472,7 @@ st_theme_node_invalidate_resources_for_file (StThemeNode *node,
   return changed;
 }
 
+static void st_theme_node_compute_maximum_borders (StThemeNodePaintState *state);
 static void st_theme_node_prerender_shadow (StThemeNodePaintState *state);
 
 static void
@@ -1575,6 +1576,8 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
 
   if (box_shadow_spec && !has_inset_box_shadow)
     {
+      st_theme_node_compute_maximum_borders (state);
+
       if (st_theme_node_load_border_image (node, resource_scale))
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
                                                                  node->border_slices_texture,
@@ -2282,49 +2285,12 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
 {
   StThemeNode *node = state->node;
   CoglContext *ctx;
-  guint border_radius[4];
-  int max_borders[4];
-  int center_radius, corner_id;
   int fb_width, fb_height;
   CoglTexture *buffer;
   CoglFramebuffer *offscreen = NULL;
   GError *error = NULL;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-
-  /* Get infos from the node */
-  if (state->alloc_width < node->box_shadow_min_width ||
-      state->alloc_height < node->box_shadow_min_height)
-    st_theme_node_reduce_border_radius (node, state->alloc_width, state->alloc_height, border_radius);
-  else
-    for (corner_id = 0; corner_id < 4; corner_id++)
-      border_radius[corner_id] = node->border_radius[corner_id];
-
-  /* Compute maximum borders sizes */
-  max_borders[ST_SIDE_TOP] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
-                                  node->border_radius[ST_CORNER_TOPRIGHT]);
-  max_borders[ST_SIDE_BOTTOM] = MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
-                                     node->border_radius[ST_CORNER_BOTTOMRIGHT]);
-  max_borders[ST_SIDE_LEFT] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
-                                   node->border_radius[ST_CORNER_BOTTOMLEFT]);
-  max_borders[ST_SIDE_RIGHT] = MAX (node->border_radius[ST_CORNER_TOPRIGHT],
-                                    node->border_radius[ST_CORNER_BOTTOMRIGHT]);
-
-  center_radius = (node->box_shadow->blur > 0) ? (2 * node->box_shadow->blur + 1) : 1;
-  node->box_shadow_min_width = max_borders[ST_SIDE_LEFT] + max_borders[ST_SIDE_RIGHT] + center_radius;
-  node->box_shadow_min_height = max_borders[ST_SIDE_TOP] + max_borders[ST_SIDE_BOTTOM] + center_radius;
-
-  if (state->alloc_width < node->box_shadow_min_width ||
-      state->alloc_height < node->box_shadow_min_height)
-    {
-      state->box_shadow_width = state->alloc_width;
-      state->box_shadow_height = state->alloc_height;
-    }
-  else
-    {
-      state->box_shadow_width = node->box_shadow_min_width;
-      state->box_shadow_height = node->box_shadow_min_height;
-    }
 
   /* Render offscreen */
   fb_width = ceilf (state->box_shadow_width * state->resource_scale);
@@ -2355,6 +2321,39 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   g_clear_error (&error);
   cogl_clear_object (&offscreen);
   cogl_clear_object (&buffer);
+}
+
+static void
+st_theme_node_compute_maximum_borders (StThemeNodePaintState *state)
+{
+  int max_borders[4], center_radius;
+  StThemeNode * node = state->node;
+
+  /* Compute maximum borders sizes */
+  max_borders[ST_SIDE_TOP] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
+                                  node->border_radius[ST_CORNER_TOPRIGHT]);
+  max_borders[ST_SIDE_BOTTOM] = MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
+                                     node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+  max_borders[ST_SIDE_LEFT] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
+                                   node->border_radius[ST_CORNER_BOTTOMLEFT]);
+  max_borders[ST_SIDE_RIGHT] = MAX (node->border_radius[ST_CORNER_TOPRIGHT],
+                                    node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+
+  center_radius = (node->box_shadow->blur > 0) ? (2 * node->box_shadow->blur + 1) : 1;
+
+  node->box_shadow_min_width = max_borders[ST_SIDE_LEFT] + max_borders[ST_SIDE_RIGHT] + center_radius;
+  node->box_shadow_min_height = max_borders[ST_SIDE_TOP] + max_borders[ST_SIDE_BOTTOM] + center_radius;
+  if (state->alloc_width < node->box_shadow_min_width ||
+      state->alloc_height < node->box_shadow_min_height)
+    {
+      state->box_shadow_width = state->alloc_width;
+      state->box_shadow_height = state->alloc_height;
+    }
+  else
+    {
+      state->box_shadow_width = node->box_shadow_min_width;
+      state->box_shadow_height = node->box_shadow_min_height;
+    }
 }
 
 static void
