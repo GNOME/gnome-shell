@@ -63,7 +63,7 @@
 	-arrow-border-radius: $base_border_radius+4;
 	-arrow-background-color: $bg_color;
 	-arrow-border-width: 1px;
-	-arrow-border-color: if($variant=='light', rgba(0,0,0,0.6), $borders_color);
+	-arrow-border-color: if($variant=='light', $bg_color, $bubble_borders_color);
 	-arrow-base: 24px;
 	-arrow-rise: 11px;
 	-arrow-box-shadow: 0 1px 3px rgba(0,0,0,0.5); //dreaming. bug #689995

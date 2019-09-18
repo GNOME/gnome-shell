@@ -5,13 +5,17 @@ $notification_banner_width: 34em;
 
 // Banner notifications
 .notification-banner {
-	font-size: $base_font_size;
+	min-height: $notification_banner_height;
 	width: $notification_banner_width;
+	font-size: $base_font_size;
 	margin: $base_margin;
 	border-radius: $dialog_border_radius;
 	border: if($variant == 'light', none, $bubble_borders_color);
-	min-height: $notification_banner_height;
-	box-shadow: 0 1px 2px rgba(0,0,0, 0.7);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.7);
+
+	.message-title { color: $fg_color }
+	.message-content { color: $fg_color; }
+
 
 	&:hover { background: $bg_color; }
 	&, &:focus, &:active {
@@ -28,9 +32,17 @@ $notification_banner_width: 34em;
 	// entries
 	StEntry { @extend %bubble_entry; }
 
-	.notification-icon { padding: 5px; }
-	.notification-content { padding: 5px; spacing: 5px; }
+	.notification-icon {
+		padding: 5px;
+	}
+
+	.notification-content {
+		padding: 5px;
+		spacing: 5px;
+	}
+
 	.secondary-icon { icon-size: $base_icon_size; }
+
 	.notification-actions {
 		padding-top: 0;
 		color: $fg_color;
