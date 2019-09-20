@@ -151,9 +151,13 @@ var GnomeShell = class {
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
         let params = { 'device-id': GLib.Variant.new('u', device.get_device_id()),
-                       'device-node': GLib.Variant.new('s', device.get_device_node()),
                        'timestamp': GLib.Variant.new('u', timestamp),
                        'action-mode': GLib.Variant.new('u', Main.actionMode) };
+
+        let deviceNode = device.get_device_node();
+        if (deviceNode)
+            params['device-node'] = GLib.Variant.new('s', deviceNode);
+
         connection.emit_signal(destination,
                                this._dbusImpl.get_object_path(),
                                info ? info.name : null,
