@@ -916,8 +916,8 @@ var ScreenShield = class {
         this._lockScreenGroup.hide();
 
         if (this._dialog) {
-            this._dialog.actor.grab_key_focus();
-            this._dialog.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            this._dialog.grab_key_focus();
+            this._dialog.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         }
     }
 
