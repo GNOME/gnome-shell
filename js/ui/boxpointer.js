@@ -458,12 +458,23 @@ var BoxPointer = GObject.registerClass({
         this.setPosition(this._sourceActor, this._arrowAlignment);
     }
 
+    fixLocation(x, y) {
+        this._fixedX = x;
+        this._fixedY = y;
+    }
+
     _reposition(allocationBox) {
         let sourceActor = this._sourceActor;
         let alignment = this._arrowAlignment;
         let monitorIndex = Main.layoutManager.findIndexForActor(sourceActor);
 
-        this._sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
+        if (this._fixedX == undefined || this._fixedY == undefined) {
+            this._sourceAllocation = Shell.util_get_transformed_allocation(sourceActor);
+        } else {
+            this._sourceAllocation = new Clutter.ActorBox();
+            this._sourceAllocation.x1 = this._sourceAllocation.x2 = this._fixedX;
+            this._sourceAllocation.y1 = this._sourceAllocation.y2 = this._fixedY;
+        }
         this._workArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         // Position correctly relative to the sourceActor
