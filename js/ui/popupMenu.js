@@ -15,6 +15,7 @@ var Ornament = {
     NONE: 0,
     DOT: 1,
     CHECK: 2,
+    HIDDEN: 3,
 };
 
 function isPopupMenuItemVisible(child) {
@@ -248,10 +249,12 @@ var PopupBaseMenuItem = GObject.registerClass({
         } else if (ornament == Ornament.CHECK) {
             this._ornamentLabel.text = '\u2713';
             this.add_accessible_state(Atk.StateType.CHECKED);
-        } else if (ornament == Ornament.NONE) {
+        } else if (ornament == Ornament.NONE || ornament == Ornament.HIDDEN) {
             this._ornamentLabel.text = '';
             this.remove_accessible_state(Atk.StateType.CHECKED);
         }
+
+        this._ornamentLabel.visible = ornament != Ornament.HIDDEN;
     }
 });
 
@@ -425,6 +428,7 @@ var PopupMenuBase = class {
             throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
 
         this.sourceActor = sourceActor;
+        this.focusActor = sourceActor;
         this._parent = null;
 
         if (styleClass !== undefined) {
@@ -1297,10 +1301,11 @@ var PopupMenuManager = class {
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
-                                    onUngrab: isUser => {
-                                        this._closeMenu(isUser, menu);
-                                    } });
+            this._grabHelper.grab({
+                actor: menu.actor,
+                focus: menu.focusActor,
+                onUngrab: isUser => this._closeMenu(isUser, menu),
+            });
         } else {
             this._grabHelper.ungrab({ actor: menu.actor });
         }
