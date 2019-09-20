@@ -684,7 +684,7 @@ var WindowOverlay = class {
     }
 
     _onHideChrome() {
-        if (this._idleHideOverlayId == 0)
+        if (this._idleHideOverlayId > 0)
             GLib.source_remove(this._idleHideOverlayId);
 
         this._idleHideOverlayId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
