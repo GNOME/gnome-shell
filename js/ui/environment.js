@@ -121,7 +121,9 @@ function _easeActor(actor, params) {
     actor.set(params);
     actor.restore_easing_state();
 
-    let transition = actor.get_transition(animatedProps[0]);
+    let transition = animatedProps.map(p => actor.get_transition(p))
+        .find(t => t !== null);
+
     if (transition)
         transition.connect('stopped', (t, finished) => callback(finished));
     else
