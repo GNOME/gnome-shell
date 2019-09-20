@@ -921,7 +921,7 @@ var LoginDialog = GObject.registerClass({
             return;
 
         this._bindOpacity();
-        this.actor.ease({
+        this.ease({
             opacity: 255,
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -944,7 +944,7 @@ var LoginDialog = GObject.registerClass({
 
     _startSession(serviceName) {
         this._bindOpacity();
-        this.actor.ease({
+        this.ease({
             opacity: 0,
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
