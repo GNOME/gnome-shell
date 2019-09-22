@@ -1,5 +1,5 @@
 # Japanese translation of gnome-shell package.
-# Copyright (C) 2009-2013 the gnome-shell copyright holder.
+# Copyright (C) 2009-2019 the gnome-shell copyright holder.
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-09-17 11:44+0000\n"
-"PO-Revision-Date: 2019-09-06 21:10+0900\n"
+"PO-Revision-Date: 2019-09-22 20:10+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -450,6 +450,8 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"大変申し訳ありませんが、インストール済み拡張機能一覧を取得できませんでした。"
+"GNOME にログインしていることを確認した上で再試行してください。"
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
 #: js/ui/components/networkAgent.js:122 js/ui/components/polkitAgent.js:138
@@ -635,7 +637,7 @@ msgstr[0] "%d週間前"
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
-msgstr[0] "%dか月前"
+msgstr[0] "%dヶ月前"
 
 #: js/misc/util.js:192
 #, javascript-format
@@ -753,10 +755,8 @@ msgid "All"
 msgstr "すべて"
 
 #: js/ui/appDisplay.js:1749
-#, fuzzy
-#| msgid "Username: "
 msgid "Rename"
-msgstr "ユーザー名: "
+msgstr "名前の変更"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2397 js/ui/panel.js:76
@@ -2205,7 +2205,7 @@ msgstr "検索"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "”%s”は準備完了です"
+msgstr "”%s”の準備ができました"
 
 #: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
@@ -2605,10 +2605,9 @@ msgid "Install extension bundle"
 msgstr ""
 
 #: src/extensions-tool/main.c:261
-#, fuzzy, c-format
-#| msgid "Use %s to get detailed help.\n"
+#, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr "%s を使用すると詳細なヘルプが表示されます。\n"
+msgstr "“%s”を使用すると詳細なヘルプが表示されます。\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
