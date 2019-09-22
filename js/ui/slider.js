@@ -100,10 +100,15 @@ var Slider = GObject.registerClass({
 
     _endDragging() {
         if (this._dragging) {
-            if (this._releaseId)
+            if (this._releaseId) {
                 this.disconnect(this._releaseId);
-            if (this._motionId)
+                this._releaseId = 0;
+            }
+
+            if (this._motionId) {
                 this.disconnect(this._motionId);
+                this._motionId = 0;
+            }
 
             if (this._grabbedSequence != null)
                 this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
