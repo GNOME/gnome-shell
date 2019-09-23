@@ -532,7 +532,9 @@ main (int argc, char **argv)
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
   shell_dbus_init (meta_get_replace_current_wm ());
-  sd_notify (0, "READY=1");
+  /* We only use NOTIFY_SOCKET exactly once; unset it so it doesn't remain in
+   * our environment. */
+  sd_notify (1, "READY=1");
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
