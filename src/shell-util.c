@@ -440,13 +440,17 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   surface = meta_window_actor_get_image (window_actor, &clip);
 
   content = clutter_canvas_new ();
-  clutter_canvas_set_size (CLUTTER_CANVAS (content),
-                           cairo_image_surface_get_width (surface),
-                           cairo_image_surface_get_height (surface));
-  g_signal_connect (content, "draw",
-                    G_CALLBACK (canvas_draw_cb), surface);
-  clutter_content_invalidate (content);
-  cairo_surface_destroy (surface);
+
+  if (surface)
+    {
+      clutter_canvas_set_size (CLUTTER_CANVAS (content),
+                               cairo_image_surface_get_width (surface),
+                               cairo_image_surface_get_height (surface));
+      g_signal_connect (content, "draw",
+                        G_CALLBACK (canvas_draw_cb), surface);
+      clutter_content_invalidate (content);
+      cairo_surface_destroy (surface);
+    }
 
   return content;
 }
