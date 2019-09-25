@@ -119,9 +119,18 @@ var IntrospectService = class {
                 type == Meta.WindowType.UTILITY;
     }
 
+    _isInvocationAllowed(invocation) {
+        if (this._isIntrospectEnabled())
+            return true;
+
+        if (this._isSenderWhitelisted(invocation.get_sender()))
+            return true;
+
+        return false;
+    }
+
     GetRunningApplicationsAsync(params, invocation) {
-        if (!this._isIntrospectEnabled() &&
-            !this._isSenderWhitelisted(invocation.get_sender())) {
+        if (!this._isInvocationAllowed(invocation)) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'App introspection not allowed');
@@ -136,8 +145,7 @@ var IntrospectService = class {
         let apps = this._appSystem.get_running();
         let windowsList = {};
 
-        if (!this._isIntrospectEnabled() &&
-            !this._isSenderWhitelisted(invocation.get_sender())) {
+        if (!this._isInvocationAllowed(invocation)) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'App introspection not allowed');
