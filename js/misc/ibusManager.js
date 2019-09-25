@@ -77,6 +77,11 @@ var IBusManager = class {
             this._ibusCancellable = null;
         }
 
+        if (this._preloadEnginesId) {
+            GLib.source_remove(this._preloadEnginesId);
+            this._preloadEnginesId = 0;
+        }
+
         if (this._panelService)
             this._panelService.destroy();
 
