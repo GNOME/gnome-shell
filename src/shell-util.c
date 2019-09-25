@@ -419,7 +419,7 @@ canvas_draw_cb (ClutterContent *content,
  * @window_actor: a #MetaWindowActor
  * @window_rect: a #MetaRectangle
  *
- * Returns: (transfer full): a new #ClutterContent
+ * Returns: (transfer full) (nullable): a new #ClutterContent
  */
 ClutterContent *
 shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
@@ -438,6 +438,9 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   clip.height = window_rect->height;
 
   surface = meta_window_actor_get_image (window_actor, &clip);
+
+  if (!surface)
+    return NULL;
 
   content = clutter_canvas_new ();
   clutter_canvas_set_size (CLUTTER_CANVAS (content),
