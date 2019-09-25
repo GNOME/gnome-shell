@@ -495,6 +495,8 @@ var AllView = class AllView extends BaseAppView {
                     let item = Shell.DesktopDirInfo.new(itemId);
                     icon = new FolderIcon(item, this);
                     icon.connect('name-changed', this._itemNameChanged.bind(this));
+                } else {
+                    icon.update();
                 }
                 this.folderIcons.push(icon);
             } else {
@@ -853,8 +855,8 @@ var AllView = class AllView extends BaseAppView {
         if (!this._canAccept(source))
             return false;
 
-        let view = _getViewFromIcon(source);
-        view.removeApp(source.app);
+        IconGridLayout.layout.appendIcon(
+            source.app.id, IconGridLayout.DESKTOP_GRID_ID);
 
         if (this._currentPopup)
             this._currentPopup.popdown();
@@ -876,32 +878,15 @@ var AllView = class AllView extends BaseAppView {
     }
 
     createFolder(apps) {
-        let newFolderId = GLib.uuid_string_random();
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.push(newFolderId);
-        this._folderSettings.set_strv('folder-children', folders);
-
-        // Create the new folder
-        let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
-        let newFolderSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.app-folders.folder',
-            path: newFolderPath
-        });
-        if (!newFolderSettings) {
-            log('Error creating new folder');
-            return false;
-        }
-
         let appItems = apps.map(id => this._items[id].app);
         let folderName = _findBestFolderName(appItems);
-        if (!folderName)
-            folderName = _("Unnamed Folder");
 
-        newFolderSettings.delay();
-        newFolderSettings.set_string('name', folderName);
-        newFolderSettings.set_strv('apps', apps);
-        newFolderSettings.apply();
+        let newFolderId = IconGridLayout.layout.addFolder(folderName);
+        if (!newFolderId)
+            return false;
+
+        for (let app of apps)
+            IconGridLayout.layout.appendIcon(app, newFolderId);
 
         return true;
     }
@@ -1376,19 +1361,10 @@ var FolderIcon = class FolderIcon {
             return false;
 
         let app = source.app;
-        let folderApps = IconGridLayout.layout.getIcons(this.id);
-        folderApps.push(app.id);
+        IconGridLayout.layout.appendIcon(app.id, this.id);
 
-        this._folder.set_strv('apps', folderApps);
-
-        // Also remove from 'excluded-apps' if the app id is listed
-        // there. This is only possible on categories-based folders.
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let index = excludedApps.indexOf(app.id);
-        if (index >= 0) {
-            excludedApps.splice(index, 1);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        this._redisplay();
+        this.view._redisplay();
 
         return true;
     }
@@ -1405,9 +1381,14 @@ var FolderIcon = class FolderIcon {
 
     _redisplay() {
         this._updateName();
+        this.view._redisplay();
         this.actor.visible = this.view.getAllItems().length > 0;
         this.icon.update();
         this.emit('apps-changed');
+    }
+
+    update() {
+        this._redisplay();
     }
 
     _createIcon(iconSize) {
