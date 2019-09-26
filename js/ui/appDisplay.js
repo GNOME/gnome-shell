@@ -448,17 +448,6 @@ var AllView = class AllView extends BaseAppView {
         this._nEventBlockerInhibits = 0;
     }
 
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._allItems.indexOf(item);
-        this._allItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
-
-        this._grid.removeItem(item);
-        this._grid.addItem(item, newIdx);
-    }
-
     getAppInfos() {
         return this._appInfoList;
     }
@@ -494,7 +483,6 @@ var AllView = class AllView extends BaseAppView {
                 if (!icon) {
                     let item = Shell.DesktopDirInfo.new(itemId);
                     icon = new FolderIcon(item, this);
-                    icon.connect('name-changed', this._itemNameChanged.bind(this));
                 } else {
                     icon.update();
                 }
@@ -1386,7 +1374,6 @@ class ViewIcon extends GObject.Object {
 var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
-        'name-changed': {},
      },
 }, class FolderIcon extends ViewIcon {
     _init(dirInfo, parentView) {
@@ -1537,7 +1524,6 @@ var FolderIcon = GObject.registerClass({
 
         this._name = name;
         this.icon.label.text = this._name;
-        this.emit('name-changed');
     }
 
     _redisplay() {
