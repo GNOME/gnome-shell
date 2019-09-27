@@ -93,6 +93,8 @@ GVariant * shell_global_get_persistent_state    (ShellGlobal  *global,
                                                  const char   *property_type,
                                                  const char   *property_name);
 
+void     shell_global_emit_modal_pushed         (ShellGlobal  *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

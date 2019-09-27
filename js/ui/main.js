@@ -479,6 +479,9 @@ function pushModal(actor, params) {
 
     actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
+
+    global.emit_modal_pushed();
+
     return true;
 }
 

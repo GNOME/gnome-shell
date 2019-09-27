@@ -105,6 +105,8 @@ var SwitcherPopup = GObject.registerClass({
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
 
+        this._modalPushedId = global.connect('modal-pushed', this.destroy.bind(this));
+
         this.connect('key-press-event', this._keyPressEvent.bind(this));
         this.connect('key-release-event', this._keyReleaseEvent.bind(this));
 
@@ -303,6 +305,8 @@ var SwitcherPopup = GObject.registerClass({
 
     _onDestroy() {
         this._popModal();
+
+        global.disconnect(this._modalPushedId);
 
         if (this._motionTimeoutId != 0)
             GLib.source_remove(this._motionTimeoutId);
