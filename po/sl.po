@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-09-26 14:21+0000\n"
-"PO-Revision-Date: 2019-09-26 21:57+0200\n"
+"PO-Revision-Date: 2019-09-28 21:08+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -1731,10 +1731,9 @@ msgstr "Odpri %s"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:479
-#, fuzzy, javascript-format
-#| msgid "Unable to connect to %s"
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "Povezava z %s ni mogoča."
+msgstr "Ni mogoče začeti »%s«"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:481
@@ -2432,20 +2431,16 @@ msgstr "Onemogoči uporabniške razširitve"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
-#, fuzzy
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
-msgstr "Neznan izvajalec"
+msgstr "Neznani argumenti"
 
 #: src/extensions-tool/command-create.c:284
 msgid "UUID, name and description are required"
 msgstr ""
 
 #: src/extensions-tool/command-disable.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Disable an extension"
-msgstr "Onemogoči uporabniške razširitve"
+msgstr "Onemogoči razširitev"
 
 #: src/extensions-tool/command-disable.c:74
 #: src/extensions-tool/command-enable.c:74
@@ -2454,7 +2449,7 @@ msgstr "Onemogoči uporabniške razširitve"
 #: src/extensions-tool/command-reset.c:74
 #: src/extensions-tool/command-uninstall.c:89
 msgid "No UUID given"
-msgstr ""
+msgstr "Ni podanega UUID"
 
 #: src/extensions-tool/command-disable.c:79
 #: src/extensions-tool/command-enable.c:79
@@ -2466,20 +2461,16 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: src/extensions-tool/command-enable.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Enable an extension"
-msgstr "Onemogoči uporabniške razširitve"
+msgstr "Onemogoči razširitev"
 
 #: src/extensions-tool/command-info.c:79
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "Show extensions info"
-msgstr "Ni nameščenih razširitev"
+msgstr "Pokaži podrobnosti razširitev"
 
 #: src/extensions-tool/command-install.c:173
 msgid "Overwrite an existing extension"
-msgstr ""
+msgstr "Prepiši obstoječo razširitev"
 
 #: src/extensions-tool/command-install.c:175
 msgid "EXTENSION_BUNDLE"
@@ -2502,10 +2493,8 @@ msgid "More than one extension bundle specified"
 msgstr ""
 
 #: src/extensions-tool/command-list.c:118
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
-msgstr "Razširitve lupine"
+msgstr "Pokaži uporabniško nameščene razširitve"
 
 #: src/extensions-tool/command-list.c:121
 #, fuzzy
@@ -2638,7 +2627,7 @@ msgstr "Uporaba:"
 
 #: src/extensions-tool/main.c:226
 msgid "Print version information and exit."
-msgstr ""
+msgstr "Izpiši podatke o različici in končaj."
 
 #: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
 msgid "COMMAND"
@@ -2705,7 +2694,7 @@ msgstr "Določila razširitev UUID, ki bodo omogočene"
 #: src/extensions-tool/main.c:261
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr ""
+msgstr "Z ukazom »%s« se izpiše podrobna pomoč.\n"
 
 #: src/main.c:474
 msgid "Mode used by GDM for login screen"
