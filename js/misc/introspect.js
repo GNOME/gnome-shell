@@ -30,7 +30,9 @@ var IntrospectService = class {
                                     this._syncRunningApplications();
                                 });
 
-        this._settings = new Gio.Settings({ schema_id: INTROSPECT_SCHEMA });
+        this._introspectSettings = new Gio.Settings({
+            schema_id: INTROSPECT_SCHEMA,
+        });
 
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app',
@@ -56,7 +58,7 @@ var IntrospectService = class {
     }
 
     _isIntrospectEnabled() {
-        return this._settings.get_boolean(INTROSPECT_KEY);
+        return this._introspectSettings.get_boolean(INTROSPECT_KEY);
     }
 
     _isSenderWhitelisted(sender) {
