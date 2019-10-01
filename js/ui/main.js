@@ -771,5 +771,33 @@ var AnimationsSettings = class {
             St.Settings.get().inc_inhibit_animations();
             return;
         }
+
+        let remoteAccessController = backend.get_remote_access_controller();
+        if (!remoteAccessController)
+            return;
+
+        this._handles = new Set();
+        remoteAccessController.connect('new-handle',
+                                       (remoteAccessController, handle) => {
+                                           this._onNewRemoteAccessHandle(handle);
+                                       });
+    }
+
+    _onRemoteAccessHandleStopped(handle) {
+        let settings = St.Settings.get();
+
+        settings.dec_inhibit_animations();
+        this._handles.delete(handle);
+    }
+
+    _onNewRemoteAccessHandle(handle) {
+        if (!handle.get_disable_animations())
+            return;
+
+        let settings = St.Settings.get();
+
+        settings.inc_inhibit_animations();
+        this._handles.add(handle);
+        handle.connect('stopped', this._onRemoteAccessHandleStopped.bind(this));
     }
 };
