@@ -161,6 +161,8 @@ function _initializeUI() {
     _loadOskLayouts();
     _loadDefaultStylesheet();
 
+    new AnimationsSettings();
+
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
 
@@ -758,3 +760,13 @@ function showRestartMessage(message) {
     let restartMessage = new RestartMessage(message);
     restartMessage.open();
 }
+
+var AnimationsSettings = class {
+    constructor() {
+        let backend = Meta.get_backend();
+        if (!backend.is_rendering_hardware_accelerated()) {
+            St.Settings.get().inc_inhibit_animations();
+            return;
+        }
+    }
+};
