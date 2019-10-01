@@ -158,6 +158,7 @@ var BaseAppView = GObject.registerClass({
             this._grid = new IconGrid.PaginatedIconGrid(gridParams);
         else
             this._grid = new IconGrid.IconGrid(gridParams);
+        this._grid._delegate = this;
 
         this._grid.connect('child-focused', (grid, actor) => {
             this._childFocused(actor);
@@ -326,6 +327,54 @@ var BaseAppView = GObject.registerClass({
         throw new GObject.NotImplementedError('adaptToSize in %s'.format(this.constructor.name));
     }
 
+    _canAccept(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source, _actor, x, y) {
+        if (!this._canAccept(source)) {
+            this._grid.removeNudges();
+            return DND.DragMotionResult.NO_DROP;
+        }
+
+        // Ask grid can we drop here
+        let [index, dragLocation] = this.canDropAt(x, y);
+
+        let onIcon = dragLocation == IconGrid.DragLocation.ON_ICON;
+        let sourceIndex = this._orderedItems.filter(c => c.visible).indexOf(source);
+        let onItself = sourceIndex !== -1
+            && (sourceIndex === index || sourceIndex === index - 1);
+        let isNewPosition = dragLocation !== this._lastDragLocation
+            || (!onIcon && index !== this._lastIndex);
+
+        if (isNewPosition || onItself)
+            this._grid.removeNudges();
+
+        if (!onItself)
+            this._grid.nudgeItemsAtIndex(index, dragLocation);
+
+        this._lastDragLocation = dragLocation;
+        this._lastIndex = index;
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    acceptDrop(source, _actor, x, y) {
+        this._grid.removeNudges();
+
+        if (!this._canAccept(source))
+            return false;
+
+        let [index] = this.canDropAt(x, y);
+
+        this.moveItem(source, index);
+
+        return true;
+    }
+
     get gridActor() {
         return this._grid;
     }
@@ -368,7 +417,6 @@ class AppDisplay extends BaseAppView {
             reactive: true,
         });
         this.add_actor(this._scrollView);
-        this._grid._delegate = this;
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
@@ -826,8 +874,10 @@ class AppDisplay extends BaseAppView {
         let gridBottom = gridY + gridHeight;
 
         // Already animating
-        if (this._adjustment.get_transition('value') !== null)
+        if (this._adjustment.get_transition('value') !== null) {
+            this._grid.removeNudges();
             return;
+        }
 
         // Within the grid boundaries
         if (dragEvent.y > gridY && dragEvent.y < gridBottom) {
@@ -835,6 +885,7 @@ class AppDisplay extends BaseAppView {
             if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD)
                 this._resetOvershoot();
 
+            this._grid.removeNudges();
             return;
         }
 
@@ -889,10 +940,14 @@ class AppDisplay extends BaseAppView {
         if (this._grid.contains(appIcon))
             this._handleDragOvershoot(dragEvent);
 
+        if (!this._grid.contains(dragEvent.targetActor))
+            this._grid.removeNudges();
+
         return DND.DragMotionResult.CONTINUE;
     }
 
     _onDragEnd() {
+        this._grid.removeNudges();
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
@@ -902,30 +957,9 @@ class AppDisplay extends BaseAppView {
         this._resetOvershoot();
     }
 
-    _canAccept(source) {
-        if (!(source instanceof AppIcon))
+    acceptDrop(source, actor, x, y) {
+        if (!super.acceptDrop(source, actor, x, y))
             return false;
-
-        let view = _getViewFromIcon(source);
-        if (!(view instanceof FolderView))
-            return false;
-
-        return true;
-    }
-
-    handleDragOver(source) {
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.NO_DROP;
-
-        return DND.DragMotionResult.MOVE_DROP;
-    }
-
-    acceptDrop(source) {
-        if (!this._canAccept(source))
-            return false;
-
-        this._iconGridLayout.appendIcon(
-            source.app.id, IconGridLayout.DESKTOP_GRID_ID);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
@@ -933,11 +967,13 @@ class AppDisplay extends BaseAppView {
         return true;
     }
 
-    createFolder(apps) {
+    createFolder(apps, iconAtPosition) {
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
 
-        let newFolderId = this._iconGridLayout.addFolder(folderName);
+        let newFolderId =
+            this._iconGridLayout.addFolder(folderName, iconAtPosition);
+
         if (!newFolderId)
             return false;
 
@@ -1316,6 +1352,11 @@ class ViewIcon extends St.Button {
         });
     }
 
+    _betweenLeeways(x, y) {
+        return x >= IconGrid.LEFT_DIVIDER_LEEWAY &&
+               x <= this.width - IconGrid.RIGHT_DIVIDER_LEEWAY;
+    }
+
     _onLabelUpdate() {
         // Do nothing by default
     }
@@ -1474,9 +1515,12 @@ var FolderIcon = GObject.registerClass({
         return true;
     }
 
-    handleDragOver(source) {
+    handleDragOver(source, _actor, x, y) {
         if (!this._canAccept(source))
             return DND.DragMotionResult.NO_DROP;
+
+        if (!this._betweenLeeways(x, y))
+            return DND.DragMotionResult.CONTINUE;
 
         return DND.DragMotionResult.MOVE_DROP;
     }
@@ -2209,11 +2253,14 @@ var AppIcon = GObject.registerClass({
         }
     }
 
-    handleDragOver(source) {
+    handleDragOver(source, _actor, x, y) {
         if (source == this)
             return DND.DragMotionResult.NO_DROP;
 
         if (!this._canAccept(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        if (!this._betweenLeeways(x, y))
             return DND.DragMotionResult.CONTINUE;
 
         return DND.DragMotionResult.MOVE_DROP;
@@ -2228,7 +2275,7 @@ var AppIcon = GObject.registerClass({
         let view = _getViewFromIcon(this);
         let apps = [this.id, source.id];
 
-        return view.createFolder(apps);
+        return view.createFolder(apps, this.id);
     }
 });
 
