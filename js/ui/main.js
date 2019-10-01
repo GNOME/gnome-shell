@@ -34,6 +34,7 @@ const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
+const Animation = imports.ui.animation;
 const Screencast = imports.ui.screencast;
 const ScreenShield = imports.ui.screenShield;
 const Scripting = imports.ui.scripting;
@@ -86,6 +87,7 @@ var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
+var animationsSettings = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -160,6 +162,8 @@ function _initializeUI() {
     reloadThemeResource();
     _loadOskLayouts();
     _loadDefaultStylesheet();
+
+    animationsSettings = new Animation.AnimationsSettings();
 
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
