@@ -57,6 +57,7 @@ struct _StSettings
 
   gchar *gtk_theme;
   gchar *gtk_icon_theme;
+  int inhibit_animations_count;
   gboolean enable_animations;
   gboolean primary_paste;
   gboolean magnifier_active;
@@ -77,6 +78,41 @@ st_settings_set_slow_down_factor (StSettings *settings,
 
   settings->slow_down_factor = factor;
   g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_SLOW_DOWN_FACTOR]);
+}
+
+static gboolean
+get_enable_animations (StSettings *settings)
+{
+  if (settings->inhibit_animations_count > 0)
+    return FALSE;
+  else
+    return settings->enable_animations;
+}
+
+void
+st_settings_inc_inhibit_animations (StSettings *settings)
+{
+  gboolean enable_animations;
+
+  enable_animations = get_enable_animations (settings);
+  settings->inhibit_animations_count++;
+
+  if (enable_animations != get_enable_animations (settings))
+    g_object_notify_by_pspec (G_OBJECT (settings),
+                              props[PROP_ENABLE_ANIMATIONS]);
+}
+
+void
+st_settings_dec_inhibit_animations (StSettings *settings)
+{
+  gboolean enable_animations;
+
+  enable_animations = get_enable_animations (settings);
+  settings->inhibit_animations_count--;
+
+  if (enable_animations != get_enable_animations (settings))
+    g_object_notify_by_pspec (G_OBJECT (settings),
+                              props[PROP_ENABLE_ANIMATIONS]);
 }
 
 static void
@@ -121,7 +157,7 @@ st_settings_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_ENABLE_ANIMATIONS:
-      g_value_set_boolean (value, settings->enable_animations);
+      g_value_set_boolean (value, get_enable_animations (settings));
       break;
     case PROP_PRIMARY_PASTE:
       g_value_set_boolean (value, settings->primary_paste);
