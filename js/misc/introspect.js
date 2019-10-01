@@ -1,5 +1,5 @@
 /* exported IntrospectService */
-const { Gio, GLib, Meta, Shell } = imports.gi;
+const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const INTROSPECT_SCHEMA = 'org.gnome.shell';
 const INTROSPECT_KEY = 'introspect';
@@ -22,6 +22,7 @@ var IntrospectService = class {
         this._runningApplicationsDirty = true;
         this._activeApplication = null;
         this._activeApplicationDirty = true;
+        this._animationsEnabled = true;
 
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('app-state-changed',
@@ -41,6 +42,11 @@ var IntrospectService = class {
                         });
 
         this._syncRunningApplications();
+
+        this._settings = St.Settings.get();
+        this._settings.connect('notify::enable-animations',
+                               this._syncAnimationsEnabled.bind(this));
+        this._syncAnimationsEnabled();
     }
 
     _isStandaloneApp(app) {
@@ -179,5 +185,18 @@ var IntrospectService = class {
             }
         }
         invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
+    }
+
+    _syncAnimationsEnabled() {
+        let wasAnimationsEnabled = this._animationsEnabled;
+        this._animationsEnabled = this._settings.enable_animations;
+        if (wasAnimationsEnabled != this._animationsEnabled) {
+            let variant = new GLib.Variant('b', this._animationsEnabled);
+            this._dbusImpl.emit_property_changed('AnimationsEnabled', variant);
+        }
+    }
+
+    get AnimationsEnabled() {
+        return this._animationsEnabled;
     }
 };
