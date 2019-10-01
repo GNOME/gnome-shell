@@ -178,6 +178,8 @@ class BaseAppView {
 
         this._items = {};
         this._allItems = [];
+
+        this._id = null;
     }
 
     _childFocused(_actor) {
@@ -336,6 +338,10 @@ class BaseAppView {
     removeNudges() {
         this._grid.removeNudges();
     }
+
+    get id() {
+        return this._id;
+    }
 }
 Signals.addSignalMethods(BaseAppView.prototype);
 
@@ -391,6 +397,8 @@ var AllView = class AllView extends BaseAppView {
         this._stack = this.actor.stack;
         this._stackBox = this.actor.stackBox;
         this._grid._delegate = this;
+
+        this._id = IconGridLayout.DESKTOP_GRID_ID;
 
         this._adjustment = this._scrollView.vscroll.adjustment;
 
@@ -1107,6 +1115,8 @@ var FolderView = class FolderView extends BaseAppView {
         super(null, null);
 
         this._dirInfo = dirInfo;
+
+        this._id = dirInfo.get_id();
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
