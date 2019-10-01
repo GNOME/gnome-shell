@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Animation, AnimatedIcon, Spinner */
+/* exported Animation, AnimatedIcon, Spinner, AnimationsSettings */
 
-const { Clutter, GLib, Gio, St } = imports.gi;
+const { Clutter, GLib, Gio, Meta, St } = imports.gi;
 
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var SPINNER_ANIMATION_TIME = 300;
@@ -174,6 +174,16 @@ var Spinner = class extends AnimatedIcon {
         } else {
             this.actor.opacity = 0;
             super.stop();
+        }
+    }
+};
+
+var AnimationsSettings = class {
+    constructor() {
+        let backend = Meta.get_backend();
+        if (!backend.is_rendering_hardware_accelerated()) {
+            St.Settings.get().inc_inhibit_animations();
+            return;
         }
     }
 };
