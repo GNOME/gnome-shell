@@ -765,5 +765,11 @@ var AnimationsSettings = class {
             St.Settings.get().inc_inhibit_animations();
             return;
         }
+
+        if (Shell.util_has_x11_display_extension(global.display,
+                                                 'VNC-EXTENSION')) {
+            St.Settings.get().inc_inhibit_animations();
+            return;
+        }
     }
 };
