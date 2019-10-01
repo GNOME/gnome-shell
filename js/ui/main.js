@@ -86,6 +86,7 @@ var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
+var animationsSettings = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -160,6 +161,8 @@ function _initializeUI() {
     reloadThemeResource();
     _loadOskLayouts();
     _loadDefaultStylesheet();
+
+    animationsSettings = new AnimationsSettings();
 
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
@@ -754,3 +757,13 @@ function showRestartMessage(message) {
     let restartMessage = new RestartMessage(message);
     restartMessage.open();
 }
+
+var AnimationsSettings = class {
+    constructor() {
+        let backend = Meta.get_backend();
+        if (!backend.is_rendering_hardware_accelerated()) {
+            St.Settings.get().inc_inhibit_animations();
+            return;
+        }
+    }
+};
