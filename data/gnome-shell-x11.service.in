@@ -31,5 +31,5 @@ SuccessExitStatus=1
 Restart=always
 # Do not wait before restarting the shell
 RestartSec=0ms
-# Kill any stubborn child processes after this long
-TimeoutStopSec=5
+# Do not kill subprocesses (non-bus-activated apps launched by the user)
+KillMode=process
