@@ -169,6 +169,7 @@ class BaseAppView {
             this._grid = new IconGrid.PaginatedIconGrid(gridParams);
         else
             this._grid = new IconGrid.IconGrid(gridParams);
+        this._grid._delegate = this;
 
         this._grid.connect('child-focused', (grid, actor) => {
             this._childFocused(actor);
@@ -326,6 +327,36 @@ class BaseAppView {
         this._grid.ease(params);
     }
 
+    _canAccept(source) {
+        if (!(source instanceof AppIcon))
+            return false;
+
+        let view = _getViewFromIcon(source);
+        if (!(view instanceof FolderView))
+            return false;
+
+        return true;
+    }
+
+    handleDragOver(source, actor, x, y) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        // Ask grid can we drop here
+        let [index, cursorLocation] = this.canDropAt(x, y);
+
+        log(`${index} - ${cursorLocation}`);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    acceptDrop(source, actor, x, y) {
+        if (!this._canAccept(source))
+            return false;
+
+        return true;
+    }
+
     get gridActor() {
         return this._grid;
     }
@@ -399,7 +430,6 @@ var AllView = class AllView extends BaseAppView {
         this._scrollView = this.actor.scrollView;
         this._stack = this.actor.stack;
         this._stackBox = this.actor.stackBox;
-        this._grid._delegate = this;
 
         this._id = IconGridLayout.DESKTOP_GRID_ID;
 
@@ -884,8 +914,8 @@ var AllView = class AllView extends BaseAppView {
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source) {
-        if (!this._canAccept(source))
+    acceptDrop(source, actor, x, y) {
+        if (!super.acceptDrop(source, actor, x, y))
             return false;
 
         IconGridLayout.layout.appendIcon(
