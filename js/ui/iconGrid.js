@@ -738,7 +738,7 @@ var IconGrid = GObject.registerClass({
         if (dragLocation == DragLocation.EMPTY_AREA || dragLocation == DragLocation.ON_ICON)
             return;
 
-        let children = this.get_children().filter(c => c.is_visible());
+        let children = this._getVisibleChildren();
         let nudgeIndex = index;
         let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
 
@@ -758,9 +758,9 @@ var IconGrid = GObject.registerClass({
     }
 
     removeNudges() {
-        let children = this.get_children().filter(c => c.is_visible());
-        for (let index = 0; index < children.length; index++) {
-            this._animateNudge(children[index],
+        let children = this._getVisibleChildren();
+        for (let child of children) {
+            this._animateNudge(child,
                                NUDGE_RETURN_ANIMATION_TYPE,
                                NUDGE_RETURN_DURATION,
                                0);
@@ -771,11 +771,11 @@ var IconGrid = GObject.registerClass({
         if (!item)
             return;
 
-        item.save_easing_state();
-        item.set_easing_mode(animationType);
-        item.set_easing_duration(duration);
-        item.translation_x = offset;
-        item.restore_easing_state();
+        item.ease({
+            translation_x: offset,
+            duration: duration,
+            mode: animationType,
+        });
     }
 
     // This function is overriden by the PaginatedIconGrid subclass so we can
