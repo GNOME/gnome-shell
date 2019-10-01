@@ -20,6 +20,8 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <meta/display.h>
+#include <meta/meta-x11-display.h>
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -674,4 +676,28 @@ shell_util_sd_notify (void)
   /* We only use NOTIFY_SOCKET exactly once; unset it so it doesn't remain in
    * our environment. */
   sd_notify (1, "READY=1");
+}
+
+/**
+ * shell_util_has_x11_display_extension:
+ * @display: A #MetaDisplay
+ * @extension: An X11 extension
+ *
+ * If the corresponding X11 display provides the passed extension, return %TRUE,
+ * otherwise %FALSE. If there is no X11 display, %FALSE is passed.
+ */
+gboolean
+shell_util_has_x11_display_extension (MetaDisplay *display,
+                                      const char  *extension)
+{
+  MetaX11Display *x11_display;
+  Display *xdisplay;
+  int op, event, error;
+
+  x11_display = meta_display_get_x11_display (display);
+  if (!x11_display)
+    return FALSE;
+
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  return XQueryExtension (xdisplay, extension, &op, &event, &error);
 }
