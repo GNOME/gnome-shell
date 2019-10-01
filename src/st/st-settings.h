@@ -33,6 +33,10 @@ G_DECLARE_FINAL_TYPE (StSettings, st_settings, ST, SETTINGS, GObject)
 
 StSettings * st_settings_get (void);
 
+void st_settings_inc_inhibit_animations (StSettings *settings);
+
+void st_settings_dec_inhibit_animations (StSettings *settings);
+
 G_END_DECLS
 
 #endif /* __ST_SETTINGS_H__ */
