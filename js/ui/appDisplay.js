@@ -341,6 +341,10 @@ var BaseAppView = GObject.registerClass({
     removeNudges() {
         this._grid.removeNudges();
     }
+
+    get id() {
+        return this._id;
+    }
 });
 
 var AppDisplay = GObject.registerClass(
@@ -354,6 +358,8 @@ class AppDisplay extends BaseAppView {
         }, {
             minRows: EOS_DESKTOP_MIN_ROWS,
         });
+
+        this._id = IconGridLayout.DESKTOP_GRID_ID;
 
         this._scrollView = new St.ScrollView({
             style_class: 'all-apps',
@@ -1083,6 +1089,7 @@ class FolderView extends BaseAppView {
         });
 
         this._dirInfo = dirInfo;
+        this._id = dirInfo.get_id();
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
