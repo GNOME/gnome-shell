@@ -68,6 +68,9 @@ gboolean shell_util_stop_systemd_unit  (const char  *unit,
 
 void shell_util_sd_notify (void);
 
+gboolean shell_util_has_x11_display_extension (MetaDisplay *display,
+                                               const char  *extension);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
