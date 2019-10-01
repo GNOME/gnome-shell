@@ -244,6 +244,9 @@ class BaseAppView {
         let realPosition = this._grid.moveItem(item, newPosition);
         this._allItems.splice(realPosition, 0, item);
 
+        let targetId = visibleItems[realPosition].id;
+        IconGridLayout.layout.repositionIcon(item.id, targetId, this.id);
+
         return realPosition;
     }
 
