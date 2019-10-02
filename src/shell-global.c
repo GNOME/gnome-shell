@@ -832,6 +832,13 @@ entry_cursor_func (StEntry  *entry,
                            use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
 }
 
+static void
+on_x11_display_closed (MetaDisplay *display,
+                       ShellGlobal *global)
+{
+  g_signal_handlers_disconnect_by_data (global->stage, global);
+}
+
 void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
@@ -894,6 +901,10 @@ _shell_global_set_plugin (ShellGlobal *global,
                     G_CALLBACK (focus_actor_changed), global);
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
+
+  if (global->xdisplay)
+    g_signal_connect_object (global->meta_display, "x11-display-closing",
+                             G_CALLBACK (on_x11_display_closed), global, 0);
 
   backend = meta_get_backend ();
   settings = meta_backend_get_settings (backend);
