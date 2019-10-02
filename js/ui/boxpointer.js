@@ -124,6 +124,10 @@ var BoxPointer = new Lang.Class({
         if (!this.actor.visible)
             return;
 
+        let pointerGrab = Clutter.get_pointer_grab();
+        if (pointerGrab && this.actor.contains(pointerGrab))
+            Clutter.ungrab_pointer();
+
         let xOffset = 0;
         let yOffset = 0;
         let themeNode = this.actor.get_theme_node();
