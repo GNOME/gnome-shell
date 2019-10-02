@@ -943,6 +943,9 @@ shell_global_begin_modal (ShellGlobal       *global,
                           guint32           timestamp,
                           MetaModalOptions  options)
 {
+  if (!meta_display_get_compositor (global->meta_display))
+    return FALSE;
+
   /* Make it an error to call begin_modal while we already
    * have a modal active. */
   if (global->has_modal)
@@ -964,6 +967,9 @@ void
 shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
+  if (!meta_display_get_compositor (global->meta_display))
+    return;
+
   if (!global->has_modal)
     return;
 
