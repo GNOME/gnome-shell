@@ -185,6 +185,8 @@ var Lightbox = class Lightbox {
             this.emit('shown');
         };
 
+        this.actor.show();
+
         if (this._radialEffect) {
             this.actor.ease_property(
                 '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, easeProps);
@@ -197,8 +199,6 @@ var Lightbox = class Lightbox {
                 onComplete
             }));
         }
-
-        this.actor.show();
     }
 
     hide(fadeOutTime) {
