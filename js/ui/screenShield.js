@@ -17,6 +17,8 @@ const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const SmartcardManager = imports.misc.smartcardManager;
 
+const { adjustAnimationTime } = imports.ui.environment;
+
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const LOCK_DELAY_KEY = 'lock-delay';
@@ -832,7 +834,7 @@ var ScreenShield = class {
 
         if (shouldLock) {
             let lockTimeout = Math.max(
-                STANDARD_FADE_TIME,
+                adjustAnimationTime(STANDARD_FADE_TIME),
                 this._settings.get_uint(LOCK_DELAY_KEY) * 1000);
             this._lockTimeoutId = GLib.timeout_add(
                 GLib.PRIORITY_DEFAULT,
