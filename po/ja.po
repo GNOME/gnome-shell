@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-06-14 16:48+0000\n"
-"PO-Revision-Date: 2019-09-05 00:00+0900\n"
+"POT-Creation-Date: 2019-09-05 11:54+0000\n"
+"PO-Revision-Date: 2019-10-05 00:20+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -401,7 +401,9 @@ msgstr "電源オフ"
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "power off;shutdown;reboot;restart"
-msgstr "power off;shutdown;reboot;restart;電源オフ;シャットダウン;リブート;リスタート;再起動"
+msgstr ""
+"power off;shutdown;reboot;restart;電源オフ;シャットダウン;リブート;リスター"
+"ト;再起動"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
@@ -471,7 +473,7 @@ msgstr "次のコマンドは解析できません:"
 #: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "”%s”の実行に失敗しました:"
+msgstr "“%s”の実行に失敗しました:"
 
 #: js/misc/util.js:180
 msgid "Just now"
@@ -509,7 +511,7 @@ msgstr[0] "%d週間前"
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
-msgstr[0] "%dか月前"
+msgstr[0] "%dヶ月前"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -811,7 +813,7 @@ msgstr "すべてクリア"
 #: js/ui/closeDialog.js:50
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "”%s”の応答がありません。"
+msgstr "“%s”の応答がありません。"
 
 #: js/ui/closeDialog.js:51
 msgid ""
@@ -888,8 +890,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"無線ネットワーク”%s”にアクセスするにはパスワードか、または暗号化キーが必要"
-"です。"
+"無線ネットワーク“%s”にアクセスするにはパスワードか、または暗号化キーが必要で"
+"す。"
 
 #: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
 msgid "Wired 802.1X authentication"
@@ -923,7 +925,7 @@ msgstr "モバイルブロードバンドネットワークのパスワード"
 #: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "”%s”への接続にはパスワードが必要です。"
+msgstr "“%s”への接続にはパスワードが必要です。"
 
 #: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1693
 msgid "Network Manager"
@@ -1193,7 +1195,7 @@ msgstr "インストール"
 #: js/ui/extensionDownloader.js:206
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "extensions.gnome.org から”%s”をダウンロードしてインストールしますか?"
+msgstr "extensions.gnome.org から“%s”をダウンロードしてインストールしますか?"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:59
@@ -1231,7 +1233,9 @@ msgstr "スローキーをオフにする"
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
-msgstr "[SHIFT] キーを8秒間押下しました。これはスローキー機能のショートカットとして、キーボード操作に影響を与えるものです。"
+msgstr ""
+"[SHIFT] キーを8秒間押下しました。これはスローキー機能のショートカットとして、"
+"キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned On"
@@ -1245,7 +1249,9 @@ msgstr "固定キーをオフにする"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr "[SHIFT] キーを連続して5回押下しました。これは固定キー機能のショートカットとして、キーボード操作に影響を与えるものです。"
+msgstr ""
+"[SHIFT] キーを連続して5回押下しました。これは固定キー機能のショートカットとし"
+"て、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:47
 msgid ""
@@ -1253,8 +1259,8 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
-"同時に2つのキーを押下したか、あるいは [SHIFT] "
-"キーを連続して5回押下しました。これは固定キー機能を無効にし、キーボード操作に影響を与えるものです。"
+"同時に2つのキーを押下したか、あるいは [SHIFT] キーを連続して5回押下しました。"
+"これは固定キー機能を無効にし、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:59
 msgid "Leave On"
@@ -1933,7 +1939,9 @@ msgstr "不明な Thunderbolt デバイス"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr "離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度切断し、再接続してください。"
+msgstr ""
+"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度切断"
+"し、再接続してください。"
 
 #: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
@@ -1999,7 +2007,7 @@ msgstr "検索"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "”%s”は準備完了です"
+msgstr "“%s”の準備ができました"
 
 #: js/ui/windowManager.js:72
 msgid "Do you want to keep these display settings?"
@@ -2099,7 +2107,7 @@ msgstr "Evolution カレンダー"
 
 #: src/main.c:432
 msgid "Print version"
-msgstr "バージョンを表示"
+msgstr "バージョンを表示する"
 
 #: src/main.c:438
 msgid "Mode used by GDM for login screen"
@@ -2121,7 +2129,7 @@ msgstr "不明なプログラム"
 #: src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "”%s”の起動に失敗しました"
+msgstr "“%s”の起動に失敗しました"
 
 #: src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
