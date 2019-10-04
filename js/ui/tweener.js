@@ -7,7 +7,7 @@ const { Clutter, GLib, Shell } = imports.gi;
 const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
 
-const { adjustAnimationTime } = imports.ui.environment;
+const Environment = imports.ui.environment;
 
 // This is a wrapper around imports.tweener.tweener that adds a bit of
 // Clutter integration. If the tweening target is a Clutter.Actor, then
@@ -28,7 +28,6 @@ function init() {
     Tweener.setFrameTicker(new ClutterFrameTicker());
 }
 
-
 function addCaller(target, tweeningParameters) {
     _wrapTweening(target, tweeningParameters);
     Tweener.addCaller(target, tweeningParameters);
@@ -37,6 +36,11 @@ function addCaller(target, tweeningParameters) {
 function addTween(target, tweeningParameters) {
     _wrapTweening(target, tweeningParameters);
     Tweener.addTween(target, tweeningParameters);
+}
+
+function adjustAnimationTime(msecs) {
+    let time = Environment.adjustAnimationTime(1000 * msecs) / 1000;
+    return time ? time : 0.000001;
 }
 
 function _wrapTweening(target, tweeningParameters) {
@@ -54,9 +58,9 @@ function _wrapTweening(target, tweeningParameters) {
 
     let { time, delay } = tweeningParameters;
     if (!isNaN(time))
-        tweeningParameters['time'] = adjustAnimationTime(1000 * time) / 1000;
+        tweeningParameters['time'] = adjustAnimationTime(time);
     if (!isNaN(delay))
-        tweeningParameters['delay'] = adjustAnimationTime(1000 * delay) / 1000;
+        tweeningParameters['delay'] = adjustAnimationTime(delay);
 
     _addHandler(target, tweeningParameters, 'onComplete', _tweenCompleted);
 }
