@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2019-09-22 11:29+0000\n"
-"PO-Revision-Date: 2019-09-22 20:10+0900\n"
+"PO-Revision-Date: 2019-10-04 23:50+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -599,7 +599,7 @@ msgstr "次のコマンドは解析できません:"
 #: js/misc/util.js:157
 #, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "”%s”の実行に失敗しました:"
+msgstr "“%s”の実行に失敗しました:"
 
 #: js/misc/util.js:174
 msgid "Just now"
@@ -952,7 +952,7 @@ msgstr "消去"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "”%s”の応答がありません。"
+msgstr "“%s”の応答がありません。"
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1043,7 +1043,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"無線ネットワーク”%s”にアクセスするにはパスワードか暗号化キーが必要です。"
+"無線ネットワーク“%s”にアクセスするにはパスワードか暗号化キーが必要です。"
 
 #: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:696
 msgid "Wired 802.1X authentication"
@@ -1077,7 +1077,7 @@ msgstr "モバイルブロードバンドネットワークのパスワード"
 #: js/ui/components/networkAgent.js:701 js/ui/components/networkAgent.js:713
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "”%s”への接続にはパスワードが必要です。"
+msgstr "“%s”への接続にはパスワードが必要です。"
 
 #: js/ui/components/networkAgent.js:680 js/ui/status/network.js:1675
 msgid "Network Manager"
@@ -1316,7 +1316,7 @@ msgstr "インストール"
 #: js/ui/extensionDownloader.js:200
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "extensions.gnome.org から”%s”をダウンロードしてインストールしますか?"
+msgstr "extensions.gnome.org から“%s”をダウンロードしてインストールしますか?"
 
 #: js/ui/inhibitShortcutsDialog.js:80
 #, javascript-format
@@ -2205,7 +2205,7 @@ msgstr "検索"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "”%s”の準備ができました"
+msgstr "“%s”の準備ができました"
 
 #: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
@@ -2629,7 +2629,7 @@ msgstr "不明なプログラム"
 #: src/shell-app.c:515
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "”%s”の起動に失敗しました"
+msgstr "“%s”の起動に失敗しました"
 
 #: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
