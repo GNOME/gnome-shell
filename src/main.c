@@ -24,14 +24,6 @@
 #include "shell-perf-log.h"
 #include "st.h"
 
-#ifdef HAVE_SYSTEMD
-#include <systemd/sd-daemon.h>
-#else
-/* So we don't need to add ifdef's everywhere */
-#define sd_notify(u, m)            do {} while (0)
-#define sd_notifyf(u, m, ...)      do {} while (0)
-#endif
-
 extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
@@ -532,9 +524,6 @@ main (int argc, char **argv)
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
   shell_dbus_init (meta_get_replace_current_wm ());
-  /* We only use NOTIFY_SOCKET exactly once; unset it so it doesn't remain in
-   * our environment. */
-  sd_notify (1, "READY=1");
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
