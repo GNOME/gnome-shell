@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-17 11:44+0000\n"
+"POT-Creation-Date: 2019-09-22 11:29+0000\n"
 "PO-Revision-Date: 2019-09-22 20:10+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -466,7 +466,7 @@ msgid "Next"
 msgstr "次へ"
 
 #: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:396
-#: js/ui/unlockDialog.js:42
+#: js/ui/unlockDialog.js:45
 msgid "Unlock"
 msgstr "ロック解除"
 
@@ -754,32 +754,32 @@ msgstr "常用"
 msgid "All"
 msgstr "すべて"
 
-#: js/ui/appDisplay.js:1749
+#: js/ui/appDisplay.js:1745
 msgid "Rename"
 msgstr "名前の変更"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2397 js/ui/panel.js:76
+#: js/ui/appDisplay.js:2418 js/ui/panel.js:76
 msgid "Open Windows"
 msgstr "開いているウィンドウ"
 
-#: js/ui/appDisplay.js:2416 js/ui/panel.js:83
+#: js/ui/appDisplay.js:2437 js/ui/panel.js:83
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: js/ui/appDisplay.js:2428
+#: js/ui/appDisplay.js:2449
 msgid "Launch using Dedicated Graphics Card"
 msgstr "専用のグラフィックカードを使用して起動する"
 
-#: js/ui/appDisplay.js:2457 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2478 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: js/ui/appDisplay.js:2463
+#: js/ui/appDisplay.js:2484
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
-#: js/ui/appDisplay.js:2473 js/ui/panel.js:94
+#: js/ui/appDisplay.js:2494 js/ui/panel.js:94
 msgid "Show Details"
 msgstr "詳細を表示する"
 
@@ -2186,11 +2186,11 @@ msgstr "外部のみ"
 msgid "Built-in Only"
 msgstr "組み込みのみ"
 
-#: js/ui/unlockDialog.js:50
+#: js/ui/unlockDialog.js:53
 msgid "Log in as another user"
 msgstr "他のユーザーでログイン"
 
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:70
 msgid "Unlock Window"
 msgstr "ロック解除"
 
