@@ -293,7 +293,7 @@ function adjustAnimationTime(msecs) {
     let settings = St.Settings.get();
 
     if (!settings.enable_animations)
-        return 1;
+        return 0;
     return settings.slow_down_factor * msecs;
 }
 
