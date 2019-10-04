@@ -26,6 +26,14 @@
 #include <langinfo.h>
 #endif
 
+#ifdef HAVE_SYSTEMD
+#include <systemd/sd-daemon.h>
+#else
+/* So we don't need to add ifdef's everywhere */
+#define sd_notify(u, m)            do {} while (0)
+#define sd_notifyf(u, m, ...)      do {} while (0)
+#endif
+
 static void
 stop_pick (ClutterActor       *actor,
            const ClutterColor *color)
@@ -658,4 +666,12 @@ shell_util_stop_systemd_unit (const char  *unit,
                               GError     **error)
 {
   return shell_util_systemd_call ("StopUnit", unit, mode, error);
+}
+
+void
+shell_util_sd_notify (void)
+{
+  /* We only use NOTIFY_SOCKET exactly once; unset it so it doesn't remain in
+   * our environment. */
+  sd_notify (1, "READY=1");
 }

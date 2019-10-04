@@ -229,6 +229,7 @@ function _initializeUI() {
     EndSessionDialog.init();
 
     // We're ready for the session manager to move to the next phase
+    Shell.util_sd_notify();
     Meta.register_with_session();
 
     _startDate = new Date();
