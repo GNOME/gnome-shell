@@ -229,7 +229,11 @@ function _initializeUI() {
     EndSessionDialog.init();
 
     // We're ready for the session manager to move to the next phase
-    Meta.register_with_session();
+    GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        Shell.util_sd_notify();
+        Meta.register_with_session();
+        return GLib.SOURCE_REMOVE;
+    });
 
     _startDate = new Date();
 
