@@ -640,15 +640,15 @@ var PadOsd = GObject.registerClass({
         this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
         this._padChooser = null;
 
-        let deviceManager = Clutter.DeviceManager.get_default();
-        this._deviceAddedId = deviceManager.connect('device-added', (manager, device) => {
+        let seat = Clutter.get_default_backend().get_default_seat();
+        this._deviceAddedId = seat.connect('device-added', (seat, device) => {
             if (device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
                 this.padDevice.is_grouped(device)) {
                 this._groupPads.push(device);
                 this._updatePadChooser();
             }
         });
-        this._deviceRemovedId = deviceManager.connect('device-removed', (manager, device) => {
+        this._deviceRemovedId = seat.connect('device-removed', (seat, device) => {
             // If the device is being removed, destroy the padOsd.
             if (device == this.padDevice) {
                 this.destroy();
@@ -661,7 +661,7 @@ var PadOsd = GObject.registerClass({
             }
         });
 
-        deviceManager.list_devices().forEach(device => {
+        seat.list_devices().forEach(device => {
             if (device != this.padDevice &&
                 device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
                 this.padDevice.is_grouped(device))
@@ -935,13 +935,13 @@ var PadOsd = GObject.registerClass({
         Main.popModal(this);
         this._actionEditor.close();
 
-        let deviceManager = Clutter.DeviceManager.get_default();
+        let seat = Clutter.get_default_backend().get_default_seat();
         if (this._deviceRemovedId != 0) {
-            deviceManager.disconnect(this._deviceRemovedId);
+            seat.disconnect(this._deviceRemovedId);
             this._deviceRemovedId = 0;
         }
         if (this._deviceAddedId != 0) {
-            deviceManager.disconnect(this._deviceAddedId);
+            seat.disconnect(this._deviceAddedId);
             this._deviceAddedId = 0;
         }
 
@@ -965,8 +965,8 @@ var PadOsdService = class {
 
     ShowAsync(params, invocation) {
         let [deviceNode, editionMode] = params;
-        let deviceManager = Clutter.DeviceManager.get_default();
-        let devices = deviceManager.list_devices();
+        let seat = Clutter.get_default_backend().get_default_seat();
+        let devices = seat.list_devices();
         let padDevice = null;
 
         devices.forEach(device => {
