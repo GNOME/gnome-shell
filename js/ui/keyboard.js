@@ -1058,7 +1058,7 @@ var Keyboard = class Keyboard {
 
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
-        this._lastDeviceId = null;
+        this._lastDevice = null;
         this._suggestions = null;
         this._emojiKeyVisible = Meta.is_wayland_compositor();
 
@@ -1081,12 +1081,9 @@ var Keyboard = class Keyboard {
         });
 
         Meta.get_backend().connect('last-device-changed', 
-            (backend, deviceId) => {
-                let manager = Clutter.DeviceManager.get_default();
-                let device = manager.get_device(deviceId);
-
+            (backend, device) => {
                 if (!device.get_device_name().includes('XTEST')) {
-                    this._lastDeviceId = deviceId;
+                    this._lastDevice = device;
                     this._syncEnabled();
                 }
             });
@@ -1114,16 +1111,10 @@ var Keyboard = class Keyboard {
     }
 
     _lastDeviceIsTouchscreen() {
-        if (!this._lastDeviceId)
+        if (!this._lastDevice)
             return false;
 
-        let manager = Clutter.DeviceManager.get_default();
-        let device = manager.get_device(this._lastDeviceId);
-
-        if (!device)
-            return false;
-
-        return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
+        return this._lastDevice.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     }
 
     _syncEnabled() {
