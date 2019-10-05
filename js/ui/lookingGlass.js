@@ -513,9 +513,9 @@ var Inspector = GObject.registerClass({
         eventHandler.connect('scroll-event', this._onScrollEvent.bind(this));
         eventHandler.connect('motion-event', this._onMotionEvent.bind(this));
 
-        let dm = Clutter.DeviceManager.get_default();
-        this._pointerDevice = dm.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
-        this._keyboardDevice = dm.get_core_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+        let seat = Clutter.get_default_backend().get_default_seat();
+        this._pointerDevice = seat.get_pointer();
+        this._keyboardDevice = seat.get_keyboard();
 
         this._pointerDevice.grab(eventHandler);
         this._keyboardDevice.grab(eventHandler);
