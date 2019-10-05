@@ -1236,8 +1236,11 @@ shell_global_sync_pointer (ShellGlobal *global)
   int x, y;
   ClutterModifierType mods;
   ClutterMotionEvent event;
+  ClutterSeat *seat;
 
   shell_global_get_pointer (global, &x, &y, &mods);
+
+  seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
 
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);
@@ -1247,8 +1250,7 @@ shell_global_sync_pointer (ShellGlobal *global)
   event.y = y;
   event.modifier_state = mods;
   event.axes = NULL;
-  event.device = clutter_device_manager_get_device (clutter_device_manager_get_default (),
-                                                    META_VIRTUAL_CORE_POINTER_ID);
+  event.device = clutter_seat_get_pointer (seat);
 
   /* Leaving event.source NULL will force clutter to look it up, which
    * will generate enter/leave events as a side effect, if they are
