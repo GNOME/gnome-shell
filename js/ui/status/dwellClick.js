@@ -48,8 +48,8 @@ class DwellClickIndicator extends PanelMenu.Button {
         this._a11ySettings.connect(`changed::${KEY_DWELL_CLICK_ENABLED}`, this._syncMenuVisibility.bind(this));
         this._a11ySettings.connect(`changed::${KEY_DWELL_MODE}`, this._syncMenuVisibility.bind(this));
 
-        this._deviceManager = Clutter.DeviceManager.get_default();
-        this._deviceManager.connect('ptr-a11y-dwell-click-type-changed', this._updateClickType.bind(this));
+        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._seat.connect('ptr-a11y-dwell-click-type-changed', this._updateClickType.bind(this));
 
         this._addDwellAction(DWELL_CLICK_MODES.primary);
         this._addDwellAction(DWELL_CLICK_MODES.double);
@@ -80,7 +80,7 @@ class DwellClickIndicator extends PanelMenu.Button {
     }
 
     _setClickType(mode) {
-        this._deviceManager.set_pointer_a11y_dwell_click_type(mode.type);
+        this._seat.set_pointer_a11y_dwell_click_type(mode.type);
         this._icon.icon_name = mode.icon;
     }
 });
