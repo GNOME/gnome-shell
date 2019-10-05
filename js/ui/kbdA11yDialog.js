@@ -15,12 +15,12 @@ class KbdA11yDialog extends GObject.Object {
 
         this._a11ySettings = new Gio.Settings({ schema_id: KEYBOARD_A11Y_SCHEMA });
 
-        let deviceManager = Clutter.DeviceManager.get_default();
-        deviceManager.connect('kbd-a11y-flags-changed',
-                              this._showKbdA11yDialog.bind(this));
+        let seat = Clutter.get_default_backend().get_default_seat();
+        seat.connect('kbd-a11y-flags-changed',
+                     this._showKbdA11yDialog.bind(this));
     }
 
-    _showKbdA11yDialog(deviceManager, newFlags, whatChanged) {
+    _showKbdA11yDialog(seat, newFlags, whatChanged) {
         let dialog = new ModalDialog.ModalDialog();
         let title, body;
         let key, enabled;
