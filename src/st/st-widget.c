@@ -1898,12 +1898,12 @@ st_widget_set_hover (StWidget *widget,
 void
 st_widget_sync_hover (StWidget *widget)
 {
-  ClutterDeviceManager *device_manager;
   ClutterInputDevice *pointer;
   ClutterActor *pointer_actor;
+  ClutterSeat *seat;
 
-  device_manager = clutter_device_manager_get_default ();
-  pointer = clutter_device_manager_get_device (device_manager, VIRTUAL_CORE_POINTER_ID);
+  seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
+  pointer = clutter_seat_get_pointer (seat);
   pointer_actor = clutter_input_device_get_pointer_actor (pointer);
   if (pointer_actor && clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
     st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
