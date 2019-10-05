@@ -310,8 +310,8 @@ var _Draggable = class _Draggable {
                 device = event.get_device();
 
             if (device == undefined) {
-                let manager = Clutter.DeviceManager.get_default();
-                device = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
+                let seat = Clutter.get_default_backend().get_default_seat;
+                device = seat.get_pointer();
             }
         }
 
