@@ -1716,8 +1716,8 @@ var Keyboard = class Keyboard {
 
 var KeyboardController = class {
     constructor() {
-        let deviceManager = Clutter.DeviceManager.get_default();
-        this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+        let seat = Clutter.get_default_backend().get_default_seat;
+        this._virtualDevice = seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',

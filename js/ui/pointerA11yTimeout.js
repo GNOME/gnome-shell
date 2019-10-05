@@ -108,9 +108,9 @@ var PieTimer = GObject.registerClass({
 
 var PointerA11yTimeout = class PointerA11yTimeout {
     constructor() {
-        let manager = Clutter.DeviceManager.get_default();
+        let seat = Clutter.get_default_backend().get_default_seat;
 
-        manager.connect('ptr-a11y-timeout-started', (manager, device, type, timeout) => {
+        seat.connect('ptr-a11y-timeout-started', (seat, device, type, timeout) => {
             let [x, y] = global.get_pointer();
 
             this._pieTimer = new PieTimer();
@@ -123,7 +123,7 @@ var PointerA11yTimeout = class PointerA11yTimeout {
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
-        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type, clicked) => {
+        seat.connect('ptr-a11y-timeout-stopped', (seat, device, type, clicked) => {
             if (!clicked)
                 this._pieTimer.destroy();
 
