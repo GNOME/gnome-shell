@@ -265,10 +265,12 @@ st_entry_dispose (GObject *object)
   StEntry *entry = ST_ENTRY (object);
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   ClutterKeymap *keymap;
+  ClutterSeat *seat;
 
   cogl_clear_object (&priv->text_shadow_material);
 
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
+  keymap = clutter_seat_get_keymap (seat);
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
 
   G_OBJECT_CLASS (st_entry_parent_class)->dispose (object);
@@ -569,10 +571,12 @@ clutter_text_focus_in_cb (ClutterText  *text,
 {
   StEntry *entry = ST_ENTRY (actor);
   ClutterKeymap *keymap;
+  ClutterSeat *seat;
 
   st_entry_update_hint_visibility (entry);
 
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
+  keymap = clutter_seat_get_keymap (seat);
   keymap_state_changed (keymap, entry);
   g_signal_connect (keymap, "state-changed",
                     G_CALLBACK (keymap_state_changed), entry);
@@ -587,6 +591,7 @@ clutter_text_focus_out_cb (ClutterText  *text,
 {
   StEntry *entry = ST_ENTRY (actor);
   ClutterKeymap *keymap;
+  ClutterSeat *seat;
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
 
@@ -595,7 +600,8 @@ clutter_text_focus_out_cb (ClutterText  *text,
   clutter_text_set_cursor_visible (text, FALSE);
   remove_capslock_feedback (entry);
 
-  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
+  keymap = clutter_seat_get_keymap (seat);
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
 }
 
