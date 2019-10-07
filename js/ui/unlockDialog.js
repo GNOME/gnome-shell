@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported UnlockDialog */
 
-const { AccountsService, Atk, Clutter,
-        Gdm, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { AccountsService, Atk, Clutter, Gdm, Gio, GLib,
+        GnomeDesktop, GObject, Meta, Shell, St } = imports.gi;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -11,6 +11,41 @@ const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
+
+var Clock = class {
+    constructor() {
+        this.actor = new St.BoxLayout({
+            style_class: 'screen-shield-clock',
+            vertical: true,
+        });
+
+        this._time = new St.Label({ style_class: 'screen-shield-clock-time' });
+        this._date = new St.Label({ style_class: 'screen-shield-clock-date' });
+
+        this.actor.add(this._time, { x_align: St.Align.MIDDLE });
+        this.actor.add(this._date, { x_align: St.Align.MIDDLE });
+
+        this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
+        this._wallClock.connect('notify::clock', this._updateClock.bind(this));
+
+        this._updateClock();
+    }
+
+    _updateClock() {
+        this._time.text = this._wallClock.clock;
+
+        let date = new Date();
+        /* Translators: This is a time format for a date in
+           long format */
+        let dateFormat = Shell.util_translate_time_string(N_("%A, %B %d"));
+        this._date.text = date.toLocaleFormat(dateFormat);
+    }
+
+    destroy() {
+        this.actor.destroy();
+        this._wallClock.run_dispose();
+    }
+};
 
 var UnlockDialog = GObject.registerClass({
     Signals: { 'failed': {} },
@@ -30,12 +65,17 @@ var UnlockDialog = GObject.registerClass({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._promptBox = new St.BoxLayout({ vertical: true,
-                                             x_align: Clutter.ActorAlign.CENTER,
-                                             y_align: Clutter.ActorAlign.CENTER,
-                                             x_expand: true,
-                                             y_expand: true });
-        this.add_child(this._promptBox);
+        this._mainBox = new St.BoxLayout({
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+            vertical: true,
+        });
+        this.add_child(this._mainBox);
+
+        this._clock = new Clock();
+        this._mainBox.add_child(this._clock.actor);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
@@ -44,7 +84,7 @@ var UnlockDialog = GObject.registerClass({
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
 
-        this._promptBox.add_child(this._authPrompt.actor);
+        this._mainBox.add_child(this._authPrompt.actor);
 
         this.allowCancel = false;
 
@@ -59,7 +99,7 @@ var UnlockDialog = GObject.registerClass({
                                                     x_align: St.Align.START,
                                                     x_fill: false });
             this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
-            this._promptBox.add_child(this._otherUserButton);
+            this._mainBox.add_child(this._otherUserButton);
         } else {
             this._otherUserButton = null;
         }
@@ -113,6 +153,9 @@ var UnlockDialog = GObject.registerClass({
 
     _onDestroy() {
         this.popModal();
+
+        this._clock.destroy();
+        this._clock = null;
 
         if (this._idleWatchId) {
             this._idleMonitor.remove_watch(this._idleWatchId);
