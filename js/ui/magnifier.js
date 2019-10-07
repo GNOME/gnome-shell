@@ -127,6 +127,9 @@ var Magnifier = class Magnifier {
      * Show the system mouse pointer.
      */
     showSystemCursor() {
+        const seat = Clutter.get_default_backend().get_default_seat();
+
+        seat.inhibit_unfocus = false;
         this._cursorTracker.set_pointer_visible(true);
     }
 
@@ -135,6 +138,9 @@ var Magnifier = class Magnifier {
      * Hide the system mouse pointer.
      */
     hideSystemCursor() {
+        const seat = Clutter.get_default_backend().get_default_seat();
+
+        seat.inhibit_unfocus = true;
         this._cursorTracker.set_pointer_visible(false);
     }
 
