@@ -14,7 +14,7 @@ const AuthPrompt = imports.gdm.authPrompt;
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
 
-var SUMMARY_ICON_SIZE = 48;
+var SUMMARY_ICON_SIZE = 24;
 
 var Clock = class {
     constructor() {
@@ -95,28 +95,28 @@ var NotificationsBox = class {
         this.actor.visible = this._notificationBox.visible;
     }
 
-    _makeNotificationCountText(count, isChat) {
-        if (isChat)
-            return ngettext("%d new message", "%d new messages", count).format(count);
-        else
-            return ngettext("%d new notification", "%d new notifications", count).format(count);
-    }
-
     _makeNotificationSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
         box.add(sourceActor, { y_fill: true });
 
-        let textBox = new St.BoxLayout({ vertical: true });
-        box.add(textBox, { y_fill: false, y_align: St.Align.START });
-
-        let title = new St.Label({ text: source.title,
-                                   style_class: 'screen-shield-notification-label' });
-        textBox.add(title);
+        let title = new St.Label({
+            text: source.title,
+            style_class: 'screen-shield-notification-label',
+            x_expand: true,
+            y_align: Clutter.ActorAlign.START,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(title);
 
         let count = source.unseenCount;
-        let countLabel = new St.Label({ text: this._makeNotificationCountText(count, source.isChat),
-                                        style_class: 'screen-shield-notification-count-text' });
-        textBox.add(countLabel);
+        let countLabel = new St.Label({
+            text: '%d'.format(count),
+            style_class: 'screen-shield-notification-count-text',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(countLabel);
 
         box.visible = count != 0;
         return [title, countLabel];
@@ -258,7 +258,7 @@ var NotificationsBox = class {
             this._showSource(source, obj, obj.sourceBox);
         } else {
             let count = source.unseenCount;
-            obj.countLabel.text = this._makeNotificationCountText(count, source.isChat);
+            obj.countLabel.text = '%d'.format(count);
         }
 
         obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
