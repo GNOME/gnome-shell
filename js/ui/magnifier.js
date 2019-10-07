@@ -127,6 +127,7 @@ var Magnifier = class Magnifier {
      * Show the system mouse pointer.
      */
     showSystemCursor() {
+        this._cursorTracker.set_keep_focus_while_hidden(false);
         this._cursorTracker.set_pointer_visible(true);
     }
 
@@ -135,6 +136,7 @@ var Magnifier = class Magnifier {
      * Hide the system mouse pointer.
      */
     hideSystemCursor() {
+        this._cursorTracker.set_keep_focus_while_hidden(true);
         this._cursorTracker.set_pointer_visible(false);
     }
 
