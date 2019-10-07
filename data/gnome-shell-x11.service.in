@@ -23,6 +23,7 @@ StartLimitBurst=3
 [Service]
 Type=notify
 ExecStart=@bindir@/gnome-shell
+ExecStopPost=@bindir@/systemctl --user unset-environment GNOME_SHELL_SESSION_MODE
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
 # On X11 we want to restart on-success (Alt+F2 + r) and on-failure.
