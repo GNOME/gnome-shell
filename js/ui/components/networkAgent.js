@@ -213,6 +213,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         // First the easy ones
         case 'wpa-none':
         case 'wpa-psk':
+        case 'sae':
             secrets.push({ label: _("Password: "), key: 'psk',
                            value: wirelessSecuritySetting.psk || '',
                            validate: this._validateWpaPsk, password: true });
