@@ -34,12 +34,6 @@ const BLUR_RADIUS = 70;
 // the slide up automatically
 var ARROW_DRAG_THRESHOLD = 0.1;
 
-// Parameters for the arrow animation
-var N_ARROWS = 3;
-var ARROW_ANIMATION_TIME = 600;
-var ARROW_ANIMATION_PEAK_OPACITY = 0.4;
-var ARROW_IDLE_TIME = 30000; // ms
-
 var SUMMARY_ICON_SIZE = 48;
 
 // ScreenShield animation time
@@ -344,80 +338,6 @@ var NotificationsBox = class {
 };
 Signals.addSignalMethods(NotificationsBox.prototype);
 
-var Arrow = GObject.registerClass(
-class ScreenShieldArrow extends St.Bin {
-    _init(params) {
-        super._init(params);
-        this.x_fill = this.y_fill = true;
-
-        this._drawingArea = new St.DrawingArea();
-        this._drawingArea.connect('repaint', this._drawArrow.bind(this));
-        this.child = this._drawingArea;
-
-        this._shadowHelper = null;
-        this._shadowWidth = this._shadowHeight = 0;
-    }
-
-    _drawArrow(arrow) {
-        let cr = arrow.get_context();
-        let [w, h] = arrow.get_surface_size();
-        let node = this.get_theme_node();
-        let thickness = node.get_length('-arrow-thickness');
-
-        Clutter.cairo_set_source_color(cr, node.get_foreground_color());
-
-        cr.setLineCap(Cairo.LineCap.ROUND);
-        cr.setLineWidth(thickness);
-
-        cr.moveTo(thickness / 2, h - thickness / 2);
-        cr.lineTo(w / 2, thickness);
-        cr.lineTo(w - thickness / 2, h - thickness / 2);
-        cr.stroke();
-        cr.$dispose();
-    }
-
-    vfunc_get_paint_volume(volume) {
-        if (!super.vfunc_get_paint_volume(volume))
-            return false;
-
-        if (!this._shadow)
-            return true;
-
-        let shadowBox = new Clutter.ActorBox();
-        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadowBox);
-
-        volume.set_width(Math.max(shadowBox.x2 - shadowBox.x1, volume.get_width()));
-        volume.set_height(Math.max(shadowBox.y2 - shadowBox.y1, volume.get_height()));
-
-        return true;
-    }
-
-    vfunc_style_changed() {
-        let node = this.get_theme_node();
-        this._shadow = node.get_shadow('-arrow-shadow');
-        if (this._shadow)
-            this._shadowHelper = St.ShadowHelper.new(this._shadow);
-        else
-            this._shadowHelper = null;
-
-        super.vfunc_style_changed();
-    }
-
-    vfunc_paint() {
-        if (this._shadowHelper) {
-            this._shadowHelper.update(this._drawingArea);
-
-            let allocation = this._drawingArea.get_allocation_box();
-            let paintOpacity = this._drawingArea.get_paint_opacity();
-            let framebuffer = Cogl.get_draw_framebuffer();
-
-            this._shadowHelper.paint(framebuffer, allocation, paintOpacity);
-        }
-
-        this._drawingArea.paint();
-    }
-});
-
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -454,24 +374,6 @@ var ScreenShield = class {
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
         this._lockScreenGroup.add_actor(this._lockScreenContents);
-
-        this._arrowAnimationId = 0;
-        this._arrowWatchId = 0;
-        this._arrowActiveWatchId = 0;
-        this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
-                                                  vertical: true,
-                                                  x_align: Clutter.ActorAlign.CENTER,
-                                                  y_align: Clutter.ActorAlign.END,
-                                                  // HACK: without these, ClutterBinLayout
-                                                  // ignores alignment properties on the actor
-                                                  x_expand: true,
-                                                  y_expand: true });
-
-        for (let i = 0; i < N_ARROWS; i++) {
-            let arrow = new Arrow({ opacity: 0 });
-            this._arrowContainer.add_actor(arrow);
-        }
-        this._lockScreenContents.add_actor(this._arrowContainer);
 
         this._dragAction = new Clutter.GestureAction();
         this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
@@ -746,30 +648,6 @@ var ScreenShield = class {
         } else {
             this._wakeUpScreen();
         }
-    }
-
-    _animateArrows() {
-        let arrows = this._arrowContainer.get_children();
-        let unitaryDelay = ARROW_ANIMATION_TIME / (arrows.length + 1);
-        let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
-        for (let i = 0; i < arrows.length; i++) {
-            arrows[i].opacity = 0;
-            arrows[i].ease({
-                opacity: maxOpacity,
-                delay: unitaryDelay * (N_ARROWS - (i + 1)),
-                duration: ARROW_ANIMATION_TIME / 2,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    arrows[i].ease({
-                        opacity: 0,
-                        duration: ARROW_ANIMATION_TIME / 2,
-                        mode: Clutter.AnimationMode.EASE_IN_QUAD
-                    });
-                }
-            });
-        }
-
-        return GLib.SOURCE_CONTINUE;
     }
 
     _onDragBegin() {
@@ -1047,61 +925,11 @@ var ScreenShield = class {
             Main.sessionMode.pushMode('lock-screen');
     }
 
-    _startArrowAnimation() {
-        this._arrowActiveWatchId = 0;
-
-        if (!this._arrowAnimationId) {
-            this._arrowAnimationId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 6000, this._animateArrows.bind(this));
-            GLib.Source.set_name_by_id(this._arrowAnimationId, '[gnome-shell] this._animateArrows');
-            this._animateArrows();
-        }
-
-        if (!this._arrowWatchId)
-            this._arrowWatchId = this.idleMonitor.add_idle_watch(ARROW_IDLE_TIME,
-                                                                 this._pauseArrowAnimation.bind(this));
-    }
-
-    _pauseArrowAnimation() {
-        if (this._arrowAnimationId) {
-            GLib.source_remove(this._arrowAnimationId);
-            this._arrowAnimationId = 0;
-        }
-
-        if (!this._arrowActiveWatchId)
-            this._arrowActiveWatchId = this.idleMonitor.add_user_active_watch(this._startArrowAnimation.bind(this));
-    }
-
-    _stopArrowAnimation() {
-        if (this._arrowAnimationId) {
-            GLib.source_remove(this._arrowAnimationId);
-            this._arrowAnimationId = 0;
-        }
-        if (this._arrowActiveWatchId) {
-            this.idleMonitor.remove_watch(this._arrowActiveWatchId);
-            this._arrowActiveWatchId = 0;
-        }
-        if (this._arrowWatchId) {
-            this.idleMonitor.remove_watch(this._arrowWatchId);
-            this._arrowWatchId = 0;
-        }
-    }
-
-    _checkArrowAnimation() {
-        let idleTime = this.idleMonitor.get_idletime();
-
-        if (idleTime < ARROW_IDLE_TIME)
-            this._startArrowAnimation();
-        else
-            this._pauseArrowAnimation();
-    }
-
     _lockScreenShown(params) {
         if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
             this._dialog = null;
         }
-
-        this._checkArrowAnimation();
 
         let motionId = global.stage.connect('captured-event', (stage, event) => {
             if (event.type() == Clutter.EventType.MOTION) {
@@ -1179,8 +1007,6 @@ var ScreenShield = class {
             this._notificationsBox.destroy();
             this._notificationsBox = null;
         }
-
-        this._stopArrowAnimation();
 
         this._lockScreenContentsBox.destroy();
 
