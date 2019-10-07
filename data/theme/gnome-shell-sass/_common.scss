@@ -2071,19 +2071,19 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
 .screen-shield-clock {
   color: white;
-  font-weight: 300;
   text-align: center;
   padding-bottom: 2.5em;
 }
 
 .screen-shield-clock-time {
-  font-size: 72pt;
+  font-size: 64pt;
+  font-weight: 200;
   padding-bottom: 24px;
   font-feature-settings: "tnum";
 }
 
 .screen-shield-clock-date { 
-  font-size: 24pt;
+  font-size: 16pt;
   font-weight: bold;
 }
 
@@ -2091,6 +2091,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   spacing: 6px;
   width: 30em;
   background-color: transparent;
+  padding: 24px 0;
   max-height: 500px;
   .summary-notification-stack-scrollview {
     padding-top: 0;
@@ -2099,7 +2100,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
   .notification,
   .screen-shield-notification-source {
-    padding: 12px 6px;
+    padding: 12px;
     border: 1px solid $osd_outer_borders_color;
     background-color: transparentize($osd_bg_color,0.5);
     color: $osd_fg_color;
