@@ -53,19 +53,6 @@ const _modes = {
         panelStyle: 'login-screen'
     },
 
-    'lock-screen': {
-        isLocked: true,
-        isGreeter: undefined,
-        unlockDialog: undefined,
-        components: ['polkitAgent', 'telepathyClient'],
-        panel: {
-            left: [],
-            center: [],
-            right: ['aggregateMenu']
-        },
-        panelStyle: 'lock-screen'
-    },
-
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: undefined,
