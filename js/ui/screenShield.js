@@ -16,6 +16,7 @@ const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const SmartcardManager = imports.misc.smartcardManager;
+const Params = imports.misc.params;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
@@ -25,6 +26,9 @@ const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
 const LOCKED_STATE_STR = 'screenShield.locked';
+
+const BLUR_RADIUS = 30;
+
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 var ARROW_DRAG_THRESHOLD = 0.1;
@@ -487,6 +491,14 @@ var ScreenShield = class {
         this._lockDialogGroup.add_actor(this._backgroundGroup);
         this._backgroundGroup.lower_bottom();
         this._bgManagers = [];
+
+        this._backgroundGroup.add_effect(new Shell.BlurEffect({
+            blur_radius: BLUR_RADIUS,
+        }));
+        this._backgroundGroup.add_effect(new Shell.BlurEffect({
+            blur_radius: BLUR_RADIUS,
+            vertical: true,
+        }));
 
         this._updateBackgrounds();
         Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
