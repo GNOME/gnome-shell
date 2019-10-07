@@ -62,40 +62,16 @@ var ScreenShield = class {
         this.actor = Main.layoutManager.screenShieldGroup;
 
         this._lockScreenState = MessageTray.State.HIDDEN;
-        this._lockScreenGroup = new St.Widget({
-            x_expand: true,
-            y_expand: true,
-            reactive: true,
-            can_focus: true,
-            name: 'lockScreenGroup',
-            visible: false,
-        });
-        this._lockScreenGroup.connect('key-press-event',
-                                      this._onLockScreenKeyPress.bind(this));
-        this._lockScreenGroup.connect('scroll-event',
-                                      this._onLockScreenScroll.bind(this));
-        Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
-
-        this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                                   name: 'lockScreenContents' });
-        this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-
-        this._lockScreenGroup.add_actor(this._lockScreenContents);
-
-        this._dragAction = new Clutter.GestureAction();
-        this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
-        this._dragAction.connect('gesture-progress', this._onDragMotion.bind(this));
-        this._dragAction.connect('gesture-end', this._onDragEnd.bind(this));
-        this._lockScreenGroup.add_action(this._dragAction);
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
                                                 reactive: true,
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
+        this._lockDialogGroup.connect('key-press-event',
+                                      this._onLockScreenKeyPress.bind(this));
 
         this.actor.add_actor(this._lockDialogGroup);
-        this.actor.add_actor(this._lockScreenGroup);
 
         this._backgroundGroup = new Clutter.Actor();
         this._lockDialogGroup.add_actor(this._backgroundGroup);
@@ -242,25 +218,14 @@ var ScreenShield = class {
     _liftShield(onPrimary, velocity) {
         if (this._isLocked) {
             if (this._ensureUnlockDialog(onPrimary, true /* allowCancel */))
-                this._hideLockScreen(true /* animate */, velocity);
+                this._hideLockScreen();
         } else {
             this.deactivate(true /* animate */);
         }
     }
 
     _maybeCancelDialog() {
-        if (!this._dialog)
-            return;
-
         this._dialog.cancel();
-        if (this._isGreeter) {
-            // LoginDialog.cancel() will grab the key focus
-            // on its own, so ensure it stays on lock screen
-            // instead
-            this._lockScreenGroup.grab_key_focus();
-        } else {
-            this._dialog = null;
-        }
     }
 
     _becomeModal() {
@@ -304,27 +269,6 @@ var ScreenShield = class {
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
-        this._liftShield(true, 0);
-        return Clutter.EVENT_STOP;
-    }
-
-    _onLockScreenScroll(actor, event) {
-        if (this._lockScreenState != MessageTray.State.SHOWN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let delta = 0;
-        if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
-            delta = Math.abs(event.get_scroll_delta()[0]);
-        else
-            delta = 5;
-
-        this._lockScreenScrollCounter += delta;
-
-        // 7 standard scrolls to lift up
-        if (this._lockScreenScrollCounter > 35) {
-            this._liftShield(true, 0);
-        }
-
         return Clutter.EVENT_STOP;
     }
 
@@ -353,55 +297,6 @@ var ScreenShield = class {
                 this.lock(true);
         } else {
             this._wakeUpScreen();
-        }
-    }
-
-    _onDragBegin() {
-        this._lockScreenGroup.remove_all_transitions();
-        this._lockScreenState = MessageTray.State.HIDING;
-
-        if (this._isLocked)
-            this._ensureUnlockDialog(false, false);
-
-        return true;
-    }
-
-    _onDragMotion() {
-        let [, origY] = this._dragAction.get_press_coords(0);
-        let [, currentY] = this._dragAction.get_motion_coords(0);
-
-        let newY = currentY - origY;
-        newY = clamp(newY, -global.stage.height, 0);
-
-        this._lockScreenGroup.y = newY;
-
-        return true;
-    }
-
-    _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
-        if (this._lockScreenState != MessageTray.State.HIDING)
-            return;
-        if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
-            // Complete motion automatically
-            let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
-            this._liftShield(true, -velocityY);
-        } else {
-            // restore the lock screen to its original place
-            // try to use the same speed as the normal animation
-            let h = global.stage.height;
-            let duration = MANUAL_FADE_TIME * (-this._lockScreenGroup.y) / h;
-            this._lockScreenGroup.remove_all_transitions();
-            this._lockScreenGroup.ease({
-                y: 0,
-                duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => {
-                    this._lockScreenGroup.fixed_position_set = false;
-                    this._lockScreenState = MessageTray.State.SHOWN;
-                }
-            });
-
-            this._maybeCancelDialog();
         }
     }
 
@@ -509,51 +404,22 @@ var ScreenShield = class {
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
         if (this._ensureUnlockDialog(true, true))
-            this._hideLockScreen(false, 0);
+            this._hideLockScreen();
     }
 
-    _hideLockScreenComplete() {
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
-
-        this._lockScreenState = MessageTray.State.HIDDEN;
-        this._lockScreenGroup.hide();
-
-        if (this._dialog) {
-            this._dialog.grab_key_focus();
-            this._dialog.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-        }
-    }
-
-    _hideLockScreen(animate, velocity) {
+    _hideLockScreen() {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
 
         this._lockScreenState = MessageTray.State.HIDING;
 
-        this._lockScreenGroup.remove_all_transitions();
+        if (Main.sessionMode.currentMode == 'lock-screen')
+            Main.sessionMode.popMode('lock-screen');
 
-        if (animate) {
-            // Tween the lock screen out of screen
-            // if velocity is not specified (i.e. we come here from pressing ESC),
-            // use the same speed regardless of original position
-            // if velocity is specified, it's in pixels per milliseconds
-            let h = global.stage.height;
-            let delta = (h + this._lockScreenGroup.y);
-            let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
+        this._lockScreenState = MessageTray.State.HIDDEN;
 
-            velocity = Math.max(minVelocity, velocity);
-            let duration = delta / velocity;
-
-            this._lockScreenGroup.ease({
-                y: -h,
-                duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => this._hideLockScreenComplete()
-            });
-        } else {
-            this._hideLockScreenComplete();
-        }
+        this._dialog.grab_key_focus();
+        this._dialog.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
 
         this._cursorTracker.set_pointer_visible(true);
     }
@@ -601,7 +467,6 @@ var ScreenShield = class {
 
         this._ensureUnlockDialog(false, false);
 
-        this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
         let fadeToBlack = params.fadeToBlack;
@@ -618,23 +483,17 @@ var ScreenShield = class {
                 }
             });
         } else {
-            this._lockScreenGroup.fixed_position_set = false;
             this._lockScreenShown({ fadeToBlack: fadeToBlack,
                                     animateFade: false });
         }
 
-        this._lockScreenGroup.grab_key_focus();
+        this._lockDialogGroup.grab_key_focus();
 
         if (Main.sessionMode.currentMode != 'lock-screen')
             Main.sessionMode.pushMode('lock-screen');
     }
 
     _lockScreenShown(params) {
-        if (this._dialog && !this._isGreeter) {
-            this._dialog.destroy();
-            this._dialog = null;
-        }
-
         let motionId = global.stage.connect('captured-event', (stage, event) => {
             if (event.type() == Clutter.EventType.MOTION) {
                 this._cursorTracker.set_pointer_visible(true);
@@ -646,8 +505,6 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
-        this._lockScreenGroup.fixed_position_set = false;
-        this._lockScreenScrollCounter = 0;
 
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
@@ -684,14 +541,11 @@ var ScreenShield = class {
     }
 
     deactivate(animate) {
-        if (this._dialog)
-            this._dialog.finish(() => this._continueDeactivate(animate));
-        else
-            this._continueDeactivate(animate);
+        this._dialog.finish(() => this._continueDeactivate(animate));
     }
 
     _continueDeactivate(animate) {
-        this._hideLockScreen(animate, 0);
+        this._hideLockScreen();
 
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
@@ -711,7 +565,7 @@ var ScreenShield = class {
             return;
         }
 
-        if (this._dialog && !this._isGreeter)
+        if (!this._isGreeter)
             this._dialog.popModal();
 
         if (this._isModal) {
