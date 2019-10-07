@@ -27,6 +27,10 @@ const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
 const LOCKED_STATE_STR = 'screenShield.locked';
+
+const BLUR_BRIGHTNESS = 0.55;
+const BLUR_RADIUS = 200;
+
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 var ARROW_DRAG_THRESHOLD = 0.1;
@@ -594,6 +598,7 @@ var ScreenShield = class {
     _createBackground(monitorIndex) {
         let monitor = Main.layoutManager.monitors[monitorIndex];
         let widget = new St.Widget({ style_class: 'screen-shield-background',
+                                     clip_to_allocation: true,
                                      x: monitor.x,
                                      y: monitor.y,
                                      width: monitor.width,
@@ -607,6 +612,11 @@ var ScreenShield = class {
         this._bgManagers.push(bgManager);
 
         this._backgroundGroup.add_child(widget);
+
+        widget.add_effect(new Shell.BlurEffect({
+            brightness: BLUR_BRIGHTNESS,
+            blur_radius: BLUR_RADIUS,
+        }));
     }
 
     _updateBackgrounds() {
