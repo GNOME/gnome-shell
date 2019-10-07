@@ -11,6 +11,7 @@ const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
+const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
 var UnlockDialog = GObject.registerClass({
     Signals: { 'failed': {} },
@@ -25,6 +26,16 @@ var UnlockDialog = GObject.registerClass({
 
         this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         parentActor.add_child(this);
+
+        this._backgroundGroup = new Clutter.Actor();
+        this._backgroundGroup.add_effect_with_name(
+            'blur', new Clutter.BlurEffect());
+        this.add_child(this._backgroundGroup);
+        this._backgroundGroup.lower_bottom();
+        this._bgManagers = [];
+
+        this._updateBackgrounds();
+        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
 
         this._userManager = AccountsService.UserManager.get_default();
         this._userName = GLib.get_user_name();
@@ -73,6 +84,39 @@ var UnlockDialog = GObject.registerClass({
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _updateBackgrounds() {
+        for (let bgManager of this._bgManagers)
+            bgManager.destroy();
+
+        this._bgManagers = [];
+        this._backgroundGroup.destroy_all_children();
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
+            this._createBackground(i);
+    }
+
+    _createBackground(monitorIndex) {
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+        let widget = new St.Widget({
+            style_class: 'screen-shield-background',
+            x: monitor.x,
+            y: monitor.y,
+            width: monitor.width,
+            height: monitor.height,
+        });
+
+        let bgManager = new Background.BackgroundManager({
+            container: widget,
+            monitorIndex: monitorIndex,
+            controlPosition: false,
+            settingsSchema: SCREENSAVER_SCHEMA,
+        });
+
+        this._bgManagers.push(bgManager);
+
+        this._backgroundGroup.add_child(widget);
     }
 
     _updateSensitivity(sensitive) {
