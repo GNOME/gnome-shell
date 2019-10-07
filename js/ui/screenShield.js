@@ -486,8 +486,8 @@ var ScreenShield = class {
 
         this._lockDialogGroup.grab_key_focus();
 
-        if (Main.sessionMode.currentMode != 'lock-screen')
-            Main.sessionMode.pushMode('lock-screen');
+        if (Main.sessionMode.currentMode != 'unlock-dialog')
+            Main.sessionMode.pushMode('unlock-dialog');
     }
 
     _lockScreenShown(params) {
@@ -544,8 +544,6 @@ var ScreenShield = class {
     _continueDeactivate(animate) {
         this._hideLockScreen();
 
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
@@ -611,8 +609,7 @@ var ScreenShield = class {
 
         this.actor.show();
 
-        if (Main.sessionMode.currentMode != 'unlock-dialog' &&
-            Main.sessionMode.currentMode != 'lock-screen') {
+        if (Main.sessionMode.currentMode != 'unlock-dialog') {
             this._isGreeter = Main.sessionMode.isGreeter;
             if (!this._isGreeter)
                 Main.sessionMode.pushMode('unlock-dialog');
