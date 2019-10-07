@@ -450,15 +450,6 @@ var ScreenShield = class {
 
         this._lockScreenGroup.add_actor(this._lockScreenContents);
 
-        this._backgroundGroup = new Clutter.Actor();
-
-        this._lockScreenGroup.add_actor(this._backgroundGroup);
-        this._backgroundGroup.lower_bottom();
-        this._bgManagers = [];
-
-        this._updateBackgrounds();
-        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
-
         this._arrowAnimationId = 0;
         this._arrowWatchId = 0;
         this._arrowActiveWatchId = 0;
@@ -491,6 +482,14 @@ var ScreenShield = class {
 
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
+
+        this._backgroundGroup = new Clutter.Actor();
+        this._lockDialogGroup.add_actor(this._backgroundGroup);
+        this._backgroundGroup.lower_bottom();
+        this._bgManagers = [];
+
+        this._updateBackgrounds();
+        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
 
         this._presence = new GnomeSession.Presence((proxy, error) => {
             if (error) {
@@ -601,8 +600,14 @@ var ScreenShield = class {
     }
 
     _updateBackgrounds() {
+        let isGreeter = Main.sessionMode.isGreeter;
+        this._backgroundGroup.visible = !isGreeter;
+
         for (let i = 0; i < this._bgManagers.length; i++)
             this._bgManagers[i].destroy();
+
+        if (isGreeter)
+            return;
 
         this._bgManagers = [];
         this._backgroundGroup.destroy_all_children();
