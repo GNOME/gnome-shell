@@ -99,14 +99,14 @@ var ScreenShield = class {
         this._smartcardManager.connect('smartcard-inserted',
                                        (manager, token) => {
                                            if (this._isLocked && token.UsedToLogin)
-                                               this._liftShield(true, 0);
+                                               this._liftShield();
                                        });
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
         this._oVirtCredentialsManager.connect('user-authenticated',
                                               () => {
                                                   if (this._isLocked)
-                                                      this._liftShield(true, 0);
+                                                      this._liftShield();
                                               });
 
         this._loginManager = LoginManager.getLoginManager();
@@ -216,9 +216,9 @@ var ScreenShield = class {
             this._createBackground(i);
     }
 
-    _liftShield(onPrimary, velocity) {
+    _liftShield() {
         if (this._isLocked) {
-            if (this._ensureUnlockDialog(onPrimary, true /* allowCancel */))
+            if (this._ensureUnlockDialog(true /* allowCancel */))
                 this._hideLockScreen();
         } else {
             this.deactivate(true /* animate */);
@@ -266,7 +266,7 @@ var ScreenShield = class {
             return Clutter.EVENT_PROPAGATE;
 
         if (this._isLocked &&
-            this._ensureUnlockDialog(true, true) &&
+            this._ensureUnlockDialog(true) &&
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
@@ -404,7 +404,7 @@ var ScreenShield = class {
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
-        if (this._ensureUnlockDialog(true, true))
+        if (this._ensureUnlockDialog(true))
             this._hideLockScreen();
     }
 
@@ -425,7 +425,7 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(true);
     }
 
-    _ensureUnlockDialog(onPrimary, allowCancel) {
+    _ensureUnlockDialog(allowCancel) {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
             if (!constructor) {
@@ -438,7 +438,7 @@ var ScreenShield = class {
 
 
             let time = global.get_current_time();
-            if (!this._dialog.open(time, onPrimary)) {
+            if (!this._dialog.open(time)) {
                 // This is kind of an impossible error: we're already modal
                 // by the time we reach this...
                 log('Could not open login dialog: failed to acquire grab');
@@ -466,7 +466,7 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
-        this._ensureUnlockDialog(false, false);
+        this._ensureUnlockDialog(false);
 
         this._lockScreenState = MessageTray.State.SHOWING;
 
