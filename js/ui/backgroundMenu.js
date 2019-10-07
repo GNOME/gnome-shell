@@ -31,6 +31,7 @@ function addBackgroundMenu(actor, layoutManager) {
 
     function openMenu(x, y) {
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
+        actor._backgroundMenu.fixLocation(x, y);
         actor._backgroundMenu.open(BoxPointer.PopupAnimation.FULL);
     }
 

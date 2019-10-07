@@ -807,6 +807,10 @@ var PopupMenu = class extends PopupMenuBase {
         this._openedSubMenu = null;
     }
 
+    fixLocation(x, y) {
+        this._boxPointer.fixLocation(x, y);
+    }
+
     _setOpenedSubMenu(submenu) {
         if (this._openedSubMenu)
             this._openedSubMenu.close(true);
