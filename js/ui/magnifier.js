@@ -169,7 +169,7 @@ var Magnifier = class Magnifier {
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
-            this._cursorTracker.set_pointer_visible(true);
+            this.showSystemCursor();
 
         // Notify interested parties of this change
         this.emit('active-changed', activate);
