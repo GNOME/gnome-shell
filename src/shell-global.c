@@ -832,6 +832,13 @@ entry_cursor_func (StEntry  *entry,
                            use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
 }
 
+static void
+on_x11_display_closed (MetaDisplay *display,
+                       ShellGlobal *global)
+{
+  g_signal_handlers_disconnect_by_data (global->stage, global);
+}
+
 void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
@@ -895,6 +902,10 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
+  if (global->xdisplay)
+    g_signal_connect_object (global->meta_display, "x11-display-closing",
+                             G_CALLBACK (on_x11_display_closed), global, 0);
+
   backend = meta_get_backend ();
   settings = meta_backend_get_settings (backend);
   g_signal_connect (settings, "ui-scaling-factor-changed",
@@ -932,6 +943,9 @@ shell_global_begin_modal (ShellGlobal       *global,
                           guint32           timestamp,
                           MetaModalOptions  options)
 {
+  if (!meta_display_get_compositor (global->meta_display))
+    return FALSE;
+
   /* Make it an error to call begin_modal while we already
    * have a modal active. */
   if (global->has_modal)
@@ -953,6 +967,9 @@ void
 shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
+  if (!meta_display_get_compositor (global->meta_display))
+    return;
+
   if (!global->has_modal)
     return;
 
