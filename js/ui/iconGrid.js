@@ -436,6 +436,8 @@ var IconGrid = GObject.registerClass({
      * set of items to be animated.
      */
     _getChildrenToAnimate() {
+        if (!St.Settings.get().enable_animations)
+            return [];
         return this._getVisibleChildren().filter(child => child.opacity > 0);
     }
 
