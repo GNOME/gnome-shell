@@ -6,6 +6,10 @@
     </method>
     <method name="ClearCode" />
     <signal name="Expired" />
+    <signal name="ImpendingShutdown">
+      <arg type="i" name="seconds_remaining"/>
+      <arg type="s" name="shutdown_reason"/>
+    </signal>
     <property name="ExpiryTime" type="t" access="read"/>
     <property name="Enabled" type="b" access="read"/>
     <property name="RateLimitEndTime" type="t" access="read"/>

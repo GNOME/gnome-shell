@@ -99,6 +99,7 @@ var PaygManager = GObject.registerClass({
         this._proxyInfo = Gio.DBusInterfaceInfo.new_for_xml(EOS_PAYG_IFACE);
 
         this._codeExpiredId = 0;
+        this._impendingShutdownId = 0;
         this._propertiesChangedId = 0;
         this._expirationReminderId = 0;
 
@@ -136,6 +137,7 @@ var PaygManager = GObject.registerClass({
 
             this._propertiesChangedId = this._proxy.connect('g-properties-changed', this._onPropertiesChanged.bind(this));
             this._codeExpiredId = this._proxy.connectSignal('Expired', this._onCodeExpired.bind(this));
+            this._impendingShutdownId = this._proxy.connectSignal('ImpendingShutdown', this._onImpendingShutdown.bind(this));
 
             this._maybeNotifyUser();
             this._updateExpirationReminders();
@@ -208,6 +210,10 @@ var PaygManager = GObject.registerClass({
 
     _onCodeExpired() {
         this.emit('code-expired');
+    }
+
+    _onImpendingShutdown(proxy, sender, [secondsRemaining, shutdownReason]) {
+        // TODO notify the user https://phabricator.endlessm.com/T27134
     }
 
     _clockUpdated() {
