@@ -1402,6 +1402,7 @@ var Workspace = class {
     }
 
     _animateClone(clone, overlay, x, y, scale) {
+        clone.overlay.relayout(true);
         clone.ease({
             x, y,
             scale_x: scale,
@@ -1412,7 +1413,6 @@ var Workspace = class {
                 this._showWindowOverlay(clone, overlay);
             }
         });
-        clone.overlay.relayout(true);
     }
 
     _showWindowOverlay(clone, overlay) {
