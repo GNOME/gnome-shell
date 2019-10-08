@@ -1,3 +1,44 @@
+3.34.1
+======
+* Fix "Frequent" view icons disappearing on hover [Jonas D.; #1502]
+* Allow editing app folder names [Georges, Marco; !675, !720]
+* Skip property transitions while hidden [Florian; !708]
+* Make menu animations more consistent [Florian, GB_2; #1595, !717]
+* Improve performance when enabling/disabling all extensions [Jonas D.; !96]
+* Fix extra icons appearing in "Frequent" view animation [Georges; !696]
+* Fix fading out desktop icons [Harshula; #1616]
+* Fix box-shadow glitch with prerendered resources [Daniel; #1186]
+* Fix accidentally skipped animations [Florian; #1572]
+* Fix screenshots and window animations when scaled [Robert; !728]
+* Don't leak NOTIFY_SOCKET environment variable to applications [Benjamin; !741]
+* Fix lock-up on X11 when ibus is already running on startup [Marco; #1712]
+* Fix screen dimming on idle [Marco; #1683]
+* Do not notify systemd before initialization is complete [Iain; !750]
+* Support SAE secrets in network agent [Lubomir; !751]
+* Fix various regressions with dynamic workspaces [Florian; #1497]
+* Fixed crashes [Florian, Marco; #1678, !746]
+* Misc. bug fixes and cleanups [Marco, Jonas D., Florian, Iain, Georges,
+  Jonas Å., Martin, Takao, Carlos; !700, !705, !709, !711, !707, #1538, !710,
+  !713, !699, !715, !718, !716, !719, !721, #1243, !725, !731, #1614, !683,
+  !732, !121, !735, !736, !740, #573, #1641, #1571]
+
+Contributors:
+  Marco Trevisan (Treviño), Benjamin Berg, Jonas Dreßler, Takao Fujiwara, GB_2,
+  Carlos Garnacho, Harshula Jayasuriya, Iain Lane, Robert Mader,
+  Daniel García Moreno, Florian Müllner, Georges Basile Stavracas Neto,
+  Lubomir Rintel, Martin Zurowietz, Jonas Ådahl
+
+Translators:
+  Rafael Fontenelle [pt_BR], Fran Dieguez [gl], Balázs Úr [hu],
+  Milo Casagrande [it], Daniel Șerbănescu [ro], Kukuh Syafaat [id],
+  Jiri Grönroos [fi], Daniel Mustieles [es], Piotr Drąg [pl],
+  Anders Jonsson [sv], Marek Černocký [cs], Jordi Mas [ca],
+  Aurimas Černius [lt], Christian Kirbach [de], Emin Tufan Çetin [tr],
+  Enrico Nicoletto [pt_BR], Danial Behzadi [fa], Марко Костић [sr],
+  Alexandre Franke [fr], Charles Monzat [fr], Kjartan Maraas [nb],
+  Ryuta Fujii [ja], Nathan Follens [nl], Dušan Kazik [sk], Fabio Tomat [fur],
+  Matej Urbančič [sl], Ask Hjorth Larsen [da], Alan Mortensen [da]
+
 3.34.0
 ======
 * Handle startup/shutdown of misc X11 services [Carlos; !680]
