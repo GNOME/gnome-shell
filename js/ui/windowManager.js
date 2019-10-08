@@ -187,6 +187,9 @@ var WorkspaceTracker = class {
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
                                  this._nWorkspacesChanged.bind(this));
+        workspaceManager.connect('workspaces-reordered', () => {
+            this._workspaces.sort((a, b) => a.index() - b.index());
+        });
         global.window_manager.connect('switch-workspace',
                                       this._queueCheckWorkspaces.bind(this));
 
@@ -1209,9 +1212,41 @@ var WindowManager = class {
         if (!Meta.prefs_get_dynamic_workspaces())
             return;
 
-        let newWs = workspaceManager.append_new_workspace(
-            false, global.get_current_time());
-        workspaceManager.reorder_workspace(newWs, pos);
+        workspaceManager.append_new_workspace(false, global.get_current_time());
+
+        let windows = global.get_window_actors().map(a => a.meta_window);
+
+        // To create a new workspace, we slide all the windows on workspaces
+        // below us to the next workspace, leaving a blank workspace for us
+        // to recycle.
+        windows.forEach(window => {
+            // If the window is attached to an ancestor, we don't need/want
+            // to move it
+            if (window.get_transient_for() != null)
+                return;
+            // Same for OR windows
+            if (window.is_override_redirect())
+                return;
+            // Sticky windows don't need moving, in fact moving would
+            // unstick them
+            if (window.on_all_workspaces)
+                return;
+            // Windows on workspaces below pos don't need moving
+            let index = window.get_workspace().index();
+            if (index < pos)
+                return;
+            window.change_workspace_by_index(index + 1, true);
+        });
+
+        // If the new workspace was inserted before the active workspace,
+        // activate the workspace to which its windows went
+        let activeIndex = workspaceManager.get_active_workspace_index();
+        if (activeIndex >= pos) {
+            let newWs = workspaceManager.get_workspace_by_index(activeIndex + 1);
+            this._blockAnimations = true;
+            newWs.activate(global.get_current_time());
+            this._blockAnimations = false;
+        }
     }
 
     keepWorkspaceAlive(workspace, duration) {
