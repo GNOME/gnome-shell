@@ -126,6 +126,9 @@ Signals.addSignalMethods(CandidateArea.prototype);
 
 var CandidatePopup = class CandidatePopup {
     constructor() {
+        this._dummyCursor = new St.Widget({ opacity: 0 });
+        Main.layoutManager.uiGroup.add_actor(this._dummyCursor);
+
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
         this._boxPointer.visible = false;
         this._boxPointer.style_class = 'candidate-popup-boxpointer';
@@ -272,9 +275,11 @@ var CandidatePopup = class CandidatePopup {
     }
 
     _setDummyCursorGeometry(x, y, w, h) {
-        Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
+        this._dummyCursor.set_position(Math.round(x), Math.round(y));
+        this._dummyCursor.set_size(Math.round(w), Math.round(h));
+
         if (this._boxPointer.visible)
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
+            this._boxPointer.setPosition(this._dummyCursor, 0);
     }
 
     _updateVisibility() {
@@ -284,7 +289,7 @@ var CandidatePopup = class CandidatePopup {
                           this._candidateArea.actor.visible));
 
         if (isVisible) {
-            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
+            this._boxPointer.setPosition(this._dummyCursor, 0);
             this._boxPointer.open(BoxPointer.PopupAnimation.NONE);
             this._boxPointer.raise_top();
         } else {
