@@ -86,12 +86,14 @@ function _makeFrameCallback(params) {
 
 function _getPropertyTarget(actor, propName) {
     if (!propName.startsWith('@'))
-        return [actor, propName];
+        return [actor, propName.split('-').join('_')];
 
     let [type, name, prop] = propName.split('.');
+    if (prop)
+        prop = prop.split('-').join('_');
     switch (type) {
     case '@layout':
-        return [actor.layout_manager, name];
+        return [actor.layout_manager, name.split('-').join('_')];
     case '@actions':
         return [actor.get_action(name), prop];
     case '@constraints':
@@ -124,9 +126,19 @@ function _easeActor(actor, params) {
     let callback = _makeEaseCallback(params, cleanup);
     let frameCallback = _makeFrameCallback(params);
 
-    // cancel overwritten transitions
-    let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
-    animatedProps.forEach(p => actor.remove_transition(p));
+    // sanitize property names and cancel overwritten transitions
+    let animatedProps = [];
+    Object.keys(params).forEach(p => {
+        let pspecName = p.split('_').join('-');
+        actor.remove_transition(pspecName);
+        animatedProps.push(pspecName);
+
+        if (p.indexOf('-') !== -1) {
+            let prop = p.split('-').join('_');
+            params[prop] = params[p];
+            delete params[p];
+        }
+    });
 
     actor.set(params);
     actor.restore_easing_state();
