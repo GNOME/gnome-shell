@@ -187,6 +187,9 @@ var WorkspaceTracker = class {
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
                                  this._nWorkspacesChanged.bind(this));
+        workspaceManager.connect('workspaces-reordered', () => {
+            this._workspaces.sort((a, b) => a.index() - b.index());
+        });
         global.window_manager.connect('switch-workspace',
                                       this._queueCheckWorkspaces.bind(this));
 
