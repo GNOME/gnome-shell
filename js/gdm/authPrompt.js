@@ -101,6 +101,11 @@ var AuthPrompt = class {
                          x_align: St.Align.START });
 
         this._entry.grab_key_focus();
+        this._entry.clutter_text.connect('activate', () => this.emit('next'));
+        this._entry.clutter_text.connect('text-changed', () => {
+            if (!this._userVerifier.hasPendingMessages)
+                this._fadeOutMessage();
+        });
 
         this._message = new St.Label({ opacity: 0,
                                        styleClass: 'login-dialog-message' });
@@ -151,32 +156,6 @@ var AuthPrompt = class {
                               y_fill: false,
                               x_align: St.Align.END,
                               y_align: St.Align.MIDDLE });
-        this.nextButton = new St.Button({ style_class: 'modal-dialog-button button',
-                                          button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                          reactive: true,
-                                          can_focus: true,
-                                          label: _("Next") });
-        this.nextButton.connect('clicked', () => this.emit('next'));
-        this.nextButton.add_style_pseudo_class('default');
-        this._buttonBox.add(this.nextButton,
-                            { expand: false,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.END,
-                              y_align: St.Align.END });
-
-        this._updateNextButtonSensitivity(this._entry.text.length > 0);
-
-        this._entry.clutter_text.connect('text-changed', () => {
-            if (!this._userVerifier.hasPendingMessages)
-                this._fadeOutMessage();
-
-            this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
-        });
-        this._entry.clutter_text.connect('activate', () => {
-            if (this.nextButton.reactive)
-                this.emit('next');
-        });
     }
 
     _onAskQuestion(verifier, serviceName, question, passwordChar) {
@@ -191,16 +170,6 @@ var AuthPrompt = class {
         }
         this.setPasswordChar(passwordChar);
         this.setQuestion(question);
-
-        if (passwordChar) {
-            if (this._userVerifier.reauthenticating)
-                this.nextButton.label = _("Unlock");
-            else
-                this.nextButton.label = C_("button", "Sign In");
-        } else {
-            this.nextButton.label = _("Next");
-        }
-
         this.updateSensitivity(true);
         this.emit('prompted');
     }
@@ -393,13 +362,7 @@ var AuthPrompt = class {
         }
     }
 
-    _updateNextButtonSensitivity(sensitive) {
-        this.nextButton.reactive = sensitive;
-        this.nextButton.can_focus = sensitive;
-    }
-
     updateSensitivity(sensitive) {
-        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
     }
@@ -430,7 +393,6 @@ var AuthPrompt = class {
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
-        this.nextButton.label = _("Next");
         this._preemptiveAnswer = null;
 
         if (this._userVerifier)
