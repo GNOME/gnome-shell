@@ -531,6 +531,10 @@ var Overview = class {
         Meta.disable_unredirect_for_display(global.display);
         this.viewSelector.show();
 
+        Main.layoutManager.overviewGroup.set_child_above_sibling(
+            this._coverPane, null);
+        this._coverPane.show();
+
         this._overview.opacity = 0;
         this._overview.ease({
             opacity: 255,
@@ -540,9 +544,6 @@ var Overview = class {
         });
         this._shadeBackgrounds();
 
-        Main.layoutManager.overviewGroup.set_child_above_sibling(
-            this._coverPane, null);
-        this._coverPane.show();
         this.emit('showing');
     }
 
@@ -595,6 +596,10 @@ var Overview = class {
 
         this.viewSelector.animateFromOverview();
 
+        Main.layoutManager.overviewGroup.set_child_above_sibling(
+            this._coverPane, null);
+        this._coverPane.show();
+
         // Make other elements fade out.
         this._overview.ease({
             opacity: 0,
@@ -604,9 +609,6 @@ var Overview = class {
         });
         this._unshadeBackgrounds();
 
-        Main.layoutManager.overviewGroup.set_child_above_sibling(
-            this._coverPane, null);
-        this._coverPane.show();
         this.emit('hiding');
     }
 
