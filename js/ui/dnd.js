@@ -430,14 +430,20 @@ var _Draggable = class _Draggable {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD
                 });
 
-                this._dragActor.get_transition('scale-x').connect('new-frame', () => {
+                let transition = this._dragActor.get_transition('scale-x');
+                let transitionFrame = () => {
                     let currentScale = this._dragActor.scale_x / origScale;
                     this._dragOffsetX = currentScale * origDragOffsetX;
                     this._dragOffsetY = currentScale * origDragOffsetY;
                     this._dragActor.set_position(
                         this._dragX + this._dragOffsetX,
                         this._dragY + this._dragOffsetY);
-                });
+                };
+
+                if (transition)
+                    transition.connect('new-frame', transitionFrame);
+                else
+                    transitionFrame();
             }
         }
     }
