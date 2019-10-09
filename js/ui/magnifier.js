@@ -744,7 +744,8 @@ var ZoomRegion = class ZoomRegion {
         this._xCaret = 0;
         this._yCaret = 0;
 
-        this._pointerIdleMonitor = Meta.IdleMonitor.get_for_device(Meta.VIRTUAL_CORE_POINTER_ID);
+        let seat = Clutter.get_default_backend().get_default_seat();
+        this._pointerIdleMonitor = Meta.IdleMonitor.get_for_device(seat.get_pointer());
         this._scrollContentsTimerId = 0;
     }
 
