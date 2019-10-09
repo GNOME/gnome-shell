@@ -75,6 +75,15 @@ function _makeEaseCallback(params, cleanup) {
     };
 }
 
+function _makeFrameCallback(params) {
+    let onNewFrame = params.onNewFrame;
+    delete params.onNewFrame;
+
+    if (onNewFrame)
+        return (progress) => onNewFrame(progress);
+    return null;
+}
+
 function _getPropertyTarget(actor, propName) {
     if (!propName.startsWith('@'))
         return [actor, propName];
@@ -113,6 +122,7 @@ function _easeActor(actor, params) {
 
     let cleanup = () => Meta.enable_unredirect_for_display(global.display);
     let callback = _makeEaseCallback(params, cleanup);
+    let frameCallback = _makeFrameCallback(params);
 
     // cancel overwritten transitions
     let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
@@ -124,10 +134,15 @@ function _easeActor(actor, params) {
     let transition = animatedProps.map(p => actor.get_transition(p))
         .find(t => t !== null);
 
-    if (transition)
+    if (transition) {
+        if (frameCallback)
+            transition.connect('new-frame', (t) => frameCallback(t.get_progress()));
         transition.connect('stopped', (t, finished) => callback(finished));
-    else
+    } else {
+        if (frameCallback)
+            frameCallback(1.0);
         callback(true);
+    }
 }
 
 function _easeActorProperty(actor, propName, target, params) {
@@ -149,6 +164,7 @@ function _easeActorProperty(actor, propName, target, params) {
 
     let cleanup = () => Meta.enable_unredirect_for_display(global.display);
     let callback = _makeEaseCallback(params, cleanup);
+    let frameCallback = _makeFrameCallback(params);
 
     // cancel overwritten transition
     actor.remove_transition(propName);
@@ -156,6 +172,9 @@ function _easeActorProperty(actor, propName, target, params) {
     if (duration == 0) {
         let [obj, prop] = _getPropertyTarget(actor, propName);
         obj[prop] = target;
+
+        if (frameCallback)
+            frameCallback(1.0);
 
         callback(true);
 
@@ -171,6 +190,9 @@ function _easeActorProperty(actor, propName, target, params) {
     actor.add_transition(propName, transition);
 
     transition.set_to(target);
+
+    if (frameCallback)
+        transition.connect('new-frame', (t) => frameCallback(t.get_progress()));
 
     transition.connect('stopped', (t, finished) => callback(finished));
 }
