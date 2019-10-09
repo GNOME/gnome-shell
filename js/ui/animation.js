@@ -167,8 +167,8 @@ var Spinner = class extends AnimatedIcon {
         if (this._animate) {
             this.actor.ease({
                 opacity: 0,
-                time: SPINNER_ANIMATION_TIME,
-                transition: 'linear',
+                duration: SPINNER_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
                 onComplete: () => super.stop()
             });
         } else {
