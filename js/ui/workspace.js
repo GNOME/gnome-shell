@@ -561,10 +561,8 @@ var WindowOverlay = class {
         else
             buttonX = cloneX + (cloneWidth - button._overlap);
 
-        if (animate)
-            this._animateOverlayActor(button, Math.floor(buttonX), Math.floor(buttonY), button.width);
-        else
-            button.set_position(Math.floor(buttonX), Math.floor(buttonY));
+        this._resizeOverlayActor(button, animate,
+            Math.floor(buttonX), Math.floor(buttonY), button.width);
 
         // Clutter.Actor.get_preferred_width() will return the fixed width if
         // one is set, so we need to reset the width by calling set_width(-1),
@@ -582,25 +580,16 @@ var WindowOverlay = class {
         let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
-        if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
-        } else {
-            title.width = titleWidth;
-            title.set_position(Math.floor(titleX), Math.floor(titleY));
-        }
+        this._resizeOverlayActor(title, animate,
+            Math.floor(titleX), Math.floor(titleY), titleWidth);
 
         let borderX = cloneX - this.borderSize;
         let borderY = cloneY - this.borderSize;
         let borderWidth = cloneWidth + 2 * this.borderSize;
         let borderHeight = cloneHeight + 2 * this.borderSize;
 
-        if (animate) {
-            this._animateOverlayActor(this.border, borderX, borderY,
-                                      borderWidth, borderHeight);
-        } else {
-            this.border.set_position(borderX, borderY);
-            this.border.set_size(borderWidth, borderHeight);
-        }
+        this._resizeOverlayActor(this.border, animate,
+            borderX, borderY, borderWidth, borderHeight);
     }
 
     _getCaption() {
@@ -613,10 +602,10 @@ var WindowOverlay = class {
         return app.get_name();
     }
 
-    _animateOverlayActor(actor, x, y, width, height) {
+    _resizeOverlayActor(actor, animate, x, y, width, height) {
         let params = {
             x, y, width,
-            duration: Overview.ANIMATION_TIME,
+            duration: animate ? Overview.ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD
         };
 
@@ -1349,7 +1338,9 @@ var Workspace = class {
                 clone.positioned = true;
             }
 
+            let animateClone;
             if (animate && isOnCurrentWorkspace) {
+                animateClone = true;
                 if (!clone.metaWindow.showing_on_its_workspace()) {
                     /* Hidden windows should fade in and grow
                      * therefore we need to resize them now so they
@@ -1368,17 +1359,9 @@ var Workspace = class {
                         duration: Overview.ANIMATION_TIME
                     });
                 }
-
-                this._animateClone(clone, clone.overlay, x, y, scale);
-            } else {
-                // cancel any active tweens (otherwise they might override our changes)
-                clone.remove_all_transitions();
-                clone.set_position(x, y);
-                clone.set_scale(scale, scale);
-                clone.set_opacity(255);
-                clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, clone.overlay);
             }
+
+            this._moveClone(clone, clone.overlay, animateClone, x, y, scale);
         }
     }
 
@@ -1401,13 +1384,13 @@ var Workspace = class {
         }
     }
 
-    _animateClone(clone, overlay, x, y, scale) {
+    _moveClone(clone, overlay, animate, x, y, scale) {
         clone.overlay.relayout(true);
         clone.ease({
             x, y,
             scale_x: scale,
             scale_y: scale,
-            duration: Overview.ANIMATION_TIME,
+            duration: animate ? Overview.ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._showWindowOverlay(clone, overlay);
