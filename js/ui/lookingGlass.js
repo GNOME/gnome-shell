@@ -428,7 +428,7 @@ var ObjInspector = class ObjInspector {
                 scale_x: 1,
                 scale_y: 1,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                time: 200
+                duration: 200
             });
         } else {
             this.actor.set_scale(1, 1);
