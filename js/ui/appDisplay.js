@@ -2233,7 +2233,7 @@ var AppIcon = class AppIcon {
         this.actor.ease({
             scale_x: 1,
             scale_y: 1,
-            time: APP_ICON_SCALE_IN_TIME,
+            duration: APP_ICON_SCALE_IN_TIME,
             delay: APP_ICON_SCALE_IN_DELAY,
             mode: Clutter.AnimationMode.EASE_OUT_QUINT
         });

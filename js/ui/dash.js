@@ -623,7 +623,7 @@ var Dash = class Dash {
             icon.icon.ease({
                 width: targetWidth,
                 height: targetHeight,
-                time: DASH_ANIMATION_TIME,
+                duration: DASH_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD
             });
         }
