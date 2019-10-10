@@ -486,7 +486,8 @@ var WindowOverlay = class {
 
         windowClone.connect('destroy', this._onDestroy.bind(this));
         windowClone.connect('show-chrome', this._onShowChrome.bind(this));
-        windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
+        this._hideChromeId = windowClone.connect('hide-chrome',
+                                                 this._onHideChrome.bind(this));
 
         this.title.hide();
         this.closeButton.hide();
@@ -636,6 +637,8 @@ var WindowOverlay = class {
             GLib.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
         }
+
+        this._windowClone.disconnect(this._hideChromeId);
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
         this.title.destroy();
         this.closeButton.destroy();
