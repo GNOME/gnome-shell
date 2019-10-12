@@ -698,7 +698,7 @@ msgstr "%A, %H∶%M"
 #, no-c-format
 #| msgid "%B %d, %H∶%M"
 msgid "%B %-d, %H∶%M"
-msgstr "%B %-d, %H∶%M"
+msgstr "%-d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -707,7 +707,7 @@ msgstr "%B %-d, %H∶%M"
 #, no-c-format
 #| msgid "%B %d %Y, %H∶%M"
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%B %-d %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:252
@@ -735,7 +735,7 @@ msgstr "%A, %l∶%M %p"
 #, no-c-format
 #| msgid "%B %d, %l∶%M %p"
 msgid "%B %-d, %l∶%M %p"
-msgstr "%B %-d, %l∶%M %p"
+msgstr "%-d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -744,7 +744,7 @@ msgstr "%B %-d, %l∶%M %p"
 #, no-c-format
 #| msgid "%B %d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%B %-d %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:40
@@ -959,14 +959,14 @@ msgstr "Όλη μέρα"
 #| msgid "%A, %B %d"
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, %B %-d"
+msgstr "%A, %-d %B"
 
 #: js/ui/calendar.js:817
 #| msgctxt "calendar heading"
 #| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, %B %-d, %Y"
+msgstr "%A, %-d %B, %Y"
 
 #: js/ui/calendar.js:1040
 msgid "No Notifications"
@@ -1165,7 +1165,7 @@ msgstr "Ταμπλό"
 #: js/ui/dateMenu.js:68
 #| msgid "%B %e %Y"
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1625,7 +1625,7 @@ msgstr "Επανεκκίνηση…"
 #. long format
 #: js/ui/screenShield.js:73
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d %B"
 
 #: js/ui/screenShield.js:129
 #, javascript-format
@@ -3608,7 +3608,7 @@ msgstr "Ήχοι συστήματος"
 #~ msgstr "%a %e %b, %R"
 
 #~ msgid "%a %R:%S"
-#~ msgstr "%a %R%a %R:%S"
+#~ msgstr "%a %R:%S"
 
 #~ msgid "%a %R"
 #~ msgstr "%a %R"
