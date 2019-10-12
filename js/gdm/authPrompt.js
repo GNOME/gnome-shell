@@ -90,15 +90,41 @@ var AuthPrompt = class {
                          x_fill: false,
                          y_fill: true,
                          x_align: St.Align.START });
+
+        this._initEntryRow();
+
+        this._message = new St.Label({ opacity: 0,
+                                       styleClass: 'login-dialog-message' });
+        this._message.clutter_text.line_wrap = true;
+        this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
+    }
+
+    _onDestroy() {
+        this._userVerifier.destroy();
+        this._userVerifier = null;
+    }
+
+    _initEntryRow() {
+        let mainBox = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: false,
+        });
+        this.actor.add_child(mainBox);
+
+        this.cancelButton = new St.Button({ style_class: 'modal-dialog-button button',
+                                            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                            reactive: true,
+                                            can_focus: true,
+                                            label: _("Cancel") });
+        this.cancelButton.connect('clicked', () => this.cancel());
+        mainBox.add_child(this.cancelButton);
+
         this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                      can_focus: true });
         ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
-        this.actor.add(this._entry,
-                       { expand: true,
-                         x_fill: true,
-                         y_fill: false,
-                         x_align: St.Align.START });
+        mainBox.add_child(this._entry);
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.connect('activate', () => this.emit('next'));
@@ -107,55 +133,14 @@ var AuthPrompt = class {
                 this._fadeOutMessage();
         });
 
-        this._message = new St.Label({ opacity: 0,
-                                       styleClass: 'login-dialog-message' });
-        this._message.clutter_text.line_wrap = true;
-        this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
-
-        this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
-                                             vertical: false });
-        this.actor.add(this._buttonBox,
-                       { expand: true,
-                         x_align: St.Align.MIDDLE,
-                         y_align: St.Align.END });
-
         this._defaultButtonWell = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._defaultButtonWellActor = null;
-
-        this._initButtons();
+        mainBox.add_child(this._defaultButtonWell);
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._spinner.actor.opacity = 0;
         this._spinner.actor.show();
         this._defaultButtonWell.add_child(this._spinner.actor);
-    }
-
-    _onDestroy() {
-        this._userVerifier.destroy();
-        this._userVerifier = null;
-    }
-
-    _initButtons() {
-        this.cancelButton = new St.Button({ style_class: 'modal-dialog-button button',
-                                            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                            reactive: true,
-                                            can_focus: true,
-                                            label: _("Cancel") });
-        this.cancelButton.connect('clicked', () => this.cancel());
-        this._buttonBox.add(this.cancelButton,
-                            { expand: false,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.START,
-                              y_align: St.Align.END });
-
-        this._buttonBox.add(this._defaultButtonWell,
-                            { expand: true,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.END,
-                              y_align: St.Align.MIDDLE });
     }
 
     _onAskQuestion(verifier, serviceName, question, passwordChar) {
