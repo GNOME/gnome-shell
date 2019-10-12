@@ -1,3 +1,10 @@
+3.35.1
+======
+* Misc. bug fixes and cleanups [Marco; Matthias; !758, #701212]
+
+Contributors:
+  Marco Trevisan (Treviño)
+
 3.34.1
 ======
 * Fix "Frequent" view icons disappearing on hover [Jonas D.; #1502]
