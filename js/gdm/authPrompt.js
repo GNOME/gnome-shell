@@ -122,8 +122,11 @@ var AuthPrompt = class {
         this.cancelButton.connect('clicked', () => this.cancel());
         mainBox.add_child(this.cancelButton);
 
-        this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
-                                     can_focus: true });
+        this._entry = new St.Entry({
+            style_class: 'login-dialog-prompt-entry',
+            can_focus: true,
+            x_expand: true,
+        });
         ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
         mainBox.add_child(this._entry);
