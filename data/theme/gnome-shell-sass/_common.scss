@@ -1986,6 +1986,15 @@ StScrollBar {
       }
     }
   }
+
+  .cancel-button {
+    padding: 0;
+    border-radius: 16px;
+    width: 32px;
+    height: 32px;
+
+	  StIcon { icon-size: 16px; }
+  }
 }
 
   .login-dialog-logo-bin { padding: 24px 0px; }

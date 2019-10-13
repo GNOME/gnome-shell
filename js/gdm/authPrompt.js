@@ -112,11 +112,13 @@ var AuthPrompt = class {
         });
         this.actor.add_child(mainBox);
 
-        this.cancelButton = new St.Button({ style_class: 'modal-dialog-button button',
-                                            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                            reactive: true,
-                                            can_focus: true,
-                                            label: _("Cancel") });
+        this.cancelButton = new St.Button({
+            style_class: 'modal-dialog-button button cancel-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
+        });
         this.cancelButton.connect('clicked', () => this.cancel());
         mainBox.add_child(this.cancelButton);
 
