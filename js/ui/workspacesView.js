@@ -22,7 +22,6 @@ var WorkspacesViewBase = class {
         this.actor = new St.Widget({ style_class: 'workspaces-view',
                                      reactive: true });
         this.actor.connect('destroy', this._onDestroy.bind(this));
-        global.focus_manager.add_group(this.actor);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
         this.actor.set_size(0, 0);
@@ -455,6 +454,10 @@ var WorkspacesDisplay = class {
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
         this.actor.connect('parent-set', this._parentSet.bind(this));
 
+        this._viewsContainer = new St.Widget();
+        Main.layoutManager.overviewGroup.add_actor(this._viewsContainer);
+        global.focus_manager.add_group(this._viewsContainer);
+
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
             // Only switch to the workspace when there's no application
@@ -688,7 +691,7 @@ var WorkspacesDisplay = class {
             view.actor.hide();
 
             this._workspacesViews.push(view);
-            Main.layoutManager.overviewGroup.add_actor(view.actor);
+            this._viewsContainer.add_actor(view.actor);
         }
 
         this._workspacesViews.forEach(v => v.actor.show());
