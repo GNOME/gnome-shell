@@ -964,23 +964,6 @@ st_scroll_view_remove (ClutterContainer *container,
 }
 
 static void
-st_scroll_view_foreach_with_internals (ClutterContainer *container,
-                                       ClutterCallback   callback,
-                                       gpointer          user_data)
-{
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (container)->priv;
-
-  if (priv->child != NULL)
-    callback (priv->child, user_data);
-
-  if (priv->hscroll != NULL)
-    callback (priv->hscroll, user_data);
-
-  if (priv->vscroll != NULL)
-    callback (priv->vscroll, user_data);
-}
-
-static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   /* store a pointer to the StBin implementation of
@@ -991,7 +974,6 @@ clutter_container_iface_init (ClutterContainerIface *iface)
 
   iface->add = st_scroll_view_add;
   iface->remove = st_scroll_view_remove;
-  iface->foreach_with_internals = st_scroll_view_foreach_with_internals;
 }
 
 StWidget *
