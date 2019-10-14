@@ -294,13 +294,12 @@ st_scroll_view_paint (ClutterActor *actor)
 }
 
 static void
-st_scroll_view_pick (ClutterActor       *actor,
-                     const ClutterColor *color)
+st_scroll_view_pick (ClutterActor *actor)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
 
   /* Chain up so we get a bounding box pained (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->pick (actor, color);
+  CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->pick (actor);
 
   if (priv->child)
     clutter_actor_paint (priv->child);
