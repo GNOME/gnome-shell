@@ -443,8 +443,7 @@ st_box_layout_paint (ClutterActor *actor)
 }
 
 static void
-st_box_layout_pick (ClutterActor       *actor,
-                    const ClutterColor *color)
+st_box_layout_pick (ClutterActor *actor)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
   StBoxLayoutPrivate *priv = self->priv;
@@ -462,7 +461,7 @@ st_box_layout_pick (ClutterActor       *actor,
       cogl_framebuffer_translate (fb, (int)x, (int)y, 0);
     }
 
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor, color);
+  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor);
 
   if (x != 0 || y != 0)
     {
