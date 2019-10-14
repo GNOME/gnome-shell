@@ -1023,14 +1023,12 @@ var PopupSubMenu = class extends PopupMenuBase {
                 mode: Clutter.AnimationMode.EASE_OUT_EXPO,
                 onComplete: () => this.actor.set_height(-1)
             });
-            this._arrow.ease({
-                rotation_angle_z: targetAngle,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
-            });
-        } else {
-            this._arrow.rotation_angle_z = targetAngle;
         }
+        this._arrow.ease({
+            rotation_angle_z: targetAngle,
+            duration: animate ? 250 : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO
+        });
     }
 
     close(animate) {
@@ -1046,25 +1044,21 @@ var PopupSubMenu = class extends PopupMenuBase {
         if (animate && this._needsScrollbar())
             animate = false;
 
-        if (animate) {
-            this.actor.ease({
-                height: 0,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onComplete: () => {
-                    this.actor.hide();
-                    this.actor.set_height(-1);
-                }
-            });
-            this._arrow.ease({
-                rotation_angle_z: 0,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
-            });
-        } else {
-            this._arrow.rotation_angle_z = 0;
-            this.actor.hide();
-        }
+        let duration = animate ? 250 : 0;
+        this.actor.ease({
+            height: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+            onComplete: () => {
+                this.actor.hide();
+                this.actor.set_height(-1);
+            }
+        });
+        this._arrow.ease({
+            rotation_angle_z: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO
+        });
     }
 
     _onKeyPressEvent(actor, event) {

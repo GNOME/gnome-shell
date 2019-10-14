@@ -1398,29 +1398,23 @@ var MessageTray = class MessageTray {
         this._resetNotificationLeftTimeout();
         this._bannerBin.remove_all_transitions();
 
-        if (animate) {
-            this._notificationState = State.HIDING;
-            this._bannerBin.ease({
-                opacity: 0,
-                duration: ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_BACK
-            });
-            this._bannerBin.ease({
-                y: -this._bannerBin.height,
-                duration: ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_BACK,
-                onComplete: () => {
-                    this._notificationState = State.HIDDEN;
-                    this._hideNotificationCompleted();
-                    this._updateState();
-                }
-            });
-        } else {
-            this._bannerBin.y = -this._bannerBin.height;
-            this._bannerBin.opacity = 0;
-            this._notificationState = State.HIDDEN;
-            this._hideNotificationCompleted();
-        }
+        let duration = animate ? ANIMATION_TIME : 0;
+        this._notificationState = State.HIDING;
+        this._bannerBin.ease({
+            opacity: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_BACK
+        });
+        this._bannerBin.ease({
+            y: -this._bannerBin.height,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_BACK,
+            onComplete: () => {
+                this._notificationState = State.HIDDEN;
+                this._hideNotificationCompleted();
+                this._updateState();
+            }
+        });
     }
 
     _hideNotificationCompleted() {
