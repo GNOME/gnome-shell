@@ -457,7 +457,6 @@ grab_window_screenshot (ClutterActor *stage,
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
   MetaRectangle rect;
-  cairo_rectangle_int_t clip;
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   clutter_actor_get_position (window_actor, &actor_x, &actor_y);
@@ -467,16 +466,10 @@ grab_window_screenshot (ClutterActor *stage,
   if (!priv->include_frame)
     meta_window_frame_rect_to_client_rect (window, &rect, &rect);
 
-  priv->screenshot_area.x = rect.x;
-  priv->screenshot_area.y = rect.y;
-  clip.x = rect.x - (gint) actor_x;
-  clip.y = rect.y - (gint) actor_y;
-
-  clip.width = priv->screenshot_area.width = rect.width;
-  clip.height = priv->screenshot_area.height = rect.height;
+  priv->screenshot_area = rect;
 
   priv->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
-                                             &clip);
+                                             NULL);
   priv->datetime = g_date_time_new_now_local ();
 
   if (priv->include_cursor)
