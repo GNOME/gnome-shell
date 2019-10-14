@@ -62,7 +62,7 @@ static const gchar *gaussian_blur_glsl =
 "  cogl_texel = vec4 (ret / total);                                \n"
 "  cogl_texel.rgb *= brightness;                                   \n";
 
-#define DOWNSCALE_FACTOR 3.0
+#define DOWNSCALE_FACTOR 4.0
 
 struct _ShellBlurEffect
 {
@@ -127,71 +127,85 @@ create_pipeline (void)
   return cogl_pipeline_copy (base_pipeline);
 }
 
+static void
+queue_actor_repaint (ShellBlurEffect *self)
+{
+  ClutterActor *actor =
+    clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (self));
+
+  if (actor)
+    clutter_actor_queue_redraw (actor);
+}
+
+static void
+update_uniforms (ShellBlurEffect *self)
+{
+  ClutterOffscreenEffect *offscreen_effect =
+    CLUTTER_OFFSCREEN_EFFECT (self);
+  CoglHandle texture;
+
+  texture = clutter_offscreen_effect_get_texture (offscreen_effect);
+  self->tex_width = cogl_texture_get_width (texture) * DOWNSCALE_FACTOR;
+  self->tex_height = cogl_texture_get_height (texture) * DOWNSCALE_FACTOR;
+
+  if (self->pixel_step_uniform > -1)
+    {
+      ClutterRect rect;
+      float pixel_step;
+
+      clutter_offscreen_effect_get_target_rect (CLUTTER_OFFSCREEN_EFFECT (self),
+                                                &rect);
+
+      if (self->vertical)
+        pixel_step = 1.f / rect.size.height;
+      else
+        pixel_step = 1.f / rect.size.width;
+
+      cogl_pipeline_set_uniform_1f (self->pipeline,
+                                    self->pixel_step_uniform,
+                                    pixel_step / DOWNSCALE_FACTOR);
+    }
+
+  if (self->blur_radius_uniform > -1)
+    {
+      cogl_pipeline_set_uniform_1f (self->pipeline,
+                                    self->blur_radius_uniform,
+                                    self->blur_radius / DOWNSCALE_FACTOR);
+    }
+
+  if (self->brightness_uniform > -1)
+    {
+      cogl_pipeline_set_uniform_1f (self->pipeline,
+                                    self->brightness_uniform,
+                                    self->brightness);
+    }
+
+  if (self->vertical_uniform > -1)
+    {
+      cogl_pipeline_set_uniform_1i (self->pipeline,
+                                    self->vertical_uniform,
+                                    self->vertical);
+    }
+
+  cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
+}
+
 static gboolean
 shell_blur_effect_pre_paint (ClutterEffect *effect)
 {
-  ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
-  ClutterOffscreenEffect *offscreen_effect =
-    CLUTTER_OFFSCREEN_EFFECT (self);
   gboolean success;
 
   success = CLUTTER_EFFECT_CLASS (shell_blur_effect_parent_class)->pre_paint (effect);
 
   if (success)
     {
-      CoglFramebuffer *offscreen;
-      CoglHandle texture;
-
-      texture = clutter_offscreen_effect_get_texture (offscreen_effect);
-      self->tex_width = cogl_texture_get_width (texture) * DOWNSCALE_FACTOR;
-      self->tex_height = cogl_texture_get_height (texture) * DOWNSCALE_FACTOR;
-
-      if (self->pixel_step_uniform > -1)
-        {
-          ClutterRect rect;
-          float pixel_step;
-
-          clutter_offscreen_effect_get_target_rect (CLUTTER_OFFSCREEN_EFFECT (self),
-                                                    &rect);
-          if (self->vertical)
-            pixel_step = 1.f / rect.size.height;
-          else
-            pixel_step = 1.f / rect.size.width;
-
-          cogl_pipeline_set_uniform_1f (self->pipeline,
-                                        self->pixel_step_uniform,
-                                        pixel_step / DOWNSCALE_FACTOR);
-        }
-
-      if (self->blur_radius_uniform > -1)
-        {
-          cogl_pipeline_set_uniform_1f (self->pipeline,
-                                        self->blur_radius_uniform,
-                                        self->blur_radius / DOWNSCALE_FACTOR);
-        }
-
-      if (self->brightness_uniform > -1)
-        {
-          cogl_pipeline_set_uniform_1f (self->pipeline,
-                                        self->brightness_uniform,
-                                        self->brightness);
-        }
-
-      if (self->vertical_uniform > -1)
-        {
-          cogl_pipeline_set_uniform_1i (self->pipeline,
-                                        self->vertical_uniform,
-                                        self->vertical);
-        }
-
-      cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
+      CoglFramebuffer *offscreen = cogl_get_draw_framebuffer ();
 
       /* Texture is downscaled, draw downscaled as well */
-      offscreen = cogl_get_draw_framebuffer ();
       cogl_framebuffer_scale (offscreen,
                               1.0 / DOWNSCALE_FACTOR,
                               1.0 / DOWNSCALE_FACTOR,
-                              0.0);
+                              1.0);
     }
 
   return success;
@@ -206,6 +220,8 @@ shell_blur_effect_paint_target (ClutterOffscreenEffect *effect)
   float blur_radius_offset_h;
   float blur_radius_offset_v;
   guint8 paint_opacity;
+
+  update_uniforms (self);
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (self));
   paint_opacity = clutter_actor_get_paint_opacity (actor);
@@ -240,7 +256,7 @@ shell_blur_effect_post_paint (ClutterEffect *effect)
   cogl_framebuffer_scale (offscreen,
                           DOWNSCALE_FACTOR,
                           DOWNSCALE_FACTOR,
-                          0.f);
+                          1.f);
 
   CLUTTER_EFFECT_CLASS (shell_blur_effect_parent_class)->post_paint (effect);
 }
@@ -253,7 +269,9 @@ shell_blur_effect_create_texture (ClutterOffscreenEffect *effect,
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  return cogl_texture_2d_new_with_size (ctx, width / 2.0, height / 2.0);
+  return cogl_texture_2d_new_with_size (ctx,
+                                        width / DOWNSCALE_FACTOR,
+                                        height / DOWNSCALE_FACTOR);
 }
 
 static gboolean
@@ -436,7 +454,7 @@ shell_blur_effect_set_blur_radius (ShellBlurEffect *self,
     return;
 
   self->blur_radius = radius;
-  clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
+  queue_actor_repaint (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_BLUR_RADIUS]);
 }
@@ -459,7 +477,7 @@ shell_blur_effect_set_brightness (ShellBlurEffect *self,
     return;
 
   self->brightness = brightness;
-  clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
+  queue_actor_repaint (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_BRIGHTNESS]);
 }
@@ -482,7 +500,7 @@ shell_blur_effect_set_vertical (ShellBlurEffect *self,
     return;
 
   self->vertical = vertical;
-  clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
+  queue_actor_repaint (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_VERTICAL]);
 }

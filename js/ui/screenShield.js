@@ -28,7 +28,7 @@ const DISABLE_LOCK_KEY = 'disable-lock-screen';
 const LOCKED_STATE_STR = 'screenShield.locked';
 
 const BLUR_BRIGHTNESS = 0.55;
-const BLUR_RADIUS = 70;
+const BLUR_RADIUS = 200;
 
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
