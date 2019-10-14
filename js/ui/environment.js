@@ -109,8 +109,6 @@ function _easeActor(actor, params) {
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
-    Meta.disable_unredirect_for_display(global.display);
-
     let cleanup = () => Meta.enable_unredirect_for_display(global.display);
     let callback = _makeEaseCallback(params, cleanup);
 
@@ -123,6 +121,11 @@ function _easeActor(actor, params) {
 
     let transition = animatedProps.map(p => actor.get_transition(p))
         .find(t => t !== null);
+
+    if (transition && transition.delay)
+        transition.connect('started', () => Meta.disable_unredirect_for_display(global.display));
+    else
+        Meta.disable_unredirect_for_display(global.display);
 
     if (transition)
         transition.connect('stopped', (t, finished) => callback(finished));
@@ -145,8 +148,6 @@ function _easeActorProperty(actor, propName, target, params) {
     if (actor instanceof Clutter.Actor && !actor.mapped)
         duration = 0;
 
-    Meta.disable_unredirect_for_display(global.display);
-
     let cleanup = () => Meta.enable_unredirect_for_display(global.display);
     let callback = _makeEaseCallback(params, cleanup);
 
@@ -157,6 +158,7 @@ function _easeActorProperty(actor, propName, target, params) {
         let [obj, prop] = _getPropertyTarget(actor, propName);
         obj[prop] = target;
 
+        Meta.disable_unredirect_for_display(global.display);
         callback(true);
 
         return;
@@ -171,6 +173,11 @@ function _easeActorProperty(actor, propName, target, params) {
     actor.add_transition(propName, transition);
 
     transition.set_to(target);
+
+    if (transition.delay)
+        transition.connect('started', () => Meta.disable_unredirect_for_display(global.display));
+    else
+        Meta.disable_unredirect_for_display(global.display);
 
     transition.connect('stopped', (t, finished) => callback(finished));
 }
