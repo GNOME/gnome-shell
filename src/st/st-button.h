@@ -40,7 +40,7 @@ struct _StButtonClass
   void (* transition) (StButton     *button);
 
   /* signals */
-  void (* clicked) (StButton *button);
+  void (* clicked) (StButton *button, int clicked_button);
 };
 
 StWidget    *st_button_new             (void);
