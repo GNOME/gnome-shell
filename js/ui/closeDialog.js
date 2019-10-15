@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CloseDialog */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -46,6 +46,18 @@ var CloseDialog = GObject.registerClass({
         return new Dialog.MessageDialogContent({ icon, title, subtitle });
     }
 
+    _updateScale() {
+        // Since this is a child of MetaWindowActor (which, in Wayland sessions,
+        // applies the geometry scale factor to its children itself, see
+        // meta_window_actor_set_geometry_scale()), make sure we don't apply
+        // the factor twice in the end.
+        if (!Meta.is_wayland_compositor())
+            return;
+
+        let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        this._dialog.set_scale(1 / scaleFactor, 1 / scaleFactor);
+    }
+
     _initDialog() {
         if (this._dialog)
             return;
@@ -64,6 +76,11 @@ var CloseDialog = GObject.registerClass({
                                  key: Clutter.Escape });
 
         global.focus_manager.add_group(this._dialog);
+
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        themeContext.connect('notify::scale-factor', this._updateScale.bind(this));
+
+        this._updateScale();
     }
 
     _addWindowEffect() {
@@ -145,10 +162,10 @@ var CloseDialog = GObject.registerClass({
         this._addWindowEffect();
         this._initDialog();
 
-        this._dialog.scale_y = 0;
-        this._dialog.set_pivot_point(0.5, 0.5);
+        this._dialog._dialog.scale_y = 0;
+        this._dialog._dialog.set_pivot_point(0.5, 0.5);
 
-        this._dialog.ease({
+        this._dialog._dialog.ease({
             scale_y: 1,
             mode: Clutter.AnimationMode.LINEAR,
             duration: DIALOG_TRANSITION_TIME,
@@ -175,7 +192,7 @@ var CloseDialog = GObject.registerClass({
         this._dialog = null;
         this._removeWindowEffect();
 
-        dialog.ease({
+        dialog._dialog.ease({
             scale_y: 0,
             mode: Clutter.AnimationMode.LINEAR,
             duration: DIALOG_TRANSITION_TIME,
