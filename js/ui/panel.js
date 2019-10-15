@@ -727,7 +727,9 @@ class AggregateMenu extends PanelMenu.Button {
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
+        this._usbProtection = new imports.ui.status.usbProtection.Indicator();
 
+        this._indicators.add_child(this._usbProtection.indicators);
         this._indicators.add_child(this._thunderbolt.indicators);
         this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._location.indicators);
@@ -758,6 +760,7 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._nightLight.menu);
+        this.menu.addMenuItem(this._usbProtection.menu);
         this.menu.addMenuItem(this._system.menu);
 
         menuLayout.addSizeChild(this._location.menu.actor);
