@@ -378,8 +378,15 @@ var UnlockDialog = GObject.registerClass({
         super._init({
             accessible_role: Atk.Role.WINDOW,
             style_class: 'login-dialog',
+            reactive: true,
             visible: false,
         });
+
+        let tapAction = new Clutter.TapAction();
+        tapAction.connect('tap', () => {
+            this._showAuth();
+        })
+        this.add_action(tapAction);
 
         this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         parentActor.add_child(this);
