@@ -1004,8 +1004,8 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         // Sort windows horizontally to minimize travel distance.
         // This affects in what order the windows end up in a row.
         row.windows.sort((a, b) => {
-            let aCenter = a.realWindow.x + a.realWindow.width / 2;
-            let bCenter = b.realWindow.x + b.realWindow.width / 2;
+            let aCenter = a.x + a.width / 2;
+            let bCenter = b.x + b.width / 2;
             return aCenter - bCenter;
         });
     }
@@ -1027,8 +1027,8 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         // This affects what rows the windows get placed in.
         let sortedWindows = windows.slice();
         sortedWindows.sort((a, b) => {
-            let aCenter = a.realWindow.y + a.realWindow.height / 2;
-            let bCenter = b.realWindow.y + b.realWindow.height / 2;
+            let aCenter = a.y + a.height / 2;
+            let bCenter = b.y + b.height / 2;
             return aCenter - bCenter;
         });
 
