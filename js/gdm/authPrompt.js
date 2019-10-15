@@ -6,6 +6,7 @@ const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
+const Util = imports.misc.util;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -15,6 +16,10 @@ var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
 var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+
+const WIGGLE_OFFSET = 6;
+const WIGGLE_DURATION = 65;
+const N_WIGGLES = 3;
 
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
@@ -256,6 +261,12 @@ var AuthPrompt = GObject.registerClass({
         this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+
+        Util.wiggle(this._entry, {
+            offset: WIGGLE_OFFSET,
+            duration: WIGGLE_DURATION,
+            wiggleCount: N_WIGGLES,
+        });
     }
 
     _onVerificationComplete() {
