@@ -1190,34 +1190,14 @@ StScrollBar {
 
   .aggregate-menu {
     min-width: 21em;
-    .popup-menu-icon { padding: 0 4px; }
+    .popup-menu-icon { padding: 0 4px;
+                       -st-icon-style: symbolic; }
     .popup-sub-menu .popup-menu-item > :first-child {
       &:ltr { /* 12px spacing + 2*4px padding */
               padding-left: 20px; margin-left: 1.09em; }
       &:rtl { /* 12px spacing + 2*4px padding */
               padding-right: 20px; margin-right: 1.09em; }
     }
-  }
-
-  .system-menu-action {
-    -st-icon-style: symbolic;
-    color: $fg_color;
-    border-radius: 32px; /* wish we could do 50% */
-    padding: 13px;
-    border: 1px solid $_bubble_borders_color;
-
-    &:hover, &:focus {
-      background-color: $_hover_bg_color;
-      color: $fg_color;
-      border: none;
-      padding: 14px;
-    }
-    &:active { 
-      background-color: $selected_bg_color;
-      color: $selected_fg_color;
-    }
-
-    & > StIcon { icon-size: 16px; }
   }
 
 // Activities Ripples
