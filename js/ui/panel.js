@@ -760,12 +760,13 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._nightLight.menu);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);
 
         menuLayout.addSizeChild(this._location.menu.actor);
         menuLayout.addSizeChild(this._rfkill.menu.actor);
         menuLayout.addSizeChild(this._power.menu.actor);
-        menuLayout.addSizeChild(this._system.buttonGroup);
+        menuLayout.addSizeChild(this._system.menu.actor);
     }
 });
 
