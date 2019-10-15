@@ -157,6 +157,8 @@ var WindowClone = GObject.registerClass({
         this.x = this._boundingBox.x;
         this.y = this._boundingBox.y;
 
+        this._computeWindowCenter();
+
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', this._onClicked.bind(this));
         clickAction.connect('long-press', this._onLongPress.bind(this));
@@ -297,6 +299,18 @@ var WindowClone = GObject.registerClass({
         // Convert from a MetaRectangle to a native JS object
         this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
         this.layout_manager.boundingBox = rect;
+    }
+
+    get windowCenter() {
+        return this._windowCenter;
+    }
+
+    _computeWindowCenter() {
+        let box = this.realWindow.get_allocation_box();
+        this._windowCenter = new Clutter.Point({
+            x: box.get_x() + box.get_width() / 2,
+            y: box.get_y() + box.get_height() / 2,
+        });
     }
 
     // Find the actor just below us, respecting reparenting done by DND code
@@ -1003,11 +1017,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
     _sortRow(row) {
         // Sort windows horizontally to minimize travel distance.
         // This affects in what order the windows end up in a row.
-        row.windows.sort((a, b) => {
-            let aCenter = a.realWindow.x + a.realWindow.width / 2;
-            let bCenter = b.realWindow.x + b.realWindow.width / 2;
-            return aCenter - bCenter;
-        });
+        row.windows.sort((a, b) => a.windowCenter.x - b.windowCenter.x);
     }
 
     computeLayout(windows, layout) {
@@ -1026,11 +1036,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         // Sort windows vertically to minimize travel distance.
         // This affects what rows the windows get placed in.
         let sortedWindows = windows.slice();
-        sortedWindows.sort((a, b) => {
-            let aCenter = a.realWindow.y + a.realWindow.height / 2;
-            let bCenter = b.realWindow.y + b.realWindow.height / 2;
-            return aCenter - bCenter;
-        });
+        sortedWindows.sort((a, b) => a.windowCenter.y - b.windowCenter.y);
 
         let windowIdx = 0;
         for (let i = 0; i < numRows; i++) {
