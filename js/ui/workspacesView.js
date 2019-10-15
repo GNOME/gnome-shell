@@ -435,6 +435,8 @@ var WorkspacesDisplay = class {
 
         workspaceManager.connect('workspaces-reordered',
                                  this._workspacesReordered.bind(this));
+        workspaceManager.connect('notify::n-workspaces',
+                                 this._activeWorkspaceChanged.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
