@@ -16,6 +16,10 @@ var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
+const WIGGLE_OFFSET = 6;
+const WIGGLE_DURATION = 65;
+const N_WIGGLES = 3;
+
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1
@@ -256,6 +260,37 @@ var AuthPrompt = GObject.registerClass({
         this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+
+        this._wiggle();
+    }
+
+    _wiggle() {
+        this._entry.translation_x = 0;
+
+        // Accelerate before wiggling
+        this._entry.ease({
+            translation_x: -WIGGLE_OFFSET,
+            duration: WIGGLE_DURATION,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                // Wiggle
+                this._entry.ease({
+                    translation_x: WIGGLE_OFFSET,
+                    duration: WIGGLE_DURATION,
+                    mode: Clutter.AnimationMode.LINEAR,
+                    repeat_count: N_WIGGLES,
+                    auto_reverse: true,
+                    onComplete: () => {
+                        // Decelerate and return to the original position
+                        this._entry.ease({
+                            translation_x: 0,
+                            duration: WIGGLE_DURATION,
+                            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                        });
+                    }
+                });
+            }
+        });
     }
 
     _onVerificationComplete() {
