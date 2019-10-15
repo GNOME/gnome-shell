@@ -313,51 +313,34 @@ Signals.addSignalMethods(NotificationsBox.prototype);
 
 var UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(clock, authPrompt, notifications) {
+    _init(clockStack, notifications) {
         super._init();
 
-        this._clock = clock;
-        this._authPrompt = authPrompt;
+        this._clockStack = clockStack;
         this._notifications = notifications;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
-        let [clockWidth] = this._clock.get_preferred_width(forHeight);
-        let [authWidth] = this._authPrompt.get_preferred_width(forHeight);
-
-        let columnWidth = Math.max(authWidth, clockWidth);
-
-        return [columnWidth, columnWidth];
+        return this._clockStack.get_preferred_width(forHeight);
     }
 
     vfunc_get_preferred_height(container, forWidth) {
-        let [clockHeight] = this._clock.get_preferred_height(forWidth);
-        let [authHeight] = this._authPrompt.get_preferred_height(forWidth);
-
-        let height = clockHeight + authHeight;
-
-        return [height, height];
+        return this._clockStack.get_preferred_height(forWidth);
     }
 
     vfunc_allocate(container, box, flags) {
         let [width, height] = box.get_size();
 
-        // FIXME: blurred text
-
         let tenthOfHeight = height / 10.0;
         let thirdOfHeight = height / 3.0;
 
-        let [clockWidth, clockHeight] =
-            this._clock.get_preferred_size();
-
-        let [authWidth, authHeight] =
-            this._authPrompt.get_preferred_size();
+        let [clockStackWidth, clockStackHeight] =
+            this._clockStack.get_preferred_size();
 
         let [, , notificationsWidth, notificationsHeight] =
             this._notifications.get_preferred_size();
 
-        let clockBoxHeight = clockHeight + authHeight;
-        let columnWidth = Math.max(authWidth, clockWidth, notificationsWidth);
+        let columnWidth = Math.max(clockStackWidth, notificationsWidth);
 
         let columnX1 = Math.floor(width / 2.0 - columnWidth / 2.0);
         let actorBox = new Clutter.ActorBox();
@@ -365,7 +348,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         // Notifications
         let maxNotificationsHeight = Math.min(
             notificationsHeight,
-            height - tenthOfHeight - clockBoxHeight);
+            height - tenthOfHeight - clockStackHeight);
 
         actorBox.x1 = columnX1;
         actorBox.y1 = height - maxNotificationsHeight;
@@ -374,29 +357,17 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
         this._notifications.allocate(actorBox, flags);
 
-        // Auth Prompt
-        let authPromptY = Math.min(
-            thirdOfHeight + clockHeight,
-            height - maxNotificationsHeight - authHeight);
-
-        actorBox.x1 = columnX1;
-        actorBox.y1 = authPromptY;
-        actorBox.x2 = columnX1 + columnWidth;
-        actorBox.y2 = authPromptY + authHeight;
-
-        this._authPrompt.allocate(actorBox, flags);
-
-        // Clock
-        let clockY = Math.min(
+        // Clock Stack
+        let clockStackY = Math.min(
             thirdOfHeight,
-            height - maxNotificationsHeight - clockBoxHeight);
+            height - clockStackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
-        actorBox.y1 = clockY;
+        actorBox.y1 = clockStackY;
         actorBox.x2 = columnX1 + columnWidth;
-        actorBox.y2 = clockY + clockHeight;
+        actorBox.y2 = clockStackY + clockStackHeight;
 
-        this._clock.allocate(actorBox, flags);
+        this._clockStack.allocate(actorBox, flags);
     }
 });
 
@@ -417,17 +388,23 @@ var UnlockDialog = GObject.registerClass({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._clock = new Clock();
-        this.add_child(this._clock.actor);
+        let clockStack = new Shell.Stack();
+        this.add_child(clockStack);
 
-        let authBox = new St.BoxLayout({
+        this._clock = new Clock();
+        clockStack.add_child(this._clock.actor);
+
+        this._activePage  = this._clock.actor;
+
+        this._authBox = new St.BoxLayout({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
             y_expand: true,
             vertical: true,
+            visible: false,
         });
-        this.add_child(authBox);
+        clockStack.add_child(this._authBox);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
@@ -435,7 +412,7 @@ var UnlockDialog = GObject.registerClass({
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.setPasswordChar('\u25cf');
 
-        authBox.add_child(this._authPrompt.actor);
+        this._authBox.add_child(this._authPrompt.actor);
 
         this.allowCancel = false;
 
@@ -450,7 +427,7 @@ var UnlockDialog = GObject.registerClass({
                                                     x_align: St.Align.START,
                                                     x_fill: false });
             this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
-            authBox.add_child(this._otherUserButton);
+            this._authBox.add_child(this._otherUserButton);
         } else {
             this._otherUserButton = null;
         }
@@ -468,11 +445,78 @@ var UnlockDialog = GObject.registerClass({
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
 
         this.layout_manager = new UnlockDialogLayout(
-            this._clock.actor,
-            authBox,
+            clockStack,
             this._notificationsBox.actor);
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _showClock() {
+        if (this._activePage == this._clock.actor)
+            return;
+
+        this._activePage = this._clock.actor;
+        this._clock.actor.show();
+
+        this._authBox.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._authBox.hide(),
+        });
+
+        this._clock.actor.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _showAuth() {
+        if (this._activePage == this._authBox)
+            return;
+
+        this._activePage = this._authBox;
+        this._authBox.show();
+
+        this._clock.actor.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._clock.actor.hide(),
+        });
+
+        this._authBox.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    vfunc_captured_event(event) {
+        if (event.type() != Clutter.EventType.KEY_PRESS)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (this._activePage == this._authBox)
+            return Clutter.EVENT_PROPAGATE;
+
+        let symbol = event.get_key_symbol();
+        let unichar = event.get_key_unicode();
+
+        let isEnter = (symbol == Clutter.KEY_Return ||
+                       symbol == Clutter.KEY_KP_Enter ||
+                       symbol == Clutter.KEY_ISO_Enter);
+        let isEscape = (symbol == Clutter.KEY_Escape);
+        let isLiftChar = (GLib.unichar_isprint(unichar) &&
+                          (this._activePage == this._clock.actor ||
+                          !GLib.unichar_isgraph(unichar)));
+
+        if (!isEnter && !isEscape && !isLiftChar)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._showAuth();
+
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _updateSensitivity(sensitive) {
@@ -485,6 +529,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     _fail() {
+        this._showClock();
         this.emit('failed');
     }
 
@@ -540,6 +585,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     addCharacter(unichar) {
+        this._showAuth();
         this._authPrompt.addCharacter(unichar);
     }
 
