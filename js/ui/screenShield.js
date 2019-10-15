@@ -411,16 +411,7 @@ var ScreenShield = class {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
 
-        this._lockScreenState = MessageTray.State.HIDING;
-
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
-
         this._lockScreenState = MessageTray.State.HIDDEN;
-
-        this._dialog.grab_key_focus();
-        this._dialog.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-
         this._cursorTracker.set_pointer_visible(true);
     }
 
