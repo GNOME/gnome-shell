@@ -105,6 +105,16 @@ function _easeActor(actor, params) {
         actor.set_easing_delay(params.delay);
     delete params.delay;
 
+    let repeat_count = 0;
+    if (params.repeat_count != undefined)
+        repeat_count = params.repeat_count;
+    delete params.repeat_count;
+
+    let auto_reverse = false;
+    if (params.auto_reverse != undefined)
+        auto_reverse = params.auto_reverse;
+    delete params.auto_reverse;
+
     if (params.mode != undefined)
         actor.set_easing_mode(params.mode);
     delete params.mode;
@@ -127,10 +137,14 @@ function _easeActor(actor, params) {
     else
         Meta.disable_unredirect_for_display(global.display);
 
-    if (transition)
+    if (transition) {
+        transition.repeat_count = repeat_count;
+        transition.auto_reverse = auto_reverse;
+
         transition.connect('stopped', (t, finished) => callback(finished));
-    else
+    } else {
         callback(true);
+    }
 }
 
 function _easeActorProperty(actor, propName, target, params) {
@@ -142,6 +156,16 @@ function _easeActorProperty(actor, propName, target, params) {
     if (params.duration)
         params.duration = adjustAnimationTime(params.duration);
     let duration = Math.floor(params.duration || 0);
+
+    let repeat_count = 0;
+    if (params.repeat_count != undefined)
+        repeat_count = params.repeat_count;
+    delete params.repeat_count;
+
+    let auto_reverse = false;
+    if (params.auto_reverse != undefined)
+        auto_reverse = params.auto_reverse;
+    delete params.auto_reverse;
 
     // Copy Clutter's behavior for implicit animations, see
     // should_skip_implicit_transition()
@@ -168,7 +192,9 @@ function _easeActorProperty(actor, propName, target, params) {
     let transition = new Clutter.PropertyTransition(Object.assign({
         property_name: propName,
         interval: new Clutter.Interval({ value_type: pspec.value_type }),
-        remove_on_complete: true
+        remove_on_complete: true,
+        repeat_count: repeat_count,
+        auto_reverse: auto_reverse,
     }, params));
     actor.add_transition(propName, transition);
 
