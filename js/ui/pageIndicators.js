@@ -20,14 +20,17 @@ var ANIMATION_DELAY = 100;
 var PageIndicators = GObject.registerClass({
     Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } }
 }, class PageIndicators extends St.BoxLayout {
-    _init(vertical = true) {
-        super._init({ style_class: 'page-indicators',
-                      vertical,
-                      x_expand: true, y_expand: true,
-                      x_align: vertical ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER,
-                      y_align: vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.END,
-                      reactive: true,
-                      clip_to_allocation: true });
+    _init(orientation = Clutter.Orientation.VERTICAL) {
+        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        super._init({
+            style_class: 'page-indicators',
+            vertical,
+            x_expand: true, y_expand: true,
+            x_align: vertical ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER,
+            y_align: vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.END,
+            reactive: true,
+            clip_to_allocation: true
+        });
         this._nPages = 0;
         this._currentPage = undefined;
         this._reactive = true;
@@ -93,18 +96,26 @@ var PageIndicators = GObject.registerClass({
 var AnimatedPageIndicators = GObject.registerClass(
 class AnimatedPageIndicators extends PageIndicators {
     _init() {
-        super._init(true);
+        super._init();
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
 
-        this.connect('notify::mapped', () => {
-            if (!this.mapped)
-                return;
+    _onDestroy() {
+        if (this.animateLater) {
+            Meta.later_remove(this.animateLater);
+            this.animateLater = 0;
+        }
+    }
 
-            // Implicit animations are skipped for unmapped actors, and our
-            // children aren't mapped yet, so defer to a later handler
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this.animateIndicators(AnimationDirection.IN);
-                return GLib.SOURCE_REMOVE;
-            });
+    vfunc_map() {
+        super.vfunc_map();
+
+        // Implicit animations are skipped for unmapped actors, and our
+        // children aren't mapped yet, so defer to a later handler
+        this.animateLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this.animateLater = 0;
+            this.animateIndicators(AnimationDirection.IN);
+            return GLib.SOURCE_REMOVE;
         });
     }
 

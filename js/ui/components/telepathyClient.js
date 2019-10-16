@@ -215,7 +215,7 @@ class TelepathyClient extends Tp.BaseClient {
                 // We are already handling the channel, display the source
                 let source = this._chatSources[channel.get_object_path()];
                 if (source)
-                    source.notify();
+                    source.showNotification();
             }
         }
     }
@@ -266,9 +266,10 @@ class TelepathyClient extends Tp.BaseClient {
     }
 }) : null;
 
-var ChatSource = class extends MessageTray.Source {
-    constructor(account, conn, channel, contact, client) {
-        super(contact.get_alias());
+var ChatSource = HAVE_TP ? GObject.registerClass(
+class ChatSource extends MessageTray.Source {
+    _init(account, conn, channel, contact, client) {
+        super._init(contact.get_alias());
 
         this._account = account;
         this._contact = contact;
@@ -326,7 +327,7 @@ var ChatSource = class extends MessageTray.Source {
 
         // We ack messages when the user expands the new notification
         let id = this._banner.connect('expanded', this._ackMessages.bind(this));
-        this._banner.actor.connect('destroy', () => {
+        this._banner.connect('destroy', () => {
             this._banner.disconnect(id);
             this._banner = null;
         });
@@ -476,7 +477,7 @@ var ChatSource = class extends MessageTray.Source {
             this._notification.appendMessage(pendingMessages[i], true);
 
         if (pendingMessages.length > 0)
-            this.notify();
+            this.showNotification();
     }
 
     destroy(reason) {
@@ -553,7 +554,7 @@ var ChatSource = class extends MessageTray.Source {
 
     _notifyTimeout() {
         if (this._pendingMessages.length != 0)
-            this.notify();
+            this.showNotification();
 
         this._notifyTimeoutId = 0;
 
@@ -568,8 +569,8 @@ var ChatSource = class extends MessageTray.Source {
         this._notification.appendMessage(message);
     }
 
-    notify() {
-        super.notify(this._notification);
+    showNotification() {
+        super.showNotification(this._notification);
     }
 
     respond(text) {
@@ -625,12 +626,18 @@ var ChatSource = class extends MessageTray.Source {
         // 'pending-message-removed' for each one.
         this._channel.ack_all_pending_messages_async(null);
     }
-};
+}) : null;
 
-var ChatNotification = class extends MessageTray.Notification {
-    constructor(source) {
-        super(source, source.title, null,
-              { secondaryGIcon: source.getSecondaryIcon() });
+var ChatNotification = HAVE_TP ? GObject.registerClass({
+    Signals: {
+        'message-removed': { param_types: [Tp.Message.$gtype] },
+        'message-added': { param_types: [Tp.Message.$gtype] },
+        'timestamp-changed': { param_types: [Tp.Message.$gtype] },
+    }
+}, class ChatNotification extends MessageTray.Notification {
+    _init(source) {
+        super._init(source, source.title, null,
+            { secondaryGIcon: source.getSecondaryIcon() });
         this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
@@ -782,7 +789,7 @@ var ChatNotification = class extends MessageTray.Notification {
 
         this._filterMessages();
     }
-};
+}) : null;
 
 var ChatLineBox = GObject.registerClass(
 class ChatLineBox extends St.BoxLayout {
@@ -792,9 +799,10 @@ class ChatLineBox extends St.BoxLayout {
     }
 });
 
-var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
-    constructor(notification) {
-        super(notification);
+var ChatNotificationBanner = GObject.registerClass(
+class ChatNotificationBanner extends MessageTray.NotificationBanner {
+    _init(notification) {
+        super._init(notification);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              x_expand: true,
@@ -879,8 +887,7 @@ var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
     }
 
     _addMessage(message) {
-        let highlighter = new MessageList.URLHighlighter(message.body, true, true);
-        let body = highlighter.actor;
+        let body = new MessageList.URLHighlighter(message.body, true, true);
 
         let styles = message.styles;
         for (let i = 0; i < styles.length; i++)
@@ -968,6 +975,6 @@ var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
             this.notification.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
     }
-};
+});
 
 var Component = TelepathyComponent;

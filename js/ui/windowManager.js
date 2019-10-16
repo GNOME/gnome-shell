@@ -40,6 +40,8 @@ const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
+const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
+
 var DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _init(wm) {
@@ -114,21 +116,20 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var WindowDimmer = class {
-    constructor(actor) {
-        this._brightnessEffect = new Clutter.BrightnessContrastEffect({
-            name: 'dim',
+var WindowDimmer = GObject.registerClass(
+class WindowDimmer extends Clutter.BrightnessContrastEffect {
+    _init() {
+        super._init({
+            name: WINDOW_DIMMER_EFFECT_NAME,
             enabled: false
         });
-        actor.add_effect(this._brightnessEffect);
-        this.actor = actor;
         this._enabled = true;
     }
 
     _syncEnabled() {
-        let animating = this.actor.get_transition('@effects.dim.brightness') != null;
-        let dimmed = this._brightnessEffect.brightness.red != 127;
-        this._brightnessEffect.enabled = this._enabled && (animating || dimmed);
+        let animating = this.actor.get_transition(`@effects.${this.name}.brightness`) != null;
+        let dimmed = this.brightness.red != 127;
+        this.enabled = this._enabled && (animating || dimmed);
     }
 
     setEnabled(enabled) {
@@ -140,7 +141,7 @@ var WindowDimmer = class {
         let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
         let color = Clutter.Color.new(val, val, val, 255);
 
-        this.actor.ease_property('@effects.dim.brightness', color, {
+        this.actor.ease_property(`@effects.${this.name}.brightness`, color, {
             mode: Clutter.AnimationMode.LINEAR,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
             onComplete: () => this._syncEnabled()
@@ -148,20 +149,19 @@ var WindowDimmer = class {
 
         this._syncEnabled();
     }
-};
+});
 
 function getWindowDimmer(actor) {
     let enabled = Meta.prefs_get_attach_modal_dialogs();
-    if (actor._windowDimmer)
-        actor._windowDimmer.setEnabled(enabled);
+    let effect = actor.get_effect(WINDOW_DIMMER_EFFECT_NAME);
 
-    if (enabled) {
-        if (!actor._windowDimmer)
-            actor._windowDimmer = new WindowDimmer(actor);
-        return actor._windowDimmer;
-    } else {
-        return null;
+    if (effect) {
+        effect.setEnabled(enabled);
+    } else if (enabled) {
+        effect = new WindowDimmer();
+        actor.add_effect(effect);
     }
+    return effect;
 }
 
 /*
@@ -379,21 +379,22 @@ var WorkspaceTracker = class {
     }
 };
 
-var TilePreview = class {
-    constructor() {
-        this.actor = new St.Widget();
-        global.window_group.add_actor(this.actor);
+var TilePreview = GObject.registerClass(
+class TilePreview extends St.Widget {
+    _init() {
+        super._init();
+        global.window_group.add_actor(this);
 
         this._reset();
         this._showing = false;
     }
 
-    show(window, tileRect, monitorIndex) {
+    open(window, tileRect, monitorIndex) {
         let windowActor = window.get_compositor_private();
         if (!windowActor)
             return;
 
-        global.window_group.set_child_below_sibling(this.actor, windowActor);
+        global.window_group.set_child_below_sibling(this, windowActor);
 
         if (this._rect && this._rect.equal(tileRect))
             return;
@@ -414,14 +415,14 @@ var TilePreview = class {
                                                    width: monitor.width,
                                                    height: monitor.height });
             let [, rect] = window.get_frame_rect().intersect(monitorRect);
-            this.actor.set_size(rect.width, rect.height);
-            this.actor.set_position(rect.x, rect.y);
-            this.actor.opacity = 0;
+            this.set_size(rect.width, rect.height);
+            this.set_position(rect.x, rect.y);
+            this.opacity = 0;
         }
 
         this._showing = true;
-        this.actor.show();
-        this.actor.ease({
+        this.show();
+        this.ease({
             x: tileRect.x,
             y: tileRect.y,
             width: tileRect.width,
@@ -432,12 +433,12 @@ var TilePreview = class {
         });
     }
 
-    hide() {
+    close() {
         if (!this._showing)
             return;
 
         this._showing = false;
-        this.actor.ease({
+        this.ease({
             opacity: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -446,7 +447,7 @@ var TilePreview = class {
     }
 
     _reset() {
-        this.actor.hide();
+        this.hide();
         this._rect = null;
         this._monitorIndex = -1;
     }
@@ -460,9 +461,9 @@ var TilePreview = class {
         if (this._rect.x + this._rect.width == monitor.x + monitor.width)
             styles.push('tile-preview-right');
 
-        this.actor.style_class = styles.join(' ');
+        this.style_class = styles.join(' ');
     }
-};
+});
 
 var TouchpadWorkspaceSwitchAction = class {
     constructor(actor, allowedModes) {
@@ -669,15 +670,16 @@ var AppSwitchAction = GObject.registerClass({
     }
 });
 
-var ResizePopup = class {
-    constructor() {
-        this._widget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+var ResizePopup = GObject.registerClass(
+class ResizePopup extends St.Widget {
+    _init() {
+        super._init({ layout_manager: new Clutter.BinLayout() });
         this._label = new St.Label({ style_class: 'resize-popup',
                                      x_align: Clutter.ActorAlign.CENTER,
                                      y_align: Clutter.ActorAlign.CENTER,
                                      x_expand: true, y_expand: true });
-        this._widget.add_child(this._label);
-        Main.uiGroup.add_actor(this._widget);
+        this.add_child(this._label);
+        Main.uiGroup.add_actor(this);
     }
 
     set(rect, displayW, displayH) {
@@ -686,15 +688,10 @@ var ResizePopup = class {
         let text = _("%d × %d").format(displayW, displayH);
         this._label.set_text(text);
 
-        this._widget.set_position(rect.x, rect.y);
-        this._widget.set_size(rect.width, rect.height);
+        this.set_position(rect.x, rect.y);
+        this.set_size(rect.width, rect.height);
     }
-
-    destroy() {
-        this._widget.destroy();
-        this._widget = null;
-    }
-};
+});
 
 var WindowManager = class {
     constructor() {
@@ -1089,7 +1086,7 @@ var WindowManager = class {
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         let bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         bottomDragAction.connect('activated', () => {
-            Main.keyboard.show(Main.layoutManager.bottomIndex);
+            Main.keyboard.open(Main.layoutManager.bottomIndex);
         });
         Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
             bottomDragAction.cancel();
@@ -1119,7 +1116,7 @@ var WindowManager = class {
         this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
         this._currentPadOsd.connect('closed', () => (this._currentPadOsd = null));
 
-        return this._currentPadOsd.actor;
+        return this._currentPadOsd;
     }
 
     _switchWorkspaceMotion(action, xRel, yRel) {
@@ -2045,13 +2042,13 @@ var WindowManager = class {
     _showTilePreview(shellwm, window, tileRect, monitorIndex) {
         if (!this._tilePreview)
             this._tilePreview = new TilePreview();
-        this._tilePreview.show(window, tileRect, monitorIndex);
+        this._tilePreview.open(window, tileRect, monitorIndex);
     }
 
     _hideTilePreview() {
         if (!this._tilePreview)
             return;
-        this._tilePreview.hide();
+        this._tilePreview.close();
     }
 
     _showWindowMenu(shellwm, window, menu, rect) {

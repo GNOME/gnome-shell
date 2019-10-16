@@ -189,7 +189,7 @@ function _initializeUI() {
 
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
-    keyboard = new Keyboard.Keyboard();
+    keyboard = new Keyboard.KeyboardManager();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
@@ -403,7 +403,7 @@ function notify(msg, details) {
     messageTray.add(source);
     let notification = new MessageTray.Notification(source, msg, details);
     notification.setTransient(true);
-    source.notify(notification);
+    source.showNotification(notification);
 }
 
 /**

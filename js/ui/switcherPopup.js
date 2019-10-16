@@ -105,12 +105,6 @@ var SwitcherPopup = GObject.registerClass({
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
 
-        this.connect('key-press-event', this._keyPressEvent.bind(this));
-        this.connect('key-release-event', this._keyReleaseEvent.bind(this));
-
-        this.connect('button-press-event', this._clickedOutside.bind(this));
-        this.connect('scroll-event', this._scrollEvent.bind(this));
-
         this.add_actor(this._switcherList);
         this._switcherList.connect('item-activated', this._itemActivated.bind(this));
         this._switcherList.connect('item-entered', this._itemEntered.bind(this));
@@ -166,9 +160,10 @@ var SwitcherPopup = GObject.registerClass({
         throw new GObject.NotImplementedError(`_keyPressHandler in ${this.constructor.name}`);
     }
 
-    _keyPressEvent(actor, event) {
-        let keysym = event.get_key_symbol();
-        let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
+    vfunc_key_press_event(keyEvent) {
+        let keysym = keyEvent.keyval;
+        let action = global.display.get_keybinding_action(
+            keyEvent.hardware_keycode, keyEvent.modifier_state);
 
         this._disableHover();
 
@@ -183,13 +178,13 @@ var SwitcherPopup = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    _keyReleaseEvent(actor, event) {
+    vfunc_key_release_event(keyEvent) {
         if (this._modifierMask) {
             let [x_, y_, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
 
             if (state == 0)
-                this._finish(event.get_time());
+                this._finish(keyEvent.time);
         } else {
             this._resetNoModsTimeout();
         }
@@ -197,7 +192,8 @@ var SwitcherPopup = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    _clickedOutside() {
+    vfunc_button_press_event() {
+        /* We clicked outside */
         this.fadeAndDestroy();
         return Clutter.EVENT_PROPAGATE;
     }
@@ -209,8 +205,8 @@ var SwitcherPopup = GObject.registerClass({
             this._select(this._next());
     }
 
-    _scrollEvent(actor, event) {
-        this._scrollHandler(event.get_scroll_direction());
+    vfunc_scroll_event(scrollEvent) {
+        this._scrollHandler(scrollEvent.scroll_direction);
         return Clutter.EVENT_PROPAGATE;
     }
 

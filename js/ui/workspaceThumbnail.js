@@ -2,7 +2,6 @@
 /* exported WorkspaceThumbnail, ThumbnailsBox */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -44,36 +43,40 @@ class PrimaryActorLayout extends Clutter.FixedLayout {
     }
 });
 
-var WindowClone = class {
-    constructor(realWindow) {
-        this.clone = new Clutter.Clone({ source: realWindow });
+var WindowClone = GObject.registerClass({
+    GTypeName: 'WorkspaceThumbnail_WindowClone',
+    Signals: {
+        'drag-begin': {},
+        'drag-cancelled': {},
+        'drag-end': {},
+        'selected': { param_types: [GObject.TYPE_UINT] },
+    }
+}, class WindowClone extends Clutter.Actor {
+    _init(realWindow) {
+        let clone = new Clutter.Clone({ source: realWindow });
+        super._init({
+            layout_manager: new PrimaryActorLayout(clone),
+            reactive: true
+        });
+        this._delegate = this;
 
-        /* Can't use a Shell.GenericContainer because of DND and reparenting... */
-        this.actor = new Clutter.Actor({ layout_manager: new PrimaryActorLayout(this.clone),
-                                         reactive: true });
-        this.actor._delegate = this;
-        this.actor.add_child(this.clone);
+        this.add_child(clone);
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
 
-        this.clone._updateId = this.realWindow.connect('notify::position',
-                                                       this._onPositionChanged.bind(this));
-        this.clone._destroyId = this.realWindow.connect('destroy', () => {
+        clone._updateId = this.realWindow.connect('notify::position',
+                                                  this._onPositionChanged.bind(this));
+        clone._destroyId = this.realWindow.connect('destroy', () => {
             // First destroy the clone and then destroy everything
             // This will ensure that we never see it in the _disconnectSignals loop
-            this.clone.destroy();
+            clone.destroy();
             this.destroy();
         });
         this._onPositionChanged();
 
-        this.actor.connect('button-release-event',
-                           this._onButtonRelease.bind(this));
-        this.actor.connect('touch-event',
-                           this._onTouchEvent.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-
-        this._draggable = DND.makeDraggable(this.actor,
+        this._draggable = DND.makeDraggable(this,
                                             { restoreOnSuccess: true,
                                               dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
                                               dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
@@ -124,13 +127,9 @@ var WindowClone = class {
 
         let actualAbove = this.getActualStackAbove();
         if (actualAbove == null)
-            this.actor.lower_bottom();
+            this.lower_bottom();
         else
-            this.actor.raise(actualAbove);
-    }
-
-    destroy() {
-        this.actor.destroy();
+            this.raise(actualAbove);
     }
 
     addAttachedDialog(win) {
@@ -147,7 +146,7 @@ var WindowClone = class {
         clone._destroyId = realDialog.connect('destroy', () => {
             clone.destroy();
         });
-        this.actor.add_child(clone);
+        this.add_child(clone);
     }
 
     _updateDialogPosition(realDialog, cloneDialog) {
@@ -159,11 +158,11 @@ var WindowClone = class {
     }
 
     _onPositionChanged() {
-        this.actor.set_position(this.realWindow.x, this.realWindow.y);
+        this.set_position(this.realWindow.x, this.realWindow.y);
     }
 
     _disconnectSignals() {
-        this.actor.get_children().forEach(child => {
+        this.get_children().forEach(child => {
             let realWindow = child.source;
 
             realWindow.disconnect(child._updateId);
@@ -174,28 +173,30 @@ var WindowClone = class {
     _onDestroy() {
         this._disconnectSignals();
 
-        this.actor._delegate = null;
+        this._delegate = null;
 
         if (this.inDrag) {
             this.emit('drag-end');
             this.inDrag = false;
         }
-
-        this.disconnectAll();
     }
 
-    _onButtonRelease(actor, event) {
-        this.emit('selected', event.get_time());
+    vfunc_button_press_event() {
+        return Clutter.EVENT_STOP;
+    }
+
+    vfunc_button_release_event(buttonEvent) {
+        this.emit('selected', buttonEvent.time);
 
         return Clutter.EVENT_STOP;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCH_END ||
-            !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type != Clutter.EventType.TOUCH_END ||
+            !global.display.is_pointer_emulating_sequence(touchEvent.sequence))
             return Clutter.EVENT_PROPAGATE;
 
-        this.emit('selected', event.get_time());
+        this.emit('selected', touchEvent.time);
         return Clutter.EVENT_STOP;
     }
 
@@ -214,18 +215,17 @@ var WindowClone = class {
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
         // with a new one on the target workspace.
-        if (this.actor.get_parent() != null) {
+        if (this.get_parent() != null) {
             if (this._stackAbove == null)
-                this.actor.lower_bottom();
+                this.lower_bottom();
             else
-                this.actor.raise(this._stackAbove);
+                this.raise(this._stackAbove);
         }
 
 
         this.emit('drag-end');
     }
-};
-Signals.addSignalMethods(WindowClone.prototype);
+});
 
 
 var ThumbnailState = {
@@ -340,7 +340,7 @@ var WorkspaceThumbnail = GObject.registerClass({
                 clone.setStackAbove(this._bgManager.backgroundActor);
             } else {
                 let previousClone = this._windows[i - 1];
-                clone.setStackAbove(previousClone.actor);
+                clone.setStackAbove(previousClone);
             }
         }
     }
@@ -522,15 +522,15 @@ var WorkspaceThumbnail = GObject.registerClass({
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
         });
-        clone.actor.connect('destroy', () => {
+        clone.connect('destroy', () => {
             this._removeWindowClone(clone.metaWindow);
         });
-        this._contents.add_actor(clone.actor);
+        this._contents.add_actor(clone);
 
         if (this._windows.length == 0)
             clone.setStackAbove(this._bgManager.backgroundActor);
         else
-            clone.setStackAbove(this._windows[this._windows.length - 1].actor);
+            clone.setStackAbove(this._windows[this._windows.length - 1]);
 
         this._windows.push(clone);
 
@@ -668,10 +668,6 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._thumbnails = [];
 
-        this.connect('button-press-event', () => Clutter.EVENT_STOP);
-        this.connect('button-release-event', this._onButtonRelease.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
-
         Main.overview.connect('showing',
                               this._createThumbnails.bind(this));
         Main.overview.connect('hidden',
@@ -728,17 +724,17 @@ var ThumbnailsBox = GObject.registerClass({
             thumbnail.activate(time);
     }
 
-    _onButtonRelease(actor, event) {
-        let [stageX, stageY] = event.get_coords();
-        this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
+    vfunc_button_release_event(buttonEvent) {
+        let { x, y } = buttonEvent;
+        this._activateThumbnailAtPoint(x, y, buttonEvent.time);
         return Clutter.EVENT_STOP;
     }
 
-    _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END &&
-            global.display.is_pointer_emulating_sequence(event.get_event_sequence())) {
-            let [stageX, stageY] = event.get_coords();
-            this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
+    vfunc_touch_event(touchEvent) {
+        if (touchEvent.type == Clutter.EventType.TOUCH_END &&
+            global.display.is_pointer_emulating_sequence(touchEvent.sequence)) {
+            let { x, y } = touchEvent;
+            this._activateThumbnailAtPoint(x, y, touchEvent.time);
         }
 
         return Clutter.EVENT_STOP;

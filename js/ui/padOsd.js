@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported PadOsdService */
+/* exported PadOsd, PadOsdService */
 
 const { Atk, Clutter, GDesktopEnums, Gio,
         GLib, GObject, Gtk, Meta, Rsvg, St } = imports.gi;
@@ -22,40 +22,45 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-var PadChooser = class {
-    constructor(device, groupDevices) {
-        this.actor = new St.Button({ style_class: 'pad-chooser-button',
-                                     toggle_mode: true,
-                                     x_fill: false,
-                                     y_fill: false,
-                                     x_align: St.Align.MIDDLE,
-                                     y_align: St.Align.MIDDLE });
+var PadChooser = GObject.registerClass({
+    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+}, class PadChooser extends St.Button {
+    _init(device, groupDevices) {
+        super._init({
+            style_class: 'pad-chooser-button',
+            toggle_mode: true,
+            x_fill: false,
+            y_fill: false,
+            x_align: St.Align.MIDDLE,
+            y_align: St.Align.MIDDLE
+        });
         this.currentDevice = device;
         this._padChooserMenu = null;
 
         let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
                                   icon_name: 'pan-down-symbolic',
                                   accessible_role: Atk.Role.ARROW });
-        this.actor.set_child(arrow);
+        this.set_child(arrow);
         this._ensureMenu(groupDevices);
 
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        this.actor.connect('clicked', actor => {
-            if (actor.get_checked()) {
-                if (this._padChooserMenu != null)
-                    this._padChooserMenu.open(true);
-                else
-                    this.set_checked(false);
-            } else {
-                this._padChooserMenu.close(true);
-            }
-        });
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    vfunc_clicked() {
+        if (this.get_checked()) {
+            if (this._padChooserMenu != null)
+                this._padChooserMenu.open(true);
+            else
+                this.set_checked(false);
+        } else {
+            this._padChooserMenu.close(true);
+        }
     }
 
     _ensureMenu(devices) {
-        this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
+        this._padChooserMenu =  new PopupMenu.PopupMenu(this, 0.5, St.Side.TOP);
         this._padChooserMenu.connect('menu-closed', () => {
-            this.actor.set_checked(false);
+            this.set_checked(false);
         });
         this._padChooserMenu.actor.hide();
         Main.uiGroup.add_actor(this._padChooserMenu.actor);
@@ -78,24 +83,20 @@ var PadChooser = class {
     update(devices) {
         if (this._padChooserMenu)
             this._padChooserMenu.actor.destroy();
-        this.actor.set_checked(false);
+        this.set_checked(false);
         this._ensureMenu(devices);
     }
+});
 
-    destroy() {
-        this.actor.destroy();
-    }
-};
-Signals.addSignalMethods(PadChooser.prototype);
-
-var KeybindingEntry = class {
-    constructor() {
-        this.actor = new St.Entry({ hint_text: _("New shortcut…"),
-                                    style: 'width: 10em' });
-        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+var KeybindingEntry = GObject.registerClass({
+    GTypeName: 'PadOsd_KeybindingEntry',
+    Signals: { 'keybinding-edited': {} }
+}, class KeybindingEntry extends St.Entry {
+    _init() {
+        super._init({ hint_text: _("New shortcut…"), style: 'width: 10em' });
     }
 
-    _onCapturedEvent(actor, event) {
+    vfunc_captured_event(event) {
         if (event.type() != Clutter.EventType.KEY_PRESS)
             return Clutter.EVENT_PROPAGATE;
 
@@ -103,23 +104,24 @@ var KeybindingEntry = class {
                                                     event.get_key_symbol(),
                                                     event.get_key_code(),
                                                     event.get_state());
-        this.actor.set_text(str);
+        this.set_text(str);
         this.emit('keybinding-edited', str);
         return Clutter.EVENT_STOP;
     }
-};
-Signals.addSignalMethods(KeybindingEntry.prototype);
+});
 
-var ActionComboBox = class {
-    constructor() {
-        this.actor = new St.Button({ style_class: 'button' });
-        this.actor.connect('clicked', this._onButtonClicked.bind(this));
-        this.actor.set_toggle_mode(true);
+var ActionComboBox = GObject.registerClass({
+    GTypeName: 'PadOsd_ActionComboBox',
+    Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } }
+}, class ActionComboBox extends St.Button {
+    _init() {
+        super._init({ style_class: 'button' });
+        this.set_toggle_mode(true);
 
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 6 });
         let box = new St.Widget({ layout_manager: boxLayout });
-        this.actor.set_child(box);
+        this.set_child(box);
 
         this._label = new St.Label({ style_class: 'combo-box-label' });
         box.add_child(this._label);
@@ -131,9 +133,9 @@ var ActionComboBox = class {
                                   y_align: Clutter.ActorAlign.CENTER });
         box.add_child(arrow);
 
-        this._editMenu = new PopupMenu.PopupMenu(this.actor, 0, St.Side.TOP);
+        this._editMenu = new PopupMenu.PopupMenu(this, 0, St.Side.TOP);
         this._editMenu.connect('menu-closed', () => {
-            this.actor.set_checked(false);
+            this.set_checked(false);
         });
         this._editMenu.actor.hide();
         Main.uiGroup.add_actor(this._editMenu.actor);
@@ -179,8 +181,8 @@ var ActionComboBox = class {
         this._editMenu.close(true);
     }
 
-    _onButtonClicked() {
-        if (this.actor.get_checked())
+    vfunc_clicked() {
+        if (this.get_checked())
             this.popup();
         else
             this.popdown();
@@ -189,38 +191,40 @@ var ActionComboBox = class {
     setButtonActionsActive(active) {
         this._buttonItems.forEach(item => item.setSensitive(active));
     }
-};
-Signals.addSignalMethods(ActionComboBox.prototype);
+});
 
-var ActionEditor = class {
-    constructor() {
+var ActionEditor = GObject.registerClass({
+    GTypeName: 'PadOsd_ActionEditor',
+    Signals: { 'done': {} }
+}, class ActionEditor extends St.Widget {
+    _init() {
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 12 });
 
-        this.actor = new St.Widget({ layout_manager: boxLayout });
+        super._init({ layout_manager: boxLayout });
 
         this._actionComboBox = new ActionComboBox();
         this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
-        this.actor.add_actor(this._actionComboBox.actor);
+        this.add_actor(this._actionComboBox);
 
         this._keybindingEdit = new KeybindingEntry();
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
-        this.actor.add_actor(this._keybindingEdit.actor);
+        this.add_actor(this._keybindingEdit);
 
         this._doneButton = new St.Button({ label: _("Done"),
                                            style_class: 'button',
                                            x_expand: false });
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
-        this.actor.add_actor(this._doneButton);
+        this.add_actor(this._doneButton);
     }
 
     _updateKeybindingEntryState() {
         if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING) {
-            this._keybindingEdit.actor.set_text(this._currentKeybinding);
-            this._keybindingEdit.actor.show();
-            this._keybindingEdit.actor.grab_key_focus();
+            this._keybindingEdit.set_text(this._currentKeybinding);
+            this._keybindingEdit.show();
+            this._keybindingEdit.grab_key_focus();
         } else {
-            this._keybindingEdit.actor.hide();
+            this._keybindingEdit.hide();
         }
     }
 
@@ -238,7 +242,7 @@ var ActionEditor = class {
 
     close() {
         this._actionComboBox.popdown();
-        this.actor.hide();
+        this.hide();
     }
 
     _onKeybindingEdited(entry, keybinding) {
@@ -272,8 +276,7 @@ var ActionEditor = class {
         this.close();
         this.emit('done');
     }
-};
-Signals.addSignalMethods(ActionEditor.prototype);
+});
 
 var PadDiagram = GObject.registerClass({
     Properties: {
@@ -615,8 +618,18 @@ var PadDiagram = GObject.registerClass({
     }
 });
 
-var PadOsd = class {
-    constructor(padDevice, settings, imagePath, editionMode, monitorIndex) {
+var PadOsd = GObject.registerClass({
+    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+}, class PadOsd extends St.BoxLayout {
+    _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
+        super._init({
+            style_class: 'pad-osd-window',
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+            reactive: true
+        });
+
         this.padDevice = padDevice;
         this._groupPads = [padDevice];
         this._settings = settings;
@@ -653,23 +666,18 @@ var PadOsd = class {
                 this._groupPads.push(device);
         });
 
-        this.actor = new St.BoxLayout({ style_class: 'pad-osd-window',
-                                        x_expand: true,
-                                        y_expand: true,
-                                        vertical: true,
-                                        reactive: true });
-        this.actor.connect('destroy', this._onDestroy.bind(this));
-        Main.uiGroup.add_actor(this.actor);
+        this.connect('destroy', this._onDestroy.bind(this));
+        Main.uiGroup.add_actor(this);
 
         this._monitorIndex = monitorIndex;
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._titleBox = new St.BoxLayout({ style_class: 'pad-osd-title-box',
                                             vertical: false,
                                             x_expand: false,
                                             x_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(this._titleBox);
+        this.add_actor(this._titleBox);
 
         let labelBox = new St.BoxLayout({ style_class: 'pad-osd-title-menu-box',
                                           vertical: true });
@@ -690,10 +698,10 @@ var PadOsd = class {
 
         this._padDiagram = new PadDiagram({ image: this._imagePath,
                                             left_handed: settings.get_boolean('left-handed'),
-                                            editor_actor: this._actionEditor.actor,
+                                            editor_actor: this._actionEditor,
                                             x_expand: true,
                                             y_expand: true });
-        this.actor.add_actor(this._padDiagram);
+        this.add_actor(this._padDiagram);
 
         // FIXME: Fix num buttons.
         let i = 0;
@@ -724,7 +732,7 @@ var PadOsd = class {
                                         x_expand: true,
                                         x_align: Clutter.ActorAlign.CENTER,
                                         y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(buttonBox);
+        this.add_actor(buttonBox);
         this._editButton = new St.Button({ label: _("Edit…"),
                                            style_class: 'button',
                                            x_align: Clutter.ActorAlign.CENTER,
@@ -735,7 +743,7 @@ var PadOsd = class {
         buttonBox.add_actor(this._editButton);
 
         this._syncEditionMode();
-        Main.pushModal(this.actor);
+        Main.pushModal(this);
     }
 
     _updatePadChooser() {
@@ -745,7 +753,7 @@ var PadOsd = class {
                 this._padChooser.connect('pad-selected', (chooser, pad) => {
                     this._requestForOtherPad(pad);
                 });
-                this._titleBox.add_child(this._padChooser.actor);
+                this._titleBox.add_child(this._padChooser);
             } else {
                 this._padChooser.update(this._groupPads);
             }
@@ -918,12 +926,8 @@ var PadOsd = class {
         this._syncEditionMode();
     }
 
-    destroy() {
-        this.actor.destroy();
-    }
-
     _onDestroy() {
-        Main.popModal(this.actor);
+        Main.popModal(this);
         this._actionEditor.close();
 
         let deviceManager = Clutter.DeviceManager.get_default();
@@ -941,11 +945,9 @@ var PadOsd = class {
             this._capturedEventId = 0;
         }
 
-        this.actor = null;
         this.emit('closed');
     }
-};
-Signals.addSignalMethods(PadOsd.prototype);
+});
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 

@@ -48,21 +48,23 @@ var STANDARD_FADE_TIME = 10000;
 var MANUAL_FADE_TIME = 300;
 var CURTAIN_SLIDE_TIME = 300;
 
-var Clock = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ style_class: 'screen-shield-clock',
-                                        vertical: true });
+var Clock = GObject.registerClass(
+class ScreenShieldClock extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'screen-shield-clock', vertical: true });
 
         this._time = new St.Label({ style_class: 'screen-shield-clock-time' });
         this._date = new St.Label({ style_class: 'screen-shield-clock-date' });
 
-        this.actor.add(this._time, { x_align: St.Align.MIDDLE });
-        this.actor.add(this._date, { x_align: St.Align.MIDDLE });
+        this.add(this._time, { x_align: St.Align.MIDDLE });
+        this.add(this._date, { x_align: St.Align.MIDDLE });
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._updateClock();
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _updateClock() {
@@ -75,17 +77,20 @@ var Clock = class {
         this._date.text = date.toLocaleFormat(dateFormat);
     }
 
-    destroy() {
-        this.actor.destroy();
+    _onDestroy() {
         this._wallClock.run_dispose();
     }
-};
+});
 
-var NotificationsBox = class {
-    constructor() {
-        this.actor = new St.BoxLayout({ vertical: true,
-                                        name: 'screenShieldNotifications',
-                                        style_class: 'screen-shield-notifications-container' });
+var NotificationsBox = GObject.registerClass({
+    Signals: { 'wake-up-screen': {} }
+}, class NotificationsBox extends St.BoxLayout {
+    _init() {
+        super._init({
+            vertical: true,
+            name: 'screenShieldNotifications',
+            style_class: 'screen-shield-notifications-container'
+        });
 
         this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
                                                hscrollbar_policy: St.PolicyType.NEVER });
@@ -93,7 +98,7 @@ var NotificationsBox = class {
                                                    style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
 
-        this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
+        this.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._sources = new Map();
         Main.messageTray.getSources().forEach(source => {
@@ -102,9 +107,11 @@ var NotificationsBox = class {
         this._updateVisibility();
 
         this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
+    _onDestroy() {
         if (this._sourceAddedId) {
             Main.messageTray.disconnect(this._sourceAddedId);
             this._sourceAddedId = 0;
@@ -114,15 +121,13 @@ var NotificationsBox = class {
         for (let [source, obj] of items) {
             this._removeSource(source, obj);
         }
-
-        this.actor.destroy();
     }
 
     _updateVisibility() {
         this._notificationBox.visible =
             this._notificationBox.get_children().some(a => a.visible);
 
-        this.actor.visible = this._notificationBox.visible;
+        this.visible = this._notificationBox.visible;
     }
 
     _makeNotificationCountText(count, isChat) {
@@ -224,14 +229,14 @@ var NotificationsBox = class {
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
-        obj.sourceCountChangedId = source.connect('count-updated', source => {
+        obj.sourceCountChangedId = source.connect('notify::count', source => {
             this._countChanged(source, obj);
         });
-        obj.sourceTitleChangedId = source.connect('title-changed', source => {
+        obj.sourceTitleChangedId = source.connect('notify::title', source => {
             this._titleChanged(source, obj);
         });
-        obj.policyChangedId = source.policy.connect('policy-changed', (policy, key) => {
-            if (key == 'show-in-lock-screen')
+        obj.policyChangedId = source.policy.connect('notify', (policy, pspec) => {
+            if (pspec.name == 'show-in-lock-screen')
                 this._visibleChanged(source, obj);
             else
                 this._detailedChanged(source, obj);
@@ -338,8 +343,7 @@ var NotificationsBox = class {
 
         this._sources.delete(source);
     }
-};
-Signals.addSignalMethods(NotificationsBox.prototype);
+});
 
 var Arrow = GObject.registerClass(
 class ScreenShieldArrow extends St.Bin {
@@ -559,11 +563,11 @@ var ScreenShield = class {
         this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                    { inhibitEvents: true,
                                                      fadeFactor: 1 });
-        this._longLightbox.connect('shown', this._onLongLightboxShown.bind(this));
+        this._longLightbox.connect('notify::active', this._onLongLightbox.bind(this));
         this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                     { inhibitEvents: true,
                                                       fadeFactor: 1 });
-        this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
+        this._shortLightbox.connect('notify::active', this._onShortLightbox.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
         this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
@@ -809,7 +813,7 @@ var ScreenShield = class {
 
         this._maybeCancelDialog();
 
-        if (this._longLightbox.actor.visible) {
+        if (this._longLightbox.visible) {
             // We're in the process of showing.
             return;
         }
@@ -851,8 +855,8 @@ var ScreenShield = class {
     }
 
     _activateFade(lightbox, time) {
-        Main.uiGroup.set_child_above_sibling(lightbox.actor, null);
-        lightbox.show(time);
+        Main.uiGroup.set_child_above_sibling(lightbox, null);
+        lightbox.lightOn(time);
 
         if (this._becameActiveId == 0)
             this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive.bind(this));
@@ -881,19 +885,21 @@ var ScreenShield = class {
         this._becameActiveId = 0;
 
         if (this._isActive || this._isLocked) {
-            this._longLightbox.hide();
-            this._shortLightbox.hide();
+            this._longLightbox.lightOff();
+            this._shortLightbox.lightOff();
         } else {
             this.deactivate(false);
         }
     }
 
-    _onLongLightboxShown() {
-        this.activate(false);
+    _onLongLightbox(lightBox) {
+        if (lightBox.active)
+            this.activate(false);
     }
 
-    _onShortLightboxShown() {
-        this._completeLockScreenShown();
+    _onShortLightbox(lightBox) {
+        if (lightBox.active)
+            this._completeLockScreenShown();
     }
 
     showDialog() {
@@ -966,7 +972,6 @@ var ScreenShield = class {
             }
 
             this._dialog = new constructor(this._lockDialogGroup);
-
 
             let time = global.get_current_time();
             if (!this._dialog.open(time, onPrimary)) {
@@ -1133,16 +1138,20 @@ var ScreenShield = class {
                                                          vertical: true,
                                                          style_class: 'screen-shield-contents-box' });
         this._clock = new Clock();
-        this._lockScreenContentsBox.add(this._clock.actor, { x_fill: true,
-                                                             y_fill: true });
+        this._lockScreenContentsBox.add(this._clock, {
+            x_fill: true,
+            y_fill: true
+        });
 
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
         this._notificationsBox = new NotificationsBox();
         this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', this._wakeUpScreen.bind(this));
-        this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
-                                                                        y_fill: true,
-                                                                        expand: true });
+        this._lockScreenContentsBox.add(this._notificationsBox, {
+            x_fill: true,
+            y_fill: true,
+            expand: true
+        });
 
         this._hasLockScreen = true;
     }
@@ -1235,8 +1244,8 @@ var ScreenShield = class {
             this._dialog = null;
         }
 
-        this._longLightbox.hide();
-        this._shortLightbox.hide();
+        this._longLightbox.lightOff();
+        this._shortLightbox.lightOff();
         this.actor.hide();
 
         if (this._becameActiveId != 0) {

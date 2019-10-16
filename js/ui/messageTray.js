@@ -4,7 +4,6 @@
    SystemNotificationSource, MessageTray */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
@@ -134,72 +133,84 @@ var FocusGrabber = class FocusGrabber {
 // source, such as whether to play sound or honour the critical bit.
 //
 // A notification without a policy object will inherit the default one.
-var NotificationPolicy = class NotificationPolicy {
-    constructor(params) {
-        params = Params.parse(params, {
-            enable: true,
-            enableSound: true,
-            showBanners: true,
-            forceExpanded: false,
-            showInLockScreen: true,
-            detailsInLockScreen: false,
-        });
-        Object.getOwnPropertyNames(params).forEach(key => {
-            let desc = Object.getOwnPropertyDescriptor(params, key);
-            Object.defineProperty(this, `_${key}`, desc);
-        });
+var NotificationPolicy = GObject.registerClass({
+    GTypeName: 'MessageTray_NotificationPolicy',
+    Properties: {
+        'enable': GObject.ParamSpec.boolean(
+            'enable', 'enable', 'enable',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
+        'enable-sound': GObject.ParamSpec.boolean(
+            'enable-sound', 'enable-sound', 'enable-sound',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
+        'show-banners': GObject.ParamSpec.boolean(
+            'show-banners', 'show-banners', 'show-banners',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
+        'force-expanded': GObject.ParamSpec.boolean(
+            'force-expanded', 'force-expanded', 'force-expanded',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+        'show-in-lock-screen': GObject.ParamSpec.boolean(
+            'show-in-lock-screen', 'show-in-lock-screen', 'show-in-lock-screen',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+        'details-in-lock-screen': GObject.ParamSpec.boolean(
+            'details-in-lock-screen', 'details-in-lock-screen', 'details-in-lock-screen',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     }
-
+}, class NotificationPolicy extends GObject.Object {
     // Do nothing for the default policy. These methods are only useful for the
     // GSettings policy.
     store() { }
 
-    destroy() { }
-
-    get enable() {
-        return this._enable;
+    destroy() {
+        this.run_dispose();
     }
 
     get enableSound() {
-        return this._enableSound;
+        return this.enable_sound;
     }
 
     get showBanners() {
-        return this._showBanners;
+        return this.show_banners;
     }
 
     get forceExpanded() {
-        return this._forceExpanded;
+        return this.force_expanded;
     }
 
     get showInLockScreen() {
-        return this._showInLockScreen;
+        return this.show_in_lock_screen;
     }
 
     get detailsInLockScreen() {
-        return this._detailsInLockScreen;
+        return this.details_in_lock_screen;
     }
-};
-Signals.addSignalMethods(NotificationPolicy.prototype);
+});
 
-var NotificationGenericPolicy =
-class NotificationGenericPolicy extends NotificationPolicy {
-    constructor() {
-        super();
+var NotificationGenericPolicy = GObject.registerClass({
+    GTypeName: 'MessageTray_NotificationGenericPolicy'
+}, class NotificationGenericPolicy extends NotificationPolicy {
+    _init() {
+        super._init();
         this.id = 'generic';
 
         this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
         this._masterSettings.connect('changed', this._changed.bind(this));
     }
 
-    store() { }
-
     destroy() {
         this._masterSettings.run_dispose();
+
+        super.destroy();
     }
 
     _changed(settings, key) {
-        this.emit('policy-changed', key);
+        if (this.constructor.find_property(key))
+            this.notify(key);
     }
 
     get showBanners() {
@@ -209,12 +220,13 @@ class NotificationGenericPolicy extends NotificationPolicy {
     get showInLockScreen() {
         return this._masterSettings.get_boolean('show-in-lock-screen');
     }
-};
+});
 
-var NotificationApplicationPolicy =
-class NotificationApplicationPolicy extends NotificationPolicy {
-    constructor(id) {
-        super();
+var NotificationApplicationPolicy = GObject.registerClass({
+    GTypeName: 'MessageTray_NotificationApplicationPolicy'
+}, class NotificationApplicationPolicy extends NotificationPolicy {
+    _init(id) {
+        super._init();
 
         this.id = id;
         this._canonicalId = this._canonicalizeId(id);
@@ -240,12 +252,13 @@ class NotificationApplicationPolicy extends NotificationPolicy {
     destroy() {
         this._masterSettings.run_dispose();
         this._settings.run_dispose();
+
+        super.destroy();
     }
 
     _changed(settings, key) {
-        this.emit('policy-changed', key);
-        if (key == 'enable')
-            this.emit('enable-changed');
+        if (this.constructor.find_property(key))
+            this.notify(key);
     }
 
     _canonicalizeId(id) {
@@ -279,7 +292,7 @@ class NotificationApplicationPolicy extends NotificationPolicy {
     get detailsInLockScreen() {
         return this._settings.get_boolean('details-in-lock-screen');
     }
-};
+});
 
 // Notification:
 // @source: the notification's Source
@@ -336,12 +349,26 @@ class NotificationApplicationPolicy extends NotificationPolicy {
 // @source allows playing sounds).
 //
 // [1] https://developer.gnome.org/notification-spec/#markup
-var Notification = class Notification {
-    constructor(source, title, banner, params) {
+var Notification = GObject.registerClass({
+    GTypeName: 'MessageTray_Notification',
+    Properties: {
+        'acknowledged': GObject.ParamSpec.boolean(
+            'acknowledged', 'acknowledged', 'acknowledged',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+    Signals: {
+        'activated': {},
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'updated': { param_types: [GObject.TYPE_BOOLEAN] },
+    }
+}, class Notification extends GObject.Object {
+    _init(source, title, banner, params) {
+        super._init();
+
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
-        this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.privacyScope = PrivacyScope.USER;
@@ -353,6 +380,7 @@ var Notification = class Notification {
         this._soundFile = null;
         this._soundPlayed = false;
         this.actions = [];
+        this.setResident(false);
 
         // If called with only one argument we assume the caller
         // will call .update() later on. This is the case of
@@ -422,7 +450,7 @@ var Notification = class Notification {
         if (this._acknowledged == v)
             return;
         this._acknowledged = v;
-        this.emit('acknowledged-changed');
+        this.notify('acknowledged');
     }
 
     setUrgency(urgency) {
@@ -431,6 +459,15 @@ var Notification = class Notification {
 
     setResident(resident) {
         this.resident = resident;
+
+        if (this.resident) {
+            if (this._activatedId) {
+                this.disconnect(this._activatedId);
+                this._activatedId = 0;
+            }
+        } else if (!this._activatedId) {
+            this._activatedId = this.connect_after('activated', () => this.destroy());
+        }
     }
 
     setTransient(isTransient) {
@@ -472,23 +509,30 @@ var Notification = class Notification {
 
     activate() {
         this.emit('activated');
-        if (!this.resident)
-            this.destroy();
     }
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
+        if (this._activatedId) {
+            this.disconnect(this._activatedId);
+            delete this._activatedId;
+        }
+
         this.emit('destroy', reason);
+        this.run_dispose();
     }
-};
-Signals.addSignalMethods(Notification.prototype);
+});
 
-var NotificationBanner =
-class NotificationBanner extends Calendar.NotificationMessage {
-    constructor(notification) {
-        super(notification);
+var NotificationBanner = GObject.registerClass({
+    Signals: {
+        'done-displaying': {},
+        'unfocused': {},
+    }
+}, class NotificationBanner extends Calendar.NotificationMessage {
+    _init(notification) {
+        super._init(notification);
 
-        this.actor.can_focus = false;
-        this.actor.add_style_class_name('notification-banner');
+        this.can_focus = false;
+        this.add_style_class_name('notification-banner');
 
         this._buttonBox = null;
 
@@ -575,7 +619,7 @@ class NotificationBanner extends Calendar.NotificationMessage {
 
         return this.addButton(button, callback);
     }
-};
+});
 
 var SourceActor = GObject.registerClass(
 class SourceActor extends St.Widget {
@@ -640,7 +684,7 @@ class SourceActorWithLabel extends SourceActor {
 
         this.add_actor(this._counterBin);
 
-        this._countUpdatedId = this._source.connect('count-updated', this._updateCount.bind(this));
+        this._countUpdatedId = this._source.connect('notify::count', this._updateCount.bind(this));
         this._updateCount();
 
         this.connect('destroy', () => {
@@ -688,11 +732,34 @@ class SourceActorWithLabel extends SourceActor {
     }
 });
 
-var Source = class Source {
-    constructor(title, iconName) {
+var Source = GObject.registerClass({
+    GTypeName: 'MessageTray_Source',
+    Properties: {
+        'count': GObject.ParamSpec.int(
+            'count', 'count', 'count',
+            GObject.ParamFlags.READABLE,
+            0, GLib.MAXINT32, 0),
+        'policy': GObject.ParamSpec.object(
+            'policy', 'policy', 'policy',
+            GObject.ParamFlags.READWRITE,
+            NotificationPolicy.$gtype),
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE,
+            null),
+    },
+    Signals: {
+        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'icon-updated': {},
+        'notification-added': { param_types: [Notification.$gtype] },
+        'notification-show': { param_types: [Notification.$gtype] },
+    }
+}, class Source extends GObject.Object {
+    _init(title, iconName) {
+        super._init({ title: title });
+
         this.SOURCE_ICON_SIZE = 48;
 
-        this.title = title;
         this.iconName = iconName;
 
         this.isChat = false;
@@ -727,7 +794,7 @@ var Source = class Source {
     }
 
     countUpdated() {
-        this.emit('count-updated');
+        super.notify('count');
     }
 
     _createPolicy() {
@@ -741,8 +808,11 @@ var Source = class Source {
     }
 
     setTitle(newTitle) {
+        if (this.title == newTitle)
+            return;
+
         this.title = newTitle;
-        this.emit('title-changed');
+        this.notify('title');
     }
 
     createBanner(notification) {
@@ -767,10 +837,10 @@ var Source = class Source {
             return;
 
         this.notifications.splice(index, 1);
+        this.countUpdated();
+
         if (this.notifications.length == 0)
             this.destroy();
-
-        this.countUpdated();
     }
 
     pushNotification(notification) {
@@ -781,22 +851,37 @@ var Source = class Source {
             this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
         notification.connect('destroy', this._onNotificationDestroy.bind(this));
-        notification.connect('acknowledged-changed', this.countUpdated.bind(this));
+        notification.connect('notify::acknowledged', this.countUpdated.bind(this));
         this.notifications.push(notification);
         this.emit('notification-added', notification);
 
         this.countUpdated();
     }
 
-    notify(notification) {
+    showNotification(notification) {
         notification.acknowledged = false;
         this.pushNotification(notification);
 
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
-            this.emit('notify', notification);
+            this.emit('notification-show', notification);
         } else {
             notification.playSound();
         }
+    }
+
+    notify(propName) {
+        if (propName instanceof Notification) {
+            try {
+                throw new Error('Source.notify() has been moved to Source.showNotification()' +
+                                'this code will break in the future');
+            } catch (e) {
+                logError(e);
+                this.showNotification(propName);
+                return;
+            }
+        }
+
+        super.notify(propName);
     }
 
     destroy(reason) {
@@ -809,6 +894,8 @@ var Source = class Source {
             notifications[i].destroy(reason);
 
         this.emit('destroy', reason);
+
+        this.run_dispose();
     }
 
     iconUpdated() {
@@ -823,14 +910,23 @@ var Source = class Source {
         for (let i = this.notifications.length - 1; i >= 0; i--)
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
-
-        this.countUpdated();
     }
-};
-Signals.addSignalMethods(Source.prototype);
+});
 
-var MessageTray = class MessageTray {
-    constructor() {
+var MessageTray = GObject.registerClass({
+    Signals: {
+        'queue-changed': {},
+        'source-added': { param_types: [Source.$gtype] },
+        'source-removed': { param_types: [Source.$gtype] },
+    }
+}, class MessageTray extends St.Widget {
+    _init() {
+        super._init({
+            visible: false,
+            clip_to_allocation: true,
+            layout_manager: new Clutter.BinLayout()
+        });
+
         this._presence = new GnomeSession.Presence((proxy, _error) => {
             this._onStatusChanged(proxy.status);
         });
@@ -847,18 +943,15 @@ var MessageTray = class MessageTray {
             // so fix up Clutter's view of the pointer position in
             // that case.
             let related = ev.get_related();
-            if (!related || this.actor.contains(related))
+            if (!related || this.contains(related))
                 global.sync_pointer();
         });
 
-        this.actor = new St.Widget({ visible: false,
-                                     clip_to_allocation: true,
-                                     layout_manager: new Clutter.BinLayout() });
         let constraint = new Layout.MonitorConstraint({ primary: true });
         Main.layoutManager.panelBox.bind_property('visible',
                                                   constraint, 'work-area',
                                                   GObject.BindingFlags.SYNC_CREATE);
-        this.actor.add_constraint(constraint);
+        this.add_constraint(constraint);
 
         this._bannerBin = new St.Widget({ name: 'notification-container',
                                           reactive: true,
@@ -872,7 +965,7 @@ var MessageTray = class MessageTray {
                                 this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
                                 this._onNotificationHoverChanged.bind(this));
-        this.actor.add_actor(this._bannerBin);
+        this.add_actor(this._bannerBin);
 
         this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
         this._notificationQueue = [];
@@ -901,7 +994,7 @@ var MessageTray = class MessageTray {
         this._notificationTimeoutId = 0;
         this._notificationRemoved = false;
 
-        Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
+        Main.layoutManager.addChrome(this, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
         global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
@@ -944,11 +1037,11 @@ var MessageTray = class MessageTray {
     }
 
     _onDragBegin() {
-        Shell.util_set_hidden_from_pick(this.actor, true);
+        Shell.util_set_hidden_from_pick(this, true);
     }
 
     _onDragEnd() {
-        Shell.util_set_hidden_from_pick(this.actor, false);
+        Shell.util_set_hidden_from_pick(this, false);
     }
 
     get bannerAlignment() {
@@ -997,22 +1090,22 @@ var MessageTray = class MessageTray {
         // Register that we got a notification for this source
         source.policy.store();
 
-        source.policy.connect('enable-changed', () => {
+        source.policy.connect('notify::enable', () => {
             this._onSourceEnableChanged(source.policy, source);
         });
-        source.policy.connect('policy-changed', this._updateState.bind(this));
+        source.policy.connect('notify', this._updateState.bind(this));
         this._onSourceEnableChanged(source.policy, source);
     }
 
     _addSource(source) {
         let obj = {
-            notifyId: 0,
+            showId: 0,
             destroyId: 0,
         };
 
         this._sources.set(source, obj);
 
-        obj.notifyId = source.connect('notify', this._onNotify.bind(this));
+        obj.showId = source.connect('notification-show', this._onNotificationShow.bind(this));
         obj.destroyId = source.connect('destroy', this._onSourceDestroy.bind(this));
 
         this.emit('source-added', source);
@@ -1022,7 +1115,7 @@ var MessageTray = class MessageTray {
         let obj = this._sources.get(source);
         this._sources.delete(source);
 
-        source.disconnect(obj.notifyId);
+        source.disconnect(obj.showId);
         source.disconnect(obj.destroyId);
 
         this.emit('source-removed', source);
@@ -1063,7 +1156,7 @@ var MessageTray = class MessageTray {
         }
     }
 
-    _onNotify(source, notification) {
+    _onNotificationShow(_source, notification) {
         if (this._notification == notification) {
             // If a notification that is being shown is updated, we update
             // how it is shown and extend the time until it auto-hides.
@@ -1195,7 +1288,7 @@ var MessageTray = class MessageTray {
     // at the present time.
     _updateState() {
         let hasMonitor = Main.layoutManager.primaryMonitor != null;
-        this.actor.visible = !this._bannerBlocked && hasMonitor && this._banner != null;
+        this.visible = !this._bannerBlocked && hasMonitor && this._banner != null;
         if (this._bannerBlocked || !hasMonitor)
             return;
 
@@ -1275,11 +1368,11 @@ var MessageTray = class MessageTray {
             this._updateState();
         });
 
-        this._bannerBin.add_actor(this._banner.actor);
+        this._bannerBin.add_actor(this._banner);
 
         this._bannerBin.opacity = 0;
-        this._bannerBin.y = -this._banner.actor.height;
-        this.actor.show();
+        this._bannerBin.y = -this._banner.height;
+        this.show();
 
         Meta.disable_unredirect_for_display(global.display);
         this._updateShowingNotification();
@@ -1426,16 +1519,16 @@ var MessageTray = class MessageTray {
     _hideNotificationCompleted() {
         let notification = this._notification;
         this._notification = null;
-        if (notification.isTransient)
+        if (!this._notificationRemoved && notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;
         Meta.enable_unredirect_for_display(global.display);
 
-        this._banner.actor.destroy();
+        this._banner.destroy();
         this._banner = null;
-        this.actor.hide();
+        this.hide();
     }
 
     _expandActiveNotification() {
@@ -1457,15 +1550,15 @@ var MessageTray = class MessageTray {
     _ensureBannerFocused() {
         this._notificationFocusGrabber.grabFocus();
     }
-};
-Signals.addSignalMethods(MessageTray.prototype);
+});
 
-var SystemNotificationSource = class SystemNotificationSource extends Source {
-    constructor() {
-        super(_("System Information"), 'dialog-information-symbolic');
+var SystemNotificationSource = GObject.registerClass(
+class SystemNotificationSource extends Source {
+    _init() {
+        super._init(_("System Information"), 'dialog-information-symbolic');
     }
 
     open() {
         this.destroy();
     }
-};
+});
