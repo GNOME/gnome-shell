@@ -33,9 +33,9 @@ class MaxWidthBox extends St.BoxLayout {
 });
 
 var SearchResult = class {
-    constructor(provider, metaInfo, resultsView) {
-        this.provider = provider;
+    constructor(searchResults, metaInfo, resultsView) {
         this.metaInfo = metaInfo;
+        this._searchResults = searchResults;
         this._resultsView = resultsView;
 
         this.actor = new St.Button({ reactive: true,
@@ -48,16 +48,24 @@ var SearchResult = class {
         this.actor.connect('clicked', this.activate.bind(this));
     }
 
+    get provider() {
+        return this._searchResults.provider;
+    }
+
     activate() {
-        this.emit('activate', this.metaInfo.id);
+        this.provider.activateResult(this.metaInfo.id, this._searchResults.terms);
+
+        if (this.metaInfo.clipboardText)
+            St.Clipboard.get_default().set_text(
+                St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
+        Main.overview.toggle();
     }
 };
-Signals.addSignalMethods(SearchResult.prototype);
 
 var ListSearchResult = class extends SearchResult {
 
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
+    constructor(searchResults, metaInfo, resultsView) {
+        super(searchResults, metaInfo, resultsView);
 
         this.actor.style_class = 'list-search-result';
         this.actor.x_fill = true;
@@ -123,8 +131,8 @@ var ListSearchResult = class extends SearchResult {
 };
 
 var GridSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
+    constructor(searchResults, metaInfo, resultsView) {
+        super(searchResults, metaInfo, resultsView);
 
         this.actor.style_class = 'grid-search-result';
 
@@ -156,8 +164,6 @@ var SearchResultsBase = class {
 
         this._resultDisplays = {};
 
-        this._clipboard = St.Clipboard.get_default();
-
         this._cancellable = new Gio.Cancellable();
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -169,6 +175,10 @@ var SearchResultsBase = class {
 
     _onDestroy() {
         this._terms = [];
+    }
+
+    get terms() {
+        return this._terms;
     }
 
     _createResultDisplay(meta) {
@@ -196,13 +206,6 @@ var SearchResultsBase = class {
             return;
         this._focusChild = actor;
         this.emit('focus-child-changed');
-    }
-
-    _activateResult(result, id) {
-        this.provider.activateResult(id, this._terms);
-        if (result.metaInfo.clipboardText)
-            this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
-        Main.overview.toggle();
     }
 
     _setMoreCount(_count) {
@@ -241,7 +244,6 @@ var SearchResultsBase = class {
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.connect('activate', this._activateResult.bind(this));
                     display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
@@ -325,7 +327,7 @@ var ListSearchResults = class extends SearchResultsBase {
 
     _createResultDisplay(meta) {
         return super._createResultDisplay(meta) ||
-               new ListSearchResult(this.provider, meta, this._resultsView);
+               new ListSearchResult(this, meta, this._resultsView);
     }
 
     _addItem(display) {
@@ -401,7 +403,7 @@ var GridSearchResults = class extends SearchResultsBase {
 
     _createResultDisplay(meta) {
         return super._createResultDisplay(meta) ||
-               new GridSearchResult(this.provider, meta, this._resultsView);
+               new GridSearchResult(this, meta, this._resultsView);
     }
 
     _addItem(display) {
