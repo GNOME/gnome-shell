@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported SearchResultsView */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -49,7 +50,12 @@ var SearchResult = class {
     }
 
     activate() {
-        this.emit('activate', this.metaInfo.id);
+        this.provider.activateResult(this.metaInfo.id, this._resultsView.terms);
+
+        if (this.metaInfo.clipboardText)
+            St.Clipboard.get_default().set_text(
+                St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
+        Main.overview.toggle();
     }
 };
 Signals.addSignalMethods(SearchResult.prototype);
@@ -155,8 +161,6 @@ var SearchResultsBase = class {
 
         this._resultDisplays = {};
 
-        this._clipboard = St.Clipboard.get_default();
-
         this._cancellable = new Gio.Cancellable();
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -188,13 +192,6 @@ var SearchResultsBase = class {
 
     _keyFocusIn(actor) {
         this.emit('key-focus-in', actor);
-    }
-
-    _activateResult(result, id) {
-        this.provider.activateResult(id, this._terms);
-        if (result.metaInfo.clipboardText)
-            this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
-        Main.overview.toggle();
     }
 
     _setMoreCount(_count) {
@@ -233,7 +230,6 @@ var SearchResultsBase = class {
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.connect('activate', this._activateResult.bind(this));
                     display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
@@ -409,7 +405,7 @@ var GridSearchResults = class extends SearchResultsBase {
 };
 Signals.addSignalMethods(GridSearchResults.prototype);
 
-var SearchResults = class {
+var SearchResultsView = class {
     constructor() {
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
@@ -465,6 +461,10 @@ var SearchResults = class {
         let appSystem = Shell.AppSystem.get_default();
         appSystem.connect('installed-changed', this._reloadRemoteProviders.bind(this));
         this._reloadRemoteProviders();
+    }
+
+    get terms() {
+        return this._terms;
     }
 
     _reloadRemoteProviders() {
@@ -744,7 +744,7 @@ var SearchResults = class {
         return description.replace(this._highlightRegex, '<b>$1</b>');
     }
 };
-Signals.addSignalMethods(SearchResults.prototype);
+Signals.addSignalMethods(SearchResultsView.prototype);
 
 var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {

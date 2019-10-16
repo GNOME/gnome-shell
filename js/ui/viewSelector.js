@@ -172,7 +172,7 @@ var ViewSelector = class {
         this._appsPage = this._addPage(this.appDisplay.actor,
                                        _("Applications"), 'view-app-grid-symbolic');
 
-        this._searchResults = new Search.SearchResults();
+        this._searchResults = new Search.SearchResultsView();
         this._searchPage = this._addPage(this._searchResults.actor,
                                          _("Search"), 'edit-find-symbolic',
                                          { a11yFocus: this._entry });
