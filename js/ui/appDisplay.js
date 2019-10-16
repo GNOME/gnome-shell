@@ -574,6 +574,9 @@ var AllView = class AllView extends BaseAppView {
         if (this._swipeTracker.canHandleScrollEvent(event))
             return Clutter.EVENT_PROPAGATE;
 
+        if (this._animating)
+            return Clutter.EVENT_STOP;
+
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
             this.goToPage(this._grid.currentPage - 1);
