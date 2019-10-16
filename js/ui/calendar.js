@@ -363,7 +363,11 @@ class DBusEventSource extends EventSourceBase {
 });
 
 var Calendar = GObject.registerClass({
-    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
+    Properties: {
+        'selected-date': GObject.ParamSpec.boxed(
+            'selected-date', 'selected-date', 'selected-date',
+            GObject.ParamFlags.READABLE, GLib.DateTime.$gtype),
+    },
 }, class Calendar extends St.Widget {
     _init() {
         this._weekStart = Shell.util_get_week_start();
@@ -417,15 +421,19 @@ var Calendar = GObject.registerClass({
         this._update();
     }
 
+    get selectedDate() {
+        return this._selectedDate;
+    }
+
     // Sets the calendar to show a specific date
-    setDate(date) {
+    set selectedDate(date) {
         if (sameDay(date, this._selectedDate))
             return;
 
         this._selectedDate = date;
         this._update();
 
-        this.emit('selected-date-changed', this._selectedDate);
+        this.notify('selected-date');
     }
 
     updateTimeZone() {
@@ -510,13 +518,13 @@ var Calendar = GObject.registerClass({
 
     _onPrevMonthButtonClicked() {
         this._backButton.grab_key_focus();
-        this.setDate(this._selectedDate.add_months(-1));
+        this.selectedDate = this.selectedDate.add_months(-1);
     }
 
     _onNextMonthButtonClicked() {
         this._forwardButton.grab_key_focus();
 
-        this.setDate(this._selectedDate.add_months(1));
+        this.selectedDate = this.selectedDate.add_months(1);
     }
 
     _onSettingsChange() {
@@ -584,7 +592,7 @@ var Calendar = GObject.registerClass({
             button._date = dateTimeCopy(iter);
             button.connect('clicked', () => {
                 this._shouldDateGrabFocus = true;
-                this.setDate(button._date);
+                this.selectedDate = button._date;
                 this._shouldDateGrabFocus = false;
             });
 
