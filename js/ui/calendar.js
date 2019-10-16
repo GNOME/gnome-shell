@@ -12,7 +12,6 @@ const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 var SHOW_WEEKDATE_KEY = 'show-weekdate';
 var ELLIPSIS_CHAR = '\u2026';
 
@@ -20,44 +19,53 @@ var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
 var NC_ = (context, str) => `${context}\u0004${str}`;
 
-function sameYear(dateA, dateB) {
-    return (dateA.getYear() == dateB.getYear());
+function sameYear(datetimeA, datetimeB) {
+    return datetimeA.get_year() == datetimeB.get_year();
 }
 
-function sameMonth(dateA, dateB) {
-    return sameYear(dateA, dateB) && (dateA.getMonth() == dateB.getMonth());
+function sameMonth(datetimeA, datetimeB) {
+    return sameYear(datetimeA, datetimeB) &&
+        (datetimeA.get_month() == datetimeB.get_month());
 }
 
-function sameDay(dateA, dateB) {
-    return sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
+function sameDay(datetimeA, datetimeB) {
+    return sameMonth(datetimeA, datetimeB) &&
+        (datetimeA.get_day_of_month() == datetimeB.get_day_of_month());
 }
 
-function isToday(date) {
-    return sameDay(new Date(), date);
+function isToday(datetime) {
+    return sameDay(GLib.DateTime.new_now_local(), datetime);
+}
+
+function dateTimeCopy(datetime, override = {}) {
+    if (Object.entries(override).length)
+        return GLib.DateTime.new_local(
+            override.year !== undefined ? override.year : datetime.get_year(),
+            override.month !== undefined ? override.month : datetime.get_month(),
+            override.day !== undefined ? override.day : datetime.get_day_of_month(),
+            override.hour !== undefined ? override.hour : datetime.get_hour(),
+            override.minute !== undefined ? override.minute : datetime.get_minute(),
+            override.seconds !== undefined ? override.seconds : datetime.get_seconds());
+
+    return datetime.add(0);
+}
+
+function newDateTimeNow(override = {}) {
+    return dateTimeCopy(GLib.DateTime.new_now_local(), override);
 }
 
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
     let days = C_('calendar-no-work', "06");
-    return !days.includes(date.getDay().toString());
+    return !days.includes((date.get_day_of_week() % 7).toString());
 }
 
 function _getBeginningOfDay(date) {
-    let ret = new Date(date.getTime());
-    ret.setHours(0);
-    ret.setMinutes(0);
-    ret.setSeconds(0);
-    ret.setMilliseconds(0);
-    return ret;
+    return dateTimeCopy(date, { hour: 0, minute: 0, seconds: 0 });
 }
 
 function _getEndOfDay(date) {
-    let ret = new Date(date.getTime());
-    ret.setHours(23);
-    ret.setMinutes(59);
-    ret.setSeconds(59);
-    ret.setMilliseconds(999);
-    return ret;
+    return dateTimeCopy(date, { hour: 23, minute: 59, seconds: 59 });
 }
 
 function _getCalendarDayAbbreviation(dayNumber) {
@@ -241,15 +249,15 @@ var DBusEventSource = class DBusEventSource {
         let appointments = results[0] || [];
         for (let n = 0; n < appointments.length; n++) {
             let a = appointments[n];
-            let date = new Date(a[4] * 1000);
-            let end = new Date(a[5] * 1000);
+            let date = GLib.DateTime.new_from_unix_local(a[4]);
+            let end = GLib.DateTime.new_from_unix_local(a[5]);
             let id = a[0];
             let summary = a[1];
             let allDay = a[3];
             let event = new CalendarEvent(id, date, end, summary, allDay);
             newEvents.push(event);
         }
-        newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
+        newEvents.sort((ev1, ev2) => ev1.date.compare(ev2));
 
         this._events = newEvents;
         this.isLoading = false;
@@ -262,11 +270,12 @@ var DBusEventSource = class DBusEventSource {
             return;
 
         if (this._curRequestBegin && this._curRequestEnd) {
-            this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
-                                            this._curRequestEnd.getTime() / 1000,
-                                            forceReload,
-                                            this._onEventsReceived.bind(this),
-                                            Gio.DBusCallFlags.NONE);
+            this._dbusProxy.GetEventsRemote(
+                this._curRequestBegin.to_unix(),
+                this._curRequestEnd.to_unix(),
+                forceReload,
+                this._onEventsReceived.bind(this),
+                Gio.DBusCallFlags.NONE);
         }
     }
 
@@ -292,9 +301,11 @@ var DBusEventSource = class DBusEventSource {
         }
         result.sort((event1, event2) => {
             // sort events by end time on ending day
-            let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
-            let d2 = event2.date < begin && event2.end <= end ? event2.end : event2.date;
-            return d1.getTime() - d2.getTime();
+            let d1 = event1.date.compare(begin) < 0 &&
+                event1.end.compare(end) <= 0 ? event1.end : event1.date;
+            let d2 = event2.date.compare(begin) < 0 &&
+                event2.end.compare(end) <= 0 ? event2.end : event2.date;
+            return d1.compare(d2);
         });
         return result;
     }
@@ -342,7 +353,7 @@ var Calendar = GObject.registerClass({
         this._headerFormat = _('%OB %Y');
 
         // Start off with the current date
-        this._selectedDate = new Date();
+        this._selectedDate = GLib.DateTime.new_now_local();
 
         this._shouldDateGrabFocus = false;
 
@@ -375,9 +386,7 @@ var Calendar = GObject.registerClass({
         this._selectedDate = date;
         this._update();
 
-        let datetime = GLib.DateTime.new_from_unix_local(
-            this._selectedDate.getTime() / 1000);
-        this.emit('selected-date-changed', datetime);
+        this.emit('selected-date-changed', this._selectedDate);
     }
 
     updateTimeZone() {
@@ -420,24 +429,23 @@ var Calendar = GObject.registerClass({
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
-        let iter = new Date(this._selectedDate);
-        iter.setSeconds(0); // Leap second protection. Hah!
-        iter.setHours(12);
+        let iter = newDateTimeNow({ hour: 12, minute: 0, secomds: 0 });
         for (let i = 0; i < 7; i++) {
-            // Could use iter.toLocaleFormat('%a') but that normally gives three characters
+            // Could use iter.format('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
-            let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
+            let weekDay = iter.get_day_of_week() % 7;
+            let customDayAbbrev = _getCalendarDayAbbreviation(weekDay);
             let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
                                        text: customDayAbbrev,
                                        can_focus: true });
-            label.accessible_name = iter.toLocaleFormat('%A');
+            label.accessible_name = iter.format('%A');
             let col;
             if (this.get_text_direction() == Clutter.TextDirection.RTL)
-                col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
+                col = 6 - (7 + weekDay - this._weekStart) % 7;
             else
-                col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+                col = offsetCols + (7 + weekDay - this._weekStart) % 7;
             layout.pack(label, col, 1);
-            iter.setTime(iter.getTime() + MSECS_IN_DAY);
+            iter = iter.add_days(1);
         }
 
         // All the children after this are days, and get removed when we update the calendar
@@ -459,49 +467,14 @@ var Calendar = GObject.registerClass({
     }
 
     _onPrevMonthButtonClicked() {
-        let newDate = new Date(this._selectedDate);
-        let oldMonth = newDate.getMonth();
-        if (oldMonth == 0) {
-            newDate.setMonth(11);
-            newDate.setFullYear(newDate.getFullYear() - 1);
-            if (newDate.getMonth() != 11) {
-                let day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
-                newDate = new Date(newDate.getFullYear() - 1, 11, day);
-            }
-        } else {
-            newDate.setMonth(oldMonth - 1);
-            if (newDate.getMonth() != oldMonth - 1) {
-                let day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
-                newDate = new Date(newDate.getFullYear(), oldMonth - 1, day);
-            }
-        }
-
         this._backButton.grab_key_focus();
-
-        this.setDate(newDate);
+        this.setDate(this._selectedDate.add_months(-1));
     }
 
     _onNextMonthButtonClicked() {
-        let newDate = new Date(this._selectedDate);
-        let oldMonth = newDate.getMonth();
-        if (oldMonth == 11) {
-            newDate.setMonth(0);
-            newDate.setFullYear(newDate.getFullYear() + 1);
-            if (newDate.getMonth() != 0) {
-                let day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
-                newDate = new Date(newDate.getFullYear() + 1, 0, day);
-            }
-        } else {
-            newDate.setMonth(oldMonth + 1);
-            if (newDate.getMonth() != oldMonth + 1) {
-                let day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
-                newDate = new Date(newDate.getFullYear(), oldMonth + 1, day);
-            }
-        }
-
         this._forwardButton.grab_key_focus();
 
-        this.setDate(newDate);
+        this.setDate(this._selectedDate.add_months(1));
     }
 
     _onSettingsChange() {
@@ -512,7 +485,7 @@ var Calendar = GObject.registerClass({
     }
 
     _rebuildCalendar() {
-        let now = new Date();
+        let now = GLib.DateTime.new_now_local();
 
         // Remove everything but the topBox and the weekday labels
         let children = this.get_children();
@@ -538,35 +511,35 @@ var Calendar = GObject.registerClass({
         // Actually computing the number of weeks is complex, but we know that the
         // problematic categories (2 and 4) always start on week start, and that
         // all months at the end have 6 weeks.
-        let beginDate = new Date(this._selectedDate);
-        beginDate.setDate(1);
-        beginDate.setSeconds(0);
-        beginDate.setHours(12);
+        this._calendarBegin = dateTimeCopy(this._selectedDate, {
+            day: 1, hour: 12, seconds: 0
+        });
 
-        this._calendarBegin = new Date(beginDate);
         this._markedAsToday = now;
 
-        let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
+        let daysToWeekStart = (7 + (this._calendarBegin.get_day_of_week() % 7) - this._weekStart) % 7;
         let startsOnWeekStart = daysToWeekStart == 0;
         let weekPadding = startsOnWeekStart ? 7 : 0;
 
-        beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
+        let beginDate = this._calendarBegin.add_days(-(weekPadding + daysToWeekStart));
 
         let layout = this.layout_manager;
-        let iter = new Date(beginDate);
+        let iter = dateTimeCopy(beginDate);
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
         let nRows = 8;
         while (row < nRows) {
-            // xgettext:no-javascript-format
-            let button = new St.Button({ label: iter.toLocaleFormat(C_("date day number format", "%d")),
-                                         can_focus: true });
+            let button = new St.Button({
+                // xgettext:no-javascript-format
+                label: iter.format(C_("date day number format", "%d")),
+                can_focus: true
+            });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
             if (this._eventSource.isDummy)
                 button.reactive = false;
 
-            button._date = new Date(iter);
+            button._date = dateTimeCopy(iter);
             button.connect('clicked', () => {
                 this._shouldDateGrabFocus = true;
                 this.setDate(button._date);
@@ -585,15 +558,16 @@ var Calendar = GObject.registerClass({
             if (row == 2)
                 styleClass = `calendar-day-top ${styleClass}`;
 
+            let dayOfWeek = iter.get_day_of_week() % 7;
             let leftMost = rtl
-                ? iter.getDay() == (this._weekStart + 6) % 7
-                : iter.getDay() == this._weekStart;
+                ? dayOfWeek == (this._weekStart + 6) % 7
+                : dayOfWeek == this._weekStart;
             if (leftMost)
                 styleClass = `calendar-day-left ${styleClass}`;
 
             if (sameDay(now, iter))
                 styleClass += ' calendar-today';
-            else if (iter.getMonth() != this._selectedDate.getMonth())
+            else if (iter.get_month() != this._selectedDate.get_month())
                 styleClass += ' calendar-other-month-day';
 
             if (hasEvents)
@@ -604,25 +578,27 @@ var Calendar = GObject.registerClass({
             let offsetCols = this._useWeekdate ? 1 : 0;
             let col;
             if (rtl)
-                col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
+                col = 6 - (7 + dayOfWeek - this._weekStart) % 7;
             else
-                col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+                col = offsetCols + (7 + dayOfWeek - this._weekStart) % 7;
             layout.pack(button, col, row);
 
             this._buttons.push(button);
 
-            if (this._useWeekdate && iter.getDay() == 4) {
-                let label = new St.Label({ text: iter.toLocaleFormat('%V'),
-                                           style_class: 'calendar-day-base calendar-week-number',
-                                           can_focus: true });
+            if (this._useWeekdate && dayOfWeek == 4) {
+                let label = new St.Label({
+                    text: iter.format('%V'),
+                    style_class: 'calendar-day-base calendar-week-number',
+                    can_focus: true
+                });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
-                label.accessible_name = iter.toLocaleFormat(weekFormat);
+                label.accessible_name = iter.format(weekFormat);
                 layout.pack(label, rtl ? 7 : 0, row);
             }
 
-            iter.setTime(iter.getTime() + MSECS_IN_DAY);
+            iter = iter.add_days(1);
 
-            if (iter.getDay() == this._weekStart)
+            if (iter.get_day_of_week() % 7 == this._weekStart)
                 row++;
         }
 
@@ -632,14 +608,16 @@ var Calendar = GObject.registerClass({
     }
 
     _update() {
-        let now = new Date();
+        let now = GLib.DateTime.new_now_local();
 
         if (sameYear(this._selectedDate, now))
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
+            this._monthLabel.text = this._selectedDate.format(this._headerFormatWithoutYear);
         else
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
+            this._monthLabel.text = this._selectedDate.format(this._headerFormat);
 
-        if (!this._calendarBegin || !sameMonth(this._selectedDate, this._calendarBegin) || !sameDay(now, this._markedAsToday))
+        if (!this._calendarBegin ||
+            !sameMonth(this._selectedDate, this._calendarBegin) ||
+            !sameDay(now, this._markedAsToday))
             this._rebuildCalendar();
 
         this._buttons.forEach(button => {
@@ -677,8 +655,9 @@ class EventMessage extends MessageList.Message {
     _formatEventTime() {
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
-        let allDay = (this._event.allDay || (this._event.date <= periodBegin &&
-                                             this._event.end >= periodEnd));
+        let allDay = (this._event.allDay ||
+            (this._event.date.compare(periodBegin) <= 0 &&
+             this._event.end.compare(periodEnd) >= 0));
         let title;
         if (allDay) {
             /* Translators: Shown in calendar event list for all day events
@@ -686,20 +665,20 @@ class EventMessage extends MessageList.Message {
              */
             title = C_("event list time", "All Day");
         } else {
-            let date = this._event.date >= periodBegin
+            let date = this._event.date.compare(periodBegin) >= 0
                 ? this._event.date
                 : this._event.end;
             title = Util.formatTime(date, { timeOnly: true });
         }
 
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
-        if (this._event.date < periodBegin && !this._event.allDay) {
+        if (this._event.date.compare(periodBegin) < 0 && !this._event.allDay) {
             if (rtl)
                 title = `${title}${ELLIPSIS_CHAR}`;
             else
                 title = `${ELLIPSIS_CHAR}${title}`;
         }
-        if (this._event.end > periodEnd && !this._event.allDay) {
+        if (this._event.end.compare(periodEnd) > 0 && !this._event.allDay) {
             if (rtl)
                 title = `${ELLIPSIS_CHAR}${title}`;
             else
@@ -814,7 +793,7 @@ class EventsSection extends MessageList.MessageListSection {
             return;
 
         let dayFormat;
-        let now = new Date();
+        let now = GLib.DateTime.new_now_local();
         if (sameYear(this._date, now))
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
@@ -823,7 +802,7 @@ class EventsSection extends MessageList.MessageListSection {
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %-d, %Y"));
-        this._title.label = this._date.toLocaleFormat(dayFormat);
+        this._title.label = this._date.format(dayFormat);
     }
 
     _reloadEvents() {
@@ -1015,7 +994,7 @@ var Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
         super._init({ style_class: 'message-list-placeholder', vertical: true });
-        this._date = new Date();
+        this._date = GLib.DateTime.new_now_local();
 
         let todayFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-notifications.svg');
         let otherFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-events.svg');
