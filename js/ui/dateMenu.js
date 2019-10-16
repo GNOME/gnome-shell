@@ -43,15 +43,15 @@ class TodayButton extends St.Button {
         hbox.add_actor(this._dateLabel);
 
         this._calendar = calendar;
-        this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
+        this._calendar.connect('notify::selected-date', () => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.reactive = !Calendar.isToday(datetime);
+            this.reactive = !Calendar.isToday(this._calendar.selectedDate);
         });
     }
 
     vfunc_clicked() {
-        this._calendar.setDate(GLib.DateTime.new_now_local(), false);
+        this._calendar.selectedDate = GLib.DateTime.new_now_local();
     }
 
     setDate(date) {
@@ -537,16 +537,16 @@ class DateMenuButton extends PanelMenu.Button {
         bin.add_actor(hbox);
 
         this._calendar = new Calendar.Calendar();
-        this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
-            layout.frozen = !Calendar.isToday(datetime);
-            this._messageList.setDate(datetime);
+        this._calendar.connect('notify::selected-date', () => {
+            layout.frozen = !Calendar.isToday(this._calendar.selectedDate);
+            this._messageList.setDate(this._calendar.selectedDate);
         });
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
             if (isOpen) {
                 let now = GLib.DateTime.new_now_local();
-                this._calendar.setDate(now);
+                this._calendar.selectedDate = now;
                 this._date.setDate(now);
                 this._messageList.setDate(now);
             }
