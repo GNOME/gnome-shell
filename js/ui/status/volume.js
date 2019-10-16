@@ -299,6 +299,9 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this.addMenuItem(this._output.item);
 
         this._input = new InputStreamSlider(this._control);
+        this._input.item.connect('notify::visible', () => {
+            this.emit('input-visible-changed');
+        });
         this.addMenuItem(this._input.item);
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -338,6 +341,10 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     getMaxLevel() {
         return this._output.getMaxLevel();
     }
+
+    getInputVisible() {
+        return this._input.item.visible;
+    }
 };
 
 var Indicator = class extends PanelMenu.SystemIndicator {
@@ -345,18 +352,24 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         super();
 
         this._primaryIndicator = this._addIndicator();
+        this._inputIndicator = this._addIndicator();
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
         this._volumeMenu.connect('icon-changed', () => {
             let icon = this._volumeMenu.getIcon();
 
-            if (icon != null) {
-                this.indicators.show();
+            if (icon != null)
                 this._primaryIndicator.icon_name = icon;
-            } else {
-                this.indicators.hide();
-            }
+            this._primaryIndicator.visible = icon !== null;
+        });
+
+        this._inputIndicator.set({
+            icon_name: 'audio-input-microphone-symbolic',
+            visible: this._volumeMenu.getInputVisible(),
+        });
+        this._volumeMenu.connect('input-visible-changed', () => {
+            this._inputIndicator.visible = this._volumeMenu.getInputVisible();
         });
 
         this.menu.addMenuItem(this._volumeMenu);
