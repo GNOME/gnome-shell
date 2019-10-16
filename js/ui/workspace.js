@@ -84,7 +84,7 @@ class WindowCloneLayout extends Clutter.LayoutManager {
             if (child == container._windowClone)
                 realWindow = container.realWindow;
             else
-                realWindow = child.source;
+                realWindow = child.content.window_actor;
 
             child.allocate(this._makeBoxForWindow(realWindow.meta_window),
                            flags);
@@ -110,7 +110,7 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        this._windowClone = new Clutter.Clone({ source: realWindow });
+        this._windowClone = new Clutter.Actor({ content: realWindow.content });
         // We expect this to be used for all interaction rather than
         // this._windowClone; as the former is reactive and the latter
         // is not, this just works for most cases. However, for DND all
@@ -197,7 +197,7 @@ var WindowClone = GObject.registerClass({
         // Delete all windows, starting from the bottom-most (most-modal) one
         let windows = this.get_children();
         for (let i = windows.length - 1; i >= 1; i--) {
-            let realWindow = windows[i].source;
+            let realWindow = windows[i].content.window_actor;
             let metaWindow = realWindow.meta_window;
 
             metaWindow.delete(global.get_current_time());
@@ -229,7 +229,7 @@ var WindowClone = GObject.registerClass({
     }
 
     _doAddAttachedDialog(metaWin, realWin) {
-        let clone = new Clutter.Clone({ source: realWin });
+        let clone = new Clutter.Actor({ content: realWin.content });
         clone._sizeChangedId = metaWin.connect('size-changed',
             this._onMetaWindowSizeChanged.bind(this));
         clone._posChangedId = metaWin.connect('position-changed',
@@ -282,7 +282,7 @@ var WindowClone = GObject.registerClass({
             if (child == this._windowClone)
                 realWindow = this.realWindow;
             else
-                realWindow = child.source;
+                realWindow = child.content.window_actor;
 
             let metaWindow = realWindow.meta_window;
             rect = rect.union(metaWindow.get_frame_rect());
@@ -327,7 +327,7 @@ var WindowClone = GObject.registerClass({
             if (child == this._windowClone)
                 realWindow = this.realWindow;
             else
-                realWindow = child.source;
+                realWindow = child.content.window_actor;
 
             realWindow.meta_window.disconnect(child._sizeChangedId);
             realWindow.meta_window.disconnect(child._posChangedId);
