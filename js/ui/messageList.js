@@ -569,7 +569,7 @@ var MessageListSection = GObject.registerClass({
             Main.sessionMode.disconnect(id);
         });
 
-        this._date = new Date();
+        this._date = GLib.DateTime.new_now_local();
         this._empty = true;
         this._canClear = false;
         this._sync();
