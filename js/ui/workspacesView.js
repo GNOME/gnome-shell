@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspacesView, WorkspacesDisplay */
 
-const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
 const WindowManager = imports.ui.windowManager;
@@ -486,11 +486,13 @@ class WorkspacesDisplay extends St.Widget {
         this._restackedNotifyId = 0;
         this._scrollEventId = 0;
         this._keyPressEventId = 0;
+        this._scrollTimeoutId = 0;
 
         this._fullGeometry = null;
 
         this._scrolling = false; // swipe-scrolling
         this._gestureActive = false; // touch(pad) gestures
+        this._canScroll = true; // limiting scrolling speed
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -506,6 +508,11 @@ class WorkspacesDisplay extends St.Widget {
         if (this._parentSetLater) {
             Meta.later_remove(this._parentSetLater);
             this._parentSetLater = 0;
+        }
+
+        if (this._scrollTimeoutId != 0) {
+            GLib.source_remove(this._scrollTimeoutId);
+            this._scrollTimeoutId = 0;
         }
     }
 
@@ -788,6 +795,9 @@ class WorkspacesDisplay extends St.Widget {
             this._getMonitorIndexForEvent(event) != this._primaryIndex)
             return Clutter.EVENT_PROPAGATE;
 
+        if (!this._canScroll)
+            return Clutter.EVENT_PROPAGATE;
+
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
         let ws;
@@ -808,6 +818,14 @@ class WorkspacesDisplay extends St.Widget {
             return Clutter.EVENT_PROPAGATE;
         }
         Main.wm.actionMoveWorkspace(ws);
+
+        this._canScroll = false;
+        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WORKSPACE_SWITCH_TIME, () => {
+            this._canScroll = true;
+            this._scrollTimeoutId = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+
         return Clutter.EVENT_STOP;
     }
 
