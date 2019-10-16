@@ -18,17 +18,6 @@ const MAX_FORECASTS = 5;
 const ClocksIntegrationIface = loadInterfaceXML('org.gnome.Shell.ClocksIntegration');
 const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
 
-function _isToday(date) {
-    let now = new Date();
-    return now.getYear() == date.getYear() &&
-           now.getMonth() == date.getMonth() &&
-           now.getDate() == date.getDate();
-}
-
-function _gDateTimeToDate(datetime) {
-    return new Date(datetime.to_unix() * 1000 + datetime.get_microsecond() / 1000);
-}
-
 var TodayButton = GObject.registerClass(
 class TodayButton extends St.Button {
     _init(calendar) {
@@ -57,16 +46,16 @@ class TodayButton extends St.Button {
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
             // Make the button reactive only if the selected date is not the
             // current date.
-            this.reactive = !_isToday(_gDateTimeToDate(datetime));
+            this.reactive = !Calendar.isToday(datetime);
         });
     }
 
     vfunc_clicked() {
-        this._calendar.setDate(new Date(), false);
+        this._calendar.setDate(GLib.DateTime.new_now_local(), false);
     }
 
     setDate(date) {
-        this._dayLabel.set_text(date.toLocaleFormat('%A'));
+        this._dayLabel.set_text(date.format('%A'));
 
         /* Translators: This is the date format to use when the calendar popup is
          * shown - it is shown just below the time in the top bar (e.g.,
@@ -74,14 +63,14 @@ class TodayButton extends St.Button {
          * "February 17 2015".
          */
         let dateFormat = Shell.util_translate_time_string (N_("%B %-d %Y"));
-        this._dateLabel.set_text(date.toLocaleFormat(dateFormat));
+        this._dateLabel.set_text(date.format(dateFormat));
 
         /* Translators: This is the accessible name of the date button shown
          * below the time in the shell; it should combine the weekday and the
          * date, e.g. "Tuesday February 17 2015".
          */
         dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
-        this.accessible_name = date.toLocaleFormat(dateFormat);
+        this.accessible_name = date.format(dateFormat);
     }
 });
 
@@ -303,14 +292,14 @@ class WeatherSection extends St.Button {
         let current = info;
         let infos = [info];
         for (let i = 0; i < forecasts.length; i++) {
-            let [ok_, timestamp] = forecasts[i].get_value_update();
-            let datetime = new Date(timestamp * 1000);
-            if (!_isToday(datetime))
+            let [, timestamp] = forecasts[i].get_value_update();
+            let datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (!Calendar.isToday(datetime))
                 continue; // Ignore forecasts from other days
 
             [ok_, timestamp] = current.get_value_update();
-            let currenttime = new Date(timestamp * 1000);
-            if (currenttime.getHours() == datetime.getHours())
+            datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (datetime.get_hour() == datetime.get_hour())
                 continue; // Enforce a minimum interval of 1h
 
             current = forecasts[i];
@@ -330,7 +319,8 @@ class WeatherSection extends St.Button {
         let col = 0;
         infos.forEach(fc => {
             let [ok_, timestamp] = fc.get_value_update();
-            let timeStr = Util.formatTime(new Date(timestamp * 1000), {
+            let datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            let timeStr = Util.formatTime(datetime, {
                 timeOnly: true
             });
 
@@ -548,15 +538,14 @@ class DateMenuButton extends PanelMenu.Button {
 
         this._calendar = new Calendar.Calendar();
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
-            let date = _gDateTimeToDate(datetime);
-            layout.frozen = !_isToday(date);
-            this._messageList.setDate(date);
+            layout.frozen = !Calendar.isToday(datetime);
+            this._messageList.setDate(datetime);
         });
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
             if (isOpen) {
-                let now = new Date();
+                let now = GLib.DateTime.new_now_local();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
                 this._messageList.setDate(now);
