@@ -627,7 +627,7 @@ var NMDeviceWireless = class {
         this._toggleItem.connect('activate', this._toggleWifi.bind(this));
         this.item.menu.addMenuItem(this._toggleItem);
 
-        this.item.menu.addSettingsAction(_("Wi-Fi Settings"), 'gnome-wifi-panel.desktop');
+        this.item.menu.addSettingsAction(_("Show available networks"), 'gnome-wifi-panel.desktop');
 
         this._wirelessEnabledChangedId = this._client.connect('notify::wireless-enabled', this._sync.bind(this));
         this._wirelessHwEnabledChangedId = this._client.connect('notify::wireless-hardware-enabled', this._sync.bind(this));
