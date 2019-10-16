@@ -798,6 +798,9 @@ var WorkspacesDisplay = class {
             this._getMonitorIndexForEvent(event) != this._primaryIndex)
             return Clutter.EVENT_PROPAGATE;
 
+        if (this._animatingScroll)
+            return Clutter.EVENT_PROPAGATE;
+
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
         let ws;
