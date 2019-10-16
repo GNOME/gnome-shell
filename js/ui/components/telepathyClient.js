@@ -698,7 +698,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             return;
 
         let lastMessageTime = this.messages[0].timestamp;
-        let currentTime = Date.now() / 1000;
+        let currentTime = GLib.DateTime.new_now_local().to_unix();
 
         // Keep the scrollback from growing too long. If the most
         // recent message (before the one we just added) is within
@@ -729,7 +729,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
      *  {bool} props.noTimestamp: suppress timestamp signal?
      */
     _append(props) {
-        let currentTime = Date.now() / 1000;
+        let currentTime = GLib.DateTime.new_now_local().to_unix();
         props = Params.parse(props, { body: null,
                                       group: null,
                                       styles: [],
@@ -920,7 +920,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
 
         if (message.showTimestamp) {
             let lastMessageTime = message.timestamp;
-            let lastMessageDate = new Date(lastMessageTime * 1000);
+            let lastMessageDate = GLib.DateTime.new_from_unix_local(lastMessageTime);
 
             let timeLabel = Util.createTimeLabel(lastMessageDate);
             timeLabel.style_class = 'chat-meta-message';

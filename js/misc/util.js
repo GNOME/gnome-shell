@@ -197,15 +197,9 @@ function formatTimeSpan(date) {
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
 
-function formatTime(time, params) {
-    let date;
-    // HACK: The built-in Date type sucks at timezones, which we need for the
-    //       world clock; it's often more convenient though, so allow either
-    //       Date or GLib.DateTime as parameter
-    if (time instanceof Date)
-        date = GLib.DateTime.new_from_unix_local(time.getTime() / 1000);
-    else
-        date = time;
+function formatTime(date, params) {
+    if (!(date instanceof GLib.DateTime))
+        throw new Error('date must be a GLib.DateTime structure');
 
     let now = GLib.DateTime.new_now_local();
 

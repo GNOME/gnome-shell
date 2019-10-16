@@ -76,11 +76,11 @@ class ScreenShieldClock extends St.BoxLayout {
     _updateClock() {
         this._time.text = this._wallClock.clock;
 
-        let date = new Date();
+        let datetime = GLib.DateTime.new_now_local();
         /* Translators: This is a time format for a date in
            long format */
         let dateFormat = Shell.util_translate_time_string(N_("%A, %B %d"));
-        this._date.text = date.toLocaleFormat(dateFormat);
+        this._date.text = datetime.format(dateFormat);
     }
 
     _onDestroy() {
