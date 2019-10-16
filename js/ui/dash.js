@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dash */
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject,
+        Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
@@ -53,7 +54,7 @@ var DashItemContainer = GObject.registerClass(
 class DashItemContainer extends St.Widget {
     _init() {
         super._init({ style_class: 'dash-item-container',
-                      pivot_point: new Clutter.Point({ x: .5, y: .5 }),
+                      pivot_point: new Graphene.Point({ x: .5, y: .5 }),
                       scale_x: 0,
                       scale_y: 0,
                       opacity: 0,
