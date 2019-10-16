@@ -276,6 +276,11 @@ function init() {
         return Shell.util_format_date(format, this.getTime());
     };
 
+    GLib.DateTime.prototype.toString = function () {
+        // Translators: The default string representation for a time object
+        return this.format(_('%a %b %e %Y %T GMT%z (%Z)'));
+    }
+
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
     if (slowdownEnv) {
         let factor = parseFloat(slowdownEnv);
