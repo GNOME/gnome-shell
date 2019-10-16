@@ -1,4 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported SearchResultsView */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -409,7 +410,7 @@ var GridSearchResults = class extends SearchResultsBase {
 };
 Signals.addSignalMethods(GridSearchResults.prototype);
 
-var SearchResults = class {
+var SearchResultsView = class {
     constructor() {
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
@@ -744,7 +745,7 @@ var SearchResults = class {
         return description.replace(this._highlightRegex, '<b>$1</b>');
     }
 };
-Signals.addSignalMethods(SearchResults.prototype);
+Signals.addSignalMethods(SearchResultsView.prototype);
 
 var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {
