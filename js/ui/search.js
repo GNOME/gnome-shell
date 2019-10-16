@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SearchResultsView */
+/* exported SearchResultsView, SearchResultInterface */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
@@ -32,8 +32,17 @@ class MaxWidthBox extends St.BoxLayout {
     }
 });
 
-var SearchResult = GObject.registerClass(
-class SearchResult extends St.Button {
+var SearchResultInterface = GObject.registerClass({
+    Requires: [Clutter.Actor],
+}, class SearchResultInterface extends GObject.Interface {
+    activate() {
+        throw new GObject.NotImplementedError('activate in %s'.format(this.constructor.name));
+    }
+});
+
+var SearchResult = GObject.registerClass({
+    Implements: [SearchResultInterface]
+}, class SearchResult extends St.Button {
     _init(provider, metaInfo, resultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
