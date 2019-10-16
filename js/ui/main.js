@@ -235,7 +235,7 @@ function _initializeUI() {
         return GLib.SOURCE_REMOVE;
     });
 
-    _startDate = new Date();
+    _startDate = GLib.DateTime.new_now_local();
 
     ExtensionDownloader.init();
     extensionManager = new ExtensionSystem.ExtensionManager();
