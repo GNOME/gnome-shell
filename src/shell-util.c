@@ -35,8 +35,7 @@
 #endif
 
 static void
-stop_pick (ClutterActor       *actor,
-           const ClutterColor *color)
+stop_pick (ClutterActor *actor)
 {
   g_signal_stop_emission_by_name (actor, "pick");
 }
