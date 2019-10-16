@@ -328,7 +328,7 @@ var AppAuthorizer = class {
             return;
 
         let levelStr = accuracyLevelToString(this._accuracyLevel);
-        let dateStr = Math.round(Date.now() / 1000).toString();
+        let dateStr = GLib.DateTime.new_now_local().to_unix().toString();
         this._permissions[this.desktopId] = [levelStr, dateStr];
 
         let data = GLib.Variant.new('av', {});
