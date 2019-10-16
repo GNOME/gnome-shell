@@ -849,9 +849,11 @@ var ScreenShield = class {
                     return GLib.SOURCE_REMOVE;
                 });
             GLib.Source.set_name_by_id(this._lockTimeoutId, '[gnome-shell] this.lock');
-        }
 
-        this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
+            this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
+        } else {
+            this.emit('lock-screen-shown');
+        }
     }
 
     _activateFade(lightbox, time) {
