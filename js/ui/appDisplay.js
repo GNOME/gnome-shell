@@ -2035,6 +2035,7 @@ var AppFolderPopup = GObject.registerClass({
 
 var AppIcon = GObject.registerClass({
     GTypeName: 'AppDisplay_AppIcon',
+    Implements: [Search.SearchResultInterface],
     Signals: {
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
