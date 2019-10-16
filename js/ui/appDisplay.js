@@ -373,6 +373,9 @@ var AllView = GObject.registerClass({
         this._displayingPopup = false;
         this._currentPopupDestroyId = 0;
 
+        this._canScroll = true; // limiting scrolling speed
+        this._scrollTimeoutId = 0;
+
         this._availWidth = 0;
         this._availHeight = 0;
 
@@ -400,6 +403,15 @@ var AllView = GObject.registerClass({
 
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._scrollTimeoutId != 0) {
+            GLib.source_remove(this._scrollTimeoutId);
+            this._scrollTimeoutId = 0;
+        }
     }
 
     vfunc_map() {
@@ -631,11 +643,25 @@ var AllView = GObject.registerClass({
         if (this._displayingPopup || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
+        if (!this._canScroll)
+            return Clutter.EVENT_STOP;
+
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
             this.goToPage(this._grid.currentPage - 1);
         else if (direction == Clutter.ScrollDirection.DOWN)
             this.goToPage(this._grid.currentPage + 1);
+        else
+            return Clutter.EVENT_STOP;
+
+        this._canScroll = false;
+        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+            PAGE_SWITCH_TIME, () => {
+                this._canScroll = true;
+                this._scrollTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            }
+        );
 
         return Clutter.EVENT_STOP;
     }
