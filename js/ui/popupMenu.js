@@ -27,7 +27,9 @@ function isPopupMenuItemVisible(child) {
 }
 
 /**
- * @side Side to which the arrow points.
+ * arrowIcon
+ * @param {St.Side} side - Side to which the arrow points.
+ * @returns {St.Icon} a new arrow icon
  */
 function arrowIcon(side) {
     let iconName;
