@@ -958,9 +958,10 @@ var PaginatedIconGrid = GObject.registerClass({
 
     /**
     * openExtraSpace:
-    * @sourceItem: the item for which to create extra space
-    * @side: where @sourceItem should be located relative to the created space
-    * @nRows: the amount of space to create
+    * @param {Clutter.Actor} sourceItem: item for which to create extra space
+    * @param {St.Side} side: where @sourceItem should be located relative to
+    *   the created space
+    * @param {number} nRows: the amount of space to create
     *
     * Pan view to create extra space for @nRows above or below @sourceItem.
     */
