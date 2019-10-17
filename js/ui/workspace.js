@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Atk, Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
+const { Atk, Clutter, GLib, GObject,
+        Graphene, Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
@@ -301,7 +302,7 @@ var WindowClone = GObject.registerClass({
 
     _computeWindowCenter() {
         let box = this.realWindow.get_allocation_box();
-        this._windowCenter = new Clutter.Point({
+        this._windowCenter = new Graphene.Point({
             x: box.get_x() + box.get_width() / 2,
             y: box.get_y() + box.get_height() / 2,
         });
