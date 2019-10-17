@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            makeCloseButton, ensureActorVisibleInScrollView */
+            makeCloseButton, ensureActorVisibleInScrollView, wiggle */
 
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
@@ -427,5 +427,39 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
     adjustment.ease(value, {
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         duration: SCROLL_TIME
+    });
+}
+
+function wiggle(actor, params) {
+    params = Params.parse(params, {
+        offset: 0,
+        duration: 0,
+        wiggleCount: 0,
+    });
+    actor.translation_x = 0;
+
+    // Accelerate before wiggling
+    actor.ease({
+        translation_x: -params.offset,
+        duration: params.duration,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+            // Wiggle
+            actor.ease({
+                translation_x: params.offset,
+                duration: params.duration,
+                mode: Clutter.AnimationMode.LINEAR,
+                repeatCount: params.wiggleCount,
+                autoReverse: true,
+                onComplete: () => {
+                    // Decelerate and return to the original position
+                    actor.ease({
+                        translation_x: 0,
+                        duration: params.duration,
+                        mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                    });
+                }
+            });
+        }
     });
 }
