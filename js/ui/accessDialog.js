@@ -38,12 +38,9 @@ class AccessDialog extends ModalDialog.ModalDialog {
         // let modal = options['modal'] || true;
         let denyLabel = options['deny_label'] || _("Deny Access");
         let grantLabel = options['grant_label'] || _("Grant Access");
-        let iconName = options['icon'] || null;
         let choices = options['choices'] || [];
 
         let contentParams = { title, subtitle, body };
-        if (iconName)
-            contentParams.icon = new Gio.ThemedIcon({ name: iconName });
         let content = new Dialog.MessageDialogContent(contentParams);
         this.contentLayout.add_actor(content);
 

@@ -29,10 +29,10 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         else
             this._content = this._getContent();
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
-        let contentParams = { icon,
-                              title: this._content.title,
-                              body: this._content.message };
+        let contentParams = {
+            title: this._content.title,
+            body: this._content.message,
+        };
         let contentBox = new Dialog.MessageDialogContent(contentParams);
         this.contentLayout.add_actor(contentBox);
 
