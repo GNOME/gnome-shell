@@ -432,7 +432,7 @@ var IconGrid = GObject.registerClass({
         return true;
     }
 
-    /**
+    /*
      * Intended to be override by subclasses if they need a different
      * set of items to be animated.
      */
@@ -785,7 +785,7 @@ var IconGrid = GObject.registerClass({
             this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
     }
 
-    /**
+    /*
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
      */
