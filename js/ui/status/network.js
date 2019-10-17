@@ -22,7 +22,7 @@ const NMConnectionCategory = {
 
 var MAX_DEVICE_ITEMS = 4;
 
-var PortalHelperResult = {
+const PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
     RECHECK: 2
