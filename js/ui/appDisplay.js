@@ -976,7 +976,7 @@ var Views = {
 
 var ControlsBoxLayout = GObject.registerClass(
 class ControlsBoxLayout extends Clutter.BoxLayout {
-    /**
+    /*
      * Override the BoxLayout behavior to use the maximum preferred width of all
      * buttons for each child
      */
