@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent */
 
-const { Clutter, Gio, GObject, Pango, St } = imports.gi;
+const { Clutter, GObject, Pango, St } = imports.gi;
 
 var Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
@@ -144,10 +144,6 @@ class Dialog extends St.Widget {
 
 var MessageDialogContent = GObject.registerClass({
     Properties: {
-        'icon': GObject.ParamSpec.object('icon', 'icon', 'icon',
-                                         GObject.ParamFlags.READWRITE |
-                                         GObject.ParamFlags.CONSTRUCT,
-                                         Gio.Icon.$gtype),
         'title': GObject.ParamSpec.string('title', 'title', 'title',
                                           GObject.ParamFlags.READWRITE |
                                           GObject.ParamFlags.CONSTRUCT,
@@ -163,12 +159,11 @@ var MessageDialogContent = GObject.registerClass({
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
-        this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
         this._title = new St.Label({ style_class: 'headline' });
         this._subtitle = new St.Label();
         this._body = new St.Label();
 
-        ['icon', 'title', 'subtitle', 'body'].forEach(prop => {
+        ['title', 'subtitle', 'body'].forEach(prop => {
             this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
         });
 
@@ -177,23 +172,28 @@ var MessageDialogContent = GObject.registerClass({
         this._subtitle.clutter_text.set(textProps);
         this._body.clutter_text.set(textProps);
 
-        let defaultParams = { style_class: 'message-dialog-main-layout' };
+        let defaultParams = {
+            style_class: 'message-dialog-main-layout',
+            vertical: true,
+        };
         super._init(Object.assign(defaultParams, params));
 
-        this.messageBox = new St.BoxLayout({ style_class: 'message-dialog-content',
-                                             x_expand: true,
-                                             vertical: true });
+        this._headerBox = new St.BoxLayout({
+            style_class: 'message-dialog-header',
+            x_expand: true,
+            vertical: true,
+        });
+        this._headerBox.add_actor(this._title);
+        this._headerBox.add_actor(this._subtitle);
+        this.add_actor(this._headerBox);
 
-        this.messageBox.add_actor(this._title);
-        this.messageBox.add_actor(this._subtitle);
+        this.messageBox = new St.BoxLayout({
+            style_class: 'message-dialog-content',
+            x_expand: true,
+            vertical: true,
+        });
         this.messageBox.add_actor(this._body);
-
-        this.add_actor(this._icon);
         this.add_actor(this.messageBox);
-    }
-
-    get icon() {
-        return this._icon.gicon;
     }
 
     get title() {
@@ -206,14 +206,6 @@ var MessageDialogContent = GObject.registerClass({
 
     get body() {
         return this._body.text;
-    }
-
-    set icon(icon) {
-        this._icon.set({
-            gicon: icon,
-            visible: icon != null,
-        });
-        this.notify('icon');
     }
 
     set title(title) {

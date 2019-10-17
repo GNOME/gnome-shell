@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CloseDialog */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -42,8 +42,7 @@ var CloseDialog = GObject.registerClass({
         let title = _("“%s” is not responding.").format(windowApp.get_name());
         let subtitle = _("You may choose to wait a short while for it to " +
                          "continue or force the application to quit entirely.");
-        let icon = new Gio.ThemedIcon({ name: 'dialog-warning-symbolic' });
-        return new Dialog.MessageDialogContent({ icon, title, subtitle });
+        return new Dialog.MessageDialogContent({ title, subtitle });
     }
 
     _updateScale() {
