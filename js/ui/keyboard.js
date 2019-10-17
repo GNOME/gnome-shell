@@ -292,10 +292,7 @@ var Key = GObject.registerClass({
         if (this._extended_keys.length == 0)
             return;
 
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
-                                                     { x_fill: true,
-                                                       y_fill: true,
-                                                       x_align: St.Align.START });
+        this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM);
         this._boxPointer.hide();
         Main.layoutManager.addTopChrome(this._boxPointer);
         this._boxPointer.setPosition(this.keyButton, 0.5);

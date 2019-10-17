@@ -307,13 +307,16 @@ var Message = GObject.registerClass({
             accessible_role: Atk.Role.NOTIFICATION,
             can_focus: true,
             x_expand: true,
-            x_fill: true
+            y_expand: true,
         });
 
         this.expanded = false;
         this._useBodyMarkup = false;
 
-        let vbox = new St.BoxLayout({ vertical: true });
+        let vbox = new St.BoxLayout({
+             vertical: true,
+             x_expand: true,
+        });
         this.set_child(vbox);
 
         let hbox = new St.BoxLayout();
@@ -325,7 +328,7 @@ var Message = GObject.registerClass({
 
         this._iconBin = new St.Bin({ style_class: 'message-icon-bin',
                                      y_expand: true,
-                                     y_align: St.Align.START,
+                                     y_align: Clutter.ActorAlign.START,
                                      visible: false });
         hbox.add_actor(this._iconBin);
 
@@ -344,8 +347,7 @@ var Message = GObject.registerClass({
         titleBox.add_actor(this.titleLabel);
 
         this._secondaryBin = new St.Bin({ style_class: 'message-secondary-bin',
-                                          x_expand: true, y_expand: true,
-                                          x_fill: true, y_fill: true });
+                                          x_expand: true, y_expand: true, });
         titleBox.add_actor(this._secondaryBin);
 
         let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
@@ -605,8 +607,6 @@ var MessageListSection = GObject.registerClass({
 
         let listItem = new St.Bin({
             child: message,
-            x_fill: true,
-            y_fill: true,
             layout_manager: new ScaleLayout(),
             pivot_point: new Graphene.Point({ x: .5, y: .5 }),
         });

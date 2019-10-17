@@ -88,8 +88,6 @@ var AuthPrompt = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._userWell = new St.Bin({
-            x_fill: true,
-            x_align: St.Align.START,
             x_expand: true,
             y_expand: true,
         });
@@ -447,6 +445,7 @@ var AuthPrompt = GObject.registerClass({
 
         if (user) {
             let userWidget = new UserWidget.UserWidget(user);
+            userWidget.x_align = Clutter.ActorAlign.START;
             this._userWell.set_child(userWidget);
         }
     }

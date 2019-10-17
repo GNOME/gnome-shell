@@ -98,8 +98,7 @@ var NotificationsBox = GObject.registerClass({
             style_class: 'screen-shield-notifications-container'
         });
 
-        this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
-                                               hscrollbar_policy: St.PolicyType.NEVER });
+        this._scrollView = new St.ScrollView({ hscrollbar_policy: St.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
                                                    style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
@@ -165,9 +164,7 @@ var NotificationsBox = GObject.registerClass({
 
     _makeNotificationDetailedSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        let sourceBin = new St.Bin({ y_align: St.Align.START,
-                                     x_align: St.Align.START,
-                                     child: sourceActor });
+        let sourceBin = new St.Bin({ child: sourceActor });
         box.add(sourceBin);
 
         let textBox = new St.BoxLayout({ vertical: true });
@@ -355,9 +352,11 @@ var Arrow = GObject.registerClass(
 class ScreenShieldArrow extends St.Bin {
     _init(params) {
         super._init(params);
-        this.x_fill = this.y_fill = true;
 
-        this._drawingArea = new St.DrawingArea();
+        this._drawingArea = new St.DrawingArea({
+            x_expand: true,
+            y_expand: true,
+        });
         this._drawingArea.connect('repaint', this._drawArrow.bind(this));
         this.child = this._drawingArea;
 

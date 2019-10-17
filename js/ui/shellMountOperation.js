@@ -53,8 +53,6 @@ var ListItem = GObject.registerClass({
             can_focus: true,
             child: layout,
             reactive: true,
-            x_align: St.Align.START,
-            x_fill: true
         });
 
         this._app = app;
@@ -65,10 +63,12 @@ var ListItem = GObject.registerClass({
                                    child: this._icon });
         layout.add(iconBin);
 
-        this._nameLabel = new St.Label({ text: this._app.get_name(),
-                                         style_class: 'mount-dialog-app-list-item-name' });
-        let labelBin = new St.Bin({ y_align: St.Align.MIDDLE,
-                                    child: this._nameLabel });
+        this._nameLabel = new St.Label({
+            text: this._app.get_name(),
+            style_class: 'mount-dialog-app-list-item-name',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        let labelBin = new St.Bin({ child: this._nameLabel });
         layout.add(labelBin);
     }
 

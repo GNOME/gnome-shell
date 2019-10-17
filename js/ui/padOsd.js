@@ -29,17 +29,17 @@ var PadChooser = GObject.registerClass({
         super._init({
             style_class: 'pad-chooser-button',
             toggle_mode: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE
         });
         this.currentDevice = device;
         this._padChooserMenu = null;
 
-        let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
-                                  icon_name: 'pan-down-symbolic',
-                                  accessible_role: Atk.Role.ARROW });
+        let arrow = new St.Icon({
+            style_class: 'popup-menu-arrow',
+            icon_name: 'pan-down-symbolic',
+            accessible_role: Atk.Role.ARROW,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.set_child(arrow);
         this._ensureMenu(groupDevices);
 

@@ -320,20 +320,23 @@ class AutorunNotification extends MessageTray.Notification {
     }
 
     _buttonForApp(app) {
-        let box = new St.BoxLayout();
+        let box = new St.BoxLayout({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+        });
         let icon = new St.Icon({ gicon: app.get_icon(),
                                  style_class: 'hotplug-notification-item-icon' });
         box.add(icon);
 
         let label = new St.Bin({
-            y_align: St.Align.MIDDLE,
-            child: new St.Label({ text: _("Open with %s").format(app.get_name()) }),
+            child: new St.Label({
+                text: _("Open with %s").format(app.get_name()),
+                y_align: Clutter.ActorAlign.CENTER,
+            }),
         });
         box.add(label);
 
         let button = new St.Button({ child: box,
-                                     x_fill: true,
-                                     x_align: St.Align.START,
                                      x_expand: true,
                                      button_mask: St.ButtonMask.ONE,
                                      style_class: 'hotplug-notification-item button' });

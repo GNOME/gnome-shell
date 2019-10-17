@@ -309,11 +309,8 @@ var ViewSelector = GObject.registerClass({
     _addPage(actor, name, a11yIcon, params) {
         params = Params.parse(params, { a11yFocus: null });
 
-        let page = new St.Bin({ child: actor,
-                                x_align: St.Align.START,
-                                y_align: St.Align.START,
-                                x_fill: true,
-                                y_fill: true });
+        let page = new St.Bin({ child: actor });
+
         if (params.a11yFocus)
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
         else

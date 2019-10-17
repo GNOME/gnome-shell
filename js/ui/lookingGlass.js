@@ -264,7 +264,7 @@ class ObjLink extends St.Button {
             reactive: true,
             track_hover: true,
             style_class: 'shell-link',
-            label: text
+            label: text,
         });
         this.set_x_align(Clutter.ActorAlign.START);
         this.get_child().single_line_mode = true;
@@ -359,8 +359,6 @@ class ObjInspector extends St.ScrollView {
     _init(lookingGlass) {
         super._init({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-            x_fill: true,
-            y_fill: true
         });
 
         this._obj = null;
@@ -369,9 +367,13 @@ class ObjInspector extends St.ScrollView {
         this._parentList = [];
 
         this.get_hscroll_bar().hide();
-        this._container = new St.BoxLayout({ name: 'LookingGlassPropertyInspector',
-                                             style_class: 'lg-dialog',
-                                             vertical: true });
+        this._container = new St.BoxLayout({
+            name: 'LookingGlassPropertyInspector',
+            style_class: 'lg-dialog',
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
         this.add_actor(this._container);
 
         this._lookingGlass = lookingGlass;

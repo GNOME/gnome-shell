@@ -39,18 +39,19 @@ class BaseIcon extends St.Bin {
         if (params.showLabel)
             styleClass += ' overview-icon-with-label';
 
-        super._init({ style_class: styleClass,
-                      x_fill: true,
-                      y_fill: true });
+        super._init({ style_class: styleClass });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._box = new St.BoxLayout({ vertical: true });
+        this._box = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
         this.set_child(this._box);
 
         this.iconSize = ICON_SIZE;
-        this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
-                                     y_align: St.Align.MIDDLE });
+        this._iconBin = new St.Bin();
 
         this._box.add_actor(this._iconBin);
 
