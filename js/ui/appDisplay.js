@@ -305,10 +305,7 @@ var AllView = GObject.registerClass({
         this._scrollView = new St.ScrollView({ style_class: 'all-apps',
                                                x_expand: true,
                                                y_expand: true,
-                                               x_fill: true,
-                                               y_fill: false,
-                                               reactive: true,
-                                               y_align: St.Align.START });
+                                               reactive: true, });
         this.add_actor(this._scrollView);
         this._grid._delegate = this;
 
@@ -327,7 +324,10 @@ var AllView = GObject.registerClass({
         this.folderIcons = [];
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        let box = new St.BoxLayout({ vertical: true });
+        let box = new St.BoxLayout({
+            vertical: true,
+            y_align: Clutter.ActorAlign.START,
+        });
 
         this._grid.currentPage = 0;
         this._stack.add_actor(this._grid);
@@ -1046,8 +1046,11 @@ class AppDisplay extends St.BoxLayout {
         this._viewStackLayout.connect('allocated-size-changed', this._onAllocatedSizeChanged.bind(this));
         this.add_actor(this._viewStack);
         let layout = new ControlsBoxLayout({ homogeneous: true });
-        this._controls = new St.Widget({ style_class: 'app-view-controls',
-                                         layout_manager: layout });
+        this._controls = new St.Widget({
+            style_class: 'app-view-controls',
+            layout_manager: layout,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this._controls.connect('notify::mapped', () => {
             // controls are faded either with their parent or
             // explicitly in animate(); we can't know how they'll be
@@ -1266,15 +1269,18 @@ class FolderView extends BaseAppView {
 
         this._scrollView = new St.ScrollView({
             overlay_scrollbars: true,
-            x_fill: true,
-            y_fill: true,
             x_expand: true,
             y_expand: true
         });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this.add_actor(this._scrollView);
 
-        let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
+        let scrollableContainer = new St.BoxLayout({
+            vertical: true,
+            reactive: true,
+            x_expand: true,
+            y_expand: true,
+        });
         scrollableContainer.add_actor(this._grid);
         this._scrollView.add_actor(scrollableContainer);
 
@@ -1462,8 +1468,6 @@ var FolderIcon = GObject.registerClass({
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
-            x_fill: true,
-            y_fill: true
         });
         this.id = id;
         this.name = '';
@@ -1902,10 +1906,7 @@ var AppFolderPopup = GObject.registerClass({
 
         this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide,
                                                      { style_class: 'app-folder-popup-bin',
-                                                       x_fill: true,
-                                                       y_fill: true,
-                                                       x_expand: true,
-                                                       x_align: St.Align.START });
+                                                       x_expand: true, });
 
         this._boxPointer.style_class = 'app-folder-popup';
         this.add_actor(this._boxPointer);
@@ -2057,8 +2058,6 @@ var AppIcon = GObject.registerClass({
             reactive: true,
             button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
             can_focus: true,
-            x_fill: true,
-            y_fill: true
         });
 
         this.app = app;

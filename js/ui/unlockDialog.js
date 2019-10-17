@@ -55,9 +55,7 @@ var UnlockDialog = GObject.registerClass({
             this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
                                                     can_focus: true,
                                                     child: otherUserLabel,
-                                                    reactive: true,
-                                                    x_align: St.Align.START,
-                                                    x_fill: false });
+                                                    reactive: true });
             this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
             this._promptBox.add_child(this._otherUserButton);
         } else {

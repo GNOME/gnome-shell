@@ -655,7 +655,7 @@ class AppIcon extends St.BoxLayout {
 
         this.app = app;
         this.icon = null;
-        this._iconBin = new St.Bin({ x_fill: true, y_fill: true });
+        this._iconBin = new St.Bin();
 
         this.add_child(this._iconBin);
         this.label = new St.Label({
@@ -894,12 +894,13 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
 
             let title = windows[i].get_title();
             if (title) {
-                let name = new St.Label({ text: title });
-                // St.Label doesn't support text-align so use a Bin
-                let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+                let name = new St.Label({
+                    text: title,
+                    // St.Label doesn't support text-align
+                    x_align: Clutter.ActorAlign.CENTER,
+                });
                 this._labels.push(bin);
-                bin.add_actor(name);
-                box.add_actor(bin);
+                box.add_actor(name);
 
                 this.addItem(box, name);
             } else {

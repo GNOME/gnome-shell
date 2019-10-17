@@ -1278,7 +1278,7 @@ var ZoomRegion = class ZoomRegion {
 
     _createActors() {
         // The root actor for the zoom region
-        this._magView = new St.Bin({ style_class: 'magnifier-zoom-region', x_fill: true, y_fill: true });
+        this._magView = new St.Bin({ style_class: 'magnifier-zoom-region' });
         global.stage.add_actor(this._magView);
 
         // hide the magnified region from CLUTTER_PICK_ALL

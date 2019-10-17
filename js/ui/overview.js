@@ -111,7 +111,7 @@ class OverviewActor extends St.BoxLayout {
         this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         let searchEntryBin = new St.Bin({
             child: this._searchEntry,
-            x_align: St.Align.MIDDLE
+            x_align: Clutter.ActorAlign.CENTER,
         });
         this.add_actor(searchEntryBin);
 

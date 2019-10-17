@@ -57,9 +57,12 @@ var ModalDialog = GObject.registerClass({
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this.add_constraint(constraint);
 
-        this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        this._backgroundBin = new St.Bin({ child: this.backgroundStack,
-                                           x_fill: true, y_fill: true });
+        this.backgroundStack = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
+        this._backgroundBin = new St.Bin({ child: this.backgroundStack });
         this._monitorConstraint = new Layout.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
         this.add_actor(this._backgroundBin);

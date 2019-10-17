@@ -10,15 +10,17 @@ const PopupMenu = imports.ui.popupMenu;
 var ButtonBox = GObject.registerClass(
 class ButtonBox extends St.Widget {
     _init(params) {
-        params = Params.parse(params, { style_class: 'panel-button' }, true);
+        params = Params.parse(params, {
+            style_class: 'panel-button',
+            x_expand: true,
+            y_expand: true,
+        }, true);
 
         super._init(params);
 
         this._delegate = this;
 
-        this.container = new St.Bin({ y_fill: true,
-                                      x_fill: true,
-                                      child: this });
+        this.container = new St.Bin({ child: this });
 
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));

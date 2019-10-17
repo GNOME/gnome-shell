@@ -11,11 +11,12 @@ class CheckBox extends St.Button {
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
-            x_fill: true,
-            y_fill: true
         });
 
-        this._box = new St.Bin();
+        this._box = new St.Bin({
+            x_expand: true,
+            y_expand: true,
+        });
         this._box.set_y_align(Clutter.ActorAlign.START);
         container.add_actor(this._box);
 

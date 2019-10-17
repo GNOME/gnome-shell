@@ -340,7 +340,6 @@ var PopupSwitchMenuItem = GObject.registerClass({
         this.add_child(this.label);
 
         this._statusBin = new St.Bin({
-            x_align: St.Align.END,
             x_expand: true,
         });
         this._statusBin.set_x_align(Clutter.ActorAlign.END);
@@ -442,12 +441,14 @@ var PopupMenuBase = class {
         this.focusActor = sourceActor;
         this._parent = null;
 
-        if (styleClass !== undefined) {
-            this.box = new St.BoxLayout({ style_class: styleClass,
-                                          vertical: true });
-        } else {
-            this.box = new St.BoxLayout({ vertical: true });
-        }
+        this.box = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
+
+        if (styleClass !== undefined)
+            this.box.style_class = styleClass;
         this.length = 0;
 
         this.isOpen = false;
@@ -797,10 +798,7 @@ var PopupMenu = class extends PopupMenuBase {
         this._arrowAlignment = arrowAlignment;
         this._arrowSide = arrowSide;
 
-        this._boxPointer = new BoxPointer.BoxPointer(arrowSide,
-                                                     { x_fill: true,
-                                                       y_fill: true,
-                                                       x_align: St.Align.START });
+        this._boxPointer = new BoxPointer.BoxPointer(arrowSide);
         this.actor = this._boxPointer;
         this.actor._delegate = this;
         this.actor.style_class = 'popup-menu-boxpointer';
