@@ -293,9 +293,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     /**
      * _select:
-     * @app: index of the app to select
-     * @window: (optional) index of which of @app's windows to select
-     * @forceAppFocus: optional flag, see below
+     * @param {number} app: index of the app to select
+     * @param {number=} window: index of which of @app's windows to select
+     * @param {bool} forceAppFocus: optional flag, see below
      *
      * Selects the indicated @app, and optional @window, and sets
      * this._thumbnailsFocused appropriately to indicate whether the
