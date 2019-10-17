@@ -195,7 +195,8 @@ StScrollBar {
   border-radius: $modal_radius;
   @extend %bubble-panel;
   .modal-dialog-content-box {
-    padding: 24px;
+    padding: 32px 40px;
+    spacing: 32px;
   }
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
   .run-dialog-error-box {
@@ -217,28 +218,16 @@ StScrollBar {
   }
 
 /* Message Dialog */
-  .message-dialog-main-layout {
-    padding: 12px 20px 0;
-    spacing: 12px;
-  }
-
   .message-dialog-content {
-    max-width: 28em;
-    spacing: 20px;
-  }
-
-  .message-dialog-icon {
-    min-width: 48px;
-    icon-size: 48px;
-  }
-
-  .message-dialog-title {
-    font-weight: bold;
-  }
-
-  .message-dialog-subtitle {
-    color: $fg_color;
-    font-weight: bold;
+    spacing: 18px;
+    .message-dialog-title {
+      text-align: center;
+      font-size: 18pt;
+      font-weight: 800;
+    }
+    .message-dialog-body {
+      text-align: center;
+    }
   }
 
 /* End Session Dialog */
