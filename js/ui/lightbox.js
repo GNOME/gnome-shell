@@ -245,7 +245,7 @@ var Lightbox = GObject.registerClass({
 
     /**
      * highlight:
-     * @window: actor to highlight
+     * @param {Clutter.Actor=} window: actor to highlight
      *
      * Highlights the indicated actor and unhighlights any other
      * currently-highlighted actor. With no arguments or a false/null
