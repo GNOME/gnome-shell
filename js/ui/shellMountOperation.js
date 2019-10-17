@@ -99,8 +99,6 @@ var ShellMountOperation = class {
                              this.close.bind(this));
         this.mountOp.connect('show-unmount-progress',
                              this._onShowUnmountProgress.bind(this));
-
-        this._gicon = source.get_icon();
     }
 
     _closeExistingDialog() {
@@ -113,7 +111,7 @@ var ShellMountOperation = class {
 
     _onAskQuestion(op, message, choices) {
         this._closeExistingDialog();
-        this._dialog = new ShellMountQuestionDialog(this._gicon);
+        this._dialog = new ShellMountQuestionDialog();
 
         this._dialogId = this._dialog.connect('response',
             (object, choice) => {
@@ -132,7 +130,7 @@ var ShellMountOperation = class {
             this._dialog = this._existingDialog;
             this._dialog.reaskPassword();
         } else {
-            this._dialog = new ShellMountPasswordDialog(message, this._gicon, flags);
+            this._dialog = new ShellMountPasswordDialog(message, flags);
         }
 
         this._dialogId = this._dialog.connect('response',
@@ -178,7 +176,7 @@ var ShellMountOperation = class {
         let message = op.get_show_processes_message();
 
         if (!this._processesDialog) {
-            this._processesDialog = new ShellProcessesDialog(this._gicon);
+            this._processesDialog = new ShellProcessesDialog();
             this._dialog = this._processesDialog;
 
             this._dialogId = this._processesDialog.connect('response',
@@ -259,10 +257,10 @@ class ShellUnmountNotifier extends MessageTray.Source {
 var ShellMountQuestionDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
-    _init(icon) {
+    _init() {
         super._init({ styleClass: 'mount-dialog' });
 
-        this._content = new Dialog.MessageDialogContent({ icon });
+        this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
     }
 
@@ -280,7 +278,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                                            GObject.TYPE_BOOLEAN,
                                            GObject.TYPE_UINT] } },
 }, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
-    _init(message, icon, flags) {
+    _init(message, flags) {
         let strings = message.split('\n');
         let title = strings.shift() || null;
         let body = strings.shift() || null;
@@ -288,7 +286,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
-        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        let content = new Dialog.MessageDialogContent({ title, body });
         this.contentLayout.add_actor(content);
         content._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
@@ -493,10 +491,10 @@ var ShellMountPasswordDialog = GObject.registerClass({
 var ShellProcessesDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
-    _init(icon) {
+    _init() {
         super._init({ styleClass: 'mount-dialog' });
 
-        this._content = new Dialog.MessageDialogContent({ icon });
+        this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
 
         let scrollView = new St.ScrollView({
@@ -612,12 +610,6 @@ var GnomeShellMountOpHandler = class {
         }
     }
 
-    _createGIcon(iconName) {
-        let realIconName = iconName ? iconName : 'drive-harddisk';
-        return new Gio.ThemedIcon({ name: realIconName,
-                                    use_default_fallbacks: true });
-    }
-
     /**
      * AskPassword:
      * @param {Array} params
@@ -653,7 +645,7 @@ var GnomeShellMountOpHandler = class {
 
         this._closeDialog();
 
-        this._dialog = new ShellMountPasswordDialog(message, this._createGIcon(iconName), flags);
+        this._dialog = new ShellMountPasswordDialog(message, flags);
         this._dialog.connect('response',
             (object, choice, password, remember, hiddenVolume, systemVolume, pim) => {
                 let details = {};
@@ -703,7 +695,7 @@ var GnomeShellMountOpHandler = class {
 
         this._closeDialog();
 
-        this._dialog = new ShellMountQuestionDialog(this._createGIcon(iconName), message);
+        this._dialog = new ShellMountQuestionDialog(message);
         this._dialog.connect('response', (object, choice) => {
             this._clearCurrentRequest(Gio.MountOperationResult.HANDLED,
                                       { choice: GLib.Variant.new('i', choice) });
@@ -741,7 +733,7 @@ var GnomeShellMountOpHandler = class {
 
         this._closeDialog();
 
-        this._dialog = new ShellProcessesDialog(this._createGIcon(iconName));
+        this._dialog = new ShellProcessesDialog();
         this._dialog.connect('response', (object, choice) => {
             let response;
             let details = {};

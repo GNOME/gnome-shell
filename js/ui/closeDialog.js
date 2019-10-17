@@ -42,8 +42,7 @@ var CloseDialog = GObject.registerClass({
         let title = _("“%s” is not responding.").format(windowApp.get_name());
         let subtitle = _("You may choose to wait a short while for it to " +
                          "continue or force the application to quit entirely.");
-        let icon = new Gio.ThemedIcon({ name: 'dialog-warning-symbolic' });
-        return new Dialog.MessageDialogContent({ icon, title, subtitle });
+        return new Dialog.MessageDialogContent({ title, subtitle });
     }
 
     _updateScale() {

@@ -49,8 +49,7 @@ class KbdA11yDialog extends GObject.Object {
             return;
         }
 
-        let icon = new Gio.ThemedIcon({ name: 'preferences-desktop-accessibility-symbolic' });
-        let contentParams = { icon, title, body, styleClass: 'access-dialog' };
+        let contentParams = { title, body, styleClass: 'access-dialog' };
         let content = new Dialog.MessageDialogContent(contentParams);
 
         dialog.contentLayout.add_actor(content);
