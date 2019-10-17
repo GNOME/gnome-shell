@@ -265,8 +265,8 @@ class ObjLink extends St.Button {
             track_hover: true,
             style_class: 'shell-link',
             label: text,
+            x_align: Clutter.ActorAlign.START,
         });
-        this.set_x_align(Clutter.ActorAlign.START);
         this.get_child().single_line_mode = true;
 
         this._obj = o;

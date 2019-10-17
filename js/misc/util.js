@@ -346,19 +346,13 @@ function insertSorted(array, val, cmp) {
 var CloseButton = GObject.registerClass(
 class CloseButton extends St.Button {
     _init(boxpointer) {
-        super._init({ style_class: 'notification-close' });
-
-        // This is a bit tricky. St.Bin has its own x-align/y-align properties
-        // that compete with Clutter's properties. This should be fixed for
-        // Clutter 2.0. Since St.Bin doesn't define its own setters, the
-        // setters are a workaround to get Clutter's version.
-        this.set_x_align(Clutter.ActorAlign.END);
-        this.set_y_align(Clutter.ActorAlign.START);
-
-        // XXX Clutter 2.0 workaround: ClutterBinLayout needs expand
-        // to respect the alignments.
-        this.set_x_expand(true);
-        this.set_y_expand(true);
+        super._init({
+            style_class: 'notification-close',
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.START,
+        });
 
         this._boxPointer = boxpointer;
         if (boxpointer)

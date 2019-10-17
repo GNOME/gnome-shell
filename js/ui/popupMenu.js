@@ -340,9 +340,9 @@ var PopupSwitchMenuItem = GObject.registerClass({
         this.add_child(this.label);
 
         this._statusBin = new St.Bin({
+            x_align: Clutter.ActorAlign.END,
             x_expand: true,
         });
-        this._statusBin.set_x_align(Clutter.ActorAlign.END);
         this.add_child(this._statusBin);
 
         this._statusLabel = new St.Label({

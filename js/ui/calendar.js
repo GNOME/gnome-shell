@@ -1082,10 +1082,12 @@ class CalendarMessageList extends St.Widget {
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
-        this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
-                                            label: _("Clear"),
-                                            can_focus: true });
-        this._clearButton.set_x_align(Clutter.ActorAlign.END);
+        this._clearButton = new St.Button({
+            style_class: 'message-list-clear-button button',
+            label: _('Clear'),
+            can_focus: true,
+            x_align: Clutter.ActorAlign.END,
+        });
         this._clearButton.connect('clicked', () => {
             this._sectionList.get_children().forEach(s => s.clear());
         });

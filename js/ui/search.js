@@ -770,13 +770,15 @@ var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {
     _init(provider) {
         this.provider = provider;
-        super._init({ style_class: 'search-provider-icon',
-                      reactive: true,
-                      can_focus: true,
-                      accessible_name: provider.appInfo.get_name(),
-                      track_hover: true });
+        super._init({
+            style_class: 'search-provider-icon',
+            reactive: true,
+            can_focus: true,
+            accessible_name: provider.appInfo.get_name(),
+            track_hover: true,
+            y_align: Clutter.ActorAlign.START,
+        });
 
-        this.set_y_align(Clutter.ActorAlign.START);
         this._content = new St.BoxLayout({ vertical: false,
                                            style_class: 'list-search-provider-content' });
         this.set_child(this._content);
