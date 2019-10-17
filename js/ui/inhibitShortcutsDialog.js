@@ -79,9 +79,8 @@ var InhibitShortcutsDialog = GObject.registerClass({
         let title = name
             ? _("%s wants to inhibit shortcuts").format(name)
             : _("Application wants to inhibit shortcuts");
-        let icon = new Gio.ThemedIcon({ name: 'dialog-warning-symbolic' });
 
-        let contentParams = { icon, title };
+        let contentParams = { title };
 
         let restoreAccel = this._getRestoreAccel();
         if (restoreAccel) {

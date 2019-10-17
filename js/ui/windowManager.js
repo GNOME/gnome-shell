@@ -52,13 +52,11 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 
         this._countDown = Meta.MonitorManager.get_display_configuration_timeout();
 
-        let iconName = 'preferences-desktop-display-symbolic';
-        let icon = new Gio.ThemedIcon({ name: iconName });
         let title = _("Do you want to keep these display settings?");
         let body = this._formatCountDown();
 
         this._content = new Dialog.MessageDialogContent({
-            icon, title, body,
+            title, body,
             x_expand: true,
             y_expand: true,
         });

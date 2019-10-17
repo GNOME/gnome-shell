@@ -38,10 +38,9 @@ var AuthenticationDialog = GObject.registerClass({
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
 
-        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        let content = new Dialog.MessageDialogContent({ title, body });
         this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {
