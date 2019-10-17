@@ -36,7 +36,8 @@ const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'ca
 /**
  * getCurrentExtension:
  *
- * Returns the current extension, or null if not called from an extension.
+ * @returns {?object} - The current extension, or null if not called from
+ * an extension.
  */
 function getCurrentExtension() {
     let stack = (new Error()).stack.split('\n');
@@ -84,7 +85,7 @@ function getCurrentExtension() {
 
 /**
  * initTranslations:
- * @domain: (optional): the gettext domain to use
+ * @param {string=} domain - the gettext domain to use
  *
  * Initialize Gettext to load translations from extensionsdir/locale.
  * If @domain is not provided, it will be taken from metadata['gettext-domain']
@@ -108,7 +109,8 @@ function initTranslations(domain) {
 
 /**
  * getSettings:
- * @schema: (optional): the GSettings schema id
+ * @param {string=} schema - the GSettings schema id
+ * @returns {Gio.Settings} - a new settings object for @schema
  *
  * Builds and returns a GSettings schema for @schema, using schema files
  * in extensionsdir/schemas. If @schema is omitted, it is taken from
@@ -145,8 +147,9 @@ function getSettings(schema) {
 
 /**
  * versionCheck:
- * @required: an array of versions we're compatible with
- * @current: the version we have
+ * @param {string[]} required - an array of versions we're compatible with
+ * @param {string} current - the version we have
+ * @returns {bool} - true if @current is compatible with @required
  *
  * Check if a component is compatible for an extension.
  * @required is an array, and at least one version must match.
