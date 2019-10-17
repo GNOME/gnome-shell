@@ -32,7 +32,8 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 /**
  * sleep:
- * @milliseconds: number of milliseconds to wait
+ * @param {number} milliseconds - number of milliseconds to wait
+ * @returns {Promise} that resolves after @milliseconds ms
  *
  * Used within an automation script to pause the the execution of the
  * current script for the specified amount of time. Use as
@@ -50,6 +51,7 @@ function sleep(milliseconds) {
 
 /**
  * waitLeisure:
+ * @returns {Promise} that resolves when the shell is idle
  *
  * Used within an automation script to pause the the execution of the
  * current script until the shell is completely idle. Use as
@@ -90,13 +92,13 @@ function _callRemote(obj, method, ...args) {
 
 /**
  * createTestWindow:
- * @params: options for window creation.
- *   width - width of window, in pixels (default 640)
- *   height - height of window, in pixels (default 480)
- *   alpha - whether the window should have an alpha channel (default false)
- *   maximized - whether the window should be created maximized (default false)
- *   redraws - whether the window should continually redraw itself (default false)
- * @maximized: whethe the window should be created maximized
+ * @param {Object} params: options for window creation.
+ *   {number} [params.width=640] - width of window, in pixels
+ *   {number} [params.height=480] - height of window, in pixels
+ *   {bool} [params.alpha=false] - whether the window should have an alpha channel
+ *   {bool} [params.maximized=false] - whether the window should be created maximized
+ *   {bool} [params.redraws=false] - whether the window should continually redraw itself
+ * @returns {Promise}
  *
  * Creates a window using gnome-shell-perf-helper for testing purposes.
  * While this function can be used with yield in an automation
@@ -119,6 +121,7 @@ function createTestWindow(params) {
 
 /**
  * waitTestWindows:
+ * @returns {Promise}
  *
  * Used within an automation script to pause until all windows previously
  * created with createTestWindow have been mapped and exposed.
@@ -130,6 +133,7 @@ function waitTestWindows() {
 
 /**
  * destroyTestWindows:
+ * @returns {Promise}
  *
  * Destroys all windows previously created with createTestWindow().
  * While this function can be used with yield in an automation
@@ -144,8 +148,8 @@ function destroyTestWindows() {
 
 /**
  * defineScriptEvent
- * @name: The event will be called script.<name>
- * @description: Short human-readable description of the event
+ * @param {string} name: The event will be called script.<name>
+ * @param {string} description: Short human-readable description of the event
  *
  * Convenience function to define a zero-argument performance event
  * within the 'script' namespace that is reserved for events defined locally
@@ -159,7 +163,7 @@ function defineScriptEvent(name, description) {
 
 /**
  * scriptEvent
- * @name: Name registered with defineScriptEvent()
+ * @param {string} name: Name registered with defineScriptEvent()
  *
  * Convenience function to record a script-local performance event
  * previously defined with defineScriptEvent
@@ -274,8 +278,9 @@ function _collect(scriptModule, outputFile) {
 
 /**
  * runPerfScript
- * @scriptModule: module object with run and finish functions
- *    and event handlers
+ * @param {Object} scriptModule: module object with run and finish
+ *    functions and event handlers
+ * @param {string} outputFile: path to write output to
  *
  * Runs a script for automated collection of performance data. The
  * script is defined as a Javascript module with specified contents.
