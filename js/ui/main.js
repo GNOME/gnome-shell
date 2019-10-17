@@ -337,7 +337,7 @@ function _loadDefaultStylesheet() {
  *
  * Get the theme CSS file that the shell will load
  *
- * Returns: A #GFile that contains the theme CSS,
+ * @returns {?Gio.File}: A #GFile that contains the theme CSS,
  *          null if using the default
  */
 function getThemeStylesheet() {
@@ -346,8 +346,8 @@ function getThemeStylesheet() {
 
 /**
  * setThemeStylesheet:
- * @cssStylesheet: A file path that contains the theme CSS,
- *                 set it to null to use the default
+ * @param {string=} cssStylesheet: A file path that contains the theme CSS,
+ *     set it to null to use the default
  *
  * Set the theme CSS file that the shell will load
  */
@@ -397,8 +397,8 @@ function loadTheme() {
 
 /**
  * notify:
- * @msg: A message
- * @details: Additional information
+ * @param {string} msg: A message
+ * @param {string} details: Additional information
  */
 function notify(msg, details) {
     let source = new MessageTray.SystemNotificationSource();
@@ -410,8 +410,8 @@ function notify(msg, details) {
 
 /**
  * notifyError:
- * @msg: An error message
- * @details: Additional information
+ * @param {string} msg: An error message
+ * @param {string} details: Additional information
  *
  * See shell_global_notify_problem().
  */
@@ -435,8 +435,8 @@ function _findModal(actor) {
 
 /**
  * pushModal:
- * @actor: #ClutterActor which will be given keyboard focus
- * @params: optional parameters
+ * @param {Clutter.Actor} actor: actor which will be given keyboard focus
+ * @param {Object=} params: optional parameters
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
  * the stage, and focus @actor. Multiple calls to this function act in
@@ -459,7 +459,7 @@ function _findModal(actor) {
  *                global keybindings; the default of NONE will filter
  *                out all keybindings
  *
- * Returns: true iff we successfully acquired a grab or already had one
+ * @returns {bool}: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
@@ -503,8 +503,9 @@ function pushModal(actor, params) {
 
 /**
  * popModal:
- * @actor: #ClutterActor passed to original invocation of pushModal()
- * @timestamp: optional timestamp
+ * @param {Clutter.Actor} actor: the actor passed to original invocation
+ *     of pushModal()
+ * @param {number=} timestamp: optional timestamp
  *
  * Reverse the effect of pushModal(). If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
@@ -590,9 +591,9 @@ function openRunDialog() {
 
 /**
  * activateWindow:
- * @window: the Meta.Window to activate
- * @time: (optional) current event time
- * @workspaceNum: (optional) window's workspace number
+ * @param {Meta.Window} window: the window to activate
+ * @param {number=} time: current event time
+ * @param {number=} workspaceNum:  window's workspace number
  *
  * Activates @window, switching to its workspace first if necessary,
  * and switching out of the overview if it's currently active
@@ -668,8 +669,8 @@ function _queueBeforeRedraw(workId) {
 
 /**
  * initializeDeferredWork:
- * @actor: A #ClutterActor
- * @callback: Function to invoke to perform work
+ * @param {Clutter.Actor} actor: an actor
+ * @param {callback} callback: Function to invoke to perform work
  *
  * This function sets up a callback to be invoked when either the
  * given actor is mapped, or after some period of time when the machine
@@ -682,7 +683,7 @@ function _queueBeforeRedraw(workId) {
  * initialization as well, under the assumption that new actors
  * will need it.
  *
- * Returns: A string work identifier
+ * @returns {string}: A string work identifier
  */
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
@@ -706,7 +707,7 @@ function initializeDeferredWork(actor, callback) {
 
 /**
  * queueDeferredWork:
- * @workId: work identifier
+ * @param {string} workId: work identifier
  *
  * Ensure that the work identified by @workId will be
  * run on map or timeout. You should call this function

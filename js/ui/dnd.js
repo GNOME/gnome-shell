@@ -292,9 +292,11 @@ var _Draggable = class _Draggable {
 
     /**
      * startDrag:
-     * @stageX: X coordinate of event
-     * @stageY: Y coordinate of event
-     * @time: Event timestamp
+     * @param {number} stageX: X coordinate of event
+     * @param {number} stageY: Y coordinate of event
+     * @param {number} time: Event timestamp
+     * @param {Clutter.EventSequence=} sequence: Event sequence
+     * @param {Clutter.InputDevice=} device: device that originated the event
      *
      * Directly initiate a drag and drop operation from the given actor.
      * This function is useful to call if you've specified manualMode
@@ -746,8 +748,9 @@ Signals.addSignalMethods(_Draggable.prototype);
 
 /**
  * makeDraggable:
- * @actor: Source actor
- * @params: (optional) Additional parameters
+ * @param {Clutter.Actor} actor: Source actor
+ * @param {Object=} params: Additional parameters
+ * @returns {Object} a new Draggable
  *
  * Create an object which controls drag and drop for the given actor.
  *
