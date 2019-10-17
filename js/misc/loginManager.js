@@ -74,8 +74,9 @@ function registerSessionWithGDM() {
 let _loginManager = null;
 
 /**
- * LoginManager:
+ * getLoginManager:
  * An abstraction over systemd/logind and ConsoleKit.
+ * @returns {object} - the LoginManager singleton
  *
  */
 function getLoginManager() {
