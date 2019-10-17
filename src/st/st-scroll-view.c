@@ -302,11 +302,11 @@ st_scroll_view_pick (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->pick (actor);
 
   if (priv->child)
-    clutter_actor_paint (priv->child);
+    clutter_actor_pick (priv->child);
   if (priv->hscrollbar_visible)
-    clutter_actor_paint (priv->hscroll);
+    clutter_actor_pick (priv->hscroll);
   if (priv->vscrollbar_visible)
-    clutter_actor_paint (priv->vscroll);
+    clutter_actor_pick (priv->vscroll);
 }
 
 static gboolean
