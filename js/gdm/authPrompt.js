@@ -162,9 +162,9 @@ var AuthPrompt = GObject.registerClass({
             can_focus: true,
             label: _("Cancel"),
             x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.END,
         });
-        this.cancelButton.set_x_align(Clutter.ActorAlign.START);
-        this.cancelButton.set_y_align(Clutter.ActorAlign.END);
         this.cancelButton.connect('clicked', () => this.cancel());
         this._buttonBox.add_child(this.cancelButton);
 
@@ -175,9 +175,9 @@ var AuthPrompt = GObject.registerClass({
             reactive: true,
             can_focus: true,
             label: _("Next"),
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
         });
-        this.nextButton.set_x_align(Clutter.ActorAlign.END);
-        this.nextButton.set_y_align(Clutter.ActorAlign.END);
         this.nextButton.connect('clicked', () => this.emit('next'));
         this.nextButton.add_style_pseudo_class('default');
         this._buttonBox.add_child(this.nextButton);

@@ -16,8 +16,8 @@ class CheckBox extends St.Button {
         this._box = new St.Bin({
             x_expand: true,
             y_expand: true,
+            y_align: Clutter.ActorAlign.START,
         });
-        this._box.set_y_align(Clutter.ActorAlign.START);
         container.add_actor(this._box);
 
         this._label = new St.Label();
