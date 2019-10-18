@@ -54,7 +54,15 @@ class TodayButton extends St.Button {
         this._calendar.selectedDate = GLib.DateTime.new_now_local();
     }
 
+    get date() {
+        return this._date;
+    }
+
     setDate(date) {
+        if (this._date && Calendar.sameDay(date, this._date))
+            return false;
+
+        this._date = date;
         this._dayLabel.set_text(date.format('%A'));
 
         /* Translators: This is the date format to use when the calendar popup is
@@ -71,6 +79,8 @@ class TodayButton extends St.Button {
          */
         dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
         this.accessible_name = date.format(dateFormat);
+
+        return true;
     }
 });
 
@@ -545,9 +555,21 @@ class DateMenuButton extends PanelMenu.Button {
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
             if (isOpen) {
-                let now = GLib.DateTime.new_now_local();
-                this._calendar.selectedDate = now;
-                this._date.setDate(now);
+                let openDate = GLib.DateTime.new_now_local();
+                this._calendar.selectedDate = openDate;
+                this._date.setDate(openDate);
+
+                this._clockChangedId = this._clock.connect('notify::clock', () => {
+                    if (!this._date.setDate(GLib.DateTime.new_now_local()))
+                        return;
+
+                    if (Calendar.sameDay(this._calendar.selectedDate, openDate))
+                        this._calendar.selectedDate = this._date.date;
+                    this._calendar.rebuildAndUpdate();
+                });
+            } else {
+                this._clock.disconnect(this._clockChangedId);
+                this._clockChangedId = 0;
             }
         });
 
