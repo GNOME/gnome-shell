@@ -105,6 +105,16 @@ function _easeActor(actor, params) {
         actor.set_easing_delay(params.delay);
     delete params.delay;
 
+    let repeatCount = 0;
+    if (params.repeatCount != undefined)
+        repeatCount = params.repeatCount;
+    delete params.repeatCount;
+
+    let autoReverse = false;
+    if (params.autoReverse != undefined)
+        autoReverse = params.autoReverse;
+    delete params.autoReverse;
+
     if (params.mode != undefined)
         actor.set_easing_mode(params.mode);
     delete params.mode;
@@ -127,10 +137,12 @@ function _easeActor(actor, params) {
     else
         Meta.disable_unredirect_for_display(global.display);
 
-    if (transition)
+    if (transition) {
+        transition.set({ repeatCount, autoReverse });
         transition.connect('stopped', (t, finished) => callback(finished));
-    else
+    } else {
         callback(true);
+    }
 }
 
 function _easeActorProperty(actor, propName, target, params) {
@@ -142,6 +154,16 @@ function _easeActorProperty(actor, propName, target, params) {
     if (params.duration)
         params.duration = adjustAnimationTime(params.duration);
     let duration = Math.floor(params.duration || 0);
+
+    let repeatCount = 0;
+    if (params.repeatCount != undefined)
+        repeatCount = params.repeatCount;
+    delete params.repeatCount;
+
+    let autoReverse = false;
+    if (params.autoReverse != undefined)
+        autoReverse = params.autoReverse;
+    delete params.autoReverse;
 
     // Copy Clutter's behavior for implicit animations, see
     // should_skip_implicit_transition()
@@ -168,7 +190,9 @@ function _easeActorProperty(actor, propName, target, params) {
     let transition = new Clutter.PropertyTransition(Object.assign({
         property_name: propName,
         interval: new Clutter.Interval({ value_type: pspec.value_type }),
-        remove_on_complete: true
+        remove_on_complete: true,
+        repeat_count: repeatCount,
+        auto_reverse: autoReverse,
     }, params));
     actor.add_transition(propName, transition);
 
