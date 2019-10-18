@@ -2,49 +2,9 @@
 
 $end_session_dialog_width: 28em;
 
-.end-session-dialog {
-  spacing: $base_spacing;
-  border: 1px solid $bubble_borders_color;
-}
-
-.end-session-dialog-list {
-  padding-top: 20px;
-}
-
-.end-session-dialog-layout {
-  padding-left: 17px;
-  &:rtl { padding-right: 17px; }
-}
-
-.end-session-dialog-description {
-  width: $end_session_dialog_width;
-  padding-bottom: 10px;
-  &:rtl {
-    text-align: right;
-  }
-}
-
 .end-session-dialog-battery-warning {
   width: $end_session_dialog_width;
   color: $warning_color;
-  padding-top: 6px;
-  &:rtl {
-    text-align: right;
-  }
-}
-
-// user profile picture
-.end-session-dialog-logout-icon {
-  border-radius: 99px;
-  width: $base_icon_size * 3;
-  height: $base_icon_size * 3;
-  background-size: contain;
-}
-
-.end-session-dialog-shutdown-icon {
-  color: $fg_color;
-  width: $base_icon_size * 3;
-  height: $base_icon_size * 3;
 }
 
 .end-session-dialog .dialog-list-title {
