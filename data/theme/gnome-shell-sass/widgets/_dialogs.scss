@@ -15,8 +15,7 @@
   }
 }
 
-.mount-dialog-subject,
-.end-session-dialog-subject { //this should be a generic header class
+.mount-dialog-subject {
   @include fontsize($base_font_size + 3);
 }
 
