@@ -374,12 +374,8 @@ var Calendar = GObject.registerClass({
     // requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
     setEventSource(eventSource) {
         this._eventSource = eventSource;
-        this._eventSource.connect('changed', () => {
-            this._rebuildCalendar();
-            this._update();
-        });
-        this._rebuildCalendar();
-        this._update();
+        this._eventSource.connect('changed', () => this.rebuildAndUpdate());
+        this.rebuildAndUpdate();
     }
 
     get selectedDate() {
@@ -400,8 +396,7 @@ var Calendar = GObject.registerClass({
     updateTimeZone() {
         // The calendar need to be rebuilt after a time zone update because
         // the date might have changed.
-        this._rebuildCalendar();
-        this._update();
+        this.rebuildAndUpdate();
     }
 
     _buildHeader() {
@@ -488,6 +483,10 @@ var Calendar = GObject.registerClass({
     _onSettingsChange() {
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
+        this.rebuildAndUpdate();
+    }
+
+    rebuildAndUpdate() {
         this._rebuildCalendar();
         this._update();
     }
