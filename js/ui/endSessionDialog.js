@@ -21,6 +21,7 @@ const { AccountsService, Clutter, Gio,
         GLib, GObject, Pango, Polkit, Shell, St }  = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
+const Dialog = imports.ui.dialog;
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const ModalDialog = imports.ui.modalDialog;
@@ -28,8 +29,7 @@ const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const _ITEM_ICON_SIZE = 48;
-const _DIALOG_ICON_SIZE = 48;
+const _ITEM_ICON_SIZE = 56;
 
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
 
@@ -49,7 +49,6 @@ const logoutDialogContent = {
     showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label: C_("button", "Log Out") }],
-    iconStyleClass: 'end-session-dialog-logout-icon',
     showOtherSessions: false,
 };
 
@@ -68,7 +67,6 @@ const shutdownDialogContent = {
                      { signal: 'ConfirmedShutdown',
                        label: C_("button", "Power Off") }],
     iconName: 'system-shutdown-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -83,7 +81,6 @@ const restartDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label: C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -101,7 +98,6 @@ const restartUpdateDialogContent = {
     unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
     unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -119,7 +115,6 @@ const restartUpgradeDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label: C_("button", "Restart &amp; Install") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -192,16 +187,6 @@ function _roundSecondsToInterval(totalSeconds, secondsLeft, interval) {
     return time;
 }
 
-function _setLabelText(label, text) {
-    if (text) {
-        label.set_text(text);
-        label.show();
-    } else {
-        label.set_text('');
-        label.hide();
-    }
-}
-
 function _setCheckBoxLabel(checkBox, text) {
     let label = checkBox.getLabelActor();
 
@@ -263,72 +248,49 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._userLoadedId = this._user.connect('notify::is-loaded', this._sync.bind(this));
         this._userChangedId = this._user.connect('changed', this._sync.bind(this));
 
-        let mainContentLayout = new St.BoxLayout({
-            vertical: false,
-            x_expand: true,
-            y_expand: false,
-        });
-        this.contentLayout.add_child(mainContentLayout);
-
-        this._iconBin = new St.Bin({
-            x_expand: true,
-            x_align: Clutter.ActorAlign.END,
-        });
-        mainContentLayout.add_child(this._iconBin);
-
-        let messageLayout = new St.BoxLayout({ vertical: true,
-                                               style_class: 'end-session-dialog-layout' });
-        mainContentLayout.add_child(messageLayout);
-
-        this._subjectLabel = new St.Label({ style_class: 'end-session-dialog-subject' });
-
-        messageLayout.add_child(this._subjectLabel);
-
-        this._descriptionLabel = new St.Label({
-            style_class: 'end-session-dialog-description',
-            y_expand: true,
-        });
-        this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._descriptionLabel.clutter_text.line_wrap = true;
-
-        messageLayout.add_child(this._descriptionLabel);
+        this._messageDialogContent = new Dialog.MessageDialogContent();
 
         this._checkBox = new CheckBox.CheckBox();
         this._checkBox.connect('clicked', this._sync.bind(this));
-        messageLayout.add(this._checkBox);
+        this._messageDialogContent.add_actor(this._checkBox);
 
         this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-battery-warning',
                                               text: _("Running on battery power: Please plug in before installing updates.") });
         this._batteryWarning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._batteryWarning.clutter_text.line_wrap = true;
-        messageLayout.add(this._batteryWarning);
+        this._messageDialogContent.add_actor(this._batteryWarning);
 
-        this._scrollView = new St.ScrollView({
-            style_class: 'end-session-dialog-list',
-            x_expand: true,
-            y_expand: true,
-        });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        this.contentLayout.add_child(this._scrollView);
-        this._scrollView.hide();
+        this.contentLayout.add_actor(this._messageDialogContent);
 
-        this._inhibitorSection = new St.BoxLayout({ vertical: true,
-                                                    style_class: 'end-session-dialog-inhibitor-layout' });
-        this._scrollView.add_actor(this._inhibitorSection);
+        this._applicationSection = new Dialog.MessageDialogContent();
 
-        this._applicationHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
-                                                 text: _("Some applications are busy or have unsaved work.") });
+        let applicationHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
+                                                 text: _("Some applications are busy or have unsaved work") });
+        this._applicationSection.add_actor(applicationHeader);
+
+        this._appScrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
+        this._appScrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this._applicationList = new St.BoxLayout({ style_class: 'end-session-dialog-app-list',
                                                    vertical: true });
-        this._inhibitorSection.add_actor(this._applicationHeader);
-        this._inhibitorSection.add_actor(this._applicationList);
+        this._appScrollView.add_actor(this._applicationList);
+        this._applicationSection.add_actor(this._appScrollView);
 
-        this._sessionHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
-                                             text: _("Other users are logged in.") });
+        this.contentLayout.add_actor(this._applicationSection);
+
+        this._sessionSection = new Dialog.MessageDialogContent();
+
+        let sessionHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
+                                             text: _("Other users are logged in"), });
+        this._sessionSection.add_actor(sessionHeader);
+
+        this._sessionScrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
+        this._sessionScrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this._sessionList = new St.BoxLayout({ style_class: 'end-session-dialog-session-list',
                                                vertical: true });
-        this._inhibitorSection.add_actor(this._sessionHeader);
-        this._inhibitorSection.add_actor(this._sessionList);
+        this._sessionScrollView.add_actor(this._sessionList);
+        this._sessionSection.add_actor(this._sessionScrollView);
+
+        this.contentLayout.add_actor(this._sessionSection);
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
@@ -379,11 +341,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             subject = dialogContent.subjectWithUpdates;
 
         if (dialogContent.showBatteryWarning) {
-            // Warn when running on battery power
-            if (this._powerProxy.OnBattery && this._checkBox.checked)
-                this._batteryWarning.opacity = 255;
-            else
-                this._batteryWarning.opacity = 0;
+            this._batteryWarning.visible = this._powerProxy.OnBattery
+                && this._checkBox.checked;
         }
 
         let description;
@@ -417,26 +376,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (!description)
             description = dialogContent.description(displayTime);
 
-        _setLabelText(this._descriptionLabel, description);
-        _setLabelText(this._subjectLabel, subject);
-
-        if (dialogContent.iconName) {
-            this._iconBin.child = new St.Icon({ icon_name: dialogContent.iconName,
-                                                icon_size: _DIALOG_ICON_SIZE,
-                                                style_class: dialogContent.iconStyleClass });
-        } else {
-            let avatarWidget = new UserWidget.Avatar(this._user,
-                                                     { iconSize: _DIALOG_ICON_SIZE,
-                                                       styleClass: dialogContent.iconStyleClass });
-            this._iconBin.child = avatarWidget;
-            avatarWidget.update();
-        }
+        this._messageDialogContent.title = subject;
+        this._messageDialogContent.description = description;
 
         let hasApplications = this._applications.length > 0;
         let hasSessions = this._sessions.length > 0;
-        this._scrollView.visible = hasApplications || hasSessions;
-        this._applicationHeader.visible = hasApplications;
-        this._sessionHeader.visible = hasSessions;
+
+        this._applicationSection.visible = hasApplications;
+        this._sessionSection.visible = hasSessions;
     }
 
     _updateButtons() {
