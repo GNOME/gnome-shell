@@ -594,8 +594,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _constructListItemForApp(inhibitor, app) {
-        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-app-list-item',
-                                       can_focus: true });
+        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-app-list-item' });
         actor.add(app.create_icon_texture(_ITEM_ICON_SIZE));
 
         let textLayout = new St.BoxLayout({ vertical: true,
@@ -653,8 +652,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         else
             userLabelText = userName;
 
-        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-session-list-item',
-                                       can_focus: true });
+        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-session-list-item' });
         actor.add(avatar);
 
         let nameLabel = new St.Label({ text: userLabelText,
