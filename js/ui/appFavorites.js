@@ -55,6 +55,7 @@ const RENAMED_DESKTOP_IDS = {
     'org.gnome.taquin.desktop': 'org.gnome.Taquin.desktop',
     'org.gnome.Weather.Application.desktop': 'org.gnome.Weather.desktop',
     'polari.desktop': 'org.gnome.Polari.desktop',
+    'shotwell.desktop': 'org.gnome.Shotwell.desktop',
     'tali.desktop': 'org.gnome.Tali.desktop',
     'totem.desktop': 'org.gnome.Totem.desktop',
     'evince.desktop': 'org.gnome.Evince.desktop',
