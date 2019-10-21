@@ -2514,8 +2514,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             }
 
             if (discreteGpuAvailable &&
-                this._source.app.state == Shell.AppState.STOPPED &&
-                !actions.includes('activate-discrete-gpu')) {
+                this._source.app.state == Shell.AppState.STOPPED) {
                 this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                 this._onDiscreteGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
@@ -2528,8 +2527,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 let action = actions[i];
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
                 item.connect('activate', (emitter, event) => {
-                    if (action == 'new-window' ||
-                        action == 'activate-discrete-gpu')
+                    if (action == 'new-window')
                         this._source.animateLaunch();
 
                     this._source.app.launch_action(action, event.get_time(), -1);
