@@ -54,8 +54,12 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
     _buildControlTable() {
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        let table = new St.Widget({ style_class: 'keyring-dialog-control-table',
-                                    layout_manager: layout });
+        let table = new St.Widget({
+            style_class: 'keyring-dialog-control-table',
+            layout_manager: layout,
+            x_expand: true,
+            y_expand: true,
+        });
         layout.hookup_style(table);
         let rtl = table.get_text_direction() == Clutter.TextDirection.RTL;
         let row = 0;
@@ -140,7 +144,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         }
 
         this._controlTable = table;
-        this._content.messageBox.add(table, { x_fill: true, y_fill: true });
+        this._content.messageBox.add_child(table);
     }
 
     _updateSensitivity(sensitive) {

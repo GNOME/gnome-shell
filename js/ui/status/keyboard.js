@@ -21,9 +21,12 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
 
-        this.label = new St.Label({ text: displayName });
+        this.label = new St.Label({
+            text: displayName,
+            x_expand: true,
+        });
         this.indicator = new St.Label({ text: shortName });
-        this.add(this.label, { expand: true });
+        this.add_child(this.label);
         this.add(this.indicator);
         this.label_actor = this.label;
     }
@@ -116,10 +119,10 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
         let bin = new St.Bin({ style_class: 'input-source-switcher-symbol' });
         let symbol = new St.Label({ text: item.shortName });
         bin.set_child(symbol);
-        box.add(bin, { x_fill: false, y_fill: false } );
+        box.add_child(bin);
 
         let text = new St.Label({ text: item.displayName });
-        box.add(text, { x_fill: false });
+        box.add_child(text);
 
         this.addItem(box, text);
     }

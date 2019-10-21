@@ -70,18 +70,21 @@ class ListSearchResult extends SearchResult {
         this.style_class = 'list-search-result';
         this.x_fill = true;
 
-        let content = new St.BoxLayout({ style_class: 'list-search-result-content',
-                                         vertical: false });
+        let content = new St.BoxLayout({
+            style_class: 'list-search-result-content',
+            vertical: false,
+            x_expand: true,
+        });
         this.set_child(content);
 
         this._termsChangedId = 0;
 
-        let titleBox = new St.BoxLayout({ style_class: 'list-search-result-title' });
+        let titleBox = new St.BoxLayout({
+            style_class: 'list-search-result-title',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
 
-        content.add(titleBox, { x_fill: true,
-                                y_fill: false,
-                                x_align: St.Align.START,
-                                y_align: St.Align.MIDDLE });
+        content.add_child(titleBox);
 
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
@@ -89,20 +92,20 @@ class ListSearchResult extends SearchResult {
             titleBox.add(icon);
         }
 
-        let title = new St.Label({ text: this.metaInfo['name'] });
-        titleBox.add(title, { x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.START,
-                              y_align: St.Align.MIDDLE });
+        let title = new St.Label({
+            text: this.metaInfo['name'],
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        titleBox.add_child(title);
 
         this.label_actor = title;
 
         if (this.metaInfo['description']) {
-            this._descriptionLabel = new St.Label({ style_class: 'list-search-result-description' });
-            content.add(this._descriptionLabel, { x_fill: false,
-                                                  y_fill: false,
-                                                  x_align: St.Align.START,
-                                                  y_align: St.Align.MIDDLE });
+            this._descriptionLabel = new St.Label({
+                style_class: 'list-search-result-description',
+                y_align: Clutter.ActorAlign.CENTER,
+            });
+            content.add_child(this._descriptionLabel);
 
             this._termsChangedId =
                 this._resultsView.connect('terms-changed',
@@ -163,9 +166,8 @@ var SearchResultsBase = GObject.registerClass({
         this._terms = [];
         this._focusChild = null;
 
-        this._resultDisplayBin = new St.Bin({ x_fill: true,
-                                              y_fill: true });
-        this.add(this._resultDisplayBin, { expand: true });
+        this._resultDisplayBin = new St.Bin({ x_fill: true });
+        this.add_child(this._resultDisplayBin);
 
         let separator = new St.Widget({ style_class: 'search-section-separator' });
         this.add(separator);
@@ -302,14 +304,14 @@ class ListSearchResults extends SearchResultsBase {
             Main.overview.toggle();
         });
 
-        this._container.add(this.providerInfo, { x_fill: false,
-                                                 y_fill: false,
-                                                 x_align: St.Align.START,
-                                                 y_align: St.Align.START });
+        this._container.add_child(this.providerInfo);
 
-        this._content = new St.BoxLayout({ style_class: 'list-search-results',
-                                           vertical: true });
-        this._container.add(this._content, { expand: true });
+        this._content = new St.BoxLayout({
+            style_class: 'list-search-results',
+            vertical: true,
+            x_expand: true,
+        });
+        this._container.add_child(this._content);
 
         this._resultDisplayBin.set_child(this._container);
     }
@@ -428,10 +430,12 @@ var SearchResultsView = GObject.registerClass({
         this._content = new MaxWidthBox({ name: 'searchResultsContent',
                                           vertical: true });
 
-        this._scrollView = new St.ScrollView({ x_fill: true,
-                                               y_fill: false,
-                                               overlay_scrollbars: true,
-                                               style_class: 'search-display vfade' });
+        this._scrollView = new St.ScrollView({
+            overlay_scrollbars: true,
+            style_class: 'search-display vfade',
+            x_expand: true,
+            y_expand: true,
+        });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(this._content);
 
@@ -439,18 +443,11 @@ var SearchResultsView = GObject.registerClass({
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this.add(this._scrollView, {
-            x_fill: true,
-            y_fill: true,
-            expand: true,
-            x_align: St.Align.START,
-            y_align: St.Align.STAR
-        });
+        this.add_child(this._scrollView);
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
-        this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
-                                       y_align: St.Align.MIDDLE });
-        this.add(this._statusBin, { expand: true });
+        this._statusBin = new St.Bin({ y_expand: true });
+        this.add_child(this._statusBin);
         this._statusBin.add_actor(this._statusText);
 
         this._highlightDefault = false;
@@ -772,6 +769,7 @@ class ProviderInfo extends St.Button {
                       accessible_name: provider.appInfo.get_name(),
                       track_hover: true });
 
+        this.set_y_align(Clutter.ActorAlign.START);
         this._content = new St.BoxLayout({ vertical: false,
                                            style_class: 'list-search-provider-content' });
         this.set_child(this._content);
