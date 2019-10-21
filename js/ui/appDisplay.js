@@ -2513,14 +2513,24 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 this._appendSeparator();
             }
 
+            let wantsDiscreteGpu = appInfo.get_boolean("X-KDE-RunOnDiscreteGpu");
             if (discreteGpuAvailable &&
                 this._source.app.state == Shell.AppState.STOPPED) {
-                this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
-                this._onDiscreteGpuMenuItem.connect('activate', () => {
-                    this._source.animateLaunch();
-                    this._source.app.launch(0, -1, true);
-                    this.emit('activate-window', null);
-                });
+                if (!wantsDiscreteGpu) {
+                    this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
+                    this._onDiscreteGpuMenuItem.connect('activate', () => {
+                        this._source.animateLaunch();
+                        this._source.app.launch(0, -1, true);
+                        this.emit('activate-window', null);
+                    });
+                } else {
+                    this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Integrated Graphics Card"));
+                    this._onDiscreteGpuMenuItem.connect('activate', () => {
+                        this._source.animateLaunch();
+                        this._source.app.launch(0, -1, false);
+                        this.emit('activate-window', null);
+                    });
+                }
             }
 
             for (let i = 0; i < actions.length; i++) {
@@ -2530,7 +2540,14 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                     if (action == 'new-window')
                         this._source.animateLaunch();
 
-                    this._source.app.launch_action(action, event.get_time(), -1);
+                    if (discreteGpuAvailable &&
+                        action == 'new-window' &&
+                        this._source.app.state == Shell.AppState.STOPPED) {
+                        let wantsDiscreteGpu = appInfo.get_boolean("X-KDE-RunOnDiscreteGpu");
+                        this._source.app.launch(0, -1, !wantsDiscreteGpu);
+                    } else {
+                        this._source.app.launch_action(action, event.get_time(), -1);
+                    }
                     this.emit('activate-window', null);
                 });
             }
