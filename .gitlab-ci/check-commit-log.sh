@@ -23,9 +23,16 @@ function commit_message_has_url() {
   return $?
 }
 
+function commit_message_has_ref() {
+  commit=$1
+  commit_message=$(git show -s --format='format:%b' $commit)
+  echo "$commit_message" | grep -qe "\([#!][0-9]\+\)"
+  return $?
+}
+
 for commit in $commits; do
-  if ! commit_message_has_url $commit; then
-    echo "Commit $(echo $commit | cut -c -8) needs a merge request or issue URL"
+  if ! commit_message_has_url $commit && ! commit_message_has_ref $commit ; then
+    echo "Commit $(echo $commit | cut -c -8) needs a merge request or issue URL, or a merge request or issue number"
     exit 1
   fi
 done
