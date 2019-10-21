@@ -404,9 +404,13 @@ var Calendar = GObject.registerClass({
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
-        this._monthLabel = new St.Label({ style_class: 'calendar-month-label',
-                                          can_focus: true });
-        this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
+        this._monthLabel = new St.Label({
+            style_class: 'calendar-month-label',
+            can_focus: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+        });
+        this._topBox.add_child(this._monthLabel);
 
         this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward pager-button',
                                               accessible_name: _("Next month"),

@@ -167,7 +167,11 @@ class KeyContainer extends St.Widget {
 var Suggestions = GObject.registerClass(
 class Suggestions extends St.BoxLayout {
     _init() {
-        super._init({ style_class: 'word-suggestions', vertical: false });
+        super._init({
+            style_class: 'word-suggestions',
+            vertical: false,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this.show();
     }
 
@@ -262,7 +266,7 @@ var Key = GObject.registerClass({
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
          */
-        this.add(this.keyButton, { expand: true, x_fill: true });
+        this.add_child(this.keyButton);
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._extended_keys = extendedKeys;
@@ -403,8 +407,11 @@ var Key = GObject.registerClass({
 
     _makeKey(key) {
         let label = GLib.markup_escape_text(key, -1);
-        let button = new St.Button ({ label: label,
-                                      style_class: 'keyboard-key' });
+        let button = new St.Button ({
+            label: label,
+            style_class: 'keyboard-key',
+            x_expand: true,
+        });
 
         button.keyWidth = 1;
         button.connect('button-press-event', () => {
@@ -902,16 +909,16 @@ var EmojiSelection = GObject.registerClass({
         this._emojiPager.connect('emoji', (pager, str) => {
             this.emit('emoji-selected', str);
         });
-        this.add(this._emojiPager, { expand: true });
+        this.add_child(this._emojiPager);
 
         this._pageIndicator = new PageIndicators.PageIndicators(
             Clutter.Orientation.HORIZONTAL
         );
-        this.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
+        this.add_child(this._pageIndicator);
         this._pageIndicator.setReactive(false);
 
         let bottomRow = this._createBottomRow();
-        this.add(bottomRow, { expand: true, x_fill: false, y_fill: false });
+        this.add_child(bottomRow);
 
         this._emojiPager.setCurrentPage(0);
     }
@@ -1261,10 +1268,10 @@ class Keyboard extends St.BoxLayout {
         this._currentPage = null;
 
         this._suggestions = new Suggestions();
-        this.add(this._suggestions, { x_align: St.Align.MIDDLE, x_fill: false });
+        this.add_child(this._suggestions);
 
         this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
-        this.add(this._aspectContainer, { expand: true });
+        this.add_child(this._aspectContainer);
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));

@@ -114,7 +114,10 @@ var Notebook = GObject.registerClass({
     Signals: { 'selection': { param_types: [Clutter.Actor.$gtype] } },
 }, class Notebook extends St.BoxLayout {
     _init() {
-        super._init({ vertical: true });
+        super._init({
+            vertical: true,
+            y_expand: true,
+        });
 
         this.tabControls = new St.BoxLayout({ style_class: 'labels' });
 
@@ -131,10 +134,10 @@ var Notebook = GObject.registerClass({
             this.selectChild(child);
             return true;
         });
-        labelBox.add(label, { expand: true });
+        labelBox.add_child(label);
         this.tabControls.add(labelBox);
 
-        let scrollview = new St.ScrollView({ x_fill: true, y_fill: true });
+        let scrollview = new St.ScrollView({ y_expand: true });
         scrollview.get_hscroll_bar().hide();
         scrollview.add_actor(child);
 
@@ -145,7 +148,7 @@ var Notebook = GObject.registerClass({
                         _scrollToBottom: false };
         this._tabs.push(tabData);
         scrollview.hide();
-        this.add(scrollview, { expand: true });
+        this.add_child(scrollview);
 
         let vAdjust = scrollview.vscroll.adjustment;
         vAdjust.connect('changed', () => this._onAdjustScopeChanged(tabData));
@@ -263,6 +266,7 @@ class ObjLink extends St.Button {
             style_class: 'shell-link',
             label: text
         });
+        this.set_x_align(Clutter.ActorAlign.START);
         this.get_child().single_line_mode = true;
 
         this._obj = o;
@@ -326,7 +330,7 @@ var WindowList = GObject.registerClass({
             let box = new St.BoxLayout({ vertical: true });
             this.add(box);
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
-            box.add(windowLink, { x_align: St.Align.START, x_fill: false });
+            box.add_child(windowLink);
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
             propsBox.add(new St.Label({ text: `wmclass: ${metaWindow.get_wm_class()}` }));
@@ -335,10 +339,10 @@ var WindowList = GObject.registerClass({
                 let icon = app.create_icon_texture(22);
                 let propBox = new St.BoxLayout({ style: 'spacing: 6px; ' });
                 propsBox.add(propBox);
-                propBox.add(new St.Label({ text: 'app: ' }), { y_fill: false });
+                propBox.add_child(new St.Label({ text: 'app: ' }));
                 let appLink = new ObjLink(this._lookingGlass, app, app.get_id());
-                propBox.add(appLink, { y_fill: false });
-                propBox.add(icon, { y_fill: false });
+                propBox.add_child(appLink);
+                propBox.add_child(icon);
             } else {
                 propsBox.add(new St.Label({ text: '<untracked>' }));
             }
@@ -384,10 +388,12 @@ class ObjInspector extends St.ScrollView {
 
         let hbox = new St.BoxLayout({ style_class: 'lg-obj-inspector-title' });
         this._container.add_actor(hbox);
-        let label = new St.Label({ text: 'Inspecting: %s: %s'.format(typeof obj,
-                                                                     objectToString(obj)) });
+        let label = new St.Label({
+            text: 'Inspecting: %s: %s'.format(typeof obj, objectToString(obj)),
+            x_expand: true,
+        });
         label.single_line_mode = true;
-        hbox.add(label, { expand: true, y_fill: false });
+        hbox.add_child(label);
         let button = new St.Button({ label: 'Insert', style_class: 'lg-obj-inspector-button' });
         button.connect('clicked', this._onInsert.bind(this));
         hbox.add(button);
@@ -503,8 +509,8 @@ var Inspector = GObject.registerClass({
                                               reactive: true });
         this._eventHandler = eventHandler;
         this.add_actor(eventHandler);
-        this._displayText = new St.Label();
-        eventHandler.add(this._displayText, { expand: true });
+        this._displayText = new St.Label({ x_expand: true });
+        eventHandler.add_child(this._displayText);
 
         eventHandler.connect('key-press-event', this._onKeyPressEvent.bind(this));
         eventHandler.connect('button-press-event', this._onButtonPressEvent.bind(this));
@@ -726,12 +732,18 @@ var Extensions = GObject.registerClass({
 
     _createExtensionDisplay(extension) {
         let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
-        let name = new St.Label({ style_class: 'lg-extension-name',
-                                  text: extension.metadata.name });
-        box.add(name, { expand: true });
-        let description = new St.Label({ style_class: 'lg-extension-description',
-                                         text: extension.metadata.description || 'No description' });
-        box.add(description, { expand: true });
+        let name = new St.Label({
+            style_class: 'lg-extension-name',
+            text: extension.metadata.name,
+            x_expand: true,
+        });
+        box.add_child(name);
+        let description = new St.Label({
+            style_class: 'lg-extension-description',
+            text: extension.metadata.description || 'No description',
+            x_expand: true,
+        });
+        box.add_child(description);
 
         let metaBox = new St.BoxLayout({ style_class: 'lg-extension-meta' });
         box.add(metaBox);
@@ -848,27 +860,37 @@ class LookingGlass extends St.BoxLayout {
 
         let notebook = new Notebook();
         this._notebook = notebook;
-        this.add(notebook, { expand: true });
+        this.add_child(notebook);
 
-        let emptyBox = new St.Bin();
-        toolbar.add(emptyBox, { expand: true });
+        let emptyBox = new St.Bin({ x_expand: true });
+        toolbar.add_child(emptyBox);
         toolbar.add_actor(notebook.tabControls);
 
         this._evalBox = new St.BoxLayout({ name: 'EvalBox', vertical: true });
         notebook.appendPage('Evaluator', this._evalBox);
 
-        this._resultsArea = new St.BoxLayout({ name: 'ResultsArea', vertical: true });
-        this._evalBox.add(this._resultsArea, { expand: true });
+        this._resultsArea = new St.BoxLayout({
+            name: 'ResultsArea',
+            vertical: true,
+            y_expand: true,
+        });
+        this._evalBox.add_child(this._resultsArea);
 
-        this._entryArea = new St.BoxLayout({ name: 'EntryArea' });
+        this._entryArea = new St.BoxLayout({
+            name: 'EntryArea',
+            y_align: Clutter.ActorAlign.END,
+        });
         this._evalBox.add_actor(this._entryArea);
 
         let label = new St.Label({ text: CHEVRON });
         this._entryArea.add(label);
 
-        this._entry = new St.Entry({ can_focus: true });
+        this._entry = new St.Entry({
+            can_focus: true,
+            x_expand: true,
+        });
         ShellEntry.addContextMenu(this._entry);
-        this._entryArea.add(this._entry, { expand: true });
+        this._entryArea.add_child(this._entry);
 
         this._windowList = new WindowList(this);
         notebook.appendPage('Windows', this._windowList);

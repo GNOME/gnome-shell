@@ -118,7 +118,7 @@ class OverviewActor extends St.BoxLayout {
         this._controls = new OverviewControls.ControlsManager(this._searchEntry);
 
         // Add our same-line elements after the search entry
-        this.add(this._controls, { y_fill: true, expand: true });
+        this.add_child(this._controls);
     }
 
     get dash() {

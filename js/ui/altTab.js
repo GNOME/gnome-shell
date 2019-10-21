@@ -657,9 +657,12 @@ class AppIcon extends St.BoxLayout {
         this.icon = null;
         this._iconBin = new St.Bin({ x_fill: true, y_fill: true });
 
-        this.add(this._iconBin, { x_fill: false, y_fill: false } );
-        this.label = new St.Label({ text: this.app.get_name() });
-        this.add(this.label, { x_fill: false });
+        this.add_child(this._iconBin);
+        this.label = new St.Label({
+            text: this.app.get_name(),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(this.label);
     }
 
     // eslint-disable-next-line camelcase
@@ -975,7 +978,7 @@ class WindowIcon extends St.BoxLayout {
 
         this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
-        this.add(this._icon, { x_fill: false, y_fill: false } );
+        this.add_child(this._icon);
         this.label = new St.Label({ text: window.get_title() });
 
         let tracker = Shell.WindowTracker.get_default();

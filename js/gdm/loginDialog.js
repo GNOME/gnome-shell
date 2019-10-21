@@ -47,6 +47,7 @@ var UserListItem = GObject.registerClass({
             style_class: 'login-dialog-user-list-item',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             can_focus: true,
+            x_expand: true,
             child: layout,
             reactive: true,
             x_align: St.Align.START,
@@ -160,7 +161,11 @@ var UserList = GObject.registerClass({
     }
 }, class UserList extends St.ScrollView {
     _init() {
-        super._init({ style_class: 'login-dialog-user-list-view' });
+        super._init({
+            style_class: 'login-dialog-user-list-view',
+            x_expand: true,
+            y_expand: true,
+        });
         this.set_policy(St.PolicyType.NEVER,
                         St.PolicyType.AUTOMATIC);
 
@@ -263,7 +268,7 @@ var UserList = GObject.registerClass({
         this.removeUser(user);
 
         let item = new UserListItem(user);
-        this._box.add(item, { x_fill: true });
+        this._box.add_child(item);
 
         this._items[userName] = item;
 
@@ -440,10 +445,7 @@ var LoginDialog = GObject.registerClass({
         this.add_child(this._userSelectionBox);
 
         this._userList = new UserList();
-        this._userSelectionBox.add(this._userList,
-                                   { expand: true,
-                                     x_fill: true,
-                                     y_fill: true });
+        this._userSelectionBox.add_child(this._userList);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
@@ -468,10 +470,7 @@ var LoginDialog = GObject.registerClass({
 
         this._notListedButton.hide();
 
-        this._userSelectionBox.add(this._notListedButton,
-                                   { expand: false,
-                                     x_align: St.Align.START,
-                                     x_fill: true });
+        this._userSelectionBox.add_child(this._notListedButton);
 
         this._bannerView = new St.ScrollView({ style_class: 'login-dialog-banner-view',
                                                opacity: 0,

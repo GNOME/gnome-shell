@@ -53,11 +53,17 @@ class ScreenShieldClock extends St.BoxLayout {
     _init() {
         super._init({ style_class: 'screen-shield-clock', vertical: true });
 
-        this._time = new St.Label({ style_class: 'screen-shield-clock-time' });
-        this._date = new St.Label({ style_class: 'screen-shield-clock-date' });
+        this._time = new St.Label({
+            style_class: 'screen-shield-clock-time',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._date = new St.Label({
+            style_class: 'screen-shield-clock-date',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
 
-        this.add(this._time, { x_align: St.Align.MIDDLE });
-        this.add(this._date, { x_align: St.Align.MIDDLE });
+        this.add_child(this._time);
+        this.add_child(this._date);
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
@@ -98,7 +104,7 @@ var NotificationsBox = GObject.registerClass({
                                                    style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
 
-        this.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
+        this.add_child(this._scrollView);
 
         this._sources = new Map();
         Main.messageTray.getSources().forEach(source => {
@@ -139,10 +145,10 @@ var NotificationsBox = GObject.registerClass({
 
     _makeNotificationSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        box.add(sourceActor, { y_fill: true });
+        box.add_child(sourceActor);
 
         let textBox = new St.BoxLayout({ vertical: true });
-        box.add(textBox, { y_fill: false, y_align: St.Align.START });
+        box.add_child(textBox);
 
         let title = new St.Label({ text: source.title,
                                    style_class: 'screen-shield-notification-label' });
@@ -165,7 +171,7 @@ var NotificationsBox = GObject.registerClass({
         box.add(sourceBin);
 
         let textBox = new St.BoxLayout({ vertical: true });
-        box.add(textBox, { y_fill: false, y_align: St.Align.START });
+        box.add_child(textBox);
 
         let title = new St.Label({ text: source.title,
                                    style_class: 'screen-shield-notification-label' });
@@ -227,7 +233,7 @@ var NotificationsBox = GObject.registerClass({
         obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source',
                                            x_expand: true });
         this._showSource(source, obj, obj.sourceBox);
-        this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
+        this._notificationBox.add_child(obj.sourceBox);
 
         obj.sourceCountChangedId = source.connect('notify::count', source => {
             this._countChanged(source, obj);
@@ -1138,20 +1144,13 @@ var ScreenShield = class {
                                                          vertical: true,
                                                          style_class: 'screen-shield-contents-box' });
         this._clock = new Clock();
-        this._lockScreenContentsBox.add(this._clock, {
-            x_fill: true,
-            y_fill: true
-        });
+        this._lockScreenContentsBox.add_child(this._clock);
 
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
         this._notificationsBox = new NotificationsBox();
         this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', this._wakeUpScreen.bind(this));
-        this._lockScreenContentsBox.add(this._notificationsBox, {
-            x_fill: true,
-            y_fill: true,
-            expand: true
-        });
+        this._lockScreenContentsBox.add_child(this._notificationsBox);
 
         this._hasLockScreen = true;
     }

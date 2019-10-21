@@ -36,19 +36,15 @@ class Dialog extends St.Widget {
         this._dialog.request_mode = Clutter.RequestMode.HEIGHT_FOR_WIDTH;
         this._dialog.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
-        this.contentLayout = new St.BoxLayout({ vertical: true,
-                                                style_class: "modal-dialog-content-box" });
-        this._dialog.add(this.contentLayout,
-                         { expand: true,
-                           x_fill: true,
-                           y_fill: true,
-                           x_align: St.Align.MIDDLE,
-                           y_align: St.Align.START });
+        this.contentLayout = new St.BoxLayout({
+            vertical: true,
+            style_class: 'modal-dialog-content-box',
+            y_expand: true,
+        });
+        this._dialog.add_child(this.contentLayout);
 
         this.buttonLayout = new St.Widget ({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
-        this._dialog.add(this.buttonLayout,
-                         { x_align: St.Align.MIDDLE,
-                           y_align: St.Align.START });
+        this._dialog.add_child(this.buttonLayout);
     }
 
     _onDestroy() {

@@ -19,7 +19,8 @@ var Slider = GObject.registerClass({
             style_class: 'slider',
             can_focus: true,
             reactive: true,
-            accessible_role: Atk.Role.SLIDER
+            accessible_role: Atk.Role.SLIDER,
+            x_expand: true,
         });
 
         this._releaseId = 0;

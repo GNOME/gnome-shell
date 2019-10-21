@@ -452,7 +452,7 @@ class ControlsManager extends St.Widget {
         this.add_actor(this._dashSlider);
 
         this._group.add_actor(this._dashSpacer);
-        this._group.add(this.viewSelector, { x_fill: true, expand: true });
+        this._group.add_child(this.viewSelector);
         this._group.add_actor(this._thumbnailsSlider);
 
         layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
