@@ -36,16 +36,16 @@ function test() {
             obin.connect_after('paint', actor => {
                 Cogl.set_source_color4f(0, 1, 0, 1);
 
-                let geom = actor.get_allocation_geometry();
+                let alloc = actor.get_allocation_box();
                 let width = 3;
 
                 // clockwise order
-                Cogl.rectangle(0, 0, geom.width, width);
-                Cogl.rectangle(geom.width - width, width,
-                               geom.width, geom.height);
-                Cogl.rectangle(0, geom.height,
-                               geom.width - width, geom.height - width);
-                Cogl.rectangle(0, geom.height - width,
+                Cogl.rectangle(0, 0, alloc.get_width(), width);
+                Cogl.rectangle(alloc.get_width() - width, width,
+                               alloc.get_width(), alloc.get_height());
+                Cogl.rectangle(0, alloc.get_height(),
+                               alloc.get_width() - width, alloc.get_height() - width);
+                Cogl.rectangle(0, alloc.get_height() - width,
                                width, width);
             });
         tbox.add(obin);

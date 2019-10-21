@@ -477,16 +477,16 @@ class RedBorderEffect extends Clutter.Effect {
         color.init_from_4ub(0xff, 0, 0, 0xc4);
         Cogl.set_source_color(color);
 
-        let geom = actor.get_allocation_geometry();
+        let alloc = actor.get_allocation_box();
         let width = 2;
 
         // clockwise order
-        Cogl.rectangle(0, 0, geom.width, width);
-        Cogl.rectangle(geom.width - width, width,
-                       geom.width, geom.height);
-        Cogl.rectangle(0, geom.height,
-                       geom.width - width, geom.height - width);
-        Cogl.rectangle(0, geom.height - width,
+        Cogl.rectangle(0, 0, alloc.get_width(), width);
+        Cogl.rectangle(alloc.get_width() - width, width,
+                       alloc.get_width(), alloc.get_height());
+        Cogl.rectangle(0, alloc.get_height(),
+                       alloc.get_width() - width, alloc.get_height() - width);
+        Cogl.rectangle(0, alloc.get_height() - width,
                        width, width);
     }
 });
