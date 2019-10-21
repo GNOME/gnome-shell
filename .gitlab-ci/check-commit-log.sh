@@ -30,9 +30,12 @@ function commit_message_has_ref() {
   return $?
 }
 
+RET=0
 for commit in $commits; do
   if ! commit_message_has_url $commit && ! commit_message_has_ref $commit ; then
     echo "Commit $(echo $commit | cut -c -8) needs a merge request or issue URL, or a merge request or issue number"
-    exit 1
+    RET=1
   fi
 done
+
+exit $RET
