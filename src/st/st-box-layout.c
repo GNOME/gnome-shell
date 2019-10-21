@@ -489,7 +489,7 @@ st_box_layout_pick (ClutterActor *actor)
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
-    clutter_actor_paint (child);
+    clutter_actor_pick (child);
 
   if (priv->hadjustment || priv->vadjustment)
     cogl_framebuffer_pop_clip (fb);
