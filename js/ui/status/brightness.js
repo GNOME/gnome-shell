@@ -42,7 +42,7 @@ var Indicator = GObject.registerClass({
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });
         this._item.add(icon);
-        this._item.add(this._slider, { expand: true });
+        this._item.add_child(this._slider);
         this._item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });

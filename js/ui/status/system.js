@@ -180,7 +180,9 @@ var Indicator = GObject.registerClass({
                                    can_focus: true,
                                    track_hover: true,
                                    accessible_name: accessibleName,
+                                   x_expand: true,
                                    style_class: 'system-menu-action' });
+        icon.set_x_align(Clutter.ActorAlign.CENTER);
         icon.child = new St.Icon({ icon_name: iconName });
         return icon;
     }
@@ -252,14 +254,14 @@ var Indicator = GObject.registerClass({
             log('Missing required core component Settings, expect trouble…');
             this._settingsAction = new St.Widget();
         }
-        item.add(this._settingsAction, { expand: true, x_fill: false });
+        item.add_child(this._settingsAction);
 
         this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
         this._orientationLockAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockOrientation();
         });
-        item.add(this._orientationLockAction, { expand: true, x_fill: false });
+        item.add_child(this._orientationLockAction);
         this._systemActions.bind_property('can-lock-orientation',
                                           this._orientationLockAction,
                                           'visible',
@@ -274,7 +276,7 @@ var Indicator = GObject.registerClass({
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockScreen();
         });
-        item.add(this._lockScreenAction, { expand: true, x_fill: false });
+        item.add_child(this._lockScreenAction);
         this._systemActions.bind_property('can-lock-screen',
                                           this._lockScreenAction,
                                           'visible',
@@ -301,7 +303,7 @@ var Indicator = GObject.registerClass({
                                           bindFlags);
 
         this._altSwitcher = new AltSwitcher(this._powerOffAction, this._suspendAction);
-        item.add(this._altSwitcher, { expand: true, x_fill: false });
+        item.add_child(this._altSwitcher);
 
         this.menu.addMenuItem(item);
 

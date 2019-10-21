@@ -84,10 +84,10 @@ class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
 
         let icon = new St.Icon({ icon_name: item.icon,
                                  icon_size: APP_ICON_SIZE });
-        box.add(icon, { x_fill: false, y_fill: false } );
+        box.add_child(icon);
 
         let text = new St.Label({ text: item.label });
-        box.add(text, { x_fill: false });
+        box.add_child(text);
 
         this.addItem(box, text);
     }

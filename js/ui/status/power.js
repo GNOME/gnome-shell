@@ -30,7 +30,7 @@ var Indicator = GObject.registerClass({
         this._indicator = this._addIndicator();
         this._percentageLabel = new St.Label({ y_expand: true,
                                                y_align: Clutter.ActorAlign.CENTER });
-        this.add(this._percentageLabel, { expand: true, y_fill: true });
+        this.add_child(this._percentageLabel);
         this.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,

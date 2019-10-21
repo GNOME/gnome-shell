@@ -264,7 +264,7 @@ var ShellMountQuestionDialog = GObject.registerClass({
         super._init({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
-        this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
+        this.contentLayout.add_child(this._content);
     }
 
     update(message, choices) {
@@ -300,8 +300,11 @@ var ShellMountPasswordDialog = GObject.registerClass({
         let rtl = grid.get_text_direction() === Clutter.TextDirection.RTL;
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
-            this._keyfilesLabel = new St.Label(({ style_class: 'prompt-dialog-keyfiles-label',
-                                                  visible: false }));
+            this._keyfilesLabel = new St.Label({
+                style_class: 'prompt-dialog-keyfiles-label',
+                visible: false,
+                y_align: Clutter.ActorAlign.CENTER,
+            });
 
             this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
             content.messageBox.add(this._hiddenVolume);
@@ -319,7 +322,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             );
             this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             this._keyfilesLabel.clutter_text.line_wrap = true;
-            content.messageBox.add(this._keyfilesLabel, { y_fill: false, y_align: St.Align.MIDDLE, expand: true });
+            content.messageBox.add_child(this._keyfilesLabel);
 
             this._pimLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
                                             text: _("PIM Number"),
@@ -492,14 +495,16 @@ var ShellProcessesDialog = GObject.registerClass({
         super._init({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
-        this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
+        this.contentLayout.add_child(this._content);
 
-        let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list' });
+        let scrollView = new St.ScrollView({
+            style_class: 'mount-dialog-app-list',
+            x_expand: true,
+            y_expand: true,
+        });
         scrollView.set_policy(St.PolicyType.NEVER,
                               St.PolicyType.AUTOMATIC);
-        this.contentLayout.add(scrollView,
-                               { x_fill: true,
-                                 y_fill: true });
+        this.contentLayout.add_child(scrollView);
         scrollView.hide();
 
         this._applicationList = new St.BoxLayout({ vertical: true });
@@ -528,7 +533,7 @@ var ShellProcessesDialog = GObject.registerClass({
                 return;
 
             let item = new ListItem(app);
-            this._applicationList.add(item, { x_fill: true });
+            this._applicationList.add_child(item);
 
             item.connect('activate', () => {
                 // use -1 to indicate Cancel

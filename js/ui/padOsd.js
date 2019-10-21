@@ -735,8 +735,8 @@ var PadOsd = GObject.registerClass({
         this.add_actor(buttonBox);
         this._editButton = new St.Button({ label: _("Edit…"),
                                            style_class: 'button',
-                                           x_align: Clutter.ActorAlign.CENTER,
                                            can_focus: true });
+        this._editButton.set_x_align(Clutter.ActorAlign.CENTER);
         this._editButton.connect('clicked', () => {
             this.setEditionMode(true);
         });

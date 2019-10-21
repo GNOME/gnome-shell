@@ -635,17 +635,23 @@ var NMWirelessDialogItem = GObject.registerClass({
         this.add_action(action);
 
         let title = ssidToLabel(this._ap.get_ssid());
-        this._label = new St.Label({ text: title });
+        this._label = new St.Label({
+            text: title,
+            x_expand: true,
+        });
 
         this.label_actor = this._label;
-        this.add(this._label, { x_align: St.Align.START });
+        this.add_child(this._label);
 
         this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
                                            icon_name: 'object-select-symbolic' });
         this.add(this._selectedIcon);
 
-        this._icons = new St.BoxLayout({ style_class: 'nm-dialog-icons' });
-        this.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
+        this._icons = new St.BoxLayout({
+            style_class: 'nm-dialog-icons',
+            x_align: Clutter.ActorAlign.END,
+        });
+        this.add_child(this._icons);
 
         this._secureIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         if (this._ap._secType != NMAccessPointSecurity.NONE)
@@ -846,7 +852,10 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         this.contentLayout.style_class = 'nm-dialog-content';
         this.contentLayout.add(headline);
 
-        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._stack = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            y_expand: true,
+        });
 
         this._itemBox = new St.BoxLayout({ vertical: true });
         this._scrollView = new St.ScrollView({ style_class: 'nm-dialog-scroll-view' });
@@ -889,13 +898,13 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                                                 text: _("Use hardware switch to turn off") });
         airplaneSubStack.add_actor(this._airplaneInactive);
 
-        this._airplaneBox.add(this._airplaneIcon, { x_align: St.Align.MIDDLE });
-        this._airplaneBox.add(this._airplaneHeadline, { x_align: St.Align.MIDDLE });
-        this._airplaneBox.add(this._airplaneText, { x_align: St.Align.MIDDLE });
-        this._airplaneBox.add(airplaneSubStack, { x_align: St.Align.MIDDLE });
+        this._airplaneBox.add_child(this._airplaneIcon);
+        this._airplaneBox.add_child(this._airplaneHeadline);
+        this._airplaneBox.add_child(this._airplaneText);
+        this._airplaneBox.add_child(airplaneSubStack);
         this._stack.add_child(this._airplaneBox);
 
-        this.contentLayout.add(this._stack, { expand: true });
+        this.contentLayout.add_child(this._stack);
 
         this._disconnectButton = this.addButton({ action: this.close.bind(this),
                                                   label: _("Cancel"),
