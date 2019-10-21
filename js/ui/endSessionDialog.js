@@ -263,38 +263,35 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._userLoadedId = this._user.connect('notify::is_loaded', this._sync.bind(this));
         this._userChangedId = this._user.connect('changed', this._sync.bind(this));
 
-        let mainContentLayout = new St.BoxLayout({ vertical: false });
-        this.contentLayout.add(mainContentLayout,
-                               { x_fill: true,
-                                 y_fill: false });
+        let mainContentLayout = new St.BoxLayout({
+            vertical: false,
+            x_expand: true,
+            y_expand: false,
+        });
+        this.contentLayout.add_child(mainContentLayout);
 
-        this._iconBin = new St.Bin();
-        mainContentLayout.add(this._iconBin,
-                              { x_fill: true,
-                                y_fill: false,
-                                x_align: St.Align.END,
-                                y_align: St.Align.START });
+        this._iconBin = new St.Bin({
+            x_expand: true,
+        });
+        this._iconBin.set_x_align(Clutter.ActorAlign.END);
+        mainContentLayout.add_child(this._iconBin);
 
         let messageLayout = new St.BoxLayout({ vertical: true,
                                                style_class: 'end-session-dialog-layout' });
-        mainContentLayout.add(messageLayout,
-                              { y_align: St.Align.START });
+        mainContentLayout.add_child(messageLayout);
 
         this._subjectLabel = new St.Label({ style_class: 'end-session-dialog-subject' });
 
-        messageLayout.add(this._subjectLabel,
-                          { x_fill: false,
-                            y_fill: false,
-                            x_align: St.Align.START,
-                            y_align: St.Align.START });
+        messageLayout.add_child(this._subjectLabel);
 
-        this._descriptionLabel = new St.Label({ style_class: 'end-session-dialog-description' });
+        this._descriptionLabel = new St.Label({
+            style_class: 'end-session-dialog-description',
+            y_expand: true,
+        });
         this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._descriptionLabel.clutter_text.line_wrap = true;
 
-        messageLayout.add(this._descriptionLabel,
-                          { y_fill: true,
-                            y_align: St.Align.START });
+        messageLayout.add_child(this._descriptionLabel);
 
         this._checkBox = new CheckBox.CheckBox();
         this._checkBox.connect('clicked', this._sync.bind(this));
@@ -306,11 +303,13 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._batteryWarning.clutter_text.line_wrap = true;
         messageLayout.add(this._batteryWarning);
 
-        this._scrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
+        this._scrollView = new St.ScrollView({
+            style_class: 'end-session-dialog-list',
+            x_expand: true,
+            y_expand: true,
+        });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        this.contentLayout.add(this._scrollView,
-                               { x_fill: true,
-                                 y_fill: true });
+        this.contentLayout.add_child(this._scrollView);
         this._scrollView.hide();
 
         this._inhibitorSection = new St.BoxLayout({ vertical: true,

@@ -61,8 +61,8 @@ class OsdWindow extends St.Widget {
         this._box.add_constraint(this._boxConstraint);
         this.add_actor(this._box);
 
-        this._icon = new St.Icon();
-        this._box.add(this._icon, { expand: true });
+        this._icon = new St.Icon({ y_expand: true });
+        this._box.add_child(this._icon);
 
         this._label = new St.Label();
         this._box.add(this._label);

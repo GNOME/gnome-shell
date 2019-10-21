@@ -42,7 +42,7 @@ var StreamSlider = class {
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
-        this.item.add(this._slider, { expand: true });
+        this.item.add_child(this._slider);
         this.item.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
         });

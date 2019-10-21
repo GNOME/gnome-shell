@@ -67,8 +67,7 @@ var AuthenticationDialog = GObject.registerClass({
         if (userIsRoot) {
             let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
                                             text: userRealName }));
-            content.messageBox.add(userLabel, { x_fill: false,
-                                                x_align: St.Align.START });
+            content.messageBox.add_child(userLabel);
         } else {
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
                                              vertical: false });
@@ -77,33 +76,34 @@ var AuthenticationDialog = GObject.registerClass({
                                                      { iconSize: DIALOG_ICON_SIZE,
                                                        styleClass: 'polkit-dialog-user-icon' });
             this._userAvatar.hide();
-            userBox.add(this._userAvatar,
-                        { x_fill: true,
-                          y_fill: false,
-                          x_align: St.Align.END,
-                          y_align: St.Align.START });
-            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-label',
-                                            text: userRealName }));
-            userBox.add(userLabel,
-                        { x_fill: true,
-                          y_fill: false,
-                          x_align: St.Align.END,
-                          y_align: St.Align.MIDDLE });
+            userBox.add_child(this._userAvatar);
+            let userLabel = new St.Label(({
+                style_class: 'polkit-dialog-user-label',
+                text: userRealName,
+                x_expand: true,
+                y_align: Clutter.ActorAlign.CENTER,
+            }));
+            userBox.add_child(userLabel);
         }
 
         this._onUserChanged();
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
-        this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
-        this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
-        this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                             text: "",
-                                             can_focus: true });
+        this._passwordLabel = new St.Label(({
+            style_class: 'prompt-dialog-password-label',
+            y_align: Clutter.ActorAlign.CENTER,
+        }));
+        this._passwordBox.add_child(this._passwordLabel);
+        this._passwordEntry = new St.Entry({
+            style_class: 'prompt-dialog-password-entry',
+            text: "",
+            can_focus: true,
+            x_expand: true,
+        });
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-        this._passwordBox.add(this._passwordEntry,
-                              { expand: true });
+        this._passwordBox.add_child(this._passwordEntry);
 
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner);
@@ -114,7 +114,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add(this._errorMessageLabel, { x_fill: false, x_align: St.Align.START });
+        content.messageBox.add_child(this._errorMessageLabel);
         this._errorMessageLabel.hide();
 
         this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });

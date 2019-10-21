@@ -177,10 +177,13 @@ class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
             icon = new St.Icon({ icon_name: item.iconName,
                                  icon_size: POPUP_APPICON_SIZE });
         }
-        box.add(icon, { x_fill: false, y_fill: false } );
+        box.add_child(icon);
 
-        let text = new St.Label({ text: item.name });
-        box.add(text, { x_fill: false });
+        let text = new St.Label({
+            text: item.name,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(text);
 
         this.addItem(box, text);
     }

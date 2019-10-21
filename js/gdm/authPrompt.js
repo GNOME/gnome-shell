@@ -87,50 +87,55 @@ var AuthPrompt = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._userWell = new St.Bin({ x_fill: true, x_align: St.Align.START });
-        this.add(this._userWell, {
-            x_align: St.Align.START,
+        this._userWell = new St.Bin({
             x_fill: true,
-            y_fill: true,
-            expand: true
+            x_align: St.Align.START,
+            x_expand: true,
+            y_expand: true,
         });
-        this._label = new St.Label({ style_class: 'login-dialog-prompt-label' });
+        this.add_child(this._userWell);
+        this._label = new St.Label({
+            style_class: 'login-dialog-prompt-label',
+            x_expand: false,
+            y_expand: true,
+        });
 
-        this.add(this._label, {
-            expand: true,
-            x_fill: false,
-            y_fill: true,
-            x_align: St.Align.START
+        this.add_child(this._label);
+        this._entry = new St.Entry({
+            style_class: 'login-dialog-prompt-entry',
+            can_focus: true,
+            x_expand: false,
+            y_expand: true,
         });
-        this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
-                                     can_focus: true });
         ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
-        this.add(this._entry, {
-            expand: true,
-            x_fill: true,
-            y_fill: false,
-            x_align: St.Align.START
-        });
+        this.add_child(this._entry);
 
         this._entry.grab_key_focus();
 
-        this._message = new St.Label({ opacity: 0,
-                                       styleClass: 'login-dialog-message' });
+        this._message = new St.Label({
+            opacity: 0,
+            styleClass: 'login-dialog-message',
+            x_expand: false,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
+        });
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
+        this.add_child(this._message);
 
-        this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
-                                             vertical: false });
-        this.add(this._buttonBox, {
-            expand: true,
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.END
+        this._buttonBox = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: false,
+            y_align: Clutter.ActorAlign.END,
         });
+        this.add_child(this._buttonBox);
 
-        this._defaultButtonWell = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        this._defaultButtonWellActor = null;
+        this._defaultButtonWell = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
 
         this._initButtons();
 
@@ -152,38 +157,32 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _initButtons() {
-        this.cancelButton = new St.Button({ style_class: 'modal-dialog-button button',
-                                            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                            reactive: true,
-                                            can_focus: true,
-                                            label: _("Cancel") });
+        this.cancelButton = new St.Button({
+            style_class: 'modal-dialog-button button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            label: _("Cancel"),
+            x_expand: true,
+        });
+        this.cancelButton.set_x_align(Clutter.ActorAlign.START);
+        this.cancelButton.set_y_align(Clutter.ActorAlign.END);
         this.cancelButton.connect('clicked', () => this.cancel());
-        this._buttonBox.add(this.cancelButton,
-                            { expand: false,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.START,
-                              y_align: St.Align.END });
+        this._buttonBox.add_child(this.cancelButton);
 
-        this._buttonBox.add(this._defaultButtonWell,
-                            { expand: true,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.END,
-                              y_align: St.Align.MIDDLE });
-        this.nextButton = new St.Button({ style_class: 'modal-dialog-button button',
-                                          button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                          reactive: true,
-                                          can_focus: true,
-                                          label: _("Next") });
+        this._buttonBox.add_child(this._defaultButtonWell);
+        this.nextButton = new St.Button({
+            style_class: 'modal-dialog-button button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            label: _("Next"),
+        });
+        this.nextButton.set_x_align(Clutter.ActorAlign.END);
+        this.nextButton.set_y_align(Clutter.ActorAlign.END);
         this.nextButton.connect('clicked', () => this.emit('next'));
         this.nextButton.add_style_pseudo_class('default');
-        this._buttonBox.add(this.nextButton,
-                            { expand: false,
-                              x_fill: false,
-                              y_fill: false,
-                              x_align: St.Align.END,
-                              y_align: St.Align.END });
+        this._buttonBox.add_child(this.nextButton);
 
         this._updateNextButtonSensitivity(this._entry.text.length > 0);
 

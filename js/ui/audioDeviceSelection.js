@@ -43,8 +43,11 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
         this.contentLayout.style_class = 'audio-selection-content';
         this.contentLayout.add(title);
 
-        this._selectionBox = new St.BoxLayout({ style_class: 'audio-selection-box' });
-        this.contentLayout.add(this._selectionBox, { expand: true });
+        this._selectionBox = new St.BoxLayout({
+            style_class: 'audio-selection-box',
+            x_expand: true,
+        });
+        this.contentLayout.add_child(this._selectionBox);
 
         if (Main.sessionMode.allowSettings)
             this.addButton({ action: this._openSettings.bind(this),

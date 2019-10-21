@@ -291,9 +291,10 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
         this._syncVisibility();
 
         this._separator = new St.Widget({ style_class: 'popup-separator-menu-item',
+                                          x_expand: true,
                                           y_expand: true,
                                           y_align: Clutter.ActorAlign.CENTER });
-        this.add(this._separator, { expand: true });
+        this.add_child(this._separator);
     }
 
     _syncVisibility() {
@@ -338,8 +339,12 @@ var PopupSwitchMenuItem = GObject.registerClass({
 
         this.add_child(this.label);
 
-        this._statusBin = new St.Bin({ x_align: St.Align.END });
-        this.add(this._statusBin, { expand: true, x_align: St.Align.END });
+        this._statusBin = new St.Bin({
+            x_align: St.Align.END,
+            x_expand: true,
+        });
+        this._statusBin.set_x_align(Clutter.ActorAlign.END);
+        this.add_child(this._statusBin);
 
         this._statusLabel = new St.Label({
             text: '',
@@ -1132,8 +1137,11 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         this.add_child(this.label);
         this.label_actor = this.label;
 
-        let expander = new St.Bin({ style_class: 'popup-menu-item-expander' });
-        this.add(expander, { expand: true });
+        let expander = new St.Bin({
+            style_class: 'popup-menu-item-expander',
+            x_expand: true,
+        });
+        this.add_child(expander);
 
         this._triangle = arrowIcon(St.Side.RIGHT);
         this._triangle.pivot_point = new Graphene.Point({ x: 0.5, y: 0.6 });

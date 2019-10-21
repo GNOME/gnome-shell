@@ -740,12 +740,13 @@ class RestartMessage extends ModalDialog.ModalDialog {
                       shouldFadeIn: false,
                       destroyOnClose: true });
 
-        let label = new St.Label({ text: message });
+        let label = new St.Label({
+            text: message,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
 
-        this.contentLayout.add(label, { x_fill: false,
-                                        y_fill: false,
-                                        x_align: St.Align.MIDDLE,
-                                        y_align: St.Align.MIDDLE });
+        this.contentLayout.add_child(label);
         this.buttonLayout.hide();
     }
 });

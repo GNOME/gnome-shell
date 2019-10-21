@@ -35,8 +35,8 @@ var CandidateArea = GObject.registerClass({
                                          track_hover: true });
             box._indexLabel = new St.Label({ style_class: 'candidate-index' });
             box._candidateLabel = new St.Label({ style_class: 'candidate-label' });
-            box.add(box._indexLabel, { y_fill: false });
-            box.add(box._candidateLabel, { y_fill: false });
+            box.add_child(box._indexLabel);
+            box.add_child(box._candidateLabel);
             this._candidateBoxes.push(box);
             this.add(box);
 
@@ -49,13 +49,19 @@ var CandidateArea = GObject.registerClass({
 
         this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
 
-        this._previousButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-previous button' });
+        this._previousButton = new St.Button({
+            style_class: 'candidate-page-button candidate-page-button-previous button',
+            x_expand: true,
+        });
         this._previousButton.child = new St.Icon({ style_class: 'candidate-page-button-icon' });
-        this._buttonBox.add(this._previousButton, { expand: true });
+        this._buttonBox.add_child(this._previousButton);
 
-        this._nextButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-next button' });
+        this._nextButton = new St.Button({
+            style_class: 'candidate-page-button candidate-page-button-next button',
+            x_expand: true,
+        });
         this._nextButton.child = new St.Icon({ style_class: 'candidate-page-button-icon' });
-        this._buttonBox.add(this._nextButton, { expand: true });
+        this._buttonBox.add_child(this._nextButton);
 
         this.add(this._buttonBox);
 

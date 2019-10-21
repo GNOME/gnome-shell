@@ -56,11 +56,13 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         let title = _("Do you want to keep these display settings?");
         let body = this._formatCountDown();
 
-        this._content = new Dialog.MessageDialogContent({ icon, title, body });
+        this._content = new Dialog.MessageDialogContent({
+            icon, title, body,
+            x_expand: true,
+            y_expand: true,
+        });
 
-        this.contentLayout.add(this._content,
-                               { x_fill: true,
-                                 y_fill: true });
+        this.contentLayout.add_child(this._content);
 
         /* Translators: this and the following message should be limited in length,
            to avoid ellipsizing the labels.

@@ -91,7 +91,8 @@ class WorldClocksSection extends St.Button {
         super._init({
             style_class: 'world-clocks-button',
             x_fill: true,
-            can_focus: true
+            can_focus: true,
+            x_expand: true,
         });
         this._clock = new GnomeDesktop.WallClock();
         this._clockNotifyId = 0;
@@ -253,7 +254,8 @@ class WeatherSection extends St.Button {
         super._init({
             style_class: 'weather-button',
             x_fill: true,
-            can_focus: true
+            can_focus: true,
+            x_expand: true,
         });
 
         this._weatherClient = new Weather.WeatherClient();
@@ -565,7 +567,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         // Fill up the first column
         this._messageList = new Calendar.CalendarMessageList();
-        hbox.add(this._messageList, { expand: true, y_fill: false, y_align: St.Align.START });
+        hbox.add_child(this._messageList);
 
         // Fill up the second column
         let boxLayout = new CalendarColumnLayout(this._calendar);
@@ -590,10 +592,10 @@ class DateMenuButton extends PanelMenu.Button {
         this._displaysSection.add_actor(displaysBox);
 
         this._clocksItem = new WorldClocksSection();
-        displaysBox.add(this._clocksItem, { x_fill: true });
+        displaysBox.add_child(this._clocksItem);
 
         this._weatherItem = new WeatherSection();
-        displaysBox.add(this._weatherItem, { x_fill: true });
+        displaysBox.add_child(this._weatherItem);
 
         // Done with hbox for calendar and event list
 
