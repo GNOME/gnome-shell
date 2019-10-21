@@ -25,7 +25,7 @@ function commit_message_has_url() {
 
 for commit in $commits; do
   if ! commit_message_has_url $commit; then
-    echo "Missing merge request or issue URL on commit $(echo $commit | cut -c -8)"
+    echo "Commit $(echo $commit | cut -c -8) needs a merge request or issue URL"
     exit 1
   fi
 done
