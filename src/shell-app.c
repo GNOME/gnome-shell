@@ -1289,8 +1289,7 @@ shell_app_launch (ShellApp     *app,
 
   global = shell_global_get ();
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
-  if (discrete_gpu)
-    g_app_launch_context_setenv (context, "DRI_PRIME", "1");
+  g_app_launch_context_setenv (context, "DRI_PRIME", discrete_gpu ? "1" : "0");
 
   /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
    * codepath. The shell's open file descriptors should be marked CLOEXEC
