@@ -2513,12 +2513,15 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 this._appendSeparator();
             }
 
+            let wantsDiscreteGpu = appInfo.get_boolean("PreferRunOnDiscreteGPU") ||
+                appInfo.get_boolean("X-KDE-RunOnDiscreteGpu");
             if (discreteGpuAvailable &&
+                !wantsDiscreteGpu &&
                 this._source.app.state == Shell.AppState.STOPPED) {
                 this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                 this._onDiscreteGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.launch(0, -1, true);
+                    this._source.app.launch(0, -1, Shell.AppGpuSelection.DISCRETE);
                     this.emit('activate-window', null);
                 });
             }
