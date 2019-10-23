@@ -18,6 +18,12 @@ typedef enum {
   SHELL_APP_STATE_RUNNING
 } ShellAppState;
 
+typedef enum {
+  SHELL_APP_GPU_SELECTION_AUTO       = -1,
+  SHELL_APP_GPU_SELECTION_INTEGRATED = 0,
+  SHELL_APP_GPU_SELECTION_DISCRETE   = 1
+} ShellAppGpuSelection;
+
 const char *shell_app_get_id (ShellApp *app);
 
 GDesktopAppInfo *shell_app_get_app_info (ShellApp *app);
@@ -51,11 +57,11 @@ GSList *shell_app_get_pids (ShellApp *app);
 
 gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
 
-gboolean shell_app_launch (ShellApp     *app,
-                           guint         timestamp,
-                           int           workspace,
-                           gboolean      discrete_gpu,
-                           GError      **error);
+gboolean shell_app_launch (ShellApp               *app,
+                           guint                  timestamp,
+                           int                    workspace,
+                           ShellAppGpuSelection   discrete_gpu,
+                           GError               **error);
 
 void shell_app_launch_action (ShellApp        *app,
                               const char      *action_name,
