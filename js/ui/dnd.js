@@ -573,11 +573,15 @@ var _Draggable = class _Draggable {
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
                 let [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
-                if (target._delegate.acceptDrop(this.actor._delegate,
-                                                this._dragActor,
-                                                targX,
-                                                targY,
-                                                event.get_time())) {
+                let accepted = false;
+                try {
+                    accepted = target._delegate.acceptDrop(this.actor._delegate,
+                        this._dragActor, targX, targY, event.get_time());
+                } catch (e) {
+                    // On error, skip this target
+                    logError(e, "Skipping drag target");
+                }
+                if (accepted) {
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
                     if (this._dragActor && this._dragActor.get_parent() == Main.uiGroup) {
