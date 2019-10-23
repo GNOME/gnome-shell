@@ -179,7 +179,7 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
   pspec = g_param_spec_boolean ("expand", "Expand",
                                 "Allocate the child extra space",
                                 FALSE,
-                                ST_PARAM_READWRITE);
+                                ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_EXPAND, pspec);
 
   pspec = g_param_spec_boolean ("x-fill", "x-fill",
@@ -187,7 +187,7 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                                 "when the container is allocating spare space "
                                 "on the horizontal axis",
                                 TRUE,
-                                ST_PARAM_READWRITE);
+                                ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_X_FILL, pspec);
 
   pspec = g_param_spec_boolean ("y-fill", "y-fill",
@@ -195,7 +195,7 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                                 "when the container is allocating spare space "
                                 "on the vertical axis",
                                 TRUE,
-                                ST_PARAM_READWRITE);
+                                ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_Y_FILL, pspec);
 
   pspec = g_param_spec_enum ("x-align",
@@ -203,7 +203,7 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                              "X alignment of the widget within the cell",
                              ST_TYPE_ALIGN,
                              ST_ALIGN_MIDDLE,
-                             ST_PARAM_READWRITE);
+                             ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_X_ALIGN, pspec);
 
   pspec = g_param_spec_enum ("y-align",
@@ -211,7 +211,7 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                              "Y alignment of the widget within the cell",
                              ST_TYPE_ALIGN,
                              ST_ALIGN_MIDDLE,
-                             ST_PARAM_READWRITE);
+                             ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_Y_ALIGN, pspec);
 }
 
