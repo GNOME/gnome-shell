@@ -509,7 +509,7 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_STOPPED:
         {
           GError *error = NULL;
-          if (!shell_app_launch (app, timestamp, workspace, FALSE, &error))
+          if (!shell_app_launch (app, timestamp, workspace, -1, &error))
             {
               char *msg;
               msg = g_strdup_printf (_("Failed to launch “%s”"), shell_app_get_name (app));
@@ -584,7 +584,7 @@ shell_app_open_new_window (ShellApp      *app,
    * instance (Firefox).  There are a few less-sensical cases such
    * as say Pidgin.
    */
-  shell_app_launch (app, 0, workspace, FALSE, NULL);
+  shell_app_launch (app, 0, workspace, -1, NULL);
 }
 
 /**
@@ -1255,18 +1255,37 @@ wait_pid (GDesktopAppInfo *appinfo,
   g_child_watch_add (pid, (GChildWatchFunc) g_spawn_close_pid, NULL);
 }
 
+static gboolean
+get_with_discrete_gpu (ShellApp *app,
+                       int       discrete_gpu)
+{
+  switch (discrete_gpu)
+    {
+      case 0:
+        return FALSE;
+      case 1:
+        return TRUE;
+      case -1:
+        return g_desktop_app_info_get_boolean (app->info,
+                                               "X-KDE-RunOnDiscreteGpu");
+      default:
+        g_assert_not_reached();
+    }
+}
+
 /**
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
  * @workspace: Start on this workspace, or -1 for default
- * @discrete_gpu: Whether to start on the discrete GPU
+ * @discrete_gpu: 1 to start the application on the discrete GPU, 0 to
+ * start it on the integrated GPU, -1 to respect the [X-KDE-RunOnDiscreteGpu property](FIXME)
  * @error: A #GError
  */
 gboolean
 shell_app_launch (ShellApp     *app,
                   guint         timestamp,
                   int           workspace,
-                  gboolean      discrete_gpu,
+                  int           discrete_gpu,
                   GError      **error)
 {
   ShellGlobal *global;
@@ -1289,7 +1308,10 @@ shell_app_launch (ShellApp     *app,
 
   global = shell_global_get ();
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
-  g_app_launch_context_setenv (context, "DRI_PRIME", discrete_gpu ? "1" : "0");
+  /* FIXME: this should probably check whether we're on a dual-GPU system */
+  g_app_launch_context_setenv (context,
+                               "DRI_PRIME",
+                               get_with_discrete_gpu (app, discrete_gpu) ? "1" : "0");
 
   /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
    * codepath. The shell's open file descriptors should be marked CLOEXEC

@@ -54,7 +54,7 @@ gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
 gboolean shell_app_launch (ShellApp     *app,
                            guint         timestamp,
                            int           workspace,
-                           gboolean      discrete_gpu,
+                           int           discrete_gpu,
                            GError      **error);
 
 void shell_app_launch_action (ShellApp        *app,
