@@ -25,6 +25,7 @@
 #include "st-texture-cache.h"
 #include "st-theme.h"
 #include "st-theme-context.h"
+#include "st-theme-node-private.h"
 
 struct _StThemeContext {
   GObject parent;
@@ -35,6 +36,8 @@ struct _StThemeContext {
 
   /* set of StThemeNode */
   GHashTable *nodes;
+
+  guint stylesheets_changed_id;
 
   int scale_factor;
 };
@@ -82,6 +85,13 @@ st_theme_context_finalize (GObject *object)
   g_signal_handlers_disconnect_by_func (clutter_get_default_backend (),
                                         (gpointer) st_theme_context_changed,
                                         context);
+
+  if (context->stylesheets_changed_id)
+    {
+      g_signal_handler_disconnect (context->theme,
+                                   context->stylesheets_changed_id);
+      context->stylesheets_changed_id = 0;
+    }
 
   if (context->nodes)
     g_hash_table_unref (context->nodes);
@@ -254,6 +264,19 @@ on_icon_theme_changed (StTextureCache *cache,
   g_source_set_name_by_id (id, "[gnome-shell] changed_idle");
 }
 
+static void
+on_custom_stylesheets_changed (StTheme        *theme,
+                               StThemeContext *context)
+{
+  GHashTableIter iter;
+  StThemeNode *node;
+
+  g_hash_table_iter_init (&iter, context->nodes);
+
+  while (g_hash_table_iter_next (&iter, (gpointer *) &node, NULL))
+    _st_theme_node_reset_for_stylesheet_change (node);
+}
+
 /**
  * st_theme_context_get_for_stage:
  * @stage: a #ClutterStage
@@ -298,13 +321,22 @@ st_theme_context_set_theme (StThemeContext          *context,
 
   if (context->theme != theme)
     {
-      if (context->theme)
-        g_object_unref (context->theme);
+      if (context->stylesheets_changed_id)
+        {
+          g_signal_handler_disconnect (context->theme,
+                                       context->stylesheets_changed_id);
+          context->stylesheets_changed_id = 0;
+        }
 
-      context->theme = theme;
+      g_set_object (&context->theme, theme);
 
       if (context->theme)
-        g_object_ref (context->theme);
+        {
+          context->stylesheets_changed_id =
+            g_signal_connect (context->theme, "custom-stylesheets-changed",
+                              G_CALLBACK (on_custom_stylesheets_changed),
+                              context);
+        }
 
       st_theme_context_changed (context);
     }
