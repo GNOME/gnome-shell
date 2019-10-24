@@ -1309,7 +1309,11 @@ shell_app_launch (ShellApp              *app,
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
   /* FIXME: this should probably check whether we're on a dual-GPU system */
   if (get_with_discrete_gpu (app, discrete_gpu))
-    g_app_launch_context_setenv (context, "DRI_PRIME", "1");
+    {
+      g_app_launch_context_setenv (context, "DRI_PRIME", "1");
+      g_app_launch_context_setenv (context, "__NV_PRIME_RENDER_OFFLOAD", "1");
+      g_app_launch_context_setenv (context, "__GLX_VENDOR_LIBRARY_NAME", "nvidia");
+    }
 
   /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
    * codepath. The shell's open file descriptors should be marked CLOEXEC
