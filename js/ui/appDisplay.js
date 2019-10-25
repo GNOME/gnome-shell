@@ -95,9 +95,7 @@ function _findBestFolderName(apps) {
     let appInfos = apps.map(app => app.get_app_info());
 
     let categoryCounter = {};
-    let commonCategories = [];
-
-    appInfos.reduce((categories, appInfo) => {
+    const commonCategories = appInfos.reduce((categories, appInfo) => {
         const appCategories = appInfo.get_categories();
         if (!appCategories)
             return categories;
@@ -115,7 +113,7 @@ function _findBestFolderName(apps) {
             }
         }
         return categories;
-    }, commonCategories);
+    }, []);
 
     for (let category of commonCategories) {
         let keyfile = new GLib.KeyFile();
