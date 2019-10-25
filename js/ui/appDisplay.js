@@ -97,7 +97,10 @@ function _findBestFolderName(apps) {
     let commonCategories = [];
 
     appInfos.reduce((categories, appInfo) => {
-        for (let category of appInfo.get_categories().split(';')) {
+        const appCategories = appInfo.get_categories();
+        if (!appCategories)
+            return categories;
+        for (let category of appCategories.split(';')) {
             if (!(category in categoryCounter))
                 categoryCounter[category] = 0;
 
