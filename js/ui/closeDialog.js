@@ -130,7 +130,7 @@ var CloseDialog = GObject.registerClass({
 
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ALIVE_TIMEOUT,
             () => {
-                this._window.check_alive(global.display.get_current_time_roundtrip());
+                this._window.check_alive();
                 return GLib.SOURCE_CONTINUE;
             });
 
