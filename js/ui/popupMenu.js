@@ -120,7 +120,7 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     vfunc_button_press_event(buttonEvent) {
         if (!this._activatable)
-            return super.vfunc_button_press_event(buttonEvent);
+            return Clutter.EVENT_PROPAGATE;
 
         // This is the CSS active state
         this.add_style_pseudo_class('active');
@@ -129,7 +129,7 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     vfunc_button_release_event(buttonEvent) {
         if (!this._activatable)
-            return super.vfunc_button_release_event(buttonEvent);
+            return Clutter.EVENT_PROPAGATE;
 
         this.remove_style_pseudo_class('active');
         this.activate(Clutter.get_current_event());
@@ -138,7 +138,7 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     vfunc_touch_event(touchEvent) {
         if (!this._activatable)
-            return super.vfunc_touch_event(touchEvent);
+            return Clutter.EVENT_PROPAGATE;
 
         if (touchEvent.type == Clutter.EventType.TOUCH_END) {
             this.remove_style_pseudo_class('active');
