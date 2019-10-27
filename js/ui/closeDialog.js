@@ -205,7 +205,12 @@ var CloseDialog = GObject.registerClass({
 
     vfunc_focus() {
         let stageFocus = global.stage.key_focus;
-        if (this._dialog && (!stageFocus || !this._dialog.contains(stageFocus)))
-            this._dialog.initialKeyFocus.grab_key_focus();
+        if (this._dialog && (!stageFocus || !this._dialog.contains(stageFocus))) {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this._dialog.initialKeyFocus.grab_key_focus();
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._dialog.initialKeyFocus.grab_key_focus');
+        }
     }
 });
