@@ -208,7 +208,11 @@ export const CloseDialog = GObject.registerClass({
     }
 
     vfunc_focus() {
-        if (this._dialog)
-            this._dialog.grab_key_focus();
+        if (!this._dialog)
+            return;
+
+        const keyFocus = global.stage.key_focus;
+        if (!keyFocus || !this._dialog.contains(keyFocus))
+            this._dialog.initialKeyFocus.grab_key_focus();
     }
 });
