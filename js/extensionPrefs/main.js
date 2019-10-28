@@ -23,9 +23,8 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
-var Application = GObject.registerClass({
-    GTypeName: 'ExtensionPrefs_Application'
-}, class Application extends Gtk.Application {
+var Application = GObject.registerClass(
+class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-shell-extension-prefs');
         super._init({

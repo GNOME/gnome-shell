@@ -1451,7 +1451,6 @@ class FolderView extends BaseAppView {
 });
 
 var FolderIcon = GObject.registerClass({
-    GTypeName: 'AppDisplay_FolderIcon',
     Signals: {
         'apps-changed': {},
         'name-changed': {},
@@ -1875,7 +1874,6 @@ var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
 Signals.addSignalMethods(RenameFolderMenu.prototype);
 
 var AppFolderPopup = GObject.registerClass({
-    GTypeName: 'AppDisplay_AppFolderPopup',
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     }
@@ -2047,7 +2045,6 @@ var AppFolderPopup = GObject.registerClass({
 });
 
 var AppIcon = GObject.registerClass({
-    GTypeName: 'AppDisplay_AppIcon',
     Signals: {
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},

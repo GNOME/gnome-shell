@@ -15,9 +15,8 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Color';
 const ColorInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Color');
 const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'NightLight_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 
