@@ -170,9 +170,13 @@ class AppMenu extends PopupMenu.PopupMenu {
         let windows = this._app.get_windows();
         windows.forEach(window => {
             let title = window.title || this._app.get_name();
-            this._windowSection.addAction(title, event => {
+            let item = this._windowSection.addAction(title, event => {
                 Main.activateWindow(window, event.get_time());
             });
+            let id = window.connect('notify::title', () => {
+                item.label.text = window.title || this._app.get_name();
+            });
+            item.connect('destroy', () => window.disconnect(id));
         });
     }
 }
