@@ -116,9 +116,8 @@ class AltSwitcher extends St.Bin {
     }
 });
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'System_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

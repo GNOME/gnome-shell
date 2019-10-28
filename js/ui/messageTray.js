@@ -134,7 +134,6 @@ var FocusGrabber = class FocusGrabber {
 //
 // A notification without a policy object will inherit the default one.
 var NotificationPolicy = GObject.registerClass({
-    GTypeName: 'MessageTray_NotificationPolicy',
     Properties: {
         'enable': GObject.ParamSpec.boolean(
             'enable', 'enable', 'enable',
@@ -192,7 +191,6 @@ var NotificationPolicy = GObject.registerClass({
 });
 
 var NotificationGenericPolicy = GObject.registerClass({
-    GTypeName: 'MessageTray_NotificationGenericPolicy'
 }, class NotificationGenericPolicy extends NotificationPolicy {
     _init() {
         super._init();
@@ -223,7 +221,6 @@ var NotificationGenericPolicy = GObject.registerClass({
 });
 
 var NotificationApplicationPolicy = GObject.registerClass({
-    GTypeName: 'MessageTray_NotificationApplicationPolicy'
 }, class NotificationApplicationPolicy extends NotificationPolicy {
     _init(id) {
         super._init();
@@ -350,7 +347,6 @@ var NotificationApplicationPolicy = GObject.registerClass({
 //
 // [1] https://developer.gnome.org/notification-spec/#markup
 var Notification = GObject.registerClass({
-    GTypeName: 'MessageTray_Notification',
     Properties: {
         'acknowledged': GObject.ParamSpec.boolean(
             'acknowledged', 'acknowledged', 'acknowledged',
@@ -733,7 +729,6 @@ class SourceActorWithLabel extends SourceActor {
 });
 
 var Source = GObject.registerClass({
-    GTypeName: 'MessageTray_Source',
     Properties: {
         'count': GObject.ParamSpec.int(
             'count', 'count', 'count',

@@ -295,7 +295,6 @@ var LabelExpanderLayout = GObject.registerClass({
 
 
 var Message = GObject.registerClass({
-    GTypeName: 'MessageList_Message',
     Signals: {
         'close': {},
         'expanded': {},

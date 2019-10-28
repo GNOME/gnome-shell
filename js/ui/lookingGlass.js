@@ -274,9 +274,8 @@ class ObjLink extends St.Button {
     }
 });
 
-var Result = GObject.registerClass({
-    GTypeName: 'LookingClass_Result'
-}, class Result extends St.BoxLayout {
+var Result = GObject.registerClass(
+class Result extends St.BoxLayout {
     _init(lookingGlass, command, o, index) {
         super._init({ vertical: true });
 
@@ -299,7 +298,6 @@ var Result = GObject.registerClass({
 });
 
 var WindowList = GObject.registerClass({
-    GTypeName: 'LookingClass_WindowList'
 }, class WindowList extends St.BoxLayout {
     _init(lookingGlass) {
         super._init({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
@@ -632,7 +630,6 @@ var Inspector = GObject.registerClass({
 });
 
 var Extensions = GObject.registerClass({
-    GTypeName: 'LookingClass_Extensions'
 }, class Extensions extends St.BoxLayout {
     _init(lookingGlass) {
         super._init({ vertical: true, name: 'lookingGlassExtensions' });
