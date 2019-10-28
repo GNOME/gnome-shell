@@ -39,7 +39,6 @@ const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
 var UserListItem = GObject.registerClass({
-    GTypeName: 'LoginDialog_UserListItem',
     Signals: { 'activate': {} }
 }, class UserListItem extends St.Button {
     _init(user) {
@@ -155,7 +154,6 @@ var UserListItem = GObject.registerClass({
 });
 
 var UserList = GObject.registerClass({
-    GTypeName: 'LoginDialog_UserList',
     Signals: {
         'activate': { param_types: [UserListItem.$gtype] },
         'item-added': { param_types: [UserListItem.$gtype] },
@@ -303,7 +301,6 @@ var UserList = GObject.registerClass({
 });
 
 var SessionMenuButton = GObject.registerClass({
-    GTypeName: 'LoginDialog_SessionMenuButton',
     Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } }
 }, class SessionMenuButton extends St.Bin {
     _init() {

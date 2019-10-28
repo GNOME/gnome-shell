@@ -1591,9 +1591,8 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var NMApplet = GObject.registerClass({
-    GTypeName: 'Network_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var NMApplet = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

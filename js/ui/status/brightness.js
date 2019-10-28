@@ -15,9 +15,8 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
 const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'Brightness_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,

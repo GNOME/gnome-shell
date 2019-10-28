@@ -6,9 +6,8 @@ const GObject = imports.gi.GObject;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'Screencast_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

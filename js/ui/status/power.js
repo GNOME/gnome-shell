@@ -17,9 +17,8 @@ const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface)
 
 const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'Power_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

@@ -14,9 +14,8 @@ var AVATAR_ICON_SIZE = 64;
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-var Avatar = GObject.registerClass({
-    GTypeName: 'UserWidget_Avatar'
-}, class Avatar extends St.Bin {
+var Avatar = GObject.registerClass(
+class Avatar extends St.Bin {
     _init(user, params) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         params = Params.parse(params, { reactive: false,

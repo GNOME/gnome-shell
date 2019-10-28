@@ -6,9 +6,8 @@ const { GObject, Meta } = imports.gi;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-var RemoteAccessApplet = GObject.registerClass({
-    GTypeName: 'RemoteAccess_Indicator'
-}, class RemoteAccessApplet extends PanelMenu.SystemIndicator {
+var RemoteAccessApplet = GObject.registerClass(
+class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

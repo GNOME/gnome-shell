@@ -17,9 +17,8 @@ const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'Bluetooth_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

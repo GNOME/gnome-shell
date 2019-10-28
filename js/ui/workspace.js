@@ -94,7 +94,6 @@ class WindowCloneLayout extends Clutter.LayoutManager {
 });
 
 var WindowClone = GObject.registerClass({
-    GTypeName: 'Workspace_WindowClone',
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},

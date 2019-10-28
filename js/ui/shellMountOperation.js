@@ -44,7 +44,6 @@ function _setLabelsForMessage(content, message) {
 /* -------------------------------------------------------- */
 
 var ListItem = GObject.registerClass({
-    GTypeName: 'ShellMountOperation_ListItem',
     Signals: { 'activate': {} }
 }, class ListItem extends St.Button {
     _init(app) {
