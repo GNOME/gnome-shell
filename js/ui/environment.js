@@ -10,7 +10,7 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
-const { Clutter, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 
 // We can't import shell JS modules yet, because they may have
@@ -232,6 +232,8 @@ function init() {
     window.C_ = Gettext.pgettext;
     window.ngettext = Gettext.ngettext;
     window.N_ = s => s;
+
+    GObject.gtypeNameBasedOnJSPath = true;
 
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
