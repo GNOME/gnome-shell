@@ -44,12 +44,32 @@ typedef enum
   SHELL_SCREENSHOT_AREA,
 } ShellScreenshotMode;
 
+enum
+{
+  SCREENSHOT_TAKEN,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 
 static void
 shell_screenshot_class_init (ShellScreenshotClass *screenshot_class)
 {
-  (void) screenshot_class;
+  signals[SCREENSHOT_TAKEN] =
+    g_signal_new ("screenshot-taken",
+                  G_TYPE_FROM_CLASS(screenshot_class),
+                  G_SIGNAL_RUN_LAST,
+                  0 /* class_offset */,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE /* return_type */,
+                  4 /* n_params */,
+                  G_TYPE_INT /* x */,
+                  G_TYPE_INT /* y */,
+                  G_TYPE_INT /* width */,
+                  G_TYPE_INT /* height */);
 }
 
 static void
@@ -75,8 +95,6 @@ on_screenshot_written (GObject      *source,
   g_clear_pointer (&priv->filename, g_free);
   g_clear_pointer (&priv->filename_used, g_free);
   g_clear_pointer (&priv->datetime, g_date_time_unref);
-
-  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
 }
 
 /* called in an I/O thread */
@@ -254,13 +272,17 @@ do_grab_screenshot (ShellScreenshot *screenshot,
                                                          width, height,
                                                          target_scale);
     }
-
   priv->datetime = g_date_time_new_now_local ();
 
   for (i = 0; i < n_captures; i++)
     cairo_surface_destroy (captures[i].image);
 
   g_free (captures);
+
+  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
+
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0 /* detail */,
+                 x, y, width, height);
 }
 
 static gboolean
@@ -486,6 +508,9 @@ grab_window_screenshot (ClutterActor *stage,
       draw_cursor_image (priv->image, priv->screenshot_area);
     }
 
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0 /* detail */,
+                 rect.x, rect.y, rect.width, rect.height);
+
   g_signal_handlers_disconnect_by_func (stage, grab_window_screenshot, result);
   task = g_task_new (screenshot, NULL, on_screenshot_written, result);
   g_task_run_in_thread (task, write_screenshot_thread);
@@ -505,8 +530,6 @@ grab_pixel (ClutterActor *stage,
                       priv->screenshot_area.y,
                       1,
                       1);
-
-  meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
 
   g_signal_handlers_disconnect_by_func (stage, grab_pixel, result);
   g_task_return_boolean (result, TRUE);
