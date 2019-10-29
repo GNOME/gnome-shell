@@ -64,20 +64,35 @@ var ScreenshotService = class {
                y + height <= global.screen_height;
     }
 
-    _onScreenshotComplete(result, area, filenameUsed, flash, invocation) {
-        if (result) {
+    _playSound(name, title) {
+        global.display.get_sound_player().play_from_theme(name, title, null);
+    }
+
+    _prepareFlash(shooter, flash) {
+        return new Promise((resolve, reject_) => {
             if (flash) {
-                let flashspot = new Flashspot(area);
-                flashspot.fire(() => {
-                    this._removeShooterForSender(invocation.get_sender());
+                shooter.connect('screenshot-taken', (sender_, x, y, width, height) => {
+                    this._playSound('screen-capture', _('Screenshot taken'));
+                    let area = { x, y, width, height };
+                    let flashspot = new Flashspot(area);
+                    flashspot.fire(() => {
+                        resolve();
+                    });
                 });
             } else {
-                this._removeShooterForSender(invocation.get_sender());
+                resolve();
             }
-        }
+        });
+    }
 
-        let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
-        invocation.return_value(retval);
+    _onScreenshotComplete(result, filenameUsed, invocation, flashed) {
+        flashed.then(() => {
+            if (!result)
+                this._playSound('dialog-error', _('Unable to capture a screenshot'));
+            let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
+            invocation.return_value(retval);
+            this._removeShooterForSender(invocation.get_sender());
+        });
     }
 
     _scaleArea(x, y, width, height) {
@@ -110,13 +125,14 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_area (x, y, width, height, filename,
+        let flashed = this._prepareFlash(screenshot, flash);
+        screenshot.screenshot_area(x, y, width, height, filename,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area_, filenameUsed] =
                         screenshot.screenshot_area_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, filenameUsed, invocation, flashed);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -128,13 +144,14 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_window (includeFrame, includeCursor, filename,
+        let flashed = this._prepareFlash(screenshot, flash);
+        screenshot.screenshot_window(includeFrame, includeCursor, filename,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area_, filenameUsed] =
                         screenshot.screenshot_window_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, filenameUsed, invocation, flashed);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -146,13 +163,14 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
+        let flashed = this._prepareFlash(screenshot, flash);
         screenshot.screenshot(includeCursor, filename,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area_, filenameUsed] =
                         screenshot.screenshot_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, filenameUsed, invocation, flashed);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
