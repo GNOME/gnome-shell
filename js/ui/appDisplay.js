@@ -1499,10 +1499,7 @@ var FolderIcon = GObject.registerClass({
 
         this.view = new FolderView(this._folder, id, parentView);
 
-        this._itemDragBeginId = Main.overview.connect(
-            'item-drag-begin', this._onDragBegin.bind(this));
-        this._itemDragEndId = Main.overview.connect(
-            'item-drag-end', this._onDragEnd.bind(this));
+        this._iconIsHovering = false;
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -1512,9 +1509,6 @@ var FolderIcon = GObject.registerClass({
     }
 
     _onDestroy() {
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
-
         if (this._dragMonitor) {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
@@ -1552,27 +1546,30 @@ var FolderIcon = GObject.registerClass({
         return this.view.getAllItems().map(item => item.id);
     }
 
-    _onDragBegin() {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
-        };
-        DND.addDragMonitor(this._dragMonitor);
+    _setHoveringByDnd(hovering) {
+        if (this._iconIsHovering == hovering)
+            return;
+
+        this._iconIsHovering = hovering;
+
+        if (hovering) {
+            this._dragMonitor = {
+                dragMotion: this._onDragMotion.bind(this),
+            };
+            DND.addDragMonitor(this._dragMonitor);
+            this.add_style_pseudo_class('drop');
+        } else {
+            DND.removeDragMonitor(this._dragMonitor);
+            this.remove_style_pseudo_class('drop');
+        }
     }
 
     _onDragMotion(dragEvent) {
-        let target = dragEvent.targetActor;
-
-        if (!this.contains(target) || !this._canAccept(dragEvent.source))
-            this.remove_style_pseudo_class('drop');
-        else
-            this.add_style_pseudo_class('drop');
+        if (!this.contains(dragEvent.targetActor) ||
+            !this._canAccept(dragEvent.source))
+            this._setHoveringByDnd(false);
 
         return DND.DragMotionResult.CONTINUE;
-    }
-
-    _onDragEnd() {
-        this.remove_style_pseudo_class('drop');
-        DND.removeDragMonitor(this._dragMonitor);
     }
 
     _canAccept(source) {
@@ -1593,10 +1590,14 @@ var FolderIcon = GObject.registerClass({
         if (!this._canAccept(source))
             return DND.DragMotionResult.NO_DROP;
 
+        this._setHoveringByDnd(true);
+
         return DND.DragMotionResult.MOVE_DROP;
     }
 
     acceptDrop(source) {
+        this._setHoveringByDnd(false);
+
         if (!this._canAccept(source))
             return false;
 
@@ -2026,7 +2027,6 @@ var AppIcon = GObject.registerClass({
 
         this._delegate = this;
 
-        this._hasDndHover = false;
         this._folderPreviewId = 0;
 
         // Get the isDraggable property without passing it on to the BaseIcon:
@@ -2075,11 +2075,7 @@ var AppIcon = GObject.registerClass({
             });
         }
 
-        this._dragMonitor = null;
-        this._itemDragBeginId = Main.overview.connect(
-            'item-drag-begin', this._onDragBegin.bind(this));
-        this._itemDragEndId = Main.overview.connect(
-            'item-drag-end', this._onDragEnd.bind(this));
+        this._otherIconIsHovering = false;
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
@@ -2091,9 +2087,6 @@ var AppIcon = GObject.registerClass({
     }
 
     _onDestroy() {
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
-
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
@@ -2340,7 +2333,17 @@ var AppIcon = GObject.registerClass({
     }
 
     _setHoveringByDnd(hovering) {
+        if (this._otherIconIsHovering == hovering)
+            return;
+
+        this._otherIconIsHovering = hovering;
+
         if (hovering) {
+            this._dragMonitor = {
+                dragMotion: this._onDragMotion.bind(this),
+            };
+            DND.addDragMonitor(this._dragMonitor);
+
             if (this._folderPreviewId > 0)
                 return;
 
@@ -2352,6 +2355,8 @@ var AppIcon = GObject.registerClass({
                     return GLib.SOURCE_REMOVE;
                 });
         } else {
+            DND.removeDragMonitor(this._dragMonitor);
+
             if (this._folderPreviewId > 0) {
                 GLib.source_remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
@@ -2361,30 +2366,11 @@ var AppIcon = GObject.registerClass({
         }
     }
 
-    _onDragBegin() {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
-        };
-        DND.addDragMonitor(this._dragMonitor);
-    }
-
     _onDragMotion(dragEvent) {
-        let target = dragEvent.targetActor;
-        let isHovering = target == this || this.contains(target);
-        let canDrop = this._canAccept(dragEvent.source);
-        let hasDndHover = isHovering && canDrop;
-
-        if (this._hasDndHover != hasDndHover) {
-            this._setHoveringByDnd(hasDndHover);
-            this._hasDndHover = hasDndHover;
-        }
+        if (!this.contains(dragEvent.targetActor))
+            this._setHoveringByDnd(false);
 
         return DND.DragMotionResult.CONTINUE;
-    }
-
-    _onDragEnd() {
-        this.remove_style_pseudo_class('drop');
-        DND.removeDragMonitor(this._dragMonitor);
     }
 
     handleDragOver(source) {
@@ -2393,6 +2379,8 @@ var AppIcon = GObject.registerClass({
 
         if (!this._canAccept(source))
             return DND.DragMotionResult.CONTINUE;
+
+        this._setHoveringByDnd(true);
 
         return DND.DragMotionResult.MOVE_DROP;
     }
