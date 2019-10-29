@@ -210,7 +210,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 } else {
                     if (input.charAt(0) == '~')
                         input = input.slice(1);
-                    path = GLib.get_home_dir() + '/' + input;
+                    path = `${GLib.get_home_dir()}/${input}`;
                 }
 
                 if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
