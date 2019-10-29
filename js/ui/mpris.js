@@ -51,7 +51,8 @@ class MediaMessage extends MessageList.Message {
         this._update();
     }
 
-    drop() {
+    _onDestroy() {
+        super._onDestroy();
         this._player.disconnect(this._updateHandlerId);
         this._player.disconnect(this._closedHandlerId);
     }
