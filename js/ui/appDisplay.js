@@ -2375,7 +2375,7 @@ var AppIcon = GObject.registerClass({
         let view = _getViewFromIcon(source);
 
         return source != this &&
-               (source instanceof AppIcon) &&
+               (source instanceof this.constructor) &&
                (view instanceof AllView);
     }
 
