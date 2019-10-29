@@ -458,14 +458,9 @@ var _Draggable = class _Draggable {
         return true;
     }
 
-    _pickTargetActor() {
-        return this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                            this._dragX, this._dragY);
-    }
-
     _updateDragHover() {
         this._updateHoverId = 0;
-        let target = this._pickTargetActor();
+        let target = this._grabbedDevice.get_actor(this._touchSequence || null);
 
         let dragEvent = {
             x: this._dragX,
@@ -478,7 +473,7 @@ var _Draggable = class _Draggable {
         let targetActorDestroyHandlerId;
         let handleTargetActorDestroyClosure;
         handleTargetActorDestroyClosure = () => {
-            target = this._pickTargetActor();
+            target = this._grabbedDevice.get_actor(this._touchSequence || null);
             dragEvent.targetActor = target;
             targetActorDestroyHandlerId =
                 target.connect('destroy', handleTargetActorDestroyClosure);
@@ -492,7 +487,7 @@ var _Draggable = class _Draggable {
                 let result = motionFunc(dragEvent);
                 if (result != DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
-                    return GLib.SOURCE_REMOVE;
+                    return;
                 }
             }
         }
@@ -511,22 +506,12 @@ var _Draggable = class _Draggable {
                                                              0);
                 if (result != DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
-                    return GLib.SOURCE_REMOVE;
+                    return;
                 }
             }
             target = target.get_parent();
         }
         global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
-        return GLib.SOURCE_REMOVE;
-    }
-
-    _queueUpdateDragHover() {
-        if (this._updateHoverId)
-            return;
-
-        this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
-                                            this._updateDragHover.bind(this));
-        GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     }
 
     _updateDragPosition(event) {
@@ -536,14 +521,13 @@ var _Draggable = class _Draggable {
         this._dragActor.set_position(stageX + this._dragOffsetX,
                                      stageY + this._dragOffsetY);
 
-        this._queueUpdateDragHover();
+        this._updateDragHover();
         return true;
     }
 
     _dragActorDropped(event) {
         let [dropX, dropY] = event.get_coords();
-        let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                  dropX, dropY);
+        let target = this._grabbedDevice.get_actor(this._touchSequence || null);
 
         // We call observers only once per motion with the innermost
         // target actor. If necessary, the observer can walk the
