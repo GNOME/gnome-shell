@@ -288,7 +288,7 @@ class MediaSection extends MessageList.MessageListSection {
 
         if (newOwner && !oldOwner) {
             if (this._message)
-                this._removeMessage(this._message);
+                this.removeMessage(this._message);
             this._addPlayer(name);
         }
     }
