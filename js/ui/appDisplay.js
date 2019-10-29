@@ -66,7 +66,7 @@ function _getFolderName(folder) {
 
     if (folder.get_boolean('translate')) {
         let keyfile = new GLib.KeyFile();
-        let path = 'desktop-directories/' + name;
+        let path = `desktop-directories/${name}`;
 
         try {
             keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
@@ -469,7 +469,7 @@ var AllView = GObject.registerClass({
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            let path = this._folderSettings.path + 'folders/' + id + '/';
+            let path = `${this._folderSettings.path}folders/${id}/`;
             let icon = this._items[id];
             if (!icon) {
                 icon = new FolderIcon(id, path, this);

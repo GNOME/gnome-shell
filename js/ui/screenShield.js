@@ -186,7 +186,7 @@ var NotificationsBox = GObject.registerClass({
             }
 
             let label = new St.Label({ style_class: 'screen-shield-notification-count-text' });
-            label.clutter_text.set_markup('<b>' + n.title + '</b> ' + body);
+            label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
             textBox.add(label);
 
             visible = true;

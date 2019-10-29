@@ -137,7 +137,7 @@ var ShellMagnifier = class ShellMagnifier {
             }
             if (!found) {
                 // Got a ZoomRegion with no DBus proxy, make one.
-                let newPath =  ZOOM_SERVICE_PATH + '/zoomer' + _zoomRegionInstanceCount;
+                let newPath = `${ZOOM_SERVICE_PATH}/zoomer${_zoomRegionInstanceCount}`;
                 _zoomRegionInstanceCount++;
                 let zoomRegionProxy = new ShellMagnifierZoomRegion(newPath, aZoomRegion);
                 let proxyAndZoomer = {};
