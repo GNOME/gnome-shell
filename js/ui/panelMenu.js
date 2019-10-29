@@ -195,9 +195,8 @@ var Button = GObject.registerClass({
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-var SystemIndicator = GObject.registerClass({
-    GTypeName: 'PanelMenu_SystemIndicator',
-}, class SystemIndicator extends St.BoxLayout {
+var SystemIndicator = GObject.registerClass(
+class SystemIndicator extends St.BoxLayout {
     _init() {
         super._init({
             style_class: 'panel-status-indicators-box',

@@ -44,7 +44,6 @@ class PrimaryActorLayout extends Clutter.FixedLayout {
 });
 
 var WindowClone = GObject.registerClass({
-    GTypeName: 'WorkspaceThumbnail_WindowClone',
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},

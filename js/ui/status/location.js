@@ -42,9 +42,8 @@ const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
 var AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
 
-var Indicator = GObject.registerClass({
-    GTypeName: 'Location_Indicator'
-}, class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 

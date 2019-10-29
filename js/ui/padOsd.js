@@ -89,7 +89,6 @@ var PadChooser = GObject.registerClass({
 });
 
 var KeybindingEntry = GObject.registerClass({
-    GTypeName: 'PadOsd_KeybindingEntry',
     Signals: { 'keybinding-edited': {} }
 }, class KeybindingEntry extends St.Entry {
     _init() {
@@ -111,7 +110,6 @@ var KeybindingEntry = GObject.registerClass({
 });
 
 var ActionComboBox = GObject.registerClass({
-    GTypeName: 'PadOsd_ActionComboBox',
     Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } }
 }, class ActionComboBox extends St.Button {
     _init() {
@@ -194,7 +192,6 @@ var ActionComboBox = GObject.registerClass({
 });
 
 var ActionEditor = GObject.registerClass({
-    GTypeName: 'PadOsd_ActionEditor',
     Signals: { 'done': {} }
 }, class ActionEditor extends St.Widget {
     _init() {

@@ -219,7 +219,6 @@ var ScreenshotService = class {
 };
 
 var SelectArea = GObject.registerClass({
-    GTypeName: 'Screenshot_SelectArea',
     Signals: { 'finished': { param_types: [Meta.Rectangle.$gtype] } }
 }, class SelectArea extends St.Widget {
     _init() {
@@ -317,7 +316,6 @@ var SelectArea = GObject.registerClass({
 });
 
 var PickPixel = GObject.registerClass({
-    GTypeName: 'Screenshot_PickPixel',
     Signals: { 'finished': { param_types: [Graphene.Point.$gtype] } }
 }, class PickPixel extends St.Widget {
     _init() {
