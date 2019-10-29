@@ -44,9 +44,16 @@ class MediaMessage extends MessageList.Message {
                 this._player.next();
             });
 
-        this._player.connect('changed', this._update.bind(this));
-        this._player.connect('closed', this.close.bind(this));
+        this._updateHandlerId =
+            this._player.connect('changed', this._update.bind(this));
+        this._closedHandlerId =
+            this._player.connect('closed', this.close.bind(this));
         this._update();
+    }
+
+    drop() {
+        this._player.disconnect(this._updateHandlerId);
+        this._player.disconnect(this._closedHandlerId);
     }
 
     vfunc_clicked() {
@@ -217,7 +224,7 @@ var MprisPlayer = class MprisPlayer {
             if (visible)
                 this.emit('show');
             else
-                this._close();
+                this.emit('hide');
         }
     }
 };
@@ -249,11 +256,15 @@ class MediaSection extends MessageList.MessageListSection {
             () => {
                 this._players.delete(busName);
             });
-        player.connect('show',
-            () => {
-                let message = new MediaMessage(player);
-                this.addMessage(message, true);
-            });
+        player.connect('show', () => {
+            this._message = new MediaMessage(player);
+            this.addMessage(this._message, true);
+        });
+        player.connect('hide', () => {
+            this.removeMessage(this._message, true);
+            this._message.drop();
+            this._message = null;
+        })
         this._players.set(busName, player);
     }
 
@@ -274,7 +285,10 @@ class MediaSection extends MessageList.MessageListSection {
         if (!name.startsWith(MPRIS_PLAYER_PREFIX))
             return;
 
-        if (newOwner && !oldOwner)
+        if (newOwner && !oldOwner) {
+            if (this._message)
+                this._removeMessage(this._message);
             this._addPlayer(name);
+        }
     }
 });
