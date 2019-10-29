@@ -159,14 +159,14 @@ var Application = GObject.registerClass({
             // markdown for pasting in gitlab issues
             let lines = [
                 `The settings of extension ${row.uuid} had an error:`,
-                '```',
+                '```', // '`' (xgettext throws up on odd number of backticks)
                 `${exc}`,
-                '```',
+                '```', // '`'
                 '',
                 'Stack trace:',
-                '```',
+                '```', // '`'
                 exc.stack.replace(/\n$/, ''), // stack without trailing newline
-                '```',
+                '```', // '`'
                 ''
             ];
             clipboard.set_text(lines.join('\n'), -1);
