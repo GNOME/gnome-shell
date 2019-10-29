@@ -350,7 +350,9 @@ var PadDiagram = GObject.registerClass({
         return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
                 '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
                 'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
-                `width="${this._imageWidth}" height="${this._imageHeight}"> ` +
+                `width="${ // " (give xgettext the paired quotes it expects)
+                    this._imageWidth
+                }" height="${this._imageHeight}"> ` + // "
                 '<style type="text/css">');
     }
 
