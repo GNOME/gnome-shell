@@ -579,9 +579,9 @@ class ExtensionRow extends Gtk.ListBoxRow {
                 this._extension = ExtensionUtils.deserializeExtension(newState);
                 let state = (this._extension.state == ExtensionState.ENABLED);
 
-                GObject.signal_handler_block(this._switch, this._notifyActiveId);
+                this._switch.block_signal_handler(this._notifyActiveId);
                 this._switch.state = state;
-                GObject.signal_handler_unblock(this._switch, this._notifyActiveId);
+                this._switch.unblock_signal_handler(this._notifyActiveId);
 
                 this._switch.sensitive = this._canToggle();
             });

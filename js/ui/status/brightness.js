@@ -57,9 +57,9 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _changeSlider(value) {
-        GObject.signal_handler_block(this._slider, this._sliderChangedId);
+        this._slider.block_signal_handler(this._sliderChangedId);
         this._slider.value = value;
-        GObject.signal_handler_unblock(this._slider, this._sliderChangedId);
+        this._slider.unblock_signal_handler(this._sliderChangedId);
     }
 
     _sync() {
