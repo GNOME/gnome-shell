@@ -69,10 +69,11 @@ test:
     stage: test
     variables:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
+        NO_AT_BRIDGE: "1"
     before_script:
         - ninja -C mutter/build install
     script:
-        - xvfb-run meson test -C build --no-rebuild
+        - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     <<: *only_default
     artifacts:
         expire_in: 1 day
