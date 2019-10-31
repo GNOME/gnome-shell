@@ -1525,6 +1525,11 @@ var FolderIcon = GObject.registerClass({
         Main.overview.disconnect(this._itemDragBeginId);
         Main.overview.disconnect(this._itemDragEndId);
 
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
         this.view.destroy();
 
         if (this._spaceReadySignalId) {
@@ -1583,7 +1588,11 @@ var FolderIcon = GObject.registerClass({
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
         this._parentView.uninhibitEventBlocker();
-        DND.removeDragMonitor(this._dragMonitor);
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
     }
 
     _canAccept(source) {
@@ -2154,6 +2163,11 @@ var AppIcon = GObject.registerClass({
         Main.overview.disconnect(this._itemDragBeginId);
         Main.overview.disconnect(this._itemDragEndId);
 
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
@@ -2438,7 +2452,11 @@ var AppIcon = GObject.registerClass({
 
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
-        DND.removeDragMonitor(this._dragMonitor);
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
     }
 
     handleDragOver(source) {
