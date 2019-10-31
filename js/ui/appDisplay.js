@@ -171,33 +171,6 @@ var BaseAppView = GObject.registerClass({
     }
 
     _redisplay() {
-        let oldApps = this._allItems.slice();
-        let oldAppIds = oldApps.map(icon => icon.id);
-
-        let newApps = this._loadApps().sort(this._compareItems);
-        let newAppIds = newApps.map(icon => icon.id);
-
-        let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
-        let removedApps = oldApps.filter(icon => !newAppIds.includes(icon.id));
-
-        // Remove old app icons
-        removedApps.forEach(icon => {
-            let iconIndex = this._allItems.indexOf(icon);
-
-            this._allItems.splice(iconIndex, 1);
-            this._grid.removeItem(icon);
-            this._items.delete(icon.id);
-        });
-
-        // Add new app icons
-        addedApps.forEach(icon => {
-            let iconIndex = newApps.indexOf(icon);
-
-            this._allItems.splice(iconIndex, 0, icon);
-            this._grid.addItem(icon, iconIndex);
-            this._items.set(icon.id, icon);
-        });
-
         this.emit('view-loaded');
     }
 
@@ -405,8 +378,60 @@ var AllView = GObject.registerClass({
     }
 
     _redisplay() {
-        super._redisplay();
+        let appSys = Shell.AppSystem.get_default();
+
+        this._appInfoList = appSys.get_installed().filter(appInfo => {
+            try {
+                (appInfo.get_id()); // catch invalid file encodings
+            } catch (e) {
+                return false;
+            }
+            return appInfo.should_show();
+        });
+
+        let appIDs = this._appInfoList.map(app => app.get_id());
+        let folderIDs = this._folderSettings.get_strv('folder-children');
+
+        let allIDs = appIDs.concat(folderIDs);
+
+        let removedIDs = [...this._items.keys()].filter(id => !allIDs.includes(id));
+        let addedIDs = allIDs.filter(id => !this._items.has(id));
+
+        removedIDs.forEach(id => {
+            let icon = this._items.get(id);
+            let iconIndex = this._allItems.indexOf(icon);
+
+            let folderIconIndex = this.folderIcons.indexOf(icon);
+            if (folderIconIndex != -1)
+                this.folderIcons.splice(folderIconIndex, 1);
+
+            this._allItems.splice(iconIndex, 1);
+            icon.destroy();
+            this._items.delete(id);
+        });
+
+        addedIDs.forEach(id => {
+            let icon;
+
+            if (folderIDs.includes(id)) {
+                let path = this._folderSettings.path + 'folders/' + id + '/';
+                icon = new FolderIcon(id, path, this);
+                icon.connect('name-changed', this._itemNameChanged.bind(this));
+                icon.connect('apps-changed', this._refilterApps.bind(this));
+                this.folderIcons.push(icon);
+            } else {
+                let shellApp = appSys.lookup_app(id);
+                icon = new AppIcon(shellApp);
+            }
+
+            let index = Util.insertSorted(this._allItems, icon, this._compareItems);
+            this._grid.addItem(icon, index);
+            this._items.set(id, icon);
+        });
+
         this._refilterApps();
+
+        super._redisplay();
     }
 
     _itemNameChanged(item) {
@@ -445,55 +470,6 @@ var AllView = GObject.registerClass({
 
     getAppInfos() {
         return this._appInfoList;
-    }
-
-    _loadApps() {
-        let newApps = [];
-        this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
-            try {
-                (appInfo.get_id()); // catch invalid file encodings
-            } catch (e) {
-                return false;
-            }
-            return appInfo.should_show();
-        });
-
-        let apps = this._appInfoList.map(app => app.get_id());
-
-        let appSys = Shell.AppSystem.get_default();
-
-        this.folderIcons = [];
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.forEach(id => {
-            let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = this._items.get(id);
-            if (!icon) {
-                icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
-                icon.connect('apps-changed', this._redisplay.bind(this));
-            }
-            newApps.push(icon);
-            this.folderIcons.push(icon);
-        });
-
-        // Allow dragging of the icon only if the Dash would accept a drop to
-        // change favorite-apps. There are no other possible drop targets from
-        // the app picker, so there's no other need for a drag to start,
-        // at least on single-monitor setups.
-        // This also disables drag-to-launch on multi-monitor setups,
-        // but we hope that is not used much.
-        let favoritesWritable = global.settings.is_writable('favorite-apps');
-
-        apps.forEach(appId => {
-            let app = appSys.lookup_app(appId);
-
-            let icon = new AppIcon(app,
-                                   { isDraggable: favoritesWritable });
-            newApps.push(icon);
-        });
-
-        return newApps;
     }
 
     // Overridden from BaseAppView
@@ -924,13 +900,13 @@ class FrequentView extends BaseAppView {
         return 0;
     }
 
-    _loadApps() {
-        let apps = [];
+    _redisplay() {
         let mostUsed = this._usage.get_most_used();
+
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if (!hasUsefulData)
-            return [];
+            return;
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -940,15 +916,30 @@ class FrequentView extends BaseAppView {
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
-        for (let i = 0; i < mostUsed.length; i++) {
-            if (!mostUsed[i].get_app_info().should_show())
-                continue;
-            let appIcon = new AppIcon(mostUsed[i],
-                                      { isDraggable: favoritesWritable });
-            apps.push(appIcon);
-        }
+        let removedApps = [...this._items.values()].filter(appIcon => !mostUsed.includes(appIcon.app));
+        let addedApps = mostUsed.filter(shellApp => !this._items.has(shellApp.get_app_info().get_id()));
 
-        return apps;
+        removedApps.forEach(shellApp => {
+            let id = shellApp.get_app_info().get_id();
+            let icon = this._items.get(id);
+            let iconIndex = this._allItems.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 1);
+            icon.destroy();
+            this._items.delete(id);
+        });
+
+        addedApps.forEach(shellApp => {
+            let id = shellApp.get_app_info().get_id();
+            let icon = new AppIcon(shellApp, { isDraggable: favoritesWritable });
+            let iconIndex = mostUsed.indexOf(shellApp);
+
+            this._allItems.splice(iconIndex, 0, icon);
+            this._grid.addItem(icon, iconIndex);
+            this._items.set(id, icon);
+        });
+
+        super._redisplay();
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -1375,42 +1366,66 @@ class FolderView extends BaseAppView {
         this._offsetForEachSide = offset;
     }
 
-    _loadApps() {
-        let apps = [];
-        let excludedApps = this._folder.get_strv('excluded-apps');
+
+    _redisplay() {
         let appSys = Shell.AppSystem.get_default();
-        let addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
+
+        let excludedAppIDs = this._folder.get_strv('excluded-apps');
+        let folderAppIDs = this._folder.get_strv('apps');
+        let folderCategories = this._folder.get_strv('categories');
+
+        // If the folder is category-based, add the apps matching the folders
+        // category to the already defined apps.
+        if (folderCategories.length > 0) {
+            let appInfos = this._parentView.getAppInfos();
+            appInfos.forEach(appInfo => {
+                let appId = appInfo.get_id();
+                let appCategories = _getCategories(appInfo);
+                let hasCommonCategories = folderCategories.some(c => appCategories.includes(c));
+
+                if (hasCommonCategories && !folderAppIDs.includes(appId))
+                    folderAppIDs.push(appId);
+            });
+        }
+
+        let folderShouldIncludeApp = appId => {
+            if (excludedAppIDs.includes(appId))
+                return false;
 
             let app = appSys.lookup_app(appId);
             if (!app)
-                return;
+                return false;
 
             if (!app.get_app_info().should_show())
-                return;
+                return false;
 
-            if (apps.some(appIcon => appIcon.id == appId))
-                return;
-
-            let icon = new AppIcon(app);
-            apps.push(icon);
+            return true;
         };
 
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
+        folderAppIDs = folderAppIDs.filter(folderShouldIncludeApp);
 
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
+        let removedIDs = [...this._items.keys()].filter(id => !folderAppIDs.includes(id));
+        let addedIDs = folderAppIDs.filter(id => !this._items.has(id));
 
-            addAppId(appInfo.get_id());
+        removedIDs.forEach(id => {
+            let icon = this._items.get(id);
+            let iconIndex = this._allItems.indexOf(icon);
+
+            this._allItems.splice(iconIndex, 1);
+            icon.destroy();
+            this._items.delete(id);
         });
 
-        return apps;
+        addedIDs.forEach(id => {
+            let shellApp = appSys.lookup_app(id);
+            let icon = new AppIcon(shellApp);
+
+            let index = Util.insertSorted(this._allItems, icon, this._compareItems);
+            this._grid.addItem(icon, index);
+            this._items.set(id, icon);
+        });
+
+        super._redisplay();
     }
 
     removeApp(app) {
