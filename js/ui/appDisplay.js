@@ -156,7 +156,7 @@ var BaseAppView = GObject.registerClass({
         this._grid.x_expand = true;
 
         this._items = new Map();
-        this._allItems = [];
+        this._orderedItems = [];
     }
 
     _childFocused(_actor) {
@@ -168,7 +168,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     getAllItems() {
-        return this._allItems;
+        return this._orderedItems;
     }
 
     _compareItems(a, b) {
@@ -392,13 +392,13 @@ var AllView = GObject.registerClass({
 
         removedIDs.forEach(id => {
             let icon = this._items.get(id);
-            let iconIndex = this._allItems.indexOf(icon);
+            let iconIndex = this._orderedItems.indexOf(icon);
 
             let folderIconIndex = this._folderIcons.indexOf(icon);
             if (folderIconIndex != -1)
                 this._folderIcons.splice(folderIconIndex, 1);
 
-            this._allItems.splice(iconIndex, 1);
+            this._orderedItems.splice(iconIndex, 1);
             icon.destroy();
             this._items.delete(id);
         });
@@ -417,7 +417,7 @@ var AllView = GObject.registerClass({
                 icon = new AppIcon(shellApp);
             }
 
-            let index = Util.insertSorted(this._allItems, icon, this._compareItems);
+            let index = Util.insertSorted(this._orderedItems, icon, this._compareItems);
             this._grid.addItem(icon, index);
             this._items.set(id, icon);
         });
@@ -430,18 +430,18 @@ var AllView = GObject.registerClass({
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._allItems.indexOf(item);
-        this._allItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
+        let oldIdx = this._orderedItems.indexOf(item);
+        this._orderedItems.splice(oldIdx, 1);
+        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems);
 
         this._grid.removeItem(item);
         this._grid.addItem(item, newIdx);
     }
 
     _refilterApps() {
-        let filteredApps = this._allItems.filter(icon => !icon.visible);
+        let filteredApps = this._orderedItems.filter(icon => !icon.visible);
 
-        this._allItems.forEach(icon => {
+        this._orderedItems.forEach(icon => {
             if (icon instanceof AppIcon)
                 icon.visible = true;
         });
@@ -915,9 +915,9 @@ class FrequentView extends BaseAppView {
         removedApps.forEach(shellApp => {
             let id = shellApp.get_app_info().get_id();
             let icon = this._items.get(id);
-            let iconIndex = this._allItems.indexOf(icon);
+            let iconIndex = this._orderedItems.indexOf(icon);
 
-            this._allItems.splice(iconIndex, 1);
+            this._orderedItems.splice(iconIndex, 1);
             icon.destroy();
             this._items.delete(id);
         });
@@ -927,7 +927,7 @@ class FrequentView extends BaseAppView {
             let icon = new AppIcon(shellApp, { isDraggable: favoritesWritable });
             let iconIndex = mostUsed.indexOf(shellApp);
 
-            this._allItems.splice(iconIndex, 0, icon);
+            this._orderedItems.splice(iconIndex, 0, icon);
             this._grid.addItem(icon, iconIndex);
             this._items.set(id, icon);
         });
@@ -1285,12 +1285,12 @@ class FolderView extends BaseAppView {
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
-        let numItems = this._allItems.length;
+        let numItems = this._orderedItems.length;
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
             let bin = new St.Bin({ width: subSize * scale, height: subSize * scale });
             if (i < numItems)
-                bin.child = this._allItems[i].app.create_icon_texture(subSize);
+                bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
             layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
         }
 
@@ -1402,9 +1402,9 @@ class FolderView extends BaseAppView {
 
         removedIDs.forEach(id => {
             let icon = this._items.get(id);
-            let iconIndex = this._allItems.indexOf(icon);
+            let iconIndex = this._orderedItems.indexOf(icon);
 
-            this._allItems.splice(iconIndex, 1);
+            this._orderedItems.splice(iconIndex, 1);
             icon.destroy();
             this._items.delete(id);
         });
@@ -1413,7 +1413,7 @@ class FolderView extends BaseAppView {
             let shellApp = appSys.lookup_app(id);
             let icon = new AppIcon(shellApp);
 
-            let index = Util.insertSorted(this._allItems, icon, this._compareItems);
+            let index = Util.insertSorted(this._orderedItems, icon, this._compareItems);
             this._grid.addItem(icon, index);
             this._items.set(id, icon);
         });
