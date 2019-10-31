@@ -267,7 +267,7 @@ var AllView = class AllView extends BaseAppView {
         this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
         this.actor.add_actor(this._pageIndicators);
 
-        this.folderIcons = [];
+        this._folderIcons = [];
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
@@ -371,9 +371,9 @@ var AllView = class AllView extends BaseAppView {
             let icon = this._items[id];
             let iconIndex = this._allItems.indexOf(icon);
 
-            let folderIconIndex = this.folderIcons.indexOf(icon);
+            let folderIconIndex = this._folderIcons.indexOf(icon);
             if (folderIconIndex != -1)
-                this.folderIcons.splice(folderIconIndex, 1);
+                this._folderIcons.splice(folderIconIndex, 1);
 
             this._allItems.splice(iconIndex, 1);
             icon.actor.destroy();
@@ -388,7 +388,7 @@ var AllView = class AllView extends BaseAppView {
                 icon = new FolderIcon(id, path, this);
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._refilterApps.bind(this));
-                this.folderIcons.push(icon);
+                this._folderIcons.push(icon);
             } else {
                 let shellApp = appSys.lookup_app(id);
                 icon = new AppIcon(shellApp);
@@ -423,7 +423,7 @@ var AllView = class AllView extends BaseAppView {
                 icon.actor.visible = true;
         });
 
-        this.folderIcons.forEach(folder => {
+        this._folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
                 let appIcon = this._items[appId];
@@ -695,8 +695,8 @@ var AllView = class AllView extends BaseAppView {
         this._availWidth = availWidth;
         this._availHeight = availHeight;
         // Update folder views
-        for (let i = 0; i < this.folderIcons.length; i++)
-            this.folderIcons[i].adaptToSize(availWidth, availHeight);
+        for (let i = 0; i < this._folderIcons.length; i++)
+            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 
     _handleDragOvershoot(dragEvent) {
