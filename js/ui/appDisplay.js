@@ -165,7 +165,7 @@ var BaseAppView = GObject.registerClass({
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
 
-        this._items = {};
+        this._items = new Map();
         this._allItems = [];
     }
 
@@ -190,7 +190,7 @@ var BaseAppView = GObject.registerClass({
 
             this._allItems.splice(iconIndex, 1);
             icon.destroy();
-            delete this._items[id];
+            this._items.delete(id);
         });
 
         // Add new app icons
@@ -199,7 +199,7 @@ var BaseAppView = GObject.registerClass({
 
             this._allItems.splice(iconIndex, 0, icon);
             this._grid.addItem(icon, iconIndex);
-            this._items[icon.id] = icon;
+            this._items.set(icon.id, icon);
         });
 
         this.emit('view-loaded');
@@ -214,24 +214,27 @@ var BaseAppView = GObject.registerClass({
     }
 
     _selectAppInternal(id) {
-        if (this._items[id])
-            this._items[id].navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        if (this._items.has(id))
+            this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log(`No such application ${id}`);
     }
 
     selectApp(id) {
-        if (this._items[id] && this._items[id].mapped) {
-            this._selectAppInternal(id);
-        } else if (this._items[id]) {
-            // Need to wait until the view is mapped
-            let signalId = this._items[id].connect('notify::mapped',
-                actor => {
+        if (this._items.has(id)) {
+            let item = this._items.get(id);
+
+            if (item.mapped) {
+                this._selectAppInternal(id);
+            } else {
+                // Need to wait until the view is mapped
+                let signalId = item.connect('notify::mapped', actor => {
                     if (actor.mapped) {
                         actor.disconnect(signalId);
                         this._selectAppInternal(id);
                     }
                 });
+            }
         } else {
             // Need to wait until the view is built
             let signalId = this.connect('view-loaded', () => {
@@ -447,7 +450,7 @@ var AllView = GObject.registerClass({
         this.folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
-                let appIcon = this._items[appId];
+                let appIcon = this._items.get(appId);
                 appIcon.visible = false;
             });
         });
@@ -483,7 +486,7 @@ var AllView = GObject.registerClass({
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
             let path = `${this._folderSettings.path}folders/${id}/`;
-            let icon = this._items[id];
+            let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
@@ -502,7 +505,7 @@ var AllView = GObject.registerClass({
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(appId => {
-            let icon = this._items[appId];
+            let icon = this._items.get(appId);
             if (!icon) {
                 let app = appSys.lookup_app(appId);
 
@@ -720,13 +723,14 @@ var AllView = GObject.registerClass({
     }
 
     _updateIconOpacities(folderOpen) {
-        for (let id in this._items) {
+        for (let icon of this._items.values()) {
             let opacity;
-            if (folderOpen && !this._items[id].checked)
+            if (folderOpen && !icon.checked)
                 opacity =  INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
-            this._items[id].ease({
+
+            icon.ease({
                 opacity,
                 duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -910,7 +914,7 @@ var AllView = GObject.registerClass({
             return false;
         }
 
-        let appItems = apps.map(id => this._items[id].app);
+        let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
             folderName = _("Unnamed Folder");
@@ -983,7 +987,7 @@ class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = this._items[mostUsed[i].get_id()];
+            let appIcon = this._items.get(mostUsed[i].get_id());
             if (!appIcon) {
                 appIcon = new AppIcon(mostUsed[i], {
                     isDraggable: favoritesWritable,
@@ -1446,7 +1450,7 @@ class FolderView extends BaseAppView {
             if (apps.some(appIcon => appIcon.id == appId))
                 return;
 
-            let icon = this._items[appId];
+            let icon = this._items.get(appId);
             if (!icon)
                 icon = new AppIcon(app);
 
