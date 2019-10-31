@@ -54,13 +54,6 @@ function _getCategories(info) {
     return categoriesStr.split(';');
 }
 
-function _listsIntersect(a, b) {
-    for (let itemA of a)
-        if (b.includes(itemA))
-            return true;
-    return false;
-}
-
 function _getFolderName(folder) {
     let name = folder.get_string('name');
 
