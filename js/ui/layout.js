@@ -212,11 +212,6 @@ var LayoutManager = GObject.registerClass({
         this._startingUp = true;
         this._pendingLoadBackground = false;
 
-        // We don't want to paint the stage background color because either
-        // the SystemBackground we create or the MetaBackgroundActor inside
-        // global.window_group covers the entirety of the screen.
-        global.stage.no_clear_hint = true;
-
         // Set up stage hierarchy to group all UI actors under one container.
         this.uiGroup = new UiActor({ name: 'uiGroup' });
         this.uiGroup.set_flags(Clutter.ActorFlags.NO_LAYOUT);
