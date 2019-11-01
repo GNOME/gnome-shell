@@ -618,7 +618,10 @@ var PadDiagram = GObject.registerClass({
 });
 
 var PadOsd = GObject.registerClass({
-    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+    Signals: {
+        'pad-selected': { param_types: [Clutter.InputDevice.$gtype] },
+        'closed': {}
+    }
 }, class PadOsd extends St.BoxLayout {
     _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
         super._init({
