@@ -57,9 +57,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         let label = new St.Label({ style_class: 'run-dialog-label',
                                    text: _("Enter a Command") });
 
-        this.contentLayout.add(label, { x_fill: false,
-                                        x_align: St.Align.START,
-                                        y_align: St.Align.START });
+        this.contentLayout.add_child(label);
 
         let entry = new St.Entry({ style_class: 'run-dialog-entry',
                                    can_focus: true });
@@ -68,29 +66,29 @@ class RunDialog extends ModalDialog.ModalDialog {
         entry.label_actor = label;
 
         this._entryText = entry.clutter_text;
-        this.contentLayout.add(entry, { y_align: St.Align.START });
+        this.contentLayout.add_child(entry);
         this.setInitialKeyFocus(this._entryText);
 
         this._errorBox = new St.BoxLayout({ style_class: 'run-dialog-error-box' });
 
-        this.contentLayout.add(this._errorBox, { expand: true });
+        this.contentLayout.add_child(this._errorBox);
 
         let errorIcon = new St.Icon({ icon_name: 'dialog-error-symbolic',
                                       icon_size: 24,
-                                      style_class: 'run-dialog-error-icon' });
+                                      style_class: 'run-dialog-error-icon',
+                                      y_align: Clutter.ActorAlign.CENTER });
 
-        this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
+        this._errorBox.add_child(errorIcon);
 
         this._commandError = false;
 
-        this._errorMessage = new St.Label({ style_class: 'run-dialog-error-label' });
+        this._errorMessage = new St.Label({
+            style_class: 'run-dialog-error-label',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._errorMessage.clutter_text.line_wrap = true;
 
-        this._errorBox.add(this._errorMessage, { expand: true,
-                                                 x_align: St.Align.START,
-                                                 x_fill: false,
-                                                 y_align: St.Align.MIDDLE,
-                                                 y_fill: false });
+        this._errorBox.add_child(this._errorMessage);
 
         this._errorBox.hide();
 

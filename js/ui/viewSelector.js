@@ -130,7 +130,10 @@ var ViewSelector = GObject.registerClass({
     }
 }, class ViewSelector extends Shell.Stack {
     _init(searchEntry, showAppsButton) {
-        super._init({ name: 'viewSelector' });
+        super._init({
+            name: 'viewSelector',
+            x_expand: true,
+        });
 
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
