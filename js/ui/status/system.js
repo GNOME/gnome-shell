@@ -175,15 +175,16 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _createActionButton(iconName, accessibleName) {
-        let icon = new St.Button({ reactive: true,
-                                   can_focus: true,
-                                   track_hover: true,
-                                   accessible_name: accessibleName,
-                                   x_expand: true,
-                                   style_class: 'system-menu-action' });
-        icon.set_x_align(Clutter.ActorAlign.CENTER);
-        icon.child = new St.Icon({ icon_name: iconName });
-        return icon;
+        return new St.Button({
+            child: new St.Icon({ icon_name: iconName }),
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            accessible_name: accessibleName,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            style_class: 'system-menu-action',
+        });
     }
 
     _createSubMenu() {

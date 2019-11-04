@@ -157,12 +157,6 @@ void                  st_widget_set_accessible_name      (StWidget    *widget,
 const gchar *         st_widget_get_accessible_name      (StWidget    *widget);
 void                  st_widget_set_accessible           (StWidget    *widget,
                                                           AtkObject   *accessible);
-/* utility methods */
-void st_get_align_factors (StAlign   x_align,
-                           StAlign   y_align,
-                           gdouble  *x_align_out,
-                           gdouble  *y_align_out);
-
 G_END_DECLS
 
 #endif /* __ST_WIDGET_H__ */

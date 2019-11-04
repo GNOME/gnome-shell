@@ -790,8 +790,8 @@ class EventsSection extends MessageList.MessageListSection {
 
         this._title = new St.Button({ style_class: 'events-section-title',
                                       label: '',
-                                      x_align: St.Align.START,
                                       can_focus: true });
+        this._title.child.x_align = Clutter.ActorAlign.START;
         this.insert_child_below(this._title, null);
 
         this._title.connect('clicked', this._onTitleClicked.bind(this));
@@ -1078,15 +1078,16 @@ class CalendarMessageList extends St.Widget {
 
         this._scrollView = new St.ScrollView({ style_class: 'vfade',
                                                overlay_scrollbars: true,
-                                               x_expand: true, y_expand: true,
-                                               x_fill: true, y_fill: true });
+                                               x_expand: true, y_expand: true, });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
-        this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
-                                            label: _("Clear"),
-                                            can_focus: true });
-        this._clearButton.set_x_align(Clutter.ActorAlign.END);
+        this._clearButton = new St.Button({
+            style_class: 'message-list-clear-button button',
+            label: _('Clear'),
+            can_focus: true,
+            x_align: Clutter.ActorAlign.END,
+        });
         this._clearButton.connect('clicked', () => {
             this._sectionList.get_children().forEach(s => s.clear());
         });
@@ -1098,6 +1099,7 @@ class CalendarMessageList extends St.Widget {
 
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
+                                               x_expand: true,
                                                y_expand: true,
                                                y_align: Clutter.ActorAlign.START });
         this._sectionList.connect('actor-added', this._sync.bind(this));

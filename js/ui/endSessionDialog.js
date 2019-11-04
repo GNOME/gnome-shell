@@ -272,8 +272,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._iconBin = new St.Bin({
             x_expand: true,
+            x_align: Clutter.ActorAlign.END,
         });
-        this._iconBin.set_x_align(Clutter.ActorAlign.END);
         mainContentLayout.add_child(this._iconBin);
 
         let messageLayout = new St.BoxLayout({ vertical: true,

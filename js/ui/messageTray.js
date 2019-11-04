@@ -632,8 +632,7 @@ class SourceActor extends St.Widget {
         this._actorDestroyed = false;
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._iconBin = new St.Bin({ x_fill: true,
-                                     x_expand: true,
+        this._iconBin = new St.Bin({ x_expand: true,
                                      height: size * scaleFactor,
                                      width: size * scaleFactor });
 

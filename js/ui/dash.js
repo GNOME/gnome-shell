@@ -285,9 +285,12 @@ var DashActor = GObject.registerClass(
 class DashActor extends St.Widget {
     _init() {
         let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
-        super._init({ name: 'dash',
-                      layout_manager: layout,
-                      clip_to_allocation: true });
+        super._init({
+            name: 'dash',
+            layout_manager: layout,
+            clip_to_allocation: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
     }
 
     vfunc_allocate(box, flags) {

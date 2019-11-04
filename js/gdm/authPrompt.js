@@ -88,8 +88,6 @@ var AuthPrompt = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._userWell = new St.Bin({
-            x_fill: true,
-            x_align: St.Align.START,
             x_expand: true,
             y_expand: true,
         });
@@ -164,9 +162,9 @@ var AuthPrompt = GObject.registerClass({
             can_focus: true,
             label: _("Cancel"),
             x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.END,
         });
-        this.cancelButton.set_x_align(Clutter.ActorAlign.START);
-        this.cancelButton.set_y_align(Clutter.ActorAlign.END);
         this.cancelButton.connect('clicked', () => this.cancel());
         this._buttonBox.add_child(this.cancelButton);
 
@@ -177,9 +175,9 @@ var AuthPrompt = GObject.registerClass({
             reactive: true,
             can_focus: true,
             label: _("Next"),
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
         });
-        this.nextButton.set_x_align(Clutter.ActorAlign.END);
-        this.nextButton.set_y_align(Clutter.ActorAlign.END);
         this.nextButton.connect('clicked', () => this.emit('next'));
         this.nextButton.add_style_pseudo_class('default');
         this._buttonBox.add_child(this.nextButton);
@@ -447,6 +445,7 @@ var AuthPrompt = GObject.registerClass({
 
         if (user) {
             let userWidget = new UserWidget.UserWidget(user);
+            userWidget.x_align = Clutter.ActorAlign.START;
             this._userWell.set_child(userWidget);
         }
     }

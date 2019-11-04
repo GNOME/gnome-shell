@@ -43,9 +43,6 @@ struct _StBinPrivate
 {
   ClutterActor *child;
 
-  StAlign       x_align;
-  StAlign       y_align;
-
   guint         x_fill : 1;
   guint         y_fill : 1;
 };
@@ -55,8 +52,6 @@ enum
   PROP_0,
 
   PROP_CHILD,
-  PROP_X_ALIGN,
-  PROP_Y_ALIGN,
   PROP_X_FILL,
   PROP_Y_FILL,
 
@@ -97,6 +92,27 @@ clutter_container_iface_init (ClutterContainerIface *iface)
   iface->remove = st_bin_remove;
 }
 
+static double
+get_align_factor (ClutterActorAlign align)
+{
+  switch (align)
+    {
+    case CLUTTER_ACTOR_ALIGN_CENTER:
+      return 0.5;
+
+    case CLUTTER_ACTOR_ALIGN_START:
+      return 0.0;
+
+    case CLUTTER_ACTOR_ALIGN_END:
+      return 1.0;
+
+    case CLUTTER_ACTOR_ALIGN_FILL:
+      break;
+   }
+
+  return 0.0;
+}
+
 static void
 st_bin_allocate (ClutterActor          *self,
                  const ClutterActorBox *box,
@@ -109,15 +125,16 @@ st_bin_allocate (ClutterActor          *self,
   if (priv->child && clutter_actor_is_visible (priv->child))
     {
       StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+      ClutterActorAlign x_align = clutter_actor_get_x_align (priv->child);
+      ClutterActorAlign y_align = clutter_actor_get_y_align (priv->child);
       ClutterActorBox childbox;
-      gdouble x_align_f, y_align_f;
 
       st_theme_node_get_content_box (theme_node, box, &childbox);
-      st_get_align_factors (priv->x_align, priv->y_align,
-                            &x_align_f, &y_align_f);
       clutter_actor_allocate_align_fill (priv->child, &childbox,
-                                         x_align_f, y_align_f,
-                                         priv->x_fill, priv->y_fill,
+                                         get_align_factor (x_align),
+                                         get_align_factor (y_align),
+                                         x_align == CLUTTER_ACTOR_ALIGN_FILL,
+                                         y_align == CLUTTER_ACTOR_ALIGN_FILL,
                                          flags);
     }
 }
@@ -143,7 +160,10 @@ st_bin_get_preferred_width (ClutterActor *self,
     }
   else
     {
-      _st_actor_get_preferred_width (priv->child, for_height, priv->y_fill,
+      ClutterActorAlign y_align = clutter_actor_get_y_align (priv->child);
+
+      _st_actor_get_preferred_width (priv->child, for_height,
+                                     y_align == CLUTTER_ACTOR_ALIGN_FILL,
                                      min_width_p,
                                      natural_width_p);
     }
@@ -172,7 +192,10 @@ st_bin_get_preferred_height (ClutterActor *self,
     }
   else
     {
-      _st_actor_get_preferred_height (priv->child, for_width, priv->x_fill,
+      ClutterActorAlign x_align = clutter_actor_get_y_align (priv->child);
+
+      _st_actor_get_preferred_height (priv->child, for_width,
+                                      x_align == CLUTTER_ACTOR_ALIGN_FILL,
                                       min_height_p,
                                       natural_height_p);
     }
@@ -245,18 +268,6 @@ st_bin_set_property (GObject      *gobject,
       st_bin_set_child (bin, g_value_get_object (value));
       break;
 
-    case PROP_X_ALIGN:
-      st_bin_set_alignment (bin,
-                            g_value_get_enum (value),
-                            priv->y_align);
-      break;
-
-    case PROP_Y_ALIGN:
-      st_bin_set_alignment (bin,
-                            priv->x_align,
-                            g_value_get_enum (value));
-      break;
-
     case PROP_X_FILL:
       st_bin_set_fill (bin,
                        g_value_get_boolean (value),
@@ -296,14 +307,6 @@ st_bin_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->y_fill);
       break;
 
-    case PROP_X_ALIGN:
-      g_value_set_enum (value, priv->x_align);
-      break;
-
-    case PROP_Y_ALIGN:
-      g_value_set_enum (value, priv->y_align);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -340,32 +343,6 @@ st_bin_class_init (StBinClass *klass)
                          ST_PARAM_READWRITE);
 
   /**
-   * StBin:x-align:
-   *
-   * The horizontal alignment of the #StBin child.
-   */
-  props[PROP_X_ALIGN] =
-    g_param_spec_enum ("x-align",
-                       "X Align",
-                       "The horizontal alignment",
-                       ST_TYPE_ALIGN,
-                       ST_ALIGN_MIDDLE,
-                       ST_PARAM_READWRITE);
-
-  /**
-   * StBin:y-align:
-   *
-   * The vertical alignment of the #StBin child.
-   */
-  props[PROP_Y_ALIGN] =
-    g_param_spec_enum ("y-align",
-                       "Y Align",
-                       "The vertical alignment",
-                       ST_TYPE_ALIGN,
-                       ST_ALIGN_MIDDLE,
-                       ST_PARAM_READWRITE);
-
-  /**
    * StBin:x-fill:
    *
    * Whether the child should fill the horizontal allocation
@@ -376,7 +353,7 @@ st_bin_class_init (StBinClass *klass)
                           "Whether the child should fill the "
                           "horizontal allocation",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
 
   /**
    * StBin:y-fill:
@@ -389,7 +366,7 @@ st_bin_class_init (StBinClass *klass)
                           "Whether the child should fill the "
                           "vertical allocation",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
@@ -397,10 +374,6 @@ st_bin_class_init (StBinClass *klass)
 static void
 st_bin_init (StBin *bin)
 {
-  StBinPrivate *priv = st_bin_get_instance_private (bin);
-
-  priv->x_align = ST_ALIGN_MIDDLE;
-  priv->y_align = ST_ALIGN_MIDDLE;
 }
 
 /**
@@ -472,76 +445,6 @@ st_bin_get_child (StBin *bin)
 }
 
 /**
- * st_bin_set_alignment:
- * @bin: a #StBin
- * @x_align: horizontal alignment
- * @y_align: vertical alignment
- *
- * Sets the horizontal and vertical alignment of the child
- * inside a #StBin.
- */
-void
-st_bin_set_alignment (StBin  *bin,
-                      StAlign x_align,
-                      StAlign y_align)
-{
-  StBinPrivate *priv;
-  gboolean changed = FALSE;
-
-  g_return_if_fail (ST_IS_BIN (bin));
-
-  priv = st_bin_get_instance_private (bin);
-
-  g_object_freeze_notify (G_OBJECT (bin));
-
-  if (priv->x_align != x_align)
-    {
-      priv->x_align = x_align;
-      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_X_ALIGN]);
-      changed = TRUE;
-    }
-
-  if (priv->y_align != y_align)
-    {
-      priv->y_align = y_align;
-      g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_Y_ALIGN]);
-      changed = TRUE;
-    }
-
-  if (changed)
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
-
-  g_object_thaw_notify (G_OBJECT (bin));
-}
-
-/**
- * st_bin_get_alignment:
- * @bin: a #StBin
- * @x_align: return location for the horizontal alignment, or %NULL
- * @y_align: return location for the vertical alignment, or %NULL
- *
- * Retrieves the horizontal and vertical alignment of the child
- * inside a #StBin, as set by st_bin_set_alignment().
- */
-void
-st_bin_get_alignment (StBin   *bin,
-                      StAlign *x_align,
-                      StAlign *y_align)
-{
-  StBinPrivate *priv;
-
-  g_return_if_fail (ST_IS_BIN (bin));
-
-  priv = st_bin_get_instance_private (bin);
-
-  if (x_align)
-    *x_align = priv->x_align;
-
-  if (y_align)
-    *y_align = priv->y_align;
-}
-
-/**
  * st_bin_set_fill:
  * @bin: a #StBin
  * @x_fill: %TRUE if the child should fill horizontally the @bin
@@ -556,7 +459,6 @@ st_bin_set_fill (StBin   *bin,
                  gboolean y_fill)
 {
   StBinPrivate *priv;
-  gboolean changed = FALSE;
 
   g_return_if_fail (ST_IS_BIN (bin));
 
@@ -567,7 +469,6 @@ st_bin_set_fill (StBin   *bin,
   if (priv->x_fill != x_fill)
     {
       priv->x_fill = x_fill;
-      changed = TRUE;
 
       g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_X_FILL]);
     }
@@ -575,13 +476,9 @@ st_bin_set_fill (StBin   *bin,
   if (priv->y_fill != y_fill)
     {
       priv->y_fill = y_fill;
-      changed = TRUE;
 
       g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_Y_FILL]);
     }
-
-  if (changed)
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
 
   g_object_thaw_notify (G_OBJECT (bin));
 }

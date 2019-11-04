@@ -43,8 +43,6 @@ class SearchResult extends St.Button {
             reactive: true,
             can_focus: true,
             track_hover: true,
-            x_align: St.Align.START,
-            y_fill: true
         });
     }
 
@@ -68,12 +66,13 @@ class ListSearchResult extends SearchResult {
         super._init(provider, metaInfo, resultsView);
 
         this.style_class = 'list-search-result';
-        this.x_fill = true;
 
         let content = new St.BoxLayout({
             style_class: 'list-search-result-content',
             vertical: false,
+            x_align: Clutter.ActorAlign.START,
             x_expand: true,
+            y_expand: true,
         });
         this.set_child(content);
 
@@ -142,7 +141,12 @@ class GridSearchResult extends SearchResult {
 
         this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                           { createIcon: this.metaInfo['createIcon'] });
-        let content = new St.Bin({ child: this.icon });
+        let content = new St.Bin({
+            child: this.icon,
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            y_expand: true,
+        });
         this.set_child(content);
         this.label_actor = this.icon.label;
     }
@@ -166,7 +170,7 @@ var SearchResultsBase = GObject.registerClass({
         this._terms = [];
         this._focusChild = null;
 
-        this._resultDisplayBin = new St.Bin({ x_fill: true });
+        this._resultDisplayBin = new St.Bin();
         this.add_child(this._resultDisplayBin);
 
         let separator = new St.Widget({ style_class: 'search-section-separator' });
@@ -353,7 +357,7 @@ class GridSearchResults extends SearchResultsBase {
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
 
-        this._bin = new St.Bin({ x_align: St.Align.MIDDLE });
+        this._bin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
         this._bin.set_child(this._grid);
 
         this._resultDisplayBin.set_child(this._bin);
@@ -427,8 +431,11 @@ var SearchResultsView = GObject.registerClass({
     _init() {
         super._init({ name: 'searchResults', vertical: true });
 
-        this._content = new MaxWidthBox({ name: 'searchResultsContent',
-                                          vertical: true });
+        this._content = new MaxWidthBox({
+            name: 'searchResultsContent',
+            vertical: true,
+            x_expand: true,
+        });
 
         this._scrollView = new St.ScrollView({
             overlay_scrollbars: true,
@@ -763,13 +770,15 @@ var ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {
     _init(provider) {
         this.provider = provider;
-        super._init({ style_class: 'search-provider-icon',
-                      reactive: true,
-                      can_focus: true,
-                      accessible_name: provider.appInfo.get_name(),
-                      track_hover: true });
+        super._init({
+            style_class: 'search-provider-icon',
+            reactive: true,
+            can_focus: true,
+            accessible_name: provider.appInfo.get_name(),
+            track_hover: true,
+            y_align: Clutter.ActorAlign.START,
+        });
 
-        this.set_y_align(Clutter.ActorAlign.START);
         this._content = new St.BoxLayout({ vertical: false,
                                            style_class: 'list-search-provider-content' });
         this.set_child(this._content);

@@ -42,7 +42,10 @@ var UserListItem = GObject.registerClass({
     Signals: { 'activate': {} }
 }, class UserListItem extends St.Button {
     _init(user) {
-        let layout = new St.BoxLayout({ vertical: true });
+        let layout = new St.BoxLayout({
+            vertical: true,
+            x_align: Clutter.ActorAlign.START,
+        });
         super._init({
             style_class: 'login-dialog-user-list-item',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
@@ -50,8 +53,6 @@ var UserListItem = GObject.registerClass({
             x_expand: true,
             child: layout,
             reactive: true,
-            x_align: St.Align.START,
-            x_fill: true
         });
 
         this.user = user;
@@ -456,15 +457,18 @@ var LoginDialog = GObject.registerClass({
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
         // manually entering the username.
-        let notListedLabel = new St.Label({ text: _("Not listed?"),
-                                            style_class: 'login-dialog-not-listed-label' });
-        this._notListedButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
-                                                button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                                can_focus: true,
-                                                child: notListedLabel,
-                                                reactive: true,
-                                                x_align: St.Align.START,
-                                                x_fill: true });
+        let notListedLabel = new St.Label({
+            text: _("Not listed?"),
+            style_class: 'login-dialog-not-listed-label',
+            x_align: Clutter.ActorAlign.START,
+        });
+        this._notListedButton = new St.Button({
+            style_class: 'login-dialog-not-listed-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            can_focus: true,
+            child: notListedLabel,
+            reactive: true,
+        });
 
         this._notListedButton.connect('clicked', this._hideUserListAskForUsernameAndBeginVerification.bind(this));
 

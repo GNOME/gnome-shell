@@ -37,7 +37,6 @@ class TodayButton extends St.Button {
         // until the selected date changes.
         super._init({
             style_class: 'datemenu-today-button',
-            x_align: St.Align.START,
             x_expand: true,
             can_focus: true,
             reactive: false
@@ -90,7 +89,6 @@ class WorldClocksSection extends St.Button {
     _init() {
         super._init({
             style_class: 'world-clocks-button',
-            x_fill: true,
             can_focus: true,
             x_expand: true,
         });
@@ -101,6 +99,7 @@ class WorldClocksSection extends St.Button {
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this._grid = new St.Widget({ style_class: 'world-clocks-grid',
+                                     x_expand: true,
                                      layout_manager: layout });
         layout.hookup_style(this._grid);
 
@@ -253,15 +252,17 @@ class WeatherSection extends St.Button {
     _init() {
         super._init({
             style_class: 'weather-button',
-            x_fill: true,
             can_focus: true,
             x_expand: true,
         });
 
         this._weatherClient = new Weather.WeatherClient();
 
-        let box = new St.BoxLayout({ style_class: 'weather-box',
-                                     vertical: true });
+        let box = new St.BoxLayout({
+            style_class: 'weather-box',
+            vertical: true,
+            x_expand: true,
+        });
 
         this.child = box;
 
@@ -582,12 +583,13 @@ class DateMenuButton extends PanelMenu.Button {
         vbox.add_actor(this._calendar);
 
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
-                                                    x_expand: true, x_fill: true,
+                                                    x_expand: true,
                                                     overlay_scrollbars: true });
         this._displaysSection.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         vbox.add_actor(this._displaysSection);
 
         let displaysBox = new St.BoxLayout({ vertical: true,
+                                             x_expand: true,
                                              style_class: 'datemenu-displays-box' });
         this._displaysSection.add_actor(displaysBox);
 
