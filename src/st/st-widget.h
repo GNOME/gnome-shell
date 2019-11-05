@@ -104,10 +104,6 @@ gboolean              st_widget_has_style_class_name      (StWidget        *acto
 void                  st_widget_set_style                 (StWidget        *actor,
                                                            const gchar     *style);
 const gchar *         st_widget_get_style                 (StWidget        *actor);
-void                  st_widget_set_theme                 (StWidget        *actor,
-                                                           StTheme         *theme);
-StTheme *             st_widget_get_theme                 (StWidget        *actor);
-
 void                  st_widget_set_track_hover           (StWidget        *widget,
                                                            gboolean         track_hover);
 gboolean              st_widget_get_track_hover           (StWidget        *widget);

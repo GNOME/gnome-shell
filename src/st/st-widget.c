@@ -57,7 +57,6 @@
 typedef struct _StWidgetPrivate        StWidgetPrivate;
 struct _StWidgetPrivate
 {
-  StTheme      *theme;
   StThemeNode  *theme_node;
   gchar        *pseudo_class;
   gchar        *style_class;
@@ -106,7 +105,6 @@ enum
 {
   PROP_0,
 
-  PROP_THEME,
   PROP_PSEUDO_CLASS,
   PROP_STYLE_CLASS,
   PROP_STYLE,
@@ -154,10 +152,6 @@ st_widget_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_THEME:
-      st_widget_set_theme (actor, g_value_get_object (value));
-      break;
-
     case PROP_PSEUDO_CLASS:
       st_widget_set_style_pseudo_class (actor, g_value_get_string (value));
       break;
@@ -211,10 +205,6 @@ st_widget_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_THEME:
-      g_value_set_object (value, priv->theme);
-      break;
-
     case PROP_PSEUDO_CLASS:
       g_value_set_string (value, priv->pseudo_class);
       break;
@@ -312,7 +302,6 @@ st_widget_dispose (GObject *gobject)
   StWidget *actor = ST_WIDGET (gobject);
   StWidgetPrivate *priv = st_widget_get_instance_private (actor);
 
-  g_clear_pointer (&priv->theme, g_object_unref);
   g_clear_pointer (&priv->theme_node, g_object_unref);
 
   st_widget_remove_transition (actor);
@@ -639,7 +628,7 @@ st_widget_get_theme_node (StWidget *widget)
         pseudo_class = direction_pseudo_class;
 
       context = st_theme_context_get_for_stage (stage);
-      tmp_node = st_theme_node_new (context, parent_node, priv->theme,
+      tmp_node = st_theme_node_new (context, parent_node, NULL,
                                     G_OBJECT_TYPE (widget),
                                     clutter_actor_get_name (CLUTTER_ACTOR (widget)),
                                     priv->style_class,
@@ -903,19 +892,6 @@ st_widget_class_init (StWidgetClass *klass)
                           ST_PARAM_READWRITE);
 
   /**
-   * StWidget:theme:
-   *
-   * A theme set on this actor overriding the global theming for this actor
-   * and its descendants
-   */
-  props[PROP_THEME] =
-     g_param_spec_object ("theme",
-                          "Theme",
-                          "Theme override",
-                          ST_TYPE_THEME,
-                          ST_PARAM_READWRITE);
-
-  /**
    * StWidget:track-hover:
    *
    * Determines whether the widget tracks pointer hover state. If
@@ -1040,52 +1016,6 @@ st_widget_class_init (StWidgetClass *klass)
                   G_STRUCT_OFFSET (StWidgetClass, resource_scale_changed),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
-}
-
-/**
- * st_widget_set_theme:
- * @actor: a #StWidget
- * @theme: a new style class string
- *
- * Overrides the theme that would be inherited from the actor's parent
- * or the stage with an entirely new theme (set of stylesheets).
- */
-void
-st_widget_set_theme (StWidget  *actor,
-                     StTheme   *theme)
-{
-  StWidgetPrivate *priv;
-
-  g_return_if_fail (ST_IS_WIDGET (actor));
-
-  priv = st_widget_get_instance_private (actor);
-
-  if (theme != priv->theme)
-    {
-      if (priv->theme)
-        g_object_unref (priv->theme);
-      priv->theme = g_object_ref (theme);
-
-      st_widget_style_changed (actor);
-
-      g_object_notify_by_pspec (G_OBJECT (actor), props[PROP_THEME]);
-    }
-}
-
-/**
- * st_widget_get_theme:
- * @actor: a #StWidget
- *
- * Gets the overriding theme set on the actor. See st_widget_set_theme()
- *
- * Return value: (transfer none): the overriding theme, or %NULL
- */
-StTheme *
-st_widget_get_theme (StWidget *actor)
-{
-  g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
-
-  return ST_WIDGET_PRIVATE (actor)->theme;
 }
 
 static const gchar *

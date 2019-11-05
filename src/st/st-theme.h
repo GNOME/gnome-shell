@@ -32,8 +32,7 @@ G_BEGIN_DECLS
  *
  * #StTheme holds a set of stylesheets. (The "cascade" of the name
  * Cascading Stylesheets.) A #StTheme can be set to apply to all the actors
- * in a stage using st_theme_context_set_theme() or applied to a subtree
- * of actors using st_widget_set_theme().
+ * in a stage using st_theme_context_set_theme().
  */
 
 #define ST_TYPE_THEME              (st_theme_get_type ())
