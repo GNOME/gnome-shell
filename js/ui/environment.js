@@ -51,11 +51,6 @@ function _patchLayoutClass(layoutClass, styleProps) {
                 }
             });
         };
-    layoutClass.prototype.child_set = function(actor, props) {
-        let meta = this.get_child_meta(actor.get_parent(), actor);
-        for (let prop in props)
-            meta[prop] = props[prop];
-    };
 }
 
 function _makeEaseCallback(params, cleanup) {
