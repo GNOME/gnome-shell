@@ -105,7 +105,8 @@ typedef struct
 } CollectAppointmentsData;
 
 static time_t
-get_time_from_property (ICalComponent         *icomp,
+get_time_from_property (ECalClient            *cal,
+                        ICalComponent         *icomp,
                         ICalPropertyKind       prop_kind,
                         ICalTime * (* get_prop_func) (ICalProperty *prop),
                         ICalTimezone          *default_zone)
@@ -124,11 +125,13 @@ get_time_from_property (ICalComponent         *icomp,
 
   param = i_cal_property_get_first_parameter (prop, I_CAL_TZID_PARAMETER);
   if (param)
-    timezone = i_cal_timezone_get_builtin_timezone_from_tzid (i_cal_parameter_get_tzid (param));
+    timezone = e_timezone_cache_get_timezone (E_TIMEZONE_CACHE (cal), i_cal_parameter_get_tzid (param));
   else if (i_cal_time_is_utc (itt))
     timezone = i_cal_timezone_get_utc_timezone ();
   else
     timezone = default_zone;
+
+  i_cal_time_set_timezone (itt, timezone);
 
   retval = i_cal_time_as_timet_with_zone (itt, timezone);
 
@@ -180,27 +183,32 @@ get_ical_description (ICalComponent *icomp)
 }
 
 static inline time_t
-get_ical_start_time (ICalComponent *icomp,
+get_ical_start_time (ECalClient    *cal,
+                     ICalComponent *icomp,
                      ICalTimezone  *default_zone)
 {
-  return get_time_from_property (icomp,
+  return get_time_from_property (cal,
+                                 icomp,
                                  I_CAL_DTSTART_PROPERTY,
                                  i_cal_property_get_dtstart,
                                  default_zone);
 }
 
 static inline time_t
-get_ical_end_time (ICalComponent *icomp,
+get_ical_end_time (ECalClient    *cal,
+                   ICalComponent *icomp,
                    ICalTimezone  *default_zone)
 {
-  return get_time_from_property (icomp,
+  return get_time_from_property (cal,
+                                 icomp,
                                  I_CAL_DTEND_PROPERTY,
                                  i_cal_property_get_dtend,
                                  default_zone);
 }
 
 static gboolean
-get_ical_is_all_day (ICalComponent *icomp,
+get_ical_is_all_day (ECalClient    *cal,
+                     ICalComponent *icomp,
                      time_t         start_time,
                      ICalTimezone  *default_zone)
 {
@@ -226,7 +234,7 @@ get_ical_is_all_day (ICalComponent *icomp,
       start_tm->tm_hour != 0)
     return FALSE;
 
-  if ((end_time = get_ical_end_time (icomp, default_zone)))
+  if ((end_time = get_ical_end_time (cal, icomp, default_zone)))
     return (end_time - start_time) % 86400 == 0;
 
   prop = i_cal_component_get_first_property (icomp, I_CAL_DURATION_PROPERTY);
@@ -244,20 +252,24 @@ get_ical_is_all_day (ICalComponent *icomp,
 }
 
 static inline time_t
-get_ical_due_time (ICalComponent *icomp,
+get_ical_due_time (ECalClient    *cal,
+                   ICalComponent *icomp,
                    ICalTimezone  *default_zone)
 {
-  return get_time_from_property (icomp,
+  return get_time_from_property (cal,
+                                 icomp,
                                  I_CAL_DUE_PROPERTY,
                                  i_cal_property_get_due,
                                  default_zone);
 }
 
 static inline time_t
-get_ical_completed_time (ICalComponent *icomp,
+get_ical_completed_time (ECalClient    *cal,
+                         ICalComponent *icomp,
                          ICalTimezone  *default_zone)
 {
-  return get_time_from_property (icomp,
+  return get_time_from_property (cal,
+                                 icomp,
                                  I_CAL_COMPLETED_PROPERTY,
                                  i_cal_property_get_completed,
                                  default_zone);
@@ -411,9 +423,10 @@ calendar_appointment_init (CalendarAppointment  *appointment,
   appointment->summary      = get_ical_summary (icomp);
   appointment->description  = get_ical_description (icomp);
   appointment->color_string = get_source_color (cal);
-  appointment->start_time   = get_ical_start_time (icomp, default_zone);
-  appointment->end_time     = get_ical_end_time (icomp, default_zone);
-  appointment->is_all_day   = get_ical_is_all_day (icomp,
+  appointment->start_time   = get_ical_start_time (cal, icomp, default_zone);
+  appointment->end_time     = get_ical_end_time (cal, icomp, default_zone);
+  appointment->is_all_day   = get_ical_is_all_day (cal,
+                                                   icomp,
                                                    appointment->start_time,
                                                    default_zone);
 }
@@ -442,7 +455,7 @@ generate_instances_cb (ICalComponent *icomp,
   GHashTable *appointments = ((CollectAppointmentsData *)user_data)->appointments;
   CalendarAppointment *appointment;
   CalendarOccurrence *occurrence;
-  ICalTimezone *default_zone;
+  ICalTimezone *default_zone, *tz;
   const gchar *uid;
 
   default_zone = e_cal_client_get_default_timezone (cal);
@@ -456,8 +469,8 @@ generate_instances_cb (ICalComponent *icomp,
     }
 
   occurrence             = g_new0 (CalendarOccurrence, 1);
-  occurrence->start_time = i_cal_time_as_timet_with_zone (instance_start, default_zone);
-  occurrence->end_time   = i_cal_time_as_timet_with_zone (instance_end, default_zone);
+  occurrence->start_time = i_cal_time_as_timet_with_zone (instance_start, i_cal_time_get_timezone (instance_start));
+  occurrence->end_time   = i_cal_time_as_timet_with_zone (instance_end, i_cal_time_get_timezone (instance_end));
   occurrence->rid        = e_cal_util_component_get_recurid_as_string (icomp);
 
   appointment->occurrences = g_slist_append (appointment->occurrences, occurrence);
