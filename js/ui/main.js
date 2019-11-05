@@ -289,7 +289,7 @@ function _initializeUI() {
 function _getStylesheet(name) {
     let stylesheet;
 
-    stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/' + name);
+    stylesheet = Gio.File.new_for_uri(`resource:///org/gnome/shell/theme/${name}`);
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -301,7 +301,7 @@ function _getStylesheet(name) {
             return stylesheet;
     }
 
-    stylesheet = Gio.File.new_for_path(global.datadir + '/theme/' + name);
+    stylesheet = Gio.File.new_for_path(`${global.datadir}/theme/${name}`);
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -359,12 +359,12 @@ function reloadThemeResource() {
     if (_themeResource)
         _themeResource._unregister();
 
-    _themeResource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
+    _themeResource = Gio.Resource.load(`${global.datadir}/gnome-shell-theme.gresource`);
     _themeResource._register();
 }
 
 function _loadOskLayouts() {
-    _oskResource = Gio.Resource.load(global.datadir + '/gnome-shell-osk-layouts.gresource');
+    _oskResource = Gio.Resource.load(`${global.datadir}/gnome-shell-osk-layouts.gresource`);
     _oskResource._register();
 }
 

@@ -79,7 +79,7 @@ class URLHighlighter extends St.Label {
         if (urlId != -1) {
             let url = this._urls[urlId].url;
             if (!url.includes(':'))
-                url = 'http://' + url;
+                url = `http://${url}`;
 
             Gio.app_info_launch_default_for_uri(
                 url, global.create_app_launch_context(0, -1));
@@ -132,7 +132,7 @@ class URLHighlighter extends St.Label {
         for (let i = 0; i < urls.length; i++) {
             let url = urls[i];
             let str = this._text.substr(pos, url.pos - pos);
-            markup += str + '<span foreground="' + this._linkColor + '"><u>' + url.url + '</u></span>';
+            markup += `${str}<span foreground="${this._linkColor}"><u>${url.url}</u></span>`;
             pos = url.pos + url.url.length;
         }
         markup += this._text.substr(pos);

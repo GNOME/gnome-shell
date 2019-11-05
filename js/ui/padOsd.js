@@ -844,7 +844,8 @@ var PadOsd = GObject.registerClass({
             this._tipLabel.set_text(_("Press any key to exit"));
         }
 
-        this._titleLabel.clutter_text.set_markup('<span size="larger"><b>' + title + '</b></span>');
+        this._titleLabel.clutter_text.set_markup(
+            `<span size="larger"><b>${title}</b></span>`);
     }
 
     _isEditedAction(type, number, dir) {

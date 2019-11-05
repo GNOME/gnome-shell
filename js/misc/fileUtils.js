@@ -76,13 +76,13 @@ function loadInterfaceXML(iface) {
     if (!_ifaceResource) {
         // don't use global.datadir so the method is usable from tests/tools
         let dir = GLib.getenv ('GNOME_SHELL_DATADIR') || Config.PKGDATADIR;
-        let path = dir + '/gnome-shell-dbus-interfaces.gresource';
+        let path = `${dir}/gnome-shell-dbus-interfaces.gresource`;
         _ifaceResource = Gio.Resource.load(path);
         _ifaceResource._register();
     }
 
     let xml = null;
-    let uri = 'resource:///org/gnome/shell/dbus-interfaces/' + iface + '.xml';
+    let uri = `resource:///org/gnome/shell/dbus-interfaces/${iface}.xml`;
     let f = Gio.File.new_for_uri(uri);
 
     try {
