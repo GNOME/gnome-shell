@@ -267,7 +267,7 @@ var _Draggable = class _Draggable {
         // dragging and ignore all other key presses.
         } else if (event.type() == Clutter.EventType.KEY_PRESS && this._dragState == DragState.DRAGGING) {
             let symbol = event.get_key_symbol();
-            if (symbol == Clutter.Escape) {
+            if (symbol == Clutter.KEY_Escape) {
                 this._cancelDrag(event.get_time());
                 return Clutter.EVENT_STOP;
             }

@@ -52,9 +52,9 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _keyPressHandler(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_MONITOR)
             this._select(this._next());
-        else if (keysym == Clutter.Left)
+        else if (keysym == Clutter.KEY_Left)
             this._select(this._previous());
-        else if (keysym == Clutter.Right)
+        else if (keysym == Clutter.KEY_Right)
             this._select(this._next());
         else
             return Clutter.EVENT_PROPAGATE;

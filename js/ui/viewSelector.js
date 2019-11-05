@@ -406,7 +406,7 @@ var ViewSelector = GObject.registerClass({
 
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.Escape) {
+        if (symbol === Clutter.KEY_Escape) {
             if (this._searchActive)
                 this.reset();
             else if (this._showAppsButton.checked)
@@ -417,10 +417,10 @@ var ViewSelector = GObject.registerClass({
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
         } else if (!this._searchActive && !global.stage.key_focus) {
-            if (symbol == Clutter.Tab || symbol == Clutter.Down) {
+            if (symbol === Clutter.KEY_Tab || symbol === Clutter.KEY_Down) {
                 this._activePage.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                 return Clutter.EVENT_STOP;
-            } else if (symbol == Clutter.ISO_Left_Tab) {
+            } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
                 this._activePage.navigate_focus(null, St.DirectionType.TAB_BACKWARD, false);
                 return Clutter.EVENT_STOP;
             }
@@ -485,10 +485,10 @@ var ViewSelector = GObject.registerClass({
     }
 
     _shouldTriggerSearch(symbol) {
-        if (symbol == Clutter.Multi_key)
+        if (symbol === Clutter.KEY_Multi_key)
             return true;
 
-        if (symbol == Clutter.BackSpace && this._searchActive)
+        if (symbol === Clutter.KEY_BackSpace && this._searchActive)
             return true;
 
         let unicode = Clutter.keysym_to_unicode(symbol);
@@ -541,7 +541,7 @@ var ViewSelector = GObject.registerClass({
 
     _onKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.Escape) {
+        if (symbol === Clutter.KEY_Escape) {
             if (this._isActivated()) {
                 this.reset();
                 return Clutter.EVENT_STOP;
@@ -549,28 +549,28 @@ var ViewSelector = GObject.registerClass({
         } else if (this._searchActive) {
             let arrowNext, nextDirection;
             if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
-                arrowNext = Clutter.Left;
+                arrowNext = Clutter.KEY_Left;
                 nextDirection = St.DirectionType.LEFT;
             } else {
-                arrowNext = Clutter.Right;
+                arrowNext = Clutter.KEY_Right;
                 nextDirection = St.DirectionType.RIGHT;
             }
 
-            if (symbol == Clutter.Tab) {
+            if (symbol === Clutter.KEY_Tab) {
                 this._searchResults.navigateFocus(St.DirectionType.TAB_FORWARD);
                 return Clutter.EVENT_STOP;
-            } else if (symbol == Clutter.ISO_Left_Tab) {
+            } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
                 this._focusTrap.can_focus = false;
                 this._searchResults.navigateFocus(St.DirectionType.TAB_BACKWARD);
                 this._focusTrap.can_focus = true;
                 return Clutter.EVENT_STOP;
-            } else if (symbol == Clutter.Down) {
+            } else if (symbol === Clutter.KEY_Down) {
                 this._searchResults.navigateFocus(St.DirectionType.DOWN);
                 return Clutter.EVENT_STOP;
             } else if (symbol == arrowNext && this._text.position == -1) {
                 this._searchResults.navigateFocus(nextDirection);
                 return Clutter.EVENT_STOP;
-            } else if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
+            } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
                 this._searchResults.activateDefault();
                 return Clutter.EVENT_STOP;
             }

@@ -797,7 +797,7 @@ var PadOsd = GObject.registerClass({
             this._padDiagram.deactivateButton(event.get_button());
             return Clutter.EVENT_STOP;
         } else if (event.type() == Clutter.EventType.KEY_PRESS &&
-                   (!this._editionMode || event.get_key_symbol() == Clutter.Escape)) {
+                   (!this._editionMode || event.get_key_symbol() === Clutter.KEY_Escape)) {
             if (this._editedAction != null)
                 this._endActionEdition();
             else

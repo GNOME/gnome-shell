@@ -660,10 +660,10 @@ var AllView = GObject.registerClass({
         if (this._displayingPopup)
             return Clutter.EVENT_STOP;
 
-        if (event.get_key_symbol() == Clutter.Page_Up) {
+        if (event.get_key_symbol() === Clutter.KEY_Page_Up) {
             this.goToPage(this._grid.currentPage - 1);
             return Clutter.EVENT_STOP;
-        } else if (event.get_key_symbol() == Clutter.Page_Down) {
+        } else if (event.get_key_symbol() === Clutter.KEY_Page_Down) {
             this.goToPage(this._grid.currentPage + 1);
             return Clutter.EVENT_STOP;
         }
@@ -1960,18 +1960,18 @@ var AppFolderPopup = GObject.registerClass({
         let direction;
         let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
         switch (keyEvent.keyval) {
-        case Clutter.Down:
+        case Clutter.KEY_Down:
             direction = St.DirectionType.TAB_FORWARD;
             break;
-        case Clutter.Right:
+        case Clutter.KEY_Right:
             direction = isLtr
                 ? St.DirectionType.TAB_FORWARD
                 : St.DirectionType.TAB_BACKWARD;
             break;
-        case Clutter.Up:
+        case Clutter.KEY_Up:
             direction = St.DirectionType.TAB_BACKWARD;
             break;
-        case Clutter.Left:
+        case Clutter.KEY_Left:
             direction = isLtr
                 ? St.DirectionType.TAB_BACKWARD
                 : St.DirectionType.TAB_FORWARD;

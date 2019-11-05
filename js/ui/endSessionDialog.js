@@ -443,7 +443,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let dialogContent = DialogContent[this._type];
         let buttons = [{ action: this.cancel.bind(this),
                          label: _("Cancel"),
-                         key: Clutter.Escape }];
+                         key: Clutter.KEY_Escape }];
 
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;

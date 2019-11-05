@@ -81,7 +81,7 @@ var AutoComplete = class AutoComplete {
         if (cursorPos != -1) {
             text = text.slice(0, cursorPos);
         }
-        if (event.get_key_symbol() == Clutter.Tab) {
+        if (event.get_key_symbol() === Clutter.KEY_Tab) {
             let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
             let currTime = global.get_current_time();
             if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
@@ -565,7 +565,7 @@ var Inspector = GObject.registerClass({
     }
 
     _onKeyPressEvent(actor, event) {
-        if (event.get_key_symbol() == Clutter.Escape)
+        if (event.get_key_symbol() === Clutter.KEY_Escape)
             this._close();
         return Clutter.EVENT_STOP;
     }
@@ -1096,7 +1096,7 @@ class LookingGlass extends St.BoxLayout {
     // Handle key events which are relevant for all tabs of the LookingGlass
     vfunc_key_press_event(keyPressEvent) {
         let symbol = keyPressEvent.keyval;
-        if (symbol == Clutter.Escape) {
+        if (symbol === Clutter.KEY_Escape) {
             if (this._objInspector.visible) {
                 this._objInspector.close();
             } else {
