@@ -39,7 +39,14 @@
                 "_": false,
                 "C_": false,
                 "N_": false,
-                "ngettext": false
+                "ngettext": false,
+                "critical": false,
+                "debug": false,
+                "error": false,
+                "info": false,
+                "logStructured": false,
+                "message": false,
+                "warning": false
             }
         }
     ]

@@ -49,7 +49,6 @@ const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
-const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
 var componentManager = null;
@@ -256,10 +255,9 @@ function _initializeUI() {
         }
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
-            GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
-                'MESSAGE': `GNOME Shell started at ${_startDate}`,
-                'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID
-            });
+            logStructured(GLib.LogLevelFlags.LEVEL_MESSAGE,
+                `GNOME Shell started at ${_startDate}`,
+                { 'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID });
         }
 
         let credentials = new Gio.Credentials();
@@ -416,9 +414,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log(`error: ${msg}: ${details}`);
+        warning(`error: ${msg}: ${details}`);
     else
-        log(`error: ${msg}`);
+        warning(`error: ${msg}`);
 
     notify(msg, details);
 }
