@@ -659,10 +659,9 @@ var ViewSelector = GObject.registerClass({
 
         let overviewViewsClone = new ViewsClone(this, this._viewsDisplay, true);
         Main.overview.setViewsClone(overviewViewsClone);
-        this._appsPage.bind_property('visible',
-                                     overviewViewsClone, 'visible',
-                                     GObject.BindingFlags.SYNC_CREATE |
-                                     GObject.BindingFlags.INVERT_BOOLEAN);
+        this._appsPage.connect('notify::opacity', () => {
+            overviewViewsClone.visible = this._appsPage.opacity != 255;
+        });
     }
 
     _onEmptySpaceClicked() {
@@ -714,7 +713,10 @@ var ViewSelector = GObject.registerClass({
     _addPage(actor, name, a11yIcon, params) {
         params = Params.parse(params, { a11yFocus: null });
 
-        let page = new St.Bin({ child: actor });
+        let page = new St.Bin({
+            child: actor,
+            opacity: 0,
+        });
 
         if (params.a11yFocus) {
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
@@ -724,7 +726,6 @@ var ViewSelector = GObject.registerClass({
                 focusCallback: () => this._a11yFocusPage(page),
             });
         }
-        page.hide();
         this.add_actor(page);
         return page;
     }
@@ -749,11 +750,9 @@ var ViewSelector = GObject.registerClass({
 
     _animateIn(oldPage) {
         if (oldPage)
-            oldPage.hide();
+            oldPage.opacity = 0;
 
         this.emit('page-empty');
-
-        this._activePage.show();
 
         if (this._activePage == this._appsPage && oldPage == this._workspacesPage) {
             // Restore opacity, in case we animated via _fadePageOut
