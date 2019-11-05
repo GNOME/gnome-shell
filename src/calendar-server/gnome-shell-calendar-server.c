@@ -455,10 +455,8 @@ generate_instances_cb (ICalComponent *icomp,
   GHashTable *appointments = ((CollectAppointmentsData *)user_data)->appointments;
   CalendarAppointment *appointment;
   CalendarOccurrence *occurrence;
-  ICalTimezone *default_zone, *tz;
   const gchar *uid;
 
-  default_zone = e_cal_client_get_default_timezone (cal);
   uid = i_cal_component_get_uid (icomp);
   appointment = g_hash_table_lookup (appointments, uid);
 
