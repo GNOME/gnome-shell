@@ -899,7 +899,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
                     // St.Label doesn't support text-align
                     x_align: Clutter.ActorAlign.CENTER,
                 });
-                this._labels.push(bin);
+                this._labels.push(name);
                 box.add_actor(name);
 
                 this.addItem(box, name);
