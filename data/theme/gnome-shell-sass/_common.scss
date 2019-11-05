@@ -1209,12 +1209,11 @@ StScrollBar {
     &:hover, &:focus {
       background-color: $_hover_bg_color;
       color: $fg_color;
-      border: none;
-      padding: 14px;
     }
     &:active { 
       background-color: $selected_bg_color;
       color: $selected_fg_color;
+      border-color: $selected_borders_color;
     }
 
     & > StIcon { icon-size: 16px; }
