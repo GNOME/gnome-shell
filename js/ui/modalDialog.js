@@ -206,7 +206,7 @@ var ModalDialog = GObject.registerClass({
         this._hasModal = false;
 
         if (!this._shellReactive)
-            this._eventBlocker.raise_top();
+            this.backgroundStack.set_child_above_sibling(this._eventBlocker, null);
     }
 
     pushModal(timestamp) {
@@ -229,7 +229,7 @@ var ModalDialog = GObject.registerClass({
         }
 
         if (!this._shellReactive)
-            this._eventBlocker.lower_bottom();
+            this.backgroundStack.set_child_below_sibling(this._eventBlocker, null);
         return true;
     }
 

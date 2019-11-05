@@ -767,7 +767,7 @@ var BackgroundManager = class BackgroundManager {
         if (this._controlPosition) {
             let monitor = this._layoutManager.monitors[this._monitorIndex];
             backgroundActor.set_position(monitor.x, monitor.y);
-            backgroundActor.lower_bottom();
+            this._container.set_child_below_sibling(backgroundActor, null);
         }
 
         let changeSignalId = background.connect('bg-changed', () => {

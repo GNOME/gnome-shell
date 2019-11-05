@@ -80,7 +80,7 @@ var XdndHandler = class {
 
         // Make sure that the cursor window is on top
         if (this._cursorWindowClone)
-            this._cursorWindowClone.raise_top();
+            Main.uiGroup.set_child_above_sibling(this._cursorWindowClone, null);
 
         let dragEvent = {
             x: x,

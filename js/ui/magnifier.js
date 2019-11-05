@@ -1651,7 +1651,7 @@ class Crosshairs extends Clutter.Actor {
                 }
 
                 container.add_actor(crosshairsActor);
-                container.raise_child(magnifiedMouse, crosshairsActor);
+                container.set_child_above_sibling(magnifiedMouse, crosshairsActor);
                 let [xMouse, yMouse] = magnifiedMouse.get_position();
                 let [crosshairsWidth, crosshairsHeight] = crosshairsActor.get_size();
                 crosshairsActor.set_position(xMouse - crosshairsWidth / 2, yMouse - crosshairsHeight / 2);

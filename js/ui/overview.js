@@ -581,7 +581,8 @@ var Overview = class {
         });
         this._shadeBackgrounds();
 
-        this._coverPane.raise_top();
+        Main.layoutManager.overviewGroup.set_child_above_sibling(
+            this._coverPane, null);
         this._coverPane.show();
         this.emit('showing');
     }
@@ -644,7 +645,8 @@ var Overview = class {
         });
         this._unshadeBackgrounds();
 
-        this._coverPane.raise_top();
+        Main.layoutManager.overviewGroup.set_child_above_sibling(
+            this._coverPane, null);
         this._coverPane.show();
         this.emit('hiding');
     }

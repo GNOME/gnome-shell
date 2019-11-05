@@ -139,7 +139,7 @@ var Lightbox = GObject.registerClass({
             this.set({ opacity: 0, style_class: 'lightbox' });
 
         container.add_actor(this);
-        this.raise_top();
+        container.set_child_above_sibling(this, null);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -264,9 +264,9 @@ var Lightbox = GObject.registerClass({
         let below = this;
         for (let i = this._children.length - 1; i >= 0; i--) {
             if (this._children[i] == window)
-                this._children[i].raise_top();
+                this._container.set_child_above_sibling(this._children[i], null);
             else if (this._children[i] == this._highlighted)
-                this._children[i].lower(below);
+                this._container.set_child_below_sibling(this._children[i], below);
             else
                 below = this._children[i];
         }
