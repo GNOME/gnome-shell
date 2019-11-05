@@ -1896,12 +1896,14 @@ var WindowManager = class {
                            parent: actor.get_parent() };
 
             if (this._movingWindow && window == this._movingWindow) {
+                record.parent.remove_child(actor);
                 switchData.movingWindow = record;
                 switchData.windows.push(switchData.movingWindow);
-                actor.reparent(switchData.movingWindowBin);
+                switchData.movingWindowBin.add_child(actor);
             } else if (window.get_workspace().index() == from) {
+                record.parent.remove_child(actor);
                 switchData.windows.push(record);
-                actor.reparent(switchData.curGroup);
+                switchData.curGroup.add_child(actor);
             } else {
                 let visible = false;
                 for (let dir of Object.values(Meta.MotionDirection)) {
@@ -1910,8 +1912,9 @@ var WindowManager = class {
                     if (!info || info.index != window.get_workspace().index())
                         continue;
 
+                    record.parent.remove_child(actor);
                     switchData.windows.push(record);
-                    actor.reparent(info.actor);
+                    info.actor.add_child(actor);
                     visible = true;
                     break;
                 }
@@ -1936,7 +1939,8 @@ var WindowManager = class {
             let w = switchData.windows[i];
 
             w.window.disconnect(w.windowDestroyId);
-            w.window.reparent(w.parent);
+            w.window.get_parent().remove_child(w.window);
+            w.parent.add_child(w.window);
 
             if (w.window.get_meta_window().get_workspace() !=
                 global.workspace_manager.get_active_workspace())
