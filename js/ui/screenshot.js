@@ -86,6 +86,9 @@ var ScreenshotService = class {
     }
 
     _createStream(filename) {
+        if (filename == '')
+            return [Gio.MemoryOutputStream.new_resizable(), null];
+
         if (GLib.path_is_absolute(filename)) {
             try {
                 let file = Gio.File.new_for_path(filename);
@@ -121,7 +124,15 @@ var ScreenshotService = class {
 
         stream.close(null);
 
-        let filenameUsed = file.get_path();
+        let filenameUsed = '';
+        if (file) {
+            filenameUsed = file.get_path();
+        } else {
+            let bytes = stream.steal_as_bytes();
+            let clipboard = St.Clipboard.get_default();
+            clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
+        }
+
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
     }
