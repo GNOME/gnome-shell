@@ -21,36 +21,33 @@ void    shell_screenshot_screenshot_area      (ShellScreenshot      *screenshot,
                                                int                   y,
                                                int                   width,
                                                int                   height,
-                                               const char           *filename,
+                                               GOutputStream        *stream,
                                                GAsyncReadyCallback   callback,
                                                gpointer              user_data);
 gboolean shell_screenshot_screenshot_area_finish (ShellScreenshot       *screenshot,
                                                   GAsyncResult          *result,
                                                   cairo_rectangle_int_t **area,
-                                                  const char            **filename_used,
                                                   GError                **error);
 
 void    shell_screenshot_screenshot_window    (ShellScreenshot     *screenshot,
                                                gboolean             include_frame,
                                                gboolean             include_cursor,
-                                               const char          *filename,
+                                               GOutputStream       *stream,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
 gboolean shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
                                                     GAsyncResult           *result,
                                                     cairo_rectangle_int_t **area,
-                                                    const char            **filename_used,
                                                     GError                **error);
 
 void    shell_screenshot_screenshot           (ShellScreenshot     *screenshot,
                                                gboolean             include_cursor,
-                                               const char          *filename,
+                                               GOutputStream       *stream,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
 gboolean shell_screenshot_screenshot_finish   (ShellScreenshot        *screenshot,
                                                GAsyncResult           *result,
                                                cairo_rectangle_int_t **area,
-                                               const char            **filename_used,
                                                GError                **error);
 
 void     shell_screenshot_pick_color        (ShellScreenshot      *screenshot,
