@@ -124,11 +124,12 @@ var WindowClone = GObject.registerClass({
         if (actor.inDrag)
             return;
 
+        let parent = this.get_parent();
         let actualAbove = this.getActualStackAbove();
         if (actualAbove == null)
-            this.lower_bottom();
+            parent.set_child_below_sibling(this, null);
         else
-            this.raise(actualAbove);
+            parent.set_child_above_sibling(this, actualAbove);
     }
 
     addAttachedDialog(win) {
@@ -214,11 +215,12 @@ var WindowClone = GObject.registerClass({
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
         // with a new one on the target workspace.
-        if (this.get_parent() != null) {
+        let parent = this.get_parent();
+        if (parent !== null) {
             if (this._stackAbove == null)
-                this.lower_bottom();
+                parent.set_child_below_sibling(this, null);
             else
-                this.raise(this._stackAbove);
+                parent.set_child_above_sibling(this, this._stackAbove);
         }
 
 
@@ -1014,7 +1016,7 @@ var ThumbnailsBox = GObject.registerClass({
         this._queueUpdateStates();
 
         // The thumbnails indicator actually needs to be on top of the thumbnails
-        this._indicator.raise_top();
+        this.set_child_above_sibling(this._indicator, null);
 
         // Clear the splice index, we got the message
         this._spliceIndex = -1;

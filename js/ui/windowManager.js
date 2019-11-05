@@ -1874,13 +1874,13 @@ var WindowManager = class {
                          actor: new Clutter.Actor() };
             switchData.surroundings[dir] = info;
             switchData.container.add_actor(info.actor);
-            info.actor.raise_top();
+            switchData.container.set_child_above_sibling(info.actor, null);
 
             let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             info.actor.set_position(x, y);
         }
 
-        switchData.movingWindowBin.raise_top();
+        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
 
         for (let i = 0; i < windows.length; i++) {
             let actor = windows[i];

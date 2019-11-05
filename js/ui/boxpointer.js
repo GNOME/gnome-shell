@@ -44,7 +44,7 @@ var BoxPointer = GObject.registerClass({
         this._border = new St.DrawingArea();
         this._border.connect('repaint', this._drawBorder.bind(this));
         this.add_actor(this._border);
-        this.bin.raise(this._border);
+        this.set_child_above_sibling(this.bin, this._border);
         this._sourceAlignment = 0.5;
         this._muteInput = true;
 

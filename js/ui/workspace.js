@@ -328,11 +328,12 @@ var WindowClone = GObject.registerClass({
             // We'll fix up the stack after the drag
             return;
 
+        let parent = this.get_parent();
         let actualAbove = this.getActualStackAbove();
         if (actualAbove == null)
-            this.lower_bottom();
+            parent.set_child_below_sibling(this, null);
         else
-            this.raise(actualAbove);
+            parent.set_child_above_sibling(this, actualAbove);
     }
 
     _disconnectSignals() {
@@ -462,11 +463,12 @@ var WindowClone = GObject.registerClass({
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
         // with a new one on the target workspace.
-        if (this.get_parent() != null) {
+        let parent = this.get_parent();
+        if (parent !== null) {
             if (this._stackAbove == null)
-                this.lower_bottom();
+                parent.set_child_below_sibling(this, null);
             else
-                this.raise(this._stackAbove);
+                parent.set_child_above_sibling(this, this._stackAbove);
         }
 
 
@@ -671,7 +673,8 @@ var WindowOverlay = class {
     }
 
     _animateVisible() {
-        this._parentActor.raise_top();
+        this._parentActor.get_parent().set_child_above_sibling(
+            this._parentActor, null);
 
         let toAnimate = [this.border, this.title];
         if (this._windowCanClose())

@@ -892,7 +892,7 @@ var PopupMenu = class extends PopupMenuBase {
         this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
         this._boxPointer.open(animate);
 
-        this.actor.raise_top();
+        this.actor.get_parent().set_child_above_sibling(this.actor, null);
 
         this.emit('open-state-changed', true);
     }
