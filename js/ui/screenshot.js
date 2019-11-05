@@ -122,7 +122,15 @@ var ScreenshotService = class {
 
         stream.close(null);
 
-        let filenameUsed = file.get_path();
+        let filenameUsed = '';
+        if (file) {
+            filenameUsed = file.get_path();
+        } else {
+            let bytes = stream.steal_as_bytes();
+            let clipboard = St.Clipboard.get_default();
+            clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
+        }
+
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
     }
@@ -158,7 +166,11 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createFileStream(filename);
+        let stream, file;
+        if (filename != '')
+            [stream, file] = this._createFileStream(filename);
+        else
+            stream = Gio.MemoryOutputStream.new_resizable();
 
         screenshot.screenshot_area (x, y, width, height, stream,
             (o, res) => {
@@ -179,7 +191,11 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createFileStream(filename);
+        let stream, file;
+        if (filename != '')
+            [stream, file] = this._createFileStream(filename);
+        else
+            stream = Gio.MemoryOutputStream.new_resizable();
 
         screenshot.screenshot_window (includeFrame, includeCursor, stream,
             (o, res) => {
@@ -200,7 +216,11 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createFileStream(filename);
+        let stream, file;
+        if (filename != '')
+            [stream, file] = this._createFileStream(filename);
+        else
+            stream = Gio.MemoryOutputStream.new_resizable();
 
         screenshot.screenshot(includeCursor, stream,
             (o, res) => {
