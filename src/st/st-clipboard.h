@@ -73,6 +73,11 @@ void st_clipboard_set_text (StClipboard             *clipboard,
                             StClipboardType          type,
                             const gchar             *text);
 
+void st_clipboard_set_content (StClipboard          *clipboard,
+                               StClipboardType       type,
+                               const gchar          *mimetype,
+                               GBytes               *bytes);
+
 void st_clipboard_set_selection (MetaSelection *selection);
 
 G_END_DECLS
