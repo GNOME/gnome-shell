@@ -15,6 +15,8 @@ var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
+const DELAYED_RESET_TIMEOUT = 200;
+
 var AuthenticationDialog = GObject.registerClass({
     Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } }
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
@@ -51,41 +53,36 @@ var AuthenticationDialog = GObject.registerClass({
             userName = userNames[0];
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
-        let userRealName = this._user.get_real_name();
-        this._userLoadedId = this._user.connect('notify::is_loaded',
+
+        let userBox = new St.BoxLayout({
+            style_class: 'polkit-dialog-user-layout',
+            vertical: false,
+        });
+        content.messageBox.add(userBox);
+
+        this._userAvatar = new UserWidget.Avatar(this._user, {
+            iconSize: DIALOG_ICON_SIZE,
+            styleClass: 'polkit-dialog-user-icon',
+        });
+        userBox.add_child(this._userAvatar);
+
+        this._userLabel = new St.Label({
+            style_class: userName === 'root'
+                ? 'polkit-dialog-user-root-label'
+                : 'polkit-dialog-user-label',
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        if (userName === 'root')
+            this._userLabel.text = _('Administrator');
+
+        userBox.add_child(this._userLabel);
+
+        this._userLoadedId = this._user.connect('notify::is-loaded',
                                                 this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed',
                                                  this._onUserChanged.bind(this));
-
-        // Special case 'root'
-        let userIsRoot = false;
-        if (userName == 'root') {
-            userIsRoot = true;
-            userRealName = _("Administrator");
-        }
-
-        if (userIsRoot) {
-            let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
-                                            text: userRealName }));
-            content.messageBox.add_child(userLabel);
-        } else {
-            let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
-                                             vertical: false });
-            content.messageBox.add(userBox);
-            this._userAvatar = new UserWidget.Avatar(this._user,
-                                                     { iconSize: DIALOG_ICON_SIZE,
-                                                       styleClass: 'polkit-dialog-user-icon' });
-            this._userAvatar.hide();
-            userBox.add_child(this._userAvatar);
-            let userLabel = new St.Label(({
-                style_class: 'polkit-dialog-user-label',
-                text: userRealName,
-                x_expand: true,
-                y_align: Clutter.ActorAlign.CENTER,
-            }));
-            userBox.add_child(userLabel);
-        }
-
         this._onUserChanged();
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
@@ -103,12 +100,14 @@ var AuthenticationDialog = GObject.registerClass({
         });
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
+        this._passwordEntry.bind_property('reactive',
+            this._passwordEntry.clutter_text, 'editable',
+            GObject.BindingFlags.SYNC_CREATE);
         this._passwordBox.add_child(this._passwordEntry);
 
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordBox.add(this._workSpinner);
 
-        this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
@@ -140,7 +139,14 @@ var AuthenticationDialog = GObject.registerClass({
                                               key: Clutter.Escape });
         this._okButton = this.addButton({ label: _("Authenticate"),
                                           action: this._onAuthenticateButtonPressed.bind(this),
-                                          default: true });
+                                          reactive: false });
+        this._okButton.bind_property('reactive',
+            this._okButton, 'can-focus',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._passwordEntry.clutter_text.connect('text-changed', text => {
+            this._okButton.reactive = text.get_text().length > 0;
+        });
 
         this._doneEmitted = false;
 
@@ -156,7 +162,8 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     performAuthentication() {
-        this._destroySession();
+        this._destroySession(DELAYED_RESET_TIMEOUT);
+
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
         this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
@@ -195,18 +202,15 @@ var AuthenticationDialog = GObject.registerClass({
         }
     }
 
-    _updateSensitivity(sensitive) {
-        this._passwordEntry.reactive = sensitive;
-        this._passwordEntry.clutter_text.editable = sensitive;
-
-        this._okButton.can_focus = sensitive;
-        this._okButton.reactive = sensitive;
-        this._setWorking(!sensitive);
-    }
-
     _onEntryActivate() {
         let response = this._passwordEntry.get_text();
-        this._updateSensitivity(false);
+        if (response.length === 0)
+            return;
+
+        this._passwordEntry.reactive = false;
+        this._okButton.reactive = false;
+        this._setWorking(true);
+
         this._session.response(response);
         // When the user responds, dismiss already shown info and
         // error texts (if any)
@@ -252,6 +256,11 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onSessionRequest(session, request, echoOn) {
+        if (this._sessionRequestTimeoutId) {
+            GLib.source_remove(this._sessionRequestTimeoutId);
+            this._sessionRequestTimeoutId = 0;
+        }
+
         // Cheap localization trick
         if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
@@ -265,9 +274,12 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox.show();
         this._passwordEntry.set_text('');
-        this._passwordEntry.grab_key_focus();
-        this._updateSensitivity(true);
+        this._passwordEntry.reactive  = true;
+        this._okButton.reactive = false;
+        this._setWorking(false);
+
         this._ensureOpen();
+        this._passwordEntry.grab_key_focus();
     }
 
     _onSessionShowError(session, text) {
@@ -288,7 +300,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._ensureOpen();
     }
 
-    _destroySession() {
+    _destroySession(delay = 0) {
         if (this._session) {
             if (!this._completed)
                 this._session.cancel();
@@ -300,13 +312,37 @@ var AuthenticationDialog = GObject.registerClass({
             this._session.disconnect(this._sessionShowInfoId);
             this._session = null;
         }
+
+        if (this._sessionRequestTimeoutId) {
+            GLib.source_remove(this._sessionRequestTimeoutId);
+            this._sessionRequestTimeoutId = 0;
+        }
+
+        let resetDialog = () => {
+            this._passwordBox.hide();
+            this._cancelButton.grab_key_focus();
+            this._okButton.reactive = false;
+        };
+
+        if (delay) {
+            this._sessionRequestTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, resetDialog);
+            GLib.Source.set_name_by_id(this._sessionRequestTimeoutId, '[gnome-shell] this._sessionRequestTimeoutId');
+        } else {
+            resetDialog();
+        }
     }
 
     _onUserChanged() {
-        if (this._user.is_loaded && this._userAvatar) {
-            this._userAvatar.update();
-            this._userAvatar.show();
-        }
+        if (!this._user.is_loaded)
+            return;
+
+        let userName = this._user.get_user_name();
+        let realName = this._user.get_real_name();
+
+        if (userName !== 'root')
+            this._userLabel.set_text(realName);
+
+        this._userAvatar.update();
     }
 
     cancel() {
@@ -318,7 +354,10 @@ var AuthenticationDialog = GObject.registerClass({
     _onDialogClosed() {
         if (this._sessionUpdatedId)
             Main.sessionMode.disconnect(this._sessionUpdatedId);
-        this._sessionUpdatedId = 0;
+
+        if (this._sessionRequestTimeoutId)
+            GLib.source_remove(this._sessionRequestTimeoutId);
+        this._sessionRequestTimeoutId = 0;
 
         if (this._user) {
             this._user.disconnect(this._userLoadedId);
