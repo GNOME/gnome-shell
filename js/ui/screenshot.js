@@ -64,7 +64,50 @@ var ScreenshotService = class {
                y + height <= global.screen_height;
     }
 
-    _onScreenshotComplete(result, area, filenameUsed, flash, invocation) {
+    *_resolveRelativeFilename(filename) {
+        if (GLib.str_has_suffix(filename, '.png'))
+            filename = filename.substr(0, -4);
+
+        let path = [
+            GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
+            GLib.get_home_dir(),
+        ].find(p => GLib.file_test(p, GLib.FileTest.EXISTS));
+
+        if (!path)
+            return null;
+
+        yield Gio.File.new_for_path(
+            GLib.build_filenamev([path, `${filename}.png`]));
+
+        for (let idx = 1; ; idx++) {
+            yield Gio.File.new_for_path(
+                GLib.build_filenamev([path, `${filename}-${idx}.png`]));
+        }
+    }
+
+    _createStream(filename) {
+        if (GLib.path_is_absolute(filename)) {
+            try {
+                let file = Gio.File.new_for_path(filename);
+                let stream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
+                return [stream, file];
+            } catch (e) {
+                return [null, null];
+            }
+        }
+
+        for (let file of this._resolveRelativeFilename(filename)) {
+            try {
+                let stream = file.create(Gio.FileCreateFlags.NONE, null);
+                return [stream, file];
+            } catch (e) {
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                    return [null, null];
+            }
+        }
+    }
+
+    _onScreenshotComplete(result, area, stream, file, flash, invocation) {
         if (result) {
             if (flash) {
                 let flashspot = new Flashspot(area);
@@ -76,6 +119,9 @@ var ScreenshotService = class {
             }
         }
 
+        stream.close(null);
+
+        let filenameUsed = file.get_path();
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
     }
@@ -110,13 +156,16 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_area (x, y, width, height, filename,
+
+        let [stream, file] = this._createStream(filename);
+
+        screenshot.screenshot_area (x, y, width, height, stream,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_area_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, area, stream, file, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -128,13 +177,16 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot_window (includeFrame, includeCursor, filename,
+
+        let [stream, file] = this._createStream(filename);
+
+        screenshot.screenshot_window (includeFrame, includeCursor, stream,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_window_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, area, stream, file, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
@@ -146,13 +198,16 @@ var ScreenshotService = class {
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
             return;
-        screenshot.screenshot(includeCursor, filename,
+
+        let [stream, file] = this._createStream(filename);
+
+        screenshot.screenshot(includeCursor, stream,
             (o, res) => {
                 try {
-                    let [result, area, filenameUsed] =
+                    let [result, area] =
                         screenshot.screenshot_finish(res);
                     this._onScreenshotComplete(
-                        result, area, filenameUsed, flash, invocation);
+                        result, area, stream, file, flash, invocation);
                 } catch (e) {
                     invocation.return_gerror (e);
                 }
