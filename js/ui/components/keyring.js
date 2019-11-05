@@ -33,7 +33,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
         this._cancelButton = this.addButton({ label: '',
                                               action: this._onCancelButton.bind(this),
-                                              key: Clutter.Escape });
+                                              key: Clutter.KEY_Escape });
         this._continueButton = this.addButton({ label: '',
                                                 action: this._onContinueButton.bind(this),
                                                 default: true });

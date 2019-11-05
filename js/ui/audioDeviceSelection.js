@@ -54,7 +54,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
                              label: _("Sound Settings") });
         this.addButton({ action: this.close.bind(this),
                          label: _("Cancel"),
-                         key: Clutter.Escape });
+                         key: Clutter.KEY_Escape });
     }
 
     _getDeviceLabel(device) {

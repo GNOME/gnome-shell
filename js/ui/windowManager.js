@@ -69,7 +69,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         */
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
                                               action: this._onFailure.bind(this),
-                                              key: Clutter.Escape });
+                                              key: Clutter.KEY_Escape });
         this._okButton = this.addButton({ label: _("Keep Changes"),
                                           action: this._onSuccess.bind(this),
                                           default: true });

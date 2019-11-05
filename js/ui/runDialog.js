@@ -95,7 +95,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         this.setButtons([{
             action: this.close.bind(this),
             label: _("Close"),
-            key: Clutter.Escape,
+            key: Clutter.KEY_Escape,
         }]);
 
         this._pathCompleter = new Gio.FilenameCompleter();
@@ -112,7 +112,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         });
         this._entryText.connect('key-press-event', (o, e) => {
             let symbol = e.get_key_symbol();
-            if (symbol == Clutter.Tab) {
+            if (symbol === Clutter.KEY_Tab) {
                 let text = o.get_text();
                 let prefix;
                 if (text.lastIndexOf(' ') == -1)

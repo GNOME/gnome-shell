@@ -61,7 +61,7 @@ class KbdA11yDialog extends GObject.Object {
                                dialog.close();
                            },
                            default: enabled,
-                           key: !enabled ? Clutter.Escape : null });
+                           key: !enabled ? Clutter.KEY_Escape : null });
 
         dialog.addButton({ label: enabled ? _("Turn Off") : _("Leave Off"),
                            action: () => {
@@ -69,7 +69,7 @@ class KbdA11yDialog extends GObject.Object {
                                dialog.close();
                            },
                            default: !enabled,
-                           key: enabled ? Clutter.Escape : null });
+                           key: enabled ? Clutter.KEY_Escape : null });
 
         dialog.open();
     }

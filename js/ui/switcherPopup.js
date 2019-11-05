@@ -172,7 +172,7 @@ var SwitcherPopup = GObject.registerClass({
 
         // Note: pressing one of the below keys will destroy the popup only if
         // that key is not used by the active popup's keyboard shortcut
-        if (keysym == Clutter.Escape || keysym == Clutter.Tab)
+        if (keysym === Clutter.KEY_Escape || keysym === Clutter.KEY_Tab)
             this.fadeAndDestroy();
 
         return Clutter.EVENT_STOP;
