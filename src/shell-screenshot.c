@@ -25,8 +25,7 @@ struct _ShellScreenshotPrivate
 {
   ShellGlobal *global;
 
-  char *filename;
-  char *filename_used;
+  GOutputStream *stream;
 
   GDateTime *datetime;
 
@@ -72,100 +71,10 @@ on_screenshot_written (GObject      *source,
   g_object_unref (result);
 
   g_clear_pointer (&priv->image, cairo_surface_destroy);
-  g_clear_pointer (&priv->filename, g_free);
-  g_clear_pointer (&priv->filename_used, g_free);
+  g_clear_object (&priv->stream);
   g_clear_pointer (&priv->datetime, g_date_time_unref);
 
   meta_enable_unredirect_for_display (shell_global_get_display (priv->global));
-}
-
-/* called in an I/O thread */
-static GOutputStream *
-get_stream_for_unique_path (const gchar *path,
-                            const gchar *filename,
-                            gchar **filename_used)
-{
-  GOutputStream *stream;
-  GFile *file;
-  gchar *real_path, *real_filename, *name, *ptr;
-  gint idx;
-
-  ptr = g_strrstr (filename, ".png");
-
-  if (ptr != NULL)
-    real_filename = g_strndup (filename, ptr - filename);
-  else
-    real_filename = g_strdup (filename);
-
-  idx = 0;
-  real_path = NULL;
-
-  do
-    {
-      if (idx == 0)
-        name = g_strdup_printf ("%s.png", real_filename);
-      else
-        name = g_strdup_printf ("%s - %d.png", real_filename, idx);
-
-      real_path = g_build_filename (path, name, NULL);
-      g_free (name);
-
-      file = g_file_new_for_path (real_path);
-      stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
-      g_object_unref (file);
-
-      if (stream != NULL)
-        *filename_used = real_path;
-      else
-        g_free (real_path);
-
-      idx++;
-    }
-  while (stream == NULL);
-
-  g_free (real_filename);
-
-  return stream;
-}
-
-/* called in an I/O thread */
-static GOutputStream *
-get_stream_for_filename (const gchar *filename,
-                         gchar **filename_used)
-{
-  const gchar *path;
-
-  path = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
-  if (!g_file_test (path, G_FILE_TEST_EXISTS))
-    {
-      path = g_get_home_dir ();
-      if (!g_file_test (path, G_FILE_TEST_EXISTS))
-        return NULL;
-    }
-
-  return get_stream_for_unique_path (path, filename, filename_used);
-}
-
-static GOutputStream *
-prepare_write_stream (const gchar *filename,
-                      gchar **filename_used)
-{
-  GOutputStream *stream;
-  GFile *file;
-
-  if (g_path_is_absolute (filename))
-    {
-      file = g_file_new_for_path (filename);
-      *filename_used = g_strdup (filename);
-      stream = G_OUTPUT_STREAM (g_file_replace (file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL));
-      g_object_unref (file);
-    }
-  else
-    {
-      stream = get_stream_for_filename (filename, filename_used);
-    }
-
-  return stream;
 }
 
 static void
@@ -184,8 +93,7 @@ write_screenshot_thread (GTask        *result,
 
   priv = screenshot->priv;
 
-  stream = prepare_write_stream (priv->filename,
-                                 &priv->filename_used);
+  stream = g_object_ref (priv->stream);
 
   if (stream == NULL)
     status = CAIRO_STATUS_FILE_NOT_FOUND;
@@ -517,7 +425,6 @@ static gboolean
 finish_screenshot (ShellScreenshot        *screenshot,
                    GAsyncResult           *result,
                    cairo_rectangle_int_t **area,
-                   const char            **filename_used,
                    GError                **error)
 {
   ShellScreenshotPrivate *priv = screenshot->priv;
@@ -528,9 +435,6 @@ finish_screenshot (ShellScreenshot        *screenshot,
   if (area)
     *area = &priv->screenshot_area;
 
-  if (filename_used)
-    *filename_used = priv->filename_used;
-
   return TRUE;
 }
 
@@ -538,19 +442,19 @@ finish_screenshot (ShellScreenshot        *screenshot,
  * shell_screenshot_screenshot:
  * @screenshot: the #ShellScreenshot
  * @include_cursor: Whether to include the cursor or not
- * @filename: The filename for the screenshot
+ * @stream: The stream for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
  * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the whole screen
- * in @filename as png image.
+ * in @stream as png image.
  *
  */
 void
 shell_screenshot_screenshot (ShellScreenshot     *screenshot,
                              gboolean             include_cursor,
-                             const char          *filename,
+                             GOutputStream       *stream,
                              GAsyncReadyCallback  callback,
                              gpointer             user_data)
 {
@@ -559,7 +463,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   const char *paint_signal;
   GTask *result;
 
-  if (priv->filename != NULL) {
+  if (priv->stream != NULL) {
     if (callback)
       g_task_report_new_error (screenshot,
                                callback,
@@ -575,7 +479,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_screenshot);
 
-  priv->filename = g_strdup (filename);
+  priv->stream = g_object_ref (stream);
   priv->include_cursor = FALSE;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
@@ -601,8 +505,6 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
  * @screenshot: the #ShellScreenshot
  * @result: the #GAsyncResult that was provided to the callback
  * @area: (out) (transfer none): the area that was grabbed in screen coordinates
- * @filename_used: (out) (transfer none): the name of the file the screenshot
- * was written to
  * @error: #GError for error reporting
  *
  * Finish the asynchronous operation started by shell_screenshot_screenshot()
@@ -615,13 +517,12 @@ gboolean
 shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
                                     GAsyncResult           *result,
                                     cairo_rectangle_int_t **area,
-                                    const char            **filename_used,
                                     GError                **error)
 {
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot),
                         FALSE);
-  return finish_screenshot (screenshot, result, area, filename_used, error);
+  return finish_screenshot (screenshot, result, area, error);
 }
 
 /**
@@ -631,13 +532,13 @@ shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
  * @y: The Y coordinate of the area
  * @width: The width of the area
  * @height: The height of the area
- * @filename: The filename for the screenshot
+ * @stream: The stream for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
  * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the passed in area and saves it
- * in @filename as png image.
+ * in @stream as png image.
  *
  */
 void
@@ -646,7 +547,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
                                   int                  y,
                                   int                  width,
                                   int                  height,
-                                  const char          *filename,
+                                  GOutputStream       *stream,
                                   GAsyncReadyCallback  callback,
                                   gpointer             user_data)
 {
@@ -654,7 +555,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
   ShellScreenshotPrivate *priv = screenshot->priv;
   GTask *result;
 
-  if (priv->filename != NULL) {
+  if (priv->stream != NULL) {
     if (callback)
       g_task_report_new_error (screenshot,
                                callback,
@@ -670,7 +571,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_screenshot_area);
 
-  priv->filename = g_strdup (filename);
+  priv->stream = g_object_ref (stream);
   priv->screenshot_area.x = x;
   priv->screenshot_area.y = y;
   priv->screenshot_area.width = width;
@@ -690,8 +591,6 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
  * @screenshot: the #ShellScreenshot
  * @result: the #GAsyncResult that was provided to the callback
  * @area: (out) (transfer none): the area that was grabbed in screen coordinates
- * @filename_used: (out) (transfer none): the name of the file the screenshot
- * was written to
  * @error: #GError for error reporting
  *
  * Finish the asynchronous operation started by shell_screenshot_screenshot_area()
@@ -704,13 +603,12 @@ gboolean
 shell_screenshot_screenshot_area_finish (ShellScreenshot        *screenshot,
                                          GAsyncResult           *result,
                                          cairo_rectangle_int_t **area,
-                                         const char            **filename_used,
                                          GError                **error)
 {
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot_area),
                         FALSE);
-  return finish_screenshot (screenshot, result, area, filename_used, error);
+  return finish_screenshot (screenshot, result, area, error);
 }
 
 /**
@@ -718,20 +616,20 @@ shell_screenshot_screenshot_area_finish (ShellScreenshot        *screenshot,
  * @screenshot: the #ShellScreenshot
  * @include_frame: Whether to include the frame or not
  * @include_cursor: Whether to include the cursor or not
- * @filename: The filename for the screenshot
+ * @stream: The stream for the screenshot
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
  * @user_data: the data to pass to callback function
  *
  * Takes a screenshot of the focused window (optionally omitting the frame)
- * in @filename as png image.
+ * in @stream as png image.
  *
  */
 void
 shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
                                     gboolean             include_frame,
                                     gboolean             include_cursor,
-                                    const char          *filename,
+                                    GOutputStream       *stream,
                                     GAsyncReadyCallback  callback,
                                     gpointer             user_data)
 {
@@ -741,7 +639,7 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
   MetaWindow *window = meta_display_get_focus_window (display);
   GTask *result;
 
-  if (priv->filename != NULL || !window) {
+  if (priv->stream != NULL || !window) {
     if (callback)
       g_task_report_new_error (screenshot,
                                callback,
@@ -757,7 +655,7 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_screenshot_window);
 
-  priv->filename = g_strdup (filename);
+  priv->stream = g_object_ref (stream);
   priv->include_frame = include_frame;
   priv->include_cursor = include_cursor &&
                          should_draw_cursor_image (SHELL_SCREENSHOT_WINDOW);
@@ -776,8 +674,6 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
  * @screenshot: the #ShellScreenshot
  * @result: the #GAsyncResult that was provided to the callback
  * @area: (out) (transfer none): the area that was grabbed in screen coordinates
- * @filename_used: (out) (transfer none): the name of the file the screenshot
- * was written to
  * @error: #GError for error reporting
  *
  * Finish the asynchronous operation started by shell_screenshot_screenshot_window()
@@ -790,13 +686,12 @@ gboolean
 shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
                                            GAsyncResult           *result,
                                            cairo_rectangle_int_t **area,
-                                           const char            **filename_used,
                                            GError                **error)
 {
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot_window),
                         FALSE);
-  return finish_screenshot (screenshot, result, area, filename_used, error);
+  return finish_screenshot (screenshot, result, area, error);
 }
 
 /**
