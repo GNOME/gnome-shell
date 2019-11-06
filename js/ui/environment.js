@@ -292,7 +292,8 @@ function init() {
 
     // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
     Date.prototype.toLocaleFormat = function(format) {
-        return Shell.util_format_date(format, this.getTime());
+        let dt = GLib.DateTime.new_from_unix_local(this.getTime() / 1000);
+        return dt ? dt.format(format) : '';
     };
 
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
