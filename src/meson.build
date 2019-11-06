@@ -183,12 +183,17 @@ libshell_no_gir_sources = [
   libshell_private_sources
 ]
 
-dbus_generated = gnome.gdbus_codegen('org-gtk-application',
+gtk_application_dbus_generated = gnome.gdbus_codegen('org-gtk-application',
   'org.gtk.Application.xml',
   namespace: 'Shell'
 )
 
-libshell_no_gir_sources += dbus_generated
+switcheroo_control_dbus_generated = gnome.gdbus_codegen('switcheroo-control',
+  'net.hadess.SwitcherooControl.xml',
+  namespace: 'Shell'
+)
+
+libshell_no_gir_sources += [ gtk_application_dbus_generated, switcheroo_control_dbus_generated ]
 
 libshell = library('gnome-shell',
   sources: libshell_gir_sources + libshell_no_gir_sources,
