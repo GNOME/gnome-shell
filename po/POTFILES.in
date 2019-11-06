@@ -93,5 +93,6 @@ subprojects/extensions-tool/src/command-reset.c
 subprojects/extensions-tool/src/command-uninstall.c
 subprojects/extensions-tool/src/main.c
 subprojects/extensions-tool/src/templates/00-plain.desktop.in
+subprojects/extensions-tool/src/templates/indicator.desktop.in
 # Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
 subprojects/gvc/gvc-mixer-control.c
