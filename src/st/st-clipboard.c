@@ -195,6 +195,36 @@ st_clipboard_get_text (StClipboard            *clipboard,
 }
 
 /**
+ * st_clipboard_set_content:
+ * @clipboard: A #StClipboard
+ * @type: The type of clipboard that you want to set
+ * @mimetype: content mimetype
+ * @bytes: content data
+ *
+ * Sets the clipboard content.
+ **/
+void
+st_clipboard_set_content (StClipboard     *clipboard,
+                          StClipboardType  type,
+                          const gchar     *mimetype,
+                          GBytes          *bytes)
+{
+  MetaSelectionType selection_type;
+  MetaSelectionSource *source;
+
+  g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
+  g_return_if_fail (meta_selection != NULL);
+  g_return_if_fail (bytes != NULL);
+
+  if (!convert_type (type, &selection_type))
+    return;
+
+  source = meta_selection_source_memory_new (mimetype, bytes);
+  meta_selection_set_owner (meta_selection, selection_type, source);
+  g_object_unref (source);
+}
+
+/**
  * st_clipboard_set_text:
  * @clipboard: A #StClipboard
  * @type: The type of clipboard that you want to set
@@ -207,22 +237,15 @@ st_clipboard_set_text (StClipboard     *clipboard,
                        StClipboardType  type,
                        const gchar     *text)
 {
-  MetaSelectionType selection_type;
-  MetaSelectionSource *source;
   GBytes *bytes;
 
   g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
   g_return_if_fail (meta_selection != NULL);
   g_return_if_fail (text != NULL);
 
-  if (!convert_type (type, &selection_type))
-    return;
-
   bytes = g_bytes_new_take (g_strdup (text), strlen (text));
-  source = meta_selection_source_memory_new ("text/plain;charset=utf-8", bytes);
+  st_clipboard_set_content (clipboard, type, "text/plain;charset=utf-8", bytes);
   g_bytes_unref (bytes);
-
-  meta_selection_set_owner (meta_selection, selection_type, source);
 }
 
 void
