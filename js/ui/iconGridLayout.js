@@ -298,12 +298,19 @@ var IconGridLayout = GObject.registerClass({
             return;
 
         if (interactive) {
+            const options = {
+                forFeedback: true,
+                destroyCallback: () => this._onMessageDestroy(info),
+                undoCallback: null,
+            };
+
+            // FIXME: re-enable Undo action for folders when support is implemented
+            if (!this.iconIsFolder(id))
+                options.undoCallback = () => this._undoRemoveItem(undoInfo);
+
             Main.overview.setMessage(
-                _('%s has been removed').format(info.get_name()), {
-                    forFeedback: true,
-                    destroyCallback: () => this._onMessageDestroy(info),
-                    undoCallback: () => this._undoRemoveItem(undoInfo),
-                });
+                _('%s has been removed').format(info.get_name()),
+                options);
         } else {
             this._onMessageDestroy(info);
         }
