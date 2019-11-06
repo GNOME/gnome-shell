@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-shell_branch=$(git describe --contains --all HEAD)
 mutter_target=
 
 git clone https://gitlab.gnome.org/GNOME/mutter.git
@@ -26,8 +25,7 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
 fi
 
 if [ -z "$mutter_target" ]; then
-  mutter_target=$(git branch -r -l origin/$shell_branch)
-  mutter_target=${mutter_target:-$(git branch -r -l ${shell_branch#remotes/})}
+  mutter_target=$(git branch -r -l origin/$CI_COMMIT_REF_NAME)
   mutter_target=${mutter_target:-origin/master}
   echo Using $mutter_target instead
 fi
