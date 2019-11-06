@@ -464,7 +464,7 @@ var ScreenShield = class {
         this._backgroundGroup = new Clutter.Actor();
 
         this._lockScreenGroup.add_actor(this._backgroundGroup);
-        this._backgroundGroup.lower_bottom();
+        this._lockScreenGroup.set_child_below_sibling(this._backgroundGroup, null);
         this._bgManagers = [];
 
         this._updateBackgrounds();

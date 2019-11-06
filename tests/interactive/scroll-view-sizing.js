@@ -154,7 +154,7 @@ class SizingIllustrator extends St.Widget {
     add(child) {
         this.child = child;
         this.add_child(child);
-        this.child.lower_bottom();
+        this.set_child_below_sibling(child, null);
     }
 
     vfunc_get_preferred_width(forHeight) {

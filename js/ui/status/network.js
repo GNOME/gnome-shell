@@ -908,10 +908,10 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
         this._disconnectButton = this.addButton({ action: this.close.bind(this),
                                                   label: _("Cancel"),
-                                                  key: Clutter.Escape });
+                                                  key: Clutter.KEY_Escape });
         this._connectButton = this.addButton({ action: this._connect.bind(this),
                                                label: _("Connect"),
-                                               key: Clutter.Return });
+                                               key: Clutter.KEY_Return });
     }
 
     _connect() {

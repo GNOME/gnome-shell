@@ -136,7 +136,7 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._cancelButton = this.addButton({ label: _("Cancel"),
                                               action: this.cancel.bind(this),
-                                              key: Clutter.Escape });
+                                              key: Clutter.KEY_Escape });
         this._okButton = this.addButton({ label: _("Authenticate"),
                                           action: this._onAuthenticateButtonPressed.bind(this),
                                           reactive: false });

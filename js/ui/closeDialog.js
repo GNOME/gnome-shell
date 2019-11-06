@@ -73,7 +73,7 @@ var CloseDialog = GObject.registerClass({
                                  default: true });
         this._dialog.addButton({ label: _('Wait'),
                                  action: this._onWait.bind(this),
-                                 key: Clutter.Escape });
+                                 key: Clutter.KEY_Escape });
 
         global.focus_manager.add_group(this._dialog);
 

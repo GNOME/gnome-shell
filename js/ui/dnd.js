@@ -267,7 +267,7 @@ var _Draggable = class _Draggable {
         // dragging and ignore all other key presses.
         } else if (event.type() == Clutter.EventType.KEY_PRESS && this._dragState == DragState.DRAGGING) {
             let symbol = event.get_key_symbol();
-            if (symbol == Clutter.Escape) {
+            if (symbol == Clutter.KEY_Escape) {
                 this._cancelDrag(event.get_time());
                 return Clutter.EVENT_STOP;
             }
@@ -338,7 +338,7 @@ var _Draggable = class _Draggable {
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
             this._dragActor = this.actor._delegate.getDragActor();
             Main.uiGroup.add_child(this._dragActor);
-            this._dragActor.raise_top();
+            Main.uiGroup.set_child_above_sibling(this._dragActor, null);
             Shell.util_set_hidden_from_pick(this._dragActor, true);
 
             // Drag actor does not always have to be the same as actor. For example drag actor
@@ -388,7 +388,7 @@ var _Draggable = class _Draggable {
 
             this._dragOrigParent.remove_actor(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);
-            this._dragActor.raise_top();
+            Main.uiGroup.set_child_above_sibling(this._dragActor, null);
             Shell.util_set_hidden_from_pick(this._dragActor, true);
         }
 

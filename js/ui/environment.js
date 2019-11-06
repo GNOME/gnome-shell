@@ -51,11 +51,6 @@ function _patchLayoutClass(layoutClass, styleProps) {
                 }
             });
         };
-    layoutClass.prototype.child_set = function(actor, props) {
-        let meta = this.get_child_meta(actor.get_parent(), actor);
-        for (let prop in props)
-            meta[prop] = props[prop];
-    };
 }
 
 function _makeEaseCallback(params, cleanup) {
@@ -238,8 +233,6 @@ function init() {
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
 
-    _patchLayoutClass(Clutter.TableLayout, { row_spacing: 'spacing-rows',
-                                             column_spacing: 'spacing-columns' });
     _patchLayoutClass(Clutter.GridLayout, { row_spacing: 'spacing-rows',
                                             column_spacing: 'spacing-columns' });
     _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });

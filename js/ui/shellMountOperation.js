@@ -394,7 +394,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._defaultButtons = [{
             label: _("Cancel"),
             action: this._onCancelButton.bind(this),
-            key: Clutter.Escape,
+            key: Clutter.KEY_Escape,
         }, {
             label: _("Unlock"),
             action: this._onUnlockButton.bind(this),
@@ -404,7 +404,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._usesKeyfilesButtons = [{
             label: _("Cancel"),
             action: this._onCancelButton.bind(this),
-            key: Clutter.Escape,
+            key: Clutter.KEY_Escape,
         }, {
             /* Translators: %s is the Disks application */
             label: _("Open %s").format(disksApp.get_name()),

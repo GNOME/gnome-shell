@@ -69,7 +69,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         */
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
                                               action: this._onFailure.bind(this),
-                                              key: Clutter.Escape });
+                                              key: Clutter.KEY_Escape });
         this._okButton = this.addButton({ label: _("Keep Changes"),
                                           action: this._onSuccess.bind(this),
                                           default: true });
@@ -1874,13 +1874,13 @@ var WindowManager = class {
                          actor: new Clutter.Actor() };
             switchData.surroundings[dir] = info;
             switchData.container.add_actor(info.actor);
-            info.actor.raise_top();
+            switchData.container.set_child_above_sibling(info.actor, null);
 
             let [x, y] = this._getPositionForDirection(dir, curWs, ws);
             info.actor.set_position(x, y);
         }
 
-        switchData.movingWindowBin.raise_top();
+        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
 
         for (let i = 0; i < windows.length; i++) {
             let actor = windows[i];
@@ -1896,12 +1896,14 @@ var WindowManager = class {
                            parent: actor.get_parent() };
 
             if (this._movingWindow && window == this._movingWindow) {
+                record.parent.remove_child(actor);
                 switchData.movingWindow = record;
                 switchData.windows.push(switchData.movingWindow);
-                actor.reparent(switchData.movingWindowBin);
+                switchData.movingWindowBin.add_child(actor);
             } else if (window.get_workspace().index() == from) {
+                record.parent.remove_child(actor);
                 switchData.windows.push(record);
-                actor.reparent(switchData.curGroup);
+                switchData.curGroup.add_child(actor);
             } else {
                 let visible = false;
                 for (let dir of Object.values(Meta.MotionDirection)) {
@@ -1910,8 +1912,9 @@ var WindowManager = class {
                     if (!info || info.index != window.get_workspace().index())
                         continue;
 
+                    record.parent.remove_child(actor);
                     switchData.windows.push(record);
-                    actor.reparent(info.actor);
+                    info.actor.add_child(actor);
                     visible = true;
                     break;
                 }
@@ -1936,7 +1939,8 @@ var WindowManager = class {
             let w = switchData.windows[i];
 
             w.window.disconnect(w.windowDestroyId);
-            w.window.reparent(w.parent);
+            w.window.get_parent().remove_child(w.window);
+            w.parent.add_child(w.window);
 
             if (w.window.get_meta_window().get_workspace() !=
                 global.workspace_manager.get_active_workspace())

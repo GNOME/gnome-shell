@@ -308,7 +308,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         if (isVisible) {
             this.setPosition(this._dummyCursor, 0);
             this.open(BoxPointer.PopupAnimation.NONE);
-            this.raise_top();
+            this.get_parent().set_child_above_sibling(this, null);
         } else {
             this.close(BoxPointer.PopupAnimation.NONE);
         }

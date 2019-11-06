@@ -180,25 +180,25 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
-        } else if (keysym == Clutter.q) {
+        } else if (keysym === Clutter.KEY_q) {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
-            if (keysym == Clutter.Left)
+            if (keysym === Clutter.KEY_Left)
                 this._select(this._selectedIndex, this._previousWindow());
-            else if (keysym == Clutter.Right)
+            else if (keysym === Clutter.KEY_Right)
                 this._select(this._selectedIndex, this._nextWindow());
-            else if (keysym == Clutter.Up)
+            else if (keysym === Clutter.KEY_Up)
                 this._select(this._selectedIndex, null, true);
-            else if (keysym == Clutter.w || keysym == Clutter.F4)
+            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
         } else {
-            if (keysym == Clutter.Left)
+            if (keysym === Clutter.KEY_Left)
                 this._select(this._previous());
-            else if (keysym == Clutter.Right)
+            else if (keysym === Clutter.KEY_Right)
                 this._select(this._next());
-            else if (keysym == Clutter.Down)
+            else if (keysym === Clutter.KEY_Down)
                 this._select(this._selectedIndex, 0);
             else
                 return Clutter.EVENT_PROPAGATE;
@@ -596,11 +596,11 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
             this._select(this._previous());
         } else {
-            if (keysym == Clutter.Left)
+            if (keysym === Clutter.KEY_Left)
                 this._select(this._previous());
-            else if (keysym == Clutter.Right)
+            else if (keysym === Clutter.KEY_Right)
                 this._select(this._next());
-            else if (keysym == Clutter.w || keysym == Clutter.F4)
+            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
                 this._closeWindow(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;

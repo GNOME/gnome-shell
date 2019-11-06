@@ -269,7 +269,7 @@ var LayoutManager = GObject.registerClass({
 
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.window_group.add_child(this._backgroundGroup);
-        this._backgroundGroup.lower_bottom();
+        global.window_group.set_child_below_sibling(this._backgroundGroup, null);
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
