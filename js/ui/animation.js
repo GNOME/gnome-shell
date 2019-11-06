@@ -71,6 +71,10 @@ class Animation extends St.Bin {
         this._animations = textureCache.load_sliced_image(file, width, height,
                                                           scaleFactor, resourceScale,
                                                           this._animationsLoaded.bind(this));
+        this._animations.set({
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.set_child(this._animations);
 
         if (wasPlaying)
