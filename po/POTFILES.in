@@ -84,6 +84,7 @@ src/extensions-tool/command-reset.c
 src/extensions-tool/command-uninstall.c
 src/extensions-tool/main.c
 src/extensions-tool/templates/00-plain.desktop.in
+src/extensions-tool/templates/indicator.desktop.in
 src/main.c
 src/shell-app.c
 src/shell-app-system.c
