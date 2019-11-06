@@ -26,6 +26,8 @@
 #include "common.h"
 #include "config.h"
 
+#define TEMPLATES_PATH "/org/gnome/extensions-tool/templates"
+
 static char *
 get_shell_version (GError **error)
 {
@@ -85,21 +87,30 @@ create_metadata (GFile       *target_dir,
 }
 
 
-#define TEMPLATE_PATH "/org/gnome/extensions-tool/template"
 static gboolean
-copy_extension_template (GFile *target_dir, GError **error)
+copy_extension_template (const char *template, GFile *target_dir, GError **error)
 {
   g_auto (GStrv) templates = NULL;
+  g_autofree char *path = NULL;
   char **s;
 
-  templates = g_resources_enumerate_children (TEMPLATE_PATH, 0, NULL);
+  path = g_strdup_printf (TEMPLATES_PATH "/%s", template);
+  templates = g_resources_enumerate_children (path, 0, NULL);
+
+  if (templates == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "No template %s", template);
+      return FALSE;
+    }
+
   for (s = templates; *s; s++)
     {
       g_autoptr (GFile) target = NULL;
       g_autoptr (GFile) source = NULL;
       g_autofree char *uri = NULL;
 
-      uri = g_strdup_printf ("resource://%s/%s", TEMPLATE_PATH, *s);
+      uri = g_strdup_printf ("resource://%s/%s", path, *s);
       source = g_file_new_for_uri (uri);
       target = g_file_get_child (target_dir, *s);
 
@@ -157,7 +168,7 @@ create_extension (const char *uuid, const char *name, const char *description)
       return FALSE;
     }
 
-  if (!copy_extension_template (dir, &error))
+  if (!copy_extension_template ("plain", dir, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
