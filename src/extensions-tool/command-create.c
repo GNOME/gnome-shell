@@ -194,14 +194,15 @@ create_extension (const char *uuid, const char *name, const char *description, c
 }
 
 static void
-prompt_metadata (char **uuid, char **name, char **description)
+prompt_metadata (char **uuid, char **name, char **description, char **template)
 {
   g_autoptr (GInputStream) stdin = NULL;
   g_autoptr (GDataInputStream) istream = NULL;
 
   if ((uuid == NULL || *uuid != NULL) &&
       (name == NULL || *name != NULL) &&
-      (description == NULL || *description != NULL))
+      (description == NULL || *description != NULL) &&
+      (template == NULL || *template != NULL))
     return;
 
   stdin = g_unix_input_stream_new (0, FALSE);
@@ -246,6 +247,39 @@ prompt_metadata (char **uuid, char **name, char **description)
 
       line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
       *uuid = g_strdelimit (line, "\n", '\0');
+    }
+
+  if (template != NULL && *template == NULL)
+    {
+      g_auto (GStrv) templates = get_template_names ();
+      int n_templates = g_strv_length (templates);
+
+      if (n_templates == 1)
+        {
+          *template = g_strdup (*templates);
+        }
+      else
+        {
+          char *line;
+
+          g_print (_("Choose one of the available templates:\n"));
+          for (int i = 0; i < n_templates; i++)
+            g_print ("%d)  %s\n", i + 1, templates[i]);
+          g_print ("Template: ");
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+
+          if (g_ascii_isdigit (*line))
+            {
+              long i = strtol (line, NULL, 10);
+              *template = g_strdup (templates[i - 1]);
+              g_free (line);
+            }
+          else
+           {
+             *template = g_strdelimit (line, "\n", '\0');
+           }
+        }
     }
 }
 
@@ -322,7 +356,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
     }
 
   if (interactive)
-    prompt_metadata (&uuid, &name, &description);
+    prompt_metadata (&uuid, &name, &description, &template);
 
   if (uuid == NULL || name == NULL || description == NULL)
     {
