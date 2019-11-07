@@ -20,6 +20,7 @@
 
 #include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 #include <gio/gunixinputstream.h>
 
 #include "commands.h"
@@ -27,6 +28,8 @@
 #include "config.h"
 
 #define TEMPLATES_PATH "/org/gnome/extensions-tool/templates"
+#define TEMPLATE_KEY "Path"
+#define SORT_DATA "desktop-id"
 
 static char *
 get_shell_version (GError **error)
@@ -48,6 +51,66 @@ get_shell_version (GError **error)
     g_clear_pointer (&split_version[2], g_free);
 
   return g_strjoinv (".", split_version);
+}
+
+static GDesktopAppInfo *
+load_app_info_from_resource (const char *uri)
+{
+  g_autoptr (GFile) file = NULL;
+  g_autofree char *contents = NULL;
+  g_autoptr (GKeyFile) keyfile = NULL;
+
+  file = g_file_new_for_uri (uri);
+  if (!g_file_load_contents (file, NULL, &contents, NULL, NULL, NULL))
+    return NULL;
+
+  keyfile = g_key_file_new ();
+  if (!g_key_file_load_from_data (keyfile, contents, -1, G_KEY_FILE_NONE, NULL))
+    return NULL;
+
+  return g_desktop_app_info_new_from_keyfile (keyfile);
+}
+
+static int
+sort_func (gconstpointer a, gconstpointer b)
+{
+  GObject *info1 = *((GObject **) a);
+  GObject *info2 = *((GObject **) b);
+  const char *desktop1 = g_object_get_data (info1, SORT_DATA);
+  const char *desktop2 = g_object_get_data (info2, SORT_DATA);
+
+  return g_strcmp0 (desktop1, desktop2);
+}
+
+static GPtrArray *
+get_templates (void)
+{
+  g_auto (GStrv) children = NULL;
+  GPtrArray *templates = g_ptr_array_new_with_free_func (g_object_unref);
+  char **s;
+
+  children = g_resources_enumerate_children (TEMPLATES_PATH, 0, NULL);
+
+  for (s = children; *s; s++)
+    {
+      g_autofree char *uri = NULL;
+      GDesktopAppInfo *info;
+
+      if (!g_str_has_suffix (*s, ".desktop"))
+        continue;
+
+      uri = g_strdup_printf ("resource://" TEMPLATES_PATH "/%s", *s);
+      info = load_app_info_from_resource (uri);
+      if (!info)
+        continue;
+
+      g_object_set_data_full (G_OBJECT (info), SORT_DATA, g_strdup (*s), g_free);
+      g_ptr_array_add (templates, info);
+    }
+
+  g_ptr_array_sort (templates, sort_func);
+
+  return templates;
 }
 
 static gboolean
@@ -266,6 +329,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
   gboolean interactive = FALSE;
+  gboolean list_templates = FALSE;
   GOptionEntry entries[] = {
     { .long_name = "uuid",
       .arg = G_OPTION_ARG_STRING, .arg_data = &uuid,
@@ -279,6 +343,9 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg_description = _("DESCRIPTION"),
       .arg = G_OPTION_ARG_STRING, .arg_data = &description,
       .description = _("A short description of what the extension does") },
+    { .long_name = "list-templates",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &list_templates,
+      .flags = G_OPTION_FLAG_HIDDEN },
     { .long_name = "interactive", .short_name = 'i',
       .arg = G_OPTION_ARG_NONE, .arg_data = &interactive,
       .description = _("Enter extension information interactively") },
@@ -309,6 +376,22 @@ handle_create (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, _("Unknown arguments"));
       return 1;
+    }
+
+  if (list_templates)
+    {
+      g_autoptr (GPtrArray) templates = get_templates ();
+      int i;
+
+      for (i = 0; i < templates->len; i++)
+        {
+          GDesktopAppInfo *info = g_ptr_array_index (templates, i);
+          g_autofree char *template = NULL;
+
+          template = g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+          g_print ("%s\n", template);
+        }
+      return 0;
     }
 
   if (interactive)
