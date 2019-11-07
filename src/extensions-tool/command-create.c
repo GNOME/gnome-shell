@@ -50,6 +50,18 @@ get_shell_version (GError **error)
   return g_strjoinv (".", split_version);
 }
 
+static char **
+get_template_names (void)
+{
+  char **templates = g_resources_enumerate_children (TEMPLATES_PATH, 0, NULL);
+  char **s;
+
+  for (s = templates; s && *s; s++)
+    g_strdelimit (*s, "/", '\0');
+
+  return templates;
+}
+
 static gboolean
 create_metadata (GFile       *target_dir,
                  const char  *uuid,
@@ -243,6 +255,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
   gboolean interactive = FALSE;
+  gboolean list_templates = FALSE;
   GOptionEntry entries[] = {
     { .long_name = "uuid",
       .arg = G_OPTION_ARG_STRING, .arg_data = &uuid,
@@ -256,6 +269,9 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg_description = _("DESCRIPTION"),
       .arg = G_OPTION_ARG_STRING, .arg_data = &description,
       .description = _("A short description of what the extension does") },
+    { .long_name = "list-templates",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &list_templates,
+      .flags = G_OPTION_FLAG_HIDDEN },
     { .long_name = "interactive", .short_name = 'i',
       .arg = G_OPTION_ARG_NONE, .arg_data = &interactive,
       .description = _("Enter extension information interactively") },
@@ -285,6 +301,16 @@ handle_create (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, _("Unknown arguments"));
       return 1;
+    }
+
+  if (list_templates)
+    {
+      g_auto (GStrv) templates = get_template_names ();
+      char **s;
+
+      for (s = templates; *s; s++)
+        g_print ("%s\n", *s);
+      return 0;
     }
 
   if (interactive)
