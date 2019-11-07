@@ -250,14 +250,15 @@ create_extension (const char *uuid, const char *name, const char *description, c
 }
 
 static void
-prompt_metadata (char **uuid, char **name, char **description)
+prompt_metadata (char **uuid, char **name, char **description, char **template)
 {
   g_autoptr (GInputStream) stdin = NULL;
   g_autoptr (GDataInputStream) istream = NULL;
 
   if ((uuid == NULL || *uuid != NULL) &&
       (name == NULL || *name != NULL) &&
-      (description == NULL || *description != NULL))
+      (description == NULL || *description != NULL) &&
+      (template == NULL || *template != NULL))
     return;
 
   stdin = g_unix_input_stream_new (0, FALSE);
@@ -306,6 +307,54 @@ prompt_metadata (char **uuid, char **name, char **description)
 
       line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
       *uuid = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
+    }
+
+  if (template != NULL && *template == NULL)
+    {
+      g_autoptr (GPtrArray) templates = get_templates ();
+
+      if (templates->len == 1)
+        {
+          GDesktopAppInfo *info = g_ptr_array_index (templates, 0);
+          *template = g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+        }
+      else
+        {
+          char *line;
+
+          g_print (_("Choose one of the available templates:\n"));
+          for (int i = 0; i < templates->len; i++)
+            {
+              GAppInfo *info = g_ptr_array_index (templates, i);
+              g_print ("%d) %-10s  –  %s\n",
+                       i + 1,
+                       g_app_info_get_name (info),
+                       g_app_info_get_description (info));
+            }
+          g_print ("Template: ");
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+
+          if (g_ascii_isdigit (*line))
+            {
+              long i = strtol (line, NULL, 10);
+
+              if (i > 0 && i <= templates->len)
+                {
+                  GDesktopAppInfo *info;
+
+                  info = g_ptr_array_index (templates, i - 1);
+                  *template = g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+                }
+              g_free (line);
+            }
+          else
+           {
+             *template = g_strdelimit (line, "\n", '\0');
+           }
+        }
 
       g_print ("\n");
     }
@@ -390,7 +439,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
     }
 
   if (interactive)
-    prompt_metadata (&uuid, &name, &description);
+    prompt_metadata (&uuid, &name, &description, &template);
 
   if (uuid == NULL || name == NULL || description == NULL)
     {
