@@ -128,6 +128,9 @@ Creates a new extension from a template.
   *--uuid*='UUID':::
     Set the unique extension ID in the metadata to 'UUID'
 
+  *--template*='TEMPLATE':::
+    Use 'TEMPLATE' as base for the new extension
+
   *-i*:::
   *--interactive*:::
     Prompt for any extension metadata that hasn't been provided
