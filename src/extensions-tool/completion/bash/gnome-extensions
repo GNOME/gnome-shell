@@ -44,6 +44,14 @@ __gnome_extensions() {
   esac
 
   case "$COMMAND" in
+    create)
+      case "$prev" in
+        --template)
+          COMPREPLY=($(compgen -W "`gnome-extensions create --list-templates`" -- "$2"))
+          return 0
+          ;;
+      esac
+      ;;
     pack)
       case "$prev" in
         --podir|--out-dir|-o)

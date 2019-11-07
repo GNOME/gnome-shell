@@ -152,10 +152,13 @@ launch_extension_source (GFile *dir, GError **error)
 }
 
 static gboolean
-create_extension (const char *uuid, const char *name, const char *description)
+create_extension (const char *uuid, const char *name, const char *description, const char *template)
 {
   g_autoptr (GFile) dir = NULL;
   g_autoptr (GError) error = NULL;
+
+  if (template == NULL)
+    template = "plain";
 
   dir = g_file_new_build_filename (g_get_user_data_dir (),
                                    "gnome-shell",
@@ -175,7 +178,7 @@ create_extension (const char *uuid, const char *name, const char *description)
       return FALSE;
     }
 
-  if (!copy_extension_template ("plain", dir, &error))
+  if (!copy_extension_template (template, dir, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
@@ -254,6 +257,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *name = NULL;
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
+  g_autofree char *template = NULL;
   gboolean interactive = FALSE;
   gboolean list_templates = FALSE;
   GOptionEntry entries[] = {
@@ -269,6 +273,10 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg_description = _("DESCRIPTION"),
       .arg = G_OPTION_ARG_STRING, .arg_data = &description,
       .description = _("A short description of what the extension does") },
+    { .long_name = "template",
+      .arg = G_OPTION_ARG_STRING, .arg_data = &template,
+      .arg_description = _("TEMPLATE"),
+      .description = _("The template to use for the new extension") },
     { .long_name = "list-templates",
       .arg = G_OPTION_ARG_NONE, .arg_data = &list_templates,
       .flags = G_OPTION_FLAG_HIDDEN },
@@ -322,5 +330,5 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return create_extension (uuid, name, description) ? 0 : 2;
+  return create_extension (uuid, name, description, template) ? 0 : 2;
 }
