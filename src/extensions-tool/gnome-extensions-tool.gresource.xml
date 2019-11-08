@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/extensions-tool">
+    <file>templates/00-plain.desktop</file>
     <file>templates/plain/extension.js</file>
     <file>templates/plain/stylesheet.css</file>
   </gresource>
