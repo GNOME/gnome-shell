@@ -22,9 +22,12 @@ sources = [
   'main.c'
 ]
 
+subdir('templates')
+
 resources = gnome.compile_resources('resources',
   'gnome-extensions-tool.gresource.xml',
-  source_dir: '.'
+  source_dir: ['.', meson.current_build_dir()],
+  dependencies: template_deps,
 )
 
 executable('gnome-extensions',
