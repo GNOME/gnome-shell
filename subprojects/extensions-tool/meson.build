@@ -27,6 +27,8 @@ cc = meson.get_compiler('c')
 
 bash_completion = dependency('bash-completion', required: false)
 
+po_dir = meson.source_root() + '/po'
+
 subdir('src')
 
 if bash_completion.found()
