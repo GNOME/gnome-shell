@@ -703,6 +703,7 @@ var WindowManager = class {
         this._unminimizing = new Set();
         this._mapping = new Set();
         this._resizing = new Set();
+        this._resizePending = new Set();
         this._destroying = new Set();
         this._movingWindow = null;
 
@@ -1464,6 +1465,7 @@ var WindowManager = class {
             this._clearAnimationInfo(actor);
         });
 
+        this._resizePending.add(actor);
         actor.__animationInfo = { clone: actorClone,
                                   oldRect: oldFrameRect,
                                   destroyId: destroyId };
@@ -1482,6 +1484,7 @@ var WindowManager = class {
         let scaleX = targetRect.width / sourceRect.width;
         let scaleY = targetRect.height / sourceRect.height;
 
+        this._resizePending.delete(actor);
         this._resizing.add(actor);
 
         // Now scale and fade out the clone
@@ -1538,6 +1541,9 @@ var WindowManager = class {
             actor.translation_y = 0;
             this._clearAnimationInfo(actor);
         }
+
+        if (this._resizePending.delete(actor))
+            this._shellwm.completed_size_change(actor);
     }
 
     _hasAttachedDialogs(window, ignoreWindow) {
