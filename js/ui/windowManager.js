@@ -700,16 +700,16 @@ var WindowManager = class {
     constructor() {
         this._shellwm =  global.window_manager;
 
-        this._minimizing = [];
-        this._unminimizing = [];
-        this._mapping = [];
-        this._resizing = [];
-        this._destroying = [];
+        this._minimizing = new Set();
+        this._unminimizing = new Set();
+        this._mapping = new Set();
+        this._resizing = new Set();
+        this._destroying = new Set();
         this._movingWindow = null;
 
         this._dimmedWindows = [];
 
-        this._skippedActors = [];
+        this._skippedActors = new Set();
 
         this._allowedKeybindings = {};
 
@@ -1257,7 +1257,7 @@ var WindowManager = class {
     }
 
     skipNextEffect(actor) {
-        this._skippedActors.push(actor);
+        this._skippedActors.add(actor);
     }
 
     setCustomKeybindingHandler(name, modes, handler) {
@@ -1286,7 +1286,7 @@ var WindowManager = class {
     }
 
     _shouldAnimateActor(actor, types) {
-        if (this._removeEffect(this._skippedActors, actor))
+        if (this._skippedActors.delete(actor))
             return false;
 
         if (!this._shouldAnimate())
@@ -1297,15 +1297,6 @@ var WindowManager = class {
 
         let type = actor.meta_window.get_window_type();
         return types.includes(type);
-    }
-
-    _removeEffect(list, actor) {
-        let idx = list.indexOf(actor);
-        if (idx != -1) {
-            list.splice(idx, 1);
-            return true;
-        }
-        return false;
     }
 
     _minimizeWindow(shellwm, actor) {
@@ -1319,7 +1310,7 @@ var WindowManager = class {
 
         actor.set_scale(1.0, 1.0);
 
-        this._minimizing.push(actor);
+        this._minimizing.add(actor);
 
         if (actor.meta_window.is_monitor_sized()) {
             actor.ease({
@@ -1373,7 +1364,7 @@ var WindowManager = class {
     }
 
     _minimizeWindowDone(shellwm, actor) {
-        if (this._removeEffect(this._minimizing, actor)) {
+        if (this._minimizing.delete(actor)) {
             actor.remove_all_transitions();
             actor.set_scale(1.0, 1.0);
             actor.set_opacity(255);
@@ -1398,7 +1389,7 @@ var WindowManager = class {
             return;
         }
 
-        this._unminimizing.push(actor);
+        this._unminimizing.add(actor);
 
         if (actor.meta_window.is_monitor_sized()) {
             actor.opacity = 0;
@@ -1455,7 +1446,7 @@ var WindowManager = class {
     }
 
     _unminimizeWindowDone(shellwm, actor) {
-        if (this._removeEffect(this._unminimizing, actor)) {
+        if (this._unminimizing.delete(actor)) {
             actor.remove_all_transitions();
             actor.set_scale(1.0, 1.0);
             actor.set_opacity(255);
@@ -1509,7 +1500,7 @@ var WindowManager = class {
     _sizeChangedWindow(shellwm, actor) {
         if (!actor.__animationInfo)
             return;
-        if (this._resizing.includes(actor))
+        if (this._resizing.has(actor))
             return;
 
         let actorClone = actor.__animationInfo.clone;
@@ -1519,7 +1510,7 @@ var WindowManager = class {
         let scaleX = targetRect.width / sourceRect.width;
         let scaleY = targetRect.height / sourceRect.height;
 
-        this._resizing.push(actor);
+        this._resizing.add(actor);
 
         // Now scale and fade out the clone
         actorClone.ease({
@@ -1572,7 +1563,7 @@ var WindowManager = class {
     }
 
     _sizeChangeWindowDone(shellwm, actor) {
-        if (this._removeEffect(this._resizing, actor)) {
+        if (this._resizing.delete(actor)) {
             actor.remove_all_transitions();
             actor.scale_x = 1.0;
             actor.scale_y = 1.0;
@@ -1676,7 +1667,7 @@ var WindowManager = class {
             actor.scale_y = 0.05;
             actor.opacity = 0;
             actor.show();
-            this._mapping.push(actor);
+            this._mapping.add(actor);
 
             actor.ease({
                 opacity: 255,
@@ -1698,7 +1689,7 @@ var WindowManager = class {
             actor.scale_y = 0;
             actor.opacity = 0;
             actor.show();
-            this._mapping.push(actor);
+            this._mapping.add(actor);
 
             actor.ease({
                 opacity: 255,
@@ -1720,7 +1711,7 @@ var WindowManager = class {
     }
 
     _mapWindowDone(shellwm, actor) {
-        if (this._removeEffect(this._mapping, actor)) {
+        if (this._mapping.delete(actor)) {
             actor.remove_all_transitions();
             actor.opacity = 255;
             actor.set_pivot_point(0, 0);
@@ -1763,7 +1754,7 @@ var WindowManager = class {
         switch (actor.meta_window.window_type) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 0.5);
-            this._destroying.push(actor);
+            this._destroying.add(actor);
 
             actor.ease({
                 opacity: 0,
@@ -1777,7 +1768,7 @@ var WindowManager = class {
         case Meta.WindowType.MODAL_DIALOG:
         case Meta.WindowType.DIALOG:
             actor.set_pivot_point(0.5, 0.5);
-            this._destroying.push(actor);
+            this._destroying.add(actor);
 
             if (window.is_attached_dialog()) {
                 let parent = window.get_transient_for();
@@ -1800,7 +1791,7 @@ var WindowManager = class {
     }
 
     _destroyWindowDone(shellwm, actor) {
-        if (this._removeEffect(this._destroying, actor)) {
+        if (this._destroying.delete(actor)) {
             let parent = actor.get_meta_window().get_transient_for();
             if (parent && actor._parentDestroyId) {
                 parent.disconnect(actor._parentDestroyId);
