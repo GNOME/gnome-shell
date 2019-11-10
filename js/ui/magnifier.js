@@ -45,6 +45,8 @@ var MouseSpriteContent = GObject.registerClass({
 }, class MouseSpriteContent extends GObject.Object {
     _init() {
         super._init();
+        this._scale = 1.0;
+        this._monitorScale = 1.0;
         this._texture = null;
     }
 
@@ -52,7 +54,10 @@ var MouseSpriteContent = GObject.registerClass({
         if (!this._texture)
             return [false, 0, 0];
 
-        return [true, this._texture.get_width(), this._texture.get_height()];
+        let width = this._texture.get_width() / this._scale;
+        let height = this._texture.get_height() / this._scale;
+
+        return [true, width, height];
     }
 
     vfunc_paint_content(actor, node) {
@@ -69,6 +74,29 @@ var MouseSpriteContent = GObject.registerClass({
         textureNode.add_rectangle(actor.get_content_box());
     }
 
+    _textureScale() {
+        if (!this._texture)
+            return 1;
+
+        /* This is a workaround to guess the sprite scale; while it works fine
+         * in normal scenarios, it's not guaranteed to work in all the cases,
+         * and so we should actually add an API to mutter that will allow us
+         * to know the real spirte texture scaling in order to adapt it to the
+         * wanted one. */
+        let avgSize = (this._texture.get_width() + this._texture.get_height()) / 2;
+        return Math.max (1, Math.floor (avgSize / Meta.prefs_get_cursor_size() + .1));
+    }
+
+    _recomputeScale() {
+        let scale = this._textureScale() / this._monitorScale;
+
+        if (this._scale == scale)
+            return false;
+
+        this._scale = scale;
+        return true;
+    }
+
     get texture() {
         return this._texture;
     }
@@ -83,7 +111,19 @@ var MouseSpriteContent = GObject.registerClass({
 
         if (!oldTexture || !coglTexture ||
             oldTexture.get_width() != coglTexture.get_width() ||
-            oldTexture.get_height() != coglTexture.get_height())
+            oldTexture.get_height() != coglTexture.get_height()) {
+            this._recomputeScale();
+            this.invalidate_size();
+        }
+    }
+
+    get scale() {
+        return this._scale;
+    }
+
+    set monitorScale(monitorScale) {
+        this._monitorScale = monitorScale;
+        if (this._recomputeScale())
             this.invalidate_size();
     }
 });
@@ -113,6 +153,8 @@ var Magnifier = class Magnifier {
         this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
+        this._updateContentScale();
+
         St.Settings.get().connect('notify::magnifier-active', () => {
             this.setActive(St.Settings.get().magnifier_active);
         });
@@ -120,6 +162,13 @@ var Magnifier = class Magnifier {
         // Export to dbus.
         (new MagnifierDBus.ShellMagnifier());
         this.setActive(St.Settings.get().magnifier_active);
+    }
+
+    _updateContentScale() {
+        let monitor = Main.layoutManager.findMonitorForPoint(this.xMouse,
+                                                             this.yMouse);
+        if (monitor)
+            this._mouseSprite.content.monitorScale = monitor.geometry_scale;
     }
 
     /**
@@ -230,6 +279,8 @@ var Magnifier = class Magnifier {
         if (xMouse != this.xMouse || yMouse != this.yMouse) {
             this.xMouse = xMouse;
             this.yMouse = yMouse;
+
+            this._updateContentScale();
 
             let sysMouseOverAny = false;
             this._zoomRegions.forEach(zoomRegion => {
