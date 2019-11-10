@@ -202,6 +202,8 @@ prompt_metadata (char **uuid, char **name, char **description)
           line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
         }
       *name = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
     }
 
   if (description != NULL && *description == NULL)
@@ -220,6 +222,8 @@ prompt_metadata (char **uuid, char **name, char **description)
           line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
         }
       *description = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
     }
 
   if (uuid != NULL && *uuid == NULL)
@@ -237,6 +241,8 @@ prompt_metadata (char **uuid, char **name, char **description)
           line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
         }
       *uuid = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
     }
 }
 
