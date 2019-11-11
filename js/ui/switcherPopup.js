@@ -186,7 +186,15 @@ var SwitcherPopup = GObject.registerClass({
             if (state == 0)
                 this._finish(keyEvent.time);
         } else {
-            this._resetNoModsTimeout();
+            let keysym = keyEvent.keyval;
+
+            if (keysym === Clutter.KEY_space ||
+                keysym === Clutter.KEY_Return ||
+                keysym === Clutter.KEY_KP_Enter ||
+                keysym === Clutter.KEY_ISO_Enter)
+                this._finish(keyEvent.time);
+            else
+                this._resetNoModsTimeout();
         }
 
         return Clutter.EVENT_STOP;
