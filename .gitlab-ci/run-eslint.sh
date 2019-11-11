@@ -13,7 +13,7 @@ is_empty() {
 }
 
 run_eslint() {
-  ARGS_LEGACY='--config lint/eslintrc-legacy.json'
+  ARGS_LEGACY='--config lint/eslintrc-legacy.yml'
 
   local extra_args=ARGS_$1
   local output_var=OUTPUT_$1

@@ -544,6 +544,7 @@ var ShellUserVerifier = class {
                 });
             }
         } else {
+            // eslint-disable-next-line no-lonely-if
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
             } else {

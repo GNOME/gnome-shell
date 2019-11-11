@@ -964,6 +964,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             else if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
                 type = NMAccessPointSecurity.WPA_PSK;
         } else {
+            // eslint-disable-next-line no-lonely-if
             if (flags & NM80211ApFlags.PRIVACY)
                 type = NMAccessPointSecurity.WEP;
             else
