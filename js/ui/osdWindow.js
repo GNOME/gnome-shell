@@ -48,7 +48,7 @@ class OsdWindow extends St.Widget {
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._monitorIndex = monitorIndex;
@@ -69,7 +69,7 @@ class OsdWindow extends St.Widget {
 
         this._level = new BarLevel.BarLevel({
             style_class: 'level',
-            value: 0
+            value: 0,
         });
         this._box.add(this._level);
 
@@ -105,21 +105,22 @@ class OsdWindow extends St.Widget {
     }
 
     setLabel(label) {
-        this._label.visible = (label != undefined);
+        this._label.visible = label != undefined;
         if (label)
             this._label.text = label;
     }
 
     setLevel(value) {
-        this._level.visible = (value != undefined);
+        this._level.visible = value != undefined;
         if (value != undefined) {
-            if (this.visible)
+            if (this.visible) {
                 this._level.ease_property('value', value, {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    duration: LEVEL_ANIMATION_TIME
+                    duration: LEVEL_ANIMATION_TIME,
                 });
-            else
+            } else {
                 this._level.value = value;
+            }
         }
     }
 
@@ -140,7 +141,7 @@ class OsdWindow extends St.Widget {
             this.ease({
                 opacity: 255,
                 duration: FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
 
@@ -168,7 +169,7 @@ class OsdWindow extends St.Widget {
             onComplete: () => {
                 this._reset();
                 Meta.enable_unredirect_for_display(global.display);
-            }
+            },
         });
         return GLib.SOURCE_REMOVE;
     }

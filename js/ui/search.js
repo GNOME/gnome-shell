@@ -53,9 +53,10 @@ class SearchResult extends St.Button {
     activate() {
         this.provider.activateResult(this.metaInfo.id, this._resultsView.terms);
 
-        if (this.metaInfo.clipboardText)
+        if (this.metaInfo.clipboardText) {
             St.Clipboard.get_default().set_text(
                 St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
+        }
         Main.overview.toggle();
     }
 });
@@ -87,9 +88,8 @@ class ListSearchResult extends SearchResult {
 
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
-        if (icon) {
+        if (icon)
             titleBox.add(icon);
-        }
 
         let title = new St.Label({
             text: this.metaInfo['name'],
@@ -159,7 +159,7 @@ var SearchResultsBase = GObject.registerClass({
             'focus-child', 'focus-child', 'focus-child',
             GObject.ParamFlags.READABLE,
             Clutter.Actor.$gtype),
-    }
+    },
 }, class SearchResultsBase extends St.BoxLayout {
     _init(provider, resultsView) {
         super._init({ style_class: 'search-section', vertical: true });
@@ -426,7 +426,7 @@ class GridSearchResults extends SearchResultsBase {
 });
 
 var SearchResultsView = GObject.registerClass({
-    Signals: { 'terms-changed': {} }
+    Signals: { 'terms-changed': {} },
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
         super._init({ name: 'searchResults', vertical: true });
@@ -550,19 +550,20 @@ var SearchResultsView = GObject.registerClass({
             provider.searchInProgress = true;
 
             let previousProviderResults = previousResults[provider.id];
-            if (this._isSubSearch && previousProviderResults)
+            if (this._isSubSearch && previousProviderResults) {
                 provider.getSubsearchResultSet(previousProviderResults,
                                                this._terms,
                                                results => {
                                                    this._gotResults(results, provider);
                                                },
                                                this._cancellable);
-            else
+            } else {
                 provider.getInitialResultSet(this._terms,
                                              results => {
                                                  this._gotResults(results, provider);
                                              },
                                              this._cancellable);
+            }
         });
 
         this._updateSearchProgress();
@@ -682,18 +683,17 @@ var SearchResultsView = GObject.registerClass({
     _updateSearchProgress() {
         let haveResults = this._providers.some(provider => {
             let display = provider.display;
-            return (display.getFirstResult() != null);
+            return display.getFirstResult() != null;
         });
 
         this._scrollView.visible = haveResults;
         this._statusBin.visible = !haveResults;
 
         if (!haveResults) {
-            if (this.searchInProgress) {
+            if (this.searchInProgress)
                 this._statusText.set_text(_("Searching…"));
-            } else {
+            else
                 this._statusText.set_text(_("No results."));
-            }
         }
     }
 

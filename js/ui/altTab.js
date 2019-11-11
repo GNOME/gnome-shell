@@ -62,7 +62,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
         this.thumbnailsVisible = false;
 
-        let apps = Shell.AppSystem.get_default().get_running ();
+        let apps = Shell.AppSystem.get_default().get_running();
 
         if (apps.length == 0)
             return;
@@ -111,14 +111,12 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _initialSelection(backward, binding) {
         if (binding == 'switch-group') {
-            if (backward) {
+            if (backward)
                 this._select(0, this._items[0].cachedWindows.length - 1);
-            } else {
-                if (this._items[0].cachedWindows.length > 1)
-                    this._select(0, 1);
-                else
-                    this._select(0, 0);
-            }
+            else if (this._items[0].cachedWindows.length > 1)
+                this._select(0, 1);
+            else
+                this._select(0, 0);
         } else if (binding == 'switch-group-backward') {
             this._select(0, this._items[0].cachedWindows.length - 1);
         } else if (binding == 'switch-applications-backward') {
@@ -193,15 +191,14 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
+        } else if (keysym == Clutter.KEY_Left) {
+            this._select(this._previous());
+        } else if (keysym == Clutter.KEY_Right) {
+            this._select(this._next());
+        } else if (keysym == Clutter.KEY_Down) {
+            this._select(this._selectedIndex, 0);
         } else {
-            if (keysym === Clutter.KEY_Left)
-                this._select(this._previous());
-            else if (keysym === Clutter.KEY_Right)
-                this._select(this._next());
-            else if (keysym === Clutter.KEY_Down)
-                this._select(this._selectedIndex, 0);
-            else
-                return Clutter.EVENT_PROPAGATE;
+            return Clutter.EVENT_PROPAGATE;
         }
 
         return Clutter.EVENT_STOP;
@@ -296,9 +293,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     /**
      * _select:
-     * @app: index of the app to select
-     * @window: (optional) index of which of @app's windows to select
-     * @forceAppFocus: optional flag, see below
+     * @param {number} app: index of the app to select
+     * @param {number=} window: index of which of @app's windows to select
+     * @param {bool} forceAppFocus: optional flag, see below
      *
      * Selects the indicated @app, and optional @window, and sets
      * this._thumbnailsFocused appropriately to indicate whether the
@@ -368,15 +365,15 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             onComplete: () => {
                 thumbnailsActor.destroy();
                 this.thumbnailsVisible = false;
-            }
+            },
         });
         this._thumbnails = null;
         if (this._switcherList._items[this._selectedIndex])
-            this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
+            this._switcherList._items[this._selectedIndex].remove_accessible_state(Atk.StateType.EXPANDED);
     }
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailList(this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
@@ -398,10 +395,10 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.thumbnailsVisible = true;
-            }
+            },
         });
 
-        this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
+        this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
     }
 });
 
@@ -418,7 +415,7 @@ class CyclerHighlight extends St.Widget {
         this.add_actor(this._highlight);
 
         let coordinate = Clutter.BindCoordinate.ALL;
-        let constraint = new Clutter.BindConstraint({ coordinate: coordinate });
+        let constraint = new Clutter.BindConstraint({ coordinate });
         this._clone.bind_property('source', constraint, 'source', 0);
 
         this.add_constraint(constraint);
@@ -477,7 +474,7 @@ var CyclerList = GObject.registerClass({
 });
 
 var CyclerPopup = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class CyclerPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
@@ -591,20 +588,18 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _keyPressHandler(keysym, action) {
-        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
+        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
             this._select(this._next());
-        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
+        else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD)
             this._select(this._previous());
-        } else {
-            if (keysym === Clutter.KEY_Left)
-                this._select(this._previous());
-            else if (keysym === Clutter.KEY_Right)
-                this._select(this._next());
-            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
-                this._closeWindow(this._selectedIndex);
-            else
-                return Clutter.EVENT_PROPAGATE;
-        }
+        else if (keysym == Clutter.KEY_Left)
+            this._select(this._previous());
+        else if (keysym == Clutter.KEY_Right)
+            this._select(this._next());
+        else if (keysym == Clutter.KEY_w || keysym == Clutter.KEY_F4)
+            this._closeWindow(this._selectedIndex);
+        else
+            return Clutter.EVENT_PROPAGATE;
 
         return Clutter.EVENT_STOP;
     }
@@ -698,7 +693,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app (w) == appIcon.app
+                w => windowTracker.get_window_app(w) == appIcon.app
             );
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
@@ -722,9 +717,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _setIconSize() {
         let j = 0;
-        while (this._items.length > 1 && this._items[j].style_class != 'item-box') {
+        while (this._items.length > 1 && this._items[j].style_class != 'item-box')
             j++;
-        }
+
         let themeNode = this._items[j].get_theme_node();
         this._list.ensure_style();
 
@@ -858,7 +853,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
         else
-            item.add_accessible_state (Atk.StateType.EXPANDABLE);
+            item.add_accessible_state(Atk.StateType.EXPANDABLE);
     }
 
     _removeIcon(app) {
@@ -1002,9 +997,10 @@ class WindowIcon extends St.BoxLayout {
             size = WINDOW_PREVIEW_SIZE;
             this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
 
-            if (this.app)
+            if (this.app) {
                 this._icon.add_actor(this._createAppIcon(this.app,
                                                          APP_ICON_SIZE_SMALL));
+            }
             break;
 
         case AppIconMode.APP_ICON_ONLY:

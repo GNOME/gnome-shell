@@ -32,7 +32,7 @@ var ShellMagnifier = class ShellMagnifier {
 
     /**
      * setActive:
-     * @activate:   Boolean to activate or de-activate the magnifier.
+     * @param {bool} activate: activate or de-activate the magnifier.
      */
     setActive(activate) {
         Main.magnifier.setActive(activate);
@@ -40,7 +40,7 @@ var ShellMagnifier = class ShellMagnifier {
 
     /**
      * isActive:
-     * @return  Whether the magnifier is active (boolean).
+     * @returns {bool} Whether the magnifier is active.
      */
     isActive() {
         return Main.magnifier.isActive();
@@ -65,22 +65,25 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * createZoomRegion:
      * Create a new ZoomRegion and return its object path.
-     * @xMagFactor:     The power to set horizontal magnification of the
-     *                  ZoomRegion.  A value of 1.0 means no magnification.  A
-     *                  value of 2.0 doubles the size.
-     * @yMagFactor:     The power to set the vertical magnification of the
-     *                  ZoomRegion.
-     * @roi             Array of integers defining the region of the
-     *                  screen/desktop to magnify.  The array has the form
-     *                  [left, top, right, bottom].
-     * @viewPort        Array of integers, [left, top, right, bottom] that defines
-     *                  the position of the ZoomRegion on screen.
+     * @param {number} xMagFactor:
+     *     The power to set horizontal magnification of the ZoomRegion.
+     *     A value of 1.0 means no magnification. A value of 2.0 doubles
+     *     the size.
+     * @param {number} yMagFactor:
+     *     The power to set the vertical magnification of the
+     *     ZoomRegion.
+     * @param {number[]} roi
+     *     Array of integers defining the region of the screen/desktop
+     *     to magnify.  The array has the form [left, top, right, bottom].
+     * @param {number[]} viewPort
+     *     Array of integers, [left, top, right, bottom] that defines
+     *     the position of the ZoomRegion on screen.
      *
      * FIXME: The arguments here are redundant, since the width and height of
      *   the ROI are determined by the viewport and magnification factors.
      *   We ignore the passed in width and height.
      *
-     * @return          The newly created ZoomRegion.
+     * @returns {ZoomRegion} The newly created ZoomRegion.
      */
     createZoomRegion(xMagFactor, yMagFactor, roi, viewPort) {
         let ROI = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
@@ -100,7 +103,9 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * addZoomRegion:
      * Append the given ZoomRegion to the magnifier's list of ZoomRegions.
-     * @zoomerObjectPath:   The object path for the zoom region proxy.
+     * @param {string} zoomerObjectPath: The object path for the zoom
+     *     region proxy.
+     * @returns {bool} whether the region was added successfully
      */
     addZoomRegion(zoomerObjectPath) {
         let proxyAndZoomRegion = this._zoomers[zoomerObjectPath];
@@ -115,8 +120,8 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * getZoomRegions:
      * Return a list of ZoomRegion object paths for this Magnifier.
-     * @return:     The Magnifier's zoom region list as an array of DBus object
-     *              paths.
+     * @returns {string[]}: The Magnifier's zoom region list as an array
+     *     of DBus object paths.
      */
     getZoomRegions() {
         // There may be more ZoomRegions in the magnifier itself than have
@@ -125,7 +130,7 @@ var ShellMagnifier = class ShellMagnifier {
         let zoomRegions = Main.magnifier.getZoomRegions();
         let objectPaths = [];
         let thoseZoomers = this._zoomers;
-        zoomRegions.forEach (aZoomRegion => {
+        zoomRegions.forEach(aZoomRegion => {
             let found = false;
             for (let objectPath in thoseZoomers) {
                 let proxyAndZoomRegion = thoseZoomers[objectPath];
@@ -169,7 +174,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * fullScreenCapable:
      * Consult if the Magnifier can magnify in full-screen mode.
-     * @return  Always return true.
+     * @returns {bool} Always return true.
      */
     fullScreenCapable() {
         return true;
@@ -178,7 +183,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * setCrosswireSize:
      * Set the crosswire size of all ZoomRegions.
-     * @size:   The thickness of each line in the cross wire.
+     * @param {number} size: The thickness of each line in the cross wire.
      */
     setCrosswireSize(size) {
         Main.magnifier.setCrosshairsThickness(size);
@@ -187,7 +192,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * getCrosswireSize:
      * Get the crosswire size of all ZoomRegions.
-     * @return:   The thickness of each line in the cross wire.
+     * @returns {number}: The thickness of each line in the cross wire.
      */
     getCrosswireSize() {
         return Main.magnifier.getCrosshairsThickness();
@@ -196,16 +201,16 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * setCrosswireLength:
      * Set the crosswire length of all zoom-regions..
-     * @size:   The length of each line in the cross wire.
+     * @param {number} length: The length of each line in the cross wire.
      */
     setCrosswireLength(length) {
         Main.magnifier.setCrosshairsLength(length);
     }
 
     /**
-     * setCrosswireSize:
-     * Set the crosswire size of all zoom-regions.
-     * @size:   The thickness of each line in the cross wire.
+     * getCrosswireSize:
+     * Get the crosswire length of all zoom-regions.
+     * @returns {number} size: The length of each line in the cross wire.
      */
     getCrosswireLength() {
         return Main.magnifier.getCrosshairsLength();
@@ -214,7 +219,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * setCrosswireClip:
      * Set if the crosswire will be clipped by the cursor image..
-     * @clip:   Flag to indicate whether to clip the crosswire.
+     * @param {bool} clip: Flag to indicate whether to clip the crosswire.
      */
     setCrosswireClip(clip) {
         Main.magnifier.setCrosshairsClip(clip);
@@ -223,7 +228,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * getCrosswireClip:
      * Get the crosswire clip value.
-     * @return:   Whether the crosswire is clipped by the cursor image.
+     * @returns {bool}: Whether the crosswire is clipped by the cursor image.
      */
     getCrosswireClip() {
         return Main.magnifier.getCrosshairsClip();
@@ -232,7 +237,7 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * setCrosswireColor:
      * Set the crosswire color of all ZoomRegions.
-     * @color:   Unsigned int of the form rrggbbaa.
+     * @param {number} color: Unsigned int of the form rrggbbaa.
      */
     setCrosswireColor(color) {
         Main.magnifier.setCrosshairsColor('#%08x'.format(color));
@@ -241,7 +246,8 @@ var ShellMagnifier = class ShellMagnifier {
     /**
      * getCrosswireClip:
      * Get the crosswire color of all ZoomRegions.
-     * @return:   The crosswire color as an unsigned int in the form rrggbbaa.
+     * @returns {number}: The crosswire color as an unsigned int in
+     *     the form rrggbbaa.
      */
     getCrosswireColor() {
         let colorString = Main.magnifier.getCrosshairsColor();
@@ -266,11 +272,11 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
 
     /**
      * setMagFactor:
-     * @xMagFactor:     The power to set the horizontal magnification factor to
-     *                  of the magnified view.  A value of 1.0 means no
-     *                  magnification.  A value of 2.0 doubles the size.
-     * @yMagFactor:     The power to set the vertical magnification factor to
-     *                  of the magnified view.
+     * @param {number} xMagFactor: The power to set the horizontal
+     *     magnification factor to of the magnified view. A value of
+     *     1.0 means no magnification. A value of 2.0 doubles the size.
+     * @param {number} yMagFactor: The power to set the vertical
+     *     magnification factor to of the magnified view.
      */
     setMagFactor(xMagFactor, yMagFactor) {
         this._zoomRegion.setMagFactor(xMagFactor, yMagFactor);
@@ -278,7 +284,7 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
 
     /**
      * getMagFactor:
-     * @return  an array, [xMagFactor, yMagFactor], containing the horizontal
+     * @returns {number[]}: [xMagFactor, yMagFactor], containing the horizontal
      *          and vertical magnification powers.  A value of 1.0 means no
      *          magnification.  A value of 2.0 means the contents are doubled
      *          in size, and so on.
@@ -290,9 +296,9 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
     /**
      * setRoi:
      * Sets the "region of interest" that the ZoomRegion is magnifying.
-     * @roi     Array, [left, top, right, bottom], defining the region of the
-     *          screen to magnify. The values are in screen (unmagnified)
-     *          coordinate space.
+     * @param {number[]} roi: [left, top, right, bottom], defining the
+     *     region of the screen to magnify.
+     *     The values are in screen (unmagnified) coordinate space.
      */
     setRoi(roi) {
         let roiObject = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
@@ -304,7 +310,7 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
      * Retrieves the "region of interest" -- the rectangular bounds of that part
      * of the desktop that the magnified view is showing (x, y, width, height).
      * The bounds are given in non-magnified coordinates.
-     * @return  an array, [left, top, right, bottom], representing the bounding
+     * @returns {Array}: [left, top, right, bottom], representing the bounding
      *          rectangle of what is shown in the magnified view.
      */
     getRoi() {
@@ -317,10 +323,11 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
     /**
      * Set the "region of interest" by centering the given screen coordinate
      * within the zoom region.
-     * @x       The x-coord of the point to place at the center of the zoom region.
-     * @y       The y-coord.
-     * @return  Whether the shift was successful (for GS-mag, this is always
-     *          true).
+     * @param {number} x: The x-coord of the point to place at the
+     *     center of the zoom region.
+     * @param {number} y: The y-coord.
+     * @returns {bool} Whether the shift was successful (for GS-mag, this
+     *     is always true).
      */
     shiftContentsTo(x, y) {
         this._zoomRegion.scrollContentsTo(x, y);
@@ -330,8 +337,8 @@ var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
     /**
      * moveResize
      * Sets the position and size of the ZoomRegion on screen.
-     * @viewPort    Array, [left, top, right, bottom], defining the position and
-     *              size on screen to place the zoom region.
+     * @param {number[]} viewPort: [left, top, right, bottom], defining
+     *     the position and size on screen to place the zoom region.
      */
     moveResize(viewPort) {
         let viewRect = { x: viewPort[0], y: viewPort[1], width: viewPort[2] - viewPort[0], height: viewPort[3] - viewPort[1] };

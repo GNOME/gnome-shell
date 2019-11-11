@@ -101,12 +101,13 @@ class ATIndicator extends PanelMenu.Button {
 
     _buildItemExtended(string, initialValue, writable, onSet) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
-        if (!writable)
+        if (!writable) {
             widget.reactive = false;
-        else
+        } else {
             widget.connect('toggled', item => {
                 onSet(item.state);
             });
+        }
         return widget;
     }
 
@@ -130,7 +131,7 @@ class ATIndicator extends PanelMenu.Button {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
         let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
-        let hasHC = (gtkTheme == HIGH_CONTRAST_THEME);
+        let hasHC = gtkTheme == HIGH_CONTRAST_THEME;
         let highContrast = this._buildItemExtended(
             _("High Contrast"),
             hasHC,
@@ -173,21 +174,22 @@ class ATIndicator extends PanelMenu.Button {
     _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-        let initialSetting = (factor > 1.0);
+        let initialSetting = factor > 1.0;
         let widget = this._buildItemExtended(_("Large Text"),
             initialSetting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             enabled => {
-                if (enabled)
+                if (enabled) {
                     settings.set_double(
                         KEY_TEXT_SCALING_FACTOR, DPI_FACTOR_LARGE);
-                else
+                } else {
                     settings.reset(KEY_TEXT_SCALING_FACTOR);
+                }
             });
 
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
-            let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-            let active = (factor > 1.0);
+            factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
+            let active = factor > 1.0;
             widget.setToggleState(active);
 
             this._queueSyncMenuVisibility();

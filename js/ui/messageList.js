@@ -39,7 +39,7 @@ class URLHighlighter extends St.Label {
             reactive: true,
             style_class: 'url-highlighter',
             x_expand: true,
-            x_align: Clutter.ActorAlign.START
+            x_align: Clutter.ActorAlign.START,
         });
         this._linkColor = '#ccccff';
         this.connect('style-changed', () => {
@@ -150,10 +150,11 @@ class URLHighlighter extends St.Label {
             findPos = i;
         }
         if (findPos != -1) {
-            for (let i = 0; i < this._urls.length; i++)
+            for (let i = 0; i < this._urls.length; i++) {
                 if (findPos >= this._urls[i].pos &&
                     this._urls[i].pos + this._urls[i].url.length > findPos)
                     return i;
+            }
         }
         return -1;
     }
@@ -170,20 +171,22 @@ class ScaleLayout extends Clutter.BinLayout {
         if (this._container == container)
             return;
 
-        if (this._container)
+        if (this._container) {
             for (let id of this._signals)
                 this._container.disconnect(id);
+        }
 
         this._container = container;
         this._signals = [];
 
-        if (this._container)
+        if (this._container) {
             for (let signal of ['notify::scale-x', 'notify::scale-y']) {
                 let id = this._container.connect(signal, () => {
                     this.layout_changed();
                 });
                 this._signals.push(id);
             }
+        }
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -210,7 +213,7 @@ var LabelExpanderLayout = GObject.registerClass({
                                               'Expansion of the layout, between 0 (collapsed) ' +
                                               'and 1 (fully expanded',
                                               GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                              0, 1, 0)
+                                              0, 1, 0),
     },
 }, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
@@ -232,7 +235,7 @@ var LabelExpanderLayout = GObject.registerClass({
 
         let visibleIndex = this._expansion > 0 ? 1 : 0;
         for (let i = 0; this._container && i < this._container.get_n_children(); i++)
-            this._container.get_child_at_index(i).visible = (i == visibleIndex);
+            this._container.get_child_at_index(i).visible = i == visibleIndex;
 
         this.layout_changed();
     }
@@ -299,7 +302,7 @@ var Message = GObject.registerClass({
         'close': {},
         'expanded': {},
         'unexpanded': {},
-    }
+    },
 }, class Message extends St.Button {
     _init(title, body) {
         super._init({
@@ -346,8 +349,10 @@ var Message = GObject.registerClass({
         this.setTitle(title);
         titleBox.add_actor(this.titleLabel);
 
-        this._secondaryBin = new St.Bin({ style_class: 'message-secondary-bin',
-                                          x_expand: true, y_expand: true, });
+        this._secondaryBin = new St.Bin({
+            style_class: 'message-secondary-bin',
+            x_expand: true, y_expand: true,
+        });
         titleBox.add_actor(this._secondaryBin);
 
         let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
@@ -377,7 +382,7 @@ var Message = GObject.registerClass({
 
     setIcon(actor) {
         this._iconBin.child = actor;
-        this._iconBin.visible = (actor != null);
+        this._iconBin.visible = actor != null;
     }
 
     setSecondaryActor(actor) {
@@ -448,7 +453,7 @@ var Message = GObject.registerClass({
     expand(animate) {
         this.expanded = true;
 
-        this._actionBin.visible = (this._actionBin.get_n_children() > 0);
+        this._actionBin.visible = this._actionBin.get_n_children() > 0;
 
         if (this._bodyStack.get_n_children() < 2) {
             this._expandedLabel = new URLHighlighter(this._bodyText,
@@ -466,7 +471,7 @@ var Message = GObject.registerClass({
             this._actionBin.ease({
                 scale_y: 1,
                 duration: MessageTray.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         } else {
             this._bodyStack.layout_manager.expansion = 1;
@@ -490,7 +495,7 @@ var Message = GObject.registerClass({
                 onComplete: () => {
                     this._actionBin.hide();
                     this.expanded = false;
-                }
+                },
             });
         } else {
             this._bodyStack.layout_manager.expansion = 0;
@@ -541,14 +546,14 @@ var MessageListSection = GObject.registerClass({
         'can-clear-changed': {},
         'empty-changed': {},
         'message-focused': { param_types: [Message.$gtype] },
-    }
+    },
 }, class MessageListSection extends St.BoxLayout {
     _init() {
         super._init({
             style_class: 'message-list-section',
             clip_to_allocation: true,
             vertical: true,
-            x_expand: true
+            x_expand: true,
         });
 
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
@@ -630,7 +635,7 @@ var MessageListSection = GObject.registerClass({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -652,7 +657,7 @@ var MessageListSection = GObject.registerClass({
                 scale_x: 1,
                 scale_y: 1,
                 duration: MESSAGE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         };
         listItem.ease({
@@ -660,7 +665,7 @@ var MessageListSection = GObject.registerClass({
             scale_y: 0,
             duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete
+            onComplete,
         });
     }
 
@@ -680,7 +685,7 @@ var MessageListSection = GObject.registerClass({
                 onComplete: () => {
                     listItem.destroy();
                     global.sync_pointer();
-                }
+                },
             });
         } else {
             listItem.destroy();
@@ -708,7 +713,7 @@ var MessageListSection = GObject.registerClass({
                     duration: MESSAGE_ANIMATION_TIME,
                     delay: i * delay,
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onComplete: () => message.close()
+                    onComplete: () => message.close(),
                 });
             }
         }

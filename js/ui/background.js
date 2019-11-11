@@ -145,7 +145,7 @@ var BackgroundCache = class BackgroundCache {
 
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
-                        (obj, file, otherFile, eventType) => {
+                        (obj, theFile, otherFile, eventType) => {
                             // Ignore CHANGED and CREATED events, since in both cases
                             // we'll get a CHANGES_DONE_HINT event when done.
                             if (eventType != Gio.FileMonitorEvent.CHANGED &&
@@ -222,7 +222,7 @@ function getBackgroundCache() {
 }
 
 var Background = GObject.registerClass({
-    Signals: { 'loaded': {}, 'bg-changed': {} }
+    Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
     _init(params) {
         params = Params.parse(params, { monitorIndex: 0,
@@ -269,9 +269,9 @@ var Background = GObject.registerClass({
 
         let i;
         let keys = Object.keys(this._fileWatches);
-        for (i = 0; i < keys.length; i++) {
+        for (i = 0; i < keys.length; i++)
             this._cache.disconnect(this._fileWatches[keys[i]]);
-        }
+
         this._fileWatches = null;
 
         if (this._timezoneChangedId != 0)
@@ -444,7 +444,7 @@ var Background = GObject.registerClass({
 
     _loadAnimation(file) {
         this._cache.getAnimation({
-            file: file,
+            file,
             settingsSchema: this._settings.schema_id,
             onLoaded: animation => {
                 this._animation = animation;
@@ -456,7 +456,7 @@ var Background = GObject.registerClass({
 
                 this._updateAnimation();
                 this._watchFile(file);
-            }
+            },
         });
     }
 
@@ -500,7 +500,7 @@ var Background = GObject.registerClass({
 let _systemBackground;
 
 var SystemBackground = GObject.registerClass({
-    Signals: { 'loaded': {} }
+    Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
@@ -514,7 +514,7 @@ var SystemBackground = GObject.registerClass({
         super._init({
             meta_display: global.display,
             monitor: 0,
-            background: _systemBackground
+            background: _systemBackground,
         });
 
         let cache = Meta.BackgroundImageCache.get_default();
@@ -592,11 +592,11 @@ var BackgroundSource = class BackgroundSource {
 
         if (!(monitorIndex in this._backgrounds)) {
             let background = new Background({
-                monitorIndex: monitorIndex,
+                monitorIndex,
                 layoutManager: this._layoutManager,
                 settings: this._settings,
-                file: file,
-                style: style
+                file,
+                style,
             });
 
             background._changedId = background.connect('bg-changed', () => {
@@ -713,7 +713,7 @@ var BackgroundManager = class BackgroundManager {
             opacity: 0,
             duration: FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => oldBackgroundActor.destroy()
+            onComplete: () => oldBackgroundActor.destroy(),
         });
     }
 

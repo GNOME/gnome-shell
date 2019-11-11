@@ -44,7 +44,7 @@ function _setLabelsForMessage(content, message) {
 /* -------------------------------------------------------- */
 
 var ListItem = GObject.registerClass({
-    Signals: { 'activate': {} }
+    Signals: { 'activate': {} },
 }, class ListItem extends St.Button {
     _init(app) {
         let layout = new St.BoxLayout({ vertical: false });
@@ -257,7 +257,7 @@ class ShellUnmountNotifier extends MessageTray.Source {
 });
 
 var ShellMountQuestionDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init(icon) {
         super._init({ styleClass: 'mount-dialog' });
@@ -278,7 +278,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                                            GObject.TYPE_BOOLEAN,
                                            GObject.TYPE_BOOLEAN,
                                            GObject.TYPE_BOOLEAN,
-                                           GObject.TYPE_UINT] } }
+                                           GObject.TYPE_UINT] } },
 }, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
     _init(message, icon, flags) {
         let strings = message.split('\n');
@@ -474,21 +474,22 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
     _onOpenDisksButton() {
         let app = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
-        if (app)
+        if (app) {
             app.activate();
-        else
+        } else {
             Main.notifyError(
                 /* Translators: %s is the Disks application */
                 _("Unable to start %s").format(app.get_name()),
                 /* Translators: %s is the Disks application */
                 _("Couldn’t find the %s application").format(app.get_name())
             );
+        }
         this._onCancelButton();
     }
 });
 
 var ShellProcessesDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init(icon) {
         super._init({ styleClass: 'mount-dialog' });
@@ -554,7 +555,7 @@ var ShellMountOperationType = {
     NONE: 0,
     ASK_PASSWORD: 1,
     ASK_QUESTION: 2,
-    SHOW_PROCESSES: 3
+    SHOW_PROCESSES: 3,
 };
 
 var GnomeShellMountOpHandler = class {
@@ -617,18 +618,22 @@ var GnomeShellMountOpHandler = class {
 
     /**
      * AskPassword:
-     * @id: an opaque ID identifying the object for which the operation is requested
-     *      The ID must be unique in the context of the calling process.
-     * @message: the message to display
-     * @icon_name: the name of an icon to display
-     * @default_user: the default username for display
-     * @default_domain: the default domain for display
-     * @flags: a set of GAskPasswordFlags
-     * @response: a GMountOperationResult
-     * @response_details: a dictionary containing the response details as
-     * entered by the user. The dictionary MAY contain the following properties:
+     * @param {Array} params
+     *   {string} id: an opaque ID identifying the object for which
+     *       the operation is requested
+     *   {string} message: the message to display
+     *   {string} icon_name: the name of an icon to display
+     *   {string} default_user: the default username for display
+     *   {string} default_domain: the default domain for display
+     *   {Gio.AskPasswordFlags} flags: a set of GAskPasswordFlags
+     *   {Gio.MountOperationResults} response: a GMountOperationResult
+     *   {Object} response_details: a dictionary containing response details as
+     *       entered by the user. The dictionary MAY contain the following
+     *       properties:
      *   - "password" -> (s): a password to be used to complete the mount operation
      *   - "password_save" -> (u): a GPasswordSave
+     * @param {Gio.DBusMethodInvocation} invocation
+     *      The ID must be unique in the context of the calling process.
      *
      * The dialog will stay visible until clients call the Close() method, or
      * another dialog becomes visible.
@@ -672,16 +677,14 @@ var GnomeShellMountOpHandler = class {
 
     /**
      * AskQuestion:
-     * @id: an opaque ID identifying the object for which the operation is requested
+     * @param {Array} params - params
+     *   {string} id: an opaque ID identifying the object for which
+     *       the operation is requested
      *      The ID must be unique in the context of the calling process.
-     * @message: the message to display
-     * @icon_name: the name of an icon to display
-     * @choices: an array of choice strings
-     * GetResponse:
-     * @response: a GMountOperationResult
-     * @response_details: a dictionary containing the response details as
-     * entered by the user. The dictionary MAY contain the following properties:
-     *   - "choice" -> (i): the chosen answer among the array of strings passed in
+     *   {string} message: the message to display
+     *   {string} icon_name: the name of an icon to display
+     *   {string[]} choices: an array of choice strings
+     * @param {Gio.DBusMethodInvocation} invocation - invocation
      *
      * The dialog will stay visible until clients call the Close() method, or
      * another dialog becomes visible.
@@ -710,16 +713,15 @@ var GnomeShellMountOpHandler = class {
 
     /**
      * ShowProcesses:
-     * @id: an opaque ID identifying the object for which the operation is requested
+     * @param {Array} params - params
+     *   {string} id: an opaque ID identifying the object for which
+     *       the operation is requested
      *      The ID must be unique in the context of the calling process.
-     * @message: the message to display
-     * @icon_name: the name of an icon to display
-     * @application_pids: the PIDs of the applications to display
-     * @choices: an array of choice strings
-     * @response: a GMountOperationResult
-     * @response_details: a dictionary containing the response details as
-     * entered by the user. The dictionary MAY contain the following properties:
-     *   - "choice" -> (i): the chosen answer among the array of strings passed in
+     *   {string} message: the message to display
+     *   {string} icon_name: the name of an icon to display
+     *   {number[]} application_pids: the PIDs of the applications to display
+     *   {string[]} choices: an array of choice strings
+     * @param {Gio.DBusMethodInvocation} invocation - invocation
      *
      * The dialog will stay visible until clients call the Close() method, or
      * another dialog becomes visible.
@@ -758,6 +760,8 @@ var GnomeShellMountOpHandler = class {
 
     /**
      * Close:
+     * @param {Array} _params - params
+     * @param {Gio.DBusMethodInvocation} _invocation - invocation
      *
      * Closes a dialog previously opened by AskPassword, AskQuestion or ShowProcesses.
      * If no dialog is open, does nothing.

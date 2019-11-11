@@ -54,9 +54,9 @@ var AutoComplete = class AutoComplete {
     }
 
     _processCompletionRequest(event) {
-        if (event.completions.length == 0) {
+        if (event.completions.length == 0)
             return;
-        }
+
         // Unique match = go ahead and complete; multiple matches + single tab = complete the common starting string;
         // multiple matches + double tab = emit a suggest event with all possible options
         if (event.completions.length == 1) {
@@ -78,20 +78,20 @@ var AutoComplete = class AutoComplete {
     _entryKeyPressEvent(actor, event) {
         let cursorPos = this._entry.clutter_text.get_cursor_position();
         let text = this._entry.get_text();
-        if (cursorPos != -1) {
+        if (cursorPos != -1)
             text = text.slice(0, cursorPos);
-        }
-        if (event.get_key_symbol() === Clutter.KEY_Tab) {
+
+        if (event.get_key_symbol() == Clutter.KEY_Tab) {
             let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
             let currTime = global.get_current_time();
             if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
                 this._processCompletionRequest({ tabType: 'double',
-                                                 completions: completions,
-                                                 attrHead: attrHead });
+                                                 completions,
+                                                 attrHead });
             } else {
                 this._processCompletionRequest({ tabType: 'single',
-                                                 completions: completions,
-                                                 attrHead: attrHead });
+                                                 completions,
+                                                 attrHead });
             }
             this._lastTabTime = currTime;
         }
@@ -141,9 +141,9 @@ var Notebook = GObject.registerClass({
         scrollview.get_hscroll_bar().hide();
         scrollview.add_actor(child);
 
-        let tabData = { child: child,
-                        labelBox: labelBox,
-                        label: label,
+        let tabData = { child,
+                        labelBox,
+                        label,
                         scrollView: scrollview,
                         _scrollToBottom: false };
         this._tabs.push(tabData);
@@ -224,18 +224,16 @@ var Notebook = GObject.registerClass({
 
     nextTab() {
         let nextIndex = this._selectedIndex;
-        if (nextIndex < this._tabs.length - 1) {
+        if (nextIndex < this._tabs.length - 1)
             ++nextIndex;
-        }
 
         this.selectIndex(nextIndex);
     }
 
     prevTab() {
         let prevIndex = this._selectedIndex;
-        if (prevIndex > 0) {
+        if (prevIndex > 0)
             --prevIndex;
-        }
 
         this.selectIndex(prevIndex);
     }
@@ -412,9 +410,8 @@ class ObjInspector extends St.ScrollView {
         hbox.add(button);
         if (typeof obj == typeof {}) {
             let properties = [];
-            for (let propName in obj) {
+            for (let propName in obj)
                 properties.push(propName);
-            }
             properties.sort();
 
             for (let i = 0; i < properties.length; i++) {
@@ -426,10 +423,10 @@ class ObjInspector extends St.ScrollView {
                 } catch (e) {
                     link = new St.Label({ text: '<error>' });
                 }
-                let hbox = new St.BoxLayout();
-                hbox.add(new St.Label({ text: `${propName}: ` }));
-                hbox.add(link);
-                this._container.add_actor(hbox);
+                let box = new St.BoxLayout();
+                box.add(new St.Label({ text: `${propName}: ` }));
+                box.add(link);
+                this._container.add_actor(box);
             }
         }
     }
@@ -446,7 +443,7 @@ class ObjInspector extends St.ScrollView {
                 scale_x: 1,
                 scale_y: 1,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: 200
+                duration: 200,
             });
         } else {
             this.set_scale(1, 1);
@@ -670,7 +667,7 @@ var Extensions = GObject.registerClass({
         if (this._numExtensions == 0)
             this._extensionsList.remove_actor(this._noExtensions);
 
-        this._numExtensions ++;
+        this._numExtensions++;
         this._extensionsList.add(extensionDisplay);
     }
 
@@ -695,7 +692,7 @@ var Extensions = GObject.registerClass({
             let errors = extension.errors;
             let errorDisplay = new St.BoxLayout({ vertical: true });
             if (errors && errors.length) {
-                for (let i = 0; i < errors.length; i ++)
+                for (let i = 0; i < errors.length; i++)
                     errorDisplay.add(new St.Label({ text: errors[i] }));
             } else {
                 /* Translators: argument is an extension UUID. */
@@ -793,7 +790,7 @@ class LookingGlass extends St.BoxLayout {
             style_class: 'lg-dialog',
             vertical: true,
             visible: false,
-            reactive: true
+            reactive: true,
         });
 
         this._borderPaintTarget = null;
@@ -997,7 +994,7 @@ class LookingGlass extends St.BoxLayout {
                 height: naturalHeight,
                 opacity: 255,
                 duration,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -1014,7 +1011,7 @@ class LookingGlass extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._completionActor.hide();
-                }
+                },
             });
         }
     }
@@ -1096,21 +1093,19 @@ class LookingGlass extends St.BoxLayout {
     // Handle key events which are relevant for all tabs of the LookingGlass
     vfunc_key_press_event(keyPressEvent) {
         let symbol = keyPressEvent.keyval;
-        if (symbol === Clutter.KEY_Escape) {
-            if (this._objInspector.visible) {
+        if (symbol == Clutter.KEY_Escape) {
+            if (this._objInspector.visible)
                 this._objInspector.close();
-            } else {
+            else
                 this.close();
-            }
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
         if (keyPressEvent.modifier_state & Clutter.ModifierType.CONTROL_MASK) {
-            if (symbol == Clutter.KEY_Page_Up) {
+            if (symbol == Clutter.KEY_Page_Up)
                 this._notebook.prevTab();
-            } else if (symbol == Clutter.KEY_Page_Down) {
+            else if (symbol == Clutter.KEY_Page_Down)
                 this._notebook.nextTab();
-            }
         }
         return Clutter.EVENT_PROPAGATE;
     }
@@ -1135,7 +1130,7 @@ class LookingGlass extends St.BoxLayout {
         this.ease({
             y: this._targetY,
             duration,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         this._windowList.update();
@@ -1161,7 +1156,7 @@ class LookingGlass extends St.BoxLayout {
             y: this._hiddenY,
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.hide()
+            onComplete: () => this.hide(),
         });
     }
 

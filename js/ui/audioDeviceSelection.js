@@ -9,13 +9,13 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 var AudioDevice = {
     HEADPHONES: 1 << 0,
     HEADSET:    1 << 1,
-    MICROPHONE: 1 << 2
+    MICROPHONE: 1 << 2,
 };
 
 const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
 var AudioDeviceSelectionDialog = GObject.registerClass({
-    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } }
+    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } },
 }, class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
     _init(devices) {
         super._init({ styleClass: 'audio-device-selection-dialog' });
@@ -49,9 +49,10 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
         });
         this.contentLayout.add_child(this._selectionBox);
 
-        if (Main.sessionMode.allowSettings)
+        if (Main.sessionMode.allowSettings) {
             this.addButton({ action: this._openSettings.bind(this),
                              label: _("Sound Settings") });
+        }
         this.addButton({ action: this.close.bind(this),
                          label: _("Cancel"),
                          key: Clutter.KEY_Escape });

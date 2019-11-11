@@ -15,7 +15,7 @@ const Config = imports.misc.config;
 
 var ExtensionType = {
     SYSTEM: 1,
-    PER_USER: 2
+    PER_USER: 2,
 };
 
 var ExtensionState = {
@@ -28,7 +28,7 @@ var ExtensionState = {
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.
-    UNINSTALLED: 99
+    UNINSTALLED: 99,
 };
 
 const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'canChange'];
@@ -36,7 +36,8 @@ const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'ca
 /**
  * getCurrentExtension:
  *
- * Returns the current extension, or null if not called from an extension.
+ * @returns {?object} - The current extension, or null if not called from
+ * an extension.
  */
 function getCurrentExtension() {
     let stack = (new Error()).stack.split('\n');
@@ -84,7 +85,7 @@ function getCurrentExtension() {
 
 /**
  * initTranslations:
- * @domain: (optional): the gettext domain to use
+ * @param {string=} domain - the gettext domain to use
  *
  * Initialize Gettext to load translations from extensionsdir/locale.
  * If @domain is not provided, it will be taken from metadata['gettext-domain']
@@ -108,7 +109,8 @@ function initTranslations(domain) {
 
 /**
  * getSettings:
- * @schema: (optional): the GSettings schema id
+ * @param {string=} schema - the GSettings schema id
+ * @returns {Gio.Settings} - a new settings object for @schema
  *
  * Builds and returns a GSettings schema for @schema, using schema files
  * in extensionsdir/schemas. If @schema is omitted, it is taken from
@@ -128,12 +130,13 @@ function getSettings(schema) {
     // SYSTEM extension that has been installed in the same prefix as the shell
     let schemaDir = extension.dir.get_child('schemas');
     let schemaSource;
-    if (schemaDir.query_exists(null))
+    if (schemaDir.query_exists(null)) {
         schemaSource = GioSSS.new_from_directory(schemaDir.get_path(),
                                                  GioSSS.get_default(),
                                                  false);
-    else
+    } else {
         schemaSource = GioSSS.get_default();
+    }
 
     let schemaObj = schemaSource.lookup(schema, true);
     if (!schemaObj)
@@ -144,8 +147,9 @@ function getSettings(schema) {
 
 /**
  * versionCheck:
- * @required: an array of versions we're compatible with
- * @current: the version we have
+ * @param {string[]} required - an array of versions we're compatible with
+ * @param {string} current - the version we have
+ * @returns {bool} - true if @current is compatible with @required
  *
  * Check if a component is compatible for an extension.
  * @required is an array, and at least one version must match.

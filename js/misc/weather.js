@@ -47,11 +47,11 @@ var WeatherClient = class {
                 return;
             }
 
-            this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
-                if (error)
-                    log(`Error looking up permission: ${error.message}`);
+            this._permStore.LookupRemote('gnome', 'geolocation', (res, err) => {
+                if (err)
+                    log(`Error looking up permission: ${err.message}`);
 
-                let [perms, data] = error ? [{}, null] : res;
+                let [perms, data] = err ? [{}, null] : res;
                 let  params = ['gnome', 'geolocation', false, data, perms];
                 this._onPermStoreChanged(this._permStore, '', params);
             });
@@ -90,7 +90,7 @@ var WeatherClient = class {
             this._onWeatherProxyReady.bind(this));
 
         this._settings = new Gio.Settings({
-            schema_id: 'org.gnome.shell.weather'
+            schema_id: 'org.gnome.shell.weather',
         });
         this._settings.connect('changed::automatic-location',
             this._onAutomaticLocationChanged.bind(this));
@@ -169,9 +169,9 @@ var WeatherClient = class {
     }
 
     _onInstalledChanged() {
-        let hadApp = (this._weatherApp != null);
+        let hadApp = this._weatherApp != null;
         this._weatherApp = this._appSystem.lookup_app(WEATHER_APP_ID);
-        let haveApp = (this._weatherApp != null);
+        let haveApp = this._weatherApp != null;
 
         if (hadApp !== haveApp)
             this.emit('changed');
@@ -205,7 +205,7 @@ var WeatherClient = class {
 
         this._weatherInfo.abort();
         this._weatherInfo.set_location(location);
-        this._locationValid = (location != null);
+        this._locationValid = location != null;
 
         this._weatherInfo.set_enabled_providers(location ? this._providers : 0);
 

@@ -57,8 +57,7 @@ function _unpremultiply(color) {
     let red = Math.min((color.red * 255 + 127) / color.alpha, 255);
     let green = Math.min((color.green * 255 + 127) / color.alpha, 255);
     let blue = Math.min((color.blue * 255 + 127) / color.alpha, 255);
-    return new Clutter.Color({ red: red, green: green,
-                               blue: blue, alpha: color.alpha });
+    return new Clutter.Color({ red, green, blue, alpha: color.alpha });
 }
 
 class AppMenu extends PopupMenu.PopupMenu {
@@ -119,7 +118,7 @@ class AppMenu extends PopupMenu.PopupMenu {
 
     _updateDetailsVisibility() {
         let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
-        this._detailsItem.visible = (sw != null);
+        this._detailsItem.visible = sw != null;
     }
 
     isEmpty() {
@@ -268,7 +267,7 @@ var AppMenuButton = GObject.registerClass({
         this.ease({
             opacity: 255,
             duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -283,7 +282,7 @@ var AppMenuButton = GObject.registerClass({
             opacity: 0,
             mode: Clutter.Animation.EASE_OUT_QUAD,
             duration: Overview.ANIMATION_TIME,
-            onComplete: () => this.hide()
+            onComplete: () => this.hide(),
         });
     }
 
@@ -344,9 +343,10 @@ var AppMenuButton = GObject.registerClass({
         if (focusedApp && focusedApp.is_on_workspace(workspace))
             return focusedApp;
 
-        for (let i = 0; i < this._startingApps.length; i++)
+        for (let i = 0; i < this._startingApps.length; i++) {
             if (this._startingApps[i].is_on_workspace(workspace))
                 return this._startingApps[i];
+        }
 
         return null;
     }
@@ -369,21 +369,21 @@ var AppMenuButton = GObject.registerClass({
             }
         }
 
-        let visible = (this._targetApp != null && !Main.overview.visibleTarget);
+        let visible = this._targetApp != null && !Main.overview.visibleTarget;
         if (visible)
             this.fadeIn();
         else
             this.fadeOut();
 
-        let isBusy = (this._targetApp != null &&
+        let isBusy = this._targetApp != null &&
                       (this._targetApp.get_state() == Shell.AppState.STARTING ||
-                       this._targetApp.get_busy()));
+                       this._targetApp.get_busy());
         if (isBusy)
             this.startAnimation();
         else
             this.stopAnimation();
 
-        this.reactive = (visible && !isBusy);
+        this.reactive = visible && !isBusy;
 
         this._syncIcon();
         this.menu.setApp(this._targetApp);
@@ -436,11 +436,11 @@ class ActivitiesButton extends PanelMenu.Button {
 
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
-            this.add_accessible_state (Atk.StateType.CHECKED);
+            this.add_accessible_state(Atk.StateType.CHECKED);
         });
         Main.overview.connect('hiding', () => {
             this.remove_style_pseudo_class('overview');
-            this.remove_accessible_state (Atk.StateType.CHECKED);
+            this.remove_accessible_state(Atk.StateType.CHECKED);
         });
 
         this._xdndTimeOut = 0;
@@ -471,9 +471,10 @@ class ActivitiesButton extends PanelMenu.Button {
 
     vfunc_event(event) {
         if (event.type() == Clutter.EventType.TOUCH_END ||
-            event.type() == Clutter.EventType.BUTTON_RELEASE)
+            event.type() == Clutter.EventType.BUTTON_RELEASE) {
             if (Main.overview.shouldToggleByCornerOrButton())
                 Main.overview.toggle();
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -529,8 +530,8 @@ class PanelCorner extends St.DrawingArea {
         if (index < 0)
             return null;
 
-        if (!(children[index].has_style_class_name('panel-menu')) &&
-            !(children[index].has_style_class_name('panel-button')))
+        if (!children[index].has_style_class_name('panel-menu') &&
+            !children[index].has_style_class_name('panel-button'))
             return this._findRightmostButton(children[index]);
 
         return children[index];
@@ -554,8 +555,8 @@ class PanelCorner extends St.DrawingArea {
         if (index == children.length)
             return null;
 
-        if (!(children[index].has_style_class_name('panel-menu')) &&
-            !(children[index].has_style_class_name('panel-button')))
+        if (!children[index].has_style_class_name('panel-menu') &&
+            !children[index].has_style_class_name('panel-button'))
             return this._findLeftmostButton(children[index]);
 
         return children[index];
@@ -623,14 +624,15 @@ class PanelCorner extends St.DrawingArea {
         cr.setOperator(Cairo.Operator.SOURCE);
 
         cr.moveTo(0, offsetY);
-        if (this._side == St.Side.LEFT)
+        if (this._side == St.Side.LEFT) {
             cr.arc(cornerRadius,
                    borderWidth + cornerRadius,
                    cornerRadius, Math.PI, 3 * Math.PI / 2);
-        else
+        } else {
             cr.arc(0,
                    borderWidth + cornerRadius,
                    cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
+        }
         cr.lineTo(cornerRadius, offsetY);
         cr.closePath();
 
@@ -646,7 +648,7 @@ class PanelCorner extends St.DrawingArea {
             Clutter.cairo_set_source_color(cr, backgroundColor);
 
             cr.save();
-            cr.translate(xOffsetDirection * offset, - offset);
+            cr.translate(xOffsetDirection * offset, -offset);
             cr.appendPath(savedPath);
             cr.fill();
             cr.restore();
@@ -708,16 +710,15 @@ class AggregateMenu extends PanelMenu.Button {
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.add_child(this._indicators);
 
-        if (Config.HAVE_NETWORKMANAGER) {
+        if (Config.HAVE_NETWORKMANAGER)
             this._network = new imports.ui.status.network.NMApplet();
-        } else {
+        else
             this._network = null;
-        }
-        if (Config.HAVE_BLUETOOTH) {
+
+        if (Config.HAVE_BLUETOOTH)
             this._bluetooth = new imports.ui.status.bluetooth.Indicator();
-        } else {
+        else
             this._bluetooth = null;
-        }
 
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._power = new imports.ui.status.power.Indicator();
@@ -734,12 +735,10 @@ class AggregateMenu extends PanelMenu.Button {
         this._indicators.add_child(this._screencast);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
-        if (this._network) {
+        if (this._network)
             this._indicators.add_child(this._network);
-        }
-        if (this._bluetooth) {
+        if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
-        }
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
@@ -749,12 +748,12 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        if (this._network) {
+        if (this._network)
             this.menu.addMenuItem(this._network.menu);
-        }
-        if (this._bluetooth) {
+
+        if (this._bluetooth)
             this.menu.addMenuItem(this._bluetooth.menu);
-        }
+
         this.menu.addMenuItem(this._remoteAccess.menu);
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
@@ -1106,7 +1105,7 @@ class Panel extends St.Widget {
         let boxes = {
             left: this._leftBox,
             center: this._centerBox,
-            right: this._rightBox
+            right: this._rightBox,
         };
         let boxContainer = boxes[box] || this._rightBox;
         this.statusArea[role] = indicator;

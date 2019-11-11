@@ -39,7 +39,7 @@ class TodayButton extends St.Button {
             style_class: 'datemenu-today-button',
             x_expand: true,
             can_focus: true,
-            reactive: false
+            reactive: false,
         });
 
         let hbox = new St.BoxLayout({ vertical: true });
@@ -72,14 +72,14 @@ class TodayButton extends St.Button {
          * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
          * "February 17 2015".
          */
-        let dateFormat = Shell.util_translate_time_string (N_("%B %-d %Y"));
+        let dateFormat = Shell.util_translate_time_string(N_("%B %-d %Y"));
         this._dateLabel.set_text(date.toLocaleFormat(dateFormat));
 
         /* Translators: This is the accessible name of the date button shown
          * below the time in the shell; it should combine the weekday and the
          * date, e.g. "Tuesday February 17 2015".
          */
-        dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
+        dateFormat = Shell.util_translate_time_string(N_("%A %B %e %Y"));
         this.accessible_name = date.toLocaleFormat(dateFormat);
     }
 });
@@ -115,7 +115,7 @@ class WorldClocksSection extends St.Button {
             Gio.DBusProxyFlags.DO_NOT_AUTO_START | Gio.DBusProxyFlags.GET_INVALIDATED_PROPERTIES);
 
         this._settings = new Gio.Settings({
-            schema_id: 'org.gnome.shell.world-clocks'
+            schema_id: 'org.gnome.shell.world-clocks',
         });
         this._settings.connect('changed', this._clocksChanged.bind(this));
         this._clocksChanged();
@@ -157,7 +157,7 @@ class WorldClocksSection extends St.Button {
         });
 
         let layout = this._grid.layout_manager;
-        let title = (this._locations.length == 0)
+        let title = this._locations.length == 0
             ? _("Add world clocks…")
             : _("World Clocks");
         let header = new St.Label({ style_class: 'world-clocks-header',
@@ -182,8 +182,8 @@ class WorldClocksSection extends St.Button {
 
             let otherOffset = this._getTimeAtLocation(l).get_utc_offset();
             let offset = (otherOffset - localOffset) / GLib.TIME_SPAN_HOUR;
-            let fmt = (Math.trunc(offset) == offset) ? '%s%.0f' : '%s%.1f';
-            let prefix = (offset >= 0) ? '+' : '-';
+            let fmt = Math.trunc(offset) == offset ? '%s%.0f' : '%s%.1f';
+            let prefix = offset >= 0 ? '+' : '-';
             let tz = new St.Label({ style_class: 'world-clocks-timezone',
                                     text: fmt.format(prefix, Math.abs(offset)),
                                     x_align: Clutter.ActorAlign.END,
@@ -203,9 +203,10 @@ class WorldClocksSection extends St.Button {
         }
 
         if (this._grid.get_n_children() > 1) {
-            if (!this._clockNotifyId)
+            if (!this._clockNotifyId) {
                 this._clockNotifyId =
                     this._clock.connect('notify::clock', this._updateLabels.bind(this));
+            }
             this._updateLabels();
         } else {
             if (this._clockNotifyId)
@@ -334,7 +335,7 @@ class WeatherSection extends St.Button {
         infos.forEach(fc => {
             let [ok_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
-                timeOnly: true
+                timeOnly: true,
             });
 
             let icon = new St.Icon({ style_class: 'weather-forecast-icon',
@@ -408,7 +409,7 @@ class MessagesIndicator extends St.Icon {
             icon_size: 16,
             visible: false,
             y_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._sources = [];
@@ -437,7 +438,7 @@ class MessagesIndicator extends St.Icon {
         this._sources.forEach(source => (count += source.unseenCount));
         count -= Main.messageTray.queueCount;
 
-        this.visible = (count > 0);
+        this.visible = count > 0;
     }
 });
 
@@ -538,7 +539,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         this.label_actor = this._clockDisplay;
         this.add_actor(box);
-        this.add_style_class_name ('clock-display');
+        this.add_style_class_name('clock-display');
 
         let layout = new FreezableBinLayout();
         let bin = new St.Widget({ layout_manager: layout });
@@ -635,11 +636,11 @@ class DateMenuButton extends PanelMenu.Button {
     _sessionUpdated() {
         let eventSource;
         let showEvents = Main.sessionMode.showCalendarEvents;
-        if (showEvents) {
+        if (showEvents)
             eventSource = this._getEventSource();
-        } else {
+        else
             eventSource = new Calendar.EmptyEventSource();
-        }
+
         this._setEventSource(eventSource);
 
         // Displays are not actually expected to launch Settings when activated

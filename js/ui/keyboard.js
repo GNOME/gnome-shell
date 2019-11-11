@@ -92,7 +92,7 @@ class KeyContainer extends St.Widget {
         super._init({
             layout_manager: gridLayout,
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
         this._gridLayout = gridLayout;
         this._currentRow = 0;
@@ -120,7 +120,7 @@ class KeyContainer extends St.Widget {
             left: this._currentCol,
             top: this._currentRow,
             width,
-            height
+            height,
         };
 
         let row = this._rows[this._rows.length - 1];
@@ -255,7 +255,7 @@ var Key = GObject.registerClass({
         'long-press': {},
         'pressed': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
         'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
-    }
+    },
 }, class Key extends St.BoxLayout {
     _init(key, extendedKeys) {
         super._init({ style_class: 'key-container' });
@@ -311,9 +311,8 @@ var Key = GObject.registerClass({
     _press(key) {
         this.emit('activated');
 
-        if (key != this.key || this._extended_keys.length == 0) {
+        if (key != this.key || this._extended_keys.length == 0)
             this.emit('pressed', this._getKeyval(key), key);
-        }
 
         if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
@@ -363,8 +362,8 @@ var Key = GObject.registerClass({
 
     _onCapturedEvent(actor, event) {
         let type = event.type();
-        let press = (type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN);
-        let release = (type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END);
+        let press = type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN;
+        let release = type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END;
 
         if (event.get_source() == this._boxPointer.bin ||
             this._boxPointer.bin.contains(event.get_source()))
@@ -404,8 +403,8 @@ var Key = GObject.registerClass({
 
     _makeKey(key) {
         let label = GLib.markup_escape_text(key, -1);
-        let button = new St.Button ({
-            label: label,
+        let button = new St.Button({
+            label,
             style_class: 'keyboard-key',
             x_expand: true,
         });
@@ -588,20 +587,20 @@ var EmojiPager = GObject.registerClass({
         'delta': GObject.ParamSpec.int(
             'delta', 'delta', 'delta',
             GObject.ParamFlags.READWRITE,
-            GLib.MININT32, GLib.MAXINT32, 0)
+            GLib.MININT32, GLib.MAXINT32, 0),
     },
     Signals: {
         'emoji': { param_types: [GObject.TYPE_STRING] },
         'page-changed': {
-            param_types: [GObject.TYPE_INT, GObject.TYPE_INT, GObject.TYPE_INT]
-        }
-    }
+            param_types: [GObject.TYPE_INT, GObject.TYPE_INT, GObject.TYPE_INT],
+        },
+    },
 }, class EmojiPager extends St.Widget {
     _init(sections, nCols, nRows) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             reactive: true,
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
         this._sections = sections;
         this._nCols = nCols;
@@ -729,7 +728,7 @@ var EmojiPager = GObject.registerClass({
                 duration: time,
                 onComplete: () => {
                     this.setCurrentPage(this.getFollowingPage());
-                }
+                },
             });
         }
     }
@@ -875,14 +874,14 @@ var EmojiSelection = GObject.registerClass({
         'emoji-selected': { param_types: [GObject.TYPE_STRING] },
         'close-request': {},
         'toggle': {},
-    }
+    },
 }, class EmojiSelection extends St.BoxLayout {
     _init() {
         super._init({
             style_class: 'emoji-panel',
             x_expand: true,
             y_expand: true,
-            vertical: true
+            vertical: true,
         });
 
         this._sections = [
@@ -1029,7 +1028,7 @@ var EmojiSelection = GObject.registerClass({
 var Keypad = GObject.registerClass({
     Signals: {
         'keyval': { param_types: [GObject.TYPE_UINT] },
-    }
+    },
 }, class Keypad extends AspectContainer {
     _init() {
         let keys = [
@@ -1050,7 +1049,7 @@ var Keypad = GObject.registerClass({
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -1308,9 +1307,10 @@ class Keyboard extends St.BoxLayout {
         this._connectSignal(global.stage, 'notify::key-focus',
             this._onKeyFocusChanged.bind(this));
 
-        if (Meta.is_wayland_compositor())
+        if (Meta.is_wayland_compositor()) {
             this._connectSignal(this._keyboardController, 'emoji-visible',
                 this._onEmojiKeyVisible.bind(this));
+        }
 
         this._relayout();
     }
@@ -1350,7 +1350,7 @@ class Keyboard extends St.BoxLayout {
              * basically). We however make things consistent by skipping that
              * second level.
              */
-            let level = (i >= 1 && levels.length == 3) ? i + 1 : i;
+            let level = i >= 1 && levels.length == 3 ? i + 1 : i;
 
             let layout = new KeyContainer();
             layout.shiftKeys = [];
@@ -1439,7 +1439,7 @@ class Keyboard extends St.BoxLayout {
                 if (switchToLevel != null) {
                     this._setActiveLayer(switchToLevel);
                     // Shift only gets latched on long press
-                    this._latched = (switchToLevel != 1);
+                    this._latched = switchToLevel != 1;
                 } else if (keyval != null) {
                     this._keyboardController.keyvalPress(keyval);
                 }
@@ -1539,7 +1539,7 @@ class Keyboard extends St.BoxLayout {
         for (let i = 0; i < rows.length; ++i) {
             layout.appendRow();
             let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
-            this._mergeRowKeys (layout, pre, rows[i], post, numLevels);
+            this._mergeRowKeys(layout, pre, rows[i], post, numLevels);
         }
     }
 
@@ -1609,7 +1609,7 @@ class Keyboard extends St.BoxLayout {
         else if (state == Clutter.InputPanelState.ON)
             enabled = true;
         else if (state == Clutter.InputPanelState.TOGGLE)
-            enabled = (this._keyboardVisible == false);
+            enabled = this._keyboardVisible == false;
         else
             return;
 
@@ -1754,7 +1754,7 @@ class Keyboard extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, -deltaY);
-                }
+                },
             });
         } else {
             windowActor.ease({
@@ -1763,7 +1763,7 @@ class Keyboard extends St.BoxLayout {
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, deltaY);
-                }
+                },
             });
         }
     }
@@ -1811,8 +1811,8 @@ var KeyboardController = class {
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
                                                                  this._onSourceChanged.bind(this));
-        this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
-                                                                    this._onSourcesModified.bind(this));
+        this._sourcesModifiedId = this._inputSourceManager.connect('sources-changed',
+                                                                   this._onSourcesModified.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
         Main.inputMethod.connect('notify::content-purpose',

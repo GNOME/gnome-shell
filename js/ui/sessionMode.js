@@ -34,9 +34,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: []
+            right: [],
         },
-        panelStyle: null
+        panelStyle: null,
     },
 
     'gdm': {
@@ -48,9 +48,9 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
         },
-        panelStyle: 'login-screen'
+        panelStyle: 'login-screen',
     },
 
     'lock-screen': {
@@ -61,9 +61,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['aggregateMenu']
+            right: ['aggregateMenu'],
         },
-        panelStyle: 'lock-screen'
+        panelStyle: 'lock-screen',
     },
 
     'unlock-dialog': {
@@ -73,9 +73,9 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
         },
-        panelStyle: 'unlock-screen'
+        panelStyle: 'unlock-screen',
     },
 
     'user': {
@@ -101,9 +101,9 @@ const _modes = {
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu']
-        }
-    }
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
+        },
+    },
 };
 
 function _loadMode(file, info) {
@@ -143,9 +143,10 @@ function listModes() {
     let loop = new GLib.MainLoop(null, false);
     let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         let names = Object.getOwnPropertyNames(_modes);
-        for (let i = 0; i < names.length; i++)
+        for (let i = 0; i < names.length; i++) {
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
+        }
         loop.quit();
     });
     GLib.Source.set_name_by_id(id, '[gnome-shell] listModes');
@@ -155,8 +156,8 @@ function listModes() {
 var SessionMode = class {
     constructor() {
         _loadModes();
-        let isPrimary = (_modes[global.session_mode] &&
-                         _modes[global.session_mode].isPrimary);
+        let isPrimary = _modes[global.session_mode] &&
+                         _modes[global.session_mode].isPrimary;
         let mode = isPrimary ? global.session_mode : 'user';
         this._modeStack = [mode];
         this._sync();
@@ -188,11 +189,12 @@ var SessionMode = class {
     _sync() {
         let params = _modes[this.currentMode];
         let defaults;
-        if (params.parentMode)
+        if (params.parentMode) {
             defaults = Params.parse(_modes[params.parentMode],
                                     _modes[DEFAULT_MODE]);
-        else
+        } else {
             defaults = _modes[DEFAULT_MODE];
+        }
         params = Params.parse(params, defaults);
 
         // A simplified version of Lang.copyProperties, handles

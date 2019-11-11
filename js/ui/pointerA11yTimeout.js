@@ -10,8 +10,8 @@ var PieTimer = GObject.registerClass({
         'angle': GObject.ParamSpec.double(
             'angle', 'angle', 'angle',
             GObject.ParamFlags.READWRITE,
-            0, 2 * Math.PI, 0)
-    }
+            0, 2 * Math.PI, 0),
+    },
 }, class PieTimer extends St.DrawingArea {
     _init() {
         this._angle = 0;
@@ -20,7 +20,7 @@ var PieTimer = GObject.registerClass({
             opacity: 0,
             visible: false,
             can_focus: false,
-            reactive: false
+            reactive: false,
         });
 
         this.set_pivot_point(0.5, 0.5);
@@ -84,13 +84,13 @@ var PieTimer = GObject.registerClass({
         this.ease({
             opacity: 255,
             duration: duration / 4,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
 
         this.ease_property('angle', 2 * Math.PI, {
             duration,
             mode: Clutter.AnimationMode.LINEAR,
-            onComplete: this._onTransitionComplete.bind(this)
+            onComplete: this._onTransitionComplete.bind(this),
         });
     }
 
@@ -101,7 +101,7 @@ var PieTimer = GObject.registerClass({
             opacity: 0,
             duration: SUCCESS_ZOOM_OUT_DURATION,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this.destroy()
+            onStopped: () => this.destroy(),
         });
     }
 });
@@ -110,7 +110,7 @@ var PointerA11yTimeout = class PointerA11yTimeout {
     constructor() {
         let manager = Clutter.DeviceManager.get_default();
 
-        manager.connect('ptr-a11y-timeout-started', (manager, device, type, timeout) => {
+        manager.connect('ptr-a11y-timeout-started', (o, device, type, timeout) => {
             let [x, y] = global.get_pointer();
 
             this._pieTimer = new PieTimer();
@@ -123,7 +123,7 @@ var PointerA11yTimeout = class PointerA11yTimeout {
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
-        manager.connect('ptr-a11y-timeout-stopped', (manager, device, type, clicked) => {
+        manager.connect('ptr-a11y-timeout-stopped', (o, device, type, clicked) => {
             if (!clicked)
                 this._pieTimer.destroy();
 

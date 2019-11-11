@@ -18,7 +18,7 @@ var WORK_SPINNER_ICON_SIZE = 16;
 const DELAYED_RESET_TIMEOUT = 200;
 
 var AuthenticationDialog = GObject.registerClass({
-    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } }
+    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
     _init(actionId, body, cookie, userNames) {
         super._init({ styleClass: 'prompt-dialog' });
@@ -87,10 +87,10 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
-        this._passwordLabel = new St.Label(({
+        this._passwordLabel = new St.Label({
             style_class: 'prompt-dialog-password-label',
             y_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
         this._passwordBox.add_child(this._passwordLabel);
         this._passwordEntry = new St.Entry({
             style_class: 'prompt-dialog-password-entry',

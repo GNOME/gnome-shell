@@ -20,7 +20,7 @@ var PINCH_GESTURE_THRESHOLD = 0.7;
 var ViewPage = {
     WINDOWS: 1,
     APPS: 2,
-    SEARCH: 3
+    SEARCH: 3,
 };
 
 var FocusTrap = GObject.registerClass(
@@ -55,7 +55,7 @@ var TouchpadShowOverviewAction = class {
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-            this.emit('activated', event.get_gesture_pinch_scale ());
+            this.emit('activated', event.get_gesture_pinch_scale());
 
         return Clutter.EVENT_STOP;
     }
@@ -85,11 +85,10 @@ var ShowOverviewAction = GObject.registerClass({
         for (let i = 0; i < this.get_n_current_points(); i++) {
             let x, y;
 
-            if (motion == true) {
+            if (motion == true)
                 [x, y] = this.get_motion_coords(i);
-            } else {
+            else
                 [x, y] = this.get_press_coords(i);
-            }
 
             if (i == 0) {
                 minX = maxX = x;
@@ -127,7 +126,7 @@ var ViewSelector = GObject.registerClass({
     Signals: {
         'page-changed': {},
         'page-empty': {},
-    }
+    },
 }, class ViewSelector extends Shell.Stack {
     _init(searchEntry, showAppsButton) {
         super._init({
@@ -311,13 +310,14 @@ var ViewSelector = GObject.registerClass({
 
         let page = new St.Bin({ child: actor });
 
-        if (params.a11yFocus)
+        if (params.a11yFocus) {
             Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
-        else
+        } else {
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
                 proxy: this,
                 focusCallback: () => this._a11yFocusPage(page),
             });
+        }
         page.hide();
         this.add_actor(page);
         return page;
@@ -327,7 +327,7 @@ var ViewSelector = GObject.registerClass({
         this._activePage.ease({
             opacity: 255,
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -337,7 +337,7 @@ var ViewSelector = GObject.registerClass({
             opacity: 0,
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._animateIn(oldPage)
+            onStopped: () => this._animateIn(oldPage),
         });
     }
 
@@ -458,8 +458,8 @@ var ViewSelector = GObject.registerClass({
 
     _onStageKeyFocusChanged() {
         let focus = global.stage.get_key_focus();
-        let appearFocused = (this._entry.contains(focus) ||
-                             this._searchResults.contains(focus));
+        let appearFocused = this._entry.contains(focus) ||
+                             this._searchResults.contains(focus);
 
         this._text.set_cursor_visible(appearFocused);
 
@@ -517,7 +517,7 @@ var ViewSelector = GObject.registerClass({
     _onTextChanged() {
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        this._searchActive = (terms.length > 0);
+        this._searchActive = terms.length > 0;
         this._searchResults.setTerms(terms);
 
         if (this._searchActive) {
@@ -525,9 +525,10 @@ var ViewSelector = GObject.registerClass({
 
             this._entry.set_secondary_icon(this._clearIcon);
 
-            if (this._iconClickedId == 0)
+            if (this._iconClickedId == 0) {
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                                                           this.reset.bind(this));
+            }
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);
@@ -584,7 +585,7 @@ var ViewSelector = GObject.registerClass({
             if (source != this._text &&
                 this._text.has_key_focus() &&
                 this._text.text == '' &&
-                !this._text.has_preedit () &&
+                !this._text.has_preedit() &&
                 !Main.layoutManager.keyboardBox.contains(source)) {
                 // the user clicked outside after activating the entry, but
                 // with no search term entered and no keyboard button pressed

@@ -18,8 +18,8 @@ var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 var InhibitShortcutsDialog = GObject.registerClass({
     Implements: [Meta.InhibitShortcutsDialog],
     Properties: {
-        'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog)
-    }
+        'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog),
+    },
 }, class InhibitShortcutsDialog extends GObject.Object {
     _init(window) {
         super._init();
@@ -84,10 +84,11 @@ var InhibitShortcutsDialog = GObject.registerClass({
         let contentParams = { icon, title };
 
         let restoreAccel = this._getRestoreAccel();
-        if (restoreAccel)
+        if (restoreAccel) {
             contentParams.subtitle =
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
                 _("You can restore shortcuts by pressing %s.").format(restoreAccel);
+        }
 
         let content = new Dialog.MessageDialogContent(contentParams);
         this._dialog.contentLayout.add_actor(content);
@@ -134,10 +135,10 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
             this._permStore.LookupRemote(APP_PERMISSIONS_TABLE,
                                          APP_PERMISSIONS_ID,
-                (res, error) => {
-                    if (error) {
+                (res, err) => {
+                    if (err) {
                         this._dialog.open();
-                        log(error.message);
+                        log(err.message);
                         return;
                     }
 

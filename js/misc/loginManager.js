@@ -74,8 +74,9 @@ function registerSessionWithGDM() {
 let _loginManager = null;
 
 /**
- * LoginManager:
+ * getLoginManager:
  * An abstraction over systemd/logind and ConsoleKit.
+ * @returns {object} - the LoginManager singleton
  *
  */
 function getLoginManager() {
@@ -103,21 +104,21 @@ var LoginManagerSystemd = class {
 
     getCurrentSessionProxy(callback) {
         if (this._currentSession) {
-            callback (this._currentSession);
+            callback(this._currentSession);
             return;
         }
 
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
-            let [session, objectPath_] = this._userProxy.Display;
+            let [session, objectPath] = this._userProxy.Display;
             if (session) {
                 log(`Will monitor session ${session}`);
                 sessionId = session;
             } else {
                 log('Failed to find "Display" session; are we the greeter?');
 
-                for (let [session, objectPath] of this._userProxy.Sessions) {
+                for ([session, objectPath] of this._userProxy.Sessions) {
                     let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
                                                                'org.freedesktop.login1',
                                                                objectPath);
@@ -185,7 +186,7 @@ var LoginManagerSystemd = class {
                 try {
                     let [outVariant_, fdList] = proxy.call_with_unix_fd_list_finish(result);
                     fd = fdList.steal_fds()[0];
-                    callback(new Gio.UnixInputStream({ fd: fd }));
+                    callback(new Gio.UnixInputStream({ fd }));
                 } catch (e) {
                     logError(e, "Error getting systemd inhibitor");
                     callback(null);

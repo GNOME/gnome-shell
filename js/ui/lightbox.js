@@ -33,8 +33,8 @@ var RadialShaderEffect = GObject.registerClass({
             'sharpness', 'sharpness', 'sharpness',
             GObject.ParamFlags.READWRITE,
             0, 1, 0
-        )
-    }
+        ),
+    },
 }, class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {
         this._brightness = undefined;
@@ -109,7 +109,7 @@ var Lightbox = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean(
             'active', 'active', 'active', GObject.ParamFlags.READABLE, false),
-    }
+    },
 }, class Lightbox extends St.Bin {
     _init(container, params) {
         params = Params.parse(params, {
@@ -124,7 +124,7 @@ var Lightbox = GObject.registerClass({
             reactive: params.inhibitEvents,
             width: params.width,
             height: params.height,
-            visible: false
+            visible: false,
         });
 
         this._active = false;
@@ -146,7 +146,7 @@ var Lightbox = GObject.registerClass({
         if (!params.width || !params.height) {
             this.add_constraint(new Clutter.BindConstraint({
                 source: container,
-                coordinate: Clutter.BindCoordinate.ALL
+                coordinate: Clutter.BindCoordinate.ALL,
             }));
         }
 
@@ -187,7 +187,7 @@ var Lightbox = GObject.registerClass({
 
         let easeProps = {
             duration: fadeInTime || 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
 
         let onComplete = () => {
@@ -206,7 +206,7 @@ var Lightbox = GObject.registerClass({
         } else {
             this.ease(Object.assign(easeProps, {
                 opacity: 255 * this._fadeFactor,
-                onComplete
+                onComplete,
             }));
         }
     }
@@ -219,7 +219,7 @@ var Lightbox = GObject.registerClass({
 
         let easeProps = {
             duration: fadeOutTime || 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
 
         let onComplete = () => this.hide();
@@ -245,7 +245,7 @@ var Lightbox = GObject.registerClass({
 
     /**
      * highlight:
-     * @window: actor to highlight
+     * @param {Clutter.Actor=} window: actor to highlight
      *
      * Highlights the indicated actor and unhighlights any other
      * currently-highlighted actor. With no arguments or a false/null

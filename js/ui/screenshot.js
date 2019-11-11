@@ -172,7 +172,7 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_area (x, y, width, height, stream,
+        screenshot.screenshot_area(x, y, width, height, stream,
             (o, res) => {
                 try {
                     let [result, area] =
@@ -180,7 +180,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
@@ -193,7 +193,7 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_window (includeFrame, includeCursor, stream,
+        screenshot.screenshot_window(includeFrame, includeCursor, stream,
             (o, res) => {
                 try {
                     let [result, area] =
@@ -201,7 +201,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
@@ -222,7 +222,7 @@ var ScreenshotService = class {
                     this._onScreenshotComplete(
                         result, area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror (e);
+                    invocation.return_gerror(e);
                 }
             });
     }
@@ -230,7 +230,7 @@ var ScreenshotService = class {
     SelectAreaAsync(params, invocation) {
         let selectArea = new SelectArea();
         selectArea.show();
-        selectArea.connect('finished', (selectArea, areaRectangle) => {
+        selectArea.connect('finished', (o, areaRectangle) => {
             if (areaRectangle) {
                 let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
                                                      areaRectangle.width, areaRectangle.height);
@@ -252,7 +252,7 @@ var ScreenshotService = class {
                                             "Invalid params");
             return;
         }
-        let flashspot = new Flashspot({ x: x, y: y, width: width, height: height });
+        let flashspot = new Flashspot({ x, y, width, height });
         flashspot.fire();
         invocation.return_value(null);
     }
@@ -260,7 +260,7 @@ var ScreenshotService = class {
     PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
         pickPixel.show();
-        pickPixel.connect('finished', (pickPixel, coords) => {
+        pickPixel.connect('finished', (obj, coords) => {
             if (coords) {
                 let screenshot = this._createScreenshot(invocation, false);
                 if (!screenshot)
@@ -272,8 +272,8 @@ var ScreenshotService = class {
                         color: GLib.Variant.new('(ddd)', [
                             red / 255.0,
                             green / 255.0,
-                            blue / 255.0
-                        ])
+                            blue / 255.0,
+                        ]),
                     }]);
                     this._removeShooterForSender(invocation.get_sender());
                     invocation.return_value(retval);
@@ -287,7 +287,7 @@ var ScreenshotService = class {
 };
 
 var SelectArea = GObject.registerClass({
-    Signals: { 'finished': { param_types: [Meta.Rectangle.$gtype] } }
+    Signals: { 'finished': { param_types: [Meta.Rectangle.$gtype] } },
 }, class SelectArea extends St.Widget {
     _init() {
         this._startX = -1;
@@ -300,7 +300,7 @@ var SelectArea = GObject.registerClass({
             visible: false,
             reactive: true,
             x: 0,
-            y: 0
+            y: 0,
         });
         Main.uiGroup.add_actor(this);
 
@@ -312,7 +312,7 @@ var SelectArea = GObject.registerClass({
 
         this._rubberband = new St.Widget({
             style_class: 'select-area-rubberband',
-            visible: false
+            visible: false,
         });
         this.add_actor(this._rubberband);
     }
@@ -332,7 +332,7 @@ var SelectArea = GObject.registerClass({
             x: Math.min(this._startX, this._lastX),
             y: Math.min(this._startY, this._lastY),
             width: Math.abs(this._startX - this._lastX) + 1,
-            height: Math.abs(this._startY - this._lastY) + 1
+            height: Math.abs(this._startY - this._lastY) + 1,
         });
     }
 
@@ -367,7 +367,7 @@ var SelectArea = GObject.registerClass({
             opacity: 0,
             duration: 200,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._grabHelper.ungrab()
+            onComplete: () => this._grabHelper.ungrab(),
         });
         return Clutter.EVENT_PROPAGATE;
     }
@@ -384,7 +384,7 @@ var SelectArea = GObject.registerClass({
 });
 
 var PickPixel = GObject.registerClass({
-    Signals: { 'finished': { param_types: [Graphene.Point.$gtype] } }
+    Signals: { 'finished': { param_types: [Graphene.Point.$gtype] } },
 }, class PickPixel extends St.Widget {
     _init() {
         super._init({ visible: false, reactive: true });
@@ -436,7 +436,7 @@ class Flashspot extends Lightbox.Lightbox {
         super._init(Main.uiGroup, {
             inhibitEvents: true,
             width: area.width,
-            height: area.height
+            height: area.height,
         });
         this.style_class = 'flashspot';
         this.set_position(area.x, area.y);
@@ -452,7 +452,7 @@ class Flashspot extends Lightbox.Lightbox {
                 if (doneCallback)
                     doneCallback();
                 this.destroy();
-            }
+            },
         });
     }
 });

@@ -23,7 +23,7 @@ const UP = 0;
 const DOWN = 1;
 
 var PadChooser = GObject.registerClass({
-    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } }
+    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } },
 }, class PadChooser extends St.Button {
     _init(device, groupDevices) {
         super._init({
@@ -89,7 +89,7 @@ var PadChooser = GObject.registerClass({
 });
 
 var KeybindingEntry = GObject.registerClass({
-    Signals: { 'keybinding-edited': {} }
+    Signals: { 'keybinding-edited': {} },
 }, class KeybindingEntry extends St.Entry {
     _init() {
         super._init({ hint_text: _("New shortcut…"), style: 'width: 10em' });
@@ -110,7 +110,7 @@ var KeybindingEntry = GObject.registerClass({
 });
 
 var ActionComboBox = GObject.registerClass({
-    Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } },
 }, class ActionComboBox extends St.Button {
     _init() {
         super._init({ style_class: 'button' });
@@ -192,7 +192,7 @@ var ActionComboBox = GObject.registerClass({
 });
 
 var ActionEditor = GObject.registerClass({
-    Signals: { 'done': {} }
+    Signals: { 'done': {} },
 }, class ActionEditor extends St.Widget {
     _init() {
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -233,7 +233,7 @@ var ActionEditor = GObject.registerClass({
         this._actionComboBox.setAction(this._currentAction);
         this._updateKeybindingEntryState();
 
-        let isButton = (action == Meta.PadActionType.BUTTON);
+        let isButton = action == Meta.PadActionType.BUTTON;
         this._actionComboBox.setButtonActionsActive(isButton);
     }
 
@@ -291,7 +291,7 @@ var PadDiagram = GObject.registerClass({
                                                  'Editor actor',
                                                  GObject.ParamFlags.READWRITE |
                                                  GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                 Clutter.Actor.$gtype)
+                                                 Clutter.Actor.$gtype),
     },
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
@@ -344,19 +344,19 @@ var PadDiagram = GObject.registerClass({
     }
 
     _wrappingSvgHeader() {
-        return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
-                '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
-                'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
-                `width="${ // " (give xgettext the paired quotes it expects)
-                    this._imageWidth
-                }" height="${this._imageHeight}"> ` + // "
-                '<style type="text/css">');
+        return '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
+               '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
+               'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
+               `width="${ // " (give xgettext the paired quotes it expects)
+                   this._imageWidth
+               }" height="${this._imageHeight}"> ` + // "
+               '<style type="text/css">';
     }
 
     _wrappingSvgFooter() {
-        return ('</style>' +
+        return '</style>' +
                 '<xi:include href="' + this._imagePath + '" />' +
-                '</svg>');
+                '</svg>';
     }
 
     _cssString() {
@@ -620,8 +620,8 @@ var PadDiagram = GObject.registerClass({
 var PadOsd = GObject.registerClass({
     Signals: {
         'pad-selected': { param_types: [Clutter.InputDevice.$gtype] },
-        'closed': {}
-    }
+        'closed': {},
+    },
 }, class PadOsd extends St.BoxLayout {
     _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
         super._init({
@@ -629,7 +629,7 @@ var PadOsd = GObject.registerClass({
             vertical: true,
             x_expand: true,
             y_expand: true,
-            reactive: true
+            reactive: true,
         });
 
         this.padDevice = padDevice;
@@ -852,15 +852,15 @@ var PadOsd = GObject.registerClass({
         if (!this._editedAction)
             return false;
 
-        return (this._editedAction.type == type &&
+        return this._editedAction.type == type &&
                 this._editedAction.number == number &&
-                this._editedAction.dir == dir);
+                this._editedAction.dir == dir;
     }
 
     _followUpActionEdition(str) {
         let { type, dir, number, mode } = this._editedAction;
-        let hasNextAction = (type == Meta.PadActionType.RING && dir == CCW ||
-                             type == Meta.PadActionType.STRIP && dir == UP);
+        let hasNextAction = type == Meta.PadActionType.RING && dir == CCW ||
+                             type == Meta.PadActionType.STRIP && dir == UP;
         if (!hasNextAction)
             return false;
 

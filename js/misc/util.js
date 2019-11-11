@@ -121,8 +121,7 @@ function trySpawn(argv) {
             // We are only interested in the part in the parentheses. (And
             // we can't pattern match the text, since it gets localized.)
             let message = err.message.replace(/.*\((.+)\)/, '$1');
-            throw new (err.constructor)({ code: err.code,
-                                          message: message });
+            throw new err.constructor({ code: err.code, message });
         } else {
             throw err;
         }
@@ -172,23 +171,28 @@ function formatTimeSpan(date) {
 
     if (minutesAgo < 5)
         return _("Just now");
-    if (hoursAgo < 1)
+    if (hoursAgo < 1) {
         return Gettext.ngettext("%d minute ago",
                                 "%d minutes ago", minutesAgo).format(minutesAgo);
-    if (daysAgo < 1)
+    }
+    if (daysAgo < 1) {
         return Gettext.ngettext("%d hour ago",
                                 "%d hours ago", hoursAgo).format(hoursAgo);
+    }
     if (daysAgo < 2)
         return _("Yesterday");
-    if (daysAgo < 15)
+    if (daysAgo < 15) {
         return Gettext.ngettext("%d day ago",
                                 "%d days ago", daysAgo).format(daysAgo);
-    if (weeksAgo < 8)
+    }
+    if (weeksAgo < 8) {
         return Gettext.ngettext("%d week ago",
                                 "%d weeks ago", weeksAgo).format(weeksAgo);
-    if (yearsAgo < 1)
+    }
+    if (yearsAgo < 1) {
         return Gettext.ngettext("%d month ago",
                                 "%d months ago", monthsAgo).format(monthsAgo);
+    }
     return Gettext.ngettext("%d year ago",
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
@@ -325,7 +329,7 @@ function lowerBound(array, val, cmp) {
             max = mid;
     }
 
-    return (min == max || cmp(array[min], val) < 0) ? max : min;
+    return min == max || cmp(array[min], val) < 0 ? max : min;
 }
 
 // insertSorted:
@@ -405,7 +409,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
         if (!parent)
             throw new Error("actor not in scroll view");
 
-        let box = parent.get_allocation_box();
+        box = parent.get_allocation_box();
         y1 += box.y1;
         y2 += box.y1;
         parent = parent.get_parent();
@@ -420,7 +424,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
 
     adjustment.ease(value, {
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        duration: SCROLL_TIME
+        duration: SCROLL_TIME,
     });
 }
 
@@ -452,8 +456,8 @@ function wiggle(actor, params) {
                         duration: params.duration,
                         mode: Clutter.AnimationMode.EASE_IN_QUAD,
                     });
-                }
+                },
             });
-        }
+        },
     });
 }

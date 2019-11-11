@@ -56,7 +56,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
             secret.entry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                           text: secret.value, can_focus: reactive,
-                                          reactive: reactive,
+                                          reactive,
                                           x_expand: true });
             ShellEntry.addContextMenu(secret.entry,
                                       { isPassword: secret.password });
@@ -169,7 +169,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             return true;
         }
 
-        return (value.length >= 8 && value.length <= 63);
+        return value.length >= 8 && value.length <= 63;
     }
 
     _validateStaticWep(secret) {
@@ -222,11 +222,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                            validate: this._validateStaticWep, password: true });
             break;
         case 'ieee8021x':
-            if (wirelessSecuritySetting.auth_alg == 'leap') // Cisco LEAP
+            if (wirelessSecuritySetting.auth_alg == 'leap') { // Cisco LEAP
                 secrets.push({ label: _("Password: "), key: 'leap-password',
                                value: wirelessSecuritySetting.leap_password || '', password: true });
-            else // Dynamic (IEEE 802.1x) WEP
+            } else { // Dynamic (IEEE 802.1x) WEP
                 this._get8021xSecrets(secrets);
+            }
             break;
         case 'wpa-eap':
             this._get8021xSecrets(secrets);
@@ -241,15 +242,18 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
         /* If hints were given we know exactly what we need to ask */
         if (this._settingName == "802-1x" && this._hints.length) {
-            if (this._hints.includes('identity'))
+            if (this._hints.includes('identity')) {
                 secrets.push({ label: _("Username: "), key: 'identity',
                                value: ieee8021xSetting.identity || '', password: false });
-            if (this._hints.includes('password'))
+            }
+            if (this._hints.includes('password')) {
                 secrets.push({ label: _("Password: "), key: 'password',
                                value: ieee8021xSetting.password || '', password: true });
-            if (this._hints.includes('private-key-password'))
+            }
+            if (this._hints.includes('private-key-password')) {
                 secrets.push({ label: _("Private key password: "), key: 'private-key-password',
                                value: ieee8021xSetting.private_key_password || '', password: true });
+            }
             return;
         }
 
@@ -553,7 +557,7 @@ var VPNRequestHandler = class {
                     contentOverride.secrets.push({
                         label: keyfile.get_string(groups[i], 'Label'),
                         key: groups[i],
-                        value: value,
+                        value,
                         password: keyfile.get_boolean(groups[i], 'IsSecret'),
                     });
                 } else {

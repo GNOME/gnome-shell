@@ -12,7 +12,7 @@ var POPUP_APPICON_SIZE = 96;
 var SortGroup = {
     TOP:    0,
     MIDDLE: 1,
-    BOTTOM: 2
+    BOTTOM: 2,
 };
 
 var CtrlAltTabManager = class CtrlAltTabManager {
@@ -86,25 +86,26 @@ var CtrlAltTabManager = class CtrlAltTabManager {
             for (let i = 0; i < windows.length; i++) {
                 let icon = null;
                 let iconName = null;
-                if (windows[i].get_window_type () == Meta.WindowType.DESKTOP) {
+                if (windows[i].get_window_type() == Meta.WindowType.DESKTOP) {
                     iconName = 'video-display-symbolic';
                 } else {
                     let app = windowTracker.get_window_app(windows[i]);
-                    if (app)
+                    if (app) {
                         icon = app.create_icon_texture(POPUP_APPICON_SIZE);
-                    else
+                    } else {
                         icon = textureCache.bind_cairo_surface_property(windows[i],
                                                                         'icon',
                                                                         POPUP_APPICON_SIZE);
+                    }
                 }
 
                 items.push({ name: windows[i].title,
                              proxy: windows[i].get_compositor_private(),
-                             focusCallback: function(timestamp) {
-                                 Main.activateWindow(this, timestamp);
-                             }.bind(windows[i]),
+                             focusCallback: timestamp => {
+                                 Main.activateWindow(windows[i], timestamp);
+                             },
                              iconActor: icon,
-                             iconName: iconName,
+                             iconName,
                              sortGroup: SortGroup.MIDDLE });
             }
         }

@@ -86,7 +86,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _updatePasswordItem() {
-        let textHidden = (this._entry.clutter_text.password_char);
+        let textHidden = this._entry.clutter_text.password_char;
         if (textHidden)
             this._passwordItem.label.set_text(_("Show Text"));
         else
@@ -110,7 +110,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _onPasswordActivated() {
-        let visible = !!(this._entry.clutter_text.password_char);
+        let visible = !!this._entry.clutter_text.password_char;
         this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }
 };
@@ -145,7 +145,7 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse (params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
     entry.menu.isPassword = params.isPassword;

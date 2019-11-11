@@ -11,13 +11,13 @@ var WORKSPACE_SWITCH_TIME = 250;
 
 var AnimationType = {
     ZOOM: 0,
-    FADE: 1
+    FADE: 1,
 };
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 var WorkspacesViewBase = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
         super._init({ style_class: 'workspaces-view', reactive: true });
@@ -197,7 +197,7 @@ class WorkspacesView extends WorkspacesViewBase {
             if (showAnimation) {
                 let easeParams = Object.assign(params, {
                     duration: WORKSPACE_SWITCH_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
                 // we have to call _updateVisibility() once before the
                 // animation and once afterwards - it does not really
@@ -224,14 +224,13 @@ class WorkspacesView extends WorkspacesViewBase {
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            if (this._animating || this._scrolling || this._gestureActive) {
+
+            if (this._animating || this._scrolling || this._gestureActive)
                 workspace.show();
-            } else {
-                if (this._inDrag)
-                    workspace.visible = (Math.abs(w - active) <= 1);
-                else
-                    workspace.visible = (w == active);
-            }
+            else if (this._inDrag)
+                workspace.visible = Math.abs(w - active) <= 1;
+            else
+                workspace.visible = w == active;
         }
     }
 
@@ -244,7 +243,7 @@ class WorkspacesView extends WorkspacesViewBase {
         this.scrollAdjustment.ease(index, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: WORKSPACE_SWITCH_TIME,
-            onComplete: () => (this._animatingScroll = false)
+            onComplete: () => (this._animatingScroll = false),
         });
     }
 
@@ -698,7 +697,7 @@ class WorkspacesDisplay extends St.Widget {
 
     _getMonitorIndexForEvent(event) {
         let [x, y] = event.get_coords();
-        let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
+        let rect = new Meta.Rectangle({ x, y, width: 1, height: 1 });
         return global.display.get_monitor_index_for_rect(rect);
     }
 
@@ -754,7 +753,7 @@ class WorkspacesDisplay extends St.Widget {
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = (i == this._primaryIndex) ? this._fullGeometry : monitors[i];
+            let geometry = i == this._primaryIndex ? this._fullGeometry : monitors[i];
             this._workspacesViews[i].setFullGeometry(geometry);
         }
     }
@@ -767,11 +766,11 @@ class WorkspacesDisplay extends St.Widget {
         let allocation = this.allocation;
         let width = allocation.x2 - allocation.x1;
         let height = allocation.y2 - allocation.y1;
-        let primaryGeometry = { x: x, y: y, width: width, height: height };
+        let primaryGeometry = { x, y, width, height };
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = (i == this._primaryIndex) ? primaryGeometry : monitors[i];
+            let geometry = i == this._primaryIndex ? primaryGeometry : monitors[i];
             this._workspacesViews[i].setActualGeometry(geometry);
         }
     }

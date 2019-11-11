@@ -55,9 +55,10 @@ function _getCategories(info) {
 }
 
 function _listsIntersect(a, b) {
-    for (let itemA of a)
+    for (let itemA of a) {
         if (b.includes(itemA))
             return true;
+    }
     return false;
 }
 
@@ -110,9 +111,8 @@ function _findBestFolderName(apps) {
             // If a category is present in all apps, its counter will
             // reach appInfos.length
             if (category.length > 0 &&
-                categoryCounter[category] == appInfos.length) {
+                categoryCounter[category] == appInfos.length)
                 categories.push(category);
-            }
         }
         return categories;
     }, commonCategories);
@@ -138,11 +138,11 @@ var BaseAppView = GObject.registerClass({
         'use-pagination': GObject.ParamSpec.boolean(
             'use-pagination', 'use-pagination', 'use-pagination',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false)
+            false),
     },
     Signals: {
         'view-loaded': {},
-    }
+    },
 }, class BaseAppView extends St.Widget {
     _init(params = {}, gridParams) {
         super._init(params);
@@ -151,7 +151,7 @@ var BaseAppView = GObject.registerClass({
             columnLimit: MAX_COLUMNS,
             minRows: MIN_ROWS,
             minColumns: MIN_COLUMNS,
-            padWithSpacing: true
+            padWithSpacing: true,
         }, true);
 
         if (this.use_pagination)
@@ -271,7 +271,7 @@ var BaseAppView = GObject.registerClass({
 
         let params = {
             duration: VIEWS_SWITCH_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             this.show();
@@ -292,20 +292,22 @@ var BaseAppView = GObject.registerClass({
 });
 
 var AllView = GObject.registerClass({
-    Signals: { 'space-ready': {} }
+    Signals: { 'space-ready': {} },
 }, class AllView extends BaseAppView {
     _init() {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-            use_pagination: true
+            use_pagination: true,
         });
 
-        this._scrollView = new St.ScrollView({ style_class: 'all-apps',
-                                               x_expand: true,
-                                               y_expand: true,
-                                               reactive: true, });
+        this._scrollView = new St.ScrollView({
+            style_class: 'all-apps',
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+        });
         this.add_actor(this._scrollView);
         this._grid._delegate = this;
 
@@ -454,7 +456,7 @@ var AllView = GObject.registerClass({
         let newApps = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
-                (appInfo.get_id()); // catch invalid file encodings
+                appInfo.get_id(); // catch invalid file encodings
             } catch (e) {
                 return false;
             }
@@ -526,13 +528,14 @@ var AllView = GObject.registerClass({
         super.animateSwitch(animationDirection);
 
         if (this._currentPopup && this._displayingPopup &&
-            animationDirection == IconGrid.AnimationDirection.OUT)
+            animationDirection == IconGrid.AnimationDirection.OUT) {
             this._currentPopup.ease({
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => (this.opacity = 255)
+                onComplete: () => (this.opacity = 255),
             });
+        }
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
             this._pageIndicators.animateIndicators(animationDirection);
@@ -586,7 +589,7 @@ var AllView = GObject.registerClass({
         this._grid.currentPage = pageNumber;
         this._adjustment.ease(this._grid.getPageY(pageNumber), {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: time
+            duration: time,
         });
 
         this._pageIndicators.setCurrentPage(pageNumber);
@@ -674,7 +677,7 @@ var AllView = GObject.registerClass({
 
     addFolderPopup(popup) {
         this._stack.add_actor(popup);
-        popup.connect('open-state-changed', (popup, isOpen) => {
+        popup.connect('open-state-changed', (o, isOpen) => {
             this._eventBlocker.reactive = isOpen;
 
             if (this._currentPopup) {
@@ -711,9 +714,9 @@ var AllView = GObject.registerClass({
             else
                 opacity = 255;
             this._items[id].ease({
-                opacity: opacity,
+                opacity,
                 duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -764,9 +767,8 @@ var AllView = GObject.registerClass({
 
         // Within the grid boundaries, or already animating
         if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
-            this._adjustment.get_transition('value') != null) {
+            this._adjustment.get_transition('value') != null)
             return;
-        }
 
         // Moving above the grid
         let currentY = this._adjustment.value;
@@ -777,14 +779,13 @@ var AllView = GObject.registerClass({
 
         // Moving below the grid
         let maxY = this._adjustment.upper - this._adjustment.page_size;
-        if (dragEvent.y >= gridBottom && currentY < maxY) {
+        if (dragEvent.y >= gridBottom && currentY < maxY)
             this.goToPage(this._grid.currentPage + 1);
-        }
     }
 
     _onDragBegin() {
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this)
+            dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
     }
@@ -866,7 +867,7 @@ var AllView = GObject.registerClass({
         let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
         let newFolderSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.app-folders.folder',
-            path: newFolderPath
+            path: newFolderPath,
         });
         if (!newFolderSettings) {
             log('Error creating new folder');
@@ -894,7 +895,7 @@ class FrequentView extends BaseAppView {
             style_class: 'frequent-apps',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         }, { fillParent: true });
 
         this._noFrequentAppsLabel = new St.Label({ text: _("Frequently used applications will appear here"),
@@ -970,12 +971,12 @@ class FrequentView extends BaseAppView {
 
 var Views = {
     FREQUENT: 0,
-    ALL: 1
+    ALL: 1,
 };
 
 var ControlsBoxLayout = GObject.registerClass(
 class ControlsBoxLayout extends Clutter.BoxLayout {
-    /**
+    /*
      * Override the BoxLayout behavior to use the maximum preferred width of all
      * buttons for each child
      */
@@ -1017,7 +1018,7 @@ class AppDisplay extends St.BoxLayout {
             style_class: 'app-display',
             vertical: true,
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
@@ -1032,14 +1033,14 @@ class AppDisplay extends St.BoxLayout {
                                  style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
-        this._views[Views.FREQUENT] = { 'view': view, 'control': button };
+        this._views[Views.FREQUENT] = { view, 'control': button };
 
         view = new AllView();
         button = new St.Button({ label: _("All"),
                                  style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
-        this._views[Views.ALL] = { 'view': view, 'control': button };
+        this._views[Views.ALL] = { view, 'control': button };
 
         this._viewStackLayout = new ViewStackLayout();
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
@@ -1129,7 +1130,7 @@ class AppDisplay extends St.BoxLayout {
         this._controls.ease({
             opacity: finalOpacity,
             duration: IconGrid.ANIMATION_TIME_IN,
-            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
         });
 
         currentView.animate(animationDirection, onComplete);
@@ -1257,7 +1258,7 @@ class FolderView extends BaseAppView {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
@@ -1271,7 +1272,7 @@ class FolderView extends BaseAppView {
         this._scrollView = new St.ScrollView({
             overlay_scrollbars: true,
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this.add_actor(this._scrollView);
@@ -1461,7 +1462,7 @@ var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
         'name-changed': {},
-    }
+    },
 }, class FolderIcon extends St.Button {
     _init(id, path, parentView) {
         super._init({
@@ -1475,14 +1476,14 @@ var FolderIcon = GObject.registerClass({
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path: path });
+                                          path });
         this._delegate = this;
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
-            setSizeManually: true
+            setSizeManually: true,
         });
         this.set_child(this.icon);
         this.label_actor = this.icon.label;
@@ -1881,7 +1882,7 @@ Signals.addSignalMethods(RenameFolderMenu.prototype);
 var AppFolderPopup = GObject.registerClass({
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
-    }
+    },
 }, class AppFolderPopup extends St.Widget {
     _init(source, side) {
         super._init({
@@ -1896,7 +1897,7 @@ var AppFolderPopup = GObject.registerClass({
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.START
+            y_align: Clutter.ActorAlign.START,
         });
         this._source = source;
         this._view = source.view;
@@ -1905,9 +1906,10 @@ var AppFolderPopup = GObject.registerClass({
         this._isOpen = false;
         this.parentOffset = 0;
 
-        this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide,
-                                                     { style_class: 'app-folder-popup-bin',
-                                                       x_expand: true, });
+        this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide, {
+            style_class: 'app-folder-popup-bin',
+            x_expand: true,
+        });
 
         this._boxPointer.style_class = 'app-folder-popup';
         this.add_actor(this._boxPointer);
@@ -1923,7 +1925,7 @@ var AppFolderPopup = GObject.registerClass({
         global.focus_manager.add_group(this);
 
         this._grabHelper = new GrabHelper.GrabHelper(this, {
-            actionMode: Shell.ActionMode.POPUP
+            actionMode: Shell.ActionMode.POPUP,
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
@@ -2050,7 +2052,7 @@ var AppIcon = GObject.registerClass({
     Signals: {
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
-    }
+    },
 }, class AppIcon extends St.Button {
     _init(app, iconParams = {}) {
         super._init({
@@ -2257,11 +2259,10 @@ var AppIcon = GObject.registerClass({
     }
 
     activateWindow(metaWindow) {
-        if (metaWindow) {
+        if (metaWindow)
             Main.activateWindow(metaWindow);
-        } else {
+        else
             Main.overview.hide();
-        }
     }
 
     _onMenuPoppedDown() {
@@ -2306,7 +2307,7 @@ var AppIcon = GObject.registerClass({
             scale_y: 1,
             duration: APP_ICON_SCALE_IN_TIME,
             delay: APP_ICON_SCALE_IN_DELAY,
-            mode: Clutter.AnimationMode.EASE_OUT_QUINT
+            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
         });
     }
 
@@ -2339,7 +2340,7 @@ var AppIcon = GObject.registerClass({
         this.ease({
             scale_x: 0.75,
             scale_y: 0.75,
-            opacity: 128
+            opacity: 128,
         });
     }
 
@@ -2348,7 +2349,7 @@ var AppIcon = GObject.registerClass({
         this.ease({
             scale_x: 1.0,
             scale_y: 1.0,
-            opacity: 255
+            opacity: 255,
         });
     }
 
@@ -2356,7 +2357,7 @@ var AppIcon = GObject.registerClass({
         this.icon.label.opacity = 0;
         this.icon.icon.ease({
             scale_x: FOLDER_SUBICON_FRACTION,
-            scale_y: FOLDER_SUBICON_FRACTION
+            scale_y: FOLDER_SUBICON_FRACTION,
         });
     }
 
@@ -2364,7 +2365,7 @@ var AppIcon = GObject.registerClass({
         this.icon.label.opacity = 255;
         this.icon.icon.ease({
             scale_x: 1.0,
-            scale_y: 1.0
+            scale_y: 1.0,
         });
     }
 
@@ -2482,11 +2483,12 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             w => !w.skip_taskbar
         );
 
-        if (windows.length > 0)
+        if (windows.length > 0) {
             this.addMenuItem(
                 /* Translators: This is the heading of a list of open windows */
                 new PopupMenu.PopupSeparatorMenuItem(_("Open Windows"))
             );
+        }
 
         windows.forEach(window => {
             let title = window.title

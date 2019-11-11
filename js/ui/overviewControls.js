@@ -12,17 +12,17 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 var SIDE_CONTROLS_ANIMATION_TIME = 160;
 
 function getRtlSlideDirection(direction, actor) {
-    let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
-    if (rtl)
-        direction = (direction == SlideDirection.LEFT)
+    let rtl = actor.text_direction == Clutter.TextDirection.RTL;
+    if (rtl) {
+        direction = direction == SlideDirection.LEFT
             ? SlideDirection.RIGHT : SlideDirection.LEFT;
-
+    }
     return direction;
 }
 
 var SlideDirection = {
     LEFT: 0,
-    RIGHT: 1
+    RIGHT: 1,
 };
 
 var SlideLayout = GObject.registerClass({
@@ -34,8 +34,8 @@ var SlideLayout = GObject.registerClass({
         'translation-x': GObject.ParamSpec.double(
             'translation-x', 'translation-x', 'translation-x',
             GObject.ParamFlags.READWRITE,
-            -Infinity, Infinity, 0)
-    }
+            -Infinity, Infinity, 0),
+    },
 }, class SlideLayout extends Clutter.FixedLayout {
     _init(params) {
         this._slideX = 1;
@@ -67,7 +67,7 @@ var SlideLayout = GObject.registerClass({
         // flags only determine what to do if the allocated box is bigger
         // than the actor's box.
         let realDirection = getRtlSlideDirection(this._direction, child);
-        let alignX = (realDirection == SlideDirection.LEFT)
+        let alignX = realDirection == SlideDirection.LEFT
             ? availWidth - natWidth
             : availWidth - natWidth * this._slideX;
 
@@ -128,7 +128,7 @@ class SlidingControl extends St.Widget {
         super._init({
             layout_manager: this.layout,
             style_class: 'overview-controls',
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
 
         this._visible = true;
@@ -168,7 +168,7 @@ class SlidingControl extends St.Widget {
         let visibleWidth = this.getVisibleWidth();
 
         if (direction == SlideDirection.LEFT)
-            return - visibleWidth;
+            return -visibleWidth;
         else
             return visibleWidth;
     }
@@ -178,12 +178,11 @@ class SlidingControl extends St.Widget {
         let translationEnd = 0;
         let translation = this._getTranslation();
 
-        let shouldShow = (this._getSlide() > 0);
-        if (shouldShow) {
+        let shouldShow = this._getSlide() > 0;
+        if (shouldShow)
             translationStart = translation;
-        } else {
+        else
             translationEnd = translation;
-        }
 
         if (this.layout.translation_x == translationEnd)
             return;
@@ -224,7 +223,7 @@ class SlidingControl extends St.Widget {
         this.ease({
             opacity: 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
     }
 
@@ -232,7 +231,7 @@ class SlidingControl extends St.Widget {
         this.ease({
             opacity: 128,
             duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -429,7 +428,7 @@ class ControlsManager extends St.Widget {
             layout_manager: layout,
             x_expand: true,
             y_expand: true,
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
 
         this.dash = new Dash.Dash();
@@ -463,7 +462,7 @@ class ControlsManager extends St.Widget {
     _updateWorkspacesGeometry() {
         let [x, y] = this.get_transformed_position();
         let [width, height] = this.get_transformed_size();
-        let geometry = { x: x, y: y, width: width, height: height };
+        let geometry = { x, y, width, height };
 
         let spacing = this.get_theme_node().get_length('spacing');
         let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
@@ -490,9 +489,9 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS);
-        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
+        let dashVisible = activePage == ViewSelector.ViewPage.WINDOWS ||
+                           activePage == ViewSelector.ViewPage.APPS;
+        let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
 
         if (dashVisible)
             this._dashSlider.slideIn();
@@ -510,7 +509,7 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        this._dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
+        this._dashSpacer.visible = activePage == ViewSelector.ViewPage.WINDOWS;
     }
 
     _onPageEmpty() {

@@ -30,7 +30,8 @@ var WINDOW_ANIMATION_TIME = 250;
 var DIM_BRIGHTNESS = -0.3;
 var DIM_TIME = 500;
 var UNDIM_TIME = 250;
-var MOTION_THRESHOLD = 100;
+var WS_MOTION_THRESHOLD = 100;
+var APP_MOTION_THRESHOLD = 30;
 
 var ONE_SECOND = 1000; // in ms
 
@@ -123,7 +124,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     _init() {
         super._init({
             name: WINDOW_DIMMER_EFFECT_NAME,
-            enabled: false
+            enabled: false,
         });
         this._enabled = true;
     }
@@ -146,7 +147,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
         this.actor.ease_property(`@effects.${this.name}.brightness`, color, {
             mode: Clutter.AnimationMode.LINEAR,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
-            onComplete: () => this._syncEnabled()
+            onComplete: () => this._syncEnabled(),
         });
 
         this._syncEnabled();
@@ -401,8 +402,8 @@ class TilePreview extends St.Widget {
         if (this._rect && this._rect.equal(tileRect))
             return;
 
-        let changeMonitor = (this._monitorIndex == -1 ||
-                             this._monitorIndex != monitorIndex);
+        let changeMonitor = this._monitorIndex == -1 ||
+                             this._monitorIndex != monitorIndex;
 
         this._monitorIndex = monitorIndex;
         this._rect = tileRect;
@@ -431,7 +432,7 @@ class TilePreview extends St.Widget {
             height: tileRect.height,
             opacity: 255,
             duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -444,7 +445,7 @@ class TilePreview extends St.Widget {
             opacity: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._reset()
+            onComplete: () => this._reset(),
         });
     }
 
@@ -493,13 +494,13 @@ var TouchpadWorkspaceSwitchAction = class {
     _checkActivated() {
         let dir;
 
-        if (this._dy < -MOTION_THRESHOLD)
+        if (this._dy < -WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.DOWN;
-        else if (this._dy > MOTION_THRESHOLD)
+        else if (this._dy > WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.UP;
-        else if (this._dx < -MOTION_THRESHOLD)
+        else if (this._dx < -WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.RIGHT;
-        else if (this._dx > MOTION_THRESHOLD)
+        else if (this._dx > WS_MOTION_THRESHOLD)
             dir = Meta.MotionDirection.LEFT;
         else
             return false;
@@ -526,14 +527,14 @@ var TouchpadWorkspaceSwitchAction = class {
 
             // Scale deltas up a bit to make it feel snappier
             this._dx += dx * 2;
-            if (!(this._touchpadSettings.get_boolean('natural-scroll')))
+            if (!this._touchpadSettings.get_boolean('natural-scroll'))
                 this._dy -= dy * 2;
             else
                 this._dy += dy * 2;
 
             this.emit('motion', this._dx, this._dy);
         } else {
-            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && ! this._checkActivated()) ||
+            if ((event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END && !this._checkActivated()) ||
                 event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL)
                 this.emit('cancel');
 
@@ -568,7 +569,7 @@ var WorkspaceSwitchAction = GObject.registerClass({
         if (!super.vfunc_gesture_prepare(actor))
             return false;
 
-        return (this._allowedModes & Main.actionMode);
+        return this._allowedModes & Main.actionMode;
     }
 
     vfunc_gesture_progress(_actor) {
@@ -586,8 +587,8 @@ var WorkspaceSwitchAction = GObject.registerClass({
     vfunc_swipe(actor, direction) {
         let [x, y] = this.get_motion_coords(0);
         let [xPress, yPress] = this.get_press_coords(0);
-        if (Math.abs(x - xPress) < MOTION_THRESHOLD &&
-            Math.abs(y - yPress) < MOTION_THRESHOLD) {
+        if (Math.abs(x - xPress) < WS_MOTION_THRESHOLD &&
+            Math.abs(y - yPress) < WS_MOTION_THRESHOLD) {
             this.emit('cancel');
             return;
         }
@@ -634,7 +635,7 @@ var AppSwitchAction = GObject.registerClass({
         const LONG_PRESS_TIMEOUT = 250;
 
         let nPoints = this.get_n_current_points();
-        let event = this.get_last_event (nPoints - 1);
+        let event = this.get_last_event(nPoints - 1);
 
         if (nPoints == 3) {
             this._longPressStartTime = event.get_time();
@@ -654,15 +655,14 @@ var AppSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_progress(_actor) {
-        const MOTION_THRESHOLD = 30;
 
         if (this.get_n_current_points() == 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
                 let [startX, startY] = this.get_press_coords(i);
                 let [x, y] = this.get_motion_coords(i);
 
-                if (Math.abs(x - startX) > MOTION_THRESHOLD ||
-                    Math.abs(y - startY) > MOTION_THRESHOLD)
+                if (Math.abs(x - startX) > APP_MOTION_THRESHOLD ||
+                    Math.abs(y - startY) > APP_MOTION_THRESHOLD)
                     return false;
             }
 
@@ -1023,15 +1023,14 @@ var WindowManager = class {
         this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
                                                 GSD_WACOM_OBJECT_PATH,
                                                 (proxy, error) => {
-                                                    if (error) {
+                                                    if (error)
                                                         log(error.message);
-                                                    }
                                                 });
 
         global.display.connect('pad-mode-switch', (display, pad, group, mode) => {
             let labels = [];
 
-            //FIXME: Fix num buttons
+            // FIXME: Fix num buttons
             for (let i = 0; i < 50; i++) {
                 let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
                 labels.push(str ? str : '');
@@ -1151,7 +1150,7 @@ var WindowManager = class {
             y: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._finishWorkspaceSwitch(switchData)
+            onComplete: () => this._finishWorkspaceSwitch(switchData),
         });
     }
 
@@ -1170,9 +1169,8 @@ var WindowManager = class {
 
     _lookupIndex(windows, metaWindow) {
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].metaWindow == metaWindow) {
+            if (windows[i].metaWindow == metaWindow)
                 return i;
-            }
         }
         return -1;
     }
@@ -1182,8 +1180,8 @@ var WindowManager = class {
             let win = actor.metaWindow;
             let workspaceManager = global.workspace_manager;
             let activeWorkspace = workspaceManager.get_active_workspace();
-            return (!win.is_override_redirect() &&
-                    win.located_on_workspace(activeWorkspace));
+            return !win.is_override_redirect() &&
+                    win.located_on_workspace(activeWorkspace);
         });
 
         if (windows.length == 0)
@@ -1195,7 +1193,7 @@ var WindowManager = class {
         if (focusWindow == null) {
             nextWindow = windows[0].metaWindow;
         } else {
-            let index = this._lookupIndex (windows, focusWindow) + 1;
+            let index = this._lookupIndex(windows, focusWindow) + 1;
 
             if (index >= windows.length)
                 index = 0;
@@ -1322,7 +1320,7 @@ var WindowManager = class {
                         this._minimizeWindowDone(shellwm, actor);
                     else
                         this._minimizeWindowOverwritten(shellwm, actor);
-                }
+                },
             });
         } else {
             let xDest, yDest, xScale, yScale;
@@ -1353,7 +1351,7 @@ var WindowManager = class {
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_EXPO,
-                onStopped: () => this._minimizeWindowDone(shellwm, actor)
+                onStopped: () => this._minimizeWindowDone(shellwm, actor),
             });
         }
     }
@@ -1387,7 +1385,7 @@ var WindowManager = class {
                 opacity: 255,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._unminimizeWindowDone(shellwm, actor)
+                onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         } else {
             let [success, geom] = actor.meta_window.get_icon_geometry();
@@ -1419,7 +1417,7 @@ var WindowManager = class {
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_EXPO,
-                onStopped: () => this._unminimizeWindowDone(shellwm, actor)
+                onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         }
     }
@@ -1468,7 +1466,7 @@ var WindowManager = class {
         this._resizePending.add(actor);
         actor.__animationInfo = { clone: actorClone,
                                   oldRect: oldFrameRect,
-                                  destroyId: destroyId };
+                                  destroyId };
     }
 
     _sizeChangedWindow(shellwm, actor) {
@@ -1495,7 +1493,7 @@ var WindowManager = class {
             scale_y: scaleY,
             opacity: 0,
             duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         actor.translation_x = -targetRect.x + sourceRect.x;
@@ -1513,7 +1511,7 @@ var WindowManager = class {
             translation_y: 0,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._sizeChangeWindowDone(shellwm, actor)
+            onStopped: () => this._sizeChangeWindowDone(shellwm, actor),
         });
 
         // Now unfreeze actor updates, to get it to the new size.
@@ -1643,7 +1641,7 @@ var WindowManager = class {
                 scale_y: 1,
                 duration: SHOW_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onStopped: () => this._mapWindowDone(shellwm, actor)
+                onStopped: () => this._mapWindowDone(shellwm, actor),
             });
             break;
         case Meta.WindowType.MODAL_DIALOG:
@@ -1660,7 +1658,7 @@ var WindowManager = class {
                 scale_y: 1,
                 duration: DIALOG_SHOW_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._mapWindowDone(shellwm, actor)
+                onStopped: () => this._mapWindowDone(shellwm, actor),
             });
             break;
         default:
@@ -1714,7 +1712,7 @@ var WindowManager = class {
                 scale_y: 0.8,
                 duration: DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._destroyWindowDone(shellwm, actor)
+                onStopped: () => this._destroyWindowDone(shellwm, actor),
             });
             break;
         case Meta.WindowType.MODAL_DIALOG:
@@ -1734,7 +1732,7 @@ var WindowManager = class {
                 scale_y: 0,
                 duration: DIALOG_DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => this._destroyWindowDone(shellwm, actor)
+                onStopped: () => this._destroyWindowDone(shellwm, actor),
             });
             break;
         default:
@@ -1852,7 +1850,7 @@ var WindowManager = class {
         wgroup.add_actor(switchData.container);
 
         let workspaceManager = global.workspace_manager;
-        let curWs = workspaceManager.get_workspace_by_index (from);
+        let curWs = workspaceManager.get_workspace_by_index(from);
 
         for (let dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
@@ -1980,7 +1978,7 @@ var WindowManager = class {
             y: yDest,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._switchWorkspaceDone(shellwm)
+            onComplete: () => this._switchWorkspaceDone(shellwm),
         });
     }
 
@@ -2190,7 +2188,7 @@ var WindowManager = class {
             window.change_workspace(workspace);
 
             global.display.clear_mouse_mode();
-            workspace.activate_with_focus (window, global.get_current_time());
+            workspace.activate_with_focus(window, global.get_current_time());
         }
     }
 
@@ -2214,10 +2212,11 @@ var WindowManager = class {
 
             this._resizePopup.set(rect, displayW, displayH);
         } else {
-            if (this._resizePopup) {
-                this._resizePopup.destroy();
-                this._resizePopup = null;
-            }
+            if (!this._resizePopup)
+                return;
+
+            this._resizePopup.destroy();
+            this._resizePopup = null;
         }
     }
 };

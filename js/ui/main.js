@@ -199,12 +199,12 @@ function _initializeUI() {
     layoutManager.init();
     overview.init();
 
-    (new PointerA11yTimeout.PointerA11yTimeout());
+    new PointerA11yTimeout.PointerA11yTimeout();
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
     global.display.connect('overlay-key', () => {
-        if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
+        if (!_a11ySettings.get_boolean(STICKY_KEYS_ENABLE))
             overview.toggle();
     });
 
@@ -248,17 +248,17 @@ function _initializeUI() {
     }
 
     layoutManager.connect('startup-complete', () => {
-        if (actionMode == Shell.ActionMode.NONE) {
+        if (actionMode == Shell.ActionMode.NONE)
             actionMode = Shell.ActionMode.NORMAL;
-        }
-        if (screenShield) {
+
+        if (screenShield)
             screenShield.lockIfWasLocked();
-        }
+
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
                 'MESSAGE': `GNOME Shell started at ${_startDate}`,
-                'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID
+                'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
             });
         }
 
@@ -296,7 +296,7 @@ function _getStylesheet(name) {
     let dataDirs = GLib.get_system_data_dirs();
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'theme', name]);
-        let stylesheet = Gio.file_new_for_path(path);
+        stylesheet = Gio.file_new_for_path(path);
         if (stylesheet.query_exists(null))
             return stylesheet;
     }
@@ -337,7 +337,7 @@ function _loadDefaultStylesheet() {
  *
  * Get the theme CSS file that the shell will load
  *
- * Returns: A #GFile that contains the theme CSS,
+ * @returns {?Gio.File}: A #GFile that contains the theme CSS,
  *          null if using the default
  */
 function getThemeStylesheet() {
@@ -346,8 +346,8 @@ function getThemeStylesheet() {
 
 /**
  * setThemeStylesheet:
- * @cssStylesheet: A file path that contains the theme CSS,
- *                 set it to null to use the default
+ * @param {string=} cssStylesheet: A file path that contains the theme CSS,
+ *     set it to null to use the default
  *
  * Set the theme CSS file that the shell will load
  */
@@ -374,11 +374,13 @@ function _loadOskLayouts() {
  * Reloads the theme CSS file
  */
 function loadTheme() {
-    let themeContext = St.ThemeContext.get_for_stage (global.stage);
+    let themeContext = St.ThemeContext.get_for_stage(global.stage);
     let previousTheme = themeContext.get_theme();
 
-    let theme = new St.Theme ({ application_stylesheet: _cssStylesheet,
-                                default_stylesheet: _defaultCssStylesheet });
+    let theme = new St.Theme({
+        application_stylesheet: _cssStylesheet,
+        default_stylesheet: _defaultCssStylesheet,
+    });
 
     if (theme.default_stylesheet == null)
         throw new Error("No valid stylesheet found for '%s'".format(sessionMode.stylesheetName));
@@ -390,13 +392,13 @@ function loadTheme() {
             theme.load_stylesheet(customStylesheets[i]);
     }
 
-    themeContext.set_theme (theme);
+    themeContext.set_theme(theme);
 }
 
 /**
  * notify:
- * @msg: A message
- * @details: Additional information
+ * @param {string} msg: A message
+ * @param {string} details: Additional information
  */
 function notify(msg, details) {
     let source = new MessageTray.SystemNotificationSource();
@@ -408,8 +410,8 @@ function notify(msg, details) {
 
 /**
  * notifyError:
- * @msg: An error message
- * @details: Additional information
+ * @param {string} msg: An error message
+ * @param {string} details: Additional information
  *
  * See shell_global_notify_problem().
  */
@@ -433,8 +435,8 @@ function _findModal(actor) {
 
 /**
  * pushModal:
- * @actor: #ClutterActor which will be given keyboard focus
- * @params: optional parameters
+ * @param {Clutter.Actor} actor: actor which will be given keyboard focus
+ * @param {Object=} params: optional parameters
  *
  * Ensure we are in a mode where all keyboard and mouse input goes to
  * the stage, and focus @actor. Multiple calls to this function act in
@@ -457,7 +459,7 @@ function _findModal(actor) {
  *                global keybindings; the default of NONE will filter
  *                out all keybindings
  *
- * Returns: true iff we successfully acquired a grab or already had one
+ * @returns {bool}: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
@@ -488,11 +490,11 @@ function pushModal(actor, params) {
                 modalActorFocusStack[index].prevFocus = null;
         });
     }
-    modalActorFocusStack.push({ actor: actor,
+    modalActorFocusStack.push({ actor,
                                 destroyId: actorDestroyId,
-                                prevFocus: prevFocus,
-                                prevFocusDestroyId: prevFocusDestroyId,
-                                actionMode: actionMode });
+                                prevFocus,
+                                prevFocusDestroyId,
+                                actionMode });
 
     actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
@@ -501,8 +503,9 @@ function pushModal(actor, params) {
 
 /**
  * popModal:
- * @actor: #ClutterActor passed to original invocation of pushModal()
- * @timestamp: optional timestamp
+ * @param {Clutter.Actor} actor: the actor passed to original invocation
+ *     of pushModal()
+ * @param {number=} timestamp: optional timestamp
  *
  * Reverse the effect of pushModal(). If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
@@ -573,24 +576,24 @@ function popModal(actor, timestamp) {
 }
 
 function createLookingGlass() {
-    if (lookingGlass == null) {
+    if (lookingGlass == null)
         lookingGlass = new LookingGlass.LookingGlass();
-    }
+
     return lookingGlass;
 }
 
 function openRunDialog() {
-    if (runDialog == null) {
+    if (runDialog == null)
         runDialog = new RunDialog.RunDialog();
-    }
+
     runDialog.open();
 }
 
 /**
  * activateWindow:
- * @window: the Meta.Window to activate
- * @time: (optional) current event time
- * @workspaceNum: (optional) window's workspace number
+ * @param {Meta.Window} window: the window to activate
+ * @param {number=} time: current event time
+ * @param {number=} workspaceNum:  window's workspace number
  *
  * Activates @window, switching to its workspace first if necessary,
  * and switching out of the overview if it's currently active
@@ -598,7 +601,7 @@ function openRunDialog() {
 function activateWindow(window, time, workspaceNum) {
     let workspaceManager = global.workspace_manager;
     let activeWorkspaceNum = workspaceManager.get_active_workspace_index();
-    let windowWorkspaceNum = (workspaceNum !== undefined) ? workspaceNum : window.get_workspace().index();
+    let windowWorkspaceNum = workspaceNum !== undefined ? workspaceNum : window.get_workspace().index();
 
     if (!time)
         time = global.get_current_time();
@@ -666,8 +669,8 @@ function _queueBeforeRedraw(workId) {
 
 /**
  * initializeDeferredWork:
- * @actor: A #ClutterActor
- * @callback: Function to invoke to perform work
+ * @param {Clutter.Actor} actor: an actor
+ * @param {callback} callback: Function to invoke to perform work
  *
  * This function sets up a callback to be invoked when either the
  * given actor is mapped, or after some period of time when the machine
@@ -680,13 +683,13 @@ function _queueBeforeRedraw(workId) {
  * initialization as well, under the assumption that new actors
  * will need it.
  *
- * Returns: A string work identifier
+ * @returns {string}: A string work identifier
  */
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
-    let workId = `${(++_deferredWorkSequence)}`;
-    _deferredWorkData[workId] = { 'actor': actor,
-                                  'callback': callback };
+    let workId = `${++_deferredWorkSequence}`;
+    _deferredWorkData[workId] = { actor,
+                                  callback };
     actor.connect('notify::mapped', () => {
         if (!(actor.mapped && _deferredWorkQueue.includes(workId)))
             return;
@@ -704,7 +707,7 @@ function initializeDeferredWork(actor, callback) {
 
 /**
  * queueDeferredWork:
- * @workId: work identifier
+ * @param {string} workId: work identifier
  *
  * Ensure that the work identified by @workId will be
  * run on map or timeout. You should call this function

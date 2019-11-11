@@ -233,7 +233,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
             let id = layouts[i];
             if (variants[i])
                 id += `+${variants[i]}`;
-            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id: id });
+            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id });
         }
         return sourcesList;
     }
@@ -266,7 +266,7 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
 
         for (let i = 0; i < nSources; i++) {
             let [type, id] = sources.get_child_value(i).deep_unpack();
-            sourcesList.push({ type: type, id: id });
+            sourcesList.push({ type, id });
         }
         return sourcesList;
     }
@@ -437,13 +437,13 @@ var InputSourceManager = class {
 
         this.emit('current-source-changed', oldSource);
 
-        for (let i = 1; i < this._mruSources.length; ++i)
+        for (let i = 1; i < this._mruSources.length; ++i) {
             if (this._mruSources[i] == newSource) {
                 let currentSource = this._mruSources.splice(i, 1);
                 this._mruSources = currentSource.concat(this._mruSources);
                 break;
             }
-
+        }
         this._changePerWindowSource();
     }
 
@@ -516,12 +516,13 @@ var InputSourceManager = class {
 
         let mruSources = [];
         for (let i = 0; i < this._mruSources.length; i++) {
-            for (let j = 0; j < sourcesList.length; j++)
+            for (let j = 0; j < sourcesList.length; j++) {
                 if (this._mruSources[i].type == sourcesList[j].type &&
                     this._mruSources[i].id == sourcesList[j].id) {
                     mruSources = mruSources.concat(sourcesList.splice(j, 1));
                     break;
                 }
+            }
         }
         this._mruSources = mruSources.concat(sourcesList);
     }
@@ -562,14 +563,14 @@ var InputSourceManager = class {
             }
 
             if (exists)
-                infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+                infosList.push({ type, id, displayName, shortName });
         }
 
         if (infosList.length == 0) {
             let type = INPUT_SOURCE_TYPE_XKB;
             let id = KeyboardManager.DEFAULT_LAYOUT;
             let [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
-            infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+            infosList.push({ type, id, displayName, shortName });
         }
 
         let inputSourcesByShortName = {};
@@ -986,16 +987,16 @@ class InputSourceIndicator extends PanelMenu.Button {
                         return;
 
                     let group = item.radioGroup;
-                    for (let i = 0; i < group.length; ++i) {
-                        if (group[i] == item) {
+                    for (let j = 0; j < group.length; ++j) {
+                        if (group[j] == item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
                             ibusManager.activateProperty(item.prop.get_key(),
                                                          IBus.PropState.CHECKED);
                         } else {
-                            group[i].setOrnament(PopupMenu.Ornament.NONE);
-                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
-                            ibusManager.activateProperty(group[i].prop.get_key(),
+                            group[j].setOrnament(PopupMenu.Ornament.NONE);
+                            group[j].prop.set_state(IBus.PropState.UNCHECKED);
+                            ibusManager.activateProperty(group[j].prop.get_key(),
                                                          IBus.PropState.UNCHECKED);
                         }
                     }
@@ -1032,7 +1033,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                 break;
 
             default:
-                log ('IBus property %s has invalid type %d'.format(prop.get_key(), type));
+                log('IBus property %s has invalid type %d'.format(prop.get_key(), type));
                 continue;
             }
 

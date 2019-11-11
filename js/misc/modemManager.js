@@ -218,7 +218,7 @@ var BroadbandModem = GObject.registerClass({
             'capabilities', 'capabilities', 'capabilities',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             NM.DeviceModemCapabilities.$gtype,
-            NM.DeviceModemCapabilities.NONE)
+            NM.DeviceModemCapabilities.NONE),
     },
 }, class BroadbandModem extends ModemBase {
     _init(path, capabilities) {

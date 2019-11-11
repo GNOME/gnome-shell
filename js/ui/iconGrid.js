@@ -22,7 +22,7 @@ var ANIMATION_BOUNCE_ICON_SCALE = 1.1;
 
 var AnimationDirection = {
     IN: 0,
-    OUT: 1
+    OUT: 1,
 };
 
 var APPICON_ANIMATION_OUT_SCALE = 3;
@@ -59,7 +59,7 @@ class BaseIcon extends St.Bin {
             this.label = new St.Label({ text: label });
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
-                y_align: Clutter.ActorAlign.CENTER
+                y_align: Clutter.ActorAlign.CENTER,
             });
             this._box.add_actor(this.label);
         } else {
@@ -190,7 +190,7 @@ function zoomOutActorAtPos(actor, x, y) {
         opacity: 0,
         duration: APPICON_ANIMATION_OUT_TIME,
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => actorClone.destroy()
+        onComplete: () => actorClone.destroy(),
     });
 }
 
@@ -246,7 +246,7 @@ var IconGrid = GObject.registerClass({
 
     _onDestroy() {
         if (this._updateIconSizesLaterId) {
-            Meta.later_remove (this._updateIconSizesLaterId);
+            Meta.later_remove(this._updateIconSizesLaterId);
             this._updateIconSizesLaterId = 0;
         }
     }
@@ -432,7 +432,7 @@ var IconGrid = GObject.registerClass({
         return true;
     }
 
-    /**
+    /*
      * Intended to be override by subclasses if they need a different
      * set of items to be animated.
      */
@@ -455,9 +455,10 @@ var IconGrid = GObject.registerClass({
     }
 
     animatePulse(animationDirection) {
-        if (animationDirection != AnimationDirection.IN)
+        if (animationDirection != AnimationDirection.IN) {
             throw new GObject.NotImplementedError("Pulse animation only implements " +
                                                   "'in' animation direction");
+        }
 
         this._resetAnimationActors();
 
@@ -487,7 +488,7 @@ var IconGrid = GObject.registerClass({
                 scale_y: ANIMATION_BOUNCE_ICON_SCALE,
                 duration: bounceUpTime,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                delay: delay,
+                delay,
                 onComplete: () => {
                     let duration = ANIMATION_TIME_IN - bounceUpTime;
                     actor.ease({
@@ -499,9 +500,9 @@ var IconGrid = GObject.registerClass({
                             if (isLastItem)
                                 this._animationDone();
                             actor.reactive = true;
-                        }
+                        },
                     });
-                }
+                },
             });
         }
     }
@@ -568,7 +569,7 @@ var IconGrid = GObject.registerClass({
                     scale_y: 1,
                     duration: ANIMATION_TIME_IN,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
 
                 if (isLastItem)
@@ -578,7 +579,7 @@ var IconGrid = GObject.registerClass({
                     opacity: 255,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
             } else {
                 let isLastItem = actor._distance == maxDist;
@@ -594,7 +595,7 @@ var IconGrid = GObject.registerClass({
                     scale_y: scaleY,
                     duration: ANIMATION_TIME_OUT,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay
+                    delay,
                 };
 
                 if (isLastItem)
@@ -604,7 +605,7 @@ var IconGrid = GObject.registerClass({
                     opacity: 0,
                     duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                     mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM
+                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
                 };
             }
 
@@ -677,8 +678,8 @@ var IconGrid = GObject.registerClass({
 
     nRows(forWidth) {
         let children = this._getVisibleChildren();
-        let nColumns = (forWidth < 0) ? children.length : this._computeLayout(forWidth)[0];
-        let nRows = (nColumns > 0) ? Math.ceil(children.length / nColumns) : 0;
+        let nColumns = forWidth < 0 ? children.length : this._computeLayout(forWidth)[0];
+        let nRows = nColumns > 0 ? Math.ceil(children.length / nColumns) : 0;
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
         return nRows;
@@ -784,7 +785,7 @@ var IconGrid = GObject.registerClass({
             this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
     }
 
-    /**
+    /*
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
      */
@@ -797,7 +798,7 @@ var IconGrid = GObject.registerClass({
             let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
             let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
 
-            let neededSpacePerItem = (neededWidth > neededHeight)
+            let neededSpacePerItem = neededWidth > neededHeight
                 ? Math.ceil(neededWidth / this._minColumns)
                 : Math.ceil(neededHeight / this._minRows);
             this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
@@ -805,9 +806,10 @@ var IconGrid = GObject.registerClass({
 
             this._updateSpacingForSize(availWidth, availHeight);
         }
-        if (!this._updateIconSizesLaterId)
+        if (!this._updateIconSizesLaterId) {
             this._updateIconSizesLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                           this._updateIconSizes.bind(this));
+        }
     }
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
@@ -815,9 +817,9 @@ var IconGrid = GObject.registerClass({
         this._updateIconSizesLaterId = 0;
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
         let newIconSize = Math.floor(ICON_SIZE * scale);
-        for (let i in this._items) {
+        for (let i in this._items)
             this._items[i].icon.setIconSize(newIconSize);
-        }
+
         return GLib.SOURCE_REMOVE;
     }
 });
@@ -879,9 +881,9 @@ var PaginatedIconGrid = GObject.registerClass({
             children[i].show();
 
             columnIndex++;
-            if (columnIndex == nColumns) {
+            if (columnIndex == nColumns)
                 columnIndex = 0;
-            }
+
             if (columnIndex == 0) {
                 y += this._getVItemSize() + spacing;
                 if ((i + 1) % this._childrenPerPage == 0)
@@ -956,9 +958,10 @@ var PaginatedIconGrid = GObject.registerClass({
 
     /**
     * openExtraSpace:
-    * @sourceItem: the item for which to create extra space
-    * @side: where @sourceItem should be located relative to the created space
-    * @nRows: the amount of space to create
+    * @param {Clutter.Actor} sourceItem: item for which to create extra space
+    * @param {St.Side} side: where @sourceItem should be located relative to
+    *   the created space
+    * @param {number} nRows: the amount of space to create
     *
     * Pan view to create extra space for @nRows above or below @sourceItem.
     */
@@ -974,7 +977,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let childrenPerRow = this._childrenPerPage / this._rowsPerPage;
         let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
 
-        let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1 : sourceRow;
+        let nRowsAbove = side == St.Side.TOP ? sourceRow + 1 : sourceRow;
         let nRowsBelow = this._rowsPerPage - nRowsAbove;
 
         let nRowsUp, nRowsDown;
@@ -1017,7 +1020,7 @@ var PaginatedIconGrid = GObject.registerClass({
             let params = {
                 translation_y: translationY,
                 duration: EXTRA_SPACE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
             };
             if (i == (children.length - 1))
                 params.onComplete = () => this.emit('space-opened');
@@ -1038,7 +1041,7 @@ var PaginatedIconGrid = GObject.registerClass({
                 translation_y: 0,
                 duration: EXTRA_SPACE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                onComplete: () => this.emit('space-closed')
+                onComplete: () => this.emit('space-closed'),
             });
         }
     }

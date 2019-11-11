@@ -23,7 +23,7 @@ const Gettext = imports.gettext;
 // of interfaces in Javascript
 function _patchContainerClass(containerClass) {
     // This one is a straightforward mapping of the C method
-    containerClass.prototype.child_set = function(actor, props) {
+    containerClass.prototype.child_set = function (actor, props) {
         let meta = this.get_child_meta(actor);
         for (let prop in props)
             meta[prop] = props[prop];
@@ -32,7 +32,7 @@ function _patchContainerClass(containerClass) {
     // clutter_container_add() actually is a an add-many-actors
     // method. We conveniently, but somewhat dubiously, take the
     // this opportunity to make it do something more useful.
-    containerClass.prototype.add = function(actor, props) {
+    containerClass.prototype.add = function (actor, props) {
         this.add_actor(actor);
         if (props)
             this.child_set(actor, props);
@@ -40,8 +40,8 @@ function _patchContainerClass(containerClass) {
 }
 
 function _patchLayoutClass(layoutClass, styleProps) {
-    if (styleProps)
-        layoutClass.prototype.hookup_style = function(container) {
+    if (styleProps) {
+        layoutClass.prototype.hookup_style = function (container) {
             container.connect('style-changed', () => {
                 let node = container.get_theme_node();
                 for (let prop in styleProps) {
@@ -51,6 +51,7 @@ function _patchLayoutClass(layoutClass, styleProps) {
                 }
             });
         };
+    }
 }
 
 function _makeEaseCallback(params, cleanup) {
@@ -238,27 +239,27 @@ function init() {
     _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });
 
     let origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
-    Clutter.Actor.prototype.set_easing_duration = function(msecs) {
+    Clutter.Actor.prototype.set_easing_duration = function (msecs) {
         origSetEasingDuration.call(this, adjustAnimationTime(msecs));
     };
     let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
-    Clutter.Actor.prototype.set_easing_delay = function(msecs) {
+    Clutter.Actor.prototype.set_easing_delay = function (msecs) {
         origSetEasingDelay.call(this, adjustAnimationTime(msecs));
     };
 
-    Clutter.Actor.prototype.ease = function(props, easingParams) {
+    Clutter.Actor.prototype.ease = function (props, easingParams) {
         _easeActor(this, props, easingParams);
     };
-    Clutter.Actor.prototype.ease_property = function(propName, target, params) {
+    Clutter.Actor.prototype.ease_property = function (propName, target, params) {
         _easeActorProperty(this, propName, target, params);
     };
-    St.Adjustment.prototype.ease = function(target, params) {
+    St.Adjustment.prototype.ease = function (target, params) {
         // we're not an actor of course, but we implement the same
         // transition API as Clutter.Actor, so this works anyway
         _easeActorProperty(this, 'value', target, params);
     };
 
-    Clutter.Actor.prototype.toString = function() {
+    Clutter.Actor.prototype.toString = function () {
         return St.describe_actor(this);
     };
     // Deprecation warning for former JS classes turned into an actor subclass
@@ -268,17 +269,17 @@ function init() {
             let { stack } = new Error();
             log(`Usage of object.actor is deprecated for ${klass}\n${stack}`);
             return this;
-        }
+        },
     });
 
-    St.set_slow_down_factor = function(factor) {
+    St.set_slow_down_factor = function (factor) {
         let { stack } = new Error();
         log(`St.set_slow_down_factor() is deprecated, use St.Settings.slow_down_factor\n${stack}`);
         St.Settings.get().slow_down_factor = factor;
     };
 
     let origToString = Object.prototype.toString;
-    Object.prototype.toString = function() {
+    Object.prototype.toString = function () {
         let base = origToString.call(this);
         try {
             if ('actor' in this && this.actor instanceof Clutter.Actor)
@@ -291,7 +292,7 @@ function init() {
     };
 
     // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
-    Date.prototype.toLocaleFormat = function(format) {
+    Date.prototype.toLocaleFormat = function (format) {
         let dt = GLib.DateTime.new_from_unix_local(this.getTime() / 1000);
         return dt ? dt.format(format) : '';
     };

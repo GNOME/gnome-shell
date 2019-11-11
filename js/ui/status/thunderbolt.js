@@ -27,13 +27,13 @@ var Status = {
     CONNECTED: 'connected',
     AUTHORIZING: 'authorizing',
     AUTH_ERROR: 'auth-error',
-    AUTHORIZED: 'authorized'
+    AUTHORIZED: 'authorized',
 };
 
 var Policy = {
     DEFAULT: 'default',
     MANUAL: 'manual',
-    AUTO: 'auto'
+    AUTO: 'auto',
 };
 
 var AuthCtrl = {
@@ -42,7 +42,7 @@ var AuthCtrl = {
 
 var AuthMode = {
     DISABLED: 'disabled',
-    ENABLED: 'enabled'
+    ENABLED: 'enabled',
 };
 
 const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';
@@ -124,7 +124,7 @@ var Client = class {
         });
     }
 
-    get authMode () {
+    get authMode() {
         return this._proxy.AuthMode;
     }
 };
@@ -199,9 +199,10 @@ var AuthRobot = class {
          */
         this._enrolling = this._devicesToEnroll.length > 0;
 
-        if (this._enrolling)
+        if (this._enrolling) {
             GLib.idle_add(GLib.PRIORITY_DEFAULT,
                           this._enrollDevicesIdle.bind(this));
+        }
     }
 
     _enrollDevicesIdle() {

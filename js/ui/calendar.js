@@ -20,7 +20,7 @@ var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 var NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
-    return (dateA.getYear() == dateB.getYear());
+    return dateA.getYear() == dateB.getYear();
 }
 
 function sameMonth(dateA, dateB) {
@@ -78,7 +78,7 @@ function _getCalendarDayAbbreviation(dayNumber) {
         /* Translators: Calendar grid abbreviation for Friday */
         NC_("grid friday", "F"),
         /* Translators: Calendar grid abbreviation for Saturday */
-        NC_("grid saturday", "S")
+        NC_("grid saturday", "S"),
     ];
     return Shell.util_translate_time_string(abbreviations[dayNumber]);
 }
@@ -110,7 +110,7 @@ var EventSourceBase = GObject.registerClass({
             GObject.ParamFlags.READABLE,
             false),
     },
-    Signals: { 'changed': {} }
+    Signals: { 'changed': {} },
 }, class EventSourceBase extends GObject.Object {
     get isLoading() {
         throw new GObject.NotImplementedError(`isLoading in ${this.constructor.name}`);
@@ -326,9 +326,8 @@ class DBusEventSource extends EventSourceBase {
         for (let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
 
-            if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
+            if (_dateIntervalsOverlap(event.date, event.end, begin, end))
                 result.push(event);
-            }
         }
         result.sort((event1, event2) => {
             // sort events by end time on ending day
@@ -353,7 +352,7 @@ class DBusEventSource extends EventSourceBase {
 });
 
 var Calendar = GObject.registerClass({
-    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } }
+    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
 }, class Calendar extends St.Widget {
     _init() {
         this._weekStart = Shell.util_get_week_start();
@@ -388,10 +387,10 @@ var Calendar = GObject.registerClass({
         super._init({
             style_class: 'calendar',
             layout_manager: new Clutter.GridLayout(),
-            reactive: true
+            reactive: true,
         });
 
-        this._buildHeader ();
+        this._buildHeader();
     }
 
     setEventSource(eventSource) {
@@ -713,15 +712,15 @@ class EventMessage extends MessageList.Message {
 
     vfunc_style_changed() {
         let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
-        this._icon.opacity = (iconVisible ? 255 : 0);
+        this._icon.opacity = iconVisible ? 255 : 0;
         super.vfunc_style_changed();
     }
 
     _formatEventTime() {
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
-        let allDay = (this._event.allDay || (this._event.date <= periodBegin &&
-                                             this._event.end >= periodEnd));
+        let allDay = this._event.allDay || (this._event.date <= periodBegin &&
+                                             this._event.end >= periodEnd);
         let title;
         if (allDay) {
             /* Translators: Shown in calendar event list for all day events
@@ -778,11 +777,12 @@ class NotificationMessage extends MessageList.Message {
     }
 
     _getIcon() {
-        if (this.notification.gicon)
+        if (this.notification.gicon) {
             return new St.Icon({ gicon: this.notification.gicon,
                                  icon_size: MESSAGE_ICON_SIZE });
-        else
+        } else {
             return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
+        }
     }
 
     _onUpdated(n, _clear) {
@@ -861,14 +861,15 @@ class EventsSection extends MessageList.MessageListSection {
 
         let dayFormat;
         let now = new Date();
-        if (sameYear(this._date, now))
+        if (sameYear(this._date, now)) {
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %-d"));
-        else
+        } else {
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %-d, %Y"));
+        }
         this._title.label = this._date.toLocaleFormat(dayFormat);
     }
 
@@ -909,7 +910,7 @@ class EventsSection extends MessageList.MessageListSection {
 
     _appInstalledChanged() {
         this._calendarApp = undefined;
-        this._title.reactive = (this._getCalendarApp() != null);
+        this._title.reactive = this._getCalendarApp() != null;
     }
 
     _getCalendarApp() {
@@ -961,7 +962,7 @@ class NotificationTimeLabel extends St.Label {
         super._init({
             style_class: 'event-time',
             x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.END
+            y_align: Clutter.ActorAlign.END,
         });
         this._datetime = datetime;
     }
@@ -997,7 +998,7 @@ class NotificationSection extends MessageList.MessageListSection {
             notificationAddedId: 0,
         };
 
-        obj.destroyId = source.connect('destroy', source => {
+        obj.destroyId = source.connect('destroy', () => {
             this._onSourceDestroy(source, obj);
         });
         obj.notificationAddedId = source.connect('notification-added',
@@ -1108,7 +1109,7 @@ class CalendarMessageList extends St.Widget {
             style_class: 'message-list',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
-            y_expand: true
+            y_expand: true,
         });
 
         this._placeholder = new Placeholder();
@@ -1118,9 +1119,11 @@ class CalendarMessageList extends St.Widget {
                                      x_expand: true, y_expand: true });
         this.add_actor(box);
 
-        this._scrollView = new St.ScrollView({ style_class: 'vfade',
-                                               overlay_scrollbars: true,
-                                               x_expand: true, y_expand: true, });
+        this._scrollView = new St.ScrollView({
+            style_class: 'vfade',
+            overlay_scrollbars: true,
+            x_expand: true, y_expand: true,
+        });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
@@ -1171,7 +1174,7 @@ class CalendarMessageList extends St.Widget {
             Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
         }));
 
-        connectionsIds.push(section.connect('destroy', (section) => {
+        connectionsIds.push(section.connect('destroy', () => {
             connectionsIds.forEach(id => section.disconnect(id));
             this._sectionList.remove_actor(section);
         }));

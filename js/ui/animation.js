@@ -10,7 +10,7 @@ var SPINNER_ANIMATION_DELAY = 1000;
 var Animation = GObject.registerClass(
 class Animation extends St.Bin {
     _init(file, width, height, speed) {
-        super._init({ width: width, height: height });
+        super._init({ width, height });
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
@@ -86,7 +86,7 @@ class Animation extends St.Bin {
         if (oldFrameActor)
             oldFrameActor.hide();
 
-        this._frame = (frame % this._animations.get_n_children());
+        this._frame = frame % this._animations.get_n_children();
 
         let newFrameActor = this._animations.get_child_at_index(this._frame);
         if (newFrameActor)
@@ -158,7 +158,7 @@ class Spinner extends AnimatedIcon {
                 opacity: 255,
                 delay: SPINNER_ANIMATION_DELAY,
                 duration: SPINNER_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.LINEAR
+                mode: Clutter.AnimationMode.LINEAR,
             });
         } else {
             this.opacity = 255;
@@ -174,7 +174,7 @@ class Spinner extends AnimatedIcon {
                 opacity: 0,
                 duration: SPINNER_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.LINEAR,
-                onComplete: () => super.stop()
+                onComplete: () => super.stop(),
             });
         } else {
             this.opacity = 0;

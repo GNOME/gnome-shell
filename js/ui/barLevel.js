@@ -16,8 +16,8 @@ var BarLevel = GObject.registerClass({
         'overdrive-start': GObject.ParamSpec.double(
             'overdrive-start', 'overdrive-start', 'overdrive-start',
             GObject.ParamFlags.READWRITE,
-            1, 2, 1)
-    }
+            1, 2, 1),
+    },
 }, class BarLevel extends St.DrawingArea {
     _init(params) {
         this._maxValue = 1;
@@ -27,7 +27,7 @@ var BarLevel = GObject.registerClass({
 
         let defaultParams = {
             style_class: 'barlevel',
-            accessible_role: Atk.Role.LEVEL_BAR
+            accessible_role: Atk.Role.LEVEL_BAR,
         };
         super._init(Object.assign(defaultParams, params));
         this.connect('allocation-changed', (actor, box) => {
@@ -88,9 +88,10 @@ var BarLevel = GObject.registerClass({
         if (this._overdriveStart == value)
             return;
 
-        if (value > this._maxValue)
+        if (value > this._maxValue) {
             throw new Error(`Tried to set overdrive value to ${value}, ` +
                 `which is a number greater than the maximum allowed value ${this._maxValue}`);
+        }
 
         this._overdriveStart = value;
         this.notify('overdrive-start');

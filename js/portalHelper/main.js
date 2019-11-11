@@ -11,13 +11,13 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
-    RECHECK: 2
+    RECHECK: 2,
 };
 
 const PortalHelperSecurityLevel = {
     NOT_YET_DETERMINED: 0,
     SECURE: 1,
-    INSECURE: 2
+    INSECURE: 2,
 };
 
 const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
@@ -92,7 +92,7 @@ class PortalHeaderBar extends Gtk.HeaderBar {
 var PortalWindow = GObject.registerClass(
 class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
-        super._init({ application: application });
+        super._init({ application });
 
         this.connect('delete-event', this.destroyWindow.bind(this));
         this._headerBar = new PortalHeaderBar();
@@ -287,7 +287,7 @@ class WebPortalHelper extends Gtk.Application {
     }
 
     Authenticate(connection, url, timestamp) {
-        this._queue.push({ connection: connection, url: url, timestamp: timestamp });
+        this._queue.push({ connection, url, timestamp });
 
         this._processQueue();
     }

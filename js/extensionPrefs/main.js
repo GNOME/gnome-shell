@@ -29,7 +29,7 @@ class Application extends Gtk.Application {
         GLib.set_prgname('gnome-shell-extension-prefs');
         super._init({
             application_id: 'org.gnome.shell.ExtensionPrefs',
-            flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE
+            flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
         });
 
         this._startupUuid = null;
@@ -60,12 +60,12 @@ class Application extends Gtk.Application {
 
         let dialog = new Gtk.Window({
             modal: !this._skipMainWindow,
-            type_hint: Gdk.WindowTypeHint.DIALOG
+            type_hint: Gdk.WindowTypeHint.DIALOG,
         });
         dialog.set_titlebar(new Gtk.HeaderBar({
             show_close_button: true,
             title: row.name,
-            visible: true
+            visible: true,
         }));
 
         if (this._skipMainWindow) {
@@ -88,20 +88,20 @@ class Application extends Gtk.Application {
     _buildErrorUI(row, exc) {
         let scroll = new Gtk.ScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
-            propagate_natural_height: true
+            propagate_natural_height: true,
         });
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 12,
             margin: 100,
-            margin_bottom: 60
+            margin_bottom: 60,
         });
         scroll.add(box);
 
         let label = new Gtk.Label({
             label: '<span size="x-large">%s</span>'.format(_("Something’s gone wrong")),
-            use_markup: true
+            use_markup: true,
         });
         label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         box.add(label);
@@ -109,13 +109,13 @@ class Application extends Gtk.Application {
         label = new Gtk.Label({
             label: _("We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors."),
             justify: Gtk.Justification.CENTER,
-            wrap: true
+            wrap: true,
         });
         box.add(label);
 
         let expander = new Expander({
             label: _("Technical Details"),
-            margin_top: 12
+            margin_top: 12,
         });
         box.add(expander);
 
@@ -126,14 +126,14 @@ class Application extends Gtk.Application {
 
         let buffer = new Gtk.TextBuffer({ text: errortext });
         let textview = new Gtk.TextView({
-            buffer: buffer,
+            buffer,
             wrap_mode: Gtk.WrapMode.WORD,
             monospace: true,
             editable: false,
             top_margin: 12,
             bottom_margin: 12,
             left_margin: 12,
-            right_margin: 12
+            right_margin: 12,
         });
 
         let toolbar = new Gtk.Toolbar();
@@ -149,7 +149,7 @@ class Application extends Gtk.Application {
 
         let copyButton = new Gtk.ToolButton({
             icon_name: 'edit-copy-symbolic',
-            tooltip_text: _("Copy Error")
+            tooltip_text: _("Copy Error"),
         });
         toolbar.add(copyButton);
 
@@ -166,7 +166,7 @@ class Application extends Gtk.Application {
                 '```', // '`'
                 exc.stack.replace(/\n$/, ''), // stack without trailing newline
                 '```', // '`'
-                ''
+                '',
             ];
             clipboard.set_text(lines.join('\n'), -1);
         });
@@ -179,7 +179,7 @@ class Application extends Gtk.Application {
             label: _("Homepage"),
             tooltip_text: _("Visit extension homepage"),
             no_show_all: true,
-            visible: row.url != null
+            visible: row.url != null,
         });
         toolbar.add(urlButton);
 
@@ -189,7 +189,7 @@ class Application extends Gtk.Application {
         });
 
         let expandedBox = new Gtk.Box({
-            orientation: Gtk.Orientation.VERTICAL
+            orientation: Gtk.Orientation.VERTICAL,
         });
         expandedBox.add(textview);
         expandedBox.add(toolbar);
@@ -219,7 +219,7 @@ class Application extends Gtk.Application {
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
         this._mainStack = new Gtk.Stack({
-            transition_type: Gtk.StackTransitionType.CROSSFADE
+            transition_type: Gtk.StackTransitionType.CROSSFADE,
         });
         this._window.add(this._mainStack);
 
@@ -360,20 +360,20 @@ var Expander = GObject.registerClass({
             'label', 'label', 'label',
             GObject.ParamFlags.READWRITE,
             null
-        )
-    }
+        ),
+    },
 }, class Expander extends Gtk.Box {
     _init(params = {}) {
         this._labelText = null;
 
         super._init(Object.assign(params, {
             orientation: Gtk.Orientation.VERTICAL,
-            spacing: 0
+            spacing: 0,
         }));
 
         this._frame = new Gtk.Frame({
             shadow_type: Gtk.ShadowType.IN,
-            hexpand: true
+            hexpand: true,
         });
 
         let eventBox = new Gtk.EventBox();
@@ -381,12 +381,12 @@ var Expander = GObject.registerClass({
 
         let hbox = new Gtk.Box({
             spacing: 6,
-            margin: 12
+            margin: 12,
         });
         eventBox.add(hbox);
 
         this._arrow = new Gtk.Image({
-            icon_name: 'pan-end-symbolic'
+            icon_name: 'pan-end-symbolic',
         });
         hbox.add(this._arrow);
 
@@ -396,7 +396,7 @@ var Expander = GObject.registerClass({
         this._revealer = new Gtk.Revealer();
 
         this._childBin = new Gtk.Frame({
-            shadow_type: Gtk.ShadowType.IN
+            shadow_type: Gtk.ShadowType.IN,
         });
         this._revealer.add(this._childBin);
 
@@ -414,7 +414,7 @@ var Expander = GObject.registerClass({
         this._gesture = new Gtk.GestureMultiPress({
             widget: this._frame,
             button: 0,
-            exclusive: true
+            exclusive: true,
         });
         this._gesture.connect('released', (gesture, nPress) => {
             if (nPress == 1)
@@ -459,7 +459,7 @@ class EmptyPlaceholder extends Gtk.Box {
         super._init({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 6,
-            margin: 32
+            margin: 32,
         });
 
         let image = new Gtk.Image({
@@ -467,15 +467,15 @@ class EmptyPlaceholder extends Gtk.Box {
             pixel_size: 96,
             visible: true,
             vexpand: true,
-            valign: Gtk.Align.END
+            valign: Gtk.Align.END,
         });
         image.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         this.add(image);
 
         let label = new Gtk.Label({
-            label: `<b><span size="x-large">${_("No Extensions Installed" )}</span></b>`,
+            label: `<b><span size="x-large">${_("No Extensions Installed")}</span></b>`,
             use_markup: true,
-            visible: true
+            visible: true,
         });
         label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         this.add(label);
@@ -490,9 +490,9 @@ class EmptyPlaceholder extends Gtk.Box {
             visible: true,
             max_width_chars: 50,
             hexpand: true,
-            vexpand: (appInfo == null),
+            vexpand: appInfo == null,
             halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.START
+            valign: Gtk.Align.START,
         });
         this.add(desc);
 
@@ -500,14 +500,14 @@ class EmptyPlaceholder extends Gtk.Box {
             let button = new Gtk.Button({
                 label: _("Browse in Software"),
                 image: new Gtk.Image({
-                    icon_name: "org.gnome.Software-symbolic"
+                    icon_name: "org.gnome.Software-symbolic",
                 }),
                 always_show_image: true,
                 margin_top: 12,
                 visible: true,
                 halign: Gtk.Align.CENTER,
                 valign: Gtk.Align.START,
-                vexpand: true
+                vexpand: true,
             });
             this.add(button);
 
@@ -526,13 +526,13 @@ class NoShellPlaceholder extends Gtk.Box {
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 12,
             margin: 100,
-            margin_bottom: 60
+            margin_bottom: 60,
         });
 
         let label = new Gtk.Label({
             label: '<span size="x-large">%s</span>'.format(
                 _("Something’s gone wrong")),
-            use_markup: true
+            use_markup: true,
         });
         label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         this.add(label);
@@ -540,7 +540,7 @@ class NoShellPlaceholder extends Gtk.Box {
         label = new Gtk.Label({
             label: _("We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again."),
             justify: Gtk.Justification.CENTER,
-            wrap: true
+            wrap: true,
         });
         this.add(label);
 
@@ -577,7 +577,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
                     return;
 
                 this._extension = ExtensionUtils.deserializeExtension(newState);
-                let state = (this._extension.state == ExtensionState.ENABLED);
+                let state = this._extension.state == ExtensionState.ENABLED;
 
                 this._switch.block_signal_handler(this._notifyActiveId);
                 this._switch.state = state;
@@ -648,7 +648,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._switch = new Gtk.Switch({
             valign: Gtk.Align.CENTER,
             sensitive: this._canToggle(),
-            state: this._extension.state === ExtensionState.ENABLED
+            state: this._extension.state === ExtensionState.ENABLED,
         });
         this._notifyActiveId = this._switch.connect('notify::active', () => {
             if (this._switch.active)
@@ -691,7 +691,7 @@ function initEnvironment() {
             log(`ERROR: ${s}`);
         },
 
-        userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell'])
+        userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell']),
     };
 
     String.prototype.format = Format.format;

@@ -43,7 +43,7 @@ class Dialog extends St.Widget {
         });
         this._dialog.add_child(this.contentLayout);
 
-        this.buttonLayout = new St.Widget ({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
+        this.buttonLayout = new St.Widget({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
         this._dialog.add_child(this.buttonLayout);
     }
 
@@ -96,7 +96,7 @@ class Dialog extends St.Widget {
     }
 
     addContent(actor) {
-        this.contentLayout.add (actor, { expand: true });
+        this.contentLayout.add(actor, { expand: true });
     }
 
     addButton(buttonInfo) {
@@ -117,7 +117,7 @@ class Dialog extends St.Widget {
                                      can_focus: true,
                                      x_expand: true,
                                      y_expand: true,
-                                     label: label });
+                                     label });
         button.connect('clicked', action);
 
         buttonInfo['button'] = button;
@@ -159,8 +159,8 @@ var MessageDialogContent = GObject.registerClass({
         'body': GObject.ParamSpec.string('body', 'body', 'body',
                                          GObject.ParamFlags.READWRITE |
                                          GObject.ParamFlags.CONSTRUCT,
-                                         null)
-    }
+                                         null),
+    },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
         this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
@@ -211,7 +211,7 @@ var MessageDialogContent = GObject.registerClass({
     set icon(icon) {
         this._icon.set({
             gicon: icon,
-            visible: icon != null
+            visible: icon != null,
         });
         this.notify('icon');
     }
@@ -231,7 +231,7 @@ var MessageDialogContent = GObject.registerClass({
     _setLabel(label, prop, value) {
         label.set({
             text: value || '',
-            visible: value != null
+            visible: value != null,
         });
         this.notify(prop);
     }

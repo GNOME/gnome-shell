@@ -72,7 +72,7 @@ class MediaMessage extends MessageList.Message {
 
         if (this._player.trackCoverUrl) {
             let file = Gio.File.new_for_uri(this._player.trackCoverUrl);
-            this._icon.gicon = new Gio.FileIcon({ file: file });
+            this._icon.gicon = new Gio.FileIcon({ file });
             this._icon.remove_style_class_name('fallback');
         } else {
             this._icon.icon_name = 'audio-x-generic-symbolic';
@@ -191,28 +191,31 @@ var MprisPlayer = class MprisPlayer {
         this._trackArtists = metadata['xesam:artist'];
         if (!Array.isArray(this._trackArtists) ||
             !this._trackArtists.every(artist => typeof artist === 'string')) {
-            if (typeof this._trackArtists !== 'undefined')
+            if (typeof this._trackArtists !== 'undefined') {
                 log(`Received faulty track artist metadata from ${
                     this._busName}; expected an array of strings, got ${
                     this._trackArtists} (${typeof this._trackArtists})`);
+            }
             this._trackArtists =  [_("Unknown artist")];
         }
 
         this._trackTitle = metadata['xesam:title'];
         if (typeof this._trackTitle !== 'string') {
-            if (typeof this._trackTitle !== 'undefined')
+            if (typeof this._trackTitle !== 'undefined') {
                 log(`Received faulty track title metadata from ${
                     this._busName}; expected a string, got ${
                     this._trackTitle} (${typeof this._trackTitle})`);
+            }
             this._trackTitle = _("Unknown title");
         }
 
         this._trackCoverUrl = metadata['mpris:artUrl'];
         if (typeof this._trackCoverUrl !== 'string') {
-            if (typeof this._trackCoverUrl !== 'undefined')
+            if (typeof this._trackCoverUrl !== 'undefined') {
                 log(`Received faulty track cover art metadata from ${
                     this._busName}; expected a string, got ${
                     this._trackCoverUrl} (${typeof this._trackCoverUrl})`);
+            }
             this._trackCoverUrl = '';
         }
 

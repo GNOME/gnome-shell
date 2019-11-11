@@ -33,7 +33,7 @@ var State = {
     HIDDEN:  0,
     SHOWING: 1,
     SHOWN:   2,
-    HIDING:  3
+    HIDING:  3,
 };
 
 // These reasons are useful when we destroy the notifications received through
@@ -47,7 +47,7 @@ var NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     SOURCE_CLOSED: 3,
-    REPLACED: 4
+    REPLACED: 4,
 };
 
 // Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
@@ -58,7 +58,7 @@ var Urgency = {
     LOW: 0,
     NORMAL: 1,
     HIGH: 2,
-    CRITICAL: 3
+    CRITICAL: 3,
 };
 
 // The privacy of the details of a notification. USER is for notifications which
@@ -159,7 +159,7 @@ var NotificationPolicy = GObject.registerClass({
             'details-in-lock-screen', 'details-in-lock-screen', 'details-in-lock-screen',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-    }
+    },
 }, class NotificationPolicy extends GObject.Object {
     // Do nothing for the default policy. These methods are only useful for the
     // GSettings policy.
@@ -357,7 +357,7 @@ var Notification = GObject.registerClass({
         'activated': {},
         'destroy': { param_types: [GObject.TYPE_UINT] },
         'updated': { param_types: [GObject.TYPE_BOOLEAN] },
-    }
+    },
 }, class Notification extends GObject.Object {
     _init(source, title, banner, params) {
         super._init();
@@ -435,7 +435,7 @@ var Notification = GObject.registerClass({
     // @label: the label for the action's button
     // @callback: the callback for the action
     addAction(label, callback) {
-        this.actions.push({ label: label, callback: callback });
+        this.actions.push({ label, callback });
     }
 
     get acknowledged() {
@@ -522,7 +522,7 @@ var NotificationBanner = GObject.registerClass({
     Signals: {
         'done-displaying': {},
         'unfocused': {},
-    }
+    },
 }, class NotificationBanner extends Calendar.NotificationMessage {
     _init(notification) {
         super._init(notification);
@@ -609,7 +609,7 @@ var NotificationBanner = GObject.registerClass({
 
     addAction(label, callback) {
         let button = new St.Button({ style_class: 'notification-button',
-                                     label: label,
+                                     label,
                                      x_expand: true,
                                      can_focus: true });
 
@@ -747,10 +747,10 @@ var Source = GObject.registerClass({
         'icon-updated': {},
         'notification-added': { param_types: [Notification.$gtype] },
         'notification-show': { param_types: [Notification.$gtype] },
-    }
+    },
 }, class Source extends GObject.Object {
     _init(title, iconName) {
-        super._init({ title: title });
+        super._init({ title });
 
         this.SOURCE_ICON_SIZE = 48;
 
@@ -856,11 +856,10 @@ var Source = GObject.registerClass({
         notification.acknowledged = false;
         this.pushNotification(notification);
 
-        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
+        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
             this.emit('notification-show', notification);
-        } else {
+        else
             notification.playSound();
-        }
     }
 
     notify(propName) {
@@ -901,9 +900,10 @@ var Source = GObject.registerClass({
     }
 
     destroyNonResidentNotifications() {
-        for (let i = this.notifications.length - 1; i >= 0; i--)
+        for (let i = this.notifications.length - 1; i >= 0; i--) {
             if (!this.notifications[i].resident)
                 this.notifications[i].destroy();
+        }
     }
 });
 
@@ -912,13 +912,13 @@ var MessageTray = GObject.registerClass({
         'queue-changed': {},
         'source-added': { param_types: [Source.$gtype] },
         'source-removed': { param_types: [Source.$gtype] },
-    }
+    },
 }, class MessageTray extends St.Widget {
     _init() {
         super._init({
             visible: false,
             clip_to_allocation: true,
-            layout_manager: new Clutter.BinLayout()
+            layout_manager: new Clutter.BinLayout(),
         });
 
         this._presence = new GnomeSession.Presence((proxy, _error) => {
@@ -1162,7 +1162,7 @@ var MessageTray = GObject.registerClass({
             // indicator in the panel; however do make an exception for CRITICAL
             // notifications, as only banner mode allows expansion.
             let bannerCount = this._notification ? 1 : 0;
-            let full = (this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE);
+            let full = this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE;
             if (!full || notification.urgency == Urgency.CRITICAL) {
                 notification.connect('destroy',
                                      this._onNotificationDestroy.bind(this));
@@ -1309,7 +1309,7 @@ var MessageTray = GObject.registerClass({
             let nextNotification = this._notificationQueue[0] || null;
             if (hasNotifications && nextNotification) {
                 let limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
-                let showNextNotification = (!limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL);
+                let showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL;
                 if (showNextNotification)
                     this._showNotification();
             }
@@ -1319,7 +1319,7 @@ var MessageTray = GObject.registerClass({
                            this._notification.urgency != Urgency.CRITICAL &&
                            !this._banner.focused &&
                            !this._pointerInNotification) || this._notificationExpired;
-            let mustClose = (this._notificationRemoved || !hasNotifications || expired);
+            let mustClose = this._notificationRemoved || !hasNotifications || expired;
 
             if (mustClose) {
                 let animate = hasNotifications && !this._notificationRemoved;
@@ -1414,7 +1414,7 @@ var MessageTray = GObject.registerClass({
         this._bannerBin.ease({
             opacity: 255,
             duration: ANIMATION_TIME,
-            mode: Clutter.AnimationMode.LINEAR
+            mode: Clutter.AnimationMode.LINEAR,
         });
         this._bannerBin.ease({
             y: 0,
@@ -1424,7 +1424,7 @@ var MessageTray = GObject.registerClass({
                 this._notificationState = State.SHOWN;
                 this._showNotificationCompleted();
                 this._updateState();
-            }
+            },
         });
     }
 
@@ -1490,7 +1490,7 @@ var MessageTray = GObject.registerClass({
             this._bannerBin.ease({
                 opacity: 0,
                 duration: ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_BACK
+                mode: Clutter.AnimationMode.EASE_OUT_BACK,
             });
             this._bannerBin.ease({
                 y: -this._bannerBin.height,
@@ -1500,7 +1500,7 @@ var MessageTray = GObject.registerClass({
                     this._notificationState = State.HIDDEN;
                     this._hideNotificationCompleted();
                     this._updateState();
-                }
+                },
             });
         } else {
             this._bannerBin.y = -this._bannerBin.height;

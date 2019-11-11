@@ -44,7 +44,7 @@ var MonitorConstraint = GObject.registerClass({
         'work-area': GObject.ParamSpec.boolean('work-area',
                                                'Work-area', 'Track monitor\'s work-area',
                                                GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                               false)
+                                               false),
     },
 }, class MonitorConstraint extends Clutter.Constraint {
     _init(props) {
@@ -167,12 +167,12 @@ var Monitor = class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
-    vfunc_get_preferred_width (_forHeight) {
+    vfunc_get_preferred_width(_forHeight) {
         let width = global.stage.width;
         return [width, width];
     }
 
-    vfunc_get_preferred_height (_forWidth) {
+    vfunc_get_preferred_height(_forWidth) {
         let height = global.stage.height;
         return [height, height];
     }
@@ -181,7 +181,7 @@ class UiActor extends St.Widget {
 const defaultParams = {
     trackFullscreen: false,
     affectsStruts: false,
-    affectsInputRegion: true
+    affectsInputRegion: true,
 };
 
 var LayoutManager = GObject.registerClass({
@@ -194,7 +194,7 @@ var LayoutManager = GObject.registerClass({
     _init() {
         super._init();
 
-        this._rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
+        this._rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;
@@ -273,7 +273,7 @@ var LayoutManager = GObject.registerClass({
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.interface'
+            schema_id: 'org.gnome.desktop.interface',
         });
 
         this._interfaceSettings.connect('changed::enable-hot-corners',
@@ -339,10 +339,11 @@ var LayoutManager = GObject.registerClass({
 
         this.monitors = [];
         let nMonitors = display.get_n_monitors();
-        for (let i = 0; i < nMonitors; i++)
+        for (let i = 0; i < nMonitors; i++) {
             this.monitors.push(new Monitor(i,
                                            display.get_monitor_geometry(i),
                                            display.get_monitor_scale(i)));
+        }
 
         if (nMonitors == 0) {
             this.primaryIndex = this.bottomIndex = -1;
@@ -445,7 +446,7 @@ var LayoutManager = GObject.registerClass({
     _createBackgroundManager(monitorIndex) {
         let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
                                                            layoutManager: this,
-                                                           monitorIndex: monitorIndex });
+                                                           monitorIndex });
 
         bgManager.connect('changed', this._addBackgroundMenu.bind(this));
         this._addBackgroundMenu(bgManager);
@@ -462,15 +463,14 @@ var LayoutManager = GObject.registerClass({
                 backgroundActor.ease({
                     opacity: 255,
                     duration: BACKGROUND_FADE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
             }
         }
     }
 
     _updateBackgrounds() {
-        let i;
-        for (i = 0; i < this._bgManagers.length; i++)
+        for (let i = 0; i < this._bgManagers.length; i++)
             this._bgManagers[i].destroy();
 
         this._bgManagers = [];
@@ -698,7 +698,7 @@ var LayoutManager = GObject.registerClass({
             translation_y: 0,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete()
+            onComplete: () => this._startupAnimationComplete(),
         });
     }
 
@@ -709,7 +709,7 @@ var LayoutManager = GObject.registerClass({
             opacity: 255,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete()
+            onComplete: () => this._startupAnimationComplete(),
         });
     }
 
@@ -743,7 +743,7 @@ var LayoutManager = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._showKeyboardComplete();
-            }
+            },
         });
         this.emit('keyboard-visible-changed', true);
     }
@@ -770,7 +770,7 @@ var LayoutManager = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
             onComplete: () => {
                 this._hideKeyboardComplete();
-            }
+            },
         });
 
         this.emit('keyboard-visible-changed', false);
@@ -956,7 +956,7 @@ var LayoutManager = GObject.registerClass({
     findIndexForActor(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h });
+        let rect = new Meta.Rectangle({ x, y, width: w, height: h });
         return global.display.get_monitor_index_for_rect(rect);
     }
 
@@ -971,9 +971,10 @@ var LayoutManager = GObject.registerClass({
         if (this._startingUp)
             return;
 
-        if (!this._updateRegionIdle)
+        if (!this._updateRegionIdle) {
             this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                     this._updateRegions.bind(this));
+        }
     }
 
     _getWindowActorsForWorkspace(workspace) {
@@ -1027,7 +1028,7 @@ var LayoutManager = GObject.registerClass({
             h = Math.round(h);
 
             if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
-                rects.push(new Meta.Rectangle({ x: x, y: y, width: w, height: h }));
+                rects.push(new Meta.Rectangle({ x, y, width: w, height: h }));
 
             let monitor = null;
             if (actorData.affectsStruts)
@@ -1078,7 +1079,7 @@ var LayoutManager = GObject.registerClass({
                 }
 
                 let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1 });
-                let strut = new Meta.Strut({ rect: strutRect, side: side });
+                let strut = new Meta.Strut({ rect: strutRect, side });
                 struts.push(strut);
             }
         }
@@ -1187,7 +1188,7 @@ class HotCorner extends Clutter.Actor {
                 y: this._y,
                 width: 3,
                 height: 3,
-                reactive: true
+                reactive: true,
             });
 
             this._corner = new Clutter.Actor({ name: 'hot-corner',

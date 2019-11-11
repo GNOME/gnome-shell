@@ -13,7 +13,7 @@ const AccessIface = loadInterfaceXML('org.freedesktop.impl.portal.Access');
 var DialogResponse = {
     OK: 0,
     CANCEL: 1,
-    CLOSED: 2
+    CLOSED: 2,
 };
 
 var AccessDialog = GObject.registerClass(
@@ -35,7 +35,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
 
     _buildLayout(title, subtitle, body, options) {
         // No support for non-modal system dialogs, so ignore the option
-        //let modal = options['modal'] || true;
+        // let modal = options['modal'] || true;
         let denyLabel = options['deny_label'] || _("Deny Access");
         let grantLabel = options['grant_label'] || _("Grant Access");
         let iconName = options['icon'] || null;

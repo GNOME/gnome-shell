@@ -23,13 +23,13 @@ var NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     APP_CLOSED: 3,
-    UNDEFINED: 4
+    UNDEFINED: 4,
 };
 
 var Urgency = {
     LOW: 0,
     NORMAL: 1,
-    CRITICAL: 2
+    CRITICAL: 2,
 };
 
 const rewriteRules = {
@@ -39,8 +39,8 @@ const rewriteRules = {
         { pattern:     /^XChat: New public message from: (\S*) \((.*)\)$/,
           replacement: '$2 <$1>' },
         { pattern:     /^XChat: Highlighted message from: (\S*) \((.*)\)$/,
-          replacement: '$2 <$1>' }
-    ]
+          replacement: '$2 <$1>' },
+    ],
 };
 
 var FdoNotificationDaemon = class FdoNotificationDaemon {
@@ -201,13 +201,13 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 hints['image-data'] = hints['icon_data'];
         }
 
-        let ndata = { appName: appName,
-                      icon: icon,
-                      summary: summary,
-                      body: body,
-                      actions: actions,
-                      hints: hints,
-                      timeout: timeout };
+        let ndata = { appName,
+                      icon,
+                      summary,
+                      body,
+                      actions,
+                      hints,
+                      timeout };
         if (replacesId != 0 && this._notifications[replacesId]) {
             ndata.id = id = replacesId;
             ndata.notification = this._notifications[replacesId].notification;
@@ -245,7 +245,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 return;
             }
 
-            let [pid] = result;
+            [pid] = result;
             source = this._getSource(appName, pid, ndata, sender, null);
 
             this._senderToPid[sender] = pid;
@@ -299,7 +299,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         else if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
 
-        notification.update(summary, body, { gicon: gicon,
+        notification.update(summary, body, { gicon,
                                              bannerMarkup: true,
                                              clear: true,
                                              soundFile: hints['sound-file'],
@@ -310,12 +310,13 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i + 1]];
-                if (actionId == 'default')
+                if (actionId == 'default') {
                     hasDefaultAction = true;
-                else
+                } else {
                     notification.addAction(label, () => {
                         this._emitActionInvoked(ndata.id, actionId);
                     });
+                }
             }
         }
 
@@ -345,7 +346,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         // of the 'transient' hint with hints['transient'] rather than hints.transient
         notification.setTransient(!!hints['transient']);
 
-        let privacyScope = (hints['x-gnome-privacy-scope'] || 'user');
+        let privacyScope = hints['x-gnome-privacy-scope'] || 'user';
         notification.setPrivacyScope(privacyScope == 'system'
             ? MessageTray.PrivacyScope.SYSTEM
             : MessageTray.PrivacyScope.USER);
@@ -383,7 +384,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             Config.PACKAGE_NAME,
             'GNOME',
             Config.PACKAGE_VERSION,
-            '1.2'
+            '1.2',
         ];
     }
 
@@ -427,13 +428,14 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         else
             this.useNotificationIcon = true;
 
-        if (sender)
+        if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
                                                               Gio.BusNameWatcherFlags.NONE,
                                                               null,
                                                               this._onNameVanished.bind(this));
-        else
+        } else {
             this._nameWatcherId = 0;
+        }
     }
 
     _createPolicy() {
@@ -532,7 +534,7 @@ const PRIORITY_URGENCY_MAP = {
     low: MessageTray.Urgency.LOW,
     normal: MessageTray.Urgency.NORMAL,
     high: MessageTray.Urgency.HIGH,
-    urgent: MessageTray.Urgency.CRITICAL
+    urgent: MessageTray.Urgency.CRITICAL,
 };
 
 var GtkNotificationDaemonNotification = GObject.registerClass(

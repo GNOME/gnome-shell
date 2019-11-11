@@ -175,11 +175,10 @@ class RunDialog extends ModalDialog.ModalDialog {
     }
 
     _getCompletion(text) {
-        if (text.includes('/')) {
+        if (text.includes('/'))
             return this._pathCompleter.get_completion_suffix(text);
-        } else {
+        else
             return this._getCommandCompletion(text);
-        }
     }
 
     _run(input, inTerminal) {
@@ -218,12 +217,12 @@ class RunDialog extends ModalDialog.ModalDialog {
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
                                                             global.create_app_launch_context(0, -1));
-                    } catch (e) {
+                    } catch (err) {
                         // The exception from gjs contains an error string like:
                         //     Error invoking Gio.app_info_launch_default_for_uri: No application
                         //     is registered as handling this file
                         // We are only interested in the part after the first colon.
-                        let message = e.message.replace(/[^:]*: *(.+)/, '$1');
+                        let message = err.message.replace(/[^:]*: *(.+)/, '$1');
                         this._showError(message);
                     }
                 } else {
@@ -250,7 +249,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 onComplete: () => {
                     parentActor.set_height(-1);
                     this._errorBox.show();
-                }
+                },
             });
         }
     }

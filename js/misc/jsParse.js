@@ -11,9 +11,8 @@ function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
     let attrHead = '';
-    if (globalCompletionList == null) {
+    if (globalCompletionList == null)
         globalCompletionList = [];
-    }
 
     let offset = getExpressionOffset(text, text.length - 1);
     if (offset >= 0) {
@@ -59,9 +58,8 @@ function isStopChar(c) {
 function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\') {
+        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\')
             return i;
-        }
     }
     return -1;
 }
@@ -69,9 +67,8 @@ function findMatchingQuote(expr, offset) {
 // Given the ending position of a regex, find where it starts
 function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\') {
+        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\')
             return i;
-        }
     }
     return -1;
 }
@@ -82,31 +79,30 @@ function findMatchingSlash(expr, offset) {
 // findMatchingBrace("[(])", 3) returns 1.
 function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
-    let openBrace = ({ ')': '(', ']': '[' })[closeBrace];
+    let openBrace = { ')': '(', ']': '[' }[closeBrace];
 
-    function findTheBrace(expr, offset) {
-        if (offset < 0) {
-            return -1;
-        }
+    return findTheBrace(expr, offset - 1, openBrace, closeBrace);
+}
 
-        if (expr.charAt(offset) == openBrace) {
-            return offset;
-        }
-        if (expr.charAt(offset).match(/['"]/)) {
-            return findTheBrace(expr, findMatchingQuote(expr, offset) - 1);
-        }
-        if (expr.charAt(offset) == '/') {
-            return findTheBrace(expr, findMatchingSlash(expr, offset) - 1);
-        }
-        if (expr.charAt(offset) == closeBrace) {
-            return findTheBrace(expr, findTheBrace(expr, offset - 1) - 1);
-        }
+function findTheBrace(expr, offset, ...braces) {
+    let [openBrace, closeBrace] = braces;
 
-        return findTheBrace(expr, offset - 1);
+    if (offset < 0)
+        return -1;
 
-    }
+    if (expr.charAt(offset) == openBrace)
+        return offset;
 
-    return findTheBrace(expr, offset - 1);
+    if (expr.charAt(offset).match(/['"]/))
+        return findTheBrace(expr, findMatchingQuote(expr, offset) - 1, ...braces);
+
+    if (expr.charAt(offset) == '/')
+        return findTheBrace(expr, findMatchingSlash(expr, offset) - 1, ...braces);
+
+    if (expr.charAt(offset) == closeBrace)
+        return findTheBrace(expr, findTheBrace(expr, offset - 1, ...braces) - 1, ...braces);
+
+    return findTheBrace(expr, offset - 1, ...braces);
 }
 
 // Walk expr backwards from offset looking for the beginning of an
@@ -118,13 +114,11 @@ function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
 
-        if (isStopChar(currChar)) {
+        if (isStopChar(currChar))
             return offset + 1;
-        }
 
-        if (currChar.match(/[)\]]/)) {
+        if (currChar.match(/[)\]]/))
             offset = findMatchingBrace(expr, offset);
-        }
 
         --offset;
     }
@@ -141,10 +135,10 @@ function isValidPropertyName(w) {
 // To get all properties (enumerable and not), we need to walk
 // the prototype chain ourselves
 function getAllProps(obj) {
-    if (obj === null || obj === undefined) {
+    if (obj === null || obj === undefined)
         return [];
-    }
-    return Object.getOwnPropertyNames(obj).concat( getAllProps(Object.getPrototypeOf(obj)) );
+
+    return Object.getOwnPropertyNames(obj).concat(getAllProps(Object.getPrototypeOf(obj)));
 }
 
 // Given a string _expr_, returns all methods
@@ -168,7 +162,7 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
     if (typeof obj === 'object') {
         let allProps = getAllProps(obj);
         // Get only things we are allowed to complete following a '.'
-        allProps = allProps.filter( isValidPropertyName );
+        allProps = allProps.filter(isValidPropertyName);
 
         // Make sure propsUnique contains one key for every
         // property so we end up with a unique list of properties
@@ -189,24 +183,26 @@ function getCommonPrefix(words) {
     return word;
 }
 
+// Remove any blocks that are quoted or are in a regex
+function removeLiterals(str) {
+    if (str.length == 0)
+        return '';
+
+    let currChar = str.charAt(str.length - 1);
+    if (currChar == '"' || currChar == '\'') {
+        return removeLiterals(
+            str.slice(0, findMatchingQuote(str, str.length - 1)));
+    } else if (currChar == '/') {
+        return removeLiterals(
+            str.slice(0, findMatchingSlash(str, str.length - 1)));
+    }
+
+    return removeLiterals(str.slice(0, str.length - 1)) + currChar;
+}
+
 // Returns true if there is reason to think that eval(str)
 // will modify the global scope
 function isUnsafeExpression(str) {
-    // Remove any blocks that are quoted or are in a regex
-    function removeLiterals(str) {
-        if (str.length == 0) {
-            return '';
-        }
-
-        let currChar = str.charAt(str.length - 1);
-        if (currChar == '"' || currChar == '\'') {
-            return removeLiterals(str.slice(0, findMatchingQuote(str, str.length - 1)));
-        } else if (currChar == '/') {
-            return removeLiterals(str.slice(0, findMatchingSlash(str, str.length - 1)));
-        }
-
-        return removeLiterals(str.slice(0, str.length - 1)) + currChar;
-    }
 
     // Check for any sort of assignment
     // The strategy used is dumb: remove any quotes
@@ -214,8 +210,8 @@ function isUnsafeExpression(str) {
     // If there is, it might be an unsafe assignment.
 
     let prunedStr = removeLiterals(str);
-    prunedStr = prunedStr.replace(/[=!]==/g, '');    //replace === and !== with nothing
-    prunedStr = prunedStr.replace(/[=<>!]=/g, '');    //replace ==, <=, >=, != with nothing
+    prunedStr = prunedStr.replace(/[=!]==/g, '');    // replace === and !== with nothing
+    prunedStr = prunedStr.replace(/[=<>!]=/g, '');    // replace ==, <=, >=, != with nothing
 
     if (prunedStr.match(/[=]/)) {
         return true;

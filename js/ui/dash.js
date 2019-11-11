@@ -16,11 +16,10 @@ var DASH_ITEM_LABEL_HIDE_TIME = 100;
 var DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
-    if (source instanceof AppDisplay.AppIcon) {
+    if (source instanceof AppDisplay.AppIcon)
         return source.app;
-    } else {
+    else
         return null;
-    }
 }
 
 var DashIcon = GObject.registerClass(
@@ -28,7 +27,7 @@ class DashIcon extends AppDisplay.AppIcon {
     _init(app) {
         super._init(app, {
             setSizeManually: true,
-            showLabel: false
+            showLabel: false,
         });
     }
 
@@ -126,7 +125,7 @@ class DashItemContainer extends St.Widget {
         this.label.ease({
             opacity: 255,
             duration: DASH_ITEM_LABEL_SHOW_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -140,7 +139,7 @@ class DashItemContainer extends St.Widget {
             opacity: 0,
             duration: DASH_ITEM_LABEL_HIDE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.label.hide()
+            onComplete: () => this.label.hide(),
         });
     }
 
@@ -164,7 +163,7 @@ class DashItemContainer extends St.Widget {
             scale_y: 1,
             opacity: 255,
             duration: time,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -183,7 +182,7 @@ class DashItemContainer extends St.Widget {
             opacity: 0,
             duration: DASH_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.destroy()
+            onComplete: () => this.destroy(),
         });
     }
 });
@@ -335,7 +334,7 @@ class DashActor extends St.Widget {
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 var Dash = GObject.registerClass({
-    Signals: { 'icon-size-changed': {} }
+    Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Bin {
     _init() {
         this._maxHeight = -1;
@@ -398,7 +397,7 @@ var Dash = GObject.registerClass({
     _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this)
+            dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
 
@@ -482,7 +481,7 @@ var Dash = GObject.registerClass({
         let appIcon = new DashIcon(app);
 
         appIcon.connect('menu-state-changed',
-                        (appIcon, opened) => {
+                        (o, opened) => {
                             this._itemMenuStateChanged(item, opened);
                         });
 
@@ -630,7 +629,7 @@ var Dash = GObject.registerClass({
                 width: targetWidth,
                 height: targetHeight,
                 duration: DASH_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -729,9 +728,10 @@ var Dash = GObject.registerClass({
             }
         }
 
-        for (let i = 0; i < addedItems.length; i++)
+        for (let i = 0; i < addedItems.length; i++) {
             this._box.insert_child_at_index(addedItems[i].item,
                                             addedItems[i].pos);
+        }
 
         for (let i = 0; i < removedActors.length; i++) {
             let item = removedActors[i];
@@ -755,9 +755,8 @@ var Dash = GObject.registerClass({
         if (!this._shownInitially)
             this._shownInitially = true;
 
-        for (let i = 0; i < addedItems.length; i++) {
+        for (let i = 0; i < addedItems.length; i++)
             addedItems[i].item.show(animate);
-        }
 
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache
@@ -837,8 +836,8 @@ var Dash = GObject.registerClass({
             }
 
             this._dragPlaceholder = new DragPlaceholderItem();
-            this._dragPlaceholder.child.set_width (this.iconSize);
-            this._dragPlaceholder.child.set_height (this.iconSize / 2);
+            this._dragPlaceholder.child.set_width(this.iconSize);
+            this._dragPlaceholder.child.set_height(this.iconSize / 2);
             this._box.insert_child_at_index(this._dragPlaceholder,
                                             this._dragPlaceholderPos);
             this._dragPlaceholder.show(fadeIn);
@@ -852,7 +851,7 @@ var Dash = GObject.registerClass({
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
 
-        let srcIsFavorite = (favPos != -1);
+        let srcIsFavorite = favPos != -1;
 
         if (srcIsFavorite)
             return DND.DragMotionResult.MOVE_DROP;
@@ -865,9 +864,8 @@ var Dash = GObject.registerClass({
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
-        if (app == null || app.is_window_backed()) {
+        if (app == null || app.is_window_backed())
             return false;
-        }
 
         if (!global.settings.is_writable('favorite-apps'))
             return false;
@@ -876,7 +874,7 @@ var Dash = GObject.registerClass({
 
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
-        let srcIsFavorite = (id in favorites);
+        let srcIsFavorite = id in favorites;
 
         let favPos = 0;
         let children = this._box.get_children();

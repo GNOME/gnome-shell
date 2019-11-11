@@ -18,7 +18,7 @@ var DragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
-    CONTINUE:  3
+    CONTINUE:  3,
 };
 
 var DragState = {
@@ -30,13 +30,13 @@ var DragState = {
 var DRAG_CURSOR_MAP = {
     0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
     1: Meta.Cursor.DND_COPY,
-    2: Meta.Cursor.DND_MOVE
+    2: Meta.Cursor.DND_MOVE,
 };
 
 var DragDropResult = {
     FAILURE:  0,
     SUCCESS:  1,
-    CONTINUE: 2
+    CONTINUE: 2,
 };
 var dragMonitors = [];
 
@@ -61,11 +61,12 @@ function addDragMonitor(monitor) {
 }
 
 function removeDragMonitor(monitor) {
-    for (let i = 0; i < dragMonitors.length; i++)
+    for (let i = 0; i < dragMonitors.length; i++) {
         if (dragMonitors[i] == monitor) {
             dragMonitors.splice(i, 1);
             return;
         }
+    }
 }
 
 var _Draggable = class _Draggable {
@@ -150,12 +151,12 @@ var _Draggable = class _Draggable {
         if (touchSequence)
             pointer.sequence_grab(touchSequence, actor);
         else if (pointer)
-            pointer.grab (actor);
+            pointer.grab(actor);
 
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
 
-        this._capturedEventId = global.stage.connect('captured-event', (actor, event) => {
+        this._capturedEventId = global.stage.connect('captured-event', (o, event) => {
             let device = event.get_device();
             if (device != this._grabbedDevice &&
                 device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
@@ -171,7 +172,7 @@ var _Draggable = class _Draggable {
         }
 
         if (this._touchSequence)
-            this._grabbedDevice.sequence_ungrab (this._touchSequence);
+            this._grabbedDevice.sequence_ungrab(this._touchSequence);
         else
             this._grabbedDevice.ungrab();
 
@@ -212,9 +213,9 @@ var _Draggable = class _Draggable {
 
     _eventIsRelease(event) {
         if (event.type() == Clutter.EventType.BUTTON_RELEASE) {
-            let buttonMask = (Clutter.ModifierType.BUTTON1_MASK |
+            let buttonMask = Clutter.ModifierType.BUTTON1_MASK |
                               Clutter.ModifierType.BUTTON2_MASK |
-                              Clutter.ModifierType.BUTTON3_MASK);
+                              Clutter.ModifierType.BUTTON3_MASK;
             /* We only obey the last button release from the device,
              * other buttons may get pressed/released during the DnD op.
              */
@@ -258,11 +259,11 @@ var _Draggable = class _Draggable {
         } else if (event.type() == Clutter.EventType.MOTION ||
                    (event.type() == Clutter.EventType.TOUCH_UPDATE &&
                     global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
-            if (this._dragActor && this._dragState == DragState.DRAGGING) {
+            if (this._dragActor && this._dragState == DragState.DRAGGING)
                 return this._updateDragPosition(event);
-            } else if (this._dragActor == null && this._dragState != DragState.CANCELLED) {
+            else if (this._dragActor == null && this._dragState != DragState.CANCELLED)
                 return this._maybeStartDrag(event);
-            }
+
         // We intercept KEY_PRESS event so that we can process Esc key press to cancel
         // dragging and ignore all other key presses.
         } else if (event.type() == Clutter.EventType.KEY_PRESS && this._dragState == DragState.DRAGGING) {
@@ -291,9 +292,11 @@ var _Draggable = class _Draggable {
 
     /**
      * startDrag:
-     * @stageX: X coordinate of event
-     * @stageY: Y coordinate of event
-     * @time: Event timestamp
+     * @param {number} stageX: X coordinate of event
+     * @param {number} stageY: Y coordinate of event
+     * @param {number} time: Event timestamp
+     * @param {Clutter.EventSequence=} sequence: Event sequence
+     * @param {Clutter.InputDevice=} device: device that originated the event
      *
      * Directly initiate a drag and drop operation from the given actor.
      * This function is useful to call if you've specified manualMode
@@ -427,7 +430,7 @@ var _Draggable = class _Draggable {
                     scale_x: scale * origScale,
                     scale_y: scale * origScale,
                     duration: SCALE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
 
                 this._dragActor.get_transition('scale-x').connect('new-frame', () => {
@@ -472,7 +475,7 @@ var _Draggable = class _Draggable {
             y: this._dragY,
             dragActor: this._dragActor,
             source: this.actor._delegate,
-            targetActor: target
+            targetActor: target,
         };
 
         let targetActorDestroyHandlerId;
@@ -551,11 +554,11 @@ var _Draggable = class _Draggable {
         let dropEvent = {
             dropActor: this._dragActor,
             targetActor: target,
-            clutterEvent: event
+            clutterEvent: event,
         };
         for (let i = 0; i < dragMonitors.length; i++) {
             let dropFunc = dragMonitors[i].dragDrop;
-            if (dropFunc)
+            if (dropFunc) {
                 switch (dropFunc(dropEvent)) {
                 case DragDropResult.FAILURE:
                 case DragDropResult.SUCCESS:
@@ -563,6 +566,7 @@ var _Draggable = class _Draggable {
                 case DragDropResult.CONTINUE:
                     continue;
                 }
+            }
         }
 
         // At this point it is too late to cancel a drag by destroying
@@ -642,7 +646,7 @@ var _Draggable = class _Draggable {
 
     _cancelDrag(eventTime) {
         this.emit('drag-cancelled', eventTime);
-        let wasCancelled = (this._dragState == DragState.CANCELLED);
+        let wasCancelled = this._dragState == DragState.CANCELLED;
         this._dragState = DragState.CANCELLED;
 
         if (this._actorDestroyed || wasCancelled) {
@@ -663,7 +667,7 @@ var _Draggable = class _Draggable {
             y: snapBackY,
             scale_x: snapBackScale,
             scale_y: snapBackScale,
-            duration: SNAP_BACK_ANIMATION_TIME
+            duration: SNAP_BACK_ANIMATION_TIME,
         });
     }
 
@@ -677,7 +681,7 @@ var _Draggable = class _Draggable {
         this._dragActor.opacity = 0;
 
         this._animateDragEnd(eventTime, {
-            duration: REVERT_ANIMATION_TIME
+            duration: REVERT_ANIMATION_TIME,
         });
     }
 
@@ -690,7 +694,7 @@ var _Draggable = class _Draggable {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._onAnimationComplete(this._dragActor, eventTime);
-            }
+            },
         }));
     }
 
@@ -744,8 +748,9 @@ Signals.addSignalMethods(_Draggable.prototype);
 
 /**
  * makeDraggable:
- * @actor: Source actor
- * @params: (optional) Additional parameters
+ * @param {Clutter.Actor} actor: Source actor
+ * @param {Object=} params: Additional parameters
+ * @returns {Object} a new Draggable
  *
  * Create an object which controls drag and drop for the given actor.
  *

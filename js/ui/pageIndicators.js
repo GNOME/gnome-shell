@@ -12,13 +12,13 @@ var INDICATORS_ANIMATION_DELAY_OUT = 62.5;
 var INDICATORS_ANIMATION_MAX_TIME = 750;
 var SWITCH_TIME = 400;
 var INDICATORS_ANIMATION_MAX_TIME_OUT =
-    Math.min (SWITCH_TIME,
-              ANIMATION_TIME_OUT + ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
+    Math.min(SWITCH_TIME,
+             ANIMATION_TIME_OUT + ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
 var ANIMATION_DELAY = 100;
 
 var PageIndicators = GObject.registerClass({
-    Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } }
+    Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } },
 }, class PageIndicators extends St.BoxLayout {
     _init(orientation = Clutter.Orientation.VERTICAL) {
         let vertical = orientation == Clutter.Orientation.VERTICAL;
@@ -29,7 +29,7 @@ var PageIndicators = GObject.registerClass({
             x_align: vertical ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER,
             y_align: vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.END,
             reactive: true,
-            clip_to_allocation: true
+            clip_to_allocation: true,
         });
         this._nPages = 0;
         this._currentPage = undefined;
@@ -81,7 +81,7 @@ var PageIndicators = GObject.registerClass({
                 children[i].destroy();
         }
         this._nPages = nPages;
-        this.visible = (this._nPages > 1);
+        this.visible = this._nPages > 1;
     }
 
     setCurrentPage(currentPage) {
@@ -154,7 +154,7 @@ class AnimatedPageIndicators extends PageIndicators {
                 translation_x: isAnimationIn ? 0 : offset,
                 duration: baseTime + delay * i,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                delay: isAnimationIn ? ANIMATION_DELAY : 0
+                delay: isAnimationIn ? ANIMATION_DELAY : 0,
             });
         }
     }

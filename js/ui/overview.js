@@ -84,7 +84,7 @@ class OverviewActor extends St.BoxLayout {
             /* Translators: This is the main view to select
                 activities. See also note for "Activities" string. */
             accessible_name: _("Overview"),
-            vertical: true
+            vertical: true,
         });
 
         this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
@@ -94,7 +94,7 @@ class OverviewActor extends St.BoxLayout {
         let panelGhost = new St.Bin({
             child: new Clutter.Clone({ source: Main.panel }),
             reactive: false,
-            opacity: 0
+            opacity: 0,
         });
         this.add_actor(panelGhost);
 
@@ -106,7 +106,7 @@ class OverviewActor extends St.BoxLayout {
                characters. */
             hint_text: _("Type to search…"),
             track_hover: true,
-            can_focus: true
+            can_focus: true,
         });
         this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         let searchEntryBin = new St.Bin({
@@ -206,7 +206,7 @@ var Overview = class {
 
         // XDND
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this)
+            dragMotion: this._onDragMotion.bind(this),
         };
 
 
@@ -245,11 +245,11 @@ var Overview = class {
         for (let i = 0; i < backgrounds.length; i++) {
             backgrounds[i].ease_property('brightness', 1.0, {
                 duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
             backgrounds[i].ease_property('vignette-sharpness', 0.0, {
                 duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -259,11 +259,11 @@ var Overview = class {
         for (let i = 0; i < backgrounds.length; i++) {
             backgrounds[i].ease_property('brightness', Lightbox.VIGNETTE_BRIGHTNESS, {
                 duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
             backgrounds[i].ease_property('vignette-sharpness', Lightbox.VIGNETTE_SHARPNESS, {
                 duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
@@ -476,7 +476,7 @@ var Overview = class {
         this._desktopFade.ease({
             opacity: 255,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME
+            duration: ANIMATION_TIME,
         });
     }
 
@@ -494,7 +494,7 @@ var Overview = class {
         this._desktopFade.ease({
             opacity: 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME
+            duration: ANIMATION_TIME,
         });
     }
 
@@ -577,7 +577,7 @@ var Overview = class {
             opacity: 255,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME,
-            onComplete: () => this._showDone()
+            onComplete: () => this._showDone(),
         });
         this._shadeBackgrounds();
 
@@ -614,8 +614,8 @@ var Overview = class {
         let event = Clutter.get_current_event();
         if (event) {
             let type = event.type();
-            let button = (type == Clutter.EventType.BUTTON_PRESS ||
-                          type == Clutter.EventType.BUTTON_RELEASE);
+            let button = type == Clutter.EventType.BUTTON_PRESS ||
+                          type == Clutter.EventType.BUTTON_RELEASE;
             let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) != 0;
             if (button && ctrl)
                 return;
@@ -641,7 +641,7 @@ var Overview = class {
             opacity: 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME,
-            onComplete: () => this._hideDone()
+            onComplete: () => this._hideDone(),
         });
         this._unshadeBackgrounds();
 

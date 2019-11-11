@@ -13,7 +13,7 @@ var ALIVE_TIMEOUT = 5000;
 var CloseDialog = GObject.registerClass({
     Implements: [Meta.CloseDialog],
     Properties: {
-        'window': GObject.ParamSpec.override('window', Meta.CloseDialog)
+        'window': GObject.ParamSpec.override('window', Meta.CloseDialog),
     },
 }, class CloseDialog extends GObject.Object {
     _init(window) {
@@ -124,11 +124,12 @@ var CloseDialog = GObject.registerClass({
         if (this._tracked === shouldTrack)
             return;
 
-        if (shouldTrack)
+        if (shouldTrack) {
             Main.layoutManager.trackChrome(this._dialog,
                                            { affectsInputRegion: true });
-        else
+        } else {
             Main.layoutManager.untrackChrome(this._dialog);
+        }
 
         // The buttons are broken when they aren't added to the input region,
         // so disable them properly in that case
@@ -169,7 +170,7 @@ var CloseDialog = GObject.registerClass({
             scale_y: 1,
             mode: Clutter.AnimationMode.LINEAR,
             duration: DIALOG_TRANSITION_TIME,
-            onComplete: this._onFocusChanged.bind(this)
+            onComplete: this._onFocusChanged.bind(this),
         });
     }
 
@@ -196,7 +197,7 @@ var CloseDialog = GObject.registerClass({
             scale_y: 0,
             mode: Clutter.AnimationMode.LINEAR,
             duration: DIALOG_TRANSITION_TIME,
-            onComplete: () => dialog.destroy()
+            onComplete: () => dialog.destroy(),
         });
     }
 

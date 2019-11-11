@@ -20,7 +20,7 @@ var AutorunSetting = {
     RUN: 0,
     IGNORE: 1,
     FILES: 2,
-    ASK: 3
+    ASK: 3,
 };
 
 // misc utils
@@ -41,7 +41,7 @@ function isMountRootHidden(root) {
     let path = root.get_path();
 
     // skip any mounts in hidden directory hierarchies
-    return (path.includes('/.'));
+    return path.includes('/.');
 }
 
 function isMountNonLocal(mount) {
@@ -52,7 +52,7 @@ function isMountNonLocal(mount) {
     if (volume == null)
         return true;
 
-    return (volume.get_identifier("class") == "network");
+    return volume.get_identifier("class") == "network";
 }
 
 function startAppForMount(app, mount) {
@@ -115,7 +115,8 @@ var ContentTypeDiscoverer = class {
 
             let hotplugSniffer = new HotplugSniffer();
             hotplugSniffer.SniffURIRemote(root.get_uri(),
-                ([contentTypes]) => {
+                result => {
+                    [contentTypes] = result;
                     this._emitCallback(mount, contentTypes);
                 });
         }
@@ -124,7 +125,7 @@ var ContentTypeDiscoverer = class {
     _emitCallback(mount, contentTypes = []) {
         // we're not interested in win32 software content types here
         contentTypes = contentTypes.filter(
-            type => (type != 'x-content/win32-software')
+            type => type != 'x-content/win32-software'
         );
 
         let apps = [];
@@ -166,7 +167,7 @@ var AutorunManager = class {
         if (!this._session.SessionIsActive)
             return;
 
-        let discoverer = new ContentTypeDiscoverer((mount, apps, contentTypes) => {
+        let discoverer = new ContentTypeDiscoverer((m, apps, contentTypes) => {
             this._dispatcher.addMount(mount, apps, contentTypes);
         });
         discoverer.guessContentTypes(mount);
@@ -201,7 +202,7 @@ var AutorunDispatcher = class {
     }
 
     _getSourceForMount(mount) {
-        let filtered = this._sources.filter(source => (source.mount == mount));
+        let filtered = this._sources.filter(source => source.mount == mount);
 
         // we always make sure not to add two sources for the same
         // mount in addMount(), so it's safe to assume filtered.length
@@ -245,11 +246,10 @@ var AutorunDispatcher = class {
         let success = false;
         let app = null;
 
-        if (setting == AutorunSetting.RUN) {
+        if (setting == AutorunSetting.RUN)
             app = Gio.app_info_get_default_for_type(contentTypes[0], false);
-        } else if (setting == AutorunSetting.FILES) {
+        else if (setting == AutorunSetting.FILES)
             app = Gio.app_info_get_default_for_type('inode/directory', false);
-        }
 
         if (app)
             success = startAppForMount(app, mount);

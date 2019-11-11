@@ -19,14 +19,17 @@ var Ornament = {
 };
 
 function isPopupMenuItemVisible(child) {
-    if (child._delegate instanceof PopupMenuSection)
+    if (child._delegate instanceof PopupMenuSection) {
         if (child._delegate.isEmpty())
             return false;
+    }
     return child.visible;
 }
 
 /**
- * @side Side to which the arrow points.
+ * arrowIcon
+ * @param {St.Side} side - Side to which the arrow points.
+ * @returns {St.Icon} a new arrow icon
  */
 function arrowIcon(side) {
     let iconName;
@@ -65,10 +68,10 @@ var PopupBaseMenuItem = GObject.registerClass({
     },
     Signals: {
         'activate': { param_types: [Clutter.Event.$gtype] },
-    }
+    },
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
-        params = Params.parse (params, {
+        params = Params.parse(params, {
             reactive: true,
             activate: true,
             hover: true,
@@ -269,7 +272,7 @@ class PopupMenuItem extends PopupBaseMenuItem {
     _init(text, params) {
         super._init(params);
 
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this.add_child(this.label);
         this.label_actor = this.label;
     }
@@ -325,12 +328,12 @@ class Switch extends St.Bin {
 });
 
 var PopupSwitchMenuItem = GObject.registerClass({
-    Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] }, },
+    Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class PopupSwitchMenuItem extends PopupBaseMenuItem {
     _init(text, active, params) {
         super._init(params);
 
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this._switch = new Switch(active);
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
@@ -416,7 +419,7 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         this._icon = new St.Icon({ style_class: 'popup-menu-icon',
                                    x_align: Clutter.ActorAlign.END });
         this.add_child(this._icon);
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text });
         this.add_child(this.label);
         this.label_actor = this.label;
 
@@ -507,7 +510,7 @@ var PopupMenuBase = class {
             menuItem = new PopupMenuItem(title);
 
         this.addMenuItem(menuItem);
-        menuItem.connect('activate', (menuItem, event) => {
+        menuItem.connect('activate', (o, event) => {
             callback(event);
         });
 
@@ -565,7 +568,7 @@ var PopupMenuBase = class {
     }
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('notify::active', menuItem => {
+        menuItem._activeChangeId = menuItem.connect('notify::active', () => {
             let active = menuItem.active;
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
@@ -589,7 +592,7 @@ var PopupMenuBase = class {
                     menuItem.actor.grab_key_focus();
             }
         });
-        menuItem._activateId = menuItem.connect_after('activate', (menuItem, _event) => {
+        menuItem._activateId = menuItem.connect_after('activate', () => {
             this.emit('activate', menuItem);
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
         });
@@ -602,7 +605,7 @@ var PopupMenuBase = class {
         // the menuItem may have, called destroyId
         // (FIXME: in the future it may make sense to have container objects
         // like PopupMenuManager does)
-        menuItem._popupMenuDestroyId = menuItem.connect('destroy', menuItem => {
+        menuItem._popupMenuDestroyId = menuItem.connect('destroy', () => {
             menuItem.disconnect(menuItem._popupMenuDestroyId);
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);
@@ -809,9 +812,10 @@ var PopupMenu = class extends PopupMenuBase {
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
 
-        if (this.sourceActor)
+        if (this.sourceActor) {
             this._keyPressId = this.sourceActor.connect('key-press-event',
                                                         this._onKeyPress.bind(this));
+        }
 
         this._openedSubMenu = null;
     }
@@ -1030,12 +1034,12 @@ var PopupSubMenu = class extends PopupMenuBase {
                 height: naturalHeight,
                 duration: 250,
                 mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onComplete: () => this.actor.set_height(-1)
+                onComplete: () => this.actor.set_height(-1),
             });
             this._arrow.ease({
                 rotation_angle_z: targetAngle,
                 duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
             });
         } else {
             this._arrow.rotation_angle_z = targetAngle;
@@ -1063,12 +1067,12 @@ var PopupSubMenu = class extends PopupMenuBase {
                 onComplete: () => {
                     this.actor.hide();
                     this.actor.set_height(-1);
-                }
+                },
             });
             this._arrow.ease({
                 rotation_angle_z: 0,
                 duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO
+                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
             });
         } else {
             this._arrow.rotation_angle_z = 0;
@@ -1129,7 +1133,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
             this.add_child(this.icon);
         }
 
-        this.label = new St.Label({ text: text,
+        this.label = new St.Label({ text,
                                     y_expand: true,
                                     y_align: Clutter.ActorAlign.CENTER });
         this.add_child(this.label);
@@ -1177,7 +1181,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         } else {
             this.remove_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(null);
-            this.remove_accessible_state (Atk.StateType.EXPANDED);
+            this.remove_accessible_state(Atk.StateType.EXPANDED);
             this.remove_style_pseudo_class('checked');
         }
     }
@@ -1251,11 +1255,11 @@ var PopupMenuManager = class {
             return;
 
         let menudata = {
-            menu:              menu,
+            menu,
             openStateChangeId: menu.connect('open-state-changed', this._onMenuOpenState.bind(this)),
             destroyId:         menu.connect('destroy', this._onMenuDestroy.bind(this)),
             enterId:           0,
-            focusInId:         0
+            focusInId:         0,
         };
 
         let source = menu.sourceActor;

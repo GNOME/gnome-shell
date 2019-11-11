@@ -59,9 +59,8 @@ var StreamSlider = class {
     }
 
     set stream(stream) {
-        if (this._stream) {
+        if (this._stream)
             this._disconnectStream(this._stream);
-        }
 
         this._stream = stream;
 
@@ -139,7 +138,7 @@ var StreamSlider = class {
     _updateVolume() {
         let muted = this._stream.is_muted;
         this._changeSlider(muted
-            ? 0 : (this._stream.volume / this._control.get_vol_max_norm()));
+            ? 0 : this._stream.volume / this._control.get_vol_max_norm());
         this.emit('stream-updated');
     }
 
@@ -228,9 +227,9 @@ var OutputStreamSlider = class extends StreamSlider {
     }
 
     _updateSliderIcon() {
-        this._icon.icon_name = (this._hasHeadphones
+        this._icon.icon_name = this._hasHeadphones
             ? 'audio-headphones-symbolic'
-            : 'audio-speakers-symbolic');
+            : 'audio-speakers-symbolic';
     }
 
     _portChanged() {
@@ -264,7 +263,7 @@ var InputStreamSlider = class extends StreamSlider {
             // as recording because they show the input level
             let skippedApps = [
                 'org.gnome.VolumeControl',
-                'org.PulseAudio.pavucontrol'
+                'org.PulseAudio.pavucontrol',
             ];
 
             showInput = this._control.get_source_outputs().some(output => {

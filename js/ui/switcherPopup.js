@@ -30,7 +30,7 @@ function primaryModifier(mask) {
 }
 
 var SwitcherPopup = GObject.registerClass({
-    GTypeFlags: GObject.TypeFlags.ABSTRACT
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class SwitcherPopup extends St.Widget {
     _init(items) {
         super._init({ style_class: 'switcher-popup',
@@ -286,7 +286,7 @@ var SwitcherPopup = GObject.registerClass({
                 opacity: 0,
                 duration: POPUP_FADE_OUT_TIME,
                 mode: Clutter.Animation.EASE_OUT_QUAD,
-                onComplete: () => this.destroy()
+                onComplete: () => this.destroy(),
             });
         } else {
             this.destroy();
@@ -464,7 +464,7 @@ var SwitcherList = GObject.registerClass({
                 if (this._highlighted == 0)
                     this._scrollableLeft = false;
                 this.queue_relayout();
-            }
+            },
         });
     }
 
@@ -487,7 +487,7 @@ var SwitcherList = GObject.registerClass({
                 if (this._highlighted == this._items.length - 1)
                     this._scrollableRight = false;
                 this.queue_relayout();
-            }
+            },
         });
     }
 
@@ -509,7 +509,7 @@ var SwitcherList = GObject.registerClass({
             maxChildNat = Math.max(childNat, maxChildNat);
 
             if (this._squareItems) {
-                let [childMin, childNat] = this._items[i].get_preferred_height(-1);
+                [childMin, childNat] = this._items[i].get_preferred_height(-1);
                 maxChildMin = Math.max(childMin, maxChildMin);
                 maxChildNat = Math.max(childNat, maxChildNat);
             }
@@ -570,7 +570,7 @@ var SwitcherList = GObject.registerClass({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._leftArrow.allocate(childBox, flags);
-        this._leftArrow.opacity = (this._scrollableLeft && scrollable) ? 255 : 0;
+        this._leftArrow.opacity = this._scrollableLeft && scrollable ? 255 : 0;
 
         arrowWidth = Math.floor(rightPadding / 3);
         arrowHeight = arrowWidth * 2;
@@ -579,7 +579,7 @@ var SwitcherList = GObject.registerClass({
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
         this._rightArrow.allocate(childBox, flags);
-        this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
+        this._rightArrow.opacity = this._scrollableRight && scrollable ? 255 : 0;
     }
 });
 
@@ -588,7 +588,7 @@ function drawArrow(area, side) {
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();
 
-    let [width, height] = area.get_surface_size ();
+    let [width, height] = area.get_surface_size();
     let cr = area.get_context();
 
     cr.setLineWidth(1.0);

@@ -57,7 +57,7 @@ var METRICS = {
       units: "us" },
     applicationsShowTimeSubsequent:
     { description: "Time to switch to applications view, second time",
-      units: "us" }
+      units: "us" },
 };
 
 let WINDOW_CONFIGS = [
@@ -67,7 +67,7 @@ let WINDOW_CONFIGS = [
     { width: 640, height: 480, alpha: false, maximized: true,  count: 5,  metric: 'overviewFps5Maximized' },
     { width: 640, height: 480, alpha: false, maximized: true,  count: 10, metric: 'overviewFps10Maximized' },
     { width: 640, height: 480, alpha: true,  maximized: false, count: 5,  metric: 'overviewFps5Alpha' },
-    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' }
+    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' },
 ];
 
 function *run() {
@@ -94,11 +94,12 @@ function *run() {
             let config = WINDOW_CONFIGS[i / 2];
             yield Scripting.destroyTestWindows();
 
-            for (let k = 0; k < config.count; k++)
+            for (let k = 0; k < config.count; k++) {
                 yield Scripting.createTestWindow({ width: config.width,
                                                    height: config.height,
                                                    alpha: config.alpha,
                                                    maximized: config.maximized });
+            }
 
             yield Scripting.waitTestWindows();
             yield Scripting.sleep(1000);
@@ -174,11 +175,10 @@ function script_applicationsShowDone(time) {
 }
 
 function script_afterShowHide(_time) {
-    if (overviewShowCount == 1) {
+    if (overviewShowCount == 1)
         METRICS.usedAfterOverview.value = mallocUsedSize;
-    } else {
+    else
         METRICS.leakedAfterOverview.value = mallocUsedSize - METRICS.usedAfterOverview.value;
-    }
 }
 
 function malloc_usedSize(time, bytes) {
