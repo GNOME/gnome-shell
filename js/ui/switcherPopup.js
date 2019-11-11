@@ -180,6 +180,14 @@ var SwitcherPopup = GObject.registerClass({
         if (keysym == Clutter.Escape || keysym == Clutter.Tab)
             this.fadeAndDestroy();
 
+        // Allow to explicitly select the current item; this is particularly
+        // useful for no-modifier popups
+        if (keysym === Clutter.KEY_space ||
+            keysym === Clutter.KEY_Return ||
+            keysym === Clutter.KEY_KP_Enter ||
+            keysym === Clutter.KEY_ISO_Enter)
+            this._finish(keyEvent.time);
+
         return Clutter.EVENT_STOP;
     }
 
