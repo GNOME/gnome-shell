@@ -452,7 +452,11 @@ var SearchResultsView = GObject.registerClass({
 
         this.add_child(this._scrollView);
 
-        this._statusText = new St.Label({ style_class: 'search-statustext' });
+        this._statusText = new St.Label({
+            style_class: 'search-statustext',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._statusBin = new St.Bin({ y_expand: true });
         this.add_child(this._statusBin);
         this._statusBin.add_actor(this._statusText);
