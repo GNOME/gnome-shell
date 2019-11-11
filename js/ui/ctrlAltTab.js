@@ -100,9 +100,9 @@ var CtrlAltTabManager = class CtrlAltTabManager {
 
                 items.push({ name: windows[i].title,
                              proxy: windows[i].get_compositor_private(),
-                             focusCallback: function(timestamp) {
-                                 Main.activateWindow(this, timestamp);
-                             }.bind(windows[i]),
+                             focusCallback: timestamp => {
+                                 Main.activateWindow(windows[i], timestamp);
+                             },
                              iconActor: icon,
                              iconName: iconName,
                              sortGroup: SortGroup.MIDDLE });
