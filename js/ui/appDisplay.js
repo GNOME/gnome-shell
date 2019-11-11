@@ -1305,8 +1305,12 @@ class FolderView extends BaseAppView {
 
     createFolderIcon(size) {
         let layout = new Clutter.GridLayout();
-        let icon = new St.Widget({ layout_manager: layout,
-                                   style_class: 'app-folder-icon' });
+        let icon = new St.Widget({
+            layout_manager: layout,
+            style_class: 'app-folder-icon',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         layout.hookup_style(icon);
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
