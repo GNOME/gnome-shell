@@ -1376,7 +1376,7 @@ var WindowManager = class {
     }
 
     _minimizeWindowOverwritten(shellwm, actor) {
-        if (this._removeEffect(this._minimizing, actor)) {
+        if (this._minimizing.delete(actor)) {
             shellwm.completed_minimize(actor);
         }
     }
@@ -1458,7 +1458,7 @@ var WindowManager = class {
     }
 
     _unminimizeWindowOverwritten(shellwm, actor) {
-        if (this._removeEffect(this._unminimizing, actor)) {
+        if (this._unminimizing.delete(actor)) {
             shellwm.completed_unminimize(actor);
         }
     }
@@ -1580,7 +1580,7 @@ var WindowManager = class {
     }
 
     _sizeChangeWindowOverwritten(shellwm, actor) {
-        if (this._removeEffect(this._resizing, actor))
+        if (this._resizing.delete(actor))
             this._clearAnimationInfo(actor);
     }
 
@@ -1730,7 +1730,7 @@ var WindowManager = class {
     }
 
     _mapWindowOverwrite(shellwm, actor) {
-        if (this._removeEffect(this._mapping, actor)) {
+        if (this._mapping.delete(actor)) {
             shellwm.completed_map(actor);
         }
     }
