@@ -600,6 +600,7 @@ var AllView = GObject.registerClass({
     openSpaceForPopup(item, side, nRows) {
         this._updateIconOpacities(true);
         this._displayingPopup = true;
+        this._eventBlocker.reactive = true;
         this._grid.openExtraSpace(item, side, nRows);
     }
 
