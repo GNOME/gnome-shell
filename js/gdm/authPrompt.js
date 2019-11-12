@@ -110,6 +110,9 @@ var AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
 
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning(this._entry);
+        this.add_child(this._capsLockWarningLabel);
+
         this._message = new St.Label({
             opacity: 0,
             styleClass: 'login-dialog-message',
