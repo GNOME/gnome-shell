@@ -43,6 +43,7 @@ enum
   PROP_0,
 
   PROP_PASSWORD_VISIBLE,
+  PROP_CAPS_LOCK_WARNING,
 
   N_PROPS
 };
@@ -65,7 +66,9 @@ st_password_entry_get_property (GObject    *gobject,
     case PROP_PASSWORD_VISIBLE:
       g_value_set_boolean (value, priv->password_visible);
       break;
-
+    case PROP_CAPS_LOCK_WARNING:
+      g_value_set_boolean (value, priv->capslock_warning_shown);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -103,6 +106,8 @@ update_caps_lock_warning_visibility (ClutterKeymap *keymap,
     priv->capslock_warning_shown = TRUE;
   else
     priv->capslock_warning_shown = FALSE;
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_CAPS_LOCK_WARNING]);
 }
 
 static void
@@ -131,6 +136,12 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                        "Whether to text in the entry is masked or not",
                                                        FALSE,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+
+  props[PROP_CAPS_LOCK_WARNING] = g_param_spec_boolean ("caps-lock-warning",
+                                                        "Caps lock warning",
+                                                        "Whether to show the capslock-warning",
+                                                        FALSE,
+                                                        ST_PARAM_READABLE);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
@@ -249,4 +260,21 @@ st_password_entry_get_password_visible (StPasswordEntry *entry)
 
   priv = ST_PASSWORD_ENTRY_PRIV (entry);
   return priv->password_visible;
+}
+
+/**
+ * st_password_entry_get_caps_lock_warning:
+ * @entry: a #StPasswordEntry
+ *
+ * Returns whether to show the caps lock warning based on the caps
+ * lock key status.
+ */
+gboolean
+st_password_entry_get_caps_lock_warning (StPasswordEntry *entry)
+{
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (entry);
+
+  g_return_val_if_fail (ST_IS_PASSWORD_ENTRY (entry), FALSE);
+
+  return priv->capslock_warning_shown;
 }
