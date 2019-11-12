@@ -27,7 +27,8 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this.addMenuItem(item);
         this._pasteItem = item;
 
-        this._passwordItem = null;
+        if (entry instanceof St.PasswordEntry)
+            this._makePasswordItem()
 
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
@@ -38,24 +39,6 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
-    }
-
-    get isPassword() {
-        return this._passwordItem != null;
-    }
-
-    set isPassword(v) {
-        if (v == this.isPassword)
-            return;
-
-        if (v) {
-            this._makePasswordItem();
-            this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
-        } else {
-            this._passwordItem.destroy();
-            this._passwordItem = null;
-            this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
-        }
     }
 
     open(animate) {
@@ -86,8 +69,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _updatePasswordItem() {
-        let textHidden = this._entry.clutter_text.password_char;
-        if (textHidden)
+        if (!this._entry.password_visible)
             this._passwordItem.label.set_text(_("Show Text"));
         else
             this._passwordItem.label.set_text(_("Hide Text"));
@@ -110,8 +92,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _onPasswordActivated() {
-        let visible = !!this._entry.clutter_text.password_char;
-        this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
+        this._entry.password_visible  = !this._entry.password_visible;
     }
 };
 
@@ -145,10 +126,9 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse(params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, { actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
-    entry.menu.isPassword = params.isPassword;
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
                                                         { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);

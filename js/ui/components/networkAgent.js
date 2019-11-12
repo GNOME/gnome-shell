@@ -54,12 +54,18 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
             let reactive = secret.key != null;
 
-            secret.entry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                          text: secret.value, can_focus: reactive,
-                                          reactive,
-                                          x_expand: true });
-            ShellEntry.addContextMenu(secret.entry,
-                                      { isPassword: secret.password });
+            let entryParams = {
+                style_class: 'prompt-dialog-password-entry',
+                text: secret.value,
+                can_focus: reactive,
+                reactive,
+                x_expand: true,
+            };
+            if (secret.password)
+                secret.entry = new St.PasswordEntry(entryParams);
+            else
+                secret.entry = new St.Entry(entryParams);
+            ShellEntry.addContextMenu(secret.menu);
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);
@@ -93,9 +99,6 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 layout.attach(secret.entry, 1, pos, 1, 1);
             }
             pos++;
-
-            if (secret.password)
-                secret.entry.clutter_text.set_password_char('\u25cf');
         }
 
         contentBox.messageBox.add(secretTable);
