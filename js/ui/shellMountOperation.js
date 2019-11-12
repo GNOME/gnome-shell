@@ -366,13 +366,16 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this.setInitialKeyFocus(this._passwordEntry);
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
         this._passwordEntry.secondary_icon = this._workSpinner;
+        this._capsLockWarningLabel = ShellEntry.addCapsLockWarning(this._passwordEntry);
 
         if (rtl) {
-            layout.attach(this._passwordEntry, 0, 1, 1, 1);
-            layout.attach(this._passwordLabel, 1, 1, 1, 1);
+            layout.attach(this._capsLockWarningLabel, 0, 1, 1, 1);
+            layout.attach(this._passwordEntry, 1, 1, 1, 1);
+            layout.attach(this._passwordLabel, 2, 1, 1, 1);
         } else {
             layout.attach(this._passwordLabel, 0, 1, 1, 1);
             layout.attach(this._passwordEntry, 1, 1, 1, 1);
+            layout.attach(this._capsLockWarningLabel, 2, 1, 1, 1);
         }
 
         content.messageBox.add(grid);
