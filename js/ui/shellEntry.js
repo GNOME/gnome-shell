@@ -145,10 +145,10 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse(params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, { actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
-    entry.menu.isPassword = params.isPassword;
+    entry.menu.isPassword = entry instanceof St.PasswordEntry;
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
                                                         { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);

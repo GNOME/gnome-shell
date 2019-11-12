@@ -70,12 +70,13 @@ class KeyringDialog extends ModalDialog.ModalDialog {
                                        y_align: Clutter.ActorAlign.CENTER });
             label.set_text(_("Password:"));
             label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                                 text: '',
-                                                 can_focus: true,
-                                                 x_expand: true });
-            this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
-            ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+            this._passwordEntry = new St.PasswordEntry({
+                style_class: 'prompt-dialog-password-entry',
+                text: '',
+                can_focus: true,
+                x_expand: true,
+            });
+            ShellEntry.addContextMenu(this._passwordEntry);
             this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
 
             this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
@@ -100,12 +101,13 @@ class KeyringDialog extends ModalDialog.ModalDialog {
                                        x_align: Clutter.ActorAlign.START,
                                        y_align: Clutter.ActorAlign.CENTER });
             label.set_text(_("Type again:"));
-            this._confirmEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
-                                                text: '',
-                                                can_focus: true,
-                                                x_expand: true });
-            this._confirmEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
-            ShellEntry.addContextMenu(this._confirmEntry, { isPassword: true });
+            this._confirmEntry = new St.PasswordEntry({
+                style_class: 'prompt-dialog-password-entry',
+                text: '',
+                can_focus: true,
+                x_expand: true,
+            });
+            ShellEntry.addContextMenu(this._confirmEntry);
             this._confirmEntry.clutter_text.connect('activate', this._onConfirmActivate.bind(this));
             if (rtl) {
                 layout.attach(this._confirmEntry, 0, row, 1, 1);
