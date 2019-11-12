@@ -98,13 +98,13 @@ var AuthPrompt = GObject.registerClass({
         });
 
         this.add_child(this._label);
-        this._entry = new St.Entry({
+        this._entry = new St.PasswordEntry({
             style_class: 'login-dialog-prompt-entry',
             can_focus: true,
             x_expand: false,
             y_expand: true,
         });
-        ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
+        ShellEntry.addContextMenu(this._entry, { actionMode: Shell.ActionMode.NONE });
 
         this.add_child(this._entry);
 
@@ -205,7 +205,9 @@ var AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
             return;
         }
-        this.setPasswordChar(passwordChar);
+        this._entry.set({
+            password_visible: passwordChar === 0,
+        });
         this.setQuestion(question);
 
         if (passwordChar) {
@@ -356,11 +358,6 @@ var AuthPrompt = GObject.registerClass({
     clear() {
         this._entry.text = '';
         this.stopSpinning();
-    }
-
-    setPasswordChar(passwordChar) {
-        this._entry.clutter_text.set_password_char(passwordChar);
-        this._entry.menu.isPassword = passwordChar != '';
     }
 
     setQuestion(question) {
