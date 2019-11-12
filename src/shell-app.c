@@ -223,7 +223,7 @@ window_backed_app_get_icon (ShellApp *app,
 /**
  * shell_app_create_icon_texture:
  *
- * Look up the icon for this application, and create a #ClutterTexture
+ * Look up the icon for this application, and create a #ClutterActor
  * for it at the given size.
  *
  * Return value: (transfer none): A floating #ClutterActor

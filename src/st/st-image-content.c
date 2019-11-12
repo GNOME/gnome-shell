@@ -146,7 +146,7 @@ st_image_content_get_preferred_size (ClutterContent *content,
 {
   StImageContent *self = ST_IMAGE_CONTENT (content);
   StImageContentPrivate *priv = st_image_content_get_instance_private (self);
-  ClutterTexture *texture;
+  CoglTexture *texture;
 
   texture = clutter_image_get_texture (CLUTTER_IMAGE (content));
 

@@ -22,9 +22,8 @@
  * SECTION:st-drawing-area
  * @short_description: A dynamically-sized Cairo drawing area
  *
- * #StDrawingArea is similar to #ClutterCairoTexture in that
- * it allows drawing via Cairo; the primary difference is that
- * it is dynamically sized.  To use, connect to the #StDrawingArea::repaint
+ * #StDrawingArea allows drawing via Cairo; the primary difference is that
+ * it is dynamically sized. To use, connect to the #StDrawingArea::repaint
  * signal, and inside the signal handler, call
  * st_drawing_area_get_context() to get the Cairo context to draw to.  The
  * #StDrawingArea::repaint signal will be emitted by default when the area is
