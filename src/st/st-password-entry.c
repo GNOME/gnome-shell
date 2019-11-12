@@ -34,6 +34,7 @@ struct _StPasswordEntry
 
 struct _StPasswordEntryPrivate
 {
+  gboolean      capslock_warning_shown;
   gboolean      password_visible;
 };
 
@@ -90,6 +91,32 @@ st_password_entry_set_property (GObject      *gobject,
       break;
     }
 }
+
+static void
+update_caps_lock_warning_visibility (ClutterKeymap *keymap,
+                                     gpointer       user_data)
+{
+  StPasswordEntry *entry = ST_PASSWORD_ENTRY (user_data);
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (entry);
+
+  if (!priv->password_visible && clutter_keymap_get_caps_lock_state (keymap))
+    priv->capslock_warning_shown = TRUE;
+  else
+    priv->capslock_warning_shown = FALSE;
+}
+
+static void
+st_password_entry_dispose (GObject *object)
+{
+  StPasswordEntry *entry = ST_PASSWORD_ENTRY (object);
+  ClutterKeymap *keymap;
+
+  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  g_signal_handlers_disconnect_by_func (keymap, update_caps_lock_warning_visibility, entry);
+
+  G_OBJECT_CLASS (st_password_entry_parent_class)->dispose (object);
+}
+
 static void
 st_password_entry_class_init (StPasswordEntryClass *klass)
 {
@@ -97,6 +124,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
 
   gobject_class->get_property = st_password_entry_get_property;
   gobject_class->set_property = st_password_entry_set_property;
+  gobject_class->dispose = st_password_entry_dispose;
 
   props[PROP_PASSWORD_VISIBLE] = g_param_spec_boolean ("password-visible",
                                                        "Password visible",
@@ -105,6 +133,40 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
+}
+
+static void
+clutter_text_focus_in_cb (ClutterText     *text,
+                          StPasswordEntry *entry)
+{
+  ClutterKeymap *keymap;
+
+  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  update_caps_lock_warning_visibility (keymap, entry);
+  g_signal_connect (keymap, "state-changed",
+                    G_CALLBACK (update_caps_lock_warning_visibility), entry);
+}
+
+static void
+clutter_text_focus_out_cb (ClutterText     *text,
+                           StPasswordEntry *entry)
+{
+  ClutterKeymap *keymap;
+
+  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  g_signal_handlers_disconnect_by_func (keymap, update_caps_lock_warning_visibility, entry);
+}
+
+static void
+clutter_text_password_char_cb (GObject    *object,
+                               GParamSpec *pspec,
+                               gpointer    user_data)
+{
+  StPasswordEntry *entry = ST_PASSWORD_ENTRY (user_data);
+  ClutterKeymap *keymap;
+
+  keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
+  update_caps_lock_warning_visibility (keymap, entry);
 }
 
 static void
@@ -118,6 +180,15 @@ st_password_entry_init (StPasswordEntry *entry)
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
 
   st_entry_set_input_purpose (ST_ENTRY (entry), CLUTTER_INPUT_CONTENT_PURPOSE_PASSWORD);
+
+  g_signal_connect (clutter_text, "key-focus-in",
+                    G_CALLBACK (clutter_text_focus_in_cb), entry);
+
+  g_signal_connect (clutter_text, "key-focus-out",
+                    G_CALLBACK (clutter_text_focus_out_cb), entry);
+
+  g_signal_connect (clutter_text, "notify::password-char",
+                    G_CALLBACK (clutter_text_password_char_cb), entry);
 }
 
 /**
