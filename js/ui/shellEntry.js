@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addContextMenu */
 
-const { Clutter, Shell, St } = imports.gi;
+const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -151,3 +151,24 @@ function addContextMenu(entry, params) {
         entry._menuManager = null;
     });
 }
+
+var CapsLockWarning = GObject.registerClass(
+    class CapsLockWarning extends St.Label {
+        _init(passwordEntry) {
+            super._init({
+                style_class: 'prompt-dialog-error-label',
+                text: 'Caps lock is on.',
+                x_align: St.Align.START,
+            });
+
+            this._passwordEntry = passwordEntry;
+            this._passwordEntry.connect("notify::caps-lock-warning", () => {
+                let showCapsLockWarning = this._passwordEntry.get_caps_lock_warning();
+                this.opacity = showCapsLockWarning ? 255 : 0;
+            });
+
+            this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this.clutter_text.line_wrap = true;
+            this.opacity = 255;
+        }
+    });

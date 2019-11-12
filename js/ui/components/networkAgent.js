@@ -61,11 +61,13 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 reactive,
                 x_expand: true,
             };
-            if (secret.password)
+            if (secret.password) {
                 secret.entry = new St.PasswordEntry(entryParams);
-            else
+                this._capsLockWarningLabel = new ShellEntry.CapsLockWarning(secret.entry);
+            } else {
                 secret.entry = new St.Entry(entryParams);
-            ShellEntry.addContextMenu(secret.menu);
+            }
+            ShellEntry.addContextMenu(secret.entry);
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);
@@ -94,9 +96,13 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             if (rtl) {
                 layout.attach(secret.entry, 0, pos, 1, 1);
                 layout.attach(label, 1, pos, 1, 1);
+                if (this._capsLockWarningLabel)
+                    layout.attach(this._capsLockWarningLabel, 1, pos + 1, 1, 1);
             } else {
                 layout.attach(label, 0, pos, 1, 1);
                 layout.attach(secret.entry, 1, pos, 1, 1);
+                if (this._capsLockWarningLabel)
+                    layout.attach(this._capsLockWarningLabel, 0, pos + 1, 1, 1);
             }
             pos++;
         }
