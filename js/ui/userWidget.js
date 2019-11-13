@@ -142,8 +142,8 @@ class UserWidgetLabel extends St.Widget {
         this._currentLabel.allocate(childBox, flags);
     }
 
-    vfunc_paint() {
-        this._currentLabel.paint();
+    vfunc_paint(paintContext) {
+        this._currentLabel.paint(paintContext);
     }
 
     _updateUser() {

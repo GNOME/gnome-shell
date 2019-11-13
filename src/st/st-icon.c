@@ -163,7 +163,8 @@ st_icon_dispose (GObject *gobject)
 }
 
 static void
-st_icon_paint (ClutterActor *actor)
+st_icon_paint (ClutterActor        *actor,
+               ClutterPaintContext *paint_context)
 {
   StIcon *icon = ST_ICON (actor);
   StIconPrivate *priv = icon->priv;
@@ -186,7 +187,7 @@ st_icon_paint (ClutterActor *actor)
                                          clutter_actor_get_paint_opacity (priv->icon_texture));
         }
 
-      clutter_actor_paint (priv->icon_texture);
+      clutter_actor_paint (priv->icon_texture, paint_context);
     }
 }
 
