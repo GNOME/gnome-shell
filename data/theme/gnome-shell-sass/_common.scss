@@ -1196,6 +1196,12 @@ StScrollBar {
       &:rtl { /* 12px spacing + 2*4px padding */
               padding-right: 20px; margin-right: 1.09em; }
     }
+    .popup-sub-menu .popup-menu-item.cloud-provider-item > :first-child {
+      &:ltr { /* 12px spacing - 2*4px padding */
+              padding-left: 0; margin-left: 0; }
+      &:rtl { /* 12px spacing */
+              padding-right: 0; margin-right: 0; }
+    }
   }
 
 // Activities Ripples
