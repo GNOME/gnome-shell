@@ -46,6 +46,10 @@ typedef enum
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 
 static void
+grab_screenshot (ClutterActor *stage,
+                 GTask        *result);
+
+static void
 shell_screenshot_class_init (ShellScreenshotClass *screenshot_class)
 {
   (void) screenshot_class;
@@ -264,6 +268,21 @@ draw_cursor_image (cairo_surface_t       *surface,
 }
 
 static void
+on_paint (ClutterActor        *actor,
+          ClutterPaintContext *paint_context,
+          GTask               *result)
+{
+  grab_screenshot (actor, result);
+}
+
+static void
+on_actors_painted (ClutterActor *actor,
+                   GTask        *result)
+{
+  grab_screenshot (actor, result);
+}
+
+static void
 grab_screenshot (ClutterActor *stage,
                  GTask        *result)
 {
@@ -325,7 +344,8 @@ grab_screenshot (ClutterActor *stage,
   if (priv->include_cursor)
     draw_cursor_image (priv->image, priv->screenshot_area);
 
-  g_signal_handlers_disconnect_by_func (stage, grab_screenshot, result);
+  g_signal_handlers_disconnect_by_func (stage, on_paint, result);
+  g_signal_handlers_disconnect_by_func (stage, on_actors_painted, result);
 
   task = g_task_new (screenshot, NULL, on_screenshot_written, result);
   g_task_run_in_thread (task, write_screenshot_thread);
@@ -460,7 +480,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
 {
   ClutterActor *stage;
   ShellScreenshotPrivate *priv = screenshot->priv;
-  const char *paint_signal;
+  gboolean use_paint_signal = FALSE;
   GTask *result;
 
   if (priv->stream != NULL) {
@@ -483,7 +503,6 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   priv->include_cursor = FALSE;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
-  paint_signal = "actors-painted";
 
   meta_disable_unredirect_for_display (shell_global_get_display (priv->global));
 
@@ -492,10 +511,21 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
       if (should_draw_cursor_image (SHELL_SCREENSHOT_SCREEN))
         priv->include_cursor = TRUE;
       else
-        paint_signal = "paint";
+        use_paint_signal = TRUE;
     }
 
-  g_signal_connect_after (stage, paint_signal, G_CALLBACK (grab_screenshot), result);
+  if (use_paint_signal)
+    {
+      g_signal_connect_after (stage, "paint",
+                              G_CALLBACK (on_paint),
+                              result);
+    }
+  else
+    {
+      g_signal_connect_after (stage, "actors-painted",
+                              G_CALLBACK (on_actors_painted),
+                              result);
+    }
 
   clutter_actor_queue_redraw (stage);
 }

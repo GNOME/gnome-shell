@@ -481,8 +481,9 @@ recorder_record_frame (ShellRecorder *recorder,
  * by clutter before glSwapBuffers() makes it visible to the user.
  */
 static void
-recorder_on_stage_paint (ClutterActor  *actor,
-                         ShellRecorder *recorder)
+recorder_on_stage_paint (ClutterActor        *actor,
+                         ClutterPaintContext *paint_context,
+                         ShellRecorder       *recorder)
 {
   if (recorder->state == RECORDER_STATE_RECORDING)
     recorder_record_frame (recorder, FALSE);

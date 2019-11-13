@@ -276,18 +276,19 @@ st_scroll_view_dispose (GObject *object)
 }
 
 static void
-st_scroll_view_paint (ClutterActor *actor)
+st_scroll_view_paint (ClutterActor        *actor,
+                      ClutterPaintContext *paint_context)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
 
   st_widget_paint_background (ST_WIDGET (actor));
 
   if (priv->child)
-    clutter_actor_paint (priv->child);
+    clutter_actor_paint (priv->child, paint_context);
   if (priv->hscrollbar_visible)
-    clutter_actor_paint (priv->hscroll);
+    clutter_actor_paint (priv->hscroll, paint_context);
   if (priv->vscrollbar_visible)
-    clutter_actor_paint (priv->vscroll);
+    clutter_actor_paint (priv->vscroll, paint_context);
 }
 
 static void

@@ -472,9 +472,9 @@ class ObjInspector extends St.ScrollView {
 
 var RedBorderEffect = GObject.registerClass(
 class RedBorderEffect extends Clutter.Effect {
-    vfunc_paint() {
+    vfunc_paint(paintContext) {
         let actor = this.get_actor();
-        actor.continue_paint();
+        actor.continue_paint(paintContext);
 
         let color = new Cogl.Color();
         color.init_from_4ub(0xff, 0, 0, 0xc4);

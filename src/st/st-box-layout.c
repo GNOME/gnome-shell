@@ -387,7 +387,8 @@ get_border_paint_offsets (StBoxLayout *self,
 
 
 static void
-st_box_layout_paint (ClutterActor *actor)
+st_box_layout_paint (ClutterActor        *actor,
+                     ClutterPaintContext *paint_context)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
   StBoxLayoutPrivate *priv = self->priv;
@@ -436,7 +437,7 @@ st_box_layout_paint (ClutterActor *actor)
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
-    clutter_actor_paint (child);
+    clutter_actor_paint (child, paint_context);
 
   if (priv->hadjustment || priv->vadjustment)
     cogl_framebuffer_pop_clip (fb);
