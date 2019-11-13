@@ -191,7 +191,8 @@ st_label_dispose (GObject   *object)
 }
 
 static void
-st_label_paint (ClutterActor *actor)
+st_label_paint (ClutterActor        *actor,
+                ClutterPaintContext *paint_context)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
@@ -236,7 +237,7 @@ st_label_paint (ClutterActor *actor)
         }
     }
 
-  clutter_actor_paint (priv->label);
+  clutter_actor_paint (priv->label, paint_context);
 }
 
 static void
