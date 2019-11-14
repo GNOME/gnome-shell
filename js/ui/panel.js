@@ -661,7 +661,6 @@ class PanelCorner extends St.DrawingArea {
     }
 
     vfunc_style_changed() {
-        super.vfunc_style_changed();
         let node = this.get_theme_node();
 
         let cornerRadius = node.get_length("-panel-corner-radius");
@@ -669,6 +668,8 @@ class PanelCorner extends St.DrawingArea {
 
         this.set_size(cornerRadius, borderWidth + cornerRadius);
         this.set_anchor_point(0, borderWidth);
+
+        super.vfunc_style_changed();
     }
 });
 
