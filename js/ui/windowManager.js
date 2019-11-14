@@ -16,7 +16,6 @@ const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
 const SwipeTracker = imports.ui.swipeTracker;
 const SwitchMonitor = imports.ui.switchMonitor;
-const IBusManager = imports.misc.ibusManager;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -897,12 +896,10 @@ var WindowManager = class {
         });
 
         global.display.connect('x11-display-opened', () => {
-            IBusManager.getIBusManager().restartDaemon(['--xim']);
             Shell.util_start_systemd_unit('gnome-session-x11-services.target', 'fail');
         });
         global.display.connect('x11-display-closing', () => {
             Shell.util_stop_systemd_unit('gnome-session-x11-services.target', 'fail');
-            IBusManager.getIBusManager().restartDaemon();
         });
 
         Main.overview.connect('showing', () => {
