@@ -255,6 +255,8 @@ st_icon_style_changed (StWidget *widget)
 
   if (should_update)
     st_icon_update (self);
+
+  ST_WIDGET_CLASS (st_icon_parent_class)->style_changed (widget);
 }
 
 static void
