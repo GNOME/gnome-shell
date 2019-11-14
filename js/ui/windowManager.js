@@ -893,11 +893,32 @@ var WindowManager = class {
             }
         });
 
-        global.display.connect('x11-display-opened', () => {
-            Shell.util_start_systemd_unit('gnome-session-x11-services.target', 'fail');
+        global.display.connect('init-xserver', (display, task) => {
+            Shell.util_start_systemd_unit('gsd-xsettings.target', 'fail');
+            let timeoutId = -1;
+
+            /* When gsd-xsettings daemon is started, we are good to resume */
+            let watchId = Gio.DBus.session.watch_name(
+                'org.gnome.SettingsDaemon.XSettings',
+                Gio.BusNameWatcherFlags.NONE,
+                () => {
+                    task.return_boolean(true);
+                    Gio.DBus.session.unwatch_name(watchId);
+                    if (timeoutId > 0)
+                        GLib.source_remove(timeoutId);
+                },
+                null);
+
+            /* Anyway, leave this watchdog timeout so don't block indefinitely here */
+            timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+                Gio.DBus.session.unwatch_name(watchId);
+                task.return_boolean(false);
+                return GLib.SOURCE_REMOVE;
+            });
+            return true;
         });
         global.display.connect('x11-display-closing', () => {
-            Shell.util_stop_systemd_unit('gnome-session-x11-services.target', 'fail');
+            Shell.util_stop_systemd_unit('gsd-xsettings.target', 'fail');
         });
 
         Main.overview.connect('showing', () => {
