@@ -319,6 +319,9 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         let resetDialog = () => {
+            if (this.state != ModalDialog.State.OPENED)
+                return;
+
             this._passwordBox.hide();
             this._cancelButton.grab_key_focus();
             this._okButton.reactive = false;
