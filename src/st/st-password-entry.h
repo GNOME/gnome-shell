@@ -35,6 +35,8 @@ G_DECLARE_FINAL_TYPE (StPasswordEntry, st_password_entry, ST, PASSWORD_ENTRY, St
 StEntry            *st_password_entry_new                        (void);
 gboolean            st_password_entry_get_password_visible       (StPasswordEntry *entry);
 void                st_password_entry_set_password_visible       (StPasswordEntry *entry, gboolean value);
+gboolean            st_password_entry_get_show_peek_icon         (StPasswordEntry *entry);
+void                st_password_entry_set_show_peek_icon         (StPasswordEntry *entry, gboolean value);
 gboolean            st_password_entry_get_caps_lock_warning      (StPasswordEntry *entry);
 
 G_END_DECLS

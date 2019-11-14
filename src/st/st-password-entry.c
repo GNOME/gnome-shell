@@ -19,6 +19,7 @@
 
 #include "st-private.h"
 #include "st-password-entry.h"
+#include "st-icon.h"
 
 #define BLACK_CIRCLE 9679
 
@@ -34,8 +35,10 @@ struct _StPasswordEntry
 
 struct _StPasswordEntryPrivate
 {
+  ClutterActor *peek_password_icon;
   gboolean      capslock_warning_shown;
   gboolean      password_visible;
+  gboolean      show_peek_icon;
 };
 
 enum
@@ -44,6 +47,7 @@ enum
 
   PROP_PASSWORD_VISIBLE,
   PROP_CAPS_LOCK_WARNING,
+  PROP_SHOW_PEEK_ICON,
 
   N_PROPS
 };
@@ -52,6 +56,15 @@ static GParamSpec *props[N_PROPS] = { NULL, };
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (StPasswordEntry, st_password_entry, ST_TYPE_ENTRY);
+
+static void
+st_password_entry_secondary_icon_clicked (StEntry *entry)
+{
+  StPasswordEntry *password_entry = ST_PASSWORD_ENTRY (entry);
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (password_entry);
+
+  st_password_entry_set_password_visible (password_entry, !priv->password_visible);
+}
 
 static void
 st_password_entry_get_property (GObject    *gobject,
@@ -67,6 +80,9 @@ st_password_entry_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->password_visible);
       break;
     case PROP_CAPS_LOCK_WARNING:
+      g_value_set_boolean (value, priv->capslock_warning_shown);
+      break;
+    case PROP_SHOW_PEEK_ICON:
       g_value_set_boolean (value, priv->capslock_warning_shown);
       break;
     default:
@@ -88,7 +104,9 @@ st_password_entry_set_property (GObject      *gobject,
     case PROP_PASSWORD_VISIBLE:
       st_password_entry_set_password_visible (entry, g_value_get_boolean (value));
       break;
-
+    case PROP_SHOW_PEEK_ICON:
+      st_password_entry_set_show_peek_icon (entry, g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -126,10 +144,13 @@ static void
 st_password_entry_class_init (StPasswordEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  StEntryClass *st_entry_class = ST_ENTRY_CLASS (klass);
 
   gobject_class->get_property = st_password_entry_get_property;
   gobject_class->set_property = st_password_entry_set_property;
   gobject_class->dispose = st_password_entry_dispose;
+
+  st_entry_class->secondary_icon_clicked = st_password_entry_secondary_icon_clicked;
 
   props[PROP_PASSWORD_VISIBLE] = g_param_spec_boolean ("password-visible",
                                                        "Password visible",
@@ -142,6 +163,12 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                         "Whether to show the capslock-warning",
                                                         FALSE,
                                                         ST_PARAM_READABLE);
+
+  props[PROP_SHOW_PEEK_ICON] = g_param_spec_boolean ("show-peek-icon",
+                                                     "Show peek icon",
+                                                     "Whether to show the password peek icon",
+                                                     TRUE,
+                                                     G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
@@ -175,17 +202,31 @@ clutter_text_password_char_cb (GObject    *object,
 {
   StPasswordEntry *entry = ST_PASSWORD_ENTRY (user_data);
   ClutterKeymap *keymap;
+  ClutterActor *clutter_text;
 
   keymap = clutter_backend_get_keymap (clutter_get_default_backend ());
   update_caps_lock_warning_visibility (keymap, entry);
+
+  clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
+  if (clutter_text_get_password_char (CLUTTER_TEXT (clutter_text)) == 0)
+    st_password_entry_set_password_visible (entry, TRUE);
+  else
+    st_password_entry_set_password_visible (entry, FALSE);
 }
 
 static void
 st_password_entry_init (StPasswordEntry *entry)
 {
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (entry);
   ClutterActor *clutter_text;
 
   st_entry_set_text (ST_ENTRY (entry), "");
+
+  priv->peek_password_icon = g_object_new (ST_TYPE_ICON,
+                                           "style-class", "peek-password",
+                                           "icon-name", "eye-not-looking-symbolic",
+                                           NULL);
+  st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
 
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
@@ -216,6 +257,50 @@ st_password_entry_new (void)
 }
 
 /**
+ * st_password_entry_set_show_peek_icon:
+ * @entry: a #StPasswordEntry
+ * @value: #TRUE to show the peek-icon in the entry, #FALSE otherwise
+ *
+ * Sets whether to show or hide the peek-icon in the password entry.
+ */
+void
+st_password_entry_set_show_peek_icon (StPasswordEntry *entry, gboolean value)
+{
+  StPasswordEntryPrivate *priv;
+
+  g_return_if_fail (ST_IS_PASSWORD_ENTRY (entry));
+
+  priv = ST_PASSWORD_ENTRY_PRIV (entry);
+  if (priv->show_peek_icon == value)
+    return;
+
+  priv->show_peek_icon = value;
+  if (priv->show_peek_icon)
+    st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
+  else
+    st_entry_set_secondary_icon (ST_ENTRY (entry), NULL);
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SHOW_PEEK_ICON]);
+}
+
+/**
+ * st_password_entry_get_show_peek_icon:
+ * @entry: a #StPasswordEntry
+ *
+ * Gets whether peek-icon is shown or hidden in the password entry.
+ */
+gboolean
+st_password_entry_get_show_peek_icon (StPasswordEntry *entry)
+{
+  StPasswordEntryPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_PASSWORD_ENTRY (entry), TRUE);
+
+  priv = ST_PASSWORD_ENTRY_PRIV (entry);
+  return priv->show_peek_icon;
+}
+
+/**
  * st_password_entry_set_password_visible:
  * @entry: a #StPasswordEntry
  * @value: #TRUE to show the password in the entry, #FALSE otherwise
@@ -238,9 +323,15 @@ st_password_entry_set_password_visible (StPasswordEntry *entry, gboolean value)
 
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   if (priv->password_visible)
-    clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), 0);
+    {
+      clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), 0);
+      st_icon_set_icon_name (ST_ICON (priv->peek_password_icon), "eye-open-negative-filled-symbolic");
+    }
   else
-    clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
+    {
+      clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
+      st_icon_set_icon_name (ST_ICON (priv->peek_password_icon), "eye-not-looking-symbolic");
+    }
 
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_PASSWORD_VISIBLE]);
 }
