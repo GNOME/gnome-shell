@@ -106,9 +106,9 @@ st_drawing_area_allocate (ClutterActor          *self,
 static void
 st_drawing_area_style_changed (StWidget  *self)
 {
-  (ST_WIDGET_CLASS (st_drawing_area_parent_class))->style_changed (self);
-
   st_drawing_area_queue_repaint (ST_DRAWING_AREA (self));
+
+  ST_WIDGET_CLASS (st_drawing_area_parent_class)->style_changed (self);
 }
 
 static void
