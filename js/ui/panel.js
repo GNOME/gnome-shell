@@ -480,15 +480,15 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 
     vfunc_key_release_event(keyEvent) {
-        let ret = super.vfunc_key_release_event(keyEvent);
-        if (ret == Clutter.EVENT_PROPAGATE) {
-            let symbol = keyEvent.keyval;
-            if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
-                if (Main.overview.shouldToggleByCornerOrButton())
-                    Main.overview.toggle();
+        let symbol = keyEvent.keyval;
+        if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
+            if (Main.overview.shouldToggleByCornerOrButton()) {
+                Main.overview.toggle();
+                return Clutter.EVENT_STOP;
             }
         }
-        return ret;
+
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _xdndToggleOverview() {
