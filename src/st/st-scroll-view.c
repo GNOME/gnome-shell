@@ -740,15 +740,11 @@ static void
 st_scroll_view_style_changed (StWidget *widget)
 {
   StScrollView *self = ST_SCROLL_VIEW (widget);
-  StScrollViewPrivate *priv = self->priv;
 
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
   gdouble vfade_offset = st_theme_node_get_length (theme_node, "-st-vfade-offset");
   gdouble hfade_offset = st_theme_node_get_length (theme_node, "-st-hfade-offset");
   st_scroll_view_update_fade_effect (self, vfade_offset, hfade_offset);
-
-  st_widget_style_changed (ST_WIDGET (priv->hscroll));
-  st_widget_style_changed (ST_WIDGET (priv->vscroll));
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
