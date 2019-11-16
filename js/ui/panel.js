@@ -303,9 +303,18 @@ var AppMenuButton = GObject.registerClass({
 
     stopAnimation() {
         this._spinner.stop();
+        this._spinnerHideTimeoutId = GLib.timeout_add(
+            GLib.PRIORITY_LOW,
+            Animation.SPINNER_ANIMATION_TIME, () => {
+                this._spinner.hide();
+                return GLib.SOURCE_REMOVE;
+            }
+        );
+        GLib.Source.set_name_by_id(this._spinnerHideTimeoutId, '[gnome-shell] this._spinner.hide');
     }
 
     startAnimation() {
+        this._spinner.show();
         this._spinner.play();
     }
 
