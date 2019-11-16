@@ -478,10 +478,17 @@ var Key = GObject.registerClass({
 
 var KeyboardModel = class {
     constructor(groupName) {
-        try {
-            this._model = this._loadModel(groupName);
-        } catch (e) {
-            this._model = this._loadModel('us');
+        let names = [groupName];
+        if (names.includes('+'))
+            names.push(groupName.replace(/\+.*/, ''));
+        names.push('us');
+
+        for (let i = 0; i < names.length; i++) {
+            try {
+                this._model = this._loadModel(names[i]);
+                break;
+            } catch (e) {
+            }
         }
     }
 
