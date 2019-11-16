@@ -302,11 +302,13 @@ var AppMenuButton = GObject.registerClass({
     }
 
     stopAnimation() {
+        this._spinner.actor.hide();
         this._spinner.stop();
     }
 
     startAnimation() {
         this._spinner.play();
+        this._spinner.actor.show();
     }
 
     _onAppStateChanged(appSys, app) {
