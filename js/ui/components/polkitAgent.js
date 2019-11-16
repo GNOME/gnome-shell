@@ -11,6 +11,11 @@ const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 
+const DialogMode = {
+    AUTH: 0,
+    CONFIRM: 1,
+};
+
 var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
@@ -26,7 +31,6 @@ var AuthenticationDialog = GObject.registerClass({
         this.actionId = actionId;
         this.message = body;
         this.userNames = userNames;
-        this._wasDismissed = false;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
             this.visible = !Main.sessionMode.isLocked;
@@ -78,12 +82,6 @@ var AuthenticationDialog = GObject.registerClass({
             this._userLabel.text = _('Administrator');
 
         userBox.add_child(this._userLabel);
-
-        this._userLoadedId = this._user.connect('notify::is-loaded',
-                                                this._onUserChanged.bind(this));
-        this._userChangedId = this._user.connect('changed',
-                                                 this._onUserChanged.bind(this));
-        this._onUserChanged();
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
@@ -150,8 +148,16 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._doneEmitted = false;
 
+        this._mode = -1;
+
         this._identityToAuth = Polkit.UnixUser.new_for_name(userName);
         this._cookie = cookie;
+
+        this._userLoadedId = this._user.connect('notify::is-loaded',
+            this._onUserChanged.bind(this));
+        this._userChangedId = this._user.connect('changed',
+            this._onUserChanged.bind(this));
+        this._onUserChanged();
     }
 
     _setWorking(working) {
@@ -161,7 +167,7 @@ var AuthenticationDialog = GObject.registerClass({
             this._workSpinner.stop();
     }
 
-    performAuthentication() {
+    _initiateSession() {
         this._destroySession(DELAYED_RESET_TIMEOUT);
 
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
@@ -220,7 +226,10 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onAuthenticateButtonPressed() {
-        this._onEntryActivate();
+        if (this._mode === DialogMode.CONFIRM)
+            this._initiateSession();
+        else
+            this._onEntryActivate();
     }
 
     _onSessionCompleted(session, gainedAuthorization) {
@@ -239,7 +248,7 @@ var AuthenticationDialog = GObject.registerClass({
              * error providing authentication-method specific information),
              * show "Sorry, that didn't work. Please try again."
              */
-            if (!this._errorMessageLabel.visible && !this._wasDismissed) {
+            if (!this._errorMessageLabel.visible) {
                 /* Translators: "that didn't work" refers to the fact that the
                  * requested authentication was not gained; this can happen
                  * because of an authentication error (like invalid password),
@@ -251,7 +260,7 @@ var AuthenticationDialog = GObject.registerClass({
             }
 
             /* Try and authenticate again */
-            this.performAuthentication();
+            this._initiateSession();
         }
     }
 
@@ -302,14 +311,15 @@ var AuthenticationDialog = GObject.registerClass({
 
     _destroySession(delay = 0) {
         if (this._session) {
-            if (!this._completed)
-                this._session.cancel();
-            this._completed = false;
-
             this._session.disconnect(this._sessionCompletedId);
             this._session.disconnect(this._sessionRequestId);
             this._session.disconnect(this._sessionShowErrorId);
             this._session.disconnect(this._sessionShowInfoId);
+
+            if (!this._completed)
+                this._session.cancel();
+
+            this._completed = false;
             this._session = null;
         }
 
@@ -346,10 +356,31 @@ var AuthenticationDialog = GObject.registerClass({
             this._userLabel.set_text(realName);
 
         this._userAvatar.update();
+
+        if (this._user.get_password_mode() === AccountsService.UserPasswordMode.NONE) {
+            if (this._mode === DialogMode.CONFIRM)
+                return;
+
+            this._mode = DialogMode.CONFIRM;
+            this._destroySession();
+
+            this._okButton.reactive = true;
+
+            /* We normally open the dialog when we get a "request" signal, but
+             * since in this case initiating a session would perform the
+             * authentication, only open the dialog and initiate the session
+             * when the user confirmed. */
+            this._ensureOpen();
+        } else {
+            if (this._mode === DialogMode.AUTH)
+                return;
+
+            this._mode = DialogMode.AUTH;
+            this._initiateSession();
+        }
     }
 
     cancel() {
-        this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
     }
@@ -412,19 +443,7 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
         }
 
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
-
-        // We actually don't want to open the dialog until we know for
-        // sure that we're going to interact with the user. For
-        // example, if the password for the identity to auth is blank
-        // (which it will be on a live CD) then there will be no
-        // conversation at all... of course, we don't *know* that
-        // until we actually try it.
-        //
-        // See https://bugzilla.gnome.org/show_bug.cgi?id=643062 for more
-        // discussion.
-
         this._currentDialog.connect('done', this._onDialogDone.bind(this));
-        this._currentDialog.performAuthentication();
     }
 
     _onCancel(_nativeAgent) {
