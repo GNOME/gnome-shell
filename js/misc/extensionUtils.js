@@ -40,7 +40,7 @@ const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'ca
  * an extension.
  */
 function getCurrentExtension() {
-    let stack = (new Error()).stack.split('\n');
+    let stack = new Error().stack.split('\n');
     let extensionStackLine;
 
     // Search for an occurrence of an extension stack frame
