@@ -689,9 +689,17 @@ var IconGrid = GObject.registerClass({
 
     _onStyleChanged() {
         let themeNode = this.get_theme_node();
-        this._spacing = themeNode.get_length('spacing');
-        this._hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
-        this._vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
+        let spacing = themeNode.get_length('spacing');
+        let hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
+        let vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
+
+        if (this._spacing == spacing && this._hItemSize == hItemSize &&
+            this._vItemSize == vItemSize)
+            return;
+
+        this._spacing = spacing;
+        this._hItemSize = hItemSize;
+        this._vItemSize = vItemSize;
         this.queue_relayout();
     }
 
