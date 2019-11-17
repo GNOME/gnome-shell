@@ -219,8 +219,6 @@ var MprisPlayer = class MprisPlayer {
             this._trackCoverUrl = '';
         }
 
-        this.emit('changed');
-
         let visible = this._playerProxy.CanPlay;
 
         if (this._visible != visible) {
@@ -230,6 +228,8 @@ var MprisPlayer = class MprisPlayer {
             else
                 this.emit('hide');
         }
+
+        this.emit('changed');
     }
 };
 Signals.addSignalMethods(MprisPlayer.prototype);
