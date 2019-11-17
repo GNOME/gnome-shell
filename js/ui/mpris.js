@@ -26,7 +26,10 @@ class MediaMessage extends MessageList.Message {
 
         this._player = player;
 
-        this._icon = new St.Icon({ style_class: 'media-message-cover-icon' });
+        this._icon = new St.Icon({
+            style_class: 'media-message-cover-icon',
+            fallback_icon_name: 'audio-x-generic-symbolic',
+        });
         this.setIcon(this._icon);
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
@@ -70,14 +73,13 @@ class MediaMessage extends MessageList.Message {
         this.setTitle(this._player.trackArtists.join(', '));
         this.setBody(this._player.trackTitle);
 
+        let icon = null;
         if (this._player.trackCoverUrl) {
             let file = Gio.File.new_for_uri(this._player.trackCoverUrl);
-            this._icon.gicon = new Gio.FileIcon({ file });
-            this._icon.remove_style_class_name('fallback');
-        } else {
-            this._icon.icon_name = 'audio-x-generic-symbolic';
-            this._icon.add_style_class_name('fallback');
+            icon = new Gio.FileIcon({ file });
         }
+
+        this._icon.gicon = icon;
 
         let isPlaying = this._player.status == 'Playing';
         let iconName = isPlaying
