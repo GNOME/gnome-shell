@@ -1163,13 +1163,6 @@ StScrollBar {
 
           .media-message-cover-icon {
             icon-size: 48px !important;
-            &.fallback {
-              color: lighten($fg_color,10%);
-              background-color: $bg_color;
-              border: 1px solid $bg_color;
-              border-radius: 2px;
-              icon-size: 32px !important;
-              padding: 6px; }
           }
 
 
