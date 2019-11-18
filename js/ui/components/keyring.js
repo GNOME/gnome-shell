@@ -74,7 +74,9 @@ class KeyringDialog extends ModalDialog.ModalDialog {
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
             this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
 
-            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
+            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
+                animate: true,
+            });
 
             if (rtl) {
                 layout.attach(this._workSpinner.actor, 0, row, 1, 1);
