@@ -234,7 +234,9 @@ var AppMenuButton = GObject.registerClass({
         this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
         this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
 
-        this._spinner = new Animation.Spinner(PANEL_ICON_SIZE, true);
+        this._spinner = new Animation.Spinner(PANEL_ICON_SIZE, {
+            animate: true,
+        });
         this._container.add_actor(this._spinner.actor);
 
         let menu = new AppMenu(this);
