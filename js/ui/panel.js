@@ -236,6 +236,7 @@ var AppMenuButton = GObject.registerClass({
 
         this._spinner = new Animation.Spinner(PANEL_ICON_SIZE, {
             animate: true,
+            hideOnStop: true,
         });
         this._container.add_actor(this._spinner.actor);
 
