@@ -359,7 +359,9 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
         this.setInitialKeyFocus(this._passwordEntry);
-        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, true);
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
+            animate: true,
+        });
         this._passwordEntry.secondary_icon = this._workSpinner.actor;
 
         if (rtl) {
