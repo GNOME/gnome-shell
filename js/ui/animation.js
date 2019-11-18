@@ -2,6 +2,7 @@
 /* exported Animation, AnimatedIcon, Spinner */
 
 const { Clutter, GLib, GObject, Gio, St } = imports.gi;
+const Params = imports.misc.params;
 
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var SPINNER_ANIMATION_TIME = 300;
@@ -136,12 +137,15 @@ class AnimatedIcon extends Animation {
 
 var Spinner = GObject.registerClass(
 class Spinner extends AnimatedIcon {
-    _init(size, animate = false) {
+    _init(size, params) {
+        params = Params.parse(params, {
+            animate: false,
+        });
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         super._init(file, size);
 
         this.opacity = 0;
-        this._animate = animate;
+        this._animate = params.animate;
     }
 
     _onDestroy() {
