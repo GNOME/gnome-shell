@@ -336,6 +336,7 @@ class WeatherSection extends St.Button {
             let [ok_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
                 timeOnly: true,
+                ampm: false,
             });
 
             let icon = new St.Icon({ style_class: 'weather-forecast-icon',
