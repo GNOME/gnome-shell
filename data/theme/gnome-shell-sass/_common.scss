@@ -1152,6 +1152,11 @@ StScrollBar {
             padding: 10px;
           }
 
+          .message-close-button {
+            color: lighten($fg_color, 15%);
+            &:hover { color: darken($fg_color, 10%); }
+          }
+
           .message-media-control {
             padding: 12px;
             color: lighten($fg_color, 15%);
