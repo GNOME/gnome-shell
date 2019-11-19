@@ -306,7 +306,8 @@ class WeatherSection extends St.Button {
 
         let current = info;
         let infos = [info];
-        for (let i = 0; i < forecasts.length; i++) {
+        let nForecasts = Math.min(forecasts.length, 5);
+        for (let i = 0; i < nForecasts; i++) {
             let [ok_, timestamp] = forecasts[i].get_value_update();
             let datetime = new Date(timestamp * 1000);
             if (!_isToday(datetime))
