@@ -3,6 +3,8 @@
 
 const { Clutter, GLib, GObject, Gio, St } = imports.gi;
 
+const Params = imports.misc.params;
+
 var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var SPINNER_ANIMATION_TIME = 300;
 var SPINNER_ANIMATION_DELAY = 1000;
@@ -136,12 +138,18 @@ class AnimatedIcon extends Animation {
 
 var Spinner = GObject.registerClass(
 class Spinner extends AnimatedIcon {
-    _init(size, animate = false) {
+    _init(size, params) {
+        params = Params.parse(params, {
+            animate: false,
+            hideOnStop: false,
+        });
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         super._init(file, size);
 
         this.opacity = 0;
-        this._animate = animate;
+        this._animate = params.animate;
+        this._hideOnStop = params.hideOnStop;
+        this.visible = !this._hideOnStop;
     }
 
     _onDestroy() {
@@ -151,6 +159,7 @@ class Spinner extends AnimatedIcon {
 
     play() {
         this.remove_all_transitions();
+        this.show();
 
         if (this._animate) {
             super.play();
@@ -174,11 +183,18 @@ class Spinner extends AnimatedIcon {
                 opacity: 0,
                 duration: SPINNER_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.LINEAR,
-                onComplete: () => super.stop(),
+                onComplete: () => {
+                    super.stop();
+                    if (this._hideOnStop)
+                        this.hide();
+                },
             });
         } else {
             this.opacity = 0;
             super.stop();
+
+            if (this._hideOnStop)
+                this.hide();
         }
     }
 });
