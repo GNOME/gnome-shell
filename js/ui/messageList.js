@@ -333,7 +333,10 @@ var Message = class Message {
 
         let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
                                       icon_size: 16 });
-        this._closeButton = new St.Button({ child: closeIcon, opacity: 0 });
+        this._closeButton = new St.Button({
+            style_class: 'message-close-button',
+            child: closeIcon, opacity: 0,
+        });
         titleBox.add_actor(this._closeButton);
 
         this._bodyStack = new St.Widget({ x_expand: true });
