@@ -7,7 +7,6 @@ const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 var SCROLL_TIME = 100;
 
@@ -197,7 +196,7 @@ function formatTimeSpan(date) {
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
 
-function formatTime(time, params) {
+function formatTime(time, { timeOnly = false, ampm = true }) {
     let date;
     // HACK: The built-in Date type sucks at timezones, which we need for the
     //       world clock; it's often more convenient though, so allow either
@@ -217,11 +216,9 @@ function formatTime(time, params) {
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
     let clockFormat = _desktopSettings.get_string('clock-format');
 
-    params = Params.parse(params, { timeOnly: false });
-
     if (clockFormat == '24h') {
         // Show only the time if date is on today
-        if (daysAgo < 1 || params.timeOnly)
+        if (daysAgo < 1 || timeOnly)
             /* Translators: Time in 24h format */
             format = N_("%H\u2236%M");
         // Show the word "Yesterday" and time if date is on yesterday
@@ -250,9 +247,13 @@ function formatTime(time, params) {
             format = N_("%B %-d %Y, %H\u2236%M");
     } else {
         // Show only the time if date is on today
-        if (daysAgo < 1 || params.timeOnly) // eslint-disable-line no-lonely-if
+        if (ampm && (daysAgo < 1 || timeOnly)) // eslint-disable-line no-lonely-if
             /* Translators: Time in 12h format */
             format = N_("%l\u2236%M %p");
+        else if (daysAgo < 1 || timeOnly)
+            /* Translators: Time in short 12h format, without any suffix of "AM"
+             * or "PM", used when it is clear from the context what is meant */
+            format = N_("%l\u2236%M");
         // Show the word "Yesterday" and time if date is on yesterday
         else if (daysAgo < 2)
             /* Translators: this is the word "Yesterday" followed by a
