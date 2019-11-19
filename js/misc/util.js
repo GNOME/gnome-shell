@@ -217,7 +217,10 @@ function formatTime(time, params) {
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
     let clockFormat = _desktopSettings.get_string('clock-format');
 
-    params = Params.parse(params, { timeOnly: false });
+    params = Params.parse(params, {
+        timeOnly: false,
+        ampm: true,
+    });
 
     if (clockFormat == '24h') {
         // Show only the time if date is on today
@@ -278,6 +281,11 @@ function formatTime(time, params) {
             // xgettext:no-c-format
             format = N_("%B %-d %Y, %l\u2236%M %p");
     }
+
+    // Time in short 12h format, without the equivalent of "AM" or "PM"; used
+    // when it is clear from the context
+    if (!params.ampm)
+        format = format.replace(/\s*%p/g, '');
 
     let formattedTime = date.format(Shell.util_translate_time_string(format));
     // prepend LTR-mark to colon/ratio to force a text direction on times
