@@ -271,11 +271,13 @@ class WeatherSection extends St.Button {
         titleBox.add_child(new St.Label({ style_class: 'weather-header',
                                           x_align: Clutter.ActorAlign.START,
                                           x_expand: true,
+                                          y_align: Clutter.ActorAlign.END,
                                           text: _("Weather") }));
         box.add_child(titleBox);
 
         this._titleLocation = new St.Label({ style_class: 'weather-header location',
-                                             x_align: Clutter.ActorAlign.END });
+                                             x_align: Clutter.ActorAlign.END,
+                                             y_align: Clutter.ActorAlign.END });
         titleBox.add_child(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
