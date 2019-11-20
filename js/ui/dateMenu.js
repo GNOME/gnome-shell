@@ -333,9 +333,12 @@ class WeatherSection extends St.Button {
 
         let col = 0;
         infos.forEach(fc => {
-            let [ok_, timestamp] = fc.get_value_update();
+            const [valid, timestamp] = fc.get_value_update();
+            if (!valid || timestamp === 0)
+                return;  // 0 means 'never updated'
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
                 timeOnly: true,
+                ampm: false,
             });
 
             let icon = new St.Icon({ style_class: 'weather-forecast-icon',
