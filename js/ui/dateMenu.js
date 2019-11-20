@@ -376,7 +376,12 @@ class WeatherSection extends St.Button {
         }
 
         let info = this._weatherClient.info;
-        this._titleLocation.text = info.get_location().get_name();
+        let loc = info.get_location();
+        if (loc.get_level() != GWeather.LocationLevel.CITY && loc.has_coords()) {
+            let world = GWeather.Location.get_world();
+            loc = world.find_nearest_city(...loc.get_coords());
+        }
+        this._titleLocation.text = loc.get_name();
 
         if (this._weatherClient.loading) {
             this._setStatusLabel(_("Loading…"));
