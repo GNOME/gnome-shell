@@ -267,7 +267,7 @@ class WeatherSection extends St.Button {
 
         this.child = box;
 
-        let titleBox = new St.BoxLayout();
+        let titleBox = new St.BoxLayout({ style_class: 'weather-header-box' });
         titleBox.add_child(new St.Label({
             style_class: 'weather-header',
             x_align: Clutter.ActorAlign.START,
