@@ -2,7 +2,7 @@
 /* exported DateMenuButton */
 
 const { Clutter, Gio, GLib, GnomeDesktop,
-        GObject, GWeather, Shell, St } = imports.gi;
+        GObject, GWeather, Pango, Shell, St } = imports.gi;
 
 const Util = imports.misc.util;
 const Main = imports.ui.main;
@@ -365,6 +365,9 @@ class WeatherSection extends St.Button {
                 text: timeStr,
                 x_align: Clutter.ActorAlign.CENTER,
             });
+
+            temp.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            time.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             layout.attach(icon, col, 0, 1, 1);
             layout.attach(temp, col, 1, 1, 1);
