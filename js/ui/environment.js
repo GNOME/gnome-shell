@@ -297,6 +297,10 @@ function init() {
         return dt ? dt.format(format) : '';
     };
 
+    GLib.DateTime.prototype.toString = function () {
+        return this.format('%c');
+    };
+
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
     if (slowdownEnv) {
         let factor = parseFloat(slowdownEnv);
