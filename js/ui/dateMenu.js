@@ -312,17 +312,18 @@ class WeatherSection extends St.Button {
         let info = this._weatherClient.info;
         let forecasts = info.get_forecast_list();
 
+        let now = GLib.DateTime.new_now_local();
         let current = info;
         let infos = [info];
         for (let i = 0; i < forecasts.length; i++) {
             let [ok_, timestamp] = forecasts[i].get_value_update();
-            let datetime = new Date(timestamp * 1000);
-            if (!_isToday(datetime))
-                continue; // Ignore forecasts from other days
+            const datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (now.difference(datetime) > 0)
+                continue; // Ignore earlier forecasts
 
             [ok_, timestamp] = current.get_value_update();
-            let currenttime = new Date(timestamp * 1000);
-            if (currenttime.getHours() == datetime.getHours())
+            const currenttime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (datetime.difference(currenttime) < GLib.TIME_SPAN_HOUR)
                 continue; // Enforce a minimum interval of 1h
 
             current = forecasts[i];
