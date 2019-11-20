@@ -281,8 +281,11 @@ class WeatherSection extends St.Button {
         titleBox.add_child(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
-                                             layout_manager: layout });
+        this._forecastGrid = new St.Widget({
+            style_class: 'weather-grid',
+            layout_manager: layout,
+            x_align: Clutter.ActorAlign.START,
+        });
         layout.hookup_style(this._forecastGrid);
         box.add_child(this._forecastGrid);
 
