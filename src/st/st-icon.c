@@ -553,7 +553,7 @@ st_icon_set_icon_name (StIcon      *icon,
 
   g_return_if_fail (ST_IS_ICON (icon));
 
-  if (icon_name)
+  if (icon_name && *icon_name)
     gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
 
   g_object_freeze_notify (G_OBJECT (icon));
@@ -730,7 +730,7 @@ st_icon_set_fallback_icon_name (StIcon      *icon,
 
   g_return_if_fail (ST_IS_ICON (icon));
 
-  if (fallback_icon_name != NULL)
+  if (fallback_icon_name && *fallback_icon_name)
     gicon = g_themed_icon_new_with_default_fallbacks (fallback_icon_name);
 
   g_object_freeze_notify (G_OBJECT (icon));
