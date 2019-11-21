@@ -303,7 +303,9 @@ st_icon_init (StIcon *self)
 
   st_bin_set_child (ST_BIN (self), self->priv->icon_actor);
 
-  self->priv->icon_size = DEFAULT_ICON_SIZE;
+  /* Set the icon size to -1 here to make sure we apply the scale to the
+   * default size on the first "style-changed" signal. */
+  self->priv->icon_size = -1;
   self->priv->prop_icon_size = -1;
   self->priv->visible_gicon = &self->priv->gicon;
 
@@ -423,17 +425,14 @@ st_icon_update (StIcon *icon)
   if (theme_node == NULL)
     return;
 
+  if (priv->icon_size <= 0)
+    return;
+
   stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
   context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   g_object_get (context, "scale-factor", &paint_scale, NULL);
 
   cache = st_texture_cache_get_default ();
-
-  /* Set the icon actor to the requested size to make sure the StIcon has the
-   * correct size even when no texture is set. */
-  clutter_actor_set_size (priv->icon_actor,
-                          priv->icon_size * paint_scale,
-                          priv->icon_size * paint_scale);
 
   /* If we're still loading an older texture, cancel that. */
   if (priv->load_cancellable)
@@ -459,7 +458,7 @@ st_icon_update (StIcon *icon)
 
   st_texture_cache_load_gicon_async (cache, theme_node,
                                      *priv->visible_gicon,
-                                     priv->icon_size,
+                                     priv->icon_size / paint_scale,
                                      paint_scale, resource_scale,
                                      priv->load_cancellable, loaded_cb, icon);
 }
@@ -469,34 +468,32 @@ st_icon_update_icon_size (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
   int new_size;
+  gint scale = 1;
+  ClutterActor *stage;
+  StThemeContext *context;
 
-  if (priv->prop_icon_size > 0)
-    new_size = priv->prop_icon_size;
-  else if (priv->theme_icon_size > 0)
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
+  if (stage != NULL)
     {
-      gint scale;
-      ClutterActor *stage;
-      StThemeContext *context;
-
-      /* The theme will give us an already-scaled size, so we
-       * undo it here, as priv->icon_size is in unscaled pixels.
-       */
-      stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
       context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
       g_object_get (context, "scale-factor", &scale, NULL);
-      new_size = (gint) (priv->theme_icon_size / scale);
     }
+
+  if (priv->prop_icon_size > 0)
+    new_size = priv->prop_icon_size * scale;
+  else if (priv->theme_icon_size > 0)
+    new_size = priv->theme_icon_size;
   else
-    new_size = DEFAULT_ICON_SIZE;
+    new_size = DEFAULT_ICON_SIZE * scale;
 
   if (new_size != priv->icon_size)
     {
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (icon));
+      clutter_actor_set_size (priv->icon_actor, new_size, new_size);
       priv->icon_size = new_size;
       return TRUE;
     }
-  else
-    return FALSE;
+
+  return FALSE;
 }
 
 /**
