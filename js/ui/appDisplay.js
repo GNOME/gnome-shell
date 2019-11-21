@@ -463,10 +463,15 @@ var AllView = class AllView extends BaseAppView {
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(appId => {
-            let app = appSys.lookup_app(appId);
+            let icon = this._items[appId];
+            if (!icon) {
+                let app = appSys.lookup_app(appId);
 
-            let icon = new AppIcon(app,
-                                   { isDraggable: favoritesWritable });
+                icon = new AppIcon(app, {
+                    isDraggable: favoritesWritable,
+                });
+            }
+
             newApps.push(icon);
         });
 
@@ -918,8 +923,12 @@ var FrequentView = class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i],
-                                      { isDraggable: favoritesWritable });
+            let appIcon = this._items[mostUsed[i].get_id()];
+            if (!appIcon) {
+                appIcon = new AppIcon(mostUsed[i], {
+                    isDraggable: favoritesWritable,
+                });
+            }
             apps.push(appIcon);
         }
 
