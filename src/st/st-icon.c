@@ -625,7 +625,7 @@ st_icon_set_fallback_gicon (StIcon *icon,
  * This is a convenience method to get the icon name of the #GThemedIcon that
  * is currently set.
  *
- * Returns: (transfer none): The name of the icon or %NULL if no icon is set
+ * Returns: (transfer none): The name of the icon or an empty string
  **/
 const gchar *
 st_icon_get_icon_name (StIcon *icon)
@@ -639,7 +639,7 @@ st_icon_get_icon_name (StIcon *icon)
   if (priv->gicon && G_IS_THEMED_ICON (priv->gicon))
     return g_themed_icon_get_names (G_THEMED_ICON (priv->gicon)) [0];
   else
-    return NULL;
+    return "";
 }
 
 /**
@@ -677,7 +677,7 @@ st_icon_set_icon_name (StIcon      *icon,
  * This is a convenience method to get the icon name of the fallback
  * #GThemedIcon that is currently set.
  *
- * Returns: (transfer none): The name of the icon or %NULL if no icon is set
+ * Returns: (transfer none): The name of the icon or an empty string
  **/
 const gchar *
 st_icon_get_fallback_icon_name (StIcon *icon)
@@ -691,7 +691,7 @@ st_icon_get_fallback_icon_name (StIcon *icon)
   if (priv->fallback_gicon && G_IS_THEMED_ICON (priv->fallback_gicon))
     return g_themed_icon_get_names (G_THEMED_ICON (priv->fallback_gicon)) [0];
   else
-    return NULL;
+    return "";
 }
 
 /**
