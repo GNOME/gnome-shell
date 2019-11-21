@@ -188,7 +188,7 @@ var BaseAppView = GObject.registerClass({
             let iconIndex = this._allItems.indexOf(icon);
 
             this._allItems.splice(iconIndex, 1);
-            this._grid.removeItem(icon);
+            icon.destroy();
             delete this._items[icon.id];
         });
 
