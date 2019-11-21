@@ -1193,11 +1193,10 @@ st_theme_node_lookup_length (StThemeNode *node,
   else if (result == VALUE_INHERIT)
     inherit = TRUE;
 
-  if (inherit && node->parent_node &&
-      st_theme_node_lookup_length (node->parent_node, property_name, inherit, length))
-    return TRUE;
-  else
-    return FALSE;
+  if (inherit && node->parent_node)
+    return st_theme_node_lookup_length (node->parent_node, property_name, inherit, length);
+
+  return FALSE;
 }
 
 /**
