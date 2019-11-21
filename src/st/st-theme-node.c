@@ -1136,7 +1136,6 @@ get_length_from_term_int (StThemeNode *node,
 static GetFromTermResult
 get_length_internal (StThemeNode *node,
                      const char  *property_name,
-                     const char  *suffixed,
                      gdouble     *length)
 {
   int i;
@@ -1147,8 +1146,7 @@ get_length_internal (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0 ||
-          (suffixed != NULL && strcmp (decl->property->stryng->str, suffixed) == 0))
+      if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
           GetFromTermResult result = get_length_from_term (node, decl->value, FALSE, length);
           if (result != VALUE_NOT_FOUND)
@@ -1189,7 +1187,7 @@ st_theme_node_lookup_length (StThemeNode *node,
                              gboolean     inherit,
                              gdouble     *length)
 {
-  GetFromTermResult result = get_length_internal (node, property_name, NULL, length);
+  GetFromTermResult result = get_length_internal (node, property_name, length);
   if (result == VALUE_FOUND)
     return TRUE;
   else if (result == VALUE_INHERIT)
