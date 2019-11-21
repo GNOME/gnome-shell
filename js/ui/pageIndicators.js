@@ -2,6 +2,7 @@
 /* exported PageIndicators, AnimatedPageIndicators */
 
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const Cairo = imports.cairo;
 
 const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
 
@@ -32,7 +33,7 @@ var PageIndicators = GObject.registerClass({
             clip_to_allocation: true,
         });
         this._nPages = 0;
-        this._currentPage = undefined;
+        this._currentPosition = 0;
         this._reactive = true;
         this._reactive = true;
     }
@@ -66,10 +67,11 @@ var PageIndicators = GObject.registerClass({
                                                 button_mask: St.ButtonMask.ONE |
                                                              St.ButtonMask.TWO |
                                                              St.ButtonMask.THREE,
-                                                toggle_mode: true,
-                                                reactive: this._reactive,
-                                                checked: pageIndex == this._currentPage });
-                indicator.child = new St.Widget({ style_class: 'page-indicator-icon' });
+                                                reactive: this._reactive });
+                indicator.child = new St.DrawingArea({ style_class: 'page-indicator-icon' });
+                indicator.child.connect('repaint', () => {
+                    this.drawIndicatorIcon(indicator.child, pageIndex);
+                });
                 indicator.connect('clicked', () => {
                     this.emit('page-activated', pageIndex);
                 });
@@ -84,12 +86,36 @@ var PageIndicators = GObject.registerClass({
         this.visible = this._nPages > 1;
     }
 
-    setCurrentPage(currentPage) {
-        this._currentPage = currentPage;
+    drawIndicatorIcon(widget, index) {
+        let node = widget.get_theme_node();
+
+        let inactiveRadius = node.get_length('-page-indicator-inactive-radius');
+        let activeRadius = node.get_length('-page-indicator-active-radius');
+
+        let activeColor = node.get_color('-page-indicator-active-color');
+        let inactiveColor = node.get_color('-page-indicator-inactive-color');
+
+        let progress = Math.max(1 - Math.abs(this._currentPosition - index), 0);
+        let radius = inactiveRadius + (activeRadius - inactiveRadius) * progress;
+        let color = inactiveColor.interpolate(activeColor, progress);
+
+        let cr = widget.get_context();
+        cr.setOperator(Cairo.Operator.SOURCE);
+
+        cr.arc(widget.width / 2, widget.height / 2, radius, 0, Math.PI * 2);
+
+        Clutter.cairo_set_source_color(cr, color);
+        cr.fill();
+
+        cr.$dispose();
+    }
+
+    setCurrentPosition(currentPosition) {
+        this._currentPosition = currentPosition;
 
         let children = this.get_children();
         for (let i = 0; i < children.length; i++)
-            children[i].set_checked(i == this._currentPage);
+            children[i].child.queue_repaint();
     }
 });
 
