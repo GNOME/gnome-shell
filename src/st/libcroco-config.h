@@ -11,7 +11,3 @@
 #define G_DISABLE_CHECKS 0
 #endif
 #endif
-
-#ifndef CROCO_HAVE_LIBXML2
-#define CROCO_HAVE_LIBXML2 (1)
-#endif
