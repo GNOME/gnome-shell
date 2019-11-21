@@ -1397,15 +1397,15 @@ var FolderView = class FolderView extends BaseAppView {
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
         if (folderApps.length == 0) {
-            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-            let folders = settings.get_strv('folder-children');
-            folders.splice(folders.indexOf(this._id), 1);
-            settings.set_strv('folder-children', folders);
-
             // Resetting all keys deletes the relocatable schema
             let keys = this._folder.settings_schema.list_keys();
             for (let key of keys)
                 this._folder.reset(key);
+
+            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+            let folders = settings.get_strv('folder-children');
+            folders.splice(folders.indexOf(this._id), 1);
+            settings.set_strv('folder-children', folders);
         } else {
             this._folder.set_strv('apps', folderApps);
         }
