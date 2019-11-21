@@ -190,6 +190,8 @@ var BaseAppView = GObject.registerClass({
             this._allItems.splice(iconIndex, 1);
             this._grid.removeItem(icon);
             delete this._items[icon.id];
+
+            icon.destroy();
         });
 
         // Add new app icons
