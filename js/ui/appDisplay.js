@@ -453,7 +453,7 @@ var AllView = GObject.registerClass({
     }
 
     _loadApps() {
-        let newApps = [];
+        let appIcons = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 appInfo.get_id(); // catch invalid file encodings
@@ -478,7 +478,7 @@ var AllView = GObject.registerClass({
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
-            newApps.push(icon);
+            appIcons.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -499,10 +499,10 @@ var AllView = GObject.registerClass({
                                    { isDraggable: favoritesWritable });
             }
 
-            newApps.push(icon);
+            appIcons.push(icon);
         });
 
-        return newApps;
+        return appIcons;
     }
 
     // Overridden from BaseAppView
