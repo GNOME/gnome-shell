@@ -2069,6 +2069,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
 
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
-        this._vpnIndicator.visible = this._vpnIndicator.icon_name != '';
+        this._vpnIndicator.visible = this._vpnIndicator.icon_name != null;
     }
 });
