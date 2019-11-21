@@ -103,7 +103,7 @@ var AuthenticationDialog = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
         this._passwordBox.add_child(this._passwordEntry);
 
-        this._workspinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
+        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
             animate: true,
         });
         this._passwordBox.add(this._workSpinner);
