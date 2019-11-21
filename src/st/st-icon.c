@@ -37,6 +37,7 @@ enum
   PROP_0,
 
   PROP_GICON,
+  PROP_FALLBACK_GICON,
 
   PROP_ICON_NAME,
   PROP_FALLBACK_ICON_NAME,
@@ -88,6 +89,10 @@ st_icon_set_property (GObject      *gobject,
       st_icon_set_gicon (icon, g_value_get_object (value));
       break;
 
+    case PROP_FALLBACK_GICON:
+      st_icon_set_fallback_gicon (icon, g_value_get_object (value));
+      break;
+
     case PROP_ICON_NAME:
       st_icon_set_icon_name (icon, g_value_get_string (value));
       break;
@@ -118,6 +123,10 @@ st_icon_get_property (GObject    *gobject,
     {
     case PROP_GICON:
       g_value_set_object (value, st_icon_get_gicon (icon));
+      break;
+
+    case PROP_FALLBACK_GICON:
+      g_value_set_object (value, st_icon_get_fallback_gicon (icon));
       break;
 
     case PROP_ICON_NAME:
@@ -245,6 +254,13 @@ st_icon_class_init (StIconClass *klass)
     g_param_spec_object ("gicon",
                          "GIcon",
                          "The GIcon shown by this icon actor",
+                         G_TYPE_ICON,
+                         ST_PARAM_READWRITE);
+
+  props[PROP_FALLBACK_GICON] =
+    g_param_spec_object ("fallback-gicon",
+                         "Fallback GIcon",
+                         "The fallback GIcon shown if the normal icon fails to load",
                          G_TYPE_ICON,
                          ST_PARAM_READWRITE);
 
@@ -545,6 +561,59 @@ st_icon_set_gicon (StIcon *icon,
     priv->gicon = g_object_ref (gicon);
 
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+
+  st_icon_update (icon);
+}
+
+/**
+ * st_icon_get_fallback_gicon:
+ * @icon: a #StIcon
+ *
+ * Gets the currently set fallback #GIcon.
+ *
+ * Returns: (transfer none): The fallback #GIcon, if set, otherwise %NULL
+ **/
+GIcon *
+st_icon_get_fallback_gicon (StIcon *icon)
+{
+  g_return_val_if_fail (ST_IS_ICON (icon), NULL);
+
+  return icon->priv->fallback_gicon;
+}
+
+/**
+ * st_icon_set_fallback_gicon:
+ * @icon: a #StIcon
+ * @fallback_gicon: (nullable): the fallback #GIcon
+ *
+ * Sets a fallback #GIcon to show if the normal icon fails to load.
+ * If @fallback_gicon is %NULL or fails to load, the icon is unset and no
+ * texture will be visible for the fallback icon.
+ **/
+void
+st_icon_set_fallback_gicon (StIcon *icon,
+                            GIcon  *fallback_gicon)
+{
+  StIconPrivate *priv;
+
+  g_return_if_fail (ST_IS_ICON (icon));
+  g_return_if_fail (fallback_gicon == NULL || G_IS_ICON (fallback_gicon));
+
+  priv = icon->priv;
+
+  if (g_icon_equal (priv->fallback_gicon, fallback_gicon))
+    return;
+
+  if (priv->fallback_gicon)
+    {
+      g_object_unref (priv->fallback_gicon);
+      priv->fallback_gicon = NULL;
+    }
+
+  if (fallback_gicon)
+    priv->fallback_gicon = g_object_ref (fallback_gicon);
+
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_GICON]);
 
   st_icon_update (icon);
 }
