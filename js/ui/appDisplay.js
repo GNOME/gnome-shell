@@ -2061,6 +2061,7 @@ var AppIcon = class AppIcon {
             });
         }
 
+        this._dragMonitor = null;
         this._itemDragBeginId = Main.overview.connect(
             'item-drag-begin', this._onDragBegin.bind(this));
         this._itemDragEndId = Main.overview.connect(
@@ -2085,6 +2086,12 @@ var AppIcon = class AppIcon {
         }
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
         if (this._draggable) {
             if (this._dragging)
                 Main.overview.endItemDrag(this);
