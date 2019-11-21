@@ -1549,20 +1549,24 @@ StScrollBar {
   }
 
   .page-indicator {
-    padding: 15px 20px;
+    padding: 7px 16px;
 
     .page-indicator-icon {
       width: 12px;
       height: 12px;
-      background-color: transparent;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 12px;
+      -page-indicator-inactive-radius: 4px;
+      -page-indicator-active-radius: 6px;
+      -page-indicator-inactive-color: rgba(255, 255, 255, 0.5);
+      -page-indicator-active-color: white;
     }
 
-    &:hover .page-indicator-icon { border-color: white; }
-    &:active .page-indicator-icon { border: none; margin: 2px; background-color: white; }
-    &:checked .page-indicator-icon,
-    &:checked:active .page-indicator-icon { background-color: white;}
+    &:hover .page-indicator-icon {
+      -page-indicator-inactive-color: white;
+    }
+
+    &:active .page-indicator-icon {
+      -page-indicator-inactive-radius: 3px;
+    }
   }
 
   .no-frequent-applications-label { @extend %status_text; }
@@ -1762,8 +1766,12 @@ StScrollBar {
         padding: 4px 4px;
 
         .page-indicator-icon {
-            width: 6px;
-            height: 6px
+            width: 8px;
+            height: 8px;
+            -page-indicator-inactive-radius: 3px;
+            -page-indicator-active-radius: 4px;
+            -page-indicator-inactive-color: rgba(255, 255, 255, 0.5);
+            -page-indicator-active-color: white;
         }
     }
 }

@@ -920,9 +920,14 @@ var EmojiSelection = GObject.registerClass({
         this.add_child(this._pageIndicator);
         this._pageIndicator.setReactive(false);
 
+        this._emojiPager.connect('notify::delta', (pager) => {
+            this._updateIndicatorPosition();
+        });
+
         let bottomRow = this._createBottomRow();
         this.add_child(bottomRow);
 
+        this._curPage = 0;
         this._emojiPager.setCurrentPage(0);
     }
 
@@ -937,13 +942,19 @@ var EmojiSelection = GObject.registerClass({
     }
 
     _onPageChanged(sectionLabel, page, nPages) {
+        this._curPage = page;
         this._pageIndicator.setNPages(nPages);
-        this._pageIndicator.setCurrentPage(page);
+        this._updateIndicatorPosition();
 
         for (let i = 0; i < this._sections.length; i++) {
             let sect = this._sections[i];
             sect.button.setLatched(sectionLabel == sect.label);
         }
+    }
+
+    _updateIndicatorPosition() {
+        this._pageIndicator.setCurrentPosition(this._curPage -
+            this._emojiPager.delta / this._emojiPager.width);
     }
 
     _findSection(emoji) {
