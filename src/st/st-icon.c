@@ -117,7 +117,7 @@ st_icon_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_GICON:
-      g_value_set_object (value, icon->priv->gicon);
+      g_value_set_object (value, st_icon_get_gicon (icon));
       break;
 
     case PROP_ICON_NAME:
