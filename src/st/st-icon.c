@@ -369,8 +369,7 @@ opacity_changed_cb (GObject *object,
   StIcon *icon = user_data;
   StIconPrivate *priv = icon->priv;
 
-  g_signal_handler_disconnect (priv->pending_texture, priv->opacity_handler_id);
-  priv->opacity_handler_id = 0;
+  g_clear_signal_handler (&priv->opacity_handler_id, priv->pending_texture);
 
   st_icon_finish_update (icon);
 }

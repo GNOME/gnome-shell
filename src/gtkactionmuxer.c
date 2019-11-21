@@ -540,7 +540,7 @@ gtk_action_muxer_free_group (gpointer data)
 
   /* 'for loop' or 'four loop'? */
   for (i = 0; i < 4; i++)
-    g_signal_handler_disconnect (group->group, group->handler_ids[i]);
+    g_clear_signal_handler (&group->handler_ids[i], group->group);
 
   g_object_unref (group->group);
   g_free (group->prefix);
