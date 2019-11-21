@@ -139,13 +139,22 @@ var SwitcherPopup = GObject.registerClass({
             GLib.PRIORITY_DEFAULT,
             POPUP_DELAY_TIMEOUT,
             () => {
-                Main.osdWindowManager.hideAll();
-                this.opacity = 255;
-                this._initialDelayTimeoutId = 0;
+                this._showImmediately();
                 return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._initialDelayTimeoutId, '[gnome-shell] Main.osdWindow.cancel');
         return true;
+    }
+
+    _showImmediately() {
+        if (this._initialDelayTimeoutId === 0)
+            return;
+
+        GLib.source_remove(this._initialDelayTimeoutId);
+        this._initialDelayTimeoutId = 0;
+
+        Main.osdWindowManager.hideAll();
+        this.opacity = 255;
     }
 
     _next() {
@@ -167,8 +176,10 @@ var SwitcherPopup = GObject.registerClass({
 
         this._disableHover();
 
-        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
+        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE) {
+            this._showImmediately();
             return Clutter.EVENT_STOP;
+        }
 
         // Note: pressing one of the below keys will destroy the popup only if
         // that key is not used by the active popup's keyboard shortcut
