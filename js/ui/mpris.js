@@ -256,18 +256,20 @@ class MediaSection extends MessageList.MessageListSection {
             return;
 
         let player = new MprisPlayer(busName);
+        let message = null;
         player.connect('closed',
             () => {
                 this._players.delete(busName);
             });
         player.connect('show', () => {
-            this._message = new MediaMessage(player);
-            this.addMessage(this._message, true);
+            message = new MediaMessage(player);
+            this.addMessage(message, true);
         });
         player.connect('hide', () => {
-            this.removeMessage(this._message, true);
-            this._message = null;
+            this.removeMessage(message, true);
+            message = null;
         });
+
         this._players.set(busName, player);
     }
 
@@ -288,10 +290,7 @@ class MediaSection extends MessageList.MessageListSection {
         if (!name.startsWith(MPRIS_PLAYER_PREFIX))
             return;
 
-        if (newOwner && !oldOwner) {
-            if (this._message)
-                this.removeMessage(this._message);
+        if (newOwner && !oldOwner)
             this._addPlayer(name);
-        }
     }
 });
