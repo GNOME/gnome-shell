@@ -54,8 +54,8 @@ struct _StThemeNodeTransitionPrivate {
 
   ClutterTimeline *timeline;
 
-  guint timeline_completed_id;
-  guint timeline_new_frame_id;
+  gulong timeline_completed_id;
+  gulong timeline_new_frame_id;
 
   ClutterActorBox last_allocation;
   ClutterActorBox offscreen_box;
@@ -410,12 +410,8 @@ st_theme_node_transition_dispose (GObject *object)
 
   if (priv->timeline)
     {
-      if (priv->timeline_completed_id != 0)
-        g_signal_handler_disconnect (priv->timeline,
-                                     priv->timeline_completed_id);
-      if (priv->timeline_new_frame_id != 0)
-        g_signal_handler_disconnect (priv->timeline,
-                                     priv->timeline_new_frame_id);
+      g_clear_signal_handler (&priv->timeline_completed_id, priv->timeline);
+      g_clear_signal_handler (&priv->timeline_new_frame_id, priv->timeline);
 
       g_clear_object (&priv->timeline);
     }
