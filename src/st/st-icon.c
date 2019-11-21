@@ -572,15 +572,7 @@ st_icon_set_gicon (StIcon *icon, GIcon *gicon)
   if (g_icon_equal (icon->priv->gicon, gicon)) /* do nothing */
     return;
 
-  if (icon->priv->gicon)
-    {
-      g_object_unref (icon->priv->gicon);
-      icon->priv->gicon = NULL;
-    }
-
-  if (gicon)
-    icon->priv->gicon = g_object_ref (gicon);
-
+  g_set_object (&icon->priv->gicon, gicon);
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
 
   st_icon_update (icon);
