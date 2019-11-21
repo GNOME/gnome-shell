@@ -23,9 +23,9 @@ struct _ShellGtkEmbedPrivate
   ShellEmbeddedWindow *window;
 
   ClutterActor *window_actor;
-  guint window_actor_destroyed_handler;
+  gulong window_actor_destroyed_handler;
 
-  guint window_created_handler;
+  gulong window_created_handler;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_TYPE_CLONE);
@@ -47,9 +47,8 @@ shell_gtk_embed_remove_window_actor (ShellGtkEmbed *embed)
 
   if (priv->window_actor)
     {
-      g_signal_handler_disconnect (priv->window_actor,
-                                   priv->window_actor_destroyed_handler);
-      priv->window_actor_destroyed_handler = 0;
+      g_clear_signal_handler (&priv->window_actor_destroyed_handler,
+                              priv->window_actor);
 
       g_object_unref (priv->window_actor);
       priv->window_actor = NULL;
@@ -116,9 +115,8 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
 
       /* Now that we've found the window we don't need to listen for
          new windows anymore */
-      g_signal_handler_disconnect (display,
-                                   priv->window_created_handler);
-      priv->window_created_handler = 0;
+      g_clear_signal_handler (&priv->window_created_handler,
+                              display);
     }
 }
 
@@ -148,12 +146,7 @@ shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
 
   if (priv->window)
     {
-      if (priv->window_created_handler)
-        {
-          g_signal_handler_disconnect (display,
-                                       priv->window_created_handler);
-          priv->window_created_handler = 0;
-        }
+      g_clear_signal_handler (&priv->window_created_handler, display);
 
       shell_gtk_embed_remove_window_actor (embed);
 

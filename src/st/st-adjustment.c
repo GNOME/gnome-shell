@@ -623,7 +623,7 @@ transition_closure_free (gpointer data)
   clos = data;
   timeline = CLUTTER_TIMELINE (clos->transition);
 
-  g_signal_handler_disconnect (clos->transition, clos->completed_id);
+  g_clear_signal_handler (&clos->completed_id, clos->transition);
 
   if (clutter_timeline_is_playing (timeline))
     clutter_timeline_stop (timeline);
