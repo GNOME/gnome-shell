@@ -425,7 +425,7 @@ var AllView = class AllView extends BaseAppView {
     }
 
     _loadApps() {
-        let newApps = [];
+        let appIcons = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 (appInfo.get_id()); // catch invalid file encodings
@@ -450,7 +450,7 @@ var AllView = class AllView extends BaseAppView {
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
-            newApps.push(icon);
+            appIcons.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -472,10 +472,10 @@ var AllView = class AllView extends BaseAppView {
                 });
             }
 
-            newApps.push(icon);
+            appIcons.push(icon);
         });
 
-        return newApps;
+        return appIcons;
     }
 
     // Overridden from BaseAppView
