@@ -37,9 +37,11 @@ enum
   PROP_0,
 
   PROP_GICON,
+
   PROP_ICON_NAME,
-  PROP_ICON_SIZE,
   PROP_FALLBACK_ICON_NAME,
+
+  PROP_ICON_SIZE,
 
   N_PROPS
 };
@@ -90,12 +92,12 @@ st_icon_set_property (GObject      *gobject,
       st_icon_set_icon_name (icon, g_value_get_string (value));
       break;
 
-    case PROP_ICON_SIZE:
-      st_icon_set_icon_size (icon, g_value_get_int (value));
-      break;
-
     case PROP_FALLBACK_ICON_NAME:
       st_icon_set_fallback_icon_name (icon, g_value_get_string (value));
+      break;
+
+    case PROP_ICON_SIZE:
+      st_icon_set_icon_size (icon, g_value_get_int (value));
       break;
 
     default:
@@ -122,12 +124,12 @@ st_icon_get_property (GObject    *gobject,
       g_value_set_string (value, st_icon_get_icon_name (icon));
       break;
 
-    case PROP_ICON_SIZE:
-      g_value_set_int (value, st_icon_get_icon_size (icon));
-      break;
-
     case PROP_FALLBACK_ICON_NAME:
       g_value_set_string (value, st_icon_get_fallback_icon_name (icon));
+      break;
+
+    case PROP_ICON_SIZE:
+      g_value_set_int (value, st_icon_get_icon_size (icon));
       break;
 
     default:
@@ -253,19 +255,19 @@ st_icon_class_init (StIconClass *klass)
                          NULL,
                          ST_PARAM_READWRITE);
 
-  props[PROP_ICON_SIZE] =
-    g_param_spec_int ("icon-size",
-                      "Icon size",
-                      "The size if the icon, if positive. Otherwise the size will be derived from the current style",
-                      -1, G_MAXINT, -1,
-                      ST_PARAM_READWRITE);
-
   props[PROP_FALLBACK_ICON_NAME] =
     g_param_spec_string ("fallback-icon-name",
                          "Fallback icon name",
                          "A fallback icon name",
                          NULL,
                          ST_PARAM_READWRITE);
+
+  props[PROP_ICON_SIZE] =
+    g_param_spec_int ("icon-size",
+                      "Icon size",
+                      "The size if the icon, if positive. Otherwise the size will be derived from the current style",
+                      -1, G_MAXINT, -1,
+                      ST_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
@@ -495,6 +497,49 @@ st_icon_new (void)
   return g_object_new (ST_TYPE_ICON, NULL);
 }
 
+/**
+ * st_icon_get_gicon:
+ * @icon: an icon
+ *
+ * Return value: (transfer none): the override GIcon, if set, or NULL
+ */
+GIcon *
+st_icon_get_gicon (StIcon *icon)
+{
+  g_return_val_if_fail (ST_IS_ICON (icon), NULL);
+
+  return icon->priv->gicon;
+}
+
+/**
+ * st_icon_set_gicon:
+ * @icon: an icon
+ * @gicon: (nullable): a #GIcon to override :icon-name
+ */
+void
+st_icon_set_gicon (StIcon *icon,
+                   GIcon  *gicon)
+{
+  g_return_if_fail (ST_IS_ICON (icon));
+  g_return_if_fail (gicon == NULL || G_IS_ICON (gicon));
+
+  if (g_icon_equal (icon->priv->gicon, gicon)) /* do nothing */
+    return;
+
+  if (icon->priv->gicon)
+    {
+      g_object_unref (icon->priv->gicon);
+      icon->priv->gicon = NULL;
+    }
+
+  if (gicon)
+    icon->priv->gicon = g_object_ref (gicon);
+
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+
+  st_icon_update (icon);
+}
+
 const gchar *
 st_icon_get_icon_name (StIcon *icon)
 {
@@ -544,44 +589,46 @@ st_icon_set_icon_name (StIcon      *icon,
   st_icon_update (icon);
 }
 
-/**
- * st_icon_get_gicon:
- * @icon: an icon
- *
- * Return value: (transfer none): the override GIcon, if set, or NULL
- */
-GIcon *
-st_icon_get_gicon (StIcon *icon)
+const gchar *
+st_icon_get_fallback_icon_name (StIcon *icon)
 {
+  StIconPrivate *priv;
+
   g_return_val_if_fail (ST_IS_ICON (icon), NULL);
 
-  return icon->priv->gicon;
+  priv = icon->priv;
+
+  if (priv->fallback_gicon && G_IS_THEMED_ICON (priv->fallback_gicon))
+    return g_themed_icon_get_names (G_THEMED_ICON (priv->fallback_gicon)) [0];
+  else
+    return NULL;
 }
 
-/**
- * st_icon_set_gicon:
- * @icon: an icon
- * @gicon: (nullable): a #GIcon to override :icon-name
- */
 void
-st_icon_set_gicon (StIcon *icon, GIcon *gicon)
+st_icon_set_fallback_icon_name (StIcon      *icon,
+                                const gchar *icon_name)
 {
+  StIconPrivate *priv = icon->priv;
+  GIcon *gicon = NULL;
+
   g_return_if_fail (ST_IS_ICON (icon));
-  g_return_if_fail (gicon == NULL || G_IS_ICON (gicon));
 
-  if (g_icon_equal (icon->priv->gicon, gicon)) /* do nothing */
-    return;
+  if (icon_name != NULL)
+    gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
 
-  if (icon->priv->gicon)
+  if (g_icon_equal (priv->fallback_gicon, gicon)) /* do nothing */
     {
-      g_object_unref (icon->priv->gicon);
-      icon->priv->gicon = NULL;
+      if (gicon)
+        g_object_unref (gicon);
+      return;
     }
 
-  if (gicon)
-    icon->priv->gicon = g_object_ref (gicon);
+  if (priv->fallback_gicon)
+    g_object_unref (priv->fallback_gicon);
 
-  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+  priv->fallback_gicon = gicon;
+
+  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_ICON_NAME]);
 
   st_icon_update (icon);
 }
@@ -627,48 +674,4 @@ st_icon_set_icon_size (StIcon *icon,
         st_icon_update (icon);
       g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_ICON_SIZE]);
     }
-}
-
-const gchar *
-st_icon_get_fallback_icon_name (StIcon *icon)
-{
-  StIconPrivate *priv;
-
-  g_return_val_if_fail (ST_IS_ICON (icon), NULL);
-
-  priv = icon->priv;
-
-  if (priv->fallback_gicon && G_IS_THEMED_ICON (priv->fallback_gicon))
-    return g_themed_icon_get_names (G_THEMED_ICON (priv->fallback_gicon)) [0];
-  else
-    return NULL;
-}
-
-void
-st_icon_set_fallback_icon_name (StIcon      *icon,
-                                const gchar *fallback_icon_name)
-{
-  StIconPrivate *priv = icon->priv;
-  GIcon *gicon = NULL;
-
-  g_return_if_fail (ST_IS_ICON (icon));
-
-  if (fallback_icon_name != NULL)
-    gicon = g_themed_icon_new_with_default_fallbacks (fallback_icon_name);
-
-  if (g_icon_equal (priv->fallback_gicon, gicon)) /* do nothing */
-    {
-      if (gicon)
-        g_object_unref (gicon);
-      return;
-    }
-
-  if (priv->fallback_gicon)
-    g_object_unref (priv->fallback_gicon);
-
-  priv->fallback_gicon = gicon;
-
-  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_ICON_NAME]);
-
-  st_icon_update (icon);
 }
