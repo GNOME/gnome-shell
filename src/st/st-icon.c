@@ -520,20 +520,24 @@ void
 st_icon_set_gicon (StIcon *icon,
                    GIcon  *gicon)
 {
+  StIconPrivate *priv;
+
   g_return_if_fail (ST_IS_ICON (icon));
   g_return_if_fail (gicon == NULL || G_IS_ICON (gicon));
 
-  if (g_icon_equal (icon->priv->gicon, gicon)) /* do nothing */
+  priv = icon->priv;
+
+  if (g_icon_equal (priv->gicon, gicon))
     return;
 
-  if (icon->priv->gicon)
+  if (priv->gicon)
     {
-      g_object_unref (icon->priv->gicon);
-      icon->priv->gicon = NULL;
+      g_object_unref (priv->gicon);
+      priv->gicon = NULL;
     }
 
   if (gicon)
-    icon->priv->gicon = g_object_ref (gicon);
+    priv->gicon = g_object_ref (gicon);
 
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
 
