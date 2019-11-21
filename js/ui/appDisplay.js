@@ -315,6 +315,9 @@ var AllView = GObject.registerClass({
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
+        this._adjustment.connect('notify::value', adj => {
+            this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
+        });
 
         this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
         this._pageIndicators.connect('page-activated',
@@ -561,7 +564,7 @@ var AllView = GObject.registerClass({
 
         if (!this.mapped) {
             this._adjustment.value = this._grid.getPageY(pageNumber);
-            this._pageIndicators.setCurrentPage(pageNumber);
+            this._pageIndicators.setCurrentPosition(pageNumber);
             this._grid.currentPage = pageNumber;
             return;
         }
@@ -597,8 +600,6 @@ var AllView = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: time,
         });
-
-        this._pageIndicators.setCurrentPage(pageNumber);
     }
 
     _diffToPage(pageNumber) {
@@ -754,7 +755,7 @@ var AllView = GObject.registerClass({
                 this._adjustment.value = 0;
                 this._grid.currentPage = 0;
                 this._pageIndicators.setNPages(this._grid.nPages());
-                this._pageIndicators.setCurrentPage(0);
+                this._pageIndicators.setCurrentPosition(0);
                 return GLib.SOURCE_REMOVE;
             });
         }
