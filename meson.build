@@ -18,7 +18,6 @@ cogl_pc = 'mutter-cogl-' + mutter_api_version
 cogl_pango_pc = 'mutter-cogl-pango-' + mutter_api_version
 libmutter_pc = 'libmutter-' + mutter_api_version
 
-croco_req = '>= 0.6.8'
 ecal_req = '>= 3.33.1'
 eds_req = '>= 3.17.2'
 gcr_req = '>= 3.7.5'
@@ -87,7 +86,6 @@ gio_unix_dep = dependency('gio-unix-2.0', version: gio_req)
 gjs_dep = dependency('gjs-1.0', version: gjs_req)
 gtk_dep = dependency('gtk+-3.0', version: gtk_req)
 libxml_dep = dependency('libxml-2.0')
-croco_dep = dependency('libcroco-0.6', version: croco_req)
 clutter_dep = dependency(clutter_pc, version: mutter_req)
 cogl_dep = dependency(cogl_pc, version: mutter_req)
 cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
