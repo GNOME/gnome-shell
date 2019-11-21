@@ -655,7 +655,6 @@ void
 st_icon_set_icon_name (StIcon      *icon,
                        const gchar *icon_name)
 {
-  StIconPrivate *priv = icon->priv;
   GIcon *gicon = NULL;
 
   g_return_if_fail (ST_IS_ICON (icon));
@@ -663,26 +662,12 @@ st_icon_set_icon_name (StIcon      *icon,
   if (icon_name)
     gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
 
-  if (g_icon_equal (priv->gicon, gicon)) /* do nothing */
-    {
-      if (gicon)
-        g_object_unref (gicon);
-      return;
-    }
-
-  if (priv->gicon)
-    g_object_unref (priv->gicon);
-
   g_object_freeze_notify (G_OBJECT (icon));
 
-  priv->gicon = gicon;
-
-  g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+  st_icon_set_gicon (icon, gicon);
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_ICON_NAME]);
 
   g_object_thaw_notify (G_OBJECT (icon));
-
-  st_icon_update (icon);
 }
 
 /**
@@ -723,7 +708,6 @@ void
 st_icon_set_fallback_icon_name (StIcon      *icon,
                                 const gchar *icon_name)
 {
-  StIconPrivate *priv = icon->priv;
   GIcon *gicon = NULL;
 
   g_return_if_fail (ST_IS_ICON (icon));
@@ -731,21 +715,12 @@ st_icon_set_fallback_icon_name (StIcon      *icon,
   if (icon_name != NULL)
     gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
 
-  if (g_icon_equal (priv->fallback_gicon, gicon)) /* do nothing */
-    {
-      if (gicon)
-        g_object_unref (gicon);
-      return;
-    }
+  g_object_freeze_notify (G_OBJECT (icon));
 
-  if (priv->fallback_gicon)
-    g_object_unref (priv->fallback_gicon);
-
-  priv->fallback_gicon = gicon;
-
+  st_icon_set_fallback_gicon (icon, gicon);
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_ICON_NAME]);
 
-  st_icon_update (icon);
+  g_object_thaw_notify (G_OBJECT (icon));
 }
 
 /**
