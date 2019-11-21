@@ -789,8 +789,7 @@ app_free (App *app)
   g_hash_table_unref (app->appointments);
 
   g_object_unref (app->connection);
-  g_signal_handler_disconnect (app->sources,
-                               app->sources_signal_id);
+  g_clear_signal_handler (&app->sources_signal_id, app->sources);
   g_object_unref (app->sources);
 
   if (app->changed_timeout_id != 0)
