@@ -186,10 +186,11 @@ var BaseAppView = GObject.registerClass({
         // Remove old app icons
         removedApps.forEach(icon => {
             let iconIndex = this._allItems.indexOf(icon);
+            let id = icon.id;
 
             this._allItems.splice(iconIndex, 1);
-            this._grid.removeItem(icon);
-            delete this._items[icon.id];
+            icon.destroy();
+            delete this._items[id];
         });
 
         // Add new app icons
@@ -453,7 +454,7 @@ var AllView = GObject.registerClass({
     }
 
     _loadApps() {
-        let newApps = [];
+        let appIcons = [];
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 appInfo.get_id(); // catch invalid file encodings
@@ -478,7 +479,7 @@ var AllView = GObject.registerClass({
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
-            newApps.push(icon);
+            appIcons.push(icon);
             this.folderIcons.push(icon);
         });
 
@@ -491,14 +492,19 @@ var AllView = GObject.registerClass({
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(appId => {
-            let app = appSys.lookup_app(appId);
+            let icon = this._items[appId];
+            if (!icon) {
+                let app = appSys.lookup_app(appId);
 
-            let icon = new AppIcon(app,
-                                   { isDraggable: favoritesWritable });
-            newApps.push(icon);
+                icon = new AppIcon(app, {
+                    isDraggable: favoritesWritable,
+                });
+            }
+
+            appIcons.push(icon);
         });
 
-        return newApps;
+        return appIcons;
     }
 
     // Overridden from BaseAppView
@@ -947,8 +953,12 @@ class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i],
-                                      { isDraggable: favoritesWritable });
+            let appIcon = this._items[mostUsed[i].get_id()];
+            if (!appIcon) {
+                appIcon = new AppIcon(mostUsed[i], {
+                    isDraggable: favoritesWritable,
+                });
+            }
             apps.push(appIcon);
         }
 
@@ -1444,15 +1454,15 @@ class FolderView extends BaseAppView {
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
         if (folderApps.length == 0) {
-            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-            let folders = settings.get_strv('folder-children');
-            folders.splice(folders.indexOf(this._id), 1);
-            settings.set_strv('folder-children', folders);
-
             // Resetting all keys deletes the relocatable schema
             let keys = this._folder.settings_schema.list_keys();
             for (let key of keys)
                 this._folder.reset(key);
+
+            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+            let folders = settings.get_strv('folder-children');
+            folders.splice(folders.indexOf(this._id), 1);
+            settings.set_strv('folder-children', folders);
         } else {
             this._folder.set_strv('apps', folderApps);
         }
@@ -2123,6 +2133,7 @@ var AppIcon = GObject.registerClass({
             });
         }
 
+        this._dragMonitor = null;
         this._itemDragBeginId = Main.overview.connect(
             'item-drag-begin', this._onDragBegin.bind(this));
         this._itemDragEndId = Main.overview.connect(
@@ -2147,6 +2158,12 @@ var AppIcon = GObject.registerClass({
         }
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
         if (this._draggable) {
             if (this._dragging)
                 Main.overview.endItemDrag(this);
