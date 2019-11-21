@@ -707,7 +707,7 @@ typedef struct {
   ClutterActor *actor;
   gint size;
   GObject *source;
-  guint notify_signal_id;
+  gulong notify_signal_id;
   gboolean weakref_active;
 } StTextureCachePropertyBind;
 
@@ -772,7 +772,7 @@ st_texture_cache_bind_weak_notify (gpointer     data,
 {
   StTextureCachePropertyBind *bind = data;
   bind->weakref_active = FALSE;
-  g_signal_handler_disconnect (bind->source, bind->notify_signal_id);
+  g_clear_signal_handler (&bind->notify_signal_id, bind->source);
 }
 
 static void

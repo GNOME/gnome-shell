@@ -308,11 +308,8 @@ st_widget_dispose (GObject *gobject)
 
   g_clear_pointer (&priv->label_actor, g_object_unref);
 
-  if (priv->texture_file_changed_id != 0)
-    {
-      g_signal_handler_disconnect (st_texture_cache_get_default (), priv->texture_file_changed_id);
-      priv->texture_file_changed_id = 0;
-    }
+  g_clear_signal_handler (&priv->texture_file_changed_id,
+                          st_texture_cache_get_default ());
 
   g_clear_object (&priv->first_visible_child);
   g_clear_object (&priv->last_visible_child);

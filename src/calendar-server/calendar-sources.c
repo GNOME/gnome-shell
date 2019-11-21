@@ -112,7 +112,7 @@ static CalendarSources *calendar_sources_singleton = NULL;
 static void
 client_data_free (ClientData *data)
 {
-  g_signal_handler_disconnect (data->client, data->backend_died_id);
+  g_clear_signal_handler (&data->backend_died_id, data->client);
   g_object_unref (data->client);
   g_slice_free (ClientData, data);
 }
@@ -259,12 +259,12 @@ calendar_sources_finalize (GObject *object)
 
   if (sources->priv->registry)
     {
-      g_signal_handler_disconnect (sources->priv->registry,
-                                   sources->priv->source_added_id);
-      g_signal_handler_disconnect (sources->priv->registry,
-                                   sources->priv->source_changed_id);
-      g_signal_handler_disconnect (sources->priv->registry,
-                                   sources->priv->source_removed_id);
+      g_clear_signal_handler (&sources->priv->source_added_id,
+                              sources->priv->registry);
+      g_clear_signal_handler (&sources->priv->source_changed_id,
+                              sources->priv->registry);
+      g_clear_signal_handler (&sources->priv->source_removed_id,
+                              sources->priv->registry);
       g_object_unref (sources->priv->registry);
     }
   sources->priv->registry = NULL;

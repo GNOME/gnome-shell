@@ -35,7 +35,7 @@ typedef struct {
   guint refcount;
 
   /* Signal connection to dirty window sort list on workspace changes */
-  guint workspace_switch_id;
+  gulong workspace_switch_id;
 
   GSList *windows;
 
@@ -1445,7 +1445,7 @@ unref_running_state (ShellAppRunningState *state)
   if (state->refcount > 0)
     return;
 
-  g_signal_handler_disconnect (workspace_manager, state->workspace_switch_id);
+  g_clear_signal_handler (&state->workspace_switch_id, workspace_manager);
 
   g_clear_object (&state->application_proxy);
 
