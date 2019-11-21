@@ -1,9 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported PageIndicators, AnimatedPageIndicators */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, Graphene, GObject, Meta, St } = imports.gi;
 
 const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
+
+const INDICATOR_INACTIVE_OPACITY = 128;
+const INDICATOR_INACTIVE_OPACITY_HOVER = 255;
+const INDICATOR_INACTIVE_SCALE = 2 / 3;
+const INDICATOR_INACTIVE_SCALE_PRESSED = 0.5;
 
 var INDICATORS_BASE_TIME = 250;
 var INDICATORS_BASE_TIME_OUT = 125;
@@ -32,7 +37,7 @@ var PageIndicators = GObject.registerClass({
             clip_to_allocation: true,
         });
         this._nPages = 0;
-        this._currentPage = undefined;
+        this._currentPosition = 0;
         this._reactive = true;
         this._reactive = true;
     }
@@ -66,13 +71,21 @@ var PageIndicators = GObject.registerClass({
                                                 button_mask: St.ButtonMask.ONE |
                                                              St.ButtonMask.TWO |
                                                              St.ButtonMask.THREE,
-                                                toggle_mode: true,
-                                                reactive: this._reactive,
-                                                checked: pageIndex == this._currentPage });
-                indicator.child = new St.Widget({ style_class: 'page-indicator-icon' });
+                                                reactive: this._reactive });
+                indicator.child = new St.Widget({
+                    style_class: 'page-indicator-icon',
+                    pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+                });
                 indicator.connect('clicked', () => {
                     this.emit('page-activated', pageIndex);
                 });
+                indicator.connect('notify::hover', () => {
+                    this._updateIndicator(indicator, pageIndex);
+                });
+                indicator.connect('notify::pressed', () => {
+                    this._updateIndicator(indicator, pageIndex);
+                });
+                this._updateIndicator(indicator, pageIndex);
                 this.add_actor(indicator);
             }
         } else {
@@ -84,12 +97,28 @@ var PageIndicators = GObject.registerClass({
         this.visible = this._nPages > 1;
     }
 
-    setCurrentPage(currentPage) {
-        this._currentPage = currentPage;
+    _updateIndicator(indicator, pageIndex) {
+        let progress =
+            Math.max(1 - Math.abs(this._currentPosition - pageIndex), 0);
+
+        let inactiveScale = indicator.pressed
+            ? INDICATOR_INACTIVE_SCALE_PRESSED : INDICATOR_INACTIVE_SCALE;
+        let inactiveOpacity = indicator.hover
+            ? INDICATOR_INACTIVE_OPACITY_HOVER : INDICATOR_INACTIVE_OPACITY;
+
+        let scale = inactiveScale + (1 - inactiveScale) * progress;
+        let opacity = inactiveOpacity + (255 - inactiveOpacity) * progress;
+
+        indicator.child.set_scale(scale, scale);
+        indicator.child.opacity = opacity;
+    }
+
+    setCurrentPosition(currentPosition) {
+        this._currentPosition = currentPosition;
 
         let children = this.get_children();
         for (let i = 0; i < children.length; i++)
-            children[i].set_checked(i == this._currentPage);
+            this._updateIndicator(children[i], i);
     }
 });
 
