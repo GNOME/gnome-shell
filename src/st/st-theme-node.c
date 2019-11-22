@@ -1916,24 +1916,6 @@ st_theme_node_get_max_height (StThemeNode *node)
   return node->max_height;
 }
 
-static GetFromTermResult
-get_background_color_from_term (StThemeNode  *node,
-                                CRTerm       *term,
-                                ClutterColor *color)
-{
-  GetFromTermResult result = get_color_from_term (node, term, color);
-  if (result == VALUE_NOT_FOUND)
-    {
-      if (term_is_transparent (term))
-        {
-          *color = TRANSPARENT_COLOR;
-          return VALUE_FOUND;
-        }
-    }
-
-  return result;
-}
-
 void
 _st_theme_node_ensure_background (StThemeNode *node)
 {
@@ -1978,7 +1960,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
           for (term = decl->value; term; term = term->next)
             {
-              GetFromTermResult result = get_background_color_from_term (node, term, &node->background_color);
+              GetFromTermResult result = get_color_from_term (node, term, &node->background_color);
               if (result == VALUE_FOUND)
                 {
                   /* color stored in node->background_color */
@@ -2087,7 +2069,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          result = get_background_color_from_term (node, decl->value, &node->background_color);
+          result = get_color_from_term (node, decl->value, &node->background_color);
           if (result == VALUE_FOUND)
             {
               /* color stored in node->background_color */
