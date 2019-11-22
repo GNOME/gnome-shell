@@ -416,7 +416,7 @@ st_widget_paint_background (StWidget            *widget,
   if (!st_widget_get_resource_scale (widget, &resource_scale))
     return;
 
-  framebuffer = cogl_get_draw_framebuffer ();
+  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
   theme_node = st_widget_get_theme_node (widget);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (widget), &allocation);

@@ -877,11 +877,16 @@ st_entry_paint (ClutterActor        *actor,
         }
 
       if (priv->text_shadow_material != NULL)
-        _st_paint_shadow_with_opacity (shadow_spec,
-                                       cogl_get_draw_framebuffer (),
-                                       priv->text_shadow_material,
-                                       &allocation,
-                                       clutter_actor_get_paint_opacity (priv->entry));
+        {
+          CoglFramebuffer *framebuffer =
+            clutter_paint_context_get_framebuffer (paint_context);
+
+          _st_paint_shadow_with_opacity (shadow_spec,
+                                         framebuffer,
+                                         priv->text_shadow_material,
+                                         &allocation,
+                                         clutter_actor_get_paint_opacity (priv->entry));
+        }
     }
 
   /* Since we paint the background ourselves, chain to the parent class
