@@ -229,11 +229,17 @@ st_label_paint (ClutterActor        *actor,
             }
 
           if (priv->text_shadow_pipeline != NULL)
-            _st_paint_shadow_with_opacity (shadow_spec,
-                                           cogl_get_draw_framebuffer (),
-                                           priv->text_shadow_pipeline,
-                                           &allocation,
-                                           clutter_actor_get_paint_opacity (priv->label));
+            {
+              CoglFramebuffer *framebuffer;
+
+              framebuffer =
+                clutter_paint_context_get_framebuffer (paint_context);
+              _st_paint_shadow_with_opacity (shadow_spec,
+                                             framebuffer,
+                                             priv->text_shadow_pipeline,
+                                             &allocation,
+                                             clutter_actor_get_paint_opacity (priv->label));
+            }
         }
     }
 

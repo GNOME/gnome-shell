@@ -124,7 +124,7 @@ shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect,
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
   ClutterActor *actor;
   guint8 paint_opacity;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *fb = clutter_paint_context_get_framebuffer (paint_context);
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
   paint_opacity = clutter_actor_get_paint_opacity (actor);
