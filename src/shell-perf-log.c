@@ -218,8 +218,7 @@ shell_perf_log_set_enabled (ShellPerfLog *perf_log,
         }
       else
         {
-          g_source_remove (perf_log->statistics_timeout_id);
-          perf_log->statistics_timeout_id = 0;
+          g_clear_handle_id (&perf_log->statistics_timeout_id, g_source_remove);
         }
     }
 }

@@ -328,8 +328,7 @@ shell_app_usage_finalize (GObject *object)
 {
   ShellAppUsage *self = SHELL_APP_USAGE (object);
 
-  if (self->save_id > 0)
-    g_source_remove (self->save_id);
+  g_clear_handle_id (&self->save_id, g_source_remove);
 
   g_object_unref (self->privacy_settings);
 
@@ -743,11 +742,7 @@ update_enable_monitoring (ShellAppUsage *self)
       if (self->watched_app)
         g_object_unref (self->watched_app);
       self->watched_app = NULL;
-      if (self->save_id)
-        {
-          g_source_remove (self->save_id);
-          self->save_id = 0;
-        }
+      g_clear_handle_id (&self->save_id, g_source_remove);
     }
 
   self->enable_monitoring = enable;
