@@ -138,6 +138,9 @@ var StreamSlider = class {
     }
 
     _notifyVolumeChange() {
+        if (this._stream.state === Gvc.MixerStreamState.RUNNING)
+            return; // feedback not necessary while playing
+
         if (this._volumeCancellable)
             this._volumeCancellable.cancel();
 
