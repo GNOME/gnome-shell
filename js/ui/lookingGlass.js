@@ -473,24 +473,33 @@ class ObjInspector extends St.ScrollView {
 var RedBorderEffect = GObject.registerClass(
 class RedBorderEffect extends Clutter.Effect {
     vfunc_paint(paintContext) {
+        let framebuffer = paintContext.get_framebuffer();
+        let coglContext = framebuffer.get_context();
         let actor = this.get_actor();
         actor.continue_paint(paintContext);
 
         let color = new Cogl.Color();
         color.init_from_4ub(0xff, 0, 0, 0xc4);
-        Cogl.set_source_color(color);
+
+        let pipeline = new Cogl.Pipeline(coglContext);
+        pipeline.set_color(color);
 
         let alloc = actor.get_allocation_box();
         let width = 2;
 
         // clockwise order
-        Cogl.rectangle(0, 0, alloc.get_width(), width);
-        Cogl.rectangle(alloc.get_width() - width, width,
-                       alloc.get_width(), alloc.get_height());
-        Cogl.rectangle(0, alloc.get_height(),
-                       alloc.get_width() - width, alloc.get_height() - width);
-        Cogl.rectangle(0, alloc.get_height() - width,
-                       width, width);
+        framebuffer.draw_rectangle(pipeline, 0, 0, alloc.get_width(), width);
+        framebuffer.draw_rectangle(pipeline,
+                                   alloc.get_width() - width, width,
+                                   alloc.get_width(), alloc.get_height());
+        framebuffer.draw_rectangle(pipeline,
+                                   0,
+                                   alloc.get_height(),
+                                   alloc.get_width() - width,
+                                   alloc.get_height() - width);
+        framebuffer.draw_rectangle(pipeline,
+                                   0, alloc.get_height() - width,
+                                   width, width);
     }
 });
 
