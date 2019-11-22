@@ -397,7 +397,7 @@ st_box_layout_paint (ClutterActor        *actor,
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *fb = clutter_paint_context_get_framebuffer (paint_context);
 
   get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)
@@ -454,7 +454,7 @@ st_box_layout_pick (ClutterActor       *actor,
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *fb = clutter_pick_context_get_framebuffer (pick_context);
 
   get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)

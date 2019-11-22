@@ -74,6 +74,7 @@ shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
   ShellGLSLEffectPrivate *priv;
   ClutterActor *actor;
   guint8 paint_opacity;
+  CoglFramebuffer *framebuffer;
 
   priv = shell_glsl_effect_get_instance_private (self);
 
@@ -85,7 +86,9 @@ shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
                               paint_opacity,
                               paint_opacity,
                               paint_opacity);
-  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
+
+  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
+  cogl_framebuffer_draw_rectangle (framebuffer,
                                    priv->pipeline,
                                    0, 0,
                                    priv->tex_width, priv->tex_height);
