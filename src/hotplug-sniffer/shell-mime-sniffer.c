@@ -483,11 +483,7 @@ shell_mime_sniffer_dispose (GObject *object)
   g_clear_object (&self->priv->cancellable);
   g_clear_object (&self->priv->task);
 
-  if (self->priv->watchdog_id != 0)
-    {
-      g_source_remove (self->priv->watchdog_id);
-      self->priv->watchdog_id = 0;
-    }
+  g_clear_handle_id (&self->priv->watchdog_id, g_source_remove);
 
   G_OBJECT_CLASS (shell_mime_sniffer_parent_class)->dispose (object);
 }

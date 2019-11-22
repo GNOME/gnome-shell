@@ -60,11 +60,7 @@ ensure_autoquit_off (void)
   if (g_getenv ("HOTPLUG_SNIFFER_PERSIST") != NULL)
     return;
 
-  if (autoquit_id != 0)
-    {
-      g_source_remove (autoquit_id);
-      autoquit_id = 0;
-    }
+  g_clear_handle_id (&autoquit_id, g_source_remove);
 }
 
 static void

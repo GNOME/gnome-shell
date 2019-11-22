@@ -242,11 +242,7 @@ calendar_sources_finalize_source_data (CalendarSources    *sources,
       g_hash_table_destroy (source_data->clients);
       source_data->clients = NULL;
 
-      if (source_data->timeout_id != 0)
-        {
-          g_source_remove (source_data->timeout_id);
-          source_data->timeout_id = 0;
-        }
+      g_clear_handle_id (&source_data->timeout_id, g_source_remove);
 
       source_data->loaded = FALSE;
     }
@@ -374,11 +370,7 @@ backend_died_cb (EClient *client, CalendarSourceData *source_data)
   g_warning ("The calendar backend for '%s' has crashed.", display_name);
   g_hash_table_remove (source_data->clients, source);
 
-  if (source_data->timeout_id != 0)
-    {
-      g_source_remove (source_data->timeout_id);
-      source_data->timeout_id = 0;
-    }
+  g_clear_handle_id (&source_data->timeout_id, g_source_remove);
 
   source_data->timeout_id = g_timeout_add_seconds (2, backend_restart,
 		  				   source_data);

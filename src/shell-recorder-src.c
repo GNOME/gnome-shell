@@ -241,8 +241,7 @@ shell_recorder_src_finalize (GObject *object)
 {
   ShellRecorderSrc *src = SHELL_RECORDER_SRC (object);
 
-  if (src->memory_used_update_idle)
-    g_source_remove (src->memory_used_update_idle);
+  g_clear_handle_id (&src->memory_used_update_idle, g_source_remove);
 
   shell_recorder_src_set_caps (src, NULL);
   g_queue_free_full (src->queue, (GDestroyNotify) gst_buffer_unref);
