@@ -26,7 +26,8 @@ struct _ShellGLSLEffectPrivate
 G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static gboolean
-shell_glsl_effect_pre_paint (ClutterEffect *effect)
+shell_glsl_effect_pre_paint (ClutterEffect       *effect,
+                             ClutterPaintContext *paint_context)
 {
   ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
   ClutterOffscreenEffect *offscreen_effect = CLUTTER_OFFSCREEN_EFFECT (effect);
@@ -51,7 +52,7 @@ shell_glsl_effect_pre_paint (ClutterEffect *effect)
     }
 
   parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
-  success = parent_class->pre_paint (effect);
+  success = parent_class->pre_paint (effect, paint_context);
 
   if (!success)
     return FALSE;
@@ -66,7 +67,8 @@ shell_glsl_effect_pre_paint (ClutterEffect *effect)
 }
 
 static void
-shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect)
+shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
+                                ClutterPaintContext    *paint_context)
 {
   ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
   ShellGLSLEffectPrivate *priv;

@@ -403,7 +403,8 @@ st_widget_allocate (ClutterActor          *actor,
  * painting children.
  */
 void
-st_widget_paint_background (StWidget *widget)
+st_widget_paint_background (StWidget            *widget,
+                            ClutterPaintContext *paint_context)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   CoglFramebuffer *framebuffer;
@@ -438,12 +439,13 @@ st_widget_paint_background (StWidget *widget)
 }
 
 static void
-st_widget_paint (ClutterActor *actor)
+st_widget_paint (ClutterActor        *actor,
+                 ClutterPaintContext *paint_context)
 {
-  st_widget_paint_background (ST_WIDGET (actor));
+  st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
   /* Chain up so we paint children. */
-  CLUTTER_ACTOR_CLASS (st_widget_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (st_widget_parent_class)->paint (actor, paint_context);
 }
 
 static void
