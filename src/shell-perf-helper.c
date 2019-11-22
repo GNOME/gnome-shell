@@ -84,8 +84,7 @@ on_timeout (gpointer data)
 static void
 establish_timeout (void)
 {
-  if (timeout_id != 0)
-    g_source_remove (timeout_id);
+  g_clear_handle_id (&timeout_id, g_source_remove);
 
   timeout_id = g_timeout_add (opt_idle_timeout * 1000, on_timeout, NULL);
   g_source_set_name_by_id (timeout_id, "[gnome-shell] on_timeout");
