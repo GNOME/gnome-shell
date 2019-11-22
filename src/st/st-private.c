@@ -432,6 +432,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   CoglPipeline *shadow_pipeline = NULL;
   float resource_scale;
   float width, height;
+  ClutterPaintContext *paint_context;
 
   g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
 
@@ -501,12 +502,16 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
 
       clutter_actor_set_opacity_override (actor, 255);
-      clutter_actor_paint (actor);
-      clutter_actor_set_opacity_override (actor, -1);
+
+      paint_context = clutter_paint_context_new_for_framebuffer (fb);
+      clutter_actor_paint (actor, paint_context);
+      clutter_paint_context_destroy (paint_context);
 
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
       cogl_pop_framebuffer ();
       G_GNUC_END_IGNORE_DEPRECATIONS;
+
+      clutter_actor_set_opacity_override (actor, -1);
 
       cogl_object_unref (fb);
 

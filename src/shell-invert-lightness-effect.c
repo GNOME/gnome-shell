@@ -76,7 +76,8 @@ G_DEFINE_TYPE (ShellInvertLightnessEffect,
                CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static gboolean
-shell_invert_lightness_effect_pre_paint (ClutterEffect *effect)
+shell_invert_lightness_effect_pre_paint (ClutterEffect       *effect,
+                                         ClutterPaintContext *paint_context)
 {
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
   ClutterEffectClass *parent_class;
@@ -98,7 +99,7 @@ shell_invert_lightness_effect_pre_paint (ClutterEffect *effect)
 
   parent_class =
     CLUTTER_EFFECT_CLASS (shell_invert_lightness_effect_parent_class);
-  if (parent_class->pre_paint (effect))
+  if (parent_class->pre_paint (effect, paint_context))
     {
       ClutterOffscreenEffect *offscreen_effect =
         CLUTTER_OFFSCREEN_EFFECT (effect);
@@ -117,7 +118,8 @@ shell_invert_lightness_effect_pre_paint (ClutterEffect *effect)
 }
 
 static void
-shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect)
+shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect,
+                                            ClutterPaintContext    *paint_context)
 {
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
   ClutterActor *actor;
