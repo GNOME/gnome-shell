@@ -270,7 +270,7 @@ var SwitcherPopup = GObject.registerClass({
             GLib.PRIORITY_DEFAULT,
             NO_MODS_TIMEOUT,
             () => {
-                this._finish(global.get_current_time());
+                this._finish(global.display.get_current_time_roundtrip());
                 this._noModsTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
             });
