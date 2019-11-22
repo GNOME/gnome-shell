@@ -268,19 +268,25 @@ class WeatherSection extends St.Button {
         this.child = box;
 
         let titleBox = new St.BoxLayout();
-        titleBox.add_child(new St.Label({ style_class: 'weather-header',
-                                          x_align: Clutter.ActorAlign.START,
-                                          x_expand: true,
-                                          text: _("Weather") }));
+        titleBox.add_child(new St.Label({
+            style_class: 'weather-header',
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            text: _('Weather'),
+        }));
         box.add_child(titleBox);
 
-        this._titleLocation = new St.Label({ style_class: 'weather-header location',
-                                             x_align: Clutter.ActorAlign.END });
+        this._titleLocation = new St.Label({
+            style_class: 'weather-header location',
+            x_align: Clutter.ActorAlign.END,
+        });
         titleBox.add_child(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
-                                             layout_manager: layout });
+        this._forecastGrid = new St.Widget({
+            style_class: 'weather-grid',
+            layout_manager: layout,
+        });
         layout.hookup_style(this._forecastGrid);
         box.add_child(this._forecastGrid);
 
@@ -341,16 +347,22 @@ class WeatherSection extends St.Button {
                 ampm: false,
             });
 
-            let icon = new St.Icon({ style_class: 'weather-forecast-icon',
-                                     icon_name: fc.get_symbolic_icon_name(),
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     x_expand: true });
-            let temp = new St.Label({ style_class: 'weather-forecast-temp',
-                                      text: fc.get_temp_summary(),
-                                      x_align: Clutter.ActorAlign.CENTER });
-            let time = new St.Label({ style_class: 'weather-forecast-time',
-                                      text: timeStr,
-                                      x_align: Clutter.ActorAlign.CENTER });
+            let icon = new St.Icon({
+                style_class: 'weather-forecast-icon',
+                icon_name: fc.get_symbolic_icon_name(),
+                x_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            let temp = new St.Label({
+                style_class: 'weather-forecast-temp',
+                text: fc.get_temp_summary(),
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            let time = new St.Label({
+                style_class: 'weather-forecast-time',
+                text: timeStr,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
 
             layout.attach(icon, col, 0, 1, 1);
             layout.attach(temp, col, 1, 1, 1);
