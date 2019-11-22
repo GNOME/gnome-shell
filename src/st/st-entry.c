@@ -842,14 +842,15 @@ st_entry_leave_event (ClutterActor         *actor,
 }
 
 static void
-st_entry_paint (ClutterActor *actor)
+st_entry_paint (ClutterActor        *actor,
+                ClutterPaintContext *paint_context)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   StShadow *shadow_spec = st_theme_node_get_text_shadow (theme_node);
   ClutterActorClass *parent_class;
 
-  st_widget_paint_background (ST_WIDGET (actor));
+  st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
   if (shadow_spec)
     {
@@ -888,7 +889,7 @@ st_entry_paint (ClutterActor *actor)
    * This is needed as we still want to paint children.
    */
   parent_class = g_type_class_peek_parent (st_entry_parent_class);
-  parent_class->paint (actor);
+  parent_class->paint (actor, paint_context);
 }
 
 static void
