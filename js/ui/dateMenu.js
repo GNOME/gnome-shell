@@ -315,7 +315,10 @@ class WeatherSection extends St.Button {
         let current = GLib.DateTime.new_from_unix_local(0);
         let infos = [];
         for (let i = 0; i < forecasts.length; i++) {
-            let [ok_, timestamp] = forecasts[i].get_value_update();
+            const [valid, timestamp] = forecasts[i].get_value_update();
+            if (!valid || timestamp === 0)
+                continue;  // 0 means 'never updated'
+
             const datetime = GLib.DateTime.new_from_unix_local(timestamp);
             if (now.difference(datetime) > 0)
                 continue; // Ignore earlier forecasts
@@ -340,9 +343,7 @@ class WeatherSection extends St.Button {
 
         let col = 0;
         infos.forEach(fc => {
-            const [valid, timestamp] = fc.get_value_update();
-            if (!valid || timestamp === 0)
-                return;  // 0 means 'never updated'
+            const [valid_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
                 timeOnly: true,
                 ampm: false,
