@@ -818,11 +818,7 @@ trough_button_release_event_cb (ClutterActor       *actor,
   if (event->button != 1)
     return FALSE;
 
-  if (priv->paging_source_id)
-    {
-      g_source_remove (priv->paging_source_id);
-      priv->paging_source_id = 0;
-    }
+  g_clear_handle_id (&priv->paging_source_id, g_source_remove);
 
   return TRUE;
 }
@@ -836,8 +832,7 @@ trough_leave_event_cb (ClutterActor *actor,
 
   if (priv->paging_source_id)
     {
-      g_source_remove (priv->paging_source_id);
-      priv->paging_source_id = 0;
+      g_clear_handle_id (&priv->paging_source_id, g_source_remove);
       return TRUE;
     }
 

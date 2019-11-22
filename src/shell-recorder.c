@@ -220,8 +220,7 @@ shell_recorder_finalize (GObject  *object)
 {
   ShellRecorder *recorder = SHELL_RECORDER (object);
 
-  if (recorder->update_memory_used_timeout)
-    g_source_remove (recorder->update_memory_used_timeout);
+  g_clear_handle_id (&recorder->update_memory_used_timeout, g_source_remove);
 
   if (recorder->cursor_image)
     cairo_surface_destroy (recorder->cursor_image);
@@ -298,11 +297,7 @@ recorder_add_redraw_timeout (ShellRecorder *recorder)
 static void
 recorder_remove_redraw_timeout (ShellRecorder *recorder)
 {
-  if (recorder->redraw_timeout != 0)
-    {
-      g_source_remove (recorder->redraw_timeout);
-      recorder->redraw_timeout = 0;
-    }
+  g_clear_handle_id (&recorder->redraw_timeout, g_source_remove);
 }
 
 static void
@@ -608,11 +603,7 @@ recorder_add_update_pointer_timeout (ShellRecorder *recorder)
 static void
 recorder_remove_update_pointer_timeout (ShellRecorder *recorder)
 {
-  if (recorder->update_pointer_timeout)
-    {
-      g_source_remove (recorder->update_pointer_timeout);
-      recorder->update_pointer_timeout = 0;
-    }
+  g_clear_handle_id (&recorder->update_pointer_timeout, g_source_remove);
 }
 
 static void
@@ -648,11 +639,7 @@ recorder_disconnect_stage_callbacks (ShellRecorder *recorder)
    * us the events is close to free in any case.
    */
 
-  if (recorder->redraw_idle)
-    {
-      g_source_remove (recorder->redraw_idle);
-      recorder->redraw_idle = 0;
-    }
+  g_clear_handle_id (&recorder->redraw_idle, g_source_remove);
 }
 
 static void
