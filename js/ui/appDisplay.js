@@ -41,6 +41,7 @@ var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
 
 const OVERSHOOT_THRESHOLD = 20;
+const OVERSHOOT_TIMEOUT = 1000;
 
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
@@ -379,6 +380,7 @@ var AllView = GObject.registerClass({
         this._availHeight = 0;
 
         this._lastOvershootY = -1;
+        this._lastOvershootTimeoutId = 0;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
         this._grid.connect('space-opened', () => {
@@ -785,9 +787,16 @@ var AllView = GObject.registerClass({
 
         // Within the grid boundaries
         if (dragEvent.y > gridY && dragEvent.y < gridBottom) {
-            // Check whether we moved out the area of the last switch
-            if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD)
+            if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD) {
+                // If we moved out of the area of the last switch and back into
+                // the grid, reset both the threshold and the timeout
                 this._lastOvershootY = -1;
+                if (this._lastOvershootTimeoutId > 0) {
+                    GLib.source_remove(this._lastOvershootTimeoutId);
+                    this._lastOvershootTimeoutId = 0;
+                }
+            }
+
             return;
         }
 
@@ -797,17 +806,33 @@ var AllView = GObject.registerClass({
 
         this._lastOvershootY = dragEvent.y;
 
-        // Moving above the grid
+        let switchedPages = false;
+
         let currentY = this._adjustment.value;
+        let maxY = this._adjustment.upper - this._adjustment.page_size;
         if (dragEvent.y <= gridY && currentY > 0) {
             this.goToPage(this._grid.currentPage - 1);
-            return;
+            switchedPages = true;
+        } else if (dragEvent.y >= gridBottom && currentY < maxY) {
+            this.goToPage(this._grid.currentPage + 1);
+            switchedPages = true;
         }
 
-        // Moving below the grid
-        let maxY = this._adjustment.upper - this._adjustment.page_size;
-        if (dragEvent.y >= gridBottom && currentY < maxY)
-            this.goToPage(this._grid.currentPage + 1);
+        if (switchedPages) {
+            if (this._lastOvershootTimeoutId > 0)
+                GLib.source_remove(this._lastOvershootTimeoutId);
+
+            this._lastOvershootTimeoutId =
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
+                    // After the timeout has finished, also reset the threshold
+                    // so we don't have to drag into and out of the grid again
+                    this._lastOvershootY = -1;
+                    this._lastOvershootTimeoutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+            GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
+                                       '[gnome-shell] this._lastOvershootTimeoutId');
+        }
     }
 
     _onDragBegin() {
@@ -842,6 +867,10 @@ var AllView = GObject.registerClass({
 
         this._eventBlocker.visible = this._currentPopup !== null;
         this._lastOvershootY = -1;
+        if (this._lastOvershootTimeoutId > 0) {
+            GLib.source_remove(this._lastOvershootTimeoutId);
+            this._lastOvershootTimeoutId = 0;
+        }
     }
 
     _canAccept(source) {
