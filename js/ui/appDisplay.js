@@ -337,7 +337,12 @@ var AllView = GObject.registerClass({
 
         this._grid.currentPage = 0;
         this._stack.add_actor(this._grid);
-        this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
+        this._eventBlocker = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            visible: false,
+        });
         this._stack.add_actor(this._eventBlocker);
 
         box.add_actor(this._stack);
@@ -364,6 +369,7 @@ var AllView = GObject.registerClass({
         });
         this._eventBlocker.add_action(this._clickAction);
 
+        this._currentPopup = null;
         this._displayingPopup = false;
         this._currentPopupDestroyId = 0;
 
@@ -394,8 +400,6 @@ var AllView = GObject.registerClass({
 
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-
-        this._nEventBlockerInhibits = 0;
     }
 
     vfunc_map() {
@@ -610,7 +614,6 @@ var AllView = GObject.registerClass({
     openSpaceForPopup(item, side, nRows) {
         this._updateIconOpacities(true);
         this._displayingPopup = true;
-        this._eventBlocker.reactive = true;
         this._grid.openExtraSpace(item, side, nRows);
     }
 
@@ -685,7 +688,7 @@ var AllView = GObject.registerClass({
     addFolderPopup(popup) {
         this._stack.add_actor(popup);
         popup.connect('open-state-changed', (o, isOpen) => {
-            this._eventBlocker.reactive = isOpen;
+            this._eventBlocker.visible = isOpen;
 
             if (this._currentPopup) {
                 this._currentPopup.disconnect(this._currentPopupDestroyId);
@@ -699,7 +702,7 @@ var AllView = GObject.registerClass({
                 this._currentPopupDestroyId = popup.connect('destroy', () => {
                     this._currentPopup = null;
                     this._currentPopupDestroyId = 0;
-                    this._eventBlocker.reactive = false;
+                    this._eventBlocker.visible = false;
                 });
             }
             this._updateIconOpacities(isOpen);
@@ -795,6 +798,8 @@ var AllView = GObject.registerClass({
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
+
+        this._eventBlocker.visible = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -817,6 +822,8 @@ var AllView = GObject.registerClass({
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
         }
+
+        this._eventBlocker.visible = this._currentPopup !== null;
     }
 
     _canAccept(source) {
@@ -848,19 +855,6 @@ var AllView = GObject.registerClass({
             this._currentPopup.popdown();
 
         return true;
-    }
-
-    inhibitEventBlocker() {
-        this._nEventBlockerInhibits++;
-        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
-    }
-
-    uninhibitEventBlocker() {
-        if (this._nEventBlockerInhibits === 0)
-            throw new Error('Not inhibited');
-
-        this._nEventBlockerInhibits--;
-        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
     }
 
     createFolder(apps) {
@@ -1566,8 +1560,6 @@ var FolderIcon = GObject.registerClass({
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
-
-        this._parentView.inhibitEventBlocker();
     }
 
     _onDragMotion(dragEvent) {
@@ -1583,7 +1575,6 @@ var FolderIcon = GObject.registerClass({
 
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
-        this._parentView.uninhibitEventBlocker();
         DND.removeDragMonitor(this._dragMonitor);
     }
 
