@@ -186,7 +186,7 @@ var SwitcherPopup = GObject.registerClass({
             keysym === Clutter.KEY_Return ||
             keysym === Clutter.KEY_KP_Enter ||
             keysym === Clutter.KEY_ISO_Enter)
-            this._finish(keyEvent.time);
+            this._finish(event.get_time());
 
         return Clutter.EVENT_STOP;
     }
