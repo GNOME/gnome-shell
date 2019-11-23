@@ -40,6 +40,8 @@ var PAGE_SWITCH_TIME = 300;
 var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
 
+const OVERSHOOT_THRESHOLD = 20;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
@@ -350,6 +352,8 @@ var AllView = class AllView extends BaseAppView {
 
         this._availWidth = 0;
         this._availHeight = 0;
+
+        this._lastOvershootY = -1;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
         this._grid.connect('space-opened', () => {
@@ -748,11 +752,23 @@ var AllView = class AllView extends BaseAppView {
         let [, gridHeight] = this.actor.get_transformed_size();
         let gridBottom = gridY + gridHeight;
 
-        // Within the grid boundaries, or already animating
-        if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
-            this._adjustment.get_transition('value') != null) {
+        // Already animating
+        if (this._adjustment.get_transition('value') !== null)
+            return;
+
+        // Within the grid boundaries
+        if (dragEvent.y > gridY && dragEvent.y < gridBottom) {
+            // Check whether we moved out the area of the last switch
+            if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD)
+                this._lastOvershootY = -1;
             return;
         }
+
+        // Still in the area of the previous page switch
+        if (this._lastOvershootY >= 0)
+            return;
+
+        this._lastOvershootY = dragEvent.y;
 
         // Moving above the grid
         let currentY = this._adjustment.value;
@@ -799,6 +815,7 @@ var AllView = class AllView extends BaseAppView {
         }
 
         this._eventBlocker.visible = this._currentPopup !== null;
+        this._lastOvershootY = -1;
     }
 
     _canAccept(source) {
