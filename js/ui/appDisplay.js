@@ -1515,6 +1515,11 @@ var FolderIcon = GObject.registerClass({
         Main.overview.disconnect(this._itemDragBeginId);
         Main.overview.disconnect(this._itemDragEndId);
 
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
         this.view.destroy();
 
         if (this._folderChangedId) {
