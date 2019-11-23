@@ -1158,7 +1158,7 @@ StScrollBar {
 
             &:last-child:ltr { padding-right: 18px; }
             &:last-child:rtl { padding-left: 18px; }
-            &:hover { color: $fg_color; }
+            &:hover { color: darken($fg_color, 10%) }
             &:insensitive { color: darken($fg_color,40%); }
           }
 
