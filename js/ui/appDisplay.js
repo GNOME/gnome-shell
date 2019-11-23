@@ -1417,7 +1417,10 @@ class FolderView extends BaseAppView {
             if (apps.some(appIcon => appIcon.id == appId))
                 return;
 
-            let icon = new AppIcon(app);
+            let icon = this._items[appId];
+            if (!icon)
+                icon = new AppIcon(app);
+
             apps.push(icon);
         };
 
