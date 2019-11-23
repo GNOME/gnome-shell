@@ -40,6 +40,8 @@ var PAGE_SWITCH_TIME = 300;
 var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
 
+const OVERSHOOT_THRESHOLD = 20;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
@@ -375,6 +377,8 @@ var AllView = GObject.registerClass({
 
         this._availWidth = 0;
         this._availHeight = 0;
+
+        this._lastOvershootY = -1;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
         this._grid.connect('space-opened', () => {
@@ -775,6 +779,18 @@ var AllView = GObject.registerClass({
         let [, gridHeight] = this.get_transformed_size();
         let gridBottom = gridY + gridHeight;
 
+        // Check whether we moved out the area of the last switch
+        if (this._lastOvershootY >= 0) {
+            let diff = this._lastOvershootY <= gridY
+                ? dragEvent.y - this._lastOvershootY
+                : this._lastOvershootY - dragEvent.y;
+
+            if (diff > OVERSHOOT_THRESHOLD)
+                this._lastOvershootY = -1;
+            else
+                return;
+        }
+
         // Within the grid boundaries, or already animating
         if (dragEvent.y > gridY && dragEvent.y < gridBottom ||
             this._adjustment.get_transition('value') != null)
@@ -784,13 +800,16 @@ var AllView = GObject.registerClass({
         let currentY = this._adjustment.value;
         if (dragEvent.y <= gridY && currentY > 0) {
             this.goToPage(this._grid.currentPage - 1);
+            this._lastOvershootY = dragEvent.y;
             return;
         }
 
         // Moving below the grid
         let maxY = this._adjustment.upper - this._adjustment.page_size;
-        if (dragEvent.y >= gridBottom && currentY < maxY)
+        if (dragEvent.y >= gridBottom && currentY < maxY) {
             this.goToPage(this._grid.currentPage + 1);
+            this._lastOvershootY = dragEvent.y;
+        }
     }
 
     _onDragBegin() {
@@ -824,6 +843,7 @@ var AllView = GObject.registerClass({
         }
 
         this._eventBlocker.visible = this._currentPopup !== null;
+        this._lastOvershootY = -1;
     }
 
     _canAccept(source) {
