@@ -179,7 +179,7 @@ class BaseAppView {
             let id = icon.id;
 
             this._allItems.splice(iconIndex, 1);
-            icon.destroy();
+            icon.actor.destroy();
             delete this._items[id];
         });
 
