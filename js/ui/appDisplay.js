@@ -768,6 +768,9 @@ var AllView = GObject.registerClass({
     }
 
     _handleDragOvershoot(dragEvent) {
+        if (this._lastOvershootTimeout)
+            return;
+
         let [, gridY] = this.get_transformed_position();
         let [, gridHeight] = this.get_transformed_size();
         let gridBottom = gridY + gridHeight;
@@ -777,17 +780,25 @@ var AllView = GObject.registerClass({
             this._adjustment.get_transition('value') != null)
             return;
 
-        // Moving above the grid
+        let switchedPages = false;
+
         let currentY = this._adjustment.value;
+        let maxY = this._adjustment.upper - this._adjustment.page_size;
         if (dragEvent.y <= gridY && currentY > 0) {
             this.goToPage(this._grid.currentPage - 1);
-            return;
+            switchedPages = true;
+        } else if (dragEvent.y >= gridBottom && currentY < maxY) {
+            this.goToPage(this._grid.currentPage + 1);
+            switchedPages = true;
         }
 
-        // Moving below the grid
-        let maxY = this._adjustment.upper - this._adjustment.page_size;
-        if (dragEvent.y >= gridBottom && currentY < maxY)
-            this.goToPage(this._grid.currentPage + 1);
+        if (switchedPages) {
+            this._lastOvershootTimeout =
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+                    this._lastOvershootTimeout = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
     }
 
     _onDragBegin() {
