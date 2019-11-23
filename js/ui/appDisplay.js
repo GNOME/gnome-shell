@@ -312,7 +312,12 @@ var AllView = class AllView extends BaseAppView {
 
         this._grid.currentPage = 0;
         this._stack.add_actor(this._grid);
-        this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
+        this._eventBlocker = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            visible: false,
+        });
         this._stack.add_actor(this._eventBlocker);
 
         box.add_actor(this._stack);
@@ -339,6 +344,7 @@ var AllView = class AllView extends BaseAppView {
         });
         this._eventBlocker.add_action(this._clickAction);
 
+        this._currentPopup = null;
         this._displayingPopup = false;
         this._currentPopupDestroyId = 0;
 
@@ -381,8 +387,6 @@ var AllView = class AllView extends BaseAppView {
 
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-
-        this._nEventBlockerInhibits = 0;
     }
 
     _redisplay() {
@@ -657,7 +661,7 @@ var AllView = class AllView extends BaseAppView {
     addFolderPopup(popup) {
         this._stack.add_actor(popup.actor);
         popup.connect('open-state-changed', (popup, isOpen) => {
-            this._eventBlocker.reactive = isOpen;
+            this._eventBlocker.visible = isOpen;
 
             if (this._currentPopup) {
                 this._currentPopup.actor.disconnect(this._currentPopupDestroyId);
@@ -671,7 +675,7 @@ var AllView = class AllView extends BaseAppView {
                 this._currentPopupDestroyId = popup.actor.connect('destroy', () => {
                     this._currentPopup = null;
                     this._currentPopupDestroyId = 0;
-                    this._eventBlocker.reactive = false;
+                    this._eventBlocker.visible = false;
                 });
             }
             this._updateIconOpacities(isOpen);
@@ -769,6 +773,8 @@ var AllView = class AllView extends BaseAppView {
             dragMotion: this._onDragMotion.bind(this)
         };
         DND.addDragMonitor(this._dragMonitor);
+
+        this._eventBlocker.visible = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -791,6 +797,8 @@ var AllView = class AllView extends BaseAppView {
             DND.removeDragMonitor(this._dragMonitor);
             this._dragMonitor = null;
         }
+
+        this._eventBlocker.visible = this._currentPopup !== null;
     }
 
     _canAccept(source) {
@@ -822,19 +830,6 @@ var AllView = class AllView extends BaseAppView {
             this._currentPopup.popdown();
 
         return true;
-    }
-
-    inhibitEventBlocker() {
-        this._nEventBlockerInhibits++;
-        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
-    }
-
-    uninhibitEventBlocker() {
-        if (this._nEventBlockerInhibits === 0)
-            throw new Error('Not inhibited');
-
-        this._nEventBlockerInhibits--;
-        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
     }
 
     createFolder(apps) {
@@ -1503,8 +1498,6 @@ var FolderIcon = class FolderIcon {
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
-
-        this._parentView.inhibitEventBlocker();
     }
 
     _onDragMotion(dragEvent) {
@@ -1520,7 +1513,6 @@ var FolderIcon = class FolderIcon {
 
     _onDragEnd() {
         this.actor.remove_style_pseudo_class('drop');
-        this._parentView.uninhibitEventBlocker();
         DND.removeDragMonitor(this._dragMonitor);
     }
 
