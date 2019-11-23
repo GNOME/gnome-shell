@@ -2,7 +2,7 @@
 /* exported DateMenuButton */
 
 const { Clutter, Gio, GLib, GnomeDesktop,
-        GObject, GWeather, Shell, St } = imports.gi;
+        GObject, GWeather, Pango, Shell, St } = imports.gi;
 
 const Util = imports.misc.util;
 const Main = imports.ui.main;
@@ -267,20 +267,28 @@ class WeatherSection extends St.Button {
 
         this.child = box;
 
-        let titleBox = new St.BoxLayout();
-        titleBox.add_child(new St.Label({ style_class: 'weather-header',
-                                          x_align: Clutter.ActorAlign.START,
-                                          x_expand: true,
-                                          text: _("Weather") }));
+        let titleBox = new St.BoxLayout({ style_class: 'weather-header-box' });
+        titleBox.add_child(new St.Label({
+            style_class: 'weather-header',
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.END,
+            text: _('Weather'),
+        }));
         box.add_child(titleBox);
 
-        this._titleLocation = new St.Label({ style_class: 'weather-header location',
-                                             x_align: Clutter.ActorAlign.END });
+        this._titleLocation = new St.Label({
+            style_class: 'weather-header location',
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+        });
         titleBox.add_child(this._titleLocation);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        this._forecastGrid = new St.Widget({ style_class: 'weather-grid',
-                                             layout_manager: layout });
+        this._forecastGrid = new St.Widget({
+            style_class: 'weather-grid',
+            layout_manager: layout,
+        });
         layout.hookup_style(this._forecastGrid);
         box.add_child(this._forecastGrid);
 
@@ -301,25 +309,27 @@ class WeatherSection extends St.Button {
     }
 
     _getInfos() {
-        let info = this._weatherClient.info;
-        let forecasts = info.get_forecast_list();
+        let forecasts = this._weatherClient.info.get_forecast_list();
 
-        let current = info;
-        let infos = [info];
+        let now = GLib.DateTime.new_now_local();
+        let current = GLib.DateTime.new_from_unix_local(0);
+        let infos = [];
         for (let i = 0; i < forecasts.length; i++) {
-            let [ok_, timestamp] = forecasts[i].get_value_update();
-            let datetime = new Date(timestamp * 1000);
-            if (!_isToday(datetime))
-                continue; // Ignore forecasts from other days
+            const [valid, timestamp] = forecasts[i].get_value_update();
+            if (!valid || timestamp === 0)
+                continue;  // 0 means 'never updated'
 
-            [ok_, timestamp] = current.get_value_update();
-            let currenttime = new Date(timestamp * 1000);
-            if (currenttime.getHours() == datetime.getHours())
+            const datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (now.difference(datetime) > 0)
+                continue; // Ignore earlier forecasts
+
+            if (datetime.difference(current) < GLib.TIME_SPAN_HOUR)
                 continue; // Enforce a minimum interval of 1h
 
-            current = forecasts[i];
-            if (infos.push(current) == MAX_FORECASTS)
+            if (infos.push(forecasts[i]) == MAX_FORECASTS)
                 break; // Use a maximum of five forecasts
+
+            current = datetime;
         }
         return infos;
     }
@@ -333,24 +343,31 @@ class WeatherSection extends St.Button {
 
         let col = 0;
         infos.forEach(fc => {
-            const [valid, timestamp] = fc.get_value_update();
-            if (!valid || timestamp === 0)
-                return;  // 0 means 'never updated'
+            const [valid_, timestamp] = fc.get_value_update();
             let timeStr = Util.formatTime(new Date(timestamp * 1000), {
                 timeOnly: true,
                 ampm: false,
             });
 
-            let icon = new St.Icon({ style_class: 'weather-forecast-icon',
-                                     icon_name: fc.get_symbolic_icon_name(),
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     x_expand: true });
-            let temp = new St.Label({ style_class: 'weather-forecast-temp',
-                                      text: fc.get_temp_summary(),
-                                      x_align: Clutter.ActorAlign.CENTER });
-            let time = new St.Label({ style_class: 'weather-forecast-time',
-                                      text: timeStr,
-                                      x_align: Clutter.ActorAlign.CENTER });
+            let icon = new St.Icon({
+                style_class: 'weather-forecast-icon',
+                icon_name: fc.get_symbolic_icon_name(),
+                x_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            let temp = new St.Label({
+                style_class: 'weather-forecast-temp',
+                text: fc.get_temp_summary(),
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            let time = new St.Label({
+                style_class: 'weather-forecast-time',
+                text: timeStr,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
+            temp.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            time.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             layout.attach(icon, col, 0, 1, 1);
             layout.attach(temp, col, 1, 1, 1);
@@ -374,7 +391,12 @@ class WeatherSection extends St.Button {
         }
 
         let info = this._weatherClient.info;
-        this._titleLocation.text = info.get_location().get_name();
+        let loc = info.get_location();
+        if (loc.get_level() !== GWeather.LocationLevel.CITY && loc.has_coords()) {
+            let world = GWeather.Location.get_world();
+            loc = world.find_nearest_city(...loc.get_coords());
+        }
+        this._titleLocation.text = loc.get_name();
 
         if (this._weatherClient.loading) {
             this._setStatusLabel(_("Loading…"));
