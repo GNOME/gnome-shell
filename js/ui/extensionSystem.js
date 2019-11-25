@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init connect disconnect */
 
-const { Gio, St } = imports.gi;
+const { GLib, Gio, St } = imports.gi;
 const Signals = imports.signals;
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -28,6 +28,23 @@ var ExtensionManager = class {
     }
 
     init() {
+        // The following file should exist for a period of time when extensions
+        // are enabled after start. If it exists, then the systemd unit will
+        // disable extensions should gnome-shell crash.
+        // Should the file already exist from a previous login, then this is OK.
+        let disableFilename = GLib.build_filenamev([GLib.get_user_runtime_dir(), 'gnome-shell-disable-extensions']);
+        let disableFile = Gio.File.new_for_path(disableFilename);
+        try {
+            disableFile.create(Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+        } catch (e) {
+            log(`Failed to create file ${disableFilename}: ${e.message}`);
+        }
+
+        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+            FileUtils.deleteGFile(disableFile);
+            return GLib.SOURCE_REMOVE;
+        });
+
         this._sessionUpdated();
     }
 
