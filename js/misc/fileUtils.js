@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported collectFromDatadirs, deleteGFile, recursivelyDeleteDir,
+/* exported collectFromDatadirs, recursivelyDeleteDir,
             recursivelyMoveDir, loadInterfaceXML */
 
 const { Gio, GLib } = imports.gi;
@@ -29,11 +29,6 @@ function collectFromDatadirs(subdir, includeUserDir, processFile) {
     }
 }
 
-function deleteGFile(file) {
-    // Work around 'delete' being a keyword in JS.
-    return file['delete'](null);
-}
-
 function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
                                           Gio.FileQueryInfoFlags.NONE, null);
@@ -43,13 +38,13 @@ function recursivelyDeleteDir(dir, deleteParent) {
         let type = info.get_file_type();
         let child = dir.get_child(info.get_name());
         if (type == Gio.FileType.REGULAR)
-            deleteGFile(child);
+            child.delete(null);
         else if (type == Gio.FileType.DIRECTORY)
             recursivelyDeleteDir(child, true);
     }
 
     if (deleteParent)
-        deleteGFile(dir);
+        dir.delete(null);
 }
 
 function recursivelyMoveDir(srcDir, destDir) {
