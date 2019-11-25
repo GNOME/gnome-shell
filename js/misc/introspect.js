@@ -40,6 +40,15 @@ var IntrospectService = class {
                         });
 
         this._syncRunningApplications();
+
+        this._whitelistMap = new Map();
+        APP_WHITELIST.forEach(appName => {
+            Gio.DBus.watch_name(Gio.BusType.SESSION,
+                appName,
+                Gio.BusNameWatcherFlags.NONE,
+                (conn, name, owner) => this._whitelistMap.set(name, owner),
+                (conn, name) => this._whitelistMap.delete(name));
+        });
     }
 
     _isStandaloneApp(app) {
@@ -51,7 +60,7 @@ var IntrospectService = class {
     }
 
     _isSenderWhitelisted(sender) {
-        return APP_WHITELIST.includes(sender);
+        return [...this._whitelistMap.values()].includes(sender);
     }
 
     _getSandboxedAppId(app) {
