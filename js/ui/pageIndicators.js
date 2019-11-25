@@ -20,8 +20,6 @@ var INDICATORS_ANIMATION_MAX_TIME_OUT =
     Math.min(SWITCH_TIME,
              ANIMATION_TIME_OUT + ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
-var ANIMATION_DELAY = 100;
-
 var PageIndicators = GObject.registerClass({
     Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } },
 }, class PageIndicators extends St.BoxLayout {
@@ -166,24 +164,17 @@ class AnimatedPageIndicators extends PageIndicators {
             offset = children[0].width;
 
         let isAnimationIn = animationDirection == AnimationDirection.IN;
-        let delay = isAnimationIn
-            ? INDICATORS_ANIMATION_DELAY
-            : INDICATORS_ANIMATION_DELAY_OUT;
-        let baseTime = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
-        let totalAnimationTime = baseTime + delay * this._nPages;
+        let duration = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
         let maxTime = isAnimationIn
             ? INDICATORS_ANIMATION_MAX_TIME
             : INDICATORS_ANIMATION_MAX_TIME_OUT;
-        if (totalAnimationTime > maxTime)
-            delay -= (totalAnimationTime - maxTime) / this._nPages;
 
         for (let i = 0; i < this._nPages; i++) {
             children[i].translation_x = isAnimationIn ? offset : 0;
             children[i].ease({
                 translation_x: isAnimationIn ? 0 : offset,
-                duration: baseTime + delay * i,
+                duration,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                delay: isAnimationIn ? ANIMATION_DELAY : 0,
             });
         }
     }
