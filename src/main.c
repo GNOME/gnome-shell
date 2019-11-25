@@ -7,6 +7,8 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
+#include <glib/gstdio.h>
+#include <fcntl.h>
 
 #include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
@@ -32,6 +34,9 @@ extern GType gnome_shell_plugin_get_type (void);
 #define WM_NAME "GNOME Shell"
 #define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
 
+#define SHELL_STABLE_TIMEOUT 120
+#define SHELL_STABLE_MARKER "gnome-shell-stable"
+
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
 static int caught_signal = 0;
@@ -45,6 +50,34 @@ enum {
 };
 static int _shell_debug;
 static gboolean _tracked_signals[NSIG] = { 0 };
+
+
+static void
+delete_stable_marker (void)
+{
+  g_autofree gchar *path = NULL;
+
+  path = g_build_filename (g_get_user_runtime_dir (),
+                           SHELL_STABLE_MARKER,
+                           NULL);
+  g_unlink (path);
+}
+
+static gboolean
+create_stable_marker (void)
+{
+  g_autofree gchar *path = NULL;
+  gint fd;
+
+  path = g_build_filename (g_get_user_runtime_dir (),
+                           SHELL_STABLE_MARKER,
+                           NULL);
+  fd = g_open (path, O_CREAT | O_WRONLY, 00600);
+  if (fd > 0)
+    g_close (fd, NULL);
+
+  return G_SOURCE_REMOVE;
+}
 
 static void
 shell_dbus_acquire_name (GDBusProxy  *bus,
@@ -491,6 +524,15 @@ main (int argc, char **argv)
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
+
+  /* Delete/create stable marker.
+   * The sole purpose of this marker is to prevent extensions from being
+   * disabled after a gnome-shell crash.
+   */
+  delete_stable_marker ();
+  g_timeout_add_seconds (SHELL_STABLE_TIMEOUT,
+                         G_SOURCE_FUNC (create_stable_marker),
+                         NULL);
 
   session_mode = (char *) g_getenv ("GNOME_SHELL_SESSION_MODE");
 
