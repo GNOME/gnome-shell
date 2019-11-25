@@ -124,13 +124,25 @@ var ScreenshotService = class {
         });
     }
 
-    async _onScreenshotComplete(area, stream, file, flash, invocation) {
-        let flashFire;
-        if (flash)
-            flashFire = this._flashspot(area);
-        else
-            flashFire = Promise.resolve();
+    _playSound(name, title) {
+        global.display.get_sound_player().play_from_theme(name, title, null);
+    }
 
+    _connectFlash(shooter, flash) {
+        if (!flash)
+            return Promise.resolve();
+
+        return new Promise((resolve, _reject) => {
+            shooter.connect('screenshot_taken', (o, coords) => {
+                let flashspot = new Flashspot(coords);
+                flashspot.fire(resolve);
+
+                this._playSound('screen-capture', _('Screenshot taken'));
+            });
+        });
+    }
+
+    async _onScreenshotComplete(area, stream, file, flashFire, invocation) {
         stream.close(null);
 
         let filenameUsed = '';
@@ -183,9 +195,10 @@ var ScreenshotService = class {
         let [stream, file] = this._createStream(filename);
 
         try {
+            let flashFire = this._connectFlash(screenshot, flash);
             let [area] = await screenshot.screenshot_area(x, y, width, height, stream);
             await this._onScreenshotComplete(
-                area, stream, file, flash, invocation);
+                area, stream, file, flashFire, invocation);
         } catch (e) {
             invocation.return_gerror(e);
         }
@@ -200,9 +213,10 @@ var ScreenshotService = class {
         let [stream, file] = this._createStream(filename);
 
         try {
+            let flashFire = this._connectFlash(screenshot, flash);
             let [area] = await screenshot.screenshot_window(includeFrame, includeCursor, stream);
             await this._onScreenshotComplete(
-                area, stream, file, flash, invocation);
+                area, stream, file, flashFire, invocation);
         } catch (e) {
             invocation.return_gerror(e);
         }
@@ -217,9 +231,10 @@ var ScreenshotService = class {
         let [stream, file] = this._createStream(filename);
 
         try {
+            let flashFire = this._connectFlash(screenshot, flash);
             let [area] = await screenshot.screenshot(includeCursor, stream);
             await this._onScreenshotComplete(
-                area, stream, file, flash, invocation);
+                area, stream, file, flashFire, invocation);
         } catch (e) {
             invocation.return_gerror(e.message);
         }
