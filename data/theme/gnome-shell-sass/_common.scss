@@ -1152,13 +1152,20 @@ StScrollBar {
             padding: 10px;
           }
 
+          .message-close-button {
+            color: lighten($fg_color, 15%);
+            &:hover { color: darken($fg_color, 10%); }
+            &:active { color: darken($fg_color, 20%); }
+          }
+
           .message-media-control {
             padding: 12px;
             color: lighten($fg_color, 15%);
 
             &:last-child:ltr { padding-right: 18px; }
             &:last-child:rtl { padding-left: 18px; }
-            &:hover { color: $fg_color; }
+            &:hover { color: darken($fg_color, 10%) }
+            &:active { color: darken($fg_color, 20%); }
             &:insensitive { color: darken($fg_color,40%); }
           }
 
