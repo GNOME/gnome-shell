@@ -1,11 +1,12 @@
 [Unit]
 Description=Disable GNOME Shell extensions after failure
+# Note that this unit must not conflict with anything, and must
+# be able to run in parallel with the gnome-session-shutdown.target.
 DefaultDependencies=no
 
-# Only disable extensions for a short period of time after login.
-# This means we err on the side of failing the first login after a broken
-# extension was installed.
-Requisite=gnome-session-stable.timer
+# We want to disable extensions only if gnome-shell has flagged the extensions
+# to be a likely cause of trouble.
+ConditionPathExists=%t/gnome-shell-disable-extensions
 
 [Service]
 Type=simple
