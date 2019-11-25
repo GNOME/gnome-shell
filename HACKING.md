@@ -29,9 +29,8 @@ what to do.
             bar = do_thing(b);
 
         if (var == 5) {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++)
                 print(i);
-            }
         } else {
             print(20);
         }
@@ -102,9 +101,8 @@ under the imports:
 Always use either `const` or `let` when defining a variable.
 ```javascript
     // Iterating over an array
-    for (let i = 0; i < arr.length; ++i) {
+    for (let i = 0; i < arr.length; ++i)
         let item = arr[i];
-    }
 
     // Iterating over an object's properties
     for (let prop in someobj) {
@@ -252,7 +250,7 @@ variable that can be captured in closures.
 All closures should be wrapped with Function.prototype.bind or use arrow
 notation.
 ```javascript
-    let closure1 = () => { this._fnorbate(); };
+    let closure1 = () => this._fnorbate();
     let closure2 = this._fnorbate.bind(this);
 ```
 
