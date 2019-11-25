@@ -18,8 +18,9 @@ fi
 
 function commit_message_has_url() {
   commit=$1
+  echo "testing commit $commit"
   commit_message=$(git show -s --format='format:%b' $commit)
-  echo "$commit_message" | grep -qe "\($CI_MERGE_REQUEST_PROJECT_URL/\(issues\|merge_requests\)/[0-9]\+\|https://bugzilla.gnome.org/show_bug.cgi?id=[0-9]\+\)"
+  echo "$commit_message" | tee /dev/stdout | grep -qe "\($CI_MERGE_REQUEST_PROJECT_URL/\(issues\|merge_requests\)/[0-9]\+\|https://bugzilla.gnome.org/show_bug.cgi?id=[0-9]\+\)"
   return $?
 }
 
