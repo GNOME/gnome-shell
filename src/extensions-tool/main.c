@@ -142,9 +142,9 @@ settings_list_remove (GSettings  *settings,
 
   n_values = g_strv_length (list);
   new_value = g_new0 (char *, n_values);
-  for (i = 0, s = (const char **)list; i < n_values; i++, s++)
+  for (i = 0, s = (const char **)list; *s != NULL; s++)
     if (!g_str_equal (*s, value))
-      new_value[i] = g_strdup (*s);
+      new_value[i++] = g_strdup (*s);
 
   g_settings_set_strv (settings, key, (const char **)new_value);
   g_settings_sync ();
