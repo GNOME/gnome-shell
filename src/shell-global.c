@@ -1308,6 +1308,31 @@ shell_global_get_current_time (ShellGlobal *global)
   return clutter_get_current_event_time ();
 }
 
+#ifdef HAVE_SYSTEMD
+static void
+shell_global_app_launched_cb (GAppLaunchContext *context,
+                              GAppInfo          *info,
+                              GVariant          *platform_data,
+                              gpointer           user_data)
+{
+  gint32 pid;
+  g_autoptr(GVariantDict) dict = NULL;
+
+  g_return_if_fail (platform_data != NULL);
+
+  dict = g_variant_dict_new (platform_data);
+
+  g_return_if_fail (g_variant_dict_contains (dict, "pid"));
+
+  if (!g_variant_dict_lookup (dict, "pid", "i", &pid)) {
+    g_critical ("Could not unpack pid from platform data.");
+    return;
+  }
+
+  shell_util_start_systemd_scope (info, pid);
+}
+#endif
+
 /**
  * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
@@ -1342,6 +1367,13 @@ shell_global_create_app_launch_context (ShellGlobal *global,
     ws = meta_workspace_manager_get_workspace_by_index (workspace_manager, workspace);
 
   meta_launch_context_set_workspace (context, ws);
+
+#ifdef HAVE_SYSTEMD
+  g_signal_connect (context,
+                    "launched",
+                    G_CALLBACK (shell_global_app_launched_cb),
+                    NULL);
+#endif
 
   return (GAppLaunchContext *) context;
 }
