@@ -43,6 +43,8 @@ struct _StTextureCachePrivate
   GHashTable *keyed_cache; /* char * -> ClutterImage* */
   GHashTable *keyed_surface_cache; /* char * -> cairo_surface_t* */
 
+  GHashTable *used_scales; /* Set: double */
+
   /* Presently this is used to de-duplicate requests for GIcons and async URIs. */
   GHashTable *outstanding_requests; /* char * -> AsyncTextureLoadData * */
 
@@ -181,6 +183,7 @@ st_texture_cache_init (StTextureCache *self)
                                                            g_str_equal,
                                                            g_free,
                                                            (GDestroyNotify) cairo_surface_destroy);
+  self->priv->used_scales = g_hash_table_new (g_double_hash, g_double_equal);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                             g_free, NULL);
   self->priv->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
@@ -199,6 +202,7 @@ st_texture_cache_dispose (GObject *object)
 
   g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
   g_clear_pointer (&self->priv->keyed_surface_cache, g_hash_table_destroy);
+  g_clear_pointer (&self->priv->used_scales, g_hash_table_destroy);
   g_clear_pointer (&self->priv->outstanding_requests, g_hash_table_destroy);
   g_clear_pointer (&self->priv->file_monitors, g_hash_table_destroy);
 
@@ -1063,6 +1067,22 @@ load_from_pixbuf (GdkPixbuf *pixbuf,
 }
 
 static void
+hash_table_remove_with_scales (GHashTable *hash,
+                               GList      *scales,
+                               const char *base_key)
+{
+  GList *l;
+
+  for (l = scales; l; l = l->next)
+    {
+      double scale = *((double *)l->data);
+      g_autofree char *key = NULL;
+      key = g_strdup_printf ("%s%f", base_key, scale);
+      g_hash_table_remove (hash, key);
+    }
+}
+
+static void
 file_changed_cb (GFileMonitor      *monitor,
                  GFile             *file,
                  GFile             *other,
@@ -1072,18 +1092,22 @@ file_changed_cb (GFileMonitor      *monitor,
   StTextureCache *cache = user_data;
   char *key;
   guint file_hash;
+  g_autoptr (GList) scales = NULL;
 
   if (event_type != G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
     return;
 
   file_hash = g_file_hash (file);
+  scales = g_hash_table_get_keys (cache->priv->used_scales);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u", file_hash);
   g_hash_table_remove (cache->priv->keyed_cache, key);
+  hash_table_remove_with_scales (cache->priv->keyed_cache, scales, key);
   g_free (key);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u", file_hash);
   g_hash_table_remove (cache->priv->keyed_surface_cache, key);
+  hash_table_remove_with_scales (cache->priv->keyed_surface_cache, scales, key);
   g_free (key);
 
   g_signal_emit (cache, signals[TEXTURE_FILE_CHANGED], 0, file);
@@ -1418,7 +1442,10 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
         goto out;
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-        g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
+        {
+          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
+          g_hash_table_insert (cache->priv->used_scales, &resource_scale, &resource_scale);
+        }
     }
 
   /* Because the texture is loaded synchronously, we won't call
@@ -1467,6 +1494,7 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
           cairo_surface_reference (surface);
           g_hash_table_insert (cache->priv->keyed_surface_cache,
                                g_strdup (key), surface);
+          g_hash_table_insert (cache->priv->used_scales, &resource_scale, &resource_scale);
         }
     }
   else
