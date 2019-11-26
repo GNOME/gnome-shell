@@ -252,6 +252,17 @@ libgvc = subproject('gvc',
 )
 libgvc_gir = libgvc.get_variable('libgvc_gir')
 
+libstylish = subproject(
+  'stylish',
+  default_options: [
+    'package_name=' + meson.project_name(),
+    'package_version=' + meson.project_version(),
+    'static=false',
+  ]
+)
+
+libstylish_lib = libstylish.get_variable('cargo_release')
+
 po_dir = join_paths(meson.current_source_dir(), 'po')
 
 subdir('js')

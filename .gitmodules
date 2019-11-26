@@ -1,3 +1,6 @@
 [submodule "subprojects/gvc"]
 	path = subprojects/gvc
 	url = https://gitlab.gnome.org/GNOME/libgnome-volume-control.git
+[submodule "subprojects/stylish"]
+	path = subprojects/stylish
+	url = https://gitlab.gnome.org/federico/stylish.git

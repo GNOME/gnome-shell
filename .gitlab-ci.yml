@@ -50,6 +50,7 @@ build:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v3
     stage: build
     before_script:
+        - dnf install -y rust cargo rust-std-static
         - .gitlab-ci/checkout-mutter.sh
         - meson mutter mutter/build --prefix=/usr -Dtests=false
         - ninja -C mutter/build install
@@ -85,6 +86,7 @@ test-pot:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v3
     stage: test
     before_script:
+        - dnf install -y rust cargo rust-std-static
         - ninja -C mutter/build install
     script:
         # Check that pot files are generated correctly:
