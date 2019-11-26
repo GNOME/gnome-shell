@@ -632,6 +632,66 @@ shell_util_stop_systemd_unit (const char  *unit,
   return shell_util_systemd_call ("StopUnit", unit, mode, error);
 }
 
+
+void
+shell_util_start_systemd_scope (GAppInfo          *info,
+                                gint32             pid)
+{
+  GVariantBuilder builder;
+  const gchar *app_id;
+  g_autofree gchar *unit_name = NULL;
+  g_autoptr (GDBusConnection) connection = NULL;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  if (connection == NULL)
+    return;
+
+  g_debug ("Trying to create transient scope for PID %d\n", pid);
+
+  /* Prepare some information */
+  app_id = g_app_info_get_id (info);
+  if (app_id == NULL)
+    app_id = "anonymous";
+
+  /* This needs to be unique, hopefully the pid will be enough. */
+  unit_name = g_strdup_printf ("gnome-shell-launched-%s-%d.scope", app_id, pid);
+
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ssa(sv)a(sa(sv)))"));
+  g_variant_builder_add (&builder, "s", unit_name);
+  g_variant_builder_add (&builder, "s", "fail");
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sv)"));
+  /* Note that futher settings are controlled using a drop-in. */
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "Description",
+                         g_variant_new_string ("Application launched by gnome-shell"));
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "PIDs",
+                          g_variant_new_fixed_array (G_VARIANT_TYPE_UINT32, &pid, 1, 4));
+
+  g_variant_builder_close (&builder);
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sa(sv))"));
+  g_variant_builder_close (&builder);
+
+  g_dbus_connection_call (connection,
+                          "org.freedesktop.systemd1",
+                          "/org/freedesktop/systemd1",
+                          "org.freedesktop.systemd1.Manager",
+                          "StartTransientUnit",
+                          g_variant_builder_end (&builder),
+                          G_VARIANT_TYPE ("(o)"),
+                          G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                          1000,
+                          NULL,
+                          on_systemd_call_cb,
+                          (gpointer) "StartTransientUnit");
+}
+
 void
 shell_util_sd_notify (void)
 {
