@@ -28,6 +28,7 @@
 
 #ifdef HAVE_SYSTEMD
 #include <systemd/sd-daemon.h>
+#include <systemd/sd-login.h>
 #else
 /* So we don't need to add ifdef's everywhere */
 #define sd_notify(u, m)            do {} while (0)
@@ -630,6 +631,98 @@ shell_util_stop_systemd_unit (const char  *unit,
                               GError     **error)
 {
   return shell_util_systemd_call ("StopUnit", unit, mode, error);
+}
+
+
+gboolean
+shell_util_start_systemd_scope (const gchar *app_id,
+                                gint32       pid,
+                                GError     **error)
+{
+#ifdef HAVE_SYSTEMD
+  GVariantBuilder builder;
+  const char *valid_chars =
+    "-._1234567890"
+    "abcdefghijklmnopqrstuvwxyz"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  g_autofree gchar *mangled_app_id = NULL;
+  g_autofree gchar *unit_name = NULL;
+  g_autofree gchar *own_unit = NULL;
+  g_autoptr (GDBusConnection) connection = NULL;
+  gint res;
+
+  /* We cannot do anything if this process is not managed by the
+   * systemd user instance. */
+  res = sd_pid_get_user_unit (getpid (), &own_unit);
+  if (res == -ENODATA) {
+    g_debug ("Not systemd managed, will not move PID %d into transient scope\n", pid);
+    return TRUE;
+  }
+  if (res < 0) {
+    g_propagate_error (error,
+                       g_error_new (G_IO_ERROR,
+                                    g_io_error_from_errno (-res),
+                                    "Error fetching user unit for own pid: %d", -res));
+
+    return FALSE;
+  }
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+
+  if (connection == NULL)
+    return FALSE;
+
+  g_debug ("Trying to create transient scope for PID %d\n", pid);
+
+  /* Create a nice and (mangled) name to embed into the unit */
+  if (app_id == NULL)
+    app_id = "anonymous";
+  if (app_id[0] == '/')
+    app_id++;
+
+  mangled_app_id = g_str_to_ascii (app_id, "C");
+  g_strdelimit (mangled_app_id, "/", '-');
+  g_strcanon (mangled_app_id, valid_chars, '_');
+
+  /* This needs to be unique, hopefully the pid will be enough. */
+  unit_name = g_strdup_printf ("gnome-launched-%s-%d.scope", mangled_app_id, pid);
+
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ssa(sv)a(sa(sv)))"));
+  g_variant_builder_add (&builder, "s", unit_name);
+  g_variant_builder_add (&builder, "s", "fail");
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sv)"));
+  /* Note that futher settings are controlled using a drop-in. */
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "Description",
+                         g_variant_new_string ("Application launched by gnome-shell"));
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "PIDs",
+                          g_variant_new_fixed_array (G_VARIANT_TYPE_UINT32, &pid, 1, 4));
+
+  g_variant_builder_close (&builder);
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sa(sv))"));
+  g_variant_builder_close (&builder);
+
+  g_dbus_connection_call (connection,
+                          "org.freedesktop.systemd1",
+                          "/org/freedesktop/systemd1",
+                          "org.freedesktop.systemd1.Manager",
+                          "StartTransientUnit",
+                          g_variant_builder_end (&builder),
+                          G_VARIANT_TYPE ("(o)"),
+                          G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                          1000,
+                          NULL,
+                          on_systemd_call_cb,
+                          (gpointer) "StartTransientUnit");
+#endif
+
+  return TRUE;
 }
 
 void

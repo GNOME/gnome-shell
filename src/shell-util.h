@@ -64,6 +64,10 @@ gboolean shell_util_stop_systemd_unit  (const char  *unit,
                                         const char  *mode,
                                         GError     **error);
 
+gboolean shell_util_start_systemd_scope (const gchar *app_id,
+                                         gint32       pid,
+                                         GError     **error);
+
 void shell_util_sd_notify (void);
 
 G_END_DECLS
