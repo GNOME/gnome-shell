@@ -29,6 +29,11 @@
 #include <meta/meta-workspace-manager.h>
 #include <meta/meta-x11-display.h>
 
+#ifdef HAVE_GNOME_SYSTEMD
+#define GNOME_DESKTOP_USE_UNSTABLE_API
+#include <libgnome-desktop/gnome-systemd.h>
+#endif
+
 /* Memory report bits */
 #ifdef HAVE_MALLINFO
 #include <malloc.h>
@@ -43,6 +48,7 @@
 #include "shell-perf-log.h"
 #include "shell-window-tracker.h"
 #include "shell-wm.h"
+#include "shell-util.h"
 #include "st.h"
 
 static ShellGlobal *the_object = NULL;
@@ -1308,6 +1314,32 @@ shell_global_get_current_time (ShellGlobal *global)
   return clutter_get_current_event_time ();
 }
 
+#ifdef HAVE_GNOME_SYSTEMD
+static void
+shell_global_app_launched_cb (GAppLaunchContext *context,
+                              GAppInfo          *info,
+                              GVariant          *platform_data,
+                              gpointer           user_data)
+{
+  gint32 pid;
+  const gchar *app_name;
+
+  if (!g_variant_lookup (platform_data, "pid", "i", &pid))
+    return;
+
+  app_name = g_app_info_get_id (info);
+  if (app_name == NULL)
+    app_name = g_app_info_get_executable (info);
+
+  /* Start async request; we don't care about the result */
+  gnome_start_systemd_scope (app_name,
+                             pid,
+                             NULL,
+                             NULL,
+                             NULL, NULL, NULL);
+}
+#endif
+
 /**
  * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
@@ -1342,6 +1374,13 @@ shell_global_create_app_launch_context (ShellGlobal *global,
     ws = meta_workspace_manager_get_workspace_by_index (workspace_manager, workspace);
 
   meta_launch_context_set_workspace (context, ws);
+
+#ifdef HAVE_GNOME_SYSTEMD
+  g_signal_connect (context,
+                    "launched",
+                    G_CALLBACK (shell_global_app_launched_cb),
+                    NULL);
+#endif
 
   return (GAppLaunchContext *) context;
 }
