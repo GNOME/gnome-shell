@@ -31,6 +31,8 @@
 #include "st-theme-context.h"
 #include "st-theme-node-private.h"
 
+#include "stylish/stylish.h"
+
 static void st_theme_node_dispose           (GObject                 *object);
 static void st_theme_node_finalize          (GObject                 *object);
 
@@ -470,151 +472,36 @@ term_is_none (CRTerm *term)
           strcmp (term->content.str->stryng->str, "none") == 0);
 }
 
-static gboolean
-term_is_transparent (CRTerm *term)
-{
-  return (term->type == TERM_IDENT &&
-          strcmp (term->content.str->stryng->str, "transparent") == 0);
-}
-
-static int
-color_component_from_double (double component)
-{
-  /* We want to spread the range 0-1 equally over 0..255, but
-   * 1.0 should map to 255 not 256, so we need to special-case it.
-   * See http://people.redhat.com/otaylor/pixel-converting.html
-   * for (very) detailed discussion of related issues. */
-  if (component >= 1.0)
-    return 255;
-  else
-    return (int)(component * 256);
-}
-
-static GetFromTermResult
-get_color_from_rgba_term (CRTerm       *term,
-                          ClutterColor *color)
-{
-  CRTerm *arg = term->ext_content.func_param;
-  CRNum *num;
-  double r = 0, g = 0, b = 0, a = 0;
-  int i;
-
-  for (i = 0; i < 4; i++)
-    {
-      double value;
-
-      if (arg == NULL)
-        return VALUE_NOT_FOUND;
-
-      if ((i == 0 && arg->the_operator != NO_OP) ||
-          (i > 0 && arg->the_operator != COMMA))
-        return VALUE_NOT_FOUND;
-
-      if (arg->type != TERM_NUMBER)
-        return VALUE_NOT_FOUND;
-
-      num = arg->content.num;
-
-      /* For simplicity, we convert a,r,g,b to [0,1.0] floats and then
-       * convert them back below. Then when we set them on a cairo content
-       * we convert them back to floats, and then cairo converts them
-       * back to integers to pass them to X, and so forth...
-       */
-      if (i < 3)
-        {
-          if (num->type == NUM_PERCENTAGE)
-            value = num->val / 100;
-          else if (num->type == NUM_GENERIC)
-            value = num->val / 255;
-          else
-            return VALUE_NOT_FOUND;
-        }
-      else
-        {
-          if (num->type != NUM_GENERIC)
-            return VALUE_NOT_FOUND;
-
-          value = num->val;
-        }
-
-      value = CLAMP (value, 0, 1);
-
-      switch (i)
-        {
-        case 0:
-          r = value;
-          break;
-        case 1:
-          g = value;
-          break;
-        case 2:
-          b = value;
-          break;
-        case 3:
-          a = value;
-          break;
-        default:
-          g_assert_not_reached();
-          break;
-        }
-
-      arg = arg->next;
-    }
-
-  color->red = color_component_from_double (r);
-  color->green = color_component_from_double (g);
-  color->blue = color_component_from_double (b);
-  color->alpha = color_component_from_double (a);
-
-  return VALUE_FOUND;
-}
-
 static GetFromTermResult
 get_color_from_term (StThemeNode  *node,
                      CRTerm       *term,
                      ClutterColor *color)
 {
-  CRRgb rgb;
-  enum CRStatus status;
+  char *stringified;
+  StylishValueResult_ClutterColor result;
 
-  if (term_is_inherit (term))
+  stringified = (char *) cr_term_to_string (term);
+  result = stylish_parse_color (stringified);
+  g_free (stringified);
+
+  switch (result.kind)
     {
+    case STYLISH_VALUE_RESULT_KIND_INHERIT:
       return VALUE_INHERIT;
-    }
-  /* Since libcroco doesn't know about rgba colors, it can't handle
-   * the transparent keyword
-   */
-  else if (term_is_transparent (term))
-    {
-      *color = TRANSPARENT_COLOR;
+
+    case STYLISH_VALUE_RESULT_KIND_SPECIFIED:
+      *color = result.value;
       return VALUE_FOUND;
+
+    case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
+      /* FIXME: propagate the error */
+      stylish_parse_error_free (&result.error);
+      return VALUE_NOT_FOUND;
+
+    default:
+      g_assert_not_reached();
+      return VALUE_NOT_FOUND;
     }
-  /* rgba () colors - a CSS3 addition, are not supported by libcroco,
-   * but they are parsed as a "function", so we can emulate the
-   * functionality.
-   */
-  else if (term->type == TERM_FUNCTION &&
-           term->content.str &&
-           term->content.str->stryng &&
-           term->content.str->stryng->str &&
-           strcmp (term->content.str->stryng->str, "rgba") == 0)
-    {
-      return get_color_from_rgba_term (term, color);
-    }
-
-  status = cr_rgb_set_from_term (&rgb, term);
-  if (status != CR_OK)
-    return VALUE_NOT_FOUND;
-
-  if (rgb.is_percentage)
-    cr_rgb_compute_from_percentage (&rgb);
-
-  color->red = rgb.red;
-  color->green = rgb.green;
-  color->blue = rgb.blue;
-  color->alpha = 0xff;
-
-  return VALUE_FOUND;
 }
 
 /**
