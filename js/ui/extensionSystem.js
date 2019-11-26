@@ -41,7 +41,7 @@ var ExtensionManager = class {
         }
 
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
-            FileUtils.deleteGFile(disableFile);
+            disableFile.delete(null);
             return GLib.SOURCE_REMOVE;
         });
 
