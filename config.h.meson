@@ -30,3 +30,6 @@
 
 /* Define if fdwalk is available in libc */
 #mesondefine HAVE_FDWALK
+
+/* Define if we have gnome-desktop systemd utils */
+#mesondefine HAVE_GNOME_SYSTEMD
