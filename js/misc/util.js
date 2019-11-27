@@ -126,6 +126,14 @@ function trySpawn(argv) {
             throw err;
         }
     }
+
+    try {
+        // This will do nothing on a non-systemd session
+        Shell.util_start_systemd_scope(argv[0], pid);
+    } catch (err) {
+        logError(err);
+    }
+
     // Dummy child watch; we don't want to double-fork internally
     // because then we lose the parent-child relationship, which
     // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
