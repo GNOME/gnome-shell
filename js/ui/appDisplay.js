@@ -2113,17 +2113,10 @@ var AppIcon = GObject.registerClass({
         this.id = app.get_id();
         this.name = app.get_name();
 
-        this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
-                                    layout_manager: new Clutter.BinLayout(),
-                                    x_expand: true, y_expand: true,
-                                    x_align: Clutter.ActorAlign.CENTER,
-                                    y_align: Clutter.ActorAlign.END });
-
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
 
         this.set_child(this._iconContainer);
-        this._iconContainer.add_child(this._dot);
 
         this._delegate = this;
 
@@ -2139,6 +2132,13 @@ var AppIcon = GObject.registerClass({
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
+
+        this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
+                                    layout_manager: new Clutter.BinLayout(),
+                                    x_expand: true, y_expand: true,
+                                    x_align: Clutter.ActorAlign.CENTER,
+                                    y_align: Clutter.ActorAlign.END });
+        this._iconContainer.add_child(this._dot);
 
         this.label_actor = this.icon.label;
 
