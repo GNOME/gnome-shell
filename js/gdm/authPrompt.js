@@ -98,14 +98,21 @@ var AuthPrompt = GObject.registerClass({
         });
 
         this.add_child(this._label);
-        this._entry = new St.PasswordEntry({
+
+        this._textEntry = new St.Entry({
             style_class: 'login-dialog-prompt-entry',
             can_focus: true,
             x_expand: false,
             y_expand: true,
         });
-        ShellEntry.addContextMenu(this._entry, { actionMode: Shell.ActionMode.NONE });
-
+        this._passwordEntry = new St.PasswordEntry({
+            style_class: 'login-dialog-prompt-entry',
+            can_focus: true,
+            x_expand: false,
+            y_expand: true,
+        });
+        ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
+        this._entry = this._passwordEntry;
         this.add_child(this._entry);
 
         this._entry.grab_key_focus();
@@ -198,7 +205,19 @@ var AuthPrompt = GObject.registerClass({
         });
     }
 
-    _onAskQuestion(verifier, serviceName, question, passwordChar) {
+    _updateEntry(secret) {
+        if (secret && (this._entry != this._passwordEntry)) {
+            this.replace_child(this._entry, this._passwordEntry);
+            this._entry = this._passwordEntry;
+            this.insert_child_below(this._capsLockWarningLabel, this._entry);
+        } else if (!secret && (this._entry != this._textEntry)) {
+            this.replace_child(this._entry, this._textEntry);
+            this._entry = this._textEntry;
+            this.remove_child(this._capsLockWarningLabel);
+        }
+    }
+
+    _onAskQuestion(verifier, serviceName, question, secret) {
         if (this._queryingService)
             this.clear();
 
@@ -208,12 +227,11 @@ var AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
             return;
         }
-        this._entry.set({
-            password_visible: passwordChar === 0,
-        });
+
+        this._updateEntry(secret);
         this.setQuestion(question);
 
-        if (passwordChar) {
+        if (secret) {
             if (this._userVerifier.reauthenticating)
                 this.nextButton.label = _("Unlock");
             else
