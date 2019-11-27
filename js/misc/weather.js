@@ -32,6 +32,7 @@ var WeatherClient = class {
         this._gclueStarting = false;
         this._gclueLocationChangedId = 0;
 
+        this._needsAuth = true;
         this._weatherAuthorized = false;
         this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
             if (error) {
@@ -142,7 +143,7 @@ var WeatherClient = class {
     get _useAutoLocation() {
         return this._autoLocationRequested &&
                this._locationSettings.get_boolean('enabled') &&
-               this._weatherAuthorized;
+               (!this._needsAuth || this._weatherAuthorized);
     }
 
     _onWeatherProxyReady(o, res) {
@@ -175,6 +176,13 @@ var WeatherClient = class {
 
         if (hadApp !== haveApp)
             this.emit('changed');
+
+        let neededAuth = this._needsAuth;
+        this._needsAuth = this._weatherApp === null ||
+                          this._weatherApp.app_info.has_key('X-Flatpak');
+
+        if (neededAuth !== this._needsAuth)
+            this._updateAutoLocation();
     }
 
     _loadInfo() {
