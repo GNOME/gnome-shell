@@ -3,7 +3,7 @@
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
             makeCloseButton, ensureActorVisibleInScrollView */
 
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
 
 const Main = imports.ui.main;
@@ -127,6 +127,14 @@ function trySpawn(argv) {
             throw err;
         }
     }
+
+    // Async call, we don't need the reply though
+    try {
+        GnomeDesktop.start_systemd_scope(argv[0], pid, null, null, null, () => {});
+    } catch (err) {
+        // Ignore error; it likely means GnomeDesktop is too old
+    }
+
     // Dummy child watch; we don't want to double-fork internally
     // because then we lose the parent-child relationship, which
     // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
