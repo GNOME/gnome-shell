@@ -777,7 +777,7 @@ var ScreenShield = class {
         let newY = currentY - origY;
         newY = clamp(newY, -global.stage.height, 0);
 
-        this._lockScreenGroup.y = newY;
+        this._lockScreenGroup.translation_y = newY;
 
         return true;
     }
@@ -785,7 +785,7 @@ var ScreenShield = class {
     _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
         if (this._lockScreenState != MessageTray.State.HIDING)
             return;
-        if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
+        if (this._lockScreenGroup.translation_y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
             let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
             this._liftShield(true, -velocityY);
@@ -793,10 +793,10 @@ var ScreenShield = class {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
             let h = global.stage.height;
-            let duration = MANUAL_FADE_TIME * -this._lockScreenGroup.y / h;
+            let duration = MANUAL_FADE_TIME * -this._lockScreenGroup.translation_y / h;
             this._lockScreenGroup.remove_all_transitions();
             this._lockScreenGroup.ease({
-                y: 0,
+                translation_y: 0,
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
@@ -945,14 +945,14 @@ var ScreenShield = class {
             // use the same speed regardless of original position
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
-            let delta = h + this._lockScreenGroup.y;
+            let delta = h + this._lockScreenGroup.translation_y;
             let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
 
             velocity = Math.max(minVelocity, velocity);
             let duration = delta / velocity;
 
             this._lockScreenGroup.ease({
-                y: -h,
+                translation_y: -h,
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => this._hideLockScreenComplete(),
@@ -1014,10 +1014,10 @@ var ScreenShield = class {
         let fadeToBlack = params.fadeToBlack;
 
         if (params.animateLockScreen) {
-            this._lockScreenGroup.y = -global.screen_height;
+            this._lockScreenGroup.translation_y = -global.screen_height;
             this._lockScreenGroup.remove_all_transitions();
             this._lockScreenGroup.ease({
-                y: 0,
+                translation_y: 0,
                 duration: MANUAL_FADE_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
