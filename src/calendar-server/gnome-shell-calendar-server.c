@@ -443,6 +443,18 @@ calendar_appointment_new (ICalComponent        *icomp,
   return appointment;
 }
 
+static time_t
+timet_from_ical_time (ICalTime     *time,
+                      ICalTimezone *default_zone)
+{
+  ICalTimezone *timezone = NULL;
+
+  timezone = i_cal_time_get_timezone (time);
+  if (timezone == NULL)
+    timezone = default_zone;
+  return i_cal_time_as_timet_with_zone (time, timezone);
+}
+
 static gboolean
 generate_instances_cb (ICalComponent *icomp,
                        ICalTime *instance_start,
@@ -455,8 +467,10 @@ generate_instances_cb (ICalComponent *icomp,
   GHashTable *appointments = ((CollectAppointmentsData *)user_data)->appointments;
   CalendarAppointment *appointment;
   CalendarOccurrence *occurrence;
+  ICalTimezone *default_zone;
   const gchar *uid;
 
+  default_zone = e_cal_client_get_default_timezone (cal);
   uid = i_cal_component_get_uid (icomp);
   appointment = g_hash_table_lookup (appointments, uid);
 
@@ -467,8 +481,8 @@ generate_instances_cb (ICalComponent *icomp,
     }
 
   occurrence             = g_new0 (CalendarOccurrence, 1);
-  occurrence->start_time = i_cal_time_as_timet_with_zone (instance_start, i_cal_time_get_timezone (instance_start));
-  occurrence->end_time   = i_cal_time_as_timet_with_zone (instance_end, i_cal_time_get_timezone (instance_end));
+  occurrence->start_time = timet_from_ical_time (instance_start, default_zone);
+  occurrence->end_time   = timet_from_ical_time (instance_end, default_zone);
   occurrence->rid        = e_cal_util_component_get_recurid_as_string (icomp);
 
   appointment->occurrences = g_slist_append (appointment->occurrences, occurrence);
