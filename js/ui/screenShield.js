@@ -67,8 +67,6 @@ var ScreenShield = class {
         });
         this._lockScreenGroup.connect('key-press-event',
                                       this._onLockScreenKeyPress.bind(this));
-        this._lockScreenGroup.connect('scroll-event',
-                                      this._onLockScreenScroll.bind(this));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
@@ -233,25 +231,6 @@ var ScreenShield = class {
             this._dialog.addCharacter(unichar);
 
         this._liftShield();
-        return Clutter.EVENT_STOP;
-    }
-
-    _onLockScreenScroll(actor, event) {
-        if (this._lockScreenState != MessageTray.State.SHOWN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let delta = 0;
-        if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
-            delta = Math.abs(event.get_scroll_delta()[0]);
-        else
-            delta = 5;
-
-        this._lockScreenScrollCounter += delta;
-
-        // 7 standard scrolls to lift up
-        if (this._lockScreenScrollCounter > 35)
-            this._liftShield();
-
         return Clutter.EVENT_STOP;
     }
 
@@ -521,7 +500,6 @@ var ScreenShield = class {
 
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;
-        this._lockScreenScrollCounter = 0;
 
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
