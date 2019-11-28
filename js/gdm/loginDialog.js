@@ -409,7 +409,10 @@ var SessionMenuButton = GObject.registerClass({
 });
 
 var LoginDialog = GObject.registerClass({
-    Signals: { 'failed': {} },
+    Signals: {
+        'failed': {},
+        'wake-up-screen': {},
+    },
 }, class LoginDialog extends St.Widget {
     _init(parentActor) {
         super._init({ style_class: 'login-dialog', visible: false });
