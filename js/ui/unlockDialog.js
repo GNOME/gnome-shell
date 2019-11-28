@@ -53,7 +53,10 @@ class UnlockDialogClock extends St.BoxLayout {
 });
 
 var UnlockDialog = GObject.registerClass({
-    Signals: { 'failed': {} },
+    Signals: {
+        'failed': {},
+        'wake-up-screen': {},
+    },
 }, class UnlockDialog extends St.Widget {
     _init(parentActor) {
         super._init({
