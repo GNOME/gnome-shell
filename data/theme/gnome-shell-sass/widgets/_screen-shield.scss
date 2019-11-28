@@ -2,7 +2,7 @@
 
 $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
-.screen-shield-clock {
+.unlock-dialog-clock {
   color: white;
   text-shadow: $_screenshield_shadow;
   font-weight: bold;
@@ -10,13 +10,13 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   padding-bottom: 1.5em;
 }
 
-.screen-shield-clock-time {
+.unlock-dialog-clock-time {
   font-size: 72pt;
   text-shadow: $_screenshield_shadow;
   font-feature-settings: "tnum";
 }
 
-.screen-shield-clock-date { 
+.unlock-dialog-clock-date {
   font-size: 28pt;
   font-weight: normal;
 }
