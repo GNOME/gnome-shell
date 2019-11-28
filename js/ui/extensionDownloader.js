@@ -154,7 +154,7 @@ function updateExtension(uuid) {
 function checkForUpdates() {
     let metadatas = {};
     Main.extensionManager.getUuids().forEach(uuid => {
-        metadatas[uuid] = Main.extensionManager.extensions[uuid].metadata;
+        metadatas[uuid] = Main.extensionManager.lookup(uuid).metadata;
     });
 
     let params = { shell_version: Config.PACKAGE_VERSION,
