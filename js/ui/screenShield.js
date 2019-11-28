@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { AccountsService, Clutter, Gio, GLib,
-        GnomeDesktop, Graphene, Meta, Shell, St } = imports.gi;
+        Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -44,46 +44,6 @@ var SUMMARY_ICON_SIZE = 48;
 var STANDARD_FADE_TIME = 10000;
 var MANUAL_FADE_TIME = 300;
 var CURTAIN_SLIDE_TIME = 300;
-
-var Clock = GObject.registerClass(
-class ScreenShieldClock extends St.BoxLayout {
-    _init() {
-        super._init({ style_class: 'screen-shield-clock', vertical: true });
-
-        this._time = new St.Label({
-            style_class: 'screen-shield-clock-time',
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this._date = new St.Label({
-            style_class: 'screen-shield-clock-date',
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this.add_child(this._time);
-        this.add_child(this._date);
-
-        this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
-        this._wallClock.connect('notify::clock', this._updateClock.bind(this));
-
-        this._updateClock();
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _updateClock() {
-        this._time.text = this._wallClock.clock;
-
-        let date = new Date();
-        /* Translators: This is a time format for a date in
-           long format */
-        let dateFormat = Shell.util_translate_time_string(N_("%A, %B %d"));
-        this._date.text = date.toLocaleFormat(dateFormat);
-    }
-
-    _onDestroy() {
-        this._wallClock.run_dispose();
-    }
-});
 
 var NotificationsBox = GObject.registerClass({
     Signals: { 'wake-up-screen': {} },
@@ -972,8 +932,6 @@ var ScreenShield = class {
                                                          y_expand: true,
                                                          vertical: true,
                                                          style_class: 'screen-shield-contents-box' });
-        this._clock = new Clock();
-        this._lockScreenContentsBox.add_child(this._clock);
 
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
@@ -990,9 +948,6 @@ var ScreenShield = class {
     }
 
     _clearLockScreen() {
-        this._clock.destroy();
-        this._clock = null;
-
         if (this._notificationsBox) {
             this._notificationsBox.disconnect(this._wakeUpScreenId);
             this._notificationsBox.destroy();
