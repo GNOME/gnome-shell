@@ -279,16 +279,24 @@ class DBusEventSource extends EventSourceBase {
     _onEventsReceived(results, _error) {
         let newEvents = [];
         let appointments = results[0] || [];
-        for (let n = 0; n < appointments.length; n++) {
-            let a = appointments[n];
-            let date = new Date(a[4] * 1000);
-            let end = new Date(a[5] * 1000);
-            let id = a[0];
-            let summary = a[1];
-            let allDay = a[3];
+        appointments.forEach(a => {
+            let [id, summary,, allDay, startTime, endTime] = a;
+
+            let date = new Date(startTime * 1000);
+            let end = new Date(endTime * 1000);
+
+            // Remove the timezone offset that's applied by Date() to make sure
+            // all-day events (which always start at 00:00 UTC) don't overlap
+            // with two days.
+            if (allDay) {
+                const tzOffset = date.getTimezoneOffset() * 60 * 1000;
+                date = new Date(date.getTime() + tzOffset);
+                end = new Date(end.getTime() + tzOffset);
+            }
+
             let event = new CalendarEvent(id, date, end, summary, allDay);
             newEvents.push(event);
-        }
+        });
         newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
 
         this._events = newEvents;
