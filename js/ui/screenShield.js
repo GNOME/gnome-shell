@@ -88,14 +88,14 @@ var ScreenShield = class {
         this._smartcardManager.connect('smartcard-inserted',
                                        (manager, token) => {
                                            if (this._isLocked && token.UsedToLogin)
-                                               this._liftShield(0);
+                                               this._liftShield();
                                        });
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
         this._oVirtCredentialsManager.connect('user-authenticated',
                                               () => {
                                                   if (this._isLocked)
-                                                      this._liftShield(0);
+                                                      this._liftShield();
                                               });
 
         this._loginManager = LoginManager.getLoginManager();
@@ -159,10 +159,10 @@ var ScreenShield = class {
         this._syncInhibitor();
     }
 
-    _liftShield(velocity) {
+    _liftShield() {
         if (this._isLocked) {
             if (this._ensureUnlockDialog(true /* allowCancel */))
-                this._hideLockScreen(true /* animate */, velocity);
+                this._hideLockScreen(true /* animate */);
         } else {
             this.deactivate(true /* animate */);
         }
@@ -222,7 +222,7 @@ var ScreenShield = class {
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
-        this._liftShield(0);
+        this._liftShield();
         return Clutter.EVENT_STOP;
     }
 
@@ -240,7 +240,7 @@ var ScreenShield = class {
 
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35)
-            this._liftShield(0);
+            this._liftShield();
 
         return Clutter.EVENT_STOP;
     }
@@ -379,7 +379,7 @@ var ScreenShield = class {
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
         if (this._ensureUnlockDialog(true))
-            this._hideLockScreen(false, 0);
+            this._hideLockScreen(false);
     }
 
     _hideLockScreenComplete() {
@@ -395,7 +395,7 @@ var ScreenShield = class {
         }
     }
 
-    _hideLockScreen(animate, velocity) {
+    _hideLockScreen(animate) {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
 
@@ -410,9 +410,7 @@ var ScreenShield = class {
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
             let delta = h + this._lockScreenGroup.translation_y;
-            let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
-
-            velocity = Math.max(minVelocity, velocity);
+            let velocity = global.stage.height / CURTAIN_SLIDE_TIME;
             let duration = delta / velocity;
 
             this._lockScreenGroup.ease({
@@ -560,7 +558,7 @@ var ScreenShield = class {
     }
 
     _continueDeactivate(animate) {
-        this._hideLockScreen(animate, 0);
+        this._hideLockScreen(animate);
 
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
