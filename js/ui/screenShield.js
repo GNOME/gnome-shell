@@ -829,6 +829,8 @@ var ScreenShield = class {
             }
 
             this._dialog.connect('failed', this._onUnlockFailed.bind(this));
+            this._wakeUpScreenId = this._dialog.connect(
+                'wake-up-screen', this._wakeUpScreen.bind(this));
         }
 
         this._dialog.allowCancel = allowCancel;
