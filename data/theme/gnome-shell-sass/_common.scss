@@ -2047,11 +2047,11 @@ StScrollBar {
 
 //SCREEN SHIELD
 
-$_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
+$_unlockdialog_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
 .unlock-dialog-clock {
   color: white;
-  text-shadow: $_screenshield_shadow;
+  text-shadow: $_unlockdialog_shadow;
   font-weight: bold;
   text-align: center;
   padding-bottom: 1.5em;
@@ -2059,7 +2059,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 
 .unlock-dialog-clock-time {
   font-size: 72pt;
-  text-shadow: $_screenshield_shadow;
+  text-shadow: $_unlockdialog_shadow;
   font-feature-settings: "tnum";
 }
 
@@ -2068,7 +2068,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   font-weight: normal;
 }
 
-.screen-shield-notifications-container {
+.unlock-dialog-notifications-container {
   spacing: 6px;
   width: 30em;
   background-color: transparent;
@@ -2079,7 +2079,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   }
 
   .notification,
-  .screen-shield-notification-source {
+  .unlock-dialog-notification-source {
     padding: 12px 6px;
     border: 1px solid $osd_outer_borders_color;
     background-color: transparentize($osd_bg_color,0.5);
@@ -2090,12 +2090,12 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 }
 
 
-.screen-shield-notification-label {
+.unlock-dialog-notification-label {
   font-weight: bold;
   padding: 0px 0px 0px 12px;
 }
 
-.screen-shield-notification-count-text { padding: 0px 0px 0px 12px; }
+.unlock-dialog-notification-count-text { padding: 0px 0px 0px 12px; }
 
 #panel.lock-screen { background-color: transparentize($osd_bg_color, 0.5); }
 
@@ -2109,7 +2109,7 @@ $_screenshield_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
   background-repeat: repeat;
 }
 
-#screenShieldNotifications {
+#unlockDialogNotifications {
   StButton#vhandle, StButton#hhandle {
     background-color: transparentize($bg_color,0.7);
     &:hover, &:focus { background-color: transparentize($bg_color,0.5); }
