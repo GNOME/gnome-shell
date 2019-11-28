@@ -194,8 +194,6 @@ var ScreenShield = class {
             // on its own, so ensure it stays on lock screen
             // instead
             this._lockScreenGroup.grab_key_focus();
-        } else {
-            this._dialog = null;
         }
     }
 
