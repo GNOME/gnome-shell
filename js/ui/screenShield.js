@@ -25,10 +25,6 @@ const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
 const LOCKED_STATE_STR = 'screenShield.locked';
 
-// fraction of screen height the arrow must reach before completing
-// the slide up automatically
-var ARROW_DRAG_THRESHOLD = 0.1;
-
 // ScreenShield animation time
 // - STANDARD_FADE_TIME is used when the session goes idle
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
@@ -37,10 +33,6 @@ var ARROW_DRAG_THRESHOLD = 0.1;
 var STANDARD_FADE_TIME = 10000;
 var MANUAL_FADE_TIME = 300;
 var CURTAIN_SLIDE_TIME = 300;
-
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
 
 /**
  * If you are setting org.gnome.desktop.session.idle-delay directly in dconf,
@@ -68,12 +60,6 @@ var ScreenShield = class {
         this._lockScreenGroup.connect('scroll-event',
                                       this._onLockScreenScroll.bind(this));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
-
-        this._dragAction = new Clutter.GestureAction();
-        this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
-        this._dragAction.connect('gesture-progress', this._onDragMotion.bind(this));
-        this._dragAction.connect('gesture-end', this._onDragEnd.bind(this));
-        this._lockScreenGroup.add_action(this._dragAction);
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
@@ -284,55 +270,6 @@ var ScreenShield = class {
                 this.lock(true);
         } else {
             this._wakeUpScreen();
-        }
-    }
-
-    _onDragBegin() {
-        this._lockScreenGroup.remove_all_transitions();
-        this._lockScreenState = MessageTray.State.HIDING;
-
-        if (this._isLocked)
-            this._ensureUnlockDialog(false);
-
-        return true;
-    }
-
-    _onDragMotion() {
-        let [, origY] = this._dragAction.get_press_coords(0);
-        let [, currentY] = this._dragAction.get_motion_coords(0);
-
-        let newY = currentY - origY;
-        newY = clamp(newY, -global.stage.height, 0);
-
-        this._lockScreenGroup.translation_y = newY;
-
-        return true;
-    }
-
-    _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
-        if (this._lockScreenState != MessageTray.State.HIDING)
-            return;
-        if (this._lockScreenGroup.translation_y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
-            // Complete motion automatically
-            let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
-            this._liftShield(-velocityY);
-        } else {
-            // restore the lock screen to its original place
-            // try to use the same speed as the normal animation
-            let h = global.stage.height;
-            let duration = MANUAL_FADE_TIME * -this._lockScreenGroup.translation_y / h;
-            this._lockScreenGroup.remove_all_transitions();
-            this._lockScreenGroup.ease({
-                translation_y: 0,
-                duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => {
-                    this._lockScreenGroup.fixed_position_set = false;
-                    this._lockScreenState = MessageTray.State.SHOWN;
-                },
-            });
-
-            this._maybeCancelDialog();
         }
     }
 
