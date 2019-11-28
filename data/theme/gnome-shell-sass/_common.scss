@@ -708,6 +708,10 @@ StScrollBar {
     width:  256px;
   }
 
+  .switcher-list .thumbnail-title {
+    max-width: 256px;
+  }
+
   .switcher-list .separator {
     width: 1px;
     background: $borders_color;
