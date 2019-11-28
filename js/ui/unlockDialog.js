@@ -493,8 +493,6 @@ var UnlockDialog = GObject.registerClass({
 
     cancel() {
         this._authPrompt.cancel();
-
-        this.destroy();
     }
 
     addCharacter(unichar) {
