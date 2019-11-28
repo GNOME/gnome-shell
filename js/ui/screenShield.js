@@ -4,7 +4,6 @@ const { AccountsService, Clutter, Gio, GLib,
         GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
-const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
 const OVirt = imports.gdm.oVirt;
@@ -26,9 +25,6 @@ const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
 const LOCKED_STATE_STR = 'screenShield.locked';
-
-const BLUR_BRIGHTNESS = 0.55;
-const BLUR_RADIUS = 200;
 
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
@@ -79,15 +75,6 @@ var ScreenShield = class {
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
         this._lockScreenGroup.add_actor(this._lockScreenContents);
-
-        this._backgroundGroup = new Clutter.Actor();
-
-        this._lockScreenGroup.add_actor(this._backgroundGroup);
-        this._lockScreenGroup.set_child_below_sibling(this._backgroundGroup, null);
-        this._bgManagers = [];
-
-        this._updateBackgrounds();
-        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
 
         this._dragAction = new Clutter.GestureAction();
         this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
@@ -192,40 +179,6 @@ var ScreenShield = class {
             this._loginSession.SetLockedHintRemote(active);
 
         this._syncInhibitor();
-    }
-
-    _createBackground(monitorIndex) {
-        let monitor = Main.layoutManager.monitors[monitorIndex];
-        let widget = new St.Widget({ style_class: 'screen-shield-background',
-                                     x: monitor.x,
-                                     y: monitor.y,
-                                     width: monitor.width,
-                                     height: monitor.height });
-
-        let bgManager = new Background.BackgroundManager({ container: widget,
-                                                           monitorIndex,
-                                                           controlPosition: false,
-                                                           settingsSchema: SCREENSAVER_SCHEMA });
-
-        this._bgManagers.push(bgManager);
-
-        this._backgroundGroup.add_child(widget);
-
-        widget.add_effect(new Shell.BlurEffect({
-            brightness: BLUR_BRIGHTNESS,
-            blur_radius: BLUR_RADIUS,
-        }));
-    }
-
-    _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
-
-        this._bgManagers = [];
-        this._backgroundGroup.destroy_all_children();
-
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
-            this._createBackground(i);
     }
 
     _liftShield(velocity) {
