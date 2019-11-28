@@ -4,6 +4,7 @@
 const { AccountsService, Atk, Clutter, Gdm, Gio,
         GnomeDesktop, GLib, GObject, Meta, Shell, St } = imports.gi;
 
+const Background = imports.ui.background;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -12,6 +13,8 @@ const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
+
+const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
 const SUMMARY_ICON_SIZE = 48;
 
@@ -323,12 +326,20 @@ var UnlockDialog = GObject.registerClass({
         super._init({
             accessible_role: Atk.Role.WINDOW,
             style_class: 'login-dialog',
-            layout_manager: new Clutter.BoxLayout(),
             visible: false,
         });
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         parentActor.add_child(this);
+
+        // Background
+        this._backgroundGroup = new Clutter.Actor();
+
+        this.add_child(this._backgroundGroup);
+        this.set_child_below_sibling(this._backgroundGroup, null);
+        this._bgManagers = [];
+
+        this._updateBackgrounds();
+        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
 
         this._userManager = AccountsService.UserManager.get_default();
         this._userName = GLib.get_user_name();
@@ -340,6 +351,7 @@ var UnlockDialog = GObject.registerClass({
                                              x_expand: true,
                                              y_expand: true });
         this.add_child(this._promptBox);
+        this._promptBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
         this._clock = new Clock();
         this._promptBox.add_child(this._clock);
@@ -384,6 +396,35 @@ var UnlockDialog = GObject.registerClass({
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _createBackground(monitorIndex) {
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+        let widget = new St.Widget({ style_class: 'screen-shield-background',
+                                     x: monitor.x,
+                                     y: monitor.y,
+                                     width: monitor.width,
+                                     height: monitor.height });
+
+        let bgManager = new Background.BackgroundManager({ container: widget,
+                                                           monitorIndex,
+                                                           controlPosition: false,
+                                                           settingsSchema: SCREENSAVER_SCHEMA });
+
+        this._bgManagers.push(bgManager);
+
+        this._backgroundGroup.add_child(widget);
+    }
+
+    _updateBackgrounds() {
+        for (let i = 0; i < this._bgManagers.length; i++)
+            this._bgManagers[i].destroy();
+
+        this._bgManagers = [];
+        this._backgroundGroup.destroy_all_children();
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
+            this._createBackground(i);
     }
 
     _updateSensitivity(sensitive) {
