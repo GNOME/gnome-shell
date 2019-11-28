@@ -5,7 +5,6 @@ const { AccountsService, Clutter, Gio,
 const Signals = imports.signals;
 
 const GnomeSession = imports.misc.gnomeSession;
-const Layout = imports.ui.layout;
 const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
@@ -69,12 +68,6 @@ var ScreenShield = class {
         this._lockScreenGroup.connect('scroll-event',
                                       this._onLockScreenScroll.bind(this));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
-
-        this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                                   name: 'lockScreenContents' });
-        this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-
-        this._lockScreenGroup.add_actor(this._lockScreenContents);
 
         this._dragAction = new Clutter.GestureAction();
         this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
@@ -141,7 +134,6 @@ var ScreenShield = class {
         this._lockSettings.connect(`changed::${DISABLE_LOCK_KEY}`, this._syncInhibitor.bind(this));
 
         this._isModal = false;
-        this._hasLockScreen = false;
         this._isGreeter = false;
         this._isActive = false;
         this._isLocked = false;
@@ -543,7 +535,6 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
-        this._ensureLockScreen();
         this._lockDialogGroup.scale_x = 1;
         this._lockDialogGroup.scale_y = 1;
 
@@ -615,33 +606,9 @@ var ScreenShield = class {
         this.emit('lock-screen-shown');
     }
 
-    // Some of the actors in the lock screen are heavy in
-    // resources, so we only create them when needed
-    _ensureLockScreen() {
-        if (this._hasLockScreen)
-            return;
-
-        this._lockScreenContentsBox = new St.BoxLayout({ x_align: Clutter.ActorAlign.CENTER,
-                                                         y_align: Clutter.ActorAlign.CENTER,
-                                                         x_expand: true,
-                                                         y_expand: true,
-                                                         vertical: true,
-                                                         style_class: 'screen-shield-contents-box' });
-
-        this._lockScreenContents.add_actor(this._lockScreenContentsBox);
-
-        this._hasLockScreen = true;
-    }
-
     _wakeUpScreen() {
         this._onUserBecameActive();
         this.emit('wake-up-screen');
-    }
-
-    _clearLockScreen() {
-        this._lockScreenContentsBox.destroy();
-
-        this._hasLockScreen = false;
     }
 
     get locked() {
@@ -665,9 +632,6 @@ var ScreenShield = class {
 
     _continueDeactivate(animate) {
         this._hideLockScreen(animate, 0);
-
-        if (this._hasLockScreen)
-            this._clearLockScreen();
 
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
