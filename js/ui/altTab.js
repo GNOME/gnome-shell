@@ -890,6 +890,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
             let title = windows[i].get_title();
             if (title) {
                 let name = new St.Label({
+                    style_class: 'thumbnail-title',
                     text: title,
                     // St.Label doesn't support text-align
                     x_align: Clutter.ActorAlign.CENTER,
