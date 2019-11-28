@@ -81,7 +81,7 @@ st_private_headers = [
 ]
 
 # please, keep this sorted alphabetically
-st_sources = [
+croco_sources = [
   'croco/cr-additional-sel.c',
   'croco/cr-attr-sel.c',
   'croco/cr-cascade.c',
@@ -106,6 +106,10 @@ st_sources = [
   'croco/cr-tknzr.c',
   'croco/cr-token.c',
   'croco/cr-utils.c',
+]
+
+# please, keep this sorted alphabetically
+st_sources = [
   'st-adjustment.c',
   'st-bin.c',
   'st-border-image.c',
@@ -171,7 +175,7 @@ st_cflags = [
 
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-1.0',
-  sources: st_gir_sources,
+  sources: st_gir_sources + croco_sources,
   c_args: st_cflags,
   dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
   build_rpath: mutter_typelibdir,
