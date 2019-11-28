@@ -568,11 +568,6 @@ var ScreenShield = class {
     }
 
     _lockScreenShown(params) {
-        if (this._dialog && !this._isGreeter) {
-            this._dialog.destroy();
-            this._dialog = null;
-        }
-
         let motionId = global.stage.connect('captured-event', (stage, event) => {
             if (event.type() == Clutter.EventType.MOTION) {
                 this._cursorTracker.set_pointer_visible(true);
@@ -700,6 +695,8 @@ var ScreenShield = class {
     activate(animate) {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
+
+        this._ensureUnlockDialog(true);
 
         this.actor.show();
 
