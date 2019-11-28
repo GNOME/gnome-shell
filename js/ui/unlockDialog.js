@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported UnlockDialog */
 
-const { AccountsService, Atk, Clutter,
-        Gdm, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { AccountsService, Atk, Clutter, Gdm, Gio,
+        GnomeDesktop, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -11,6 +11,46 @@ const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
+
+var Clock = GObject.registerClass(
+class UnlockDialogClock extends St.BoxLayout {
+    _init() {
+        super._init({ style_class: 'unlock-dialog-clock', vertical: true });
+
+        this._time = new St.Label({
+            style_class: 'unlock-dialog-clock-time',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._date = new St.Label({
+            style_class: 'unlock-dialog-clock-date',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this.add_child(this._time);
+        this.add_child(this._date);
+
+        this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
+        this._wallClock.connect('notify::clock', this._updateClock.bind(this));
+
+        this._updateClock();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _updateClock() {
+        this._time.text = this._wallClock.clock;
+
+        let date = new Date();
+        /* Translators: This is a time format for a date in
+           long format */
+        let dateFormat = Shell.util_translate_time_string(N_('%A, %B %d'));
+        this._date.text = date.toLocaleFormat(dateFormat);
+    }
+
+    _onDestroy() {
+        this._wallClock.run_dispose();
+    }
+});
 
 var UnlockDialog = GObject.registerClass({
     Signals: { 'failed': {} },
@@ -36,6 +76,9 @@ var UnlockDialog = GObject.registerClass({
                                              x_expand: true,
                                              y_expand: true });
         this.add_child(this._promptBox);
+
+        this._clock = new Clock();
+        this._promptBox.add_child(this._clock);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
