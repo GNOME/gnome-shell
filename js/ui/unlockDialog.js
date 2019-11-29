@@ -390,9 +390,16 @@ var UnlockDialog = GObject.registerClass({
             accessible_role: Atk.Role.WINDOW,
             style_class: 'login-dialog',
             visible: false,
+            reactive: true,
         });
 
         parentActor.add_child(this);
+
+        this._activePage = null;
+
+        let tapAction = new Clutter.TapAction();
+        tapAction.connect('tap', this._showPrompt.bind(this));
+        this.add_action(tapAction);
 
         // Background
         this._backgroundGroup = new Clutter.Actor();
@@ -469,6 +476,29 @@ var UnlockDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
+    vfunc_key_press_event(keyEvent) {
+        if (this._activePage == this._promptBox)
+            return Clutter.EVENT_PROPAGATE;
+
+        let symbol = keyEvent.keyval;
+        let unichar = keyEvent.unicode_value;
+
+        let isLiftChar = GLib.unichar_isprint(unichar);
+        let isEnter = symbol == Clutter.KEY_Return ||
+                      symbol == Clutter.KEY_KP_Enter ||
+                      symbol == Clutter.KEY_ISO_Enter;
+
+        if (!isEnter && !isLiftChar)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._showPrompt();
+
+        if (GLib.unichar_isgraph(unichar))
+            this.addCharacter(unichar);
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _createBackground(monitorIndex) {
         let monitor = Main.layoutManager.monitors[monitorIndex];
         let widget = new St.Widget({ style_class: 'screen-shield-background',
@@ -510,6 +540,48 @@ var UnlockDialog = GObject.registerClass({
             this._otherUserButton.reactive = sensitive;
             this._otherUserButton.can_focus = sensitive;
         }
+    }
+
+    _showClock() {
+        if (this._activePage == this._clock)
+            return;
+
+        this._activePage = this._clock;
+        this._clock.show();
+
+        this._promptBox.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._promptBox.hide(),
+        });
+
+        this._clock.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _showPrompt() {
+        if (this._activePage == this._promptBox)
+            return;
+
+        this._activePage = this._promptBox;
+        this._promptBox.show();
+
+        this._clock.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._clock.hide(),
+        });
+
+        this._promptBox.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _fail() {
@@ -564,6 +636,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     addCharacter(unichar) {
+        this._showPrompt();
         this._authPrompt.addCharacter(unichar);
     }
 
