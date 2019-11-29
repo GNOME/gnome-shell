@@ -477,8 +477,7 @@ term_is_none (CRTerm *term)
 }
 
 static GetFromTermResult
-get_color_from_term (StThemeNode  *node,
-                     CRTerm       *term,
+get_color_from_term (CRTerm       *term,
                      ClutterColor *color)
 {
   char *stringified;
@@ -548,7 +547,7 @@ st_theme_node_lookup_color (StThemeNode  *node,
 
       if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
-          GetFromTermResult result = get_color_from_term (node, decl->value, color);
+          GetFromTermResult result = get_color_from_term (decl->value, color);
           if (result == VALUE_FOUND)
             {
               return TRUE;
@@ -1284,7 +1283,7 @@ do_border_property (StThemeNode   *node,
                 }
             }
 
-          result = get_color_from_term (node, term, &color);
+          result = get_color_from_term (term, &color);
           if (result != VALUE_NOT_FOUND)
             {
               color_set = result == VALUE_FOUND;
@@ -1298,7 +1297,7 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (node, decl->value, &color) == VALUE_FOUND)
+      if (get_color_from_term (decl->value, &color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1389,7 +1388,7 @@ do_outline_property (StThemeNode   *node,
                 }
             }
 
-          result = get_color_from_term (node, term, &color);
+          result = get_color_from_term (term, &color);
           if (result != VALUE_NOT_FOUND)
             {
               color_set = result == VALUE_FOUND;
@@ -1403,7 +1402,7 @@ do_outline_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (node, decl->value, &color) == VALUE_FOUND)
+      if (get_color_from_term (decl->value, &color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1846,7 +1845,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
           for (term = decl->value; term; term = term->next)
             {
-              GetFromTermResult result = get_color_from_term (node, term, &node->background_color);
+              GetFromTermResult result = get_color_from_term (term, &node->background_color);
               if (result == VALUE_FOUND)
                 {
                   /* color stored in node->background_color */
@@ -1955,7 +1954,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          result = get_color_from_term (node, decl->value, &node->background_color);
+          result = get_color_from_term (decl->value, &node->background_color);
           if (result == VALUE_FOUND)
             {
               /* color stored in node->background_color */
@@ -2022,11 +2021,11 @@ _st_theme_node_ensure_background (StThemeNode *node)
         }
       else if (strcmp (property_name, "-gradient-start") == 0)
         {
-          get_color_from_term (node, decl->value, &node->background_color);
+          get_color_from_term (decl->value, &node->background_color);
         }
       else if (strcmp (property_name, "-gradient-end") == 0)
         {
-          get_color_from_term (node, decl->value, &node->background_gradient_end);
+          get_color_from_term (decl->value, &node->background_gradient_end);
         }
     }
 }
@@ -2092,7 +2091,7 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
 
           if (strcmp (decl->property->stryng->str, "color") == 0)
             {
-              GetFromTermResult result = get_color_from_term (node, decl->value, &node->foreground_color);
+              GetFromTermResult result = get_color_from_term (decl->value, &node->foreground_color);
               if (result == VALUE_FOUND)
                 goto out;
               else if (result == VALUE_INHERIT)
@@ -3164,7 +3163,7 @@ parse_shadow_property (StThemeNode       *node,
           continue;
         }
 
-      result = get_color_from_term (node, term, color);
+      result = get_color_from_term (term, color);
 
       if (result == VALUE_INHERIT)
         {
@@ -3487,25 +3486,25 @@ st_theme_node_get_icon_colors (StThemeNode *node)
           strcmp (decl->property->stryng->str, "color") == 0)
         {
           found = FOREGROUND;
-          result = get_color_from_term (node, decl->value, &color);
+          result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & WARNING) != 0 &&
                strcmp (decl->property->stryng->str, "warning-color") == 0)
         {
           found = WARNING;
-          result = get_color_from_term (node, decl->value, &color);
+          result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & ERROR) != 0 &&
                strcmp (decl->property->stryng->str, "error-color") == 0)
         {
           found = ERROR;
-          result = get_color_from_term (node, decl->value, &color);
+          result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & SUCCESS) != 0 &&
                strcmp (decl->property->stryng->str, "success-color") == 0)
         {
           found = SUCCESS;
-          result = get_color_from_term (node, decl->value, &color);
+          result = get_color_from_term (decl->value, &color);
         }
 
       if (result == VALUE_INHERIT)
