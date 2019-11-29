@@ -65,8 +65,8 @@ var ScreenShield = class {
                                                 pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
 
-        this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
+        this.actor.add_actor(this._lockDialogGroup);
 
         this._presence = new GnomeSession.Presence((proxy, error) => {
             if (error) {
