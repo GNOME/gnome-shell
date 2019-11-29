@@ -600,6 +600,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     _fail() {
+        this._showClock();
         this.emit('failed');
     }
 
