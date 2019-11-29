@@ -15,10 +15,13 @@ stage {
     background: #ff0000 url('some-background.png');
 
     font-feature-settings: "tnum";
+
+    double-prop: 42.0;
 }
 
 #text1 {
     background-image: inherit;
+    double-prop: inherit;
 }
 
 .special-text {
