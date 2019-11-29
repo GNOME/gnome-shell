@@ -836,8 +836,7 @@ StScrollBar {
   font-feature-settings: "tnum";
 
   &.unlock-screen,
-  &.login-screen,
-  &.lock-screen {
+  &.login-screen {
     background-color: transparent;
   }
 
@@ -855,7 +854,7 @@ StScrollBar {
       -panel-corner-border-color: lighten($selected_bg_color,5%);
     }
 
-    &.lock-screen, &.login-screen, &.unlock-screen {
+    &.login-screen, &.unlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
       -panel-corner-border-color: transparent;
@@ -889,8 +888,7 @@ StScrollBar {
 
     .system-status-icon { icon-size: 1.09em; padding: 0 5px; }
     .unlock-screen &,
-    .login-screen &,
-    .lock-screen & {
+    .login-screen & {
       color: lighten($fg_color, 10%);
       &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
     }
@@ -2106,8 +2104,6 @@ $_unlockdialog_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
 }
 
 .unlock-dialog-notification-count-text { padding: 0px 0px 0px 12px; }
-
-#panel.lock-screen { background-color: transparentize($osd_bg_color, 0.5); }
 
 .screen-shield-background { //just the shadow, really
   background: black;
