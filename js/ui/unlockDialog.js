@@ -21,7 +21,7 @@ const CROSSFADE_TIME = 300;
 const BLUR_BRIGHTNESS = 0.55;
 const BLUR_RADIUS = 200;
 
-const SUMMARY_ICON_SIZE = 48;
+const SUMMARY_ICON_SIZE = 32;
 
 var NotificationsBox = GObject.registerClass({
     Signals: { 'wake-up-screen': {} },
