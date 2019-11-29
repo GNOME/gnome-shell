@@ -396,6 +396,12 @@ var ScreenShield = class {
                 translation_y: -h,
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            });
+
+            this._lockDialogGroup.ease({
+                translation_y: -h,
+                duration,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => this._hideLockScreenComplete(),
             });
         } else {
@@ -447,9 +453,6 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
-        this._lockDialogGroup.scale_x = 1;
-        this._lockDialogGroup.scale_y = 1;
-
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
@@ -461,6 +464,14 @@ var ScreenShield = class {
             this._lockScreenGroup.ease({
                 translation_y: 0,
                 duration: MANUAL_FADE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
+            this._lockDialogGroup.translation_y = -global.screen_height;
+            this._lockDialogGroup.remove_all_transitions();
+            this._lockDialogGroup.ease({
+                translation_y: 0,
+                duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._lockScreenShown({ fadeToBlack, animateFade: true });
@@ -565,9 +576,8 @@ var ScreenShield = class {
         }
 
         this._lockDialogGroup.ease({
-            scale_x: 0,
-            scale_y: 0,
-            duration: animate ? Overview.ANIMATION_TIME : 0,
+            translation_y: -global.screen_height,
+            duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this._completeDeactivate(),
         });
