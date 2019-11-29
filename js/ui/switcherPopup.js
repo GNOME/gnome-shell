@@ -568,10 +568,10 @@ var SwitcherList = GObject.registerClass({
         let leftPadding = this.get_theme_node().get_padding(St.Side.LEFT);
         let rightPadding = this.get_theme_node().get_padding(St.Side.RIGHT);
 
-        let [, natScrollViewWidth] = this._scrollView.get_preferred_width(height);
+        let [minListWidth] = this._list.get_preferred_width(height);
 
         let childBox = new Clutter.ActorBox();
-        let scrollable = natScrollViewWidth > width;
+        let scrollable = minListWidth > width;
 
         this._scrollView.allocate(contentBox, flags);
 
