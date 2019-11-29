@@ -1,3 +1,4 @@
+# please, keep this sorted alphabetically
 st_headers = [
   'st-adjustment.h',
   'st-bin.h',
@@ -45,11 +46,66 @@ st_h = configure_file(
 
 st_inc = include_directories('.', '..')
 
+# please, keep this sorted alphabetically
 st_private_headers = [
+  'croco/cr-additional-sel.h',
+  'croco/cr-attr-sel.h',
+  'croco/cr-cascade.h',
+  'croco/cr-declaration.h',
+  'croco/cr-doc-handler.h',
+  'croco/cr-enc-handler.h',
+  'croco/cr-fonts.h',
+  'croco/cr-input.h',
+  'croco/cr-num.h',
+  'croco/cr-om-parser.h',
+  'croco/cr-parser.h',
+  'croco/cr-parsing-location.h',
+  'croco/cr-prop-list.h',
+  'croco/cr-pseudo.h',
+  'croco/cr-rgb.h',
+  'croco/cr-selector.h',
+  'croco/cr-simple-sel.h',
+  'croco/cr-statement.h',
+  'croco/cr-string.h',
+  'croco/cr-stylesheet.h',
+  'croco/cr-term.h',
+  'croco/cr-tknzr.h',
+  'croco/cr-token.h',
+  'croco/cr-utils.h',
+  'croco/libcroco-config.h',
+  'croco/libcroco.h',
   'st-private.h',
   'st-theme-private.h',
   'st-theme-node-private.h',
   'st-theme-node-transition.h'
+]
+
+# please, keep this sorted alphabetically
+croco_sources = [
+  'croco/cr-additional-sel.c',
+  'croco/cr-attr-sel.c',
+  'croco/cr-cascade.c',
+  'croco/cr-declaration.c',
+  'croco/cr-doc-handler.c',
+  'croco/cr-enc-handler.c',
+  'croco/cr-fonts.c',
+  'croco/cr-input.c',
+  'croco/cr-num.c',
+  'croco/cr-om-parser.c',
+  'croco/cr-parser.c',
+  'croco/cr-parsing-location.c',
+  'croco/cr-prop-list.c',
+  'croco/cr-pseudo.c',
+  'croco/cr-rgb.c',
+  'croco/cr-selector.c',
+  'croco/cr-simple-sel.c',
+  'croco/cr-statement.c',
+  'croco/cr-string.c',
+  'croco/cr-stylesheet.c',
+  'croco/cr-term.c',
+  'croco/cr-tknzr.c',
+  'croco/cr-token.c',
+  'croco/cr-utils.c',
 ]
 
 # please, keep this sorted alphabetically
@@ -119,9 +175,9 @@ st_cflags = [
 
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-1.0',
-  sources: st_gir_sources,
+  sources: st_gir_sources + croco_sources,
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep, croco_dep, mutter_dep, m_dep],
+  dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
@@ -135,7 +191,7 @@ libst_dep = declare_dependency(link_with: libst,
 test_theme = executable('test-theme',
   sources: 'test-theme.c',
   c_args: st_cflags,
-  dependencies: [mutter_dep, gtk_dep],
+  dependencies: [mutter_dep, gtk_dep, libxml_dep],
   build_rpath: mutter_typelibdir,
   link_with: libst
 )
