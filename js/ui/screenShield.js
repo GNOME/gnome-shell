@@ -354,7 +354,7 @@ var ScreenShield = class {
 
         this._lockScreenState = MessageTray.State.HIDING;
 
-        this._lockScreenGroup.remove_all_transitions();
+        this._lockDialogGroup.remove_all_transitions();
 
         if (animate) {
             // Tween the lock screen out of screen
@@ -365,12 +365,6 @@ var ScreenShield = class {
             let delta = h + this._lockScreenGroup.translation_y;
             let velocity = global.stage.height / CURTAIN_SLIDE_TIME;
             let duration = delta / velocity;
-
-            this._lockScreenGroup.ease({
-                translation_y: -h,
-                duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-            });
 
             this._lockDialogGroup.ease({
                 translation_y: -h,
@@ -433,14 +427,6 @@ var ScreenShield = class {
         let fadeToBlack = params.fadeToBlack;
 
         if (params.animateLockScreen) {
-            this._lockScreenGroup.translation_y = -global.screen_height;
-            this._lockScreenGroup.remove_all_transitions();
-            this._lockScreenGroup.ease({
-                translation_y: 0,
-                duration: MANUAL_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-
             this._lockDialogGroup.translation_y = -global.screen_height;
             this._lockDialogGroup.remove_all_transitions();
             this._lockDialogGroup.ease({
