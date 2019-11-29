@@ -75,12 +75,18 @@ var NotificationsBox = GObject.registerClass({
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
         box.add_child(sourceActor);
 
-        let textBox = new St.BoxLayout({ vertical: true });
+        let textBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         box.add_child(textBox);
 
         let title = new St.Label({
             text: source.title,
             style_class: 'unlock-dialog-notification-label',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
         });
         textBox.add(title);
 
