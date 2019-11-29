@@ -102,6 +102,12 @@ cr_declaration_new (CRStatement * a_statement,
         return result;
 }
 
+const char *
+cr_declaration_name (CRDeclaration *a_this)
+{
+        return a_this->property->stryng->str;
+}
+
 /**
  * cr_declaration_parse_from_buf:
  *@a_statement: the parent css2 statement of this

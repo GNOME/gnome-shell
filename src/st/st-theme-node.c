@@ -543,7 +543,7 @@ st_theme_node_lookup_color (StThemeNode  *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           GetFromTermResult result = get_color_from_term (decl->value, color);
           if (result == VALUE_FOUND)
@@ -644,7 +644,7 @@ st_theme_node_lookup_double (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           GetFromTermResult result = get_double_from_term (decl->value, value);
           if (result == VALUE_FOUND)
@@ -729,7 +729,7 @@ st_theme_node_lookup_time (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           GetFromTermResult result = get_time_from_term (decl->value, value);
           if (result == VALUE_FOUND)
@@ -815,7 +815,7 @@ st_theme_node_lookup_url (StThemeNode  *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           CRTerm *term = decl->value;
           CRStyleSheet *base_stylesheet;
@@ -1068,7 +1068,7 @@ get_length_internal (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           GetFromTermResult result = get_length_from_term (node, decl->value, FALSE, length);
           if (result != VALUE_NOT_FOUND)
@@ -1178,7 +1178,7 @@ static void
 do_border_radius (StThemeNode   *node,
                   CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 13; /* Skip 'border-radius' */
+  const char *property_name = cr_declaration_name (decl) + 13; /* Skip 'border-radius' */
 
   if (strcmp (property_name, "") == 0)
     {
@@ -1237,7 +1237,7 @@ static void
 do_border_property (StThemeNode   *node,
                     CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 6; /* Skip 'border' */
+  const char *property_name = cr_declaration_name (decl) + 6; /* Skip 'border' */
   StSide side = (StSide)-1;
   ClutterColor color;
   gboolean color_set = FALSE;
@@ -1371,7 +1371,7 @@ static void
 do_outline_property (StThemeNode   *node,
                      CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 7; /* Skip 'outline' */
+  const char *property_name = cr_declaration_name (decl) + 7; /* Skip 'outline' */
   ClutterColor color;
   gboolean color_set = FALSE;
   int width = 0; /* suppress warning */
@@ -1486,7 +1486,7 @@ static void
 do_padding_property (StThemeNode   *node,
                      CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 7; /* Skip 'padding' */
+  const char *property_name = cr_declaration_name (decl) + 7; /* Skip 'padding' */
 
   if (strcmp (property_name, "") == 0)
     {
@@ -1568,7 +1568,7 @@ static void
 do_margin_property (StThemeNode   *node,
                     CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 6; /* Skip 'margin' */
+  const char *property_name = cr_declaration_name (decl) + 6; /* Skip 'margin' */
 
   if (strcmp (property_name, "") == 0)
     {
@@ -1665,7 +1665,7 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
   for (i = 0; i < node->n_properties; i++)
     {
       CRDeclaration *decl = node->properties[i];
-      const char *property_name = decl->property->stryng->str;
+      const char *property_name = cr_declaration_name (decl);
 
       if (g_str_has_prefix (property_name, "border"))
         do_border_property (node, decl);
@@ -1858,7 +1858,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
   for (i = 0; i < node->n_properties; i++)
     {
       CRDeclaration *decl = node->properties[i];
-      const char *property_name = decl->property->stryng->str;
+      const char *property_name = cr_declaration_name (decl);
 
       if (g_str_has_prefix (property_name, "background"))
         property_name += 10;
@@ -2126,7 +2126,7 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
         {
           CRDeclaration *decl = node->properties[i];
 
-          if (strcmp (decl->property->stryng->str, "color") == 0)
+          if (strcmp (cr_declaration_name (decl), "color") == 0)
             {
               GetFromTermResult result = get_color_from_term (decl->value, &node->foreground_color);
               if (result == VALUE_FOUND)
@@ -2262,7 +2262,7 @@ st_theme_node_get_icon_style (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "-st-icon-style") == 0)
+      if (strcmp (cr_declaration_name (decl), "-st-icon-style") == 0)
         {
           CRTerm *term;
 
@@ -2304,7 +2304,7 @@ st_theme_node_get_text_decoration (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "text-decoration") == 0)
+      if (strcmp (cr_declaration_name (decl), "text-decoration") == 0)
         {
           CRTerm *term = decl->value;
           StTextDecoration decoration = 0;
@@ -2371,7 +2371,7 @@ st_theme_node_get_text_align(StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp(decl->property->stryng->str, "text-align") == 0)
+      if (strcmp(cr_declaration_name (decl), "text-align") == 0)
         {
           CRTerm *term = decl->value;
 
@@ -2723,7 +2723,7 @@ st_theme_node_get_font (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "font") == 0)
+      if (strcmp (cr_declaration_name (decl), "font") == 0)
         {
           PangoStyle tmp_style = PANGO_STYLE_NORMAL;
           PangoVariant tmp_variant = PANGO_VARIANT_NORMAL;
@@ -2792,7 +2792,7 @@ st_theme_node_get_font (StThemeNode *node)
           size_set = TRUE;
 
         }
-      else if (strcmp (decl->property->stryng->str, "font-family") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-family") == 0)
         {
           if (!font_family_from_terms (decl->value, &family))
             {
@@ -2800,7 +2800,7 @@ st_theme_node_get_font (StThemeNode *node)
               continue;
             }
         }
-      else if (strcmp (decl->property->stryng->str, "font-weight") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-weight") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
@@ -2808,7 +2808,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (font_weight_from_term (decl->value, &weight, &weight_absolute))
             weight_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-style") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-style") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
@@ -2816,7 +2816,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (font_style_from_term (decl->value, &font_style))
             font_style_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-variant") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-variant") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
@@ -2824,7 +2824,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (font_variant_from_term (decl->value, &variant))
             variant_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-size") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-size") == 0)
         {
           gdouble tmp_size;
           if (decl->value == NULL || decl->value->next != NULL)
@@ -2892,7 +2892,7 @@ st_theme_node_get_font_features (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "font-feature-settings") == 0)
+      if (strcmp (cr_declaration_name (decl), "font-feature-settings") == 0)
         {
           CRTerm *term = decl->value;
 
@@ -2942,7 +2942,7 @@ st_theme_node_get_border_image (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "border-image") == 0)
+      if (strcmp (cr_declaration_name (decl), "border-image") == 0)
         {
           CRTerm *term = decl->value;
           CRStyleSheet *base_stylesheet;
@@ -3270,7 +3270,7 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
           GetFromTermResult result = parse_shadow_property (node,
                                                             decl,
@@ -3520,25 +3520,25 @@ st_theme_node_get_icon_colors (StThemeNode *node)
       guint found = 0;
 
       if ((still_need & FOREGROUND) != 0 &&
-          strcmp (decl->property->stryng->str, "color") == 0)
+          strcmp (cr_declaration_name (decl), "color") == 0)
         {
           found = FOREGROUND;
           result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & WARNING) != 0 &&
-               strcmp (decl->property->stryng->str, "warning-color") == 0)
+               strcmp (cr_declaration_name (decl), "warning-color") == 0)
         {
           found = WARNING;
           result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & ERROR) != 0 &&
-               strcmp (decl->property->stryng->str, "error-color") == 0)
+               strcmp (cr_declaration_name (decl), "error-color") == 0)
         {
           found = ERROR;
           result = get_color_from_term (decl->value, &color);
         }
       else if ((still_need & SUCCESS) != 0 &&
-               strcmp (decl->property->stryng->str, "success-color") == 0)
+               strcmp (cr_declaration_name (decl), "success-color") == 0)
         {
           found = SUCCESS;
           result = get_color_from_term (decl->value, &color);
