@@ -1,23 +1,20 @@
 /* Screen Shield */
 
-$_unlockdialog_shadow: 0px 0px 6px rgba(0, 0, 0, 0.726);
-
 .unlock-dialog-clock {
   color: white;
-  text-shadow: $_unlockdialog_shadow;
-  font-weight: bold;
+  font-weight: 300;
   text-align: center;
-  padding-bottom: 1.5em;
+  padding-bottom: 2.5em;
 }
 
 .unlock-dialog-clock-time {
-  font-size: 72pt;
-  text-shadow: $_unlockdialog_shadow;
+  font-size: 64pt;
+  padding-bottom: 24px;
   font-feature-settings: "tnum";
 }
 
 .unlock-dialog-clock-date {
-  font-size: 28pt;
+  font-size: 16pt;
   font-weight: normal;
 }
 
