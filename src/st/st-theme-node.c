@@ -593,6 +593,19 @@ st_theme_node_get_color (StThemeNode  *node,
     }
 }
 
+static GetFromTermResult
+get_double_from_term (CRTerm *term,
+                      double *value)
+{
+  if (term->type != TERM_NUMBER || term->content.num->type != NUM_GENERIC)
+    {
+      return VALUE_NOT_FOUND;
+    }
+
+  *value = term->content.num->val;
+  return VALUE_FOUND;
+}
+
 /**
  * st_theme_node_lookup_double:
  * @node: a #StThemeNode
@@ -631,18 +644,20 @@ st_theme_node_lookup_double (StThemeNode *node,
 
       if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
-          CRTerm *term = decl->value;
-
-          if (term->type != TERM_NUMBER || term->content.num->type != NUM_GENERIC)
-            continue;
-
-          *value = term->content.num->val;
-          result = TRUE;
-          break;
+          GetFromTermResult result = get_double_from_term (decl->value, value);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_double (node->parent_node, property_name, inherit, value);
 
   return result;
