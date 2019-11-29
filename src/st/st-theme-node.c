@@ -555,10 +555,8 @@ st_theme_node_lookup_color (StThemeNode  *node,
             }
           else if (result == VALUE_INHERIT)
             {
-              if (node->parent_node)
-                return st_theme_node_lookup_color (node->parent_node, property_name, inherit, color);
-              else
-                break;
+              inherit = TRUE;
+              break;
             }
         }
     }
