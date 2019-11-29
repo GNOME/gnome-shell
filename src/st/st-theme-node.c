@@ -666,26 +666,33 @@ st_theme_node_lookup_double (StThemeNode *node,
 
 static GetFromTermResult
 get_time_from_term (CRTerm *term,
-                      double *value)
+                    double *millis)
 {
-  int factor = 1;
+  char *stringified;
+  StylishValueResult_Time result;
 
-  if (term->type != TERM_NUMBER)
+  stringified = (char *) cr_term_to_string (term);
+  result = stylish_parse_time (stringified);
+  g_free (stringified);
+
+  switch (result.kind)
     {
+    case STYLISH_VALUE_RESULT_KIND_INHERIT:
+      return VALUE_INHERIT;
+
+    case STYLISH_VALUE_RESULT_KIND_SPECIFIED:
+      *millis = result.value.millis;
+      return VALUE_FOUND;
+
+    case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
+      /* FIXME: propagate the error */
+      stylish_parse_error_free (&result.error);
+      return VALUE_NOT_FOUND;
+
+    default:
+      g_assert_not_reached();
       return VALUE_NOT_FOUND;
     }
-
-  if (term->content.num->type != NUM_TIME_S &&
-      term->content.num->type != NUM_TIME_MS)
-    {
-      return VALUE_NOT_FOUND;
-    }
-
-  if (term->content.num->type == NUM_TIME_S)
-    factor = 1000;
-
-  *value = factor * term->content.num->val;
-  return VALUE_FOUND;
 }
 
 /**
