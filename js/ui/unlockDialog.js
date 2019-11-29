@@ -319,6 +319,66 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 });
 
+var UnlockDialogLayout = GObject.registerClass(
+class UnlockDialogLayout extends Clutter.LayoutManager {
+    _init(authBox, notifications) {
+        super._init();
+
+        this._authBox = authBox;
+        this._notifications = notifications;
+    }
+
+    vfunc_get_preferred_width(container, forHeight) {
+        return this._authBox.get_preferred_width(forHeight);
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        return this._authBox.get_preferred_height(forWidth);
+    }
+
+    vfunc_allocate(container, box, flags) {
+        let [width, height] = box.get_size();
+
+        let tenthOfHeight = height / 10.0;
+        let thirdOfHeight = height / 3.0;
+
+        let [, , authBoxWidth, authBoxHeight] =
+            this._authBox.get_preferred_size();
+
+        let [, , notificationsWidth, notificationsHeight] =
+            this._notifications.get_preferred_size();
+
+        let columnWidth = Math.max(authBoxWidth, notificationsWidth);
+
+        let columnX1 = Math.floor(width / 2.0 - columnWidth / 2.0);
+        let actorBox = new Clutter.ActorBox();
+
+        // Notifications
+        let maxNotificationsHeight = Math.min(
+            notificationsHeight,
+            height - tenthOfHeight - authBoxHeight);
+
+        actorBox.x1 = columnX1;
+        actorBox.y1 = height - maxNotificationsHeight;
+        actorBox.x2 = columnX1 + columnWidth;
+        actorBox.y2 = actorBox.y1 + maxNotificationsHeight;
+
+        this._notifications.allocate(actorBox, flags);
+
+        // Authentication Box
+        let authBoxY = Math.min(
+            thirdOfHeight,
+            height - authBoxHeight - maxNotificationsHeight);
+
+        actorBox.x1 = columnX1;
+        actorBox.y1 = authBoxY;
+        actorBox.x2 = columnX1 + columnWidth;
+        actorBox.y2 = authBoxY + authBoxHeight;
+
+        this._authBox.allocate(actorBox, flags);
+    }
+});
+
 var UnlockDialog = GObject.registerClass({
     Signals: {
         'failed': {},
@@ -348,13 +408,7 @@ var UnlockDialog = GObject.registerClass({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._promptBox = new St.BoxLayout({ vertical: true,
-                                             x_align: Clutter.ActorAlign.CENTER,
-                                             y_align: Clutter.ActorAlign.CENTER,
-                                             x_expand: true,
-                                             y_expand: true });
-        this.add_child(this._promptBox);
-        this._promptBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this._promptBox = new St.BoxLayout({ vertical: true });
 
         this._clock = new Clock();
         this._promptBox.add_child(this._clock);
@@ -393,7 +447,16 @@ var UnlockDialog = GObject.registerClass({
         this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', () => {
             this.emit('wake-up-screen');
         });
-        this._promptBox.add_child(this._notificationsBox);
+
+        // Main Box
+        let mainBox = new Clutter.Actor();
+        mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        mainBox.add_child(this._promptBox);
+        mainBox.add_child(this._notificationsBox);
+        mainBox.layout_manager = new UnlockDialogLayout(
+            this._promptBox,
+            this._notificationsBox);
+        this.add_child(mainBox);
 
         this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
