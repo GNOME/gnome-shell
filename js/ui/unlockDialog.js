@@ -67,11 +67,8 @@ var NotificationsBox = GObject.registerClass({
         this.visible = this._notificationBox.visible;
     }
 
-    _makeNotificationCountText(count, isChat) {
-        if (isChat)
-            return ngettext("%d new message", "%d new messages", count).format(count);
-        else
-            return ngettext("%d new notification", "%d new notifications", count).format(count);
+    _makeNotificationCountText(count) {
+        return "%d".format(count);
     }
 
     _makeNotificationSource(source, box) {
@@ -86,8 +83,10 @@ var NotificationsBox = GObject.registerClass({
         textBox.add(title);
 
         let count = source.unseenCount;
-        let countLabel = new St.Label({ text: this._makeNotificationCountText(count, source.isChat),
-                                        style_class: 'unlock-dialog-notification-count-text' });
+        let countLabel = new St.Label({
+            text: this._makeNotificationCountText(count),
+            style_class: 'unlock-dialog-notification-count-text',
+        });
         textBox.add(countLabel);
 
         box.visible = count != 0;
@@ -227,7 +226,7 @@ var NotificationsBox = GObject.registerClass({
             this._showSource(source, obj, obj.sourceBox);
         } else {
             let count = source.unseenCount;
-            obj.countLabel.text = this._makeNotificationCountText(count, source.isChat);
+            obj.countLabel.text = this._makeNotificationCountText(count);
         }
 
         obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
