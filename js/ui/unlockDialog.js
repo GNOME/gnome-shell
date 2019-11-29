@@ -331,19 +331,19 @@ class UnlockDialogClock extends St.BoxLayout {
 
 var UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(authBox, notifications) {
+    _init(stack, notifications) {
         super._init();
 
-        this._authBox = authBox;
+        this._stack = stack;
         this._notifications = notifications;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
-        return this._authBox.get_preferred_width(forHeight);
+        return this._stack.get_preferred_width(forHeight);
     }
 
     vfunc_get_preferred_height(container, forWidth) {
-        return this._authBox.get_preferred_height(forWidth);
+        return this._stack.get_preferred_height(forWidth);
     }
 
     vfunc_allocate(container, box, flags) {
@@ -352,13 +352,13 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         let tenthOfHeight = height / 10.0;
         let thirdOfHeight = height / 3.0;
 
-        let [, , authBoxWidth, authBoxHeight] =
-            this._authBox.get_preferred_size();
+        let [, , stackWidth, stackHeight] =
+            this._stack.get_preferred_size();
 
         let [, , notificationsWidth, notificationsHeight] =
             this._notifications.get_preferred_size();
 
-        let columnWidth = Math.max(authBoxWidth, notificationsWidth);
+        let columnWidth = Math.max(stackWidth, notificationsWidth);
 
         let columnX1 = Math.floor(width / 2.0 - columnWidth / 2.0);
         let actorBox = new Clutter.ActorBox();
@@ -366,7 +366,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         // Notifications
         let maxNotificationsHeight = Math.min(
             notificationsHeight,
-            height - tenthOfHeight - authBoxHeight);
+            height - tenthOfHeight - stackHeight);
 
         actorBox.x1 = columnX1;
         actorBox.y1 = height - maxNotificationsHeight;
@@ -376,16 +376,16 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox, flags);
 
         // Authentication Box
-        let authBoxY = Math.min(
+        let stackY = Math.min(
             thirdOfHeight,
-            height - authBoxHeight - maxNotificationsHeight);
+            height - stackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
-        actorBox.y1 = authBoxY;
+        actorBox.y1 = stackY;
         actorBox.x2 = columnX1 + columnWidth;
-        actorBox.y2 = authBoxY + authBoxHeight;
+        actorBox.y2 = stackY + stackHeight;
 
-        this._authBox.allocate(actorBox, flags);
+        this._stack.allocate(actorBox, flags);
     }
 });
 
@@ -417,10 +417,14 @@ var UnlockDialog = GObject.registerClass({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
+        // Authentication & Clock stack
+        let stack = new Shell.Stack();
+
         this._promptBox = new St.BoxLayout({ vertical: true });
+        stack.add_child(this._promptBox);
 
         this._clock = new Clock();
-        this._promptBox.add_child(this._clock);
+        stack.add_child(this._clock);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
@@ -460,10 +464,10 @@ var UnlockDialog = GObject.registerClass({
         // Main Box
         let mainBox = new Clutter.Actor();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        mainBox.add_child(this._promptBox);
+        mainBox.add_child(stack);
         mainBox.add_child(this._notificationsBox);
         mainBox.layout_manager = new UnlockDialogLayout(
-            this._promptBox,
+            stack,
             this._notificationsBox);
         this.add_child(mainBox);
 
