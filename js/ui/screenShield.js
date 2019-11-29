@@ -435,7 +435,6 @@ var ScreenShield = class {
                 },
             });
         } else {
-            this._lockScreenGroup.fixed_position_set = false;
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
@@ -454,7 +453,6 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
-        this._lockScreenGroup.fixed_position_set = false;
 
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
