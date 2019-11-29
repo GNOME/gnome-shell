@@ -31,6 +31,13 @@
 #include "st-theme-context.h"
 #include "st-theme-node-private.h"
 
+/* Keep this in sync with stylish/src/c_api.rs:GetFromTermResult */
+typedef enum {
+  VALUE_FOUND,
+  VALUE_NOT_FOUND,
+  VALUE_INHERIT
+} GetFromTermResult;
+
 #include "stylish/stylish.h"
 
 static void st_theme_node_dispose           (GObject                 *object);
@@ -452,12 +459,6 @@ ensure_properties (StThemeNode *node)
     }
 }
 
-typedef enum {
-  VALUE_FOUND,
-  VALUE_NOT_FOUND,
-  VALUE_INHERIT
-} GetFromTermResult;
-
 static gboolean
 term_is_inherit (CRTerm *term)
 {
@@ -470,35 +471,6 @@ term_is_none (CRTerm *term)
 {
   return (term->type == TERM_IDENT &&
           strcmp (term->content.str->stryng->str, "none") == 0);
-}
-
-static GetFromTermResult
-get_color_from_term (CRTerm       *term,
-                     ClutterColor *color)
-{
-  char *stringified;
-  StylishValueResult_ClutterColor result;
-
-  stringified = (char *) cr_term_to_string (term);
-  result = stylish_parse_color (stringified);
-  g_free (stringified);
-
-  switch (result.kind)
-    {
-    case STYLISH_VALUE_RESULT_KIND_INHERIT:
-      return VALUE_INHERIT;
-
-    case STYLISH_VALUE_RESULT_KIND_SPECIFIED:
-      *color = result.value;
-      return VALUE_FOUND;
-
-    case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
-      return VALUE_NOT_FOUND;
-
-    default:
-      g_assert_not_reached();
-      return VALUE_NOT_FOUND;
-    }
 }
 
 /**
@@ -541,7 +513,7 @@ st_theme_node_lookup_color (StThemeNode  *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = get_color_from_term (decl->value, color);
+          GetFromTermResult result = stylish_get_color_from_term (decl->value, color);
           if (result == VALUE_FOUND)
             {
               return TRUE;
@@ -661,36 +633,6 @@ st_theme_node_lookup_double (StThemeNode *node,
   return result;
 }
 
-
-static GetFromTermResult
-get_time_from_term (CRTerm *term,
-                    double *millis)
-{
-  char *stringified;
-  StylishValueResult_Time result;
-
-  stringified = (char *) cr_term_to_string (term);
-  result = stylish_parse_time (stringified);
-  g_free (stringified);
-
-  switch (result.kind)
-    {
-    case STYLISH_VALUE_RESULT_KIND_INHERIT:
-      return VALUE_INHERIT;
-
-    case STYLISH_VALUE_RESULT_KIND_SPECIFIED:
-      *millis = result.value.millis;
-      return VALUE_FOUND;
-
-    case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
-      return VALUE_NOT_FOUND;
-
-    default:
-      g_assert_not_reached();
-      return VALUE_NOT_FOUND;
-    }
-}
-
 /**
  * st_theme_node_lookup_time:
  * @node: a #StThemeNode
@@ -727,7 +669,7 @@ st_theme_node_lookup_time (StThemeNode *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = get_time_from_term (decl->value, value);
+          GetFromTermResult result = stylish_get_time_from_term (decl->value, value);
           if (result == VALUE_FOUND)
             {
               return TRUE;
@@ -1310,7 +1252,7 @@ do_border_property (StThemeNode   *node,
                 }
             }
 
-          result = get_color_from_term (term, &color);
+          result = stylish_get_color_from_term (term, &color);
           if (result != VALUE_NOT_FOUND)
             {
               color_set = result == VALUE_FOUND;
@@ -1324,7 +1266,7 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (decl->value, &color) == VALUE_FOUND)
+      if (stylish_get_color_from_term (decl->value, &color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1415,7 +1357,7 @@ do_outline_property (StThemeNode   *node,
                 }
             }
 
-          result = get_color_from_term (term, &color);
+          result = stylish_get_color_from_term (term, &color);
           if (result != VALUE_NOT_FOUND)
             {
               color_set = result == VALUE_FOUND;
@@ -1429,7 +1371,7 @@ do_outline_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (decl->value, &color) == VALUE_FOUND)
+      if (stylish_get_color_from_term (decl->value, &color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1878,7 +1820,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
           for (term = decl->value; term; term = term->next)
             {
-              GetFromTermResult result = get_color_from_term (term, &node->background_color);
+              GetFromTermResult result = stylish_get_color_from_term (term, &node->background_color);
               if (result == VALUE_FOUND)
                 {
                   /* color stored in node->background_color */
@@ -1987,7 +1929,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          result = get_color_from_term (decl->value, &node->background_color);
+          result = stylish_get_color_from_term (decl->value, &node->background_color);
           if (result == VALUE_FOUND)
             {
               /* color stored in node->background_color */
@@ -2054,11 +1996,11 @@ _st_theme_node_ensure_background (StThemeNode *node)
         }
       else if (strcmp (property_name, "-gradient-start") == 0)
         {
-          get_color_from_term (decl->value, &node->background_color);
+          stylish_get_color_from_term (decl->value, &node->background_color);
         }
       else if (strcmp (property_name, "-gradient-end") == 0)
         {
-          get_color_from_term (decl->value, &node->background_gradient_end);
+          stylish_get_color_from_term (decl->value, &node->background_gradient_end);
         }
     }
 }
@@ -2124,7 +2066,7 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
 
           if (strcmp (cr_declaration_name (decl), "color") == 0)
             {
-              GetFromTermResult result = get_color_from_term (decl->value, &node->foreground_color);
+              GetFromTermResult result = stylish_get_color_from_term (decl->value, &node->foreground_color);
               if (result == VALUE_FOUND)
                 goto out;
               else if (result == VALUE_INHERIT)
@@ -3194,7 +3136,7 @@ parse_shadow_property (StThemeNode       *node,
           continue;
         }
 
-      result = get_color_from_term (term, color);
+      result = stylish_get_color_from_term (term, color);
 
       if (result == VALUE_INHERIT)
         {
@@ -3517,25 +3459,25 @@ st_theme_node_get_icon_colors (StThemeNode *node)
           strcmp (cr_declaration_name (decl), "color") == 0)
         {
           found = FOREGROUND;
-          result = get_color_from_term (decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & WARNING) != 0 &&
                strcmp (cr_declaration_name (decl), "warning-color") == 0)
         {
           found = WARNING;
-          result = get_color_from_term (decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & ERROR) != 0 &&
                strcmp (cr_declaration_name (decl), "error-color") == 0)
         {
           found = ERROR;
-          result = get_color_from_term (decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & SUCCESS) != 0 &&
                strcmp (cr_declaration_name (decl), "success-color") == 0)
         {
           found = SUCCESS;
-          result = get_color_from_term (decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
 
       if (result == VALUE_INHERIT)
