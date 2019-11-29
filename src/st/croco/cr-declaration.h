@@ -79,6 +79,7 @@ CRDeclaration * cr_declaration_new (CRStatement *a_statement,
 				    CRString *a_property, 
 				    CRTerm *a_value) ;
 
+const char *cr_declaration_name (CRDeclaration *a_this);
 
 CRDeclaration * cr_declaration_parse_from_buf (CRStatement *a_statement,
 					       const guchar *a_str,
