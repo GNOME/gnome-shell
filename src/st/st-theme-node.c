@@ -567,19 +567,6 @@ st_theme_node_get_color (StThemeNode  *node,
     }
 }
 
-static GetFromTermResult
-get_double_from_term (CRTerm *term,
-                      double *value)
-{
-  if (term->type != TERM_NUMBER || term->content.num->type != NUM_GENERIC)
-    {
-      return VALUE_NOT_FOUND;
-    }
-
-  *value = term->content.num->val;
-  return VALUE_FOUND;
-}
-
 /**
  * st_theme_node_lookup_double:
  * @node: a #StThemeNode
@@ -618,7 +605,7 @@ st_theme_node_lookup_double (StThemeNode *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = get_double_from_term (decl->value, value);
+          GetFromTermResult result = stylish_get_double_from_term (decl->value, value);
           if (result == VALUE_FOUND)
             {
               return TRUE;
