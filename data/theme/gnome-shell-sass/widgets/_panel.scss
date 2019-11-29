@@ -15,8 +15,7 @@ $panel_height: 1.86em;
 
   // transparent panel on lock & login screens
   &.unlock-screen,
-  &.login-screen,
-  &.lock-screen {
+  &.login-screen {
     background-color: transparent;
 
     .panel-corner {
@@ -77,8 +76,7 @@ $panel_height: 1.86em;
 
     // lock & login screen styles
     .unlock-screen &,
-    .login-screen &,
-    .lock-screen & {
+    .login-screen & {
       color: lighten($fg_color, 10%);
       &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
     }
