@@ -247,6 +247,19 @@ test_defaults (void)
 }
 
 static void
+test_double (void)
+{
+  double value;
+
+  test = "double";
+
+  g_assert_cmpfloat (42.0, ==, st_theme_node_get_double (group1, "double-prop"));
+
+  g_assert (st_theme_node_lookup_double (text1, "double-prop", TRUE, &value));
+  g_assert_cmpfloat (value, ==, 42.0);
+}
+
+static void
 test_lengths (void)
 {
   test = "lengths";
@@ -590,6 +603,7 @@ main (int argc, char **argv)
                               ST_TYPE_BUTTON, "button", NULL, NULL, NULL);
 
   test_defaults ();
+  test_double ();
   test_lengths ();
   test_classes ();
   test_type_inheritance ();
