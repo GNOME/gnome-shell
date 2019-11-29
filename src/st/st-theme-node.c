@@ -667,6 +667,31 @@ st_theme_node_lookup_double (StThemeNode *node,
   return result;
 }
 
+
+static GetFromTermResult
+get_time_from_term (CRTerm *term,
+                      double *value)
+{
+  int factor = 1;
+
+  if (term->type != TERM_NUMBER)
+    {
+      return VALUE_NOT_FOUND;
+    }
+
+  if (term->content.num->type != NUM_TIME_S &&
+      term->content.num->type != NUM_TIME_MS)
+    {
+      return VALUE_NOT_FOUND;
+    }
+
+  if (term->content.num->type == NUM_TIME_S)
+    factor = 1000;
+
+  *value = factor * term->content.num->val;
+  return VALUE_FOUND;
+}
+
 /**
  * st_theme_node_lookup_time:
  * @node: a #StThemeNode
@@ -703,26 +728,20 @@ st_theme_node_lookup_time (StThemeNode *node,
 
       if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
-          CRTerm *term = decl->value;
-          int factor = 1;
-
-          if (term->type != TERM_NUMBER)
-            continue;
-
-          if (term->content.num->type != NUM_TIME_S &&
-              term->content.num->type != NUM_TIME_MS)
-            continue;
-
-          if (term->content.num->type == NUM_TIME_S)
-            factor = 1000;
-
-          *value = factor * term->content.num->val;
-          result = TRUE;
-          break;
+          GetFromTermResult result = get_time_from_term (decl->value, value);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_time (node->parent_node, property_name, inherit, value);
 
   return result;

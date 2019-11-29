@@ -260,6 +260,26 @@ test_double (void)
 }
 
 static void
+test_time (void)
+{
+  double value;
+
+  test = "time";
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (group1, "time-s", FALSE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (group1, "time-ms", FALSE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (text1, "time-s", TRUE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+}
+
+static void
 test_lengths (void)
 {
   test = "lengths";
@@ -603,6 +623,7 @@ main (int argc, char **argv)
 
   test_defaults ();
   test_double ();
+  test_time ();
   test_lengths ();
   test_classes ();
   test_type_inheritance ();

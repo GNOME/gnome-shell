@@ -17,11 +17,15 @@ stage {
     font-feature-settings: "tnum";
 
     double-prop: 42.0;
+
+    time-s: 42s;
+    time-ms: 42000ms;
 }
 
 #text1 {
     background-image: inherit;
     double-prop: inherit;
+    time-s: inherit;
 }
 
 .special-text {
