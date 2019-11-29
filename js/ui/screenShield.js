@@ -5,14 +5,12 @@ const { AccountsService, Clutter, Gio,
 const Signals = imports.signals;
 
 const GnomeSession = imports.misc.gnomeSession;
-const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
-const SmartcardManager = imports.misc.smartcardManager;
 
 const { adjustAnimationTime } = imports.ui.environment;
 
@@ -82,20 +80,6 @@ var ScreenShield = class {
 
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
-        this._smartcardManager = SmartcardManager.getSmartcardManager();
-        this._smartcardManager.connect('smartcard-inserted',
-                                       (manager, token) => {
-                                           if (this._isLocked && token.UsedToLogin)
-                                               this._liftShield();
-                                       });
-
-        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
-        this._oVirtCredentialsManager.connect('user-authenticated',
-                                              () => {
-                                                  if (this._isLocked)
-                                                      this._liftShield();
-                                              });
-
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
                                    this._prepareForSleep.bind(this));
@@ -157,15 +141,6 @@ var ScreenShield = class {
         this._syncInhibitor();
     }
 
-    _liftShield() {
-        if (this._isLocked) {
-            if (this._ensureUnlockDialog(true /* allowCancel */))
-                this._hideLockScreen(true /* animate */);
-        } else {
-            this.deactivate(true /* animate */);
-        }
-    }
-
     _maybeCancelDialog() {
         if (!this._dialog)
             return;
@@ -220,7 +195,6 @@ var ScreenShield = class {
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
-        this._liftShield();
         return Clutter.EVENT_STOP;
     }
 
@@ -396,6 +370,12 @@ var ScreenShield = class {
                 translation_y: -h,
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            });
+
+            this._lockDialogGroup.ease({
+                translation_y: -h,
+                duration,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => this._hideLockScreenComplete(),
             });
         } else {
@@ -447,9 +427,6 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
-        this._lockDialogGroup.scale_x = 1;
-        this._lockDialogGroup.scale_y = 1;
-
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
@@ -461,6 +438,14 @@ var ScreenShield = class {
             this._lockScreenGroup.ease({
                 translation_y: 0,
                 duration: MANUAL_FADE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
+            this._lockDialogGroup.translation_y = -global.screen_height;
+            this._lockDialogGroup.remove_all_transitions();
+            this._lockDialogGroup.ease({
+                translation_y: 0,
+                duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._lockScreenShown({ fadeToBlack, animateFade: true });
@@ -565,9 +550,8 @@ var ScreenShield = class {
         }
 
         this._lockDialogGroup.ease({
-            scale_x: 0,
-            scale_y: 0,
-            duration: animate ? Overview.ANIMATION_TIME : 0,
+            translation_y: -global.screen_height,
+            duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this._completeDeactivate(),
         });
