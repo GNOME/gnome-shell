@@ -493,8 +493,6 @@ get_color_from_term (CRTerm       *term,
       return VALUE_FOUND;
 
     case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
-      /* FIXME: propagate the error */
-      stylish_parse_error_free (&result.error);
       return VALUE_NOT_FOUND;
 
     default:
@@ -685,8 +683,6 @@ get_time_from_term (CRTerm *term,
       return VALUE_FOUND;
 
     case STYLISH_VALUE_RESULT_KIND_PARSE_ERROR:
-      /* FIXME: propagate the error */
-      stylish_parse_error_free (&result.error);
       return VALUE_NOT_FOUND;
 
     default:
