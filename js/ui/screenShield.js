@@ -53,8 +53,6 @@ var ScreenShield = class {
             name: 'lockScreenGroup',
             visible: false,
         });
-        this._lockScreenGroup.connect('key-press-event',
-                                      this._onLockScreenKeyPress.bind(this));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
@@ -167,35 +165,6 @@ var ScreenShield = class {
         this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
                                                      actionMode: Shell.ActionMode.LOCK_SCREEN });
         return this._isModal;
-    }
-
-    _onLockScreenKeyPress(actor, event) {
-        let symbol = event.get_key_symbol();
-        let unichar = event.get_key_unicode();
-
-        // Do nothing if the lock screen is not fully shown.
-        // This avoids reusing the previous (and stale) unlock
-        // dialog if esc is pressed while the curtain is going
-        // down after cancel.
-
-        if (this._lockScreenState != MessageTray.State.SHOWN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let isEnter = symbol == Clutter.KEY_Return ||
-                       symbol == Clutter.KEY_KP_Enter ||
-                       symbol == Clutter.KEY_ISO_Enter;
-        let isEscape = symbol == Clutter.KEY_Escape;
-        let isLiftChar = GLib.unichar_isprint(unichar) &&
-                          (this._isLocked || !GLib.unichar_isgraph(unichar));
-        if (!isEnter && !isEscape && !isLiftChar)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (this._isLocked &&
-            this._ensureUnlockDialog(true) &&
-            GLib.unichar_isgraph(unichar))
-            this._dialog.addCharacter(unichar);
-
-        return Clutter.EVENT_STOP;
     }
 
     _syncInhibitor() {
