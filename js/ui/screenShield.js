@@ -336,9 +336,6 @@ var ScreenShield = class {
     }
 
     _hideLockScreenComplete() {
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
-
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup.hide();
 
@@ -443,9 +440,6 @@ var ScreenShield = class {
         }
 
         this._lockScreenGroup.grab_key_focus();
-
-        if (Main.sessionMode.currentMode != 'lock-screen')
-            Main.sessionMode.pushMode('lock-screen');
     }
 
     _lockScreenShown(params) {
@@ -510,8 +504,6 @@ var ScreenShield = class {
     _continueDeactivate(animate) {
         this._hideLockScreen(animate);
 
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
@@ -579,8 +571,7 @@ var ScreenShield = class {
 
         this.actor.show();
 
-        if (Main.sessionMode.currentMode != 'unlock-dialog' &&
-            Main.sessionMode.currentMode != 'lock-screen') {
+        if (Main.sessionMode.currentMode != 'unlock-dialog') {
             this._isGreeter = Main.sessionMode.isGreeter;
             if (!this._isGreeter)
                 Main.sessionMode.pushMode('unlock-dialog');
