@@ -471,16 +471,6 @@ var Expander = GObject.registerClass({
     }
 });
 
-var DescriptionLabel = GObject.registerClass(
-class DescriptionLabel extends Gtk.Label {
-    vfunc_get_preferred_height_for_width(width) {
-        // Hack: Request the maximum height allowed by the line limit
-        if (this.lines > 0)
-            return super.vfunc_get_preferred_height_for_width(0);
-        return super.vfunc_get_preferred_height_for_width(width);
-    }
-});
-
 var ExtensionRow = GObject.registerClass(
 class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
@@ -552,10 +542,13 @@ class ExtensionRow extends Gtk.ListBoxRow {
         vbox.add(label);
 
         let desc = this._extension.metadata.description.split('\n')[0];
-        label = new DescriptionLabel({ label: desc, wrap: true, lines: 2,
-                                       ellipsize: Pango.EllipsizeMode.END,
-                                       max_width_chars: 60,
-                                       xalign: 0, yalign: 0 });
+        label = new Gtk.Label({
+            label: desc,
+            ellipsize: Pango.EllipsizeMode.END,
+            max_width_chars: 60,
+            xalign: 0,
+            yalign: 0,
+        });
         vbox.add(label);
 
         let button = new Gtk.Button({ valign: Gtk.Align.CENTER,
