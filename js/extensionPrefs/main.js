@@ -64,8 +64,15 @@ class Application extends Gtk.Application {
     }
 });
 
-var ExtensionsWindow = GObject.registerClass(
-class ExtensionsWindow extends Gtk.ApplicationWindow {
+var ExtensionsWindow = GObject.registerClass({
+    GTypeName: 'ExtensionsWindow',
+    Template: 'resource:///org/gnome/shell/ui/extensions-window.ui',
+    InternalChildren: [
+        'extensionsList',
+        'killSwitch',
+        'mainStack',
+    ],
+}, class ExtensionsWindow extends Gtk.ApplicationWindow {
     _init(params) {
         super._init(params);
 
@@ -73,15 +80,13 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
         this._loaded = false;
         this._prefsDialog = null;
 
-        this._buildUI();
-
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.bind('disable-user-extensions',
             this._killSwitch, 'active',
             Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
-        this._extensionSelector.set_sort_func(this._sortList.bind(this));
-        this._extensionSelector.set_header_func(this._updateHeader.bind(this));
+        this._extensionsList.set_sort_func(this._sortList.bind(this));
+        this._extensionsList.set_header_func(this._updateHeader.bind(this));
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -104,7 +109,7 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
         if (this._prefsDialog)
             return false;
 
-        let row = this._extensionSelector.get_children().find(c => {
+        let row = this._extensionsList.get_children().find(c => {
             return c.uuid === uuid && c.hasPrefs;
         });
 
@@ -265,39 +270,6 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
         return scroll;
     }
 
-    _buildUI() {
-        this.set({
-            window_position: Gtk.WindowPosition.CENTER,
-            default_width: 800,
-            default_height: 500,
-        });
-
-        this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
-                                             title: _("Shell Extensions") });
-        this.set_titlebar(this._titlebar);
-
-        this._killSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
-        this._titlebar.pack_end(this._killSwitch);
-
-        this._mainStack = new Gtk.Stack({
-            transition_type: Gtk.StackTransitionType.CROSSFADE,
-        });
-        this.add(this._mainStack);
-
-        let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
-
-        this._extensionSelector = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
-        this._extensionSelector.set_sort_func(this._sortList.bind(this));
-        this._extensionSelector.set_header_func(this._updateHeader.bind(this));
-
-        scroll.add(this._extensionSelector);
-
-        this._mainStack.add_named(scroll, 'listing');
-        this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
-
-        this.show_all();
-    }
-
     _sortList(row1, row2) {
         return row1.name.localeCompare(row2.name);
     }
@@ -311,7 +283,7 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
     }
 
     _findExtensionRow(uuid) {
-        return this._extensionSelector.get_children().find(c => c.uuid === uuid);
+        return this._extensionsList.get_children().find(c => c.uuid === uuid);
     }
 
     _onExtensionStateChanged(proxy, senderName, [uuid, newState]) {
@@ -331,7 +303,6 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
             if (e) {
                 if (e instanceof Gio.DBusError) {
                     log(`Failed to connect to shell proxy: ${e}`);
-                    this._mainStack.add_named(new NoShellPlaceholder(), 'noshell');
                     this._mainStack.visible_child_name = 'noshell';
                 } else {
                     throw e;
@@ -355,12 +326,12 @@ class ExtensionsWindow extends Gtk.ApplicationWindow {
         });
 
         row.show_all();
-        this._extensionSelector.add(row);
+        this._extensionsList.add(row);
     }
 
     _extensionsLoaded() {
-        if (this._extensionSelector.get_children().length > 0)
-            this._mainStack.visible_child_name = 'listing';
+        if (this._extensionsList.get_children().length > 0)
+            this._mainStack.visible_child_name = 'main';
         else
             this._mainStack.visible_child_name = 'placeholder';
 
@@ -467,61 +438,6 @@ var Expander = GObject.registerClass({
 
         if (child)
             this._childBin.add(child);
-    }
-});
-
-var EmptyPlaceholder = GObject.registerClass(
-class EmptyPlaceholder extends Gtk.Box {
-    _init() {
-        super._init({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 6,
-            margin: 32,
-            valign: Gtk.Align.CENTER,
-        });
-
-        let image = new Gtk.Image({
-            icon_name: 'application-x-addon-symbolic',
-            pixel_size: 96,
-            visible: true,
-        });
-        this.add(image);
-
-        let label = new Gtk.Label({
-            label: `<b><span size="x-large">${_('No Installed Extensions')}</span></b>`,
-            use_markup: true,
-            visible: true,
-        });
-        this.add(label);
-    }
-});
-
-var NoShellPlaceholder = GObject.registerClass(
-class NoShellPlaceholder extends Gtk.Box {
-    _init() {
-        super._init({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 12,
-            margin: 100,
-            margin_bottom: 60,
-        });
-
-        let label = new Gtk.Label({
-            label: '<span size="x-large">%s</span>'.format(
-                _("Something’s gone wrong")),
-            use_markup: true,
-        });
-        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
-        this.add(label);
-
-        label = new Gtk.Label({
-            label: _("We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again."),
-            justify: Gtk.Justification.CENTER,
-            wrap: true,
-        });
-        this.add(label);
-
-        this.show_all();
     }
 });
 
