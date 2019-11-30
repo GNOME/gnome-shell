@@ -74,6 +74,8 @@ var ExtensionsWindow = GObject.registerClass({
         'killSwitch',
         'infoBar',
         'mainStack',
+        'updatesBar',
+        'updatesLabel',
     ],
 }, class ExtensionsWindow extends Gtk.ApplicationWindow {
     _init(params) {
@@ -82,10 +84,15 @@ var ExtensionsWindow = GObject.registerClass({
         this._startupUuid = null;
         this._loaded = false;
         this._prefsDialog = null;
+        this._updatesCheckId = 0;
 
         let action;
         action = new Gio.SimpleAction({ name: 'show-about' });
         action.connect('activate', this._showAbout.bind(this));
+        this.add_action(action);
+
+        action = new Gio.SimpleAction({ name: 'restart-session' });
+        action.connect('activate', this._restartSession.bind(this));
         this.add_action(action);
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
@@ -208,6 +215,22 @@ var ExtensionsWindow = GObject.registerClass({
             modal: true,
         });
         aboutDialog.present();
+    }
+
+    _restartSession() {
+        this.application.get_dbus_connection().call(
+            'org.gnome.SessionManager',
+            '/org/gnome/SessionManager',
+            'org.gnome.SessionManager',
+            'Logout',
+            new GLib.Variant('(u)', [0]),
+            null,
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null,
+            (o, res) => {
+                o.call_finish(res);
+            });
     }
 
     _buildErrorUI(row, exc) {
@@ -348,6 +371,8 @@ var ExtensionsWindow = GObject.registerClass({
         let extension = ExtensionUtils.deserializeExtension(newState);
         let row = this._findExtensionRow(uuid);
 
+        this._queueUpdatesCheck();
+
         if (row && row.type !== extension.type) {
             row.destroy();
             row = null;
@@ -391,6 +416,29 @@ var ExtensionsWindow = GObject.registerClass({
             this._systemList.add(row);
     }
 
+    _queueUpdatesCheck() {
+        if (this._updatesCheckId)
+            return;
+
+        this._updatesCheckId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT, 1, () => {
+                this._checkUpdates();
+
+                this._updatesCheckId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
+    _checkUpdates() {
+        let nUpdates = this._userList.get_children().filter(c => c.hasUpdate).length;
+
+        this._updatesLabel.label = Gettext.ngettext(
+            '%d Update Available',
+            '%d Updates Available',
+            nUpdates).format(nUpdates);
+        this._updatesBar.visible = nUpdates > 0;
+    }
+
     _touchFile(file) {
         try {
             file.get_parent().make_directory_with_parents(null);
@@ -426,6 +474,8 @@ var ExtensionsWindow = GObject.registerClass({
             this._mainStack.visible_child_name = 'main';
         else
             this._mainStack.visible_child_name = 'placeholder';
+
+        this._checkUpdates();
 
         if (this._startupUuid)
             this._showPrefs(this._startupUuid);
@@ -541,6 +591,7 @@ var ExtensionRow = GObject.registerClass({
         'descriptionLabel',
         'versionLabel',
         'authorLabel',
+        'updatesIcon',
         'revealButton',
         'revealer',
     ],
@@ -637,6 +688,10 @@ var ExtensionRow = GObject.registerClass({
         return this._extension.hasPrefs;
     }
 
+    get hasUpdate() {
+        return this._extension.hasUpdate || false;
+    }
+
     get type() {
         return this._extension.type;
     }
@@ -659,6 +714,8 @@ var ExtensionRow = GObject.registerClass({
         let action = this._actionGroup.lookup('enabled');
         action.set_state(new GLib.Variant('b', state));
         action.enabled = this._canToggle();
+
+        this._updatesIcon.visible = this.hasUpdate;
 
         this._versionLabel.label = `${this.version}`;
         this._versionLabel.visible = this.version !== '';

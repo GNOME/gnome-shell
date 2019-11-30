@@ -243,6 +243,39 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkActionBar" id="updatesBar">
+            <property name="no_show_all">True</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon_name">software-update-available-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="updatesLabel">
+                <property name="visible">True</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">Restart &amp; Update…</property>
+                <property name="visible">True</property>
+                <property name="action-name">win.restart-session</property>
+                <property name="receives_default">True</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>
