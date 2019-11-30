@@ -7,5 +7,7 @@
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
     <file>misc/params.js</file>
+
+    <file alias="ui/extensions-window.ui">extensionPrefs/ui/extensions-window.ui</file>
   </gresource>
 </gresources>
