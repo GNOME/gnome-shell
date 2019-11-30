@@ -30,18 +30,80 @@ class Application extends Gtk.Application {
             application_id: 'org.gnome.shell.ExtensionPrefs',
             flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
         });
-
-        this._startupUuid = null;
-        this._loaded = false;
-        this._skipMainWindow = false;
-        this._shellProxy = null;
     }
 
     get shellProxy() {
         return this._shellProxy;
     }
 
+    vfunc_activate() {
+        this._window.present();
+    }
+
+    vfunc_startup() {
+        super.vfunc_startup();
+
+        this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
+        this._window = new ExtensionsWindow({ application: this });
+    }
+
+    vfunc_command_line(commandLine) {
+        let args = commandLine.get_arguments();
+
+        if (args.length) {
+            let uuid = args[0];
+
+            // Strip off "extension:///" prefix which fakes a URI, if it exists
+            uuid = stripPrefix(uuid, 'extension:///');
+
+            this._window.openPrefs(uuid);
+        } else {
+            this.activate();
+        }
+        return 0;
+    }
+});
+
+var ExtensionsWindow = GObject.registerClass(
+class ExtensionsWindow extends Gtk.ApplicationWindow {
+    _init(params) {
+        super._init(params);
+
+        this._startupUuid = null;
+        this._loaded = false;
+        this._prefsDialog = null;
+
+        this._buildUI();
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._settings.bind('disable-user-extensions',
+            this._killSwitch, 'active',
+            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN);
+
+        this._extensionSelector.set_sort_func(this._sortList.bind(this));
+        this._extensionSelector.set_header_func(this._updateHeader.bind(this));
+
+        this._shellProxy.connectSignal('ExtensionStateChanged',
+            this._onExtensionStateChanged.bind(this));
+
+        this._scanExtensions();
+    }
+
+    get _shellProxy() {
+        return this.application.shellProxy;
+    }
+
+    openPrefs(uuid) {
+        if (!this._loaded)
+            this._startupUuid = uuid;
+        else if (!this._showPrefs(uuid))
+            this.present();
+    }
+
     _showPrefs(uuid) {
+        if (this._prefsDialog)
+            return false;
+
         let row = this._extensionSelector.get_children().find(c => {
             return c.uuid === uuid && c.hasPrefs;
         });
@@ -57,29 +119,33 @@ class Application extends Gtk.Application {
             widget = this._buildErrorUI(row, e);
         }
 
-        let dialog = new Gtk.Window({
-            modal: !this._skipMainWindow,
+        this._prefsDialog = new Gtk.Window({
+            application: this.application,
+            default_width: 600,
+            default_height: 400,
+            modal: this.visible,
             type_hint: Gdk.WindowTypeHint.DIALOG,
+            window_position: Gtk.WindowPosition.CENTER,
         });
-        dialog.set_titlebar(new Gtk.HeaderBar({
+
+        this._prefsDialog.set_titlebar(new Gtk.HeaderBar({
             show_close_button: true,
             title: row.name,
             visible: true,
         }));
 
-        if (this._skipMainWindow) {
-            this.add_window(dialog);
-            if (this._window)
-                this._window.destroy();
-            this._window = dialog;
-            this._window.window_position = Gtk.WindowPosition.CENTER;
-        } else {
-            dialog.transient_for = this._window;
-        }
+        if (this.visible)
+            this._prefsDialog.transient_for = this;
 
-        dialog.set_default_size(600, 400);
-        dialog.add(widget);
-        dialog.show();
+        this._prefsDialog.connect('destroy', () => {
+            this._prefsDialog = null;
+
+            if (!this.visible)
+                this.destroy();
+        });
+
+        this._prefsDialog.add(widget);
+        this._prefsDialog.show();
 
         return true;
     }
@@ -200,27 +266,23 @@ class Application extends Gtk.Application {
     }
 
     _buildUI() {
-        this._window = new Gtk.ApplicationWindow({ application: this,
-                                                   window_position: Gtk.WindowPosition.CENTER });
-
-        this._window.set_default_size(800, 500);
+        this.set({
+            window_position: Gtk.WindowPosition.CENTER,
+            default_width: 800,
+            default_height: 500,
+        });
 
         this._titlebar = new Gtk.HeaderBar({ show_close_button: true,
                                              title: _("Shell Extensions") });
-        this._window.set_titlebar(this._titlebar);
+        this.set_titlebar(this._titlebar);
 
-        let killSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
-        this._titlebar.pack_end(killSwitch);
-
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.bind('disable-user-extensions', killSwitch, 'active',
-                            Gio.SettingsBindFlags.DEFAULT |
-                            Gio.SettingsBindFlags.INVERT_BOOLEAN);
+        this._killSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+        this._titlebar.pack_end(this._killSwitch);
 
         this._mainStack = new Gtk.Stack({
             transition_type: Gtk.StackTransitionType.CROSSFADE,
         });
-        this._window.add(this._mainStack);
+        this.add(this._mainStack);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
 
@@ -233,12 +295,9 @@ class Application extends Gtk.Application {
         this._mainStack.add_named(scroll, 'listing');
         this._mainStack.add_named(new EmptyPlaceholder(), 'placeholder');
 
-        this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-        this._shellProxy.connectSignal('ExtensionStateChanged',
-            this._onExtensionStateChanged.bind(this));
-
-        this._window.show_all();
+        this.show_all();
     }
+
 
     _sortList(row1, row2) {
         return row1.name.localeCompare(row2.name);
@@ -309,39 +368,7 @@ class Application extends Gtk.Application {
         if (this._startupUuid)
             this._showPrefs(this._startupUuid);
         this._startupUuid = null;
-        this._skipMainWindow = false;
         this._loaded = true;
-    }
-
-    vfunc_activate() {
-        this._window.present();
-    }
-
-    vfunc_startup() {
-        super.vfunc_startup();
-
-        this._buildUI();
-        this._scanExtensions();
-    }
-
-    vfunc_command_line(commandLine) {
-        this.activate();
-        let args = commandLine.get_arguments();
-
-        if (args.length) {
-            let uuid = args[0];
-
-            this._skipMainWindow = true;
-
-            // Strip off "extension:///" prefix which fakes a URI, if it exists
-            uuid = stripPrefix(uuid, "extension:///");
-
-            if (!this._loaded)
-                this._startupUuid = uuid;
-            else if (!this._showPrefs(uuid))
-                this._skipMainWindow = false;
-        }
-        return 0;
     }
 });
 
