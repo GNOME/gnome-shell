@@ -27,9 +27,14 @@
         <child>
           <object class="GtkButton" id="prefsButton">
             <property name="no_show_all">True</property>
+            <property name="visible"
+                      bind-source="prefsButton"
+                      bind-property="sensitive"
+                      bind-flags="sync-create"/>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="valign">center</property>
+            <property name="action-name">row.show-prefs</property>
             <style>
               <class name="circular"/>>
               <class name="image-button"/>>
@@ -46,10 +51,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch" id="switch">
+          <object class="GtkSwitch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">center</property>
+            <property name="action-name">row.enabled</property>
           </object>
           <packing>
             <property name="height">2</property>
