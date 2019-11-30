@@ -80,7 +80,8 @@ var ExtensionsWindow = GObject.registerClass({
     GTypeName: 'ExtensionsWindow',
     Template: 'resource:///org/gnome/shell/ui/extensions-window.ui',
     InternalChildren: [
-        'extensionsList',
+        'userList',
+        'systemList',
         'killSwitch',
         'mainBox',
         'mainStack',
@@ -106,8 +107,11 @@ var ExtensionsWindow = GObject.registerClass({
             this._killSwitch, 'active',
             Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
-        this._extensionsList.set_sort_func(this._sortList.bind(this));
-        this._extensionsList.set_header_func(this._updateHeader.bind(this));
+        this._userList.set_sort_func(this._sortList.bind(this));
+        this._userList.set_header_func(this._updateHeader.bind(this));
+
+        this._systemList.set_sort_func(this._sortList.bind(this));
+        this._systemList.set_header_func(this._updateHeader.bind(this));
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -152,11 +156,8 @@ var ExtensionsWindow = GObject.registerClass({
         if (this._prefsDialog)
             return false;
 
-        let row = this._extensionsList.get_children().find(c => {
-            return c.uuid === uuid && c.hasPrefs;
-        });
-
-        if (!row)
+        let row = this._findExtensionRow(uuid);
+        if (!row || !row.hasPrefs)
             return false;
 
         let widget;
@@ -346,12 +347,23 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _findExtensionRow(uuid) {
-        return this._extensionsList.get_children().find(c => c.uuid === uuid);
+        return [
+            ...this._userList.get_children(),
+            ...this._systemList.get_children(),
+        ].find(c => c.uuid === uuid);
     }
 
     _onExtensionStateChanged(proxy, senderName, [uuid, newState]) {
         let extension = ExtensionUtils.deserializeExtension(newState);
         let row = this._findExtensionRow(uuid);
+
+        // the extension's type changed; remove the corresponding row
+        // and reset the variable to null so that we create a new row
+        // below and add it to the appropriate list
+        if (row && row.type !== extension.type) {
+            row.destroy();
+            row = null;
+        }
 
         if (row) {
             if (extension.state === ExtensionState.UNINSTALLED)
@@ -384,11 +396,18 @@ var ExtensionsWindow = GObject.registerClass({
     _addExtensionRow(extension) {
         let row = new ExtensionRow(extension);
         row.show_all();
-        this._extensionsList.add(row);
+
+        if (row.type === ExtensionType.PER_USER)
+            this._userList.add(row);
+        else
+            this._systemList.add(row);
     }
 
     _extensionsLoaded() {
-        if (this._extensionsList.get_children().length > 0)
+        this._userList.visible = this._userList.get_children().length > 0;
+        this._systemList.visible = this._systemList.get_children().length > 0;
+
+        if (this._userList.visible || this._systemList.visible)
             this._mainStack.visible_child_name = 'main';
         else
             this._mainStack.visible_child_name = 'placeholder';

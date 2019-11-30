@@ -116,8 +116,47 @@
                     <property name="orientation">vertical</property>
                     <property name="halign">center</property>
                     <property name="margin">36</property>
+                    <property name="spacing">12</property>
                     <child>
-                      <object class="GtkListBox" id="extensionsList">
+                      <object class="GtkLabel">
+                        <property name="visible"
+                                  bind-source="userList"
+                                  bind-property="visible"
+                                  bind-flags="sync-create"/>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Manually Installed</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBox" id="userList">
+                        <property name="visible">True</property>
+                        <property name="selection_mode">none</property>
+                        <property name="margin_bottom">24</property>
+                        <style>
+                          <class name="frame"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible"
+                                  bind-source="systemList"
+                                  bind-property="visible"
+                                  bind-flags="sync-create"/>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Built-In</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBox" id="systemList">
                         <property name="visible">True</property>
                         <property name="selection_mode">none</property>
                         <style>
