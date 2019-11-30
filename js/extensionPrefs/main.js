@@ -81,6 +81,11 @@ var ExtensionsWindow = GObject.registerClass({
         this._loaded = false;
         this._prefsDialog = null;
 
+        let action;
+        action = new Gio.SimpleAction({ name: 'show-about' });
+        action.connect('activate', this._showAbout.bind(this));
+        this.add_action(action);
+
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.bind('disable-user-extensions',
             this._killSwitch, 'active',
@@ -159,6 +164,25 @@ var ExtensionsWindow = GObject.registerClass({
         this._prefsDialog.show();
 
         return true;
+    }
+
+    _showAbout() {
+        let aboutDialog = new Gtk.AboutDialog({
+            authors: [
+                'Florian Müllner <fmuellner@gnome.org>',
+                'Jasper St. Pierre <jstpierre@mecheye.net>',
+                'Didier Roche <didrocks@ubuntu.com>',
+            ],
+            translator_credits: _('translator-credits'),
+            program_name: _('Shell Extensions'),
+            comments: _('Manage your GNOME Extensions'),
+            license_type: Gtk.License.GPL_2_0,
+            logo_icon_name: 'org.gnome.Extensions',
+
+            transient_for: this,
+            modal: true,
+        });
+        aboutDialog.present();
     }
 
     _buildErrorUI(row, exc) {
