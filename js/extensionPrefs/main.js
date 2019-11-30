@@ -296,7 +296,7 @@ var ExtensionsWindow = GObject.registerClass({
             label: _("Homepage"),
             tooltip_text: _("Visit extension homepage"),
             no_show_all: true,
-            visible: row.url != null,
+            visible: row.url !== '',
         });
         toolbar.add(urlButton);
 
@@ -516,6 +516,8 @@ var ExtensionRow = GObject.registerClass({
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
+        'versionLabel',
+        'authorLabel',
         'revealButton',
         'revealer',
     ],
@@ -536,6 +538,16 @@ var ExtensionRow = GObject.registerClass({
             enabled: this.hasPrefs,
         });
         action.connect('activate', () => this.get_toplevel().openPrefs(this.uuid));
+        this._actionGroup.add_action(action);
+
+        action = new Gio.SimpleAction({
+            name: 'show-url',
+            enabled: this.url !== '',
+        });
+        action.connect('activate', () => {
+            Gio.AppInfo.launch_default_for_uri(
+                this.url, this.get_display().get_app_launch_context());
+        });
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
@@ -595,8 +607,16 @@ var ExtensionRow = GObject.registerClass({
         return this._extension.hasPrefs;
     }
 
+    get creator() {
+        return this._extension.metadata.creator || '';
+    }
+
     get url() {
-        return this._extension.metadata.url;
+        return this._extension.metadata.url || '';
+    }
+
+    get version() {
+        return this._extension.metadata.version || '';
     }
 
     _updateState() {
@@ -605,6 +625,12 @@ var ExtensionRow = GObject.registerClass({
         let action = this._actionGroup.lookup('enabled');
         action.set_state(new GLib.Variant('b', state));
         action.enabled = this._canToggle();
+
+        this._versionLabel.label = `${this.version}`;
+        this._versionLabel.visible = this.version !== '';
+
+        this._authorLabel.label = `${this.creator}`;
+        this._authorLabel.visible = this.creator !== '';
     }
 
     _onDestroy() {
