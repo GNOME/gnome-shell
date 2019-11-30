@@ -32,9 +32,20 @@
               <object class="GtkViewport">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkListBox" id="extensionsList">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="selection_mode">none</property>
+                    <property name="orientation">vertical</property>
+                    <property name="halign">center</property>
+                    <property name="margin">36</property>
+                    <child>
+                      <object class="GtkListBox" id="extensionsList">
+                        <property name="visible">True</property>
+                        <property name="selection_mode">none</property>
+                        <style>
+                          <class name="frame"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
