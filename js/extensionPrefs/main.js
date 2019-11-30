@@ -350,11 +350,6 @@ var ExtensionsWindow = GObject.registerClass({
 
     _addExtensionRow(extension) {
         let row = new ExtensionRow(extension);
-
-        row.prefsButton.connect('clicked', () => {
-            this._showPrefs(row.uuid);
-        });
-
         row.show_all();
         this._extensionsList.add(row);
     }
@@ -474,13 +469,9 @@ var Expander = GObject.registerClass({
 var ExtensionRow = GObject.registerClass({
     GTypeName: 'ExtensionRow',
     Template: 'resource:///org/gnome/shell/ui/extension-row.ui',
-    Children: [
-        'prefsButton',
-    ],
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
-        'switch',
     ],
 }, class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
@@ -490,21 +481,38 @@ var ExtensionRow = GObject.registerClass({
         this._extension = extension;
         this._prefsModule = null;
 
+        this._actionGroup = new Gio.SimpleActionGroup();
+        this.insert_action_group('row', this._actionGroup);
+
+        let action;
+        action = new Gio.SimpleAction({
+            name: 'show-prefs',
+            enabled: this.hasPrefs,
+        });
+        action.connect('activate', () => this.get_toplevel().openPrefs(this.uuid));
+        this._actionGroup.add_action(action);
+
+        action = new Gio.SimpleAction({
+            name: 'enabled',
+            state: new GLib.Variant('b', false),
+        });
+        action.connect('activate', () => {
+            let state = action.get_state();
+            action.change_state(new GLib.Variant('b', !state.get_boolean()));
+        });
+        action.connect('change-state', (a, state) => {
+            if (state.get_boolean())
+                this._app.shellProxy.EnableExtensionRemote(this.uuid);
+            else
+                this._app.shellProxy.DisableExtensionRemote(this.uuid);
+        });
+        this._actionGroup.add_action(action);
+
         let name = GLib.markup_escape_text(this.name, -1);
         this._nameLabel.label = name;
 
         let desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
-
-        this.prefsButton.visible = this.hasPrefs;
-
-        this._notifyActiveId = this._switch.connect('notify::active', () => {
-            if (this._switch.active)
-                this._app.shellProxy.EnableExtensionRemote(this.uuid);
-            else
-                this._app.shellProxy.DisableExtensionRemote(this.uuid);
-        });
-        this._switch.connect('state-set', () => true);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -538,11 +546,9 @@ var ExtensionRow = GObject.registerClass({
     _updateState() {
         let state = this._extension.state === ExtensionState.ENABLED;
 
-        this._switch.block_signal_handler(this._notifyActiveId);
-        this._switch.state = state;
-        this._switch.unblock_signal_handler(this._notifyActiveId);
-
-        this._switch.sensitive = this._canToggle();
+        let action = this._actionGroup.lookup('enabled');
+        action.set_state(new GLib.Variant('b', state));
+        action.enabled = this._canToggle();
     }
 
     _onDestroy() {
