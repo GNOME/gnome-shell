@@ -657,11 +657,11 @@ class ExtensionRow extends Gtk.ListBoxRow {
     }
 
     get prefsModule() {
+        // give extension prefs access to their own extension object
+        ExtensionUtils.getCurrentExtension = () => this._extension;
+
         if (!this._prefsModule) {
             ExtensionUtils.installImporter(this._extension);
-
-            // give extension prefs access to their own extension object
-            ExtensionUtils.getCurrentExtension = () => this._extension;
 
             this._prefsModule = this._extension.imports.prefs;
             this._prefsModule.init(this._extension.metadata);
