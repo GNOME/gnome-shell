@@ -12,7 +12,7 @@ const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const { ExtensionState } = ExtensionUtils;
+const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
@@ -117,6 +117,28 @@ var ExtensionsWindow = GObject.registerClass({
 
     get _shellProxy() {
         return this.application.shellProxy;
+    }
+
+    uninstall(uuid) {
+        let row = this._findExtensionRow(uuid);
+
+        let dialog = new Gtk.MessageDialog({
+            transient_for: this,
+            modal: true,
+            text: _('Remove “%s”?').format(row.name),
+            secondary_text: _('If you remove the extension, you need to return to download it if you want to enable it again'),
+        });
+
+        dialog.add_button(_('Cancel'), Gtk.ResponseType.CANCEL);
+        dialog.add_button(_('Remove'), Gtk.ResponseType.ACCEPT)
+            .get_style_context().add_class('destructive-action');
+
+        dialog.connect('response', (dlg, response) => {
+            if (response === Gtk.ResponseType.ACCEPT)
+                this._shellProxy.UninstallExtensionRemote(uuid);
+            dialog.destroy();
+        });
+        dialog.present();
     }
 
     openPrefs(uuid) {
@@ -518,6 +540,13 @@ var ExtensionRow = GObject.registerClass({
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
+            name: 'uninstall',
+            enabled: this.type === ExtensionType.PER_USER,
+        });
+        action.connect('activate', () => this.get_toplevel().uninstall(this.uuid));
+        this._actionGroup.add_action(action);
+
+        action = new Gio.SimpleAction({
             name: 'enabled',
             state: new GLib.Variant('b', false),
         });
@@ -572,6 +601,10 @@ var ExtensionRow = GObject.registerClass({
 
     get hasPrefs() {
         return this._extension.hasPrefs;
+    }
+
+    get type() {
+        return this._extension.type;
     }
 
     get creator() {
