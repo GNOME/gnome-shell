@@ -524,6 +524,7 @@ class ExtensionRow extends Gtk.ListBoxRow {
         let desc = this._extension.metadata.description.split('\n')[0];
         label = new DescriptionLabel({ label: desc, wrap: true, lines: 2,
                                        ellipsize: Pango.EllipsizeMode.END,
+                                       max_width_chars: 60,
                                        xalign: 0, yalign: 0 });
         vbox.add(label);
 
