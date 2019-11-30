@@ -451,62 +451,22 @@ class EmptyPlaceholder extends Gtk.Box {
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 6,
             margin: 32,
+            valign: Gtk.Align.CENTER,
         });
 
         let image = new Gtk.Image({
             icon_name: 'application-x-addon-symbolic',
             pixel_size: 96,
             visible: true,
-            vexpand: true,
-            valign: Gtk.Align.END,
         });
-        image.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         this.add(image);
 
         let label = new Gtk.Label({
-            label: `<b><span size="x-large">${_("No Extensions Installed")}</span></b>`,
+            label: `<b><span size="x-large">${_('No Installed Extensions')}</span></b>`,
             use_markup: true,
             visible: true,
         });
-        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
         this.add(label);
-
-        let appInfo = Gio.DesktopAppInfo.new('org.gnome.Software.desktop');
-
-        let desc = new Gtk.Label({
-            label: _("Extensions can be installed through Software or <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."),
-            use_markup: true,
-            wrap: true,
-            justify: Gtk.Justification.CENTER,
-            visible: true,
-            max_width_chars: 50,
-            hexpand: true,
-            vexpand: appInfo == null,
-            halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.START,
-        });
-        this.add(desc);
-
-        if (appInfo) {
-            let button = new Gtk.Button({
-                label: _("Browse in Software"),
-                image: new Gtk.Image({
-                    icon_name: "org.gnome.Software-symbolic",
-                }),
-                always_show_image: true,
-                margin_top: 12,
-                visible: true,
-                halign: Gtk.Align.CENTER,
-                valign: Gtk.Align.START,
-                vexpand: true,
-            });
-            this.add(button);
-
-            button.connect('clicked', w => {
-                let context = w.get_display().get_app_launch_context();
-                appInfo.launch([], context);
-            });
-        }
     }
 });
 
