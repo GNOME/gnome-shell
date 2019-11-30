@@ -3,7 +3,7 @@ imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
 const Gettext = imports.gettext;
-const { Gdk, GLib, Gio, GObject, Gtk, Pango } = imports.gi;
+const { Gdk, GLib, Gio, GObject, Gtk } = imports.gi;
 const Format = imports.format;
 
 const _ = Gettext.gettext;
@@ -504,8 +504,18 @@ var Expander = GObject.registerClass({
     }
 });
 
-var ExtensionRow = GObject.registerClass(
-class ExtensionRow extends Gtk.ListBoxRow {
+var ExtensionRow = GObject.registerClass({
+    GTypeName: 'ExtensionRow',
+    Template: 'resource:///org/gnome/shell/ui/extension-row.ui',
+    Children: [
+        'prefsButton',
+    ],
+    InternalChildren: [
+        'nameLabel',
+        'descriptionLabel',
+        'switch',
+    ],
+}, class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
         super._init();
 
@@ -513,9 +523,23 @@ class ExtensionRow extends Gtk.ListBoxRow {
         this._extension = extension;
         this._prefsModule = null;
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        let name = GLib.markup_escape_text(this.name, -1);
+        this._nameLabel.label = name;
 
-        this._buildUI();
+        let desc = this._extension.metadata.description.split('\n')[0];
+        this._descriptionLabel.label = desc;
+
+        this.prefsButton.visible = this.hasPrefs;
+
+        this._notifyActiveId = this._switch.connect('notify::active', () => {
+            if (this._switch.active)
+                this._app.shellProxy.EnableExtensionRemote(this.uuid);
+            else
+                this._app.shellProxy.DisableExtensionRemote(this.uuid);
+        });
+        this._switch.connect('state-set', () => true);
+
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._extensionStateChangedId = this._app.shellProxy.connectSignal(
             'ExtensionStateChanged', (p, sender, [uuid, newState]) => {
@@ -523,14 +547,9 @@ class ExtensionRow extends Gtk.ListBoxRow {
                     return;
 
                 this._extension = ExtensionUtils.deserializeExtension(newState);
-                let state = this._extension.state == ExtensionState.ENABLED;
-
-                this._switch.block_signal_handler(this._notifyActiveId);
-                this._switch.state = state;
-                this._switch.unblock_signal_handler(this._notifyActiveId);
-
-                this._switch.sensitive = this._canToggle();
+                this._updateState();
             });
+        this._updateState();
     }
 
     get uuid() {
@@ -549,6 +568,16 @@ class ExtensionRow extends Gtk.ListBoxRow {
         return this._extension.metadata.url;
     }
 
+    _updateState() {
+        let state = this._extension.state === ExtensionState.ENABLED;
+
+        this._switch.block_signal_handler(this._notifyActiveId);
+        this._switch.state = state;
+        this._switch.unblock_signal_handler(this._notifyActiveId);
+
+        this._switch.sensitive = this._canToggle();
+    }
+
     _onDestroy() {
         if (!this._app.shellProxy)
             return;
@@ -556,58 +585,6 @@ class ExtensionRow extends Gtk.ListBoxRow {
         if (this._extensionStateChangedId)
             this._app.shellProxy.disconnectSignal(this._extensionStateChangedId);
         this._extensionStateChangedId = 0;
-    }
-
-    _buildUI() {
-        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                 hexpand: true, margin_end: 24, spacing: 24,
-                                 margin: 12 });
-        this.add(hbox);
-
-        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 6, hexpand: true });
-        hbox.add(vbox);
-
-        let name = GLib.markup_escape_text(this.name, -1);
-        let label = new Gtk.Label({ label: '<b>' + name + '</b>',
-                                    use_markup: true,
-                                    halign: Gtk.Align.START });
-        vbox.add(label);
-
-        let desc = this._extension.metadata.description.split('\n')[0];
-        label = new Gtk.Label({
-            label: desc,
-            ellipsize: Pango.EllipsizeMode.END,
-            max_width_chars: 60,
-            xalign: 0,
-            yalign: 0,
-        });
-        vbox.add(label);
-
-        let button = new Gtk.Button({ valign: Gtk.Align.CENTER,
-                                      visible: this.hasPrefs,
-                                      no_show_all: true });
-        button.set_image(new Gtk.Image({ icon_name: 'emblem-system-symbolic',
-                                         icon_size: Gtk.IconSize.BUTTON,
-                                         visible: true }));
-        button.get_style_context().add_class('circular');
-        hbox.add(button);
-
-        this.prefsButton = button;
-
-        this._switch = new Gtk.Switch({
-            valign: Gtk.Align.CENTER,
-            sensitive: this._canToggle(),
-            state: this._extension.state === ExtensionState.ENABLED,
-        });
-        this._notifyActiveId = this._switch.connect('notify::active', () => {
-            if (this._switch.active)
-                this._app.shellProxy.EnableExtensionRemote(this.uuid);
-            else
-                this._app.shellProxy.DisableExtensionRemote(this.uuid);
-        });
-        this._switch.connect('state-set', () => true);
-        hbox.add(this._switch);
     }
 
     _canToggle() {
