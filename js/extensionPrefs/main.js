@@ -258,23 +258,15 @@ class Application extends Gtk.Application {
     }
 
     _onExtensionStateChanged(proxy, senderName, [uuid, newState]) {
+        let extension = ExtensionUtils.deserializeExtension(newState);
         let row = this._findExtensionRow(uuid);
+
         if (row) {
-            let { state } = ExtensionUtils.deserializeExtension(newState);
-            if (state == ExtensionState.UNINSTALLED)
+            if (extension.state === ExtensionState.UNINSTALLED)
                 row.destroy();
             return; // we only deal with new and deleted extensions here
         }
-
-        this._shellProxy.GetExtensionInfoRemote(uuid, ([serialized]) => {
-            let extension = ExtensionUtils.deserializeExtension(serialized);
-            if (!extension)
-                return;
-            // check the extension wasn't added in between
-            if (this._findExtensionRow(uuid) != null)
-                return;
-            this._addExtensionRow(extension);
-        });
+        this._addExtensionRow(extension);
     }
 
     _scanExtensions() {
