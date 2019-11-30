@@ -7,3 +7,5 @@
 .details-button.expanded:dir(rtl) image {
   -gtk-icon-transform: rotate(-0.25turn);
 }
+
+image.warning { color: @warning_color; }
