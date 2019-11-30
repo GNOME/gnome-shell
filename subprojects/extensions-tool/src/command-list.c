@@ -32,7 +32,8 @@ typedef enum {
   LIST_FLAGS_SYSTEM   = 1 << 1,
   LIST_FLAGS_ENABLED  = 1 << 2,
   LIST_FLAGS_DISABLED = 1 << 3,
-  LIST_FLAGS_NO_PREFS = 1 << 4
+  LIST_FLAGS_NO_PREFS = 1 << 4,
+  LIST_FLAGS_NO_UPDATES = 1 << 5,
 } ListFilterFlags;
 
 static gboolean
@@ -69,11 +70,13 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
       g_autoptr (GVariantDict) info = NULL;
       double type, state;
       gboolean has_prefs;
+      gboolean has_update;
 
       info = g_variant_dict_new (value);
       g_variant_dict_lookup (info, "type", "d", &type);
       g_variant_dict_lookup (info, "state", "d", &state);
       g_variant_dict_lookup (info, "hasPrefs", "b", &has_prefs);
+      g_variant_dict_lookup (info, "hasUpdate", "b", &has_update);
 
       if (type == TYPE_USER && (filter & LIST_FLAGS_USER) == 0)
         continue;
@@ -88,6 +91,9 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
         continue;
 
       if (!has_prefs && (filter & LIST_FLAGS_NO_PREFS) == 0)
+        continue;
+
+      if (!has_update && (filter & LIST_FLAGS_NO_UPDATES) == 0)
         continue;
 
       if (needs_newline)
@@ -112,6 +118,7 @@ handle_list (int argc, char *argv[], gboolean do_help)
   gboolean enabled = FALSE;
   gboolean disabled = FALSE;
   gboolean has_prefs = FALSE;
+  gboolean has_updates = FALSE;
   GOptionEntry entries[] = {
     { .long_name = "user",
       .arg = G_OPTION_ARG_NONE, .arg_data = &user,
@@ -128,6 +135,9 @@ handle_list (int argc, char *argv[], gboolean do_help)
     { .long_name = "prefs",
       .arg = G_OPTION_ARG_NONE, .arg_data = &has_prefs,
       .description = _("Show extensions with preferences") },
+    { .long_name = "updates",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &has_updates,
+      .description = _("Show extensions with updates") },
     { .long_name = "details", .short_name = 'd',
       .arg = G_OPTION_ARG_NONE, .arg_data = &details,
       .description = _("Print extension details") },
@@ -173,6 +183,9 @@ handle_list (int argc, char *argv[], gboolean do_help)
 
   if (!has_prefs)
     flags |= LIST_FLAGS_NO_PREFS;
+
+  if (!has_updates)
+    flags |= LIST_FLAGS_NO_UPDATES;
 
   return list_extensions (flags, details ? DISPLAY_DETAILED
                                          : DISPLAY_ONELINE) ? 0 : 2;
