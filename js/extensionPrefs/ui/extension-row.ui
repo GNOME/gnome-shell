@@ -169,6 +169,27 @@
                     <property name="top_attach">3</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkButton" id="removeButton">
+                    <property name="visible"
+                              bind-source="removeButton"
+                              bind-property="sensitive"
+                              bind-flags="sync-create"/>
+                    <property name="no_show_all">True</property>
+                    <property name="label" translatable="yes">Remove…</property>
+                    <property name="action_name">row.uninstall</property>
+                    <property name="hexpand">True</property>
+                    <property name="halign">end</property>
+                    <property name="valign">end</property>
+                    <style>
+                      <class name="destructive-action"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>
