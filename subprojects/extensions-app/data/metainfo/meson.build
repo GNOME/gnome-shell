@@ -2,7 +2,7 @@ metainfo = app_id + '.metainfo.xml'
 i18n.merge_file(metainfo,
   input: metainfo + '.in',
   output: metainfo,
-  po_dir: '../../../../po',
+  po_dir: po_dir,
   install: true,
   install_dir: metainfodir
 )
