@@ -5,11 +5,6 @@ data/org.gnome.Shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 data/org.gnome.Shell.PortalHelper.desktop.in.in
 js/dbusServices/extensions/ui/extension-prefs-dialog.ui
-js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in
-js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in
-js/extensionPrefs/js/main.js
-js/extensionPrefs/data/ui/extension-row.ui
-js/extensionPrefs/data/ui/extensions-window.ui
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
 js/gdm/util.js
@@ -83,6 +78,11 @@ src/shell-global.c
 src/shell-keyring-prompt.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
+subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in
+subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in
+subprojects/extensions-app/js/main.js
+subprojects/extensions-app/data/ui/extension-row.ui
+subprojects/extensions-app/data/ui/extensions-window.ui
 subprojects/extensions-tool/src/command-create.c
 subprojects/extensions-tool/src/command-disable.c
 subprojects/extensions-tool/src/command-enable.c
