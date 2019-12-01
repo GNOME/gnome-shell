@@ -140,7 +140,6 @@ mutter_typelibdir = mutter_dep.get_pkgconfig_variable('typelibdir')
 python = find_program('python3')
 sassc = find_program('sassc')
 gjs = find_program('gjs')
-appstream_util = find_program('appstream-util', required: false)
 
 cc = meson.get_compiler('c')
 
@@ -265,6 +264,16 @@ if get_option('extensions_tool')
     'extension-tool version does not match project version'
   )
 endif
+
+extensions_app = subproject('extensions-app',
+  default_options: [
+    'package_name=@0@'.format(meson.project_name()),
+  ]
+)
+
+extensions_app_version = extensions_app.get_variable('package_version')
+assert(extensions_app_version == meson.project_version(),
+  'Extensions app version does not match project version')
 
 
 po_dir = join_paths(meson.current_source_dir(), 'po')

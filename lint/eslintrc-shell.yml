@@ -24,3 +24,8 @@ overrides:
       C_: readonly
       N_: readonly
       ngettext: readonly
+  - files: subprojects/extensions-app/js/**
+    globals:
+      _: readonly
+      C_: readonly
+      N_: readonly
