@@ -23,7 +23,7 @@ run_eslint() {
   mkdir -p $(dirname $output)
   touch $output
 
-  eslint -f unix ${!extra_args} -o $output js
+  eslint -f unix ${!extra_args} -o $output js subprojects/extensions-app/js
 }
 
 list_commit_range_additions() {
