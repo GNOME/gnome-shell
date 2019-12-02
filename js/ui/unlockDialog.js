@@ -403,6 +403,7 @@ var UnlockDialog = GObject.registerClass({
             accessible_role: Atk.Role.WINDOW,
             style_class: 'login-dialog',
             visible: false,
+            can_focus: true,
             reactive: true,
         });
 
