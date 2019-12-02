@@ -35,7 +35,7 @@ $osd_outer_borders_color: if($variant == 'light', rgba(0,0,0,0.1), lighten($osd_
 $shadow_color: if($variant == 'light', rgba(0,0,0,0.1), rgba(0,0,0,0.2));
 =======
 $osd_borders_color:  if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
-$osd_outer_borders_color: rgba(255,255,255,0.16);
+$osd_outer_borders_color: if($variant == 'light', rgba(255,255,255,0.4), rgba(255,255,255,0.1));
 
 $shadow_color: rgba(0,0,0,0.9);
 >>>>>>> de7edaff5... theme: OSD refinements; overview and panel refinements
