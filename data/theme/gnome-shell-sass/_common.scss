@@ -94,7 +94,15 @@ stage {
 @import 'widgets/window-picker';
 @import 'widgets/workspace-switcher';
 
-// Common Stylings
+/* Common Stylings */
+
+// Text
+%status_text {
+	font-size: 2em;
+	font-weight: bold;
+	color: $osd_fg_color;
+}
+
 
 // osd panels
 
