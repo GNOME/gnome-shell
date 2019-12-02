@@ -158,17 +158,6 @@ var PopupBaseMenuItem = GObject.registerClass({
         if (!this._activatable)
             return super.vfunc_key_press_event(keyEvent);
 
-        let state = keyEvent.modifier_state;
-
-        // if user has a modifier down (except capslock and numlock)
-        // then don't handle the key press here
-        state &= ~Clutter.ModifierType.LOCK_MASK;
-        state &= ~Clutter.ModifierType.MOD2_MASK;
-        state &= Clutter.ModifierType.MODIFIER_MASK;
-
-        if (state)
-            return Clutter.EVENT_PROPAGATE;
-
         let symbol = keyEvent.keyval;
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.activate(Clutter.get_current_event());
@@ -577,6 +566,8 @@ var PopupMenuBase = class {
                 this.emit('active-changed', menuItem);
             } else if (!active && this._activeMenuItem == menuItem) {
                 this._activeMenuItem = null;
+                this.actor.grab_key_focus();
+
                 this.emit('active-changed', null);
             }
         });
@@ -812,11 +803,6 @@ var PopupMenu = class extends PopupMenuBase {
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
 
-        if (this.sourceActor) {
-            this._keyPressId = this.sourceActor.connect('key-press-event',
-                                                        this._onKeyPress.bind(this));
-        }
-
         this._openedSubMenu = null;
     }
 
@@ -825,55 +811,6 @@ var PopupMenu = class extends PopupMenuBase {
             this._openedSubMenu.close(true);
 
         this._openedSubMenu = submenu;
-    }
-
-    _onKeyPress(actor, event) {
-        // Disable toggling the menu by keyboard
-        // when it cannot be toggled by pointer
-        if (!actor.reactive)
-            return Clutter.EVENT_PROPAGATE;
-
-        let navKey;
-        switch (this._boxPointer.arrowSide) {
-        case St.Side.TOP:
-            navKey = Clutter.KEY_Down;
-            break;
-        case St.Side.BOTTOM:
-            navKey = Clutter.KEY_Up;
-            break;
-        case St.Side.LEFT:
-            navKey = Clutter.KEY_Right;
-            break;
-        case St.Side.RIGHT:
-            navKey = Clutter.KEY_Left;
-            break;
-        }
-
-        let state = event.get_state();
-
-        // if user has a modifier down (except capslock)
-        // then don't handle the key press here
-        state &= ~Clutter.ModifierType.LOCK_MASK;
-        state &= Clutter.ModifierType.MODIFIER_MASK;
-
-        if (state)
-            return Clutter.EVENT_PROPAGATE;
-
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
-            this.toggle();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Escape && this.isOpen) {
-            this.close();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == navKey) {
-            if (!this.isOpen)
-                this.toggle();
-            this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-            return Clutter.EVENT_STOP;
-        } else {
-            return Clutter.EVENT_PROPAGATE;
-        }
     }
 
     setArrowOrigin(origin) {
@@ -916,12 +853,6 @@ var PopupMenu = class extends PopupMenuBase {
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
-    }
-
-    destroy() {
-        if (this._keyPressId)
-            this.sourceActor.disconnect(this._keyPressId);
-        super.destroy();
     }
 };
 
@@ -1319,7 +1250,7 @@ var PopupMenuManager = class {
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
             this._grabHelper.grab({
                 actor: menu.actor,
-                focus: menu.focusActor,
+                focus: menu.actor,
                 onUngrab: isUser => this._closeMenu(isUser, menu),
             });
         } else {

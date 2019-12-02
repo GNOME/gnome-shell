@@ -131,9 +131,15 @@ var Button = GObject.registerClass({
     }
 
     vfunc_event(event) {
+        let keyPressed = event.type() == Clutter.EventType.KEY_PRESS &&
+                         (event.get_key_symbol() == Clutter.KEY_space ||
+                          event.get_key_symbol() == Clutter.KEY_Return ||
+                          event.get_key_symbol() == Clutter.KEY_Down);
+
         if (this.menu &&
             (event.type() == Clutter.EventType.TOUCH_BEGIN ||
-             event.type() == Clutter.EventType.BUTTON_PRESS))
+             event.type() == Clutter.EventType.BUTTON_PRESS ||
+             keyPressed))
             this.menu.toggle();
 
         return Clutter.EVENT_PROPAGATE;
@@ -147,7 +153,11 @@ var Button = GObject.registerClass({
     }
 
     _onMenuKeyPress(actor, event) {
-        if (global.focus_manager.navigate_from_event(event))
+        // Only navigate outside the menu (to switch to another menu or to close
+        // the current menu) if the menu didn't handle the event itself or if the
+        // menu actor is still focused (it's focused after opening a menu).
+        if (!this.menu.actor.has_key_focus() &&
+            global.focus_manager.navigate_from_event(event))
             return Clutter.EVENT_STOP;
 
         let symbol = event.get_key_symbol();
@@ -158,7 +168,12 @@ var Button = GObject.registerClass({
                 group.navigate_focus(this, direction, false);
                 return Clutter.EVENT_STOP;
             }
+        } else if (symbol == Clutter.KEY_Up) {
+            this.menu.toggle();
+            this.grab_key_focus();
+            return Clutter.EVENT_STOP;
         }
+
         return Clutter.EVENT_PROPAGATE;
     }
 

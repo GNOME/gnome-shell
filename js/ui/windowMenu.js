@@ -225,7 +225,6 @@ var WindowMenuManager = class {
         this._sourceActor.show();
 
         menu.open(BoxPointer.PopupAnimation.FADE);
-        menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', (menu_, isOpen) => {
             if (isOpen)
                 return;
