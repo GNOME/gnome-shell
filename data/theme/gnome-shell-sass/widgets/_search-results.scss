@@ -9,20 +9,18 @@ $overview_search_container_width: 1024px;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
 	text-shadow: 0 1px rgba(0,0,0,0.3);
 	color: $osd_fg_color;
+	padding: $base_padding * 2;
 }
 
 // search overview container
 #searchResultsContent {
 	max-width: $overview_search_container_width;
-	width: 60%;
-	padding: $base_padding * 2;
-	margin-bottom: $base_margin * 2;
+	padding-bottom: 48px;
 }
 
 // search results section
 .search-section {
 	@extend %search_result_bubble;
-	padding: $base_padding * 2;
 	spacing:0;
 	margin-top: $base_padding * 2;
 	margin-bottom: $base_padding * 2;
@@ -127,6 +125,7 @@ $overview_search_container_width: 1024px;
 	.list-search-result {
 		@extend %icon_tile;
 		spacing: 0;
+		padding: $base_padding;
 		color: $osd_fg_color;
 
 		&:focus,
