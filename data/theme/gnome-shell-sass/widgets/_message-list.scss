@@ -56,6 +56,12 @@
 		}
 	}
 
+	// message close button
+	.message-close-button {
+		color: lighten($fg_color, 15%);
+		&:hover { color: darken($fg_color, 10%);}
+	}
+
 	// message icon
 	.message-icon-bin {
 		// padding: $base_padding;
