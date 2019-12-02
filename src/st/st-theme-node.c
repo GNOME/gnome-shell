@@ -809,6 +809,7 @@ get_parent_font (StThemeNode *node)
 typedef struct {
   const PangoFontDescription *font_desc;
   double resolution;
+  int scale_factor;
 } LengthNormalize;
 
 static LengthNormalize
@@ -818,6 +819,8 @@ length_normalize (StThemeNode *node, const PangoFontDescription *desc)
 
   norm.font_desc = desc;
   norm.resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
+  norm.scale_factor = node->cached_scale_factor;
+
   return norm;
 }
 
@@ -843,7 +846,6 @@ get_length_from_term (StThemeNode     *node,
 
   double multiplier = 1.0;
 
-
   if (term->type != TERM_NUMBER)
     {
       g_warning ("Ignoring length property that isn't a number at line %d, col %d",
@@ -857,7 +859,7 @@ get_length_from_term (StThemeNode     *node,
     {
     case NUM_LENGTH_PX:
       type = ABSOLUTE;
-      multiplier = 1 * node->cached_scale_factor;
+      multiplier = 1 * norm.scale_factor;
       break;
     case NUM_LENGTH_PT:
       type = POINTS;
@@ -983,7 +985,9 @@ get_length_from_term_int (StThemeNode     *node,
 
   result = get_length_from_term (node, term, norm, &value);
   if (result == VALUE_FOUND)
-    *length = (int) ((value / node->cached_scale_factor) + 0.5) * node->cached_scale_factor;
+    {
+      *length = (int) ((value / norm.scale_factor) + 0.5) * norm.scale_factor;
+    }
   return result;
 }
 
