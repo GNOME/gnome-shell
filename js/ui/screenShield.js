@@ -55,11 +55,14 @@ var ScreenShield = class {
         });
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
-        this._lockDialogGroup = new St.Widget({ x_expand: true,
-                                                y_expand: true,
-                                                reactive: true,
-                                                pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-                                                name: 'lockDialogGroup' });
+        this._lockDialogGroup = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            can_focus: true,
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            name: 'lockDialogGroup',
+        });
 
         this.actor.add_actor(this._lockScreenGroup);
         this.actor.add_actor(this._lockDialogGroup);
@@ -148,7 +151,7 @@ var ScreenShield = class {
             // LoginDialog.cancel() will grab the key focus
             // on its own, so ensure it stays on lock screen
             // instead
-            this._lockScreenGroup.grab_key_focus();
+            this._dialog.grab_key_focus();
         }
     }
 
@@ -408,7 +411,7 @@ var ScreenShield = class {
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
-        this._lockScreenGroup.grab_key_focus();
+        this._dialog.grab_key_focus();
     }
 
     _lockScreenShown(params) {
