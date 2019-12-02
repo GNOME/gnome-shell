@@ -325,6 +325,7 @@ var Key = GObject.registerClass({
 
                                                         if (this._extended_keys.length > 0) {
                                                             this._touchPressed = false;
+                                                            this._mousePressed = false;
                                                             this.keyButton.set_hover(false);
                                                             this.keyButton.fake_release();
                                                             this._ensureExtendedKeysPopup();
@@ -412,10 +413,17 @@ var Key = GObject.registerClass({
         button.keyWidth = 1;
         button.connect('button-press-event', () => {
             this._press(key);
+            this._mousePressed = true;
             return Clutter.EVENT_PROPAGATE;
         });
         button.connect('button-release-event', () => {
+            if (this._mousePressed == false) {
+                // This is required in order to activate an extended key
+                // in case the user keeps the mouse pressed.
+                this._press(key);
+            }
             this._release(key);
+            this._mousePressed = false;
             return Clutter.EVENT_PROPAGATE;
         });
         button.connect('touch-event', (actor, event) => {
@@ -436,6 +444,13 @@ var Key = GObject.registerClass({
             } else if (this._touchPressed &&
                        event.type() == Clutter.EventType.TOUCH_END) {
                 this._touchPressed = false;
+                this._release(key);
+            } else if (!this._touchPressed &&
+                        event.type() == Clutter.EventType.TOUCH_END &&
+                        device.sequence_get_grabbed_actor(sequence) == null) {
+                // This is required in order to activate an extended key
+                // in case the user keeps the finger over the screen.
+                this._press(key);
                 this._release(key);
             }
             return Clutter.EVENT_PROPAGATE;
