@@ -445,32 +445,7 @@ var UnlockDialog = GObject.registerClass({
         stack.add_child(this._clock);
         this._showClock();
 
-        this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
-        this._authPrompt.connect('failed', this._fail.bind(this));
-        this._authPrompt.connect('cancelled', this._fail.bind(this));
-        this._authPrompt.connect('reset', this._onReset.bind(this));
-        this._authPrompt.nextButton.label = _("Unlock");
-
-        this._promptBox.add_child(this._authPrompt);
-
         this.allowCancel = false;
-
-        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-        if (screenSaverSettings.get_boolean('user-switch-enabled')) {
-            let otherUserLabel = new St.Label({ text: _("Log in as another user"),
-                                                style_class: 'login-dialog-not-listed-label' });
-            this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
-                                                    can_focus: true,
-                                                    child: otherUserLabel,
-                                                    reactive: true });
-            this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
-            this._promptBox.add_child(this._otherUserButton);
-        } else {
-            this._otherUserButton = null;
-        }
-
-        this._authPrompt.reset();
-        this._updateSensitivity(true);
 
         Main.ctrlAltTabManager.addGroup(this, _("Unlock Window"), 'dialog-password-symbolic');
 
@@ -553,6 +528,52 @@ var UnlockDialog = GObject.registerClass({
             this._createBackground(i);
     }
 
+    _ensureAuthPrompt() {
+        if (this._authPrompt)
+            return;
+
+        this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
+        this._authPrompt.connect('failed', this._fail.bind(this));
+        this._authPrompt.connect('cancelled', this._fail.bind(this));
+        this._authPrompt.connect('reset', this._onReset.bind(this));
+        this._authPrompt.nextButton.label = _("Unlock");
+
+        this._promptBox.add_child(this._authPrompt);
+
+        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+        if (screenSaverSettings.get_boolean('user-switch-enabled')) {
+            let otherUserLabel = new St.Label({
+                text: _("Log in as another user"),
+                style_class: 'login-dialog-not-listed-label',
+            });
+            this._otherUserButton = new St.Button({
+                style_class: 'login-dialog-not-listed-button',
+                can_focus: true,
+                child: otherUserLabel,
+                reactive: true,
+            });
+            this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
+            this._promptBox.add_child(this._otherUserButton);
+        } else {
+            this._otherUserButton = null;
+        }
+
+        this._authPrompt.reset();
+        this._updateSensitivity(true);
+    }
+
+    _maybeDestroyAuthPrompt() {
+        this.grab_key_focus();
+
+        if (this._authPrompt) {
+            this._authPrompt.destroy();
+            this._authPrompt = null;
+
+            this._otherUserButton.destroy();
+            this._otherUserButton = null;
+        }
+    }
+
     _updateSensitivity(sensitive) {
         this._authPrompt.updateSensitivity(sensitive);
 
@@ -573,7 +594,10 @@ var UnlockDialog = GObject.registerClass({
             opacity: 0,
             duration: 300,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._promptBox.hide(),
+            onComplete: () => {
+                this._promptBox.hide();
+                this._maybeDestroyAuthPrompt();
+            },
         });
 
         this._clock.ease({
@@ -584,6 +608,8 @@ var UnlockDialog = GObject.registerClass({
     }
 
     _showPrompt() {
+        this._ensureAuthPrompt();
+
         if (this._activePage == this._promptBox)
             return;
 
@@ -653,6 +679,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     cancel() {
+        this._ensureAuthPrompt();
         this._authPrompt.cancel();
     }
 
@@ -662,6 +689,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     finish(onComplete) {
+        this._ensureAuthPrompt();
         this._authPrompt.finish(onComplete);
     }
 
