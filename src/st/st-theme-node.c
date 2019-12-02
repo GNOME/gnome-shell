@@ -807,7 +807,7 @@ get_parent_font (StThemeNode *node)
 }
 
 typedef struct {
-  const PangoFontDescription *font_desc;
+  double font_size;
   double resolution;
   int scale_factor;
 } LengthNormalize;
@@ -816,9 +816,19 @@ static LengthNormalize
 length_normalize (StThemeNode *node, const PangoFontDescription *desc)
 {
   LengthNormalize norm;
+  double resolution;
+  double font_size;
 
-  norm.font_desc = desc;
-  norm.resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
+  resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
+
+  font_size = (double)pango_font_description_get_size (desc) / PANGO_SCALE;
+  if (!pango_font_description_get_size_is_absolute (desc))
+    {
+      font_size = font_size * resolution / 72.0;
+    }
+
+  norm.font_size = font_size;
+  norm.resolution = resolution;
   norm.scale_factor = node->cached_scale_factor;
 
   return norm;
@@ -953,18 +963,7 @@ get_length_from_term (StThemeNode     *node,
       break;
     case FONT_RELATIVE:
       {
-        double font_size;
-
-        font_size = (double)pango_font_description_get_size (norm.font_desc) / PANGO_SCALE;
-
-        if (pango_font_description_get_size_is_absolute (norm.font_desc))
-          {
-            *length = num->val * multiplier * font_size;
-          }
-        else
-          {
-            *length = num->val * multiplier * (norm.resolution / 72.) * font_size;
-          }
+        *length = num->val * multiplier * norm.font_size;
       }
       break;
     default:
