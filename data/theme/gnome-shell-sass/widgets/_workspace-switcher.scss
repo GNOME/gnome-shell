@@ -49,7 +49,7 @@
 	border-bottom-left-radius:0 !important;
 	border-right-width: 0 !important;
 	&:rtl { 
-		border-radius: 0 $dialog_border_radius $dialog_border_radius 0; 
+		border-radius: 0 $modal_radius $modal_radius 0; 
 		border-left-width: 0 !important;
 	}
 

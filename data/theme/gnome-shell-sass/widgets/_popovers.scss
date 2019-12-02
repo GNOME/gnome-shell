@@ -82,6 +82,17 @@
 // Desktop background menu
 .background-menu { -boxpointer-gap: $base_margin; -arrow-rise: 0px; }
 
+
+// Rename popup
+.rename-folder-popup {
+	.rename-folder-popup-item {
+		spacing: 6px;
+		&:ltr, &:rtl { padding: 0, 12px; }
+	}
+}
+
+
+
 /* fallback menu
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled app menu inside the main app window itself rather than the top bar
 */
