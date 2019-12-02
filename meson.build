@@ -132,19 +132,8 @@ else
   have_systemd = false
 endif
 
-if get_option('extensions_tool')
-  autoar_dep = dependency('gnome-autoar-0')
-  json_dep = dependency('json-glib-1.0')
-endif
-
-bash_completion = dependency('bash-completion', required: false)
-
 if get_option('man')
   xsltproc = find_program('xsltproc')
-
-  if get_option('extensions_tool')
-    a2x = find_program('a2x')
-  endif
 
   subdir('man')
 endif
@@ -253,6 +242,16 @@ libgvc = subproject('gvc',
   ]
 )
 libgvc_gir = libgvc.get_variable('libgvc_gir')
+
+if get_option('extensions_tool')
+  subproject('extensions-tool',
+    default_options: [
+      'man=@0@'.format(get_option('man')),
+      'package_name=@0@'.format(meson.project_name()),
+    ]
+  )
+endif
+
 
 po_dir = join_paths(meson.current_source_dir(), 'po')
 

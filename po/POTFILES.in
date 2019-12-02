@@ -72,17 +72,6 @@ js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 js/ui/windowMenu.js
 src/calendar-server/evolution-calendar.desktop.in
-src/extensions-tool/command-create.c
-src/extensions-tool/command-disable.c
-src/extensions-tool/command-enable.c
-src/extensions-tool/command-info.c
-src/extensions-tool/command-install.c
-src/extensions-tool/command-list.c
-src/extensions-tool/command-pack.c
-src/extensions-tool/command-prefs.c
-src/extensions-tool/command-reset.c
-src/extensions-tool/command-uninstall.c
-src/extensions-tool/main.c
 src/main.c
 src/shell-app.c
 src/shell-app-system.c
@@ -90,5 +79,16 @@ src/shell-global.c
 src/shell-keyring-prompt.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
+subprojects/extensions-tool/src/command-create.c
+subprojects/extensions-tool/src/command-disable.c
+subprojects/extensions-tool/src/command-enable.c
+subprojects/extensions-tool/src/command-info.c
+subprojects/extensions-tool/src/command-install.c
+subprojects/extensions-tool/src/command-list.c
+subprojects/extensions-tool/src/command-pack.c
+subprojects/extensions-tool/src/command-prefs.c
+subprojects/extensions-tool/src/command-reset.c
+subprojects/extensions-tool/src/command-uninstall.c
+subprojects/extensions-tool/src/main.c
 # Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
 subprojects/gvc/gvc-mixer-control.c
