@@ -140,11 +140,7 @@ $app_grid_fg_color: #fff;
 }
 
 // Label when no frequent apps
-.no-frequent-applications-label { 
-	font-size: 2em;
-	font-weight: bold;
-	color: $osd_fg_color;
-}
+.no-frequent-applications-label { @extend %status_text; }
 
 // shutdown and other actions in the grid
 .system-action-icon {
@@ -153,7 +149,6 @@ $app_grid_fg_color: #fff;
 	border-radius: 50%;
 	icon-size: calc($app_icon_size * 0.5);
 }
-
 
 /* Frequent | All toggle */
 

@@ -23,11 +23,9 @@
 	spacing: 0;
 }
 
-// "no results"
-.search-statustext { 
-	font-size: 2em;
-	font-weight: bold;
-	color: $osd_fg_color;
+// "no results" text
+.search-statustext {
+	@extend %status_text;
 }
 
 .search-section-separator { 
