@@ -86,12 +86,10 @@
 // Rename popup
 .rename-folder-popup {
 	.rename-folder-popup-item {
-		spacing: 6px;
-		&:ltr, &:rtl { padding: 0, 12px; }
+		spacing: $base_spacing;
+		&:ltr, &:rtl { padding: 0, $base_padding * 2; }
 	}
 }
-
-
 
 /* fallback menu
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled app menu inside the main app window itself rather than the top bar
@@ -107,9 +105,11 @@
 .aggregate-menu {
 	min-width: 21em;
 
+	// lock screen, shutdown, etc. buttons
 	.popup-menu-icon { 
 		padding:0;
 		margin: 0 $base_margin;
+		-st-icon-style: symbolic;
 	}
 
 	.popup-sub-menu .popup-menu-item > :first-child {
@@ -122,28 +122,5 @@
 			padding-right: $base_padding + $base_margin * 2; ;
 			margin-right: $base_icon_size;
 		}
-	}
-
-	// lock screen, shutdown, etc. buttons
-	.system-menu-action {
-		color: $fg_color;
-		border-radius: $base_icon_size * 2; /* wish we could do 50% */
-		padding: $base_padding * 2;
-		border: 1px solid $bubble_borders_color;
-		-st-icon-style: symbolic;
-
-		&:hover, &:focus {
-			background-color: $hover_bg_color;
-			color: $fg_color;
-			border: none;
-			padding: $base_padding * 2 + 1px;
-		}
-
-		&:active { 
-			background-color: $selected_bg_color;
-			color: $selected_fg_color;
-		}
-
-		& > StIcon { icon-size: $base_icon_size; }
 	}
 }
