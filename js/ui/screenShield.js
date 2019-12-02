@@ -303,8 +303,7 @@ var ScreenShield = class {
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
-        if (this._ensureUnlockDialog(true))
-            this._hideLockScreen(false);
+        this._ensureUnlockDialog(true);
     }
 
     _hideLockScreenComplete() {
