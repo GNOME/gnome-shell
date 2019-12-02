@@ -9,13 +9,12 @@ $overview_search_container_width: 1024px;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
 	text-shadow: 0 1px rgba(0,0,0,0.3);
 	color: $osd_fg_color;
-	padding: $base_padding * 2;
+	padding: $base_padding * 3;
 }
 
 // search overview container
 #searchResultsContent {
 	max-width: $overview_search_container_width;
-	padding-bottom: 48px;
 }
 
 // search results section
