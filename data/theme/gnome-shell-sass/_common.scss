@@ -60,7 +60,10 @@ $active_borders_color: darken($borders_color,if($variant=='light', 5%, 3%));
 
 // fonts
 $base_font_size: 11pt;
+<<<<<<< HEAD
 $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
+=======
+>>>>>>> 55efc6d1d... theme: remove font override
 
 // icons
 // $base_icon_size: 1.09em;
