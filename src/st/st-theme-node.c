@@ -810,12 +810,12 @@ typedef struct {
   double font_size;
   double resolution;
   int scale_factor;
-} LengthNormalize;
+} NormalizeParams;
 
-static LengthNormalize
-length_normalize (StThemeNode *node, const PangoFontDescription *desc)
+static NormalizeParams
+normalize (StThemeNode *node, const PangoFontDescription *desc)
 {
-  LengthNormalize norm;
+  NormalizeParams norm;
   double resolution;
   double font_size;
 
@@ -834,16 +834,16 @@ length_normalize (StThemeNode *node, const PangoFontDescription *desc)
   return norm;
 }
 
-static LengthNormalize
-length_normalize_default (StThemeNode *node)
+static NormalizeParams
+normalize_default (StThemeNode *node)
 {
-  return length_normalize (node, st_theme_node_get_font (node));
+  return normalize (node, st_theme_node_get_font (node));
 }
 
 static GetFromTermResult
 get_length_from_term (StThemeNode     *node,
                       CRTerm          *term,
-                      LengthNormalize  norm,
+                      NormalizeParams  norm,
                       gdouble         *length)
 {
   CRNum *num;
@@ -976,7 +976,7 @@ get_length_from_term (StThemeNode     *node,
 static GetFromTermResult
 get_length_from_term_int (StThemeNode     *node,
                           CRTerm          *term,
-                          LengthNormalize  norm,
+                          NormalizeParams  norm,
                           gint            *length)
 {
   double value;
@@ -1032,7 +1032,7 @@ st_theme_node_lookup_length (StThemeNode *node,
         {
           GetFromTermResult result = get_length_from_term (node,
                                                            decl->value,
-                                                           length_normalize_default (node),
+                                                           normalize_default (node),
                                                            length);
           if (result == VALUE_FOUND)
             {
@@ -1092,7 +1092,7 @@ do_border_radius_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, length_normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (topleft)
@@ -1243,7 +1243,7 @@ do_border_property (StThemeNode   *node,
 
           if (term->type == TERM_NUMBER)
             {
-              result = get_length_from_term_int (node, term, length_normalize_default (node), &width);
+              result = get_length_from_term_int (node, term, normalize_default (node), &width);
               if (result != VALUE_NOT_FOUND)
                 {
                   width_set = result == VALUE_FOUND;
@@ -1274,7 +1274,7 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, length_normalize_default (node), &width) == VALUE_FOUND)
+      if (get_length_from_term_int (node, decl->value, normalize_default (node), &width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
@@ -1348,7 +1348,7 @@ do_outline_property (StThemeNode   *node,
 
           if (term->type == TERM_NUMBER)
             {
-              result = get_length_from_term_int (node, term, length_normalize_default (node), &width);
+              result = get_length_from_term_int (node, term, normalize_default (node), &width);
               if (result != VALUE_NOT_FOUND)
                 {
                   width_set = result == VALUE_FOUND;
@@ -1379,7 +1379,7 @@ do_outline_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, length_normalize_default (node), &width) == VALUE_FOUND)
+      if (get_length_from_term_int (node, decl->value, normalize_default (node), &width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
@@ -1400,7 +1400,7 @@ do_padding_property_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, length_normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (left)
@@ -1482,7 +1482,7 @@ do_margin_property_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, length_normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (left)
@@ -1565,7 +1565,7 @@ do_size_property (StThemeNode   *node,
       strcmp (term->content.str->stryng->str, "auto") == 0)
     *node_value = -1;
   else
-    get_length_from_term_int (node, decl->value, length_normalize_default (node), node_value);
+    get_length_from_term_int (node, decl->value, normalize_default (node), node_value);
 }
 
 void
@@ -1779,7 +1779,7 @@ void
 _st_theme_node_ensure_background (StThemeNode *node)
 {
   int i;
-  LengthNormalize norm;
+  NormalizeParams norm;
 
   if (node->background_computed)
     return;
@@ -1793,7 +1793,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
   ensure_properties (node);
 
-  norm = length_normalize_default (node);
+  norm = normalize_default (node);
 
   for (i = 0; i < node->n_properties; i++)
     {
@@ -2521,7 +2521,7 @@ font_size_from_term (StThemeNode *node,
     }
   else if (get_length_from_term (node,
                                  term,
-                                 length_normalize (node, get_parent_font (node)),
+                                 normalize (node, get_parent_font (node)),
                                  size) == VALUE_FOUND)
     {
       /* Convert from pixels to Pango units */
@@ -3095,7 +3095,7 @@ parse_shadow_property (StThemeNode       *node,
           gdouble multiplier;
 
           multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
-          result = get_length_from_term (node, term, length_normalize_default (node), &value);
+          result = get_length_from_term (node, term, normalize_default (node), &value);
 
           if (result == VALUE_INHERIT)
             {
