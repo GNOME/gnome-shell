@@ -48,7 +48,6 @@ $hover_borders_color: lighten($borders_color,if($variant=='light', 5%, 3%));
 
 // fonts
 $base_font_size: 11pt;
-$font_family: Cantarell, Sans-Serif;
 
 // icons
 // $base_icon_size: 1.09em;
@@ -56,7 +55,6 @@ $base_icon_size: 16px;
 
 // Stage
 stage {
-	font-family: $font_family;
 	@include fontsize($base_font_size);
 	color: $fg_color;
 }
