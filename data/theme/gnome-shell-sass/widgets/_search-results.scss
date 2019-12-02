@@ -1,4 +1,6 @@
 /* Search */
+$overview_search_container_width: 1024px;
+
 
 %search_result_bubble {
 	background-color: transparentize(lighten($osd_bg_color, 5%), 0.2);
@@ -11,9 +13,9 @@
 
 // search overview container
 #searchResultsContent {
-	max-width: 1000px;
+	max-width: $overview_search_container_width;
+	width: 60%;
 	padding: $base_padding * 2;
-	spacing: 0;
 	margin-bottom: $base_margin * 2;
 }
 
@@ -105,14 +107,14 @@
 
 	// content
 	.list-search-provider-content {
-		spacing: $base_spacing * 3;
+		spacing: $base_spacing * 2;
 
 		// provider labels
 		.list-search-provider-details {
-			width: 160px;
+			width: 120px;
 			margin-top: 0;
 			color: darken($osd_fg_color, 8%);
-			font-weight: bold;
+			// font-weight: bold;
 		}
 	}
 }
@@ -148,7 +150,7 @@
 			color: $osd_fg_color;
 			spacing: $base_spacing * 2;
 			padding-right: $base_padding;
-			font-weight: bold;
+			// font-weight: bold;
 		}
 
 		// list item description
