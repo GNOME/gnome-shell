@@ -974,30 +974,6 @@ get_length_from_term_int (StThemeNode *node,
   return result;
 }
 
-static GetFromTermResult
-get_length_internal (StThemeNode *node,
-                     const char  *property_name,
-                     gdouble     *length)
-{
-  int i;
-
-  ensure_properties (node);
-
-  for (i = node->n_properties - 1; i >= 0; i--)
-    {
-      CRDeclaration *decl = node->properties[i];
-
-      if (strcmp (cr_declaration_name (decl), property_name) == 0)
-        {
-          GetFromTermResult result = get_length_from_term (node, decl->value, FALSE, length);
-          if (result != VALUE_NOT_FOUND)
-            return result;
-        }
-    }
-
-  return VALUE_NOT_FOUND;
-}
-
 /**
  * st_theme_node_lookup_length:
  * @node: a #StThemeNode
@@ -1028,11 +1004,28 @@ st_theme_node_lookup_length (StThemeNode *node,
                              gboolean     inherit,
                              gdouble     *length)
 {
-  GetFromTermResult result = get_length_internal (node, property_name, length);
-  if (result == VALUE_FOUND)
-    return TRUE;
-  else if (result == VALUE_INHERIT)
-    inherit = TRUE;
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
+        {
+          GetFromTermResult result = get_length_from_term (node, decl->value, FALSE, length);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
+        }
+    }
 
   if (inherit && node->parent_node)
     return st_theme_node_lookup_length (node->parent_node, property_name, inherit, length);
