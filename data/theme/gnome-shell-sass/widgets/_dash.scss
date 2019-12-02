@@ -1,7 +1,7 @@
 /* Dash */
 
 $dash_placeholder_size: 32px;
-$dash_border_radius: $dialog_border_radius * 1.5;
+$dash_border_radius: $modal_radius * 1.5;
 
 #dash {
 	@extend %overview_panel;

@@ -9,7 +9,7 @@ $notification_banner_width: 34em;
 	width: $notification_banner_width;
 	font-size: $base_font_size;
 	margin: $base_margin;
-	border-radius: $dialog_border_radius;
+	border-radius: $modal_radius;
 	border: if($variant == 'light', none, $bubble_borders_color);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.7);
 
