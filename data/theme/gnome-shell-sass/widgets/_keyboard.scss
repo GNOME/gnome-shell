@@ -1,55 +1,69 @@
 /* On-screen Keyboard */
 
-$key_bg: opacify(lighten($osd_bg_color, 9%), 1);
-$default_key_bg: opacify($osd_bg_color, 1);
+$key_size: 1.2em;
+$key_border_radius: $base_border_radius + 3px;
+$key_bg_color: lighten($bg_color, if($variant=='light', 0%, 2%));
+// $default_key_bg_color: darken($key_bg_color, 4%);
+$default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten($osd_bg_color, 2%));
+
+
+%keyboard_key {
+	background-color: $key_bg_color;
+	border-radius: $key_border_radius;
+	border: 1px solid if($variant=='light', darken($borders_color, 9%), darken($borders_color, 5%));
+	box-shadow: inset 0 1px 0 0 $borders_edge;
+	color: $osd_fg_color;
+
+	&:focus { @include button(focus); }
+	&:hover, &:checked { background-color: lighten($key_bg_color, 3%); }
+	&:active { 
+		border: 1px solid darken($borders_color, 20%);
+		background-color: darken($key_bg_color, 2%);
+		&:checked { background-color: red;}
+	}
+}
 
 #keyboard {
-	background-color: transparentize($osd_bg_color, 0.3);
+	background-color: transparentize(if($variant=='light', darken($bg_color, 5%), darken($bg_color, 8%)), 0.1);
+	box-shadow: inset 0 1px 0 0 $borders_edge;
 
 	.page-indicator {
-		padding: 4px;
+		padding: $base_padding;
 
 		.page-indicator-icon {
-				width: 6px;
-				height: 6px
+			width: 6px;
+			height: 6px
 		}
 	}
 }
 
 .key-container {
-	padding: 4px;
-	spacing: 4px;
+	padding: $base_margin;
+	spacing: $base_margin;
 }
 
 .keyboard-key {
-	background-color: $key_bg;
-	border-radius: $base_border_radius;
-	border: 1px solid $osd_outer_borders_color;
-	color: $osd_fg_color;
+	@extend %keyboard_key;
 	font-size: $base_font_size + 5pt;
-	min-height: 1.2em;
-	min-width: 1.2em;
+	min-height: $key_size;
+	min-width: $key_size;
 
-	&:focus { @include button(focus); }
-	&:hover, &:checked { background-color: lighten($key_bg, 3%); }
-	&:active { background-color: darken($key_bg, 2%); }
 	&:grayed { //FIXME
-		background-color: $osd_bg_color;
+		background-color: $bg_color;
 		color: $osd_fg_color;
 		border-color: $osd_borders_color;
 	}
 
 	&.default-key {
-		border-color: $osd_outer_borders_color;
-		background-color: $default_key_bg;
+		background-color: $default_key_bg_color;
 		background-size: 20px;
-		&:hover, &:checked { background-color: lighten($default_key_bg, 3%); }
-		&:active { background-color: darken($default_key_bg, 2%); }
+		&:hover, &:checked { background-color: lighten($default_key_bg_color, 3%); }
+		&:active { background-color: darken($default_key_bg_color, 2%); }
 	}
 
 	// enter key is suggested-action
 	&.enter-key {
-		border-color: lighten($selected_bg_color, 5%);
+		border: 1px solid if($variant=='light', darken($selected_bg_color, 9%), lighten($selected_bg_color, 5%));
 		background-color: $selected_bg_color;
 		color: $selected_fg_color;
 		background-image: url("resource:///org/gnome/shell/theme/key-enter.svg");
@@ -65,16 +79,21 @@ $default_key_bg: opacify($osd_bg_color, 1);
 	&.layout-key {background-image: url("resource:///org/gnome/shell/theme/key-layout.svg");}
 }
 
-//long press on a key popup
+// long press on a key popup
 .keyboard-subkeys {
-	color: white;
-	-arrow-border-radius: 10px;
-	-arrow-background-color: transparentize($osd_bg_color, 0.3);
-	-arrow-border-width: 2px;
-	-arrow-border-color: $osd_outer_borders_color;
+	color: $osd_fg_color;
+	-arrow-border-radius: $modal_radius;
+	-arrow-background-color: $osd_bg_color;
+	-arrow-border-width: 1px;
+	-arrow-border-color: lighten($osd_bg_color, 9%);
 	-arrow-base: 20px;
 	-arrow-rise: 10px;
-	-boxpointer-gap: 5px;
+	-boxpointer-gap: $base_spacing;
+
+	.keyboard-key {
+		@extend %keyboard_key;
+		border-radius:$base_border_radius;
+	}
 }
 
 // emoji
@@ -82,6 +101,7 @@ $default_key_bg: opacify($osd_bg_color, 1);
 	.keyboard-key {
 		background-color: transparent;
 		border: none;
+		color: initial;
 	}
 }
 
