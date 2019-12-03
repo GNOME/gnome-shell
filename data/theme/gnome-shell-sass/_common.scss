@@ -206,11 +206,11 @@ stage {
 	min-height: 22px;
 	padding: calc($base_padding * 0.25) calc($base_padding * 2);
 
-	@include button(normal, $c:$bg_color, $tc:$fg_color);
-	&:focus { @include button(focus, $c:$bg_color, $tc:$fg_color); }
-	&:hover { @include button(hover, $c:$bg_color, $tc:$fg_color); }
+	@include button(normal);
+	&:focus { @include button(focus); }
+	&:hover { @include button(hover); }
 	&:insensitive { @include button(insensitive); }
-	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color); }
+	&:active { @include button(active); }
 }
 
 
@@ -220,17 +220,17 @@ stage {
 	padding: 0;
 	margin: $base_margin;
 
-	@include button(normal, $c:lighten($bg_color, 5%), $tc:$fg_color);
+	@include button(normal, $c:lighten($bg_color, 5%));
 
 	&:focus,
 	&:hover {
 		margin-top: $base_margin - 1px;
 		margin-bottom: $base_margin + 1px;
-		@include button(hover, $c:lighten($bg_color, 5%), $tc:$fg_color);
+		@include button(hover, $c:lighten($bg_color, 5%));
 	}
 
 	&:active { 
-		@include button(active, $c:lighten($bg_color, 5%), $tc:$fg_color);
+		@include button(active, $c:lighten($bg_color, 5%));
 		margin: $base_margin;
 	}
 }
