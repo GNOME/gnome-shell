@@ -30,7 +30,7 @@ docs/reference/*/*.interfaces
 docs/reference/*/*.prerequisites
 docs/reference/*/*.sgml
 docs/reference/*/*.signals
-docs/reference/*/*.stampl/merge_requests
+docs/reference/*/*.stamp
 docs/reference/*/*.txt
 docs/reference/*/*.types
 docs/reference/*/html/
