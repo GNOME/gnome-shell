@@ -428,7 +428,8 @@ shell_blur_effect_set_actor (ClutterActorMeta *meta,
 }
 
 static gboolean
-shell_blur_effect_pre_paint (ClutterEffect *effect)
+shell_blur_effect_pre_paint (ClutterEffect       *effect,
+                             ClutterPaintContext *paint_context)
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
   ClutterActorBox box;
@@ -478,10 +479,6 @@ shell_blur_effect_pre_paint (ClutterEffect *effect)
   vblur = &self->blur[VERTICAL];
   hblur = &self->blur[HORIZONTAL];
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  cogl_push_framebuffer (vblur->framebuffer);
-  G_GNUC_END_IGNORE_DEPRECATIONS;
-
   setup_projection_matrix (vblur->framebuffer, width, height, downscale_factor);
   setup_projection_matrix (hblur->framebuffer, width, height, downscale_factor);
   setup_projection_matrix (self->framebuffer, width, height, downscale_factor);
@@ -507,13 +504,16 @@ shell_blur_effect_pre_paint (ClutterEffect *effect)
                           1.f / downscale_factor,
                           1.f);
 
+  clutter_paint_context_push_framebuffer (paint_context, vblur->framebuffer);
+
   return TRUE;
 }
 
 static void
-paint_texture (ShellBlurEffect *self)
+paint_texture (ShellBlurEffect     *self,
+               ClutterPaintContext *paint_context)
 {
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *framebuffer;
   ClutterActor *actor;
   CoglMatrix modelview;
   BlurData *vblur;
@@ -521,6 +521,7 @@ paint_texture (ShellBlurEffect *self)
   guint8 paint_opacity;
   float resource_scale;
 
+  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
   vblur = &self->blur[VERTICAL];
   hblur = &self->blur[HORIZONTAL];
 
@@ -599,6 +600,7 @@ paint_texture (ShellBlurEffect *self)
 
 static void
 shell_blur_effect_paint (ClutterEffect           *effect,
+                         ClutterPaintContext     *paint_context,
                          ClutterEffectPaintFlags  flags)
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
@@ -607,31 +609,31 @@ shell_blur_effect_paint (ClutterEffect           *effect,
     {
       /* Chain up to the parent paint method which will call the pre and
          post paint functions to update the image */
-      CLUTTER_EFFECT_CLASS (shell_blur_effect_parent_class)->paint (effect, flags);
+      CLUTTER_EFFECT_CLASS (shell_blur_effect_parent_class)->paint (effect,
+                                                                    paint_context,
+                                                                    flags);
     }
   else
     {
       /* If we've already got a cached image and the actor hasn't been redrawn
        * then we can just use the cached image in the FBO.
        */
-      paint_texture (self);
+      paint_texture (self, paint_context);
     }
 }
 
 static void
-shell_blur_effect_post_paint (ClutterEffect *effect)
+shell_blur_effect_post_paint (ClutterEffect       *effect,
+                              ClutterPaintContext *paint_context)
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
 
   cogl_framebuffer_pop_matrix (self->blur[VERTICAL].framebuffer);
-
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  cogl_pop_framebuffer ();
-  G_GNUC_END_IGNORE_DEPRECATIONS;
+  clutter_paint_context_pop_framebuffer (paint_context);
 
   clutter_actor_set_opacity_override (self->actor, self->old_opacity_override);
 
-  paint_texture (self);
+  paint_texture (self, paint_context);
 }
 
 static gboolean
