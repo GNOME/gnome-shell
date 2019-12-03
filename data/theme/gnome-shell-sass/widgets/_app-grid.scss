@@ -108,6 +108,21 @@ $app_grid_fg_color: #fff;
 	margin-bottom: 1px;
 }
 
+// Rename popup for app folders
+.rename-folder-popup {
+	background: red;
+	.rename-folder-popup-item {
+		spacing: $base_spacing;
+		&:ltr, &:rtl { padding: 0, $base_padding * 2; }
+	}
+}
+
+// right-click app menu
+.app-menu,
+.app-well-menu {
+	max-width: 27.25em;
+}
+
 // App Grid pagination indicators
 .page-indicator {
 	padding: 15px 20px;
