@@ -104,8 +104,8 @@
 		height: 32px;
 		width: 32px;
 		border-radius: $base_border_radius;
-		&:hover, &:focus { background-color: $hover_bg_color; }
-		&:active { background-color: transparentize($fg_color, 0.84); }
+		&:hover, &:focus { background-color: lighten($hover_bg_color, 5%); }
+		&:active { background-color: $active_bg_color; }
 	}
 
 

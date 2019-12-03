@@ -39,12 +39,16 @@ $modal_radius:$base_border_radius * 2;
 $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
 // $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
 
-$active_bg_color: if($variant == 'light', darken($bg_color, 14%), darken($bg_color, 9%));
 
 // hover
-$hover_bg_color: lighten($bg_color,if($variant=='light', 5%, 5%));
-$hover_fg_color: lighten($fg_color,if($variant=='light', 5%, 3%));
+$hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color, 5%));
+$hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 5%));
 $hover_borders_color: lighten($borders_color,if($variant=='light', 5%, 3%));
+
+// active
+$active_bg_color: if($variant == 'light', darken($bg_color, 7%), darken($bg_color, 9%));
+$active_fg_color: darken($fg_color,if($variant=='light', 5%, 3%));
+$active_borders_color: darken($borders_color,if($variant=='light', 5%, 3%));
 
 // fonts
 $base_font_size: 11pt;
@@ -201,7 +205,8 @@ stage {
 	border-width: 1px;
 	min-height: 22px;
 	padding: calc($base_padding * 0.25) calc($base_padding * 2);
-	@include button(normal);
+
+	@include button(normal, $c:$bg_color, $tc:$fg_color);
 	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color); }
 	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color); }
 	&:insensitive { @include button(insensitive); }
@@ -211,22 +216,22 @@ stage {
 
 // notification styling
 %notification_bubble {
-	border: 1px solid $bubble_borders_color;
 	border-radius:$base_border_radius + 2px;
-	background-color: lighten($bg_color, 5%);
-	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
 	padding: 0;
+	border: 1px solid;
 	margin: $base_margin;
 
-	&:hover,
-	&:focus {
-		background-color: $hover_bg_color;
-		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+	@include button(normal, $c:lighten($bg_color, 5%), $tc:$fg_color);
+
+	&:focus,
+	&:hover {
 		margin-top: $base_margin - 1px;
 		margin-bottom: $base_margin + 1px;
+		@include button(hover, $c:lighten($hover_bg_color, 5%), $tc:$fg_color);
 	}
+
 	&:active { 
-		background-color: transparentize($fg_color, 0.84);
+		@include button(active, $c:lighten($active_bg_color, 5%), $tc:$fg_color);
 		margin: $base_margin;
 	}
 }
