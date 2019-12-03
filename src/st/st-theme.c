@@ -858,16 +858,6 @@ add_matched_properties (StTheme      *a_this,
             }
           break;
 
-        case AT_MEDIA_RULE_STMT:
-          if (cur_stmt->kind.media_rule
-              && cur_stmt->kind.media_rule->rulesets
-              && cur_stmt->kind.media_rule->rulesets->kind.ruleset
-              && cur_stmt->kind.media_rule->rulesets->kind.ruleset->sel_list)
-            {
-              sel_list = cur_stmt->kind.media_rule->rulesets->kind.ruleset->sel_list;
-            }
-          break;
-
         case AT_IMPORT_RULE_STMT:
           {
             CRAtImportRule *import_rule = cur_stmt->kind.import_rule;
@@ -908,6 +898,7 @@ add_matched_properties (StTheme      *a_this,
               }
           }
           break;
+        case AT_MEDIA_RULE_STMT:
         case AT_RULE_STMT:
         case AT_PAGE_RULE_STMT:
         case AT_CHARSET_RULE_STMT:
