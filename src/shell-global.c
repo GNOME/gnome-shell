@@ -122,6 +122,30 @@ G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
 static guint shell_global_signals [LAST_SIGNAL] = { 0 };
 
 static void
+got_switcheroo_control_gpus_property_cb (GObject      *source_object,
+                                         GAsyncResult *res,
+                                         gpointer      user_data)
+{
+  ShellGlobal *global;
+  GError *error = NULL;
+  GVariant *gpus;
+
+  gpus = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
+                                        res, &error);
+  if (!gpus)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_debug ("Could not get GPUs property from switcheroo-control: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  global = user_data;
+  shell_net_hadess_switcheroo_control_set_gpus (SHELL_NET_HADESS_SWITCHEROO_CONTROL (global->switcheroo_control),
+                                                gpus);
+}
+
+static void
 switcheroo_control_ready_cb (GObject      *source_object,
                              GAsyncResult *res,
                              gpointer      user_data)
@@ -142,6 +166,21 @@ switcheroo_control_ready_cb (GObject      *source_object,
   global = user_data;
   global->switcheroo_control = G_DBUS_PROXY (control);
   g_debug ("Got switcheroo-control proxy successfully");
+
+  g_dbus_connection_call (g_dbus_proxy_get_connection (global->switcheroo_control),
+                          g_dbus_proxy_get_name (global->switcheroo_control),
+                          g_dbus_proxy_get_object_path (global->switcheroo_control),
+                          "org.freedesktop.DBus.Properties",
+                          "Get",
+                          g_variant_new ("(ss)",
+                                         g_dbus_proxy_get_interface_name (global->switcheroo_control),
+                                         "GPUs"),
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          global->switcheroo_cancellable,
+                          got_switcheroo_control_gpus_property_cb,
+                          user_data);
 }
 
 static void
