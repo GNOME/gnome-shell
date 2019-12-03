@@ -52,6 +52,7 @@ $active_borders_color: darken($borders_color,if($variant=='light', 5%, 3%));
 
 // fonts
 $base_font_size: 11pt;
+$text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
 
 // icons
 // $base_icon_size: 1.09em;
@@ -143,7 +144,7 @@ stage {
 	border: 1px solid if($variant=='light', rgba(0,0,0, 0.6), $borders_color);
 
 	// entry
-	StEntry { @extend %bubble_entry; }
+	StEntry { @extend %bubble_entry;}
 
 	// button
 	.button {
@@ -155,12 +156,12 @@ stage {
 			border-color: $bubble_borders_color;
 		}
 
-		&:hover { background-color: $hover_bg_color; }
+		&:hover { background-color: $hover_bg_color;}
 		&:active { 
 			background-color: $selected_bg_color;
 			color: $selected_fg_color;
 		}
-		&:disabled { color: $insensitive_fg_color; }
+		&:disabled { color: $insensitive_fg_color;}
 	}
 }
 
@@ -170,7 +171,7 @@ stage {
 	background-color: darken($bg_color, 2%);
 	border-color: $bubble_borders_color;
 	box-shadow: none;
-	&:focus { border: 2px solid $selected_bg_color; }
+	&:focus { border: 2px solid $selected_bg_color;}
 }
 
 // buttons in dialogs
@@ -181,10 +182,10 @@ stage {
 	border-top: 1px solid $bubble_borders_color;
 	box-shadow:none !important;
 
-	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color); }
-	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color); }
-	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color); }
-	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color); }
+	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color);}
+	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color);}
+	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color);}
+	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color);}
 
 	&:first-child {
 		border-radius: 0px 0px 0px $modal_radius;
@@ -207,10 +208,10 @@ stage {
 	padding: calc($base_padding * 0.25) calc($base_padding * 2);
 
 	@include button(normal);
-	&:focus { @include button(focus); }
-	&:hover { @include button(hover); }
-	&:insensitive { @include button(insensitive); }
-	&:active { @include button(active); }
+	&:focus { @include button(focus);}
+	&:hover { @include button(hover);}
+	&:insensitive { @include button(insensitive);}
+	&:active { @include button(active);}
 }
 
 
@@ -220,17 +221,17 @@ stage {
 	padding: 0;
 	margin: $base_margin;
 
-	@include button(normal, $c:lighten($bg_color, 5%));
+	@include button(normal);
 
 	&:focus,
 	&:hover {
 		margin-top: $base_margin - 1px;
 		margin-bottom: $base_margin + 1px;
-		@include button(hover, $c:lighten($bg_color, 5%));
+		@include button(hover);
 	}
 
-	&:active { 
-		@include button(active, $c:lighten($bg_color, 5%));
+	&:active {
+		@include button(active);
 		margin: $base_margin;
 	}
 }

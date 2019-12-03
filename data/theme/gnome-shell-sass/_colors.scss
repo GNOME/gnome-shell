@@ -24,11 +24,10 @@ $osd_text_color: if($variant == 'light', #000, #fff);
 $osd_bg_color: if($variant == 'light', rgba(255,255,255,0.9), transparentize(darken(desaturate(#3d3846, 100%), 12%),0.04));
 $osd_insensitive_bg_color: transparentize(mix($osd_fg_color, opacify($osd_bg_color, 1), 10%), 0.5);
 $osd_insensitive_fg_color: mix($osd_fg_color, opacify($osd_bg_color, 1), 50%);
-$osd_borders_color:  if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
+$osd_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
 $osd_outer_borders_color: if($variant == 'light', rgba(0,0,0,0.1), rgba(255,255,255,0.1));
 
 $shadow_color: rgba(0,0,0,0.4);
-$text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
 
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);

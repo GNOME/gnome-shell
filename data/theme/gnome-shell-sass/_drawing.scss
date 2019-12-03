@@ -61,7 +61,7 @@
 	//
 	// colored buttons want the border form the base color
 	//
-	@return darken($c,13%);
+	@return if($variant == 'light', darken($c, 18%), darken($c, 8%));
 }
 
 @function draw_text_shadow_color ($tc:$fg_color, $bg:$bg_color) {
@@ -133,7 +133,7 @@
 	// normal button
 	@if $t==normal {
 		color: $tc;
-		background-color: $c;
+		background-color: lighten($c, 3%);
 		border-width: 1px;
 		border-style: solid;
 		border-color: draw_border_color($c);
@@ -155,10 +155,10 @@
 	// hover osd button
 	@else if $t==hover {
 		color: $tc;
-		background-color: lighten($c,3%);
+		background-color: lighten($c,5%);
 		border-width: 1px;
 		border-style: solid;
-		border-color: draw_border_color(lighten($c,3%));
+		border-color: draw_border_color(lighten($c,5%));
 		@include draw_shadows(0 1px 1px 0 rgba(0,0,0,0.1));
 		text-shadow: 0 1px $text_shadow_color;
 		icon-shadow: 0 1px $text_shadow_color;
@@ -167,7 +167,7 @@
 	// active osd button
 	@else if $t==active {
 		color: $tc;
-		background-color: darken($c,8%);
+		background-color: darken($c,3%);
 		border-width: 1px;
 		border-style: solid;
 		border-color: draw_border_color($c);
