@@ -23,17 +23,20 @@
 		margin: $base_margin;
 		border: 1px solid transparent;
 
-		&:hover,
-		&:focus {
-			border-color: $bubble_borders_color;
+		&:focus,
+		&:hover {
 			border-radius:$base_border_radius + 2px;
-			background-color: $hover_bg_color;
-			box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
 			margin-top: $base_margin - 1px;
 			margin-bottom: $base_margin + 1px;
 		}
 
-		&:active { background-color: transparentize($fg_color, 0.84) }
+		&:hover { @include button(hover);}
+		&:focus { @include button(focus);}
+
+		&:active { 
+			@include button(active);
+			margin: $base_margin;
+		}
 
 		// weekday label
 		.day-label {
