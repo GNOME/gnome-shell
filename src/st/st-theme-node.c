@@ -806,12 +806,6 @@ get_parent_font (StThemeNode *node)
     return st_theme_context_get_font (node->context);
 }
 
-typedef struct {
-  double font_size;
-  double resolution;
-  int scale_factor;
-} NormalizeParams;
-
 static NormalizeParams
 normalize (StThemeNode *node, const PangoFontDescription *desc)
 {
@@ -841,148 +835,14 @@ normalize_default (StThemeNode *node)
 }
 
 static GetFromTermResult
-get_length_from_term (StThemeNode     *node,
-                      CRTerm          *term,
-                      NormalizeParams  norm,
-                      gdouble         *length)
-{
-  CRNum *num;
-
-  enum {
-    ABSOLUTE,
-    POINTS,
-    FONT_RELATIVE,
-  } type = ABSOLUTE;
-
-  double multiplier = 1.0;
-
-  if (term->type != TERM_NUMBER)
-    {
-      g_warning ("Ignoring length property that isn't a number at line %d, col %d",
-                 term->location.line, term->location.column);
-      return VALUE_NOT_FOUND;
-    }
-
-  num = term->content.num;
-
-  switch (num->type)
-    {
-    case NUM_LENGTH_PX:
-      type = ABSOLUTE;
-      multiplier = 1 * norm.scale_factor;
-      break;
-    case NUM_LENGTH_PT:
-      type = POINTS;
-      multiplier = 1;
-      break;
-    case NUM_LENGTH_IN:
-      type = POINTS;
-      multiplier = 72;
-      break;
-    case NUM_LENGTH_CM:
-      type = POINTS;
-      multiplier = 72. / 2.54;
-      break;
-    case NUM_LENGTH_MM:
-      type = POINTS;
-      multiplier = 72. / 25.4;
-      break;
-    case NUM_LENGTH_PC:
-      type = POINTS;
-      multiplier = 12. / 25.4;
-      break;
-    case NUM_LENGTH_EM:
-      {
-        type = FONT_RELATIVE;
-        multiplier = 1;
-        break;
-      }
-    case NUM_LENGTH_EX:
-      {
-        /* Doing better would require actually resolving the font description
-         * to a specific font, and Pango doesn't have an ex metric anyways,
-         * so we'd have to try and synthesize it by complicated means.
-         *
-         * The 0.5em is the CSS spec suggested thing to use when nothing
-         * better is available.
-         */
-        type = FONT_RELATIVE;
-        multiplier = 0.5;
-        break;
-      }
-
-    case NUM_INHERIT:
-      return VALUE_INHERIT;
-
-    case NUM_AUTO:
-      g_warning ("'auto' not supported for lengths");
-      return VALUE_NOT_FOUND;
-
-    case NUM_GENERIC:
-      {
-        if (num->val != 0)
-          {
-            g_warning ("length values must specify a unit");
-            return VALUE_NOT_FOUND;
-          }
-        else
-          {
-            type = ABSOLUTE;
-            multiplier = 0;
-          }
-        break;
-      }
-
-    case NUM_PERCENTAGE:
-      g_warning ("percentage lengths not currently supported");
-      return VALUE_NOT_FOUND;
-
-    case NUM_ANGLE_DEG:
-    case NUM_ANGLE_RAD:
-    case NUM_ANGLE_GRAD:
-    case NUM_TIME_MS:
-    case NUM_TIME_S:
-    case NUM_FREQ_HZ:
-    case NUM_FREQ_KHZ:
-    case NUM_UNKNOWN_TYPE:
-    case NB_NUM_TYPE:
-    default:
-      g_warning ("Ignoring invalid type of number of length property");
-      return VALUE_NOT_FOUND;
-    }
-
-  switch (type)
-    {
-    case ABSOLUTE:
-      *length = num->val * multiplier;
-      break;
-    case POINTS:
-      {
-        *length = num->val * multiplier * (norm.resolution / 72.);
-      }
-      break;
-    case FONT_RELATIVE:
-      {
-        *length = num->val * multiplier * norm.font_size;
-      }
-      break;
-    default:
-      g_assert_not_reached ();
-    }
-
-  return VALUE_FOUND;
-}
-
-static GetFromTermResult
-get_length_from_term_int (StThemeNode     *node,
-                          CRTerm          *term,
+get_length_from_term_int (CRTerm          *term,
                           NormalizeParams  norm,
                           gint            *length)
 {
   double value;
   GetFromTermResult result;
 
-  result = get_length_from_term (node, term, norm, &value);
+  result = stylish_get_length_from_term (term, norm, &value);
   if (result == VALUE_FOUND)
     {
       *length = (int) ((value / norm.scale_factor) + 0.5) * norm.scale_factor;
@@ -1030,10 +890,9 @@ st_theme_node_lookup_length (StThemeNode *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = get_length_from_term (node,
-                                                           decl->value,
-                                                           normalize_default (node),
-                                                           length);
+          GetFromTermResult result = stylish_get_length_from_term (decl->value,
+                                                                   normalize_default (node),
+                                                                   length);
           if (result == VALUE_FOUND)
             {
               return TRUE;
@@ -1092,7 +951,7 @@ do_border_radius_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (topleft)
@@ -1243,7 +1102,7 @@ do_border_property (StThemeNode   *node,
 
           if (term->type == TERM_NUMBER)
             {
-              result = get_length_from_term_int (node, term, normalize_default (node), &width);
+              result = get_length_from_term_int (term, normalize_default (node), &width);
               if (result != VALUE_NOT_FOUND)
                 {
                   width_set = result == VALUE_FOUND;
@@ -1274,7 +1133,7 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, normalize_default (node), &width) == VALUE_FOUND)
+      if (get_length_from_term_int (decl->value, normalize_default (node), &width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
@@ -1348,7 +1207,7 @@ do_outline_property (StThemeNode   *node,
 
           if (term->type == TERM_NUMBER)
             {
-              result = get_length_from_term_int (node, term, normalize_default (node), &width);
+              result = get_length_from_term_int (term, normalize_default (node), &width);
               if (result != VALUE_NOT_FOUND)
                 {
                   width_set = result == VALUE_FOUND;
@@ -1379,7 +1238,7 @@ do_outline_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, normalize_default (node), &width) == VALUE_FOUND)
+      if (get_length_from_term_int (decl->value, normalize_default (node), &width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
@@ -1400,7 +1259,7 @@ do_padding_property_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (left)
@@ -1482,7 +1341,7 @@ do_margin_property_term (StThemeNode *node,
 {
   int value;
 
-  if (get_length_from_term_int (node, term, normalize_default (node), &value) != VALUE_FOUND)
+  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
   if (left)
@@ -1565,7 +1424,7 @@ do_size_property (StThemeNode   *node,
       strcmp (term->content.str->stryng->str, "auto") == 0)
     *node_value = -1;
   else
-    get_length_from_term_int (node, decl->value, normalize_default (node), node_value);
+    get_length_from_term_int (decl->value, normalize_default (node), node_value);
 }
 
 void
@@ -1859,7 +1718,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
         }
       else if (strcmp (property_name, "-position") == 0)
         {
-          GetFromTermResult result = get_length_from_term_int (node, decl->value, norm, &node->background_position_x);
+          GetFromTermResult result = get_length_from_term_int (decl->value, norm, &node->background_position_x);
           if (result == VALUE_NOT_FOUND)
             {
               node->background_position_set = FALSE;
@@ -1868,7 +1727,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           else
             node->background_position_set = TRUE;
 
-          result = get_length_from_term_int (node, decl->value->next, norm, &node->background_position_y);
+          result = get_length_from_term_int (decl->value->next, norm, &node->background_position_y);
 
           if (result == VALUE_NOT_FOUND)
             {
@@ -1896,7 +1755,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
                 node->background_size = ST_BACKGROUND_SIZE_COVER;
               else if ((strcmp (decl->value->content.str->stryng->str, "auto") == 0) && (decl->value->next) && (decl->value->next->type == TERM_NUMBER))
                 {
-                  GetFromTermResult result = get_length_from_term_int (node, decl->value->next, norm, &node->background_size_h);
+                  GetFromTermResult result = get_length_from_term_int (decl->value->next, norm, &node->background_size_h);
 
                   node->background_size_w = -1;
                   node->background_size = (result == VALUE_FOUND) ? ST_BACKGROUND_SIZE_FIXED : ST_BACKGROUND_SIZE_AUTO;
@@ -1906,7 +1765,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else if (decl->value->type == TERM_NUMBER)
             {
-              GetFromTermResult result = get_length_from_term_int (node, decl->value, norm, &node->background_size_w);
+              GetFromTermResult result = get_length_from_term_int (decl->value, norm, &node->background_size_w);
               if (result == VALUE_NOT_FOUND)
                 continue;
 
@@ -1914,7 +1773,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
               if ((decl->value->next) && (decl->value->next->type == TERM_NUMBER))
                 {
-                  result = get_length_from_term_int (node, decl->value->next, norm, &node->background_size_h);
+                  result = get_length_from_term_int (decl->value->next, norm, &node->background_size_h);
 
                   if (result == VALUE_FOUND)
                     continue;
@@ -2519,10 +2378,9 @@ font_size_from_term (StThemeNode *node,
       *size *= term->content.num->val / 100.;
       return TRUE;
     }
-  else if (get_length_from_term (node,
-                                 term,
-                                 normalize (node, get_parent_font (node)),
-                                 size) == VALUE_FOUND)
+  else if (stylish_get_length_from_term (term,
+                                         normalize (node, get_parent_font (node)),
+                                         size) == VALUE_FOUND)
     {
       /* Convert from pixels to Pango units */
       *size *= 1024;
@@ -3095,7 +2953,7 @@ parse_shadow_property (StThemeNode       *node,
           gdouble multiplier;
 
           multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
-          result = get_length_from_term (node, term, normalize_default (node), &value);
+          result = stylish_get_length_from_term (term, normalize_default (node), &value);
 
           if (result == VALUE_INHERIT)
             {
