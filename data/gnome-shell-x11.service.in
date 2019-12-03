@@ -29,5 +29,7 @@ SuccessExitStatus=1
 Restart=always
 # Do not wait before restarting the shell
 RestartSec=0ms
+# Do not die if OOM killer reaps an application
+OOMPolicy=continue
 # Kill any stubborn child processes after this long
 TimeoutStopSec=5
