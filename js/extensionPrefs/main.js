@@ -8,7 +8,6 @@ const Format = imports.format;
 
 const _ = Gettext.gettext;
 
-const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -691,9 +690,6 @@ function initEnvironment() {
 
 function main(argv) {
     initEnvironment();
-
-    Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-    Gettext.textdomain(Config.GETTEXT_PACKAGE);
 
     new Application().run(argv);
 }
