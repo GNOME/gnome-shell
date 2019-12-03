@@ -40,3 +40,7 @@ if get_option('man')
 
   subdir('man')
 endif
+
+if not meson.is_subproject()
+  subdir('po')
+endif
