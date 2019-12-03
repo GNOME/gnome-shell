@@ -26,7 +26,7 @@
 	.modal-dialog-button-box { spacing: 3px; }
 	.modal-dialog-button {
 		padding: 4px 18px;
-		box-shadow: 0 1px 3px transparentize($shadow_color, 0.02);
+		box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 		background-color: $_gdm_bg;
 		border-color: $_gdm_bg;
 		color: $fg_color;
