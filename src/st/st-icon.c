@@ -163,12 +163,13 @@ st_icon_dispose (GObject *gobject)
 }
 
 static void
-st_icon_paint (ClutterActor *actor)
+st_icon_paint (ClutterActor        *actor,
+               ClutterPaintContext *paint_context)
 {
   StIcon *icon = ST_ICON (actor);
   StIconPrivate *priv = icon->priv;
 
-  st_widget_paint_background (ST_WIDGET (actor));
+  st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
   if (priv->icon_texture)
     {
@@ -177,16 +178,18 @@ st_icon_paint (ClutterActor *actor)
       if (priv->shadow_pipeline)
         {
           ClutterActorBox allocation;
+          CoglFramebuffer *framebuffer;
 
           clutter_actor_get_allocation_box (priv->icon_texture, &allocation);
+          framebuffer = clutter_paint_context_get_framebuffer (paint_context);
           _st_paint_shadow_with_opacity (priv->shadow_spec,
-                                         cogl_get_draw_framebuffer (),
+                                         framebuffer,
                                          priv->shadow_pipeline,
                                          &allocation,
                                          clutter_actor_get_paint_opacity (priv->icon_texture));
         }
 
-      clutter_actor_paint (priv->icon_texture);
+      clutter_actor_paint (priv->icon_texture, paint_context);
     }
 }
 

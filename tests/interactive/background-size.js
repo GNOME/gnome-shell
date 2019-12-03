@@ -2,11 +2,13 @@
 
 const UI = imports.testcommon.ui;
 
-const { Cogl, Clutter, St } = imports.gi;
+const { Cogl, Clutter, Meta, St } = imports.gi;
 
 
 function test() {
-    let stage = new Clutter.Stage({ user_resizable: true, width: 1024, height: 768 });
+    Meta.init();
+
+    let stage = Meta.get_backend().get_stage();
     UI.init(stage);
 
     let vbox = new St.BoxLayout({ style: 'background: #ffee88;' });
@@ -33,20 +35,32 @@ function test() {
         if (useCairo)
             obin.style = 'border: 3px solid green;';
         else
-            obin.connect_after('paint', actor => {
-                Cogl.set_source_color4f(0, 1, 0, 1);
+            obin.connect_after('paint', (actor, paintContext) => {
+                let framebuffer = paintContext.get_framebuffer();
+                let coglContext = framebuffer.get_context();
+
+                let pipeline = new Cogl.Pipeline(coglContext);
+                pipeline.set_color4f(0, 1, 0, 1);
 
                 let alloc = actor.get_allocation_box();
                 let width = 3;
 
                 // clockwise order
-                Cogl.rectangle(0, 0, alloc.get_width(), width);
-                Cogl.rectangle(alloc.get_width() - width, width,
-                               alloc.get_width(), alloc.get_height());
-                Cogl.rectangle(0, alloc.get_height(),
-                               alloc.get_width() - width, alloc.get_height() - width);
-                Cogl.rectangle(0, alloc.get_height() - width,
-                               width, width);
+                framebuffer.draw_rectangle(pipeline,
+                                           0, 0, alloc.get_width(), width);
+                framebuffer.draw_rectangle(pipeline,
+                                           alloc.get_width() - width, width,
+                                           alloc.get_width(), alloc.get_height());
+                framebuffer.draw_rectangle(pipeline,
+                                           0,
+                                           alloc.get_height(),
+                                           alloc.get_width() - width,
+                                           alloc.get_height() - width);
+                framebuffer.draw_rectangle(pipeline,
+                                           0,
+                                           alloc.get_height() - width,
+                                           width,
+                                           width);
             });
         tbox.add(obin);
 

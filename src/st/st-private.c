@@ -432,6 +432,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   CoglPipeline *shadow_pipeline = NULL;
   float resource_scale;
   float width, height;
+  ClutterPaintContext *paint_context;
 
   g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
 
@@ -489,24 +490,18 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 0);
       clutter_actor_get_position (actor, &x, &y);
 
-      /* XXX: There's no way to render a ClutterActor to an offscreen
-       * as it uses the implicit API. */
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-      cogl_push_framebuffer (fb);
-      G_GNUC_END_IGNORE_DEPRECATIONS;
-
       cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR, &clear_color);
       cogl_framebuffer_translate (fb, -x, -y, 0);
       cogl_framebuffer_orthographic (fb, 0, 0, width, height, 0, 1.0);
       cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
 
       clutter_actor_set_opacity_override (actor, 255);
-      clutter_actor_paint (actor);
-      clutter_actor_set_opacity_override (actor, -1);
 
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-      cogl_pop_framebuffer ();
-      G_GNUC_END_IGNORE_DEPRECATIONS;
+      paint_context = clutter_paint_context_new_for_framebuffer (fb);
+      clutter_actor_paint (actor, paint_context);
+      clutter_paint_context_destroy (paint_context);
+
+      clutter_actor_set_opacity_override (actor, -1);
 
       cogl_object_unref (fb);
 

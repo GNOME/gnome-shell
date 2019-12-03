@@ -387,7 +387,8 @@ get_border_paint_offsets (StBoxLayout *self,
 
 
 static void
-st_box_layout_paint (ClutterActor *actor)
+st_box_layout_paint (ClutterActor        *actor,
+                     ClutterPaintContext *paint_context)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
   StBoxLayoutPrivate *priv = self->priv;
@@ -396,7 +397,7 @@ st_box_layout_paint (ClutterActor *actor)
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *fb = clutter_paint_context_get_framebuffer (paint_context);
 
   get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)
@@ -405,7 +406,7 @@ st_box_layout_paint (ClutterActor *actor)
       cogl_framebuffer_translate (fb, (int)x, (int)y, 0);
     }
 
-  st_widget_paint_background (ST_WIDGET (actor));
+  st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
   if (x != 0 || y != 0)
     {
@@ -436,14 +437,15 @@ st_box_layout_paint (ClutterActor *actor)
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
-    clutter_actor_paint (child);
+    clutter_actor_paint (child, paint_context);
 
   if (priv->hadjustment || priv->vadjustment)
     cogl_framebuffer_pop_clip (fb);
 }
 
 static void
-st_box_layout_pick (ClutterActor *actor)
+st_box_layout_pick (ClutterActor       *actor,
+                    ClutterPickContext *pick_context)
 {
   StBoxLayout *self = ST_BOX_LAYOUT (actor);
   StBoxLayoutPrivate *priv = self->priv;
@@ -452,7 +454,7 @@ st_box_layout_pick (ClutterActor *actor)
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
+  CoglFramebuffer *fb = clutter_pick_context_get_framebuffer (pick_context);
 
   get_border_paint_offsets (self, &x, &y);
   if (x != 0 || y != 0)
@@ -461,7 +463,7 @@ st_box_layout_pick (ClutterActor *actor)
       cogl_framebuffer_translate (fb, (int)x, (int)y, 0);
     }
 
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor);
+  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor, pick_context);
 
   if (x != 0 || y != 0)
     {
@@ -489,7 +491,7 @@ st_box_layout_pick (ClutterActor *actor)
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
-    clutter_actor_pick (child);
+    clutter_actor_pick (child, pick_context);
 
   if (priv->hadjustment || priv->vadjustment)
     cogl_framebuffer_pop_clip (fb);

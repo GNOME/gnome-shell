@@ -26,7 +26,8 @@ struct _ShellGLSLEffectPrivate
 G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
 static gboolean
-shell_glsl_effect_pre_paint (ClutterEffect *effect)
+shell_glsl_effect_pre_paint (ClutterEffect       *effect,
+                             ClutterPaintContext *paint_context)
 {
   ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
   ClutterOffscreenEffect *offscreen_effect = CLUTTER_OFFSCREEN_EFFECT (effect);
@@ -51,7 +52,7 @@ shell_glsl_effect_pre_paint (ClutterEffect *effect)
     }
 
   parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
-  success = parent_class->pre_paint (effect);
+  success = parent_class->pre_paint (effect, paint_context);
 
   if (!success)
     return FALSE;
@@ -66,12 +67,14 @@ shell_glsl_effect_pre_paint (ClutterEffect *effect)
 }
 
 static void
-shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect)
+shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
+                                ClutterPaintContext    *paint_context)
 {
   ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
   ShellGLSLEffectPrivate *priv;
   ClutterActor *actor;
   guint8 paint_opacity;
+  CoglFramebuffer *framebuffer;
 
   priv = shell_glsl_effect_get_instance_private (self);
 
@@ -83,7 +86,9 @@ shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect)
                               paint_opacity,
                               paint_opacity,
                               paint_opacity);
-  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
+
+  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
+  cogl_framebuffer_draw_rectangle (framebuffer,
                                    priv->pipeline,
                                    0, 0,
                                    priv->tex_width, priv->tex_height);
