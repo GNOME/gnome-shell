@@ -2,7 +2,7 @@
 
 // generic drawing of more complex things
 
-@function _widget_edge($c:$borders_edge) {
+@function draw_widget_edge($c:$borders_edge) {
 // outer highlight "used" on most widgets
 	@return 0 1px $c;
 }
@@ -13,7 +13,7 @@
 	//font-size: ($size / $base) * 1rem;
 }
 
-@mixin _shadows($shadow1, $shadow2:none, $shadow3:none, $shadow4:none) {
+@mixin draw_shadows($shadow1, $shadow2:none, $shadow3:none, $shadow4:none) {
 //
 // Helper function to stack up to 4 box-shadows;
 //
@@ -31,8 +31,7 @@
 //
 // $t: entry type
 // $fc: focus color
-// $edge: set to none to not draw the bottom edge or specify a color to not
-//        use the default one
+// $edge: set to none to not draw the bottom edge or specify a color to not use the default one
 //
 // possible $t values:
 // normal, focus, insensitive
@@ -45,8 +44,8 @@
 	}
 	@if $t==focus {
 		border-color: if($fc==$selected_bg_color,
-										 $selected_borders_color,
-										 darken($fc,35%));
+							$selected_borders_color,
+							darken($fc,35%));
 	}
 	@if $t==hover { }
 	@if $t==insensitive {
@@ -58,23 +57,26 @@
 
 // buttons
 
-@function _border_color ($c) { @return darken($c,25%); } // colored buttons want
-																												 // the border form the
-																												 // base color
+@function draw_border_color ($c) {
+	//
+	// colored buttons want the border form the base color
+	//
+	@return darken($c,16%);
+}
 
-@function _text_shadow_color ($tc:$fg_color, $bg:$bg_color) {
+@function draw_text_shadow_color ($tc:$fg_color, $bg:$bg_color) {
 //
 // calculate the color of text shadows
 //
 // $tc is the text color
 // $bg is the background color
 //
-	$_lbg: lightness($bg)/100%;
-	@if lightness($tc)<50% { @return rgba(255,255,255,1-$_lbg/($_lbg*1.3)); }
-	@else { @return rgba(0,0,0,$_lbg*0.8); }
+	$lbg: lightness($bg)/100%;
+	@if lightness($tc)<50% { @return rgba(255,255,255,1-$lbg/($lbg*1.3)); }
+	@else { @return rgba(0,0,0,$lbg*0.8); }
 }
 
-@function _button_hilight_color($c) {
+@function draw_button_hilight_color($c) {
 //
 // calculate the right top hilight color for buttons
 //
@@ -87,7 +89,7 @@
 	@else { @return rgba(255,255,255, 0.9); }
 }
 
-@mixin _button_text_shadow ($tc:$fg_color, $bg:$bg_color) {
+@mixin draw_button_text_shadow ($tc:$fg_color, $bg:$bg_color) {
 //
 // helper function for the text emboss effect
 //
@@ -96,15 +98,15 @@
 // TODO: this functions needs a way to deal with special cases
 //
 
-	$_shadow: _text_shadow_color($tc, $bg);
+	$shadow: draw_text_shadow_color($tc, $bg);
 
 	@if lightness($tc)<50% {
-		text-shadow: 0 1px $_shadow;
-		icon-shadow: 0 1px $_shadow;
+		text-shadow: 0 1px $shadow;
+		icon-shadow: 0 1px $shadow;
 	}
 	@else {
-		text-shadow: 0 -1px $_shadow;
-		icon-shadow: 0 -1px $_shadow;
+		text-shadow: 0 -1px $shadow;
+		icon-shadow: 0 -1px $shadow;
 	}
 }
 
@@ -124,45 +126,45 @@
 // osd, osd-hover, osd-active, osd-insensitive, osd-backdrop, undecorated
 //
 
-	$_hilight_color: _button_hilight_color($c);
-	$_button_edge: if($edge == none, none, _widget_edge($edge));
-	$_blank_edge: if($edge == none, none, _widget_edge(transparentize($edge,1)));
-	$_button_shadow: 0 1px 2px transparentize($shadow_color, 0.03);
+	$hilight_color: draw_button_hilight_color($c);
+	$button_edge: if($edge == none, none, draw_widget_edge($edge));
+	$blank_edge: if($edge == none, none, draw_widget_edge(transparentize($edge,1)));
 
 	// normal button
 	@if $t==normal {
 		color: $tc;
 		background-color: $c;
-		border-color: $borders_color;
-		box-shadow: $_button_shadow;
-		text-shadow: 0 1px black;
-		icon-shadow: 0 1px black;
+		border-color: draw_border_color($c);
+		@include draw_shadows(0 1px 1px 0 rgba(0,0,0,0.1));
+		// box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+		text-shadow: 0 1px rgba(0,0,0,0.4);
+		icon-shadow: 0 1px rgba(0,0,0,0.4);
 	}
 
 	// focused button
 	@if $t==focus {
 		color: $tc;
-		text-shadow: 0 1px black;
-		icon-shadow: 0 1px black;
-		box-shadow: inset 0 0 0 2px $selected_bg_color;
+		text-shadow: 0 1px rgba(0,0,0,0.4);
+		icon-shadow: 0 1px rgba(0,0,0,0.4);
+		box-shadow: inset 0 0 0 2px transparentize($selected_bg_color, 0.7);
 		//border-color: $selected_bg_color;
 	}
 
-	// active osd button
+	// hover osd button
 	@else if $t==hover {
 		color: $tc;
-		border-color: $borders_color;
-		background-color: $c;
-		box-shadow: $_button_shadow;
-		text-shadow: 0 1px black;
-		icon-shadow: 0 1px black;
+		background-color: lighten($c,3%);
+		border-color: draw_border_color(lighten($c,5%));
+		@include draw_shadows(0 1px 1px 0 rgba(0,0,0,0.1));
+		text-shadow: 0 1px rgba(0,0,0,0.4);
+		icon-shadow: 0 1px rgba(0,0,0,0.4);
 	}
 
 	// active osd button
 	@else if $t==active {
 		color: $tc;
-		border-color: $borders_color;
-		background-color: $c;
+		background-color: darken($c,5%);
+		border-color: draw_border_color(darken($c,4%));
 		text-shadow: none;
 		icon-shadow: none;
 		box-shadow: none;
@@ -183,7 +185,7 @@
 		border-color: transparent;
 		background-color: transparent;
 		background-image: none;
-		@include _shadows(inset 0 1px rgba(255,255,255,1),$_blank_edge);
+		@include draw_shadows(inset 0 1px rgba(255,255,255,1),$blank_edge);
 		text-shadow: none;
 		icon-shadow: none;
 	}

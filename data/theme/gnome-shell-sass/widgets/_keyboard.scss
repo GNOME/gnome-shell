@@ -7,25 +7,19 @@ $key_bg_color: lighten($bg_color, if($variant=='light', 0%, 2%));
 $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten($osd_bg_color, 2%));
 
 
+// draw keys using button function
 %keyboard_key {
-	background-color: $key_bg_color;
-	border-radius: $key_border_radius;
-	border: 1px solid if($variant=='light', darken($borders_color, 9%), darken($borders_color, 5%));
-	box-shadow: inset 0 1px 0 0 $borders_edge;
-	color: $osd_fg_color;
 
-	&:focus { @include button(focus); }
-	&:hover, &:checked { background-color: lighten($key_bg_color, 3%); }
-	&:active { 
-		border: 1px solid darken($borders_color, 20%);
-		background-color: darken($key_bg_color, 2%);
-		&:checked { background-color: red;}
-	}
+	@include button(normal, $c:$key_bg_color, $tc:$osd_fg_color);
+
+	&:focus { @include button(focus);}
+	&:hover, &:checked { @include button(hover, $c: $key_bg_color);}
+	&:active { @include button(active, $c: $key_bg_color); }
 }
 
 #keyboard {
 	background-color: transparentize(if($variant=='light', darken($bg_color, 5%), darken($bg_color, 8%)), 0.1);
-	box-shadow: inset 0 1px 0 0 $borders_edge;
+	box-shadow: inset 0 1px 0 0 $osd_outer_borders_color !important;
 
 	.page-indicator {
 		padding: $base_padding;
@@ -37,16 +31,21 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
 	}
 }
 
+// the container for individual keys
 .key-container {
+	background-color: transparent;
 	padding: $base_margin;
 	spacing: $base_margin;
 }
 
+// the keys
 .keyboard-key {
 	@extend %keyboard_key;
 	font-size: $base_font_size + 5pt;
 	min-height: $key_size;
 	min-width: $key_size;
+
+	border-radius: $key_border_radius;
 
 	&:grayed { //FIXME
 		background-color: $bg_color;
@@ -54,21 +53,26 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
 		border-color: $osd_borders_color;
 	}
 
+	// non-character keys
 	&.default-key {
-		background-color: $default_key_bg_color;
-		background-size: 20px;
-		&:hover, &:checked { background-color: lighten($default_key_bg_color, 3%); }
-		&:active { background-color: darken($default_key_bg_color, 2%); }
+
+		// size of the icon asset
+		background-size: 24px;
+
+		@include button(normal, $c:$default_key_bg_color);
+		&:hover, &:checked {@include button(hover, $c: $default_key_bg_color);}
+		&:active { @include button(active, $c: $default_key_bg_color);}
+		box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1) !important; // drawing override because of a visual bug
 	}
 
 	// enter key is suggested-action
 	&.enter-key {
-		border: 1px solid if($variant=='light', darken($selected_bg_color, 9%), lighten($selected_bg_color, 5%));
-		background-color: $selected_bg_color;
-		color: $selected_fg_color;
 		background-image: url("resource:///org/gnome/shell/theme/key-enter.svg");
-		&:hover, &:checked { background-color: lighten($selected_bg_color, 3%); }
-		&:active { background-color: darken($selected_bg_color, 2%); }
+
+		@include button(normal, $c:$selected_bg_color, $tc:$selected_fg_color);
+		&:hover, &:checked { @include button(hover, $c: lighten($selected_bg_color, 3%));}
+		&:active {@include button(active, $c: darken($selected_bg_color, 2%));}
+		box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1) !important; // drawing override because of a visual bug
 	}
 
 	// key assets
