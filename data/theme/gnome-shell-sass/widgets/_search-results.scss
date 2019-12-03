@@ -7,7 +7,7 @@ $overview_search_container_width: 1024px;
 	border-radius: $modal_radius + 3px;
 	border: 1px solid $osd_outer_borders_color;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
-	text-shadow: 0 1px rgba(0,0,0,0.3);
+	text-shadow: 0 1px if($variant == 'light', rgba(255,255,255,0.2), rgba(0,0,0,0.2));
 	color: $osd_fg_color;
 	padding: $base_padding * 3;
 }
@@ -17,12 +17,12 @@ $overview_search_container_width: 1024px;
 	max-width: $overview_search_container_width;
 }
 
-// search results section
+// search results sections "the boxes"
 .search-section {
 	@extend %search_result_bubble;
 	spacing:0;
-	margin-top: $base_padding * 2;
-	margin-bottom: $base_padding * 2;
+	margin-top: $base_padding;
+	margin-bottom: $base_padding;
 
 	// hide separator
 	&:first-child .search-section-separator,

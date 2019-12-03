@@ -8,7 +8,7 @@ $fg_color: if($variant == 'light', #2e3436, #eeeeec);
 $selected_fg_color: #fff;
 $selected_bg_color: if($variant == 'light', #3584e4, darken(#3584e4, 10%));
 $selected_borders_color: if($variant== 'light', darken($selected_bg_color, 15%), darken($selected_bg_color, 30%));
-$borders_color: if($variant == 'light', darken($bg_color, 18%), darken($bg_color, 10%));
+$borders_color: if($variant == 'light', darken($bg_color, 18%), darken($bg_color, 8%));
 $borders_edge: if($variant == 'light', rgba(255,255,255,0.2), transparentize($fg_color, 0.93));
 $link_color: if($variant == 'light', darken($selected_bg_color, 10%), lighten($selected_bg_color, 20%));
 $link_visited_color: if($variant == 'light', darken($selected_bg_color, 20%), lighten($selected_bg_color, 10%));
@@ -28,7 +28,6 @@ $osd_borders_color:  if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0
 $osd_outer_borders_color: if($variant == 'light', rgba(0,0,0,0.1), rgba(255,255,255,0.1));
 
 $shadow_color: rgba(0,0,0,0.4);
-$text_shadow_color: if($variant == 'light', rgba(255,255,255,0.2), rgba(0,0,0,0.2));
 
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);
