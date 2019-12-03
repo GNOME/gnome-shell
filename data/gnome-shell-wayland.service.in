@@ -23,5 +23,7 @@ ExecStart=@bindir@/gnome-shell
 SuccessExitStatus=1
 # On wayland we cannot restart
 Restart=no
+# Do not die if OOM killer reaps an application
+OOMPolicy=continue
 # Kill any stubborn child processes after this long
 TimeoutStopSec=5
