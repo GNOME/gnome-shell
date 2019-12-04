@@ -324,8 +324,8 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
-var AllView = GObject.registerClass({
-}, class AllView extends BaseAppView {
+var AppDisplay = GObject.registerClass(
+class AppDisplay extends BaseAppView {
     _init() {
         super._init({
             layout_manager: new Clutter.BinLayout(),
@@ -438,6 +438,29 @@ var AllView = GObject.registerClass({
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+
+        this._switcherooNotifyId = global.connect('notify::switcheroo-control',
+            () => this._updateDiscreteGpuAvailable());
+        this._updateDiscreteGpuAvailable();
+    }
+
+    _updateDiscreteGpuAvailable() {
+        this._switcherooProxy = global.get_switcheroo_control();
+        if (this._switcherooProxy) {
+            let prop = this._switcherooProxy.get_cached_property('HasDualGpu');
+            discreteGpuAvailable = prop ? prop.unpack() : false;
+        } else {
+            discreteGpuAvailable = false;
+        }
+    }
+
+    vfunc_allocate(box) {
+        box = this.get_theme_node().get_content_box(box);
+        let availWidth = box.get_width();
+        let availHeight = box.get_height();
+        this.adaptToSize(availWidth, availHeight);
+
+        super.vfunc_allocate(box);
     }
 
     _onDestroy() {
@@ -952,51 +975,6 @@ var AllView = GObject.registerClass({
     }
 });
 
-var AppDisplay = GObject.registerClass(
-class AppDisplay extends St.Widget {
-    _init() {
-        super._init({
-            style_class: 'app-display',
-            x_expand: true,
-            y_expand: true,
-        });
-
-        this._view = new AllView();
-        this.add_actor(this._view);
-
-        this._switcherooNotifyId = global.connect('notify::switcheroo-control',
-            () => this._updateDiscreteGpuAvailable());
-        this._updateDiscreteGpuAvailable();
-    }
-
-    _updateDiscreteGpuAvailable() {
-        this._switcherooProxy = global.get_switcheroo_control();
-        if (this._switcherooProxy) {
-            let prop = this._switcherooProxy.get_cached_property('HasDualGpu');
-            discreteGpuAvailable = prop ? prop.unpack() : false;
-        } else {
-            discreteGpuAvailable = false;
-        }
-    }
-
-    animate(animationDirection, onComplete) {
-        this._view.animate(animationDirection, onComplete);
-    }
-
-    selectApp(id) {
-        this._view.selectApp(id);
-    }
-
-    vfunc_allocate(box, flags) {
-        box = this.get_theme_node().get_content_box(box);
-        let availWidth = box.get_width();
-        let availHeight = box.get_height();
-        this._view.adaptToSize(availWidth, availHeight);
-
-        this._view.allocate(box, flags);
-    }
-});
-
 var AppSearchProvider = class AppSearchProvider {
     constructor() {
         this._appSys = Shell.AppSystem.get_default();
@@ -1385,7 +1363,7 @@ var FolderIcon = GObject.registerClass({
             return false;
 
         let view = _getViewFromIcon(source);
-        if (!view || !(view instanceof AllView))
+        if (!view || !(view instanceof AppDisplay))
             return false;
 
         if (this._folder.get_strv('apps').includes(source.id))
@@ -2137,7 +2115,7 @@ var AppIcon = GObject.registerClass({
 
         return source != this &&
                (source instanceof this.constructor) &&
-               (view instanceof AllView);
+               (view instanceof AppDisplay);
     }
 
     _setHoveringByDnd(hovering) {
