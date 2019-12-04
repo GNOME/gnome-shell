@@ -4,7 +4,10 @@ const { Clutter, GObject, Pango, St } = imports.gi;
 var CheckBox = GObject.registerClass(
 class CheckBox extends St.Button {
     _init(label) {
-        let container = new St.BoxLayout();
+        let container = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+        });
         super._init({
             style_class: 'check-box',
             child: container,
@@ -13,11 +16,7 @@ class CheckBox extends St.Button {
             can_focus: true,
         });
 
-        this._box = new St.Bin({
-            x_expand: true,
-            y_expand: true,
-            y_align: Clutter.ActorAlign.START,
-        });
+        this._box = new St.Bin({ y_align: Clutter.ActorAlign.START });
         container.add_actor(this._box);
 
         this._label = new St.Label();
