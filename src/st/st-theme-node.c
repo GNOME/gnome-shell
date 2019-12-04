@@ -742,26 +742,32 @@ st_theme_node_lookup_url (StThemeNode  *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          CRTerm *term = decl->value;
-          CRStyleSheet *base_stylesheet;
+          char *value = NULL;
+          GetFromTermResult result = stylish_get_url_from_term (decl->value, &value);
 
-          if (term->type != TERM_URI && term->type != TERM_STRING)
-            continue;
+          if (result == VALUE_FOUND)
+            {
+              CRStyleSheet *base_stylesheet;
 
-          if (decl->parent_statement != NULL)
-            base_stylesheet = decl->parent_statement->parent_sheet;
-          else
-            base_stylesheet = NULL;
+              if (decl->parent_statement != NULL)
+                base_stylesheet = decl->parent_statement->parent_sheet;
+              else
+                base_stylesheet = NULL;
 
-          *file = _st_theme_resolve_url (node->theme,
-                                         base_stylesheet,
-                                         decl->value->content.str->stryng->str);
-          result = TRUE;
-          break;
+              *file = _st_theme_resolve_url (node->theme, base_stylesheet, value);
+              g_free (value);
+
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_url (node->parent_node, property_name, inherit, file);
 
   return result;
