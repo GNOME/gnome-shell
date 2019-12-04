@@ -330,8 +330,8 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
-var AllView = GObject.registerClass({
-}, class AllView extends BaseAppView {
+var AppDisplay = GObject.registerClass(
+class AppDisplay extends BaseAppView {
     _init() {
         super._init({
             layout_manager: new Clutter.BinLayout(),
@@ -444,6 +444,43 @@ var AllView = GObject.registerClass({
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+
+        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
+            Gio.BusNameWatcherFlags.NONE,
+            this._switcherooProxyAppeared.bind(this),
+            () => {
+                this._switcherooProxy = null;
+                this._updateDiscreteGpuAvailable();
+            });
+    }
+
+    _updateDiscreteGpuAvailable() {
+        if (!this._switcherooProxy)
+            discreteGpuAvailable = false;
+        else
+            discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
+    }
+
+    _switcherooProxyAppeared() {
+        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system,
+            SWITCHEROO_BUS_NAME,
+            SWITCHEROO_OBJECT_PATH,
+            (proxy, error) => {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._updateDiscreteGpuAvailable();
+            });
+    }
+
+    vfunc_allocate(box, flags) {
+        box = this.get_theme_node().get_content_box(box);
+        let availWidth = box.get_width();
+        let availHeight = box.get_height();
+        this.adaptToSize(availWidth, availHeight);
+
+        super.vfunc_allocate(box, flags);
     }
 
     _onDestroy() {
@@ -959,63 +996,6 @@ var AllView = GObject.registerClass({
     }
 });
 
-var AppDisplay = GObject.registerClass(
-class AppDisplay extends St.Widget {
-    _init() {
-        super._init({
-            style_class: 'app-display',
-            x_expand: true,
-            y_expand: true,
-        });
-
-        this._view = new AllView();
-        this.add_actor(this._view);
-
-        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
-                                   Gio.BusNameWatcherFlags.NONE,
-                                   this._switcherooProxyAppeared.bind(this),
-                                   () => {
-                                       this._switcherooProxy = null;
-                                       this._updateDiscreteGpuAvailable();
-                                   });
-    }
-
-    _updateDiscreteGpuAvailable() {
-        if (!this._switcherooProxy)
-            discreteGpuAvailable = false;
-        else
-            discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
-    }
-
-    _switcherooProxyAppeared() {
-        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
-            (proxy, error) => {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._updateDiscreteGpuAvailable();
-            });
-    }
-
-    animate(animationDirection, onComplete) {
-        this._view.animate(animationDirection, onComplete);
-    }
-
-    selectApp(id) {
-        this._view.selectApp(id);
-    }
-
-    vfunc_allocate(box, flags) {
-        box = this.get_theme_node().get_content_box(box);
-        let availWidth = box.get_width();
-        let availHeight = box.get_height();
-        this._view.adaptToSize(availWidth, availHeight);
-
-        this._view.allocate(box, flags);
-    }
-});
-
 var AppSearchProvider = class AppSearchProvider {
     constructor() {
         this._appSys = Shell.AppSystem.get_default();
@@ -1405,7 +1385,7 @@ var FolderIcon = GObject.registerClass({
             return false;
 
         let view = _getViewFromIcon(source);
-        if (!view || !(view instanceof AllView))
+        if (!view || !(view instanceof AppDisplay))
             return false;
 
         if (this._folder.get_strv('apps').includes(source.id))
@@ -2157,7 +2137,7 @@ var AppIcon = GObject.registerClass({
 
         return source != this &&
                (source instanceof this.constructor) &&
-               (view instanceof AllView);
+               (view instanceof AppDisplay);
     }
 
     _setHoveringByDnd(hovering) {
