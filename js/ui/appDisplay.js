@@ -1798,7 +1798,7 @@ var FolderIcon = GObject.registerClass({
         if (!this._menu) {
             this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-            this._menu = new RenameFolderMenu(this, this._folder);
+            this._menu = new RenameFolderMenu(this, this._folder, this.id);
             this._menuManager.addMenu(this._menu);
 
             this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
@@ -1829,13 +1829,14 @@ var FolderIcon = GObject.registerClass({
 
 var RenameFolderMenuItem = GObject.registerClass(
 class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(folder) {
+    _init(folder, id) {
         super._init({
             style_class: 'rename-folder-popup-item',
             reactive: false,
         });
         this.setOrnament(PopupMenu.Ornament.HIDDEN);
 
+        this._id = id;
         this._folder = folder;
 
         // Entry
@@ -1895,18 +1896,20 @@ class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
         this._folder.set_string('name', newFolderName);
         this._folder.set_boolean('translate', false);
         this.activate(Clutter.get_current_event());
+
+        Main.overview.viewSelector.appDisplay.selectApp(this._id);
     }
 });
 
 var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
-    constructor(source, folder) {
+    constructor(source, folder, id) {
         super(source, 0.5, St.Side.BOTTOM);
         this.actor.add_style_class_name('rename-folder-popup');
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
 
-        let menuItem = new RenameFolderMenuItem(folder);
+        let menuItem = new RenameFolderMenuItem(folder, id);
         this.addMenuItem(menuItem);
 
         // Focus the text entry on menu pop-up
