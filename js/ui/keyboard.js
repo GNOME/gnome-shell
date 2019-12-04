@@ -460,6 +460,8 @@ var Key = GObject.registerClass({
             this._extendedKeyboard.add(key);
 
             key.set_size(...this.keyButton.allocation.get_size());
+            this.keyButton.connect('notify::allocation',
+                () => key.set_size(...this.keyButton.allocation.get_size()));
         }
         this._boxPointer.bin.add_actor(this._extendedKeyboard);
     }
