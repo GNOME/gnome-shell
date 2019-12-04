@@ -292,6 +292,9 @@ var Key = GObject.registerClass({
         if (this._extendedKeys.length === 0)
             return;
 
+        if (this._boxPointer)
+            return;
+
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM);
         this._boxPointer.hide();
         Main.layoutManager.addTopChrome(this._boxPointer);
