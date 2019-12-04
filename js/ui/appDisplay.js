@@ -437,6 +437,7 @@ var AllView = GObject.registerClass({
 
         this._grid.removeItem(item);
         this._grid.addItem(item, newIdx);
+        this.selectApp(item.id);
     }
 
     _refilterApps() {
