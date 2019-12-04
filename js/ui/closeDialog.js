@@ -47,11 +47,11 @@ var CloseDialog = GObject.registerClass({
     }
 
     _updateScale() {
-        // Since this is a child of MetaWindowActor (which, in Wayland sessions,
+        // Since this is a child of MetaWindowActor (which, for Wayland clients,
         // applies the geometry scale factor to its children itself, see
         // meta_window_actor_set_geometry_scale()), make sure we don't apply
         // the factor twice in the end.
-        if (!Meta.is_wayland_compositor())
+        if (this._window.get_client_type() !== Meta.WindowClientType.WAYLAND)
             return;
 
         let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
