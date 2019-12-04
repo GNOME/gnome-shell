@@ -923,6 +923,8 @@ var AllView = GObject.registerClass({
         newFolderSettings.set_strv('apps', apps);
         newFolderSettings.apply();
 
+        this.selectApp(newFolderId);
+
         return true;
     }
 });
