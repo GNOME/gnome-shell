@@ -952,38 +952,17 @@ var AllView = GObject.registerClass({
     }
 });
 
-var ViewStackLayout = GObject.registerClass({
-    Signals: { 'allocated-size-changed': { param_types: [GObject.TYPE_INT,
-                                                         GObject.TYPE_INT] } },
-}, class ViewStackLayout extends Clutter.BinLayout {
-    vfunc_allocate(actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        // Prepare children of all views for the upcoming allocation, calculate all
-        // the needed values to adapt available size
-        this.emit('allocated-size-changed', availWidth, availHeight);
-        super.vfunc_allocate(actor, box, flags);
-    }
-});
-
 var AppDisplay = GObject.registerClass(
-class AppDisplay extends St.BoxLayout {
+class AppDisplay extends St.Widget {
     _init() {
         super._init({
             style_class: 'app-display',
-            vertical: true,
             x_expand: true,
             y_expand: true,
         });
 
         this._view = new AllView();
-        this._viewStackLayout = new ViewStackLayout();
-        this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
-                                          layout_manager: this._viewStackLayout });
-        this._viewStackLayout.connect('allocated-size-changed', this._onAllocatedSizeChanged.bind(this));
-        this.add_actor(this._viewStack);
-
-        this._viewStack.add_actor(this._view);
+        this.add_actor(this._view);
 
         this._switcherooNotifyId = global.connect('notify::switcheroo-control',
             () => this._updateDiscreteGpuAvailable());
@@ -1008,15 +987,13 @@ class AppDisplay extends St.BoxLayout {
         this._view.selectApp(id);
     }
 
-    _onAllocatedSizeChanged(actor, width, height) {
-        let box = new Clutter.ActorBox();
-        box.x1 = box.y1 = 0;
-        box.x2 = width;
-        box.y2 = height;
-        box = this._viewStack.get_theme_node().get_content_box(box);
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
+    vfunc_allocate(box, flags) {
+        box = this.get_theme_node().get_content_box(box);
+        let availWidth = box.get_width();
+        let availHeight = box.get_height();
         this._view.adaptToSize(availWidth, availHeight);
+
+        this._view.allocate(box, flags);
     }
 });
 
