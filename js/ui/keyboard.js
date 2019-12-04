@@ -269,8 +269,8 @@ var Key = GObject.registerClass({
         this.add_child(this.keyButton);
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._extended_keys = extendedKeys;
-        this._extended_keyboard = null;
+        this._extendedKeys = extendedKeys;
+        this._extendedKeyboard = null;
         this._pressTimeoutId = 0;
         this._capturedPress = false;
 
@@ -289,7 +289,10 @@ var Key = GObject.registerClass({
     }
 
     _ensureExtendedKeysPopup() {
-        if (this._extended_keys.length == 0)
+        if (this._extendedKeys.length === 0)
+            return;
+
+        if (this._boxPointer)
             return;
 
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM);
@@ -300,7 +303,7 @@ var Key = GObject.registerClass({
         // Adds style to existing keyboard style to avoid repetition
         this._boxPointer.add_style_class_name('keyboard-subkeys');
         this._getExtendedKeys();
-        this.keyButton._extended_keys = this._extended_keyboard;
+        this.keyButton._extendedKeys = this._extendedKeyboard;
     }
 
     _getKeyval(key) {
@@ -311,28 +314,28 @@ var Key = GObject.registerClass({
     _press(key) {
         this.emit('activated');
 
-        if (key != this.key || this._extended_keys.length == 0)
+        if (key !== this.key || this._extendedKeys.length === 0)
             this.emit('pressed', this._getKeyval(key), key);
 
         if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                    KEY_LONG_PRESS_TIME,
-                                                    () => {
-                                                        this._longPress = true;
-                                                        this._pressTimeoutId = 0;
+                KEY_LONG_PRESS_TIME,
+                () => {
+                    this._longPress = true;
+                    this._pressTimeoutId = 0;
 
-                                                        this.emit('long-press');
+                    this.emit('long-press');
 
-                                                        if (this._extended_keys.length > 0) {
-                                                            this._touchPressed = false;
-                                                            this.keyButton.set_hover(false);
-                                                            this.keyButton.fake_release();
-                                                            this._ensureExtendedKeysPopup();
-                                                            this._showSubkeys();
-                                                        }
+                    if (this._extendedKeys.length > 0) {
+                        this._touchPressed = false;
+                        this._ensureExtendedKeysPopup();
+                        this.keyButton.set_hover(false);
+                        this.keyButton.fake_release();
+                        this._showSubkeys();
+                    }
 
-                                                        return GLib.SOURCE_REMOVE;
-                                                    });
+                    return GLib.SOURCE_REMOVE;
+                });
         }
     }
 
@@ -342,7 +345,7 @@ var Key = GObject.registerClass({
             this._pressTimeoutId = 0;
         }
 
-        if (!this._longPress && key == this.key && this._extended_keys.length > 0)
+        if (!this._longPress && key === this.key && this._extendedKeys.length > 0)
             this.emit('pressed', this._getKeyval(key), key);
 
         this.emit('released', this._getKeyval(key), key);
@@ -445,19 +448,22 @@ var Key = GObject.registerClass({
     }
 
     _getExtendedKeys() {
-        this._extended_keyboard = new St.BoxLayout({ style_class: 'key-container',
-                                                     vertical: false });
-        for (let i = 0; i < this._extended_keys.length; ++i) {
-            let extendedKey = this._extended_keys[i];
+        this._extendedKeyboard = new St.BoxLayout({
+            style_class: 'key-container',
+            vertical: false,
+        });
+        for (let i = 0; i < this._extendedKeys.length; ++i) {
+            let extendedKey = this._extendedKeys[i];
             let key = this._makeKey(extendedKey);
 
-            key.extended_key = extendedKey;
-            this._extended_keyboard.add(key);
+            key.extendedKey = extendedKey;
+            this._extendedKeyboard.add(key);
 
-            key.width = this.keyButton.width;
-            key.height = this.keyButton.height;
+            key.set_size(...this.keyButton.allocation.get_size());
+            this.keyButton.connect('notify::allocation',
+                () => key.set_size(...this.keyButton.allocation.get_size()));
         }
-        this._boxPointer.bin.add_actor(this._extended_keyboard);
+        this._boxPointer.bin.add_actor(this._extendedKeyboard);
     }
 
     get subkeys() {
@@ -1177,7 +1183,7 @@ var KeyboardManager = class KeyBoardManager {
 
         let actor = event.get_source();
         return Main.layoutManager.keyboardBox.contains(actor) ||
-               !!actor._extended_keys || !!actor.extended_key;
+               !!actor._extendedKeys || !!actor.extendedKey;
     }
 };
 
@@ -1339,7 +1345,7 @@ class Keyboard extends St.BoxLayout {
         // Showing an extended key popup and clicking a key from the extended keys
         // will grab focus, but ignore that
         let extendedKeysWereFocused = this._focusInExtendedKeys;
-        this._focusInExtendedKeys = focus && (focus._extended_keys || focus.extended_key);
+        this._focusInExtendedKeys = focus && (focus._extendedKeys || focus.extendedKey);
         if (this._focusInExtendedKeys || extendedKeysWereFocused)
             return;
 
@@ -1682,12 +1688,12 @@ class Keyboard extends St.BoxLayout {
 
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                   KEYBOARD_REST_TIME,
-                                                   () => {
-                                                       this._clearKeyboardRestTimer();
-                                                       this._open(monitor);
-                                                       return GLib.SOURCE_REMOVE;
-                                                   });
+            KEYBOARD_REST_TIME,
+            () => {
+                this._clearKeyboardRestTimer();
+                this._open(monitor);
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
@@ -1716,12 +1722,12 @@ class Keyboard extends St.BoxLayout {
 
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                   KEYBOARD_REST_TIME,
-                                                   () => {
-                                                       this._clearKeyboardRestTimer();
-                                                       this._close();
-                                                       return GLib.SOURCE_REMOVE;
-                                                   });
+            KEYBOARD_REST_TIME,
+            () => {
+                this._clearKeyboardRestTimer();
+                this._close();
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
