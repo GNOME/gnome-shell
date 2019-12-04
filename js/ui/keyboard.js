@@ -316,23 +316,23 @@ var Key = GObject.registerClass({
 
         if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                    KEY_LONG_PRESS_TIME,
-                                                    () => {
-                                                        this._longPress = true;
-                                                        this._pressTimeoutId = 0;
+                KEY_LONG_PRESS_TIME,
+                () => {
+                    this._longPress = true;
+                    this._pressTimeoutId = 0;
 
-                                                        this.emit('long-press');
+                    this.emit('long-press');
 
-                                                        if (this._extended_keys.length > 0) {
-                                                            this._touchPressed = false;
-                                                            this.keyButton.set_hover(false);
-                                                            this.keyButton.fake_release();
-                                                            this._ensureExtendedKeysPopup();
-                                                            this._showSubkeys();
-                                                        }
+                    if (this._extended_keys.length > 0) {
+                        this._touchPressed = false;
+                        this.keyButton.set_hover(false);
+                        this.keyButton.fake_release();
+                        this._ensureExtendedKeysPopup();
+                        this._showSubkeys();
+                    }
 
-                                                        return GLib.SOURCE_REMOVE;
-                                                    });
+                    return GLib.SOURCE_REMOVE;
+                });
         }
     }
 
@@ -1682,12 +1682,12 @@ class Keyboard extends St.BoxLayout {
 
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                   KEYBOARD_REST_TIME,
-                                                   () => {
-                                                       this._clearKeyboardRestTimer();
-                                                       this._open(monitor);
-                                                       return GLib.SOURCE_REMOVE;
-                                                   });
+            KEYBOARD_REST_TIME,
+            () => {
+                this._clearKeyboardRestTimer();
+                this._open(monitor);
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
@@ -1716,12 +1716,12 @@ class Keyboard extends St.BoxLayout {
 
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                   KEYBOARD_REST_TIME,
-                                                   () => {
-                                                       this._clearKeyboardRestTimer();
-                                                       this._close();
-                                                       return GLib.SOURCE_REMOVE;
-                                                   });
+            KEYBOARD_REST_TIME,
+            () => {
+                this._clearKeyboardRestTimer();
+                this._close();
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
