@@ -459,8 +459,7 @@ var Key = GObject.registerClass({
             key.extendedKey = extendedKey;
             this._extendedKeyboard.add(key);
 
-            key.width = this.keyButton.width;
-            key.height = this.keyButton.height;
+            key.set_size(...this.keyButton.allocation.get_size());
         }
         this._boxPointer.bin.add_actor(this._extendedKeyboard);
     }
