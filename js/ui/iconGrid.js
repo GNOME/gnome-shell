@@ -28,6 +28,8 @@ var AnimationDirection = {
 var APPICON_ANIMATION_OUT_SCALE = 3;
 var APPICON_ANIMATION_OUT_TIME = 250;
 
+const ICON_POSITION_DELAY = 25;
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -192,6 +194,23 @@ function zoomOutActorAtPos(actor, x, y) {
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => actorClone.destroy(),
     });
+}
+
+function animateIconPosition(icon, box, flags, nChangedIcons) {
+    if (!icon.has_allocation() || icon.allocation.equal(box)) {
+        icon.allocate(box, flags);
+        return false;
+    }
+
+    icon.save_easing_state();
+    icon.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+    icon.set_easing_delay(nChangedIcons * ICON_POSITION_DELAY);
+
+    icon.allocate(box, flags);
+
+    icon.restore_easing_state();
+
+    return true;
 }
 
 var IconGrid = GObject.registerClass({
@@ -366,6 +385,7 @@ var IconGrid = GObject.registerClass({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+        let nChangedIcons = 0;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
@@ -375,7 +395,9 @@ var IconGrid = GObject.registerClass({
             } else {
                 if (!animating)
                     children[i].opacity = 255;
-                children[i].allocate(childBox, flags);
+
+                if (animateIconPosition(children[i], childBox, flags, nChangedIcons))
+                    nChangedIcons++;
             }
 
             columnIndex++;
@@ -875,9 +897,13 @@ var PaginatedIconGrid = GObject.registerClass({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
 
+        let nChangedIcons = 0;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
-            children[i].allocate(childBox, flags);
+
+            if (animateIconPosition(children[i], childBox, flags, nChangedIcons))
+                nChangedIcons++;
+
             children[i].show();
 
             columnIndex++;
