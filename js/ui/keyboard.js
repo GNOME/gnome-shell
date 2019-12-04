@@ -328,9 +328,9 @@ var Key = GObject.registerClass({
 
                     if (this._extendedKeys.length > 0) {
                         this._touchPressed = false;
+                        this._ensureExtendedKeysPopup();
                         this.keyButton.set_hover(false);
                         this.keyButton.fake_release();
-                        this._ensureExtendedKeysPopup();
                         this._showSubkeys();
                     }
 
