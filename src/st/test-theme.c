@@ -311,6 +311,19 @@ test_lengths (void)
 }
 
 static void
+test_url (void)
+{
+  GFile *file;
+
+  test = "url";
+
+  file = st_theme_node_get_url (group1, "url-prop");
+  g_assert (file != NULL);
+  /* FIXME: test that the relative URL is resolved with respect to the test-theme.css file */
+  g_object_unref (file);
+}
+
+static void
 test_classes (void)
 {
   test = "classes";
@@ -625,6 +638,7 @@ main (int argc, char **argv)
   test_double ();
   test_time ();
   test_lengths ();
+  test_url ();
   test_classes ();
   test_type_inheritance ();
   test_adjacent_selector ();

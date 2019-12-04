@@ -20,6 +20,8 @@ stage {
 
     time-s: 42s;
     time-ms: 42000ms;
+
+    url-prop: url("foo.svg");
 }
 
 #text1 {
