@@ -32,8 +32,6 @@ var INACTIVE_GRID_OPACITY = 77;
 var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 240;
 var FOLDER_SUBICON_FRACTION = .4;
 
-var MIN_FREQUENT_APPS_COUNT = 3;
-
 var VIEWS_SWITCH_TIME = 400;
 var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
@@ -916,119 +914,6 @@ var AllView = GObject.registerClass({
     }
 });
 
-var FrequentView = GObject.registerClass(
-class FrequentView extends BaseAppView {
-    _init() {
-        super._init({
-            style_class: 'frequent-apps',
-            layout_manager: new Clutter.BinLayout(),
-            x_expand: true,
-            y_expand: true,
-        }, { fillParent: true });
-
-        this._noFrequentAppsLabel = new St.Label({ text: _("Frequently used applications will appear here"),
-                                                   style_class: 'no-frequent-applications-label',
-                                                   x_align: Clutter.ActorAlign.CENTER,
-                                                   x_expand: true,
-                                                   y_align: Clutter.ActorAlign.CENTER,
-                                                   y_expand: true });
-
-        this._grid.y_expand = true;
-
-        this.add_actor(this._grid);
-        this.add_actor(this._noFrequentAppsLabel);
-        this._noFrequentAppsLabel.hide();
-
-        this._usage = Shell.AppUsage.get_default();
-    }
-
-    vfunc_map() {
-        this._redisplay();
-        super.vfunc_map();
-    }
-
-    hasUsefulData() {
-        return this._usage.get_most_used().length >= MIN_FREQUENT_APPS_COUNT;
-    }
-
-    _compareItems() {
-        // The FrequentView does not need to be sorted alphabetically
-        return 0;
-    }
-
-    _loadApps() {
-        let apps = [];
-        let mostUsed = this._usage.get_most_used();
-        let hasUsefulData = this.hasUsefulData();
-        this._noFrequentAppsLabel.visible = !hasUsefulData;
-        if (!hasUsefulData)
-            return [];
-
-        // Allow dragging of the icon only if the Dash would accept a drop to
-        // change favorite-apps. There are no other possible drop targets from
-        // the app picker, so there's no other need for a drag to start,
-        // at least on single-monitor setups.
-        // This also disables drag-to-launch on multi-monitor setups,
-        // but we hope that is not used much.
-        let favoritesWritable = global.settings.is_writable('favorite-apps');
-
-        for (let i = 0; i < mostUsed.length; i++) {
-            if (!mostUsed[i].get_app_info().should_show())
-                continue;
-            let appIcon = this._items.get(mostUsed[i].get_id());
-            if (!appIcon) {
-                appIcon = new AppIcon(mostUsed[i], {
-                    isDraggable: favoritesWritable,
-                });
-            }
-            apps.push(appIcon);
-        }
-
-        return apps;
-    }
-
-    // Called before allocation to calculate dynamic spacing
-    adaptToSize(width, height) {
-        let box = new Clutter.ActorBox();
-        box.x1 = box.y1 = 0;
-        box.x2 = width;
-        box.y2 = height;
-        box = this.get_theme_node().get_content_box(box);
-        box = this._grid.get_theme_node().get_content_box(box);
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        this._grid.adaptToSize(availWidth, availHeight);
-    }
-});
-
-var Views = {
-    FREQUENT: 0,
-    ALL: 1,
-};
-
-var ControlsBoxLayout = GObject.registerClass(
-class ControlsBoxLayout extends Clutter.BoxLayout {
-    /*
-     * Override the BoxLayout behavior to use the maximum preferred width of all
-     * buttons for each child
-     */
-    vfunc_get_preferred_width(container, forHeight) {
-        let maxMinWidth = 0;
-        let maxNaturalWidth = 0;
-        for (let child = container.get_first_child();
-            child;
-            child = child.get_next_sibling()) {
-            let [minWidth, natWidth] = child.get_preferred_width(forHeight);
-            maxMinWidth = Math.max(maxMinWidth, minWidth);
-            maxNaturalWidth = Math.max(maxNaturalWidth, natWidth);
-        }
-        let childrenCount = container.get_n_children();
-        let totalSpacing = this.spacing * (childrenCount - 1);
-        return [maxMinWidth * childrenCount + totalSpacing,
-                maxNaturalWidth * childrenCount + totalSpacing];
-    }
-});
-
 var ViewStackLayout = GObject.registerClass({
     Signals: { 'allocated-size-changed': { param_types: [GObject.TYPE_INT,
                                                          GObject.TYPE_INT] } },
@@ -1053,70 +938,14 @@ class AppDisplay extends St.BoxLayout {
             y_expand: true,
         });
 
-        this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
-        this._privacySettings.connect('changed::remember-app-usage',
-                                      this._updateFrequentVisibility.bind(this));
-
-        this._views = [];
-
-        let view, button;
-        view = new FrequentView();
-        button = new St.Button({ label: _("Frequent"),
-                                 style_class: 'app-view-control button',
-                                 can_focus: true,
-                                 x_expand: true });
-        this._views[Views.FREQUENT] = { view, 'control': button };
-
-        view = new AllView();
-        button = new St.Button({ label: _("All"),
-                                 style_class: 'app-view-control button',
-                                 can_focus: true,
-                                 x_expand: true });
-        this._views[Views.ALL] = { view, 'control': button };
-
+        this._view = new AllView();
         this._viewStackLayout = new ViewStackLayout();
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
                                           layout_manager: this._viewStackLayout });
         this._viewStackLayout.connect('allocated-size-changed', this._onAllocatedSizeChanged.bind(this));
         this.add_actor(this._viewStack);
-        let layout = new ControlsBoxLayout({ homogeneous: true });
-        this._controls = new St.Widget({
-            style_class: 'app-view-controls',
-            layout_manager: layout,
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this._controls.connect('notify::mapped', () => {
-            // controls are faded either with their parent or
-            // explicitly in animate(); we can't know how they'll be
-            // shown next, so make sure to restore their opacity
-            // when they are hidden
-            if (this._controls.mapped)
-                return;
 
-            this._controls.remove_all_transitions();
-            this._controls.opacity = 255;
-        });
-
-        layout.hookup_style(this._controls);
-        this.add_actor(new St.Bin({ child: this._controls }));
-
-        for (let i = 0; i < this._views.length; i++) {
-            this._viewStack.add_actor(this._views[i].view);
-            this._controls.add_actor(this._views[i].control);
-
-            let viewIndex = i;
-            this._views[i].control.connect('clicked', () => {
-                this._showView(viewIndex);
-                global.settings.set_uint('app-picker-view', viewIndex);
-            });
-        }
-        let initialView = Math.min(global.settings.get_uint('app-picker-view'),
-                                   this._views.length - 1);
-        let frequentUseful = this._views[Views.FREQUENT].view.hasUsefulData();
-        if (initialView == Views.FREQUENT && !frequentUseful)
-            initialView = Views.ALL;
-        this._showView(initialView);
-        this._updateFrequentVisibility();
+        this._viewStack.add_actor(this._view);
 
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
                                    Gio.BusNameWatcherFlags.NONE,
@@ -1146,56 +975,11 @@ class AppDisplay extends St.BoxLayout {
     }
 
     animate(animationDirection, onComplete) {
-        let currentView = this._views.filter(v => v.control.has_style_pseudo_class('checked')).pop().view;
-
-        // Animate controls opacity using iconGrid animation time, since
-        // it will be the time the AllView or FrequentView takes to show
-        // it entirely.
-        let finalOpacity;
-        if (animationDirection == IconGrid.AnimationDirection.IN) {
-            this._controls.opacity = 0;
-            finalOpacity = 255;
-        } else {
-            finalOpacity = 0;
-        }
-
-        this._controls.ease({
-            opacity: finalOpacity,
-            duration: IconGrid.ANIMATION_TIME_IN,
-            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-        });
-
-        currentView.animate(animationDirection, onComplete);
-    }
-
-    _showView(activeIndex) {
-        for (let i = 0; i < this._views.length; i++) {
-            if (i == activeIndex)
-                this._views[i].control.add_style_pseudo_class('checked');
-            else
-                this._views[i].control.remove_style_pseudo_class('checked');
-
-            let animationDirection = i == activeIndex
-                ? IconGrid.AnimationDirection.IN
-                : IconGrid.AnimationDirection.OUT;
-            this._views[i].view.animateSwitch(animationDirection);
-        }
-    }
-
-    _updateFrequentVisibility() {
-        let enabled = this._privacySettings.get_boolean('remember-app-usage');
-        this._views[Views.FREQUENT].control.visible = enabled;
-
-        let visibleViews = this._views.filter(v => v.control.visible);
-        this._controls.visible = visibleViews.length > 1;
-
-        if (!enabled && this._views[Views.FREQUENT].view.visible)
-            this._showView(Views.ALL);
+        this._view.animate(animationDirection, onComplete);
     }
 
     selectApp(id) {
-        this._showView(Views.ALL);
-        this._views[Views.ALL].view.selectApp(id);
+        this._view.selectApp(id);
     }
 
     _onAllocatedSizeChanged(actor, width, height) {
@@ -1206,8 +990,7 @@ class AppDisplay extends St.BoxLayout {
         box = this._viewStack.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
-        for (let i = 0; i < this._views.length; i++)
-            this._views[i].view.adaptToSize(availWidth, availHeight);
+        this._view.adaptToSize(availWidth, availHeight);
     }
 });
 
