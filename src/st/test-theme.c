@@ -324,6 +324,21 @@ test_url (void)
 }
 
 static void
+test_icon_style (void)
+{
+  StIconStyle style;
+
+  test = "icon_style";
+
+  style = st_theme_node_get_icon_style (group1);
+  g_assert (style == ST_ICON_STYLE_SYMBOLIC);
+
+  /* test the default value */
+  style = st_theme_node_get_icon_style (text1);
+  g_assert (style == ST_ICON_STYLE_REQUESTED);
+}
+
+static void
 test_classes (void)
 {
   test = "classes";
@@ -639,6 +654,7 @@ main (int argc, char **argv)
   test_time ();
   test_lengths ();
   test_url ();
+  test_icon_style ();
   test_classes ();
   test_type_inheritance ();
   test_adjacent_selector ();

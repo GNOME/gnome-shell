@@ -22,6 +22,8 @@ stage {
     time-ms: 42000ms;
 
     url-prop: url("foo.svg");
+
+    -st-icon-style: symbolic;
 }
 
 #text1 {

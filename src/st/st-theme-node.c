@@ -2056,8 +2056,10 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   return factor * node->transition_duration;
 }
 
-StIconStyle
-st_theme_node_get_icon_style (StThemeNode *node)
+static gboolean
+st_theme_node_lookup_icon_style (StThemeNode *node,
+                                 gboolean     inherit,
+                                 StIconStyle *style)
 {
   int i;
 
@@ -2069,33 +2071,34 @@ st_theme_node_get_icon_style (StThemeNode *node)
 
       if (strcmp (cr_declaration_name (decl), "-st-icon-style") == 0)
         {
-          CRTerm *term;
-
-          for (term = decl->value; term; term = term->next)
+          GetFromTermResult result = stylish_get_icon_style_from_term (decl->value, style);
+          if (result == VALUE_FOUND)
             {
-              if (term->type != TERM_IDENT)
-                goto next_decl;
-
-              if (strcmp (term->content.str->stryng->str, "requested") == 0)
-                return ST_ICON_STYLE_REQUESTED;
-              else if (strcmp (term->content.str->stryng->str, "regular") == 0)
-                return ST_ICON_STYLE_REGULAR;
-              else if (strcmp (term->content.str->stryng->str, "symbolic") == 0)
-                return ST_ICON_STYLE_SYMBOLIC;
-              else
-                g_warning ("Unknown -st-icon-style \"%s\"",
-                           term->content.str->stryng->str);
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
             }
         }
-
-    next_decl:
-      ;
     }
 
-  if (node->parent_node)
-    return st_theme_node_get_icon_style (node->parent_node);
+  if (inherit && node->parent_node)
+    return st_theme_node_lookup_icon_style (node->parent_node, inherit, style);
 
-  return ST_ICON_STYLE_REQUESTED;
+  return FALSE;
+}
+
+StIconStyle
+st_theme_node_get_icon_style (StThemeNode *node)
+{
+  StIconStyle style;
+
+  if (st_theme_node_lookup_icon_style (node, FALSE, &style))
+    return style;
+  else
+    return ST_ICON_STYLE_REQUESTED;
 }
 
 StTextDecoration
