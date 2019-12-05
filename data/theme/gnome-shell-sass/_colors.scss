@@ -25,9 +25,9 @@ $osd_bg_color: if($variant == 'light', rgba(255,255,255,0.9), transparentize(dar
 $osd_insensitive_bg_color: transparentize(mix($osd_fg_color, opacify($osd_bg_color, 1), 10%), 0.5);
 $osd_insensitive_fg_color: mix($osd_fg_color, opacify($osd_bg_color, 1), 50%);
 $osd_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
-$osd_outer_borders_color: if($variant == 'light', rgba(0,0,0,0.1), rgba(255,255,255,0.1));
+$osd_outer_borders_color: if($variant == 'light', rgba(0,0,0,0.1), lighten($osd_bg_color, 7%));
 
-$shadow_color: rgba(0,0,0,0.4);
+$shadow_color: if($variant == 'light', rgba(0,0,0,0.1), rgba(0,0,0,0.2));
 
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);

@@ -225,13 +225,13 @@ stage {
 
 	&:focus,
 	&:hover {
-		margin-top: $base_margin - 1px;
-		margin-bottom: $base_margin + 1px;
+		// margin-top: $base_margin - 1px;
+		// margin-bottom: $base_margin + 1px;
 		@include button(hover);
 	}
 
 	&:active {
 		@include button(active);
-		margin: $base_margin;
+		// margin: $base_margin;
 	}
 }
