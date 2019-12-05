@@ -84,7 +84,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         let restoreAccel = this._getRestoreAccel();
         if (restoreAccel) {
-            contentParams.subtitle =
+            contentParams.body =
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
                 _("You can restore shortcuts by pressing %s.").format(restoreAccel);
         }

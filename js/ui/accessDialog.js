@@ -1,5 +1,5 @@
 /* exported AccessDialogDBus */
-const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
@@ -40,9 +40,14 @@ class AccessDialog extends ModalDialog.ModalDialog {
         let grantLabel = options['grant_label'] || _("Grant Access");
         let choices = options['choices'] || [];
 
-        let contentParams = { title, subtitle, body };
-        let content = new Dialog.MessageDialogContent(contentParams);
+        let content = new Dialog.MessageDialogContent({ title, body });
         this.contentLayout.add_actor(content);
+
+        let subtitleLabel = new St.Label({
+            text: subtitle,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        content.insertBeforeBody(subtitleLabel);
 
         this._choices = new Map();
 
