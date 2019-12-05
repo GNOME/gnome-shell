@@ -109,6 +109,17 @@
         the shell.
       </description>
     </key>
+    <key name="app-picker-layout" type="aa{sv}">
+      <default>[]</default>
+      <summary>Layout of the app picker</summary>
+      <description>
+        Layout of the app picker. Each entry in the array is a page. Pages are
+        stored in the order they appear in GNOME Shell. Each page contains an
+        “application id” → 'data' pair. Currently, the following values are
+        stored as 'data':
+          • “position”: the position of the application icon in the page
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 
