@@ -330,7 +330,7 @@ var AllView = GObject.registerClass({
         this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
         this.add_actor(this._pageIndicators);
 
-        this.folderIcons = [];
+        this._folderIcons = [];
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({
@@ -447,7 +447,7 @@ var AllView = GObject.registerClass({
                 icon.visible = true;
         });
 
-        this.folderIcons.forEach(folder => {
+        this._folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
                 let appIcon = this._items.get(appId);
@@ -481,7 +481,7 @@ var AllView = GObject.registerClass({
 
         let appSys = Shell.AppSystem.get_default();
 
-        this.folderIcons = [];
+        this._folderIcons = [];
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
@@ -493,7 +493,7 @@ var AllView = GObject.registerClass({
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
             appIcons.push(icon);
-            this.folderIcons.push(icon);
+            this._folderIcons.push(icon);
         });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -773,8 +773,8 @@ var AllView = GObject.registerClass({
         this._availWidth = availWidth;
         this._availHeight = availHeight;
         // Update folder views
-        for (let i = 0; i < this.folderIcons.length; i++)
-            this.folderIcons[i].adaptToSize(availWidth, availHeight);
+        for (let i = 0; i < this._folderIcons.length; i++)
+            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 
     _resetOvershoot() {
