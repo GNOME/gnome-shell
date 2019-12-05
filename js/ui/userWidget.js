@@ -7,7 +7,7 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
-var AVATAR_ICON_SIZE = 64;
+var AVATAR_ICON_SIZE = 128;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -20,7 +20,8 @@ class Avatar extends St.Bin {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'user-icon' });
+                                        styleClass: 'user-icon',
+                                        x_align: St.Align.MIDDLE, });
 
         super._init({
             style_class: params.styleClass,
@@ -73,7 +74,9 @@ class Avatar extends St.Bin {
         } else {
             this.style = null;
             this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                       icon_size: this._iconSize });
+                                       icon_size: this._iconSize,
+                                       x_expand: true,
+                                       x_align: Clutter.ActorAlign.CENTER });
         }
     }
 });
@@ -86,11 +89,13 @@ class UserWidgetLabel extends St.Widget {
         this._user = user;
 
         this._realNameLabel = new St.Label({ style_class: 'user-widget-label',
-                                             y_align: Clutter.ActorAlign.CENTER });
+                                             x_expand: true,
+                                             x_align: Clutter.ActorAlign.CENTER });
         this.add_child(this._realNameLabel);
 
         this._userNameLabel = new St.Label({ style_class: 'user-widget-label',
-                                             y_align: Clutter.ActorAlign.CENTER });
+                                             x_expand: true,
+                                             x_align: Clutter.ActorAlign.CENTER });
         this.add_child(this._userNameLabel);
 
         this._currentLabel = null;
@@ -160,7 +165,7 @@ class UserWidgetLabel extends St.Widget {
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
     _init(user) {
-        super._init({ style_class: 'user-widget', vertical: false });
+        super._init({ style_class: 'user-widget', vertical: true });
 
         this._user = user;
 

@@ -1884,6 +1884,7 @@ StScrollBar {
 .user-icon {
   background-size: contain;
   color: $osd_fg_color;
+  text-align: center;
   border-radius: 99px;
   &:hover {
     color: lighten($osd_fg_color,30%);
@@ -2010,10 +2011,11 @@ StScrollBar {
   .login-dialog-username,
   .user-widget-label {
     color: $osd_fg_color;
-    font-size: 120%;
+    font-size: 11pt;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     padding-left: 15px;
+    padding-top: 24px;
   }
     .user-widget-label {
       &:ltr { padding-left: 14px; }
