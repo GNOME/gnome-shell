@@ -5,7 +5,9 @@
   @extend %bubble_panel;
 
   .modal-dialog-content-box {
-    padding: $base_padding * 4;
+    margin: 32px 40px;
+    spacing: 32px;
+    max-width: 28em;
   }
 
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
@@ -32,11 +34,6 @@
 }
 
 /* Message Dialog */
-.message-dialog-main-layout {
-  padding: 12px 20px 0;
-  spacing: 12px;
-}
-
 .message-dialog-content {
   max-width: 28em;
   spacing: 20px;
@@ -118,7 +115,6 @@
   //this is the width of the entire modal popup
   width: 34em;
 
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-content { spacing: $base_spacing * 4; }
   .message-dialog-title { color: lighten($fg_color,15%); }
 }
@@ -247,7 +243,6 @@
 /* Extension Dialog */
 .extension-dialog {
   @extend %bubble_panel;
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-title { font-weight: normal; color: $fg_color; }
 }
 

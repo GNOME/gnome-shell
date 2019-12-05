@@ -179,18 +179,16 @@ var MessageDialogContent = GObject.registerClass({
         this._subtitle.clutter_text.set(textProps);
         this._body.clutter_text.set(textProps);
 
-        let defaultParams = { style_class: 'message-dialog-main-layout' };
-        super._init(Object.assign(defaultParams, params));
-
-        this.messageBox = new St.BoxLayout({
+        let defaultParams = {
             style_class: 'message-dialog-content',
             x_expand: true,
             vertical: true,
-        });
-        this.messageBox.add_actor(this._title);
-        this.messageBox.add_actor(this._subtitle);
-        this.messageBox.add_actor(this._body);
-        this.add_actor(this.messageBox);
+        };
+        super._init(Object.assign(defaultParams, params));
+
+        this.add_child(this._title);
+        this.add_child(this._subtitle);
+        this.add_child(this._body);
     }
 
     get title() {
