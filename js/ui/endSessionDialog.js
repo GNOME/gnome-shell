@@ -260,7 +260,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this.connect('opened',
                      this._onOpened.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is_loaded', this._sync.bind(this));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._sync.bind(this));
         this._userChangedId = this._user.connect('changed', this._sync.bind(this));
 
         let mainContentLayout = new St.BoxLayout({
