@@ -25,10 +25,12 @@ class Dialog extends St.Widget {
     }
 
     _createDialog() {
-        this._dialog = new St.BoxLayout({ style_class: 'modal-dialog',
-                                          x_align: Clutter.ActorAlign.CENTER,
-                                          y_align: Clutter.ActorAlign.CENTER,
-                                          vertical: true });
+        this._dialog = new St.BoxLayout({
+            style_class: 'modal-dialog',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            vertical: true,
+        });
 
         // modal dialogs are fixed width and grow vertically; set the request
         // mode accordingly so wrapped labels are handled correctly during
@@ -43,7 +45,9 @@ class Dialog extends St.Widget {
         });
         this._dialog.add_child(this.contentLayout);
 
-        this.buttonLayout = new St.Widget({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
+        this.buttonLayout = new St.Widget({
+            layout_manager: new Clutter.BoxLayout({ homogeneous: true }),
+        });
         this._dialog.add_child(this.buttonLayout);
     }
 
@@ -111,13 +115,15 @@ class Dialog extends St.Widget {
         else
             keys = [];
 
-        let button = new St.Button({ style_class: 'modal-dialog-linked-button',
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                     reactive: true,
-                                     can_focus: true,
-                                     x_expand: true,
-                                     y_expand: true,
-                                     label });
+        let button = new St.Button({
+            style_class: 'modal-dialog-linked-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            x_expand: true,
+            y_expand: true,
+            label,
+        });
         button.connect('clicked', action);
 
         buttonInfo['button'] = button;
@@ -172,18 +178,21 @@ var MessageDialogContent = GObject.registerClass({
             this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
         });
 
-        let textProps = { ellipsize: Pango.EllipsizeMode.NONE,
-                          line_wrap: true };
+        let textProps = {
+            ellipsize: Pango.EllipsizeMode.NONE,
+            line_wrap: true,
+        };
         this._subtitle.clutter_text.set(textProps);
         this._body.clutter_text.set(textProps);
 
         let defaultParams = { style_class: 'message-dialog-main-layout' };
         super._init(Object.assign(defaultParams, params));
 
-        this.messageBox = new St.BoxLayout({ style_class: 'message-dialog-content',
-                                             x_expand: true,
-                                             vertical: true });
-
+        this.messageBox = new St.BoxLayout({
+            style_class: 'message-dialog-content',
+            x_expand: true,
+            vertical: true,
+        });
         this.messageBox.add_actor(this._title);
         this.messageBox.add_actor(this._subtitle);
         this.messageBox.add_actor(this._body);
