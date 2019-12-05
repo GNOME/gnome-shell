@@ -304,14 +304,14 @@ var ShellMountPasswordDialog = GObject.registerClass({
             });
 
             this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
-            content.messageBox.add(this._hiddenVolume);
+            content.add_actor(this._hiddenVolume);
 
             this._systemVolume = new CheckBox.CheckBox(_("Windows System Volume"));
-            content.messageBox.add(this._systemVolume);
+            content.add_actor(this._systemVolume);
 
             this._keyfilesCheckbox = new CheckBox.CheckBox(_("Uses Keyfiles"));
             this._keyfilesCheckbox.connect("clicked", this._onKeyfilesCheckboxClicked.bind(this));
-            content.messageBox.add(this._keyfilesCheckbox);
+            content.add_actor(this._keyfilesCheckbox);
 
             this._keyfilesLabel.clutter_text.set_markup(
                 /* Translators: %s is the Disks application */
@@ -319,7 +319,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             );
             this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             this._keyfilesLabel.clutter_text.line_wrap = true;
-            content.messageBox.add_child(this._keyfilesLabel);
+            content.add_actor(this._keyfilesLabel);
 
             this._pimLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
                                             text: _("PIM Number"),
@@ -378,20 +378,20 @@ var ShellMountPasswordDialog = GObject.registerClass({
             layout.attach(this._capsLockWarningLabel, 1, 2, 1, 1);
         }
 
-        content.messageBox.add(grid);
+        content.add_actor(grid);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
                                                  text: _("Sorry, that didn’t work. Please try again.") });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();
-        content.messageBox.add(this._errorMessageLabel);
+        content.add_actor(this._errorMessageLabel);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
             this._rememberChoice.checked =
                 global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
-            content.messageBox.add(this._rememberChoice);
+            content.add_actor(this._rememberChoice);
         } else {
             this._rememberChoice = null;
         }

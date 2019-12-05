@@ -163,17 +163,15 @@ var MessageDialogContent = GObject.registerClass({
         this._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._body.clutter_text.line_wrap = true;
 
-        let defaultParams = { style_class: 'message-dialog-main-layout' };
-        super._init(Object.assign(defaultParams, params));
-
-        this.messageBox = new St.BoxLayout({
+        let defaultParams = {
             style_class: 'message-dialog-content',
             x_expand: true,
             vertical: true,
-        });
-        this.messageBox.add_actor(this._title);
-        this.messageBox.add_actor(this._body);
-        this.add_actor(this.messageBox);
+        };
+        super._init(Object.assign(defaultParams, params));
+
+        this.add_actor(this._title);
+        this.add_actor(this._body);
     }
 
     get title() {
@@ -201,6 +199,6 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     insertBeforeBody(actor) {
-        this.messageBox.insert_child_below(actor, this._body);
+        this.insert_child_below(actor, this._body);
     }
 });
