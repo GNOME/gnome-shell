@@ -99,10 +99,6 @@ class Dialog extends St.Widget {
         return this._initialKeyFocus || this;
     }
 
-    addContent(actor) {
-        this.contentLayout.add(actor, { expand: true });
-    }
-
     addButton(buttonInfo) {
         let { label, action, key } = buttonInfo;
         let isDefault = buttonInfo['default'];
