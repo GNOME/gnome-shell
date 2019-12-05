@@ -200,8 +200,9 @@ StScrollBar {
   border-radius: $modal_radius;
   @extend %bubble-panel;
   .modal-dialog-content-box {
-    padding: 32px 40px;
+    margin: 32px 40px;
     spacing: 32px;
+    max-width: 28em;
   }
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
   .run-dialog-error-box {
@@ -377,7 +378,6 @@ StScrollBar {
   //this is the width of the entire modal popup
   width: 34em;
 
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-content { spacing: 16px; }
   .message-dialog-title { color: lighten($fg_color,15%); }
 }
@@ -510,7 +510,6 @@ StScrollBar {
 /* Extension Dialog */
 .extension-dialog {
   @extend %bubble-panel;
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-title { font-weight: normal; color: $fg_color; }
 }
 

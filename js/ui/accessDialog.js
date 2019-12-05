@@ -53,7 +53,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
             let check = new CheckBox.CheckBox();
             check.getLabelActor().text = name;
             check.checked = selected == "true";
-            content.messageBox.add_child(check);
+            content.add_child(check);
 
             this._choices.set(id, check);
         }
@@ -62,7 +62,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
             text: body,
             x_align: Clutter.ActorAlign.CENTER,
         });
-        content.messageBox.add_child(bodyLabel);
+        content.add_child(bodyLabel);
 
         this.addButton({ label: denyLabel,
                          action: () => {

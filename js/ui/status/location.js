@@ -361,7 +361,7 @@ var GeolocationDialog = GObject.registerClass({
             text: _("Location access can be changed at any time from the privacy settings."),
             x_align: Clutter.ActorAlign.CENTER,
         });
-        content.messageBox.add_child(infoLabel);
+        content.add_child(infoLabel);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: this._onDenyClicked.bind(this),
