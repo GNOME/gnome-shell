@@ -437,6 +437,7 @@ var AllView = GObject.registerClass({
 
         this._grid.removeItem(item);
         this._grid.addItem(item, newIdx);
+        this.selectApp(item.id);
     }
 
     _refilterApps() {
@@ -922,6 +923,8 @@ var AllView = GObject.registerClass({
         newFolderSettings.set_string('name', folderName);
         newFolderSettings.set_strv('apps', apps);
         newFolderSettings.apply();
+
+        this.selectApp(newFolderId);
 
         return true;
     }
