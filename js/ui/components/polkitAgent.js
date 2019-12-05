@@ -25,11 +25,11 @@ const DELAYED_RESET_TIMEOUT = 200;
 var AuthenticationDialog = GObject.registerClass({
     Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
-    _init(actionId, body, cookie, userNames) {
+    _init(actionId, description, cookie, userNames) {
         super._init({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
-        this.message = body;
+        this.message = description;
         this.userNames = userNames;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
@@ -40,7 +40,7 @@ var AuthenticationDialog = GObject.registerClass({
 
         let title = _("Authentication Required");
 
-        let content = new Dialog.MessageDialogContent({ title, body });
+        let content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {

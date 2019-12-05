@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -347,17 +347,21 @@ var AppAuthorizer = class {
 var GeolocationDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
-    _init(name, subtitle, reqAccuracyLevel) {
+    _init(name, description, reqAccuracyLevel) {
         super._init({ styleClass: 'geolocation-dialog' });
         this.reqAccuracyLevel = reqAccuracyLevel;
 
         /* Translators: %s is an application name */
         let title = _("Give %s access to your location?").format(name);
-        let body = _("Location access can be changed at any time from the privacy settings.");
 
-        let contentParams = { title, subtitle, body };
-        let content = new Dialog.MessageDialogContent(contentParams);
+        let content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_actor(content);
+
+        let infoLabel = new St.Label({
+            text: _("Location access can be changed at any time from the privacy settings."),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        content.messageBox.add_child(infoLabel);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: this._onDenyClicked.bind(this),

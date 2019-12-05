@@ -25,7 +25,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.contentLayout.add(this._content);
 
         this.prompt.bind_property('message', this._content, 'title', GObject.BindingFlags.SYNC_CREATE);
-        this.prompt.bind_property('description', this._content, 'body', GObject.BindingFlags.SYNC_CREATE);
+        this.prompt.bind_property('description', this._content, 'description', GObject.BindingFlags.SYNC_CREATE);
 
         this._workSpinner = null;
         this._controlTable = null;

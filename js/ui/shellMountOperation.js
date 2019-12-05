@@ -38,7 +38,7 @@ function _setLabelsForMessage(content, message) {
     let labels = message.split('\n');
 
     content.title = labels.shift();
-    content.body = labels.join('\n');
+    content.description = labels.join('\n');
 }
 
 /* -------------------------------------------------------- */
@@ -281,14 +281,13 @@ var ShellMountPasswordDialog = GObject.registerClass({
     _init(message, flags) {
         let strings = message.split('\n');
         let title = strings.shift() || null;
-        let body = strings.shift() || null;
+        let description = strings.shift() || null;
         super._init({ styleClass: 'prompt-dialog' });
 
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
-        let content = new Dialog.MessageDialogContent({ title, body });
+        let content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_actor(content);
-        content._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         let grid = new St.Widget({ style_class: 'prompt-dialog-grid',

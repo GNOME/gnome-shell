@@ -1,5 +1,5 @@
 /* exported AccessDialogDBus */
-const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
@@ -18,7 +18,7 @@ var DialogResponse = {
 
 var AccessDialog = GObject.registerClass(
 class AccessDialog extends ModalDialog.ModalDialog {
-    _init(invocation, handle, title, subtitle, body, options) {
+    _init(invocation, handle, title, description, body, options) {
         super._init({ styleClass: 'access-dialog' });
 
         this._invocation = invocation;
@@ -30,18 +30,17 @@ class AccessDialog extends ModalDialog.ModalDialog {
         for (let option in options)
             options[option] = options[option].deep_unpack();
 
-        this._buildLayout(title, subtitle, body, options);
+        this._buildLayout(title, description, body, options);
     }
 
-    _buildLayout(title, subtitle, body, options) {
+    _buildLayout(title, description, body, options) {
         // No support for non-modal system dialogs, so ignore the option
         // let modal = options['modal'] || true;
         let denyLabel = options['deny_label'] || _("Deny Access");
         let grantLabel = options['grant_label'] || _("Grant Access");
         let choices = options['choices'] || [];
 
-        let contentParams = { title, subtitle, body };
-        let content = new Dialog.MessageDialogContent(contentParams);
+        let content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_actor(content);
 
         this._choices = new Map();
@@ -54,10 +53,16 @@ class AccessDialog extends ModalDialog.ModalDialog {
             let check = new CheckBox.CheckBox();
             check.getLabelActor().text = name;
             check.checked = selected == "true";
-            content.insertBeforeBody(check);
+            content.messageBox.add_child(check);
 
             this._choices.set(id, check);
         }
+
+        let bodyLabel = new St.Label({
+            text: body,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        content.messageBox.add_child(bodyLabel);
 
         this.addButton({ label: denyLabel,
                          action: () => {
@@ -130,7 +135,7 @@ var AccessDialogDBus = class {
             return;
         }
 
-        let [handle, appId, parentWindow_, title, subtitle, body, options] = params;
+        let [handle, appId, parentWindow_, title, description, body, options] = params;
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
         if (appId && `${appId}.desktop` != this._windowTracker.focus_app.id) {
@@ -141,7 +146,7 @@ var AccessDialogDBus = class {
         }
 
         let dialog = new AccessDialog(invocation, handle, title,
-                                      subtitle, body, options);
+                                      description, body, options);
         dialog.open();
 
         dialog.connect('closed', () => (this._accessDialog = null));
