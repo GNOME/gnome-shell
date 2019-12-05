@@ -176,13 +176,13 @@ stage {
 
 // buttons in dialogs
 %bubble_button {
-	@include button(normal, $c:$bg_color, $tc:$fg_color);
+	@include button(normal);
 	padding: $base_padding * 2;
 	border-right-width: 1px;
 	border-top: 1px solid $bubble_borders_color;
 	box-shadow:none !important;
 
-	&:insensitive { @include button(insensitive, $c:$bg_color, $tc:$fg_color);}
+	&:insensitive { @include button(insensitive);}
 	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color);}
 	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color);}
 	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color);}
