@@ -2168,8 +2168,10 @@ st_theme_node_get_text_decoration (StThemeNode *node)
   return 0;
 }
 
-StTextAlign
-st_theme_node_get_text_align(StThemeNode *node)
+static gboolean
+st_theme_node_lookup_text_align (StThemeNode *node,
+                                 gboolean     inherit,
+                                 StTextAlign *text_align)
 {
   int i;
 
@@ -2179,40 +2181,36 @@ st_theme_node_get_text_align(StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp(cr_declaration_name (decl), "text-align") == 0)
+      if (strcmp (cr_declaration_name (decl), "text-align") == 0)
         {
-          CRTerm *term = decl->value;
-
-          if (term->type != TERM_IDENT || term->next)
-            continue;
-
-          if (strcmp(term->content.str->stryng->str, "inherit") == 0)
+          GetFromTermResult result = stylish_get_text_align_from_term (decl->value, text_align);
+          if (result == VALUE_FOUND)
             {
-              if (node->parent_node)
-                return st_theme_node_get_text_align(node->parent_node);
-              return ST_TEXT_ALIGN_LEFT;
+              return TRUE;
             }
-          else if (strcmp(term->content.str->stryng->str, "left") == 0)
+          else if (result == VALUE_INHERIT)
             {
-              return ST_TEXT_ALIGN_LEFT;
-            }
-          else if (strcmp(term->content.str->stryng->str, "right") == 0)
-            {
-              return ST_TEXT_ALIGN_RIGHT;
-            }
-          else if (strcmp(term->content.str->stryng->str, "center") == 0)
-            {
-              return ST_TEXT_ALIGN_CENTER;
-            }
-          else if (strcmp(term->content.str->stryng->str, "justify") == 0)
-            {
-              return ST_TEXT_ALIGN_JUSTIFY;
+              inherit = TRUE;
+              break;
             }
         }
     }
-  if(node->parent_node)
-    return st_theme_node_get_text_align(node->parent_node);
-  return ST_TEXT_ALIGN_LEFT;
+
+  if (inherit && node->parent_node)
+    return st_theme_node_lookup_text_align (node->parent_node, inherit, text_align);
+
+  return FALSE;
+}
+
+StTextAlign
+st_theme_node_get_text_align (StThemeNode *node)
+{
+  StTextAlign text_align;
+
+  if (st_theme_node_lookup_text_align (node, TRUE, &text_align))
+    return text_align;
+  else
+    return ST_TEXT_ALIGN_LEFT;
 }
 
 /**
