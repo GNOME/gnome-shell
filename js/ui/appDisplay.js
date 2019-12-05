@@ -572,6 +572,62 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
+var PageManager = GObject.registerClass({
+    Signals: { 'layout-changed': {} },
+}, class PageManager extends GObject.Object {
+    _init() {
+        super._init();
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._settings.connect('changed::grid-layout', this._loadPages.bind(this));
+
+        this._loadPages();
+    }
+
+    _loadPages() {
+        this._pages = this._settings.get_value('grid-layout').recursiveUnpack();
+        this.emit('layout-changed');
+    }
+
+    getAppPosition(appId) {
+        let position = -1;
+        let page = -1;
+
+        for (let pageIndex = 0; pageIndex < this._pages.length; pageIndex++) {
+            const pageData = this._pages[pageIndex];
+
+            if (!(appId in pageData))
+                continue;
+
+            page = pageIndex;
+            position = pageData[appId].position;
+        }
+
+        return [page, position];
+    }
+
+    set pages(p) {
+        const packedPages = [];
+
+        // Pack the icon properties as a GVariant
+        for (let page of p) {
+            const pageData = {};
+            for (let [appId, properties] of Object.entries(page)) {
+                const variant = new GLib.Variant('a{sv}', properties);
+                pageData[appId] = new GLib.Variant('v', variant);
+            }
+            packedPages.push(pageData);
+        }
+
+        const variant = new GLib.Variant('aa{sv}', packedPages);
+        this._settings.set_value('grid-layout', variant);
+    }
+
+    get pages() {
+        return this._pages;
+    }
+});
+
 var AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
     _init() {
@@ -582,6 +638,7 @@ class AppDisplay extends BaseAppView {
         });
 
         this._grid._delegate = this;
+        this._pageManager = new PageManager();
 
         this._scrollView.add_style_class_name('all-apps');
 
