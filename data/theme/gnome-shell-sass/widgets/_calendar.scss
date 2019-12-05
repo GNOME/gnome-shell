@@ -11,7 +11,8 @@
 	spacing: 0;
 	border: 0 solid $bubble_borders_color;
 	padding: $base_padding + $base_margin;
-	padding-bottom: 3em;
+	padding-bottom: 3em; // account for the notifications clear button
+	padding-top:0;
 
 	&:ltr { border-left-width: 1px; }
 	&:rtl { border-right-width: 1px; }
