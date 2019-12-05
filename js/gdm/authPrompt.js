@@ -445,7 +445,7 @@ var AuthPrompt = GObject.registerClass({
 
         if (user) {
             let userWidget = new UserWidget.UserWidget(user);
-            userWidget.x_align = Clutter.ActorAlign.START;
+            userWidget.x_align = Clutter.ActorAlign.CENTER;
             this._userWell.set_child(userWidget);
         }
     }
