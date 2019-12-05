@@ -7,7 +7,7 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
-var AVATAR_ICON_SIZE = 64;
+var AVATAR_ICON_SIZE = 128;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -20,7 +20,8 @@ class Avatar extends St.Bin {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'user-icon' });
+                                        styleClass: 'user-icon',
+                                        x_align: St.Align.MIDDLE, });
 
         super._init({
             style_class: params.styleClass,
@@ -160,7 +161,7 @@ class UserWidgetLabel extends St.Widget {
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
     _init(user) {
-        super._init({ style_class: 'user-widget', vertical: false });
+        super._init({ style_class: 'user-widget', vertical: true });
 
         this._user = user;
 
