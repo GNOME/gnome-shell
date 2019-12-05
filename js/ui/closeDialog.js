@@ -67,7 +67,7 @@ var CloseDialog = GObject.registerClass({
         this._dialog.width = windowActor.width;
         this._dialog.height = windowActor.height;
 
-        this._dialog.addContent(this._createDialogContent());
+        this._dialog.contentLayout.add_child(this._createDialogContent());
         this._dialog.addButton({ label: _('Force Quit'),
                                  action: this._onClose.bind(this),
                                  default: true });
