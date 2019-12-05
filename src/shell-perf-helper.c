@@ -12,7 +12,6 @@
 #include <math.h>
 
 #include <gtk/gtk.h>
-#include <gdk/gdkx.h>
 
 #define BUS_NAME "org.gnome.Shell.PerfHelper"
 
@@ -59,12 +58,6 @@ static GOptionEntry opt_entries[] =
     { "idle-timeout", 'r', 0, G_OPTION_ARG_INT, &opt_idle_timeout, "Exit after N seconds", "N" },
     { NULL }
   };
-
-static Display *xdisplay;
-static Window xroot;
-static Atom atom_wm_state;
-static Atom atom__net_wm_name;
-static Atom atom_utf8_string;
 
 static guint timeout_id;
 static GList *our_windows;
@@ -119,9 +112,9 @@ on_window_map_event (GtkWidget   *window,
 }
 
 static gboolean
-on_window_draw (GtkWidget  *window,
-		cairo_t    *cr,
-                WindowInfo *info)
+on_child_draw (GtkWidget  *window,
+               cairo_t    *cr,
+               WindowInfo *info)
 {
   cairo_rectangle_int_t allocation;
   double x_offset, y_offset;
@@ -203,6 +196,7 @@ create_window (int      width,
                gboolean redraws)
 {
   WindowInfo *info;
+  GtkWidget *child;
 
   info = g_new0 (WindowInfo, 1);
   info->width = width;
@@ -218,10 +212,13 @@ create_window (int      width,
   info->pending = TRUE;
   info->start_time = -1;
 
+  child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, "app-paintable", TRUE, NULL);
+  gtk_container_add (GTK_CONTAINER (info->window), child);
+
   gtk_widget_set_size_request (info->window, width, height);
   gtk_widget_set_app_paintable (info->window, TRUE);
   g_signal_connect (info->window, "map-event", G_CALLBACK (on_window_map_event), info);
-  g_signal_connect (info->window, "draw", G_CALLBACK (on_window_draw), info);
+  g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), info);
   gtk_widget_show (info->window);
 
   if (info->redraws)
@@ -346,8 +343,6 @@ on_name_lost  (GDBusConnection *connection,
 int
 main (int argc, char **argv)
 {
-  GdkDisplay *display;
-  GdkScreen *screen;
   GOptionContext *context;
   GError *error = NULL;
 
@@ -362,15 +357,6 @@ main (int argc, char **argv)
       g_print ("option parsing failed: %s\n", error->message);
       return 1;
     }
-
-  display = gdk_display_get_default ();
-  screen = gdk_screen_get_default ();
-
-  xdisplay = gdk_x11_display_get_xdisplay (display);
-  xroot = gdk_x11_window_get_xid (gdk_screen_get_root_window (screen));
-  atom_wm_state = gdk_x11_get_xatom_by_name_for_display (display, "WM_STATE");
-  atom__net_wm_name = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_NAME");
-  atom_utf8_string = gdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING");
 
   g_bus_own_name (G_BUS_TYPE_SESSION,
                   BUS_NAME,
