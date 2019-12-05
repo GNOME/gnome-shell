@@ -200,8 +200,9 @@ StScrollBar {
   border-radius: $modal_radius;
   @extend %bubble-panel;
   .modal-dialog-content-box {
-    padding: 32px 40px;
+    margin: 32px 40px;
     spacing: 32px;
+    max-width: 28em;
   }
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
   .run-dialog-error-box {

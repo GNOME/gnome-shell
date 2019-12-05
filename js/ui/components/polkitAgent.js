@@ -61,7 +61,7 @@ var AuthenticationDialog = GObject.registerClass({
             style_class: 'polkit-dialog-user-layout',
             vertical: false,
         });
-        content.messageBox.add(userBox);
+        content.add_actor(userBox);
 
         this._userAvatar = new UserWidget.Avatar(this._user, {
             iconSize: DIALOG_ICON_SIZE,
@@ -83,7 +83,7 @@ var AuthenticationDialog = GObject.registerClass({
         userBox.add_child(this._userLabel);
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        content.messageBox.add(this._passwordBox);
+        content.add_actor(this._passwordBox);
         this._passwordLabel = new St.Label({
             style_class: 'prompt-dialog-password-label',
             y_align: Clutter.ActorAlign.CENTER,
@@ -114,13 +114,13 @@ var AuthenticationDialog = GObject.registerClass({
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add_child(this._errorMessageLabel);
+        content.add_actor(this._errorMessageLabel);
         this._errorMessageLabel.hide();
 
         this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
         this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._infoMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add(this._infoMessageLabel);
+        content.add_actor(this._infoMessageLabel);
         this._infoMessageLabel.hide();
 
         /* text is intentionally non-blank otherwise the height is not the same as for
@@ -132,7 +132,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._nullMessageLabel.add_style_class_name('hidden');
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add(this._nullMessageLabel);
+        content.add_actor(this._nullMessageLabel);
         this._nullMessageLabel.show();
 
         this._cancelButton = this.addButton({ label: _("Cancel"),

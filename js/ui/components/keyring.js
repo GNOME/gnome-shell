@@ -153,7 +153,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         }
 
         this._controlTable = table;
-        this._content.messageBox.add_child(table);
+        this._content.add_actor(table);
     }
 
     _updateSensitivity(sensitive) {
