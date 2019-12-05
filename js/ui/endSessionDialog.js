@@ -297,7 +297,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._checkBox.connect('clicked', this._sync.bind(this));
         messageLayout.add(this._checkBox);
 
-        this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-warning',
+        this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-battery-warning',
                                               text: _("Running on battery power: Please plug in before installing updates.") });
         this._batteryWarning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._batteryWarning.clutter_text.line_wrap = true;
