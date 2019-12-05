@@ -98,7 +98,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 secret.entry.clutter_text.set_password_char('\u25cf');
         }
 
-        contentBox.messageBox.add(secretTable);
+        contentBox.add_actor(secretTable);
 
         if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
             let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
@@ -106,7 +106,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             descriptionLabel.clutter_text.line_wrap = true;
             descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
-            contentBox.messageBox.add_child(descriptionLabel);
+            contentBox.add_actor(descriptionLabel);
         }
 
         this._okButton = {
