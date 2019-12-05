@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GLib, GObject, Shell } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -355,9 +355,14 @@ var GeolocationDialog = GObject.registerClass({
         let title = _("Give %s access to your location?").format(name);
         let body = _("Location access can be changed at any time from the privacy settings.");
 
-        let contentParams = { title, subtitle, body };
-        let content = new Dialog.MessageDialogContent(contentParams);
+        let content = new Dialog.MessageDialogContent({ title, body });
         this.contentLayout.add_actor(content);
+
+        let subtitleLabel = new St.Label({
+            text: subtitle,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        content.insertBeforeBody(subtitleLabel);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: this._onDenyClicked.bind(this),
