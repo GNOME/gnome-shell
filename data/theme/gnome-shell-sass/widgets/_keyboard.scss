@@ -2,15 +2,14 @@
 
 $key_size: 1.2em;
 $key_border_radius: $base_border_radius + 3px;
-$key_bg_color: lighten($bg_color, if($variant=='light', 0%, 2%));
+$key_bg_color:  $bg_color;
 // $default_key_bg_color: darken($key_bg_color, 4%);
 $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten($osd_bg_color, 2%));
 
 
 // draw keys using button function
 %keyboard_key {
-
-	@include button(normal, $c:$key_bg_color, $tc:$osd_fg_color);
+	@include button(normal, $c:$key_bg_color);
 
 	&:focus { @include button(focus);}
 	&:hover, &:checked { @include button(hover, $c: $key_bg_color);}
@@ -26,14 +25,16 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
 
 		.page-indicator-icon {
 			width: 6px;
-			height: 6px
+			height: 6px;
+			&:checked {
+				background-color:red;
+			}
 		}
 	}
 }
 
 // the container for individual keys
 .key-container {
-	background-color: transparent;
 	padding: $base_margin;
 	spacing: $base_margin;
 }
@@ -47,8 +48,8 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
 
 	border-radius: $key_border_radius;
 
-	&:grayed { //FIXME
-		background-color: $bg_color;
+	&:grayed { //FIXMEy
+		background-color: darken($bg_color, 3%);
 		color: $osd_fg_color;
 		border-color: $osd_borders_color;
 	}
