@@ -150,10 +150,6 @@ var MessageDialogContent = GObject.registerClass({
                                           GObject.ParamFlags.READWRITE |
                                           GObject.ParamFlags.CONSTRUCT,
                                           null),
-        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle', 'subtitle',
-                                             GObject.ParamFlags.READWRITE |
-                                             GObject.ParamFlags.CONSTRUCT,
-                                             null),
         'body': GObject.ParamSpec.string('body', 'body', 'body',
                                          GObject.ParamFlags.READWRITE |
                                          GObject.ParamFlags.CONSTRUCT,
@@ -161,20 +157,11 @@ var MessageDialogContent = GObject.registerClass({
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
-        this._title = new St.Label();
-        this._subtitle = new St.Label();
-        this._body = new St.Label();
+        this._title = new St.Label({ style_class: 'message-dialog-title' });
+        this._body = new St.Label({ style_class: 'message-dialog-body' });
 
-        ['title', 'subtitle', 'body'].forEach(prop => {
-            this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
-        });
-
-        let textProps = {
-            ellipsize: Pango.EllipsizeMode.NONE,
-            line_wrap: true,
-        };
-        this._subtitle.clutter_text.set(textProps);
-        this._body.clutter_text.set(textProps);
+        this._body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._body.clutter_text.line_wrap = true;
 
         let defaultParams = { style_class: 'message-dialog-main-layout' };
         super._init(Object.assign(defaultParams, params));
@@ -185,7 +172,6 @@ var MessageDialogContent = GObject.registerClass({
             vertical: true,
         });
         this.messageBox.add_actor(this._title);
-        this.messageBox.add_actor(this._subtitle);
         this.messageBox.add_actor(this._body);
         this.add_actor(this.messageBox);
     }
@@ -194,20 +180,12 @@ var MessageDialogContent = GObject.registerClass({
         return this._title.text;
     }
 
-    get subtitle() {
-        return this._subtitle.text;
-    }
-
     get body() {
         return this._body.text;
     }
 
     set title(title) {
         this._setLabel(this._title, 'title', title);
-    }
-
-    set subtitle(subtitle) {
-        this._setLabel(this._subtitle, 'subtitle', subtitle);
     }
 
     set body(body) {
