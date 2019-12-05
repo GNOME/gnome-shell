@@ -574,6 +574,61 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
+var PageManager = GObject.registerClass({
+    Signals: { 'layout-changed': {} },
+}, class PageManager extends GObject.Object {
+    _init() {
+        super._init();
+
+        global.settings.connect('changed::app-picker-layout',
+            this._loadPages.bind(this));
+
+        this._loadPages();
+    }
+
+    _loadPages() {
+        const layout = global.settings.get_value('app-picker-layout');
+        this._pages = layout.recursiveUnpack();
+        this.emit('layout-changed');
+    }
+
+    getAppPosition(appId) {
+        let position = -1;
+        let page = -1;
+
+        for (let pageIndex = 0; pageIndex < this._pages.length; pageIndex++) {
+            const pageData = this._pages[pageIndex];
+
+            if (!(appId in pageData))
+                continue;
+
+            page = pageIndex;
+            position = pageData[appId].position;
+        }
+
+        return [page, position];
+    }
+
+    set pages(p) {
+        const packedPages = [];
+
+        // Pack the icon properties as a GVariant
+        for (const page of p) {
+            const pageData = {};
+            for (const [appId, properties] of Object.entries(page))
+                pageData[appId] = new GLib.Variant('a{sv}', properties);
+            packedPages.push(pageData);
+        }
+
+        const variant = new GLib.Variant('aa{sv}', packedPages);
+        global.settings.set_value('app-picker-layout', variant);
+    }
+
+    get pages() {
+        return this._pages;
+    }
+});
+
 var AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
     _init() {
@@ -584,6 +639,7 @@ class AppDisplay extends BaseAppView {
         });
 
         this._grid._delegate = this;
+        this._pageManager = new PageManager();
 
         this._scrollView.add_style_class_name('all-apps');
 
