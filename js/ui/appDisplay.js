@@ -102,10 +102,7 @@ function _findBestFolderName(apps) {
     let commonCategories = [];
 
     appInfos.reduce((categories, appInfo) => {
-        const appCategories = appInfo.get_categories();
-        if (!appCategories)
-            return categories;
-        for (let category of appCategories.split(';')) {
+        for (let category of _getCategories(appInfo)) {
             if (!(category in categoryCounter))
                 categoryCounter[category] = 0;
 
@@ -168,8 +165,8 @@ var BaseAppView = GObject.registerClass({
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
 
-        this._items = {};
-        this._allItems = [];
+        this._items = new Map();
+        this._orderedItems = [];
     }
 
     _childFocused(_actor) {
@@ -177,7 +174,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _redisplay() {
-        let oldApps = this._allItems.slice();
+        let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
         let newApps = this._loadApps().sort(this._compareItems);
@@ -188,28 +185,28 @@ var BaseAppView = GObject.registerClass({
 
         // Remove old app icons
         removedApps.forEach(icon => {
-            let iconIndex = this._allItems.indexOf(icon);
+            let iconIndex = this._orderedItems.indexOf(icon);
             let id = icon.id;
 
-            this._allItems.splice(iconIndex, 1);
+            this._orderedItems.splice(iconIndex, 1);
             icon.destroy();
-            delete this._items[id];
+            this._items.delete(id);
         });
 
         // Add new app icons
         addedApps.forEach(icon => {
             let iconIndex = newApps.indexOf(icon);
 
-            this._allItems.splice(iconIndex, 0, icon);
+            this._orderedItems.splice(iconIndex, 0, icon);
             this._grid.addItem(icon, iconIndex);
-            this._items[icon.id] = icon;
+            this._items.set(icon.id, icon);
         });
 
         this.emit('view-loaded');
     }
 
     getAllItems() {
-        return this._allItems;
+        return this._orderedItems;
     }
 
     _compareItems(a, b) {
@@ -217,24 +214,27 @@ var BaseAppView = GObject.registerClass({
     }
 
     _selectAppInternal(id) {
-        if (this._items[id])
-            this._items[id].navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        if (this._items.has(id))
+            this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
             log(`No such application ${id}`);
     }
 
     selectApp(id) {
-        if (this._items[id] && this._items[id].mapped) {
-            this._selectAppInternal(id);
-        } else if (this._items[id]) {
-            // Need to wait until the view is mapped
-            let signalId = this._items[id].connect('notify::mapped',
-                actor => {
+        if (this._items.has(id)) {
+            let item = this._items.get(id);
+
+            if (item.mapped) {
+                this._selectAppInternal(id);
+            } else {
+                // Need to wait until the view is mapped
+                let signalId = item.connect('notify::mapped', actor => {
                     if (actor.mapped) {
                         actor.disconnect(signalId);
                         this._selectAppInternal(id);
                     }
                 });
+            }
         } else {
             // Need to wait until the view is built
             let signalId = this.connect('view-loaded', () => {
@@ -330,7 +330,7 @@ var AllView = GObject.registerClass({
         this._pageIndicators.connect('scroll-event', this._onScroll.bind(this));
         this.add_actor(this._pageIndicators);
 
-        this.folderIcons = [];
+        this._folderIcons = [];
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({
@@ -431,9 +431,9 @@ var AllView = GObject.registerClass({
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._allItems.indexOf(item);
-        this._allItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
+        let oldIdx = this._orderedItems.indexOf(item);
+        this._orderedItems.splice(oldIdx, 1);
+        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems);
 
         this._grid.removeItem(item);
         this._grid.addItem(item, newIdx);
@@ -441,17 +441,17 @@ var AllView = GObject.registerClass({
     }
 
     _refilterApps() {
-        let filteredApps = this._allItems.filter(icon => !icon.visible);
+        let filteredApps = this._orderedItems.filter(icon => !icon.visible);
 
-        this._allItems.forEach(icon => {
+        this._orderedItems.forEach(icon => {
             if (icon instanceof AppIcon)
                 icon.visible = true;
         });
 
-        this.folderIcons.forEach(folder => {
+        this._folderIcons.forEach(folder => {
             let folderApps = folder.getAppIds();
             folderApps.forEach(appId => {
-                let appIcon = this._items[appId];
+                let appIcon = this._items.get(appId);
                 appIcon.visible = false;
             });
         });
@@ -482,19 +482,19 @@ var AllView = GObject.registerClass({
 
         let appSys = Shell.AppSystem.get_default();
 
-        this.folderIcons = [];
+        this._folderIcons = [];
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
             let path = `${this._folderSettings.path}folders/${id}/`;
-            let icon = this._items[id];
+            let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
             appIcons.push(icon);
-            this.folderIcons.push(icon);
+            this._folderIcons.push(icon);
         });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -506,7 +506,7 @@ var AllView = GObject.registerClass({
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(appId => {
-            let icon = this._items[appId];
+            let icon = this._items.get(appId);
             if (!icon) {
                 let app = appSys.lookup_app(appId);
 
@@ -724,13 +724,14 @@ var AllView = GObject.registerClass({
     }
 
     _updateIconOpacities(folderOpen) {
-        for (let id in this._items) {
+        for (let icon of this._items.values()) {
             let opacity;
-            if (folderOpen && !this._items[id].checked)
+            if (folderOpen && !icon.checked)
                 opacity =  INACTIVE_GRID_OPACITY;
             else
                 opacity = 255;
-            this._items[id].ease({
+
+            icon.ease({
                 opacity,
                 duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -773,8 +774,8 @@ var AllView = GObject.registerClass({
         this._availWidth = availWidth;
         this._availHeight = availHeight;
         // Update folder views
-        for (let i = 0; i < this.folderIcons.length; i++)
-            this.folderIcons[i].adaptToSize(availWidth, availHeight);
+        for (let i = 0; i < this._folderIcons.length; i++)
+            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 
     _resetOvershoot() {
@@ -914,7 +915,7 @@ var AllView = GObject.registerClass({
             return false;
         }
 
-        let appItems = apps.map(id => this._items[id].app);
+        let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
             folderName = _("Unnamed Folder");
@@ -989,7 +990,7 @@ class FrequentView extends BaseAppView {
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = this._items[mostUsed[i].get_id()];
+            let appIcon = this._items.get(mostUsed[i].get_id());
             if (!appIcon) {
                 appIcon = new AppIcon(mostUsed[i], {
                     isDraggable: favoritesWritable,
@@ -1360,12 +1361,12 @@ class FolderView extends BaseAppView {
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
-        let numItems = this._allItems.length;
+        let numItems = this._orderedItems.length;
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
             let bin = new St.Bin({ width: subSize * scale, height: subSize * scale });
             if (i < numItems)
-                bin.child = this._allItems[i].app.create_icon_texture(subSize);
+                bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
             layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
         }
 
@@ -1452,7 +1453,7 @@ class FolderView extends BaseAppView {
             if (apps.some(appIcon => appIcon.id == appId))
                 return;
 
-            let icon = this._items[appId];
+            let icon = this._items.get(appId);
             if (!icon)
                 icon = new AppIcon(app);
 
