@@ -46,6 +46,8 @@ var SwitcherPopup = GObject.registerClass({
 
         Main.uiGroup.add_actor(this);
 
+        Main.layoutManager.connect('system-modal-opened', () => this.destroy());
+
         this._haveModal = false;
         this._modifierMask = 0;
 

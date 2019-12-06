@@ -134,6 +134,7 @@ var ModalDialog = GObject.registerClass({
             onComplete: () => {
                 this._setState(State.OPENED);
                 this.emit('opened');
+                Main.layoutManager.emit('system-modal-opened');
             },
         });
     }
