@@ -149,6 +149,7 @@ var AuthPrompt = GObject.registerClass({
             can_focus: true,
             x_expand: false,
             y_expand: true,
+            hint_text: "Enter Password…",
         });
         ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
 
