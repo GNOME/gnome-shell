@@ -57,7 +57,6 @@ convertdir = join_paths(datadir, 'GConf', 'gsettings')
 desktopdir = join_paths(datadir, 'applications')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')
 localedir = join_paths(datadir, 'locale')
-portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
