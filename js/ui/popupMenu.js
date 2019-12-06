@@ -817,6 +817,7 @@ var PopupMenu = class extends PopupMenuBase {
                                                         this._onKeyPress.bind(this));
         }
 
+        this._systemModalOpenedId = 0;
         this._openedSubMenu = null;
     }
 
@@ -891,6 +892,11 @@ var PopupMenu = class extends PopupMenuBase {
         if (this.isEmpty())
             return;
 
+        if (!this._systemModalOpenedId) {
+            this._systemModalOpenedId =
+                Main.layoutManager.connect('system-modal-opened', () => this.close());
+        }
+
         this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
@@ -921,6 +927,11 @@ var PopupMenu = class extends PopupMenuBase {
     destroy() {
         if (this._keyPressId)
             this.sourceActor.disconnect(this._keyPressId);
+
+        if (this._systemModalOpenedId)
+            Main.layoutManager.disconnect(this._systemModalOpenedId);
+        this._systemModalOpenedId = 0;
+
         super.destroy();
     }
 };
