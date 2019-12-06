@@ -216,6 +216,8 @@ var ModalDialog = GObject.registerClass({
         if (!Main.pushModal(this, params))
             return false;
 
+        Main.layoutManager.emit('system-modal-opened');
+
         this._hasModal = true;
         if (this._savedKeyFocus) {
             this._savedKeyFocus.grab_key_focus();

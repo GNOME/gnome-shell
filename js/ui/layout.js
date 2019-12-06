@@ -189,6 +189,7 @@ var LayoutManager = GObject.registerClass({
                'startup-complete': {},
                'startup-prepared': {},
                'monitors-changed': {},
+               'system-modal-opened': {},
                'keyboard-visible-changed': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class LayoutManager extends GObject.Object {
     _init() {
