@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { AccountsService, Clutter, Cogl, Gio, GLib,
+const { AccountsService, Clutter, Gio, GLib,
         GnomeDesktop, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
 const Signals = imports.signals;
@@ -407,18 +407,18 @@ class ScreenShieldArrow extends St.Bin {
         super.vfunc_style_changed();
     }
 
-    vfunc_paint() {
+    vfunc_paint(paintContext) {
         if (this._shadowHelper) {
             this._shadowHelper.update(this._drawingArea);
 
             let allocation = this._drawingArea.get_allocation_box();
             let paintOpacity = this._drawingArea.get_paint_opacity();
-            let framebuffer = Cogl.get_draw_framebuffer();
+            let framebuffer = paintContext.get_framebuffer();
 
             this._shadowHelper.paint(framebuffer, allocation, paintOpacity);
         }
 
-        this._drawingArea.paint();
+        this._drawingArea.paint(paintContext);
     }
 });
 
