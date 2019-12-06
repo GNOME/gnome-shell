@@ -72,7 +72,6 @@ configure_file(
 )
 
 
-install_data('gnome-shell.portal', install_dir: portaldir)
 install_data('50-gnome-shell-system.xml', install_dir: keysdir)
 
 
