@@ -496,6 +496,8 @@ var ShellUserVerifier = class {
             // The only question asked by this service is "Token?"
             this.answerQuery(serviceName, this._oVirtCredentialsManager.getToken());
             return;
+        } else if (serviceName == PASSWORD_SERVICE_NAME) {
+            secretQuestion = '';
         }
 
         this.emit('ask-question', serviceName, secretQuestion, '\u25cf');
