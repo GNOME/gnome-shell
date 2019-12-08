@@ -287,13 +287,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
         let content = new Dialog.MessageDialogContent({ title, description });
-        this.contentLayout.add_actor(content);
-
-        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        let grid = new St.Widget({ style_class: 'prompt-dialog-grid',
-                                   layout_manager: layout });
-        layout.hookup_style(grid);
-        let rtl = grid.get_text_direction() === Clutter.TextDirection.RTL;
+        this.contentLayout.add_child(content);
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
             this._keyfilesLabel = new St.Label({
@@ -320,29 +314,30 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._keyfilesLabel.clutter_text.line_wrap = true;
             content.add_child(this._keyfilesLabel);
 
-            this._pimLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                            text: _("PIM Number"),
-                                            y_align: Clutter.ActorAlign.CENTER });
+            let passwordBox = new St.BoxLayout({
+                style_class: 'prompt-dialog-password-layout',
+                vertical: true,
+            });
+
             this._pimEntry = new St.PasswordEntry({
                 style_class: 'prompt-dialog-password-entry',
+                hint_text: _("Enter PIM Number…"),
+                show_hint_while_focused: true,
                 can_focus: true,
                 x_expand: true,
             });
             this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
             ShellEntry.addContextMenu(this._pimEntry);
+            passwordBox.add_child(this._pimEntry);
 
-            if (rtl) {
-                layout.attach(this._pimEntry, 0, 0, 1, 1);
-                layout.attach(this._pimLabel, 1, 0, 1, 1);
-            } else {
-                layout.attach(this._pimLabel, 0, 0, 1, 1);
-                layout.attach(this._pimEntry, 1, 0, 1, 1);
-            }
+            this._pimErrorMessageLabel = new St.Label({
+                style_class: 'prompt-dialog-password-entry',
+                text: _("The PIM must be a number or empty."),
+                visible: false,
+            });
+            passwordBox.add_child(this._pimErrorMessageLabel);
 
-            this._pimErrorMessageLabel = new St.Label({ style_class: 'prompt-dialog-password-entry',
-                                                        text: _("The PIM must be a number or empty."),
-                                                        visible: false });
-            layout.attach(this._pimErrorMessageLabel, 0, 2, 2, 1);
+            content.add_child(passwordBox);
         } else {
             this._hiddenVolume = null;
             this._systemVolume = null;
@@ -350,41 +345,36 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._pimErrorMessageLabel = null;
         }
 
-        this._passwordLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                             text: _("Password"),
-                                             y_align: Clutter.ActorAlign.CENTER });
+        let passwordBox = new St.BoxLayout({
+            style_class: 'prompt-dialog-password-layout',
+            vertical: true,
+        });
+
         this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
+            hint_text: _("Enter Password…"),
+            show_hint_while_focused: true,
             can_focus: true,
             x_expand: true,
         });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-        ShellEntry.addContextMenu(this._passwordEntry);
         this.setInitialKeyFocus(this._passwordEntry);
-        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
-            animate: true,
-        });
-        this._passwordEntry.secondary_icon = this._workSpinner;
+        ShellEntry.addContextMenu(this._passwordEntry);
+        passwordBox.add_child(this._passwordEntry);
+
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        passwordBox.add_child(this._capsLockWarningLabel);
 
-        if (rtl) {
-            layout.attach(this._passwordEntry, 0, 1, 1, 1);
-            layout.attach(this._passwordLabel, 1, 1, 1, 1);
-            layout.attach(this._capsLockWarningLabel, 0, 2, 1, 1);
-        } else {
-            layout.attach(this._passwordLabel, 0, 1, 1, 1);
-            layout.attach(this._passwordEntry, 1, 1, 1, 1);
-            layout.attach(this._capsLockWarningLabel, 1, 2, 1, 1);
-        }
-
-        content.add_child(grid);
-
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn’t work. Please try again.") });
+        this._errorMessageLabel = new St.Label({
+            style_class: 'prompt-dialog-error-label',
+            text: _("Sorry, that didn’t work. Please try again."),
+            opacity: 0,
+        });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        this._errorMessageLabel.hide();
-        content.add_child(this._errorMessageLabel);
+        passwordBox.add_child(this._errorMessageLabel);
+
+        content.add_child(passwordBox);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
@@ -421,8 +411,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
     reaskPassword() {
         this._passwordEntry.set_text('');
-        this._errorMessageLabel.show();
-        this._workSpinner.stop();
+        this._errorMessageLabel.opacity = 255;
     }
 
     _onCancelButton() {
@@ -448,7 +437,6 @@ var ShellMountPasswordDialog = GObject.registerClass({
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.checked);
 
-        this._workSpinner.play();
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&
