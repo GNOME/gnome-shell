@@ -97,6 +97,26 @@
 
 .prompt-dialog-password-layout {
   spacing: 8px;
+
+  .prompt-dialog-password-spinner-box {
+    width: 20em;
+    padding-left: 20px; // 4px (spacing) + 16px (spinner-width)
+    spacing: 4px;
+
+    &:rtl {
+      padding-left: 0px;
+      padding-right: 20px;
+    }
+
+    .prompt-dialog-no-spinner-password-entry {
+      margin-right: 20px;
+
+      &:rtl {
+        margin-left: 20px;
+        margin-right: 0px;
+      }
+    }
+  }
 }
 
 .prompt-dialog-password-entry {
@@ -112,11 +132,6 @@
 
 .prompt-dialog-error-label {
   color: $warning_color;
-}
-
-.prompt-dialog-grid {
-  spacing-rows: 15px;
-  spacing-columns: 1em;
 }
 
 
