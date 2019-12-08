@@ -269,21 +269,13 @@ var ShellMountPasswordDialog = GObject.registerClass({
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
         let content = new Dialog.MessageDialogContent({ title, description });
-        this.contentLayout.add_actor(content);
 
-        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        let grid = new St.Widget({ style_class: 'prompt-dialog-grid',
-                                   layout_manager: layout });
-        layout.hookup_style(grid);
-        let rtl = grid.get_text_direction() === Clutter.TextDirection.RTL;
+        let passwordBox = new St.BoxLayout({
+            style_class: 'prompt-dialog-password-layout',
+            vertical: true,
+        });
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
-            this._keyfilesLabel = new St.Label({
-                style_class: 'prompt-dialog-keyfiles-label',
-                visible: false,
-                y_align: Clutter.ActorAlign.CENTER,
-            });
-
             this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
             content.add_child(this._hiddenVolume);
 
@@ -294,6 +286,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._keyfilesCheckbox.connect("clicked", this._onKeyfilesCheckboxClicked.bind(this));
             content.add_child(this._keyfilesCheckbox);
 
+            this._keyfilesLabel = new St.Label({ visible: false });
             this._keyfilesLabel.clutter_text.set_markup(
                 /* Translators: %s is the Disks application */
                 _("To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead.").format(disksApp.get_name())
@@ -302,71 +295,64 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._keyfilesLabel.clutter_text.line_wrap = true;
             content.add_child(this._keyfilesLabel);
 
-            this._pimLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                            text: _("PIM Number"),
-                                            y_align: Clutter.ActorAlign.CENTER });
+            let entrySpinnerBox = new St.BoxLayout({
+                style_class: 'prompt-dialog-password-spinner-box',
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
             this._pimEntry = new St.PasswordEntry({
                 style_class: 'prompt-dialog-password-entry',
+                hint_text: _("Enter PIM Number…"),
                 can_focus: true,
-                x_expand: true,
             });
             this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
             ShellEntry.addContextMenu(this._pimEntry);
+            entrySpinnerBox.add_child(this._pimEntry);
+            passwordBox.add_child(entrySpinnerBox);
 
-            if (rtl) {
-                layout.attach(this._pimEntry, 0, 0, 1, 1);
-                layout.attach(this._pimLabel, 1, 0, 1, 1);
-            } else {
-                layout.attach(this._pimLabel, 0, 0, 1, 1);
-                layout.attach(this._pimEntry, 1, 0, 1, 1);
-            }
-
-            this._pimErrorMessageLabel = new St.Label({ style_class: 'prompt-dialog-password-entry',
-                                                        text: _("The PIM must be a number or empty."),
-                                                        visible: false });
-            layout.attach(this._pimErrorMessageLabel, 0, 2, 2, 1);
+            content.add_child(passwordBox);
         } else {
             this._hiddenVolume = null;
             this._systemVolume = null;
             this._pimEntry = null;
-            this._pimErrorMessageLabel = null;
         }
 
-        this._passwordLabel = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                             text: _("Password"),
-                                             y_align: Clutter.ActorAlign.CENTER });
+        let entrySpinnerBox = new St.BoxLayout({
+            style_class: 'prompt-dialog-password-spinner-box',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
         this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
+            hint_text: _("Enter Password…"),
             can_focus: true,
-            x_expand: true,
         });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-        ShellEntry.addContextMenu(this._passwordEntry);
         this.setInitialKeyFocus(this._passwordEntry);
+        ShellEntry.addContextMenu(this._passwordEntry);
+        entrySpinnerBox.add_child(this._passwordEntry);
+
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
             animate: true,
         });
-        this._passwordEntry.secondary_icon = this._workSpinner;
-        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        entrySpinnerBox.add_child(this._workSpinner);
+        passwordBox.add_child(entrySpinnerBox);
 
-        if (rtl) {
-            layout.attach(this._passwordEntry, 0, 1, 1, 1);
-            layout.attach(this._passwordLabel, 1, 1, 1, 1);
-            layout.attach(this._capsLockWarningLabel, 0, 2, 1, 1);
-        } else {
-            layout.attach(this._passwordLabel, 0, 1, 1, 1);
-            layout.attach(this._passwordEntry, 1, 1, 1, 1);
-            layout.attach(this._capsLockWarningLabel, 1, 2, 1, 1);
-        }
+        let warningBox = new St.BoxLayout({ vertical: true });
 
-        content.add_child(grid);
+        let capsLockWarning = new ShellEntry.CapsLockWarning();
+        warningBox.add_child(capsLockWarning);
 
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn’t work. Please try again.") });
+        this._errorMessageLabel = new St.Label({
+            style_class: 'prompt-dialog-error-label',
+            opacity: 0,
+        });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        this._errorMessageLabel.hide();
-        content.add_child(this._errorMessageLabel);
+        warningBox.add_child(this._errorMessageLabel);
+
+        passwordBox.add_child(warningBox);
+        content.add_child(passwordBox);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
@@ -376,6 +362,8 @@ var ShellMountPasswordDialog = GObject.registerClass({
         } else {
             this._rememberChoice = null;
         }
+
+        this.contentLayout.add_child(content);
 
         this._defaultButtons = [{
             label: _("Cancel"),
@@ -402,9 +390,10 @@ var ShellMountPasswordDialog = GObject.registerClass({
     }
 
     reaskPassword() {
-        this._passwordEntry.set_text('');
-        this._errorMessageLabel.show();
         this._workSpinner.stop();
+        this._passwordEntry.set_text('');
+        this._errorMessageLabel.text = _("Sorry, that didn’t work. Please try again.");
+        this._errorMessageLabel.opacity = 255;
     }
 
     _onCancelButton() {
@@ -417,14 +406,17 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
     _onEntryActivate() {
         let pim = 0;
-        if (this._pimEntry !== null)
+        if (this._pimEntry !== null) {
             pim = this._pimEntry.get_text();
-        if (isNaN(pim)) {
-            this._pimEntry.set_text('');
-            this._pimErrorMessageLabel.show();
-            return;
-        } else if (this._pimErrorMessageLabel !== null) {
-            this._pimErrorMessageLabel.hide();
+
+            if (isNaN(pim)) {
+                this._pimEntry.set_text('');
+                this._errorMessageLabel.text = _("The PIM must be a number or empty.");
+                this._errorMessageLabel.opacity = 255;
+                return;
+            }
+
+            this._errorMessageLabel.opacity = 0;
         }
 
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
