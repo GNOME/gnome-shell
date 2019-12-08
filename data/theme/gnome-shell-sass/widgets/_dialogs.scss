@@ -152,11 +152,6 @@
   color: $warning_color;
 }
 
-.prompt-dialog-grid {
-  spacing-rows: 15px;
-  spacing-columns: 1em;
-}
-
 .prompt-dialog-caps-lock-warning {
   @extend .prompt-dialog-error-label;
 }
