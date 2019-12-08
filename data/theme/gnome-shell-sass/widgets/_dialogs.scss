@@ -148,6 +148,13 @@
 
 .prompt-dialog-password-layout {
   spacing: 8px;
+
+  .prompt-dialog-password-spinner-box {
+    padding-left: 20px; // 20px = spinner size + spacing
+    spacing: 4px;
+
+    .prompt-dialog-password-entry { width: 19em; }
+  }
 }
 
 .prompt-dialog-password-entry {
@@ -163,11 +170,6 @@
 
 .prompt-dialog-error-label {
   color: $warning_color;
-}
-
-.prompt-dialog-grid {
-  spacing-rows: 15px;
-  spacing-columns: 1em;
 }
 
 .prompt-dialog-caps-lock-warning {
