@@ -2024,13 +2024,8 @@ StScrollBar {
     font-size: 11pt;
     font-weight: bold;
     text-align: center;
-    padding-left: 15px;
     padding-top: 24px;
   }
-    .user-widget-label {
-      &:ltr { padding-left: 14px; }
-      &:rtl { padding-right: 14px; }
-    }
 
   .login-dialog-prompt-layout {
       padding-top: 24px;
