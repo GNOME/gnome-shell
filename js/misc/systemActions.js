@@ -125,11 +125,10 @@ const SystemActions = GObject.registerClass({
             available: false,
         });
         this._actions.set(LOCK_ORIENTATION_ACTION_ID, {
-            // Translators: The name of the lock orientation action in search
-            name: C_("search-result", "Lock Orientation"),
+            name: '',
             iconName: '',
             // Translators: A list of keywords that match the lock orientation action, separated by semicolons
-            keywords: _("lock orientation;screen;rotation").split(/[; ]/),
+            keywords: _("lock orientation;unlock orientation;screen;rotation").split(/[; ]/),
             available: false,
         });
 
@@ -167,11 +166,10 @@ const SystemActions = GObject.registerClass({
 
         this.forceUpdate();
 
-        this._orientationSettings.connect('changed::orientation-lock',
-                                          () => {
-                                              this._updateOrientationLock();
-                                              this._updateOrientationLockIcon();
-                                          });
+        this._orientationSettings.connect('changed::orientation-lock', () => {
+          this._updateOrientationLock();
+          this._updateOrientationLockStatus();
+        });
         Main.layoutManager.connect('monitors-changed',
                                    () => this._updateOrientationLock());
         this._sensorProxy = new SensorProxy(Gio.DBus.system,
@@ -190,7 +188,7 @@ const SystemActions = GObject.registerClass({
             this._updateOrientationLock();
         });
         this._updateOrientationLock();
-        this._updateOrientationLockIcon();
+        this._updateOrientationLockStatus();
 
         Main.sessionMode.connect('updated', () => this._sessionUpdated());
         this._sessionUpdated();
@@ -243,12 +241,21 @@ const SystemActions = GObject.registerClass({
         this.notify('can-lock-orientation');
     }
 
-    _updateOrientationLockIcon() {
+    _updateOrientationLockStatus() {
         let locked = this._orientationSettings.get_boolean('orientation-lock');
+        let action = this._actions.get(LOCK_ORIENTATION_ACTION_ID);
+
+        // Translators: The name of the lock orientation action in search
+        // and in the system status menu
+        let name = locked
+            ? C_('search-result', 'Unlock Screen Rotation')
+            : C_('search-result', 'Lock Screen Rotation');
         let iconName = locked
             ? 'rotation-locked-symbolic'
             : 'rotation-allowed-symbolic';
-        this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName = iconName;
+
+        action.name = name;
+        action.iconName = iconName;
 
         this.notify('orientation-lock-icon');
     }
