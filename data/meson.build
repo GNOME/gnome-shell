@@ -114,8 +114,7 @@ if have_systemd
     install_dir: systemduserunitdir
   )
 
-  units = files('gnome-shell-x11.target',
-                'gnome-shell-wayland.target',
+  units = files('gnome-shell.target',
                 'gnome-shell-disable-extensions.service')
 
   install_data(units, install_dir: systemduserunitdir)

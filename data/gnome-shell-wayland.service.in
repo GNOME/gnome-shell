@@ -13,11 +13,12 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-# The units already conflict because they use the same BusName
-#Conflicts=gnome-shell-x11.service
-
 [Service]
 Type=notify
+# We cannot use Requisite= because that does not work with OnFailure, and we
+# cannot use Conflicts= because that would stop gnome-session-x11.target
+# if gnome-shell needs to be restarted.
+ExecCondition=systemctl --user --quiet is-active gnome-session-wayland.target
 ExecStart=@bindir@/gnome-shell
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
