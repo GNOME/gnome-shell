@@ -1,6 +1,12 @@
 [Unit]
 Description=GNOME Shell on X11
 DefaultDependencies=no
+CollectMode=inactive-or-failed
+RefuseManualStart=on
+RefuseManualStop=on
+
+# Only allow this target to be loaded in a X11 session
+Requisite=gnome-session-x11.target
 
 Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target

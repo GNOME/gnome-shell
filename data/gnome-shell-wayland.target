@@ -1,6 +1,12 @@
 [Unit]
 Description=GNOME Shell on Wayland
 DefaultDependencies=no
+CollectMode=inactive-or-failed
+RefuseManualStart=on
+RefuseManualStop=on
+
+# Only allow this target to be loaded in a wayland session
+Requisite=gnome-session-wayland.target
 
 Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
