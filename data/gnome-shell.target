@@ -1,0 +1,18 @@
+[Unit]
+Description=GNOME Shell
+DefaultDependencies=no
+CollectMode=inactive-or-failed
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+# Pull in both x11 and wayland, one of them will fail due to dependencies.
+Wants=gnome-shell-wayland.target
+Wants=gnome-shell-x11.target
+
+PartOf=gnome-shell-wayland.target
+PartOf=gnome-shell-x11.target
+
+After=gnome-shell-wayland.target
+After=gnome-shell-x11.target
