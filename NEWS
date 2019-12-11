@@ -1,3 +1,45 @@
+3.34.2
+======
+* Fix unredirection after cancelled animations [Florian; #1788]
+* Use cached coordinates for window sorting in overview [Andrew; !763]
+* Include shadow in window screenshots [Robert; !762]
+* Use correct timezones for events [Milan, Florian; !806, #1895]
+* Adjust style of system menu action buttons [monday; !802]
+* Fix windows getting stuck on screen if closed while animating [Florian; !815]
+* Hide stopped spinner in top bar [Joonas; !834]
+* Reuse existing icons when updating the app picker grid [Georges; !841]
+* Fix not-responding dialog size when using geometry scaling [Jonas; !783]
+* Fix battery icon glitch in "100% but charging" case [Philip; !814]
+* Update window titles in app menu [Florian; #1830]
+* Improve modifier-less keyboard navigation of switcher popups [Florian; #1883]
+* Use better OSK layout fallback for unsupported variants [Florian; #1907]
+* Fix creating app folders with no pre-existing folders [Jonas; #1652]
+* Improve DND page switching in app picker [Florian, Jonas; #1693]
+* Show polkit confirmation dialog for users with no password [Joaquim; !829]
+* Fix interacting with applications when magnifier is enabled [Jonas; !754]
+* Tweak styling of notifications/media constrols [Joonas; !855, !865]
+* Fix disable command of gnome-extensions tool [Florian; #1946]
+* Enable clean session shutdown after gnome-shell failure [Benjamin; !858]
+* Also remove scaled keys when texture cache is cleared [Daniel; !567]
+* Don't show overflow indicator in switchers that fit screen [Florian; #1834]
+* Place launched applications into a systemd scope [Benjamin; !863]
+* Fix weather forecasts for automatic location when Weather is not sandboxed
+  [Florian; #1823]
+* Dismiss switcher popups when a system modal dialogs opens [Florian; #1536]
+* Misc. bug fixes and cleanups [Marco, Philip, Florian, cunidev, Jonas, Joonas;
+  !758, !749, !777, !811, #1884, !823, !840, !782, !847, #1836, !852, !851,
+  !788, #1916, !866, !884]
+
+Contributors:
+  Marco Trevisan (Treviño), Benjamin Berg, Philip Chimento, Milan Crha,
+  Jonas Dreßler, Joonas Henriksson, Robert Mader, Daniel García Moreno,
+  Florian Müllner, Georges Basile Stavracas Neto, Joaquim Rocha, Andrew Watson,
+  cunidev, monday
+
+Translators:
+  Stas Solovey [ru], Ricardo Silva Veloso [pt_BR], Yi-Jyun Pan [zh_TW],
+  Umarzuki Bin Mochlis Moktar [ms]
+
 3.34.1
 ======
 * Fix "Frequent" view icons disappearing on hover [Jonas D.; #1502]
