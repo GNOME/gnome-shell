@@ -27,6 +27,7 @@ st_headers = [
   'st-theme-context.h',
   'st-theme-node.h',
   'st-types.h',
+  'st-viewport.h',
   'st-widget.h',
   'st-widget-accessible.h'
 ]
@@ -140,6 +141,7 @@ st_sources = [
   'st-theme-node.c',
   'st-theme-node-drawing.c',
   'st-theme-node-transition.c',
+  'st-viewport.c',
   'st-widget.c'
 ]
 
