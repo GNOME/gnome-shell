@@ -1,3 +1,68 @@
+3.35.2
+======
+* Fix unredirection after cancelled animations [Florian; #1788]
+* Include shadow in window screenshots [Robert; !762]
+* Show indicator when microphone is active [Florian; !729]
+* Use inheritance instead of delegate pattern [Marco; !559]
+* Use cached coordinates for window sorting in overview [Andrew; !763]
+* Wiggle login/unlock password entries on failure [Georges; !769]
+* Update window titles in app menu [Florian; #1830]
+* Fix window animations getting stuck by workspace switches [Jonas D.; !784]
+* Fix not-responding dialog size when using geometry scaling [Jonas D.; !783]
+* Handle buggy MPRIS clients more gracefully [Philip; #1362]
+* Deprecate StBoxLayout's child properties [Florian; !780]
+* Remove StBin's align properties [Florian; !803]
+* Use correct timezones for events [Milan, Florian; !806, #1895]
+* Reduce overhead of tracking stylesheet changes [Carlos; !779]
+* Replace action icons in system menu with regular menu items [Florian; #270]
+* Refine polkit dialogs [Jonas D.; !788]
+* Fix battery icon glitch in "100% but charging" case [Philip; !814]
+* Fix windows getting stuck on screen if closed while animating [Florian; !815]
+* Use font from interface settings [Florian; #688288]
+* Show polkit confirmation dialog for users with no password
+  [Joaquim, Jonas D.; !829]
+* Use better OSK layout fallback for unsupported variants [Florian; #1907]
+* Hide stopped spinner in top bar [Joonas; !832]
+* Reuse existing icons when updating the app picker grid [Georges; !841]
+* Show switcher popups immediately on second key press [Florian; #1928]
+* Add position-based animation to page indicators [Alexander; !843]
+* Improve modifier-less keyboard navigation of switcher popups [Florian; #1883]
+* Improve weather integration [Florian; #1927, #1926]
+* Add back sound feedback when scrolling volume indicator [Florian; #53]
+* Fix creating app folders with no pre-existing folders [Jonas D.; #1652]
+* Improve DND page switching in app picker [Florian, Jonas D.; #1693]
+* Fix disable command of gnome-extensions tool [Florian; #1946]
+* Tweak styling of notifications/media constrols [Joonas; !855, !865]
+* Enable clean session shutdown after gnome-shell failure [Benjamin; !858]
+* Also remove scaled keys when texture cache is cleared [Daniel M.; !567]
+* Don't show overflow indicator in switchers that fit screen [Florian; #1834]
+* Move libcroco dependency in-tree [Federico; !861]
+* Move to app folder location when it is created/renamed [Georges; !883]
+* Dismiss switcher popups when a system modal dialogs opens [Florian; #1536]
+* Fix weather forecasts for automatic location when Weather is not sandboxed
+  [Florian; #1823]
+* Place launched applications into a systemd scope [Benjamin; !863]
+* Fixed crashes [Jonas D., Carlos; !787, !813]
+* Misc. bug fixes and cleanups [Marco, Georges, Daniel V., Florian, Robert,
+  Kalev, Philip, Jonas D., Will, Carlos, Jonas Å., cunidev, Joonas, Federico;
+  !747, !765, !421, !759, !749, !730, !770, #1799, !774, !773, !776, !777,
+  !782, !794, !778, !792, !790, !190, !796, !795, !797, !798, !800, !804, !808,
+  !807, !810, !811, !563, !809, !805, !817, !818, !822, !830, !828, !823, !835,
+  !840, !842, !833, !845, !846, !847, !851, #1916, !862, !866, #1979, !827,
+  #1976, !884, !873, !885, !799, !887, !891, !816]
+
+Contributors:
+  Marco Trevisan (Treviño), Benjamin Berg, Philip Chimento, Milan Crha,
+  Jonas Dreßler, Carlos Garnacho, Joonas Henriksson, Kalev Lember, Robert Mader,
+  Alexander Mikhaylenko, Daniel García Moreno, Florian Müllner,
+  Georges Basile Stavracas Neto, Federico Mena Quintero, Joaquim Rocha,
+  Will Thompson, Daniel van Vugt, Andrew Watson, cunidev, Jonas Ådahl
+
+Translators:
+  Daniel Mustieles [es], Goran Vidović [hr], Fabio Tomat [fur],
+  Danial Behzadi [fa], Andika Triwidada [id], Efstathios Iosifidis [el],
+  Ricardo Silva Veloso [pt_BR]
+
 3.35.1
 ======
 * Misc. bug fixes and cleanups [Marco; Matthias; !758, #701212]
