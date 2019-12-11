@@ -1323,7 +1323,7 @@ shell_global_app_launched_cb (GAppLaunchContext *context,
 {
   gint32 pid;
   const gchar *app_name;
-
+asdf
   if (!g_variant_lookup (platform_data, "pid", "i", &pid))
     return;
 
