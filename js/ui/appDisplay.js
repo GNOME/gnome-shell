@@ -2575,13 +2575,15 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 this._appendSeparator();
             }
 
+            let wantsDiscreteGpu = appInfo.get_boolean("PreferRunOnDiscreteGPU") ||
+                appInfo.get_boolean("X-KDE-RunOnDiscreteGpu");
             if (discreteGpuAvailable &&
-                this._source.app.state == Shell.AppState.STOPPED &&
-                !actions.includes('activate-discrete-gpu')) {
+                !wantsDiscreteGpu &&
+                this._source.app.state == Shell.AppState.STOPPED) {
                 this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                 this._onDiscreteGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.launch(0, -1, true);
+                    this._source.app.launch(0, -1, Shell.AppGpuSelection.DISCRETE);
                     this.emit('activate-window', null);
                 });
             }
@@ -2590,8 +2592,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 let action = actions[i];
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
                 item.connect('activate', (emitter, event) => {
-                    if (action == 'new-window' ||
-                        action == 'activate-discrete-gpu')
+                    if (action == 'new-window')
                         this._source.animateLaunch();
 
                     this._source.app.launch_action(action, event.get_time(), -1);
