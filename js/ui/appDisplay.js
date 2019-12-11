@@ -341,14 +341,37 @@ var AllView = GObject.registerClass({
             use_pagination: true,
         });
 
+        this._grid._delegate = this;
+
+        this._stack = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
+        this.add_actor(this._stack);
+
+        let box = new St.BoxLayout({
+            vertical: true,
+            y_align: Clutter.ActorAlign.START,
+        });
+        box.add_child(this._grid);
+
         this._scrollView = new St.ScrollView({
             style_class: 'all-apps',
             x_expand: true,
             y_expand: true,
             reactive: true,
         });
-        this.add_actor(this._scrollView);
-        this._grid._delegate = this;
+        this._scrollView.add_actor(box);
+        this._stack.add_actor(this._scrollView);
+
+        this._eventBlocker = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            visible: false,
+        });
+        this._stack.add_actor(this._eventBlocker);
 
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
@@ -369,24 +392,7 @@ var AllView = GObject.registerClass({
 
         this._folderIcons = [];
 
-        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        let box = new St.BoxLayout({
-            vertical: true,
-            y_align: Clutter.ActorAlign.START,
-        });
-
         this._grid.currentPage = 0;
-        this._stack.add_actor(this._grid);
-        this._eventBlocker = new St.Widget({
-            x_expand: true,
-            y_expand: true,
-            reactive: true,
-            visible: false,
-        });
-        this._stack.add_actor(this._eventBlocker);
-
-        box.add_actor(this._stack);
-        this._scrollView.add_actor(box);
 
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
