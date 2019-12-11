@@ -26,11 +26,12 @@
 #define _ST_BOX_LAYOUT_H
 
 #include <st/st-widget.h>
+#include <st/st-viewport.h>
 
 G_BEGIN_DECLS
 
 #define ST_TYPE_BOX_LAYOUT st_box_layout_get_type()
-G_DECLARE_FINAL_TYPE (StBoxLayout, st_box_layout, ST, BOX_LAYOUT, StWidget)
+G_DECLARE_FINAL_TYPE (StBoxLayout, st_box_layout, ST, BOX_LAYOUT, StViewport)
 
 typedef struct _StBoxLayout StBoxLayout;
 typedef struct _StBoxLayoutPrivate StBoxLayoutPrivate;
@@ -44,7 +45,7 @@ typedef struct _StBoxLayoutPrivate StBoxLayoutPrivate;
 struct _StBoxLayout
 {
   /*< private >*/
-  StWidget parent;
+  StViewport parent;
 
   StBoxLayoutPrivate *priv;
 };
