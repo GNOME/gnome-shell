@@ -46,13 +46,13 @@ static GOptionEntry entries[] = {
 int
 main(int argc, char **argv)
 {
+  g_autoptr (ShellGlobalSingleton) global = NULL;
+  g_autoptr (GError) error = NULL;
+  g_autofree char *script  = NULL;
+  g_autofree char *title  = NULL;
   GOptionContext *context;
-  GError *error = NULL;
-  ShellGlobal *global;
   GjsContext *js_context;
-  char *script;
   const char *filename;
-  char *title;
   gsize len;
   int code;
 
@@ -62,13 +62,14 @@ main(int argc, char **argv)
   g_option_context_set_ignore_unknown_options (context, TRUE);
 
   g_option_context_add_main_entries (context, entries, NULL);
-  if (!g_option_context_parse (context, &argc, &argv, &error))
+  if (!g_option_context_parse (context, &argc, &argv, &error)) {
     g_error ("option parsing failed: %s", error->message);
+    g_clear_error (&error);
+  }
 
   setlocale (LC_ALL, "");
 
-  _shell_global_init (NULL);
-  global = shell_global_get ();
+  global = _shell_global_init (NULL);
   js_context = _shell_global_get_gjs_context (global);
 
   /* prepare command line arguments */
@@ -76,7 +77,7 @@ main(int argc, char **argv)
                                         argc - 2, (const char**)argv + 2,
                                         &error)) {
     g_printerr ("Failed to defined ARGV: %s", error->message);
-    exit (1);
+    return 1;
   }
 
   if (command != NULL) {
@@ -88,31 +89,25 @@ main(int argc, char **argv)
     len = strlen (script);
     filename = "<stdin>";
   } else /*if (argc >= 2)*/ {
-    error = NULL;
     if (!g_file_get_contents (argv[1], &script, &len, &error)) {
       g_printerr ("%s\n", error->message);
-      exit (1);
+      return 1;
     }
     filename = argv[1];
   }
 
   title = g_filename_display_basename (filename);
   g_set_prgname (title);
-  g_free (title);
 
   /* evaluate the script */
   error = NULL;
   if (!gjs_context_eval (js_context, script, len,
                          filename, &code, &error)) {
-    g_free (script);
     g_printerr ("%s\n", error->message);
-    exit (1);
   }
 
   gjs_context_gc (js_context);
   gjs_context_gc (js_context);
 
-  g_object_unref (js_context);
-  g_free (script);
-  exit (code);
+  return code;
 }

@@ -199,62 +199,6 @@ shell_fonts_init (void)
 }
 
 static void
-shell_profiler_init (void)
-{
-  ShellGlobal *global;
-  GjsProfiler *profiler;
-  GjsContext *context;
-  const char *enabled;
-  const char *fd_str;
-  int fd = -1;
-
-  /* Sysprof uses the "GJS_TRACE_FD=N" environment variable to connect GJS
-   * profiler data to the combined Sysprof capture. Since we are in control of
-   * the GjsContext, we need to proxy this FD across to the GJS profiler.
-   */
-
-  fd_str = g_getenv ("GJS_TRACE_FD");
-  enabled = g_getenv ("GJS_ENABLE_PROFILER");
-  if (fd_str == NULL || enabled == NULL)
-    return;
-
-  global = shell_global_get ();
-  g_return_if_fail (global);
-
-  context = _shell_global_get_gjs_context (global);
-  g_return_if_fail (context);
-
-  profiler = gjs_context_get_profiler (context);
-  g_return_if_fail (profiler);
-
-  if (fd_str)
-    {
-      fd = atoi (fd_str);
-
-      if (fd > 2)
-        {
-          gjs_profiler_set_fd (profiler, fd);
-          gjs_profiler_start (profiler);
-        }
-    }
-}
-
-static void
-shell_profiler_shutdown (void)
-{
-  ShellGlobal *global;
-  GjsProfiler *profiler;
-  GjsContext *context;
-
-  global = shell_global_get ();
-  context = _shell_global_get_gjs_context (global);
-  profiler = gjs_context_get_profiler (context);
-
-  if (profiler)
-    gjs_profiler_stop (profiler);
-}
-
-static void
 malloc_statistics_callback (ShellPerfLog *perf_log,
                             gpointer      data)
 {
@@ -414,7 +358,7 @@ list_modes (const char  *option_name,
             gpointer     data,
             GError     **error)
 {
-  ShellGlobal *global;
+  ShellGlobalSingleton *global;
   GjsContext *context;
   const char *script;
   int status;
@@ -428,8 +372,7 @@ list_modes (const char  *option_name,
   g_log_set_default_handler (shut_up, NULL);
   gtk_init_check (NULL, NULL);
 
-  _shell_global_init (NULL);
-  global = shell_global_get ();
+  global = _shell_global_init (NULL);
   context = _shell_global_get_gjs_context (global);
 
   shell_introspection_init ();
@@ -439,7 +382,8 @@ list_modes (const char  *option_name,
   if (!gjs_context_eval (context, script, -1, "<main>", &status, NULL))
       g_message ("Retrieving list of available modes failed.");
 
-  g_object_unref (context);
+  _shell_global_destroy (global);
+
   exit (status);
 }
 
@@ -484,8 +428,9 @@ GOptionEntry gnome_shell_options[] = {
 int
 main (int argc, char **argv)
 {
-  GOptionContext *ctx;
-  GError *error = NULL;
+  g_autoptr (ShellGlobalSingleton) global = NULL;
+  g_autoptr (GOptionContext) ctx = NULL;
+  g_autoptr (GError) error = NULL;
   int ecode;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -500,10 +445,8 @@ main (int argc, char **argv)
   if (!g_option_context_parse (ctx, &argc, &argv, &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
-      exit (1);
+      return 1;
     }
-
-  g_option_context_free (ctx);
 
   meta_plugin_manager_set_plugin_type (gnome_shell_plugin_get_type ());
 
@@ -535,7 +478,7 @@ main (int argc, char **argv)
   if (session_mode == NULL)
     session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
-  _shell_global_init ("session-mode", session_mode, NULL);
+  global = _shell_global_init ("session-mode", session_mode, NULL);
 
   dump_gjs_stack_on_signal (SIGABRT);
   dump_gjs_stack_on_signal (SIGFPE);
@@ -548,13 +491,8 @@ main (int argc, char **argv)
       dump_gjs_stack_on_signal (SIGSEGV);
     }
 
-  shell_profiler_init ();
   ecode = meta_run ();
-  shell_profiler_shutdown ();
-
   g_debug ("Doing final cleanup");
-  _shell_global_destroy_gjs_context (shell_global_get ());
-  g_object_unref (shell_global_get ());
 
   return ecode;
 }

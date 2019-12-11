@@ -92,6 +92,7 @@ let _cssStylesheet = null;
 let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
+let _restartMessage = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -214,11 +215,6 @@ function _initializeUI() {
 
     global.display.connect('show-restart-message', (display, message) => {
         showRestartMessage(message);
-        return true;
-    });
-
-    global.display.connect('restart', () => {
-        global.reexec_self();
         return true;
     });
 
@@ -755,6 +751,19 @@ class RestartMessage extends ModalDialog.ModalDialog {
 });
 
 function showRestartMessage(message) {
-    let restartMessage = new RestartMessage(message);
-    restartMessage.open();
+    if (message) {
+        if (_restartMessage) {
+            log('error: Restart message is already showing');
+            return;
+        }
+        _restartMessage = new RestartMessage(message);
+        _restartMessage.open();
+    } else {
+        if (!_restartMessage) {
+            log('error: No Restart message is showing');
+            return;
+        }
+        _restartMessage.close();
+        _restartMessage = null;
+    }
 }

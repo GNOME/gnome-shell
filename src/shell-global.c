@@ -82,6 +82,10 @@ struct _ShellGlobal {
 
   GHashTable *save_ops;
 
+  guint quit_idle;
+  guint restart_idle;
+  GPtrArray *restart_args;
+
   gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
@@ -113,12 +117,15 @@ enum
 {
  NOTIFY_ERROR,
  LOCATE_POINTER,
+ CLOSING,
  LAST_SIGNAL
 };
 
 G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
 
 static guint shell_global_signals [LAST_SIGNAL] = { 0 };
+
+static gboolean on_meta_restart_requested (ShellGlobal *global);
 
 static void
 shell_global_set_property(GObject         *object,
@@ -221,6 +228,35 @@ shell_global_get_property(GObject         *object,
 }
 
 static void
+shell_global_profiler_init (ShellGlobal *global)
+{
+  GjsProfiler *profiler;
+  const char *enabled;
+  const char *fd_str;
+  int fd = -1;
+
+  /* Sysprof uses the "GJS_TRACE_FD=N" environment variable to connect GJS
+   * profiler data to the combined Sysprof capture. Since we are in control of
+   * the GjsContext, we need to proxy this FD across to the GJS profiler.
+   */
+
+  fd_str = g_getenv ("GJS_TRACE_FD");
+  enabled = g_getenv ("GJS_ENABLE_PROFILER");
+  if (fd_str == NULL || *fd_str == '\0' || enabled == NULL || *enabled == '\0')
+    return;
+
+  profiler = gjs_context_get_profiler (global->js_context);
+  g_return_if_fail (profiler);
+
+  fd = atoi (fd_str);
+  if (fd > 2)
+    {
+      gjs_profiler_set_fd (profiler, fd);
+      gjs_profiler_start (profiler);
+    }
+}
+
+static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
@@ -313,6 +349,34 @@ shell_global_init (ShellGlobal *global)
   global->save_ops = g_hash_table_new_full (g_file_hash,
                                             (GEqualFunc) g_file_equal,
                                             g_object_unref, g_object_unref);
+
+  shell_global_profiler_init (global);
+}
+
+static void
+destroy_gjs_context (GjsContext *context)
+{
+  g_signal_emit (the_object, shell_global_signals[CLOSING], 0);
+  g_object_run_dispose (G_OBJECT (context));
+  g_object_unref (context);
+}
+
+static void
+shell_global_dispose (GObject *object)
+{
+  ShellGlobal *global = SHELL_GLOBAL (object);
+
+
+  g_clear_handle_id (&global->restart_idle, g_source_remove);
+  g_clear_handle_id (&global->quit_idle, g_source_remove);
+
+  g_clear_pointer (&global->js_context, destroy_gjs_context);
+
+  g_clear_object (&global->settings);
+  g_clear_object (&global->userdatadir_path);
+  g_clear_object (&global->runtime_state_path);
+
+  G_OBJECT_CLASS (shell_global_parent_class)->dispose (object);
 }
 
 static void
@@ -320,19 +384,15 @@ shell_global_finalize (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  g_clear_object (&global->js_context);
-  g_object_unref (global->settings);
-
   the_object = NULL;
-
-  g_clear_object (&global->userdatadir_path);
-  g_clear_object (&global->runtime_state_path);
 
   g_free (global->session_mode);
   g_free (global->imagedir);
   g_free (global->userdatadir);
 
-  g_hash_table_unref (global->save_ops);
+  g_hash_table_destroy (global->save_ops);
+
+  g_clear_pointer (&global->restart_args, g_ptr_array_unref);
 
   G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
 }
@@ -344,6 +404,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   gobject_class->get_property = shell_global_get_property;
   gobject_class->set_property = shell_global_set_property;
+  gobject_class->dispose = shell_global_dispose;
   gobject_class->finalize = shell_global_finalize;
 
   shell_global_signals[NOTIFY_ERROR] =
@@ -357,6 +418,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_STRING);
   shell_global_signals[LOCATE_POINTER] =
       g_signal_new ("locate-pointer",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
+  shell_global_signals[CLOSING] =
+      g_signal_new ("closing",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
@@ -497,14 +565,16 @@ shell_global_class_init (ShellGlobalClass *klass)
  *
  * This call must be called before shell_global_get() and shouldn't be called
  * more than once.
+ *
+ * Return value: (transfer none): the singleton #ShellGlobal object
  */
-void
+ShellGlobalSingleton *
 _shell_global_init (const char *first_property_name,
                     ...)
 {
   va_list argument_list;
 
-  g_return_if_fail (the_object == NULL);
+  g_return_val_if_fail (the_object == NULL, the_object);
 
   va_start (argument_list, first_property_name);
   the_object = SHELL_GLOBAL (g_object_new_valist (SHELL_TYPE_GLOBAL,
@@ -512,6 +582,7 @@ _shell_global_init (const char *first_property_name,
                                                   argument_list));
   va_end (argument_list);
 
+  return the_object;
 }
 
 /**
@@ -527,18 +598,40 @@ shell_global_get (void)
   return the_object;
 }
 
+static void
+maybe_restart_the_shell (GPtrArray *restart_args)
+{
+  if (!restart_args)
+    return;
+
+  if (the_object)
+    g_warning ("Shell global object %p has not been finalized before "
+               "restarting, something is leaking it", the_object);
+
+  g_print("Restarting %s\n",restart_args->pdata[0]);
+  execvp (restart_args->pdata[0], (char **) restart_args->pdata);
+  g_critical ("failed to reexec: %s", g_strerror (errno));
+}
+
 /**
- * _shell_global_destroy_gjs_context: (skip)
+ * _shell_global_destroy: (skip)
  * @self: global object
  *
- * Destroys the GjsContext held by ShellGlobal, in order to break reference
- * counting cycles. (The GjsContext holds a reference to ShellGlobal because
- * it's available as window.global inside JS.)
+ * Destroys the #ShellGlobal, disposing child objects (such as the #GjsContext)
+ * in order to break reference counting cycles.
+ * The GjsContext holds a reference to ShellGlobal because it's available as
+ * window.global inside JS.
  */
 void
-_shell_global_destroy_gjs_context (ShellGlobal *self)
+_shell_global_destroy (ShellGlobal *global)
 {
-  g_clear_object (&self->js_context);
+  g_autoptr (GPtrArray) restart_args = NULL;
+  restart_args = g_steal_pointer (&global->restart_args);
+
+  g_object_run_dispose (G_OBJECT (global));
+  g_object_unref (global);
+
+  maybe_restart_the_shell (restart_args);
 }
 
 static guint32
@@ -872,17 +965,17 @@ _shell_global_set_plugin (ShellGlobal *global,
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
 
-  g_signal_connect (global->stage, "notify::width",
-                    G_CALLBACK (global_stage_notify_width), global);
-  g_signal_connect (global->stage, "notify::height",
-                    G_CALLBACK (global_stage_notify_height), global);
+  g_signal_connect_object (global->stage, "notify::width",
+                           G_CALLBACK (global_stage_notify_width), global, 0);
+  g_signal_connect_object (global->stage, "notify::height",
+                           G_CALLBACK (global_stage_notify_height), global, 0);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
                                          global_stage_before_paint,
                                          global, NULL);
 
-  g_signal_connect (global->stage, "after-paint",
-                    G_CALLBACK (global_stage_after_paint), global);
+  g_signal_connect_object (global->stage, "after-paint",
+                           G_CALLBACK (global_stage_after_paint), global, 0);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
                                          global_stage_after_swap,
@@ -901,10 +994,13 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of frame, possibly including swap time",
                                "");
 
-  g_signal_connect (global->stage, "notify::key-focus",
-                    G_CALLBACK (focus_actor_changed), global);
-  g_signal_connect (global->meta_display, "notify::focus-window",
-                    G_CALLBACK (focus_window_changed), global);
+  g_signal_connect_object (global->stage, "notify::key-focus",
+                    G_CALLBACK (focus_actor_changed), global, 0);
+  g_signal_connect_object (global->meta_display, "notify::focus-window",
+                    G_CALLBACK (focus_window_changed), global, 0);
+  g_signal_connect_object (global->meta_display, "restart",
+                           G_CALLBACK (on_meta_restart_requested), global,
+                           G_CONNECT_SWAPPED);
 
   if (global->xdisplay)
     g_signal_connect_object (global->meta_display, "x11-display-closing",
@@ -912,8 +1008,8 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   backend = meta_get_backend ();
   settings = meta_backend_get_settings (backend);
-  g_signal_connect (settings, "ui-scaling-factor-changed",
-                    G_CALLBACK (ui_scaling_factor_changed), global);
+  g_signal_connect_object (settings, "ui-scaling-factor-changed",
+                           G_CALLBACK (ui_scaling_factor_changed), global, 0);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
@@ -1083,80 +1179,74 @@ pre_exec_close_fds(void)
   fdwalk (set_cloexec, GINT_TO_POINTER(3));
 }
 
-/**
- * shell_global_reexec_self:
- * @global: A #ShellGlobal
- * 
- * Restart the current process.  Only intended for development purposes. 
- */
-void 
-shell_global_reexec_self (ShellGlobal *global)
+static gboolean
+try_restart (ShellGlobal *global)
 {
-  GPtrArray *arr;
+  g_autoptr (GPtrArray) arr = NULL;
   gsize len;
 
+  g_assert_null (global->restart_args);
+
 #if defined __linux__ || defined __sun
-  char *buf;
+  g_autofree char *buf = NULL;
+  g_autoptr (GError) error = NULL;
   char *buf_p;
   char *buf_end;
-  GError *error = NULL;
 
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
       g_warning ("failed to get /proc/self/cmdline: %s", error->message);
-      return;
+      return FALSE;
     }
 
   buf_end = buf+len;
-  arr = g_ptr_array_new ();
+  arr = g_ptr_array_new_with_free_func (g_free);
   /* The cmdline file is NUL-separated */
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
-    g_ptr_array_add (arr, buf_p);
+    g_ptr_array_add (arr, g_strdup (buf_p));
 
   g_ptr_array_add (arr, NULL);
 #elif defined __OpenBSD__
-  gchar **args, **args_p;
+  g_autoptr char **args = NULL;
+  gchar **args_p;
   gint mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
 
   if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
-    return;
+    return FALSE;
 
   args = g_malloc0 (len);
 
   if (sysctl (mib, G_N_ELEMENTS (mib), args, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    g_free (args);
-    return;
+    return FALSE;
   }
 
-  arr = g_ptr_array_new ();
-  for (args_p = args; *args_p != NULL; args_p++) {
-    g_ptr_array_add (arr, *args_p);
-  }
+  arr = g_ptr_array_new_with_free_func (g_free);
+  for (args_p = args; *args_p != NULL; args_p++)
+    g_ptr_array_add (arr, g_strdup (*args_p));
 
   g_ptr_array_add (arr, NULL);
 #elif defined __FreeBSD__
-  char *buf;
+  g_autoptr char *buf = NULL;
   char *buf_p;
   char *buf_end;
   gint mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_ARGS, getpid() };
 
   if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
-    return;
+    return FALSE;
 
   buf = g_malloc0 (len);
 
   if (sysctl (mib, G_N_ELEMENTS (mib), buf, &len, NULL, 0) == -1) {
     g_warning ("failed to get command line args: %d", errno);
-    g_free (buf);
-    return;
+    return FALSE;
   }
 
   buf_end = buf+len;
-  arr = g_ptr_array_new ();
+  arr = g_ptr_array_new_with_free_func (g_free);
   /* The value returned by sysctl is NUL-separated */
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
-    g_ptr_array_add (arr, buf_p);
+    g_ptr_array_add (arr, g_strdup (buf_p));
 
   g_ptr_array_add (arr, NULL);
 #else
@@ -1170,17 +1260,55 @@ shell_global_reexec_self (ShellGlobal *global)
    */
   pre_exec_close_fds ();
 
+  /* Save the restart args so that maybe_restart_the_shell() can pick them
+   * to do the actual restarting when destroying the shell.
+   * Here we don't call shell_global_destroy() directly because closing the
+   * mutter display, stops the mutter loop we are in, and so the global destroy
+   * function will be eventually called as last thing, after we've cleaned
+   * up everything.
+   * However here we force the shell global dispostion, in order to release
+   * all the JS objects before destroying the mutter backend. */
+  global->restart_args = g_steal_pointer (&arr);
+  g_object_run_dispose (G_OBJECT (global));
+
   meta_display_close (shell_global_get_display (global),
                       shell_global_get_current_time (global));
 
-  execvp (arr->pdata[0], (char**)arr->pdata);
-  g_warning ("failed to reexec: %s", g_strerror (errno));
-  g_ptr_array_free (arr, TRUE);
-#if defined __linux__ || defined __FreeBSD__
-  g_free (buf);
-#elif defined __OpenBSD__
-  g_free (args);
-#endif
+  return TRUE;
+}
+
+static gboolean
+on_meta_restart_requested (ShellGlobal *global)
+{
+  g_return_val_if_fail (!meta_is_wayland_compositor (), FALSE);
+
+  return try_restart (global);
+}
+
+static gboolean
+on_restart_idle (gpointer data)
+{
+  ShellGlobal *global = data;
+
+  global->restart_idle = 0;
+  try_restart (global);
+
+  return FALSE;
+}
+
+/**
+ * shell_global_reexec_self:
+ * @global: A #ShellGlobal
+ *
+ * Restart the current process.  Only intended for development purposes.
+ */
+void
+shell_global_reexec_self (ShellGlobal *global)
+{
+  g_return_if_fail (!meta_is_wayland_compositor ());
+
+  if (!global->restart_idle)
+    global->restart_idle = g_idle_add (on_restart_idle, global);
 }
 
 /**
@@ -1199,7 +1327,7 @@ shell_global_notify_error (ShellGlobal  *global,
                            const char   *msg,
                            const char   *details)
 {
-  g_signal_emit_by_name (global, "notify-error", msg, details);
+  g_signal_emit (global, shell_global_signals[NOTIFY_ERROR], 0, msg, details);
 }
 
 /**
@@ -1712,4 +1840,33 @@ void
 _shell_global_locate_pointer (ShellGlobal *global)
 {
   g_signal_emit (global, shell_global_signals[LOCATE_POINTER], 0);
+}
+
+static gboolean
+on_quit_idle (gpointer data)
+{
+  MetaExitCode exit_code = GPOINTER_TO_UINT (data);
+
+  g_object_run_dispose (G_OBJECT (the_object));
+  meta_quit (exit_code);
+
+  return FALSE;
+}
+
+/**
+ * shell_global_quit:
+ * @global: a #ShellGlobal
+ * @exit_code: the #MetaExitCode for quitting the process
+ *
+ * Quits the shell triggering the garbage collector and terminating mutter.
+ */
+void
+shell_global_quit (ShellGlobal  *global,
+                   MetaExitCode  exit_code)
+{
+  /* Since the global disposition will destroy the JS Context triggering the
+   * garbage collector, this can't be called directly by a Javascript call,
+   * so we do this in an idle, so that gjs isn't involved anymore on destroy */
+  if (!global->quit_idle)
+    global->quit_idle = g_idle_add (on_quit_idle, GUINT_TO_POINTER (exit_code));
 }
