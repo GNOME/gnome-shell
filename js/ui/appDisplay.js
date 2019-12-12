@@ -1837,6 +1837,11 @@ var AppFolderDialog = GObject.registerClass({
         this.add_child(this._viewBox);
         this._viewBox.add_child(this._view);
 
+        this._viewBox.add_effect(new Shell.BlurEffect({
+            mode: Shell.BlurMode.BACKGROUND,
+            blur_radius: 50,
+        }));
+
         global.focus_manager.add_group(this);
 
         this._grabHelper = new GrabHelper.GrabHelper(this, {
