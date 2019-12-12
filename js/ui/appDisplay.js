@@ -1561,6 +1561,8 @@ var AppFolderDialog = GObject.registerClass({
             primary: true,
         }));
 
+        this._blurEffect = null;
+
         this._source = source;
         this._view = source.view;
 
@@ -1594,6 +1596,19 @@ var AppFolderDialog = GObject.registerClass({
         let [dialogX, dialogY] =
             this.get_transformed_position();
 
+        this._blurEffect = new Shell.BlurEffect({
+            name: 'blur',
+            blur_radius: 0,
+            brightness: 1,
+        });
+        Main.layoutManager.overviewGroup.add_effect(this._blurEffect);
+
+        Main.layoutManager.overviewGroup.ease_property(
+            '@effects.blur.blur_radius', 19, {
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: 250,
+            });
+
         this.set({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
@@ -1613,6 +1628,13 @@ var AppFolderDialog = GObject.registerClass({
         });
 
         this._needsZoomAndFade = false;
+    }
+
+    _removeBlur() {
+        if (this._blurEffect) {
+            Main.layoutManager.overviewGroup.remove_effect(this._blurEffect);
+            this._blurEffect = null;
+        }
     }
 
     _onDestroy() {
@@ -1708,6 +1730,7 @@ var AppFolderDialog = GObject.registerClass({
             return;
 
         this._needsZoomAndFade = false;
+        this._removeBlur();
         this.hide();
 
         this._grabHelper.ungrab({ actor: this });
