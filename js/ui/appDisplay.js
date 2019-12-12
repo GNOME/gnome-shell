@@ -693,13 +693,14 @@ var AllView = GObject.registerClass({
     }
 
     addFolderPopup(popup) {
-        this._stack.add_actor(popup);
+        Main.uiGroup.add_child(popup);
         popup.connect('open-state-changed', (o, isOpen) => {
             this._eventBlocker.visible = isOpen;
 
             if (this._currentPopup) {
                 this._currentPopup.disconnect(this._currentPopupDestroyId);
                 this._currentPopupDestroyId = 0;
+                Main.uiGroup.remove_child(popup);
             }
 
             this._currentPopup = null;
