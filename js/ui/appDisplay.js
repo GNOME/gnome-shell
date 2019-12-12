@@ -41,6 +41,9 @@ var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
 
 const FOLDER_DIALOG_ANIMATION_TIME = 200;
+const FOLDER_DIALOG_GRID_BRIGHTNESS = 0.8;
+const FOLDER_DIALOG_GRID_BLUR_RADIUS = 10;
+const FOLDER_DIALOG_BACKGROUND_BLUR_RADIUS = 40;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
@@ -1647,7 +1650,7 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this);
+            this._dialog = new AppFolderDialog(this, this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1835,7 +1838,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Widget {
-    _init(source) {
+    _init(source, parentView) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             style_class: 'app-folder-dialog-container',
@@ -1851,6 +1854,7 @@ var AppFolderDialog = GObject.registerClass({
 
         this._source = source;
         this._view = source.view;
+        this._parentView = parentView;
 
         this._isOpen = false;
         this.parentOffset = 0;
@@ -1873,6 +1877,11 @@ var AppFolderDialog = GObject.registerClass({
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._viewBox.add_effect(new Shell.BlurEffect({
+            mode: Shell.BlurMode.BACKGROUND,
+            blur_radius: FOLDER_DIALOG_BACKGROUND_BLUR_RADIUS,
+        }));
+        this._blur = new Shell.BlurEffect({ brightness: 0.8 });
         this._needsZoomAndFade = false;
     }
 
@@ -1900,6 +1909,18 @@ var AppFolderDialog = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
+        this._parentView.add_effect_with_name('blur', this._blur);
+        this._parentView.ease_property('@effects.blur.blur-radius',
+            FOLDER_DIALOG_GRID_BLUR_RADIUS, {
+                duration: FOLDER_DIALOG_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
+        this._parentView.ease_property('@effects.blur.brightness',
+            FOLDER_DIALOG_GRID_BRIGHTNESS, {
+                duration: FOLDER_DIALOG_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
+
         this._needsZoomAndFade = false;
 
         this._sourceMappedId = this._source.connect('notify::mapped',
@@ -1911,6 +1932,8 @@ var AppFolderDialog = GObject.registerClass({
             return;
 
         if (!this._source.mapped) {
+            this._parentView.remove_effect(this._blur);
+            this._blur.blur_radius = 0;
             this.hide();
             return;
         }
@@ -1940,6 +1963,16 @@ var AppFolderDialog = GObject.registerClass({
             },
         });
 
+        this._parentView.ease_property('@effects.blur.blur-radius', 0, {
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.LINEAR,
+            onComplete: () => this._parentView.remove_effect(this._blur),
+        });
+        this._parentView.ease_property('@effects.blur.brightness', 1, {
+                duration: FOLDER_DIALOG_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
+
         this._needsZoomAndFade = false;
     }
 
@@ -1954,6 +1987,8 @@ var AppFolderDialog = GObject.registerClass({
             this._source.disconnect(this._sourceMappedId);
             this._sourceMappedId = 0;
         }
+
+        this._blur = null;
     }
 
     vfunc_allocate(box, flags) {
