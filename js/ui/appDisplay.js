@@ -578,10 +578,6 @@ var AllView = GObject.registerClass({
             this._pageIndicators.animateIndicators(animationDirection);
     }
 
-    getCurrentPageY() {
-        return this._grid.getPageY(this._grid.currentPage);
-    }
-
     goToPage(pageNumber, animate = true) {
         pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
 
@@ -785,9 +781,6 @@ var AllView = GObject.registerClass({
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
-        // Update folder views
-        for (let i = 0; i < this._folderIcons.length; i++)
-            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 
     _resetOvershoot() {
@@ -1411,36 +1404,6 @@ class FolderView extends BaseAppView {
         this._grid.bottomPadding = Math.max(this._grid.bottomPadding, 0);
         this._grid.leftPadding = Math.max(this._grid.leftPadding, 0);
         this._grid.rightPadding = Math.max(this._grid.rightPadding, 0);
-
-        this.set_width(this.usedWidth());
-        this.set_height(this.usedHeight());
-    }
-
-    _getPageAvailableSize() {
-        let pageBox = new Clutter.ActorBox();
-        pageBox.x1 = pageBox.y1 = 0;
-        pageBox.x2 = this._parentAvailableWidth;
-        pageBox.y2 = this._parentAvailableHeight;
-
-        let contentBox = this.get_theme_node().get_content_box(pageBox);
-        // We only can show icons inside the collection view boxPointer
-        // so we have to subtract the required padding etc of the boxpointer
-        return [contentBox.x2 - contentBox.x1, contentBox.y2 - contentBox.y1];
-    }
-
-    usedWidth() {
-        let [availWidthPerPage] = this._getPageAvailableSize();
-        return this._grid.usedWidth(availWidthPerPage);
-    }
-
-    usedHeight() {
-        return this._grid.usedHeightForNRows(this.nRowsDisplayedAtOnce());
-    }
-
-    nRowsDisplayedAtOnce() {
-        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
-        let maxRows = this._grid.rowsForHeight(availHeightPerPage) - 1;
-        return Math.min(this._grid.nRows(availWidthPerPage), maxRows);
     }
 
     _loadApps() {
@@ -1539,8 +1502,6 @@ var FolderIcon = GObject.registerClass({
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path });
         this._delegate = this;
-        // whether we need to update arrow side, position etc.
-        this._dialogInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
@@ -1692,13 +1653,8 @@ var FolderIcon = GObject.registerClass({
         return this.view.createFolderIcon(iconSize, this);
     }
 
-    _popupHeight() {
-        let usedHeight = this.view.usedHeight();
-        return usedHeight;
-    }
-
     _ensureFolderDialog() {
-        if (this._dialog && !this._dialogInvalidated)
+        if (this._dialog)
             return;
         if (!this._dialog) {
             this._dialog = new AppFolderDialog(this);
@@ -1708,7 +1664,6 @@ var FolderIcon = GObject.registerClass({
                     this.checked = false;
             });
         }
-        this._dialogInvalidated = false;
     }
 
     _removeMenuTimeout() {
@@ -1782,14 +1737,6 @@ var FolderIcon = GObject.registerClass({
         this.set_hover(true);
         this._menu.open();
         this._menuManager.ignoreRelease();
-    }
-
-    adaptToSize(width, height) {
-        this._parentAvailableWidth = width;
-        this._parentAvailableHeight = height;
-        if (this._dialog)
-            this.view.adaptToSize(width, height);
-        this._dialogInvalidated = true;
     }
 });
 
