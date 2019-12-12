@@ -188,6 +188,11 @@ dbus_generated = gnome.gdbus_codegen('org-gtk-application',
   namespace: 'Shell'
 )
 
+dbus_generated += gnome.gdbus_codegen('switcheroo-control',
+  '../data/dbus-interfaces/net.hadess.SwitcherooControl.xml',
+  namespace: 'Shell'
+)
+
 libshell_no_gir_sources += dbus_generated
 
 libshell = library('gnome-shell',
