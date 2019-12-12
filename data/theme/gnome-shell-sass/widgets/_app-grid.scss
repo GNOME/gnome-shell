@@ -86,14 +86,16 @@ $app_grid_fg_color: #fff;
 }
 
 // expanded folder
-.app-folder-popup {
-  -arrow-border-radius: 8px;
-  -arrow-background-color: transparentize(darken($osd_bg_color,10%), 0.5);
-  -arrow-base: 24px;
-  -arrow-rise: 11px;
+.app-folder-dialog {
+  border-radius: 8px;
+  spacing: 24px;
+  background-color: transparentize(darken($osd_bg_color,10%), 0.05);
 }
-
-.app-folder-popup-bin { padding: $base_padding - 1px; }
+.app-folder-dialog-container {
+  padding: 12px;
+  width: 800px;
+  height: 600px;
+}
 
 .app-folder-icon {
   padding: $base_padding;
