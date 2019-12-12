@@ -298,7 +298,6 @@ var BaseAppView = GObject.registerClass({
 });
 
 var AllView = GObject.registerClass({
-    Signals: { 'space-ready': {} },
 }, class AllView extends BaseAppView {
     _init() {
         super._init({
@@ -389,16 +388,6 @@ var AllView = GObject.registerClass({
         this._lastOvershootTimeoutId = 0;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
-        this._grid.connect('space-opened', () => {
-            let fadeEffect = this._scrollView.get_effect('fade');
-            if (fadeEffect)
-                fadeEffect.enabled = false;
-
-            this.emit('space-ready');
-        });
-        this._grid.connect('space-closed', () => {
-            this._displayingPopup = false;
-        });
 
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
@@ -607,22 +596,6 @@ var AllView = GObject.registerClass({
         });
     }
 
-    openSpaceForPopup(item, side, nRows) {
-        this._updateIconOpacities(true);
-        this._displayingPopup = true;
-        this._grid.openExtraSpace(item, side, nRows);
-    }
-
-    _closeSpaceForPopup() {
-        this._updateIconOpacities(false);
-
-        let fadeEffect = this._scrollView.get_effect('fade');
-        if (fadeEffect)
-            fadeEffect.enabled = true;
-
-        this._grid.closeExtraSpace();
-    }
-
     _onScroll(actor, event) {
         if (this._displayingPopup || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
@@ -721,8 +694,7 @@ var AllView = GObject.registerClass({
                 });
             }
             this._updateIconOpacities(isOpen);
-            if (!isOpen)
-                this._closeSpaceForPopup();
+            this._displayingPopup = isOpen;
         });
     }
 
