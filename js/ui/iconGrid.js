@@ -9,8 +9,6 @@ const Main = imports.ui.main;
 var ICON_SIZE = 96;
 var MIN_ICON_SIZE = 16;
 
-var EXTRA_SPACE_ANIMATION_TIME = 250;
-
 var ANIMATION_TIME_IN = 350;
 var ANIMATION_TIME_OUT = 1 / 2 * ANIMATION_TIME_IN;
 var ANIMATION_MAX_DELAY_FOR_ITEM = 2 / 3 * ANIMATION_TIME_IN;
@@ -824,10 +822,8 @@ var IconGrid = GObject.registerClass({
     }
 });
 
-var PaginatedIconGrid = GObject.registerClass({
-    Signals: { 'space-opened': {},
-               'space-closed': {} },
-}, class PaginatedIconGrid extends IconGrid {
+var PaginatedIconGrid = GObject.registerClass(
+class PaginatedIconGrid extends IconGrid {
     _init(params) {
         super._init(params);
         this._nPages = 0;
@@ -954,95 +950,5 @@ var PaginatedIconGrid = GObject.registerClass({
         if (index == -1)
             throw new Error('Item not found.');
         return Math.floor(index / this._childrenPerPage);
-    }
-
-    /**
-    * openExtraSpace:
-    * @param {Clutter.Actor} sourceItem: item for which to create extra space
-    * @param {St.Side} side: where @sourceItem should be located relative to
-    *   the created space
-    * @param {number} nRows: the amount of space to create
-    *
-    * Pan view to create extra space for @nRows above or below @sourceItem.
-    */
-    openExtraSpace(sourceItem, side, nRows) {
-        let children = this._getVisibleChildren();
-        let index = children.indexOf(sourceItem);
-        if (index == -1)
-            throw new Error('Item not found.');
-
-        let pageIndex = Math.floor(index / this._childrenPerPage);
-        let pageOffset = pageIndex * this._childrenPerPage;
-
-        let childrenPerRow = this._childrenPerPage / this._rowsPerPage;
-        let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
-
-        let nRowsAbove = side == St.Side.TOP ? sourceRow + 1 : sourceRow;
-        let nRowsBelow = this._rowsPerPage - nRowsAbove;
-
-        let nRowsUp, nRowsDown;
-        if (side == St.Side.TOP) {
-            nRowsDown = Math.min(nRowsBelow, nRows);
-            nRowsUp = nRows - nRowsDown;
-        } else {
-            nRowsUp = Math.min(nRowsAbove, nRows);
-            nRowsDown = nRows - nRowsUp;
-        }
-
-        let childrenDown = children.splice(pageOffset +
-                                           nRowsAbove * childrenPerRow,
-                                           nRowsBelow * childrenPerRow);
-        let childrenUp = children.splice(pageOffset,
-                                         nRowsAbove * childrenPerRow);
-
-        // Special case: On the last row with no rows below the icon,
-        // there's no need to move any rows either up or down
-        if (childrenDown.length == 0 && nRowsUp == 0) {
-            this._translatedChildren = [];
-            this.emit('space-opened');
-        } else {
-            this._translateChildren(childrenUp, St.DirectionType.UP, nRowsUp);
-            this._translateChildren(childrenDown, St.DirectionType.DOWN, nRowsDown);
-            this._translatedChildren = childrenUp.concat(childrenDown);
-        }
-    }
-
-    _translateChildren(children, direction, nRows) {
-        let translationY = nRows * (this._getVItemSize() + this._getSpacing());
-        if (translationY == 0)
-            return;
-
-        if (direction == St.DirectionType.UP)
-            translationY *= -1;
-
-        for (let i = 0; i < children.length; i++) {
-            children[i].translation_y = 0;
-            let params = {
-                translation_y: translationY,
-                duration: EXTRA_SPACE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-            };
-            if (i == (children.length - 1))
-                params.onComplete = () => this.emit('space-opened');
-            children[i].ease(params);
-        }
-    }
-
-    closeExtraSpace() {
-        if (!this._translatedChildren || !this._translatedChildren.length) {
-            this.emit('space-closed');
-            return;
-        }
-
-        for (let i = 0; i < this._translatedChildren.length; i++) {
-            if (!this._translatedChildren[i].translation_y)
-                continue;
-            this._translatedChildren[i].ease({
-                translation_y: 0,
-                duration: EXTRA_SPACE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                onComplete: () => this.emit('space-closed'),
-            });
-        }
     }
 });
