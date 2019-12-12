@@ -27,7 +27,8 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this.addMenuItem(item);
         this._pasteItem = item;
 
-        this._passwordItem = null;
+        if (entry instanceof St.PasswordEntry)
+            this._makePasswordItem();
 
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
@@ -86,8 +87,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _updatePasswordItem() {
-        let textHidden = this._entry.clutter_text.password_char;
-        if (textHidden)
+        if (!this._entry.password_visible)
             this._passwordItem.label.set_text(_("Show Text"));
         else
             this._passwordItem.label.set_text(_("Hide Text"));
@@ -110,8 +110,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     }
 
     _onPasswordActivated() {
-        let visible = !!this._entry.clutter_text.password_char;
-        this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
+        this._entry.password_visible  = !this._entry.password_visible;
     }
 };
 
