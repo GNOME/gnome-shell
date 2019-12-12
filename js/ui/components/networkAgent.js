@@ -65,8 +65,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 secret.entry = new St.PasswordEntry(entryParams);
             else
                 secret.entry = new St.Entry(entryParams);
-            ShellEntry.addContextMenu(secret.entry,
-                                      { isPassword: secret.password });
+            ShellEntry.addContextMenu(secret.entry);
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);
