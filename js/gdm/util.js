@@ -485,7 +485,7 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        this.emit('ask-question', serviceName, question, '');
+        this.emit('ask-question', serviceName, question, false);
     }
 
     _onSecretInfoQuery(client, serviceName, secretQuestion) {
@@ -498,7 +498,7 @@ var ShellUserVerifier = class {
             return;
         }
 
-        this.emit('ask-question', serviceName, secretQuestion, '\u25cf');
+        this.emit('ask-question', serviceName, secretQuestion, true);
     }
 
     _onReset() {

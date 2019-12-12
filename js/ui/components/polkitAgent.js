@@ -90,7 +90,7 @@ var AuthenticationDialog = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._passwordBox.add_child(this._passwordLabel);
-        this._passwordEntry = new St.Entry({
+        this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
             text: "",
             can_focus: true,
@@ -278,10 +278,7 @@ var AuthenticationDialog = GObject.registerClass({
         else
             this._passwordLabel.set_text(request);
 
-        if (echoOn)
-            this._passwordEntry.clutter_text.set_password_char('');
-        else
-            this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+        this._passwordEntry.password_visible = echoOn;
 
         this._passwordBox.show();
         this._passwordEntry.set_text('');
