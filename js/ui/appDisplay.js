@@ -5,10 +5,10 @@ const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppFavorites = imports.ui.appFavorites;
-const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
@@ -40,6 +40,8 @@ var PAGE_SWITCH_TIME = 250;
 
 var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
+
+const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
@@ -1405,10 +1407,10 @@ class FolderView extends BaseAppView {
         this._scrollView.update_fade_effect(fadeOffset, 0);
 
         // Set extra padding to avoid popup or close button being cut off
-        this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
-        this._grid.bottomPadding = Math.max(this._grid.bottomPadding - this._offsetForEachSide, 0);
-        this._grid.leftPadding = Math.max(this._grid.leftPadding - this._offsetForEachSide, 0);
-        this._grid.rightPadding = Math.max(this._grid.rightPadding - this._offsetForEachSide, 0);
+        this._grid.topPadding = Math.max(this._grid.topPadding, 0);
+        this._grid.bottomPadding = Math.max(this._grid.bottomPadding, 0);
+        this._grid.leftPadding = Math.max(this._grid.leftPadding, 0);
+        this._grid.rightPadding = Math.max(this._grid.rightPadding, 0);
 
         this.set_width(this.usedWidth());
         this.set_height(this.usedHeight());
@@ -1423,7 +1425,7 @@ class FolderView extends BaseAppView {
         let contentBox = this.get_theme_node().get_content_box(pageBox);
         // We only can show icons inside the collection view boxPointer
         // so we have to subtract the required padding etc of the boxpointer
-        return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
+        return [contentBox.x2 - contentBox.x1, contentBox.y2 - contentBox.y1];
     }
 
     usedWidth() {
@@ -1439,10 +1441,6 @@ class FolderView extends BaseAppView {
         let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
         let maxRows = this._grid.rowsForHeight(availHeightPerPage) - 1;
         return Math.min(this._grid.nRows(availWidthPerPage), maxRows);
-    }
-
-    setPaddingOffsets(offset) {
-        this._offsetForEachSide = offset;
     }
 
     _loadApps() {
@@ -1600,7 +1598,7 @@ var FolderIcon = GObject.registerClass({
         this._removeMenuTimeout();
         this._ensurePopup();
         this.view._scrollView.vscroll.adjustment.value = 0;
-        this._openSpaceForPopup();
+        this._popup.popup();
     }
 
     getAppIds() {
@@ -1695,65 +1693,21 @@ var FolderIcon = GObject.registerClass({
     }
 
     _popupHeight() {
-        let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
+        let usedHeight = this.view.usedHeight();
         return usedHeight;
-    }
-
-    _openSpaceForPopup() {
-        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(this._spaceReadySignalId);
-            this._spaceReadySignalId = 0;
-            this._popup.popup();
-            this._updatePopupPosition();
-        });
-        this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
-    }
-
-    _calculateBoxPointerArrowSide() {
-        let spaceTop = this.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.height - (spaceTop + this.height);
-
-        return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
-    }
-
-    _updatePopupSize() {
-        // StWidget delays style calculation until needed, make sure we use the correct values
-        this.view._grid.ensure_style();
-
-        let offsetForEachSide = Math.ceil((this._popup.getOffset(St.Side.TOP) +
-                                           this._popup.getOffset(St.Side.BOTTOM) -
-                                           this._popup.getCloseButtonOverlap()) / 2);
-        // Add extra padding to prevent boxpointer decorations and close button being cut off
-        this.view.setPaddingOffsets(offsetForEachSide);
-        this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
-    }
-
-    _updatePopupPosition() {
-        if (!this._popup)
-            return;
-
-        if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.y = this.allocation.y1 + this.translation_y - this._popupHeight();
-        else
-            this._popup.y = this.allocation.y1 + this.translation_y + this.height;
     }
 
     _ensurePopup() {
         if (this._popup && !this._popupInvalidated)
             return;
-        this._boxPointerArrowside = this._calculateBoxPointerArrowSide();
         if (!this._popup) {
-            this._popup = new AppFolderPopup(this, this._boxPointerArrowside);
+            this._popup = new AppFolderPopup(this);
             this._parentView.addFolderPopup(this._popup);
             this._popup.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
                     this.checked = false;
             });
-        } else {
-            this._popup.updateArrowSide(this._boxPointerArrowside);
         }
-        this._updatePopupSize();
-        this._updatePopupPosition();
         this._popupInvalidated = false;
     }
 
@@ -1944,43 +1898,35 @@ var AppFolderPopup = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderPopup extends St.Widget {
-    _init(source, side) {
+    _init(source) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
+            style_class: 'app-folder-dialog-container',
             visible: false,
-            // We don't want to expand really, but look
-            // at the layout manager of our parent...
-            //
-            // DOUBLE HACK: if you set one, you automatically
-            // get the effect for the other direction too, so
-            // we need to set the y_align
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
         });
+        this.add_constraint(new Layout.MonitorConstraint({
+            primary: true,
+        }));
+
         this._source = source;
         this._view = source.view;
-        this._arrowSide = side;
 
         this._isOpen = false;
         this.parentOffset = 0;
 
-        this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide, {
-            style_class: 'app-folder-popup-bin',
+        this._viewBox = new St.BoxLayout({
+            style_class: 'app-folder-dialog',
             x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
         });
-
-        this._boxPointer.style_class = 'app-folder-popup';
-        this.add_actor(this._boxPointer);
-        this._boxPointer.bin.set_child(this._view);
-
-        this.closeButton = Util.makeCloseButton(this._boxPointer);
-        this.closeButton.connect('clicked', this.popdown.bind(this));
-        this.add_actor(this.closeButton);
-
-        this._boxPointer.bind_property('opacity', this.closeButton, 'opacity',
-                                       GObject.BindingFlags.SYNC_CREATE);
+        this.add_child(this._viewBox);
+        this._viewBox.add_child(this._view);
 
         global.focus_manager.add_group(this);
 
@@ -1989,6 +1935,75 @@ var AppFolderPopup = GObject.registerClass({
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
+
+        this._needsZoomAndFade = false;
+    }
+
+    _zoomAndFadeIn() {
+        let [sourceX, sourceY] =
+            this._source.get_transformed_position();
+        let [dialogX, dialogY] =
+            this.get_transformed_position();
+
+        this.set({
+            translation_x: sourceX - dialogX,
+            translation_y: sourceY - dialogY,
+            scale_x: this._source.width / this.width,
+            scale_y: this._source.height / this.height,
+            opacity: 0,
+        });
+
+        this.ease({
+            translation_x: 0,
+            translation_y: 0,
+            scale_x: 1,
+            scale_y: 1,
+            opacity: 255,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this._needsZoomAndFade = false;
+
+        this._sourceMappedId = this._source.connect('notify::mapped',
+            this._zoomAndFadeOut.bind(this));
+    }
+
+    _zoomAndFadeOut() {
+        if (!this._isOpen)
+            return;
+
+        if (!this._source.mapped) {
+            this.hide();
+            return;
+        }
+
+        let [sourceX, sourceY] =
+            this._source.get_transformed_position();
+        let [dialogX, dialogY] =
+            this.get_transformed_position();
+
+        this.ease({
+            translation_x: sourceX - dialogX,
+            translation_y: sourceY - dialogY,
+            scale_x: this._source.width / this.width,
+            scale_y: this._source.height / this.height,
+            opacity: 0,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this.set({
+                    translation_x: 0,
+                    translation_y: 0,
+                    scale_x: 1,
+                    scale_y: 1,
+                    opacity: 255,
+                });
+                this.hide();
+            },
+        });
+
+        this._needsZoomAndFade = false;
     }
 
     _onDestroy() {
@@ -1997,6 +2012,22 @@ var AppFolderPopup = GObject.registerClass({
             this._grabHelper.ungrab({ actor: this });
             this._grabHelper = null;
         }
+
+        if (this._sourceMappedId) {
+            this._source.disconnect(this._sourceMappedId);
+            this._sourceMappedId = 0;
+        }
+    }
+
+    vfunc_allocate(box, flags) {
+        let contentBox = this.get_theme_node().get_content_box(box);
+        this._view.adaptToSize(contentBox.get_width(), contentBox.get_height());
+
+        super.vfunc_allocate(box, flags);
+
+        // We can only start zooming after receiving an allocation
+        if (this._needsZoomAndFade)
+            this._zoomAndFadeIn();
     }
 
     vfunc_key_press_event(keyEvent) {
@@ -2062,19 +2093,8 @@ var AppFolderPopup = GObject.registerClass({
         if (!this._isOpen)
             return;
 
+        this._needsZoomAndFade = true;
         this.show();
-
-        this._boxPointer.setArrowActor(this._source);
-        // We need to hide the icons of the view until the boxpointer animation
-        // is completed so we can animate the icons after as we like without
-        // showing them while boxpointer is animating.
-        this._view.opacity = 0;
-        this._boxPointer.open(BoxPointer.PopupAnimation.FADE |
-                              BoxPointer.PopupAnimation.SLIDE,
-                              () => {
-                                  this._view.opacity = 255;
-                                  this._view.animate(IconGrid.AnimationDirection.IN);
-                              });
 
         this.emit('open-state-changed', true);
     }
@@ -2083,28 +2103,11 @@ var AppFolderPopup = GObject.registerClass({
         if (!this._isOpen)
             return;
 
-        this._grabHelper.ungrab({ actor: this });
+        this._zoomAndFadeOut();
 
-        this._boxPointer.close(BoxPointer.PopupAnimation.FADE |
-                               BoxPointer.PopupAnimation.SLIDE);
+        this._grabHelper.ungrab({ actor: this });
         this._isOpen = false;
         this.emit('open-state-changed', false);
-    }
-
-    getCloseButtonOverlap() {
-        return this.closeButton.get_theme_node().get_length('-shell-close-overlap-y');
-    }
-
-    getOffset(side) {
-        let offset = this._boxPointer.getPadding(side);
-        if (this._arrowSide == side)
-            offset += this._boxPointer.getArrowHeight();
-        return offset;
-    }
-
-    updateArrowSide(side) {
-        this._arrowSide = side;
-        this._boxPointer.updateArrowSide(side);
     }
 });
 
