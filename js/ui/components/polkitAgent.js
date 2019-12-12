@@ -96,7 +96,7 @@ var AuthenticationDialog = GObject.registerClass({
             can_focus: true,
             x_expand: true,
         });
-        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+        ShellEntry.addContextMenu(this._passwordEntry);
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordEntry.bind_property('reactive',
             this._passwordEntry.clutter_text, 'editable',

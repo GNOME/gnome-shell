@@ -332,7 +332,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                 x_expand: true,
             });
             this._pimEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-            ShellEntry.addContextMenu(this._pimEntry, { isPassword: true });
+            ShellEntry.addContextMenu(this._pimEntry);
 
             if (rtl) {
                 layout.attach(this._pimEntry, 0, 0, 1, 1);
@@ -362,7 +362,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             x_expand: true,
         });
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
-        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+        ShellEntry.addContextMenu(this._passwordEntry);
         this.setInitialKeyFocus(this._passwordEntry);
         this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
             animate: true,
