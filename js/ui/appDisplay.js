@@ -1561,6 +1561,8 @@ var AppFolderDialog = GObject.registerClass({
             primary: true,
         }));
 
+        this._blurEffect = null;
+
         this._source = source;
         this._view = source.view;
 
@@ -1594,6 +1596,19 @@ var AppFolderDialog = GObject.registerClass({
         let [dialogX, dialogY] =
             this.get_transformed_position();
 
+        this._blurEffect = new Shell.BlurEffect({
+            name: 'blur',
+            blur_radius: 0,
+            brightness: 1,
+        });
+        Main.overview.viewSelector.add_effect(this._blurEffect);
+
+        Main.overview.viewSelector.ease_property(
+            '@effects.blur.blur_radius', 40, {
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: 250,
+            });
+
         this.set({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
@@ -1623,6 +1638,7 @@ var AppFolderDialog = GObject.registerClass({
             return;
 
         if (!this._source.mapped) {
+            this._removeBlur();
             this.hide();
             return;
         }
@@ -1631,6 +1647,14 @@ var AppFolderDialog = GObject.registerClass({
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
             this.get_transformed_position();
+
+        Main.overview.viewSelector.ease_property(
+            '@effects.blur.blur_radius', 0, {
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                delay: 50,
+                duration: 250,
+                onComplete: () => this._removeBlur(),
+            });
 
         this.ease({
             translation_x: sourceX - dialogX,
@@ -1653,6 +1677,13 @@ var AppFolderDialog = GObject.registerClass({
         });
 
         this._needsZoomAndFade = false;
+    }
+
+    _removeBlur() {
+        if (this._blurEffect) {
+            Main.overview.viewSelector.remove_effect(this._blurEffect);
+            this._blurEffect = null;
+        }
     }
 
     _onDestroy() {
