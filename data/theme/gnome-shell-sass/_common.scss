@@ -1553,13 +1553,16 @@ StScrollBar {
 
 
   // Collections
-  .app-folder-popup { //expanded collection
-    -arrow-border-radius: 8px;
-    -arrow-background-color: transparentize(darken($osd_bg_color,10%), 0.5);
-    -arrow-base: 24px;
-    -arrow-rise: 11px;
+  .app-folder-dialog { //expanded collection
+    border-radius: 8px;
+    spacing: 24px;
+    background-color: transparentize(darken($osd_bg_color,10%), 0.4);
   }
-  .app-folder-popup-bin { padding: 5px; }
+  .app-folder-dialog-container {
+    padding: 12px;
+    width: 800px;
+    height: 600px;
+  }
   .app-folder-icon {
     padding: 5px;
     spacing-rows: 5px;
