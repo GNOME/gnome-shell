@@ -1645,7 +1645,7 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this);
+            this._dialog = new AppFolderDialog(this, this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1833,7 +1833,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Widget {
-    _init(source) {
+    _init(source, parentView) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             style_class: 'app-folder-dialog-container',
@@ -1849,6 +1849,7 @@ var AppFolderDialog = GObject.registerClass({
 
         this._source = source;
         this._view = source.view;
+        this._parentView = parentView;
 
         this._isOpen = false;
         this.parentOffset = 0;
@@ -1871,6 +1872,7 @@ var AppFolderDialog = GObject.registerClass({
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._blur = new Shell.BlurEffect();
         this._needsZoomAndFade = false;
     }
 
@@ -1895,6 +1897,13 @@ var AppFolderDialog = GObject.registerClass({
             scale_y: 1,
             opacity: 255,
             duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this._parentView.add_effect_with_name('blur', this._blur);
+        this._parentView.ease_property('@effects.blur.blur-radius', 50, {
+            duration: 200,
+            delay: 100,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
@@ -1938,6 +1947,14 @@ var AppFolderDialog = GObject.registerClass({
             },
         });
 
+        this._parentView.ease_property('@effects.blur.blur-radius', 0, {
+            duration: 200,
+            delay: 100,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._parentView.remove_effect(this._blur),
+        });
+
+
         this._needsZoomAndFade = false;
     }
 
@@ -1952,6 +1969,8 @@ var AppFolderDialog = GObject.registerClass({
             this._source.disconnect(this._sourceMappedId);
             this._sourceMappedId = 0;
         }
+
+        this._blur = null;
     }
 
     vfunc_allocate(box, flags) {
