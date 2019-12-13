@@ -44,6 +44,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let rtl = secretTable.get_text_direction() == Clutter.TextDirection.RTL;
         let initialFocusSet = false;
         let pos = 0;
+        let lastPasswordEntry = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
             let label = new St.Label({ style_class: 'prompt-dialog-password-label',
@@ -61,10 +62,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 reactive,
                 x_expand: true,
             };
-            if (secret.password)
+            if (secret.password) {
                 secret.entry = new St.PasswordEntry(entryParams);
-            else
+                lastPasswordEntry = i;
+            } else {
                 secret.entry = new St.Entry(entryParams);
+            }
             ShellEntry.addContextMenu(secret.entry);
 
             if (secret.validate)
@@ -99,6 +102,14 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 layout.attach(secret.entry, 1, pos, 1, 1);
             }
             pos++;
+        }
+        // Bind the caps-lock warning to the last password-entry and pack below it.
+        if (this._content.secrets[lastPasswordEntry].password) {
+            this._capsLockWarningLabel = new ShellEntry.CapsLockWarning(this._content.secrets[lastPasswordEntry].entry);
+            if (rtl)
+                layout.attach(this._capsLockWarningLabel, 0, ++pos, 1, 1);
+            else
+                layout.attach(this._capsLockWarningLabel, 1, ++pos, 1, 1);
         }
 
         contentBox.messageBox.add(secretTable);
