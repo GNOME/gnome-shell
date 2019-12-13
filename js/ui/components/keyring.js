@@ -126,6 +126,12 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.set_password_actor(this._passwordEntry ? this._passwordEntry.clutter_text : null);
         this.prompt.set_confirm_actor(this._confirmEntry ? this._confirmEntry.clutter_text : null);
 
+        if (this._passwordEntry || this._confirmEntry) {
+            this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+            layout.attach(this._capsLockWarningLabel, 1, row, 1, 1);
+            row++;
+        }
+
         if (this.prompt.choice_visible) {
             let choice = new CheckBox.CheckBox();
             this.prompt.bind_property('choice-label', choice.getLabelActor(), 'text', GObject.BindingFlags.SYNC_CREATE);

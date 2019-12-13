@@ -101,6 +101,14 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             pos++;
         }
 
+        if (this._content.secrets.some(s => s.password)) {
+            this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+            if (rtl)
+                layout.attach(this._capsLockWarningLabel, 0, pos, 1, 1);
+            else
+                layout.attach(this._capsLockWarningLabel, 1, pos, 1, 1);
+        }
+
         contentBox.messageBox.add(secretTable);
 
         if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
