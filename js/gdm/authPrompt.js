@@ -120,6 +120,9 @@ var AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
 
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning(this._entry);
+        this.add_child(this._capsLockWarningLabel);
+
         this._message = new St.Label({
             opacity: 0,
             styleClass: 'login-dialog-message',
@@ -209,9 +212,11 @@ var AuthPrompt = GObject.registerClass({
         if (secret && (this._entry != this._passwordEntry)) {
             this.replace_child(this._entry, this._passwordEntry);
             this._entry = this._passwordEntry;
+            this.insert_child_below(this._capsLockWarningLabel, this._entry);
         } else if (!secret && (this._entry != this._textEntry)) {
             this.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
+            this.remove_child(this._capsLockWarningLabel);
         }
     }
 

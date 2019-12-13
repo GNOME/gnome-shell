@@ -404,6 +404,11 @@ StScrollBar {
     padding-bottom: 8px;
   }
 
+  .prompt-dialog-caps-lock-warning {
+    @extend .prompt-dialog-error-label;
+    padding-left: 6.2em;
+  }
+
   .prompt-dialog-info-label {
     font-size: 10pt;
     padding-bottom: 8px;
