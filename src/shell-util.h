@@ -62,12 +62,21 @@ cairo_surface_t * shell_util_composite_capture_images (ClutterCapture  *captures
 
 void shell_util_check_cloexec_fds (void);
 
-gboolean shell_util_start_systemd_unit (const char  *unit,
-                                        const char  *mode,
-                                        GError     **error);
-gboolean shell_util_stop_systemd_unit  (const char  *unit,
-                                        const char  *mode,
-                                        GError     **error);
+void   shell_util_start_systemd_unit        (const char           *unit,
+                                             const char           *mode,
+                                             GCancellable         *cancellable,
+                                             GAsyncReadyCallback   callback,
+                                             gpointer              user_data);
+gchar* shell_util_start_systemd_unit_finish (GAsyncResult         *res,
+                                             GError              **error);
+
+void  shell_util_stop_systemd_unit         (const char           *unit,
+                                            const char           *mode,
+                                            GCancellable         *cancellable,
+                                            GAsyncReadyCallback   callback,
+                                            gpointer              user_data);
+gchar* shell_util_stop_systemd_unit_finish (GAsyncResult         *res,
+                                            GError              **error);
 
 void shell_util_sd_notify (void);
 
