@@ -1044,10 +1044,10 @@ var WindowManager = class {
 
         global.display.connect('x11-display-opened', () => {
             IBusManager.getIBusManager().restartDaemon(['--xim']);
-            Shell.util_start_systemd_unit('gnome-session-x11-services.target', 'fail');
+            Shell.util_start_systemd_unit('gnome-session-x11-services.target', 'fail', null, () => {});
         });
         global.display.connect('x11-display-closing', () => {
-            Shell.util_stop_systemd_unit('gnome-session-x11-services.target', 'fail');
+            Shell.util_stop_systemd_unit('gnome-session-x11-services.target', 'fail', null, () => {});
             IBusManager.getIBusManager().restartDaemon();
         });
 
