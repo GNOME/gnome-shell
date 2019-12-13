@@ -42,6 +42,11 @@ const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
 const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
 
+Gio._promisify(Shell,
+    'util_start_systemd_unit', 'util_start_systemd_unit_finish');
+Gio._promisify(Shell,
+    'util_stop_systemd_unit', 'util_stop_systemd_unit_finish');
+
 var DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _init(wm) {
@@ -901,46 +906,23 @@ var WindowManager = class {
         global.display.connect('init-xserver', (display, task) => {
             IBusManager.getIBusManager().restartDaemon(['--xim']);
 
-            try {
-                if (!Shell.util_start_systemd_unit('gsd-xsettings.target', 'fail'))
-                    log('Not starting gsd-xsettings; waiting for gnome-session to do so');
+            /* Timeout waiting for start job completion after 5 seconds */
+            let cancellable = new Gio.Cancellable();
+            GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+                cancellable.cancel();
+                return GLib.SOURCE_REMOVE;
+            });
 
-                /* Leave this watchdog timeout so don't block indefinitely here */
-                let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
-                    Gio.DBus.session.unwatch_name(watchId);
-                    log('Warning: Failed to start gsd-xsettings');
-                    task.return_boolean(true);
-                    timeoutId = 0;
-                    return GLib.SOURCE_REMOVE;
-                });
-
-                /* When gsd-xsettings daemon is started, we are good to resume */
-                let watchId = Gio.DBus.session.watch_name(
-                    'org.gnome.SettingsDaemon.XSettings',
-                    Gio.BusNameWatcherFlags.NONE,
-                    () => {
-                        Gio.DBus.session.unwatch_name(watchId);
-                        if (timeoutId > 0) {
-                            task.return_boolean(true);
-                            GLib.source_remove(timeoutId);
-                        }
-                    },
-                    null);
-            } catch (e) {
-                log('Error starting gsd-xsettings: %s'.format(e.message));
-                task.return_boolean(true);
-            }
+            this._startX11Services(task, cancellable);
 
             return true;
         });
         global.display.connect('x11-display-closing', () => {
             if (!Meta.is_wayland_compositor())
                 return;
-            try {
-                Shell.util_stop_systemd_unit('gsd-xsettings.target', 'fail');
-            } catch (e) {
-                log('Error stopping gsd-xsettings: %s'.format(e.message));
-            }
+
+            this._stopX11Services(null);
+
             IBusManager.getIBusManager().restartDaemon();
         });
 
@@ -1006,6 +988,36 @@ var WindowManager = class {
         global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
 
         global.stage.add_action(topDragAction);
+    }
+
+    async _startX11Services(task, cancellable) {
+        try {
+            await Shell.util_start_systemd_unit(
+                'gnome-session-x11-services-ready.target', 'fail', cancellable);
+        } catch (e) {
+            // Ignore NOT_SUPPORTED error, which indicates we are not systemd
+            // managed and gnome-session will have taken care of everything
+            // already.
+            // Note that we do log cancellation from here.
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+                log('Error starting X11 services: %s'.format(e.message));
+        } finally {
+            task.return_boolean(true);
+        }
+    }
+
+    async _stopX11Services(cancellable) {
+        try {
+            await Shell.util_stop_systemd_unit(
+                'gnome-session-x11-services.target', 'fail', cancellable);
+        } catch (e) {
+            // Ignore NOT_SUPPORTED error, which indicates we are not systemd
+            // managed and gnome-session will have taken care of everything
+            // already.
+            // Note that we do log cancellation from here.
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+                log('Error stopping X11 services: %s'.format(e.message));
+        }
     }
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
