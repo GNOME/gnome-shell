@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported addContextMenu */
+/* exported addContextMenu CapsLockWarning */
 
-const { Clutter, Shell, St } = imports.gi;
+const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -151,3 +151,39 @@ function addContextMenu(entry, params) {
         entry._menuManager = null;
     });
 }
+
+var CapsLockWarning = GObject.registerClass(
+class CapsLockWarning extends St.Label {
+    _init(passwordEntry, params) {
+        super._init({
+            text: _('Caps lock is on.'),
+        });
+
+        params = Params.parse(params, {
+            style_class: 'prompt-dialog-error-label',
+            x_align: St.Align.START,
+        });
+        this.set(params);
+
+        this.keymap = Clutter.get_default_backend().get_keymap();
+        this._updateCapsLockWarningOpacity();
+
+        this._passwordEntry = passwordEntry;
+        this._passwordEntry.connect('notify::mapped', () => {
+            if (this._passwordEntry.is_mapped()) {
+                this.stateChangedId = this.keymap.connect('state-changed',
+                                                          this._updateCapsLockWarningOpacity.bind(this));
+            } else {
+                this.keymap.disonnect(this.stateChangedId);
+            }
+        });
+
+        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.clutter_text.line_wrap = true;
+    }
+
+    _updateCapsLockWarningOpacity() {
+        let capsLockOn = this.keymap.get_caps_lock_state();
+        this.opacity = capsLockOn ? 255 : 0;
+    }
+});
