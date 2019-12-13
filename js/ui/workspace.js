@@ -431,7 +431,7 @@ var WindowClone = GObject.registerClass({
                     return;
                 let [x, y] = action.get_coords();
                 action.release();
-                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
+                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
             });
         } else {
             this.emit('show-chrome');
