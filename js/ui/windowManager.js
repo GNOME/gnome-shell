@@ -901,43 +901,45 @@ var WindowManager = class {
         global.display.connect('init-xserver', (display, task) => {
             IBusManager.getIBusManager().restartDaemon(['--xim']);
 
-            try {
-                if (!Shell.util_start_systemd_unit('gsd-xsettings.target', 'fail'))
-                    log('Not starting gsd-xsettings; waiting for gnome-session to do so');
+            log('Starting X11 services from init-xserver callback');
 
-                /* Leave this watchdog timeout so don't block indefinitely here */
-                let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
-                    Gio.DBus.session.unwatch_name(watchId);
-                    log('Warning: Failed to start gsd-xsettings');
-                    task.return_boolean(true);
-                    timeoutId = 0;
-                    return GLib.SOURCE_REMOVE;
-                });
-
-                /* When gsd-xsettings daemon is started, we are good to resume */
-                let watchId = Gio.DBus.session.watch_name(
-                    'org.gnome.SettingsDaemon.XSettings',
-                    Gio.BusNameWatcherFlags.NONE,
-                    () => {
-                        Gio.DBus.session.unwatch_name(watchId);
-                        if (timeoutId > 0) {
-                            task.return_boolean(true);
-                            GLib.source_remove(timeoutId);
-                        }
-                    },
-                    null);
-            } catch (e) {
-                log('Error starting gsd-xsettings: %s'.format(e.message));
+            /* Start a watchdog timeout so we don't block indefinitely here */
+            let cancellable = new Gio.Cancellable();
+            let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+                log('Warning: Failed to start X11 services');
+                cancellable.cancel();
                 task.return_boolean(true);
-            }
+                timeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+
+            Shell.util_start_systemd_unit('gnome-session-x11-services-ready.target',
+                                          'fail',
+                                          cancellable,
+                                          (obj, res) => {
+                                              try {
+                                                  res = Shell.util_start_systemd_unit_finish(res)
+                                                  log('Starting X11 services job result was: %s'.format(res));
+                                              } catch (e) {
+                                                  if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                                                      return;
+
+                                                  log('Error starting X11 services: %s'.format(e.message));
+                                              }
+
+                                              task.return_boolean(true);
+                                              GLib.source_remove(timeoutId);
+                                          })
 
             return true;
         });
         global.display.connect('x11-display-closing', () => {
+            log('Stopping X11 services from x11-display-closing callback');
+
             if (!Meta.is_wayland_compositor())
                 return;
             try {
-                Shell.util_stop_systemd_unit('gsd-xsettings.target', 'fail');
+                Shell.util_stop_systemd_unit('gnome-session-x11-services.target', 'fail', null, () => {});
             } catch (e) {
                 log('Error stopping gsd-xsettings: %s'.format(e.message));
             }
