@@ -564,6 +564,14 @@ var PadDiagram = GObject.registerClass({
         this.add_actor(label);
     }
 
+    updateLabels(callback) {
+        for (let i = 0; i < this._labels.length; i++) {
+            let [label, action, idx, dir] = this._labels[i];
+            let str = callback(action, idx, dir);
+            label.set_text(str);
+        }
+    }
+
     _applyLabel(label, action, idx, dir, str) {
         if (str != null) {
             label.set_text(str);
@@ -776,17 +784,30 @@ var PadOsd = GObject.registerClass({
         global.display.request_pad_osd(pad, editionMode);
     }
 
+    _getActionText(type, number, dir) {
+        let str = global.display.get_pad_action_label(this.padDevice, type, number);
+        return str ? str : _("None");
+    }
+
     _createLabel(type, number, dir) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
-        let label = new St.Label({ text: str ? str : _("None") });
+        let label = new St.Label({ text: this._getActionText(type, number, dir) });
         this._padDiagram.addLabel(label, type, number, dir);
     }
 
+    _updateActionLabels() {
+        this._padDiagram.updateLabels(this._getActionText.bind(this));
+    }
+
     _onCapturedEvent(actor, event) {
+        let isModeSwitch =
+            (event.type() == Clutter.EventType.PAD_BUTTON_PRESS ||
+             event.type() == Clutter.EventType.PAD_BUTTON_RELEASE) &&
+            this.padDevice.get_mode_switch_button_group(event.get_button()) >= 0;
+
         if (event.type() == Clutter.EventType.PAD_BUTTON_PRESS &&
             event.get_source_device() == this.padDevice) {
             this._padDiagram.activateButton(event.get_button());
-            let isModeSwitch = this.padDevice.get_mode_switch_button_group(event.get_button()) >= 0;
 
             /* Buttons that switch between modes cannot be edited */
             if (this._editionMode && !isModeSwitch)
@@ -795,6 +816,11 @@ var PadOsd = GObject.registerClass({
         } else if (event.type() == Clutter.EventType.PAD_BUTTON_RELEASE &&
                    event.get_source_device() == this.padDevice) {
             this._padDiagram.deactivateButton(event.get_button());
+
+            if (isModeSwitch) {
+                this._endActionEdition();
+                this._updateActionLabels();
+            }
             return Clutter.EVENT_STOP;
         } else if (event.type() == Clutter.EventType.KEY_PRESS &&
                    (!this._editionMode || event.get_key_symbol() === Clutter.KEY_Escape)) {
