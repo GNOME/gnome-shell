@@ -41,24 +41,6 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this._passwordItem = item;
     }
 
-    get isPassword() {
-        return this._passwordItem != null;
-    }
-
-    set isPassword(v) {
-        if (v == this.isPassword)
-            return;
-
-        if (v) {
-            this._makePasswordItem();
-            this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
-        } else {
-            this._passwordItem.destroy();
-            this._passwordItem = null;
-            this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
-        }
-    }
-
     open(animate) {
         this._updatePasteItem();
         this._updateCopyItem();
@@ -144,10 +126,9 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse(params, { isPassword: false, actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, { actionMode: Shell.ActionMode.POPUP });
 
     entry.menu = new EntryMenu(entry);
-    entry.menu.isPassword = params.isPassword;
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
                                                         { actionMode: params.actionMode });
     entry._menuManager.addMenu(entry.menu);
