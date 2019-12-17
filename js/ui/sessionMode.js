@@ -4,7 +4,6 @@ import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as FileUtils from '../misc/fileUtils.js';
-import * as Params from '../misc/params.js';
 
 import {LoginDialog}  from '../gdm/loginDialog.js';
 import {UnlockDialog} from '../ui/unlockDialog.js';
@@ -191,16 +190,12 @@ export class SessionMode extends Signals.EventEmitter {
     }
 
     _sync() {
-        let params = _modes[this.currentMode];
-        let defaults;
-        if (params.parentMode) {
-            defaults = Params.parse(
-                _modes[params.parentMode],
-                _modes[DEFAULT_MODE]);
-        } else {
-            defaults = _modes[DEFAULT_MODE];
-        }
-        params = Params.parse(params, defaults);
+        const current = _modes[this.currentMode];
+        const parent = current.parentMode
+            ? {..._modes[DEFAULT_MODE], ..._modes[current.parentMode]}
+            : {..._modes[DEFAULT_MODE]};
+
+        const params = {...parent, ...current};
 
         // A simplified version of Lang.copyProperties, handles
         // undefined as a special case for "no change / inherit from previous mode"
