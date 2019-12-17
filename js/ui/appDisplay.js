@@ -1219,10 +1219,6 @@ var FolderIcon = GObject.registerClass({
         this._itemDragEndId = Main.overview.connect(
             'item-drag-end', this._onDragEnd.bind(this));
 
-        this._popupTimeoutId = 0;
-
-        this.connect('popup-menu', this._popupRenamePopup.bind(this));
-
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._folder.connect('changed', this._redisplay.bind(this));
@@ -1242,8 +1238,6 @@ var FolderIcon = GObject.registerClass({
 
         if (this._dialog)
             this._dialog.destroy();
-
-        this._removeMenuTimeout();
     }
 
     vfunc_clicked() {
@@ -1258,7 +1252,6 @@ var FolderIcon = GObject.registerClass({
     }
 
     open() {
-        this._removeMenuTimeout();
         this._ensurePopup();
         this.view._scrollView.vscroll.adjustment.value = 0;
         this._dialog.popup();
@@ -1367,180 +1360,7 @@ var FolderIcon = GObject.registerClass({
             });
         }
     }
-
-    _removeMenuTimeout() {
-        if (this._popupTimeoutId > 0) {
-            GLib.source_remove(this._popupTimeoutId);
-            this._popupTimeoutId = 0;
-        }
-    }
-
-    _setPopupTimeout() {
-        this._removeMenuTimeout();
-        this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
-            this._popupTimeoutId = 0;
-            this._popupRenamePopup();
-            return GLib.SOURCE_REMOVE;
-        });
-        GLib.Source.set_name_by_id(this._popupTimeoutId,
-                                   '[gnome-shell] this._popupRenamePopup');
-    }
-
-    vfunc_leave_event(crossingEvent) {
-        let ret = super.vfunc_leave_event(crossingEvent);
-        this.fake_release();
-        this._removeMenuTimeout();
-        return ret;
-    }
-
-    vfunc_button_press_event(buttonEvent) {
-        super.vfunc_button_press_event(buttonEvent);
-
-        if (buttonEvent.button == 1) {
-            this._setPopupTimeout();
-        } else if (buttonEvent.button == 3) {
-            this._popupRenamePopup();
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_touch_event(touchEvent) {
-        super.vfunc_touch_event(touchEvent);
-
-        if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
-            this._setPopupTimeout();
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    _popupRenamePopup() {
-        this._removeMenuTimeout();
-        this.fake_release();
-
-        if (!this._menu) {
-            this._menuManager = new PopupMenu.PopupMenuManager(this);
-
-            this._menu = new RenameFolderMenu(this, this._folder);
-            this._menuManager.addMenu(this._menu);
-
-            this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
-                if (!isPoppedUp)
-                    this.sync_hover();
-            });
-            let id = Main.overview.connect('hiding', () => {
-                this._menu.close();
-            });
-            this.connect('destroy', () => {
-                Main.overview.disconnect(id);
-            });
-        }
-
-        this.set_hover(true);
-        this._menu.open();
-        this._menuManager.ignoreRelease();
-    }
 });
-
-var RenameFolderMenuItem = GObject.registerClass(
-class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(folder) {
-        super._init({
-            style_class: 'rename-folder-popup-item',
-            reactive: false,
-        });
-        this.setOrnament(PopupMenu.Ornament.HIDDEN);
-
-        this._folder = folder;
-
-        // Entry
-        this._entry = new St.Entry({
-            x_expand: true,
-            width: 200,
-        });
-        this.add_child(this._entry);
-
-        this._entry.clutter_text.connect(
-            'notify::text', this._validate.bind(this));
-        this._entry.clutter_text.connect(
-            'activate', this._updateFolderName.bind(this));
-
-        // Rename button
-        this._button = new St.Button({
-            style_class: 'button',
-            reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-            can_focus: true,
-            label: _('Rename'),
-        });
-        this.add_child(this._button);
-
-        this._button.connect('clicked', this._updateFolderName.bind(this));
-    }
-
-    vfunc_map() {
-        this._entry.text = _getFolderName(this._folder);
-        this._entry.clutter_text.set_selection(0, -1);
-        super.vfunc_map();
-    }
-
-    vfunc_key_focus_in() {
-        super.vfunc_key_focus_in();
-        this._entry.clutter_text.grab_key_focus();
-    }
-
-    _isValidFolderName() {
-        let folderName = _getFolderName(this._folder);
-        let newFolderName = this._entry.text.trim();
-
-        return newFolderName.length > 0 && newFolderName != folderName;
-    }
-
-    _validate() {
-        let isValid = this._isValidFolderName();
-
-        this._button.reactive = isValid;
-    }
-
-    _updateFolderName() {
-        if (!this._isValidFolderName())
-            return;
-
-        let newFolderName = this._entry.text.trim();
-        this._folder.set_string('name', newFolderName);
-        this._folder.set_boolean('translate', false);
-        this.activate(Clutter.get_current_event());
-    }
-});
-
-var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
-    constructor(source, folder) {
-        super(source, 0.5, St.Side.BOTTOM);
-        this.actor.add_style_class_name('rename-folder-popup');
-
-        // We want to keep the item hovered while the menu is up
-        this.blockSourceEvents = true;
-
-        let menuItem = new RenameFolderMenuItem(folder);
-        this.addMenuItem(menuItem);
-
-        // Focus the text entry on menu pop-up
-        this.focusActor = menuItem;
-
-        // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.connect('notify::mapped', () => {
-            if (!source.mapped)
-                this.close();
-        });
-        source.connect('destroy', () => {
-            source.disconnect(this._sourceMappedId);
-            this.destroy();
-        });
-
-        Main.uiGroup.add_actor(this.actor);
-    }
-};
-Signals.addSignalMethods(RenameFolderMenu.prototype);
 
 var AppFolderDialog = GObject.registerClass({
     Signals: {
