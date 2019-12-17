@@ -814,7 +814,12 @@ var PopupMenu = class extends PopupMenuBase {
 
         if (this.sourceActor) {
             this._keyPressId = this.sourceActor.connect('key-press-event',
-                                                        this._onKeyPress.bind(this));
+                this._onKeyPress.bind(this));
+            this._notifyMappedId = this.sourceActor.connect('notify::mapped',
+                () => {
+                    if (!this.sourceActor.mapped)
+                        this.close();
+                });
         }
 
         this._systemModalOpenedId = 0;
@@ -927,6 +932,9 @@ var PopupMenu = class extends PopupMenuBase {
     destroy() {
         if (this._keyPressId)
             this.sourceActor.disconnect(this._keyPressId);
+
+        if (this._notifyMappedId)
+            this.sourceActor.disconnect(this._notifyMappedId);
 
         if (this._systemModalOpenedId)
             Main.layoutManager.disconnect(this._systemModalOpenedId);
