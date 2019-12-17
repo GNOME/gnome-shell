@@ -1514,6 +1514,33 @@ StScrollBar {
   .app-folder-dialog { //expanded collection
     border-radius: 8px;
     background-color: transparentize(darken($osd_bg_color,10%), 0.4);
+
+    & .folder-name-container {
+      padding: 12px 18px;
+      spacing: 12px;
+
+      & .folder-name-label,
+      & .folder-name-entry {
+        font-size: 18pt;
+        font-weight: bold;
+      }
+
+      & .folder-name-entry { width: 300px }
+
+      /* FIXME: this is to keep the label in sync with the entry */
+      & .folder-name-label { padding: 5px 7px }
+
+      & .edit-folder-button {
+        @extend %button;
+
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 16px;
+
+        & > StIcon { icon-size: 16px }
+      }
+    }
   }
   .app-folder-dialog-container {
     padding: 12px;
