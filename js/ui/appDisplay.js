@@ -1284,6 +1284,8 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
+        }, {
+            minRows: 1,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
