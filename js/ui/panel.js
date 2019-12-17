@@ -962,7 +962,7 @@ class Panel extends St.Widget {
     }
 
     _toggleMenu(indicator) {
-        if (!indicator || !indicator.container.visible)
+        if (!indicator || !indicator.mapped)
             return; // menu not supported by current session mode
 
         let menu = indicator.menu;
