@@ -98,17 +98,29 @@ var AuthPrompt = GObject.registerClass({
         });
 
         this.add_child(this._label);
-        this._entry = new St.Entry({
+
+        let entryParams = {
             style_class: 'login-dialog-prompt-entry',
             can_focus: true,
             x_expand: false,
             y_expand: true,
-        });
-        ShellEntry.addContextMenu(this._entry, { isPassword: true, actionMode: Shell.ActionMode.NONE });
+        };
 
+        this._entry = null;
+
+        this._textEntry = new St.Entry(entryParams);
+        ShellEntry.addContextMenu(this._textEntry, { actionMode: Shell.ActionMode.NONE });
+
+        this._passwordEntry = new St.PasswordEntry(entryParams);
+        ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
+
+        this._entry = this._passwordEntry;
         this.add_child(this._entry);
 
         this._entry.grab_key_focus();
+
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        this.add_child(this._capsLockWarningLabel);
 
         this._message = new St.Label({
             opacity: 0,
@@ -195,7 +207,18 @@ var AuthPrompt = GObject.registerClass({
         });
     }
 
-    _onAskQuestion(verifier, serviceName, question, passwordChar) {
+    _updateEntry(secret) {
+        if (secret && (this._entry != this._passwordEntry)) {
+            this.replace_child(this._entry, this._passwordEntry);
+            this._entry = this._passwordEntry;
+        } else if (!secret && (this._entry != this._textEntry)) {
+            this.replace_child(this._entry, this._textEntry);
+            this._entry = this._textEntry;
+        }
+        this._capsLockWarningLabel.visible = secret;
+    }
+
+    _onAskQuestion(verifier, serviceName, question, secret) {
         if (this._queryingService)
             this.clear();
 
@@ -205,10 +228,11 @@ var AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
             return;
         }
-        this.setPasswordChar(passwordChar);
+
+        this._updateEntry(secret);
         this.setQuestion(question);
 
-        if (passwordChar) {
+        if (secret) {
             if (this._userVerifier.reauthenticating)
                 this.nextButton.label = _("Unlock");
             else
@@ -356,11 +380,6 @@ var AuthPrompt = GObject.registerClass({
     clear() {
         this._entry.text = '';
         this.stopSpinning();
-    }
-
-    setPasswordChar(passwordChar) {
-        this._entry.clutter_text.set_password_char(passwordChar);
-        this._entry.menu.isPassword = passwordChar != '';
     }
 
     setQuestion(question) {

@@ -896,7 +896,6 @@ var LoginDialog = GObject.registerClass({
     }
 
     _askForUsernameAndBeginVerification() {
-        this._authPrompt.setPasswordChar('');
         this._authPrompt.setQuestion(_("Username: "));
 
         this._showRealmLoginHint(this._realmManager.loginFormat);

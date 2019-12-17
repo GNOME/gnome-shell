@@ -90,13 +90,13 @@ var AuthenticationDialog = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._passwordBox.add_child(this._passwordLabel);
-        this._passwordEntry = new St.Entry({
+        this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
             text: "",
             can_focus: true,
             x_expand: true,
         });
-        ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
+        ShellEntry.addContextMenu(this._passwordEntry);
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordEntry.bind_property('reactive',
             this._passwordEntry.clutter_text, 'editable',
@@ -109,6 +109,8 @@ var AuthenticationDialog = GObject.registerClass({
         this._passwordBox.add(this._workSpinner);
 
         this._passwordBox.hide();
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({ style_class: 'prompt-dialog-caps-lock-warning' });
+        content.messageBox.add(this._capsLockWarningLabel);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -278,10 +280,7 @@ var AuthenticationDialog = GObject.registerClass({
         else
             this._passwordLabel.set_text(request);
 
-        if (echoOn)
-            this._passwordEntry.clutter_text.set_password_char('');
-        else
-            this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
+        this._passwordEntry.password_visible = echoOn;
 
         this._passwordBox.show();
         this._passwordEntry.set_text('');

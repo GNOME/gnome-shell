@@ -97,6 +97,11 @@ StEntry {
     warning-color: $warning_color;
     padding: 0 4px;
   }
+
+  StIcon.peek-password {
+    icon-size: 1.09em;
+    padding: 0 4px;
+  }
 }
 
 
@@ -402,6 +407,11 @@ StScrollBar {
     font-size: 10pt;
     color: $warning_color;
     padding-bottom: 8px;
+  }
+
+  .prompt-dialog-caps-lock-warning {
+    @extend .prompt-dialog-error-label;
+    padding-left: 6.2em;
   }
 
   .prompt-dialog-info-label {
