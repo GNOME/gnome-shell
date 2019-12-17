@@ -119,6 +119,9 @@ var AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
 
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        this.add_child(this._capsLockWarningLabel);
+
         this._message = new St.Label({
             opacity: 0,
             styleClass: 'login-dialog-message',
@@ -212,6 +215,7 @@ var AuthPrompt = GObject.registerClass({
             this.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
         }
+        this._capsLockWarningLabel.visible = secret;
     }
 
     _onAskQuestion(verifier, serviceName, question, secret) {
