@@ -17,9 +17,9 @@ $slider_size: 15px;
 	-barlevel-overdrive-border-color: if($variant == 'light', darken($destructive_color, 4%), lighten($destructive_color, 2%)); //trough border when red;
 	-barlevel-overdrive-separator-width:1px;
 	// slider hander
-	-slider-handle-radius: $slider_size * 0.5; // half the size of the 
+	-slider-handle-radius: $slider_size * 0.5; // half the size of the size
 	-slider-handle-border-width: 1px;
-	-slider-handle-border-color: if($variant == 'light', $borders_color, $fg_color); //active trough border
+	-slider-handle-border-color: if($variant == 'light', $borders_color, $fg_color);
 
 	color: if($variant == 'light', lighten($bg_color, 10%), $fg_color);
 	&:hover { color: $hover_bg_color; }
