@@ -108,16 +108,8 @@
 .message-media-control {
 	padding: $base_padding * 2 $base_padding * 4;
 	color: darken($fg_color, 15%);
-	// border: 0 solid $borders_color;
-	// border-left-width:1px;
 
-	&:last-child:ltr {
-		border-radius: 0 calc(#{$base_border_radius} + 2px) calc(#{$base_border_radius} + 2px) 0;
-	}
-	&:last-child:rtl {
-		border-radius: calc(#{$base_border_radius} + 2px) 0 0 calc(#{$base_border_radius} + 2px);
-	}
-
+	// uses $hover_bg_color since the media controls are in a notification_bubble
 	&:hover {
 		background-color: lighten($hover_bg_color, 5%);
 		color: $fg_color;
@@ -129,6 +121,10 @@
 	}
 
 	&:insensitive { color: darken($fg_color,40%); }
+	
+	// fix border-radius for last button on hover
+	&:last-child:ltr { &:hover {border-radius:  0 $base_border_radius + 2px $base_border_radius + 2px 0;} }
+	&:last-child:rtl { &:hover {border-radius: calc(#{$base_border_radius} + 2px) 0 0 calc(#{$base_border_radius} + 2px);} }
 }
 
 // album-art
