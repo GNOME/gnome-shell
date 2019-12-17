@@ -21,7 +21,6 @@ import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
 import * as PopupMenu from './popupMenu.js';
 import * as Search from './search.js';
 import * as SwipeTracker from './swipeTracker.js';
-import * as Params from '../misc/params.js';
 import * as SystemActions from '../misc/systemActions.js';
 
 import * as Main from './main.js';
@@ -2986,10 +2985,9 @@ export const AppIcon = GObject.registerClass({
 }, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
         // Get the isDraggable property without passing it on to the BaseIcon:
-        const appIconParams = Params.parse(iconParams, {isDraggable: true}, true);
-        const isDraggable = appIconParams['isDraggable'];
+        const isDraggable = iconParams['isDraggable'] ?? true;
         delete iconParams['isDraggable'];
-        const expandTitleOnHover = appIconParams['expandTitleOnHover'];
+        const expandTitleOnHover = iconParams['expandTitleOnHover'];
         delete iconParams['expandTitleOnHover'];
 
         super._init({style_class: 'overview-tile'}, isDraggable, expandTitleOnHover);

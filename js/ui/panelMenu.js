@@ -6,19 +6,17 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 
 import * as Main from './main.js';
-import * as Params from '../misc/params.js';
 import * as PopupMenu from './popupMenu.js';
 
 export const ButtonBox = GObject.registerClass(
 class ButtonBox extends St.Widget {
     _init(params) {
-        params = Params.parse(params, {
+        super._init({
             style_class: 'panel-button',
             x_expand: true,
             y_expand: true,
-        }, true);
-
-        super._init(params);
+            ...params,
+        });
 
         this._delegate = this;
 

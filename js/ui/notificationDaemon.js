@@ -9,7 +9,6 @@ import Shell from 'gi://Shell';
 import * as Config from '../misc/config.js';
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
-import * as Params from '../misc/params.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 import {NotificationErrors, NotificationError} from '../misc/dbusErrors.js';
@@ -128,7 +127,7 @@ class FdoNotificationDaemon {
             hints[hint] = hints[hint].deepUnpack();
         }
 
-        hints = Params.parse(hints, {urgency: Urgency.NORMAL}, true);
+        hints = {urgency: Urgency.NORMAL, ...hints};
 
         // Be compatible with the various hints for image data and image path
         // 'image-data' and 'image-path' are the latest name of these hints, introduced in 1.2
