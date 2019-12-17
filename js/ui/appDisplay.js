@@ -1650,7 +1650,8 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this, this._parentView);
+            this._dialog = new AppFolderDialog(this,
+                this._parentView, this._folder);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1838,7 +1839,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Widget {
-    _init(source, parentView) {
+    _init(source, parentView, folder) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             style_class: 'app-folder-dialog-container',
@@ -1853,6 +1854,7 @@ var AppFolderDialog = GObject.registerClass({
         }));
 
         this._source = source;
+        this._folder = folder;
         this._view = source.view;
         this._parentView = parentView;
 
@@ -1865,8 +1867,11 @@ var AppFolderDialog = GObject.registerClass({
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.FILL,
+            vertical: true,
         });
         this.add_child(this._viewBox);
+
+        this._addFolderNameEntry();
         this._viewBox.add_child(this._view);
 
         global.focus_manager.add_group(this);
@@ -1883,6 +1888,117 @@ var AppFolderDialog = GObject.registerClass({
         }));
         this._blur = new Shell.BlurEffect({ brightness: 0.8 });
         this._needsZoomAndFade = false;
+    }
+
+    _addFolderNameEntry() {
+        this._entryBox = new St.BoxLayout({
+            style_class: 'folder-name-container',
+        });
+        this._viewBox.add_child(this._entryBox);
+
+        let stack = new Shell.Stack({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._entryBox.add_child(stack);
+
+        // Folder name label
+        this._folderNameLabel = new St.Label({
+            style_class: 'folder-name-label',
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        stack.add_child(this._folderNameLabel);
+
+        // Folder name entry
+        this._entry = new St.Entry({
+            style_class: 'folder-name-entry',
+            opacity: 0,
+            reactive: false,
+        });
+        this._entry.clutter_text.set({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        stack.add_child(this._entry);
+
+        // Edit button
+        let button = new St.Button({
+            style_class: 'edit-folder-button',
+            button_mask: St.ButtonMask.ONE,
+            reactive: true,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+            child: new St.Icon({
+                icon_name: 'document-edit-symbolic',
+                icon_size: 16,
+            }),
+        });
+
+        button.connect('clicked', () => {
+            if (this._entry.reactive)
+                this._showFolderLabel();
+            else
+                this._showFolderEntry();
+        });
+
+        this._entryBox.add_child(button);
+
+        this._folder.connect('changed::name', () => this._syncFolderName());
+        this._syncFolderName();
+    }
+
+    _syncFolderName() {
+        let newName = _getFolderName(this._folder);
+
+        this._folderNameLabel.text = newName;
+        this._entry.text = newName;
+    }
+
+    _switchActor(from, to) {
+        to.reactive = true;
+        to.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        from.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                from.reactive = false;
+            },
+        });
+    }
+
+    _showFolderLabel() {
+        this._maybeUpdateFolderName();
+        this._switchActor(this._entry, this._folderNameLabel);
+    }
+
+    _showFolderEntry() {
+        this._switchActor(this._folderNameLabel, this._entry);
+
+        this._entry.clutter_text.set_selection(0, -1);
+        this._entry.clutter_text.grab_key_focus();
+    }
+
+    _maybeUpdateFolderName() {
+        let folderName = _getFolderName(this._folder);
+        let newFolderName = this._entry.text.trim();
+
+        if (newFolderName.length === 0 || newFolderName === folderName)
+            return;
+
+        this._folder.set_string('name', newFolderName);
+        this._folder.set_boolean('translate', false);
     }
 
     _zoomAndFadeIn() {
@@ -1993,7 +2109,12 @@ var AppFolderDialog = GObject.registerClass({
 
     vfunc_allocate(box, flags) {
         let contentBox = this.get_theme_node().get_content_box(box);
-        this._view.adaptToSize(contentBox.get_width(), contentBox.get_height());
+
+        let [, entryBoxHeight] = this._entryBox.get_size();
+        let spacing = this._viewBox.layout_manager.spacing;
+
+        this._view.adaptToSize(contentBox.get_width(),
+            contentBox.get_height() - entryBoxHeight - spacing);
 
         super.vfunc_allocate(box, flags);
 
@@ -2076,6 +2197,7 @@ var AppFolderDialog = GObject.registerClass({
             return;
 
         this._zoomAndFadeOut();
+        this._showFolderLabel();
 
         this._grabHelper.ungrab({ actor: this });
         this._isOpen = false;
