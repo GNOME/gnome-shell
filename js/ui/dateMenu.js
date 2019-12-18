@@ -357,7 +357,7 @@ class WeatherSection extends St.Button {
             });
             let icon = new St.Icon({
                 style_class: 'weather-forecast-icon',
-                icon_name: fc.get_symbolic_icon_name(),
+                icon_name: fc.get_icon_name(),
                 x_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
