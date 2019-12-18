@@ -222,6 +222,10 @@
     icon-size: $base_icon_size * 2;
   }
 
+  .weather-forecast-temp {
+    font-weight: bold;
+  }
+
   .weather-forecast-time {
     color: darken($fg_color,30%);
     font-feature-settings: "tnum";
