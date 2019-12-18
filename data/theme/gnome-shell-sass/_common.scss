@@ -1009,17 +1009,17 @@ StScrollBar {
       font-size: 0.9em;
     }
 
+    .weather-forecast-time {
+      color: darken($fg_color,40%);
+      font-size: 0.8em;
+    }
+
     .weather-forecast-icon {
       icon-size: 2.18em;
     }
 
     .weather-forecast-temp {
       font-weight: bold;
-    }
-
-    .weather-forecast-time {
-      color: darken($fg_color,40%);
-      font-size: 0.8em;
     }
 
     .calendar-month-label {
