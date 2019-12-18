@@ -25,22 +25,6 @@ $panel_height: 1.86em;
 		spacing: $base_spacing;
 	}
 
-	// App Menu
-	#appMenu {
-		spacing: $base_spacing;
-
-		.label-shadow { color: transparent; }
-
-		// app menu icon
-		.app-menu-icon {
-			-st-icon-style: symbolic;
-			margin-left: $base_margin;
-			margin-right: $base_margin;
-			// dimensions of the icon are hardcoded
-		}
-	}
-
-
 	// the rounded outset corners
 	.panel-corner {
 		-panel_corner_radius: $panel_corner_radius;
@@ -83,6 +67,15 @@ $panel_height: 1.86em;
 			padding: $base_padding - 1px;
 		}
 
+
+		// app menu icon
+		.app-menu-icon {
+			-st-icon-style: symbolic;
+			margin-left: $base_margin;
+			margin-right: $base_margin;
+			// dimensions of the icon are hardcoded
+		}
+
 		// lock & login screen styles
 		.unlock-screen &,
 		.login-screen &,
@@ -105,4 +98,10 @@ $panel_height: 1.86em;
 	// indicator for active
 	.screencast-indicator,
 	.remote-access-indicator { color: $warning_color; }
+}
+
+// App Menu
+#appMenu {
+	spacing: $base_spacing;
+	.label-shadow { color: transparent; }
 }

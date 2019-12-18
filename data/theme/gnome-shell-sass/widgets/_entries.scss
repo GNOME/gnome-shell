@@ -16,4 +16,8 @@ StEntry {
 		warning-color: $warning_color;
 		padding: 0 4px;
 	}
+	StIcon.peek-password {
+		icon-size: $base_icon_size;
+		padding: 0 4px;
+	}
 }
