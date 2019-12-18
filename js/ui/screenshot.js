@@ -84,7 +84,7 @@ var ScreenshotService = class {
         let path = [
             GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
             GLib.get_home_dir(),
-        ].find(p => GLib.file_test(p, GLib.FileTest.EXISTS));
+        ].find(p => p && GLib.file_test(p, GLib.FileTest.EXISTS));
 
         if (!path)
             return null;
