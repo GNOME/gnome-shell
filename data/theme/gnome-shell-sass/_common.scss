@@ -55,8 +55,8 @@ $base_font_size: 11;
 $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
 
 // icons
-// $base_icon_size: 1.09em;
-$base_icon_size: 16px;
+$base_icon_size: 1.09em;
+// $base_icon_size: 16px;
 
 // Stage
 stage {
@@ -65,7 +65,6 @@ stage {
 }
 
 /* WIDGETS */
-@import 'widgets/panel';
 @import 'widgets/app-grid';
 @import 'widgets/app-switcher';
 @import 'widgets/buttons';
@@ -87,6 +86,7 @@ stage {
 @import 'widgets/network-dialog';
 @import 'widgets/osd';
 @import 'widgets/overview';
+@import 'widgets/panel';
 @import 'widgets/popovers';
 @import 'widgets/screen-shield';
 @import 'widgets/scrollbars';

@@ -18,6 +18,11 @@ $panel_height: 1.86em;
   &.login-screen,
   &.lock-screen {
     background-color: transparent;
+    .panel-corner {
+      -panel_corner_radius: 0;
+      -panel-corner-background-color: transparent;
+      -panel-corner-border-color: transparent;
+    }
   }
 }
 
@@ -28,19 +33,13 @@ $panel_height: 1.86em;
 
 // the rounded outset corners
 .panel-corner {
-  -panel_corner_radius: $panel_corner_radius;
+  -panel-corner-radius: $panel_corner_radius;
   -panel-corner-background-color: $panel_bg_color;
   -panel-corner-border-width: 2px;
   -panel-corner-border-color: transparent;
 
   &:active, &:overview, &:focus {
     -panel-corner-border-color: lighten($selected_bg_color,5%);
-  }
-
-  &.lock-screen, &.login-screen, &.unlock-screen {
-    -panel_corner_radius: 0;
-    -panel-corner-background-color: transparent;
-    -panel-corner-border-color: transparent;
   }
 }
 
