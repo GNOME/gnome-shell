@@ -19,53 +19,53 @@ $popover_arrow_height: 12px;
 	min-width: 15em;
 	color: $fg_color;
 
-	.popup-menu-content {
-		padding: $base_padding * 2 + $base_margin 0;
-	}
-
-	// menu items
-	.popup-menu-item {
-		spacing: $base_padding;
-		padding: $base_padding;
-
-		&:ltr { padding-right:1.75em; padding-left: 0; }
-		&:rtl { padding-right: 0; padding-left:1.75em; }
-
-		&:checked {
-			background-color: lighten($bg_color, 2%);
-			box-shadow: none;
-		}
-
-		&.selected {
-			background-color: transparentize(white, if($variant=='light', 0.2, 0.9));
-			color: $fg_color;
-		}
-
-		&:active { 
-			background-color: $selected_bg_color;
-			color: $selected_fg_color;
-		}
-
-		&:insensitive { color: transparentize($fg_color,0.5);}
-	}
-
-	// all icons and other graphical elements
-	.popup-inactive-menu-item {
-		color: $fg_color;
-
-		&:insensitive { color: transparentize($fg_color,0.5); }
-	}
-
 	//.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is
 	&.panel-menu {
 		-boxpointer-gap: $base_margin; // distance from the panel
 		margin-bottom: 1.75em;
 	}
-
-	// symbolic icons in popover
-	.popup-menu-arrow,
-	.popup-menu-icon { icon-size: $base_icon_size; }
 }
+
+.popup-menu-content {
+	padding: $base_padding * 2 + $base_margin 0;
+}
+
+// menu items
+.popup-menu-item {
+	spacing: $base_padding;
+	padding: $base_padding;
+
+	&:ltr { padding-right:1.75em; padding-left: 0; }
+	&:rtl { padding-right: 0; padding-left:1.75em; }
+
+	&:checked {
+		background-color: lighten($bg_color, 2%);
+		box-shadow: none;
+	}
+
+	&.selected {
+		background-color: transparentize(white, if($variant=='light', 0.2, 0.9));
+		color: $fg_color;
+	}
+
+	&:active { 
+		background-color: $selected_bg_color;
+		color: $selected_fg_color;
+	}
+
+	&:insensitive { color: transparentize($fg_color,0.5);}
+}
+
+// all icons and other graphical elements
+.popup-inactive-menu-item {
+	color: $fg_color;
+
+	&:insensitive { color: transparentize($fg_color,0.5); }
+}
+
+// symbolic icons in popover
+.popup-menu-arrow,
+.popup-menu-icon { icon-size: $base_icon_size; }
 
 // popover submenus
 .popup-sub-menu {
