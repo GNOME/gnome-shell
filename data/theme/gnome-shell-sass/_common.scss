@@ -65,6 +65,7 @@ stage {
 }
 
 /* WIDGETS */
+@import 'widgets/panel';
 @import 'widgets/app-grid';
 @import 'widgets/app-switcher';
 @import 'widgets/buttons';
@@ -86,7 +87,6 @@ stage {
 @import 'widgets/network-dialog';
 @import 'widgets/osd';
 @import 'widgets/overview';
-@import 'widgets/panel';
 @import 'widgets/popovers';
 @import 'widgets/screen-shield';
 @import 'widgets/scrollbars';
@@ -209,7 +209,7 @@ stage {
 	border-radius: $base_border_radius;
 	border-width: 1px;
 	min-height: 22px;
-	padding: $base_padding * 0.25 $base_padding * 2;
+	padding: $base_padding * 0.5 $base_padding * 4;
 
 	@include button(normal);
 	&:focus { @include button(focus);}
