@@ -1,7 +1,7 @@
 /* Modal Dialogs */
 
 .modal-dialog {
-	border-radius: $base_border_radius + 4px;;
+	border-radius: $modal_radius;
 	@extend %bubble_panel;
 
 	.modal-dialog-content-box {

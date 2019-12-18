@@ -198,6 +198,7 @@ stage {
 		border-right-width: 0 !important;
 		border-radius: 0px 0px $modal_radius - 2px 0px;
 	}
+	
 	&:first-child:last-child {
 		border-radius: 0px 0px $modal_radius - 2px $modal_radius - 2px;
 	}
