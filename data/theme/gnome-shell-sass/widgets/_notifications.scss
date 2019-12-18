@@ -10,12 +10,9 @@ $notification_banner_width: 34em;
 	font-size: $base_font_size;
 	margin: $base_margin;
 	border-radius: $modal_radius;
-	border: if($variant == 'light', none, $bubble_borders_color);
-	box-shadow: 0 1px 2px rgba(0,0,0,0.7);
 
 	.message-title { color: $fg_color }
 	.message-content { color: $fg_color; }
-
 
 	&:hover { background: $bg_color; }
 	&, &:focus, &:active {
@@ -24,8 +21,9 @@ $notification_banner_width: 34em;
 		.message-content { color: $fg_color; }
 	}
 
-	// icon color
+	// icon
 	.message-icon-bin > StIcon {
+		icon-size: $base_icon_size * 2;
 		color: $fg_color;
 	}
 
@@ -52,10 +50,11 @@ $notification_banner_width: 34em;
 
 	.notification-button {
 		@extend %bubble_button;
+		min-height: $notification_banner_height * 0.5;
+		padding: $base_padding !important;
+		border-top-width: 0 !important;
+		
 		&:focus { box-shadow: none; }
-		padding: 0 16px;
-		min-height: 35px;
-		border: none;
 	}
 }
 

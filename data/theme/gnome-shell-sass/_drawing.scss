@@ -170,7 +170,7 @@
 		background-color: darken($c,3%) !important;
 		border-width: 1px;
 		border-style: solid;
-		border-color: draw_border_color(if($variant == 'light', $c, darken($c,12%)));
+		border-color: draw_border_color(if($variant == 'light', $c, darken($c,7%)));
 		text-shadow: none;
 		icon-shadow: none;
 		box-shadow: none;

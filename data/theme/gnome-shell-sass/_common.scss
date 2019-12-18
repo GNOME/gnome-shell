@@ -178,25 +178,29 @@ stage {
 %bubble_button {
 	@include button(normal);
 	padding: $base_padding * 2;
-	border-right-width: 1px;
-	border-top: 1px solid $bubble_borders_color;
+	border-color: $bubble_borders_color;
+	border-style: solid;
+	border-width: 0 !important;
+	border-top-width: 1px !important;
 	box-shadow:none !important;
 
 	&:insensitive { @include button(insensitive);}
-	&:hover { @include button(hover, $c:$hover_bg_color, $tc:$fg_color);}
-	&:focus { @include button(focus, $c:$hover_bg_color, $tc:$fg_color);}
-	&:active { @include button(active, $c:$active_bg_color, $tc:$fg_color);}
+	&:hover { @include button(hover);}
+	&:focus { @include button(focus);}
+	&:active { @include button(active);}
 
+	// radius is 2 pixel less to fit in bubble
 	&:first-child {
-		border-radius: 0px 0px 0px $modal_radius;
+		border-right-width: 1px !important;
+		border-radius: 0px 0px 0px $modal_radius - 2px;
 	}
 	&:last-child {
-		border-right-width: 0px;
-		border-radius: 0px 0px $modal_radius 0px;
+		border-right-width: 0 !important;
+		border-radius: 0px 0px $modal_radius - 2px 0px;
 	}
+	
 	&:first-child:last-child {
-		border-right-width: 0px;
-		border-radius: 0px 0px $modal_radius $modal_radius;
+		border-radius: 0px 0px $modal_radius - 2px $modal_radius - 2px;
 	}
 }
 
