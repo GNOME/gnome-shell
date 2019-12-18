@@ -20,7 +20,7 @@ $popover_arrow_height: 12px;
 	color: $fg_color;
 
 	.popup-menu-content {
-		padding: calc(#{$base_padding} * 2 + #{$base_margin}) 0;
+		padding: $base_padding * 2 + $base_margin 0;
 	}
 
 	// menu items
