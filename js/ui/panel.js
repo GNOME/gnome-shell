@@ -100,7 +100,7 @@ class AppMenu extends PopupMenu.PopupMenu {
                          'org.gtk.Actions', 'Activate',
                          GLib.Variant.new('(sava{sv})',
                                           ['details', [args], null]),
-                         null, 0, -1, null, null);
+                         null, 0, -1, null);
             });
         });
 
