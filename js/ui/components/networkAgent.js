@@ -10,6 +10,7 @@ const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 
+Gio._promisify(Shell.NetworkAgent.prototype, 'init_async', 'init_finish');
 Gio._promisify(Shell.NetworkAgent.prototype,
     'search_vpn_plugin', 'search_vpn_plugin_finish');
 
@@ -482,39 +483,37 @@ var VPNRequestHandler = class {
         }
     }
 
-    _readStdoutOldStyle() {
-        this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, (stream, result) => {
-            let [line, len_] = this._dataStdout.read_line_finish_utf8(result);
+    async _readStdoutOldStyle() {
+        const [line, len_] =
+            await this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null);
 
-            if (line == null) {
-                // end of file
-                this._stdout.close(null);
-                return;
-            }
+        if (line === null) {
+            // end of file
+            this._stdout.close(null);
+            return;
+        }
 
-            this._vpnChildProcessLineOldStyle(line);
+        this._vpnChildProcessLineOldStyle(line);
 
-            // try to read more!
-            this._readStdoutOldStyle();
-        });
+        // try to read more!
+        this._readStdoutOldStyle();
     }
 
-    _readStdoutNewStyle() {
-        this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null, (stream, result) => {
-            let cnt = this._dataStdout.fill_finish(result);
+    async _readStdoutNewStyle() {
+        const cnt =
+            await this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null);
 
-            if (cnt == 0) {
-                // end of file
-                this._showNewStyleDialog();
+        if (cnt === 0) {
+            // end of file
+            this._showNewStyleDialog();
 
-                this._stdout.close(null);
-                return;
-            }
+            this._stdout.close(null);
+            return;
+        }
 
-            // Try to read more
-            this._dataStdout.set_buffer_size(2 * this._dataStdout.get_buffer_size());
-            this._readStdoutNewStyle();
-        });
+        // Try to read more
+        this._dataStdout.set_buffer_size(2 * this._dataStdout.get_buffer_size());
+        this._readStdoutNewStyle();
     }
 
     _showNewStyleDialog() {
@@ -621,15 +620,17 @@ var NetworkAgent = class {
         this._native.connect('cancel-request', this._cancelRequest.bind(this));
 
         this._initialized = false;
-        this._native.init_async(GLib.PRIORITY_DEFAULT, null, (o, res) => {
-            try {
-                this._native.init_finish(res);
-                this._initialized = true;
-            } catch (e) {
-                this._native = null;
-                logError(e, 'error initializing the NetworkManager Agent');
-            }
-        });
+        this._initNative();
+    }
+
+    async _initNative() {
+        try {
+            await this._native.init_async(GLib.PRIORITY_DEFAULT, null);
+            this._initialized = true;
+        } catch (e) {
+            this._native = null;
+            logError(e, 'error initializing the NetworkManager Agent');
+        }
     }
 
     enable() {
