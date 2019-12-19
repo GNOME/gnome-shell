@@ -188,10 +188,7 @@ var ExtensionsWindow = GObject.registerClass({
             null,
             Gio.DBusCallFlags.NONE,
             -1,
-            null,
-            (o, res) => {
-                o.call_finish(res);
-            });
+            null);
     }
 
     _sortList(row1, row2) {

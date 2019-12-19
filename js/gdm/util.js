@@ -2,7 +2,7 @@
 /* exported BANNER_MESSAGE_KEY, BANNER_MESSAGE_TEXT_KEY, LOGO_KEY,
             DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor */
 
-const { Clutter, Gio, GLib } = imports.gi;
+const { Clutter, Gdm, Gio, GLib } = imports.gi;
 const Signals = imports.signals;
 
 const Batch = imports.gdm.batch;
@@ -11,6 +11,15 @@ const OVirt = imports.gdm.oVirt;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
+
+Gio._promisify(Gdm.Client.prototype,
+    'open_reauthentication_channel', 'open_reauthentication_channel_finish');
+Gio._promisify(Gdm.Client.prototype,
+    'get_user_verifier', 'get_user_verifier_finish');
+Gio._promisify(Gdm.UserVerifierProxy.prototype,
+    'call_begin_verification_for_user', 'call_begin_verification_for_user_finish');
+Gio._promisify(Gdm.UserVerifierProxy.prototype,
+    'call_begin_verification', 'call_begin_verification_finish');
 
 var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
@@ -168,14 +177,12 @@ var ShellUserVerifier = class {
 
         this._checkForFingerprintReader();
 
-        if (userName) {
-            // If possible, reauthenticate an already running session,
-            // so any session specific credentials get updated appropriately
-            this._client.open_reauthentication_channel(userName, this._cancellable,
-                                                       this._reauthenticationChannelOpened.bind(this));
-        } else {
-            this._client.get_user_verifier(this._cancellable, this._userVerifierGot.bind(this));
-        }
+        // If possible, reauthenticate an already running session,
+        // so any session specific credentials get updated appropriately
+        if (userName)
+            this._openReauthenticationChannel(userName);
+        else
+            this._getUserVerifier();
     }
 
     cancel() {
@@ -339,10 +346,11 @@ var ShellUserVerifier = class {
         this._verificationFailed(false);
     }
 
-    _reauthenticationChannelOpened(client, result) {
+    async _openReauthenticationChannel(userName) {
         try {
             this._clearUserVerifier();
-            this._userVerifier = client.open_reauthentication_channel_finish(result);
+            this._userVerifier = await this._client.open_reauthentication_channel(
+                userName, this._cancellable);
         } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
@@ -351,8 +359,7 @@ var ShellUserVerifier = class {
                 // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there
                 // is no session to reauthenticate. Fall back to performing
                 // verification from this login session
-                client.get_user_verifier(this._cancellable,
-                                         this._userVerifierGot.bind(this));
+                this._getUserVerifier();
                 return;
             }
 
@@ -366,10 +373,11 @@ var ShellUserVerifier = class {
         this._hold.release();
     }
 
-    _userVerifierGot(client, result) {
+    async _getUserVerifier() {
         try {
             this._clearUserVerifier();
-            this._userVerifier = client.get_user_verifier_finish(result);
+            this._userVerifier =
+                await this._client.get_user_verifier(this._cancellable);
         } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
@@ -421,35 +429,25 @@ var ShellUserVerifier = class {
         }
     }
 
-    _startService(serviceName) {
+    async _startService(serviceName) {
         this._hold.acquire();
-        if (this._userName) {
-            this._userVerifier.call_begin_verification_for_user(serviceName, this._userName, this._cancellable, (obj, result) => {
-                try {
-                    obj.call_begin_verification_for_user_finish(result);
-                } catch (e) {
-                    if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                        return;
-                    this._reportInitError('Failed to start verification for user', e);
-                    return;
-                }
-
-                this._hold.release();
-            });
-        } else {
-            this._userVerifier.call_begin_verification(serviceName, this._cancellable, (obj, result) => {
-                try {
-                    obj.call_begin_verification_finish(result);
-                } catch (e) {
-                    if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                        return;
-                    this._reportInitError('Failed to start verification', e);
-                    return;
-                }
-
-                this._hold.release();
-            });
+        try {
+            if (this._userName) {
+                await this._userVerifier.call_begin_verification_for_user(
+                    serviceName, this._userName, this._cancellable);
+            } else {
+                await this._userVerifier.call_begin_verification(
+                    serviceName, this._cancellable);
+            }
+        } catch (e) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                return;
+            this._reportInitError(this._userName
+                ? 'Failed to start verification for user'
+                : 'Failed to start verification', e);
+            return;
         }
+        this._hold.release();
     }
 
     _beginVerification() {

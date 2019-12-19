@@ -4,6 +4,9 @@ const { Clutter, GLib, Gio, GObject, IBus } = imports.gi;
 
 const Keyboard = imports.ui.status.keyboard;
 
+Gio._promisify(IBus.Bus.prototype,
+    'create_input_context_async', 'create_input_context_async_finish');
+
 var HIDE_PANEL_TIME = 50;
 
 var InputMethod = GObject.registerClass(
@@ -46,15 +49,11 @@ class InputMethod extends Clutter.InputMethod {
         this._currentSource = this._inputSourceManager.currentSource;
     }
 
-    _onConnected() {
+    async _onConnected() {
         this._cancellable = new Gio.Cancellable();
-        this._ibus.create_input_context_async('gnome-shell', -1,
-            this._cancellable, this._setContext.bind(this));
-    }
-
-    _setContext(bus, res) {
         try {
-            this._context = this._ibus.create_input_context_async_finish(res);
+            this._context = await this._ibus.create_input_context_async(
+                'gnome-shell', -1, this._cancellable);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                 logError(e);

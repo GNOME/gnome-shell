@@ -8,6 +8,14 @@ var Tpl = null;
 var Tp = null;
 try {
     ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
+
+    Gio._promisify(Tp.Channel.prototype, 'close_async', 'close_finish');
+    Gio._promisify(Tp.Channel.prototype,
+        'send_message_async', 'send_message_finish');
+    Gio._promisify(Tp.ChannelDispatchOperation.prototype,
+        'claim_with_async', 'claim_with_finish');
+    Gio._promisify(Tpl.LogManager.prototype,
+        'get_filtered_events_async', 'get_filtered_events_finish');
 } catch (e) {
     log('Telepathy is not available, chat integration will be disabled.');
 }
@@ -193,7 +201,7 @@ class TelepathyClient extends Tp.BaseClient {
 
             // We can only handle text channel, so close any other channel
             if (!(channel instanceof Tp.TextChannel)) {
-                channel.close_async(null);
+                channel.close_async();
                 continue;
             }
 
@@ -239,7 +247,7 @@ class TelepathyClient extends Tp.BaseClient {
         }
     }
 
-    _approveTextChannel(account, conn, channel, dispatchOp, context) {
+    async _approveTextChannel(account, conn, channel, dispatchOp, context) {
         let [targetHandle_, targetHandleType] = channel.get_handle();
 
         if (targetHandleType != Tp.HandleType.CONTACT) {
@@ -248,17 +256,15 @@ class TelepathyClient extends Tp.BaseClient {
             return;
         }
 
-        // Approve private text channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this, (o, result) => {
-            try {
-                dispatchOp.claim_with_finish(result);
-                this._handlingChannels(account, conn, [channel], false);
-            } catch (err) {
-                log('Failed to Claim channel: %s'.format(err.toString()));
-            }
-        });
-
         context.accept();
+
+        // Approve private text channels right away as we are going to handle it
+        try {
+            await dispatchOp.claim_with_async(this);
+            this._handlingChannels(account, conn, [channel], false);
+        } catch (err) {
+            log('Failed to Claim channel: %s'.format(err.toString()));
+        }
     }
 
     _delegatedChannelsCb(_client, _channels) {
@@ -419,17 +425,14 @@ class ChatSource extends MessageTray.Source {
         }
     }
 
-    _getLogMessages() {
+    async _getLogMessages() {
         let logManager = Tpl.LogManager.dup_singleton();
         let entity = Tpl.Entity.new_from_tp_contact(this._contact, Tpl.EntityType.CONTACT);
 
-        logManager.get_filtered_events_async(this._account, entity,
-                                             Tpl.EventTypeMask.TEXT, SCROLLBACK_HISTORY_LINES,
-                                             null, this._displayPendingMessages.bind(this));
-    }
-
-    _displayPendingMessages(logManager, result) {
-        let [success_, events] = logManager.get_filtered_events_finish(result);
+        const [events] = await logManager.get_filtered_events_async(
+            this._account, entity,
+            Tpl.EventTypeMask.TEXT, SCROLLBACK_HISTORY_LINES,
+            null);
 
         let logMessages = events.map(makeMessageFromTplEvent);
         this._ensureNotification();
@@ -486,9 +489,7 @@ class ChatSource extends MessageTray.Source {
             this._ackMessages();
             // The chat box has been destroyed so it can't
             // handle the channel any more.
-            this._channel.close_async((channel, result) => {
-                channel.close_finish(result);
-            });
+            this._channel.close_async();
         } else {
             // Don't indicate any unread messages when the notification
             // that represents them has been destroyed.
@@ -584,9 +585,7 @@ class ChatSource extends MessageTray.Source {
         }
 
         let msg = Tp.ClientMessage.new_text(type, text);
-        this._channel.send_message_async(msg, 0, (src, result) => {
-            this._channel.send_message_finish(result);
-        });
+        this._channel.send_message_async(msg, 0);
     }
 
     setChatState(state) {

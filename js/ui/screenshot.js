@@ -7,6 +7,13 @@ const GrabHelper = imports.ui.grabHelper;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
+Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot', 'screenshot_finish');
+Gio._promisify(Shell.Screenshot.prototype,
+    'screenshot_window', 'screenshot_window_finish');
+Gio._promisify(Shell.Screenshot.prototype,
+    'screenshot_area', 'screenshot_area_finish');
+
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
@@ -156,7 +163,7 @@ var ScreenshotService = class {
         return [x, y, width, height];
     }
 
-    ScreenshotAreaAsync(params, invocation) {
+    async ScreenshotAreaAsync(params, invocation) {
         let [x, y, width, height, flash, filename] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
@@ -173,21 +180,17 @@ var ScreenshotService = class {
         if (!stream)
             return;
 
-        screenshot.screenshot_area(x, y, width, height, stream,
-            (o, res) => {
-                try {
-                    let [success_, area] =
-                        screenshot.screenshot_area_finish(res);
-                    this._onScreenshotComplete(
-                        area, stream, file, flash, invocation);
-                } catch (e) {
-                    this._removeShooterForSender(invocation.get_sender());
-                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
-                }
-            });
+        try {
+            let [area] =
+                await screenshot.screenshot_area(x, y, width, height, stream);
+            this._onScreenshotComplete(area, stream, file, flash, invocation);
+        } catch (e) {
+            this._removeShooterForSender(invocation.get_sender());
+            invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        }
     }
 
-    ScreenshotWindowAsync(params, invocation) {
+    async ScreenshotWindowAsync(params, invocation) {
         let [includeFrame, includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
@@ -197,21 +200,17 @@ var ScreenshotService = class {
         if (!stream)
             return;
 
-        screenshot.screenshot_window(includeFrame, includeCursor, stream,
-            (o, res) => {
-                try {
-                    let [success_, area] =
-                        screenshot.screenshot_window_finish(res);
-                    this._onScreenshotComplete(
-                        area, stream, file, flash, invocation);
-                } catch (e) {
-                    this._removeShooterForSender(invocation.get_sender());
-                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
-                }
-            });
+        try {
+            let [area] =
+                await screenshot.screenshot_window(includeFrame, includeCursor, stream);
+            this._onScreenshotComplete(area, stream, file, flash, invocation);
+        } catch (e) {
+            this._removeShooterForSender(invocation.get_sender());
+            invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        }
     }
 
-    ScreenshotAsync(params, invocation) {
+    async ScreenshotAsync(params, invocation) {
         let [includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
@@ -221,18 +220,13 @@ var ScreenshotService = class {
         if (!stream)
             return;
 
-        screenshot.screenshot(includeCursor, stream,
-            (o, res) => {
-                try {
-                    let [success_, area] =
-                        screenshot.screenshot_finish(res);
-                    this._onScreenshotComplete(
-                        area, stream, file, flash, invocation);
-                } catch (e) {
-                    this._removeShooterForSender(invocation.get_sender());
-                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
-                }
-            });
+        try {
+            let [area] = await screenshot.screenshot(includeCursor, stream);
+            this._onScreenshotComplete(area, stream, file, flash, invocation);
+        } catch (e) {
+            this._removeShooterForSender(invocation.get_sender());
+            invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        }
     }
 
     async SelectAreaAsync(params, invocation) {
@@ -273,19 +267,17 @@ var ScreenshotService = class {
             if (!screenshot)
                 return;
 
-            screenshot.pick_color(coords.x, coords.y, (_o, res) => {
-                let [success_, color] = screenshot.pick_color_finish(res);
-                let { red, green, blue } = color;
-                let retval = GLib.Variant.new('(a{sv})', [{
-                    color: GLib.Variant.new('(ddd)', [
-                        red / 255.0,
-                        green / 255.0,
-                        blue / 255.0,
-                    ]),
-                }]);
-                this._removeShooterForSender(invocation.get_sender());
-                invocation.return_value(retval);
-            });
+            const [color] = await screenshot.pick_color(coords.x, coords.y);
+            const { red, green, blue } = color;
+            const retval = GLib.Variant.new('(a{sv})', [{
+                color: GLib.Variant.new('(ddd)', [
+                    red / 255.0,
+                    green / 255.0,
+                    blue / 255.0,
+                ]),
+            }]);
+            this._removeShooterForSender(invocation.get_sender());
+            invocation.return_value(retval);
         } catch (e) {
             invocation.return_error_literal(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,

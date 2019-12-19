@@ -199,46 +199,47 @@ class DBusEventSource extends EventSourceBase {
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
-        this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, (object, result) => {
-            let loaded = false;
+        this._initProxy();
+    }
 
-            try {
-                this._dbusProxy.init_finish(result);
-                loaded = true;
-            } catch (e) {
-                if (e.matches(Gio.DBusError, Gio.DBusError.TIMED_OUT)) {
-                    // Ignore timeouts and install signals as normal, because with high
-                    // probability the service will appear later on, and we will get a
-                    // NameOwnerChanged which will finish loading
-                    //
-                    // (But still _initialized to false, because the proxy does not know
-                    // about the HasCalendars property and would cause an exception trying
-                    // to read it)
-                } else {
-                    log('Error loading calendars: %s'.format(e.message));
-                    return;
-                }
+    async _initProxy() {
+        let loaded = false;
+
+        try {
+            await this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null);
+            loaded = true;
+        } catch (e) {
+            // Ignore timeouts and install signals as normal, because with high
+            // probability the service will appear later on, and we will get a
+            // NameOwnerChanged which will finish loading
+            //
+            // (But still _initialized to false, because the proxy does not know
+            // about the HasCalendars property and would cause an exception trying
+            // to read it)
+            if (!e.matches(Gio.DBusError, Gio.DBusError.TIMED_OUT)) {
+                log('Error loading calendars: %s'.format(e.message));
+                return;
             }
+        }
 
-            this._dbusProxy.connectSignal('Changed', this._onChanged.bind(this));
+        this._dbusProxy.connectSignal('Changed', this._onChanged.bind(this));
 
-            this._dbusProxy.connect('notify::g-name-owner', () => {
-                if (this._dbusProxy.g_name_owner)
-                    this._onNameAppeared();
-                else
-                    this._onNameVanished();
-            });
-
-            this._dbusProxy.connect('g-properties-changed', () => {
-                this.notify('has-calendars');
-            });
-
-            this._initialized = loaded;
-            if (loaded) {
-                this.notify('has-calendars');
+        this._dbusProxy.connect('notify::g-name-owner', () => {
+            if (this._dbusProxy.g_name_owner)
                 this._onNameAppeared();
-            }
+            else
+                this._onNameVanished();
         });
+
+        this._dbusProxy.connect('g-properties-changed', () => {
+            this.notify('has-calendars');
+        });
+
+        this._initialized = loaded;
+        if (loaded) {
+            this.notify('has-calendars');
+            this._onNameAppeared();
+        }
     }
 
     destroy() {

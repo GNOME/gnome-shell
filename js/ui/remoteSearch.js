@@ -204,7 +204,7 @@ var RemoteSearchProvider = class {
                                          g_interface_info: proxyInfo,
                                          g_interface_name: proxyInfo.name,
                                          gFlags });
-        this.proxy.init_async(GLib.PRIORITY_DEFAULT, null, null);
+        this.proxy.init_async(GLib.PRIORITY_DEFAULT, null);
 
         this.appInfo = appInfo;
         this.id = appInfo.get_id();
