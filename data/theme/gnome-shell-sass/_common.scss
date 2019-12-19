@@ -55,13 +55,13 @@ $base_font_size: 11;
 $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
 
 // icons
-$base_icon_size: 1.09em;
-// $base_icon_size: 16px;
+// $base_icon_size: 1.09em;
+$base_icon_size: 16px;
 
 // Stage
 stage {
-	@include fontsize($base_font_size);
-	color: $fg_color;
+  @include fontsize($base_font_size);
+  color: $fg_color;
 }
 
 /* WIDGETS */
@@ -92,7 +92,6 @@ stage {
 @import 'widgets/scrollbars';
 @import 'widgets/search-entry';
 @import 'widgets/search-results';
-@import 'widgets/search-results';
 @import 'widgets/slider';
 @import 'widgets/switches';
 @import 'widgets/tiled-previews';
@@ -103,139 +102,139 @@ stage {
 
 // Text
 %status_text {
-	font-size: 2em;
-	font-weight: bold;
-	color: $osd_fg_color;
+  font-size: 2em;
+  font-weight: bold;
+  color: $osd_fg_color;
 }
 
 
 // osd panels
 %osd_panel {
-	color: $osd_fg_color;
-	background-color: $osd_bg_color;
-	border: 1px solid $osd_outer_borders_color;
-	border-radius: $base_border_radius * 2 + 4px;
-	padding: $base_padding * 2;
+  color: $osd_fg_color;
+  background-color: $osd_bg_color;
+  border: 1px solid $osd_outer_borders_color;
+  border-radius: $base_border_radius * 2 + 4px;
+  padding: $base_padding * 2;
 }
 
 // Overview panels 
 // for the dash and workspace switcher
 %overview_panel {
-	color: $osd_fg_color;
-	background-color: transparentize($osd_bg_color, 0.2);
-	border: 1px solid $osd_outer_borders_color;
+  color: $osd_fg_color;
+  background-color: transparentize($osd_bg_color, 0.2);
+  border: 1px solid $osd_outer_borders_color;
 }
 
 // icon tiles
 %icon_tile {
-	background-color: transparent; // no background
-	color: $osd_fg_color;
-	border-radius: $base_border_radius + 4px;
-	padding: $base_padding;
-	border: 2px solid transparent;
-	transition-duration: 100ms;
-	text-align: center;
+  background-color: transparent; // no background
+  color: $osd_fg_color;
+  border-radius: $base_border_radius + 4px;
+  padding: $base_padding;
+  border: 2px solid transparent;
+  transition-duration: 100ms;
+  text-align: center;
 }
 
 // dialogs
 %bubble_panel {
-	color: $fg_color;
-	background-color: $bg_color;
-	border: 1px solid if($variant=='light', rgba(0,0,0, 0.6), $borders_color);
+  color: $fg_color;
+  background-color: $bg_color;
+  border: 1px solid if($variant=='light', rgba(0,0,0, 0.6), $borders_color);
 
-	// entry
-	StEntry { @extend %bubble_entry;}
+  // entry
+  StEntry { @extend %bubble_entry;}
 
-	// button
-	.button {
-		background-color: $bg_color;
-		color: $fg_color;
-		box-shadow: none;
+  // button
+  .button {
+    background-color: $bg_color;
+    color: $fg_color;
+    box-shadow: none;
 
-		&, &:hover, &:focus, &:active, &:disabled { 
-			border-color: $bubble_borders_color;
-		}
+    &, &:hover, &:focus, &:active, &:disabled { 
+      border-color: $bubble_borders_color;
+    }
 
-		&:hover { background-color: $hover_bg_color;}
-		&:active { 
-			background-color: $selected_bg_color;
-			color: $selected_fg_color;
-		}
-		&:disabled { color: $insensitive_fg_color;}
-	}
+    &:hover { background-color: $hover_bg_color;}
+    &:active { 
+      background-color: $selected_bg_color;
+      color: $selected_fg_color;
+    }
+    &:disabled { color: $insensitive_fg_color;}
+  }
 }
 
 // entries in dialogs
 %bubble_entry {
-	color: $fg_color;
-	background-color: darken($bg_color, 2%);
-	border-color: $bubble_borders_color;
-	box-shadow: none;
-	&:focus { border: 2px solid $selected_bg_color;}
+  color: $fg_color;
+  background-color: darken($bg_color, 2%);
+  border-color: $bubble_borders_color;
+  box-shadow: none;
+  &:focus { border: 2px solid $selected_bg_color;}
 }
 
 // buttons in dialogs
 %bubble_button {
-	@include button(normal);
-	padding: $base_padding * 2;
-	border-color: $bubble_borders_color;
-	border-style: solid;
-	border-width: 0 !important;
-	border-top-width: 1px !important;
-	box-shadow:none !important;
+  @include button(normal);
+  padding: $base_padding * 2;
+  border-color: $bubble_borders_color;
+  border-style: solid;
+  border-width: 0 !important;
+  border-top-width: 1px !important;
+  box-shadow:none !important;
 
-	&:insensitive { @include button(insensitive);}
-	&:hover { @include button(hover);}
-	&:focus { @include button(focus);}
-	&:active { @include button(active);}
+  &:insensitive { @include button(insensitive);}
+  &:hover { @include button(hover);}
+  &:focus { @include button(focus);}
+  &:active { @include button(active);}
 
-	// radius is 2 pixel less to fit in bubble
-	&:first-child {
-		border-right-width: 1px !important;
-		border-radius: 0px 0px 0px $modal_radius - 2px;
-	}
-	&:last-child {
-		border-right-width: 0 !important;
-		border-radius: 0px 0px $modal_radius - 2px 0px;
-	}
-	
-	&:first-child:last-child {
-		border-radius: 0px 0px $modal_radius - 2px $modal_radius - 2px;
-	}
+  // radius is 2 pixel less to fit in bubble
+  &:first-child {
+    border-right-width: 1px !important;
+    border-radius: 0px 0px 0px $modal_radius - 2px;
+  }
+  &:last-child {
+    border-right-width: 0 !important;
+    border-radius: 0px 0px $modal_radius - 2px 0px;
+  }
+  
+  &:first-child:last-child {
+    border-radius: 0px 0px $modal_radius - 2px $modal_radius - 2px;
+  }
 }
 
 // button styling
 %button {
-	border-radius: $base_border_radius;
-	border-width: 1px;
-	min-height: 22px;
-	padding: $base_padding * 0.5 $base_padding * 4;
+  border-radius: $base_border_radius;
+  border-width: 1px;
+  min-height: 22px;
+  padding: $base_padding * 0.5 $base_padding * 4;
 
-	@include button(normal);
-	&:focus { @include button(focus);}
-	&:hover { @include button(hover);}
-	&:insensitive { @include button(insensitive);}
-	&:active { @include button(active);}
+  @include button(normal);
+  &:focus { @include button(focus);}
+  &:hover { @include button(hover);}
+  &:insensitive { @include button(insensitive);}
+  &:active { @include button(active);}
 }
 
 
 // notification styling
 %notification_bubble {
-	border-radius:$base_border_radius + 2px;
-	padding: 0;
-	margin: $base_margin;
+  border-radius:$base_border_radius + 2px;
+  padding: 0;
+  margin: $base_margin;
 
-	@include button(normal);
+  @include button(normal);
 
-	&:focus,
-	&:hover {
-		// margin-top: $base_margin - 1px;
-		// margin-bottom: $base_margin + 1px;
-		@include button(hover);
-	}
+  &:focus,
+  &:hover {
+    // margin-top: $base_margin - 1px;
+    // margin-bottom: $base_margin + 1px;
+    @include button(hover);
+  }
 
-	&:active {
-		@include button(active);
-		// margin: $base_margin;
-	}
+  &:active {
+    @include button(active);
+    // margin: $base_margin;
+  }
 }
