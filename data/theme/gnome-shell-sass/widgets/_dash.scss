@@ -4,81 +4,81 @@ $dash_placeholder_size: 32px;
 $dash_border_radius: $modal_radius * 1.5;
 
 #dash {
-	@extend %overview_panel;
-	font-size: $base_font_size - 2pt;
-	padding: 0;
-	padding-bottom: $base_padding + 4px;
+  @extend %overview_panel;
+  font-size: $base_font_size - 2pt;
+  padding: 0;
+  padding-bottom: $base_padding + 4px;
 
-	//fixme: can't have non uniform borders :(
-	border-radius: 0 $dash_border_radius $dash_border_radius 0; 
-	border-left-width: 0 !important;
-	&:rtl { 
-		border-radius: $dash_border_radius 0 0 $dash_border_radius;
-		border-right-width: 0 !important;
-	}
+  //fixme: can't have non uniform borders :(
+  border-radius: 0 $dash_border_radius $dash_border_radius 0; 
+  border-left-width: 0 !important;
+  &:rtl { 
+    border-radius: $dash_border_radius 0 0 $dash_border_radius;
+    border-right-width: 0 !important;
+  }
 
-	.placeholder {
-		// background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
-		background-image:none;
-		background-size: contain;
-		height: $dash_placeholder_size;
-	}
+  .placeholder {
+    // background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+    background-image:none;
+    background-size: contain;
+    height: $dash_placeholder_size;
+  }
 
-	.empty-dash-drop-target {
-		width: $dash_placeholder_size;
-		height: $dash_placeholder_size;
-	}
+  .empty-dash-drop-target {
+    width: $dash_placeholder_size;
+    height: $dash_placeholder_size;
+  }
 }
 
 // Dash Items
 .dash-item-container > StWidget {
-	padding: $base_padding + 4px;
-	padding-bottom: 0;
+  padding: $base_padding + 4px;
+  padding-bottom: 0;
 }
 
 // OSD Tooltip
 .dash-label {
-	background-color: transparentize($osd_bg_color,0.05);
-	border-radius: $base_border_radius + 2px;
-	border:none;
-	box-shadow:0 0 0 1px $osd_outer_borders_color;
-	color: $osd_fg_color;
-	padding: $base_padding $base_padding + 2px;
-	text-align: center;
-	margin-top: $base_margin + 4px;
-	-x-offset: $base_margin * 2; // distance from the dash edge
+  background-color: transparentize($osd_bg_color,0.05);
+  border-radius: $base_border_radius + 2px;
+  border:none;
+  box-shadow:0 0 0 1px $osd_outer_borders_color;
+  color: $osd_fg_color;
+  padding: $base_padding $base_padding + 2px;
+  text-align: center;
+  margin-top: $base_margin + 4px;
+  -x-offset: $base_margin * 2; // distance from the dash edge
 }
 
 // Show apps button
 .show-apps {
-	background-color: transparent;
-	color: $osd_fg_color;
+  background-color: transparent;
+  color: $osd_fg_color;
 
-	& .overview-icon {
-		@extend %icon_tile;
-		color: $osd_fg_color;
-	}
+  & .overview-icon {
+    @extend %icon_tile;
+    color: $osd_fg_color;
+  }
 
-	&:hover .overview-icon,
-	&:focus .overview-icon,
-	&:selected .overview-icon {
-		background-color: transparentize($osd_fg_color,0.9);
-		color: $osd_fg_color;
-	}
+  &:hover .overview-icon,
+  &:focus .overview-icon,
+  &:selected .overview-icon {
+    background-color: transparentize($osd_fg_color,0.9);
+    color: $osd_fg_color;
+  }
 
-	&:drop .overview-icon {
-		background-color: transparentize($selected_bg_color,.15);
-	}
+  &:drop .overview-icon {
+    background-color: transparentize($selected_bg_color,.15);
+  }
 
-	&:active .overview-icon,
-	&:checked .overview-icon {
-		background-color: darken($osd_bg_color,10%);
-	}
+  &:active .overview-icon,
+  &:checked .overview-icon {
+    background-color: darken($osd_bg_color,10%);
+  }
 
-	&:checked .show-apps-icon,
-	&:focus .show-apps-icon {
-		color: $fg_color;
-		transition-duration: 100ms;
-	}
+  &:checked .show-apps-icon,
+  &:focus .show-apps-icon {
+    color: $fg_color;
+    transition-duration: 100ms;
+  }
 }
 
