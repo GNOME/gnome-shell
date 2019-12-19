@@ -6,6 +6,15 @@ const Signals = imports.signals;
 
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 
+Gio._promisify(IBus.Bus.prototype,
+    'list_engines_async', 'list_engines_async_finish');
+Gio._promisify(IBus.Bus.prototype,
+    'request_name_async', 'request_name_async_finish');
+Gio._promisify(IBus.Bus.prototype,
+    'get_global_engine_async', 'get_global_engine_async_finish');
+Gio._promisify(IBus.Bus.prototype,
+    'set_global_engine_async', 'set_global_engine_async_finish');
+
 // Ensure runtime version matches
 _checkIBusVersion(1, 5, 2);
 
@@ -102,16 +111,14 @@ var IBusManager = class {
 
     _onConnected() {
         this._cancellable = new Gio.Cancellable();
-        this._ibus.list_engines_async(-1, this._cancellable,
-            this._initEngines.bind(this));
-        this._ibus.request_name_async(IBus.SERVICE_PANEL,
-            IBus.BusNameFlag.REPLACE_EXISTING, -1, this._cancellable,
-            this._initPanelService.bind(this));
+        this._initEngines();
+        this._initPanelService();
     }
 
-    _initEngines(ibus, result) {
+    async _initEngines() {
         try {
-            let enginesList = this._ibus.list_engines_async_finish(result);
+            const enginesList =
+                await this._ibus.list_engines_async(-1, this._cancellable);
             for (let i = 0; i < enginesList.length; ++i) {
                 let name = enginesList[i].get_name();
                 this._engines.set(name, enginesList[i]);
@@ -126,9 +133,10 @@ var IBusManager = class {
         }
     }
 
-    _initPanelService(ibus, result) {
+    async _initPanelService() {
         try {
-            this._ibus.request_name_async_finish(result);
+            await this._ibus.request_name_async(IBus.SERVICE_PANEL,
+                IBus.BusNameFlag.REPLACE_EXISTING, -1, this._cancellable);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                 logError(e);
@@ -163,19 +171,15 @@ var IBusManager = class {
             this._panelService.connect('set-content-type', this._setContentType.bind(this));
         } catch (e) {
         }
-        // If an engine is already active we need to get its properties
-        this._ibus.get_global_engine_async(-1, this._cancellable, (_bus, res) => {
-            let engine;
-            try {
-                engine = this._ibus.get_global_engine_async_finish(res);
-                if (!engine)
-                    return;
-            } catch (e) {
-                return;
-            }
+
+        try {
+            // If an engine is already active we need to get its properties
+            const engine =
+                await this._ibus.get_global_engine_async(-1, this._cancellable);
             this._engineChanged(this._ibus, engine.get_name());
-        });
-        this._updateReadiness();
+            this._updateReadiness();
+        } catch (e) {
+        }
     }
 
     _updateReadiness() {
@@ -223,7 +227,7 @@ var IBusManager = class {
         return this._engines.get(id);
     }
 
-    setEngine(id, callback) {
+    async setEngine(id, callback) {
         // Send id even if id == this._currentEngineName
         // because 'properties-registered' signal can be emitted
         // while this._ibusSources == null on a lock screen.
@@ -233,18 +237,16 @@ var IBusManager = class {
             return;
         }
 
-        this._ibus.set_global_engine_async(id,
-            this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
-            this._cancellable, (_bus, res) => {
-                try {
-                    this._ibus.set_global_engine_async_finish(res);
-                } catch (e) {
-                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                        logError(e);
-                }
-                if (callback)
-                    callback();
-            });
+        try {
+            await this._ibus.set_global_engine_async(id,
+                this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
+                this._cancellable);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(e);
+        }
+        if (callback)
+            callback();
     }
 
     preloadEngines(ids) {

@@ -90,18 +90,16 @@ class AppMenu extends PopupMenu.PopupMenu {
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this._detailsItem = this.addAction(_("Show Details"), () => {
+        this._detailsItem = this.addAction(_('Show Details'), async () => {
             let id = this._app.get_id();
             let args = GLib.Variant.new('(ss)', [id, '']);
-            Gio.DBus.get(Gio.BusType.SESSION, null, (o, res) => {
-                let bus = Gio.DBus.get_finish(res);
-                bus.call('org.gnome.Software',
-                         '/org/gnome/Software',
-                         'org.gtk.Actions', 'Activate',
-                         GLib.Variant.new('(sava{sv})',
-                                          ['details', [args], null]),
-                         null, 0, -1, null, null);
-            });
+            const bus = await Gio.DBus.get(Gio.BusType.SESSION, null);
+            bus.call(
+                'org.gnome.Software',
+                '/org/gnome/Software',
+                'org.gtk.Actions', 'Activate',
+                new GLib.Variant('(sava{sv})', ['details', [args], null]),
+                null, 0, -1, null, null);
         });
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());

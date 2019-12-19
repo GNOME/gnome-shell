@@ -325,8 +325,7 @@ var GnomeShellExtensions = class {
             null,
             Gio.DBusCallFlags.NONE,
             -1,
-            null,
-            (conn, res) => conn.call_finish(res));
+            null);
     }
 
     ReloadExtension(uuid) {
