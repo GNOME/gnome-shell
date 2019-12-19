@@ -118,9 +118,14 @@ launch_extension_source (GFile *dir, GError **error)
   GList l;
 
   main_source = g_file_get_child (dir, "extension.js");
-  handler = g_file_query_default_handler (main_source, NULL, error);
+  handler = g_file_query_default_handler (main_source, NULL, NULL);
   if (handler == NULL)
-    return FALSE;
+    {
+      /* Translators: a file path to an extension directory */
+      g_print (_("The new extension was successfully created in %s.\n"),
+               g_file_peek_path (dir));
+      return TRUE;
+    }
 
   l.data = main_source;
   l.next = l.prev = NULL;
