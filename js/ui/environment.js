@@ -17,6 +17,7 @@ import St from 'gi://St';
 
 import * as SignalTracker from '../misc/signalTracker.js';
 import {adjustAnimationTime} from '../misc/animationUtils.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 
 const sessionSignalHolder = new SignalTracker.TransientSignalHolder();
 
@@ -61,14 +62,24 @@ function _makeEaseCallback(params, cleanup) {
     const onStopped = params.onStopped;
     delete params.onStopped;
 
-    return isFinished => {
+    const {promise, resolve, reject} = Promise.withResolvers();
+    const callback = isFinished => {
         cleanup?.();
 
         if (onStopped)
             onStopped(isFinished);
         if (onComplete && isFinished)
             onComplete();
+
+        if (isFinished) {
+            resolve();
+        } else {
+            reject(new GLib.Error(Gio.IOErrorEnum,
+                Gio.IOErrorEnum.CANCELLED, 'Transition was stopped before completing'));
+        }
     };
+
+    return {promise, callback};
 }
 
 function _makeEasePrepareAndCleanup(duration) {
@@ -146,7 +157,7 @@ function _easeActor(actor, params) {
 
     const easingDuration = actor.get_easing_duration();
     const {prepare, cleanup} = _makeEasePrepareAndCleanup(easingDuration);
-    const callback = _makeEaseCallback(params, cleanup);
+    const {promise, callback} = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
     const animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
@@ -177,6 +188,8 @@ function _easeActor(actor, params) {
     } else {
         callback(true);
     }
+
+    return promise;
 }
 
 function _easeAnimatableProperty(animatable, propName, target, params) {
@@ -222,7 +235,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
         duration = 0;
 
     const {prepare, cleanup} = _makeEasePrepareAndCleanup(duration);
-    const callback = _makeEaseCallback(params, cleanup);
+    const {promise, callback} = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
     animatable.remove_transition(propName);
@@ -236,7 +249,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
         prepare?.();
         callback(true);
 
-        return;
+        return promise;
     }
 
     const pspec = animatable.find_property(propName);
@@ -261,6 +274,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
     transition.connectObject('stopped',
         (t, finished) => callback(finished), sessionSignalHolder);
+    return promise;
 }
 
 // Add some bindings to the global JS namespace
@@ -318,15 +332,27 @@ Clutter.Actor.prototype.set_easing_delay = function (msecs, params = {}) {
 };
 
 Clutter.Actor.prototype.ease = function (props) {
-    _easeActor(this, props);
+    _easeActor(this, props).catch(logErrorUnlessCancelled);
 };
 Clutter.Actor.prototype.ease_property = function (propName, target, params) {
-    _easeAnimatableProperty(this, propName, target, params);
+    _easeAnimatableProperty(this, propName, target, params).catch(logErrorUnlessCancelled);
 };
 St.Adjustment.prototype.ease = function (target, params) {
     // we're not an actor of course, but we implement the same
     // transition API as Clutter.Actor, so this works anyway
-    _easeAnimatableProperty(this, 'value', target, params);
+    _easeAnimatableProperty(this, 'value', target, params).catch(logErrorUnlessCancelled);
+};
+
+Clutter.Actor.prototype.easeAsync = async function (props) {
+    await _easeActor(this, props);
+};
+Clutter.Actor.prototype.ease_property_async = async function (propName, target, params) {
+    await _easeAnimatableProperty(this, propName, target, params);
+};
+St.Adjustment.prototype.easeAsync = async function (target, params) {
+    // we're not an actor of course, but we implement the same
+    // transition API as Clutter.Actor, so this works anyway
+    await _easeAnimatableProperty(this, 'value', target, params).catch(() => {});
 };
 
 Clutter.Actor.prototype[Symbol.iterator] = function* () {
