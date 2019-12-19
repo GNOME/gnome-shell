@@ -223,6 +223,8 @@
     font-feature-settings: "tnum";
     @include fontsize($base_font_size - 2);
     font-weight: normal;
+    padding-top: 0.2em;
+    padding-bottom: 0.4em;
   }
 
   .weather-forecast-icon {
