@@ -39,7 +39,7 @@ $window_close_button_padding: 3px;
   border-radius: 8px;
   margin-top: 24px;
   padding: 4px 12px;
-  font-size: $base_font_size + 1pt;
+  @include fontsize($base_font_size + 1);
   font-weight: bold;
 }
 

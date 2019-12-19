@@ -7,7 +7,7 @@ $notification_banner_width: 34em;
 .notification-banner {
   min-height: $notification_banner_height;
   width: $notification_banner_width;
-  font-size: $base_font_size;
+  @include fontsize($base_font_size);
   margin: $base_margin;
   border-radius: $modal_radius;
 
@@ -93,7 +93,7 @@ $notification_banner_width: 34em;
 
 .chat-meta-message {
   padding-left: 4px;
-  font-size: 9pt;
+  @include fontsize($base_font_size - 2);
   font-weight: bold;
   color: lighten($fg_color,18%);
   &:rtl { padding-left: 0; padding-right: 4px; }
