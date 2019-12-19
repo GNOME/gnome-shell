@@ -29,8 +29,6 @@ const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
-
 const _ITEM_ICON_SIZE = 64;
 
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
