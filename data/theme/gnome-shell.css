@@ -197,12 +197,14 @@ stage {
 .datemenu-calendar-column {
   spacing: 0;
   border: 0 solid #2d2d2d;
-  padding: 10px;
+  padding: 12px;
   padding-bottom: 3em;
   padding-top: 0; }
   .datemenu-calendar-column:ltr {
+    margin-right: 8px;
     border-left-width: 1px; }
   .datemenu-calendar-column:rtl {
+    margin-left: 8px;
     border-right-width: 1px; }
   .datemenu-calendar-column .datemenu-today-button {
     padding: 9px;
@@ -1285,7 +1287,7 @@ StEntry {
   padding: 0 12px; }
 
 .message-list-sections {
-  margin: 0;
+  margin: 4px;
   spacing: 6px; }
 
 .message-list-section,
@@ -1298,7 +1300,7 @@ StEntry {
   padding: 0; }
 
 .message-list-clear-button {
-  margin: 4px; }
+  margin: 4px 8px; }
 
 .message .message-title {
   color: #eeeeec;

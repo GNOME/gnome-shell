@@ -8,7 +8,7 @@
 }
 
 .message-list-sections {
-  margin:0;
+  margin:$base_margin;
   spacing: $base_spacing;
 }
 
@@ -24,7 +24,7 @@
 
 // clear button
 .message-list-clear-button {
-  margin:$base_margin;
+  margin:$base_margin $base_margin*2;
   .button {
     @extend %button;
   }
