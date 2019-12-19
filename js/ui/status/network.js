@@ -15,6 +15,10 @@ const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
+Gio._promisify(NM.Client, 'new_async', 'new_finish');
+Gio._promisify(NM.Client.prototype,
+    'check_connectivity_async', 'check_connectivity_finish');
+
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
@@ -1627,11 +1631,11 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
 
-        NM.Client.new_async(null, this._clientGot.bind(this));
+        this._getClient();
     }
 
-    _clientGot(obj, result) {
-        this._client = NM.Client.new_finish(result);
+    async _getClient() {
+        this._client = await NM.Client.new_async(null);
 
         this._activeConnections = [];
         this._connections = [];
@@ -1982,7 +1986,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
     }
 
-    _portalHelperDone(proxy, emitter, parameters) {
+    async _portalHelperDone(proxy, emitter, parameters) {
         let [path, result] = parameters;
 
         if (result == PortalHelperResult.CANCELLED) {
@@ -1993,13 +1997,11 @@ class Indicator extends PanelMenu.SystemIndicator {
         } else if (result == PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);
         } else if (result == PortalHelperResult.RECHECK) {
-            this._client.check_connectivity_async(null, (client, res) => {
-                try {
-                    let state = client.check_connectivity_finish(res);
-                    if (state >= NM.ConnectivityState.FULL)
-                        this._closeConnectivityCheck(path);
-                } catch (e) { }
-            });
+            try {
+                const state = await this._client.check_connectivity_async(null);
+                if (state >= NM.ConnectivityState.FULL)
+                    this._closeConnectivityCheck(path);
+            } catch (e) { }
         } else {
             log('Invalid result from portal helper: %s'.format(result));
         }

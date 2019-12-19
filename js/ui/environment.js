@@ -10,9 +10,20 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Polkit, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 const System = imports.system;
+
+Gio._promisify(Gio.DataInputStream.prototype, 'fill_async', 'fill_finish');
+Gio._promisify(Gio.DataInputStream.prototype,
+    'read_line_async', 'read_line_finish');
+Gio._promisify(Gio.DBus, 'get', 'get_finish');
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
+Gio._promisify(Gio.DBusProxy, 'new', 'new_finish');
+Gio._promisify(Gio.DBusProxy.prototype, 'init_async', 'init_finish');
+Gio._promisify(Gio.DBusProxy.prototype,
+    'call_with_unix_fd_list', 'call_with_unix_fd_list_finish');
+Gio._promisify(Polkit.Permission, 'new', 'new_finish');
 
 let _localTimeZone = null;
 

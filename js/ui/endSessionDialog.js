@@ -278,7 +278,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
     }
 
-    _onPkOfflineProxyCreated(proxy, error) {
+    async _onPkOfflineProxyCreated(proxy, error) {
         if (error) {
             log(error.message);
             return;
@@ -293,15 +293,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         // It only makes sense to check for this permission if PackageKit is available.
-        Polkit.Permission.new(
-            'org.freedesktop.packagekit.trigger-offline-update', null, null,
-            (source, res) => {
-                try {
-                    this._updatesPermission = Polkit.Permission.new_finish(res);
-                } catch (e) {
-                    log('No permission to trigger offline updates: %s'.format(e.toString()));
-                }
-            });
+        try {
+            this._updatesPermission = await Polkit.Permission.new(
+                'org.freedesktop.packagekit.trigger-offline-update', null, null);
+        } catch (e) {
+            log('No permission to trigger offline updates: %s'.format(e.toString()));
+        }
     }
 
     _onDestroy() {

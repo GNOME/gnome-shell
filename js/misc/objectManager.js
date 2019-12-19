@@ -57,9 +57,7 @@ var ObjectManager = class {
         // Start out inhibiting load until at least the proxy
         // manager is loaded and the remote objects are fetched
         this._numLoadInhibitors = 1;
-        this._managerProxy.init_async(GLib.PRIORITY_DEFAULT,
-                                      this._cancellable,
-                                      this._onManagerProxyLoaded.bind(this));
+        this._initManagerProxy();
     }
 
     _tryToCompleteLoad() {
@@ -73,7 +71,7 @@ var ObjectManager = class {
         }
     }
 
-    _addInterface(objectPath, interfaceName, onFinished) {
+    async _addInterface(objectPath, interfaceName, onFinished) {
         let info = this._interfaceInfos[interfaceName];
 
         if (!info) {
@@ -89,40 +87,38 @@ var ObjectManager = class {
                                         g_interface_info: info,
                                         g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
 
-        proxy.init_async(GLib.PRIORITY_DEFAULT, this._cancellable, (initable, result) => {
-            try {
-                initable.init_finish(result);
-            } catch (e) {
-                logError(e, `could not initialize proxy for interface ${interfaceName}`);
-
-                if (onFinished)
-                    onFinished();
-                return;
-            }
-
-            let isNewObject;
-            if (!this._objects[objectPath]) {
-                this._objects[objectPath] = {};
-                isNewObject = true;
-            } else {
-                isNewObject = false;
-            }
-
-            this._objects[objectPath][interfaceName] = proxy;
-
-            if (!this._interfaces[interfaceName])
-                this._interfaces[interfaceName] = [];
-
-            this._interfaces[interfaceName].push(proxy);
-
-            if (isNewObject)
-                this.emit('object-added', objectPath);
-
-            this.emit('interface-added', interfaceName, proxy);
+        try {
+            await proxy.init_async(GLib.PRIORITY_DEFAULT, this._cancellable);
+        } catch (e) {
+            logError(e, `could not initialize proxy for interface ${interfaceName}`);
 
             if (onFinished)
                 onFinished();
-        });
+            return;
+        }
+
+        let isNewObject;
+        if (!this._objects[objectPath]) {
+            this._objects[objectPath] = {};
+            isNewObject = true;
+        } else {
+            isNewObject = false;
+        }
+
+        this._objects[objectPath][interfaceName] = proxy;
+
+        if (!this._interfaces[interfaceName])
+            this._interfaces[interfaceName] = [];
+
+        this._interfaces[interfaceName].push(proxy);
+
+        if (isNewObject)
+            this.emit('object-added', objectPath);
+
+        this.emit('interface-added', interfaceName, proxy);
+
+        if (onFinished)
+            onFinished();
     }
 
     _removeInterface(objectPath, interfaceName) {
@@ -151,9 +147,10 @@ var ObjectManager = class {
         }
     }
 
-    _onManagerProxyLoaded(initable, result) {
+    async _initManagerProxy() {
         try {
-            initable.init_finish(result);
+            await this._managerProxy.init_async(
+                GLib.PRIORITY_DEFAULT, this._cancellable);
         } catch (e) {
             logError(e, `could not initialize object manager for object ${this._serviceName}`);
 

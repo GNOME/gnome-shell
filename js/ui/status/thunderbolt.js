@@ -52,22 +52,21 @@ const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 var Client = class {
     constructor() {
         this._proxy = null;
-        let nodeInfo = Gio.DBusNodeInfo.new_for_xml(BoltClientInterface);
-        Gio.DBusProxy.new(Gio.DBus.system,
-                          Gio.DBusProxyFlags.DO_NOT_AUTO_START,
-                          nodeInfo.lookup_interface(BOLT_DBUS_CLIENT_IFACE),
-                          BOLT_DBUS_NAME,
-                          BOLT_DBUS_PATH,
-                          BOLT_DBUS_CLIENT_IFACE,
-                          null,
-                          this._onProxyReady.bind(this));
-
         this.probing = false;
+        this._getProxy();
     }
 
-    _onProxyReady(o, res) {
+    async _getProxy() {
+        let nodeInfo = Gio.DBusNodeInfo.new_for_xml(BoltClientInterface);
         try {
-            this._proxy = Gio.DBusProxy.new_finish(res);
+            this._proxy = await Gio.DBusProxy.new(
+                Gio.DBus.system,
+                Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+                nodeInfo.lookup_interface(BOLT_DBUS_CLIENT_IFACE),
+                BOLT_DBUS_NAME,
+                BOLT_DBUS_PATH,
+                BOLT_DBUS_CLIENT_IFACE,
+                null);
         } catch (e) {
             log('error creating bolt proxy: %s'.format(e.message));
             return;
@@ -243,14 +242,15 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._source = null;
         this._perm = null;
+        this._createPermission();
+    }
 
-        Polkit.Permission.new('org.freedesktop.bolt.enroll', null, null, (source, res) => {
-            try {
-                this._perm = Polkit.Permission.new_finish(res);
-            } catch (e) {
-                log('Failed to get PolKit permission: %s'.format(e.toString()));
-            }
-        });
+    async _createPermission() {
+        try {
+            this._perm = await Polkit.Permission.new('org.freedesktop.bolt.enroll', null, null);
+        } catch (e) {
+            log('Failed to get PolKit permission: %s'.format(e.toString()));
+        }
     }
 
     _onDestroy() {

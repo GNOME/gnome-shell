@@ -199,36 +199,36 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
                                          this._reload.bind(this));
     }
 
-    _reload() {
-        Gio.DBus.system.call(this._BUS_NAME,
-                             this._BUS_PATH,
-                             this._BUS_PROPS_IFACE,
-                             'GetAll',
-                             new GLib.Variant('(s)', [this._BUS_IFACE]),
-                             null, Gio.DBusCallFlags.NONE, -1, null,
-                             (conn, result) => {
-                                 let props;
-                                 try {
-                                     props = conn.call_finish(result).deep_unpack()[0];
-                                 } catch (e) {
-                                     log('Could not get properties from %s'.format(this._BUS_NAME));
-                                     return;
-                                 }
-                                 let layouts = props['X11Layout'].unpack();
-                                 let variants = props['X11Variant'].unpack();
-                                 let options = props['X11Options'].unpack();
+    async _reload() {
+        let props;
+        try {
+            const result = await Gio.DBus.system.call(
+                this._BUS_NAME,
+                this._BUS_PATH,
+                this._BUS_PROPS_IFACE,
+                'GetAll',
+                new GLib.Variant('(s)', [this._BUS_IFACE]),
+                null, Gio.DBusCallFlags.NONE, -1, null);
+            [props] = result.deep_unpack();
+        } catch (e) {
+            log('Could not get properties from %s'.format(this._BUS_NAME));
+            return;
+        }
 
-                                 if (layouts != this._layouts ||
-                                     variants != this._variants) {
-                                     this._layouts = layouts;
-                                     this._variants = variants;
-                                     this._emitInputSourcesChanged();
-                                 }
-                                 if (options != this._options) {
-                                     this._options = options;
-                                     this._emitKeyboardOptionsChanged();
-                                 }
-                             });
+        const layouts = props['X11Layout'].unpack();
+        const variants = props['X11Variant'].unpack();
+        const options = props['X11Options'].unpack();
+
+        if (layouts !== this._layouts ||
+            variants !== this._variants) {
+            this._layouts = layouts;
+            this._variants = variants;
+            this._emitInputSourcesChanged();
+        }
+        if (options !== this._options) {
+            this._options = options;
+            this._emitKeyboardOptionsChanged();
+        }
     }
 
     get inputSources() {
