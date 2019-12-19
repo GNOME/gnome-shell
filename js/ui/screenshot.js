@@ -256,32 +256,33 @@ var ScreenshotService = class {
         invocation.return_value(null);
     }
 
-    PickColorAsync(params, invocation) {
+    async PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
-        pickPixel.show();
-        pickPixel.connect('finished', (obj, coords) => {
-            if (coords) {
-                let screenshot = this._createScreenshot(invocation, false);
-                if (!screenshot)
-                    return;
-                screenshot.pick_color(coords.x, coords.y, (_o, res) => {
-                    let [success_, color] = screenshot.pick_color_finish(res);
-                    let { red, green, blue } = color;
-                    let retval = GLib.Variant.new('(a{sv})', [{
-                        color: GLib.Variant.new('(ddd)', [
-                            red / 255.0,
-                            green / 255.0,
-                            blue / 255.0,
-                        ]),
-                    }]);
-                    this._removeShooterForSender(invocation.get_sender());
-                    invocation.return_value(retval);
-                });
-            } else {
-                invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                                                "Operation was cancelled");
-            }
-        });
+        try {
+            const coords = await pickPixel.pickAsync();
+
+            let screenshot = this._createScreenshot(invocation, false);
+            if (!screenshot)
+                return;
+
+            screenshot.pick_color(coords.x, coords.y, (_o, res) => {
+                let [success_, color] = screenshot.pick_color_finish(res);
+                let { red, green, blue } = color;
+                let retval = GLib.Variant.new('(a{sv})', [{
+                    color: GLib.Variant.new('(ddd)', [
+                        red / 255.0,
+                        green / 255.0,
+                        blue / 255.0,
+                    ]),
+                }]);
+                this._removeShooterForSender(invocation.get_sender());
+                invocation.return_value(retval);
+            });
+        } catch (e) {
+            invocation.return_error_literal(
+                Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                'Operation was cancelled');
+        }
     }
 };
 
@@ -378,9 +379,8 @@ class SelectArea extends St.Widget {
     }
 });
 
-var PickPixel = GObject.registerClass({
-    Signals: { 'finished': { param_types: [Graphene.Point.$gtype] } },
-}, class PickPixel extends St.Widget {
+var PickPixel = GObject.registerClass(
+class PickPixel extends St.Widget {
     _init() {
         super._init({ visible: false, reactive: true });
 
@@ -395,14 +395,21 @@ var PickPixel = GObject.registerClass({
         this.add_constraint(constraint);
     }
 
-    vfunc_show() {
-        if (!this._grabHelper.grab({ actor: this,
-                                     onUngrab: this._onUngrab.bind(this) }))
-            return;
-
+    async pickAsync() {
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         Main.uiGroup.set_child_above_sibling(this, null);
-        super.vfunc_show();
+        this.show();
+
+        await this._grabHelper.grabAsync({ actor: this });
+
+        global.display.set_cursor(Meta.Cursor.DEFAULT);
+
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this.destroy();
+            return GLib.SOURCE_REMOVE;
+        });
+
+        return this._result;
     }
 
     vfunc_button_release_event(buttonEvent) {
@@ -410,16 +417,6 @@ var PickPixel = GObject.registerClass({
         this._result = new Graphene.Point({ x, y });
         this._grabHelper.ungrab();
         return Clutter.EVENT_PROPAGATE;
-    }
-
-    _onUngrab() {
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
-        this.emit('finished', this._result);
-
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this.destroy();
-            return GLib.SOURCE_REMOVE;
-        });
     }
 });
 
