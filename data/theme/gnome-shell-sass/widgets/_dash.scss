@@ -43,9 +43,9 @@ $dash_border_radius: $modal_radius * 1.5;
   border:none;
   box-shadow:0 0 0 1px $osd_outer_borders_color;
   color: $osd_fg_color;
+  margin-top: $base_margin + 4px;
   padding: $base_padding $base_padding + 2px;
   text-align: center;
-  margin-top: $base_margin + 4px;
   -x-offset: $base_margin * 2; // distance from the dash edge
 }
 
@@ -54,31 +54,35 @@ $dash_border_radius: $modal_radius * 1.5;
   background-color: transparent;
   color: $osd_fg_color;
 
-  & .overview-icon {
+  &.overview-icon {
     @extend %icon_tile;
     color: $osd_fg_color;
   }
 
-  &:hover .overview-icon,
-  &:focus .overview-icon,
-  &:selected .overview-icon {
-    background-color: transparentize($osd_fg_color,0.9);
-    color: $osd_fg_color;
+  &:hover,
+  &:focus,
+  &:selected {
+    .overview-icon {
+      background-color: transparentize($osd_fg_color,0.9);
+      color: $osd_fg_color;
+    }
   }
 
   &:drop .overview-icon {
     background-color: transparentize($selected_bg_color,.15);
   }
 
-  &:active .overview-icon,
-  &:checked .overview-icon {
-    background-color: darken($osd_bg_color,10%);
+  &:active, &:checked {
+    .overview-icon {
+      background-color: darken($osd_bg_color,10%);
+    }
   }
 
-  &:checked .show-apps-icon,
-  &:focus .show-apps-icon {
-    color: $fg_color;
-    transition-duration: 100ms;
+  &:checked, &:focus {
+     .show-apps-icon {
+      color: $fg_color;
+      transition-duration: 100ms;
+    }
   }
 }
 
