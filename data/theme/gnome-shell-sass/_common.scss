@@ -983,8 +983,11 @@ StScrollBar {
 
     .world-clocks-grid,
     .weather-grid {
-      spacing-rows: 0.4em;
       spacing-columns: 0.8em;
+    }
+
+    .world-clocks-grid {
+      spacing-rows: 0.4em;
     }
 
     .weather-header-box,
@@ -1012,6 +1015,7 @@ StScrollBar {
     .weather-forecast-time {
       color: darken($fg_color,40%);
       font-size: 0.8em;
+      padding: 0.4em 0;
     }
 
     .weather-forecast-icon {
