@@ -1,16 +1,17 @@
 /* App Grid */
 
 $app_icon_size: 96px;
-$app_icon_padding: 20px;
+$app_icon_padding: 24px;
 
 // app icons
 .icon-grid {
-  spacing: 30px;
   -shell-grid-horizontal-item-size: $app_icon_size + $app_icon_padding * 2;
   -shell-grid-vertical-item-size: $app_icon_size + $app_icon_padding * 2;
+  spacing: $base_spacing * 6;
 
   .overview-icon {
     icon-size: $app_icon_size;
+    StIcon { margin-bottom: $base_margin; } // margin on icon so label isn't close
   }
 }
 
@@ -83,7 +84,7 @@ $app_grid_fg_color: #fff;
   }
 }
 
-//expanded folder
+// expanded folder
 .app-folder-popup {
   -arrow-border-radius: 8px;
   -arrow-background-color: transparentize(darken($osd_bg_color,10%), 0.5);
@@ -92,6 +93,7 @@ $app_grid_fg_color: #fff;
 }
 
 .app-folder-popup-bin { padding: 5px; }
+
 .app-folder-icon {
   padding: $base_padding;
   spacing-rows: $base_spacing;
@@ -173,7 +175,7 @@ $app_grid_fg_color: #fff;
 
 // buttons
 .app-view-control { 
-  padding: 4px 32px;
+  padding: $base_padding $base_padding*5;
   margin: 0;
   background-color: transparentize($osd_bg_color, 0.5);
   border-width: 1px;
@@ -186,16 +188,19 @@ $app_grid_fg_color: #fff;
   }
 
   &:active {
-    box-shadow: inset 0 -2px 0 0 $osd_fg_color;
-    background-color: transparentize($selected_bg_color, 0.5) !important;
-    font-weight: bold;
+    box-shadow: none;
+    background-color: $selected_bg_color !important;
+    &:hover {
+      background-color: lighten($selected_bg_color, 11%) !important;
+    }
   }
 
   &:checked {
-    background-color: transparentize(lighten($osd_bg_color, 20%), 0.5);
-    color: $osd_fg_color;
+    background-color: $selected_bg_color !important;
+    color: $selected_fg_color;
     box-shadow: none;
-    font-weight: bold;
+    &:active { background-color: darken($selected_bg_color, 4%) !important; }
+    &:hover { background-color: lighten($selected_bg_color, 7%) !important; }
   }
 
   &:first-child {
