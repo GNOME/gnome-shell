@@ -5,7 +5,7 @@
   @extend %bubble_panel;
 
   .modal-dialog-content-box {
-    padding: 24px;
+    padding: $base_padding * 4;
   }
 
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
@@ -25,7 +25,7 @@
 
 .mount-dialog-subject,
 .end-session-dialog-subject { //this should be a generic header class
-  @include fontsize($base_font_size * 1.3);
+  @include fontsize($base_font_size + 3);
 }
 
 .modal-dialog-linked-button {
@@ -147,10 +147,6 @@
 .prompt-dialog-info-label {
   @include fontsize($base_font_size - 1);
   padding-bottom: 8px;
-}
-
-.hidden {
-  color: rgba(0,0,0,0);
 }
 
 .prompt-dialog-null-label {
