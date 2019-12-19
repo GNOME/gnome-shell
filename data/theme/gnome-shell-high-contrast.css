@@ -268,7 +268,7 @@ stage {
   padding: 8px 0; }
 .calendar .calendar-change-month-back StIcon,
 .calendar .calendar-change-month-forward StIcon {
-  icon-size: 1.09em; }
+  icon-size: 16px; }
 .calendar .pager-button {
   background-color: transparent;
   height: 32px;
@@ -352,7 +352,7 @@ stage {
     spacing-rows: 6px;
     spacing-columns: 12px; }
   .weather-box .weather-forecast-icon {
-    icon-size: 2.18em; }
+    icon-size: 32px; }
   .weather-box .weather-forecast-time {
     color: #b3b3b3;
     font-feature-settings: "tnum";
@@ -495,8 +495,8 @@ stage {
   spacing: 20px; }
 
 .message-dialog-icon {
-  min-width: 3.27em;
-  icon-size: 3.27em; }
+  min-width: 48px;
+  icon-size: 48px; }
 
 .message-dialog-title {
   font-weight: bold; }
@@ -507,7 +507,7 @@ stage {
 
 /* ShellMountOperation Dialogs */
 .shell-mount-operation-icon {
-  icon-size: 3.27em; }
+  icon-size: 48px; }
 
 .mount-dialog {
   spacing: 24px; }
@@ -649,7 +649,7 @@ stage {
   spacing: 20px; }
 
 .audio-selection-device-icon {
-  icon-size: 4.36em; }
+  icon-size: 64px; }
 
 /* Access Dialog */
 .access-dialog {
@@ -708,14 +708,14 @@ stage {
 
 .end-session-dialog-logout-icon {
   border-radius: 99px;
-  width: 3.27em;
-  height: 3.27em;
+  width: 48px;
+  height: 48px;
   background-size: contain; }
 
 .end-session-dialog-shutdown-icon {
   color: #fff;
-  width: 3.27em;
-  height: 3.27em; }
+  width: 48px;
+  height: 48px; }
 
 .end-session-dialog-inhibitor-layout {
   spacing: 24px;
@@ -765,7 +765,7 @@ StEntry {
     warning-color: #f57900;
     padding: 0 4px; }
   StEntry StIcon.peek-password {
-    icon-size: 1.09em;
+    icon-size: 16px;
     padding: 0 4px; }
 
 .hotplug-transient-box {
@@ -844,7 +844,20 @@ StEntry {
   icon-size: 1em; }
 
 /* On-screen Keyboard */
-.keyboard-key, .keyboard-subkeys .keyboard-key {
+#keyboard {
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important; }
+  #keyboard .page-indicator {
+    padding: 6px; }
+    #keyboard .page-indicator .page-indicator-icon {
+      width: 6px;
+      height: 6px; }
+
+.key-container {
+  padding: 4px;
+  spacing: 4px; }
+
+.keyboard-key {
   color: #fff;
   background-color: #080808 !important;
   border-width: 1px;
@@ -852,7 +865,11 @@ StEntry {
   border-color: black;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
   text-shadow: 0 1px rgba(255, 255, 255, 0.3);
-  icon-shadow: 0 1px rgba(255, 255, 255, 0.3); }
+  icon-shadow: 0 1px rgba(255, 255, 255, 0.3);
+  font-size: 16pt;
+  min-height: 1.2em;
+  min-width: 1.2em;
+  border-radius: 8px; }
   .keyboard-key:focus {
     color: #fff;
     text-shadow: 0 1px rgba(255, 255, 255, 0.3);
@@ -876,27 +893,6 @@ StEntry {
     text-shadow: none;
     icon-shadow: none;
     box-shadow: none; }
-
-#keyboard {
-  background-color: rgba(0, 0, 0, 0.9);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important; }
-  #keyboard .page-indicator {
-    padding: 6px; }
-    #keyboard .page-indicator .page-indicator-icon {
-      width: 6px;
-      height: 6px; }
-      #keyboard .page-indicator .page-indicator-icon:checked {
-        background-color: red; }
-
-.key-container {
-  padding: 4px;
-  spacing: 4px; }
-
-.keyboard-key {
-  font-size: 16pt;
-  min-height: 1.2em;
-  min-width: 1.2em;
-  border-radius: 8px; }
   .keyboard-key:grayed {
     background-color: black;
     color: #eeeeec;
@@ -910,8 +906,7 @@ StEntry {
     border-color: black;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
     text-shadow: 0 1px rgba(255, 255, 255, 0.3);
-    icon-shadow: 0 1px rgba(255, 255, 255, 0.3);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1) !important; }
+    icon-shadow: 0 1px rgba(255, 255, 255, 0.3); }
     .keyboard-key.default-key:hover, .keyboard-key.default-key:checked {
       color: #fff;
       background-color: #272c2e !important;
@@ -939,8 +934,7 @@ StEntry {
     border-color: #113050;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
     text-shadow: 0 1px rgba(255, 255, 255, 0.3);
-    icon-shadow: 0 1px rgba(255, 255, 255, 0.3);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1) !important; }
+    icon-shadow: 0 1px rgba(255, 255, 255, 0.3); }
     .keyboard-key.enter-key:hover, .keyboard-key.enter-key:checked {
       color: #fff;
       background-color: #2b79cb !important;
@@ -980,7 +974,38 @@ StEntry {
   -arrow-rise: 10px;
   -boxpointer-gap: 6px; }
   .keyboard-subkeys .keyboard-key {
+    color: #fff;
+    background-color: #080808 !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
+    text-shadow: 0 1px rgba(255, 255, 255, 0.3);
+    icon-shadow: 0 1px rgba(255, 255, 255, 0.3);
     border-radius: 5px; }
+    .keyboard-subkeys .keyboard-key:focus {
+      color: #fff;
+      text-shadow: 0 1px rgba(255, 255, 255, 0.3);
+      icon-shadow: 0 1px rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 0 0 2px rgba(33, 93, 156, 0.3); }
+    .keyboard-subkeys .keyboard-key:hover, .keyboard-subkeys .keyboard-key:checked {
+      color: #fff;
+      background-color: #141414 !important;
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
+      text-shadow: 0 1px rgba(255, 255, 255, 0.3);
+      icon-shadow: 0 1px rgba(255, 255, 255, 0.3); }
+    .keyboard-subkeys .keyboard-key:active {
+      color: #fff;
+      background-color: black !important;
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+      text-shadow: none;
+      icon-shadow: none;
+      box-shadow: none; }
 
 .emoji-page .keyboard-key {
   background-color: transparent;
@@ -1291,16 +1316,17 @@ StEntry {
   .message .message-close-button:hover {
     color: #e6e6e6; }
 .message .message-icon-bin {
+  padding: 6px;
   margin: 6px 0; }
   .message .message-icon-bin > StIcon {
     color: #fff;
-    icon-size: 2.18em;
+    icon-size: 32px;
     -st-icon-style: symbolic;
     padding: 0;
     margin: 6px; }
   .message .message-icon-bin > .fallback-window-icon {
-    width: 1.09em;
-    height: 1.09em; }
+    width: 16px;
+    height: 16px; }
 .message .message-secondary-bin {
   padding: 0; }
   .message .message-secondary-bin > .event-time {
@@ -1329,14 +1355,14 @@ StEntry {
     border-radius: 7px 0 0 7px; }
 
 .media-message-cover-icon {
-  icon-size: 2.18em !important;
+  icon-size: 32px !important;
   border-radius: 5px; }
   .media-message-cover-icon.fallback {
     color: #d4d4d4;
     background-color: #000;
     border: 1px solid transparent;
     border-radius: 5px;
-    icon-size: 2.18em !important;
+    icon-size: 32px !important;
     padding: 12px; }
 
 /* Notifications & Mesage Tray */
@@ -1359,7 +1385,7 @@ StEntry {
     .notification-banner .message-content, .notification-banner:focus .message-content, .notification-banner:active .message-content {
       color: #fff; }
   .notification-banner .message-icon-bin > StIcon {
-    icon-size: 2.18em;
+    icon-size: 32px;
     color: #fff; }
   .notification-banner .notification-icon {
     padding: 5px; }
@@ -1367,7 +1393,7 @@ StEntry {
     padding: 5px;
     spacing: 5px; }
   .notification-banner .secondary-icon {
-    icon-size: 1.09em; }
+    icon-size: 16px; }
   .notification-banner .notification-actions {
     padding-top: 0;
     color: #fff;
@@ -1394,7 +1420,7 @@ StEntry {
   border-radius: 0.9em; }
 
 .secondary-icon {
-  icon-size: 1.09em; }
+  icon-size: 16px; }
 
 .chat-body {
   spacing: 5px; }
@@ -1502,7 +1528,7 @@ StEntry {
   font-weight: bold; }
 
 .nm-dialog-header-icon {
-  icon-size: 2.18em; }
+  icon-size: 32px; }
 
 .nm-dialog-header-hbox {
   spacing: 10px; }
@@ -1522,7 +1548,7 @@ StEntry {
     color: #ffffff; }
 
 .nm-dialog-icon {
-  icon-size: 1.09em; }
+  icon-size: 16px; }
 
 .nm-dialog-icons {
   spacing: 12px; }
@@ -1604,7 +1630,7 @@ StEntry {
       box-shadow: inset 0 -2px 0 0 #256ab1;
       color: #333333; }
     #panel .panel-button .system-status-icon {
-      icon-size: 1.09em;
+      icon-size: 16px;
       padding: 5px; }
     #panel .panel-button .app-menu-icon {
       margin-left: 4px;
@@ -1677,7 +1703,7 @@ StEntry {
 
 .popup-menu-arrow,
 .popup-menu-icon {
-  icon-size: 1.09em; }
+  icon-size: 16px; }
 
 .popup-sub-menu {
   background-color: black;
@@ -1709,10 +1735,10 @@ StEntry {
     -st-icon-style: symbolic; }
   .aggregate-menu .popup-sub-menu .popup-menu-item > :first-child:ltr {
     padding-left: 14px;
-    margin-left: 1.09em; }
+    margin-left: 16px; }
   .aggregate-menu .popup-sub-menu .popup-menu-item > :first-child:rtl {
     padding-right: 14px;
-    margin-right: 1.09em; }
+    margin-right: 16px; }
 
 /* Screen Shield */
 .screen-shield-arrows {
@@ -1829,11 +1855,14 @@ StScrollBar {
     box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.2); }
   .login-dialog StEntry .search-entry-icon,
   .search-entry .search-entry-icon {
-    icon-size: 1.09em;
+    icon-size: 16px;
     padding: 0 4px;
     color: inherit; }
 
 /* Search */
+#searchResultsContent {
+  max-width: 1024px; }
+
 .search-section {
   background-color: rgba(58, 65, 68, 0.8);
   border-radius: 13px;
@@ -1842,91 +1871,8 @@ StScrollBar {
   text-shadow: 0 1px rgba(255, 255, 255, 0.2);
   color: #eeeeec;
   padding: 18px;
-  margin: 4px; }
-
-#searchResultsContent {
-  max-width: 1024px; }
-
-.search-section {
-  spacing: 0;
-  margin-top: 0;
-  margin-bottom: 0; }
-  .search-section:first-child .search-section-separator, .search-section:last-child .search-section-separator {
-    background-color: transparent; }
-  .search-section .search-section-separator {
-    height: 0px;
-    background-color: transparent; }
-  .search-section .search-section-content {
-    spacing: 0; }
-
-.grid-search-result > .overview-icon {
-  color: #eeeeec; }
-.grid-search-result > .overview-icon.overview-icon-with-label {
-  padding: 10px 8px 5px 8px;
-  spacing: 6px; }
-.grid-search-result:hover .overview-icon, .grid-search-result:focus .overview-icon, .grid-search-result:selected .overview-icon {
-  background-color: rgba(46, 52, 54, 0.2);
-  color: #eeeeec; }
-.grid-search-result:drop .overview-icon {
-  background-color: rgba(33, 93, 156, 0.85); }
-.grid-search-result:active .overview-icon, .grid-search-result:checked .overview-icon {
-  background-color: rgba(23, 25, 26, 0.5); }
-
-.search-provider-icon {
-  padding: 0;
-  spacing: 0;
-  margin-right: 8px; }
-  .search-provider-icon:focus, .search-provider-icon:selected, .search-provider-icon:hover {
-    background-color: rgba(238, 238, 236, 0.1);
-    transition-duration: 200ms; }
-  .search-provider-icon:active, .search-provider-icon:checked {
-    background-color: rgba(23, 25, 26, 0.9); }
-  .search-provider-icon .list-search-provider-content {
-    spacing: 12px; }
-    .search-provider-icon .list-search-provider-content .list-search-provider-details {
-      width: 120px;
-      margin-top: 0;
-      color: #dbdbd6; }
-
-.list-search-results {
-  spacing: 6px; }
-
-.list-search-result {
-  spacing: 0;
-  padding: 6px;
-  color: #eeeeec; }
-  .list-search-result:focus, .list-search-result:selected, .list-search-result:hover {
-    background-color: rgba(238, 238, 236, 0.1);
-    transition-duration: 200ms; }
-  .list-search-result:active, .list-search-result:checked {
-    background-color: rgba(23, 25, 26, 0.9); }
-  .list-search-result .list-search-result-content {
-    spacing: 0; }
-  .list-search-result .list-search-result-title {
-    color: #eeeeec;
-    spacing: 12px;
-    padding-right: 6px; }
-  .list-search-result .list-search-result-description {
-    color: #a6a69b; }
-
-/* Search */
-.search-section {
-  background-color: rgba(58, 65, 68, 0.8);
-  border-radius: 13px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.9);
-  text-shadow: 0 1px rgba(255, 255, 255, 0.2);
-  color: #eeeeec;
-  padding: 18px;
-  margin: 4px; }
-
-#searchResultsContent {
-  max-width: 1024px; }
-
-.search-section {
-  spacing: 0;
-  margin-top: 0;
-  margin-bottom: 0; }
+  margin: 4px;
+  spacing: 12px; }
   .search-section:first-child .search-section-separator, .search-section:last-child .search-section-separator {
     background-color: transparent; }
   .search-section .search-section-separator {
