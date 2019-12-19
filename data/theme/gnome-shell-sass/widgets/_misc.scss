@@ -49,7 +49,11 @@
   border: 5px solid $selected_bg_color;
 }
 
-
+// Text
 .headline { @include fontsize($base_font_size + 1); }
 .lightbox { background-color: black; }
 .flashspot { background-color: white; }
+
+
+// Hidden
+.hidden { color: rgba(0,0,0,0);}
