@@ -76,5 +76,5 @@ $end_session_dialog_width: 28em;
 
 .end-session-dialog-app-list-item-description {
   color: darken($fg_color,5%);
-  font-size: 10pt;
+  @include fontsize($base_font_size - 1);
 }

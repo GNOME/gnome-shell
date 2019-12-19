@@ -40,13 +40,13 @@
 
     // weekday label
     .day-label {
-      font-size: $base_font_size + 1pt;
+      @include fontsize($base_font_size+1);
       font-weight: bold;
     }
 
     // date label
     .date-label {
-      font-size: $base_font_size * 1.5;
+      @include fontsize($base_font_size+7);
       font-weight: 1000;
     }
   }
@@ -115,7 +115,7 @@
   $calendar_day_size: 32px;
 
   .calendar-day-base {
-    font-size: 80%;
+    @include fontsize($base_font_size - 3);
     text-align: center;
     width: $calendar_day_size;
     height: $calendar_day_size;
@@ -134,7 +134,7 @@
     &.calendar-day-heading {
       color: lighten($fg_color,10%);
       margin-top: 1em;
-      font-size: 70%;
+      @include fontsize($base_font_size - 4);
     }
   }
   .calendar-day { //border collapse hack - see calendar.js
@@ -185,7 +185,7 @@
   }
 
   .calendar-week-number {
-    font-size: 70%;
+    @include fontsize($base_font_size - 4);
     font-weight: bold;
     height: 1.8em;
     width: 2.3em; 
@@ -208,7 +208,7 @@
     font-weight: bold;
     &.location {
       font-weight: normal;
-      font-size: $base_font_size - 1pt;
+      @include fontsize($base_font_size - 1);
     }
   }
 
@@ -225,7 +225,7 @@
   .weather-forecast-time {
     color: darken($fg_color,30%);
     font-feature-settings: "tnum";
-    font-size: $base_font_size - 2pt;
+    @include fontsize($base_font_size - 2);
     font-weight: normal;
   }
 }
@@ -245,7 +245,7 @@
   // city label
   .world-clocks-city {
     color: $fg_color;
-    font-size: $base_font_size;
+    @include fontsize($base_font_size);
     font-weight: normal;
   }
 
@@ -254,14 +254,14 @@
     font-weight: bold;
     color: $fg_color;
     font-feature-settings: "lnum";
-    font-size: $base_font_size;
-    text-align:right;
+    @include fontsize($base_font_size);
+    text-align: right;
   }
 
   // timezone offset label
   .world-clocks-timezone {
     color: darken($fg_color,20%);
     font-feature-settings: "tnum";
-    font-size: $base_font_size - 1pt;
+    @include fontsize($base_font_size - 1);
   }
 }
