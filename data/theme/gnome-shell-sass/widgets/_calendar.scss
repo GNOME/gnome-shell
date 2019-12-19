@@ -10,13 +10,12 @@
 .datemenu-calendar-column {
   spacing: 0;
   border: 0 solid $bubble_borders_color;
-  padding: $base_padding + $base_margin;
+  padding: $base_padding * 2;
   padding-bottom: 3em; // account for the notifications clear button
   padding-top:0;
 
-  &:ltr { border-left-width: 1px; }
-  &:rtl { border-right-width: 1px; }
-
+  &:ltr {margin-right: $base_margin * 2; border-left-width: 1px; }
+  &:rtl {margin-left: $base_margin * 2; border-right-width: 1px; }
 
   // today button (the date)
   .datemenu-today-button {
