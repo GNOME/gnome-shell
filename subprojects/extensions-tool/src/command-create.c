@@ -118,9 +118,11 @@ launch_extension_source (GFile *dir, GError **error)
   GList l;
 
   main_source = g_file_get_child (dir, "extension.js");
-  handler = g_file_query_default_handler (main_source, NULL, error);
-  if (handler == NULL)
-    return FALSE;
+  handler = g_file_query_default_handler (main_source, NULL, NULL);
+  if (handler == NULL) {
+    g_print (_("Extension created!  Edit %s to get started.\n"), g_file_peek_path(main_source));
+    return TRUE;
+  }
 
   l.data = main_source;
   l.next = l.prev = NULL;
