@@ -194,6 +194,15 @@ var GrabHelper = class GrabHelper {
         return true;
     }
 
+    grabAsync(params) {
+        return new Promise((resolve, reject) => {
+            params.onUngrab = resolve;
+
+            if (!this.grab(params))
+                reject(new Error('Grab failed'));
+        });
+    }
+
     _takeModalGrab() {
         let firstGrab = this._modalCount == 0;
         if (firstGrab) {
