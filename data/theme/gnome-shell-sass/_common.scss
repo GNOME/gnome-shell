@@ -39,7 +39,6 @@ $modal_radius:$base_border_radius * 2;
 $bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
 // $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
 
-
 // hover
 $hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color, 5%));
 $hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 5%));
@@ -131,7 +130,9 @@ stage {
   color: $osd_fg_color;
   border-radius: $base_border_radius + 4px;
   padding: $base_padding;
-  border: 2px solid transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
   transition-duration: 100ms;
   text-align: center;
 }
