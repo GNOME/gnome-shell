@@ -88,7 +88,7 @@
 }
 
 .login-dialog-not-listed-label {
-  font-size: 90%;
+  @include fontsize($base_font_size - 1);
   font-weight: bold;
   color: darken($osd_fg_color,30%);
   padding-top: 1em;
@@ -119,7 +119,7 @@
 .login-dialog-username,
 .user-widget-label {
   color: $osd_fg_color;
-  font-size: 120%;
+  @include fontsize($base_font_size + 2);
   font-weight: bold;
   text-align: left;
   padding-left: 15px;
@@ -139,7 +139,7 @@
 
 .login-dialog-prompt-label {
   color: darken($osd_fg_color, 20%);
-  font-size: 110%;
+  @include fontsize($base_font_size + 1);
   padding-top: 1em;
 }
 

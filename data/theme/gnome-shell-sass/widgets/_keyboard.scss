@@ -39,7 +39,7 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
   &:hover, &:checked { @include button(hover, $c: $key_bg_color);}
   &:active { @include button(active, $c: $key_bg_color); }
 
-  font-size: $base_font_size + 5pt;
+  @include fontsize($base_font_size + 5);
   min-height: $key_size;
   min-width: $key_size;
 
@@ -119,7 +119,7 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
 
 // suggestions
 .word-suggestions {
-  font-size: $base_font_size + 3pt;
+  @include fontsize($base_font_size + 3);
   spacing: 12px;
   min-height: 20pt;
 }

@@ -38,7 +38,7 @@
 
 // list item
 .nm-dialog-item {
-  font-size: $base_font_size;
+  @include fontsize($base_font_size);
   border-bottom: 1px solid $borders_color;
   padding: $base_padding * 2;
   spacing: 0px;

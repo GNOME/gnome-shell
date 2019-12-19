@@ -5,7 +5,7 @@ $dash_border_radius: $modal_radius * 1.5;
 
 #dash {
   @extend %overview_panel;
-  font-size: $base_font_size - 2pt;
+  @include fontsize($base_font_size - 2);
   padding: 0;
   padding-bottom: $base_padding + 4px;
 

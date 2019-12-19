@@ -95,7 +95,7 @@
     // notification time stamp
     > .event-time {
       color: transparentize($fg_color, 0.5);
-      font-size: 80%;
+      @include fontsize($base_font_size - 2);
       text-align: right;
       margin: 0 $base_margin * 2;
       /* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */

@@ -113,7 +113,7 @@
 }
 
 .mount-dialog-app-list-item-name {
-  font-size: 10pt;
+  @include fontsize($base_font_size - 1);
 }
 
 
@@ -139,13 +139,13 @@
 }
 
 .prompt-dialog-error-label {
-  font-size: 10pt;
+  @include fontsize($base_font_size - 1);
   color: $warning_color;
   padding-bottom: 8px;
 }
 
 .prompt-dialog-info-label {
-  font-size: 10pt;
+  @include fontsize($base_font_size - 1);
   padding-bottom: 8px;
 }
 
@@ -154,7 +154,7 @@
 }
 
 .prompt-dialog-null-label {
-  font-size: 10pt;
+  @include fontsize($base_font_size - 1);
   padding-bottom: 8px;
 }
 
