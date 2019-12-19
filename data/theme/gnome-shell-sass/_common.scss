@@ -1012,6 +1012,8 @@ StScrollBar {
     .weather-forecast-time {
       color: darken($fg_color,40%);
       font-size: 0.8em;
+      padding-top: 0.2em;
+      padding-bottom: 0.4em;
     }
 
     .weather-forecast-icon {
