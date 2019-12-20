@@ -59,8 +59,10 @@
   // close button
   .message-close-button {
     color: lighten($fg_color, 15%);
-    &:hover { color: darken($fg_color, 10%);}
+    &:hover { color: if($variant=='light', lighten($fg_color, 30%), darken($fg_color, 10%)); }
+    &:active { color: if($variant=='light', lighten($fg_color, 40%), darken($fg_color, 20%)); }
   }
+
 
   // icon container
   .message-icon-bin {
