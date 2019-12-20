@@ -51,7 +51,7 @@ class BaseIcon extends St.Bin {
         this.set_child(this._box);
 
         this.iconSize = ICON_SIZE;
-        this._iconBin = new St.Bin();
+        this._iconBin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
 
         this._box.add_actor(this._iconBin);
 
