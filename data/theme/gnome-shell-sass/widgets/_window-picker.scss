@@ -1,7 +1,7 @@
 /* Window Picker */
 
-$window_picker_spacing: 48px;
-$window_picker_padding: 64px;
+$window_picker_spacing: $base_spacing * 8; // 48px
+$window_picker_padding: $base_padding * 10; // 60px
 
 $window_thumbnail_border_color:transparentize($selected_fg_color, 0.65);
 
@@ -22,8 +22,10 @@ $window_close_button_padding: 3px;
 
 // Borders on window thumbnails
 .window-clone-border {
-  border: 6px solid $window_thumbnail_border_color;
-  border-radius: $base_border_radius + 2px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: $window_thumbnail_border_color;
+  border-radius: $base_border_radius + 2;
   // For window decorations with round corners we can't match
   // the exact shape when the window is scaled. So apply a shadow
   // to fix that case
@@ -32,15 +34,13 @@ $window_close_button_padding: 3px;
 
 // Window titles
 .window-caption {
-  spacing: 24px;
-  color: $selected_fg_color;
-  background-color: rgba(0,0,0,0.5);
-  border:1px solid rgba(0,0,0,0.6);
-  border-radius: 8px;
-  margin-top: 24px;
-  padding: 4px 12px;
-  @include fontsize($base_font_size + 1);
+  color: $osd_fg_color;
+  background-color: $osd_bg_color;
+  border:1px solid $osd_outer_borders_color;
+  border-radius: $base_border_radius + 1;
+  padding: $base_padding $base_padding * 2;
   font-weight: bold;
+  @include fontsize($base_font_size + 1);
 }
 
 // Close button
