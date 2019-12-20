@@ -894,7 +894,7 @@ var EmojiSelection = class EmojiSelection {
         this._emojiPager.connect('emoji', (pager, str) => {
             this.emit('emoji-selected', str);
         });
-        this.actor.add(this._emojiPager.actor, { expand: true });
+        this.actor.add(this._emojiPager, { expand: true });
 
         this._pageIndicator = new PageIndicators.PageIndicators(false);
         this.actor.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
