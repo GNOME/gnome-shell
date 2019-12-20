@@ -155,13 +155,14 @@ st_gir_sources = st_sources + st_headers + st_enums
 
 data_to_c = find_program(meson.source_root() + '/src/data-to-c.pl')
 
-custom_target('scroll-view-fade-glsl',
+glsl_sources = custom_target('scroll-view-fade-glsl',
   input: ['st-scroll-view-fade.glsl'],
-  output: ['st-scroll-view-fade-generated.c'],
-  build_by_default: true,
+  output: ['st-scroll-view-fade-generated.h'],
   capture: true,
   command: [data_to_c, '@INPUT@', 'st_scroll_view_fade_glsl']
 )
+
+st_nogir_sources = [glsl_sources]
 
 st_cflags = [
   '-I@0@/src'.format(meson.source_root()),
@@ -177,7 +178,7 @@ st_cflags = [
 
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-1.0',
-  sources: st_gir_sources + croco_sources,
+  sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
   dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
   build_rpath: mutter_typelibdir,
