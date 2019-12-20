@@ -32,7 +32,7 @@
 
 #define DEFAULT_FADE_OFFSET 68.0f
 
-#include "st-scroll-view-fade-generated.c"
+#include "st-scroll-view-fade-generated.h"
 
 struct _StScrollViewFade
 {
