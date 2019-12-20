@@ -51,10 +51,9 @@ $dash_border_radius: $modal_radius * 1.5;
 
 // Show apps button
 .show-apps {
-  background-color: transparent;
   color: $osd_fg_color;
 
-  &.overview-icon {
+  & .overview-icon {
     @extend %icon_tile;
     color: $osd_fg_color;
   }
