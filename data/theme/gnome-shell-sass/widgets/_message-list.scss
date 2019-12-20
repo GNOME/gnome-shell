@@ -8,8 +8,8 @@
 }
 
 .message-list-sections {
-  margin:$base_margin;
   spacing: $base_spacing;
+  margin: $base_margin * 4; // to account for scrollbar
 }
 
 .message-list-section,
