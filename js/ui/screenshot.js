@@ -11,6 +11,11 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot_area', 'screenshot_area_finish');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot_window', 'screenshot_window_finish');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot', 'screenshot_finish');
+Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
+
 var ScreenshotService = class {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenshotIface, this);
@@ -71,7 +76,7 @@ var ScreenshotService = class {
         let path = [
             GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
             GLib.get_home_dir(),
-        ].find(p => GLib.file_test(p, GLib.FileTest.EXISTS));
+        ].find(p => p && GLib.file_test(p, GLib.FileTest.EXISTS));
 
         if (!path)
             return null;
@@ -112,18 +117,32 @@ var ScreenshotService = class {
         return [null, null];
     }
 
-    _onScreenshotComplete(result, area, stream, file, flash, invocation) {
-        if (result) {
-            if (flash) {
-                let flashspot = new Flashspot(area);
-                flashspot.fire(() => {
-                    this._removeShooterForSender(invocation.get_sender());
-                });
-            } else {
-                this._removeShooterForSender(invocation.get_sender());
-            }
-        }
+    _flashspot(coords) {
+        return new Promise((resolve, _reject) => {
+            let flashspot = new Flashspot(coords);
+            flashspot.fire(resolve);
+        });
+    }
 
+    _playSound(name, title) {
+        global.display.get_sound_player().play_from_theme(name, title, null);
+    }
+
+    _connectFlash(shooter, flash) {
+        if (!flash)
+            return Promise.resolve();
+
+        return new Promise((resolve, _reject) => {
+            shooter.connect('screenshot_taken', (o, coords) => {
+                let flashspot = new Flashspot(coords);
+                flashspot.fire(resolve);
+
+                this._playSound('screen-capture', _('Screenshot taken'));
+            });
+        });
+    }
+
+    async _onScreenshotComplete(area, stream, file, flashFire, invocation) {
         stream.close(null);
 
         let filenameUsed = '';
@@ -135,8 +154,11 @@ var ScreenshotService = class {
             clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
         }
 
-        let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
+        let retval = GLib.Variant.new('(bs)', [true, filenameUsed]);
         invocation.return_value(retval);
+
+        await flashFire;
+        this._removeShooterForSender(invocation.get_sender());
     }
 
     _scaleArea(x, y, width, height) {
@@ -157,7 +179,7 @@ var ScreenshotService = class {
         return [x, y, width, height];
     }
 
-    ScreenshotAreaAsync(params, invocation) {
+    async ScreenshotAreaAsync(params, invocation) {
         let [x, y, width, height, flash, filename] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
@@ -172,20 +194,17 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_area(x, y, width, height, stream,
-            (o, res) => {
-                try {
-                    let [result, area] =
-                        screenshot.screenshot_area_finish(res);
-                    this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
-                } catch (e) {
-                    invocation.return_gerror(e);
-                }
-            });
+        try {
+            let flashFire = this._connectFlash(screenshot, flash);
+            let [area] = await screenshot.screenshot_area(x, y, width, height, stream);
+            await this._onScreenshotComplete(
+                area, stream, file, flashFire, invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+        }
     }
 
-    ScreenshotWindowAsync(params, invocation) {
+    async ScreenshotWindowAsync(params, invocation) {
         let [includeFrame, includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
@@ -193,20 +212,17 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot_window(includeFrame, includeCursor, stream,
-            (o, res) => {
-                try {
-                    let [result, area] =
-                        screenshot.screenshot_window_finish(res);
-                    this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
-                } catch (e) {
-                    invocation.return_gerror(e);
-                }
-            });
+        try {
+            let flashFire = this._connectFlash(screenshot, flash);
+            let [area] = await screenshot.screenshot_window(includeFrame, includeCursor, stream);
+            await this._onScreenshotComplete(
+                area, stream, file, flashFire, invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+        }
     }
 
-    ScreenshotAsync(params, invocation) {
+    async ScreenshotAsync(params, invocation) {
         let [includeCursor, flash, filename] = params;
         let screenshot = this._createScreenshot(invocation);
         if (!screenshot)
@@ -214,36 +230,43 @@ var ScreenshotService = class {
 
         let [stream, file] = this._createStream(filename);
 
-        screenshot.screenshot(includeCursor, stream,
-            (o, res) => {
-                try {
-                    let [result, area] =
-                        screenshot.screenshot_finish(res);
-                    this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
-                } catch (e) {
-                    invocation.return_gerror(e);
-                }
-            });
+        try {
+            let flashFire = this._connectFlash(screenshot, flash);
+            let [area] = await screenshot.screenshot(includeCursor, stream);
+            await this._onScreenshotComplete(
+                area, stream, file, flashFire, invocation);
+        } catch (e) {
+            invocation.return_gerror(e.message);
+        }
     }
 
-    SelectAreaAsync(params, invocation) {
-        let selectArea = new SelectArea();
-        selectArea.show();
-        selectArea.connect('finished', (o, areaRectangle) => {
-            if (areaRectangle) {
-                let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
-                                                     areaRectangle.width, areaRectangle.height);
-                let retval = GLib.Variant.new('(iiii)', retRectangle);
-                invocation.return_value(retval);
-            } else {
-                invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                                                "Operation was cancelled");
-            }
+    _selectArea() {
+        return new Promise((resolve, reject) => {
+            let selectArea = new SelectArea();
+            selectArea.show();
+            selectArea.connect('finished', (o, areaRectangle) => {
+                if (areaRectangle)
+                    resolve(areaRectangle);
+                else
+                    reject(new Error("Operation was cancelled"));
+            });
         });
     }
 
-    FlashAreaAsync(params, invocation) {
+    async SelectAreaAsync(params, invocation) {
+        try {
+            let areaRectangle = await this._selectArea();
+            let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
+                areaRectangle.width, areaRectangle.height);
+            let retval = GLib.Variant.new('(iiii)', retRectangle);
+            invocation.return_value(retval);
+        } catch (e) {
+            invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                                            e.message);
+        }
+    }
+
+    async FlashAreaAsync(params, invocation) {
         let [x, y, width, height] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
@@ -252,37 +275,44 @@ var ScreenshotService = class {
                                             "Invalid params");
             return;
         }
-        let flashspot = new Flashspot({ x, y, width, height });
-        flashspot.fire();
+        await this._flashspot({ x, y, width, height });
         invocation.return_value(null);
     }
 
-    PickColorAsync(params, invocation) {
-        let pickPixel = new PickPixel();
-        pickPixel.show();
-        pickPixel.connect('finished', (obj, coords) => {
-            if (coords) {
-                let screenshot = this._createScreenshot(invocation, false);
-                if (!screenshot)
-                    return;
-                screenshot.pick_color(coords.x, coords.y, (_o, res) => {
-                    let [success_, color] = screenshot.pick_color_finish(res);
-                    let { red, green, blue } = color;
-                    let retval = GLib.Variant.new('(a{sv})', [{
-                        color: GLib.Variant.new('(ddd)', [
-                            red / 255.0,
-                            green / 255.0,
-                            blue / 255.0,
-                        ]),
-                    }]);
-                    this._removeShooterForSender(invocation.get_sender());
-                    invocation.return_value(retval);
-                });
-            } else {
-                invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                                                "Operation was cancelled");
-            }
+    _pickPixel() {
+        return new Promise((resolve, reject) => {
+            let pickPixel = new PickPixel();
+            pickPixel.show();
+            pickPixel.connect('finished', (obj, coords) => {
+                if (coords)
+                    resolve(coords);
+                else
+                    reject(new Error("Operation was cancelled"));
+            });
         });
+    }
+
+    async PickColorAsync(params, invocation) {
+        try {
+            let coords = await this._pickPixel();
+            let screenshot = this._createScreenshot(invocation, false);
+            if (!screenshot)
+                return;
+            let [color] = await screenshot.pick_color(coords.x, coords.y);
+            let { red, green, blue } = color;
+            let retval = GLib.Variant.new('(a{sv})', [{
+                color: GLib.Variant.new('(ddd)', [
+                    red / 255.0,
+                    green / 255.0,
+                    blue / 255.0,
+                ]),
+            }]);
+            this._removeShooterForSender(invocation.get_sender());
+            invocation.return_value(retval);
+        } catch (e) {
+            invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                                            e.message);
+        }
     }
 };
 
