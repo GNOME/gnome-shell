@@ -164,12 +164,6 @@ st_password_entry_init (StPasswordEntry *entry)
                                            NULL);
   st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
 
-  priv->peek_password_icon = g_object_new (ST_TYPE_ICON,
-                                           "style-class", "peek-password",
-                                           "icon-name", "eye-not-looking-symbolic",
-                                           NULL);
-  st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
-
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
 
