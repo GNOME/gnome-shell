@@ -1315,12 +1315,7 @@ var WindowManager = class {
                 opacity: 0,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: isFinished => {
-                    if (isFinished)
-                        this._minimizeWindowDone(shellwm, actor);
-                    else
-                        this._minimizeWindowOverwritten(shellwm, actor);
-                },
+                onStopped: () => this._minimizeWindowDone(shellwm, actor),
             });
         } else {
             let xDest, yDest, xScale, yScale;
