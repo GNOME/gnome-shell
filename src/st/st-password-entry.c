@@ -164,6 +164,8 @@ st_password_entry_init (StPasswordEntry *entry)
                                            NULL);
   st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
 
+  priv->show_peek_icon = TRUE;
+
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
 
