@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-11-12 20:07+0000\n"
-"PO-Revision-Date: 2019-11-18 09:54+0100\n"
+"POT-Creation-Date: 2019-12-20 22:04+0000\n"
+"PO-Revision-Date: 2019-12-22 19:58+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -400,7 +400,7 @@ msgstr ""
 msgid "Network Login"
 msgstr "Acès di rêt"
 
-#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:534
+#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:526
 msgid "Something’s gone wrong"
 msgstr "Alc al è lât stuart"
 
@@ -430,11 +430,11 @@ msgstr "Pagjine principâl"
 msgid "Visit extension homepage"
 msgstr "Visite la pagjine principâl de estension"
 
-#: js/extensionPrefs/main.js:476
+#: js/extensionPrefs/main.js:468
 msgid "No Extensions Installed"
 msgstr "Nissune estension instalade"
 
-#: js/extensionPrefs/main.js:486
+#: js/extensionPrefs/main.js:478
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -442,11 +442,11 @@ msgstr ""
 "Si puedin instalâ lis estension cun Software o cun <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:501
+#: js/extensionPrefs/main.js:493
 msgid "Browse in Software"
 msgstr "Esplore in Software"
 
-#: js/extensionPrefs/main.js:541
+#: js/extensionPrefs/main.js:533
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -454,24 +454,24 @@ msgstr ""
 "Nus displâs, ma nol è stât pussibil otignî la liste des estensions "
 "instaladis. Controle di jessi jentrât in GNOME e torne prove."
 
-#: js/gdm/authPrompt.js:162 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:119 js/ui/components/polkitAgent.js:137
+#: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:130 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:395 js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:402 js/ui/shellMountOperation.js:412
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Anule"
 
-#: js/gdm/authPrompt.js:176 js/gdm/authPrompt.js:217 js/gdm/authPrompt.js:457
+#: js/gdm/authPrompt.js:188 js/gdm/authPrompt.js:241 js/gdm/authPrompt.js:476
 msgid "Next"
 msgstr "Indenant"
 
-#: js/gdm/authPrompt.js:213 js/ui/shellMountOperation.js:399
-#: js/ui/unlockDialog.js:45
+#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:406
+#: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Sbloche"
 
-#: js/gdm/authPrompt.js:215
+#: js/gdm/authPrompt.js:239
 msgctxt "button"
 msgid "Sign In"
 msgstr "Jentre"
@@ -494,12 +494,12 @@ msgstr "(p.e., utent o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:900 js/ui/components/networkAgent.js:246
-#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
+#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:280 js/ui/components/networkAgent.js:298
 msgid "Username: "
 msgstr "Non utent: "
 
-#: js/gdm/loginDialog.js:1231
+#: js/gdm/loginDialog.js:1230
 msgid "Login Window"
 msgstr "Barcon di acès"
 
@@ -588,59 +588,59 @@ msgstr "Comant no cjatât"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:148
+#: js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Impussibil analizâ il comant:"
 
-#: js/misc/util.js:156
+#: js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Esecuzion di '%s' falide:"
 
-#: js/misc/util.js:173
+#: js/misc/util.js:177
 msgid "Just now"
 msgstr "Propite cumò"
 
-#: js/misc/util.js:175
+#: js/misc/util.js:179
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minût indaûr"
 msgstr[1] "%d minûts indaûr"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:183
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ore indaûr"
 msgstr[1] "%d oris indaûr"
 
-#: js/misc/util.js:183
+#: js/misc/util.js:187
 msgid "Yesterday"
 msgstr "Îr"
 
-#: js/misc/util.js:185
+#: js/misc/util.js:189
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d zornade indaûr"
 msgstr[1] "%d zornadis indaûr"
 
-#: js/misc/util.js:189
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d setemane indaûr"
 msgstr[1] "%d setemanis indaûr"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:197
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d mês indaûr"
 msgstr[1] "%d mês indaûr"
 
-#: js/misc/util.js:196
+#: js/misc/util.js:200
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -648,20 +648,20 @@ msgstr[0] "%d an indaûr"
 msgstr[1] "%d agns indaûr"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:226
+#: js/misc/util.js:233
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:232
+#: js/misc/util.js:239
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Îr, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:238
+#: js/misc/util.js:245
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -669,7 +669,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:244
+#: js/misc/util.js:251
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d di %B, %H∶%M"
@@ -677,7 +677,7 @@ msgstr "%-d di %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:250
+#: js/misc/util.js:257
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d di %B dal %Y, %H∶%M"
@@ -685,20 +685,20 @@ msgstr "%-d di %B dal %Y, %H∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:255
+#: js/misc/util.js:262
 msgid "%l∶%M %p"
 msgstr "%I∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:261
+#: js/misc/util.js:268
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Îr, %I∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:267
+#: js/misc/util.js:274
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %I∶%M %p"
@@ -706,7 +706,7 @@ msgstr "%A, %I∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:273
+#: js/misc/util.js:280
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d di %B, %I∶%M %p"
@@ -714,7 +714,7 @@ msgstr "%-d di %B, %I∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:279
+#: js/misc/util.js:286
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d di %B dal %Y, %I∶%M %p"
@@ -743,57 +743,57 @@ msgstr "Dinee acès"
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
-#: js/ui/appDisplay.js:880
+#: js/ui/appDisplay.js:921
 msgid "Unnamed Folder"
 msgstr "Cartele cence non"
 
-#: js/ui/appDisplay.js:901
+#: js/ui/appDisplay.js:944
 msgid "Frequently used applications will appear here"
 msgstr "Lis aplicazions dopradis dispès a vignaran mostradis culì"
 
-#: js/ui/appDisplay.js:1032
+#: js/ui/appDisplay.js:1079
 msgid "Frequent"
 msgstr "Dispès"
 
-#: js/ui/appDisplay.js:1039
+#: js/ui/appDisplay.js:1086
 msgid "All"
 msgstr "Dutis"
 
-#: js/ui/appDisplay.js:1814
+#: js/ui/appDisplay.js:1861
 msgid "Rename"
 msgstr "Cambie non"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2492 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2549 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Barcons vierts"
 
-#: js/ui/appDisplay.js:2512 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2569 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:2524
+#: js/ui/appDisplay.js:2580
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Invie doprant une schede grafiche dedicade"
 
-#: js/ui/appDisplay.js:2553 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2608 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:2559
+#: js/ui/appDisplay.js:2614
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:2569 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2624 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostre Detais"
 
-#: js/ui/appFavorites.js:151
+#: js/ui/appFavorites.js:152
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s al è stât zontât tai tiei preferîts."
 
-#: js/ui/appFavorites.js:184
+#: js/ui/appFavorites.js:185
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s al è stât gjavât dai tiei preferîts."
@@ -814,7 +814,7 @@ msgstr "Cufis"
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:247
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -996,54 +996,54 @@ msgstr "La version di udisks instalade no supuarte la impostazion PIM"
 msgid "Open with %s"
 msgstr "Vierç cun %s"
 
-#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:266
+#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:279
 msgid "Password:"
 msgstr "Password:"
 
-#: js/ui/components/keyring.js:102
+#: js/ui/components/keyring.js:105
 msgid "Type again:"
 msgstr "Scîf di gnûf:"
 
-#: js/ui/components/networkAgent.js:105
+#: js/ui/components/networkAgent.js:116
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "In alternative al è pussibil conetisi fracant il boton “WPS” sul router."
 
-#: js/ui/components/networkAgent.js:113 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:124 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:913
 msgid "Connect"
 msgstr "Conet"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:226
-#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:271
-#: js/ui/components/networkAgent.js:291 js/ui/components/networkAgent.js:301
+#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:237
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:282
+#: js/ui/components/networkAgent.js:302 js/ui/components/networkAgent.js:312
 msgid "Password: "
 msgstr "Password: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:219
+#: js/ui/components/networkAgent.js:230
 msgid "Key: "
 msgstr "Clâf: "
 
-#: js/ui/components/networkAgent.js:254 js/ui/components/networkAgent.js:277
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:288
 msgid "Private key password: "
 msgstr "Password di clâf privade: "
 
-#: js/ui/components/networkAgent.js:275
+#: js/ui/components/networkAgent.js:286
 msgid "Identity: "
 msgstr "Identitât: "
 
-#: js/ui/components/networkAgent.js:289
+#: js/ui/components/networkAgent.js:300
 msgid "Service: "
 msgstr "Servizi: "
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
 msgid "Authentication required by wireless network"
 msgstr "La rêt cence fîl e domande autenticazion"
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1052,53 +1052,53 @@ msgstr ""
 "Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence "
 "fîl \"%s\"."
 
-#: js/ui/components/networkAgent.js:323 js/ui/components/networkAgent.js:698
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:709
 msgid "Wired 802.1X authentication"
 msgstr "Autenticazion vie fîl 802.1X"
 
-#: js/ui/components/networkAgent.js:325
+#: js/ui/components/networkAgent.js:336
 msgid "Network name: "
 msgstr "Non rêt: "
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:702
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:713
 msgid "DSL authentication"
 msgstr "Autenticazion DSL"
 
-#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
 msgid "PIN code required"
 msgstr "Si pretint un codiç PIN"
 
-#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:708
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:719
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 
-#: js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:346 js/ui/components/networkAgent.js:714
+#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:725
 msgid "Mobile broadband network password"
 msgstr "Passowrd rêt mobil a bande largje"
 
-#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:699
-#: js/ui/components/networkAgent.js:703 js/ui/components/networkAgent.js:715
+#: js/ui/components/networkAgent.js:358 js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:714 js/ui/components/networkAgent.js:726
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:682 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:693 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
-#: js/ui/components/polkitAgent.js:38
+#: js/ui/components/polkitAgent.js:42
 msgid "Authentication Required"
 msgstr "Autenticazion Necessarie"
 
-#: js/ui/components/polkitAgent.js:78
+#: js/ui/components/polkitAgent.js:82
 msgid "Administrator"
 msgstr "Aministradôr"
 
-#: js/ui/components/polkitAgent.js:140
+#: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
 msgstr "Autentiche"
 
@@ -1106,7 +1106,7 @@ msgstr "Autentiche"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:247 js/ui/shellMountOperation.js:379
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:386
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Mi displâs, no je lade drete. Prove di gnûf."
 
@@ -1156,23 +1156,23 @@ msgstr "Zonte orlois mondiâi…"
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:274
+#: js/ui/dateMenu.js:276
 msgid "Weather"
 msgstr "Timp"
 
-#: js/ui/dateMenu.js:369
+#: js/ui/dateMenu.js:389
 msgid "Select a location…"
 msgstr "Selezione une posizion…"
 
-#: js/ui/dateMenu.js:377
+#: js/ui/dateMenu.js:402
 msgid "Loading…"
 msgstr "Daûr a cjariâ…"
 
-#: js/ui/dateMenu.js:387
+#: js/ui/dateMenu.js:412
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:389
+#: js/ui/dateMenu.js:414
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -1426,51 +1426,51 @@ msgstr "Lasse disativât"
 msgid "Region & Language Settings"
 msgstr "Impostazions regjon e lenghe"
 
-#: js/ui/lookingGlass.js:644
+#: js/ui/lookingGlass.js:659
 msgid "No extensions installed"
 msgstr "Nissune estension instalade"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:699
+#: js/ui/lookingGlass.js:714
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nol a dât fûr nissun erôr."
 
-#: js/ui/lookingGlass.js:705
+#: js/ui/lookingGlass.js:720
 msgid "Hide Errors"
 msgstr "Tapone Erôrs"
 
-#: js/ui/lookingGlass.js:709 js/ui/lookingGlass.js:774
+#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
 msgid "Show Errors"
 msgstr "Mostre Erôrs"
 
-#: js/ui/lookingGlass.js:718
+#: js/ui/lookingGlass.js:733
 msgid "Enabled"
 msgstr "Abilitât"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:721 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Disabilitât"
 
-#: js/ui/lookingGlass.js:723
+#: js/ui/lookingGlass.js:738
 msgid "Error"
 msgstr "Erôr"
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:740
 msgid "Out of date"
 msgstr "No inzornât"
 
-#: js/ui/lookingGlass.js:727
+#: js/ui/lookingGlass.js:742
 msgid "Downloading"
 msgstr "Daur a scjamâ"
 
-#: js/ui/lookingGlass.js:756
+#: js/ui/lookingGlass.js:771
 msgid "View Source"
 msgstr "Viôt sorzint"
 
-#: js/ui/lookingGlass.js:765
+#: js/ui/lookingGlass.js:780
 msgid "Web Page"
 msgstr "Pagjine Web"
 
@@ -1548,24 +1548,24 @@ msgstr "Assegne batidure"
 msgid "Done"
 msgstr "Fat"
 
-#: js/ui/padOsd.js:739
+#: js/ui/padOsd.js:747
 msgid "Edit…"
 msgstr "Modifiche…"
 
 # masculin o feminin
-#: js/ui/padOsd.js:781 js/ui/padOsd.js:887
+#: js/ui/padOsd.js:789 js/ui/padOsd.js:912
 msgid "None"
 msgstr "Nissune"
 
-#: js/ui/padOsd.js:840
+#: js/ui/padOsd.js:865
 msgid "Press a button to configure"
 msgstr "Frache un boton par configurâ"
 
-#: js/ui/padOsd.js:841
+#: js/ui/padOsd.js:866
 msgid "Press Esc to exit"
 msgstr "Frache Esc par jessî"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:869
 msgid "Press any key to exit"
 msgstr "Frache un tast par jessî"
 
@@ -1575,16 +1575,16 @@ msgstr "Jes"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:431
+#: js/ui/panel.js:434
 msgid "Activities"
 msgstr "Ativitâts"
 
-#: js/ui/panel.js:704
+#: js/ui/panel.js:707
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sisteme"
 
-#: js/ui/panel.js:817
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Sbare parsore"
 
@@ -1672,13 +1672,17 @@ msgstr "Copie"
 msgid "Paste"
 msgstr "Tache"
 
-#: js/ui/shellEntry.js:91
+#: js/ui/shellEntry.js:73
 msgid "Show Text"
 msgstr "Mostre Test"
 
-#: js/ui/shellEntry.js:93
+#: js/ui/shellEntry.js:75
 msgid "Hide Text"
 msgstr "Plate Test"
+
+#: js/ui/shellEntry.js:161
+msgid "Caps lock is on."
+msgstr "BlocMaiusc al è atîf."
 
 #: js/ui/shellMountOperation.js:308
 msgid "Hidden Volume"
@@ -1705,32 +1709,32 @@ msgstr ""
 msgid "PIM Number"
 msgstr "Numar PIM"
 
-#: js/ui/shellMountOperation.js:345
+#: js/ui/shellMountOperation.js:346
 msgid "The PIM must be a number or empty."
 msgstr "Il PIM al scugne jessi un numar o vueit."
 
-#: js/ui/shellMountOperation.js:356
+#: js/ui/shellMountOperation.js:357
 msgid "Password"
 msgstr "Password"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:393
 msgid "Remember Password"
 msgstr "Visâsi Password"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:410
+#: js/ui/shellMountOperation.js:417
 #, javascript-format
 msgid "Open %s"
 msgstr "Vierç %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:482
+#: js/ui/shellMountOperation.js:489
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Impussibil inviâ %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:484
+#: js/ui/shellMountOperation.js:491
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "Impussibil cjatâ la aplicazion %s"
@@ -2202,11 +2206,11 @@ msgstr "Erôr di autorizazion di Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impussibil autorizâ il dispositîf Thunderbolt: %s"
 
-#: js/ui/status/volume.js:128
+#: js/ui/status/volume.js:150
 msgid "Volume changed"
 msgstr "Volum modificât"
 
-#: js/ui/status/volume.js:199
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volum"
 
@@ -2238,11 +2242,11 @@ msgstr "Dome esterni"
 msgid "Built-in Only"
 msgstr "Dome incorporât"
 
-#: js/ui/unlockDialog.js:53
+#: js/ui/unlockDialog.js:52
 msgid "Log in as another user"
 msgstr "Jentre come altri utent"
 
-#: js/ui/unlockDialog.js:68
+#: js/ui/unlockDialog.js:67
 msgid "Unlock Window"
 msgstr "Sbloche barcon"
 
@@ -2358,319 +2362,9 @@ msgstr "Sposte tal visôr a drete"
 msgid "Evolution Calendar"
 msgstr "Calendari di Evolution"
 
-#: src/extensions-tool/command-create.c:189
-#, c-format
-msgid ""
-"Name should be a very short (ideally descriptive) string.\n"
-"Examples are: %s"
-msgstr ""
-"Il non al à di jessi une stringhe (descritive in mût ideâl) une vore curte.\n"
-"Esemplis a son: %s"
-
-#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
-msgid "Name"
-msgstr "Non"
-
-#: src/extensions-tool/command-create.c:203
-#, c-format
-msgid ""
-"Description is a single-sentence explanation of what your extension does.\n"
-"Examples are: %s"
-msgstr ""
-"La descrizion e je une spiegazion fate di une frase singule su ce che la "
-"estension e fâs.\n"
-"Esemplis a son: %s"
-
-#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
-msgid "Description"
-msgstr "Descrizion"
-
-#: src/extensions-tool/command-create.c:217
-msgid ""
-"UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"Il UUID al è un identificadôr unic e globâl pe tô estension.\n"
-"Chest al à di jessi tal formât di une direzion e-mail "
-"(clicparfocalizâ@titedalfari.esempli.com)\n"
-
-#: src/extensions-tool/command-create.c:239
-msgid "The unique identifier of the new extension"
-msgstr "L'identificadôr univoc de gnove estension"
-
-#: src/extensions-tool/command-create.c:242
-msgid "NAME"
-msgstr "NON"
-
-#: src/extensions-tool/command-create.c:243
-msgid "The user-visible name of the new extension"
-msgstr "Il non visibil dal utent de gnove estension"
-
-#: src/extensions-tool/command-create.c:245
-msgid "DESCRIPTION"
-msgstr "DESCRIZION"
-
-#: src/extensions-tool/command-create.c:247
-msgid "A short description of what the extension does"
-msgstr "Une curte descrizion di ce che la estension e fâs"
-
-#: src/extensions-tool/command-create.c:250
-msgid "Enter extension information interactively"
-msgstr "Inserìs lis informazions de estension in maniere interative"
-
-#: src/extensions-tool/command-create.c:258
-msgid "Create a new extension"
-msgstr "Cree une gnove estension"
-
-#: src/extensions-tool/command-create.c:275
-#: src/extensions-tool/command-list.c:158
-msgid "Unknown arguments"
-msgstr "Argoments no cognossûts"
-
-#: src/extensions-tool/command-create.c:284
-msgid "UUID, name and description are required"
-msgstr "A coventin UUID, non e descrizion"
-
-#: src/extensions-tool/command-disable.c:57
-msgid "Disable an extension"
-msgstr "Disabilite une estension"
-
-#: src/extensions-tool/command-disable.c:74
-#: src/extensions-tool/command-enable.c:74
-#: src/extensions-tool/command-info.c:96
-#: src/extensions-tool/command-prefs.c:107
-#: src/extensions-tool/command-reset.c:74
-#: src/extensions-tool/command-uninstall.c:89
-msgid "No UUID given"
-msgstr "Nissun UUID indicât"
-
-#: src/extensions-tool/command-disable.c:79
-#: src/extensions-tool/command-enable.c:79
-#: src/extensions-tool/command-info.c:101
-#: src/extensions-tool/command-prefs.c:112
-#: src/extensions-tool/command-reset.c:79
-#: src/extensions-tool/command-uninstall.c:94
-msgid "More than one UUID given"
-msgstr "Plui di un UUID indicât"
-
-#: src/extensions-tool/command-enable.c:57
-msgid "Enable an extension"
-msgstr "Abilite une estension"
-
-#: src/extensions-tool/command-info.c:79
-msgid "Show extensions info"
-msgstr "Mostre informazions de estension"
-
-#: src/extensions-tool/command-install.c:173
-msgid "Overwrite an existing extension"
-msgstr "Sorescrîf une estension esistente"
-
-#: src/extensions-tool/command-install.c:175
-msgid "EXTENSION_BUNDLE"
-msgstr "EXTENSION_BUNDLE"
-
-#: src/extensions-tool/command-install.c:184
-msgid "Install an extension bundle"
-msgstr "Instale un complès di estensions"
-
-#: src/extensions-tool/command-install.c:201
-msgid "No extension bundle specified"
-msgstr "Nissun complès di estensions specificât"
-
-#: src/extensions-tool/command-install.c:207
-msgid "More than one extension bundle specified"
-msgstr "Plui di un complès di estensions specificât"
-
-#: src/extensions-tool/command-list.c:118
-msgid "Show user-installed extensions"
-msgstr "Mostre estensions instaladis dal utent"
-
-#: src/extensions-tool/command-list.c:121
-msgid "Show system-installed extensions"
-msgstr "Mostre estensions instaladis dal sisteme"
-
-#: src/extensions-tool/command-list.c:124
-msgid "Show enabled extensions"
-msgstr "Mostre estensions abilitadis"
-
-#: src/extensions-tool/command-list.c:127
-msgid "Show disabled extensions"
-msgstr "Mostre estensions disabilitadis"
-
-#: src/extensions-tool/command-list.c:130
-msgid "Show extensions with preferences"
-msgstr "Mostre lis estensions cu lis preferencis"
-
-#: src/extensions-tool/command-list.c:133
-msgid "Print extension details"
-msgstr "Stampe detais de estension"
-
-#: src/extensions-tool/command-list.c:141
-msgid "List installed extensions"
-msgstr "Liste lis estensions instaladis"
-
-#: src/extensions-tool/command-pack.c:450
-msgid "FILE"
-msgstr "FILE"
-
-#: src/extensions-tool/command-pack.c:451
-msgid "Additional source to include in the bundle"
-msgstr "Sorzint adizionâl di includi tal complès"
-
-#: src/extensions-tool/command-pack.c:454
-msgid "SCHEMA"
-msgstr "SCHEME"
-
-#: src/extensions-tool/command-pack.c:455
-msgid "A GSettings schema that should be included"
-msgstr "Un scheme di GSettings che al à di jessi includût"
-
-#: src/extensions-tool/command-pack.c:457
-#: src/extensions-tool/command-pack.c:468
-msgid "DIRECTORY"
-msgstr "CARTELE"
-
-#: src/extensions-tool/command-pack.c:459
-msgid "The directory where translations are found"
-msgstr "La cartele dulà cjatâ lis traduzions"
-
-#: src/extensions-tool/command-pack.c:461
-msgid "DOMAIN"
-msgstr "DOMINI"
-
-#: src/extensions-tool/command-pack.c:463
-msgid "The gettext domain to use for translations"
-msgstr "Il domini di gettext di doprâ pes traduzions"
-
-#: src/extensions-tool/command-pack.c:466
-msgid "Overwrite an existing pack"
-msgstr "Sorescrîf un pachet esistent"
-
-#: src/extensions-tool/command-pack.c:470
-msgid "The directory where the pack should be created"
-msgstr "La cartele dulà che il pachet al à die jessi creât"
-
-#: src/extensions-tool/command-pack.c:472
-msgid "SOURCE_DIRECTORY"
-msgstr "CARTELE_SORZINT"
-
-#: src/extensions-tool/command-pack.c:481
-msgid "Create an extension bundle"
-msgstr "Cree un complès di estensions"
-
-#: src/extensions-tool/command-pack.c:500
-msgid "More than one source directory specified"
-msgstr "Plui di une cartele sorzint specificade"
-
-#: src/extensions-tool/command-prefs.c:90
-msgid "Opens extension preferences"
-msgstr "Al vierç lis preferencis de estension"
-
-#: src/extensions-tool/command-reset.c:57
-msgid "Reset an extension"
-msgstr "Azere une estension"
-
-#: src/extensions-tool/command-uninstall.c:72
-msgid "Uninstall an extension"
-msgstr "Disinstale une estension"
-
-#: src/extensions-tool/main.c:175
-msgid "Path"
-msgstr "Percors"
-
-#: src/extensions-tool/main.c:178
-msgid "URL"
-msgstr "URL"
-
-#: src/extensions-tool/main.c:181
-msgid "Original author"
-msgstr "Autôr origjinâl"
-
-#: src/extensions-tool/main.c:184
-msgid "Version"
-msgstr "Version"
-
-#: src/extensions-tool/main.c:187
-msgid "State"
-msgstr "Stât"
-
-#: src/extensions-tool/main.c:221
-msgid "“version” takes no arguments"
-msgstr "“version” no vûl nissun argoment"
-
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
-msgid "Usage:"
-msgstr "Ûs:"
-
-#: src/extensions-tool/main.c:226
-msgid "Print version information and exit."
-msgstr "Stampe informazions su la version e jes."
-
-#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
-msgid "COMMAND"
-msgstr "COMANT"
-
-#: src/extensions-tool/main.c:244
-msgid "[ARGS…]"
-msgstr "[ARGS…]"
-
-#: src/extensions-tool/main.c:246
-msgid "Commands:"
-msgstr "Comants:"
-
-#: src/extensions-tool/main.c:247
-msgid "Print help"
-msgstr "Stampe jutori"
-
-#: src/extensions-tool/main.c:248 src/main.c:460
+#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Stampe version"
-
-#: src/extensions-tool/main.c:249
-msgid "Enable extension"
-msgstr "Abilite estension"
-
-#: src/extensions-tool/main.c:250
-msgid "Disable extension"
-msgstr "Disabilite estension"
-
-#: src/extensions-tool/main.c:251
-msgid "Reset extension"
-msgstr "Azere estension"
-
-#: src/extensions-tool/main.c:252
-msgid "Uninstall extension"
-msgstr "Disinstale estension"
-
-#: src/extensions-tool/main.c:253
-msgid "List extensions"
-msgstr "Liste lis estensions"
-
-#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
-msgid "Show extension info"
-msgstr "Mostre informazions de estension"
-
-#: src/extensions-tool/main.c:256
-msgid "Open extension preferences"
-msgstr "Vierç preferencis de estension"
-
-#: src/extensions-tool/main.c:257
-msgid "Create extension"
-msgstr "Cree estension"
-
-#: src/extensions-tool/main.c:258
-msgid "Package extension"
-msgstr "Estension dal pachet"
-
-#: src/extensions-tool/main.c:259
-msgid "Install extension bundle"
-msgstr "Instale complès di estensions"
-
-#: src/extensions-tool/main.c:261
-#, c-format
-msgid "Use “%s” to get detailed help.\n"
-msgstr "Dopre “%s” par vê un jutori detaiât.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2684,12 +2378,12 @@ msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di ac�
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
-#: src/shell-app.c:264
+#: src/shell-app.c:265
 msgctxt "program"
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/shell-app.c:515
+#: src/shell-app.c:516
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "No soi rivât a eseguî '%s'"
@@ -2706,9 +2400,330 @@ msgstr "La password no pues jessi vueide"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialic di autenticazion anulât dal utent"
 
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "La gnove estension e je stade creade cun sucès in %s.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Il non al à di jessi une stringhe (descritive in mût ideâl) une vore curte.\n"
+"Esemplis a son: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr "Non"
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"La descrizion e je une spiegazion fate di une frase singule su ce che la "
+"estension e fâs.\n"
+"Esemplis a son: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Descrizion"
+
+#: subprojects/extensions-tool/src/command-create.c:222
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"Il UUID al è un identificadôr unic e globâl pe tô estension.\n"
+"Chest al à di jessi tal formât di une direzion e-mail "
+"(clicparfocalizâ@titedalfari.esempli.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr "L'identificadôr univoc de gnove estension"
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr "NON"
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr "Il non visibil dal utent de gnove estension"
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr "DESCRIZION"
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr "Une curte descrizion di ce che la estension e fâs"
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr "Inserìs lis informazions de estension in maniere interative"
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr "Cree une gnove estension"
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argoments no cognossûts"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr "A coventin UUID, non e descrizion"
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Disabilite une estension"
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Nissun UUID indicât"
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Plui di un UUID indicât"
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Abilite une estension"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+msgid "Show extensions info"
+msgstr "Mostre informazions de estension"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Sorescrîf une estension esistente"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instale un complès di estensions"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Nissun complès di estensions specificât"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Plui di un complès di estensions specificât"
+
+#: subprojects/extensions-tool/src/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Mostre estensions instaladis dal utent"
+
+#: subprojects/extensions-tool/src/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Mostre estensions instaladis dal sisteme"
+
+#: subprojects/extensions-tool/src/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Mostre estensions abilitadis"
+
+#: subprojects/extensions-tool/src/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Mostre estensions disabilitadis"
+
+#: subprojects/extensions-tool/src/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Mostre lis estensions cu lis preferencis"
+
+#: subprojects/extensions-tool/src/command-list.c:133
+msgid "Print extension details"
+msgstr "Stampe detais de estension"
+
+#: subprojects/extensions-tool/src/command-list.c:141
+msgid "List installed extensions"
+msgstr "Liste lis estensions instaladis"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "FILE"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Sorzint adizionâl di includi tal complès"
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEME"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Un scheme di GSettings che al à di jessi includût"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "CARTELE"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "La cartele dulà cjatâ lis traduzions"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINI"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Il domini di gettext di doprâ pes traduzions"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Sorescrîf un pachet esistent"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "La cartele dulà che il pachet al à die jessi creât"
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "CARTELE_SORZINT"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Cree un complès di estensions"
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Plui di une cartele sorzint specificade"
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Al vierç lis preferencis de estension"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Azere une estension"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Disinstale une estension"
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr "Percors"
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr "Autôr origjinâl"
+
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Version"
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr "Stât"
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr "“version” no vûl nissun argoment"
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr "Ûs:"
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr "Stampe informazions su la version e jes."
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr "COMANT"
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr "Comants:"
+
+#: subprojects/extensions-tool/src/main.c:248
+msgid "Print help"
+msgstr "Stampe jutori"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Enable extension"
+msgstr "Abilite estension"
+
+#: subprojects/extensions-tool/src/main.c:251
+msgid "Disable extension"
+msgstr "Disabilite estension"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "Reset extension"
+msgstr "Azere estension"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr "Disinstale estension"
+
+#: subprojects/extensions-tool/src/main.c:254
+msgid "List extensions"
+msgstr "Liste lis estensions"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+msgid "Show extension info"
+msgstr "Mostre informazions de estension"
+
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Open extension preferences"
+msgstr "Vierç preferencis de estension"
+
+#: subprojects/extensions-tool/src/main.c:258
+msgid "Create extension"
+msgstr "Cree estension"
+
+#: subprojects/extensions-tool/src/main.c:259
+msgid "Package extension"
+msgstr "Estension dal pachet"
+
+#: subprojects/extensions-tool/src/main.c:260
+msgid "Install extension bundle"
+msgstr "Instale complès di estensions"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Dopre “%s” par vê un jutori detaiât.\n"
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1871
+#: subprojects/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2717,14 +2732,14 @@ msgstr[1] "%u jessudis"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1881
+#: subprojects/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u jentrade"
 msgstr[1] "%u jentradis"
 
-#: subprojects/gvc/gvc-mixer-control.c:2736
+#: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Suns di sisteme"
 
