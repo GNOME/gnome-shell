@@ -97,7 +97,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
 msgstr ""
-"Identificadors universals únics de les extensions que s'han d'habilitar"
+"Identificadors universals únics de les extensions que s'han d'inhabilitar"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
@@ -2302,7 +2302,7 @@ msgstr "Mou"
 
 #: js/ui/windowMenu.js:51
 msgid "Resize"
-msgstr "Reajusta"
+msgstr "Canvia la mida"
 
 #: js/ui/windowMenu.js:58
 msgid "Move Titlebar Onscreen"
