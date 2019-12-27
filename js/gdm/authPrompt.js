@@ -463,8 +463,11 @@ var AuthPrompt = GObject.registerClass({
             oldChild.destroy();
 
         if (user) {
-            let userWidget = new UserWidget.UserWidget(user);
-            userWidget.x_align = Clutter.ActorAlign.START;
+                let orientation = Clutter.Orientation.HORIZONTAL;
+                if (this._mode == AuthPromptMode.UNLOCK_ONLY)
+                    orientation = Clutter.Orientation.VERTICAL;
+
+            let userWidget = new UserWidget.UserWidget(user, orientation);
             this._userWell.set_child(userWidget);
         }
     }
