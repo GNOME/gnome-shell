@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-11-05 13:12+0000\n"
-"PO-Revision-Date: 2019-11-05 15:08+0100\n"
+"POT-Creation-Date: 2019-12-26 22:28+0000\n"
+"PO-Revision-Date: 2019-12-30 12:12+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -410,7 +410,7 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
-#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:534
+#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:526
 msgid "Something’s gone wrong"
 msgstr "Algo ha fallado"
 
@@ -439,11 +439,11 @@ msgstr "Página web"
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/extensionPrefs/main.js:476
+#: js/extensionPrefs/main.js:468
 msgid "No Extensions Installed"
 msgstr "No hay extensiones instaladas"
 
-#: js/extensionPrefs/main.js:486
+#: js/extensionPrefs/main.js:478
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -451,11 +451,11 @@ msgstr ""
 "Las extensiones se puede instalar mediante software o <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:501
+#: js/extensionPrefs/main.js:493
 msgid "Browse in Software"
 msgstr "Buscar en Software"
 
-#: js/extensionPrefs/main.js:541
+#: js/extensionPrefs/main.js:533
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -463,24 +463,24 @@ msgstr ""
 "No es posible obtener la lista de extensiones instaladas. asegúrese de que "
 "ha iniciado sesión en GNOME e inténtelo de nuevo."
 
-#: js/gdm/authPrompt.js:163 js/ui/audioDeviceSelection.js:56
-#: js/ui/components/networkAgent.js:119 js/ui/components/polkitAgent.js:138
+#: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:130 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:395 js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:402 js/ui/shellMountOperation.js:412
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:177 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:457
+#: js/gdm/authPrompt.js:188 js/gdm/authPrompt.js:241 js/gdm/authPrompt.js:476
 msgid "Next"
 msgstr "Siguiente"
 
-#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:399
-#: js/ui/unlockDialog.js:45
+#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:406
+#: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#: js/gdm/authPrompt.js:216
+#: js/gdm/authPrompt.js:239
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -495,7 +495,7 @@ msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:896
+#: js/gdm/loginDialog.js:895
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -503,12 +503,12 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:901 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
+#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:280 js/ui/components/networkAgent.js:298
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: js/gdm/loginDialog.js:1236
+#: js/gdm/loginDialog.js:1230
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -597,59 +597,59 @@ msgstr "Comando no encontrado"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:149
+#: js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "No se pudo analizar el comando:"
 
-#: js/misc/util.js:157
+#: js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Falló la ejecución de «%s»:"
 
-#: js/misc/util.js:174
+#: js/misc/util.js:177
 msgid "Just now"
 msgstr "Ahora mismo"
 
-#: js/misc/util.js:176
+#: js/misc/util.js:179
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:183
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:187
 msgid "Yesterday"
 msgstr "Ayer"
 
-#: js/misc/util.js:184
+#: js/misc/util.js:189
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "Hace %d semana"
 msgstr[1] "Hace %d semanas"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:197
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "Hace %d mes"
 msgstr[1] "Hace %d meses"
 
-#: js/misc/util.js:192
+#: js/misc/util.js:200
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -657,20 +657,20 @@ msgstr[0] "Hace %d año"
 msgstr[1] "Hace %d años"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:222
+#: js/misc/util.js:233
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:228
+#: js/misc/util.js:239
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Ayer, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:234
+#: js/misc/util.js:245
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -678,7 +678,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:240
+#: js/misc/util.js:251
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%d de %B, %H∶%M"
@@ -686,26 +686,28 @@ msgstr "%d de %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:246
+#: js/misc/util.js:257
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d de %B de %Y, %H∶%M"
 
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:251
+#: js/misc/util.js:262
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:257
+#: js/misc/util.js:268
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Ayer a las %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:263
+#: js/misc/util.js:274
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -713,7 +715,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:269
+#: js/misc/util.js:280
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%d de %B, %l∶%M %p"
@@ -721,7 +723,7 @@ msgstr "%d de %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:275
+#: js/misc/util.js:286
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
@@ -749,57 +751,57 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:878
+#: js/ui/appDisplay.js:921
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
-#: js/ui/appDisplay.js:899
+#: js/ui/appDisplay.js:944
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: js/ui/appDisplay.js:1030
+#: js/ui/appDisplay.js:1079
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: js/ui/appDisplay.js:1037
+#: js/ui/appDisplay.js:1086
 msgid "All"
 msgstr "Todas"
 
-#: js/ui/appDisplay.js:1809
+#: js/ui/appDisplay.js:1861
 msgid "Rename"
 msgstr "Renombrar"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2487 js/ui/panel.js:76
+#: js/ui/appDisplay.js:2549 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2506 js/ui/panel.js:83
+#: js/ui/appDisplay.js:2569 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2518
+#: js/ui/appDisplay.js:2580
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica dedicada"
 
-#: js/ui/appDisplay.js:2547 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2608 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2553
+#: js/ui/appDisplay.js:2614
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2563 js/ui/panel.js:94
+#: js/ui/appDisplay.js:2624 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
-#: js/ui/appFavorites.js:151
+#: js/ui/appFavorites.js:152
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Se ha añadido %s a sus favoritos."
 
-#: js/ui/appFavorites.js:184
+#: js/ui/appFavorites.js:185
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
@@ -812,15 +814,15 @@ msgstr "Seleccionar dispositivo de sonido"
 msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
-#: js/ui/audioDeviceSelection.js:63
+#: js/ui/audioDeviceSelection.js:64
 msgid "Headphones"
 msgstr "Auriculares"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:66
 msgid "Headset"
 msgstr "Manos libres"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:248
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -837,7 +839,7 @@ msgid "Settings"
 msgstr "Configuración"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:41
+#: js/ui/calendar.js:40
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -847,43 +849,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:69
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:71
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:73
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:75
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:77
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:79
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:81
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -894,7 +896,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:332
+#: js/ui/calendar.js:370
 msgid "%OB"
 msgstr "%OB"
 
@@ -907,55 +909,55 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:342
+#: js/ui/calendar.js:380
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:401
+#: js/ui/calendar.js:439
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: js/ui/calendar.js:416
+#: js/ui/calendar.js:454
 msgid "Next month"
 msgstr "Siguiente mes"
 
-#: js/ui/calendar.js:566
+#: js/ui/calendar.js:604
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:622
+#: js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:691
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo el día"
 
-#: js/ui/calendar.js:825
+#: js/ui/calendar.js:867
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d de %B"
 
-#: js/ui/calendar.js:829
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: js/ui/calendar.js:1054
+#: js/ui/calendar.js:1097
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
-#: js/ui/calendar.js:1057
+#: js/ui/calendar.js:1100
 msgid "No Events"
 msgstr "No hay eventos"
 
-#: js/ui/calendar.js:1087
+#: js/ui/calendar.js:1132
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -981,19 +983,19 @@ msgstr "Forzar la salida"
 msgid "Wait"
 msgstr "Esperar"
 
-#: js/ui/components/automountManager.js:87
+#: js/ui/components/automountManager.js:86
 msgid "External drive connected"
 msgstr "Dispositivo externo conectado"
 
-#: js/ui/components/automountManager.js:99
+#: js/ui/components/automountManager.js:98
 msgid "External drive disconnected"
 msgstr "Dispositivo externo desconectado"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
 msgstr "No se puede desbloquear el volumen"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "La versión de udisks instalada no soporta la configuración PIM"
 
@@ -1002,54 +1004,54 @@ msgstr "La versión de udisks instalada no soporta la configuración PIM"
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:257
+#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:279
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: js/ui/components/keyring.js:102
+#: js/ui/components/keyring.js:105
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-#: js/ui/components/networkAgent.js:105
+#: js/ui/components/networkAgent.js:116
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Alternativamente puede conectarse pulsando el botón «WPS» de su router."
 
-#: js/ui/components/networkAgent.js:113 js/ui/status/network.js:222
-#: js/ui/status/network.js:313 js/ui/status/network.js:913
+#: js/ui/components/networkAgent.js:124 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:913
 msgid "Connect"
 msgstr "Conectar"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:226
-#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:267
-#: js/ui/components/networkAgent.js:287 js/ui/components/networkAgent.js:297
+#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:237
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:282
+#: js/ui/components/networkAgent.js:302 js/ui/components/networkAgent.js:312
 msgid "Password: "
 msgstr "Contraseña: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:219
+#: js/ui/components/networkAgent.js:230
 msgid "Key: "
 msgstr "Clave:"
 
-#: js/ui/components/networkAgent.js:251 js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:288
 msgid "Private key password: "
 msgstr "Contraseña de la clave privada:"
 
-#: js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:286
 msgid "Identity: "
 msgstr "Identidad:"
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:300
 msgid "Service: "
 msgstr "Servicio:"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
 msgid "Authentication required by wireless network"
 msgstr "La red inalámbrica requiere autenticación"
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1058,53 +1060,53 @@ msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:709
 msgid "Wired 802.1X authentication"
 msgstr "Autenticación 802.1X cableada"
 
-#: js/ui/components/networkAgent.js:321
+#: js/ui/components/networkAgent.js:336
 msgid "Network name: "
 msgstr "Nombre de la red: "
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:698
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:713
 msgid "DSL authentication"
 msgstr "Autenticación DSL"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:703
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
 msgid "PIN code required"
 msgstr "Código PIN requerido"
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:719
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Se necesita un código PIN para el dispositivo de banda ancha móvil"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:725
 msgid "Mobile broadband network password"
 msgstr "Contraseña de la red de banda ancha móvil"
 
-#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:695
-#: js/ui/components/networkAgent.js:699 js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:358 js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:714 js/ui/components/networkAgent.js:726
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Se requiere una contraseña para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:678 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:693 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
-#: js/ui/components/polkitAgent.js:36
+#: js/ui/components/polkitAgent.js:42
 msgid "Authentication Required"
 msgstr "Se necesita autenticación"
 
-#: js/ui/components/polkitAgent.js:64
+#: js/ui/components/polkitAgent.js:82
 msgid "Administrator"
 msgstr "Administrador"
 
-#: js/ui/components/polkitAgent.js:141
+#: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
 msgstr "Autenticar"
 
@@ -1112,28 +1114,28 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:379
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:386
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Eso no ha funcionado. Inténtelo de nuevo."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:784
+#: js/ui/components/telepathyClient.js:787
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Ahora %s se llama %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:176
 msgid "Windows"
 msgstr "Ventanas"
 
-#: js/ui/dash.js:201 js/ui/dash.js:242
+#: js/ui/dash.js:200 js/ui/dash.js:241
 msgid "Show Applications"
 msgstr "Mostrar aplicaciones"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:395
+#: js/ui/dash.js:394
 msgid "Dash"
 msgstr "Tablero"
 
@@ -1162,23 +1164,23 @@ msgstr "Añadir relojes del mundo…"
 msgid "World Clocks"
 msgstr "Relojes del mundo"
 
-#: js/ui/dateMenu.js:273
+#: js/ui/dateMenu.js:276
 msgid "Weather"
 msgstr "Meteorología"
 
-#: js/ui/dateMenu.js:368
+#: js/ui/dateMenu.js:389
 msgid "Select a location…"
 msgstr "Seleccionar ubicación…"
 
-#: js/ui/dateMenu.js:376
+#: js/ui/dateMenu.js:402
 msgid "Loading…"
 msgstr "Cargando…"
 
-#: js/ui/dateMenu.js:386
+#: js/ui/dateMenu.js:412
 msgid "Go online for weather information"
 msgstr "Conectarse para obtener la información meteorológica"
 
-#: js/ui/dateMenu.js:388
+#: js/ui/dateMenu.js:414
 msgid "Weather information is currently unavailable"
 msgstr "La información meteorológica no está disponible actualmente."
 
@@ -1355,11 +1357,11 @@ msgstr "Su aplicación quiere inhibir los atajos"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Puede restaurar los atajos pulsando %s."
 
-#: js/ui/inhibitShortcutsDialog.js:95
+#: js/ui/inhibitShortcutsDialog.js:96
 msgid "Deny"
 msgstr "Denegar"
 
-#: js/ui/inhibitShortcutsDialog.js:102
+#: js/ui/inhibitShortcutsDialog.js:103
 msgid "Allow"
 msgstr "Permitir"
 
@@ -1412,13 +1414,13 @@ msgid "Leave On"
 msgstr "Dejar activada"
 
 #: js/ui/kbdA11yDialog.js:58 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:1286
+#: js/ui/status/network.js:1285
 msgid "Turn On"
 msgstr "Encendido"
 
 #: js/ui/kbdA11yDialog.js:66 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:131 js/ui/status/network.js:314
-#: js/ui/status/network.js:1286 js/ui/status/network.js:1398
+#: js/ui/status/network.js:131 js/ui/status/network.js:315
+#: js/ui/status/network.js:1285 js/ui/status/network.js:1397
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1432,51 +1434,51 @@ msgstr "Dejar apagado"
 msgid "Region & Language Settings"
 msgstr "Configuración de región e idioma"
 
-#: js/ui/lookingGlass.js:647
+#: js/ui/lookingGlass.js:659
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:702
+#: js/ui/lookingGlass.js:714
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: js/ui/lookingGlass.js:708
+#: js/ui/lookingGlass.js:720
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: js/ui/lookingGlass.js:712 js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: js/ui/lookingGlass.js:721
+#: js/ui/lookingGlass.js:733
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:724 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:738
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:728
+#: js/ui/lookingGlass.js:740
 msgid "Out of date"
 msgstr "Caducado"
 
-#: js/ui/lookingGlass.js:730
+#: js/ui/lookingGlass.js:742
 msgid "Downloading"
 msgstr "Descargando"
 
-#: js/ui/lookingGlass.js:759
+#: js/ui/lookingGlass.js:771
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:780
 msgid "Web Page"
 msgstr "Página web"
 
@@ -1504,11 +1506,11 @@ msgstr "La pantalla de bloqueo necesita el gestor de pantallas de GNOME."
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: js/ui/mpris.js:198
+#: js/ui/mpris.js:199
 msgid "Unknown artist"
 msgstr "Artista desconocido"
 
-#: js/ui/mpris.js:207
+#: js/ui/mpris.js:209
 msgid "Unknown title"
 msgstr "Título desconocido"
 
@@ -1554,42 +1556,42 @@ msgstr "Asignar pulsación"
 msgid "Done"
 msgstr "Hecho"
 
-#: js/ui/padOsd.js:739
+#: js/ui/padOsd.js:747
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:781 js/ui/padOsd.js:887
+#: js/ui/padOsd.js:789 js/ui/padOsd.js:912
 msgid "None"
 msgstr "Nada"
 
-#: js/ui/padOsd.js:840
+#: js/ui/padOsd.js:865
 msgid "Press a button to configure"
 msgstr "Pulse un botón para configurar"
 
-#: js/ui/padOsd.js:841
+#: js/ui/padOsd.js:866
 msgid "Press Esc to exit"
 msgstr "Pulse Esc para salir"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:869
 msgid "Press any key to exit"
 msgstr "Pulse cualquier tecla para salir"
 
-#: js/ui/panel.js:110
+#: js/ui/panel.js:109
 msgid "Quit"
 msgstr "Salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:431
+#: js/ui/panel.js:434
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:702
+#: js/ui/panel.js:707
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:818
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1601,11 +1603,11 @@ msgstr "Introducir un comando"
 msgid "Close"
 msgstr "Cerrar"
 
-#: js/ui/runDialog.js:260
+#: js/ui/runDialog.js:259
 msgid "Restart is not available on Wayland"
 msgstr "Reiniciar no está disponible en Wayland"
 
-#: js/ui/runDialog.js:265
+#: js/ui/runDialog.js:264
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
@@ -1615,25 +1617,25 @@ msgstr "Reiniciando…"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: js/ui/screenShield.js:140
+#: js/ui/screenShield.js:139
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d mensaje nuevo"
 msgstr[1] "%d mensajes nuevos"
 
-#: js/ui/screenShield.js:142
+#: js/ui/screenShield.js:141
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: js/ui/screenShield.js:456 js/ui/status/system.js:93
+#: js/ui/screenShield.js:454 js/ui/status/system.js:93
 msgid "Lock"
 msgstr "Bloquear"
 
-#: js/ui/screenShield.js:720
+#: js/ui/screenShield.js:717
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1644,23 +1646,23 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:834 js/ui/screenShield.js:1306
+#: js/ui/screenShield.js:831 js/ui/screenShield.js:1303
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: js/ui/screenShield.js:835 js/ui/screenShield.js:1307
+#: js/ui/screenShield.js:832 js/ui/screenShield.js:1304
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: js/ui/search.js:689
+#: js/ui/search.js:694
 msgid "Searching…"
 msgstr "Buscando…"
 
-#: js/ui/search.js:691
+#: js/ui/search.js:696
 msgid "No results."
 msgstr "No se encontraron resultados."
 
-#: js/ui/search.js:818
+#: js/ui/search.js:822
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1675,13 +1677,17 @@ msgstr "Copiar"
 msgid "Paste"
 msgstr "Pegar"
 
-#: js/ui/shellEntry.js:91
+#: js/ui/shellEntry.js:73
 msgid "Show Text"
 msgstr "Mostrar texto"
 
-#: js/ui/shellEntry.js:93
+#: js/ui/shellEntry.js:75
 msgid "Hide Text"
 msgstr "Ocultar texto"
+
+#: js/ui/shellEntry.js:161
+msgid "Caps lock is on."
+msgstr "Bloq. Mayús. está activo"
 
 #: js/ui/shellMountOperation.js:308
 msgid "Hidden Volume"
@@ -1708,32 +1714,32 @@ msgstr ""
 msgid "PIM Number"
 msgstr "Número PIM"
 
-#: js/ui/shellMountOperation.js:345
+#: js/ui/shellMountOperation.js:346
 msgid "The PIM must be a number or empty."
 msgstr "El PIM debe ser un número o estar vacío."
 
-#: js/ui/shellMountOperation.js:356
+#: js/ui/shellMountOperation.js:357
 msgid "Password"
 msgstr "Contraseña"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:393
 msgid "Remember Password"
 msgstr "Recordar contraseña"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:410
+#: js/ui/shellMountOperation.js:417
 #, javascript-format
 msgid "Open %s"
 msgstr "Abrir %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:482
+#: js/ui/shellMountOperation.js:489
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "No se puede iniciar %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:484
+#: js/ui/shellMountOperation.js:491
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "No se pudo encontrar la aplicación %s"
@@ -1774,11 +1780,11 @@ msgstr "Rechazo de teclas"
 msgid "Mouse Keys"
 msgstr "Teclas del ratón"
 
-#: js/ui/status/accessibility.js:135
+#: js/ui/status/accessibility.js:136
 msgid "High Contrast"
 msgstr "Contraste alto"
 
-#: js/ui/status/accessibility.js:177
+#: js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "Texto grande"
 
@@ -1830,11 +1836,11 @@ msgstr "Pulsación secundaria"
 msgid "Dwell Click"
 msgstr "Pulsación al posarse"
 
-#: js/ui/status/keyboard.js:817
+#: js/ui/status/keyboard.js:818
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: js/ui/status/keyboard.js:839
+#: js/ui/status/keyboard.js:840
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
@@ -1879,7 +1885,7 @@ msgid "<unknown>"
 msgstr "<desconocido>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:420 js/ui/status/network.js:1315
+#: js/ui/status/network.js:420 js/ui/status/network.js:1314
 #, javascript-format
 msgid "%s Off"
 msgstr "%s apagada"
@@ -1905,7 +1911,7 @@ msgid "%s Disconnecting"
 msgstr "Desconectando %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1307
+#: js/ui/status/network.js:438 js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Conectando %s"
@@ -1945,7 +1951,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Configuración de banda ancha móvil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:558 js/ui/status/network.js:1312
+#: js/ui/status/network.js:558 js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Hardware %s desactivado"
@@ -2010,27 +2016,27 @@ msgid "Wi-Fi Settings"
 msgstr "Configuración de Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1303
+#: js/ui/status/network.js:1302
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Punto de acceso %s activo"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1318
+#: js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s no conectado"
 
-#: js/ui/status/network.js:1415
+#: js/ui/status/network.js:1414
 msgid "connecting…"
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1418
+#: js/ui/status/network.js:1417
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
-#: js/ui/status/network.js:1420
+#: js/ui/status/network.js:1419
 msgid "connection failed"
 msgstr "falló la conexión"
 
@@ -2125,7 +2131,7 @@ msgstr "%d∶%02d queda (%d %%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d para la carga completa (%d %%)"
 
-#: js/ui/status/power.js:136 js/ui/status/power.js:138
+#: js/ui/status/power.js:139 js/ui/status/power.js:141
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2146,13 +2152,10 @@ msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
 #: js/ui/status/system.js:57
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear la rotación de la pantalla"
 
 #: js/ui/status/system.js:106
-#| msgid "Power Off"
 msgid "Power Off / Log Out"
 msgstr "Apagar / cerrar sesión"
 
@@ -2161,7 +2164,6 @@ msgid "Log Out"
 msgstr "Cerrar la sesión"
 
 #: js/ui/status/system.js:121
-#| msgid "Switch User"
 msgid "Switch User…"
 msgstr "Cambiar de usuario…"
 
@@ -2170,19 +2172,18 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: js/ui/status/system.js:147
-#| msgid "Power Off"
 msgid "Power Off…"
 msgstr "Apagar…"
 
-#: js/ui/status/thunderbolt.js:262
+#: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "Dispositivo Thunderbolt desconocido"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2190,30 +2191,30 @@ msgstr ""
 "Se ha detectado un dispositivo nuevo mientras estaba fuera. Desconéctelo y "
 "vuélvalo a conectar para empezar a usarlo."
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispositivo Thunderbolt no autorizado"
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:329
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Se ha detectado un dispositivo nuevo y un administrador debe autorizarlo."
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:335
 msgid "Thunderbolt authorization error"
 msgstr "Error de autorización de Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:336
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "No se pudo autorizar el dispositivo Thunderbolt: %s"
 
-#: js/ui/status/volume.js:129
+#: js/ui/status/volume.js:150
 msgid "Volume changed"
 msgstr "Volumen modificado"
 
-#: js/ui/status/volume.js:200
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volumen"
 
@@ -2245,19 +2246,19 @@ msgstr "Sólo la externa"
 msgid "Built-in Only"
 msgstr "Sólo la integrada"
 
-#: js/ui/unlockDialog.js:53
+#: js/ui/unlockDialog.js:52
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
-#: js/ui/unlockDialog.js:68
+#: js/ui/unlockDialog.js:67
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
-#: js/ui/viewSelector.js:181
+#: js/ui/viewSelector.js:180
 msgid "Applications"
 msgstr "Aplicaciones"
 
-#: js/ui/viewSelector.js:185
+#: js/ui/viewSelector.js:184
 msgid "Search"
 msgstr "Buscar"
 
@@ -2266,22 +2267,22 @@ msgstr "Buscar"
 msgid "“%s” is ready"
 msgstr "«%s» está preparado"
 
-#: js/ui/windowManager.js:56
+#: js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "¿Quiere mantener esta configuración de la pantalla?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:70
+#: js/ui/windowManager.js:71
 msgid "Revert Settings"
 msgstr "Revertir configuración"
 
-#: js/ui/windowManager.js:73
+#: js/ui/windowManager.js:74
 msgid "Keep Changes"
 msgstr "Mantener cambios"
 
-#: js/ui/windowManager.js:91
+#: js/ui/windowManager.js:92
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2363,318 +2364,9 @@ msgstr "Mover a la pantalla de la derecha"
 msgid "Evolution Calendar"
 msgstr "Calendario de Evolution"
 
-#: src/extensions-tool/command-create.c:189
-#, c-format
-msgid ""
-"Name should be a very short (ideally descriptive) string.\n"
-"Examples are: %s"
-msgstr ""
-"El nombre debe ser una cadena (descriptiva) muy corta.\n"
-"Algunos ejemplos: %s"
-
-#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
-msgid "Name"
-msgstr "Nombre"
-
-#: src/extensions-tool/command-create.c:203
-#, c-format
-msgid ""
-"Description is a single-sentence explanation of what your extension does.\n"
-"Examples are: %s"
-msgstr ""
-"La descripción es una única frase para explicar qué hace su extensión.\n"
-"Algunos ejemplos: %s"
-
-#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
-msgid "Description"
-msgstr "Descripción"
-
-#: src/extensions-tool/command-create.c:217
-msgid ""
-"UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"El UUID es un identificador único global para su extensión.\n"
-"Normalmente debe estar en formato de dirección de correo electrónico "
-"(pulsarparaenfocar@usuario.ejemplo.com)\n"
-
-#: src/extensions-tool/command-create.c:239
-msgid "The unique identifier of the new extension"
-msgstr "El identificador único de la nueva extensión"
-
-#: src/extensions-tool/command-create.c:242
-msgid "NAME"
-msgstr "NOMBRE"
-
-#: src/extensions-tool/command-create.c:243
-msgid "The user-visible name of the new extension"
-msgstr "El nombre visible por el usuario de esta extensión"
-
-#: src/extensions-tool/command-create.c:245
-msgid "DESCRIPTION"
-msgstr "DESCRIPCIÓN"
-
-#: src/extensions-tool/command-create.c:247
-msgid "A short description of what the extension does"
-msgstr "Una breve descripción de qué hace la extensión"
-
-#: src/extensions-tool/command-create.c:250
-msgid "Enter extension information interactively"
-msgstr "Introduzca la información de la extensión interactivamente"
-
-#: src/extensions-tool/command-create.c:258
-msgid "Create a new extension"
-msgstr "Crear una extensión nueva"
-
-#: src/extensions-tool/command-create.c:275
-#: src/extensions-tool/command-list.c:158
-msgid "Unknown arguments"
-msgstr "Argumentos desconocidos"
-
-#: src/extensions-tool/command-create.c:284
-msgid "UUID, name and description are required"
-msgstr "Se necesita el UUID, el nombre y la descripción"
-
-#: src/extensions-tool/command-disable.c:57
-msgid "Disable an extension"
-msgstr "Desactivar una extensión"
-
-#: src/extensions-tool/command-disable.c:74
-#: src/extensions-tool/command-enable.c:74
-#: src/extensions-tool/command-info.c:96
-#: src/extensions-tool/command-prefs.c:107
-#: src/extensions-tool/command-reset.c:74
-#: src/extensions-tool/command-uninstall.c:89
-msgid "No UUID given"
-msgstr "No se ha especificado el UUID"
-
-#: src/extensions-tool/command-disable.c:79
-#: src/extensions-tool/command-enable.c:79
-#: src/extensions-tool/command-info.c:101
-#: src/extensions-tool/command-prefs.c:112
-#: src/extensions-tool/command-reset.c:79
-#: src/extensions-tool/command-uninstall.c:94
-msgid "More than one UUID given"
-msgstr "Se ha proporcionado más de un UUID"
-
-#: src/extensions-tool/command-enable.c:57
-msgid "Enable an extension"
-msgstr "Activar una extensión"
-
-#: src/extensions-tool/command-info.c:79
-msgid "Show extensions info"
-msgstr "Mostrar información de las extensiones"
-
-#: src/extensions-tool/command-install.c:173
-msgid "Overwrite an existing extension"
-msgstr "Sobrescribir una extensión que ya exista"
-
-#: src/extensions-tool/command-install.c:175
-msgid "EXTENSION_BUNDLE"
-msgstr "EXTENSION_BUNDLE"
-
-#: src/extensions-tool/command-install.c:184
-msgid "Install an extension bundle"
-msgstr "Instalar un conjunto de extensiones"
-
-#: src/extensions-tool/command-install.c:201
-msgid "No extension bundle specified"
-msgstr "No se ha especificado un conjunto de extensiones"
-
-#: src/extensions-tool/command-install.c:207
-msgid "More than one extension bundle specified"
-msgstr "Se ha especificado más de un conjunto de extensiones"
-
-#: src/extensions-tool/command-list.c:118
-msgid "Show user-installed extensions"
-msgstr "Mostrar las extensiones de usuario instaladas"
-
-#: src/extensions-tool/command-list.c:121
-msgid "Show system-installed extensions"
-msgstr "Mostrar las extensiones del sistema instaladas"
-
-#: src/extensions-tool/command-list.c:124
-msgid "Show enabled extensions"
-msgstr "Mostrar extensiones activadas"
-
-#: src/extensions-tool/command-list.c:127
-msgid "Show disabled extensions"
-msgstr "Mostrar extensiones desactivadas"
-
-#: src/extensions-tool/command-list.c:130
-msgid "Show extensions with preferences"
-msgstr "Mostrar extensiones con preferencias"
-
-#: src/extensions-tool/command-list.c:133
-msgid "Print extension details"
-msgstr "Mostrar detalles de la extensión"
-
-#: src/extensions-tool/command-list.c:141
-msgid "List installed extensions"
-msgstr "Listar las extensiones instaladas"
-
-#: src/extensions-tool/command-pack.c:450
-msgid "FILE"
-msgstr "ARCHIVO"
-
-#: src/extensions-tool/command-pack.c:451
-msgid "Additional source to include in the bundle"
-msgstr "Fuente adicional que incluir en el conjunto"
-
-#: src/extensions-tool/command-pack.c:454
-msgid "SCHEMA"
-msgstr "ESQUEMA"
-
-#: src/extensions-tool/command-pack.c:455
-msgid "A GSettings schema that should be included"
-msgstr "Se debe incluir un esquema de GSettings"
-
-#: src/extensions-tool/command-pack.c:457
-#: src/extensions-tool/command-pack.c:468
-msgid "DIRECTORY"
-msgstr "CARPETA"
-
-#: src/extensions-tool/command-pack.c:459
-msgid "The directory where translations are found"
-msgstr "La carpeta donde están las traducciones"
-
-#: src/extensions-tool/command-pack.c:461
-msgid "DOMAIN"
-msgstr "DOMINIO"
-
-#: src/extensions-tool/command-pack.c:463
-msgid "The gettext domain to use for translations"
-msgstr "El dominio de gettext que usar para las traducciones"
-
-#: src/extensions-tool/command-pack.c:466
-msgid "Overwrite an existing pack"
-msgstr "Sobrescribir un paquete existente"
-
-#: src/extensions-tool/command-pack.c:470
-msgid "The directory where the pack should be created"
-msgstr "La carpeta donde se debe crear el paquete"
-
-#: src/extensions-tool/command-pack.c:472
-msgid "SOURCE_DIRECTORY"
-msgstr "CARPETA_FUENTE"
-
-#: src/extensions-tool/command-pack.c:481
-msgid "Create an extension bundle"
-msgstr "Crear un conjunto de extensiones"
-
-#: src/extensions-tool/command-pack.c:500
-msgid "More than one source directory specified"
-msgstr "Se ha especificado más de una carpeta fuente"
-
-#: src/extensions-tool/command-prefs.c:90
-msgid "Opens extension preferences"
-msgstr "abre las preferencias de la extensión"
-
-#: src/extensions-tool/command-reset.c:57
-msgid "Reset an extension"
-msgstr "Restablecer una extensión"
-
-#: src/extensions-tool/command-uninstall.c:72
-msgid "Uninstall an extension"
-msgstr "Desinstalar una extensión"
-
-#: src/extensions-tool/main.c:175
-msgid "Path"
-msgstr "Ruta"
-
-#: src/extensions-tool/main.c:178
-msgid "URL"
-msgstr "URL"
-
-#: src/extensions-tool/main.c:181
-msgid "Original author"
-msgstr "Autor original"
-
-#: src/extensions-tool/main.c:184
-msgid "Version"
-msgstr "Versión"
-
-#: src/extensions-tool/main.c:187
-msgid "State"
-msgstr "Estado"
-
-#: src/extensions-tool/main.c:221
-msgid "“version” takes no arguments"
-msgstr "«version» no lleva argumentos"
-
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
-msgid "Usage:"
-msgstr "Uso:"
-
-#: src/extensions-tool/main.c:226
-msgid "Print version information and exit."
-msgstr "Mostrar información de la versión y salir."
-
-#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
-msgid "COMMAND"
-msgstr "COMANDO"
-
-#: src/extensions-tool/main.c:244
-msgid "[ARGS…]"
-msgstr "[ARGS…]"
-
-#: src/extensions-tool/main.c:246
-msgid "Commands:"
-msgstr "Comandos:"
-
-#: src/extensions-tool/main.c:247
-msgid "Print help"
-msgstr "Mostrar ayuda"
-
-#: src/extensions-tool/main.c:248 src/main.c:460
+#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Imprimir versión"
-
-#: src/extensions-tool/main.c:249
-msgid "Enable extension"
-msgstr "Activar extensión"
-
-#: src/extensions-tool/main.c:250
-msgid "Disable extension"
-msgstr "Desactivar extensión"
-
-#: src/extensions-tool/main.c:251
-msgid "Reset extension"
-msgstr "Restablecer extensión"
-
-#: src/extensions-tool/main.c:252
-msgid "Uninstall extension"
-msgstr "Desinstalar extensión"
-
-#: src/extensions-tool/main.c:253
-msgid "List extensions"
-msgstr "Listar extensiones"
-
-#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
-msgid "Show extension info"
-msgstr "Mostrar información de la extensión"
-
-#: src/extensions-tool/main.c:256
-msgid "Open extension preferences"
-msgstr "Abrir las preferencias de la extensión"
-
-#: src/extensions-tool/main.c:257
-msgid "Create extension"
-msgstr "Crear extensión"
-
-#: src/extensions-tool/main.c:258
-msgid "Package extension"
-msgstr "Extensión del paquete"
-
-#: src/extensions-tool/main.c:259
-msgid "Install extension bundle"
-msgstr "Instalar conjunto de extensiones"
-
-#: src/extensions-tool/main.c:261
-#, c-format
-msgid "Use “%s” to get detailed help.\n"
-msgstr "Use «%s» para obtener ayuda detallada.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2690,12 +2382,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
-#: src/shell-app.c:264
+#: src/shell-app.c:265
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/shell-app.c:515
+#: src/shell-app.c:516
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
@@ -2712,9 +2404,329 @@ msgstr "La contraseña no puede estar vacía"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
 
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "Se ha creado correctamente la nueva extensión en %s.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"El nombre debe ser una cadena (descriptiva) muy corta.\n"
+"Algunos ejemplos: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr "Nombre"
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"La descripción es una única frase para explicar qué hace su extensión.\n"
+"Algunos ejemplos: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Descripción"
+
+#: subprojects/extensions-tool/src/command-create.c:222
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"El UUID es un identificador único global para su extensión.\n"
+"Normalmente debe estar en formato de dirección de correo electrónico "
+"(pulsarparaenfocar@usuario.ejemplo.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr "El identificador único de la nueva extensión"
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr "NOMBRE"
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr "El nombre visible por el usuario de esta extensión"
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr "DESCRIPCIÓN"
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr "Una breve descripción de qué hace la extensión"
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr "Introduzca la información de la extensión interactivamente"
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr "Crear una extensión nueva"
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argumentos desconocidos"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr "Se necesita el UUID, el nombre y la descripción"
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Desactivar una extensión"
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "No se ha especificado el UUID"
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Se ha proporcionado más de un UUID"
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Activar una extensión"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+msgid "Show extensions info"
+msgstr "Mostrar información de las extensiones"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Sobrescribir una extensión que ya exista"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Instalar un conjunto de extensiones"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "No se ha especificado un conjunto de extensiones"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Se ha especificado más de un conjunto de extensiones"
+
+#: subprojects/extensions-tool/src/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Mostrar las extensiones de usuario instaladas"
+
+#: subprojects/extensions-tool/src/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Mostrar las extensiones del sistema instaladas"
+
+#: subprojects/extensions-tool/src/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Mostrar extensiones activadas"
+
+#: subprojects/extensions-tool/src/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Mostrar extensiones desactivadas"
+
+#: subprojects/extensions-tool/src/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Mostrar extensiones con preferencias"
+
+#: subprojects/extensions-tool/src/command-list.c:133
+msgid "Print extension details"
+msgstr "Mostrar detalles de la extensión"
+
+#: subprojects/extensions-tool/src/command-list.c:141
+msgid "List installed extensions"
+msgstr "Listar las extensiones instaladas"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "ARCHIVO"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Fuente adicional que incluir en el conjunto"
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "ESQUEMA"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Se debe incluir un esquema de GSettings"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "CARPETA"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "La carpeta donde están las traducciones"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINIO"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "El dominio de gettext que usar para las traducciones"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Sobrescribir un paquete existente"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "La carpeta donde se debe crear el paquete"
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "CARPETA_FUENTE"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Crear un conjunto de extensiones"
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Se ha especificado más de una carpeta fuente"
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "abre las preferencias de la extensión"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Restablecer una extensión"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Desinstalar una extensión"
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr "Ruta"
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr "Autor original"
+
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Versión"
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr "Estado"
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr "«version» no lleva argumentos"
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr "Uso:"
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr "Mostrar información de la versión y salir."
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr "COMANDO"
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr "Comandos:"
+
+#: subprojects/extensions-tool/src/main.c:248
+msgid "Print help"
+msgstr "Mostrar ayuda"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Enable extension"
+msgstr "Activar extensión"
+
+#: subprojects/extensions-tool/src/main.c:251
+msgid "Disable extension"
+msgstr "Desactivar extensión"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "Reset extension"
+msgstr "Restablecer extensión"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr "Desinstalar extensión"
+
+#: subprojects/extensions-tool/src/main.c:254
+msgid "List extensions"
+msgstr "Listar extensiones"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+msgid "Show extension info"
+msgstr "Mostrar información de la extensión"
+
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Open extension preferences"
+msgstr "Abrir las preferencias de la extensión"
+
+#: subprojects/extensions-tool/src/main.c:258
+msgid "Create extension"
+msgstr "Crear extensión"
+
+#: subprojects/extensions-tool/src/main.c:259
+msgid "Package extension"
+msgstr "Extensión del paquete"
+
+#: subprojects/extensions-tool/src/main.c:260
+msgid "Install extension bundle"
+msgstr "Instalar conjunto de extensiones"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Use «%s» para obtener ayuda detallada.\n"
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1871
+#: subprojects/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2723,14 +2735,14 @@ msgstr[1] "%u salidas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1881
+#: subprojects/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: subprojects/gvc/gvc-mixer-control.c:2736
+#: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
