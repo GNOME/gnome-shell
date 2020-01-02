@@ -86,7 +86,10 @@ class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
                                  icon_size: APP_ICON_SIZE });
         box.add_child(icon);
 
-        let text = new St.Label({ text: item.label });
+        let text = new St.Label({
+            text: item.label,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         box.add_child(text);
 
         this.addItem(box, text);
