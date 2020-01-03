@@ -72,6 +72,7 @@ var AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('reset', this._onReset.bind(this));
         this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
         this._userVerifier.connect('ovirt-user-authenticated', this._onOVirtUserAuthenticated.bind(this));
+        this._userVerifier.connect('vmware-user-authenticated', this._onVmwareUserAuthenticated.bind(this));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -243,6 +244,11 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _onOVirtUserAuthenticated() {
+        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            this.reset();
+    }
+
+    _onVmwareUserAuthenticated() {
         if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     }
