@@ -4,6 +4,42 @@
 const Gio = imports.gi.Gio;
 const Signals = imports.signals;
 
+const GLib = imports.gi.GLib;
+const envDisplay = GLib.getenv('DISPLAY');
+const display = envDisplay.substr(envDisplay.indexOf(":") + 1);
+
+const dbusPath = '/org/vmware/viewagent/Credentials/D' + display;
+const dbusInterface = 'org.vmware.viewagent.Credentials.D' + display;
+
+const VCredentialsIface = '<node> \
+<interface name="' + dbusInterface + '"> \
+<signal name="UserAuthenticated"> \
+    <arg type="s" name="token"/> \
+</signal> \
+</interface> \
+</node>';
+
+const VGreeterIface = '<node> \
+<interface name="org.vmware.viewagent.Greeter"> \
+<signal name="GreeterStarted"> \
+    <arg type="s" name="token"/> \
+</signal> \
+</interface> \
+</node>';
+
+const VCredentialsInfo = Gio.DBusInterfaceInfo.new_for_xml(VCredentialsIface);
+
+function VCredentials() {
+    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.system,
+                                   g_interface_name: VCredentialsInfo.name,
+                                   g_interface_info: VCredentialsInfo,
+                                   g_name: dbusInterface,
+                                   g_object_path: dbusPath,
+                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
+    self.init(null);
+    return self;
+}
+
 const OVirtCredentialsIface = `
 <node>
 <interface name="org.ovirt.vdsm.Credentials">
@@ -35,6 +71,21 @@ var OVirtCredentialsManager = class {
         this._credentials = new OVirtCredentials();
         this._credentials.connectSignal('UserAuthenticated',
                                         this._onUserAuthenticated.bind(this));
+
+        this._VMcredentials = new VCredentials();
+        this._VMcredentials.connectSignal('UserAuthenticated',
+            this._onUserAuthenticated.bind(this));
+
+        try {
+            if (display >= 100) {
+                this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(VGreeterIface, this);
+                this._dbusImpl.export(Gio.DBus.system, '/org/vmware/viewagent/Greeter');
+                this._dbusImpl.emit_signal('GreeterStarted', GLib.Variant.new('(s)', [display]));
+                log("Greeter started with DISPLAY: " + display);
+            }
+        } catch (e) {
+            log("Error: " + e.message);
+        }
     }
 
     _onUserAuthenticated(proxy, sender, [token]) {
