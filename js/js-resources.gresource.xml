@@ -6,6 +6,7 @@
     <file>gdm/fingerprint.js</file>
     <file>gdm/loginDialog.js</file>
     <file>gdm/oVirt.js</file>
+    <file>gdm/vmCred.js</file>
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
 
