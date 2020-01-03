@@ -3,6 +3,9 @@
 
 const Gio = imports.gi.Gio;
 const Signals = imports.signals;
+const CredManager = imports.gdm.credentialManager;
+
+var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
 
 const OVirtCredentialsIface = `
 <node>
@@ -28,30 +31,14 @@ function OVirtCredentials() {
     return self;
 }
 
-var OVirtCredentialsManager = class {
+var OVirtCredentialsManager = class OVirtCredentialsManager extends CredManager.CredentialManager {
     constructor() {
-        this._token = null;
-
+        super(OVIRT_SERVICE_NAME);
         this._credentials = new OVirtCredentials();
         this._credentials.connectSignal('UserAuthenticated',
-                                        this._onUserAuthenticated.bind(this));
-    }
-
-    _onUserAuthenticated(proxy, sender, [token]) {
-        this._token = token;
-        this.emit('user-authenticated', token);
-    }
-
-    hasToken() {
-        return this._token != null;
-    }
-
-    getToken() {
-        return this._token;
-    }
-
-    resetToken() {
-        this._token = null;
+                                        (proxy, sender, [token]) => {
+                                             this.token = token;
+                                        });
     }
 };
 Signals.addSignalMethods(OVirtCredentialsManager.prototype);
