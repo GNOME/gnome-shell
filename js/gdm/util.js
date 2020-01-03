@@ -8,6 +8,7 @@ const Signals = imports.signals;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const OVirt = imports.gdm.oVirt;
+const VmCred = imports.gdm.vmCred;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
@@ -16,6 +17,7 @@ var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
+var VMWARE_SERVICE_NAME = 'gdm-vmwcred';
 var FADE_ANIMATION_TIME = 160;
 var CLONE_FADE_ANIMATION_TIME = 250;
 
@@ -158,6 +160,14 @@ var ShellUserVerifier = class {
 
         this._oVirtUserAuthenticatedId = this._oVirtCredentialsManager.connect('user-authenticated',
                                                                                this._oVirtUserAuthenticated.bind(this));
+
+        this._vmwareCredentialsManager = VmCred.getVmwareCredentialsManager();
+        this._vmCredUserAuthenticatedId = this._vmwareCredentialsManager.connect('vm-authenticated',
+                                                                                 this._vmCredUserAuthenticated.bind(this));
+
+        this._credentialManagers = {};
+        this._credentialManagers[OVIRT_SERVICE_NAME] = _oVirtCredentialsManager;
+        this._credentialManagers[VMWARE_SERVICE_NAME] = _vmwareCredentialsManager;
     }
 
     begin(userName, hold) {
@@ -217,6 +227,9 @@ var ShellUserVerifier = class {
 
         this._oVirtCredentialsManager.disconnect(this._oVirtUserAuthenticatedId);
         this._oVirtCredentialsManager = null;
+
+        this._vmwareCredentialsManager.disconnect(this._vmCredUserAuthenticatedId);
+        this._vmwareCredentialsManager = null;
     }
 
     answerQuery(serviceName, answer) {
@@ -308,6 +321,12 @@ var ShellUserVerifier = class {
         this._preemptingService = OVIRT_SERVICE_NAME;
         this.emit('ovirt-user-authenticated');
     }
+
+    _vmCredUserAuthenticated(_token) {
+        this._preemptingService = VMWARE_SERVICE_NAME;
+        this.emit('vmware-user-authenticated');
+    }
+
 
     _checkForSmartcard() {
         let smartcardDetected;
@@ -492,9 +511,12 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        if (serviceName == OVIRT_SERVICE_NAME) {
-            // The only question asked by this service is "Token?"
-            this.answerQuery(serviceName, this._oVirtCredentialsManager.getToken());
+        let token = null;
+        if (this._credentialManagers[serviceName])
+            token = this._credentialManagers[serviceName].getToken();
+
+        if (token) {
+            this.answerQuery(serviceName, token);
             return;
         }
 
@@ -564,6 +586,13 @@ var ShellUserVerifier = class {
         // mechanism.
         if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
             this._oVirtCredentialsManager.resetToken();
+            this._preemptingService = null;
+            this._verificationFailed(false);
+            return;
+        }
+
+        if (this.serviceIsForeground(VMWARE_SERVICE_NAME)) {
+            this._vmwareCredentialsManager.resetToken();
             this._preemptingService = null;
             this._verificationFailed(false);
             return;
