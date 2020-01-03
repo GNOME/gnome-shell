@@ -8,6 +8,7 @@ const Signals = imports.signals;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const OVirt = imports.gdm.oVirt;
+const VmCred = imports.gdm.vmCred;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
@@ -160,13 +161,19 @@ var ShellUserVerifier = class {
 
         this._failCounter = 0;
 
-        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
+        this._credentialManagers = {};
+        this._credentialManagers[OVIRT_SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
 
-        if (this._oVirtCredentialsManager.hasToken())
-            this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
+        if (this._credentialManagers[OVIRT_SERVICE_NAME].token) {
+            this._oVirtUserAuthenticated(this._credentialManagers[OVIRT_SERVICE_NAME],
+                                         this._credentialManagers[OVIRT_SERVICE_NAME].token);
+        }
 
-        this._oVirtUserAuthenticatedId = this._oVirtCredentialsManager.connect('user-authenticated',
-                                                                               this._oVirtUserAuthenticated.bind(this));
+        for (let service in this._credentialManagers) {
+            this._credentialManagers[service]._authenticatedSignalId =
+                this._credentialManagers[service].connect('user-authenticated',
+                                                          this._onCredentialManagerAuthenticated.bind(this));
+        }
     }
 
     begin(userName, hold) {
@@ -222,8 +229,11 @@ var ShellUserVerifier = class {
         this._smartcardManager.disconnect(this._smartcardRemovedId);
         this._smartcardManager = null;
 
-        this._oVirtCredentialsManager.disconnect(this._oVirtUserAuthenticatedId);
-        this._oVirtCredentialsManager = null;
+        for (let service in this._credentialManagers) {
+            let credentialManager = this._credentialManagers[service];
+            credentialManager.disconnect(credentialManager._authenticatedSignalId);
+            credentialManager = null;
+        }
     }
 
     answerQuery(serviceName, answer) {
@@ -311,10 +321,11 @@ var ShellUserVerifier = class {
             });
     }
 
-    _oVirtUserAuthenticated(_token) {
-        this._preemptingService = OVIRT_SERVICE_NAME;
-        this.emit('ovirt-user-authenticated');
+    _onCredentialManagerAuthenticated(credentialManager, _token) {
+        this._preemptingService = credentialManager.service;
+        this.emit('credential-manager-authenticated');
     }
+
 
     _checkForSmartcard() {
         let smartcardDetected;
@@ -490,9 +501,12 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        if (serviceName == OVIRT_SERVICE_NAME) {
-            // The only question asked by this service is "Token?"
-            this.answerQuery(serviceName, this._oVirtCredentialsManager.getToken());
+        let token = null;
+        if (this._credentialManagers[serviceName])
+            token = this._credentialManagers[serviceName].token;
+
+        if (token) {
+            this.answerQuery(serviceName, token);
             return;
         }
 
@@ -560,8 +574,10 @@ var ShellUserVerifier = class {
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
         // mechanism.
-        if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
-            this._oVirtCredentialsManager.resetToken();
+        let foregroundCredentialManager = Object.keys(this._credentialManagers).find(service =>
+            this.serviceIsForeground(service));
+        if (foregroundCredentialManager) {
+            this.foregroundCredentialManager.token = null;
             this._preemptingService = null;
             this._verificationFailed(false);
             return;
