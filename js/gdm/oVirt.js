@@ -5,14 +5,14 @@ const Gio = imports.gi.Gio;
 const Signals = imports.signals;
 
 const GLib = imports.gi.GLib;
-const env_display = GLib.getenv('DISPLAY');
-const display = env_display.substr(env_display.indexOf(":")+1);
+const envDisplay = GLib.getenv('DISPLAY');
+const display = envDisplay.substr(envDisplay.indexOf(":") + 1);
 
-const dbus_path = '/org/vmware/viewagent/Credentials/D' + display;
-const dbus_interface = 'org.vmware.viewagent.Credentials.D' + display;
+const dbusPath = '/org/vmware/viewagent/Credentials/D' + display;
+const dbusInterface = 'org.vmware.viewagent.Credentials.D' + display;
 
 const VCredentialsIface = '<node> \
-<interface name="' + dbus_interface + '"> \
+<interface name="' + dbusInterface + '"> \
 <signal name="UserAuthenticated"> \
     <arg type="s" name="token"/> \
 </signal> \
@@ -33,9 +33,9 @@ function VCredentials() {
     var self = new Gio.DBusProxy({ g_connection: Gio.DBus.system,
                                    g_interface_name: VCredentialsInfo.name,
                                    g_interface_info: VCredentialsInfo,
-                                   g_name: dbus_interface,
-                                   g_object_path: dbus_path,
-                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+                                   g_name: dbusInterface,
+                                   g_object_path: dbusPath,
+                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
     self.init(null);
     return self;
 }
@@ -74,7 +74,7 @@ var OVirtCredentialsManager = class {
 
         this._VMcredentials = new VCredentials();
         this._VMcredentials.connectSignal('UserAuthenticated',
-                                        this._onUserAuthenticated.bind(this));
+            this._onUserAuthenticated.bind(this));
 
         try {
             if (display >= 100) {
