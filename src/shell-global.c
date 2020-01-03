@@ -693,7 +693,7 @@ sync_stage_window_focus (ShellGlobal *global)
                              get_current_time_maybe_roundtrip (global));
 
   /* An actor dropped key focus. Focus the default window. */
-  else if (actor == NULL && meta_stage_is_focused (global->meta_display))
+  else if (actor == NULL)
     meta_display_focus_default_window (global->meta_display,
                                        get_current_time_maybe_roundtrip (global));
 }
@@ -1079,7 +1079,7 @@ shell_global_end_modal (ShellGlobal *global,
     clutter_stage_set_key_focus (global->stage, NULL);
 
   /* An actor dropped key focus. Focus the default window. */
-  else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_display))
+  else if (get_key_focused_actor (global))
     meta_display_focus_default_window (global->meta_display,
                                        get_current_time_maybe_roundtrip (global));
 
