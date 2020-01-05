@@ -1,3 +1,22 @@
+3.35.3
+======
+* Add discrete GPU support for NVidia drivers [Bastien; #1810]
+* Fix DND of window previews with tablet devices [Carlos; !897]
+* Update pad OSD actions dynamically on mode changes [Carlos; !898]
+* st: Add dedicated PasswordEntry widget [Umang; !619]
+* Allow stand-alone builds of gnome-extensions tool [Florian; !877]
+* extension-tool: Don't treat missing .js handler as error [Chuck; !905]
+* Disallow top bar menus without top bar [Florian; #2002]
+* Misc. bug fixes and cleanups [Georges, Florian, Robert, Umang; !901,
+  #789937, !909, !910, !911, !913, !916]
+
+Contributors:
+  Michael Catanzaro, Chuck, Carlos Garnacho, Umang Jain, Robert Mader,
+  Florian Müllner, Georges Basile Stavracas Neto, Bastien Nocera
+
+Translators:
+  Fabio Tomat [fur], Fran Dieguez [gl], Jordi Mas [ca], Daniel Mustieles [es]
+
 3.35.2
 ======
 * Fix unredirection after cancelled animations [Florian; #1788]
