@@ -1,3 +1,11 @@
+3.34.3
+======
+* polkitAgent: Fix confirming via keyboard when password-less [Jonas; #2066]
+* Misc. bug fixes and cleanups [Florian; !906]
+
+Contributors:
+  Jonas Dreßler, Florian Müllner
+
 3.34.2
 ======
 * Fix unredirection after cancelled animations [Florian; #1788]
