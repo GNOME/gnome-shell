@@ -247,8 +247,8 @@ function init() {
         origSetEasingDelay.call(this, adjustAnimationTime(msecs));
     };
 
-    Clutter.Actor.prototype.ease = function (props, easingParams) {
-        _easeActor(this, props, easingParams);
+    Clutter.Actor.prototype.ease = function (props) {
+        _easeActor(this, props);
     };
     Clutter.Actor.prototype.ease_property = function (propName, target, params) {
         _easeActorProperty(this, propName, target, params);
