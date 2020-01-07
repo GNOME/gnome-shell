@@ -16,6 +16,9 @@ const IDLE_TIMEOUT = 2 * 60;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
+const BLUR_BRIGHTNESS = 0.55;
+const BLUR_RADIUS = 200;
+
 const SUMMARY_ICON_SIZE = 48;
 
 var NotificationsBox = GObject.registerClass({
@@ -414,6 +417,11 @@ var UnlockDialog = GObject.registerClass({
         this._bgManagers.push(bgManager);
 
         this._backgroundGroup.add_child(widget);
+
+        widget.add_effect(new Shell.BlurEffect({
+            brightness: BLUR_BRIGHTNESS,
+            blur_radius: BLUR_RADIUS,
+        }));
     }
 
     _updateBackgrounds() {
