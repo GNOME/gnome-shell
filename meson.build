@@ -266,4 +266,4 @@ if get_option('gtk_doc')
   subdir('docs/reference')
 endif
 
-meson.add_install_script('meson/meson-postinstall.sh')
+meson.add_install_script('meson/postinstall.py')
