@@ -156,18 +156,19 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _initEntryAndButtons() {
-        this.cancelButton = new St.Button({
-            style_class: 'modal-dialog-button button',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-            reactive: true,
-            can_focus: true,
-            label: _("Cancel"),
-            x_expand: true,
-            x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.END,
-        });
+        this.cancelButton = null;
 
         if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+            this.cancelButton = new St.Button({
+                style_class: 'modal-dialog-button button cancel-button',
+                button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                reactive: true,
+                can_focus: true,
+                x_expand: true,
+                x_align: Clutter.ActorAlign.START,
+                y_align: Clutter.ActorAlign.END,
+                child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
+            });
             let mainBox = new St.BoxLayout({
                 style_class: 'login-dialog-button-box',
                 vertical: false,
@@ -177,14 +178,25 @@ var AuthPrompt = GObject.registerClass({
             mainBox.add_child(this._entry);
             mainBox.add_child(this._defaultButtonWell);
         } else {
+            this.add_child(this._entry);
+            this.add_child(this._capsLockWarningLabel);
+
             this._buttonBox = new St.BoxLayout({
                 style_class: 'login-dialog-button-box',
                 vertical: false,
                 y_align: Clutter.ActorAlign.END,
             });
-            this.add_child(this._entry);
-            this.add_child(this._capsLockWarningLabel);
 
+            this.cancelButton = new St.Button({
+                style_class: 'modal-dialog-button button',
+                button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                reactive: true,
+                can_focus: true,
+                label: _("Cancel"),
+                x_expand: true,
+                x_align: Clutter.ActorAlign.START,
+                y_align: Clutter.ActorAlign.END,
+            });
             this._buttonBox.add_child(this.cancelButton);
             this._buttonBox.add_child(this._defaultButtonWell);
             this.add_child(this._buttonBox);
