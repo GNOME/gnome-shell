@@ -259,6 +259,11 @@ var AuthPrompt = GObject.registerClass({
         }
 
         this._updateEntry(secret);
+
+        //HACK: Mask question (which is "Password:" label here) on UNLOCK_ONLY mode.
+        if (serviceName == 'gdm-password' && this._mode == AuthPromptMode.UNLOCK_ONLY)
+            question = '';
+
         this.setQuestion(question);
 
         if (this.nextButton) {
