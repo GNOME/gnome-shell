@@ -115,12 +115,10 @@ var AuthPrompt = GObject.registerClass({
         ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
 
         this._entry = this._passwordEntry;
-        this.add_child(this._entry);
 
         this._entry.grab_key_focus();
 
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
-        this.add_child(this._capsLockWarningLabel);
 
         this._message = new St.Label({
             opacity: 0,
@@ -131,14 +129,6 @@ var AuthPrompt = GObject.registerClass({
         });
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.add_child(this._message);
-
-        this._buttonBox = new St.BoxLayout({
-            style_class: 'login-dialog-button-box',
-            vertical: false,
-            y_align: Clutter.ActorAlign.END,
-        });
-        this.add_child(this._buttonBox);
 
         this._defaultButtonWell = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
@@ -146,7 +136,7 @@ var AuthPrompt = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        this._initButtons();
+        this._initEntryAndButtons();
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._spinner.opacity = 0;
@@ -165,7 +155,18 @@ var AuthPrompt = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _initButtons() {
+    _initEntryAndButtons() {
+        this.add_child(this._entry);
+        this.add_child(this._capsLockWarningLabel);
+        this.add_child(this._message);
+
+        this._buttonBox = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: false,
+            y_align: Clutter.ActorAlign.END,
+        });
+        this.add_child(this._buttonBox);
+
         this.cancelButton = new St.Button({
             style_class: 'modal-dialog-button button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
