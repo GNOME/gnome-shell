@@ -180,31 +180,32 @@ var AuthPrompt = GObject.registerClass({
         this._buttonBox.add_child(this.cancelButton);
 
         this._buttonBox.add_child(this._defaultButtonWell);
-        this.nextButton = new St.Button({
-            style_class: 'modal-dialog-button button',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-            reactive: true,
-            can_focus: true,
-            label: _("Next"),
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.END,
-        });
-        this.nextButton.connect('clicked', () => this.emit('next'));
-        this.nextButton.add_style_pseudo_class('default');
-        this._buttonBox.add_child(this.nextButton);
+        if (this._mode != AuthPromptMode.UNLOCK_ONLY) {
+            this.nextButton = new St.Button({
+                style_class: 'modal-dialog-button button',
+                button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                reactive: true,
+                can_focus: true,
+                label: _("Next"),
+                x_align: Clutter.ActorAlign.END,
+                y_align: Clutter.ActorAlign.END,
+            });
+            this.nextButton.connect('clicked', () => this.emit('next'));
+            this.nextButton.add_style_pseudo_class('default');
+            this._buttonBox.add_child(this.nextButton);
 
-        this._updateNextButtonSensitivity(this._entry.text.length > 0);
+            this._updateNextButtonSensitivity(this._entry.text.length > 0);
+        }
 
         this._entry.clutter_text.connect('text-changed', () => {
             if (!this._userVerifier.hasPendingMessages)
                 this._fadeOutMessage();
 
-            this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
+            if (this.nextButton)
+                this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
         });
-        this._entry.clutter_text.connect('activate', () => {
-            if (this.nextButton.reactive)
-                this.emit('next');
-        });
+
+        this._entry.clutter_text.connect('activate', () => this.emit('next'));
     }
 
     _updateEntry(secret) {
@@ -232,13 +233,15 @@ var AuthPrompt = GObject.registerClass({
         this._updateEntry(secret);
         this.setQuestion(question);
 
-        if (secret) {
-            if (this._userVerifier.reauthenticating)
-                this.nextButton.label = _("Unlock");
-            else
-                this.nextButton.label = C_("button", "Sign In");
-        } else {
-            this.nextButton.label = _("Next");
+        if (this.nextButton) {
+            if (secret) {
+                if (this._userVerifier.reauthenticating)
+                    this.nextButton.label = _("Unlock");
+                else
+                    this.nextButton.label = C_("button", "Sign In");
+            } else {
+                this.nextButton.label = _("Next");
+            }
         }
 
         this.updateSensitivity(true);
@@ -441,7 +444,8 @@ var AuthPrompt = GObject.registerClass({
     }
 
     updateSensitivity(sensitive) {
-        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
+        if (this.nextButton)
+            this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
     }
@@ -476,7 +480,8 @@ var AuthPrompt = GObject.registerClass({
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
-        this.nextButton.label = _("Next");
+        if (this.nextButton)
+            this.nextButton.label = _("Next");
         this._preemptiveAnswer = null;
 
         if (this._userVerifier)
