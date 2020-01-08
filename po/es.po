@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2019.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-12-26 22:28+0000\n"
-"PO-Revision-Date: 2019-12-30 12:12+0100\n"
+"POT-Creation-Date: 2020-01-08 15:39+0000\n"
+"PO-Revision-Date: 2020-01-08 16:46+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -45,7 +45,7 @@ msgid "Open the application menu"
 msgstr "Abrir el menú de la aplicación"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:210
+#: js/extensionPrefs/main.js:209
 msgid "Shell Extensions"
 msgstr "Extensiones de la Shell"
 
@@ -410,11 +410,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
-#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:526
+#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
 msgid "Something’s gone wrong"
 msgstr "Algo ha fallado"
 
-#: js/extensionPrefs/main.js:110
+#: js/extensionPrefs/main.js:109
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -423,27 +423,27 @@ msgstr ""
 "Ha habido un problema: no se puede mostrar la configuración para esta "
 "extensión. Se recomienda que informe del error a los autores de la extensión."
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:116
 msgid "Technical Details"
 msgstr "Detalles técnicos"
 
-#: js/extensionPrefs/main.js:152
+#: js/extensionPrefs/main.js:151
 msgid "Copy Error"
 msgstr "Copiar error"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:178
 msgid "Homepage"
 msgstr "Página web"
 
-#: js/extensionPrefs/main.js:180
+#: js/extensionPrefs/main.js:179
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/extensionPrefs/main.js:468
+#: js/extensionPrefs/main.js:467
 msgid "No Extensions Installed"
 msgstr "No hay extensiones instaladas"
 
-#: js/extensionPrefs/main.js:478
+#: js/extensionPrefs/main.js:477
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -451,11 +451,11 @@ msgstr ""
 "Las extensiones se puede instalar mediante software o <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:493
+#: js/extensionPrefs/main.js:492
 msgid "Browse in Software"
 msgstr "Buscar en Software"
 
-#: js/extensionPrefs/main.js:533
+#: js/extensionPrefs/main.js:532
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -533,8 +533,9 @@ msgstr "Apagar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-msgid "power off;shutdown;reboot;restart"
-msgstr "apagar;apagado;reinicio;reiniciar"
+#| msgid "power off;shutdown;reboot;restart"
+msgid "power off;shutdown;reboot;restart;halt;stop"
+msgstr "apagar;apagado;reinicio;reiniciar;detener;parar"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -1836,11 +1837,11 @@ msgstr "Pulsación secundaria"
 msgid "Dwell Click"
 msgstr "Pulsación al posarse"
 
-#: js/ui/status/keyboard.js:818
+#: js/ui/status/keyboard.js:825
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: js/ui/status/keyboard.js:840
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
