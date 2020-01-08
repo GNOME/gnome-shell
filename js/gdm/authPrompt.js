@@ -156,17 +156,6 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _initEntryAndButtons() {
-        this.add_child(this._entry);
-        this.add_child(this._capsLockWarningLabel);
-        this.add_child(this._message);
-
-        this._buttonBox = new St.BoxLayout({
-            style_class: 'login-dialog-button-box',
-            vertical: false,
-            y_align: Clutter.ActorAlign.END,
-        });
-        this.add_child(this._buttonBox);
-
         this.cancelButton = new St.Button({
             style_class: 'modal-dialog-button button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
@@ -177,10 +166,35 @@ var AuthPrompt = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.END,
         });
-        this.cancelButton.connect('clicked', () => this.cancel());
-        this._buttonBox.add_child(this.cancelButton);
 
-        this._buttonBox.add_child(this._defaultButtonWell);
+        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+            let mainBox = new St.BoxLayout({
+                style_class: 'login-dialog-button-box',
+                vertical: false,
+            });
+            this.add_child(mainBox);
+            mainBox.add_child(this.cancelButton);
+            mainBox.add_child(this._entry);
+            mainBox.add_child(this._defaultButtonWell);
+        } else {
+            this._buttonBox = new St.BoxLayout({
+                style_class: 'login-dialog-button-box',
+                vertical: false,
+                y_align: Clutter.ActorAlign.END,
+            });
+            this.add_child(this._entry);
+            this.add_child(this._capsLockWarningLabel);
+
+            this._buttonBox.add_child(this.cancelButton);
+            this._buttonBox.add_child(this._defaultButtonWell);
+            this.add_child(this._buttonBox);
+        }
+        this.add_child(this._capsLockWarningLabel);
+
+        this.add_child(this._message);
+
+        this.cancelButton.connect('clicked', () => this.cancel());
+
         if (this._mode != AuthPromptMode.UNLOCK_ONLY) {
             this.nextButton = new St.Button({
                 style_class: 'modal-dialog-button button',
