@@ -210,6 +210,11 @@ var AuthPrompt = GObject.registerClass({
         }
 
         this._updateEntry(secret);
+
+        // HACK: Mask question i.e. "Password:" label here).
+        if (serviceName == 'gdm-password')
+            question = '';
+
         this.setQuestion(question);
 
         this.updateSensitivity(true);
