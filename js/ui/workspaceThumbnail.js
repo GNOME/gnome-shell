@@ -7,7 +7,6 @@ const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Workspace = imports.ui.workspace;
-const WorkspacesView = imports.ui.workspacesView;
 
 // The maximum size of a thumbnail is 1/10 the width and height of the screen
 let MAX_THUMBNAIL_SCALE = 1 / 10.;
@@ -628,7 +627,7 @@ var ThumbnailsBox = GObject.registerClass({
             0, Infinity, 0),
     },
 }, class ThumbnailsBox extends St.Widget {
-    _init() {
+    _init(scrollAdjustment) {
         super._init({ reactive: true,
                       style_class: 'workspace-thumbnails',
                       request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
@@ -658,7 +657,6 @@ var ThumbnailsBox = GObject.registerClass({
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
-        this._indicatorY = 0; // only used when _animatingIndicator is true
 
         this._stateCounts = {};
         for (let key in ThumbnailState)
@@ -701,6 +699,20 @@ var ThumbnailsBox = GObject.registerClass({
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
         this._workareasChangedId = 0;
+
+        this._scrollAdjustment = scrollAdjustment;
+
+        this._scrollAdjustment.connect('notify::value', adj => {
+            let workspaceManager = global.workspace_manager;
+            let activeIndex = workspaceManager.get_active_workspace_index();
+
+            this._animatingIndicator = adj.value !== activeIndex;
+
+            if (!this._animatingIndicator)
+                this._queueUpdateStates();
+
+            this.queue_relayout();
+        });
     }
 
     _updateSwitcherVisibility() {
@@ -901,9 +913,6 @@ var ThumbnailsBox = GObject.registerClass({
     _createThumbnails() {
         let workspaceManager = global.workspace_manager;
 
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          this._activeWorkspaceChanged.bind(this));
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._workspacesChanged.bind(this));
@@ -936,10 +945,6 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0)
             return;
 
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
-        }
         if (this._nWorkspacesNotifyId > 0) {
             let workspaceManager = global.workspace_manager;
             workspaceManager.disconnect(this._nWorkspacesNotifyId);
@@ -1054,21 +1059,6 @@ var ThumbnailsBox = GObject.registerClass({
 
     get scale() {
         return this._scale;
-    }
-
-    // eslint-disable-next-line camelcase
-    set indicator_y(indicatorY) {
-        if (this._indicatorY == indicatorY)
-            return;
-
-        this._indicatorY = indicatorY;
-        this.notify('indicator-y');
-        this.queue_relayout();
-    }
-
-    // eslint-disable-next-line camelcase
-    get indicator_y() {
-        return this._indicatorY;
     }
 
     _setThumbnailState(thumbnail, state) {
@@ -1263,13 +1253,16 @@ var ThumbnailsBox = GObject.registerClass({
         else
             slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
-        let indicatorY1 = this._indicatorY;
-        let indicatorY2;
-        // when not animating, the workspace position overrides this._indicatorY
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let indicatorWorkspace = !this._animatingIndicator ? activeWorkspace : null;
-        let indicatorThemeNode = this._indicator.get_theme_node();
+        let indicatorValue = this._scrollAdjustment.value;
+        let indicatorUpperWs = Math.ceil(indicatorValue);
+        let indicatorLowerWs = Math.floor(indicatorValue);
 
+        let indicatorLowerY1 = 0;
+        let indicatorLowerY2 = 0;
+        let indicatorUpperY1 = 0;
+        let indicatorUpperY2 = 0;
+
+        let indicatorThemeNode = this._indicator.get_theme_node();
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
         let indicatorBottomFullBorder = indicatorThemeNode.get_padding(St.Side.BOTTOM) + indicatorThemeNode.get_border_width(St.Side.BOTTOM);
         let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
@@ -1321,9 +1314,13 @@ var ThumbnailsBox = GObject.registerClass({
             let y2 = Math.round(y + thumbnailHeight);
             let roundedVScale = (y2 - y1) / portholeHeight;
 
-            if (thumbnail.metaWorkspace == indicatorWorkspace) {
-                indicatorY1 = y1;
-                indicatorY2 = y2;
+            if (i === indicatorUpperWs) {
+                indicatorUpperY1 = y1;
+                indicatorUpperY2 = y2;
+            }
+            if (i === indicatorLowerWs) {
+                indicatorLowerY1 = y1;
+                indicatorLowerY2 = y2;
             }
 
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
@@ -1349,29 +1346,15 @@ var ThumbnailsBox = GObject.registerClass({
             childBox.x1 = box.x2 - thumbnailWidth;
             childBox.x2 = box.x2;
         }
+        let indicatorY1 = indicatorLowerY1 +
+            (indicatorUpperY1 - indicatorLowerY1) * (indicatorValue % 1);
+        let indicatorY2 = indicatorLowerY2 +
+            (indicatorUpperY2 - indicatorLowerY2) * (indicatorValue % 1);
+
         childBox.x1 -= indicatorLeftFullBorder;
         childBox.x2 += indicatorRightFullBorder;
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
-        childBox.y2 = (indicatorY2 ? indicatorY2 : indicatorY1 + thumbnailHeight) + indicatorBottomFullBorder;
+        childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
         this._indicator.allocate(childBox, flags);
-    }
-
-    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        let thumbnail = this._thumbnails.find(t => t.metaWorkspace == activeWorkspace);
-
-        this._animatingIndicator = true;
-        let indicatorThemeNode = this._indicator.get_theme_node();
-        let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
-        this.indicator_y = this._indicator.allocation.y1 + indicatorTopFullBorder;
-        this.ease_property('indicator-y', thumbnail.allocation.y1, {
-            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: WorkspacesView.WORKSPACE_SWITCH_TIME,
-            onComplete: () => {
-                this._animatingIndicator = false;
-                this._queueUpdateStates();
-            },
-        });
     }
 });
