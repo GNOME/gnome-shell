@@ -193,7 +193,7 @@
     border-color: transparent;
     background-color: transparent;
     background-image: none;
-    @include draw_shadows(inset 0 1px rgba(255,255,255,1),$blank_edge);
+    @include draw_shadows(inset 0 1px rgba(255,255,255,0),$blank_edge);
     text-shadow: none;
     icon-shadow: none;
   }
