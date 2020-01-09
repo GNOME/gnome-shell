@@ -710,6 +710,15 @@ var AllView = GObject.registerClass({
                     this._eventBlocker.visible = false;
                 });
             }
+
+            // Toggle search entry
+            Main.overview.searchEntry.reactive = !isOpen;
+            Main.overview.searchEntry.ease({
+                opacity: isOpen ? 0 : 255,
+                duration: FOLDER_DIALOG_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
             this._displayingPopup = isOpen;
         });
     }
