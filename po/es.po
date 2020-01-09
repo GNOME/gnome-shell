@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-01-08 15:39+0000\n"
-"PO-Revision-Date: 2020-01-08 16:46+0100\n"
+"POT-Creation-Date: 2020-01-09 01:33+0000\n"
+"PO-Revision-Date: 2020-01-09 14:58+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -533,7 +533,6 @@ msgstr "Apagar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-#| msgid "power off;shutdown;reboot;restart"
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "apagar;apagado;reinicio;reiniciar;detener;parar"
 
@@ -752,48 +751,48 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:947
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
-#: js/ui/appDisplay.js:944
+#: js/ui/appDisplay.js:970
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: js/ui/appDisplay.js:1079
+#: js/ui/appDisplay.js:1105
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: js/ui/appDisplay.js:1086
+#: js/ui/appDisplay.js:1112
 msgid "All"
 msgstr "Todas"
 
-#: js/ui/appDisplay.js:1861
+#: js/ui/appDisplay.js:1887
 msgid "Rename"
 msgstr "Renombrar"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2549 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2575 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2569 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2595 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2580
+#: js/ui/appDisplay.js:2606
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica dedicada"
 
-#: js/ui/appDisplay.js:2608 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2634 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2614
+#: js/ui/appDisplay.js:2640
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2624 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2650 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -1091,6 +1090,7 @@ msgstr "Contraseña de la red de banda ancha móvil"
 
 #: js/ui/components/networkAgent.js:358 js/ui/components/networkAgent.js:710
 #: js/ui/components/networkAgent.js:714 js/ui/components/networkAgent.js:726
+#: js/ui/components/networkAgent.js:730
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Se requiere una contraseña para conectarse a «%s»."
@@ -1098,6 +1098,11 @@ msgstr "Se requiere una contraseña para conectarse a «%s»."
 #: js/ui/components/networkAgent.js:693 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Gestor de la red"
+
+#: js/ui/components/networkAgent.js:729
+#| msgid "Password"
+msgid "VPN password"
+msgstr "Contraseña de la VPN"
 
 #: js/ui/components/polkitAgent.js:42
 msgid "Authentication Required"
@@ -1126,7 +1131,7 @@ msgstr "Eso no ha funcionado. Inténtelo de nuevo."
 msgid "%s is now known as %s"
 msgstr "Ahora %s se llama %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:176
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
 msgid "Windows"
 msgstr "Ventanas"
 
@@ -2255,11 +2260,11 @@ msgstr "Iniciar sesión como otro usuario"
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
-#: js/ui/viewSelector.js:180
+#: js/ui/viewSelector.js:181
 msgid "Applications"
 msgstr "Aplicaciones"
 
-#: js/ui/viewSelector.js:184
+#: js/ui/viewSelector.js:185
 msgid "Search"
 msgstr "Buscar"
 
