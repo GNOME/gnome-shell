@@ -689,5 +689,9 @@ var Overview = class {
 
         return this.dash.showAppsButton;
     }
+
+    get searchEntry() {
+        return this._overview.searchEntry;
+    }
 };
 Signals.addSignalMethods(Overview.prototype);
