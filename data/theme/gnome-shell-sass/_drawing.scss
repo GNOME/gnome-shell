@@ -72,8 +72,8 @@
 // $bg is the background color
 //
   $lbg: lightness($bg)/100%;
-  @if lightness($tc)<50% { @return rgba(255,255,255,1-$lbg/($lbg*1.3)); }
-  @else { @return rgba(0,0,0,$lbg*0.8); }
+  @if lightness($tc)<50% { @return rgba(255,255,255,$lbg/($lbg*1.3)); }
+  @else { @return rgba(0,0,0,1-$lbg*0.8); }
 }
 
 @function draw_button_hilight_color($c) {
