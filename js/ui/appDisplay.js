@@ -24,10 +24,6 @@ var MAX_COLUMNS = 6;
 var MIN_COLUMNS = 4;
 var MIN_ROWS = 4;
 
-var INACTIVE_GRID_OPACITY = 77;
-// This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
-// to not clash with other animations
-var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 240;
 var FOLDER_SUBICON_FRACTION = .4;
 
 var MIN_FREQUENT_APPS_COUNT = 3;
@@ -713,7 +709,6 @@ var AllView = GObject.registerClass({
                     this._eventBlocker.visible = false;
                 });
             }
-            this._updateIconOpacities(isOpen);
             this._displayingPopup = isOpen;
         });
     }
@@ -721,22 +716,6 @@ var AllView = GObject.registerClass({
     _childFocused(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
-    }
-
-    _updateIconOpacities(folderOpen) {
-        for (let icon of this._items.values()) {
-            let opacity;
-            if (folderOpen && !icon.checked)
-                opacity =  INACTIVE_GRID_OPACITY;
-            else
-                opacity = 255;
-
-            icon.ease({
-                opacity,
-                duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
     }
 
     // Called before allocation to calculate dynamic spacing
