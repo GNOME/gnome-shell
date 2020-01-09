@@ -725,6 +725,10 @@ var NetworkAgent = class {
             title = _("Mobile broadband network password");
             body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
+        case 'vpn':
+            title = _("VPN password");
+            body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
+            break;
         default:
             log(`Invalid connection type: ${connectionType}`);
             this._native.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
