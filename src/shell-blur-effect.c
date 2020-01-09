@@ -904,7 +904,7 @@ shell_blur_effect_get_property (GObject    *object,
       break;
 
     case PROP_BRIGHTNESS:
-      g_value_set_int (value, self->brightness);
+      g_value_set_float (value, self->brightness);
       break;
 
     case PROP_MODE:
