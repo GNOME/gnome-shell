@@ -25,7 +25,7 @@ $osd_bg_color: #2e3436;
 $osd_borders_color: rgba(0,0,0, 0.3);
 $osd_outer_borders_color: rgba(255,255,255, 0.1);
 
-$shadow_color: rgba(0,0,0, 0.9);
+$shadow_color: rgba(0,0,0, 0.1);
 
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);
