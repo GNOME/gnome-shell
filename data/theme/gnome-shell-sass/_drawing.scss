@@ -83,10 +83,10 @@
 // $c: base color;
 //
   @if lightness($c)>90% { @return white; }
-  @else if lightness($c)>80% { @return rgba(255,255,255, 0.3); }
+  @else if lightness($c)>80% { @return rgba(255,255,255, 0.7); }
   @else if lightness($c)>50% { @return rgba(255,255,255, 0.5); }
-  @else if lightness($c)>40% { @return rgba(255,255,255, 0.7); }
-  @else { @return rgba(255,255,255, 0.9); }
+  @else if lightness($c)>40% { @return rgba(255,255,255, 0.3); }
+  @else { @return rgba(255,255,255, 0.1); }
 }
 
 @mixin draw_button_text_shadow ($tc:$fg_color, $bg:$bg_color) {
