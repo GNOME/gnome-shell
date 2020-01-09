@@ -218,15 +218,21 @@
     spacing-columns: $base_spacing * 2;
   }
 
-  .weather-forecast-icon {
-    icon-size: $base_icon_size * 2;
-  }
-
   .weather-forecast-time {
     color: darken($fg_color,30%);
     font-feature-settings: "tnum";
     @include fontsize($base_font_size - 2);
     font-weight: normal;
+    padding-top: 0.2em;
+    padding-bottom: 0.4em;
+  }
+
+  .weather-forecast-icon {
+    icon-size: $base_icon_size * 2;
+  }
+
+  .weather-forecast-temp {
+    font-weight: bold;
   }
 }
 

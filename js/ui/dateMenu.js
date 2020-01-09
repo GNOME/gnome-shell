@@ -348,7 +348,14 @@ class WeatherSection extends St.Button {
                 timeOnly: true,
                 ampm: false,
             });
+            const [, tempValue] = fc.get_value_temp(GWeather.TemperatureUnit.DEFAULT);
+            const tempPrefix = tempValue >= 0 ? ' ' : '';
 
+            let time = new St.Label({
+                style_class: 'weather-forecast-time',
+                text: timeStr,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
             let icon = new St.Icon({
                 style_class: 'weather-forecast-icon',
                 icon_name: fc.get_symbolic_icon_name(),
@@ -357,21 +364,16 @@ class WeatherSection extends St.Button {
             });
             let temp = new St.Label({
                 style_class: 'weather-forecast-temp',
-                text: fc.get_temp_summary(),
-                x_align: Clutter.ActorAlign.CENTER,
-            });
-            let time = new St.Label({
-                style_class: 'weather-forecast-time',
-                text: timeStr,
+                text: '%s%.0f°'.format(tempPrefix, tempValue),
                 x_align: Clutter.ActorAlign.CENTER,
             });
 
             temp.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             time.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
-            layout.attach(icon, col, 0, 1, 1);
-            layout.attach(temp, col, 1, 1, 1);
-            layout.attach(time, col, 2, 1, 1);
+            layout.attach(time, col, 0, 1, 1);
+            layout.attach(icon, col, 1, 1, 1);
+            layout.attach(temp, col, 2, 1, 1);
             col++;
         });
     }
