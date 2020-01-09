@@ -66,6 +66,11 @@ class ScreenShieldClock extends St.BoxLayout {
         this.add_child(this._date);
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
+        /*
+         * Extra _wallClock.ref() is required to stop toggle references from
+         * triggering garbage collection every time the clock emits a tick.
+         */
+        this._wallClock.ref();
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._updateClock();
@@ -84,7 +89,11 @@ class ScreenShieldClock extends St.BoxLayout {
     }
 
     _onDestroy() {
-        this._wallClock.run_dispose();
+        if (this._wallClock) {
+            this._wallClock.unref();
+            this._wallClock.run_dispose();
+            this._wallClock = null;
+        }
     }
 });
 

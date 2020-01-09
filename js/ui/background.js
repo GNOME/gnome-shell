@@ -243,6 +243,13 @@ var Background = GObject.registerClass({
         this.isLoaded = false;
 
         this._clock = new GnomeDesktop.WallClock();
+        /*
+         * Extra _clock.ref() is required to stop toggle references from
+         * triggering garbage collection every time the clock emits a tick,
+         * even though that's a notify::clock and not a notify::timezone.
+         * The reference still toggles internally within Glib.
+         */
+        this._clock.ref();
         this._timezoneChangedId = this._clock.connect('notify::timezone',
             () => {
                 if (this._animation)
@@ -278,7 +285,10 @@ var Background = GObject.registerClass({
             this._clock.disconnect(this._timezoneChangedId);
         this._timezoneChangedId = 0;
 
-        this._clock = null;
+        if (this._clock) {
+            this._clock.unref();
+            this._clock = null;
+        }
 
         if (this._prepareForSleepId != 0)
             LoginManager.getLoginManager().disconnect(this._prepareForSleepId);
