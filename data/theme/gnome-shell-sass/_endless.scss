@@ -757,6 +757,13 @@ $success_time_payg_color: #02b842;
           text-align: left;
       }
 
+      .unlock-dialog-payg-account-id {
+          color: $osd_fg_color;
+          font-size: 100%;
+          text-align: left;
+          margin: 12px;
+      }
+
       .unlock-dialog-payg-success {
           color: $success_time_payg_color;
           font-size: 24px;

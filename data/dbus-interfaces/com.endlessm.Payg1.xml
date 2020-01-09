@@ -13,6 +13,7 @@
     <property name="ExpiryTime" type="t" access="read"/>
     <property name="Enabled" type="b" access="read"/>
     <property name="RateLimitEndTime" type="t" access="read"/>
+    <property name="AccountID" type="s" access="read"/>
     <property name="CodeFormat" type="s" access="read"/>
     <property name="CodeFormatPrefix" type="s" access="read"/>
     <property name="CodeFormatSuffix" type="s" access="read"/>

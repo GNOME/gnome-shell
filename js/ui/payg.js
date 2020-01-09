@@ -263,6 +263,8 @@ var PaygUnlockUi = GObject.registerClass({
             this.setErrorMessage(_('Code already used. Please enter a new code.'));
         } else if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.TIMED_OUT)) {
             this.setErrorMessage(_('Time exceeded while verifying the code'));
+        } else if (error.matches(PaygManager.PaygErrorDomain, PaygManager.PaygError.SHOW_ACCOUNT_ID)) {
+            this.setErrorMessage(_('Your Pay As You Go Account ID is: %s').format(Main.paygManager.accountID));
         } else {
             // We don't consider any other error here (and we don't consider DISABLED explicitly,
             // since that should not happen), but still we need to show something to the user.

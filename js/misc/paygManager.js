@@ -41,6 +41,7 @@ var PaygError = {
     CODE_ALREADY_USED: 1,
     TOO_MANY_ATTEMPTS: 2,
     DISABLED: 3,
+    SHOW_ACCOUNT_ID: 4,
 };
 
 const DBusErrorsMapping = {
@@ -48,6 +49,7 @@ const DBusErrorsMapping = {
     CODE_ALREADY_USED: 'com.endlessm.Payg1.Error.CodeAlreadyUsed',
     TOO_MANY_ATTEMPTS: 'com.endlessm.Payg1.Error.TooManyAttempts',
     DISABLED: 'com.endlessm.Payg1.Error.Disabled',
+    SHOW_ACCOUNT_ID: 'com.endlessm.Payg1.Error.DisplayAccountID',
 };
 
 // This list defines the different instants in time where we would
@@ -87,6 +89,7 @@ var PaygManager = GObject.registerClass({
         this._expiryTime = 0;
         this._lastTimeAdded = 0;
         this._rateLimitEndTime = 0;
+        this._accountID = '';
         this._codeFormat = '';
         this._codeFormatRegex = null;
         this._paygNotifier = new Payg.PaygNotifier();
@@ -133,6 +136,7 @@ var PaygManager = GObject.registerClass({
             this._enabled = this._proxy.Enabled;
             this._expiryTime = this._proxy.ExpiryTime;
             this._rateLimitEndTime = this._proxy.RateLimitEndTime;
+            this._accountID = this._proxy.AccountID;
             this._setCodeFormat(this._proxy.CodeFormat || '^[0-9]{8}$');
 
             this._propertiesChangedId = this._proxy.connect('g-properties-changed', this._onPropertiesChanged.bind(this));
@@ -347,6 +351,10 @@ var PaygManager = GObject.registerClass({
 
     get rateLimitEndTime() {
         return this._rateLimitEndTime;
+    }
+
+    get accountID() {
+        return this._accountID;
     }
 
     get isLocked() {
