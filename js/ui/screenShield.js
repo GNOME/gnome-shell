@@ -800,7 +800,6 @@ var ScreenShield = class {
                 duration,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
-                    this._lockScreenGroup.fixed_position_set = false;
                     this._lockScreenState = MessageTray.State.SHOWN;
                 },
             });
@@ -1026,7 +1025,6 @@ var ScreenShield = class {
             });
         } else {
             this._lockScreenGroup.translation_y = 0;
-            this._lockScreenGroup.fixed_position_set = false;
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
@@ -1104,7 +1102,6 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
-        this._lockScreenGroup.fixed_position_set = false;
         this._lockScreenScrollCounter = 0;
 
         if (params.fadeToBlack && params.animateFade) {
