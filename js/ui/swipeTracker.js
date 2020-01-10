@@ -445,8 +445,11 @@ var SwipeTracker = GObject.registerClass({
 
     /**
      * canHandleScrollEvent:
-     * @param {Clutter.Event} event: an event to check
+     * @param {number} event: an event to check
      * @returns {bool} whether the event can be handled by the tracker
+     *
+     * This function can be used to combine swipe gesture and mouse
+     * scrolling.
      */
     canHandleScrollEvent(event) {
         if (!this.enabled || this._scrollGesture === null)
