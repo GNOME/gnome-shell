@@ -314,7 +314,7 @@ class WorkspacesView extends WorkspacesViewBase {
             let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
             let currentY = firstWorkspaceY;
-            let newY = -adj.value / (adj.upper - 1) * workspacesHeight;
+            let newY = -Math.round(adj.value / (adj.upper - 1) * workspacesHeight);
 
             let dy = newY - currentY;
 
@@ -328,7 +328,7 @@ class WorkspacesView extends WorkspacesViewBase {
             let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
 
             let currentX = firstWorkspaceX;
-            let newX = -adj.value / (adj.upper - 1) * workspacesWidth;
+            let newX = -Math.round(adj.value / (adj.upper - 1) * workspacesWidth);
 
             let dx = newX - currentX;
 
@@ -553,6 +553,7 @@ class WorkspacesDisplay extends St.Widget {
     _switchWorkspaceUpdate(tracker, progress) {
         let adjustment = this._scrollAdjustment;
         adjustment.value = progress * adjustment.page_size;
+        log("WTF ", adjustment.page_size);
     }
 
     _switchWorkspaceEnd(tracker, duration, endProgress) {
