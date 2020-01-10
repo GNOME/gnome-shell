@@ -443,11 +443,6 @@ var SwipeTracker = GObject.registerClass({
         }
     }
 
-    /**
-     * canHandleScrollEvent:
-     * @param {Clutter.Event} event: an event to check
-     * @returns {bool} whether the event can be handled by the tracker
-     */
     canHandleScrollEvent(event) {
         if (!this.enabled || this._scrollGesture === null)
             return false;
