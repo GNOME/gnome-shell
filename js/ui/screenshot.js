@@ -65,8 +65,7 @@ var ScreenshotService = class {
     }
 
     *_resolveRelativeFilename(filename) {
-        if (GLib.str_has_suffix(filename, '.png'))
-            filename = filename.substr(0, -4);
+        filename = filename.replace(/\.png$/, '');
 
         let path = [
             GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
