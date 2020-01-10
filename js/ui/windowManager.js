@@ -474,7 +474,7 @@ var TouchpadWorkspaceSwitchAction = class {
         this._dx = 0;
         this._dy = 0;
         this._enabled = true;
-        actor.connect('captured-event', this._handleEvent.bind(this));
+        actor.connect('captured-event::touchpad', this._handleEvent.bind(this));
         this._touchpadSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.peripherals.touchpad' });
     }
 
