@@ -557,14 +557,14 @@ var IconGrid = GObject.registerClass({
 
                 actorClone.opacity = 0;
                 actorClone.set_scale(scaleX, scaleY);
-
-                actorClone.set_position(adjustedSourcePositionX, adjustedSourcePositionY);
+                actorClone.set_translation(
+                    adjustedSourcePositionX, adjustedSourcePositionY, 0);
 
                 let delay = (1 - (actor._distance - minDist) / normalization) * ANIMATION_MAX_DELAY_FOR_ITEM;
                 let [finalX, finalY]  = actor._transformedPosition;
                 movementParams = {
-                    x: finalX,
-                    y: finalY,
+                    translation_x: finalX,
+                    translation_y: finalY,
                     scale_x: 1,
                     scale_y: 1,
                     duration: ANIMATION_TIME_IN,
@@ -585,12 +585,12 @@ var IconGrid = GObject.registerClass({
                 let isLastItem = actor._distance == maxDist;
 
                 let [startX, startY]  = actor._transformedPosition;
-                actorClone.set_position(startX, startY);
+                actorClone.set_translation(startX, startY, 0);
 
                 let delay = (actor._distance - minDist) / normalization * ANIMATION_MAX_DELAY_OUT_FOR_ITEM;
                 movementParams = {
-                    x: adjustedSourcePositionX,
-                    y: adjustedSourcePositionY,
+                    translation_x: adjustedSourcePositionX,
+                    translation_y: adjustedSourcePositionY,
                     scale_x: scaleX,
                     scale_y: scaleY,
                     duration: ANIMATION_TIME_OUT,
