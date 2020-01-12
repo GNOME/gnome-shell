@@ -8,28 +8,14 @@
     padding: $base_padding * 4;
   }
 
-  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
-  .run-dialog-error-box {
-    padding-top: 16px;
-    spacing: 6px;
-  }
-
-  .run-dialog-button-box { padding-top: 1em; }
-  .run-dialog-label {
-    @include fontsize($base_font_size + 1.1);
-    font-weight: normal;
-    color: $fg_color;
-    padding-bottom: .4em;
+  .modal-dialog-linked-button {
+    @extend %bubble_button;
   }
 }
 
 .mount-dialog-subject,
 .end-session-dialog-subject { //this should be a generic header class
   @include fontsize($base_font_size + 3);
-}
-
-.modal-dialog-linked-button {
-  @extend %bubble_button;
 }
 
 /* Message Dialog */
@@ -55,6 +41,23 @@
 .message-dialog-subtitle {
   color: $fg_color;
   font-weight: bold;
+}
+
+/* Run Dialog */
+.run-dialog {
+  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
+  .run-dialog-error-box {
+    padding-top: 16px;
+    spacing: 6px;
+  }
+
+  .run-dialog-button-box { padding-top: 1em; }
+  .run-dialog-label {
+    @include fontsize($base_font_size + 1.1);
+    font-weight: normal;
+    color: $fg_color;
+    padding-bottom: .4em;
+  }
 }
 
 /* ShellMountOperation Dialogs */
