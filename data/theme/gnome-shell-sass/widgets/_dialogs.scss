@@ -108,7 +108,6 @@
 /* Password or Authentication Dialog */
 
 .prompt-dialog {
-  @extend %bubble_panel;
   //this is the width of the entire modal popup
   width: 34em;
 
@@ -188,7 +187,6 @@
 
 /* Audio selection dialog */
 .audio-device-selection-dialog {
-  @extend %bubble_panel;
   spacing: 30px;
 }
 
@@ -227,25 +225,21 @@
 
 /* Access Dialog */
 .access-dialog {
-  @extend %bubble_panel;
   spacing: 30px;
 }
 
 /* Geolocation Dialog */
 .geolocation-dialog {
-  @extend %bubble_panel;
   spacing: 30px;
 }
 
 /* Extension Dialog */
 .extension-dialog {
-  @extend %bubble_panel;
   .message-dialog-title { font-weight: normal; color: $fg_color; }
 }
 
 /* Inhibit-Shortcuts Dialog */
 .inhibit-shortcuts-dialog {
-  @extend %bubble_panel;
   spacing: 30px;
 }
 
