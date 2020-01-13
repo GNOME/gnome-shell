@@ -296,7 +296,7 @@ typedef struct {
 typedef struct {
   StTextureCache *cache;
   StTextureCachePolicy policy;
-  char *key;
+  gchar *key;
 
   guint width;
   guint height;
