@@ -29,11 +29,10 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         else
             this._content = this._getContent();
 
-        let contentParams = {
+        let contentBox = new Dialog.MessageDialogContent({
             title: this._content.title,
-            body: this._content.message,
-        };
-        let contentBox = new Dialog.MessageDialogContent(contentParams);
+            description: this._content.message,
+        });
         this.contentLayout.add_actor(contentBox);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
