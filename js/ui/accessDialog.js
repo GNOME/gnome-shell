@@ -18,7 +18,7 @@ var DialogResponse = {
 
 var AccessDialog = GObject.registerClass(
 class AccessDialog extends ModalDialog.ModalDialog {
-    _init(invocation, handle, title, subtitle, body, options) {
+    _init(invocation, handle, title, description, body, options) {
         super._init({ styleClass: 'access-dialog' });
 
         this._invocation = invocation;
@@ -30,17 +30,17 @@ class AccessDialog extends ModalDialog.ModalDialog {
         for (let option in options)
             options[option] = options[option].deep_unpack();
 
-        this._buildLayout(title, subtitle, body, options);
+        this._buildLayout(title, description, body, options);
     }
 
-    _buildLayout(title, subtitle, body, options) {
+    _buildLayout(title, description, body, options) {
         // No support for non-modal system dialogs, so ignore the option
         // let modal = options['modal'] || true;
         let denyLabel = options['deny_label'] || _("Deny Access");
         let grantLabel = options['grant_label'] || _("Grant Access");
         let choices = options['choices'] || [];
 
-        let contentParams = { title, subtitle, body };
+        let contentParams = { title, description, body };
         let content = new Dialog.MessageDialogContent(contentParams);
         this.contentLayout.add_actor(content);
 
@@ -130,7 +130,7 @@ var AccessDialogDBus = class {
             return;
         }
 
-        let [handle, appId, parentWindow_, title, subtitle, body, options] = params;
+        let [handle, appId, parentWindow_, title, description, body, options] = params;
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
         if (appId && `${appId}.desktop` != this._windowTracker.focus_app.id) {
@@ -141,7 +141,7 @@ var AccessDialogDBus = class {
         }
 
         let dialog = new AccessDialog(invocation, handle, title,
-                                      subtitle, body, options);
+                                      description, body, options);
         dialog.open();
 
         dialog.connect('closed', () => (this._accessDialog = null));

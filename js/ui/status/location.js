@@ -347,7 +347,7 @@ var AppAuthorizer = class {
 var GeolocationDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
-    _init(name, subtitle, reqAccuracyLevel) {
+    _init(name, description, reqAccuracyLevel) {
         super._init({ styleClass: 'geolocation-dialog' });
         this.reqAccuracyLevel = reqAccuracyLevel;
 
@@ -355,7 +355,7 @@ var GeolocationDialog = GObject.registerClass({
         let title = _("Give %s access to your location?").format(name);
         let body = _("Location access can be changed at any time from the privacy settings.");
 
-        let contentParams = { title, subtitle, body };
+        let contentParams = { title, description, body };
         let content = new Dialog.MessageDialogContent(contentParams);
         this.contentLayout.add_actor(content);
 
