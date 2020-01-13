@@ -22,7 +22,7 @@ class KbdA11yDialog extends GObject.Object {
 
     _showKbdA11yDialog(deviceManager, newFlags, whatChanged) {
         let dialog = new ModalDialog.ModalDialog();
-        let title, body;
+        let title, description;
         let key, enabled;
 
         if (whatChanged & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) {
@@ -31,8 +31,8 @@ class KbdA11yDialog extends GObject.Object {
             title = enabled
                 ? _("Slow Keys Turned On")
                 : _("Slow Keys Turned Off");
-            body = _("You just held down the Shift key for 8 seconds. This is the shortcut " +
-                     "for the Slow Keys feature, which affects the way your keyboard works.");
+            description = _('You just held down the Shift key for 8 seconds. This is the shortcut ' +
+                            'for the Slow Keys feature, which affects the way your keyboard works.');
 
         } else  if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
@@ -40,7 +40,7 @@ class KbdA11yDialog extends GObject.Object {
             title = enabled
                 ? _("Sticky Keys Turned On")
                 : _("Sticky Keys Turned Off");
-            body = enabled
+            description = enabled
                 ? _("You just pressed the Shift key 5 times in a row. This is the shortcut " +
                   "for the Sticky Keys feature, which affects the way your keyboard works.")
                 : _("You just pressed two keys at once, or pressed the Shift key 5 times in a row. " +
@@ -49,7 +49,7 @@ class KbdA11yDialog extends GObject.Object {
             return;
         }
 
-        let contentParams = { title, body, styleClass: 'access-dialog' };
+        let contentParams = { title, description, styleClass: 'access-dialog' };
         let content = new Dialog.MessageDialogContent(contentParams);
 
         dialog.contentLayout.add_actor(content);

@@ -156,28 +156,14 @@ var MessageDialogContent = GObject.registerClass({
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
-        'body': GObject.ParamSpec.string(
-            'body', 'body', 'body',
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
-            null),
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
-        this._title = new St.Label();
-        this._description = new St.Label();
-        this._body = new St.Label();
+        this._title = new St.Label({ style_class: 'message-dialog-title' });
+        this._description = new St.Label({ style_class: 'message-dialog-description' });
 
-        ['title', 'description', 'body'].forEach(prop => {
-            this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
-        });
-
-        let textProps = {
-            ellipsize: Pango.EllipsizeMode.NONE,
-            line_wrap: true,
-        };
-        this._description.clutter_text.set(textProps);
-        this._body.clutter_text.set(textProps);
+        this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._description.clutter_text.line_wrap = true;
 
         let defaultParams = {
             style_class: 'message-dialog-content',
@@ -188,7 +174,6 @@ var MessageDialogContent = GObject.registerClass({
 
         this.add_child(this._title);
         this.add_child(this._description);
-        this.add_child(this._body);
     }
 
     get title() {
@@ -199,10 +184,6 @@ var MessageDialogContent = GObject.registerClass({
         return this._description.text;
     }
 
-    get body() {
-        return this._body.text;
-    }
-
     set title(title) {
         this._setLabel(this._title, 'title', title);
     }
@@ -211,19 +192,11 @@ var MessageDialogContent = GObject.registerClass({
         this._setLabel(this._description, 'description', description);
     }
 
-    set body(body) {
-        this._setLabel(this._body, 'body', body);
-    }
-
     _setLabel(label, prop, value) {
         label.set({
             text: value || '',
             visible: value != null,
         });
         this.notify(prop);
-    }
-
-    insertBeforeBody(actor) {
-        this.messageBox.insert_child_below(actor, this._body);
     }
 });
