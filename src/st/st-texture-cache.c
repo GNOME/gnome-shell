@@ -595,44 +595,20 @@ finish_texture_load (AsyncTextureLoadData *data,
     }
 
   g_clear_error (&error);
+  image = pixbuf_to_st_content_image (pixbuf, data->width, data->height,
+                                      data->paint_scale, data->resource_scale,
+                                      &error);
+
+  if (error != NULL)
+    {
+      g_clear_object (&image);
+      async_texture_load_return_error (data, error);
+      return;
+    }
 
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
-    {
-      if (!g_hash_table_lookup_extended (priv->keyed_cache, data->key,
-                                         NULL, (gpointer *) &image))
-        {
-          image = pixbuf_to_st_content_image (pixbuf,
-                                              data->width, data->height,
-                                              data->paint_scale,
-                                              data->resource_scale,
-                                              &error);
-
-          if (error != NULL)
-            {
-              g_clear_object (&image);
-              async_texture_load_return_error (data, error);
-              return;
-            }
-
-          g_hash_table_insert (priv->keyed_cache, g_strdup (data->key),
-                               g_object_ref (image));
-        }
-    }
-  else
-    {
-      image = pixbuf_to_st_content_image (pixbuf,
-                                          data->width, data->height,
-                                          data->paint_scale,
-                                          data->resource_scale,
-                                          &error);
-
-      if (error != NULL)
-        {
-          g_clear_object (&image);
-          async_texture_load_return_error (data, error);
-          return;
-        }
-    }
+    g_hash_table_insert (priv->keyed_cache, g_strdup (data->key),
+                         g_object_ref (image));
 
   for (iter = data->tasks; iter; iter = iter->next)
     {
