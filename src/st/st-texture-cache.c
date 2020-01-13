@@ -567,49 +567,23 @@ finish_texture_load (AsyncTextureLoadData *data,
       goto out;
     }
 
+  image = pixbuf_to_st_content_image (pixbuf, data->width, data->height,
+                                      data->paint_scale, data->resource_scale,
+                                      &error);
+
+  if (error != NULL)
+    {
+      g_clear_object (&image);
+
+      for (iter = data->tasks; iter; iter = iter->next)
+        g_task_return_error (G_TASK (iter->data), error);
+
+      goto out;
+    }
+
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
-    {
-      if (!g_hash_table_lookup_extended (priv->keyed_cache, data->key,
-                                         NULL, (gpointer)&image))
-        {
-          image = pixbuf_to_st_content_image (pixbuf,
-                                              data->width, data->height,
-                                              data->paint_scale,
-                                              data->resource_scale,
-                                              &error);
-
-          if (error != NULL)
-            {
-              g_clear_object (&image);
-
-              for (iter = data->tasks; iter; iter = iter->next)
-                g_task_return_error (G_TASK (iter->data), error);
-
-              goto out;
-            }
-
-          g_hash_table_insert (priv->keyed_cache, g_strdup (data->key),
-                               g_object_ref (image));
-        }
-    }
-  else
-    {
-      image = pixbuf_to_st_content_image (pixbuf,
-                                          data->width, data->height,
-                                          data->paint_scale,
-                                          data->resource_scale,
-                                          &error);
-
-      if (error != NULL)
-        {
-          g_clear_object (&image);
-
-          for (iter = data->tasks; iter; iter = iter->next)
-            g_task_return_error (G_TASK (iter->data), error);
-
-          goto out;
-        }
-    }
+    g_hash_table_insert (priv->keyed_cache, g_strdup (data->key),
+                         g_object_ref (image));
 
   for (iter = data->tasks; iter; iter = iter->next)
     {
