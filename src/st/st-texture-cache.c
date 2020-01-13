@@ -693,10 +693,7 @@ load_texture_async (StTextureCache       *cache,
       StIconColors *colors = data->colors;
       if (colors)
         {
-          GdkRGBA foreground_color;
-          GdkRGBA success_color;
-          GdkRGBA warning_color;
-          GdkRGBA error_color;
+          GdkRGBA foreground_color, success_color, warning_color, error_color;
 
           rgba_from_clutter (&foreground_color, &colors->foreground);
           rgba_from_clutter (&success_color, &colors->success);
