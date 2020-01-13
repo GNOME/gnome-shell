@@ -890,6 +890,13 @@ request_texture_from_cache (StTextureCache       *cache,
        * of the pending request and return. */
       pending_request->tasks = g_slist_prepend (pending_request->tasks,
                                                 g_object_ref (task));
+
+      /* Make sure the policy of the pending request is updated if a newer
+       * one wants the image to be stored. */
+      if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER &&
+          pending_request->policy != policy)
+        pending_request->policy = policy;
+
       return;
     }
 
