@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { AccountsService, Clutter, Gio, GLib,
+const { AccountsService, Clutter, GLib,
         GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
@@ -38,10 +38,9 @@ var AuthenticationDialog = GObject.registerClass({
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
 
-        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        let content = new Dialog.MessageDialogContent({ title, body });
         this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {
