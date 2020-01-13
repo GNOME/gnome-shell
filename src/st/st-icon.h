@@ -56,19 +56,25 @@ struct _StIcon {
 
 ClutterActor* st_icon_new (void);
 
+GIcon       *st_icon_get_gicon (StIcon *icon);
+void         st_icon_set_gicon (StIcon *icon,
+                                GIcon  *gicon);
 
+GIcon       *st_icon_get_fallback_gicon (StIcon *icon);
+void         st_icon_set_fallback_gicon (StIcon *icon,
+                                         GIcon  *fallback_gicon);
 
-const gchar *st_icon_get_icon_name (StIcon *icon);
-void         st_icon_set_icon_name (StIcon *icon, const gchar *icon_name);
+const gchar *st_icon_get_icon_name (StIcon      *icon);
+void         st_icon_set_icon_name (StIcon      *icon,
+                                    const gchar *icon_name);
+
+const gchar *st_icon_get_fallback_icon_name (StIcon      *icon);
+void         st_icon_set_fallback_icon_name (StIcon      *icon,
+                                             const gchar *fallback_icon_name);
 
 gint         st_icon_get_icon_size (StIcon *icon);
-void         st_icon_set_icon_size (StIcon *icon, gint size);
-
-void         st_icon_set_gicon (StIcon *icon, GIcon *gicon);
-GIcon       *st_icon_get_gicon (StIcon *icon);
-
-void         st_icon_set_fallback_icon_name (StIcon *icon, const gchar *icon_name);
-const gchar *st_icon_get_fallback_icon_name (StIcon *icon);
+void         st_icon_set_icon_size (StIcon *icon,
+                                    gint    size);
 
 G_END_DECLS
 
