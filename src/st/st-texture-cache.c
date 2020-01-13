@@ -292,7 +292,7 @@ typedef struct {
 } Dimensions;
 
 /* This struct corresponds to a request for an texture.
- * It's creasted when something needs a new texture,
+ * It's created when something needs a new texture,
  * and destroyed when the texture data is loaded. */
 typedef struct {
   StTextureCache *cache;
