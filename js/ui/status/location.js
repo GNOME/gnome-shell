@@ -351,13 +351,11 @@ var GeolocationDialog = GObject.registerClass({
         super._init({ styleClass: 'geolocation-dialog' });
         this.reqAccuracyLevel = reqAccuracyLevel;
 
-        let icon = new Gio.ThemedIcon({ name: 'find-location-symbolic' });
-
         /* Translators: %s is an application name */
         let title = _("Give %s access to your location?").format(name);
         let body = _("Location access can be changed at any time from the privacy settings.");
 
-        let contentParams = { icon, title, subtitle, body };
+        let contentParams = { title, subtitle, body };
         let content = new Dialog.MessageDialogContent(contentParams);
         this.contentLayout.add_actor(content);
 
