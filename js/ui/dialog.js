@@ -151,8 +151,8 @@ var MessageDialogContent = GObject.registerClass({
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
-        'subtitle': GObject.ParamSpec.string(
-            'subtitle', 'subtitle', 'subtitle',
+        'description': GObject.ParamSpec.string(
+            'description', 'description', 'description',
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
@@ -165,10 +165,10 @@ var MessageDialogContent = GObject.registerClass({
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
         this._title = new St.Label();
-        this._subtitle = new St.Label();
+        this._description = new St.Label();
         this._body = new St.Label();
 
-        ['title', 'subtitle', 'body'].forEach(prop => {
+        ['title', 'description', 'body'].forEach(prop => {
             this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
         });
 
@@ -176,7 +176,7 @@ var MessageDialogContent = GObject.registerClass({
             ellipsize: Pango.EllipsizeMode.NONE,
             line_wrap: true,
         };
-        this._subtitle.clutter_text.set(textProps);
+        this._description.clutter_text.set(textProps);
         this._body.clutter_text.set(textProps);
 
         let defaultParams = {
@@ -187,7 +187,7 @@ var MessageDialogContent = GObject.registerClass({
         super._init(Object.assign(defaultParams, params));
 
         this.add_child(this._title);
-        this.add_child(this._subtitle);
+        this.add_child(this._description);
         this.add_child(this._body);
     }
 
@@ -195,8 +195,8 @@ var MessageDialogContent = GObject.registerClass({
         return this._title.text;
     }
 
-    get subtitle() {
-        return this._subtitle.text;
+    get description() {
+        return this._description.text;
     }
 
     get body() {
@@ -207,8 +207,8 @@ var MessageDialogContent = GObject.registerClass({
         this._setLabel(this._title, 'title', title);
     }
 
-    set subtitle(subtitle) {
-        this._setLabel(this._subtitle, 'subtitle', subtitle);
+    set description(description) {
+        this._setLabel(this._description, 'description', description);
     }
 
     set body(body) {
