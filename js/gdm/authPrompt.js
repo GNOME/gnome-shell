@@ -160,6 +160,7 @@ var AuthPrompt = GObject.registerClass({
         ShellEntry.addContextMenu(this._textEntry, { actionMode: Shell.ActionMode.NONE });
 
         this._passwordEntry = new St.PasswordEntry(entryParams);
+        this._passwordEntry.hint_text = "Enter Password…";
         ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
 
         this._entry = this._passwordEntry;
