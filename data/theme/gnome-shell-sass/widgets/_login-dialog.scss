@@ -68,6 +68,17 @@
       }
     }
   }
+
+  .cancel-button {
+    padding: 0;
+    border-radius: 99px;
+    width: $base_icon_size * 2;
+    height: $base_icon_size * 2;
+    border-color: transparentize($bg_color,0.7);
+    background-color: transparentize($bg_color,0.7);
+
+    StIcon { icon-size: $base_icon_size; }
+  }
 }
 
 .login-dialog-logo-bin { padding: 24px 0px; }
