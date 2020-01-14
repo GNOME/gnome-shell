@@ -5,20 +5,22 @@
 # Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
 # Wibiharto <wibinem@yahoo.com>, 2011.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019.
+# Sucipto <sucipto@pm.me>, 2020.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-11-05 13:12+0000\n"
-"PO-Revision-Date: 2019-11-10 09:33+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2020-01-09 01:33+0000\n"
+"PO-Revision-Date: 2020-01-13 17:07+0700\n"
+"Last-Translator: Sucipto <sucipto@pm.me>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural= n!=1;\n"
-"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: ‪nplurals=2; plural= n!=1;\n"
+"X-Generator: Gtranslator 3.34.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -47,7 +49,7 @@ msgid "Open the application menu"
 msgstr "Buka menu aplikasi"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:210
+#: js/extensionPrefs/main.js:209
 msgid "Shell Extensions"
 msgstr "Ekstensi Shell"
 
@@ -403,11 +405,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Log Masuk Jaringan"
 
-#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:534
+#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
 msgid "Something’s gone wrong"
 msgstr "Ada yang tidak beres"
 
-#: js/extensionPrefs/main.js:110
+#: js/extensionPrefs/main.js:109
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -417,27 +419,27 @@ msgstr ""
 "tidak dapat ditampilkan. Kami menyarankan Anda melaporkan masalah ini kepada "
 "penulis ekstensi."
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:116
 msgid "Technical Details"
 msgstr "Detail Teknis"
 
-#: js/extensionPrefs/main.js:152
+#: js/extensionPrefs/main.js:151
 msgid "Copy Error"
 msgstr "Salin Galat"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:178
 msgid "Homepage"
 msgstr "Halaman Web"
 
-#: js/extensionPrefs/main.js:180
+#: js/extensionPrefs/main.js:179
 msgid "Visit extension homepage"
 msgstr "Kunjungi halaman web ekstensi"
 
-#: js/extensionPrefs/main.js:476
+#: js/extensionPrefs/main.js:467
 msgid "No Extensions Installed"
 msgstr "Tak Ada Ekstensi Terpasang"
 
-#: js/extensionPrefs/main.js:486
+#: js/extensionPrefs/main.js:477
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -445,11 +447,11 @@ msgstr ""
 "Ekstensi dapat dipasang melalui Perangkat Lunak atau <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:501
+#: js/extensionPrefs/main.js:492
 msgid "Browse in Software"
 msgstr "Ramban di Perangkat Lunak"
 
-#: js/extensionPrefs/main.js:541
+#: js/extensionPrefs/main.js:532
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -457,24 +459,24 @@ msgstr ""
 "Kami sangat menyesal, tetapi tidak mungkin mendapatkan daftar ekstensi yang "
 "dipasang. Pastikan Anda masuk ke GNOME dan coba lagi."
 
-#: js/gdm/authPrompt.js:163 js/ui/audioDeviceSelection.js:56
-#: js/ui/components/networkAgent.js:119 js/ui/components/polkitAgent.js:138
+#: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:130 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:395 js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:402 js/ui/shellMountOperation.js:412
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Batal"
 
-#: js/gdm/authPrompt.js:177 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:457
+#: js/gdm/authPrompt.js:188 js/gdm/authPrompt.js:241 js/gdm/authPrompt.js:476
 msgid "Next"
 msgstr "Selanjutnya"
 
-#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:399
-#: js/ui/unlockDialog.js:45
+#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:406
+#: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Buka Kunci"
 
-#: js/gdm/authPrompt.js:216
+#: js/gdm/authPrompt.js:239
 msgctxt "button"
 msgid "Sign In"
 msgstr "Masuk"
@@ -489,7 +491,7 @@ msgstr "Tak masuk daftar?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:896
+#: js/gdm/loginDialog.js:895
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
@@ -497,12 +499,12 @@ msgstr "(cth., pengguna dari %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:901 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
+#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:280 js/ui/components/networkAgent.js:298
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: js/gdm/loginDialog.js:1236
+#: js/gdm/loginDialog.js:1230
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -527,8 +529,8 @@ msgstr "Matikan"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-msgid "power off;shutdown;reboot;restart"
-msgstr "matikan;matikan;nyalakan ulang;nyalakan ulang"
+msgid "power off;shutdown;reboot;restart;halt;stop"
+msgstr "matikan;nyalakan ulang;berhenti"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -591,59 +593,59 @@ msgstr "Perintah tidak ditemukan"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:149
+#: js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Tak dapat mengurai perintah:"
 
-#: js/misc/util.js:157
+#: js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Eksekusi \"%s\" gagal:"
 
-#: js/misc/util.js:174
+#: js/misc/util.js:177
 msgid "Just now"
 msgstr "Baru saja"
 
-#: js/misc/util.js:176
+#: js/misc/util.js:179
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d menit yang lalu"
 msgstr[1] "%d menit yang lalu"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:183
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d jam yang lalu"
 msgstr[1] "%d jam yang lalu"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:187
 msgid "Yesterday"
 msgstr "Kemarin"
 
-#: js/misc/util.js:184
+#: js/misc/util.js:189
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d hari yang lalu"
 msgstr[1] "%d hari yang lalu"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d minggu yang lalu"
 msgstr[1] "%d minggu yang lalu"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:197
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d bulan yang lalu"
 msgstr[1] "%d bulan yang lalu"
 
-#: js/misc/util.js:192
+#: js/misc/util.js:200
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -651,20 +653,20 @@ msgstr[0] "%d tahun yang lalu"
 msgstr[1] "%d tahun yang lalu"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:222
+#: js/misc/util.js:233
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:228
+#: js/misc/util.js:239
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Kemarin, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:234
+#: js/misc/util.js:245
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -672,7 +674,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:240
+#: js/misc/util.js:251
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%d %B, %H∶%M"
@@ -680,26 +682,28 @@ msgstr "%d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:246
+#: js/misc/util.js:257
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:251
+#: js/misc/util.js:262
 msgid "%l∶%M %p"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:257
+#: js/misc/util.js:268
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Kemarin, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:263
+#: js/misc/util.js:274
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -707,7 +711,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:269
+#: js/misc/util.js:280
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
@@ -715,7 +719,7 @@ msgstr "%d %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:275
+#: js/misc/util.js:286
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
@@ -744,57 +748,57 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:878
+#: js/ui/appDisplay.js:947
 msgid "Unnamed Folder"
 msgstr "Folder Tanpa Nama"
 
-#: js/ui/appDisplay.js:899
+#: js/ui/appDisplay.js:970
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: js/ui/appDisplay.js:1030
+#: js/ui/appDisplay.js:1105
 msgid "Frequent"
 msgstr "Sering"
 
-#: js/ui/appDisplay.js:1037
+#: js/ui/appDisplay.js:1112
 msgid "All"
 msgstr "Semua"
 
-#: js/ui/appDisplay.js:1809
+#: js/ui/appDisplay.js:1887
 msgid "Rename"
 msgstr "Ubah Nama"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2487 js/ui/panel.js:76
+#: js/ui/appDisplay.js:2575 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:2506 js/ui/panel.js:83
+#: js/ui/appDisplay.js:2595 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:2518
+#: js/ui/appDisplay.js:2606
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:2547 js/ui/dash.js:240
+#: js/ui/appDisplay.js:2634 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:2553
+#: js/ui/appDisplay.js:2640
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:2563 js/ui/panel.js:94
+#: js/ui/appDisplay.js:2650 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
-#: js/ui/appFavorites.js:151
+#: js/ui/appFavorites.js:152
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s telah ditambahkan ke favorit Anda."
 
-#: js/ui/appFavorites.js:184
+#: js/ui/appFavorites.js:185
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
@@ -807,15 +811,15 @@ msgstr "Pilih Perangkat Audio"
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
-#: js/ui/audioDeviceSelection.js:63
+#: js/ui/audioDeviceSelection.js:64
 msgid "Headphones"
 msgstr "Headphone"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:66
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:248
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -832,7 +836,7 @@ msgid "Settings"
 msgstr "Pengaturan"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:41
+#: js/ui/calendar.js:40
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -842,43 +846,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:69
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:71
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:73
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:75
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:77
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:79
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:81
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -889,7 +893,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:332
+#: js/ui/calendar.js:370
 msgid "%OB"
 msgstr "%OB"
 
@@ -902,55 +906,55 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:342
+#: js/ui/calendar.js:380
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:401
+#: js/ui/calendar.js:439
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
 
-#: js/ui/calendar.js:416
+#: js/ui/calendar.js:454
 msgid "Next month"
 msgstr "Bulan selanjutnya"
 
-#: js/ui/calendar.js:566
+#: js/ui/calendar.js:604
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:622
+#: js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Minggu %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:691
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
-#: js/ui/calendar.js:825
+#: js/ui/calendar.js:867
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d %B"
 
-#: js/ui/calendar.js:829
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: js/ui/calendar.js:1054
+#: js/ui/calendar.js:1097
 msgid "No Notifications"
 msgstr "Tak Ada Pemberitahuan"
 
-#: js/ui/calendar.js:1057
+#: js/ui/calendar.js:1100
 msgid "No Events"
 msgstr "Tak Ada Kejadian"
 
-#: js/ui/calendar.js:1087
+#: js/ui/calendar.js:1132
 msgid "Clear"
 msgstr "Bersihkan"
 
@@ -976,19 +980,19 @@ msgstr "Tutup Paksa"
 msgid "Wait"
 msgstr "Tunggu"
 
-#: js/ui/components/automountManager.js:87
+#: js/ui/components/automountManager.js:86
 msgid "External drive connected"
 msgstr "Drive eksternal tersambung"
 
-#: js/ui/components/automountManager.js:99
+#: js/ui/components/automountManager.js:98
 msgid "External drive disconnected"
 msgstr "Drive eksternal terputus"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
 msgstr "Tak bisa membuka kunci volume"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Versi udisks yang dipasang tidak mendukung pengaturan PIM"
 
@@ -997,55 +1001,55 @@ msgstr "Versi udisks yang dipasang tidak mendukung pengaturan PIM"
 msgid "Open with %s"
 msgstr "Buka dengan %s"
 
-#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:257
+#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:279
 msgid "Password:"
 msgstr "Sandi:"
 
-#: js/ui/components/keyring.js:102
+#: js/ui/components/keyring.js:105
 msgid "Type again:"
 msgstr "Ketik lagi:"
 
-#: js/ui/components/networkAgent.js:105
+#: js/ui/components/networkAgent.js:116
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
 "router Anda."
 
-#: js/ui/components/networkAgent.js:113 js/ui/status/network.js:222
-#: js/ui/status/network.js:313 js/ui/status/network.js:913
+#: js/ui/components/networkAgent.js:124 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:913
 msgid "Connect"
 msgstr "Sambung"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:226
-#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:267
-#: js/ui/components/networkAgent.js:287 js/ui/components/networkAgent.js:297
+#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:237
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:282
+#: js/ui/components/networkAgent.js:302 js/ui/components/networkAgent.js:312
 msgid "Password: "
 msgstr "Sandi: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:219
+#: js/ui/components/networkAgent.js:230
 msgid "Key: "
 msgstr "Tombol: "
 
-#: js/ui/components/networkAgent.js:251 js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:288
 msgid "Private key password: "
 msgstr "Sandi kunci privat: "
 
-#: js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:286
 msgid "Identity: "
 msgstr "Identitas: "
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:300
 msgid "Service: "
 msgstr "Layanan: "
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
 msgid "Authentication required by wireless network"
 msgstr "Autentikasi diperlukan oleh jaringan nirkabel"
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1054,53 +1058,58 @@ msgstr ""
 "Sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s"
 "\"."
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:709
 msgid "Wired 802.1X authentication"
 msgstr "Autentikasi 802.1X kabel"
 
-#: js/ui/components/networkAgent.js:321
+#: js/ui/components/networkAgent.js:336
 msgid "Network name: "
 msgstr "Nama jaringan: "
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:698
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:713
 msgid "DSL authentication"
 msgstr "Autentikasi DSL"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:703
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
 msgid "PIN code required"
 msgstr "Perlu kode PIN"
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:719
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:350
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:725
 msgid "Mobile broadband network password"
 msgstr "Sandi jaringan data seluler"
 
-#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:695
-#: js/ui/components/networkAgent.js:699 js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:358 js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:714 js/ui/components/networkAgent.js:726
+#: js/ui/components/networkAgent.js:730
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:678 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:693 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
-#: js/ui/components/polkitAgent.js:36
+#: js/ui/components/networkAgent.js:729
+msgid "VPN password"
+msgstr "Sandi VPN"
+
+#: js/ui/components/polkitAgent.js:42
 msgid "Authentication Required"
 msgstr "Diperlukan Autentikasi"
 
-#: js/ui/components/polkitAgent.js:64
+#: js/ui/components/polkitAgent.js:82
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:141
+#: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
 msgstr "Autentikasi"
 
@@ -1108,13 +1117,13 @@ msgstr "Autentikasi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:379
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:386
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:784
+#: js/ui/components/telepathyClient.js:787
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s sekarang dikenal sebagai %s"
@@ -1123,13 +1132,13 @@ msgstr "%s sekarang dikenal sebagai %s"
 msgid "Windows"
 msgstr "Jendela"
 
-#: js/ui/dash.js:201 js/ui/dash.js:242
+#: js/ui/dash.js:200 js/ui/dash.js:241
 msgid "Show Applications"
 msgstr "Tampilkan Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:395
+#: js/ui/dash.js:394
 msgid "Dash"
 msgstr "Dash"
 
@@ -1158,23 +1167,23 @@ msgstr "Tambah jam dunia…"
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:273
+#: js/ui/dateMenu.js:276
 msgid "Weather"
 msgstr "Cuaca"
 
-#: js/ui/dateMenu.js:368
+#: js/ui/dateMenu.js:389
 msgid "Select a location…"
 msgstr "Pilih lokasi…"
 
-#: js/ui/dateMenu.js:376
+#: js/ui/dateMenu.js:402
 msgid "Loading…"
 msgstr "Memuat…"
 
-#: js/ui/dateMenu.js:386
+#: js/ui/dateMenu.js:412
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:388
+#: js/ui/dateMenu.js:414
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
@@ -1351,11 +1360,11 @@ msgstr "Aplikasi ingin mencegah pintasan"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Anda dapat memulihkan pintasan dengan menekan %s."
 
-#: js/ui/inhibitShortcutsDialog.js:95
+#: js/ui/inhibitShortcutsDialog.js:96
 msgid "Deny"
 msgstr "Tolak"
 
-#: js/ui/inhibitShortcutsDialog.js:102
+#: js/ui/inhibitShortcutsDialog.js:103
 msgid "Allow"
 msgstr "Izinkan"
 
@@ -1406,13 +1415,13 @@ msgid "Leave On"
 msgstr "Biarkan Menyala"
 
 #: js/ui/kbdA11yDialog.js:58 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:1286
+#: js/ui/status/network.js:1285
 msgid "Turn On"
 msgstr "Nyalakan"
 
 #: js/ui/kbdA11yDialog.js:66 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:131 js/ui/status/network.js:314
-#: js/ui/status/network.js:1286 js/ui/status/network.js:1398
+#: js/ui/status/network.js:131 js/ui/status/network.js:315
+#: js/ui/status/network.js:1285 js/ui/status/network.js:1397
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1426,51 +1435,51 @@ msgstr "Biarkan Mati"
 msgid "Region & Language Settings"
 msgstr "Pengaturan Wilayah & Bahasa"
 
-#: js/ui/lookingGlass.js:647
+#: js/ui/lookingGlass.js:659
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:702
+#: js/ui/lookingGlass.js:714
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s tidak menampilkan galat apa pun."
 
-#: js/ui/lookingGlass.js:708
+#: js/ui/lookingGlass.js:720
 msgid "Hide Errors"
 msgstr "Sembunyikan Galat"
 
-#: js/ui/lookingGlass.js:712 js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
 msgid "Show Errors"
 msgstr "Tampilkan Galat"
 
-#: js/ui/lookingGlass.js:721
+#: js/ui/lookingGlass.js:733
 msgid "Enabled"
 msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:724 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:738
 msgid "Error"
 msgstr "Galat"
 
-#: js/ui/lookingGlass.js:728
+#: js/ui/lookingGlass.js:740
 msgid "Out of date"
 msgstr "Kadaluarsa"
 
-#: js/ui/lookingGlass.js:730
+#: js/ui/lookingGlass.js:742
 msgid "Downloading"
 msgstr "Mengunduh"
 
-#: js/ui/lookingGlass.js:759
+#: js/ui/lookingGlass.js:771
 msgid "View Source"
 msgstr "Tilik Sumber"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:780
 msgid "Web Page"
 msgstr "Halaman Web"
 
@@ -1498,11 +1507,11 @@ msgstr "Penguncian Layar memerlukan manajer tampilan GNOME."
 msgid "System Information"
 msgstr "Informasi Sistem"
 
-#: js/ui/mpris.js:198
+#: js/ui/mpris.js:199
 msgid "Unknown artist"
 msgstr "Artis tak dikenal"
 
-#: js/ui/mpris.js:207
+#: js/ui/mpris.js:209
 msgid "Unknown title"
 msgstr "Judul tak dikenal"
 
@@ -1548,42 +1557,42 @@ msgstr "Tetapkan keystroke"
 msgid "Done"
 msgstr "Selesai"
 
-#: js/ui/padOsd.js:739
+#: js/ui/padOsd.js:747
 msgid "Edit…"
 msgstr "Sunting…"
 
-#: js/ui/padOsd.js:781 js/ui/padOsd.js:887
+#: js/ui/padOsd.js:789 js/ui/padOsd.js:912
 msgid "None"
 msgstr "Nihil"
 
-#: js/ui/padOsd.js:840
+#: js/ui/padOsd.js:865
 msgid "Press a button to configure"
 msgstr "Tekan tombol untuk mengkonfigurasi"
 
-#: js/ui/padOsd.js:841
+#: js/ui/padOsd.js:866
 msgid "Press Esc to exit"
 msgstr "Tekan Esc untuk keluar"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:869
 msgid "Press any key to exit"
 msgstr "Tekan tombol apa saja untuk keluar"
 
-#: js/ui/panel.js:110
+#: js/ui/panel.js:109
 msgid "Quit"
 msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:431
+#: js/ui/panel.js:434
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: js/ui/panel.js:702
+#: js/ui/panel.js:707
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:818
+#: js/ui/panel.js:820
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1595,11 +1604,11 @@ msgstr "Ketikkan Perintah"
 msgid "Close"
 msgstr "Tutup"
 
-#: js/ui/runDialog.js:260
+#: js/ui/runDialog.js:259
 msgid "Restart is not available on Wayland"
 msgstr "Memulai ulang tidak tersedia di Wayland"
 
-#: js/ui/runDialog.js:265
+#: js/ui/runDialog.js:264
 msgid "Restarting…"
 msgstr "Memulai ulang…"
 
@@ -1609,25 +1618,25 @@ msgstr "Memulai ulang…"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: js/ui/screenShield.js:140
+#: js/ui/screenShield.js:139
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d pesan baru"
 msgstr[1] "%d pesan baru"
 
-#: js/ui/screenShield.js:142
+#: js/ui/screenShield.js:141
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 msgstr[1] "%d pemberitahuan baru"
 
-#: js/ui/screenShield.js:456 js/ui/status/system.js:93
+#: js/ui/screenShield.js:454 js/ui/status/system.js:93
 msgid "Lock"
 msgstr "Kunci"
 
-#: js/ui/screenShield.js:720
+#: js/ui/screenShield.js:717
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
@@ -1638,23 +1647,23 @@ msgstr "GNOME perlu mengunci layar"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:834 js/ui/screenShield.js:1306
+#: js/ui/screenShield.js:831 js/ui/screenShield.js:1303
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: js/ui/screenShield.js:835 js/ui/screenShield.js:1307
+#: js/ui/screenShield.js:832 js/ui/screenShield.js:1304
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: js/ui/search.js:689
+#: js/ui/search.js:694
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: js/ui/search.js:691
+#: js/ui/search.js:696
 msgid "No results."
 msgstr "Tak ada yang cocok."
 
-#: js/ui/search.js:818
+#: js/ui/search.js:822
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1669,13 +1678,17 @@ msgstr "Salin"
 msgid "Paste"
 msgstr "Tempel"
 
-#: js/ui/shellEntry.js:91
+#: js/ui/shellEntry.js:73
 msgid "Show Text"
 msgstr "Tampilkan Teks"
 
-#: js/ui/shellEntry.js:93
+#: js/ui/shellEntry.js:75
 msgid "Hide Text"
 msgstr "Sembunyikan Teks"
+
+#: js/ui/shellEntry.js:161
+msgid "Caps lock is on."
+msgstr "Caps lock menyala."
 
 #: js/ui/shellMountOperation.js:308
 msgid "Hidden Volume"
@@ -1702,32 +1715,32 @@ msgstr ""
 msgid "PIM Number"
 msgstr "Nomor PIM"
 
-#: js/ui/shellMountOperation.js:345
+#: js/ui/shellMountOperation.js:346
 msgid "The PIM must be a number or empty."
 msgstr "PIM harus berupa angka atau kosong."
 
-#: js/ui/shellMountOperation.js:356
+#: js/ui/shellMountOperation.js:357
 msgid "Password"
 msgstr "Sandi"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:393
 msgid "Remember Password"
 msgstr "Ingat Sandi"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:410
+#: js/ui/shellMountOperation.js:417
 #, javascript-format
 msgid "Open %s"
 msgstr "Buka %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:482
+#: js/ui/shellMountOperation.js:489
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Tak bisa memulai %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:484
+#: js/ui/shellMountOperation.js:491
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "Tak bisa menemukan aplikasi %s"
@@ -1768,11 +1781,11 @@ msgstr "Tombol Pantul"
 msgid "Mouse Keys"
 msgstr "Tombol Tetikus"
 
-#: js/ui/status/accessibility.js:135
+#: js/ui/status/accessibility.js:136
 msgid "High Contrast"
 msgstr "Kontras Tinggi"
 
-#: js/ui/status/accessibility.js:177
+#: js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "Teks Besar"
 
@@ -1824,11 +1837,11 @@ msgstr "Klik Sekunder"
 msgid "Dwell Click"
 msgstr "Klik Menetap"
 
-#: js/ui/status/keyboard.js:817
+#: js/ui/status/keyboard.js:825
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
-#: js/ui/status/keyboard.js:839
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
@@ -1871,7 +1884,7 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:420 js/ui/status/network.js:1315
+#: js/ui/status/network.js:420 js/ui/status/network.js:1314
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
@@ -1897,7 +1910,7 @@ msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1307
+#: js/ui/status/network.js:438 js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
@@ -1937,7 +1950,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:558 js/ui/status/network.js:1312
+#: js/ui/status/network.js:558 js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
@@ -2002,27 +2015,27 @@ msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1303
+#: js/ui/status/network.js:1302
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1318
+#: js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1415
+#: js/ui/status/network.js:1414
 msgid "connecting…"
 msgstr "menyambung…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1418
+#: js/ui/status/network.js:1417
 msgid "authentication required"
 msgstr "diperlukan autentikasi"
 
-#: js/ui/status/network.js:1420
+#: js/ui/status/network.js:1419
 msgid "connection failed"
 msgstr "koneksi gagal"
 
@@ -2117,7 +2130,7 @@ msgstr "%d:%02d Tersisa (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d Sampai Penuh (%d%%)"
 
-#: js/ui/status/power.js:136 js/ui/status/power.js:138
+#: js/ui/status/power.js:139 js/ui/status/power.js:141
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2161,15 +2174,15 @@ msgstr "Suspensi"
 msgid "Power Off…"
 msgstr "Matikan…"
 
-#: js/ui/status/thunderbolt.js:262
+#: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2177,30 +2190,30 @@ msgstr ""
 "Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan "
 "sambungkan kembali perangkat untuk mulai menggunakannya."
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:329
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:335
 msgid "Thunderbolt authorization error"
 msgstr "Autorisasi Thunderbolt galat"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:336
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
 
-#: js/ui/status/volume.js:129
+#: js/ui/status/volume.js:150
 msgid "Volume changed"
 msgstr "Volume diubah"
 
-#: js/ui/status/volume.js:200
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volume"
 
@@ -2232,11 +2245,11 @@ msgstr "Hanya Eksternal"
 msgid "Built-in Only"
 msgstr "Hanya Bawaan"
 
-#: js/ui/unlockDialog.js:53
+#: js/ui/unlockDialog.js:52
 msgid "Log in as another user"
 msgstr "Masuk sebagai pengguna lain"
 
-#: js/ui/unlockDialog.js:68
+#: js/ui/unlockDialog.js:67
 msgid "Unlock Window"
 msgstr "Buka Kunci Jendela"
 
@@ -2253,22 +2266,22 @@ msgstr "Cari"
 msgid "“%s” is ready"
 msgstr "“%s” siap"
 
-#: js/ui/windowManager.js:56
+#: js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "Apakah Anda ingin mempertahankan pengaturan tampilan ini?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:70
+#: js/ui/windowManager.js:71
 msgid "Revert Settings"
 msgstr "Balikkan Tatanan"
 
-#: js/ui/windowManager.js:73
+#: js/ui/windowManager.js:74
 msgid "Keep Changes"
 msgstr "Simpan Perubahan"
 
-#: js/ui/windowManager.js:91
+#: js/ui/windowManager.js:92
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2350,318 +2363,9 @@ msgstr "Pindahkan ke Monitor Kanan"
 msgid "Evolution Calendar"
 msgstr "Evolution Kalender"
 
-#: src/extensions-tool/command-create.c:189
-#, c-format
-msgid ""
-"Name should be a very short (ideally descriptive) string.\n"
-"Examples are: %s"
-msgstr ""
-"Nama harus berupa string yang sangat pendek (idealnya deskriptif).\n"
-"Contohnya adalah: %s"
-
-#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
-msgid "Name"
-msgstr "Nama"
-
-#: src/extensions-tool/command-create.c:203
-#, c-format
-msgid ""
-"Description is a single-sentence explanation of what your extension does.\n"
-"Examples are: %s"
-msgstr ""
-"Deskripsi adalah penjelasan satu kalimat tentang apa yang dilakukan ekstensi "
-"Anda.\n"
-"Contohnya adalah: %s"
-
-#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
-msgid "Description"
-msgstr "Deskripsi"
-
-#: src/extensions-tool/command-create.c:217
-msgid ""
-"UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"UUID adalah pengidentifikasi unik secara global untuk ekstensi Anda.\n"
-"Ini harus dalam format alamat surel (clicktofocus@janedoe.example.com)\n"
-
-#: src/extensions-tool/command-create.c:239
-msgid "The unique identifier of the new extension"
-msgstr "Pengidentifikasi unik ekstensi baru"
-
-#: src/extensions-tool/command-create.c:242
-msgid "NAME"
-msgstr "NAMA"
-
-#: src/extensions-tool/command-create.c:243
-msgid "The user-visible name of the new extension"
-msgstr "Nama ekstensi baru yang dapat dilihat pengguna"
-
-#: src/extensions-tool/command-create.c:245
-msgid "DESCRIPTION"
-msgstr "DESKRIPSI"
-
-#: src/extensions-tool/command-create.c:247
-msgid "A short description of what the extension does"
-msgstr "Deskripsi singkat tentang apa yang dilakukan ekstensi"
-
-#: src/extensions-tool/command-create.c:250
-msgid "Enter extension information interactively"
-msgstr "Masukkan informasi ekstensi secara interaktif"
-
-#: src/extensions-tool/command-create.c:258
-msgid "Create a new extension"
-msgstr "Buat ekstensi baru"
-
-#: src/extensions-tool/command-create.c:275
-#: src/extensions-tool/command-list.c:158
-msgid "Unknown arguments"
-msgstr "Argumen tak dikenal"
-
-#: src/extensions-tool/command-create.c:284
-msgid "UUID, name and description are required"
-msgstr "Diperlukan UUID, nama, dan deskripsi"
-
-#: src/extensions-tool/command-disable.c:57
-msgid "Disable an extension"
-msgstr "Nonaktifkan ekstensi"
-
-#: src/extensions-tool/command-disable.c:74
-#: src/extensions-tool/command-enable.c:74
-#: src/extensions-tool/command-info.c:96
-#: src/extensions-tool/command-prefs.c:107
-#: src/extensions-tool/command-reset.c:74
-#: src/extensions-tool/command-uninstall.c:89
-msgid "No UUID given"
-msgstr "Tidak ada UUID yang diberikan"
-
-#: src/extensions-tool/command-disable.c:79
-#: src/extensions-tool/command-enable.c:79
-#: src/extensions-tool/command-info.c:101
-#: src/extensions-tool/command-prefs.c:112
-#: src/extensions-tool/command-reset.c:79
-#: src/extensions-tool/command-uninstall.c:94
-msgid "More than one UUID given"
-msgstr "Lebih dari satu UUID diberikan"
-
-#: src/extensions-tool/command-enable.c:57
-msgid "Enable an extension"
-msgstr "Aktifkan ekstensi"
-
-#: src/extensions-tool/command-info.c:79
-msgid "Show extensions info"
-msgstr "Tampilkan info ekstensi"
-
-#: src/extensions-tool/command-install.c:173
-msgid "Overwrite an existing extension"
-msgstr "Timpa ekstensi yang ada"
-
-#: src/extensions-tool/command-install.c:175
-msgid "EXTENSION_BUNDLE"
-msgstr "BUNDEL_EKSTENSI"
-
-#: src/extensions-tool/command-install.c:184
-msgid "Install an extension bundle"
-msgstr "Pasang bundel ekstensi"
-
-#: src/extensions-tool/command-install.c:201
-msgid "No extension bundle specified"
-msgstr "Tidak ada bundel ekstensi yang ditentukan"
-
-#: src/extensions-tool/command-install.c:207
-msgid "More than one extension bundle specified"
-msgstr "Lebih dari satu bundel ekstensi ditentukan"
-
-#: src/extensions-tool/command-list.c:118
-msgid "Show user-installed extensions"
-msgstr "Tampilkan ekstensi yang dipasang pengguna"
-
-#: src/extensions-tool/command-list.c:121
-msgid "Show system-installed extensions"
-msgstr "Tampilkan ekstensi yang dipasang sistem"
-
-#: src/extensions-tool/command-list.c:124
-msgid "Show enabled extensions"
-msgstr "Tampilkan ekstensi yang diaktifkan"
-
-#: src/extensions-tool/command-list.c:127
-msgid "Show disabled extensions"
-msgstr "Tampilkan ekstensi yang dinonaktifkan"
-
-#: src/extensions-tool/command-list.c:130
-msgid "Show extensions with preferences"
-msgstr "Tampilkan ekstensi dengan preferensi"
-
-#: src/extensions-tool/command-list.c:133
-msgid "Print extension details"
-msgstr "Cetak detail ekstensi"
-
-#: src/extensions-tool/command-list.c:141
-msgid "List installed extensions"
-msgstr "Daftar ekstensi yang dipasang"
-
-#: src/extensions-tool/command-pack.c:450
-msgid "FILE"
-msgstr "BERKAS"
-
-#: src/extensions-tool/command-pack.c:451
-msgid "Additional source to include in the bundle"
-msgstr "Sumber tambahan untuk disertakan dalam bundel"
-
-#: src/extensions-tool/command-pack.c:454
-msgid "SCHEMA"
-msgstr "SKEMA"
-
-#: src/extensions-tool/command-pack.c:455
-msgid "A GSettings schema that should be included"
-msgstr "Skema GSettings yang harus dimasukkan"
-
-#: src/extensions-tool/command-pack.c:457
-#: src/extensions-tool/command-pack.c:468
-msgid "DIRECTORY"
-msgstr "DIREKTORI"
-
-#: src/extensions-tool/command-pack.c:459
-msgid "The directory where translations are found"
-msgstr "Direktori tempat terjemahan ditemukan"
-
-#: src/extensions-tool/command-pack.c:461
-msgid "DOMAIN"
-msgstr "DOMAIN"
-
-#: src/extensions-tool/command-pack.c:463
-msgid "The gettext domain to use for translations"
-msgstr "Domain gettext yang digunakan untuk terjemahan"
-
-#: src/extensions-tool/command-pack.c:466
-msgid "Overwrite an existing pack"
-msgstr "Timpa paket yang ada"
-
-#: src/extensions-tool/command-pack.c:470
-msgid "The directory where the pack should be created"
-msgstr "Direktori tempat paket harus dibuat"
-
-#: src/extensions-tool/command-pack.c:472
-msgid "SOURCE_DIRECTORY"
-msgstr "DIREKTORI_SUMBER"
-
-#: src/extensions-tool/command-pack.c:481
-msgid "Create an extension bundle"
-msgstr "Buat bundel ekstensi"
-
-#: src/extensions-tool/command-pack.c:500
-msgid "More than one source directory specified"
-msgstr "Lebih dari satu direktori sumber ditentukan"
-
-#: src/extensions-tool/command-prefs.c:90
-msgid "Opens extension preferences"
-msgstr "Buka preferensi ekstensi"
-
-#: src/extensions-tool/command-reset.c:57
-msgid "Reset an extension"
-msgstr "Atur ulang ekstensi"
-
-#: src/extensions-tool/command-uninstall.c:72
-msgid "Uninstall an extension"
-msgstr "Hapus ekstensi"
-
-#: src/extensions-tool/main.c:175
-msgid "Path"
-msgstr "Path"
-
-#: src/extensions-tool/main.c:178
-msgid "URL"
-msgstr "URL"
-
-#: src/extensions-tool/main.c:181
-msgid "Original author"
-msgstr "Penulis asli"
-
-#: src/extensions-tool/main.c:184
-msgid "Version"
-msgstr "Versi"
-
-#: src/extensions-tool/main.c:187
-msgid "State"
-msgstr "Kondisi"
-
-#: src/extensions-tool/main.c:221
-msgid "“version” takes no arguments"
-msgstr "\"version\" tak menerima argumen"
-
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
-msgid "Usage:"
-msgstr "Pemakaian:"
-
-#: src/extensions-tool/main.c:226
-msgid "Print version information and exit."
-msgstr "Cetak informasi versi dan keluar."
-
-#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
-msgid "COMMAND"
-msgstr "PERINTAH"
-
-#: src/extensions-tool/main.c:244
-msgid "[ARGS…]"
-msgstr "[ARG...]"
-
-#: src/extensions-tool/main.c:246
-msgid "Commands:"
-msgstr "Perintah:"
-
-#: src/extensions-tool/main.c:247
-msgid "Print help"
-msgstr "Cetak bantuan"
-
-#: src/extensions-tool/main.c:248 src/main.c:460
+#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Versi Cetak"
-
-#: src/extensions-tool/main.c:249
-msgid "Enable extension"
-msgstr "Aktifkan ekstensi"
-
-#: src/extensions-tool/main.c:250
-msgid "Disable extension"
-msgstr "Nonaktifkan ekstensi"
-
-#: src/extensions-tool/main.c:251
-msgid "Reset extension"
-msgstr "Atur ulang ekstensi"
-
-#: src/extensions-tool/main.c:252
-msgid "Uninstall extension"
-msgstr "Hapus ekstensi"
-
-#: src/extensions-tool/main.c:253
-msgid "List extensions"
-msgstr "Daftar ekstensi"
-
-#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
-msgid "Show extension info"
-msgstr "Tampilkan info ekstensi"
-
-#: src/extensions-tool/main.c:256
-msgid "Open extension preferences"
-msgstr "Buka preferensi ekstensi"
-
-#: src/extensions-tool/main.c:257
-msgid "Create extension"
-msgstr "Buat ekstensi"
-
-#: src/extensions-tool/main.c:258
-msgid "Package extension"
-msgstr "Ekstensi Paket"
-
-#: src/extensions-tool/main.c:259
-msgid "Install extension bundle"
-msgstr "Pasang bundel ekstensi"
-
-#: src/extensions-tool/main.c:261
-#, c-format
-msgid "Use “%s” to get detailed help.\n"
-msgstr "Gunakan \"%s\" untuk mendapatkan bantuan terperinci.\n"
 
 #: src/main.c:466
 msgid "Mode used by GDM for login screen"
@@ -2675,12 +2379,12 @@ msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
-#: src/shell-app.c:264
+#: src/shell-app.c:265
 msgctxt "program"
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: src/shell-app.c:515
+#: src/shell-app.c:516
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Gagal meluncurkan \"%s\""
@@ -2697,9 +2401,329 @@ msgstr "Sandi tidak boleh kosong"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog autentikasi ditolak oleh pengguna"
 
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "Ekstensi baru berhasil dibuat di %s.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Nama harus berupa string yang sangat pendek (idealnya deskriptif).\n"
+"Contohnya adalah: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr "Nama"
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Deskripsi adalah penjelasan satu kalimat tentang apa yang dilakukan ekstensi "
+"Anda.\n"
+"Contohnya adalah: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Deskripsi"
+
+#: subprojects/extensions-tool/src/command-create.c:222
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID adalah pengidentifikasi unik secara global untuk ekstensi Anda.\n"
+"Ini harus dalam format alamat surel (clicktofocus@janedoe.example.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr "Pengidentifikasi unik ekstensi baru"
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr "NAMA"
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr "Nama ekstensi baru yang dapat dilihat pengguna"
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr "DESKRIPSI"
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr "Deskripsi singkat tentang apa yang dilakukan ekstensi"
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr "Masukkan informasi ekstensi secara interaktif"
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr "Buat ekstensi baru"
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Unknown arguments"
+msgstr "Argumen tak dikenal"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr "Diperlukan UUID, nama, dan deskripsi"
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Nonaktifkan ekstensi"
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Tidak ada UUID yang diberikan"
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Lebih dari satu UUID diberikan"
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Aktifkan ekstensi"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+msgid "Show extensions info"
+msgstr "Tampilkan info ekstensi"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Timpa ekstensi yang ada"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "BUNDEL_EKSTENSI"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Pasang bundel ekstensi"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Tidak ada bundel ekstensi yang ditentukan"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Lebih dari satu bundel ekstensi ditentukan"
+
+#: subprojects/extensions-tool/src/command-list.c:118
+msgid "Show user-installed extensions"
+msgstr "Tampilkan ekstensi yang dipasang pengguna"
+
+#: subprojects/extensions-tool/src/command-list.c:121
+msgid "Show system-installed extensions"
+msgstr "Tampilkan ekstensi yang dipasang sistem"
+
+#: subprojects/extensions-tool/src/command-list.c:124
+msgid "Show enabled extensions"
+msgstr "Tampilkan ekstensi yang diaktifkan"
+
+#: subprojects/extensions-tool/src/command-list.c:127
+msgid "Show disabled extensions"
+msgstr "Tampilkan ekstensi yang dinonaktifkan"
+
+#: subprojects/extensions-tool/src/command-list.c:130
+msgid "Show extensions with preferences"
+msgstr "Tampilkan ekstensi dengan preferensi"
+
+#: subprojects/extensions-tool/src/command-list.c:133
+msgid "Print extension details"
+msgstr "Cetak detail ekstensi"
+
+#: subprojects/extensions-tool/src/command-list.c:141
+msgid "List installed extensions"
+msgstr "Daftar ekstensi yang dipasang"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "BERKAS"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Sumber tambahan untuk disertakan dalam bundel"
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SKEMA"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Skema GSettings yang harus dimasukkan"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIREKTORI"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Direktori tempat terjemahan ditemukan"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMAIN"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Domain gettext yang digunakan untuk terjemahan"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Timpa paket yang ada"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Direktori tempat paket harus dibuat"
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "DIREKTORI_SUMBER"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Buat bundel ekstensi"
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Lebih dari satu direktori sumber ditentukan"
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Buka preferensi ekstensi"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Atur ulang ekstensi"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Hapus ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr "Path"
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr "Penulis asli"
+
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Versi"
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr "Kondisi"
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr "\"version\" tak menerima argumen"
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr "Pemakaian:"
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr "Cetak informasi versi dan keluar."
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr "PERINTAH"
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr "[ARG...]"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr "Perintah:"
+
+#: subprojects/extensions-tool/src/main.c:248
+msgid "Print help"
+msgstr "Cetak bantuan"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Enable extension"
+msgstr "Aktifkan ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:251
+msgid "Disable extension"
+msgstr "Nonaktifkan ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "Reset extension"
+msgstr "Atur ulang ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr "Hapus ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:254
+msgid "List extensions"
+msgstr "Daftar ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+msgid "Show extension info"
+msgstr "Tampilkan info ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Open extension preferences"
+msgstr "Buka preferensi ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:258
+msgid "Create extension"
+msgstr "Buat ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:259
+msgid "Package extension"
+msgstr "Ekstensi Paket"
+
+#: subprojects/extensions-tool/src/main.c:260
+msgid "Install extension bundle"
+msgstr "Pasang bundel ekstensi"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Gunakan \"%s\" untuk mendapatkan bantuan terperinci.\n"
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1871
+#: subprojects/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2708,13 +2732,13 @@ msgstr[1] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1881
+#: subprojects/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 msgstr[1] "%u Masukan"
 
-#: subprojects/gvc/gvc-mixer-control.c:2736
+#: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Suara Sistem"
