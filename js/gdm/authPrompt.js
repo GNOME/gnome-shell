@@ -137,14 +137,14 @@ var AuthPrompt = GObject.registerClass({
         this.add_child(mainBox);
 
         this.cancelButton = new St.Button({
-            style_class: 'modal-dialog-button button',
+            style_class: 'modal-dialog-button button cancel-button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: true,
             can_focus: true,
-            label: _("Cancel"),
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.END,
+            child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
         });
         this.cancelButton.connect('clicked', () => this.cancel());
         mainBox.add_child(this.cancelButton);
