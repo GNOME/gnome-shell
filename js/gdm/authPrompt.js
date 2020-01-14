@@ -51,6 +51,8 @@ var AuthPrompt = GObject.registerClass({
         super._init({
             style_class: 'login-dialog-prompt-layout',
             vertical: true,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
         });
 
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
@@ -463,8 +465,7 @@ var AuthPrompt = GObject.registerClass({
             oldChild.destroy();
 
         if (user) {
-            let userWidget = new UserWidget.UserWidget(user);
-            userWidget.x_align = Clutter.ActorAlign.START;
+            let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
             this._userWell.set_child(userWidget);
         }
     }
