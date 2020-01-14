@@ -21,12 +21,11 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.connect('show-confirm', this._onShowConfirm.bind(this));
         this.prompt.connect('prompt-close', this._onHidePrompt.bind(this));
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
-        this._content = new Dialog.MessageDialogContent({ icon });
+        this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add(this._content);
 
         this.prompt.bind_property('message', this._content, 'title', GObject.BindingFlags.SYNC_CREATE);
-        this.prompt.bind_property('description', this._content, 'body', GObject.BindingFlags.SYNC_CREATE);
+        this.prompt.bind_property('description', this._content, 'description', GObject.BindingFlags.SYNC_CREATE);
 
         this._workSpinner = null;
         this._controlTable = null;
@@ -154,7 +153,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         }
 
         this._controlTable = table;
-        this._content.messageBox.add_child(table);
+        this._content.add_child(table);
     }
 
     _updateSensitivity(sensitive) {

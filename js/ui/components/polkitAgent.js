@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { AccountsService, Clutter, Gio, GLib,
+const { AccountsService, Clutter, GLib,
         GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
@@ -25,11 +25,11 @@ const DELAYED_RESET_TIMEOUT = 200;
 var AuthenticationDialog = GObject.registerClass({
     Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
-    _init(actionId, body, cookie, userNames) {
+    _init(actionId, description, cookie, userNames) {
         super._init({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
-        this.message = body;
+        this.message = description;
         this.userNames = userNames;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
@@ -38,10 +38,9 @@ var AuthenticationDialog = GObject.registerClass({
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
 
-        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        let content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {
@@ -62,7 +61,7 @@ var AuthenticationDialog = GObject.registerClass({
             style_class: 'polkit-dialog-user-layout',
             vertical: false,
         });
-        content.messageBox.add(userBox);
+        content.add_child(userBox);
 
         this._userAvatar = new UserWidget.Avatar(this._user, {
             iconSize: DIALOG_ICON_SIZE,
@@ -84,7 +83,7 @@ var AuthenticationDialog = GObject.registerClass({
         userBox.add_child(this._userLabel);
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        content.messageBox.add(this._passwordBox);
+        content.add_child(this._passwordBox);
         this._passwordLabel = new St.Label({
             style_class: 'prompt-dialog-password-label',
             y_align: Clutter.ActorAlign.CENTER,
@@ -110,18 +109,18 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordBox.hide();
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({ style_class: 'prompt-dialog-caps-lock-warning' });
-        content.messageBox.add(this._capsLockWarningLabel);
+        content.add_child(this._capsLockWarningLabel);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add_child(this._errorMessageLabel);
+        content.add_child(this._errorMessageLabel);
         this._errorMessageLabel.hide();
 
         this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
         this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._infoMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add(this._infoMessageLabel);
+        content.add_child(this._infoMessageLabel);
         this._infoMessageLabel.hide();
 
         /* text is intentionally non-blank otherwise the height is not the same as for
@@ -133,7 +132,7 @@ var AuthenticationDialog = GObject.registerClass({
         this._nullMessageLabel.add_style_class_name('hidden');
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
-        content.messageBox.add(this._nullMessageLabel);
+        content.add_child(this._nullMessageLabel);
         this._nullMessageLabel.show();
 
         this._cancelButton = this.addButton({ label: _("Cancel"),

@@ -5,7 +5,9 @@
   @extend %bubble_panel;
 
   .modal-dialog-content-box {
-    padding: $base_padding * 4;
+    margin: 32px 40px;
+    spacing: 32px;
+    max-width: 28em;
   }
 
   .run-dialog-entry { width: 20em; margin-bottom: 6px; }
@@ -14,7 +16,6 @@
     spacing: 6px;
   }
 
-  .run-dialog-button-box { padding-top: 1em; }
   .run-dialog-label {
     @include fontsize($base_font_size + 1.1);
     font-weight: normal;
@@ -33,28 +34,15 @@
 }
 
 /* Message Dialog */
-.message-dialog-main-layout {
-  padding: 12px 20px 0;
-  spacing: 12px;
-}
-
 .message-dialog-content {
-  max-width: 28em;
-  spacing: 20px;
-}
+  spacing: 18px;
 
-.message-dialog-icon {
-  min-width: $base_icon_size * 3;
-  icon-size: $base_icon_size * 3;
-}
-
-.message-dialog-title {
-  font-weight: bold;
-}
-
-.message-dialog-subtitle {
-  color: $fg_color;
-  font-weight: bold;
+  .message-dialog-title {
+    text-align: center;
+    font-size: 18pt;
+    font-weight: 800;
+  }
+  .message-dialog-description { text-align: center; }
 }
 
 /* ShellMountOperation Dialogs */
@@ -77,12 +65,12 @@
     padding-right: 17px;
   }
 
-  .message-dialog-body {
+  .message-dialog-description {
     padding-left: 17px;
     width: 28em;
   }
 
-  .message-dialog-body:rtl {
+  .message-dialog-description:rtl {
     padding-left: 0px;
     padding-right: 17px;
   }
@@ -124,7 +112,6 @@
   //this is the width of the entire modal popup
   width: 34em;
 
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-content { spacing: $base_spacing * 4; }
   .message-dialog-title { color: lighten($fg_color,15%); }
 }
@@ -253,7 +240,6 @@
 /* Extension Dialog */
 .extension-dialog {
   @extend %bubble_panel;
-  .message-dialog-main-layout { spacing: 24px; padding: 10px; }
   .message-dialog-title { font-weight: normal; color: $fg_color; }
 }
 

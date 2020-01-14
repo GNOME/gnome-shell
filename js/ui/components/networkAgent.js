@@ -29,11 +29,10 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         else
             this._content = this._getContent();
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
-        let contentParams = { icon,
-                              title: this._content.title,
-                              body: this._content.message };
-        let contentBox = new Dialog.MessageDialogContent(contentParams);
+        let contentBox = new Dialog.MessageDialogContent({
+            title: this._content.title,
+            description: this._content.message,
+        });
         this.contentLayout.add_actor(contentBox);
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
@@ -109,7 +108,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 layout.attach(this._capsLockWarningLabel, 1, pos, 1, 1);
         }
 
-        contentBox.messageBox.add(secretTable);
+        contentBox.add_child(secretTable);
 
         if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
             let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
@@ -117,7 +116,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             descriptionLabel.clutter_text.line_wrap = true;
             descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
-            contentBox.messageBox.add_child(descriptionLabel);
+            contentBox.add_child(descriptionLabel);
         }
 
         this._okButton = {

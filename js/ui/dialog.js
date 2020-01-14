@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent */
 
-const { Clutter, Gio, GObject, Pango, St } = imports.gi;
+const { Clutter, GObject, Pango, St } = imports.gi;
 
 var Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
@@ -25,10 +25,12 @@ class Dialog extends St.Widget {
     }
 
     _createDialog() {
-        this._dialog = new St.BoxLayout({ style_class: 'modal-dialog',
-                                          x_align: Clutter.ActorAlign.CENTER,
-                                          y_align: Clutter.ActorAlign.CENTER,
-                                          vertical: true });
+        this._dialog = new St.BoxLayout({
+            style_class: 'modal-dialog',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            vertical: true,
+        });
 
         // modal dialogs are fixed width and grow vertically; set the request
         // mode accordingly so wrapped labels are handled correctly during
@@ -43,7 +45,9 @@ class Dialog extends St.Widget {
         });
         this._dialog.add_child(this.contentLayout);
 
-        this.buttonLayout = new St.Widget({ layout_manager: new Clutter.BoxLayout({ homogeneous: true }) });
+        this.buttonLayout = new St.Widget({
+            layout_manager: new Clutter.BoxLayout({ homogeneous: true }),
+        });
         this._dialog.add_child(this.buttonLayout);
     }
 
@@ -95,10 +99,6 @@ class Dialog extends St.Widget {
         return this._initialKeyFocus || this;
     }
 
-    addContent(actor) {
-        this.contentLayout.add(actor, { expand: true });
-    }
-
     addButton(buttonInfo) {
         let { label, action, key } = buttonInfo;
         let isDefault = buttonInfo['default'];
@@ -111,13 +111,15 @@ class Dialog extends St.Widget {
         else
             keys = [];
 
-        let button = new St.Button({ style_class: 'modal-dialog-linked-button',
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                     reactive: true,
-                                     can_focus: true,
-                                     x_expand: true,
-                                     y_expand: true,
-                                     label });
+        let button = new St.Button({
+            style_class: 'modal-dialog-linked-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            x_expand: true,
+            y_expand: true,
+            label,
+        });
         button.connect('clicked', action);
 
         buttonInfo['button'] = button;
@@ -144,88 +146,50 @@ class Dialog extends St.Widget {
 
 var MessageDialogContent = GObject.registerClass({
     Properties: {
-        'icon': GObject.ParamSpec.object('icon', 'icon', 'icon',
-                                         GObject.ParamFlags.READWRITE |
-                                         GObject.ParamFlags.CONSTRUCT,
-                                         Gio.Icon.$gtype),
-        'title': GObject.ParamSpec.string('title', 'title', 'title',
-                                          GObject.ParamFlags.READWRITE |
-                                          GObject.ParamFlags.CONSTRUCT,
-                                          null),
-        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle', 'subtitle',
-                                             GObject.ParamFlags.READWRITE |
-                                             GObject.ParamFlags.CONSTRUCT,
-                                             null),
-        'body': GObject.ParamSpec.string('body', 'body', 'body',
-                                         GObject.ParamFlags.READWRITE |
-                                         GObject.ParamFlags.CONSTRUCT,
-                                         null),
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
+        'description': GObject.ParamSpec.string(
+            'description', 'description', 'description',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
-        this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
-        this._title = new St.Label({ style_class: 'headline' });
-        this._subtitle = new St.Label();
-        this._body = new St.Label();
+        this._title = new St.Label({ style_class: 'message-dialog-title' });
+        this._description = new St.Label({ style_class: 'message-dialog-description' });
 
-        ['icon', 'title', 'subtitle', 'body'].forEach(prop => {
-            this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
-        });
+        this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._description.clutter_text.line_wrap = true;
 
-        let textProps = { ellipsize: Pango.EllipsizeMode.NONE,
-                          line_wrap: true };
-        this._subtitle.clutter_text.set(textProps);
-        this._body.clutter_text.set(textProps);
-
-        let defaultParams = { style_class: 'message-dialog-main-layout' };
+        let defaultParams = {
+            style_class: 'message-dialog-content',
+            x_expand: true,
+            vertical: true,
+        };
         super._init(Object.assign(defaultParams, params));
 
-        this.messageBox = new St.BoxLayout({ style_class: 'message-dialog-content',
-                                             x_expand: true,
-                                             vertical: true });
-
-        this.messageBox.add_actor(this._title);
-        this.messageBox.add_actor(this._subtitle);
-        this.messageBox.add_actor(this._body);
-
-        this.add_actor(this._icon);
-        this.add_actor(this.messageBox);
-    }
-
-    get icon() {
-        return this._icon.gicon;
+        this.add_child(this._title);
+        this.add_child(this._description);
     }
 
     get title() {
         return this._title.text;
     }
 
-    get subtitle() {
-        return this._subtitle.text;
-    }
-
-    get body() {
-        return this._body.text;
-    }
-
-    set icon(icon) {
-        this._icon.set({
-            gicon: icon,
-            visible: icon != null,
-        });
-        this.notify('icon');
+    get description() {
+        return this._description.text;
     }
 
     set title(title) {
         this._setLabel(this._title, 'title', title);
     }
 
-    set subtitle(subtitle) {
-        this._setLabel(this._subtitle, 'subtitle', subtitle);
-    }
-
-    set body(body) {
-        this._setLabel(this._body, 'body', body);
+    set description(description) {
+        this._setLabel(this._description, 'description', description);
     }
 
     _setLabel(label, prop, value) {
@@ -234,9 +198,5 @@ var MessageDialogContent = GObject.registerClass({
             visible: value != null,
         });
         this.notify(prop);
-    }
-
-    insertBeforeBody(actor) {
-        this.messageBox.insert_child_below(actor, this._body);
     }
 });
