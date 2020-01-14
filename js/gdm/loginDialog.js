@@ -838,7 +838,7 @@ var LoginDialog = GObject.registerClass({
 
     _onReset(authPrompt, beginRequest) {
         this._resetGreeterProxy();
-        this._sessionMenuButton.updateSensitivity(true);
+        this._sessionMenuButton.updateSensitivity(false);
 
         this._user = null;
 
