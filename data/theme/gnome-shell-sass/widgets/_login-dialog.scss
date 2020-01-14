@@ -114,7 +114,7 @@
 }
 
 .login-dialog-username,
-.user-widget-label {
+.user-widget-label-horizontal {
   color: $osd_fg_color;
   @include fontsize($base_font_size + 2);
   font-weight: bold;
@@ -122,9 +122,16 @@
   padding-left: 15px;
 }
 
-.user-widget-label {
+.user-widget-label-horizontal {
   &:ltr { padding-left: 14px; }
   &:rtl { padding-right: 14px; }
+}
+
+.user-widget-label-vertical {
+  color: $osd_fg_color;
+  font-size: 16pt;
+  text-align: center;
+  padding-top: 24px;
 }
 
 .login-dialog-prompt-layout {
