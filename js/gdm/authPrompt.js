@@ -101,25 +101,7 @@ var AuthPrompt = GObject.registerClass({
 
         this.add_child(this._label);
 
-        let entryParams = {
-            style_class: 'login-dialog-prompt-entry',
-            can_focus: true,
-            x_expand: false,
-            y_expand: true,
-        };
-
-        this._entry = null;
-
-        this._textEntry = new St.Entry(entryParams);
-        ShellEntry.addContextMenu(this._textEntry, { actionMode: Shell.ActionMode.NONE });
-
-        this._passwordEntry = new St.PasswordEntry(entryParams);
-        ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
-
-        this._entry = this._passwordEntry;
-        this.add_child(this._entry);
-
-        this._entry.grab_key_focus();
+        this._initEntryRow();
 
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
         this.add_child(this._capsLockWarningLabel);
@@ -134,26 +116,6 @@ var AuthPrompt = GObject.registerClass({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.add_child(this._message);
-
-        this._buttonBox = new St.BoxLayout({
-            style_class: 'login-dialog-button-box',
-            vertical: false,
-            y_align: Clutter.ActorAlign.END,
-        });
-        this.add_child(this._buttonBox);
-
-        this._defaultButtonWell = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this._initButtons();
-
-        this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
-        this._spinner.opacity = 0;
-        this._spinner.show();
-        this._defaultButtonWell.add_child(this._spinner);
     }
 
     _onDestroy() {
@@ -167,21 +129,42 @@ var AuthPrompt = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _initButtons() {
+    _initEntryRow() {
+        let mainBox = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: false,
+        });
+        this.add_child(mainBox);
+
         this.cancelButton = new St.Button({
             style_class: 'modal-dialog-button button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: true,
             can_focus: true,
             label: _("Cancel"),
-            x_expand: true,
             x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this.cancelButton.connect('clicked', () => this.cancel());
-        this._buttonBox.add_child(this.cancelButton);
+        mainBox.add_child(this.cancelButton);
 
-        this._buttonBox.add_child(this._defaultButtonWell);
+        let entryParams = {
+            style_class: 'login-dialog-prompt-entry',
+            can_focus: true,
+            x_expand: true,
+        };
+
+        this._entry = null;
+
+        this._textEntry = new St.Entry(entryParams);
+        ShellEntry.addContextMenu(this._textEntry, { actionMode: Shell.ActionMode.NONE });
+
+        this._passwordEntry = new St.PasswordEntry(entryParams);
+        ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
+
+        this._entry = this._passwordEntry;
+        mainBox.add_child(this._entry);
+        this._entry.grab_key_focus();
 
         this._entry.clutter_text.connect('text-changed', () => {
             if (!this._userVerifier.hasPendingMessages)
@@ -192,6 +175,16 @@ var AuthPrompt = GObject.registerClass({
             if (this._entry.reactive)
                 this.emit('next');
         });
+
+        this._defaultButtonWell = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        mainBox.add_child(this._defaultButtonWell);
+
+        this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
+        this._defaultButtonWell.add_child(this._spinner);
     }
 
     _updateEntry(secret) {
