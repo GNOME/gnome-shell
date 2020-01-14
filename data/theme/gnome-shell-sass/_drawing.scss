@@ -134,8 +134,6 @@
   @if $t==normal {
     color: $tc;
     background-color: lighten($c, 3%) !important;
-    border-width: 1px;
-    border-style: solid;
     border-color: draw_border_color($c);
     @include draw_shadows(0 1px 1px 0 $shadow_color);
     // box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
@@ -156,8 +154,6 @@
   @else if $t==hover {
     color: $tc;
     background-color: lighten($c, if($variant == 'light', 8%, 5%)) !important;
-    border-width: 1px;
-    border-style: solid;
     border-color: if($variant == 'light', draw_border_color(lighten($c, 7%)), draw_border_color($c));
     @include draw_shadows(0 1px 1px 0 $shadow_color);
     text-shadow: 0 1px $text_shadow_color;
@@ -168,8 +164,6 @@
   @else if $t==active {
     color: $tc;
     background-color: darken($c,3%) !important;
-    border-width: 1px;
-    border-style: solid;
     border-color: draw_border_color(if($variant == 'light', $c, darken($c,7%)));
     text-shadow: none;
     icon-shadow: none;
@@ -179,8 +173,6 @@
   // insensitive button
   @else if $t==insensitive {
     color: $insensitive_fg_color;
-    border-width: 1px;
-    border-style: solid;
     border-color: $insensitive_borders_color;
     background-color: $insensitive_bg_color !important;
     box-shadow: none;
