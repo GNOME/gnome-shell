@@ -37,6 +37,14 @@
   }
 }
 
+.user-widget.vertical .user-icon {
+  icon-size: 128px;
+}
+
+.user-widget.horizontal .user-icon {
+  icon-size: 64px;
+}
+
 // Input Source Switcher
 .input-source-switcher-symbol {
   font-size: 34pt;
