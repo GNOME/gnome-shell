@@ -113,18 +113,25 @@
   &:focus .login-dialog-timed-login-indicator { background-color: $selected_fg_color; }
 }
 
-.login-dialog-username,
 .user-widget-label {
   color: $osd_fg_color;
+}
+
+.user-widget.horizontal .user-widget-label {
   @include fontsize($base_font_size + 2);
   font-weight: bold;
   text-align: left;
   padding-left: 15px;
-}
 
-.user-widget-label {
   &:ltr { padding-left: 14px; }
   &:rtl { padding-right: 14px; }
+}
+
+.user-widget.vertical .user-widget-label {
+  @include fontsize($base_font_size + 5);
+  text-align: center;
+  font-weight: normal;
+  padding-top: 16px;
 }
 
 .login-dialog-prompt-layout {

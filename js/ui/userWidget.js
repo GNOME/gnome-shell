@@ -7,7 +7,7 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
-var AVATAR_ICON_SIZE = 64;
+var AVATAR_ICON_SIZE = -1;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -63,6 +63,16 @@ class Avatar extends St.Bin {
 
         if (iconFile) {
             this.child = null;
+
+            // Check CSS for avatar size if params are defaulting to AVATAR_ICON_SIZE
+            if (this._iconSize == AVATAR_ICON_SIZE){
+                let themeNode = this.get_theme_node();
+
+		// FIXME: Ideally themeNode.get_length('icon-size') should work here.
+		// FIXME2: This causes a avatar size jump when the system is powered on.
+		//         The Lock-screen/re-login list seems fine but still might be buggy.
+                this._iconSize = themeNode.get_width();
+            }
             let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
             this.set_size(
                 this._iconSize * scaleFactor,
@@ -72,8 +82,10 @@ class Avatar extends St.Bin {
                 background-size: cover;`;
         } else {
             this.style = null;
-            this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                       icon_size: this._iconSize });
+            this.child = new St.Icon({
+                icon_name: 'avatar-default-symbolic',
+                icon_size: 128,
+            });
         }
     }
 });
@@ -159,26 +171,36 @@ class UserWidgetLabel extends St.Widget {
 
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
-    _init(user) {
-        super._init({ style_class: 'user-widget', vertical: false });
-
+    _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
         this._user = user;
+
+        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        let align = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
+        let style_class = vertical ? 'user-widget vertical' : 'user-widget horizontal';
+
+        super._init({
+            style_class,
+            vertical,
+            x_align: align,
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._avatar = new Avatar(user);
         this.add_child(this._avatar);
 
-        this._label = new UserWidgetLabel(user);
-        this.add_child(this._label);
+        this._userLoadedId = 0;
+        this._userChangedId = 0;
+        if (user) {
+            this._label = new UserWidgetLabel(user);
+            this.add_child(this._label);
 
-        this._label.bind_property('label-actor', this, 'label-actor',
-                                  GObject.BindingFlags.SYNC_CREATE);
-
-        this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
-        this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
-        this._updateUser();
-    }
+            this._label.bind_property('label-actor', this, 'label-actor',
+                                      GObject.BindingFlags.SYNC_CREATE);
+            this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
+            this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+            this._updateUser();
+        }
 
     _onDestroy() {
         if (this._userLoadedId != 0) {
