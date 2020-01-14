@@ -530,7 +530,6 @@ var UnlockDialog = GObject.registerClass({
         this._authPrompt.connect('failed', this._fail.bind(this));
         this._authPrompt.connect('cancelled', this._fail.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
-        this._authPrompt.nextButton.label = _("Unlock");
 
         this._promptBox.add_child(this._authPrompt);
 
