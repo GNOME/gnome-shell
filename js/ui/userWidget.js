@@ -8,6 +8,7 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 const Params = imports.misc.params;
 
 var AVATAR_ICON_SIZE = 64;
+var AVATAR_ICON_SIZE_VERTICAL = 128;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -16,20 +17,31 @@ var AVATAR_ICON_SIZE = 64;
 
 var Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
-    _init(user, params) {
+    _init(user, params, orientation = Clutter.Orientation.HORIZONTAL) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        params = Params.parse(params, { reactive: false,
-                                        iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'user-icon' });
+
+        if (orientation == Clutter.Orientation.HORIZONTAL) {
+            params = Params.parse(params, { reactive: false,
+                                            iconSize: AVATAR_ICON_SIZE,
+                                            styleClass: 'user-icon',
+                                            x_align: Clutter.ActorAlign.START, });
+        } else {
+            params = Params.parse(params, { reactive: false,
+                                            iconSize: AVATAR_ICON_SIZE_VERTICAL,
+                                            styleClass: 'user-icon',
+                                            x_align: Clutter.ActorAlign.CENTER, });
+        }
 
         super._init({
             style_class: params.styleClass,
             reactive: params.reactive,
             width: params.iconSize * themeContext.scaleFactor,
             height: params.iconSize * themeContext.scaleFactor,
+            x_align: params.x_align,
         });
 
         this._iconSize = params.iconSize;
+        this._xAlign = params.x_align;
         this._user = user;
 
         this.bind_property('reactive', this, 'track-hover',
@@ -73,23 +85,30 @@ class Avatar extends St.Bin {
         } else {
             this.style = null;
             this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                       icon_size: this._iconSize });
+                                       icon_size: this._iconSize,
+                                       x_expand: true,
+                                       x_align: this._xAlign, });
         }
     }
 });
 
 var UserWidgetLabel = GObject.registerClass(
 class UserWidgetLabel extends St.Widget {
-    _init(user) {
+    _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
         super._init({ layout_manager: new Clutter.BinLayout() });
 
         this._user = user;
 
-        this._realNameLabel = new St.Label({ style_class: 'user-widget-label',
+        let styleClass = 'user-widget-label-horizontal';
+        if (orientation == Clutter.Orientation.VERTICAL) {
+            styleClass = 'user-widget-label-vertical';
+        }
+
+        this._realNameLabel = new St.Label({ style_class: styleClass,
                                              y_align: Clutter.ActorAlign.CENTER });
         this.add_child(this._realNameLabel);
 
-        this._userNameLabel = new St.Label({ style_class: 'user-widget-label',
+        this._userNameLabel = new St.Label({ style_class: styleClass,
                                              y_align: Clutter.ActorAlign.CENTER });
         this.add_child(this._userNameLabel);
 
@@ -159,17 +178,24 @@ class UserWidgetLabel extends St.Widget {
 
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
-    _init(user) {
-        super._init({ style_class: 'user-widget', vertical: false });
-
+    _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
         this._user = user;
+
+        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        let align = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
+
+        super._init({
+            style_class: 'user-widget',
+            vertical,
+            x_align: align,
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._avatar = new Avatar(user);
+        this._avatar = new Avatar(user, {}, orientation);
         this.add_child(this._avatar);
 
-        this._label = new UserWidgetLabel(user);
+        this._label = new UserWidgetLabel(user, orientation);
         this.add_child(this._label);
 
         this._label.bind_property('label-actor', this, 'label-actor',
