@@ -423,9 +423,8 @@ var SwitcherList = GObject.registerClass({
         bbox.set_child(item);
         this._list.add_actor(bbox);
 
-        let n = this._items.length;
-        bbox.connect('clicked', () => this._onItemClicked(n));
-        bbox.connect('motion-event', () => this._onItemEnter(n));
+        bbox.connect('clicked', () => this._onItemClicked(bbox));
+        bbox.connect('motion-event', () => this._onItemEnter(bbox));
 
         bbox.label_actor = label;
 
@@ -448,14 +447,17 @@ var SwitcherList = GObject.registerClass({
         this._items[index].remove_accessible_state(state);
     }
 
-    _onItemClicked(index) {
+    _onItemClicked(item) {
+        let index = this._items.indexOf(item);
         this._itemActivated(index);
     }
 
-    _onItemEnter(index) {
+    _onItemEnter(item) {
         // Avoid reentrancy
-        if (index != this._highlighted)
+        if (item !== this._items[this._highlighted]) {
+            let index = this._items.indexOf(item);
             this._itemEntered(index);
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
