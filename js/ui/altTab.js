@@ -775,7 +775,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
-    _onItemEnter(index) {
+    _onItemEnter(item) {
+        const index = this._items.indexOf(item);
+
         if (this._mouseTimeOutId != 0)
             GLib.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
