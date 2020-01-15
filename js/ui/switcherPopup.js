@@ -230,7 +230,7 @@ var SwitcherPopup = GObject.registerClass({
     vfunc_scroll_event(scrollEvent) {
         this._disableHover();
 
-        this._scrollHandler(scrollEvent.scroll_direction);
+        this._scrollHandler(scrollEvent.direction);
         return Clutter.EVENT_PROPAGATE;
     }
 
