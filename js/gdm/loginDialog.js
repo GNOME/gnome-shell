@@ -36,7 +36,6 @@ const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
-const _MAX_BOTTOM_MENU_ITEMS = 5;
 
 var UserListItem = GObject.registerClass({
     Signals: { 'activate': {} },
@@ -326,16 +325,7 @@ var SessionMenuButton = GObject.registerClass({
         super._init({ child: button });
         this._button = button;
 
-        let side = St.Side.TOP;
-        let align = 0;
-        if (Gdm.get_session_ids().length > _MAX_BOTTOM_MENU_ITEMS) {
-            if (this.text_direction == Clutter.TextDirection.RTL)
-                side = St.Side.RIGHT;
-            else
-                side = St.Side.LEFT;
-            align = 0.5;
-        }
-        this._menu = new PopupMenu.PopupMenu(this._button, align, side);
+        this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.BOTTOM);
         Main.uiGroup.add_actor(this._menu.actor);
         this._menu.actor.hide();
 
@@ -360,6 +350,7 @@ var SessionMenuButton = GObject.registerClass({
     updateSensitivity(sensitive) {
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
+        this.opacity = sensitive ? 255 : 0;
         this._menu.close(BoxPointer.PopupAnimation.NONE);
     }
 
@@ -497,6 +488,15 @@ var LoginDialog = GObject.registerClass({
         bannerBox.add_child(this._bannerLabel);
         this._updateBanner();
 
+        this._sessionMenuButton = new SessionMenuButton();
+        this._sessionMenuButton.connect('session-activated',
+            (list, sessionId) => {
+                this._greeter.call_select_session_sync(sessionId, null);
+            });
+        this._sessionMenuButton.opacity = 0;
+        this._sessionMenuButton.show();
+        this.add_child(this._sessionMenuButton);
+
         this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
                                         x_align: Clutter.ActorAlign.CENTER,
                                         y_align: Clutter.ActorAlign.END });
@@ -509,16 +509,6 @@ var LoginDialog = GObject.registerClass({
         this._userList.connect('activate', (userList, item) => {
             this._onUserListActivated(item);
         });
-
-
-        this._sessionMenuButton = new SessionMenuButton();
-        this._sessionMenuButton.connect('session-activated',
-            (list, sessionId) => {
-                this._greeter.call_select_session_sync(sessionId, null);
-            });
-        this._sessionMenuButton.opacity = 0;
-        this._sessionMenuButton.show();
-        this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton);
 
         this._disableUserList = undefined;
         this._userListLoaded = false;
@@ -558,6 +548,23 @@ var LoginDialog = GObject.registerClass({
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = dialogBox.y2 - natHeight;
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
+    _getSessionMenuButtonAllocation(dialogBox) {
+        let actorBox = new Clutter.ActorBox();
+
+        let [, , natWidth, natHeight] = this._sessionMenuButton.get_preferred_size();
+
+        if (this.get_text_direction() === Clutter.TextDirection.RTL)
+            actorBox.x1 = dialogBox.x1 + natWidth;
+        else
+            actorBox.x1 = dialogBox.x2 - (natWidth * 2);
+
+        actorBox.y1 = dialogBox.y2 - (natHeight * 2);
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
 
@@ -619,6 +626,10 @@ var LoginDialog = GObject.registerClass({
             logoAllocation = this._getLogoBinAllocation(dialogBox);
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
+
+        let sessionMenuButtonAllocation = null;
+        if (this._sessionMenuButton.visible)
+            sessionMenuButtonAllocation = this._getSessionMenuButtonAllocation(dialogBox);
 
         // Then figure out if we're overly constrained and need to
         // try a different layout, or if we have what extra space we
@@ -718,6 +729,9 @@ var LoginDialog = GObject.registerClass({
 
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation, flags);
+
+        if (sessionMenuButtonAllocation)
+            this._sessionMenuButton.allocate(sessionMenuButtonAllocation, flags);
     }
 
     _ensureUserListLoaded() {
@@ -813,12 +827,10 @@ var LoginDialog = GObject.registerClass({
     }
 
     _onPrompted() {
-        if (this._shouldShowSessionMenuButton()) {
-            this._sessionMenuButton.updateSensitivity(true);
-            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton);
-        } else {
-            this._sessionMenuButton.updateSensitivity(false);
-        }
+        const showSessionMenu = this._shouldShowSessionMenuButton();
+
+        this._sessionMenuButton.updateSensitivity(showSessionMenu);
+        this._sessionMenuButton.visible = showSessionMenu;
         this._showPrompt();
     }
 
