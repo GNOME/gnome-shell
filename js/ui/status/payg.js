@@ -108,8 +108,27 @@ class PaygIndicator extends PanelMenu.SystemIndicator {
         } else {
             let paygManagerId = this._paygManager.connect('initialized', () => {
                 this._sync();
+                this._initializeAccountIDMenu();
                 this._paygManager.disconnect(paygManagerId);
             });
         }
+    }
+
+    // Differently from the remaining time counter, we just want to show the account ID
+    // when the backend properly supports it.
+    _initializeAccountIDMenu() {
+        if (this._verifyValidAccountID()) {
+            this._paygItem = new PopupMenu.PopupSubMenuMenuItem('', true);
+            this._paygItem.setSensitive(false);
+            this._paygItem.actor.visible = this._indicator.visible = this._paygManager.enabled;
+            this._paygItem.label.text = _('Account ID: %s').format(this._paygManager.accountID);
+            this._paygItem.icon.gicon = this._getMenuGicon();
+
+            this.menu.addMenuItem(this._paygItem);
+        }
+    }
+
+    _verifyValidAccountID() {
+        return Main.paygManager.accountID !== '0';
     }
 });
