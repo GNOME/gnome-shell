@@ -278,10 +278,6 @@ var AuthPrompt = GObject.registerClass({
         this.reset();
     }
 
-    addActorToDefaultButtonWell(actor) {
-        this._defaultButtonWell.add_child(actor);
-    }
-
     setActorInDefaultButtonWell(actor, animate) {
         if (!this._defaultButtonWellActor &&
             !actor)
