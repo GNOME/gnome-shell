@@ -559,7 +559,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this._indicator = new MessagesIndicator();
 
-        let box = new St.BoxLayout();
+        let box = new St.BoxLayout({ style_class: 'clock-display-box' });
         box.add_actor(new IndicatorPad(this._indicator));
         box.add_actor(this._clockDisplay);
         box.add_actor(this._indicator);
