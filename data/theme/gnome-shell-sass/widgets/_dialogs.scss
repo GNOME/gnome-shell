@@ -32,19 +32,28 @@
   .message-dialog-description { text-align: center; }
 }
 
-/* Run Dialog */
-.run-dialog {
-  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
-  .run-dialog-error-box {
-    padding-top: 16px;
-    spacing: 6px;
+/* Dialog List */
+.dialog-list {
+  spacing: 18px;
+
+  .dialog-list-title {
+    text-align: center;
+    font-weight: bold;
   }
 
-  .run-dialog-label {
-    @include fontsize($base_font_size + 1.1);
-    font-weight: normal;
-    color: $fg_color;
-    padding-bottom: .4em;
+  .dialog-list-scrollview { max-height: 200px; }
+  .dialog-list-box {
+    spacing: 1em;
+
+    .dialog-list-item {
+      spacing: 1em;
+
+      .dialog-list-item-title { font-weight: bold; }
+      .dialog-list-item-description {
+        color: darken($fg_color,5%);
+        @include fontsize($base_font_size - 1);
+      }
+    }
   }
 }
 
