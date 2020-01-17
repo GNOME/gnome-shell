@@ -221,6 +221,14 @@ class UserWidget extends St.BoxLayout {
 
             this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
             this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+        } else {
+            this.usernameEntry = new St.Entry({
+                style_class: 'login-dialog-username-entry',
+                can_focus: true,
+                x_expand: true,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            this.usernameEntry.hint_text = "Enter username…";
         }
 
         this._updateUser();
