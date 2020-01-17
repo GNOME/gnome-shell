@@ -8,6 +8,7 @@ const Util = imports.misc.util;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const Calendar = imports.ui.calendar;
+const GnomeSession = imports.misc.gnomeSession;
 const Weather = imports.misc.weather;
 const System = imports.system;
 
@@ -432,7 +433,6 @@ var MessagesIndicator = GObject.registerClass(
 class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
-            icon_name: 'message-indicator-symbolic',
             icon_size: 16,
             visible: false,
             y_expand: true,
@@ -440,6 +440,13 @@ class MessagesIndicator extends St.Icon {
         });
 
         this._sources = [];
+        this._count = 0;
+        this._doNotDisturb = false;
+
+        this._presence = new GnomeSession.Presence(
+            proxy => this._onStatusChanged(proxy.status));
+        this._presence.connectSignal('StatusChanged',
+            (proxy, sender, [status]) => this._onStatusChanged(status));
 
         Main.messageTray.connect('source-added', this._onSourceAdded.bind(this));
         Main.messageTray.connect('source-removed', this._onSourceRemoved.bind(this));
@@ -463,9 +470,21 @@ class MessagesIndicator extends St.Icon {
     _updateCount() {
         let count = 0;
         this._sources.forEach(source => (count += source.unseenCount));
-        count -= Main.messageTray.queueCount;
+        this._count = count - Main.messageTray.queueCount;
 
-        this.visible = count > 0;
+        this._sync();
+    }
+
+    _onStatusChanged(status) {
+        this._doNotDisturb = status === GnomeSession.PresenceStatus.BUSY;
+        this._sync();
+    }
+
+    _sync() {
+        this.icon_name = this._doNotDisturb
+            ? 'notifications-disabled-symbolic'
+            : 'message-indicator-symbolic';
+        this.visible = this._doNotDisturb || this._count > 0;
     }
 });
 
