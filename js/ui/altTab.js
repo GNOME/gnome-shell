@@ -64,9 +64,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
         let apps = Shell.AppSystem.get_default().get_running();
 
-        if (apps.length == 0)
-            return;
-
         this._switcherList = new AppSwitcher(apps, this);
         this._items = this._switcherList.icons;
     }
@@ -178,7 +175,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
-        } else if (keysym === Clutter.KEY_q) {
+        } else if (keysym == Clutter.KEY_q || keysym === Clutter.KEY_Q) {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym === Clutter.KEY_Left)
@@ -187,7 +184,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this._select(this._selectedIndex, this._nextWindow());
             else if (keysym === Clutter.KEY_Up)
                 this._select(this._selectedIndex, null, true);
-            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_F4)
+            else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
@@ -248,20 +245,20 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._select(n);
     }
 
-    _windowActivated(thumbnailList, n) {
+    _windowActivated(thumbnailSwitcher, n) {
         let appIcon = this._items[this._selectedIndex];
         Main.activateWindow(appIcon.cachedWindows[n]);
         this.fadeAndDestroy();
     }
 
-    _windowEntered(thumbnailList, n) {
+    _windowEntered(thumbnailSwitcher, n) {
         if (!this.mouseActive)
             return;
 
         this._select(this._selectedIndex, n);
     }
 
-    _windowRemoved(thumbnailList, n) {
+    _windowRemoved(thumbnailSwitcher, n) {
         let appIcon = this._items[this._selectedIndex];
         if (!appIcon)
             return;
@@ -373,7 +370,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _createThumbnails() {
-        this._thumbnails = new ThumbnailList(this._items[this._selectedIndex].cachedWindows);
+        this._thumbnails = new ThumbnailSwitcher(this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
@@ -481,9 +478,6 @@ var CyclerPopup = GObject.registerClass({
 
         this._items = this._getWindows();
 
-        if (this._items.length == 0)
-            return;
-
         this._highlight = new CyclerHighlight();
         global.window_group.add_actor(this._highlight);
 
@@ -559,11 +553,8 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
         let windows = this._getWindowList();
 
-        if (windows.length == 0)
-            return;
-
         let mode = this._settings.get_enum('app-icon-mode');
-        this._switcherList = new WindowList(windows, mode);
+        this._switcherList = new WindowSwitcher(windows, mode);
         this._items = this._switcherList.icons;
     }
 
@@ -596,7 +587,7 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(this._previous());
         else if (keysym == Clutter.KEY_Right)
             this._select(this._next());
-        else if (keysym == Clutter.KEY_w || keysym == Clutter.KEY_F4)
+        else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
             this._closeWindow(this._selectedIndex);
         else
             return Clutter.EVENT_PROPAGATE;
@@ -811,7 +802,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     // We override SwitcherList's highlight() method to also deal with
-    // the AppSwitcher->ThumbnailList arrows. Apps with only 1 window
+    // the AppSwitcher->ThumbnailSwitcher arrows. Apps with only 1 window
     // will hide their arrows by default, but show them when their
     // thumbnails are visible (ie, when the app icon is supposed to be
     // in justOutline mode). Apps with multiple windows will normally
@@ -868,8 +859,8 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var ThumbnailList = GObject.registerClass(
-class ThumbnailList extends SwitcherPopup.SwitcherList {
+var ThumbnailSwitcher = GObject.registerClass(
+class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
 
@@ -1022,8 +1013,8 @@ class WindowIcon extends St.BoxLayout {
     }
 });
 
-var WindowList = GObject.registerClass(
-class WindowList extends SwitcherPopup.SwitcherList {
+var WindowSwitcher = GObject.registerClass(
+class WindowSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows, mode) {
         super._init(true);
 
