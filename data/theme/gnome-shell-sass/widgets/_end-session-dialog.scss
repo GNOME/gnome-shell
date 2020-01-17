@@ -47,34 +47,6 @@ $end_session_dialog_width: 28em;
   height: $base_icon_size * 3;
 }
 
-.end-session-dialog-inhibitor-layout {
-  spacing: $base_spacing * 4;
-  max-height: 200px;
-  padding-right: 65px;
-  padding-left: 65px;
-}
-
-.end-session-dialog-session-list,
-.end-session-dialog-app-list {
-  spacing: 1em;
-}
-
-.end-session-dialog-list-header {
-  font-weight: bold;
-  &:rtl { text-align: right; }
-}
-
-.end-session-dialog-app-list-item,
-.end-session-dialog-session-list-item {
-  spacing: 1em;
-}
-
-.end-session-dialog-app-list-item-name,
-.end-session-dialog-session-list-item-name {
-  font-weight: bold;
-}
-
-.end-session-dialog-app-list-item-description {
-  color: darken($fg_color,5%);
-  @include fontsize($base_font_size - 1);
+.end-session-dialog .dialog-list-title {
+  color: $warning_color;
 }
