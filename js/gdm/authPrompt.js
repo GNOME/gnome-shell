@@ -101,6 +101,15 @@ var AuthPrompt = GObject.registerClass({
 
         this.add_child(this._label);
 
+        this._usernameEntry = new St.Entry({
+            can_focus: true,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._usernameEntry.hint_text = "Enter username…";
+        this._usernameEntry.hide();
+        this.add_child(this._usernameEntry);
+
         this._initEntryRow();
 
         this._message = new St.Label({
@@ -366,6 +375,11 @@ var AuthPrompt = GObject.registerClass({
         this._entry.grab_key_focus();
     }
 
+
+    getUsernameEntryText() {
+        return this._usernameEntry.get_text();
+    }
+
     getAnswer() {
         let text;
 
@@ -426,7 +440,7 @@ var AuthPrompt = GObject.registerClass({
         this._entry.set_text('');
     }
 
-    setUser(user) {
+    setUser(user, userNotListed=false) {
         let oldChild = this._userWell.get_child();
         if (oldChild)
             oldChild.destroy();
@@ -434,6 +448,11 @@ var AuthPrompt = GObject.registerClass({
         if (user) {
             let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
             this._userWell.set_child(userWidget);
+            this._usernameEntry.hide();
+        } else if (!user && userNotListed) {
+            let userWidget = new UserWidget.UserWidget(null, Clutter.Orientation.VERTICAL);
+            this._userWell.set_child(userWidget);
+            this._usernameEntry.show();
         }
     }
 
