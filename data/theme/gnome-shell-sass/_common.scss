@@ -156,19 +156,18 @@ stage {
 
 // buttons in dialogs
 %bubble_button {
-  @include button(normal);
+  @include button(normal, $shadow: none);
   padding: $base_padding * 2;
   border-color: $bubble_borders_color;
   border-style: solid;
   border-width: 1px;
   border-left-width: 0;
   border-bottom-width: 0;
-  box-shadow:none !important;
 
-  &:insensitive { @include button(insensitive);}
-  &:hover { @include button(hover);}
-  &:focus { @include button(focus);}
-  &:active { @include button(active);}
+  &:insensitive { @include button(insensitive, $shadow: none); }
+  &:hover { @include button(hover, $shadow: none); }
+  &:focus { @include button(focus, $shadow: none); }
+  &:active { @include button(active, $shadow: none); }
 
   // radius is 2 pixel less to fit in bubble
   &:first-child {
