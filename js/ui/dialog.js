@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Dialog, MessageDialogContent */
+/* exported Dialog, MessageDialogContent, ListSection */
 
 const { Clutter, GObject, Pango, St } = imports.gi;
 
@@ -198,5 +198,85 @@ var MessageDialogContent = GObject.registerClass({
             visible: value != null,
         });
         this.notify(prop);
+    }
+});
+
+var ListSection = GObject.registerClass({
+    Properties: {
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
+    },
+}, class ListSection extends St.BoxLayout {
+    _init(params) {
+        this._title = new St.Label({ style_class: 'dialog-list-title' });
+
+        this._listScrollView = new St.ScrollView({
+            style_class: 'dialog-list-scrollview',
+            hscrollbar_policy: St.PolicyType.NEVER,
+        });
+        this._list = new St.BoxLayout({
+            style_class: 'dialog-list-box',
+            vertical: true,
+        });
+        this._listScrollView.add_actor(this._list);
+
+        let defaultParams = {
+            style_class: 'dialog-list',
+            x_expand: true,
+            vertical: true,
+        };
+        super._init(Object.assign(defaultParams, params));
+
+        this.add_child(this._title);
+        this.add_child(this._listScrollView);
+    }
+
+    get title() {
+        return this._title.text;
+    }
+
+    set title(title) {
+        this._title.set({
+            text: title || '',
+            visible: title != null,
+        });
+        this.notify('title');
+    }
+
+    addListItem(iconActor, title, description) {
+        let item = new St.BoxLayout({ style_class: 'dialog-list-item' });
+
+        item.add_child(iconActor);
+
+        let textLayout = new St.BoxLayout({
+            vertical: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        item.add_child(textLayout);
+
+        let nameLabel = new St.Label({
+            text: title,
+            style_class: 'dialog-list-item-title',
+        });
+        textLayout.add_child(nameLabel);
+        item.label_actor = nameLabel;
+
+        if (description) {
+            let descriptionLabel = new St.Label({
+                text: description,
+                style_class: 'dialog-list-item-title-description',
+            });
+            textLayout.add_child(descriptionLabel);
+        }
+
+        this._list.add_actor(item);
+    }
+
+    clearList() {
+        this._list.destroy_all_children();
     }
 });
