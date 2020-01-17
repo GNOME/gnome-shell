@@ -157,6 +157,16 @@
   height: 24px;
 }
 
+.login-dialog-username-entry {
+  width: 262px;
+  height: 24px;
+}
+
+.login-dialog-username-prompt-entry {
+ @extend .login-dialog-username-entry;
+ margin-left: 52px;
+}
+
 .login-dialog-prompt-label {
   color: darken($osd_fg_color, 20%);
   @include fontsize($base_font_size + 1);
