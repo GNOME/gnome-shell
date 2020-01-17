@@ -906,7 +906,8 @@ var LoginDialog = GObject.registerClass({
     }
 
     _askForUsernameAndBeginVerification() {
-        this._authPrompt.setQuestion(_("Username: "));
+        this._user = null;
+        this._authPrompt.setUser(this._user, true);
 
         this._showRealmLoginHint(this._realmManager.loginFormat);
 
@@ -916,8 +917,8 @@ var LoginDialog = GObject.registerClass({
             () => {
                 this._authPrompt.disconnect(this._nextSignalId);
                 this._nextSignalId = 0;
-                this._authPrompt.updateSensitivity(false);
-                let answer = this._authPrompt.getAnswer();
+                this._authPrompt.updateSensitivity(true);
+                let answer = this._authPrompt.getUsernameEntryText();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
                 this._authPrompt.startSpinning();
@@ -926,7 +927,7 @@ var LoginDialog = GObject.registerClass({
             });
         this._updateCancelButton();
 
-        this._sessionMenuButton.updateSensitivity(false);
+        this._sessionMenuButton.updateSensitivity(this._shouldShowSessionMenuButton());
         this._authPrompt.updateSensitivity(true);
         this._showPrompt();
     }
