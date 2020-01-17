@@ -127,11 +127,23 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _initEntryRow() {
-        let mainBox = new St.BoxLayout({
+        this._mainBox = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: true,
+        });
+        this.add_child(this._mainBox);
+
+        this._mainBoxRow1 = new St.BoxLayout({
             style_class: 'login-dialog-button-box',
             vertical: false,
         });
-        this.add_child(mainBox);
+        this._mainBox.add_child(this._mainBoxRow1);
+
+        this._mainBoxRow2 = new St.BoxLayout({
+            style_class: 'login-dialog-button-box',
+            vertical: false,
+        });
+        this._mainBox.add_child(this._mainBoxRow2);
 
         this.cancelButton = new St.Button({
             style_class: 'modal-dialog-button button cancel-button',
@@ -144,7 +156,6 @@ var AuthPrompt = GObject.registerClass({
             child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
         });
         this.cancelButton.connect('clicked', () => this.cancel());
-        mainBox.add_child(this.cancelButton);
 
         let entryParams = {
             style_class: 'login-dialog-prompt-entry',
@@ -161,7 +172,6 @@ var AuthPrompt = GObject.registerClass({
         ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
 
         this._entry = this._passwordEntry;
-        mainBox.add_child(this._entry);
         this._entry.grab_key_focus();
 
         this._entry.clutter_text.connect('text-changed', () => {
@@ -179,12 +189,39 @@ var AuthPrompt = GObject.registerClass({
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        mainBox.add_child(this._defaultButtonWell);
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._spinner.opacity = 0;
         this._spinner.show();
         this._defaultButtonWell.add_child(this._spinner);
+
+        this._updateRowsForLogin();
+    }
+
+    _updateRowsForLogin() {
+        this._mainBoxRow1.remove_all_children();
+        this._mainBoxRow2.remove_all_children();
+        this._mainBoxRow2.hide();
+
+        this._mainBoxRow1.add_child(this.cancelButton);
+        this._mainBoxRow1.add_child(this._entry);
+        this._entry.style_class = 'login-dialog-prompt-entry';
+        this._mainBoxRow1.add_child(this._defaultButtonWell);
+    }
+
+    _updateRowsForUsernameBasedLogin() {
+        this._mainBoxRow1.remove_all_children();
+
+        let userWidget = this._userWell.get_child();
+        this._mainBoxRow1.add_child(this.cancelButton);
+        this._mainBoxRow1.add_child(userWidget.usernameEntry);
+
+        // Make sure we always have password-entry here.
+        this._updateEntry(true);
+        this._mainBoxRow2.add_child(this._entry);
+        this._entry.style_class = 'login-dialog-username-prompt-entry';
+        this._mainBoxRow2.add_child(this._defaultButtonWell);
+        this._mainBoxRow2.show();
     }
 
     _updateEntry(secret) {
@@ -363,6 +400,12 @@ var AuthPrompt = GObject.registerClass({
         this._entry.grab_key_focus();
     }
 
+    getUsernameEntryText() {
+        let userWidget = this._userWell.get_child();
+        return userWidget.usernameEntry.get_text();
+    }
+
+
     getAnswer() {
         let text;
 
@@ -423,7 +466,7 @@ var AuthPrompt = GObject.registerClass({
         this._entry.set_text('');
     }
 
-    setUser(user) {
+    setUser(user, userNotListed = false) {
         let oldChild = this._userWell.get_child();
         if (oldChild)
             oldChild.destroy();
@@ -431,6 +474,11 @@ var AuthPrompt = GObject.registerClass({
         if (user) {
             let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
             this._userWell.set_child(userWidget);
+        } else if (!user && userNotListed) {
+            let userWidget = new UserWidget.UserWidget(null, Clutter.Orientation.VERTICAL);
+            this._userWell.set_child(userWidget);
+            this._updateRowsForUsernameBasedLogin();
+            this.verificationStatus = AuthPromptStatus.VERIFYING;
         }
     }
 
@@ -448,6 +496,8 @@ var AuthPrompt = GObject.registerClass({
         this._message.opacity = 0;
         this.setUser(null);
         this.stopSpinning();
+
+        this._updateRowsForLogin();
 
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
