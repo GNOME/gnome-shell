@@ -12,14 +12,22 @@ var SPINNER_ANIMATION_DELAY = 1000;
 var Animation = GObject.registerClass(
 class Animation extends St.Bin {
     _init(file, width, height, speed) {
-        super._init({ width, height });
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
+
+        super._init({
+            width * themeContext.scale_factor,
+            height * themeContext.scale_factor,
+        });
+
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
 
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
         this._scaleChangedId = themeContext.connect('notify::scale-factor',
-            this._loadFile.bind(this, file, width, height));
+            () => {
+                this._loadFile(file, width, height);
+                this.set_size(width * themeContext.scale_factor, height * themeContext.scale_factor);
+            });
 
         this._speed = speed;
 
