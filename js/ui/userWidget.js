@@ -57,9 +57,12 @@ class Avatar extends St.Bin {
     }
 
     update() {
-        let iconFile = this._user.get_icon_file();
-        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-            iconFile = null;
+        let iconFile = null;
+        if (this._user) {
+            iconFile = this._user.get_icon_file();
+            if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+                iconFile = null;
+        }
 
         if (iconFile) {
             this.child = null;
@@ -172,6 +175,7 @@ class UserWidgetLabel extends St.Widget {
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
     _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
+        // If user is null, that implies a username-based login authorization.
         this._user = user;
 
         let vertical = orientation == Clutter.Orientation.VERTICAL;
@@ -197,10 +201,13 @@ class UserWidget extends St.BoxLayout {
 
             this._label.bind_property('label-actor', this, 'label-actor',
                                       GObject.BindingFlags.SYNC_CREATE);
+
             this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
             this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
-            this._updateUser();
         }
+
+        this._updateUser();
+    }
 
     _onDestroy() {
         if (this._userLoadedId != 0) {
