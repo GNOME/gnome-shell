@@ -435,14 +435,6 @@ var UnlockDialog = GObject.registerClass({
         let clock = new Clock();
         this._clock.add_child(clock);
 
-        let nameLabel = new St.Label({
-            style_class: 'unlock-dialog-user-name',
-            text: this._user.get_real_name(),
-            x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this._clock.add_child(nameLabel);
-
         stack.add_child(this._clock);
         this._showClock();
 
