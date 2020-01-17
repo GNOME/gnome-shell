@@ -107,36 +107,6 @@ stage {
   color: $fg_color;
   background-color: $bg_color;
   border: 1px solid if($variant=='light', rgba(0,0,0, 0.6), $borders_color);
-
-  // entry
-  StEntry { @extend %bubble_entry;}
-
-  // button
-  .button {
-    background-color: $bg_color;
-    color: $fg_color;
-    box-shadow: none;
-
-    &, &:hover, &:focus, &:active, &:disabled { 
-      border-color: $bubble_borders_color;
-    }
-
-    &:hover { background-color: $hover_bg_color;}
-    &:active { 
-      background-color: $selected_bg_color;
-      color: $selected_fg_color;
-    }
-    &:disabled { color: $insensitive_fg_color;}
-  }
-}
-
-// entries in dialogs
-%bubble_entry {
-  color: $fg_color;
-  background-color: darken($bg_color, 2%);
-  border-color: $bubble_borders_color;
-  box-shadow: none;
-  &:focus { border: 2px solid $selected_bg_color;}
 }
 
 // button styling
@@ -158,7 +128,6 @@ stage {
 %bubble_button {
   @include button(normal, $shadow: none);
   padding: $base_padding * 2;
-  border-color: $bubble_borders_color;
   border-style: solid;
   border-width: 1px;
   border-left-width: 0;

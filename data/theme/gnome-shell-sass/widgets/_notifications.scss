@@ -27,9 +27,6 @@ $notification_banner_width: 34em;
     color: $fg_color;
   }
 
-  // entries
-  StEntry { @extend %bubble_entry; }
-
   .notification-icon {
     padding: 5px;
   }
