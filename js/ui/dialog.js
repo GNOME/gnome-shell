@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Dialog, MessageDialogContent */
+/* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
 const { Clutter, GObject, Pango, St } = imports.gi;
 
@@ -189,6 +189,123 @@ var MessageDialogContent = GObject.registerClass({
 
     get description() {
         return this._description.text;
+    }
+
+    set title(title) {
+        _setLabel(this._title, title);
+        this.notify('title');
+    }
+
+    set description(description) {
+        _setLabel(this._description, description);
+        this.notify('description');
+    }
+});
+
+var ListSection = GObject.registerClass({
+    Properties: {
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
+    },
+}, class ListSection extends St.BoxLayout {
+    _init(params) {
+        this._title = new St.Label({ style_class: 'dialog-list-title' });
+
+        this._listScrollView = new St.ScrollView({
+            style_class: 'dialog-list-scrollview',
+            hscrollbar_policy: St.PolicyType.NEVER,
+        });
+
+        this.list = new St.BoxLayout({
+            style_class: 'dialog-list-box',
+            vertical: true,
+        });
+        this._listScrollView.add_actor(this.list);
+
+        let defaultParams = {
+            style_class: 'dialog-list',
+            x_expand: true,
+            vertical: true,
+        };
+        super._init(Object.assign(defaultParams, params));
+
+        this.label_actor = this._title;
+        this.add_child(this._title);
+        this.add_child(this._listScrollView);
+    }
+
+    get title() {
+        return this._title.text;
+    }
+
+    set title(title) {
+        _setLabel(this._title, title);
+        this.notify('title');
+    }
+});
+
+var ListSectionItem = GObject.registerClass({
+    Properties: {
+        'icon-actor':  GObject.ParamSpec.object(
+            'icon-actor', 'icon-actor', 'Icon actor',
+            GObject.ParamFlags.READWRITE,
+            Clutter.Actor.$gtype),
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
+        'description': GObject.ParamSpec.string(
+            'description', 'description', 'description',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT,
+            null),
+    },
+}, class ListSectionItem extends St.BoxLayout {
+    _init(params) {
+        this._iconActorBin = new St.Bin();
+
+        let textLayout = new St.BoxLayout({
+            vertical: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this._title = new St.Label({ style_class: 'dialog-list-item-title' });
+
+        this._description = new St.Label({
+            style_class: 'dialog-list-item-title-description',
+        });
+
+        textLayout.add_child(this._title);
+        textLayout.add_child(this._description);
+
+        let defaultParams = { style_class: 'dialog-list-item' };
+        super._init(Object.assign(defaultParams, params));
+
+        this.label_actor = this._title;
+        this.add_child(this._iconActorBin);
+        this.add_child(textLayout);
+    }
+
+    get icon_actor() {
+        return this._iconActorBin.get_child();
+    }
+
+    get title() {
+        return this._title.text;
+    }
+
+    get description() {
+        return this._description.text;
+    }
+
+    set icon_actor(actor) {
+        this._iconActorBin.set_child(actor);
+        this.notify('icon-actor');
     }
 
     set title(title) {
