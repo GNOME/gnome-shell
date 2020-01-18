@@ -863,12 +863,10 @@ class EventsSection extends MessageList.MessageListSection {
         let now = new Date();
         if (sameYear(this._date, now)) {
             /* Translators: Shown on calendar heading when selected day occurs on current year */
-            dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
-                                                             "%A, %B %-d"));
+            dayFormat = Shell.util_translate_time_string(NC_("calendar heading", "%A, %B %-d"));
         } else {
             /* Translators: Shown on calendar heading when selected day occurs on different year */
-            dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
-                                                             "%A, %B %-d, %Y"));
+            dayFormat = Shell.util_translate_time_string(NC_("calendar heading", "%A, %B %-d, %Y"));
         }
         this._title.label = this._date.toLocaleFormat(dayFormat);
     }
