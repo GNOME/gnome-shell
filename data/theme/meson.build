@@ -8,6 +8,7 @@ theme_sources = files([
   'gnome-shell-sass/_widgets.scss',
   'gnome-shell-sass/widgets/_app-grid.scss',
   'gnome-shell-sass/widgets/_app-switcher.scss',
+  'gnome-shell-sass/widgets/_base.scss',
   'gnome-shell-sass/widgets/_buttons.scss',
   'gnome-shell-sass/widgets/_calendar.scss',
   'gnome-shell-sass/widgets/_check-box.scss',
