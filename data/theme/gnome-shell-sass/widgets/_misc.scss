@@ -1,9 +1,4 @@
-// Links/URLs
-.shell-link {
-  color: $link_color;
-  &:hover { color: lighten($link_color,10%); }
-}
-
+// URLs
 .url-highlighter { link-color: $link_color; }
 
 // Rubberband for select-area screenshots
