@@ -57,12 +57,6 @@ $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.
 // $base_icon_size: 1.09em;
 $base_icon_size: 16px;
 
-// Stage
-stage {
-  @include fontsize($base_font_size);
-  color: $fg_color;
-}
-
 /* Common Stylings */
 
 // Text
