@@ -3,6 +3,13 @@
 
 const { Clutter, GObject, Pango, St } = imports.gi;
 
+function _setLabel(label, value) {
+    label.set({
+        text: value || '',
+        visible: value != null,
+    });
+}
+
 var Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
     _init(parentActor, styleClass) {
@@ -185,18 +192,12 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     set title(title) {
-        this._setLabel(this._title, 'title', title);
+        _setLabel(this._title, title);
+        this.notify('title');
     }
 
     set description(description) {
-        this._setLabel(this._description, 'description', description);
-    }
-
-    _setLabel(label, prop, value) {
-        label.set({
-            text: value || '',
-            visible: value != null,
-        });
-        this.notify(prop);
+        _setLabel(this._description, description);
+        this.notify('description');
     }
 });
