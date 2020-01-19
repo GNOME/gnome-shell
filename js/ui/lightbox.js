@@ -6,7 +6,7 @@ const { Clutter, GObject, Shell, St } = imports.gi;
 const Params = imports.misc.params;
 
 var DEFAULT_FADE_FACTOR = 0.4;
-var VIGNETTE_BRIGHTNESS = 0.2;
+var VIGNETTE_BRIGHTNESS = 0.5;
 var VIGNETTE_SHARPNESS = 0.7;
 
 const VIGNETTE_DECLARATIONS = '\
