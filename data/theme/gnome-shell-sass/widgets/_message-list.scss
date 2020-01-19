@@ -5,6 +5,8 @@
 .message-list {
   width: 31.5em;
   padding: 0 $base_padding * 2;
+
+  .message-list-placeholder { spacing: 12px; }
 }
 
 .message-list-sections {
