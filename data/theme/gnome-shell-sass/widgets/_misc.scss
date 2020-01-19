@@ -7,21 +7,6 @@
   border: 1px solid $selected_bg_color;
 }
 
-// Pointer accessibility notifications
-.pie-timer {
-  width: 60px;
-  height: 60px;
-  -pie-border-width: 3px;
-  -pie-border-color: $selected_bg_color;
-  -pie-background-color: lighten(transparentize($selected_bg_color, 0.7), 40%);
-}
-
-// Screen zoom/Magnifier
-.magnifier-zoom-region {
-  border: 2px solid $selected_bg_color;
-  &.full-screen { border-width: 0; }
-}
-
 // User icon
 .user-icon {
   background-size: contain;
