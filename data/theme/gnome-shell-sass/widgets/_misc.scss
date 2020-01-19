@@ -32,18 +32,6 @@
   icon-size: 64px;
 }
 
-// Input Source Switcher
-.input-source-switcher-symbol {
-  font-size: 34pt;
-  width: 96px;
-  height: 96px;
-}
-
-// Window cycler highlight
-.cycler-highlight {
-  border: 5px solid $selected_bg_color;
-}
-
 // Text
 .headline { @include fontsize($base_font_size + 1); }
 .lightbox { background-color: black; }
