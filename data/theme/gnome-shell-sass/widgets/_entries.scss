@@ -20,4 +20,5 @@ StEntry {
     icon-size: $base_icon_size;
     padding: 0 4px;
   }
+  StLabel.hint-text { color: transparentize($fg_color, 0.3); }
 }
