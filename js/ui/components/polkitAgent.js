@@ -10,6 +10,7 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
+const Util = imports.misc.util;
 
 const DialogMode = {
     AUTH: 0,
@@ -247,6 +248,13 @@ var AuthenticationDialog = GObject.registerClass({
                  * requested authentication was not gained; this can happen
                  * because of an authentication error (like invalid password),
                  * for instance. */
+
+                Util.wiggle(this._passwordEntry, {
+                    offset: Util.WIGGLE_OFFSET,
+                    duration: Util.WIGGLE_DURATION,
+                    wiggleCount: Util.N_WIGGLES,
+                });
+
                 this._errorMessageLabel.set_text(_("Sorry, that didn’t work. Please try again."));
                 this._errorMessageLabel.show();
                 this._infoMessageLabel.hide();
