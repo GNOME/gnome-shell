@@ -703,7 +703,7 @@ var AllView = GObject.registerClass({
     }
 
     addFolderPopup(popup) {
-        this._stack.add_actor(popup);
+        this.add_child(popup);
         popup.connect('open-state-changed', (o, isOpen) => {
             this._eventBlocker.visible = isOpen;
 
