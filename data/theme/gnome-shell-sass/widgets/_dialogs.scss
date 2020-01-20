@@ -129,10 +129,12 @@
 
 .prompt-dialog-password-layout {
   spacing: 8px;
-}
 
-.prompt-dialog-password-entry {
-  width: 22em;
+  .prompt-dialog-password-entry {
+    width: 22em;
+
+    .hint-text { color: transparentize($fg_color, 0.3); }
+  }
 }
 
 .prompt-dialog-error-label {
