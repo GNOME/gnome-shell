@@ -60,8 +60,8 @@
 
 // Caps-lock warning
 .caps-lock-warning-label {
+  text-align: center;
   padding-bottom: 8px;
-  padding-left: 6.2em;
   @include fontsize($base_font_size - 1);
   color: $warning_color;
 }
