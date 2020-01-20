@@ -8,8 +8,7 @@ const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
-
-var WORK_SPINNER_ICON_SIZE = 16;
+const Util = imports.misc.util;
 
 var KeyringDialog = GObject.registerClass(
 class KeyringDialog extends ModalDialog.ModalDialog {
@@ -74,6 +73,15 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.bind_property('warning', warning, 'text', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.connect('notify::warning-visible', () => {
             warning.opacity = this.prompt.warning_visible ? 255 : 0;
+        });
+        this.prompt.connect('notify::warning', () => {
+            if (this._passwordEntry && warning != '') {
+                Util.wiggle(this._passwordEntry, {
+                    offset: Util.WIGGLE_OFFSET,
+                    duration: Util.WIGGLE_DURATION,
+                    wiggleCount: Util.N_WIGGLES,
+                });
+            }
         });
         passwordBox.add_child(warning);
 
