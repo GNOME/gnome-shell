@@ -56,6 +56,22 @@
   }
 }
 
+/* Run Dialog */
+.run-dialog {
+  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
+  .run-dialog-error-box {
+    padding-top: 16px;
+    spacing: 6px;
+  }
+
+  .run-dialog-label {
+    @include fontsize($base_font_size + 1.1);
+    font-weight: normal;
+    color: $fg_color;
+    padding-bottom: .4em;
+  }
+}
+
 /* ShellMountOperation Dialogs */
 .shell-mount-operation-icon {
   icon-size: $base_icon_size * 3;
