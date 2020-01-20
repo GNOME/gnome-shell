@@ -21,6 +21,7 @@ const { AccountsService, Clutter, Gio,
         GLib, GObject, Pango, Polkit, Shell, St }  = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
+const Dialog = imports.ui.dialog;
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const ModalDialog = imports.ui.modalDialog;
@@ -28,8 +29,7 @@ const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const _ITEM_ICON_SIZE = 48;
-const _DIALOG_ICON_SIZE = 48;
+const _ITEM_ICON_SIZE = 64;
 
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
 
@@ -49,7 +49,6 @@ const logoutDialogContent = {
     showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label: C_("button", "Log Out") }],
-    iconStyleClass: 'end-session-dialog-logout-icon',
     showOtherSessions: false,
 };
 
@@ -68,7 +67,6 @@ const shutdownDialogContent = {
                      { signal: 'ConfirmedShutdown',
                        label: C_("button", "Power Off") }],
     iconName: 'system-shutdown-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -83,7 +81,6 @@ const restartDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label: C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -101,7 +98,6 @@ const restartUpdateDialogContent = {
     unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
     unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -119,7 +115,6 @@ const restartUpgradeDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label: C_("button", "Restart &amp; Install") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
 };
 
@@ -192,16 +187,6 @@ function _roundSecondsToInterval(totalSeconds, secondsLeft, interval) {
     return time;
 }
 
-function _setLabelText(label, text) {
-    if (text) {
-        label.set_text(text);
-        label.show();
-    } else {
-        label.set_text('');
-        label.hide();
-    }
-}
-
 function _setCheckBoxLabel(checkBox, text) {
     let label = checkBox.getLabelActor();
 
@@ -260,75 +245,34 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this.connect('opened',
                      this._onOpened.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is_loaded', this._sync.bind(this));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._sync.bind(this));
         this._userChangedId = this._user.connect('changed', this._sync.bind(this));
 
-        let mainContentLayout = new St.BoxLayout({
-            vertical: false,
-            x_expand: true,
-            y_expand: false,
-        });
-        this.contentLayout.add_child(mainContentLayout);
-
-        this._iconBin = new St.Bin({
-            x_expand: true,
-            x_align: Clutter.ActorAlign.END,
-        });
-        mainContentLayout.add_child(this._iconBin);
-
-        let messageLayout = new St.BoxLayout({ vertical: true,
-                                               style_class: 'end-session-dialog-layout' });
-        mainContentLayout.add_child(messageLayout);
-
-        this._subjectLabel = new St.Label({ style_class: 'end-session-dialog-subject' });
-
-        messageLayout.add_child(this._subjectLabel);
-
-        this._descriptionLabel = new St.Label({
-            style_class: 'end-session-dialog-description',
-            y_expand: true,
-        });
-        this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._descriptionLabel.clutter_text.line_wrap = true;
-
-        messageLayout.add_child(this._descriptionLabel);
+        this._messageDialogContent = new Dialog.MessageDialogContent();
 
         this._checkBox = new CheckBox.CheckBox();
         this._checkBox.connect('clicked', this._sync.bind(this));
-        messageLayout.add(this._checkBox);
+        this._messageDialogContent.add_child(this._checkBox);
 
-        this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-warning',
-                                              text: _("Running on battery power: please plug in before installing updates.") });
+        this._batteryWarning = new St.Label({
+            style_class: 'end-session-dialog-battery-warning',
+            text: _('Running on battery power: Please plug in before installing updates.'),
+        });
         this._batteryWarning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._batteryWarning.clutter_text.line_wrap = true;
-        messageLayout.add(this._batteryWarning);
+        this._messageDialogContent.add_child(this._batteryWarning);
 
-        this._scrollView = new St.ScrollView({
-            style_class: 'end-session-dialog-list',
-            x_expand: true,
-            y_expand: true,
+        this.contentLayout.add_child(this._messageDialogContent);
+
+        this._applicationSection = new Dialog.ListSection({
+            title: _('Some applications are busy or have unsaved work'),
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        this.contentLayout.add_child(this._scrollView);
-        this._scrollView.hide();
+        this.contentLayout.add_child(this._applicationSection);
 
-        this._inhibitorSection = new St.BoxLayout({ vertical: true,
-                                                    style_class: 'end-session-dialog-inhibitor-layout' });
-        this._scrollView.add_actor(this._inhibitorSection);
-
-        this._applicationHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
-                                                 text: _("Some applications are busy or have unsaved work.") });
-        this._applicationList = new St.BoxLayout({ style_class: 'end-session-dialog-app-list',
-                                                   vertical: true });
-        this._inhibitorSection.add_actor(this._applicationHeader);
-        this._inhibitorSection.add_actor(this._applicationList);
-
-        this._sessionHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
-                                             text: _("Other users are logged in.") });
-        this._sessionList = new St.BoxLayout({ style_class: 'end-session-dialog-session-list',
-                                               vertical: true });
-        this._inhibitorSection.add_actor(this._sessionHeader);
-        this._inhibitorSection.add_actor(this._sessionList);
+        this._sessionSection = new Dialog.ListSection({
+            title: _('Other users are logged in'),
+        });
+        this.contentLayout.add_child(this._sessionSection);
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
@@ -379,11 +323,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             subject = dialogContent.subjectWithUpdates;
 
         if (dialogContent.showBatteryWarning) {
-            // Warn when running on battery power
-            if (this._powerProxy.OnBattery && this._checkBox.checked)
-                this._batteryWarning.opacity = 255;
-            else
-                this._batteryWarning.opacity = 0;
+            this._batteryWarning.visible =
+                this._powerProxy.OnBattery && this._checkBox.checked;
         }
 
         let description;
@@ -417,26 +358,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (!description)
             description = dialogContent.description(displayTime);
 
-        _setLabelText(this._descriptionLabel, description);
-        _setLabelText(this._subjectLabel, subject);
-
-        if (dialogContent.iconName) {
-            this._iconBin.child = new St.Icon({ icon_name: dialogContent.iconName,
-                                                icon_size: _DIALOG_ICON_SIZE,
-                                                style_class: dialogContent.iconStyleClass });
-        } else {
-            let avatarWidget = new UserWidget.Avatar(this._user,
-                                                     { iconSize: _DIALOG_ICON_SIZE,
-                                                       styleClass: dialogContent.iconStyleClass });
-            this._iconBin.child = avatarWidget;
-            avatarWidget.update();
-        }
+        this._messageDialogContent.title = subject;
+        this._messageDialogContent.description = description;
 
         let hasApplications = this._applications.length > 0;
         let hasSessions = this._sessions.length > 0;
-        this._scrollView.visible = hasApplications || hasSessions;
-        this._applicationHeader.visible = hasApplications;
-        this._sessionHeader.visible = hasSessions;
+
+        this._applicationSection.visible = hasApplications;
+        this._sessionSection.visible = hasSessions;
     }
 
     _updateButtons() {
@@ -593,31 +522,6 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._secondsLeft = 0;
     }
 
-    _constructListItemForApp(inhibitor, app) {
-        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-app-list-item',
-                                       can_focus: true });
-        actor.add(app.create_icon_texture(_ITEM_ICON_SIZE));
-
-        let textLayout = new St.BoxLayout({ vertical: true,
-                                            y_expand: true,
-                                            y_align: Clutter.ActorAlign.CENTER });
-        actor.add(textLayout);
-
-        let nameLabel = new St.Label({ text: app.get_name(),
-                                       style_class: 'end-session-dialog-app-list-item-name' });
-        textLayout.add(nameLabel);
-        actor.label_actor = nameLabel;
-
-        let [reason] = inhibitor.GetReasonSync();
-        if (reason) {
-            let reasonLabel = new St.Label({ text: reason,
-                                             style_class: 'end-session-dialog-app-list-item-description' });
-            textLayout.add(reasonLabel);
-        }
-
-        return actor;
-    }
-
     _onInhibitorLoaded(inhibitor) {
         if (!this._applications.includes(inhibitor)) {
             // Stale inhibitor
@@ -627,44 +531,19 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let app = findAppFromInhibitor(inhibitor);
 
         if (app) {
-            let actor = this._constructListItemForApp(inhibitor, app);
-            this._applicationList.add(actor);
+            let [description] = inhibitor.GetReasonSync();
+            let listItem = new Dialog.ListSectionItem({
+                icon_actor: app.create_icon_texture(_ITEM_ICON_SIZE),
+                title: app.get_name(),
+                description,
+            });
+            this._applicationSection.list.add_child(listItem);
         } else {
             // inhibiting app is a service, not an application
             this._applications.splice(this._applications.indexOf(inhibitor), 1);
         }
 
         this._sync();
-    }
-
-    _constructListItemForSession(session) {
-        let avatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
-        avatar.update();
-
-        let userName = session.user.get_real_name() ? session.user.get_real_name() : session.username;
-        let userLabelText;
-
-        if (session.remote)
-            /* Translators: Remote here refers to a remote session, like a ssh login */
-            userLabelText = _("%s (remote)").format(userName);
-        else if (session.type == "tty")
-            /* Translators: Console here refers to a tty like a VT console */
-            userLabelText = _("%s (console)").format(userName);
-        else
-            userLabelText = userName;
-
-        let actor = new St.BoxLayout({ style_class: 'end-session-dialog-session-list-item',
-                                       can_focus: true });
-        actor.add(avatar);
-
-        let nameLabel = new St.Label({ text: userLabelText,
-                                       style_class: 'end-session-dialog-session-list-item-name',
-                                       y_expand: true,
-                                       y_align: Clutter.ActorAlign.CENTER });
-        actor.add(nameLabel);
-        actor.label_actor = nameLabel;
-
-        return actor;
     }
 
     _loadSessions() {
@@ -697,8 +576,27 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                                 remote: proxy.Remote };
                 this._sessions.push(session);
 
-                let actor = this._constructListItemForSession(session);
-                this._sessionList.add(actor);
+                let userAvatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
+                userAvatar.update();
+
+                userName = session.user.get_real_name()
+                    ? session.user.get_real_name() : session.username;
+
+                let userLabelText;
+                if (session.remote)
+                    /* Translators: Remote here refers to a remote session, like a ssh login */
+                    userLabelText = _('%s (remote)').format(userName);
+                else if (session.type === 'tty')
+                    /* Translators: Console here refers to a tty like a VT console */
+                    userLabelText = _('%s (console)').format(userName);
+                else
+                    userLabelText = userName;
+
+                let listItem = new Dialog.ListSectionItem({
+                    icon_actor: userAvatar,
+                    title: userLabelText,
+                });
+                this._sessionSection.list.add_child(listItem);
 
                 // limit the number of entries
                 n++;
@@ -724,10 +622,10 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         this._applications = [];
-        this._applicationList.destroy_all_children();
+        this._applicationSection.list.destroy_all_children();
 
         this._sessions = [];
-        this._sessionList.destroy_all_children();
+        this._sessionSection.list.destroy_all_children();
 
         if (!(this._type in DialogContent)) {
             invocation.return_dbus_error('org.gnome.Shell.ModalDialog.TypeError',
