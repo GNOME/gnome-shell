@@ -3,7 +3,6 @@
 
 const { Clutter, Gcr, Gio, GObject, Pango, Shell, St } = imports.gi;
 
-const Animation = imports.ui.animation;
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
@@ -22,13 +21,66 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.connect('prompt-close', this._onHidePrompt.bind(this));
 
         this._content = new Dialog.MessageDialogContent();
-        this.contentLayout.add(this._content);
 
         this.prompt.bind_property('message', this._content, 'title', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('description', this._content, 'description', GObject.BindingFlags.SYNC_CREATE);
 
-        this._workSpinner = null;
-        this._controlTable = null;
+        let passwordBox = new St.BoxLayout({
+            style_class: 'prompt-dialog-password-layout',
+            vertical: true,
+        });
+
+        this._passwordEntry = new St.PasswordEntry({
+            style_class: 'prompt-dialog-password-entry',
+            can_focus: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        ShellEntry.addContextMenu(this._passwordEntry);
+        this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
+        this.prompt.bind_property('password-visible', this._passwordEntry,
+            'visible', GObject.BindingFlags.SYNC_CREATE);
+        passwordBox.add_child(this._passwordEntry);
+
+        this._confirmEntry = new St.PasswordEntry({
+            style_class: 'prompt-dialog-password-entry',
+            can_focus: true,
+        });
+        ShellEntry.addContextMenu(this._confirmEntry);
+        this._confirmEntry.clutter_text.connect('activate', this._onConfirmActivate.bind(this));
+        this.prompt.bind_property('confirm-visible', this._confirmEntry,
+            'visible', GObject.BindingFlags.SYNC_CREATE);
+        passwordBox.add_child(this._confirmEntry);
+
+        this.prompt.set_password_actor(this._passwordEntry.clutter_text);
+        this.prompt.set_confirm_actor(this._confirmEntry.clutter_text);
+
+        let warningBox = new St.BoxLayout({ vertical: true });
+
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        warningBox.add_child(this._capsLockWarningLabel);
+
+        let warning = new St.Label({ style_class: 'prompt-dialog-error-label' });
+        warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        warning.clutter_text.line_wrap = true;
+        this.prompt.bind_property('warning', warning, 'text', GObject.BindingFlags.SYNC_CREATE);
+        this.prompt.connect('notify::warning-visible', () => {
+            warning.opacity = this.prompt.warning_visible ? 255 : 0;
+        });
+        warningBox.add_child(warning);
+
+        passwordBox.add_child(warningBox);
+        this._content.add_child(passwordBox);
+
+        this._choice = new CheckBox.CheckBox();
+        this.prompt.bind_property('choice-label', this._choice.getLabelActor(),
+            'text', GObject.BindingFlags.SYNC_CREATE);
+        this.prompt.bind_property('choice-chosen', this._choice,
+            'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
+        this.prompt.bind_property('choice-visible', this._choice,
+            'visible', GObject.BindingFlags.SYNC_CREATE);
+        this._content.add_child(this._choice);
+
+        this.contentLayout.add_child(this._content);
 
         this._cancelButton = this.addButton({ label: '',
                                               action: this._onCancelButton.bind(this),
@@ -39,121 +91,6 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('continue-label', this._continueButton, 'label', GObject.BindingFlags.SYNC_CREATE);
-    }
-
-    _setWorking(working) {
-        if (!this._workSpinner)
-            return;
-
-        if (working)
-            this._workSpinner.play();
-        else
-            this._workSpinner.stop();
-    }
-
-    _buildControlTable() {
-        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        let table = new St.Widget({
-            style_class: 'keyring-dialog-control-table',
-            layout_manager: layout,
-            x_expand: true,
-            y_expand: true,
-        });
-        layout.hookup_style(table);
-        let rtl = table.get_text_direction() == Clutter.TextDirection.RTL;
-        let row = 0;
-
-        if (this.prompt.password_visible) {
-            let label = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                       x_align: Clutter.ActorAlign.START,
-                                       y_align: Clutter.ActorAlign.CENTER });
-            label.set_text(_("Password:"));
-            label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            this._passwordEntry = new St.PasswordEntry({
-                style_class: 'prompt-dialog-password-entry',
-                text: '',
-                can_focus: true,
-                x_expand: true,
-            });
-            ShellEntry.addContextMenu(this._passwordEntry);
-            this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
-
-            this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
-                animate: true,
-            });
-
-            if (rtl) {
-                layout.attach(this._workSpinner, 0, row, 1, 1);
-                layout.attach(this._passwordEntry, 1, row, 1, 1);
-                layout.attach(label, 2, row, 1, 1);
-            } else {
-                layout.attach(label, 0, row, 1, 1);
-                layout.attach(this._passwordEntry, 1, row, 1, 1);
-                layout.attach(this._workSpinner, 2, row, 1, 1);
-            }
-            row++;
-        } else {
-            this._workSpinner = null;
-            this._passwordEntry = null;
-        }
-
-        if (this.prompt.confirm_visible) {
-            var label = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                       x_align: Clutter.ActorAlign.START,
-                                       y_align: Clutter.ActorAlign.CENTER });
-            label.set_text(_("Type again:"));
-            this._confirmEntry = new St.PasswordEntry({
-                style_class: 'prompt-dialog-password-entry',
-                text: '',
-                can_focus: true,
-                x_expand: true,
-            });
-            ShellEntry.addContextMenu(this._confirmEntry);
-            this._confirmEntry.clutter_text.connect('activate', this._onConfirmActivate.bind(this));
-            if (rtl) {
-                layout.attach(this._confirmEntry, 0, row, 1, 1);
-                layout.attach(label, 1, row, 1, 1);
-            } else {
-                layout.attach(label, 0, row, 1, 1);
-                layout.attach(this._confirmEntry, 1, row, 1, 1);
-            }
-            row++;
-        } else {
-            this._confirmEntry = null;
-        }
-
-        this.prompt.set_password_actor(this._passwordEntry ? this._passwordEntry.clutter_text : null);
-        this.prompt.set_confirm_actor(this._confirmEntry ? this._confirmEntry.clutter_text : null);
-
-        if (this._passwordEntry || this._confirmEntry) {
-            this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
-            layout.attach(this._capsLockWarningLabel, 1, row, 1, 1);
-            row++;
-        }
-
-        if (this.prompt.choice_visible) {
-            let choice = new CheckBox.CheckBox();
-            this.prompt.bind_property('choice-label', choice.getLabelActor(), 'text', GObject.BindingFlags.SYNC_CREATE);
-            this.prompt.bind_property('choice-chosen', choice, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
-            layout.attach(choice, rtl ? 0 : 1, row, 1, 1);
-            row++;
-        }
-
-        let warning = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                     x_align: Clutter.ActorAlign.START });
-        warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        warning.clutter_text.line_wrap = true;
-        layout.attach(warning, rtl ? 0 : 1, row, 1, 1);
-        this.prompt.bind_property('warning-visible', warning, 'visible', GObject.BindingFlags.SYNC_CREATE);
-        this.prompt.bind_property('warning', warning, 'text', GObject.BindingFlags.SYNC_CREATE);
-
-        if (this._controlTable) {
-            this._controlTable.destroy_all_children();
-            this._controlTable.destroy();
-        }
-
-        this._controlTable = table;
-        this._content.add_child(table);
     }
 
     _updateSensitivity(sensitive) {
@@ -169,7 +106,6 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;
-        this._setWorking(!sensitive);
     }
 
     _ensureOpen() {
@@ -191,16 +127,16 @@ class KeyringDialog extends ModalDialog.ModalDialog {
     }
 
     _onShowPassword() {
-        this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
+        this._passwordEntry.text = '';
         this._passwordEntry.grab_key_focus();
     }
 
     _onShowConfirm() {
-        this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
+        this._confirmEntry.text = '';
         this._continueButton.grab_key_focus();
     }
 
