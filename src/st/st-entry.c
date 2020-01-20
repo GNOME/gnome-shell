@@ -1121,6 +1121,8 @@ st_entry_set_hint_text (StEntry     *entry,
   g_return_if_fail (ST_IS_ENTRY (entry));
 
   label = st_label_new (text);
+  st_widget_add_style_class_name (label, "hint-text");
+
   st_entry_set_hint_actor (ST_ENTRY (entry), CLUTTER_ACTOR (label));
 }
 
