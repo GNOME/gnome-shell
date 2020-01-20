@@ -16,9 +16,7 @@ const DialogMode = {
     CONFIRM: 1,
 };
 
-var DIALOG_ICON_SIZE = 48;
-
-var WORK_SPINNER_ICON_SIZE = 16;
+const DIALOG_ICON_SIZE = 64;
 
 const DELAYED_RESET_TIMEOUT = 200;
 
@@ -40,8 +38,10 @@ var AuthenticationDialog = GObject.registerClass({
 
         let title = _("Authentication Required");
 
-        let content = new Dialog.MessageDialogContent({ title, description });
-        this.contentLayout.add_actor(content);
+        let headerContent = new Dialog.MessageDialogContent({ title, description });
+        this.contentLayout.add_child(headerContent);
+
+        let bodyContent = new Dialog.MessageDialogContent();
 
         if (userNames.length > 1) {
             log(`polkitAuthenticationAgent: Received ${userNames.length} ` +
@@ -59,22 +59,23 @@ var AuthenticationDialog = GObject.registerClass({
 
         let userBox = new St.BoxLayout({
             style_class: 'polkit-dialog-user-layout',
-            vertical: false,
+            vertical: true,
         });
-        content.add_child(userBox);
+        bodyContent.add_child(userBox);
 
         this._userAvatar = new UserWidget.Avatar(this._user, {
             iconSize: DIALOG_ICON_SIZE,
             styleClass: 'polkit-dialog-user-icon',
+
         });
+        this._userAvatar.x_align = Clutter.ActorAlign.CENTER;
         userBox.add_child(this._userAvatar);
 
         this._userLabel = new St.Label({
             style_class: userName === 'root'
                 ? 'polkit-dialog-user-root-label'
                 : 'polkit-dialog-user-label',
-            x_expand: true,
-            y_align: Clutter.ActorAlign.CENTER,
+         //   x_align: Clutter.ActorAlign.CENTER,
         });
 
         if (userName === 'root')
@@ -82,58 +83,54 @@ var AuthenticationDialog = GObject.registerClass({
 
         userBox.add_child(this._userLabel);
 
-        this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        content.add_child(this._passwordBox);
-        this._passwordLabel = new St.Label({
-            style_class: 'prompt-dialog-password-label',
-            y_align: Clutter.ActorAlign.CENTER,
+        let passwordBox = new St.BoxLayout({
+            style_class: 'prompt-dialog-password-layout',
+            vertical: true,
         });
-        this._passwordBox.add_child(this._passwordLabel);
+
         this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
             text: "",
             can_focus: true,
-            x_expand: true,
+            visible: false,
+            x_align: Clutter.ActorAlign.CENTER,
         });
         ShellEntry.addContextMenu(this._passwordEntry);
         this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordEntry.bind_property('reactive',
             this._passwordEntry.clutter_text, 'editable',
             GObject.BindingFlags.SYNC_CREATE);
-        this._passwordBox.add_child(this._passwordEntry);
+        passwordBox.add_child(this._passwordEntry);
 
-        this._workSpinner = new Animation.Spinner(WORK_SPINNER_ICON_SIZE, {
-            animate: true,
-        });
-        this._passwordBox.add(this._workSpinner);
-
-        this._passwordBox.hide();
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({ style_class: 'prompt-dialog-caps-lock-warning' });
-        content.add_child(this._capsLockWarningLabel);
+        passwordBox.add_child(this._capsLockWarningLabel);
 
-        this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
+        this._errorMessageLabel = new St.Label({
+            style_class: 'prompt-dialog-error-label',
+            visible: false,
+        });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        content.add_child(this._errorMessageLabel);
-        this._errorMessageLabel.hide();
+        passwordBox.add_child(this._errorMessageLabel);
 
-        this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
+        this._infoMessageLabel = new St.Label({
+            style_class: 'prompt-dialog-info-label',
+            visible: false,
+        });
         this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._infoMessageLabel.clutter_text.line_wrap = true;
-        content.add_child(this._infoMessageLabel);
-        this._infoMessageLabel.hide();
+        passwordBox.add_child(this._infoMessageLabel);
 
         /* text is intentionally non-blank otherwise the height is not the same as for
          * infoMessage and errorMessageLabel - but it is still invisible because
          * gnome-shell.css sets the color to be transparent
          */
-        this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label',
-                                                text: 'abc' });
-        this._nullMessageLabel.add_style_class_name('hidden');
+        this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label' });
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
-        content.add_child(this._nullMessageLabel);
-        this._nullMessageLabel.show();
+        passwordBox.add_child(this._nullMessageLabel);
+
+        bodyContent.add_child(passwordBox);
 
         this._cancelButton = this.addButton({ label: _("Cancel"),
                                               action: this.cancel.bind(this),
@@ -149,6 +146,8 @@ var AuthenticationDialog = GObject.registerClass({
             this._okButton.reactive = text.get_text().length > 0;
         });
 
+        this.contentLayout.add_child(bodyContent);
+
         this._doneEmitted = false;
 
         this._mode = -1;
@@ -161,13 +160,6 @@ var AuthenticationDialog = GObject.registerClass({
         this._userChangedId = this._user.connect('changed',
             this._onUserChanged.bind(this));
         this._onUserChanged();
-    }
-
-    _setWorking(working) {
-        if (working)
-            this._workSpinner.play();
-        else
-            this._workSpinner.stop();
     }
 
     _initiateSession() {
@@ -218,7 +210,6 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._passwordEntry.reactive = false;
         this._okButton.reactive = false;
-        this._setWorking(true);
 
         this._session.response(response);
         // When the user responds, dismiss already shown info and
@@ -274,18 +265,15 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         // Cheap localization trick
-        if (request == 'Password:' || request == 'Password: ')
-            this._passwordLabel.set_text(_("Password:"));
-        else
-            this._passwordLabel.set_text(request);
+        this._passwordEntry.hint_text = request == 'Password:' || request == 'Password: '
+            ? _('Password') : request;
 
         this._passwordEntry.password_visible = echoOn;
 
-        this._passwordBox.show();
+        this._passwordEntry.show();
         this._passwordEntry.set_text('');
         this._passwordEntry.reactive  = true;
         this._okButton.reactive = false;
-        this._setWorking(false);
 
         this._ensureOpen();
         this._passwordEntry.grab_key_focus();
@@ -332,7 +320,7 @@ var AuthenticationDialog = GObject.registerClass({
             if (this.state != ModalDialog.State.OPENED)
                 return;
 
-            this._passwordBox.hide();
+            this._passwordEntry.hide();
             this._cancelButton.grab_key_focus();
             this._okButton.reactive = false;
         };
