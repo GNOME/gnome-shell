@@ -303,7 +303,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case '802-11-wireless':
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            content.title = _("Authentication required by wireless network");
+            content.title = _('Authentication required');
             content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
@@ -331,7 +331,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             // fall through
         case 'cdma':
         case 'bluetooth':
-            content.title = _("Mobile broadband network password");
+            content.title = _('Authentication required');
             content.message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
@@ -678,7 +678,7 @@ var NetworkAgent = class {
         case '802-11-wireless': {
             let wirelessSetting = connection.get_setting_wireless();
             let ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            title = _("Authentication required by wireless network");
+            title = _('Authentication required');
             body = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             break;
         }
@@ -699,7 +699,7 @@ var NetworkAgent = class {
             // fall through
         case 'cdma':
         case 'bluetooth':
-            title = _("Mobile broadband network password");
+            title = _('Authentication required');
             body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
         case 'vpn':
