@@ -1291,7 +1291,7 @@ class Keyboard extends St.BoxLayout {
         this.add_child(this._suggestions);
 
         this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
-        this.add_child(this._aspectContainer);
+        this.add(this._aspectContainer, { expand: true });
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
