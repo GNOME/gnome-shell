@@ -10,18 +10,8 @@ const WINDOW_ANIMATION_TIME = 250;
 
 var WorkspaceAnimationController = class {
     constructor() {
-        this._shellwm = global.window_manager;
         this._movingWindow = null;
-
         this._switchData = null;
-        this._shellwm.connect('kill-switch-workspace', shellwm => {
-            if (this._switchData) {
-                if (this._switchData.inProgress)
-                    this._switchWorkspaceDone(shellwm);
-                else if (!this._switchData.gestureActivated)
-                    this._finishWorkspaceSwitch(this._switchData);
-            }
-        });
 
         global.display.connect('restacked', this._syncStacking.bind(this));
 
@@ -231,7 +221,7 @@ var WorkspaceAnimationController = class {
         this.movingWindow = null;
     }
 
-    animateSwitchWorkspace(shellwm, from, to, direction) {
+    animateSwitchWorkspace(from, to, direction, onComplete) {
         this._prepareWorkspaceSwitch(from, to, direction);
         this._switchData.inProgress = true;
 
@@ -253,13 +243,11 @@ var WorkspaceAnimationController = class {
             y: yDest,
             duration: WINDOW_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            onComplete: () => this._switchWorkspaceDone(shellwm),
+            onComplete: () => {
+                this._finishWorkspaceSwitch(this._switchData);
+                onComplete();
+            },
         });
-    }
-
-    _switchWorkspaceDone(shellwm) {
-        this._finishWorkspaceSwitch(this._switchData);
-        shellwm.completed_switch_workspace();
     }
 
     _directionForProgress(progress) {
@@ -416,6 +404,10 @@ var WorkspaceAnimationController = class {
 
     isAnimating() {
         return this._switchData !== null;
+    }
+
+    canCancelGesture() {
+        return this.isAnimating() && this._switchData.gestureActivated;
     }
 
     set movingWindow(movingWindow) {
