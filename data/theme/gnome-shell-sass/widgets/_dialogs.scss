@@ -132,24 +132,24 @@
 }
 
 .prompt-dialog-password-entry {
+  padding: 8px;
   width: 22em;
 
-  .hint-text { color: transparentize($fg_color, 0.3); }
+  .hint-text {
+    margin-left: 4px;
+    color: transparentize($fg_color, 0.5);
+  }
+}
+
+.prompt-dialog-error-label,
+.prompt-dialog-info-label,
+.prompt-dialog-null-label {
+  text-align: center;
+  @include fontsize($base_font_size - 1);
 }
 
 .prompt-dialog-error-label {
-  text-align: center;
-  @include fontsize($base_font_size - 1);
   color: $warning_color;
-}
-
-.prompt-dialog-info-label {
-  text-align: center;
-  @include fontsize($base_font_size - 1);
-}
-
-.prompt-dialog-null-label {
-  @include fontsize($base_font_size - 1);
 }
 
 .prompt-dialog-grid {
