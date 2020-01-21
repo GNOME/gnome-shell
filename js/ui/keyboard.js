@@ -918,7 +918,7 @@ var EmojiSelection = GObject.registerClass({
         this._emojiPager.connect('emoji', (pager, str) => {
             this.emit('emoji-selected', str);
         });
-        this.add_child(this._emojiPager);
+        this.add(this._emojiPager, { expand: true });
 
         this._pageIndicator = new PageIndicators.PageIndicators(
             Clutter.Orientation.HORIZONTAL
