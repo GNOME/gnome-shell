@@ -51,7 +51,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 
         this._countDown = Meta.MonitorManager.get_display_configuration_timeout();
 
-        let title = _("Do you want to keep these display settings?");
+        let title = _("Keep these display settings?");
         let description = this._formatCountDown();
 
         this._content = new Dialog.MessageDialogContent({ title, description });
