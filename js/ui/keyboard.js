@@ -1290,7 +1290,10 @@ class Keyboard extends St.BoxLayout {
         this._suggestions = new Suggestions();
         this.add_child(this._suggestions);
 
-        this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
+        this._aspectContainer = new AspectContainer({
+            layout_manager: new Clutter.BinLayout(),
+            y_expand: true
+        });
         this.add_child(this._aspectContainer);
 
         this._emojiSelection = new EmojiSelection();
