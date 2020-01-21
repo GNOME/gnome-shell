@@ -614,6 +614,7 @@ var EmojiPager = GObject.registerClass({
             layout_manager: new Clutter.BinLayout(),
             reactive: true,
             clip_to_allocation: true,
+            y_expand: true,
         });
         this._sections = sections;
         this._nCols = nCols;
