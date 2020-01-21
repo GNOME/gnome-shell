@@ -86,14 +86,43 @@ $app_grid_fg_color: #fff;
 }
 
 // expanded folder
-.app-folder-popup {
-  -arrow-border-radius: 8px;
-  -arrow-background-color: transparentize(darken($osd_bg_color,10%), 0.5);
-  -arrow-base: 24px;
-  -arrow-rise: 11px;
-}
+.app-folder-dialog {
+  border-radius: 8px;
+  spacing: 24px;
+  background-color: transparentize(darken($osd_bg_color,10%), 0.05);
 
-.app-folder-popup-bin { padding: $base_padding - 1px; }
+  & .folder-name-container {
+    padding: 12px 18px;
+    spacing: 12px;
+
+    & .folder-name-label,
+    & .folder-name-entry {
+      font-size: 18pt;
+      font-weight: bold;
+    }
+
+    & .folder-name-entry { width: 300px }
+
+    /* FIXME: this is to keep the label in sync with the entry */
+    & .folder-name-label { padding: 5px 7px }
+
+    & .edit-folder-button {
+      @extend %button;
+
+      padding: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+
+      & > StIcon { icon-size: 16px }
+    }
+  }
+}
+.app-folder-dialog-container {
+  padding: 12px;
+  width: 800px;
+  height: 600px;
+}
 
 .app-folder-icon {
   padding: $base_padding;

@@ -5,7 +5,6 @@ const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppFavorites = imports.ui.appFavorites;
-const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
@@ -40,6 +39,8 @@ var PAGE_SWITCH_TIME = 250;
 
 var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
+
+const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
@@ -297,7 +298,6 @@ var BaseAppView = GObject.registerClass({
 });
 
 var AllView = GObject.registerClass({
-    Signals: { 'space-ready': {} },
 }, class AllView extends BaseAppView {
     _init() {
         super._init({
@@ -364,19 +364,19 @@ var AllView = GObject.registerClass({
 
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', () => {
-            if (!this._currentPopup)
+            if (!this._currentDialog)
                 return;
 
             let [x, y] = this._clickAction.get_coords();
             let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-            if (!this._currentPopup.contains(actor))
-                this._currentPopup.popdown();
+            if (!this._currentDialog.contains(actor))
+                this._currentDialog.popdown();
         });
         this._eventBlocker.add_action(this._clickAction);
 
-        this._currentPopup = null;
-        this._displayingPopup = false;
-        this._currentPopupDestroyId = 0;
+        this._currentDialog = null;
+        this._displayingDialog = false;
+        this._currentDialogDestroyId = 0;
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
@@ -388,16 +388,6 @@ var AllView = GObject.registerClass({
         this._lastOvershootTimeoutId = 0;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
-        this._grid.connect('space-opened', () => {
-            let fadeEffect = this._scrollView.get_effect('fade');
-            if (fadeEffect)
-                fadeEffect.enabled = false;
-
-            this.emit('space-ready');
-        });
-        this._grid.connect('space-closed', () => {
-            this._displayingPopup = false;
-        });
 
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
@@ -547,8 +537,8 @@ var AllView = GObject.registerClass({
         };
 
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
-            this._displayingPopup && this._currentPopup) {
-            this._currentPopup.popdown();
+            this._displayingDialog && this._currentDialog) {
+            this._currentDialog.popdown();
             let spaceClosedId = this._grid.connect('space-closed', () => {
                 this._grid.disconnect(spaceClosedId);
                 super.animate(animationDirection, completionFunc);
@@ -563,9 +553,9 @@ var AllView = GObject.registerClass({
     animateSwitch(animationDirection) {
         super.animateSwitch(animationDirection);
 
-        if (this._currentPopup && this._displayingPopup &&
+        if (this._currentDialog && this._displayingDialog &&
             animationDirection == IconGrid.AnimationDirection.OUT) {
-            this._currentPopup.ease({
+            this._currentDialog.ease({
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -577,17 +567,15 @@ var AllView = GObject.registerClass({
             this._pageIndicators.animateIndicators(animationDirection);
     }
 
-    getCurrentPageY() {
-        return this._grid.getPageY(this._grid.currentPage);
-    }
-
     goToPage(pageNumber, animate = true) {
         pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
 
-        if (this._grid.currentPage == pageNumber && this._displayingPopup && this._currentPopup)
+        if (this._grid.currentPage === pageNumber &&
+            this._displayingDialog &&
+            this._currentDialog)
             return;
-        if (this._displayingPopup && this._currentPopup)
-            this._currentPopup.popdown();
+        if (this._displayingDialog && this._currentDialog)
+            this._currentDialog.popdown();
 
         if (!this.mapped) {
             this._adjustment.value = this._grid.getPageY(pageNumber);
@@ -608,24 +596,8 @@ var AllView = GObject.registerClass({
         });
     }
 
-    openSpaceForPopup(item, side, nRows) {
-        this._updateIconOpacities(true);
-        this._displayingPopup = true;
-        this._grid.openExtraSpace(item, side, nRows);
-    }
-
-    _closeSpaceForPopup() {
-        this._updateIconOpacities(false);
-
-        let fadeEffect = this._scrollView.get_effect('fade');
-        if (fadeEffect)
-            fadeEffect.enabled = true;
-
-        this._grid.closeExtraSpace();
-    }
-
     _onScroll(actor, event) {
-        if (this._displayingPopup || !this._scrollView.reactive)
+        if (this._displayingDialog || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
         if (this._swipeTracker.canHandleScrollEvent(event))
@@ -687,7 +659,7 @@ var AllView = GObject.registerClass({
     }
 
     _onKeyPressEvent(actor, event) {
-        if (this._displayingPopup)
+        if (this._displayingDialog)
             return Clutter.EVENT_STOP;
 
         if (event.get_key_symbol() === Clutter.KEY_Page_Up) {
@@ -701,29 +673,34 @@ var AllView = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    addFolderPopup(popup) {
-        this._stack.add_actor(popup);
-        popup.connect('open-state-changed', (o, isOpen) => {
+    addFolderDialog(dialog) {
+        this.add_child(dialog);
+        dialog.connect('open-state-changed', (o, isOpen) => {
             this._eventBlocker.visible = isOpen;
 
-            if (this._currentPopup) {
-                this._currentPopup.disconnect(this._currentPopupDestroyId);
-                this._currentPopupDestroyId = 0;
+            if (this._currentDialog) {
+                this._currentDialog.disconnect(this._currentDialogDestroyId);
+                this._currentDialogDestroyId = 0;
             }
 
-            this._currentPopup = null;
+            this._currentDialog = null;
 
             if (isOpen) {
-                this._currentPopup = popup;
-                this._currentPopupDestroyId = popup.connect('destroy', () => {
-                    this._currentPopup = null;
-                    this._currentPopupDestroyId = 0;
+                this._currentDialog = dialog;
+                this._currentDialogDestroyId = dialog.connect('destroy', () => {
+                    this._currentDialog = null;
+                    this._currentDialogDestroyId = 0;
                     this._eventBlocker.visible = false;
                 });
             }
             this._updateIconOpacities(isOpen);
-            if (!isOpen)
-                this._closeSpaceForPopup();
+
+            // Toggle search entry
+            Main.overview.searchEntry.reactive = !isOpen;
+            Main.overview.searchEntry.clutter_text.reactive = !isOpen;
+            Main.overview.searchEntry.clutter_text.editable = !isOpen;
+
+            this._displayingPopup = isOpen;
         });
     }
 
@@ -782,9 +759,6 @@ var AllView = GObject.registerClass({
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
-        // Update folder views
-        for (let i = 0; i < this._folderIcons.length; i++)
-            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 
     _resetOvershoot() {
@@ -871,7 +845,7 @@ var AllView = GObject.registerClass({
             this._dragMonitor = null;
         }
 
-        this._eventBlocker.visible = this._currentPopup !== null;
+        this._eventBlocker.visible = this._currentDialog !== null;
         this._resetOvershoot();
     }
 
@@ -900,8 +874,8 @@ var AllView = GObject.registerClass({
         let view = _getViewFromIcon(source);
         view.removeApp(source.app);
 
-        if (this._currentPopup)
-            this._currentPopup.popdown();
+        if (this._currentDialog)
+            this._currentDialog.popdown();
 
         return true;
     }
@@ -1315,6 +1289,8 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
+        }, {
+            minRows: 1,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
@@ -1404,44 +1380,10 @@ class FolderView extends BaseAppView {
         this._scrollView.update_fade_effect(fadeOffset, 0);
 
         // Set extra padding to avoid popup or close button being cut off
-        this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
-        this._grid.bottomPadding = Math.max(this._grid.bottomPadding - this._offsetForEachSide, 0);
-        this._grid.leftPadding = Math.max(this._grid.leftPadding - this._offsetForEachSide, 0);
-        this._grid.rightPadding = Math.max(this._grid.rightPadding - this._offsetForEachSide, 0);
-
-        this.set_width(this.usedWidth());
-        this.set_height(this.usedHeight());
-    }
-
-    _getPageAvailableSize() {
-        let pageBox = new Clutter.ActorBox();
-        pageBox.x1 = pageBox.y1 = 0;
-        pageBox.x2 = this._parentAvailableWidth;
-        pageBox.y2 = this._parentAvailableHeight;
-
-        let contentBox = this.get_theme_node().get_content_box(pageBox);
-        // We only can show icons inside the collection view boxPointer
-        // so we have to subtract the required padding etc of the boxpointer
-        return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
-    }
-
-    usedWidth() {
-        let [availWidthPerPage] = this._getPageAvailableSize();
-        return this._grid.usedWidth(availWidthPerPage);
-    }
-
-    usedHeight() {
-        return this._grid.usedHeightForNRows(this.nRowsDisplayedAtOnce());
-    }
-
-    nRowsDisplayedAtOnce() {
-        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
-        let maxRows = this._grid.rowsForHeight(availHeightPerPage) - 1;
-        return Math.min(this._grid.nRows(availWidthPerPage), maxRows);
-    }
-
-    setPaddingOffsets(offset) {
-        this._offsetForEachSide = offset;
+        this._grid.topPadding = Math.max(this._grid.topPadding, 0);
+        this._grid.bottomPadding = Math.max(this._grid.bottomPadding, 0);
+        this._grid.leftPadding = Math.max(this._grid.leftPadding, 0);
+        this._grid.rightPadding = Math.max(this._grid.rightPadding, 0);
     }
 
     _loadApps() {
@@ -1540,8 +1482,6 @@ var FolderIcon = GObject.registerClass({
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path });
         this._delegate = this;
-        // whether we need to update arrow side, position etc.
-        this._popupInvalidated = false;
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
@@ -1556,10 +1496,6 @@ var FolderIcon = GObject.registerClass({
             'item-drag-begin', this._onDragBegin.bind(this));
         this._itemDragEndId = Main.overview.connect(
             'item-drag-end', this._onDragEnd.bind(this));
-
-        this._popupTimeoutId = 0;
-
-        this.connect('popup-menu', this._popupRenamePopup.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -1578,10 +1514,8 @@ var FolderIcon = GObject.registerClass({
             this._spaceReadySignalId = 0;
         }
 
-        if (this._popup)
-            this._popup.destroy();
-
-        this._removeMenuTimeout();
+        if (this._dialog)
+            this._dialog.destroy();
     }
 
     vfunc_clicked() {
@@ -1591,15 +1525,14 @@ var FolderIcon = GObject.registerClass({
     vfunc_unmap() {
         super.vfunc_unmap();
 
-        if (this._popup)
-            this._popup.popdown();
+        if (this._dialog)
+            this._dialog.popdown();
     }
 
     open() {
-        this._removeMenuTimeout();
-        this._ensurePopup();
+        this._ensureFolderDialog();
         this.view._scrollView.vscroll.adjustment.value = 0;
-        this._openSpaceForPopup();
+        this._dialog.popup();
     }
 
     getAppIds() {
@@ -1693,293 +1626,59 @@ var FolderIcon = GObject.registerClass({
         return this.view.createFolderIcon(iconSize, this);
     }
 
-    _popupHeight() {
-        let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
-        return usedHeight;
-    }
-
-    _openSpaceForPopup() {
-        this._spaceReadySignalId = this._parentView.connect('space-ready', () => {
-            this._parentView.disconnect(this._spaceReadySignalId);
-            this._spaceReadySignalId = 0;
-            this._popup.popup();
-            this._updatePopupPosition();
-        });
-        this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
-    }
-
-    _calculateBoxPointerArrowSide() {
-        let spaceTop = this.y - this._parentView.getCurrentPageY();
-        let spaceBottom = this._parentView.height - (spaceTop + this.height);
-
-        return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
-    }
-
-    _updatePopupSize() {
-        // StWidget delays style calculation until needed, make sure we use the correct values
-        this.view._grid.ensure_style();
-
-        let offsetForEachSide = Math.ceil((this._popup.getOffset(St.Side.TOP) +
-                                           this._popup.getOffset(St.Side.BOTTOM) -
-                                           this._popup.getCloseButtonOverlap()) / 2);
-        // Add extra padding to prevent boxpointer decorations and close button being cut off
-        this.view.setPaddingOffsets(offsetForEachSide);
-        this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
-    }
-
-    _updatePopupPosition() {
-        if (!this._popup)
+    _ensureFolderDialog() {
+        if (this._dialog)
             return;
-
-        if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.y = this.allocation.y1 + this.translation_y - this._popupHeight();
-        else
-            this._popup.y = this.allocation.y1 + this.translation_y + this.height;
-    }
-
-    _ensurePopup() {
-        if (this._popup && !this._popupInvalidated)
-            return;
-        this._boxPointerArrowside = this._calculateBoxPointerArrowSide();
-        if (!this._popup) {
-            this._popup = new AppFolderPopup(this, this._boxPointerArrowside);
-            this._parentView.addFolderPopup(this._popup);
-            this._popup.connect('open-state-changed', (popup, isOpen) => {
+        if (!this._dialog) {
+            this._dialog = new AppFolderDialog(this, this._folder);
+            this._parentView.addFolderDialog(this._dialog);
+            this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
                     this.checked = false;
             });
-        } else {
-            this._popup.updateArrowSide(this._boxPointerArrowside);
         }
-        this._updatePopupSize();
-        this._updatePopupPosition();
-        this._popupInvalidated = false;
-    }
-
-    _removeMenuTimeout() {
-        if (this._popupTimeoutId > 0) {
-            GLib.source_remove(this._popupTimeoutId);
-            this._popupTimeoutId = 0;
-        }
-    }
-
-    _setPopupTimeout() {
-        this._removeMenuTimeout();
-        this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
-            this._popupTimeoutId = 0;
-            this._popupRenamePopup();
-            return GLib.SOURCE_REMOVE;
-        });
-        GLib.Source.set_name_by_id(this._popupTimeoutId,
-                                   '[gnome-shell] this._popupRenamePopup');
-    }
-
-    vfunc_leave_event(crossingEvent) {
-        let ret = super.vfunc_leave_event(crossingEvent);
-        this.fake_release();
-        this._removeMenuTimeout();
-        return ret;
-    }
-
-    vfunc_button_press_event(buttonEvent) {
-        super.vfunc_button_press_event(buttonEvent);
-
-        if (buttonEvent.button == 1) {
-            this._setPopupTimeout();
-        } else if (buttonEvent.button == 3) {
-            this._popupRenamePopup();
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_touch_event(touchEvent) {
-        super.vfunc_touch_event(touchEvent);
-
-        if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
-            this._setPopupTimeout();
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    _popupRenamePopup() {
-        this._removeMenuTimeout();
-        this.fake_release();
-
-        if (!this._menu) {
-            this._menuManager = new PopupMenu.PopupMenuManager(this);
-
-            this._menu = new RenameFolderMenu(this, this._folder);
-            this._menuManager.addMenu(this._menu);
-
-            this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
-                if (!isPoppedUp)
-                    this.sync_hover();
-            });
-            let id = Main.overview.connect('hiding', () => {
-                this._menu.close();
-            });
-            this.connect('destroy', () => {
-                Main.overview.disconnect(id);
-            });
-        }
-
-        this.set_hover(true);
-        this._menu.open();
-        this._menuManager.ignoreRelease();
-    }
-
-    adaptToSize(width, height) {
-        this._parentAvailableWidth = width;
-        this._parentAvailableHeight = height;
-        if (this._popup)
-            this.view.adaptToSize(width, height);
-        this._popupInvalidated = true;
     }
 });
 
-var RenameFolderMenuItem = GObject.registerClass(
-class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(folder) {
-        super._init({
-            style_class: 'rename-folder-popup-item',
-            reactive: false,
-        });
-        this.setOrnament(PopupMenu.Ornament.HIDDEN);
-
-        this._folder = folder;
-
-        // Entry
-        this._entry = new St.Entry({
-            x_expand: true,
-            width: 200,
-        });
-        this.add_child(this._entry);
-
-        this._entry.clutter_text.connect(
-            'notify::text', this._validate.bind(this));
-        this._entry.clutter_text.connect(
-            'activate', this._updateFolderName.bind(this));
-
-        // Rename button
-        this._button = new St.Button({
-            style_class: 'button',
-            reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-            can_focus: true,
-            label: _('Rename'),
-        });
-        this.add_child(this._button);
-
-        this._button.connect('clicked', this._updateFolderName.bind(this));
-    }
-
-    vfunc_map() {
-        this._entry.text = _getFolderName(this._folder);
-        this._entry.clutter_text.set_selection(0, -1);
-        super.vfunc_map();
-    }
-
-    vfunc_key_focus_in() {
-        super.vfunc_key_focus_in();
-        this._entry.clutter_text.grab_key_focus();
-    }
-
-    _isValidFolderName() {
-        let folderName = _getFolderName(this._folder);
-        let newFolderName = this._entry.text.trim();
-
-        return newFolderName.length > 0 && newFolderName != folderName;
-    }
-
-    _validate() {
-        let isValid = this._isValidFolderName();
-
-        this._button.reactive = isValid;
-    }
-
-    _updateFolderName() {
-        if (!this._isValidFolderName())
-            return;
-
-        let newFolderName = this._entry.text.trim();
-        this._folder.set_string('name', newFolderName);
-        this._folder.set_boolean('translate', false);
-        this.activate(Clutter.get_current_event());
-    }
-});
-
-var RenameFolderMenu = class RenameFolderMenu extends PopupMenu.PopupMenu {
-    constructor(source, folder) {
-        super(source, 0.5, St.Side.BOTTOM);
-        this.actor.add_style_class_name('rename-folder-popup');
-
-        // We want to keep the item hovered while the menu is up
-        this.blockSourceEvents = true;
-
-        let menuItem = new RenameFolderMenuItem(folder);
-        this.addMenuItem(menuItem);
-
-        // Focus the text entry on menu pop-up
-        this.focusActor = menuItem;
-
-        // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.connect('notify::mapped', () => {
-            if (!source.mapped)
-                this.close();
-        });
-        source.connect('destroy', () => {
-            source.disconnect(this._sourceMappedId);
-            this.destroy();
-        });
-
-        Main.uiGroup.add_actor(this.actor);
-    }
-};
-Signals.addSignalMethods(RenameFolderMenu.prototype);
-
-var AppFolderPopup = GObject.registerClass({
+var AppFolderDialog = GObject.registerClass({
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
-}, class AppFolderPopup extends St.Widget {
-    _init(source, side) {
+}, class AppFolderDialog extends St.Widget {
+    _init(source, folder) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
+            style_class: 'app-folder-dialog-container',
             visible: false,
-            // We don't want to expand really, but look
-            // at the layout manager of our parent...
-            //
-            // DOUBLE HACK: if you set one, you automatically
-            // get the effect for the other direction too, so
-            // we need to set the y_align
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
         });
+        this.add_constraint(new Clutter.BindConstraint({
+            source: Main.overview.viewSelector,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+
         this._source = source;
+        this._folder = folder;
         this._view = source.view;
-        this._arrowSide = side;
 
         this._isOpen = false;
         this.parentOffset = 0;
 
-        this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide, {
-            style_class: 'app-folder-popup-bin',
+        this._viewBox = new St.BoxLayout({
+            style_class: 'app-folder-dialog',
             x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
+            vertical: true,
         });
+        this.add_child(this._viewBox);
 
-        this._boxPointer.style_class = 'app-folder-popup';
-        this.add_actor(this._boxPointer);
-        this._boxPointer.bin.set_child(this._view);
-
-        this.closeButton = Util.makeCloseButton(this._boxPointer);
-        this.closeButton.connect('clicked', this.popdown.bind(this));
-        this.add_actor(this.closeButton);
-
-        this._boxPointer.bind_property('opacity', this.closeButton, 'opacity',
-                                       GObject.BindingFlags.SYNC_CREATE);
+        this._addFolderNameEntry();
+        this._viewBox.add_child(this._view);
 
         global.focus_manager.add_group(this);
 
@@ -1988,6 +1687,206 @@ var AppFolderPopup = GObject.registerClass({
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
+
+        this._sourceMappedId = 0;
+        this._needsZoomAndFade = false;
+    }
+
+    _addFolderNameEntry() {
+        this._entryBox = new St.BoxLayout({
+            style_class: 'folder-name-container',
+        });
+        this._viewBox.add_child(this._entryBox);
+
+        // Empty actor to center the title
+        let ghostButton = new Clutter.Actor();
+        this._entryBox.add_child(ghostButton);
+
+        let stack = new Shell.Stack({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._entryBox.add_child(stack);
+
+        // Folder name label
+        this._folderNameLabel = new St.Label({
+            style_class: 'folder-name-label',
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        stack.add_child(this._folderNameLabel);
+
+        // Folder name entry
+        this._entry = new St.Entry({
+            style_class: 'folder-name-entry',
+            opacity: 0,
+            reactive: false,
+        });
+        this._entry.clutter_text.set({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this._entry.clutter_text.connect('activate', () => {
+            this._showFolderLabel();
+        });
+
+        stack.add_child(this._entry);
+
+        // Edit button
+        this._editButton = new St.Button({
+            style_class: 'edit-folder-button',
+            button_mask: St.ButtonMask.ONE,
+            toggle_mode: true,
+            reactive: true,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+            child: new St.Icon({
+                icon_name: 'document-edit-symbolic',
+                icon_size: 16,
+            }),
+        });
+
+        this._editButton.connect('notify::checked', () => {
+            if (this._editButton.checked)
+                this._showFolderEntry();
+            else
+                this._showFolderLabel();
+        });
+
+        this._entryBox.add_child(this._editButton);
+
+        ghostButton.add_constraint(new Clutter.BindConstraint({
+            source: this._editButton,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        }));
+
+        this._folder.connect('changed::name', () => this._syncFolderName());
+        this._syncFolderName();
+    }
+
+    _syncFolderName() {
+        let newName = _getFolderName(this._folder);
+
+        this._folderNameLabel.text = newName;
+        this._entry.text = newName;
+    }
+
+    _switchActor(from, to) {
+        to.reactive = true;
+        to.ease({
+            opacity: 255,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        from.ease({
+            opacity: 0,
+            duration: 300,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                from.reactive = false;
+            },
+        });
+    }
+
+    _showFolderLabel() {
+        if (this._editButton.checked)
+            this._editButton.checked = false;
+
+        this._maybeUpdateFolderName();
+        this._switchActor(this._entry, this._folderNameLabel);
+    }
+
+    _showFolderEntry() {
+        this._switchActor(this._folderNameLabel, this._entry);
+
+        this._entry.clutter_text.set_selection(0, -1);
+        this._entry.clutter_text.grab_key_focus();
+    }
+
+    _maybeUpdateFolderName() {
+        let folderName = _getFolderName(this._folder);
+        let newFolderName = this._entry.text.trim();
+
+        if (newFolderName.length === 0 || newFolderName === folderName)
+            return;
+
+        this._folder.set_string('name', newFolderName);
+        this._folder.set_boolean('translate', false);
+    }
+
+    _zoomAndFadeIn() {
+        let [sourceX, sourceY] =
+            this._source.get_transformed_position();
+        let [dialogX, dialogY] =
+            this.get_transformed_position();
+
+        this.set({
+            translation_x: sourceX - dialogX,
+            translation_y: sourceY - dialogY,
+            scale_x: this._source.width / this.width,
+            scale_y: this._source.height / this.height,
+            opacity: 0,
+        });
+
+        this.ease({
+            translation_x: 0,
+            translation_y: 0,
+            scale_x: 1,
+            scale_y: 1,
+            opacity: 255,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this._needsZoomAndFade = false;
+
+        if (this._sourceMappedId === 0) {
+            this._sourceMappedId = this._source.connect(
+                'notify::mapped', this._zoomAndFadeOut.bind(this));
+        }
+    }
+
+    _zoomAndFadeOut() {
+        if (!this._isOpen)
+            return;
+
+        if (!this._source.mapped) {
+            this.hide();
+            return;
+        }
+
+        let [sourceX, sourceY] =
+            this._source.get_transformed_position();
+        let [dialogX, dialogY] =
+            this.get_transformed_position();
+
+        this.ease({
+            translation_x: sourceX - dialogX,
+            translation_y: sourceY - dialogY,
+            scale_x: this._source.width / this.width,
+            scale_y: this._source.height / this.height,
+            opacity: 0,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this.set({
+                    translation_x: 0,
+                    translation_y: 0,
+                    scale_x: 1,
+                    scale_y: 1,
+                    opacity: 255,
+                });
+                this.hide();
+            },
+        });
+
+        this._needsZoomAndFade = false;
     }
 
     _onDestroy() {
@@ -1996,6 +1895,28 @@ var AppFolderPopup = GObject.registerClass({
             this._grabHelper.ungrab({ actor: this });
             this._grabHelper = null;
         }
+
+        if (this._sourceMappedId) {
+            this._source.disconnect(this._sourceMappedId);
+            this._sourceMappedId = 0;
+        }
+    }
+
+    vfunc_allocate(box, flags) {
+        let contentBox = this.get_theme_node().get_content_box(box);
+
+        let [, entryBoxHeight] = this._entryBox.get_size();
+        let spacing = this._viewBox.layout_manager.spacing;
+
+        this._view.adaptToSize(
+            contentBox.get_width(),
+            contentBox.get_height() - entryBoxHeight - spacing);
+
+        super.vfunc_allocate(box, flags);
+
+        // We can only start zooming after receiving an allocation
+        if (this._needsZoomAndFade)
+            this._zoomAndFadeIn();
     }
 
     vfunc_key_press_event(keyEvent) {
@@ -2061,19 +1982,8 @@ var AppFolderPopup = GObject.registerClass({
         if (!this._isOpen)
             return;
 
+        this._needsZoomAndFade = true;
         this.show();
-
-        this._boxPointer.setArrowActor(this._source);
-        // We need to hide the icons of the view until the boxpointer animation
-        // is completed so we can animate the icons after as we like without
-        // showing them while boxpointer is animating.
-        this._view.opacity = 0;
-        this._boxPointer.open(BoxPointer.PopupAnimation.FADE |
-                              BoxPointer.PopupAnimation.SLIDE,
-                              () => {
-                                  this._view.opacity = 255;
-                                  this._view.animate(IconGrid.AnimationDirection.IN);
-                              });
 
         this.emit('open-state-changed', true);
     }
@@ -2082,28 +1992,12 @@ var AppFolderPopup = GObject.registerClass({
         if (!this._isOpen)
             return;
 
-        this._grabHelper.ungrab({ actor: this });
+        this._zoomAndFadeOut();
+        this._showFolderLabel();
 
-        this._boxPointer.close(BoxPointer.PopupAnimation.FADE |
-                               BoxPointer.PopupAnimation.SLIDE);
+        this._grabHelper.ungrab({ actor: this });
         this._isOpen = false;
         this.emit('open-state-changed', false);
-    }
-
-    getCloseButtonOverlap() {
-        return this.closeButton.get_theme_node().get_length('-shell-close-overlap-y');
-    }
-
-    getOffset(side) {
-        let offset = this._boxPointer.getPadding(side);
-        if (this._arrowSide == side)
-            offset += this._boxPointer.getArrowHeight();
-        return offset;
-    }
-
-    updateArrowSide(side) {
-        this._arrowSide = side;
-        this._boxPointer.updateArrowSide(side);
     }
 });
 
