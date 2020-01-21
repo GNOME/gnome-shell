@@ -1584,7 +1584,17 @@ class Keyboard extends St.BoxLayout {
 
         let maxHeight = monitor.height / 3;
         this.width = monitor.width;
-        this.height = maxHeight;
+
+        if (monitor.width > monitor.height) {
+            this.height = maxHeight;
+        } else {
+            /* In portrait mode, lack of horizontal space means we won't be
+             * able to make the OSK that big while keeping size ratio, so
+             * we allow the OSK being smaller than 1/3rd of the monitor height
+             * there.
+             */
+            this.height = Math.min(maxHeight, this.get_preferred_height(monitor.width));
+        }
     }
 
     _onGroupChanged() {
