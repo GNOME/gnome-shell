@@ -45,6 +45,13 @@ def start_shell(perf_output=None):
     if options.replace:
         args.append('--replace')
 
+    if options.wayland or options.nested:
+        args.append('--wayland')
+        if options.nested:
+            args.append('--nested')
+        else:
+            args.append('--display-server')
+
     return subprocess.Popen(args, env=env)
 
 def run_shell(perf_output=None):
@@ -284,6 +291,10 @@ parser.add_option("", "--version", action="callback", callback=show_version,
 
 parser.add_option("-r", "--replace", action="store_true",
                   help="Replace the running window manager")
+parser.add_option("-w", "--wayland", action="store_true",
+                  help="Run as a Wayland compositor")
+parser.add_option("-n", "--nested", action="store_true",
+                  help="Run as a Wayland nested compositor")
 
 options, args = parser.parse_args()
 
