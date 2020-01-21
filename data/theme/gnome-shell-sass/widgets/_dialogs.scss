@@ -100,37 +100,20 @@
   padding-bottom: 1em;
 }
 
-.prompt-dialog-error-label {
-  @include fontsize($base_font_size - 1);
-  color: $warning_color;
-  padding-bottom: 8px;
-}
-
-.prompt-dialog-info-label {
-  @include fontsize($base_font_size - 1);
-  padding-bottom: 8px;
-}
-
+.prompt-dialog-error-label,
+.prompt-dialog-info-label,
 .prompt-dialog-null-label {
   @include fontsize($base_font_size - 1);
   padding-bottom: 8px;
 }
 
-.prompt-dialog-pim-box {
-  spacing: 1em;
+.prompt-dialog-error-label {
+  color: $warning_color;
 }
 
 .prompt-dialog-grid {
   spacing-rows: 15px;
   spacing-columns: 1em;
-}
-
-.prompt-dialog-keyfiles-box {
-  spacing: 1em;
-}
-
-.prompt-dialog-button.button {
-  padding: 8px;
 }
 
 
