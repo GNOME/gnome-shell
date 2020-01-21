@@ -942,11 +942,6 @@ var EmojiSelection = GObject.registerClass({
         super.vfunc_map();
     }
 
-    vfunc_unmap() {
-        super.vfunc_unmap();
-        this._emojiPager.setCurrentPage(0);
-    }
-
     _onPageChanged(sectionLabel, page, nPages) {
         this._curPage = page;
         this._pageIndicator.setNPages(nPages);
