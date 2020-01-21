@@ -473,21 +473,19 @@ var IndicatorPad = GObject.registerClass(
 class IndicatorPad extends St.Widget {
     _init(actor) {
         this._source = actor;
-        this._source.connect('notify::visible', () => this.queue_relayout());
         this._source.connect('notify::size', () => this.queue_relayout());
         super._init();
+        this._source.bind_property('visible',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     vfunc_get_preferred_width(forHeight) {
-        if (this._source.visible)
-            return this._source.get_preferred_width(forHeight);
-        return [0, 0];
+        return this._source.get_preferred_width(forHeight);
     }
 
     vfunc_get_preferred_height(forWidth) {
-        if (this._source.visible)
-            return this._source.get_preferred_height(forWidth);
-        return [0, 0];
+        return this._source.get_preferred_height(forWidth);
     }
 });
 
