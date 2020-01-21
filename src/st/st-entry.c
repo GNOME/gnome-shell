@@ -77,6 +77,7 @@ enum
   PROP_SECONDARY_ICON,
   PROP_HINT_TEXT,
   PROP_HINT_ACTOR,
+  PROP_SHOW_HINT_WHILE_FOCUSED,
   PROP_TEXT,
   PROP_INPUT_PURPOSE,
   PROP_INPUT_HINTS,
@@ -107,6 +108,8 @@ struct _StEntryPrivate
   ClutterActor *secondary_icon;
 
   ClutterActor *hint_actor;
+
+  gboolean      show_hint_while_focused;
 
   gfloat        spacing;
 
@@ -147,6 +150,10 @@ st_entry_set_property (GObject      *gobject,
 
     case PROP_HINT_ACTOR:
       st_entry_set_hint_actor (entry, g_value_get_object (value));
+      break;
+
+    case PROP_SHOW_HINT_WHILE_FOCUSED:
+      st_entry_set_show_hint_while_focused (entry, g_value_get_boolean (value));
       break;
 
     case PROP_TEXT:
@@ -197,6 +204,10 @@ st_entry_get_property (GObject    *gobject,
       g_value_set_object (value, priv->hint_actor);
       break;
 
+    case PROP_SHOW_HINT_WHILE_FOCUSED:
+      g_value_set_boolean (value, priv->show_hint_while_focused);
+      break;
+
     case PROP_TEXT:
       g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->entry)));
       break;
@@ -232,8 +243,8 @@ st_entry_update_hint_visibility (StEntry *self)
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
   gboolean hint_visible =
     priv->hint_actor != NULL &&
-    strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), "") == 0 &&
-    !HAS_FOCUS (priv->entry);
+    strlen (clutter_text_get_text (CLUTTER_TEXT (priv->entry))) == 0 &&
+    (priv->show_hint_while_focused || !HAS_FOCUS (priv->entry));
 
   if (priv->hint_actor)
     g_object_set (priv->hint_actor, "visible", hint_visible, NULL);
@@ -547,6 +558,8 @@ clutter_text_changed_cb (GObject    *object,
 {
   StEntry *entry = ST_ENTRY (user_data);
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+
+  st_entry_update_hint_visibility (entry);
 
   /* Since the text changed, force a regen of the shadow texture */
   cogl_clear_object (&priv->text_shadow_material);
@@ -908,6 +921,12 @@ st_entry_class_init (StEntryClass *klass)
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE);
 
+  props[PROP_SHOW_HINT_WHILE_FOCUSED] =
+    g_param_spec_boolean ("show-hint-while-focused",
+                          "Show hint while focused",
+                          "Whether to show the hint actor while focused",
+                           FALSE,
+                           ST_PARAM_READWRITE);
   props[PROP_TEXT] =
     g_param_spec_string ("text",
                          "Text",
@@ -1063,8 +1082,6 @@ st_entry_set_text (StEntry     *entry,
   priv = st_entry_get_instance_private (entry);
 
   clutter_text_set_text (CLUTTER_TEXT (priv->entry), text);
-
-  st_entry_update_hint_visibility (entry);
 
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
 }
@@ -1388,6 +1405,48 @@ st_entry_get_hint_actor (StEntry *entry)
 
   priv = ST_ENTRY_PRIV (entry);
   return priv->hint_actor;
+}
+
+/**
+ * st_entry_set_show_hint_while_focused:
+ * @entry: a #StEntry
+ * @show_hint_while_focused: Whether to show the hint while focused
+ *
+ * Set the hint actor of the entry to @hint_actor
+ */
+void
+st_entry_set_show_hint_while_focused (StEntry  *entry,
+                                      gboolean  show_hint_while_focused)
+{
+  StEntryPrivate *priv;
+
+  g_return_if_fail (ST_IS_ENTRY (entry));
+
+  priv = ST_ENTRY_PRIV (entry);
+
+  if (priv->show_hint_while_focused == show_hint_while_focused)
+    return;
+
+  priv->show_hint_while_focused = show_hint_while_focused;
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SHOW_HINT_WHILE_FOCUSED]);
+}
+
+/**
+ * st_entry_get_show_hint_while_focused:
+ * @entry: a #StEntry
+ *
+ * Returns: %TRUE if the hint actor should be shown while the entry is focused
+ */
+gboolean
+st_entry_get_show_hint_while_focused (StEntry *entry)
+{
+  StEntryPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_ENTRY (entry), FALSE);
+
+  priv = ST_ENTRY_PRIV (entry);
+  return priv->show_hint_while_focused;
 }
 
 /******************************************************************************/
