@@ -17,10 +17,6 @@ var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
-const WIGGLE_OFFSET = 6;
-const WIGGLE_DURATION = 65;
-const N_WIGGLES = 3;
-
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1,
@@ -282,11 +278,7 @@ var AuthPrompt = GObject.registerClass({
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
-        Util.wiggle(this._entry, {
-            offset: WIGGLE_OFFSET,
-            duration: WIGGLE_DURATION,
-            wiggleCount: N_WIGGLES,
-        });
+        Util.wiggle(this._entry);
     }
 
     _onVerificationComplete() {
