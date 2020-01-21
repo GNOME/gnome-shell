@@ -305,25 +305,44 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var Switch = GObject.registerClass(
-class Switch extends St.Bin {
+var Switch = GObject.registerClass({
+    Properties: {
+        'state': GObject.ParamSpec.boolean(
+            'state', 'state', 'state',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class Switch extends St.Bin {
     _init(state) {
-        super._init({ style_class: 'toggle-switch',
-                      accessible_role: Atk.Role.CHECK_BOX,
-                      can_focus: true });
-        this.setToggleState(state);
+        this._state = false;
+
+        super._init({
+            style_class: 'toggle-switch',
+            accessible_role: Atk.Role.CHECK_BOX,
+            can_focus: true,
+            state,
+        });
     }
 
-    setToggleState(state) {
+    get state() {
+        return this._state;
+    }
+
+    set state(state) {
+        if (this._state === state)
+            return;
+
         if (state)
             this.add_style_pseudo_class('checked');
         else
             this.remove_style_pseudo_class('checked');
-        this.state = state;
+
+        this._state = state;
+        this.notify('state');
     }
 
     toggle() {
-        this.setToggleState(!this.state);
+        this.state = !this.state;
     }
 });
 
@@ -393,7 +412,7 @@ var PopupSwitchMenuItem = GObject.registerClass({
     }
 
     setToggleState(state) {
-        this._switch.setToggleState(state);
+        this._switch.state = state;
         this.checkAccessibleState();
     }
 
