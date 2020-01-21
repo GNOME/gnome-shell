@@ -614,6 +614,7 @@ var EmojiPager = GObject.registerClass({
             layout_manager: new Clutter.BinLayout(),
             reactive: true,
             clip_to_allocation: true,
+            y_expand: true,
         });
         this._sections = sections;
         this._nCols = nCols;
@@ -934,17 +935,11 @@ var EmojiSelection = GObject.registerClass({
         this.add_child(bottomRow);
 
         this._curPage = 0;
-        this._emojiPager.setCurrentPage(0);
     }
 
     vfunc_map() {
         this._emojiPager.setCurrentPage(0);
         super.vfunc_map();
-    }
-
-    vfunc_unmap() {
-        super.vfunc_unmap();
-        this._emojiPager.setCurrentPage(0);
     }
 
     _onPageChanged(sectionLabel, page, nPages) {
@@ -1290,7 +1285,10 @@ class Keyboard extends St.BoxLayout {
         this._suggestions = new Suggestions();
         this.add_child(this._suggestions);
 
-        this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
+        this._aspectContainer = new AspectContainer({
+            layout_manager: new Clutter.BinLayout(),
+            y_expand: true,
+        });
         this.add_child(this._aspectContainer);
 
         this._emojiSelection = new EmojiSelection();
@@ -1590,7 +1588,17 @@ class Keyboard extends St.BoxLayout {
 
         let maxHeight = monitor.height / 3;
         this.width = monitor.width;
-        this.height = maxHeight;
+
+        if (monitor.width > monitor.height) {
+            this.height = maxHeight;
+        } else {
+            /* In portrait mode, lack of horizontal space means we won't be
+             * able to make the OSK that big while keeping size ratio, so
+             * we allow the OSK being smaller than 1/3rd of the monitor height
+             * there.
+             */
+            this.height = Math.min(maxHeight, this.get_preferred_height(monitor.width));
+        }
     }
 
     _onGroupChanged() {
