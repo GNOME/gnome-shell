@@ -321,8 +321,8 @@ var ShellMountPasswordDialog = GObject.registerClass({
             });
 
             this._pimEntry = new St.PasswordEntry({
-                hint_text: _("PIM Number"),
                 style_class: 'prompt-dialog-password-entry',
+                hint_text: _("PIM Number"),
                 can_focus: true,
                 x_expand: true,
             });
