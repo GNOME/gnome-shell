@@ -131,9 +131,13 @@
   spacing: 8px;
 
   .prompt-dialog-password-entry {
+    padding: 8px;
     width: 22em;
 
-    .hint-text { color: transparentize($fg_color, 0.3); }
+    .hint-text {
+      margin-left: 4px;
+      color: transparentize($fg_color, 0.5);
+    }
   }
 }
 
