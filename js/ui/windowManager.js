@@ -984,6 +984,11 @@ var WindowManager = class {
 
         this._workspaceAnimation =
             new WorkspaceAnimation.WorkspaceAnimationController();
+
+        this._shellwm.connect('kill-switch-workspace', () => {
+            this._workspaceAnimation.cancelSwitchAnimation();
+            this._switchWorkspaceDone();
+        });
     }
 
     _showPadOsd(display, device, settings, imagePath, editionMode, monitorIndex) {
@@ -1605,10 +1610,24 @@ var WindowManager = class {
     _switchWorkspace(shellwm, from, to, direction) {
         if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
             shellwm.completed_switch_workspace();
+            this._switchInProgress = false;
             return;
         }
 
-        this._workspaceAnimation.animateSwitch(shellwm, from, to, direction);
+        this._switchInProgress = true;
+
+        this._workspaceAnimation.animateSwitch(from, to, direction, () => {
+            this._shellwm.completed_switch_workspace();
+            this._switchInProgress = false;
+        });
+    }
+
+    _switchWorkspaceDone() {
+        if (!this._switchInProgress)
+            return;
+
+        this._shellwm.completed_switch_workspace();
+        this._switchInProgress = false;
     }
 
     _showTilePreview(shellwm, window, tileRect, monitorIndex) {
