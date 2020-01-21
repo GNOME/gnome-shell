@@ -934,7 +934,6 @@ var EmojiSelection = GObject.registerClass({
         this.add_child(bottomRow);
 
         this._curPage = 0;
-        this._emojiPager.setCurrentPage(0);
     }
 
     vfunc_map() {
