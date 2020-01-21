@@ -302,7 +302,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case '802-11-wireless':
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            content.title = _("Authentication required by wireless network");
+            content.title = _("Authentication required");
             content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
@@ -330,7 +330,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             // fall through
         case 'cdma':
         case 'bluetooth':
-            content.title = _("Mobile broadband network password");
+            content.title = _("Authentication required");
             content.message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
