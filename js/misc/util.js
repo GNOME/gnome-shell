@@ -11,6 +11,10 @@ const Params = imports.misc.params;
 
 var SCROLL_TIME = 100;
 
+const WIGGLE_OFFSET = 6;
+const WIGGLE_DURATION = 65;
+const N_WIGGLES = 3;
+
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\([^\\s()<>]+\\)';
 const _leadingJunk = '[\\s`(\\[{\'\\"<\u00AB\u201C\u2018]';
