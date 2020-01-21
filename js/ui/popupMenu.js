@@ -305,22 +305,33 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var Switch = GObject.registerClass(
-class Switch extends St.BoxLayout {
-    _init(state) {
+var Switch = GObject.registerClass({
+    Signals: {
+        'toggled': { param_types: [GObject.TYPE_BOOLEAN] },
+        'activated': {},
+    },
+}, class Switch extends St.BoxLayout {
+    _init(state, reactive = true) {
         super._init({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
             can_focus: true,
         });
 
-        this._handle = new St.Widget({ style_class: 'handle' });
+        this._handle = new St.Widget({
+            style_class: 'handle',
+            reactive,
+        });
         this._handleAlignConstraint = new Clutter.AlignConstraint({
             align_axis: Clutter.AlignAxis.X_AXIS,
             source: this,
         });
         this._handle.add_constraint_with_name('align', this._handleAlignConstraint);
+        this._handle.connect('button-press-event', (actor, event) => this._startDragging(event));
+        this._handle.connect('touch-event', this._touchDragging.bind(this));
         this.add_child(this._handle);
+
+        this._dragging = false;
 
         this.setToggleState(state);
     }
@@ -344,10 +355,107 @@ class Switch extends St.BoxLayout {
         });
 
         this.state = state;
+        this.emit('toggled', this.state);
     }
 
     toggle() {
         this.setToggleState(!this.state);
+    }
+
+    _getHandleAlignFactor() {
+        return this._handle.get_constraint('align').get_factor();
+    }
+
+    _setHandleAlignFactor(factor) {
+        this._handle.get_constraint('align').set_factor(factor);
+    }
+
+    _startDragging(event) {
+        if (this._dragging)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._dragging = true;
+        [this._initialGrabX] = event.get_coords();
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (sequence != null)
+            device.sequence_grab(sequence, this);
+        else
+            device.grab(this);
+
+        this._grabbedDevice = device;
+        this._grabbedSequence = sequence;
+
+        if (sequence == null) {
+            this._releaseId = this.connect('button-release-event', this._endDragging.bind(this));
+            this._motionId = this.connect('motion-event', this._motionEvent.bind(this));
+        }
+
+        return Clutter.EVENT_STOP;
+    }
+
+    _touchDragging(actor, event) {
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (!this._dragging && event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            return this._startDragging(event);
+        } else if (device.sequence_get_grabbed_actor(sequence) == actor) {
+            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+                return this._motionEvent(actor, event);
+            else if (event.type() == Clutter.EventType.TOUCH_END ||
+                     event.type() == Clutter.EventType.TOUCH_CANCEL)
+                return this._endDragging();
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _endDragging() {
+        if (this._dragging) {
+            if (this._releaseId) {
+                this.disconnect(this._releaseId);
+                this._releaseId = null;
+            }
+            if (this._motionId) {
+                this.disconnect(this._motionId);
+                this._motionId = null;
+            }
+
+            if (this._grabbedSequence != null)
+                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
+            else
+                this._grabbedDevice.ungrab();
+
+            if (this._dragged == null) {
+                this.toggle();
+                this.emit('activated');
+            } else {
+                this.setToggleState(this._getHandleAlignFactor() > 0.5);
+            }
+
+            this._dragged = null;
+            this._grabbedSequence = null;
+            this._grabbedDevice = null;
+            this._dragging = false;
+        }
+        return Clutter.EVENT_STOP;
+    }
+
+    _motionEvent(actor, event) {
+        this._dragged = true;
+
+        let [absX] = event.get_coords();
+        let factorDiff = (absX - this._initialGrabX) / (this.get_width() - this._handle.get_width());
+        let factor = factorDiff + (this.state ? 1.0 : 0.0);
+
+        factor = Math.max(factor, 0.0);
+        factor = Math.min(factor, 1.0);
+
+        this._setHandleAlignFactor(factor);
+
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -358,7 +466,11 @@ var PopupSwitchMenuItem = GObject.registerClass({
         super._init(params);
 
         this.label = new St.Label({ text });
-        this._switch = new Switch(active);
+
+        let switchReactive = params && params.reactive;
+        this._switch = new Switch(active, switchReactive);
+        this._switch.connect('toggled', this._onToggled.bind(this));
+        this._switch.connect('activated', event => this.emit('activate', event));
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this.checkAccessibleState();
@@ -408,8 +520,6 @@ var PopupSwitchMenuItem = GObject.registerClass({
 
     toggle() {
         this._switch.toggle();
-        this.emit('toggled', this._switch.state);
-        this.checkAccessibleState();
     }
 
     get state() {
@@ -417,7 +527,14 @@ var PopupSwitchMenuItem = GObject.registerClass({
     }
 
     setToggleState(state) {
+        this._omitSignal = true;
         this._switch.setToggleState(state);
+        this._omitSignal = false;
+    }
+
+    _onToggled(sw, state) {
+        if (!this._omitSignal)
+            this.emit('toggled', state);
         this.checkAccessibleState();
     }
 
