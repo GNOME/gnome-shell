@@ -91,10 +91,6 @@
   }
 }
 
-.prompt-dialog-description:rtl {
-  text-align: right;
-}
-
 .prompt-dialog-password-grid {
   spacing-rows: 8px;
   spacing-columns: 4px;
@@ -170,11 +166,4 @@
 /* Access Dialog */
 .access-dialog {
   spacing: 30px;
-}
-
-/* Network Agent Dialog */
-
-.network-dialog-secret-table {
-  spacing-rows: 15px;
-  spacing-columns: 1em;
 }
