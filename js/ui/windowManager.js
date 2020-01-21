@@ -960,6 +960,11 @@ var WindowManager = class {
 
         this._workspaceAnimation =
             new WorkspaceAnimation.WorkspaceAnimationController();
+
+        this._shellwm.connect('kill-switch-workspace', () => {
+            this._workspaceAnimation.cancelSwitchAnimation();
+            this._switchWorkspaceDone();
+        });
     }
 
     async _startX11Services(task, cancellable) {
@@ -1618,7 +1623,20 @@ var WindowManager = class {
             return;
         }
 
-        this._workspaceAnimation.animateSwitch(shellwm, from, to, direction);
+        this._switchInProgress = true;
+
+        this._workspaceAnimation.animateSwitch(from, to, direction, () => {
+            this._shellwm.completed_switch_workspace();
+            this._switchInProgress = false;
+        });
+    }
+
+    _switchWorkspaceDone() {
+        if (!this._switchInProgress)
+            return;
+
+        this._shellwm.completed_switch_workspace();
+        this._switchInProgress = false;
     }
 
     _showTilePreview(shellwm, window, tileRect, monitorIndex) {
