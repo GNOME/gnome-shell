@@ -83,7 +83,7 @@
 
 .login-dialog-logo-bin { padding: 24px 0px; }
 .login-dialog-banner { color: darken($osd_fg_color,10%); }
-.login-dialog-button-box { spacing: 5px; }
+.login-dialog-button-box { width: 23em; spacing: 5px; }
 .login-dialog-message-warning { color: $warning_color; }
 .login-dialog-message-hint { padding-top: 0; padding-bottom: 20px; }
 .login-dialog-user-selection-box { padding: 100px 0px; }
@@ -142,7 +142,8 @@
   color: $osd_fg_color;
   font-size: 16pt;
   text-align: center;
-  padding-top: 24px;
+  font-weight: normal;
+  padding-top: 16px;
 }
 
 .login-dialog-prompt-layout {
@@ -150,6 +151,10 @@
   padding-bottom: 12px;
   spacing: $base_spacing * 2;
   width: 23em;
+}
+
+.login-dialog-prompt-entry {
+  width: 262px;
 }
 
 .login-dialog-prompt-label {
