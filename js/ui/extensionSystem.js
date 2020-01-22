@@ -45,6 +45,7 @@ var ExtensionManager = class {
             return GLib.SOURCE_REMOVE;
         });
 
+        this._installExtensionUpdates();
         this._sessionUpdated();
     }
 
@@ -454,6 +455,21 @@ var ExtensionManager = class {
         [...this._extensions.values()].sort((a, b) => {
             return extensionOrder.indexOf(a.uuid) - extensionOrder.indexOf(b.uuid);
         }).forEach(extension => this.reloadExtension(extension));
+    }
+
+    _installExtensionUpdates() {
+        FileUtils.collectFromDatadirs('extension-updates', true, (dir, info) => {
+            let fileType = info.get_file_type();
+            if (fileType !== Gio.FileType.DIRECTORY)
+                return;
+            let uuid = info.get_name();
+            let extensionDir = Gio.File.new_for_path(
+                GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
+
+            FileUtils.recursivelyDeleteDir(extensionDir, false);
+            FileUtils.recursivelyMoveDir(dir, extensionDir);
+            FileUtils.recursivelyDeleteDir(dir, true);
+        });
     }
 
     _loadExtensions() {
