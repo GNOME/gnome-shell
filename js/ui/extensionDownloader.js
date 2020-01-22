@@ -126,8 +126,13 @@ function checkForUpdates() {
         metadatas[uuid] = extension.metadata;
     });
 
-    let params = { shell_version: Config.PACKAGE_VERSION,
-                   installed: JSON.stringify(metadatas) };
+    let versionCheck = global.settings.get_boolean(
+        'disable-extension-version-validation');
+    let params = {
+        shell_version: Config.PACKAGE_VERSION,
+        installed: JSON.stringify(metadatas),
+        disable_version_validation: `${versionCheck}`,
+    };
 
     let url = REPOSITORY_URL_UPDATE;
     let message = Soup.form_request_new_from_hash('GET', url, params);
