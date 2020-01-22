@@ -549,7 +549,7 @@ void
 st_icon_set_icon_name (StIcon      *icon,
                        const gchar *icon_name)
 {
-  GIcon *gicon = NULL;
+  g_autoptr(GIcon) gicon = NULL;
 
   g_return_if_fail (ST_IS_ICON (icon));
 
