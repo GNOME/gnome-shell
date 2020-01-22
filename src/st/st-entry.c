@@ -232,8 +232,7 @@ st_entry_update_hint_visibility (StEntry *self)
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
   gboolean hint_visible =
     priv->hint_actor != NULL &&
-    strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), "") == 0 &&
-    !HAS_FOCUS (priv->entry);
+    strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), "") == 0;
 
   if (priv->hint_actor)
     g_object_set (priv->hint_actor, "visible", hint_visible, NULL);
@@ -519,10 +518,6 @@ static void
 clutter_text_focus_in_cb (ClutterText  *text,
                           ClutterActor *actor)
 {
-  StEntry *entry = ST_ENTRY (actor);
-
-  st_entry_update_hint_visibility (entry);
-
   st_widget_add_style_pseudo_class (ST_WIDGET (actor), "focus");
   clutter_text_set_cursor_visible (text, TRUE);
 }
@@ -531,12 +526,7 @@ static void
 clutter_text_focus_out_cb (ClutterText  *text,
                            ClutterActor *actor)
 {
-  StEntry *entry = ST_ENTRY (actor);
-
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
-
-  st_entry_update_hint_visibility (entry);
-
   clutter_text_set_cursor_visible (text, FALSE);
 }
 
@@ -547,6 +537,8 @@ clutter_text_changed_cb (GObject    *object,
 {
   StEntry *entry = ST_ENTRY (user_data);
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+
+  st_entry_update_hint_visibility (entry);
 
   /* Since the text changed, force a regen of the shadow texture */
   cogl_clear_object (&priv->text_shadow_material);
@@ -1039,10 +1031,8 @@ st_entry_get_text (StEntry *entry)
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
   priv = st_entry_get_instance_private (entry);
-  if (priv->hint_actor != NULL && clutter_actor_is_visible (priv->hint_actor))
-    return "";
-  else
-    return clutter_text_get_text (CLUTTER_TEXT (priv->entry));
+
+  return clutter_text_get_text (CLUTTER_TEXT (priv->entry));
 }
 
 /**
@@ -1063,8 +1053,6 @@ st_entry_set_text (StEntry     *entry,
   priv = st_entry_get_instance_private (entry);
 
   clutter_text_set_text (CLUTTER_TEXT (priv->entry), text);
-
-  st_entry_update_hint_visibility (entry);
 
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
 }
