@@ -559,6 +559,7 @@ st_icon_set_icon_name (StIcon      *icon,
   g_object_freeze_notify (G_OBJECT (icon));
 
   st_icon_set_gicon (icon, gicon);
+  g_object_unref (G_OBJECT (gicon));
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_ICON_NAME]);
 
   g_object_thaw_notify (G_OBJECT (icon));
