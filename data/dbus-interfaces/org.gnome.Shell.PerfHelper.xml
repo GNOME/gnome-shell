@@ -9,5 +9,9 @@
     </method>
     <method name="WaitWindows"/>
     <method name="DestroyWindows"/>
+    <method name='OpenDisplay'>
+      <arg type='s' name='display' direction='in'/>
+    </method>"
+    <method name='CloseDisplay'/>
   </interface>
 </node>
