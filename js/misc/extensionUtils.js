@@ -31,7 +31,15 @@ var ExtensionState = {
     UNINSTALLED: 99,
 };
 
-const SERIALIZED_PROPERTIES = ['type', 'state', 'path', 'error', 'hasPrefs', 'canChange'];
+const SERIALIZED_PROPERTIES = [
+    'type',
+    'state',
+    'path',
+    'error',
+    'hasPrefs',
+    'hasUpdate',
+    'canChange',
+];
 
 /**
  * getCurrentExtension:
