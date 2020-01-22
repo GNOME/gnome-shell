@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-01-21 14:23+0000\n"
-"PO-Revision-Date: 2020-01-20 00:00+0900\n"
+"PO-Revision-Date: 2020-01-23 02:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -1287,23 +1287,17 @@ msgstr ""
 "ター本体は電源につないでください。"
 
 #: js/ui/endSessionDialog.js:259
-#, fuzzy
-#| msgid "Running on battery power: please plug in before installing updates."
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
 "バッテリーで動作中です: 更新をインストールする前に電源に接続してください。"
 
 #: js/ui/endSessionDialog.js:268
-#, fuzzy
-#| msgid "Some applications are busy or have unsaved work."
 msgid "Some applications are busy or have unsaved work"
-msgstr "実行中あるいは作業が未保存のアプリケーションがあります。"
+msgstr "実行中または作業が未保存のアプリケーションがあります"
 
 #: js/ui/endSessionDialog.js:273
-#, fuzzy
-#| msgid "Other users are logged in."
 msgid "Other users are logged in"
-msgstr "他のユーザーがログインしています。"
+msgstr "他のユーザーがログインしています"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
