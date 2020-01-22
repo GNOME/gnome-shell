@@ -198,6 +198,15 @@ var ExtensionManager = class {
         return true;
     }
 
+    notifyExtensionUpdate(uuid) {
+        let extension = this.lookup(uuid);
+        if (!extension)
+            return;
+
+        extension.hasUpdate = true;
+        this.emit('extension-state-changed', extension);
+    }
+
     logExtensionError(uuid, error) {
         let extension = this.lookup(uuid);
         if (!extension)
@@ -253,6 +262,7 @@ var ExtensionManager = class {
             path: dir.get_path(),
             error: '',
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
+            hasUpdate: false,
             canChange: false,
         };
         this._extensions.set(uuid, extension);
