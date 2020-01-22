@@ -90,6 +90,32 @@ function _callRemote(obj, method, ...args) {
     });
 }
 
+let _displayName = null;
+function _getDisplayName() {
+    if (_displayName != null)
+      return _displayName;
+
+    // Try Wayland first
+    _displayName = GLib.getenv("WAYLAND_DISPLAY");
+
+    // Otherwise X11
+    if (_displayName == null)
+      _displayName = GLib.getenv("DISPLAY");
+
+    return _displayName;
+}
+
+function openDisplay() {
+    let displayName = _getDisplayName();
+    let perfHelper = _getPerfHelper();
+    return _callRemote(perfHelper, perfHelper.OpenDisplayRemote, displayName);
+}
+
+function closeDisplay() {
+    let perfHelper = _getPerfHelper();
+    return _callRemote(perfHelper, perfHelper.CloseDisplayRemote);
+}
+
 /**
  * createTestWindow:
  * @param {Object} params: options for window creation.
@@ -319,6 +345,7 @@ function _collect(scriptModule, outputFile) {
  **/
 async function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);
+    openDisplay();
 
     for (let step of scriptModule.run()) {
         try {
@@ -335,5 +362,6 @@ async function runPerfScript(scriptModule, outputFile) {
         log(`Script failed: ${err}\n${err.stack}`);
         Meta.exit(Meta.ExitCode.ERROR);
     }
+    closeDisplay();
     Meta.exit(Meta.ExitCode.SUCCESS);
 }
