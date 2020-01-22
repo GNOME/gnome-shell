@@ -32,6 +32,10 @@ static const gchar introspection_xml[] =
 	  "    </method>"
 	  "    <method name='WaitWindows'/>"
 	  "    <method name='DestroyWindows'/>"
+	  "    <method name='OpenDisplay'>"
+	  "      <arg type='s' name='display' direction='in'/>"
+	  "    </method>"
+	  "    <method name='CloseDisplay'/>"
 	  "  </interface>"
 	"</node>";
 
@@ -267,6 +271,8 @@ handle_method_call (GDBusConnection       *connection,
 		    GDBusMethodInvocation *invocation,
 		    gpointer               user_data)
 {
+  static GdkDisplay *display;
+
   /* Push off the idle timeout */
   establish_timeout ();
 
@@ -297,6 +303,26 @@ handle_method_call (GDBusConnection       *connection,
   else if (g_strcmp0 (method_name, "DestroyWindows") == 0)
     {
       destroy_windows ();
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else if (g_strcmp0 (method_name, "OpenDisplay") == 0)
+    {
+      char *display_name;
+
+      g_variant_get (parameters, "(s)", &display_name);
+
+      if (!display)
+        display = gdk_display_open (display_name);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else if (g_strcmp0 (method_name, "CloseDisplay") == 0)
+    {
+      if (display)
+        {
+          gdk_display_close (display);
+          display = NULL;
+        }
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
 }
@@ -351,7 +377,7 @@ main (int argc, char **argv)
 
   context = g_option_context_new (" - server to create windows for performance testing");
   g_option_context_add_main_entries (context, opt_entries, NULL);
-  g_option_context_add_group (context, gtk_get_option_group (TRUE));
+  g_option_context_add_group (context, gtk_get_option_group (FALSE));
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_print ("option parsing failed: %s\n", error->message);
