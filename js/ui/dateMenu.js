@@ -432,7 +432,6 @@ var MessagesIndicator = GObject.registerClass(
 class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
-            icon_name: 'message-indicator-symbolic',
             icon_size: 16,
             visible: false,
             y_expand: true,
@@ -440,6 +439,13 @@ class MessagesIndicator extends St.Icon {
         });
 
         this._sources = [];
+        this._count = 0;
+        this._doNotDisturb = false;
+
+        this._settings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.notifications',
+        });
+        this._settings.connect('changed::show-banners', this._sync.bind(this));
 
         Main.messageTray.connect('source-added', this._onSourceAdded.bind(this));
         Main.messageTray.connect('source-removed', this._onSourceRemoved.bind(this));
@@ -447,6 +453,11 @@ class MessagesIndicator extends St.Icon {
 
         let sources = Main.messageTray.getSources();
         sources.forEach(source => this._onSourceAdded(null, source));
+
+        this.connect('destroy', () => {
+            this._settings.run_dispose();
+            this._settings = null;
+        });
     }
 
     _onSourceAdded(tray, source) {
@@ -463,9 +474,17 @@ class MessagesIndicator extends St.Icon {
     _updateCount() {
         let count = 0;
         this._sources.forEach(source => (count += source.unseenCount));
-        count -= Main.messageTray.queueCount;
+        this._count = count - Main.messageTray.queueCount;
 
-        this.visible = count > 0;
+        this._sync();
+    }
+
+    _sync() {
+        let doNotDisturb = !this._settings.get_boolean('show-banners');
+        this.icon_name = doNotDisturb
+            ? 'notifications-disabled-symbolic'
+            : 'message-indicator-symbolic';
+        this.visible = doNotDisturb || this._count > 0;
     }
 });
 
@@ -473,21 +492,19 @@ var IndicatorPad = GObject.registerClass(
 class IndicatorPad extends St.Widget {
     _init(actor) {
         this._source = actor;
-        this._source.connect('notify::visible', () => this.queue_relayout());
         this._source.connect('notify::size', () => this.queue_relayout());
         super._init();
+        this._source.bind_property('visible',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     vfunc_get_preferred_width(forHeight) {
-        if (this._source.visible)
-            return this._source.get_preferred_width(forHeight);
-        return [0, 0];
+        return this._source.get_preferred_width(forHeight);
     }
 
     vfunc_get_preferred_height(forWidth) {
-        if (this._source.visible)
-            return this._source.get_preferred_height(forWidth);
-        return [0, 0];
+        return this._source.get_preferred_height(forWidth);
     }
 });
 
@@ -559,7 +576,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this._indicator = new MessagesIndicator();
 
-        let box = new St.BoxLayout();
+        let box = new St.BoxLayout({ style_class: 'clock-display-box' });
         box.add_actor(new IndicatorPad(this._indicator));
         box.add_actor(this._clockDisplay);
         box.add_actor(this._indicator);
