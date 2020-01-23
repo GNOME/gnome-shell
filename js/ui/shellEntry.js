@@ -154,15 +154,21 @@ function addContextMenu(entry, params) {
 }
 
 var CapsLockWarning = GObject.registerClass(
-class CapsLockWarning extends St.Label {
+class CapsLockWarning extends St.Bin {
     _init(params) {
-        let defaultParams = { style_class: 'caps-lock-warning-label' };
+        let defaultParams = { height: 0 };
         super._init(Object.assign(defaultParams, params));
 
-        this.text = _('Caps lock is on.');
+        this._label = new St.Label({
+            style_class: 'caps-lock-warning-label'
+        });
+        this._label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._label.clutter_text.line_wrap = true;
+        this.set_child(this._label);
+
+        this._label.text = _('Caps lock is on.');
 
         this._keymap = Clutter.get_default_backend().get_keymap();
-
         this.connect('notify::mapped', () => {
             if (this.is_mapped()) {
                 this._stateChangedId = this._keymap.connect('state-changed',
@@ -179,13 +185,17 @@ class CapsLockWarning extends St.Label {
             if (this._stateChangedId > 0)
                 this._keymap.disconnect(this._stateChangedId);
         });
-
-        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.clutter_text.line_wrap = true;
     }
 
     _updateCapsLockWarningOpacity() {
         let capsLockOn = this._keymap.get_caps_lock_state();
-        this.opacity = capsLockOn ? 255 : 0;
+        let [,height] = this._label.get_preferred_height(-1);
+
+        this.remove_all_transitions();
+        this.ease({
+            height: capsLockOn ? height : 0,
+            opacity: capsLockOn ? 255 : 0,
+            duration: 200,
+        });
     }
 });
