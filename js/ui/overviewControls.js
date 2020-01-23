@@ -31,15 +31,10 @@ var SlideLayout = GObject.registerClass({
             'slide-x', 'slide-x', 'slide-x',
             GObject.ParamFlags.READWRITE,
             0, 1, 1),
-        'translation-x': GObject.ParamSpec.double(
-            'translation-x', 'translation-x', 'translation-x',
-            GObject.ParamFlags.READWRITE,
-            -Infinity, Infinity, 0),
     },
 }, class SlideLayout extends Clutter.FixedLayout {
     _init(params) {
         this._slideX = 1;
-        this._translationX = 0;
         this._direction = SlideDirection.LEFT;
 
         super._init(params);
@@ -72,7 +67,7 @@ var SlideLayout = GObject.registerClass({
             : availWidth - natWidth * this._slideX;
 
         let actorBox = new Clutter.ActorBox();
-        actorBox.x1 = box.x1 + alignX + this._translationX;
+        actorBox.x1 = box.x1 + alignX;
         actorBox.x2 = actorBox.x1 + (child.x_expand ? availWidth : natWidth);
         actorBox.y1 = box.y1;
         actorBox.y2 = actorBox.y1 + availHeight;
@@ -101,20 +96,6 @@ var SlideLayout = GObject.registerClass({
 
     get slideDirection() {
         return this._direction;
-    }
-
-    // eslint-disable-next-line camelcase
-    set translation_x(value) {
-        if (this._translationX == value)
-            return;
-        this._translationX = value;
-        this.notify('translation-x');
-        this.layout_changed();
-    }
-
-    // eslint-disable-next-line camelcase
-    get translation_x() {
-        return this._translationX;
     }
 });
 
@@ -184,11 +165,12 @@ class SlidingControl extends St.Widget {
         else
             translationEnd = translation;
 
-        if (this.layout.translation_x == translationEnd)
+        if (this.translation_x === translationEnd)
             return;
 
-        this.layout.translation_x = translationStart;
-        this.ease_property('@layout.translation-x', translationEnd, {
+        this.translation_x = translationStart;
+        this.ease({
+            translation_x: translationEnd,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
         });
