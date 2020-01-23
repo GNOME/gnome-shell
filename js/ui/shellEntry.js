@@ -165,19 +165,19 @@ class CapsLockWarning extends St.Label {
 
         this.connect('notify::mapped', () => {
             if (this.is_mapped()) {
-                this.stateChangedId = this._keymap.connect('state-changed',
+                this._stateChangedId = this._keymap.connect('state-changed',
                     this._updateCapsLockWarningOpacity.bind(this));
             } else {
-                this._keymap.disconnect(this.stateChangedId);
-                this.stateChangedId = 0;
+                this._keymap.disconnect(this._stateChangedId);
+                this._stateChangedId = 0;
             }
 
             this._updateCapsLockWarningOpacity();
         });
 
         this.connect('destroy', () => {
-            if (this.stateChangedId > 0)
-                this._keymap.disconnect(this.stateChangedId);
+            if (this._stateChangedId > 0)
+                this._keymap.disconnect(this._stateChangedId);
         });
 
         this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
