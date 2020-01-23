@@ -57,3 +57,11 @@
 
 // Hidden
 .hidden { color: rgba(0,0,0,0);}
+
+// Caps-lock warning
+.caps-lock-warning-label {
+  padding-bottom: 8px;
+  padding-left: 6.2em;
+  @include fontsize($base_font_size - 1);
+  color: $warning_color;
+}
