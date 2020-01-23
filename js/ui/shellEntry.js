@@ -156,36 +156,52 @@ function addContextMenu(entry, params) {
 var CapsLockWarning = GObject.registerClass(
 class CapsLockWarning extends St.Label {
     _init(params) {
-        let defaultParams = { style_class: 'caps-lock-warning-label' };
+        let defaultParams = {
+            style_class: 'caps-lock-warning-label',
+            text: _('Caps lock is on.'),
+        };
         super._init(Object.assign(defaultParams, params));
-
-        this.text = _('Caps lock is on.');
-
-        this._keymap = Clutter.get_default_backend().get_keymap();
-
-        this.connect('notify::mapped', () => {
-            if (this.is_mapped()) {
-                this._stateChangedId = this._keymap.connect('state-changed',
-                    this._updateCapsLockWarningOpacity.bind(this));
-            } else {
-                this._keymap.disconnect(this._stateChangedId);
-                this._stateChangedId = 0;
-            }
-
-            this._updateCapsLockWarningOpacity();
-        });
-
-        this.connect('destroy', () => {
-            if (this._stateChangedId > 0)
-                this._keymap.disconnect(this._stateChangedId);
-        });
 
         this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.clutter_text.line_wrap = true;
+
+        this._keymap = Clutter.get_default_backend().get_keymap();
+        this._stateChangedId = this._keymap.connect('state-changed',
+            this._sync.bind(this));
+
+        this._sync();
+
+        this.connect('destroy', () => {
+            this._keymap.disconnect(this._stateChangedId);
+        });
     }
 
-    _updateCapsLockWarningOpacity() {
+    _sync() {
         let capsLockOn = this._keymap.get_caps_lock_state();
-        this.opacity = capsLockOn ? 255 : 0;
+        this.remove_all_transitions();
+
+        if (!this.get_stage()) {
+            this.visible = capsLockOn;
+            return;
+        }
+
+        let [, height] = this.get_preferred_height(-1);
+
+        if (capsLockOn) {
+            this.height = 0;
+            this.show();
+        }
+
+        this.ease({
+            height: capsLockOn ? height : 0,
+            opacity: capsLockOn ? 255 : 0,
+            duration: 200,
+            onComplete: () => {
+                this.height = -1;
+
+                if (!capsLockOn)
+                    this.hide();
+            },
+        });
     }
 });
