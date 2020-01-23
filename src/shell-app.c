@@ -186,7 +186,7 @@ window_backed_app_get_icon (ShellApp *app,
 {
   MetaWindow *window = NULL;
   StWidget *widget;
-  gint scale;
+  int scale, scaled_size;
   ShellGlobal *global;
   StThemeContext *context;
 
@@ -194,7 +194,7 @@ window_backed_app_get_icon (ShellApp *app,
   context = st_theme_context_get_for_stage (shell_global_get_stage (global));
   g_object_get (context, "scale-factor", &scale, NULL);
 
-  size *= scale;
+  scaled_size = size * scale;
 
   /* During a state transition from running to not-running for
    * window-backend apps, it's possible we get a request for the icon.
@@ -208,14 +208,28 @@ window_backed_app_get_icon (ShellApp *app,
       ClutterActor *actor;
 
       actor = clutter_actor_new ();
-      g_object_set (actor, "opacity", 0, "width", (float) size, "height", (float) size, NULL);
+      g_object_set (actor,
+                    "opacity", 0,
+                    "width", (float) scaled_size,
+                    "height", (float) scaled_size,
+                    NULL);
       return actor;
     }
 
-  widget = st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
-                                                         G_OBJECT (window),
-                                                         "icon",
-                                                         size);
+  if (meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      widget = st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
+                                                             G_OBJECT (window),
+                                                             "icon",
+                                                             scaled_size);
+    }
+  else
+    {
+      widget = g_object_new (ST_TYPE_ICON,
+                             "icon-size", size,
+                             "icon-name", "application-x-executable",
+                             NULL);
+    }
   st_widget_add_style_class_name (widget, "fallback-app-icon");
 
   return CLUTTER_ACTOR (widget);
