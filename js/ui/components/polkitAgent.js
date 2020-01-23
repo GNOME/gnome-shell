@@ -108,8 +108,8 @@ var AuthenticationDialog = GObject.registerClass({
         this._passwordBox.add(this._workSpinner);
 
         this._passwordBox.hide();
-        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({ style_class: 'prompt-dialog-caps-lock-warning' });
-        content.add_child(this._capsLockWarningLabel);
+        let capsLockWarning = new ShellEntry.CapsLockWarning();
+        content.add_child(capsLockWarning);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
