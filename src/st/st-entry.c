@@ -542,6 +542,8 @@ clutter_text_changed_cb (GObject    *object,
 
   /* Since the text changed, force a regen of the shadow texture */
   cogl_clear_object (&priv->text_shadow_material);
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
 }
 
 static void
@@ -1054,7 +1056,8 @@ st_entry_set_text (StEntry     *entry,
 
   clutter_text_set_text (CLUTTER_TEXT (priv->entry), text);
 
-  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
+  /* Note: PROP_TEXT will get notfied from our notify::text handler connected
+   * to priv->entry. */
 }
 
 /**
