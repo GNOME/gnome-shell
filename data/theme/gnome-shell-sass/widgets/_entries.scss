@@ -25,9 +25,3 @@ StEntry {
     color: transparentize($fg_color, 0.3);
   }
 }
-
-.caps-lock-warning-label {
-  padding-left: 6.2em;
-  @include fontsize($base_font_size - 1);
-  color: $warning_color;
-}
