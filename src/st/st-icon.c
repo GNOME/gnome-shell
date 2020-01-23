@@ -67,6 +67,8 @@ struct _StIconPrivate
   gint              theme_icon_size; /* icon size from theme node */
   gint              icon_size;       /* icon size we are using */
 
+  StIconColors     *colors;
+
   CoglPipeline     *shadow_pipeline;
   StShadow         *shadow_spec;
   graphene_size_t   shadow_size;
@@ -166,6 +168,7 @@ st_icon_dispose (GObject *gobject)
 
   g_clear_object (&priv->gicon);
   g_clear_object (&priv->fallback_gicon);
+  g_clear_pointer (&priv->colors, st_icon_colors_unref);
   g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
   g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
   g_clear_pointer (&priv->icon_actor, clutter_actor_destroy);
@@ -210,22 +213,48 @@ st_icon_style_changed (StWidget *widget)
   StIcon *self = ST_ICON (widget);
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
   StIconPrivate *priv = self->priv;
+  gboolean should_update = FALSE;
+  StShadow *shadow_spec;
+  StIconColors *colors;
 
-  st_icon_clear_shadow_pipeline (self);
-  g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
+  shadow_spec = st_theme_node_get_shadow (theme_node, "icon-shadow");
 
-  priv->shadow_spec = st_theme_node_get_shadow (theme_node, "icon-shadow");
-
-  if (priv->shadow_spec && priv->shadow_spec->inset)
+  if (shadow_spec && shadow_spec->inset)
     {
       g_warning ("The icon-shadow property does not support inset shadows");
-      st_shadow_unref (priv->shadow_spec);
-      priv->shadow_spec = NULL;
+      st_shadow_unref (shadow_spec);
+      shadow_spec = NULL;
+    }
+
+  if ((shadow_spec && priv->shadow_spec && !st_shadow_equal (shadow_spec, priv->shadow_spec)) ||
+      (shadow_spec && !priv->shadow_spec) || (!shadow_spec && priv->shadow_spec))
+    {
+      st_icon_clear_shadow_pipeline (self);
+      g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
+
+      priv->shadow_spec = shadow_spec;
+      should_update = TRUE;
+    }
+  else
+    st_shadow_unref (shadow_spec);
+
+  colors = st_theme_node_get_icon_colors (theme_node);
+
+  if ((colors && priv->colors && !st_icon_colors_equal (colors, priv->colors)) ||
+      (colors && !priv->colors) || (!colors && priv->colors))
+    {
+      g_clear_pointer (&priv->colors, st_icon_colors_unref);
+
+      priv->colors = st_icon_colors_ref (colors);
+      should_update = TRUE;
     }
 
   priv->theme_icon_size = (int)(0.5 + st_theme_node_get_length (theme_node, "icon-size"));
-  st_icon_update_icon_size (self);
-  st_icon_update (self);
+
+  should_update |= st_icon_update_icon_size (self);
+
+  if (should_update)
+    st_icon_update (self);
 }
 
 static void
