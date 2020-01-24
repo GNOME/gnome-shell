@@ -8,20 +8,13 @@
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="margin_start">12</property>
-        <property name="margin_end">24</property>
-        <property name="margin_top">12</property>
-        <property name="margin_bottom">12</property>
-        <property name="row_spacing">6</property>
-        <property name="column_spacing">24</property>
+        <property name="margin">12</property>
+        <property name="column_spacing">12</property>
         <child>
           <object class="GtkLabel" id="nameLabel">
             <property name="visible">True</property>
             <property name="hexpand">True</property>
             <property name="halign">start</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
           </object>
         </child>
         <child>
@@ -46,9 +39,6 @@
               </object>
             </child>
           </object>
-          <packing>
-            <property name="height">2</property>
-          </packing>
         </child>
         <child>
           <object class="GtkSwitch">
@@ -57,21 +47,65 @@
             <property name="valign">center</property>
             <property name="action-name">row.enabled</property>
           </object>
-          <packing>
-            <property name="height">2</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="descriptionLabel">
+          <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="ellipsize">end</property>
-            <property name="max_width_chars">60</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
+          </object>
+        </child>
+         <child>
+          <object class="GtkButton" id="revealButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="valign">center</property>
+            <style>
+              <class name="image-button"/>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon_name">pan-end-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="revealer">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="margin_top">12</property>
+                <property name="row_spacing">6</property>
+                <property name="column_spacing">12</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Description</property>
+                    <property name="xalign">0</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="descriptionLabel">
+                    <property name="visible">True</property>
+                    <property name="ellipsize">end</property>
+                    <property name="max_width_chars">60</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
+            <property name="width">5</property>
           </packing>
         </child>
       </object>
