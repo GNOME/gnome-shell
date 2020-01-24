@@ -5,8 +5,10 @@
 
 const { Gio, GLib, Meta, Shell } = imports.gi;
 
+const Config = imports.misc.config;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
+const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -75,6 +77,27 @@ function _getPerfHelper() {
         _perfHelper = new PerfHelper();
 
     return _perfHelper;
+}
+
+function _hasPerfHelper() {
+    try {
+        _getPerfHelper();
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+function _spawnPerfHelper() {
+    let path = Config.LIBEXECDIR;
+    try {
+        let command = `${path}/gnome-shell-perf-helper`;
+        log(`${command}`);
+        Util.trySpawnCommandLine(command);
+    } catch (e) {
+        log(`Failed to launch gnome-shell-perf-helper: ${e.message}`);
+        return;
+    }
 }
 
 function _callRemote(obj, method, ...args) {
@@ -276,6 +299,25 @@ function _collect(scriptModule, outputFile) {
     }
 }
 
+async function _runPerfScript(scriptModule, outputFile) {
+    for (let step of scriptModule.run()) {
+        try {
+            await step; // eslint-disable-line no-await-in-loop
+        } catch (err) {
+            log(`Script failed: ${err}\n${err.stack}`);
+            Meta.exit(Meta.ExitCode.ERROR);
+        }
+    }
+
+    try {
+        _collect(scriptModule, outputFile);
+    } catch (err) {
+        log(`Script failed: ${err}\n${err.stack}`);
+        Meta.exit(Meta.ExitCode.ERROR);
+    }
+    Meta.exit(Meta.ExitCode.SUCCESS);
+}
+
 /**
  * runPerfScript
  * @param {Object} scriptModule: module object with run and finish
@@ -317,23 +359,16 @@ function _collect(scriptModule, outputFile) {
  * After running the script and collecting statistics from the
  * event log, GNOME Shell will exit.
  **/
-async function runPerfScript(scriptModule, outputFile) {
+function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);
+    _spawnPerfHelper();
 
-    for (let step of scriptModule.run()) {
-        try {
-            await step; // eslint-disable-line no-await-in-loop
-        } catch (err) {
-            log(`Script failed: ${err}\n${err.stack}`);
-            Meta.exit(Meta.ExitCode.ERROR);
-        }
-    }
-
-    try {
-        _collect(scriptModule, outputFile);
-    } catch (err) {
-        log(`Script failed: ${err}\n${err.stack}`);
-        Meta.exit(Meta.ExitCode.ERROR);
-    }
-    Meta.exit(Meta.ExitCode.SUCCESS);
+    let watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION,
+                                         'org.gnome.Shell.PerfHelper',
+                                         Gio.BusNameWatcherFlags.NONE,
+                                         (conn, name, owner) => {
+                                             log(`${name} appeared`);
+                                             _runPerfScript(scriptModule, outputFile);
+                                         },
+                                         null);
 }
