@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-01-21 00:07+0000\n"
-"PO-Revision-Date: 2020-01-21 10:53+0700\n"
+"POT-Creation-Date: 2020-01-22 22:00+0000\n"
+"PO-Revision-Date: 2020-01-23 16:31+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -748,48 +748,44 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:930
+#: js/ui/appDisplay.js:904
 msgid "Unnamed Folder"
 msgstr "Folder Tanpa Nama"
 
-#: js/ui/appDisplay.js:953
+#: js/ui/appDisplay.js:927
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: js/ui/appDisplay.js:1088
+#: js/ui/appDisplay.js:1062
 msgid "Frequent"
 msgstr "Sering"
 
-#: js/ui/appDisplay.js:1095
+#: js/ui/appDisplay.js:1069
 msgid "All"
 msgstr "Semua"
 
-#: js/ui/appDisplay.js:1870
-msgid "Rename"
-msgstr "Ubah Nama"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2558 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:2578 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:2589
+#: js/ui/appDisplay.js:2483
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:2617 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:2623
+#: js/ui/appDisplay.js:2517
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:2633 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -836,7 +832,7 @@ msgid "Settings"
 msgstr "Pengaturan"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -846,43 +842,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:79
+#: js/ui/calendar.js:80
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:81
+#: js/ui/calendar.js:82
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -893,7 +889,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:370
+#: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
 
@@ -906,57 +902,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:380
+#: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:439
+#: js/ui/calendar.js:440
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
 
-#: js/ui/calendar.js:454
+#: js/ui/calendar.js:455
 msgid "Next month"
 msgstr "Bulan selanjutnya"
 
-#: js/ui/calendar.js:604
+#: js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:661
 msgid "Week %V"
 msgstr "Minggu %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:867
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:869
+#: js/ui/calendar.js:870
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: js/ui/calendar.js:1095
+#: js/ui/calendar.js:1096
 msgid "No Notifications"
 msgstr "Tak Ada Pemberitahuan"
 
-#: js/ui/calendar.js:1098
+#: js/ui/calendar.js:1099
 msgid "No Events"
 msgstr "Tak Ada Kejadian"
 
-#: js/ui/calendar.js:1130
+#: js/ui/calendar.js:1153
+msgid "Do Not Disturb"
+msgstr "Jangan Ganggu"
+
+#: js/ui/calendar.js:1167
 msgid "Clear"
 msgstr "Bersihkan"
 
@@ -2744,3 +2744,6 @@ msgstr[1] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "Rename"
+#~ msgstr "Ubah Nama"
