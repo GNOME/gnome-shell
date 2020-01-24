@@ -70,6 +70,7 @@ var ExtensionsWindow = GObject.registerClass({
     InternalChildren: [
         'extensionsList',
         'killSwitch',
+        'infoBar',
         'mainStack',
     ],
 }, class ExtensionsWindow extends Gtk.ApplicationWindow {
@@ -88,10 +89,15 @@ var ExtensionsWindow = GObject.registerClass({
         this._extensionsList.set_sort_func(this._sortList.bind(this));
         this._extensionsList.set_header_func(this._updateHeader.bind(this));
 
+        this._infoBar.connect('response', () => {
+            this._infoBar.revealed = false;
+        });
+
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
 
         this._scanExtensions();
+        this._infoBar.revealed = this._needsFirstRunWarning();
     }
 
     get _shellProxy() {
@@ -327,6 +333,33 @@ var ExtensionsWindow = GObject.registerClass({
 
         row.show_all();
         this._extensionsList.add(row);
+    }
+
+    _touchFile(file) {
+        try {
+            file.get_parent().make_directory_with_parents(null);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                throw e;
+            // not an error, carry on
+        }
+
+        let stream = file.create(0, null);
+        stream.close(null);
+    }
+
+    _needsFirstRunWarning() {
+        let path = `${GLib.get_user_data_dir()}/gnome-shell-extension-prefs/first-run-warning-shown`;
+        let f = Gio.File.new_for_path(path);
+        try {
+            this._touchFile(f);
+        } catch (e) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                return false; // warning has been shown
+            log(`Failed to mark first-run warning as shown: ${e.message}`);
+        }
+
+        return true;
     }
 
     _extensionsLoaded() {
