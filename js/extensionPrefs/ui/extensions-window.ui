@@ -10,6 +10,34 @@
         <property name="visible">True</property>
         <property name="title" translatable="yes">Shell Extensions</property>
         <property name="show_close_button">True</property>
+        <child type="title">
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="label"
+                          bind-source="ExtensionsWindow"
+                          bind-property="title"
+                          bind-flags="sync-create"/>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="use-markup">True</property>
+                <property name="label" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;</property>
+                <style>
+                  <class name="subtitle"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
         <child>
           <object class="GtkSwitch" id="killSwitch">
             <property name="visible">True</property>
