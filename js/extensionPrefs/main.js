@@ -44,6 +44,17 @@ class Application extends Gtk.Application {
     vfunc_startup() {
         super.vfunc_startup();
 
+        let provider = new Gtk.CssProvider();
+        let uri = 'resource:///org/gnome/shell/css/application.css';
+        try {
+            provider.load_from_file(Gio.File.new_for_uri(uri));
+        } catch (e) {
+            logError(e, 'Failed to add application style');
+        }
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
         this._window = new ExtensionsWindow({ application: this });
     }
@@ -472,6 +483,8 @@ var ExtensionRow = GObject.registerClass({
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
+        'revealButton',
+        'revealer',
     ],
 }, class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
@@ -513,6 +526,16 @@ var ExtensionRow = GObject.registerClass({
 
         let desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
+
+        this._revealButton.connect('clicked', () => {
+            this._revealer.reveal_child = !this._revealer.reveal_child;
+        });
+        this._revealer.connect('notify::reveal-child', () => {
+            if (this._revealer.reveal_child)
+                this._revealButton.get_style_context().add_class('expanded');
+            else
+                this._revealButton.get_style_context().remove_class('expanded');
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
