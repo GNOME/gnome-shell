@@ -28,7 +28,7 @@ class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-shell-extension-prefs');
         super._init({
-            application_id: 'org.gnome.shell.ExtensionPrefs',
+            application_id: 'org.gnome.Extensions',
             flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
         });
     }
@@ -173,7 +173,7 @@ var ExtensionsWindow = GObject.registerClass({
                 'Didier Roche <didrocks@ubuntu.com>',
             ],
             translator_credits: _('translator-credits'),
-            program_name: _('Shell Extensions'),
+            program_name: _('Extensions'),
             comments: _('Manage your GNOME Extensions'),
             license_type: Gtk.License.GPL_2_0,
             logo_icon_name: 'org.gnome.Extensions',
