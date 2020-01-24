@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Shell Extensions
+Icon=org.gnome.Extensions
 Comment=Configure GNOME Shell Extensions
 Exec=@bindir@/gnome-shell-extension-prefs %u
 Categories=GNOME;GTK;
