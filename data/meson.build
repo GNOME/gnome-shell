@@ -43,6 +43,7 @@ endforeach
 
 
 subdir('dbus-interfaces')
+subdir('icons')
 subdir('theme')
 
 data_resources = [
