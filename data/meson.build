@@ -1,6 +1,6 @@
 desktop_files = [
   'org.gnome.Shell.desktop',
-  'gnome-shell-extension-prefs.desktop'
+  'org.gnome.Extensions.desktop',
 ]
 service_files = []
 
