@@ -2,6 +2,44 @@
 <!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkPopover" id="infoPopover">
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="margin">12</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
+            <property name="use_markup">True</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Warning</property>
+            <property name="xalign">0</property>
+            <property name="margin_top">6</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Extensions can cause system issues, including performance problems. If you encounter problems with your system, it is recommended to disable all extensions.</property>
+            <property name="wrap">True</property>
+            <property name="max_width_chars">40</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
   <template class="ExtensionsWindow" parent="GtkApplicationWindow">
     <property name="default_width">800</property>
     <property name="default_height">500</property>
@@ -10,6 +48,18 @@
         <property name="visible">True</property>
         <property name="title" translatable="yes">Shell Extensions</property>
         <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkMenuButton">
+            <property name="visible">True</property>
+            <property name="popover">infoPopover</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon_name">dialog-information-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
         <child>
           <object class="GtkSwitch" id="killSwitch">
             <property name="visible">True</property>
