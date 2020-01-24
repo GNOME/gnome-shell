@@ -302,7 +302,7 @@ var GnomeShellExtensions = class {
 
     LaunchExtensionPrefs(uuid) {
         let appSys = Shell.AppSystem.get_default();
-        let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
+        let app = appSys.lookup_app('org.gnome.Extensions.desktop');
         let info = app.get_app_info();
         let timestamp = global.display.get_current_time_roundtrip();
         info.launch_uris([`extension:///${uuid}`],
