@@ -49,105 +49,131 @@
       </object>
     </child>
     <child>
-      <object class="GtkStack" id="mainStack">
+      <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="transition_type">crossfade</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkInfoBar" id="infoBar">
             <property name="visible">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <child>
-              <object class="GtkViewport">
-                <property name="visible">True</property>
+            <property name="revealed">False</property>
+            <property name="show_close_button">True</property>
+            <child internal-child="content_area">
+              <object class="GtkBox">
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
-                    <property name="halign">center</property>
-                    <property name="margin">36</property>
-                    <child>
-                      <object class="GtkListBox" id="extensionsList">
-                        <property name="visible">True</property>
-                        <property name="selection_mode">none</property>
-                        <style>
-                          <class name="frame"/>
-                        </style>
-                      </object>
-                    </child>
+                    <property name="label" translatable="yes">Manually installed extensions can cause system issues, including performance problems. If you encounter any problems with your system, it is recommended to disable all extensions.</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="name">main</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkStack" id="mainStack">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
-            <property name="margin">32</property>
-            <property name="spacing">6</property>
-            <property name="valign">center</property>
+            <property name="transition_type">crossfade</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="GtkImage">
+              <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
-                <property name="pixel_size">96</property>
-                <property name="icon_name">application-x-addon-symbolic</property>
+                <property name="hscrollbar_policy">never</property>
+                <child>
+                  <object class="GtkViewport">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="margin">36</property>
+                        <child>
+                          <object class="GtkListBox" id="extensionsList">
+                            <property name="visible">True</property>
+                            <property name="selection_mode">none</property>
+                            <style>
+                              <class name="frame"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="name">main</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">No Installed Extensions</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                  <attribute name="scale" value="1.44"/>
-                </attributes>
+                <property name="orientation">vertical</property>
+                <property name="margin">32</property>
+                <property name="spacing">6</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="pixel_size">96</property>
+                    <property name="icon_name">application-x-addon-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">No Installed Extensions</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                      <attribute name="scale" value="1.44"/>
+                    </attributes>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="name">placeholder</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="margin_left">100</property>
+                <property name="margin_right">100</property>
+                <property name="margin_top">100</property>
+                <property name="margin_bottom">60</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">12</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Something’s gone wrong</property>
+                    <attributes>
+                      <attribute name="scale" value="1.44"/>
+                    </attributes>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again.</property>
+                    <property name="justify">center</property>
+                    <property name="wrap">True</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="name">noshell</property>
+              </packing>
             </child>
           </object>
-          <packing>
-            <property name="name">placeholder</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="margin_left">100</property>
-            <property name="margin_right">100</property>
-            <property name="margin_top">100</property>
-            <property name="margin_bottom">60</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">12</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Something’s gone wrong</property>
-                <attributes>
-                  <attribute name="scale" value="1.44"/>
-                </attributes>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again.</property>
-                <property name="justify">center</property>
-                <property name="wrap">True</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="name">noshell</property>
-          </packing>
         </child>
       </object>
     </child>
