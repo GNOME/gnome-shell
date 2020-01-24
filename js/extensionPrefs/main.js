@@ -501,6 +501,8 @@ var ExtensionRow = GObject.registerClass({
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
+        'revealButton',
+        'revealer',
     ],
 }, class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
@@ -542,6 +544,16 @@ var ExtensionRow = GObject.registerClass({
 
         let desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
+
+        this._revealButton.connect('clicked', () => {
+            this._revealer.reveal_child = !this._revealer.reveal_child;
+        });
+        this._revealer.connect('notify::reveal-child', () => {
+            let image = this._revealButton.get_child();
+            image.icon_name = this._revealer.reveal_child
+                ? 'pan-down-symbolic'
+                : 'pan-end-symbolic';
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
