@@ -41,33 +41,7 @@
 
 // Search results with icons
 .grid-search-result {
-  > .overview-icon {
-    @extend %icon_tile;
-    color: $osd_fg_color;
-  }
-
-  > .overview-icon.overview-icon-with-label {
-    padding: 10px 8px 5px 8px;
-    spacing: $base_spacing;
-  }
-
-  &:hover,
-  &:focus,
-  &:selected {
-    .overview-icon {
-      background-color: transparentize($osd_bg_color,0.8);
-      color: $osd_fg_color;
-    }
-  }
-
-  &:drop .overview-icon {
-    background-color: transparentize($selected_bg_color,.15);
-  }
-
-  &:active .overview-icon,
-  &:checked .overview-icon {
-    background-color: transparentize(darken($osd_bg_color,10%), 0.5);
-  }
+  @extend %app-well-app;
 }
 
 // search result provider
