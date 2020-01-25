@@ -37,7 +37,7 @@ $app_grid_fg_color: #fff;
 
   .overview-icon {
     @extend %icon_tile;
-    color: $app_grid_fg_color !important;
+    color: $app_grid_fg_color;
   }
 
   &:selected {
@@ -58,7 +58,7 @@ $app_grid_fg_color: #fff;
 
   &:focus {
     .overview-icon {
-      background-color: transparentize($osd_fg_color,0.7  );
+      background-color: transparentize($osd_fg_color,0.7);
       // border-color: $selected_bg_color;
       color: $app_grid_fg_color;
     }
@@ -203,13 +203,12 @@ $app_grid_fg_color: #fff;
 
 // buttons
 .app-view-control {
-
   padding: 4px 32px;
   margin: 0 4px;
+
   &, &:hover, &:checked {
     @include button(undecorated);
     color: darken($osd_fg_color, 25%);
-    background-color: transparent !important;
   }
 
   &:hover {
@@ -232,6 +231,6 @@ $app_grid_fg_color: #fff;
   }
 
   &:last-child {
-   border-radius: 0;
+    border-radius: 0;
   }
 }

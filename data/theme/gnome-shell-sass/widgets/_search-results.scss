@@ -8,8 +8,6 @@
 // search results sections "the boxes"
 .search-section {
   spacing: $base_margin * 2;
-  padding:0 !important;
-  margin:0 !important;
   background-color:transparent;
   box-shadow:none;
   border:none;
@@ -118,7 +116,7 @@
   padding: $base_padding;
   color: $osd_fg_color;
 
-  border-radius: $base_border_radius + 2px !important;
+  border-radius: $base_border_radius + 2px;
 
   &:focus,
   &:selected,
