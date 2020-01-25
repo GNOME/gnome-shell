@@ -64,9 +64,9 @@
 }
 
 .events-section-title {
+  @include notification_bubble($flat: true);
   color: desaturate(darken($fg_color,40%), 10%);
   font-weight: bold;
-  border-radius: 4px;
   padding: .4em;
 }
 
