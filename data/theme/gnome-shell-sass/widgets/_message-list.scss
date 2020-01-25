@@ -32,7 +32,7 @@
 
 // message bubbles
 .message {
-  @extend %notification_bubble;
+  @include notification_bubble;
 
   // title
   .message-title {
