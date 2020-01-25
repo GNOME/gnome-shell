@@ -7,13 +7,12 @@
 
 // search results sections "the boxes"
 .search-section {
-  spacing: $base_margin * 2;
+  spacing: $base_margin * 4;
   background-color:transparent;
   box-shadow:none;
   border:none;
   // separator
   .search-section-separator { 
-    // margin-top: $base_padding * 2;
     // height: 1px;
     // background-color: $osd_outer_borders_color;
     height: 0;
@@ -30,8 +29,7 @@
   text-shadow: 0 1px if($variant == 'light', rgba(255,255,255,0.2), rgba(0,0,0,0.2));
   color: $osd_fg_color;
   padding: $base_padding * 3;
-  margin: $base_margin 0;
-  spacing: 0;
+  spacing: $base_margin * 2;
 }
 
 %search-section-content-item {
@@ -63,7 +61,6 @@
 // search result provider
 .search-provider-icon {
   @extend %search-section-content-item;
-  margin-right: $base_margin * 2;
 
   // content
   .list-search-provider-content {
@@ -90,13 +87,12 @@
 
   // content
   .list-search-result-content {
-    spacing: 0;
+    spacing: $base_padding;
   }
 
-  // list item title
+  // list item title (with icon)
   .list-search-result-title {
     spacing: $base_spacing * 2;
-    padding-right: $base_padding;
     // font-weight: bold;
   }
 
