@@ -42,7 +42,6 @@ $dash_border_radius: $modal_radius * 1.5;
   border:none;
   box-shadow:0 0 0 1px $osd_outer_borders_color;
   color: $osd_fg_color;
-  margin-top: $base_margin + 4px;
   padding: $base_padding $base_padding + 2px;
   text-align: center;
   -x-offset: $base_margin * 2; // distance from the dash edge
