@@ -49,9 +49,9 @@
   // calendar
   .calendar {
     @extend %notification_bubble;
-    margin:$base_margin !important;
-    margin-bottom: $base_padding + $base_margin !important;
-    padding:$base_padding !important;
+    margin: $base_margin;
+    margin-bottom: $base_padding + $base_margin;
+    padding: $base_padding;
 
     // more below for sub-elements
   }
@@ -68,7 +68,7 @@
     .world-clocks-button,
     .weather-button {
       @extend %notification_bubble;
-      padding:$base_padding !important;
+      padding: $base_padding;
     }
   }
 }
