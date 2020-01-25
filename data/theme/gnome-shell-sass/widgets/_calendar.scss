@@ -21,17 +21,8 @@
 
   // today button (the date)
   .datemenu-today-button {
+    @include notification_bubble($flat: true);
     padding: $base_padding * 1.5;
-    margin: $base_margin;
-    border: 1px solid transparent;
-    border-radius: $base_border_radius + 2px;
-
-    &:hover { @include button(hover);}
-    &:focus { @include button(focus);}
-
-    &:active {
-      @include button(active);
-    }
 
     // weekday label
     .day-label {
@@ -48,8 +39,7 @@
 
   // calendar
   .calendar {
-    @extend %notification_bubble;
-    margin: $base_margin;
+    @include notification_bubble;
     margin-bottom: $base_padding + $base_margin;
     padding: $base_padding;
 
@@ -67,7 +57,7 @@
     // world clocks and weather
     .world-clocks-button,
     .weather-button {
-      @extend %notification_bubble;
+      @include notification_bubble;
       padding: $base_padding;
     }
   }
