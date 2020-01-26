@@ -1,12 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init connect disconnect */
 
-const { GLib, Gio, St } = imports.gi;
+const { GLib, Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
@@ -19,6 +20,7 @@ var ExtensionManager = class {
     constructor() {
         this._initialized = false;
         this._enabled = false;
+        this._updateNotified = false;
 
         this._extensions = new Map();
         this._enabledExtensions = [];
@@ -206,6 +208,18 @@ var ExtensionManager = class {
 
         extension.hasUpdate = true;
         this.emit('extension-state-changed', extension);
+
+        if (!this._updateNotified) {
+            this._updateNotified = true;
+
+            let source = new ExtensionUpdateSource();
+            Main.messageTray.add(source);
+
+            let notification = new MessageTray.Notification(source,
+                _('Extension Updates Available'),
+                _('Extension updates are ready to be installed.'));
+            source.showNotification(notification);
+        }
     }
 
     logExtensionError(uuid, error) {
@@ -557,3 +571,27 @@ var ExtensionManager = class {
     }
 };
 Signals.addSignalMethods(ExtensionManager.prototype);
+
+const ExtensionUpdateSource = GObject.registerClass(
+class ExtensionUpdateSource extends MessageTray.Source {
+    _init() {
+        let appSys = Shell.AppSystem.get_default();
+        this._app = appSys.lookup_app('org.gnome.Extensions.desktop');
+
+        super._init(this._app.get_name());
+    }
+
+    getIcon() {
+        return this._app.app_info.get_icon();
+    }
+
+    _createPolicy() {
+        return new MessageTray.NotificationApplicationPolicy(this._app.id);
+    }
+
+    open() {
+        this._app.activate();
+        Main.overview.hide();
+        Main.panel.closeCalendar();
+    }
+});
