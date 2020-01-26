@@ -38,6 +38,7 @@ class Application extends Gtk.Application {
     }
 
     vfunc_activate() {
+        this._shellProxy.CheckForUpdatesRemote();
         this._window.present();
     }
 
