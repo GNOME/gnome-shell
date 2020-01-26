@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-12-27 13:16+0000\n"
-"PO-Revision-Date: 2020-01-03 22:58+0100\n"
+"POT-Creation-Date: 2020-01-25 01:15+0000\n"
+"PO-Revision-Date: 2020-01-26 10:07+0100\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -46,7 +46,7 @@ msgid "Open the application menu"
 msgstr "Obre el menú d'aplicació"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:210
+#: js/extensionPrefs/main.js:209
 msgid "Shell Extensions"
 msgstr "Extensions del Shell"
 
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inici de sessió de xarxa"
 
-#: js/extensionPrefs/main.js:103 js/extensionPrefs/main.js:526
+#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
 msgid "Something’s gone wrong"
 msgstr "Alguna cosa ha anat malament"
 
-#: js/extensionPrefs/main.js:110
+#: js/extensionPrefs/main.js:109
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -428,27 +428,27 @@ msgstr ""
 "Hi ha un problema: no es poden mostrar els paràmetres per a aquesta "
 "extensió. Us recomanem que informeu del problema als autors de l'extensió."
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:116
 msgid "Technical Details"
 msgstr "Detalls tècnics"
 
-#: js/extensionPrefs/main.js:152
+#: js/extensionPrefs/main.js:151
 msgid "Copy Error"
 msgstr "Copia l'error"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:178
 msgid "Homepage"
 msgstr "Pàgina d'inici"
 
-#: js/extensionPrefs/main.js:180
+#: js/extensionPrefs/main.js:179
 msgid "Visit extension homepage"
 msgstr "Visiteu la pàgina d'inici de l'extensió"
 
-#: js/extensionPrefs/main.js:468
+#: js/extensionPrefs/main.js:467
 msgid "No Extensions Installed"
 msgstr "No hi ha cap extensió instal·lada"
 
-#: js/extensionPrefs/main.js:478
+#: js/extensionPrefs/main.js:477
 msgid ""
 "Extensions can be installed through Software or <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -456,11 +456,11 @@ msgstr ""
 "Les extensions es poden instal·lar amb el Programari o a <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:493
+#: js/extensionPrefs/main.js:492
 msgid "Browse in Software"
 msgstr "Navega al Programari"
 
-#: js/extensionPrefs/main.js:533
+#: js/extensionPrefs/main.js:532
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -469,9 +469,9 @@ msgstr ""
 "heu entrat al GNOME i torneu a provar-ho."
 
 #: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:130 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:402 js/ui/shellMountOperation.js:412
+#: js/ui/components/networkAgent.js:129 js/ui/components/polkitAgent.js:138
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:190
+#: js/ui/shellMountOperation.js:399 js/ui/shellMountOperation.js:409
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -480,7 +480,7 @@ msgstr "Cancel·la"
 msgid "Next"
 msgstr "Següent"
 
-#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:406
+#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:403
 #: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Desbloqueja"
@@ -508,8 +508,8 @@ msgstr "(p. ex. l'usuari o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:280 js/ui/components/networkAgent.js:298
+#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:256
+#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:297
 msgid "Username: "
 msgstr "Nom d'usuari:"
 
@@ -538,7 +538,7 @@ msgstr "Apaga"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-msgid "power off;shutdown;reboot;restart"
+msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "apaga;atura;reinicia"
 
 #. Translators: The name of the lock screen action in search
@@ -749,56 +749,52 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:364
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:366
 msgid "Deny Access"
 msgstr "Denega l'accés"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:367
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:369
 msgid "Grant Access"
 msgstr "Permet l'accés"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:904
 msgid "Unnamed Folder"
 msgstr "Carpeta sense nom"
 
-#: js/ui/appDisplay.js:944
+#: js/ui/appDisplay.js:927
 msgid "Frequently used applications will appear here"
 msgstr "Les aplicacions utilitzades freqüentment apareixeran aquí"
 
-#: js/ui/appDisplay.js:1079
+#: js/ui/appDisplay.js:1062
 msgid "Frequent"
 msgstr "Freqüent"
 
-#: js/ui/appDisplay.js:1086
+#: js/ui/appDisplay.js:1069
 msgid "All"
 msgstr "Totes"
 
-#: js/ui/appDisplay.js:1861
-msgid "Rename"
-msgstr "Canvia el nom"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2549 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Obre finestres"
 
-#: js/ui/appDisplay.js:2569 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: js/ui/appDisplay.js:2580
+#: js/ui/appDisplay.js:2483
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usant una targeta gràfica dedicada"
 
-#: js/ui/appDisplay.js:2608 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: js/ui/appDisplay.js:2614
+#: js/ui/appDisplay.js:2517
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
-#: js/ui/appDisplay.js:2624 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
@@ -845,7 +841,7 @@ msgid "Settings"
 msgstr "Paràmetres"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -855,43 +851,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Dg"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
 msgstr "Dl"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Dt"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Dc"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Dj"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:79
+#: js/ui/calendar.js:80
 msgctxt "grid friday"
 msgid "F"
 msgstr "Dv"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:81
+#: js/ui/calendar.js:82
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ds"
@@ -902,7 +898,7 @@ msgstr "Ds"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:370
+#: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
 
@@ -915,55 +911,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:380
+#: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:439
+#: js/ui/calendar.js:440
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: js/ui/calendar.js:454
+#: js/ui/calendar.js:455
 msgid "Next month"
 msgstr "Mes següent"
 
-#: js/ui/calendar.js:604
+#: js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%-d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:661
 msgid "Week %V"
 msgstr "Setmana %-V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tot el dia"
 
+#. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/calendar.js:867
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/calendar.js:871
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/calendar.js:870
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A %d %B de %Y"
 
-#: js/ui/calendar.js:1097
+#: js/ui/calendar.js:1096
 msgid "No Notifications"
 msgstr "Cap notificació"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1099
 msgid "No Events"
 msgstr "Cap cita"
 
-#: js/ui/calendar.js:1132
+#: js/ui/calendar.js:1153
+msgid "Do Not Disturb"
+msgstr "No molesteu"
+
+#: js/ui/calendar.js:1167
 msgid "Clear"
 msgstr "Neteja-ho"
 
@@ -981,11 +983,11 @@ msgstr ""
 "Podeu esperar un moment perquè continuï o podeu forçar-ne la sortida "
 "completa."
 
-#: js/ui/closeDialog.js:71
+#: js/ui/closeDialog.js:70
 msgid "Force Quit"
 msgstr "Força la sortida"
 
-#: js/ui/closeDialog.js:74
+#: js/ui/closeDialog.js:73
 msgid "Wait"
 msgstr "Espera"
 
@@ -1011,53 +1013,53 @@ msgstr ""
 msgid "Open with %s"
 msgstr "Obre amb %s"
 
-#: js/ui/components/keyring.js:71 js/ui/components/polkitAgent.js:279
+#: js/ui/components/keyring.js:70 js/ui/components/polkitAgent.js:278
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: js/ui/components/keyring.js:105
+#: js/ui/components/keyring.js:104
 msgid "Type again:"
 msgstr "Torneu a escriure-la:"
 
-#: js/ui/components/networkAgent.js:116
+#: js/ui/components/networkAgent.js:115
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "També us podeu connectar prement el botó «WPS» del vostre encaminador."
 
-#: js/ui/components/networkAgent.js:124 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:123 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:913
 msgid "Connect"
 msgstr "Connecta"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:237
-#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:282
-#: js/ui/components/networkAgent.js:302 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:224 js/ui/components/networkAgent.js:236
+#: js/ui/components/networkAgent.js:260 js/ui/components/networkAgent.js:281
+#: js/ui/components/networkAgent.js:301 js/ui/components/networkAgent.js:311
 msgid "Password: "
 msgstr "Contrasenya:"
 
 #. static WEP
-#: js/ui/components/networkAgent.js:230
+#: js/ui/components/networkAgent.js:229
 msgid "Key: "
 msgstr "Clau:"
 
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:288
+#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:287
 msgid "Private key password: "
 msgstr "Contrasenya de la clau privada:"
 
-#: js/ui/components/networkAgent.js:286
+#: js/ui/components/networkAgent.js:285
 msgid "Identity: "
 msgstr "Identitat:"
 
-#: js/ui/components/networkAgent.js:300
+#: js/ui/components/networkAgent.js:299
 msgid "Service: "
 msgstr "Servei:"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:328 js/ui/components/networkAgent.js:703
 msgid "Authentication required by wireless network"
 msgstr "La xarxa sense fil requereix autenticació"
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1066,53 +1068,58 @@ msgstr ""
 "Per accedir a la xarxa sense fil «%s» calen les contrasenyes o les claus "
 "d'encriptació."
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:709
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:708
 msgid "Wired 802.1X authentication"
 msgstr "Autenticació 802.1X amb fil"
 
-#: js/ui/components/networkAgent.js:336
+#: js/ui/components/networkAgent.js:335
 msgid "Network name: "
 msgstr "Nom de la xarxa: "
 
-#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:713
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:712
 msgid "DSL authentication"
 msgstr "Autenticació DSL"
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
+#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:717
 msgid "PIN code required"
 msgstr "Cal que introduïu el codi PIN"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:719
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Cal que introduïu el codi PIN del dispositiu de banda ampla mòbil"
 
-#: js/ui/components/networkAgent.js:350
+#: js/ui/components/networkAgent.js:349
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:725
+#: js/ui/components/networkAgent.js:356 js/ui/components/networkAgent.js:724
 msgid "Mobile broadband network password"
 msgstr "Contrasenya de la xarxa de banda ampla mòbil"
 
-#: js/ui/components/networkAgent.js:358 js/ui/components/networkAgent.js:710
-#: js/ui/components/networkAgent.js:714 js/ui/components/networkAgent.js:726
+#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:709
+#: js/ui/components/networkAgent.js:713 js/ui/components/networkAgent.js:725
+#: js/ui/components/networkAgent.js:729
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Cal introduir una contrasenya per connectar-vos a «%s»."
 
-#: js/ui/components/networkAgent.js:693 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:692 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
-#: js/ui/components/polkitAgent.js:42
+#: js/ui/components/networkAgent.js:728
+msgid "VPN password"
+msgstr "Contrasenya VPN"
+
+#: js/ui/components/polkitAgent.js:41
 msgid "Authentication Required"
 msgstr "Cal autenticació"
 
-#: js/ui/components/polkitAgent.js:82
+#: js/ui/components/polkitAgent.js:81
 msgid "Administrator"
 msgstr "Administrador"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autentica"
 
@@ -1120,7 +1127,7 @@ msgstr "Autentica"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:386
+#: js/ui/components/polkitAgent.js:259 js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "No ha funcionat. Torneu-ho a provar."
 
@@ -1131,7 +1138,7 @@ msgstr "No ha funcionat. Torneu-ho a provar."
 msgid "%s is now known as %s"
 msgstr "En/na %s ara es diu %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:176
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
 msgid "Windows"
 msgstr "Finestres"
 
@@ -1174,19 +1181,19 @@ msgstr "Rellotges del món"
 msgid "Weather"
 msgstr "El temps"
 
-#: js/ui/dateMenu.js:389
+#: js/ui/dateMenu.js:391
 msgid "Select a location…"
 msgstr "Trieu una ubicació…"
 
-#: js/ui/dateMenu.js:402
+#: js/ui/dateMenu.js:404
 msgid "Loading…"
 msgstr "S'està carregant…"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:414
 msgid "Go online for weather information"
 msgstr "Vés en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:416
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
@@ -1220,56 +1227,56 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Surt"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:56
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagada"
 
-#: js/ui/endSessionDialog.js:58
+#: js/ui/endSessionDialog.js:57
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instal·la les actualitzacions i apaga"
 
-#: js/ui/endSessionDialog.js:60
+#: js/ui/endSessionDialog.js:59
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "S'apagarà l'ordinador automàticament d'aquí %d segon."
 msgstr[1] "S'apagarà l'ordinador automàticament d'aquí %d segons."
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:63
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instal·la les actualitzacions pendents"
 
-#: js/ui/endSessionDialog.js:67 js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Restart"
 msgstr "Reinicia"
 
-#: js/ui/endSessionDialog.js:69
+#: js/ui/endSessionDialog.js:68
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apaga"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:74
 msgctxt "title"
 msgid "Restart"
 msgstr "Reinici"
 
-#: js/ui/endSessionDialog.js:78
+#: js/ui/endSessionDialog.js:76
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Es reiniciarà l'ordinador automàticament d'aquí %d segon."
 msgstr[1] "Es reiniciarà l'ordinador automàticament d'aquí %d segons."
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reinicia i instal·la les actualitzacions"
 
-#: js/ui/endSessionDialog.js:94
+#: js/ui/endSessionDialog.js:91
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1281,22 +1288,22 @@ msgstr[1] ""
 "Es reiniciarà l'ordinador automàticament i s'instal·laran les "
 "actualitzacions d'aquí %d segons."
 
-#: js/ui/endSessionDialog.js:100 js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reinicia i instal·la"
 
-#: js/ui/endSessionDialog.js:101
+#: js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Instal·la i apaga"
 
-#: js/ui/endSessionDialog.js:102
+#: js/ui/endSessionDialog.js:99
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Apaga després d'instal·lar les actualitzacions"
 
-#: js/ui/endSessionDialog.js:110
+#: js/ui/endSessionDialog.js:106
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Reinicia i instal·la l'actualització"
@@ -1304,7 +1311,7 @@ msgstr "Reinicia i instal·la l'actualització"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:115
+#: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1314,30 +1321,30 @@ msgstr ""
 "instal·lació pot trigar força temps. Assegureu-vos que heu fet còpia de "
 "seguretat i que l'ordinador està connectat al corrent."
 
-#: js/ui/endSessionDialog.js:301
-msgid "Running on battery power: please plug in before installing updates."
+#: js/ui/endSessionDialog.js:259
+msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
-"S'està utilitzant la bateria: connecteu l'ordinador a la xarxa elèctrica "
+"S'està utilitzant la bateria. Connecteu l'ordinador a la xarxa elèctrica "
 "abans d'instal·lar les actualitzacions."
 
-#: js/ui/endSessionDialog.js:320
-msgid "Some applications are busy or have unsaved work."
+#: js/ui/endSessionDialog.js:268
+msgid "Some applications are busy or have unsaved work"
 msgstr ""
 "Hi ha algunes aplicacions que estan ocupades o que tenen documents sense "
 "desar."
 
-#: js/ui/endSessionDialog.js:327
-msgid "Other users are logged in."
-msgstr "Altres usuaris tenen la sessió oberta."
+#: js/ui/endSessionDialog.js:273
+msgid "Other users are logged in"
+msgstr "Altres usuaris tenen la sessió oberta"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:649
+#: js/ui/endSessionDialog.js:588
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remot)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:652
+#: js/ui/endSessionDialog.js:591
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consola)"
@@ -1361,16 +1368,16 @@ msgid "Application wants to inhibit shortcuts"
 msgstr "L'aplicació vol inhabilitar les dreceres"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:89
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Podeu restaurar les dreceres si premeu %s."
 
-#: js/ui/inhibitShortcutsDialog.js:96
+#: js/ui/inhibitShortcutsDialog.js:95
 msgid "Deny"
 msgstr "Denega"
 
-#: js/ui/inhibitShortcutsDialog.js:103
+#: js/ui/inhibitShortcutsDialog.js:102
 msgid "Allow"
 msgstr "Permet"
 
@@ -1418,16 +1425,16 @@ msgstr ""
 "Això desactiva la funcionalitat de les tecles enganxoses, que afecta la "
 "manera en què funciona el teclat."
 
-#: js/ui/kbdA11yDialog.js:58
+#: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
 msgstr "Deixa-ho actiu"
 
-#: js/ui/kbdA11yDialog.js:58 js/ui/status/bluetooth.js:135
+#: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:1285
 msgid "Turn On"
 msgstr "Activa"
 
-#: js/ui/kbdA11yDialog.js:66 js/ui/status/bluetooth.js:135
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:131 js/ui/status/network.js:315
 #: js/ui/status/network.js:1285 js/ui/status/network.js:1397
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
@@ -1435,7 +1442,7 @@ msgstr "Activa"
 msgid "Turn Off"
 msgstr "Desactiva"
 
-#: js/ui/kbdA11yDialog.js:66
+#: js/ui/kbdA11yDialog.js:65
 msgid "Leave Off"
 msgstr "Deixa-ho desactivat"
 
@@ -1655,11 +1662,11 @@ msgstr "El GNOME necessita bloquejar la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1303
+#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
 msgid "Unable to lock"
 msgstr "No es pot blocar"
 
-#: js/ui/screenShield.js:832 js/ui/screenShield.js:1304
+#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
 msgid "Lock was blocked by an application"
 msgstr "Una aplicació està bloquejant el bloqueig"
 
@@ -1694,60 +1701,60 @@ msgstr "Mostra el text"
 msgid "Hide Text"
 msgstr "Oculta el text"
 
-#: js/ui/shellEntry.js:161
+#: js/ui/shellEntry.js:162
 msgid "Caps lock is on."
 msgstr "Bloq Maj està activat."
 
-#: js/ui/shellMountOperation.js:308
+#: js/ui/shellMountOperation.js:305
 msgid "Hidden Volume"
 msgstr "Volum ocult"
 
-#: js/ui/shellMountOperation.js:311
+#: js/ui/shellMountOperation.js:308
 msgid "Windows System Volume"
 msgstr "Volum del sistema del Windows"
 
-#: js/ui/shellMountOperation.js:314
+#: js/ui/shellMountOperation.js:311
 msgid "Uses Keyfiles"
 msgstr "Usa fitxers de claus"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:320
+#: js/ui/shellMountOperation.js:317
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
 "Per a desbloquejar un volum que usa fitxers de claus, useu l'eina <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:327
+#: js/ui/shellMountOperation.js:324
 msgid "PIM Number"
 msgstr "Número PIM"
 
-#: js/ui/shellMountOperation.js:346
+#: js/ui/shellMountOperation.js:343
 msgid "The PIM must be a number or empty."
 msgstr "El PIM ha de ser un nombre o estar buit."
 
-#: js/ui/shellMountOperation.js:357
+#: js/ui/shellMountOperation.js:354
 msgid "Password"
 msgstr "Contrasenya"
 
-#: js/ui/shellMountOperation.js:393
+#: js/ui/shellMountOperation.js:390
 msgid "Remember Password"
 msgstr "Recorda la contrasenya"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:417
+#: js/ui/shellMountOperation.js:414
 #, javascript-format
 msgid "Open %s"
 msgstr "Obre %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:489
+#: js/ui/shellMountOperation.js:486
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "No es pot iniciar %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:491
+#: js/ui/shellMountOperation.js:488
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "No s'ha pogut trobar l'aplicació %s"
@@ -1844,11 +1851,11 @@ msgstr "Clic secundari"
 msgid "Dwell Click"
 msgstr "Clic en passar per sobre"
 
-#: js/ui/status/keyboard.js:818
+#: js/ui/status/keyboard.js:825
 msgid "Keyboard"
 msgstr "Teclat"
 
-#: js/ui/status/keyboard.js:840
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Mostra la disposició del teclat"
 
@@ -1877,12 +1884,12 @@ msgid "Enable"
 msgstr "Habilita"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:357
+#: js/ui/status/location.js:355
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Voleu donar a %s accés a la vostra ubicació?"
 
-#: js/ui/status/location.js:358
+#: js/ui/status/location.js:361
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu "
@@ -2264,11 +2271,11 @@ msgstr "Entra amb un altre usuari"
 msgid "Unlock Window"
 msgstr "Desbloqueja la finestra"
 
-#: js/ui/viewSelector.js:180
+#: js/ui/viewSelector.js:181
 msgid "Applications"
 msgstr "Aplicacions"
 
-#: js/ui/viewSelector.js:184
+#: js/ui/viewSelector.js:185
 msgid "Search"
 msgstr "Cerca"
 
@@ -2277,22 +2284,22 @@ msgstr "Cerca"
 msgid "“%s” is ready"
 msgstr "«%s» ja està a punt"
 
-#: js/ui/windowManager.js:57
+#: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
 msgstr "Voleu mantenir aquesta configuració de la pantalla?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:71
+#: js/ui/windowManager.js:68
 msgid "Revert Settings"
 msgstr "Descarta els canvis"
 
-#: js/ui/windowManager.js:74
+#: js/ui/windowManager.js:71
 msgid "Keep Changes"
 msgstr "Mantén els canvis"
 
-#: js/ui/windowManager.js:92
+#: js/ui/windowManager.js:89
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2301,7 +2308,7 @@ msgstr[1] "Es descartaran els canvis d'aquí %d segons"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:690
+#: js/ui/windowManager.js:546
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2390,12 +2397,12 @@ msgstr "Utilitza un mode específic, p. ex. «gdm» per la pantalla d'entrada"
 msgid "List possible modes"
 msgstr "Llista els modes possibles"
 
-#: src/shell-app.c:265
+#: src/shell-app.c:279
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/shell-app.c:516
+#: src/shell-app.c:530
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "No s'ha pogut iniciar «%s»"
@@ -2752,6 +2759,9 @@ msgstr[1] "%u entrades"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sons del sistema"
+
+#~ msgid "Rename"
+#~ msgstr "Canvia el nom"
 
 #~ msgid "Account Settings"
 #~ msgstr "Paràmetres del compte"
