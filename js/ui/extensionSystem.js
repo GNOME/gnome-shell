@@ -4,6 +4,7 @@
 const { GLib, Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
@@ -15,6 +16,8 @@ const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
+
+const UPDATE_CHECK_TIMEOUT = 24 * 60 * 60; // 1 day in seconds
 
 var ExtensionManager = class {
     constructor() {
@@ -49,6 +52,12 @@ var ExtensionManager = class {
 
         this._installExtensionUpdates();
         this._sessionUpdated();
+
+        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, UPDATE_CHECK_TIMEOUT, () => {
+            ExtensionDownloader.checkForUpdates();
+            return GLib.SOURCE_CONTINUE;
+        });
+        ExtensionDownloader.checkForUpdates();
     }
 
     lookup(uuid) {
