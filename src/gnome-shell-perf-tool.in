@@ -24,52 +24,6 @@ def show_version(option, opt_str, value, parser):
     print("GNOME Shell Performance Test @VERSION@")
     sys.exit()
 
-def wait_for_dbus_name(wait_name):
-    loop = GLib.MainLoop()
-
-    def on_name_appeared(connection, name, new_owner, *args):
-        if not (name == wait_name and new_owner != ''):
-            return
-        loop.quit()
-        return
-
-    watch_id = Gio.bus_watch_name(Gio.BusType.SESSION,
-                                  wait_name,
-                                  Gio.BusNameWatcherFlags.NONE,
-                                  on_name_appeared,
-                                  None)
-
-    def on_timeout():
-        print("\nFailed to start %s: timed out" % (wait_name,))
-        sys.exit(1)
-    GLib.timeout_add_seconds(7, on_timeout)
-
-    loop.run()
-    Gio.bus_unwatch_name(watch_id)
-
-PERF_HELPER_NAME = "org.gnome.Shell.PerfHelper"
-PERF_HELPER_IFACE = "org.gnome.Shell.PerfHelper"
-PERF_HELPER_PATH = "/org/gnome/Shell/PerfHelper"
-
-def start_perf_helper():
-    self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    perf_helper_path = "@libexecdir@/gnome-shell-perf-helper"
-
-    subprocess.Popen([perf_helper_path])
-    wait_for_dbus_name (PERF_HELPER_NAME)
-
-def stop_perf_helper():
-    bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
-
-    proxy = Gio.DBusProxy.new_sync(bus,
-                                   Gio.DBusProxyFlags.NONE,
-                                   None,
-                                   PERF_HELPER_NAME,
-                                   PERF_HELPER_PATH,
-                                   PERF_HELPER_IFACE,
-                                   None)
-    proxy.Exit()
-
 def start_shell(perf_output=None):
     # Set up environment
     env = dict(os.environ)
@@ -90,6 +44,13 @@ def start_shell(perf_output=None):
 
     if options.replace:
         args.append('--replace')
+
+    if options.wayland or options.nested:
+        args.append('--wayland')
+        if options.nested:
+            args.append('--nested')
+        else:
+            args.append('--display-server')
 
     return subprocess.Popen(args, env=env)
 
@@ -204,8 +165,6 @@ def run_performance_test():
     logs = []
     metric_summaries = {}
 
-    start_perf_helper()
-
     for i in range(0, iters):
         # We create an empty temporary file that the shell will overwrite
         # with the contents.
@@ -217,14 +176,12 @@ def run_performance_test():
         try:
             normal_exit = run_shell(perf_output=output_file)
         except:
-            stop_perf_helper()
             raise
         finally:
             if not normal_exit:
                 os.remove(output_file)
 
         if not normal_exit:
-            stop_perf_helper()
             return False
 
         try:
@@ -232,7 +189,6 @@ def run_performance_test():
             output = json.load(f)
             f.close()
         except:
-            stop_perf_helper()
             raise
         finally:
             os.remove(output_file)
@@ -259,8 +215,6 @@ def run_performance_test():
             summary['values'].append(metric['value'])
 
         logs.append(output['log'])
-
-    stop_perf_helper()
 
     if options.perf_output or options.perf_upload:
         # Write a complete report, formatted as JSON. The Javascript/C code that
@@ -337,6 +291,10 @@ parser.add_option("", "--version", action="callback", callback=show_version,
 
 parser.add_option("-r", "--replace", action="store_true",
                   help="Replace the running window manager")
+parser.add_option("-w", "--wayland", action="store_true",
+                  help="Run as a Wayland compositor")
+parser.add_option("-n", "--nested", action="store_true",
+                  help="Run as a Wayland nested compositor")
 
 options, args = parser.parse_args()
 
