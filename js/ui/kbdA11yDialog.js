@@ -49,10 +49,8 @@ class KbdA11yDialog extends GObject.Object {
             return;
         }
 
-        let contentParams = { title, description, styleClass: 'access-dialog' };
-        let content = new Dialog.MessageDialogContent(contentParams);
-
-        dialog.contentLayout.add_actor(content);
+        let content = new Dialog.MessageDialogContent({ title, description });
+        dialog.contentLayout.add_child(content);
 
         dialog.addButton({ label: enabled ? _("Leave On") : _("Turn On"),
                            action: () => {
