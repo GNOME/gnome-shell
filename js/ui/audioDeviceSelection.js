@@ -1,6 +1,7 @@
 /* exported AudioDeviceSelectionDBus */
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
+const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
@@ -36,18 +37,17 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 
     _buildLayout() {
-        let title = new St.Label({ style_class: 'audio-selection-title',
-                                   text: _("Select Audio Device"),
-                                   x_align: Clutter.ActorAlign.CENTER });
-
-        this.contentLayout.style_class = 'audio-selection-content';
-        this.contentLayout.add(title);
+        let content = new Dialog.MessageDialogContent({
+            title: _('Select Audio Device'),
+        });
 
         this._selectionBox = new St.BoxLayout({
             style_class: 'audio-selection-box',
             x_expand: true,
         });
-        this.contentLayout.add_child(this._selectionBox);
+        content.add_child(this._selectionBox);
+
+        this.contentLayout.add_child(content);
 
         if (Main.sessionMode.allowSettings) {
             this.addButton({ action: this._openSettings.bind(this),

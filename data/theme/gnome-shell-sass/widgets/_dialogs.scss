@@ -212,21 +212,8 @@
 
 /* Audio selection dialog */
 .audio-device-selection-dialog {
-  spacing: 30px;
-}
-
-.audio-selection-content {
-  spacing: 20px;
-  padding: 24px;
-}
-
-.audio-selection-title {
-  font-weight: bold;
-  text-align: center;
-}
-
-.audio-selection-box {
-  spacing: 20px;
+  .modal-dialog-content-box { margin-bottom: 28px; }
+  .audio-selection-box { spacing: 20px; }
 }
 
 .audio-selection-device {
