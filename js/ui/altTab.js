@@ -280,12 +280,10 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _onDestroy() {
-        super._onDestroy();
-
-        if (this._thumbnails)
-            this._destroyThumbnails();
         if (this._thumbnailTimeoutId != 0)
             GLib.source_remove(this._thumbnailTimeoutId);
+
+        super._onDestroy();
     }
 
     /**
