@@ -75,22 +75,25 @@ var InhibitShortcutsDialog = GObject.registerClass({
     _buildLayout() {
         let name = this._app ? this._app.get_name() : this._window.title;
 
-        /* Translators: %s is an application name like "Settings" */
-        let title = name
-            ? _("%s wants to inhibit shortcuts").format(name)
-            : _("Application wants to inhibit shortcuts");
-
-        let contentParams = { title };
+        let content = new Dialog.MessageDialogContent({
+            title: _("Allow inhibiting shortcuts"),
+            description: name
+                /* Translators: %s is an application name like "Settings" */
+                ? _("The application %s wants to inhibit shortcuts").format(name)
+                : _("An application wants to inhibit shortcuts"),
+        });
 
         let restoreAccel = this._getRestoreAccel();
         if (restoreAccel) {
-            contentParams.description =
+            let restoreLabel = new St.Label({
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
-                _("You can restore shortcuts by pressing %s.").format(restoreAccel);
+                text: _("You can restore shortcuts by pressing %s.").format(restoreAccel),
+                style_class: 'message-dialog-description',
+            });
+            content.add_child(restoreLabel);
         }
 
-        let content = new Dialog.MessageDialogContent(contentParams);
-        this._dialog.contentLayout.add_actor(content);
+        this._dialog.contentLayout.add_child(content);
 
         this._dialog.addButton({ label: _("Deny"),
                                  action: () => {
