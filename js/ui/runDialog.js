@@ -3,6 +3,7 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
+const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
@@ -18,13 +19,13 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-var DIALOG_GROW_TIME = 100;
-
 var RunDialog = GObject.registerClass(
 class RunDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'run-dialog',
-                      destroyOnClose: false });
+        super._init({
+            styleClass: 'run-dialog',
+            destroyOnClose: false,
+        });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
@@ -54,58 +55,41 @@ class RunDialog extends ModalDialog.ModalDialog {
             },
         };
 
-        let label = new St.Label({ style_class: 'run-dialog-label',
-                                   text: _("Enter a Command") });
+        let title = _('Run a Command');
 
-        this.contentLayout.add_child(label);
+        let content = new Dialog.MessageDialogContent({ title });
+        this.contentLayout.add_actor(content);
 
-        let entry = new St.Entry({ style_class: 'run-dialog-entry',
-                                   can_focus: true });
+        let entry = new St.Entry({
+            style_class: 'run-dialog-entry',
+            can_focus: true,
+        });
         ShellEntry.addContextMenu(entry);
 
-        entry.label_actor = label;
-
         this._entryText = entry.clutter_text;
-        this.contentLayout.add_child(entry);
+        content.add_child(entry);
         this.setInitialKeyFocus(this._entryText);
 
-        this._errorBox = new St.BoxLayout({ style_class: 'run-dialog-error-box' });
+        let defaultDescriptionText = _('Press ESC to close');
 
-        this.contentLayout.add_child(this._errorBox);
-
-        let errorIcon = new St.Icon({ icon_name: 'dialog-error-symbolic',
-                                      icon_size: 24,
-                                      style_class: 'run-dialog-error-icon',
-                                      y_align: Clutter.ActorAlign.CENTER });
-
-        this._errorBox.add_child(errorIcon);
+        this._descriptionLabel = new St.Label({
+            style_class: 'run-dialog-description',
+            text: defaultDescriptionText,
+        });
+        content.add_child(this._descriptionLabel);
 
         this._commandError = false;
 
-        this._errorMessage = new St.Label({
-            style_class: 'run-dialog-error-label',
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        this._errorMessage.clutter_text.line_wrap = true;
-
-        this._errorBox.add_child(this._errorMessage);
-
-        this._errorBox.hide();
-
-        this.setButtons([{
-            action: this.close.bind(this),
-            label: _("Close"),
-            key: Clutter.KEY_Escape,
-        }]);
-
         this._pathCompleter = new Gio.FilenameCompleter();
 
-        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
-                                                     entry: this._entryText });
+        this._history = new History.HistoryManager({
+            gsettingsKey: HISTORY_KEY,
+            entry: this._entryText,
+        });
         this._entryText.connect('activate', o => {
             this.popModal();
             this._run(o.get_text(),
-                      Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
+                Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
             if (!this._commandError ||
                 !this.pushModal())
                 this.close();
@@ -128,6 +112,18 @@ class RunDialog extends ModalDialog.ModalDialog {
             }
             return Clutter.EVENT_PROPAGATE;
         });
+        this._entryText.connect('text-changed', () => {
+            this._descriptionLabel.set_text(defaultDescriptionText);
+        });
+    }
+
+    vfunc_key_release_event(event) {
+        if (event.keyval === Clutter.KEY_Escape) {
+            this.close();
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _getCommandCompletion(text) {
@@ -216,7 +212,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                     let file = Gio.file_new_for_path(path);
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
-                                                            global.create_app_launch_context(0, -1));
+                            global.create_app_launch_context(0, -1));
                     } catch (err) {
                         // The exception from gjs contains an error string like:
                         //     Error invoking Gio.app_info_launch_default_for_uri: No application
@@ -234,24 +230,7 @@ class RunDialog extends ModalDialog.ModalDialog {
 
     _showError(message) {
         this._commandError = true;
-
-        this._errorMessage.set_text(message);
-
-        if (!this._errorBox.visible) {
-            let [, errorBoxNaturalHeight] = this._errorBox.get_preferred_height(-1);
-
-            let parentActor = this._errorBox.get_parent();
-            let height = parentActor.height + errorBoxNaturalHeight;
-            parentActor.ease({
-                height,
-                duration: DIALOG_GROW_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    parentActor.set_height(-1);
-                    this._errorBox.show();
-                },
-            });
-        }
+        this._descriptionLabel.set_text(message);
     }
 
     _restart() {
@@ -266,7 +245,6 @@ class RunDialog extends ModalDialog.ModalDialog {
 
     open() {
         this._history.lastItem();
-        this._errorBox.hide();
         this._entryText.set_text('');
         this._commandError = false;
 

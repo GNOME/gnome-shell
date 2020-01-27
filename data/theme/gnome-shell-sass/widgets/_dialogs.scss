@@ -58,17 +58,15 @@
 
 /* Run Dialog */
 .run-dialog {
-  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
-  .run-dialog-error-box {
-    padding-top: 16px;
-    spacing: 6px;
+  .modal-dialog-content-box {
+    margin-top: 24px;
+    margin-bottom: 14px;
   }
-
-  .run-dialog-label {
-    @include fontsize($base_font_size + 1.1);
-    font-weight: normal;
-    color: $fg_color;
-    padding-bottom: .4em;
+  .run-dialog-entry { width: 20em; }
+  .run-dialog-description {
+    @include fontsize($base_font_size - 1);
+    text-align: center;
+    color: darken($fg_color, 20%);
   }
 }
 
