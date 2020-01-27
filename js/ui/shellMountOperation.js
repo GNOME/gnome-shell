@@ -239,6 +239,15 @@ var ShellMountQuestionDialog = GObject.registerClass({
         this.contentLayout.add_child(this._content);
     }
 
+    vfunc_key_release_event(event) {
+        if (event.keyval === Clutter.KEY_Escape) {
+            this.emit('response', -1);
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     update(message, choices) {
         _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, this._oldChoices, choices);
@@ -484,7 +493,13 @@ var ShellProcessesDialog = GObject.registerClass({
         this.contentLayout.add_child(this._applicationSection);
     }
 
+    vfunc_key_release_event(event) {
+        if (event.keyval === Clutter.KEY_Escape) {
+            this.emit('response', -1);
+            return Clutter.EVENT_STOP;
+        }
 
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _setAppsForPids(pids) {
@@ -665,8 +680,17 @@ var GnomeShellMountOpHandler = class {
 
         this._dialog = new ShellMountQuestionDialog(message);
         this._dialog.connect('response', (object, choice) => {
-            this._clearCurrentRequest(Gio.MountOperationResult.HANDLED,
-                                      { choice: GLib.Variant.new('i', choice) });
+            let response;
+            let details = {};
+
+            if (choice == -1) {
+                response = Gio.MountOperationResult.ABORTED;
+            } else {
+                response = Gio.MountOperationResult.HANDLED;
+                details['choice'] = GLib.Variant.new('i', choice);
+            }
+
+            this._clearCurrentRequest(response, details);
         });
 
         this._dialog.update(message, choices);
