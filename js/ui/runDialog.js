@@ -23,8 +23,10 @@ var DIALOG_GROW_TIME = 100;
 var RunDialog = GObject.registerClass(
 class RunDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'run-dialog',
-                      destroyOnClose: false });
+        super._init({
+            styleClass: 'run-dialog',
+            destroyOnClose: false,
+        });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
@@ -54,13 +56,16 @@ class RunDialog extends ModalDialog.ModalDialog {
             },
         };
 
-        let label = new St.Label({ style_class: 'run-dialog-label',
-                                   text: _("Enter a Command") });
-
+        let label = new St.Label({
+            style_class: 'run-dialog-label',
+            text: _('Enter a Command'),
+        });
         this.contentLayout.add_child(label);
 
-        let entry = new St.Entry({ style_class: 'run-dialog-entry',
-                                   can_focus: true });
+        let entry = new St.Entry({
+            style_class: 'run-dialog-entry',
+            can_focus: true,
+        });
         ShellEntry.addContextMenu(entry);
 
         entry.label_actor = label;
@@ -73,11 +78,12 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         this.contentLayout.add_child(this._errorBox);
 
-        let errorIcon = new St.Icon({ icon_name: 'dialog-error-symbolic',
-                                      icon_size: 24,
-                                      style_class: 'run-dialog-error-icon',
-                                      y_align: Clutter.ActorAlign.CENTER });
-
+        let errorIcon = new St.Icon({
+            icon_name: 'dialog-error-symbolic',
+            icon_size: 24,
+            style_class: 'run-dialog-error-icon',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._errorBox.add_child(errorIcon);
 
         this._commandError = false;
@@ -100,12 +106,14 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         this._pathCompleter = new Gio.FilenameCompleter();
 
-        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
-                                                     entry: this._entryText });
+        this._history = new History.HistoryManager({
+            gsettingsKey: HISTORY_KEY,
+            entry: this._entryText,
+        });
         this._entryText.connect('activate', o => {
             this.popModal();
             this._run(o.get_text(),
-                      Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
+                Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
             if (!this._commandError ||
                 !this.pushModal())
                 this.close();
@@ -216,7 +224,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                     let file = Gio.file_new_for_path(path);
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
-                                                            global.create_app_launch_context(0, -1));
+                            global.create_app_launch_context(0, -1));
                     } catch (err) {
                         // The exception from gjs contains an error string like:
                         //     Error invoking Gio.app_info_launch_default_for_uri: No application
