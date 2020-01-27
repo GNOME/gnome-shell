@@ -347,21 +347,29 @@ var AppAuthorizer = class {
 var GeolocationDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
-    _init(name, description, reqAccuracyLevel) {
+    _init(name, reason, reqAccuracyLevel) {
         super._init({ styleClass: 'geolocation-dialog' });
         this.reqAccuracyLevel = reqAccuracyLevel;
 
-        /* Translators: %s is an application name */
-        let title = _("Give %s access to your location?").format(name);
+        let content = new Dialog.MessageDialogContent({
+            title: _('Allow location access'),
+            /* Translators: %s is an application name */
+            description: _('The app %s wants to access your location').format(name),
+        });
 
-        let content = new Dialog.MessageDialogContent({ title, description });
-        this.contentLayout.add_actor(content);
+        let reasonLabel = new St.Label({
+            text: reason,
+            style_class: 'message-dialog-description',
+        });
+        content.add_child(reasonLabel);
 
         let infoLabel = new St.Label({
             text: _('Location access can be changed at any time from the privacy settings.'),
-            x_align: Clutter.ActorAlign.CENTER,
+            style_class: 'message-dialog-description',
         });
         content.add_child(infoLabel);
+
+        this.contentLayout.add_child(content);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: this._onDenyClicked.bind(this),
