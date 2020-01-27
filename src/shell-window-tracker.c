@@ -336,17 +336,17 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
                          MetaWindow          *window)
 {
   ShellApp *result;
-  int pid;
+  pid_t pid;
 
   if (meta_window_is_remote (window))
     return NULL;
 
-  pid = meta_window_get_pid (window);
+  pid = meta_window_get_client_pid (window);
 
-  if (pid == -1)
+  if (pid == 0)
     return NULL;
 
-  result = shell_window_tracker_get_app_from_pid (tracker, pid);
+  result = shell_window_tracker_get_app_from_pid (tracker, (int) pid);
   if (result != NULL)
     g_object_ref (result);
 
