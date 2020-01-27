@@ -43,41 +43,6 @@ function _setLabelsForMessage(content, message) {
 
 /* -------------------------------------------------------- */
 
-var ListItem = GObject.registerClass({
-    Signals: { 'activate': {} },
-}, class ListItem extends St.Button {
-    _init(app) {
-        let layout = new St.BoxLayout({ vertical: false });
-        super._init({
-            style_class: 'mount-dialog-app-list-item',
-            can_focus: true,
-            child: layout,
-            reactive: true,
-        });
-
-        this._app = app;
-
-        this._icon = this._app.create_icon_texture(LIST_ITEM_ICON_SIZE);
-
-        let iconBin = new St.Bin({ style_class: 'mount-dialog-app-list-item-icon',
-                                   child: this._icon });
-        layout.add(iconBin);
-
-        this._nameLabel = new St.Label({
-            text: this._app.get_name(),
-            style_class: 'mount-dialog-app-list-item-name',
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        let labelBin = new St.Bin({ child: this._nameLabel });
-        layout.add(labelBin);
-    }
-
-    vfunc_clicked() {
-        this.emit('activate');
-        this._app.activate();
-    }
-});
-
 var ShellMountOperation = class {
     constructor(source, params) {
         params = Params.parse(params, { existingDialog: null });
@@ -258,7 +223,7 @@ var ShellMountQuestionDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'mount-dialog' });
+        super._init({ styleClass: 'mount-question-dialog' });
 
         this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
@@ -496,38 +461,22 @@ var ShellProcessesDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'mount-dialog' });
+        super._init({ styleClass: 'processes-dialog' });
 
         this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
 
-        let scrollView = new St.ScrollView({
-            style_class: 'mount-dialog-app-list',
-            x_expand: true,
-            y_expand: true,
-        });
-        scrollView.set_policy(St.PolicyType.NEVER,
-                              St.PolicyType.AUTOMATIC);
-        this.contentLayout.add_child(scrollView);
-        scrollView.hide();
+        this._applicationSection = new Dialog.ListSection();
+        this._applicationSection.hide();
+        this.contentLayout.add_child(this._applicationSection);
+    }
 
-        this._applicationList = new St.BoxLayout({ vertical: true });
-        scrollView.add_actor(this._applicationList);
 
-        this._applicationList.connect('actor-added', () => {
-            if (this._applicationList.get_n_children() == 1)
-                scrollView.show();
-        });
-
-        this._applicationList.connect('actor-removed', () => {
-            if (this._applicationList.get_n_children() == 0)
-                scrollView.hide();
-        });
     }
 
     _setAppsForPids(pids) {
         // remove all the items
-        this._applicationList.destroy_all_children();
+        this._applicationSection.list.destroy_all_children();
 
         pids.forEach(pid => {
             let tracker = Shell.WindowTracker.get_default();
@@ -536,14 +485,15 @@ var ShellProcessesDialog = GObject.registerClass({
             if (!app)
                 return;
 
-            let item = new ListItem(app);
-            this._applicationList.add_child(item);
-
-            item.connect('activate', () => {
-                // use -1 to indicate Cancel
-                this.emit('response', -1);
+            let listItem = new Dialog.ListSectionItem({
+                icon_actor: app.create_icon_texture(LIST_ITEM_ICON_SIZE),
+                title: app.get_name(),
             });
+            this._applicationSection.list.add_child(listItem);
         });
+
+        this._applicationSection.visible =
+            this._applicationSection.list.get_n_children() > 0;
     }
 
     update(message, processes, choices) {
