@@ -123,6 +123,8 @@ function checkForUpdates() {
         let extension = Main.extensionManager.lookup(uuid);
         if (extension.type !== ExtensionUtils.ExtensionType.PER_USER)
             return;
+        if (extension.hasUpdate)
+            return;
         metadatas[uuid] = extension.metadata;
     });
 
