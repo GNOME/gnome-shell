@@ -197,7 +197,8 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         }]);
 
         let content = new Dialog.MessageDialogContent({
-            title: _("Download and install “%s” from extensions.gnome.org?").format(info.name),
+            title: _('Install Extension'),
+            description: _('Download and install “%s” from extensions.gnome.org?').format(info.name),
         });
 
         this.contentLayout.add(content);
