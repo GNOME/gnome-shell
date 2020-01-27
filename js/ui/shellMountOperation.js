@@ -20,18 +20,23 @@ var WORK_SPINNER_ICON_SIZE = 16;
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
 /* ------ Common Utils ------- */
-function _setButtonsForChoices(dialog, choices) {
+function _setButtonsForChoices(dialog, oldChoices, choices) {
     let buttons = [];
+    let buttonsChanged = oldChoices.length !== choices.length;
 
     for (let idx = 0; idx < choices.length; idx++) {
         let button = idx;
+
+        buttonsChanged |= oldChoices[idx] !== choices[idx];
+
         buttons.unshift({
             label: choices[idx],
             action: () => dialog.emit('response', button),
         });
     }
 
-    dialog.setButtons(buttons);
+    if (buttonsChanged)
+        dialog.setButtons(buttons);
 }
 
 function _setLabelsForMessage(content, message) {
@@ -225,13 +230,16 @@ var ShellMountQuestionDialog = GObject.registerClass({
     _init() {
         super._init({ styleClass: 'mount-question-dialog' });
 
+        this._oldChoices = [];
+
         this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
     }
 
     update(message, choices) {
         _setLabelsForMessage(this._content, message);
-        _setButtonsForChoices(this, choices);
+        _setButtonsForChoices(this, this._oldChoices, choices);
+        this._oldChoices = choices;
     }
 });
 
@@ -463,6 +471,8 @@ var ShellProcessesDialog = GObject.registerClass({
     _init() {
         super._init({ styleClass: 'processes-dialog' });
 
+        this._oldChoices = [];
+
         this._content = new Dialog.MessageDialogContent();
         this.contentLayout.add_child(this._content);
 
@@ -499,7 +509,8 @@ var ShellProcessesDialog = GObject.registerClass({
     update(message, processes, choices) {
         this._setAppsForPids(processes);
         _setLabelsForMessage(this._content, message);
-        _setButtonsForChoices(this, choices);
+        _setButtonsForChoices(this, this._oldChoices, choices);
+        this._oldChoices = choices;
     }
 });
 
