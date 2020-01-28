@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-01-21 05:01+0000\n"
-"PO-Revision-Date: 2020-01-21 11:33+0100\n"
+"POT-Creation-Date: 2020-01-27 22:44+0000\n"
+"PO-Revision-Date: 2020-01-28 15:39+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -743,56 +743,52 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:366
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
 msgid "Deny Access"
 msgstr "Denegar acceso"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:930
+#: js/ui/appDisplay.js:904
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
-#: js/ui/appDisplay.js:953
+#: js/ui/appDisplay.js:927
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: js/ui/appDisplay.js:1088
+#: js/ui/appDisplay.js:1062
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: js/ui/appDisplay.js:1095
+#: js/ui/appDisplay.js:1069
 msgid "All"
 msgstr "Todas"
 
-#: js/ui/appDisplay.js:1870
-msgid "Rename"
-msgstr "Renombrar"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2558 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2578 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2589
+#: js/ui/appDisplay.js:2483
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica dedicada"
 
-#: js/ui/appDisplay.js:2617 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2623
+#: js/ui/appDisplay.js:2517
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2633 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -806,7 +802,7 @@ msgstr "Se ha añadido %s a sus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
-#: js/ui/audioDeviceSelection.js:40
+#: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
 msgstr "Seleccionar dispositivo de sonido"
 
@@ -839,7 +835,7 @@ msgid "Settings"
 msgstr "Configuración"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -849,43 +845,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:79
+#: js/ui/calendar.js:80
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:81
+#: js/ui/calendar.js:82
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -896,7 +892,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:370
+#: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
 
@@ -909,57 +905,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:380
+#: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:439
+#: js/ui/calendar.js:440
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: js/ui/calendar.js:454
+#: js/ui/calendar.js:455
 msgid "Next month"
 msgstr "Siguiente mes"
 
-#: js/ui/calendar.js:604
+#: js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:661
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo el día"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:867
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:869
+#: js/ui/calendar.js:870
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: js/ui/calendar.js:1095
+#: js/ui/calendar.js:1096
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
-#: js/ui/calendar.js:1098
+#: js/ui/calendar.js:1099
 msgid "No Events"
 msgstr "No hay eventos"
 
-#: js/ui/calendar.js:1130
+#: js/ui/calendar.js:1153
+msgid "Do Not Disturb"
+msgstr "No molestar"
+
+#: js/ui/calendar.js:1167
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -1316,18 +1316,15 @@ msgstr ""
 "que el equipo está enchufado."
 
 #: js/ui/endSessionDialog.js:259
-#| msgid "Running on battery power: please plug in before installing updates."
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
 "Funcionando con batería: conéctese antes de instalar las actualizaciones."
 
 #: js/ui/endSessionDialog.js:268
-#| msgid "Some applications are busy or have unsaved work."
 msgid "Some applications are busy or have unsaved work"
 msgstr "Algunas aplicaciones están ocupadas o tienen trabajo sin guardar"
 
 #: js/ui/endSessionDialog.js:273
-#| msgid "Other users are logged in."
 msgid "Other users are logged in"
 msgstr "Hay otros usuarios con la sesión iniciada"
 
@@ -1348,30 +1345,43 @@ msgid "Install"
 msgstr "Instalar"
 
 #: js/ui/extensionDownloader.js:200
+#| msgid "Uninstall extension"
+msgid "Install Extension"
+msgstr "Instalar extensión"
+
+#: js/ui/extensionDownloader.js:201
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: js/ui/inhibitShortcutsDialog.js:80
-#, javascript-format
-msgid "%s wants to inhibit shortcuts"
-msgstr "%s quiere inhibir los atajos"
+#: js/ui/inhibitShortcutsDialog.js:79
+#| msgid "%s wants to inhibit shortcuts"
+msgid "Allow inhibiting shortcuts"
+msgstr "Permitir inhibir los atajos"
 
-#: js/ui/inhibitShortcutsDialog.js:81
-msgid "Application wants to inhibit shortcuts"
-msgstr "Su aplicación quiere inhibir los atajos"
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:82
+#, javascript-format
+#| msgid "Application wants to inhibit shortcuts"
+msgid "The application %s wants to inhibit shortcuts"
+msgstr "La aplicación %s quiere inhibir los atajos"
+
+#: js/ui/inhibitShortcutsDialog.js:83
+#| msgid "Application wants to inhibit shortcuts"
+msgid "An application wants to inhibit shortcuts"
+msgstr "Una aplicación quiere inhibir los atajos"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:89
+#: js/ui/inhibitShortcutsDialog.js:90
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Puede restaurar los atajos pulsando %s."
 
-#: js/ui/inhibitShortcutsDialog.js:95
+#: js/ui/inhibitShortcutsDialog.js:98
 msgid "Deny"
 msgstr "Denegar"
 
-#: js/ui/inhibitShortcutsDialog.js:102
+#: js/ui/inhibitShortcutsDialog.js:105
 msgid "Allow"
 msgstr "Permitir"
 
@@ -1419,16 +1429,16 @@ msgstr ""
 "veces seguidas. Esto desactiva la característica de «Teclas persistentes», "
 "lo cual afecta a la forma en que funciona su teclado."
 
-#: js/ui/kbdA11yDialog.js:57
+#: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
 msgstr "Dejar activada"
 
-#: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:135
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:1285
 msgid "Turn On"
 msgstr "Encendido"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:135
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:131 js/ui/status/network.js:315
 #: js/ui/status/network.js:1285 js/ui/status/network.js:1397
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
@@ -1436,7 +1446,7 @@ msgstr "Encendido"
 msgid "Turn Off"
 msgstr "Apagar"
 
-#: js/ui/kbdA11yDialog.js:65
+#: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
 msgstr "Dejar apagado"
 
@@ -1606,18 +1616,20 @@ msgid "Top Bar"
 msgstr "Barra superior"
 
 #: js/ui/runDialog.js:58
-msgid "Enter a Command"
-msgstr "Introducir un comando"
+#| msgid "Enter a Command"
+msgid "Run a Command"
+msgstr "Eejcutar un comando"
 
-#: js/ui/runDialog.js:97 js/ui/windowMenu.js:167
-msgid "Close"
-msgstr "Cerrar"
+#: js/ui/runDialog.js:73
+#| msgid "Press Esc to exit"
+msgid "Press ESC to close"
+msgstr "Pulse Esc para cerrar"
 
-#: js/ui/runDialog.js:259
+#: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
 msgstr "Reiniciar no está disponible en Wayland"
 
-#: js/ui/runDialog.js:264
+#: js/ui/runDialog.js:243
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
@@ -1878,13 +1890,18 @@ msgstr "Ubicación desactivada"
 msgid "Enable"
 msgstr "Activar"
 
-#. Translators: %s is an application name
 #: js/ui/status/location.js:355
-#, javascript-format
-msgid "Give %s access to your location?"
-msgstr "¿Conceder acceso a %s a su ubicación?"
+msgid "Allow location access"
+msgstr "Permitir acceso a la ubicación"
 
-#: js/ui/status/location.js:361
+#. Translators: %s is an application name
+#: js/ui/status/location.js:357
+#, javascript-format
+#| msgid "Give %s access to your location?"
+msgid "The app %s wants to access your location"
+msgstr "La aplicación %s quiere acceder a su ubicación"
+
+#: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Los servicios de ubicación se pueden cambiar en cualquier momento desde la "
@@ -2370,6 +2387,10 @@ msgstr "Mover a la pantalla de la izquierda"
 msgid "Move to Monitor Right"
 msgstr "Mover a la pantalla de la derecha"
 
+#: js/ui/windowMenu.js:167
+msgid "Close"
+msgstr "Cerrar"
+
 #: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
 msgstr "Calendario de Evolution"
@@ -2392,12 +2413,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
-#: src/shell-app.c:265
+#: src/shell-app.c:279
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/shell-app.c:516
+#: src/shell-app.c:530
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
@@ -2755,6 +2776,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "Rename"
+#~ msgstr "Renombrar"
 
 #~ msgid "Account Settings"
 #~ msgstr "Configuración de la cuenta"
@@ -3644,9 +3668,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "calendar:week_start:0"
 #~ msgstr "calendar:week_start:1"
-
-#~ msgid "Do Not Disturb"
-#~ msgstr "No molestar"
 
 #, fuzzy
 #~ msgid "The length of the server certificate, or the depth of the "
