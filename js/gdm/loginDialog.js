@@ -312,12 +312,14 @@ var SessionMenuButton = GObject.registerClass({
     _init() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         let button = new St.Button({
-            style_class: 'login-dialog-session-list-button',
+            style_class: 'modal-dialog-button button login-dialog-session-list-button',
             reactive: true,
             track_hover: true,
             can_focus: true,
             accessible_name: _("Choose Session"),
             accessible_role: Atk.Role.MENU,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
             child: gearIcon,
         });
 
