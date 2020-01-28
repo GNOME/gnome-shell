@@ -22,6 +22,8 @@
 /* End Session Dialog */
 
 .end-session-dialog {
+  width: 30em;
+
   .end-session-dialog-battery-warning,
   .dialog-list-title {
     color: $warning_color;
