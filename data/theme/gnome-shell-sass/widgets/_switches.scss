@@ -28,7 +28,7 @@ $switch_handle_border: 0.07em;
     background: $selected_bg_color;
     box-shadow: inset 0 0 0 1px darken($selected_bg_color, 25%);
     .handle {
-      @if $variant== 'light' { border-color: darken($selected_bg_color, 15%); }
+      @if $variant == 'light' { border-color: darken($selected_bg_color, 15%); }
     }
   }
 }
