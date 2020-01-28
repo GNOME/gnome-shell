@@ -428,6 +428,13 @@ class WorkspacesDisplay extends St.Widget {
         this._swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this.bind_property('mapped', this._swipeTracker, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
+        this._windowDragBeginId =
+            Main.overview.connect('window-drag-begin',
+                this._windowDragBegin.bind(this));
+        this._windowDragEndId =
+            Main.overview.connect('window-drag-begin',
+                this._windowDragEnd.bind(this));
+
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
 
@@ -470,6 +477,16 @@ class WorkspacesDisplay extends St.Widget {
 
         global.window_manager.disconnect(this._switchWorkspaceId);
         global.workspace_manager.disconnect(this._reorderWorkspacesdId);
+        Main.overview.disconnect(this._windowDragBeginId);
+        Main.overview.disconnect(this._windowDragEndId);
+    }
+
+    _windowDragBegin() {
+        this._swipeTracker.enabled = false;
+    }
+
+    _windowDragEnd() {
+        this._swipeTracker.enabled = true;
     }
 
     _workspacesReordered() {
