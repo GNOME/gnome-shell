@@ -69,7 +69,8 @@
     }
   }
 
-  .cancel-button {
+  .cancel-button,
+  .login-dialog-session-list-button {
     padding: 0;
     border-radius: 99px;
     width: $base_icon_size * 2;
@@ -161,14 +162,4 @@
   color: darken($osd_fg_color, 20%);
   @include fontsize($base_font_size + 1);
   padding-top: 1em;
-}
-
-.login-dialog-session-list-button StIcon {
-  icon-size: 1.25em;
-}
-
-.login-dialog-session-list-button {
-  color: darken($osd_fg_color,30%);
-  &:hover,&:focus { color: $osd_fg_color; }
-  &:active { color: darken($osd_fg_color, 50%); }
 }
