@@ -164,7 +164,12 @@
 }
 
 .login-dialog-session-list-button StIcon {
-  icon-size: 1.25em;
+ border-radius: 32px;
+ width: 32px;
+ height: 32px;
+ border-color: transparentize($bg_color,0.5);
+ background-color: transparentize($bg_color,0.5);
+ icon-size: 16px;
 }
 
 .login-dialog-session-list-button {
