@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-01-27 22:44+0000\n"
-"PO-Revision-Date: 2020-01-28 15:39+0100\n"
+"POT-Creation-Date: 2020-01-28 15:54+0000\n"
+"PO-Revision-Date: 2020-01-29 10:33+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -466,7 +466,7 @@ msgstr ""
 #: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:129 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:399 js/ui/shellMountOperation.js:409
+#: js/ui/shellMountOperation.js:381 js/ui/shellMountOperation.js:391
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Cancelar"
@@ -475,7 +475,7 @@ msgstr "Cancelar"
 msgid "Next"
 msgstr "Siguiente"
 
-#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:403
+#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:385
 #: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Desbloquear"
@@ -580,16 +580,23 @@ msgstr "Cambiar de usuario"
 msgid "switch user"
 msgstr "cambiar;usuario"
 
-#. Translators: The name of the lock orientation action in search
-#: js/misc/systemActions.js:129
-msgctxt "search-result"
-msgid "Lock Orientation"
-msgstr "Bloquear la orientación"
-
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
-msgid "lock orientation;screen;rotation"
-msgstr "bloqueo;orientación;pantalla"
+#: js/misc/systemActions.js:131
+#| msgid "lock orientation;screen;rotation"
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr "bloquear orientación;desbloquear orientación;pantalla;rotación"
+
+#: js/misc/systemActions.js:251
+#| msgid "Lock Screen Rotation"
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "Desbloquear la rotación de la pantalla"
+
+#: js/misc/systemActions.js:252
+#| msgid "Lock Screen Rotation"
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "Bloquear la rotación de la pantalla"
 
 #: js/misc/util.js:116
 msgid "Command not found"
@@ -1121,7 +1128,7 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:259 js/ui/shellMountOperation.js:383
+#: js/ui/components/polkitAgent.js:259 js/ui/shellMountOperation.js:365
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Eso no ha funcionado. Inténtelo de nuevo."
 
@@ -1345,7 +1352,6 @@ msgid "Install"
 msgstr "Instalar"
 
 #: js/ui/extensionDownloader.js:200
-#| msgid "Uninstall extension"
 msgid "Install Extension"
 msgstr "Instalar extensión"
 
@@ -1355,19 +1361,16 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#| msgid "%s wants to inhibit shortcuts"
 msgid "Allow inhibiting shortcuts"
 msgstr "Permitir inhibir los atajos"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
 #, javascript-format
-#| msgid "Application wants to inhibit shortcuts"
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "La aplicación %s quiere inhibir los atajos"
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#| msgid "Application wants to inhibit shortcuts"
 msgid "An application wants to inhibit shortcuts"
 msgstr "Una aplicación quiere inhibir los atajos"
 
@@ -1616,12 +1619,10 @@ msgid "Top Bar"
 msgstr "Barra superior"
 
 #: js/ui/runDialog.js:58
-#| msgid "Enter a Command"
 msgid "Run a Command"
 msgstr "Eejcutar un comando"
 
 #: js/ui/runDialog.js:73
-#| msgid "Press Esc to exit"
 msgid "Press ESC to close"
 msgstr "Pulse Esc para cerrar"
 
@@ -1653,7 +1654,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: js/ui/screenShield.js:454 js/ui/status/system.js:93
+#: js/ui/screenShield.js:454 js/ui/status/system.js:98
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -1711,20 +1712,20 @@ msgstr "Ocultar texto"
 msgid "Caps lock is on."
 msgstr "Bloq. Mayús. está activo"
 
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:287
 msgid "Hidden Volume"
 msgstr "Ocultar volumen"
 
-#: js/ui/shellMountOperation.js:308
+#: js/ui/shellMountOperation.js:290
 msgid "Windows System Volume"
 msgstr "Volumen de sistema Windows"
 
-#: js/ui/shellMountOperation.js:311
+#: js/ui/shellMountOperation.js:293
 msgid "Uses Keyfiles"
 msgstr "Usa archivos de claves"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:299
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1732,36 +1733,36 @@ msgstr ""
 "Para desbloquear un volumen que usa archivos de claves use la herramienta <i>"
 "%s</i> en su lugar."
 
-#: js/ui/shellMountOperation.js:324
+#: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
 msgstr "Número PIM"
 
-#: js/ui/shellMountOperation.js:343
+#: js/ui/shellMountOperation.js:325
 msgid "The PIM must be a number or empty."
 msgstr "El PIM debe ser un número o estar vacío."
 
-#: js/ui/shellMountOperation.js:354
+#: js/ui/shellMountOperation.js:336
 msgid "Password"
 msgstr "Contraseña"
 
-#: js/ui/shellMountOperation.js:390
+#: js/ui/shellMountOperation.js:372
 msgid "Remember Password"
 msgstr "Recordar contraseña"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:414
+#: js/ui/shellMountOperation.js:396
 #, javascript-format
 msgid "Open %s"
 msgstr "Abrir %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:486
+#: js/ui/shellMountOperation.js:468
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "No se puede iniciar %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:488
+#: js/ui/shellMountOperation.js:470
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "No se pudo encontrar la aplicación %s"
@@ -1897,7 +1898,6 @@ msgstr "Permitir acceso a la ubicación"
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
 #, javascript-format
-#| msgid "Give %s access to your location?"
 msgid "The app %s wants to access your location"
 msgstr "La aplicación %s quiere acceder a su ubicación"
 
@@ -2178,27 +2178,23 @@ msgstr "Apagar"
 msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
-#: js/ui/status/system.js:57
-msgid "Lock Screen Rotation"
-msgstr "Bloquear la rotación de la pantalla"
-
-#: js/ui/status/system.js:106
+#: js/ui/status/system.js:111
 msgid "Power Off / Log Out"
 msgstr "Apagar / cerrar sesión"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:114
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: js/ui/status/system.js:121
+#: js/ui/status/system.js:126
 msgid "Switch User…"
 msgstr "Cambiar de usuario…"
 
-#: js/ui/status/system.js:135
+#: js/ui/status/system.js:140
 msgid "Suspend"
 msgstr "Suspender"
 
-#: js/ui/status/system.js:147
+#: js/ui/status/system.js:152
 msgid "Power Off…"
 msgstr "Apagar…"
 
@@ -2776,6 +2772,10 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgctxt "search-result"
+#~ msgid "Lock Orientation"
+#~ msgstr "Bloquear la orientación"
 
 #~ msgid "Rename"
 #~ msgstr "Renombrar"
