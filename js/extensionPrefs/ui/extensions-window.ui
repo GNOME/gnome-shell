@@ -25,14 +25,14 @@
         <property name="visible">True</property>
         <property name="transition_type">crossfade</property>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="scrolledWindow">
             <property name="visible">True</property>
             <property name="hscrollbar_policy">never</property>
             <child>
               <object class="GtkViewport">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkBox" id="mainBox">
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <property name="halign">center</property>
