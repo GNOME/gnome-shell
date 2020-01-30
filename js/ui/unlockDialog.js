@@ -535,6 +535,10 @@ var UnlockDialog = GObject.registerClass({
         return true;
     }
 
+    activate() {
+        this._showPrompt();
+    }
+
     popModal(timestamp) {
         if (this._isModal) {
             Main.popModal(this, timestamp);
