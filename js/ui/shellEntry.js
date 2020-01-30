@@ -156,36 +156,51 @@ function addContextMenu(entry, params) {
 var CapsLockWarning = GObject.registerClass(
 class CapsLockWarning extends St.Label {
     _init(params) {
-        let defaultParams = { style_class: 'prompt-dialog-error-label' };
+        let defaultParams = { style_class: 'caps-lock-warning-label' };
         super._init(Object.assign(defaultParams, params));
 
         this.text = _('Caps lock is on.');
+
+        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.clutter_text.line_wrap = true;
 
         this._keymap = Clutter.get_default_backend().get_keymap();
 
         this.connect('notify::mapped', () => {
             if (this.is_mapped()) {
-                this.stateChangedId = this._keymap.connect('state-changed',
-                    this._updateCapsLockWarningOpacity.bind(this));
+                this._stateChangedId = this._keymap.connect('state-changed',
+                    () => this._sync(true));
             } else {
-                this._keymap.disconnect(this.stateChangedId);
-                this.stateChangedId = 0;
+                this._keymap.disconnect(this._stateChangedId);
+                this._stateChangedId = 0;
             }
 
-            this._updateCapsLockWarningOpacity();
+            this._sync(false);
         });
 
         this.connect('destroy', () => {
-            if (this.stateChangedId > 0)
-                this._keymap.disconnect(this.stateChangedId);
+            if (this._stateChangedId)
+                this._keymap.disconnect(this._stateChangedId);
         });
-
-        this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.clutter_text.line_wrap = true;
     }
 
-    _updateCapsLockWarningOpacity() {
+    _sync(animate) {
         let capsLockOn = this._keymap.get_caps_lock_state();
-        this.opacity = capsLockOn ? 255 : 0;
+
+        this.remove_all_transitions();
+
+        this.natural_height_set = false;
+        let [, height] = this.get_preferred_height(-1);
+        this.natural_height_set = true;
+
+        this.ease({
+            height: capsLockOn ? height : 0,
+            opacity: capsLockOn ? 255 : 0,
+            duration: animate ? 200 : 0,
+            onComplete: () => {
+                if (capsLockOn)
+                    this.height = -1;
+            },
+        });
     }
 });
