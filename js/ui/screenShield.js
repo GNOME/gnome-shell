@@ -55,7 +55,6 @@ var ScreenShield = class {
             name: 'lockScreenGroup',
             visible: false,
         });
-        Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
         this._lockDialogGroup = new St.Widget({
             x_expand: true,
