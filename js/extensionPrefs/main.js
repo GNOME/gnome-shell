@@ -70,7 +70,9 @@ var ExtensionsWindow = GObject.registerClass({
     InternalChildren: [
         'extensionsList',
         'killSwitch',
+        'mainBox',
         'mainStack',
+        'scrolledWindow',
     ],
 }, class ExtensionsWindow extends Gtk.ApplicationWindow {
     _init(params) {
@@ -79,6 +81,8 @@ var ExtensionsWindow = GObject.registerClass({
         this._startupUuid = null;
         this._loaded = false;
         this._prefsDialog = null;
+
+        this._mainBox.set_focus_vadjustment(this._scrolledWindow.vadjustment);
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.bind('disable-user-extensions',
