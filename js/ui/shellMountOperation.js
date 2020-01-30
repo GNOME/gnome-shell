@@ -309,7 +309,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._pimErrorMessageLabel = new St.Label({
                 style_class: 'prompt-dialog-error-label',
                 text: _("The PIM must be a number or empty."),
-                visible: false,
+                opacity: 0,
             });
             passwordBox.add_child(this._pimErrorMessageLabel);
 
@@ -417,14 +417,16 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
     _onEntryActivate() {
         let pim = 0;
-        if (this._pimEntry !== null)
+        if (this._pimEntry !== null) {
             pim = this._pimEntry.get_text();
-        if (isNaN(pim)) {
-            this._pimEntry.set_text('');
-            this._pimErrorMessageLabel.show();
-            return;
-        } else if (this._pimErrorMessageLabel !== null) {
-            this._pimErrorMessageLabel.hide();
+
+            if (isNaN(pim)) {
+                this._pimEntry.set_text('');
+                this._pimErrorMessageLabel.opacity = 255;
+                return;
+            }
+
+            this._pimErrorMessageLabel.opacity = 0;
         }
 
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
