@@ -59,6 +59,12 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         let warningBox = new St.BoxLayout({ vertical: true });
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
+        let syncCapsLockWarningVisibility = () => {
+            capsLockWarning.visible =
+                this.prompt.password_visible || this.prompt.confirm_visible;
+        };
+        this.prompt.connect('notify::password-visible', syncCapsLockWarningVisibility);
+        this.prompt.connect('notify::confirm-visible', syncCapsLockWarningVisibility);
         warningBox.add_child(capsLockWarning);
 
         let warning = new St.Label({ style_class: 'prompt-dialog-error-label' });

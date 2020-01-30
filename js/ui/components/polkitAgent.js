@@ -103,6 +103,9 @@ var AuthenticationDialog = GObject.registerClass({
         let warningBox = new St.BoxLayout({ vertical: true });
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
+        this._passwordEntry.bind_property('visible',
+            capsLockWarning, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
         warningBox.add_child(capsLockWarning);
 
         this._errorMessageLabel = new St.Label({
