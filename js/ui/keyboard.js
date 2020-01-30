@@ -1102,13 +1102,10 @@ var KeyboardManager = class KeyBoardManager {
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
 
-        this._lastDeviceId = null;
-        Meta.get_backend().connect('last-device-changed', (backend, deviceId) => {
-            let manager = Clutter.DeviceManager.get_default();
-            let device = manager.get_device(deviceId);
-
+        this._lastDevice = null;
+        Meta.get_backend().connect('last-device-changed', (backend, device) => {
             if (device.get_device_name().indexOf('XTEST') < 0) {
-                this._lastDeviceId = deviceId;
+                this._lastDevice = device;
                 this._syncEnabled();
             }
         });
@@ -1116,16 +1113,11 @@ var KeyboardManager = class KeyBoardManager {
     }
 
     _lastDeviceIsTouchscreen() {
-        if (!this._lastDeviceId)
+        if (!this._lastDevice)
             return false;
 
-        let manager = Clutter.DeviceManager.get_default();
-        let device = manager.get_device(this._lastDeviceId);
-
-        if (!device)
-            return false;
-
-        return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
+        let deviceType = this._lastDevice.get_device_type();
+        return deviceType == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     }
 
     _syncEnabled() {
@@ -1837,8 +1829,8 @@ class Keyboard extends St.BoxLayout {
 
 var KeyboardController = class {
     constructor() {
-        let deviceManager = Clutter.DeviceManager.get_default();
-        this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+        let seat = Clutter.get_default_backend().get_default_seat();
+        this._virtualDevice = seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
