@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported init, installExtension, uninstallExtension,
-            checkForUpdates, updateExtension */
+/* exported init, installExtension, uninstallExtension, checkForUpdates */
 
 const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 
@@ -100,13 +99,9 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     });
 }
 
-function updateExtension(uuid) {
-    // This gets a bit tricky. We want the update to be seamless -
-    // if we have any error during downloading or extracting, we
-    // want to not unload the current version.
-
-    let oldExtensionTmpDir = GLib.Dir.make_tmp('XXXXXX-shell-extension');
-    let newExtensionTmpDir = GLib.Dir.make_tmp('XXXXXX-shell-extension');
+function downloadExtensionUpdate(uuid) {
+    let dir = Gio.File.new_for_path(
+        GLib.build_filenamev([global.userdatadir, 'extension-updates', uuid]));
 
     let params = { shell_version: Config.PACKAGE_VERSION };
 
@@ -114,39 +109,10 @@ function updateExtension(uuid) {
     let message = Soup.form_request_new_from_hash('GET', url, params);
 
     _httpSession.queue_message(message, session => {
-        gotExtensionZipFile(session, message, uuid, newExtensionTmpDir, () => {
-            let oldExtension = Main.extensionManager.lookup(uuid);
-            let extensionDir = oldExtension.dir;
-
-            if (!Main.extensionManager.unloadExtension(oldExtension))
-                return;
-
-            FileUtils.recursivelyMoveDir(extensionDir, oldExtensionTmpDir);
-            FileUtils.recursivelyMoveDir(newExtensionTmpDir, extensionDir);
-
-            let extension = null;
-
-            try {
-                extension = Main.extensionManager.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
-                Main.extensionManager.loadExtension(extension);
-            } catch (e) {
-                if (extension)
-                    Main.extensionManager.unloadExtension(extension);
-
-                logError(e, 'Error loading extension %s'.format(uuid));
-
-                FileUtils.recursivelyDeleteDir(extensionDir, false);
-                FileUtils.recursivelyMoveDir(oldExtensionTmpDir, extensionDir);
-
-                // Restore what was there before. We can't do much if we
-                // fail here.
-                Main.extensionManager.loadExtension(oldExtension);
-                return;
-            }
-
-            FileUtils.recursivelyDeleteDir(oldExtensionTmpDir, true);
+        gotExtensionZipFile(session, message, uuid, dir, () => {
+            Main.extensionManager.notifyExtensionUpdate(uuid);
         }, (code, msg) => {
-            log(`Error while updating extension ${uuid}: ${code} (${msg})`);
+            log(`Error while downloading update for extension ${uuid}: ${code} (${msg})`);
         });
     });
 }
@@ -154,11 +120,21 @@ function updateExtension(uuid) {
 function checkForUpdates() {
     let metadatas = {};
     Main.extensionManager.getUuids().forEach(uuid => {
-        metadatas[uuid] = Main.extensionManager.lookup(uuid).metadata;
+        let extension = Main.extensionManager.lookup(uuid);
+        if (extension.type !== ExtensionUtils.ExtensionType.PER_USER)
+            return;
+        if (extension.hasUpdate)
+            return;
+        metadatas[uuid] = extension.metadata;
     });
 
-    let params = { shell_version: Config.PACKAGE_VERSION,
-                   installed: JSON.stringify(metadatas) };
+    let versionCheck = global.settings.get_boolean(
+        'disable-extension-version-validation');
+    let params = {
+        shell_version: Config.PACKAGE_VERSION,
+        installed: JSON.stringify(metadatas),
+        disable_version_validation: `${versionCheck}`,
+    };
 
     let url = REPOSITORY_URL_UPDATE;
     let message = Soup.form_request_new_from_hash('GET', url, params);
@@ -172,7 +148,7 @@ function checkForUpdates() {
             if (operation == 'blacklist')
                 uninstallExtension(uuid);
             else if (operation == 'upgrade' || operation == 'downgrade')
-                updateExtension(uuid);
+                downloadExtensionUpdate(uuid);
         }
     });
 }
