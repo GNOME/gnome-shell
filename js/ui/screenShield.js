@@ -86,14 +86,14 @@ var ScreenShield = class {
         this._smartcardManager.connect('smartcard-inserted',
                                        (manager, token) => {
                                            if (this._isLocked && token.UsedToLogin)
-                                               this._liftShield();
+                                               this._activateDialog();
                                        });
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
         this._oVirtCredentialsManager.connect('user-authenticated',
                                               () => {
                                                   if (this._isLocked)
-                                                      this._liftShield();
+                                                      this._activateDialog();
                                               });
 
         this._loginManager = LoginManager.getLoginManager();
@@ -157,7 +157,7 @@ var ScreenShield = class {
         this._syncInhibitor();
     }
 
-    _liftShield() {
+    _activateDialog() {
         if (this._isLocked) {
             this._ensureUnlockDialog(true /* allowCancel */);
             this._dialog.activate();
@@ -220,7 +220,7 @@ var ScreenShield = class {
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
-        this._liftShield();
+        this._activateDialog();
         return Clutter.EVENT_STOP;
     }
 
