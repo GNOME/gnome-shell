@@ -159,8 +159,8 @@ var ScreenShield = class {
 
     _liftShield() {
         if (this._isLocked) {
-            if (this._ensureUnlockDialog(true /* allowCancel */))
-                this._hideLockScreen(true /* animate */);
+            this._ensureUnlockDialog(true /* allowCancel */);
+            this._dialog.activate();
         } else {
             this.deactivate(true /* animate */);
         }
@@ -437,6 +437,7 @@ var ScreenShield = class {
         }
 
         this._dialog.allowCancel = allowCancel;
+        this._dialog.grab_key_focus();
         return true;
     }
 
