@@ -137,6 +137,7 @@ class OverviewActor extends St.BoxLayout {
 var Overview = class {
     constructor() {
         this._initCalled = false;
+        this._visible = false;
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
