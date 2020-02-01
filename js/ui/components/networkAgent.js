@@ -33,38 +33,26 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             title: this._content.title,
             description: this._content.message,
         });
-        this.contentLayout.add_actor(contentBox);
 
-        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        let secretTable = new St.Widget({ style_class: 'network-dialog-secret-table',
-                                          layout_manager: layout });
-        layout.hookup_style(secretTable);
-
-        let rtl = secretTable.get_text_direction() == Clutter.TextDirection.RTL;
         let initialFocusSet = false;
-        let pos = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
-            let label = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                       text: secret.label,
-                                       x_align: Clutter.ActorAlign.START,
-                                       y_align: Clutter.ActorAlign.CENTER });
-            label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-
             let reactive = secret.key != null;
 
             let entryParams = {
                 style_class: 'prompt-dialog-password-entry',
+                hint_text: secret.label,
                 text: secret.value,
                 can_focus: reactive,
                 reactive,
-                x_expand: true,
+                x_align: Clutter.ActorAlign.CENTER,
             };
             if (secret.password)
                 secret.entry = new St.PasswordEntry(entryParams);
             else
                 secret.entry = new St.Entry(entryParams);
             ShellEntry.addContextMenu(secret.entry);
+            contentBox.add_child(secret.entry);
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);
@@ -89,35 +77,25 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             } else {
                 secret.valid = true;
             }
-
-            if (rtl) {
-                layout.attach(secret.entry, 0, pos, 1, 1);
-                layout.attach(label, 1, pos, 1, 1);
-            } else {
-                layout.attach(label, 0, pos, 1, 1);
-                layout.attach(secret.entry, 1, pos, 1, 1);
-            }
-            pos++;
         }
 
         if (this._content.secrets.some(s => s.password)) {
-            this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
-            if (rtl)
-                layout.attach(this._capsLockWarningLabel, 0, pos, 1, 1);
-            else
-                layout.attach(this._capsLockWarningLabel, 1, pos, 1, 1);
+            let capsLockWarning = new ShellEntry.CapsLockWarning();
+            contentBox.add_child(capsLockWarning);
         }
 
-        contentBox.add_child(secretTable);
-
         if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
-            let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
-                                                  text: _("Alternatively you can connect by pushing the “WPS” button on your router.") });
+            let descriptionLabel = new St.Label({
+                text: _('Alternatively you can connect by pushing the “WPS” button on your router.'),
+                style_class: 'message-dialog-description',
+            });
             descriptionLabel.clutter_text.line_wrap = true;
             descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             contentBox.add_child(descriptionLabel);
         }
+
+        this.contentLayout.add_child(contentBox);
 
         this._okButton = {
             label: _("Connect"),
@@ -325,7 +303,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case '802-11-wireless':
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            content.title = _("Authentication required by wireless network");
+            content.title = _('Authentication required');
             content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
@@ -353,7 +331,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             // fall through
         case 'cdma':
         case 'bluetooth':
-            content.title = _("Mobile broadband network password");
+            content.title = _('Authentication required');
             content.message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
@@ -700,7 +678,7 @@ var NetworkAgent = class {
         case '802-11-wireless': {
             let wirelessSetting = connection.get_setting_wireless();
             let ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            title = _("Authentication required by wireless network");
+            title = _('Authentication required');
             body = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             break;
         }
@@ -721,7 +699,7 @@ var NetworkAgent = class {
             // fall through
         case 'cdma':
         case 'bluetooth':
-            title = _("Mobile broadband network password");
+            title = _('Authentication required');
             body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
         case 'vpn':

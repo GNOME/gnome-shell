@@ -45,21 +45,17 @@ const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
 var DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _init(wm) {
-        super._init({ styleClass: 'prompt-dialog' });
+        super._init();
 
         this._wm = wm;
 
         this._countDown = Meta.MonitorManager.get_display_configuration_timeout();
 
-        let title = _("Do you want to keep these display settings?");
+        // Translators: This string should be shorter than 30 characters
+        let title = _('Keep these display settings?');
         let description = this._formatCountDown();
 
-        this._content = new Dialog.MessageDialogContent({
-            title, description,
-            x_expand: true,
-            y_expand: true,
-        });
-
+        this._content = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_child(this._content);
 
         /* Translators: this and the following message should be limited in length,
