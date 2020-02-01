@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-01-28 15:54+0000\n"
-"PO-Revision-Date: 2020-01-29 14:12+0100\n"
+"POT-Creation-Date: 2020-02-01 07:15+0000\n"
+"PO-Revision-Date: 2020-02-02 00:04+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -377,7 +377,7 @@ msgstr "Zobrazené umiestnenia v svetových časoch"
 
 #: data/org.gnome.shell.gschema.xml.in:245
 msgid "Automatic location"
-msgstr "Automatická poloha"
+msgstr "Automatické umiestnenie"
 
 #: data/org.gnome.shell.gschema.xml.in:246
 msgid "Whether to fetch the current location or not"
@@ -389,7 +389,7 @@ msgstr "Umiestnenie"
 
 #: data/org.gnome.shell.gschema.xml.in:254
 msgid "The location for which to show a forecast"
-msgstr "Poloha pre zobrazenie predpovede"
+msgstr "Umiestnenie, pre ktoré zobraziť predpoveď"
 
 #: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
@@ -482,24 +482,24 @@ msgstr ""
 "rozšírení. Uistite sa, že ste prihlásený do prostredia GNOME a skúste to "
 "znovu."
 
-#: js/gdm/authPrompt.js:174 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:129 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:381 js/ui/shellMountOperation.js:391
+#: js/gdm/authPrompt.js:170 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: js/gdm/authPrompt.js:188 js/gdm/authPrompt.js:241 js/gdm/authPrompt.js:476
+#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
 msgid "Next"
 msgstr "Ďalej"
 
-#: js/gdm/authPrompt.js:237 js/ui/shellMountOperation.js:385
+#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
 #: js/ui/unlockDialog.js:44
 msgid "Unlock"
 msgstr "Odomknúť"
 
-#: js/gdm/authPrompt.js:239
+#: js/gdm/authPrompt.js:235
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prihlásiť sa"
@@ -524,8 +524,8 @@ msgstr "(napr., používateľ alebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:256
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:297
+#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
 msgid "Username: "
 msgstr "Používateľské meno: "
 
@@ -619,26 +619,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
 
-#: js/misc/util.js:116
+#: js/misc/util.js:120
 msgid "Command not found"
 msgstr "Príkaz nebol nájdený"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:156
 msgid "Could not parse command:"
 msgstr "Nepodarilo sa analyzovať príkaz:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:164
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Spustenie „%s“ zlyhalo:"
 
-#: js/misc/util.js:177
+#: js/misc/util.js:181
 msgid "Just now"
 msgstr "Práve teraz"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:183
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -646,7 +646,7 @@ msgstr[0] "Pred %d minútou"
 msgstr[1] "Pred %d minútami"
 msgstr[2] "Pred %d minútami"
 
-#: js/misc/util.js:183
+#: js/misc/util.js:187
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -654,11 +654,11 @@ msgstr[0] "Pred %d hodinou"
 msgstr[1] "Pred %d hodinami"
 msgstr[2] "Pred %d hodinami"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:191
 msgid "Yesterday"
 msgstr "Včera"
 
-#: js/misc/util.js:189
+#: js/misc/util.js:193
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -666,7 +666,7 @@ msgstr[0] "Pred %d dňom"
 msgstr[1] "Pred %d dňami"
 msgstr[2] "Pred %d dňami"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:197
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -674,7 +674,7 @@ msgstr[0] "Pred %d týždňom"
 msgstr[1] "Pred %d týždňami"
 msgstr[2] "Pred %d týždňami"
 
-#: js/misc/util.js:197
+#: js/misc/util.js:201
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -682,7 +682,7 @@ msgstr[0] "Pred %d mesiacom"
 msgstr[1] "Pred %d mesiacmi"
 msgstr[2] "Pred %d mesiacmi"
 
-#: js/misc/util.js:200
+#: js/misc/util.js:204
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -691,20 +691,20 @@ msgstr[1] "Pred %d rokmi"
 msgstr[2] "Pred %d rokmi"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:233
+#: js/misc/util.js:237
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:239
+#: js/misc/util.js:243
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Včera o %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:245
+#: js/misc/util.js:249
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H:%M"
@@ -712,7 +712,7 @@ msgstr "%A, %H:%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:251
+#: js/misc/util.js:255
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%d. %B, %H:%M"
@@ -720,7 +720,7 @@ msgstr "%d. %B, %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:257
+#: js/misc/util.js:261
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d. %B %Y, %H:%M"
@@ -728,13 +728,13 @@ msgstr "%d. %B %Y, %H:%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:262
+#: js/misc/util.js:266
 msgid "%l∶%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:268
+#: js/misc/util.js:272
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Včera, %l:%M %p"
@@ -744,7 +744,7 @@ msgstr "Včera, %l:%M %p"
 # v ostatnych retazcoch je pouzite %e, tak to bude asi OK
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:274
+#: js/misc/util.js:278
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l:%M %p"
@@ -752,7 +752,7 @@ msgstr "%A, %l:%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:280
+#: js/misc/util.js:284
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%d. %B, %l:%M %p"
@@ -760,17 +760,17 @@ msgstr "%d. %B, %l:%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:286
+#: js/misc/util.js:290
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d. %B %Y, %l:%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:40
+#: js/portalHelper/main.js:42
 msgid "Hotspot Login"
 msgstr "Prihlásenie do aktívneho bodu"
 
-#: js/portalHelper/main.js:86
+#: js/portalHelper/main.js:88
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1048,54 +1048,47 @@ msgstr "Nainštalovaná verzia programu udisks nepodporuje nastavenie PIM"
 msgid "Open with %s"
 msgstr "Otvoriť pomocou aplikácie %s"
 
-#: js/ui/components/keyring.js:70 js/ui/components/polkitAgent.js:278
-msgid "Password:"
-msgstr "Heslo:"
-
-#: js/ui/components/keyring.js:104
-msgid "Type again:"
-msgstr "Zadajte znovu:"
-
-#: js/ui/components/networkAgent.js:115
+#: js/ui/components/networkAgent.js:89
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Pripojiť sa môžete taktiež stlačením tlačidla „WPS“ na vašom smerovači."
 
-#: js/ui/components/networkAgent.js:123 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:913
 msgid "Connect"
 msgstr "Pripojiť"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:224 js/ui/components/networkAgent.js:236
-#: js/ui/components/networkAgent.js:260 js/ui/components/networkAgent.js:281
-#: js/ui/components/networkAgent.js:301 js/ui/components/networkAgent.js:311
+#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
 msgid "Password: "
 msgstr "Heslo: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:229
+#: js/ui/components/networkAgent.js:207
 msgid "Key: "
 msgstr "Kľúč: "
 
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
 msgid "Private key password: "
 msgstr "Heslo k súkromnému kľúču: "
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:263
 msgid "Identity: "
 msgstr "Identita: "
 
-#: js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:277
 msgid "Service: "
 msgstr "Služba: "
 
-#: js/ui/components/networkAgent.js:328 js/ui/components/networkAgent.js:703
-msgid "Authentication required by wireless network"
-msgstr "Bezdrôtová sieť vyžaduje overenie totožnosti"
+#: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
+msgid "Authentication required"
+msgstr "Požaduje sa overenie totožnosti"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:307 js/ui/components/networkAgent.js:682
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1104,59 +1097,55 @@ msgstr ""
 "Na prístup do bezdrôtovej siete „%s“ sú vyžadované heslá alebo šifrovacie "
 "kľúče."
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:708
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
 msgid "Wired 802.1X authentication"
 msgstr "Overenie totožnosti k drôtovej sieti 802.1X"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:313
 msgid "Network name: "
 msgstr "Názov siete: "
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:712
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "DSL authentication"
 msgstr "Overenie totožnosti k DSL"
 
-#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:717
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:695
 msgid "PIN code required"
 msgstr "Požaduje sa kód PIN"
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:718
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:696
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pre zariadenie mobilnej širokopásmovej siete je potrebný kód PIN"
 
-#: js/ui/components/networkAgent.js:349
+#: js/ui/components/networkAgent.js:327
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:356 js/ui/components/networkAgent.js:724
-msgid "Mobile broadband network password"
-msgstr "Heslo k mobilnej širokopásmovej sieti"
-
-#: js/ui/components/networkAgent.js:357 js/ui/components/networkAgent.js:709
-#: js/ui/components/networkAgent.js:713 js/ui/components/networkAgent.js:725
-#: js/ui/components/networkAgent.js:729
+#: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
+#: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
+#: js/ui/components/networkAgent.js:707
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Na pripojenie k „%s“ sa požaduje heslo."
 
-#: js/ui/components/networkAgent.js:692 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:670 js/ui/status/network.js:1688
 msgid "Network Manager"
 msgstr "Správca siete"
 
-#: js/ui/components/networkAgent.js:728
+#: js/ui/components/networkAgent.js:706
 msgid "VPN password"
 msgstr "Heslo siete VPN"
 
-#: js/ui/components/polkitAgent.js:41
+#: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
 msgstr "Požaduje sa overenie totožnosti"
 
 # PŠ: ináč toto je riadna hlúposť, keďže sa pýta heslo používateľa "root"
-#: js/ui/components/polkitAgent.js:81
+#: js/ui/components/polkitAgent.js:80
 msgid "Administrator"
 msgstr "Správca"
 
-#: js/ui/components/polkitAgent.js:141
+#: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
 msgstr "Overiť totožnosť"
 
@@ -1164,9 +1153,14 @@ msgstr "Overiť totožnosť"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:259 js/ui/shellMountOperation.js:365
+#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Prepáčte, ale nezabralo to. Skúste to, prosím, znova."
+
+#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
+#| msgid "Remember Password"
+msgid "Enter Password…"
+msgstr "Zadajte heslo…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1389,16 +1383,16 @@ msgstr "%s (vzdialená relácia)"
 msgid "%s (console)"
 msgstr "%s (konzola)"
 
-#: js/ui/extensionDownloader.js:194
+#: js/ui/extensionDownloader.js:170
 msgid "Install"
 msgstr "Inštalovať"
 
 # dialog title
-#: js/ui/extensionDownloader.js:200
+#: js/ui/extensionDownloader.js:176
 msgid "Install Extension"
 msgstr "Inštalácia rozšírenia"
 
-#: js/ui/extensionDownloader.js:201
+#: js/ui/extensionDownloader.js:177
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Prevziať a nainštalovať rozšírenie „%s“ z extensions.gnome.org?"
@@ -1768,56 +1762,53 @@ msgstr "Skryť text"
 msgid "Caps lock is on."
 msgstr "Je zapnutá funkcia Caps Lock."
 
-#: js/ui/shellMountOperation.js:287
+#: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
 msgstr "Skrytý zväzok"
 
-#: js/ui/shellMountOperation.js:290
+#: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
 msgstr "Zväzok so systémom Windows"
 
-#: js/ui/shellMountOperation.js:293
+#: js/ui/shellMountOperation.js:291
 msgid "Uses Keyfiles"
 msgstr "Využíva kľúčové súbory"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:299
+#: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr "Na odomknutie zväzku s kľúčovými súbormi použite nástroj <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
-msgid "PIM Number"
-msgstr "Číslo PIM"
+#| msgid "PIM Number"
+msgid "Enter PIM Number…"
+msgstr "Zadajte číslo PIM…"
 
-#: js/ui/shellMountOperation.js:325
-msgid "The PIM must be a number or empty."
-msgstr "PIM musí byť číslo alebo prázdne."
-
-#: js/ui/shellMountOperation.js:336
-msgid "Password"
-msgstr "Heslo"
-
-#: js/ui/shellMountOperation.js:372
+#: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
 msgstr "Zapamätať heslo"
 
 # DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:396
+#: js/ui/shellMountOperation.js:391
 #, javascript-format
 msgid "Open %s"
 msgstr "Otvoriť %s"
 
+#: js/ui/shellMountOperation.js:423
+msgid "The PIM must be a number or empty."
+msgstr "PIM musí byť číslo alebo prázdne."
+
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:468
+#: js/ui/shellMountOperation.js:469
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Nepodarilo sa spustiť %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:470
+#: js/ui/shellMountOperation.js:471
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "Nepodarilo sa nájsť aplikáciu %s"
@@ -1931,7 +1922,7 @@ msgstr "Zobraziť rozloženie klávesnice"
 
 #: js/ui/status/location.js:65 js/ui/status/location.js:174
 msgid "Location Enabled"
-msgstr "Poloha povolená"
+msgstr "Umiestnenie je povolené"
 
 #: js/ui/status/location.js:66 js/ui/status/location.js:175
 msgid "Disable"
@@ -1943,11 +1934,11 @@ msgstr "Nastavenia súkromia"
 
 #: js/ui/status/location.js:173
 msgid "Location In Use"
-msgstr "Poloha sa používa"
+msgstr "Používa sa umiestnenie"
 
 #: js/ui/status/location.js:177
 msgid "Location Disabled"
-msgstr "Poloha zakázaná"
+msgstr "Umiestnenie je zakázané"
 
 #: js/ui/status/location.js:178
 msgid "Enable"
@@ -2358,22 +2349,23 @@ msgstr "Hľadať"
 msgid "“%s” is ready"
 msgstr "Aplikácia „%s“ je pripravená"
 
-#: js/ui/windowManager.js:54
-msgid "Do you want to keep these display settings?"
-msgstr "Chcete ponechať tieto nastavenia displeja?"
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:55
+msgid "Keep these display settings?"
+msgstr "Ponechať nastavenia displeja?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:64
 msgid "Revert Settings"
 msgstr "Vrátiť nastavenia"
 
-#: js/ui/windowManager.js:71
+#: js/ui/windowManager.js:67
 msgid "Keep Changes"
 msgstr "Uchovať zmeny"
 
-#: js/ui/windowManager.js:89
+#: js/ui/windowManager.js:85
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2383,7 +2375,7 @@ msgstr[2] "Zmeny nastavení budú vrátené za %d sekúnd"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:546
+#: js/ui/windowManager.js:542
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2853,6 +2845,21 @@ msgstr[2] "%u vstupov"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
+#~ msgid "Password:"
+#~ msgstr "Heslo:"
+
+#~ msgid "Type again:"
+#~ msgstr "Zadajte znovu:"
+
+#~ msgid "Authentication required by wireless network"
+#~ msgstr "Bezdrôtová sieť vyžaduje overenie totožnosti"
+
+#~ msgid "Mobile broadband network password"
+#~ msgstr "Heslo k mobilnej širokopásmovej sieti"
+
+#~ msgid "Password"
+#~ msgstr "Heslo"
+
 # action button
 #~ msgctxt "search-result"
 #~ msgid "Lock Orientation"
@@ -2969,9 +2976,6 @@ msgstr "Systémové zvuky"
 #~ msgstr[0] "%d pripojené zariadenie"
 #~ msgstr[1] "%d pripojené zariadenia"
 #~ msgstr[2] "%d pripojených zariadení"
-
-#~ msgid "Authentication required"
-#~ msgstr "Požaduje sa overenie totožnosti"
 
 #~ msgid "UPS"
 #~ msgstr "Záložný zdroj UPS"
