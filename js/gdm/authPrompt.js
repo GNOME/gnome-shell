@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AuthPrompt */
 
-const { Clutter, GObject, Pango, Shell, St } = imports.gi;
+const { Clutter, Gdm, Gio, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
@@ -141,7 +141,7 @@ var AuthPrompt = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
             child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
         });
-        this.cancelButton.connect('clicked', () => this.cancel());
+        this.cancelButton.connect('clicked', () => this._onCancelButtonClicked());
         mainBox.add_child(this.cancelButton);
 
         let entryParams = {
@@ -376,6 +376,15 @@ var AuthPrompt = GObject.registerClass({
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+    }
+
+    _onCancelButtonClicked() {
+        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+            let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+            if (screenSaverSettings.get_boolean('user-switch-enabled'))
+                Gdm.goto_login_session_sync(null);
+        }
+        this.cancel();
     }
 
     setMessage(message, type) {
