@@ -87,12 +87,13 @@ $app_grid_fg_color: #fff;
 
 // expanded folder
 .app-folder-dialog {
-  border-radius: 8px;
-  spacing: 24px;
+  border-radius: $modal_radius * 1.5;
+  border: 1px solid $osd_outer_borders_color;
+  spacing: 12px;
   background-color: transparentize(darken($osd_bg_color,10%), 0.05);
 
   & .folder-name-container {
-    padding: 12px 18px;
+    padding: 24px 36px 0;
     spacing: 12px;
 
     & .folder-name-label,
@@ -117,6 +118,10 @@ $app_grid_fg_color: #fff;
       & > StIcon { icon-size: 16px }
     }
   }
+
+  & StButton#vhandle,
+  & StButton#vhandle:hover,
+  & StButton#vhandle:active { background-color: transparent; }
 }
 .app-folder-dialog-container {
   padding: 12px;
