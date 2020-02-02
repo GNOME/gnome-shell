@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-01 07:15+0000\n"
-"PO-Revision-Date: 2020-02-02 00:04+0100\n"
+"POT-Creation-Date: 2020-02-01 23:06+0000\n"
+"PO-Revision-Date: 2020-02-02 21:33+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -1158,7 +1158,6 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "Prepáčte, ale nezabralo to. Skúste to, prosím, znova."
 
 #: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-#| msgid "Remember Password"
 msgid "Enter Password…"
 msgstr "Zadajte heslo…"
 
@@ -1782,7 +1781,6 @@ msgid ""
 msgstr "Na odomknutie zväzku s kľúčovými súbormi použite nástroj <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
-#| msgid "PIM Number"
 msgid "Enter PIM Number…"
 msgstr "Zadajte číslo PIM…"
 
@@ -2171,11 +2169,11 @@ msgstr "Aktivácia pripojenia k sieti zlyhala"
 
 #: js/ui/status/nightLight.js:63
 msgid "Night Light Disabled"
-msgstr "Nočné svetlo zakázané"
+msgstr "Nočné osvetlenie zakázané"
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
-msgstr "Nočné svetlo zapnuté"
+msgstr "Nočné osvetlenie zapnuté"
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
@@ -2207,13 +2205,13 @@ msgstr "Odhaduje sa…"
 #: js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d:%02d Zostáva (%d%%)"
+msgstr "%d:%02d zostáva (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d:%02d Do plného nabitia (%d%%)"
+msgstr "%d:%02d do plného nabitia (%d%%)"
 
 #: js/ui/status/power.js:139 js/ui/status/power.js:141
 #, javascript-format
