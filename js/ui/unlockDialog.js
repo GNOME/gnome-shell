@@ -17,6 +17,8 @@ const IDLE_TIMEOUT = 2 * 60;
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
 const CROSSFADE_TIME = 300;
+const FADE_OUT_TRANSLATION = 200;
+const FADE_OUT_SCALE = 0.3;
 
 const BLUR_BRIGHTNESS = 0.55;
 const BLUR_RADIUS = 200;
@@ -431,9 +433,11 @@ var UnlockDialog = GObject.registerClass({
         let stack = new Shell.Stack();
 
         this._promptBox = new St.BoxLayout({ vertical: true });
+        this._promptBox.set_pivot_point(0.5, 0.5);
         stack.add_child(this._promptBox);
 
         this._clock = new Clock();
+        this._clock.set_pivot_point(0.5, 0.5);
         stack.add_child(this._clock);
         this._showClock();
 
@@ -592,6 +596,9 @@ var UnlockDialog = GObject.registerClass({
 
         this._promptBox.ease({
             opacity: 0,
+            scale_x: FADE_OUT_SCALE,
+            scale_y: FADE_OUT_SCALE,
+            translation_y: FADE_OUT_TRANSLATION,
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
@@ -600,8 +607,17 @@ var UnlockDialog = GObject.registerClass({
             },
         });
 
+        this._clock.set({
+            scale_x: FADE_OUT_SCALE,
+            scale_y: FADE_OUT_SCALE,
+            translation_y: -FADE_OUT_TRANSLATION,
+        });
+
         this._clock.ease({
             opacity: 255,
+            scale_x: 1,
+            scale_y: 1,
+            translation_y: 0,
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
@@ -616,8 +632,17 @@ var UnlockDialog = GObject.registerClass({
         this._activePage = this._promptBox;
         this._promptBox.show();
 
+        this._promptBox.set({
+            scale_x: FADE_OUT_SCALE,
+            scale_y: FADE_OUT_SCALE,
+            translation_y: FADE_OUT_TRANSLATION,
+        });
+
         this._clock.ease({
             opacity: 0,
+            scale_x: FADE_OUT_SCALE,
+            scale_y: FADE_OUT_SCALE,
+            translation_y: -FADE_OUT_TRANSLATION,
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this._clock.hide(),
@@ -625,6 +650,9 @@ var UnlockDialog = GObject.registerClass({
 
         this._promptBox.ease({
             opacity: 255,
+            scale_x: 1,
+            scale_y: 1,
+            translation_y: 0,
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
