@@ -8,6 +8,7 @@ const Background = imports.ui.background;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const SwipeTracker = imports.ui.swipeTracker;
 
 const AuthPrompt = imports.gdm.authPrompt;
 
@@ -436,6 +437,12 @@ var UnlockDialog = GObject.registerClass({
             this._setTransitionProgress(this._adjustment.value);
         });
 
+        this._swipeTracker = new SwipeTracker.SwipeTracker(
+            this, Shell.ActionMode.UNLOCK_SCREEN);
+        this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
+        this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
+        this._swipeTracker.connect('end', this._swipeEnd.bind(this));
+
         this._activePage = null;
 
         let tapAction = new Clutter.TapAction();
@@ -457,16 +464,15 @@ var UnlockDialog = GObject.registerClass({
         this._user = this._userManager.get_user(this._userName);
 
         // Authentication & Clock stack
-        let stack = new Shell.Stack();
+        this._stack = new Shell.Stack();
 
         this._promptBox = new St.BoxLayout({ vertical: true });
         this._promptBox.set_pivot_point(0.5, 0.5);
-        this._promptBox.hide();
-        stack.add_child(this._promptBox);
+        this._stack.add_child(this._promptBox);
 
         this._clock = new Clock();
         this._clock.set_pivot_point(0.5, 0.5);
-        stack.add_child(this._clock);
+        this._stack.add_child(this._clock);
         this._showClock();
 
         this.allowCancel = false;
@@ -480,10 +486,10 @@ var UnlockDialog = GObject.registerClass({
         // Main Box
         let mainBox = new Clutter.Actor();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        mainBox.add_child(stack);
+        mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
         mainBox.layout_manager = new UnlockDialogLayout(
-            stack,
+            this._stack,
             this._notificationsBox);
         this.add_child(mainBox);
 
@@ -654,6 +660,40 @@ var UnlockDialog = GObject.registerClass({
     _escape() {
         if (this.allowCancel)
             this._authPrompt.cancel();
+    }
+
+    _swipeBegin(tracker, monitor) {
+        if (monitor !== Main.layoutManager.primaryIndex)
+            return;
+
+        this._adjustment.remove_transition('value');
+
+        this._ensureAuthPrompt();
+
+        let progress = this._adjustment.value;
+        tracker.confirmSwipe(this._stack.height,
+            [0, 1],
+            progress,
+            Math.round(progress));
+    }
+
+    _swipeUpdate(tracker, progress) {
+        this._adjustment.value = progress;
+    }
+
+    _swipeEnd(tracker, duration, endProgress) {
+        this._activePage = endProgress
+            ? this._promptBox
+            : this._clock;
+
+        this._adjustment.ease(endProgress, {
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            duration,
+            onComplete: () => {
+                if (this._activePage === this._clock)
+                    this._maybeDestroyAuthPrompt();
+            },
+        });
     }
 
     _onDestroy() {
