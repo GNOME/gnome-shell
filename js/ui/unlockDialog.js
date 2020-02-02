@@ -409,6 +409,16 @@ var UnlockDialog = GObject.registerClass({
 
         parentActor.add_child(this);
 
+        this._adjustment = new St.Adjustment({
+            lower: 0,
+            upper: 2,
+            page_size: 1,
+            page_increment: 1,
+        });
+        this._adjustment.connect('notify::value', () => {
+            this._setTransitionProgress(this._adjustment.value);
+        });
+
         this._activePage = null;
 
         let tapAction = new Clutter.TapAction();
@@ -434,6 +444,7 @@ var UnlockDialog = GObject.registerClass({
 
         this._promptBox = new St.BoxLayout({ vertical: true });
         this._promptBox.set_pivot_point(0.5, 0.5);
+        this._promptBox.hide();
         stack.add_child(this._promptBox);
 
         this._clock = new Clock();
@@ -592,34 +603,11 @@ var UnlockDialog = GObject.registerClass({
             return;
 
         this._activePage = this._clock;
-        this._clock.show();
 
-        this._promptBox.ease({
-            opacity: 0,
-            scale_x: FADE_OUT_SCALE,
-            scale_y: FADE_OUT_SCALE,
-            translation_y: FADE_OUT_TRANSLATION,
+        this._adjustment.ease(0, {
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._promptBox.hide();
-                this._maybeDestroyAuthPrompt();
-            },
-        });
-
-        this._clock.set({
-            scale_x: FADE_OUT_SCALE,
-            scale_y: FADE_OUT_SCALE,
-            translation_y: -FADE_OUT_TRANSLATION,
-        });
-
-        this._clock.ease({
-            opacity: 255,
-            scale_x: 1,
-            scale_y: 1,
-            translation_y: 0,
-            duration: CROSSFADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._maybeDestroyAuthPrompt(),
         });
     }
 
@@ -632,29 +620,28 @@ var UnlockDialog = GObject.registerClass({
         this._activePage = this._promptBox;
         this._promptBox.show();
 
+        this._adjustment.ease(1, {
+            duration: CROSSFADE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _setTransitionProgress(progress) {
+        this._promptBox.visible = progress > 0;
+        this._clock.visible = progress < 1;
+
         this._promptBox.set({
-            scale_x: FADE_OUT_SCALE,
-            scale_y: FADE_OUT_SCALE,
-            translation_y: FADE_OUT_TRANSLATION,
+            opacity: 255 * progress,
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            translation_y: FADE_OUT_TRANSLATION * (1 - progress),
         });
 
-        this._clock.ease({
-            opacity: 0,
-            scale_x: FADE_OUT_SCALE,
-            scale_y: FADE_OUT_SCALE,
-            translation_y: -FADE_OUT_TRANSLATION,
-            duration: CROSSFADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._clock.hide(),
-        });
-
-        this._promptBox.ease({
-            opacity: 255,
-            scale_x: 1,
-            scale_y: 1,
-            translation_y: 0,
-            duration: CROSSFADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        this._clock.set({
+            opacity: 255 * (1 - progress),
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+            translation_y: -FADE_OUT_TRANSLATION * progress,
         });
     }
 
