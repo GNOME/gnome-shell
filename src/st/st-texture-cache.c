@@ -1443,8 +1443,9 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
+          double resource_scale_double = resource_scale;
           g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
-          g_hash_table_insert (cache->priv->used_scales, &resource_scale, &resource_scale);
+          g_hash_table_insert (cache->priv->used_scales, &resource_scale_double, &resource_scale_double);
         }
     }
 
@@ -1491,10 +1492,11 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
+          double resource_scale_double = resource_scale;
           cairo_surface_reference (surface);
           g_hash_table_insert (cache->priv->keyed_surface_cache,
                                g_strdup (key), surface);
-          g_hash_table_insert (cache->priv->used_scales, &resource_scale, &resource_scale);
+          g_hash_table_insert (cache->priv->used_scales, &resource_scale_double, &resource_scale_double);
         }
     }
   else
