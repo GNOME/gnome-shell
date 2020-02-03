@@ -15,6 +15,8 @@ const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
+const EXTENSION_LOAD_SLOW_MS = 100;
+
 var ExtensionManager = class {
     constructor() {
         this._initialized = false;
@@ -92,10 +94,15 @@ var ExtensionManager = class {
             delete extension.stylesheet;
         }
 
+        let startTime = GLib.get_monotonic_time();
         try {
             extension.stateObj.disable();
         } catch (e) {
             this.logExtensionError(uuid, e);
+        } finally {
+            let timePassedMs = (GLib.get_monotonic_time() - startTime) / 1000;
+            if (timePassedMs > EXTENSION_LOAD_SLOW_MS)
+                log(`Calling disable on extension ${uuid} took long: ${timePassedMs}ms`);
         }
 
         for (let i = 0; i < order.length; i++) {
@@ -145,6 +152,7 @@ var ExtensionManager = class {
             }
         }
 
+        let startTime = GLib.get_monotonic_time();
         try {
             extension.stateObj.enable();
             extension.state = ExtensionState.ENABLED;
@@ -156,6 +164,10 @@ var ExtensionManager = class {
                 delete extension.stylesheet;
             }
             this.logExtensionError(uuid, e);
+        } finally {
+            let timePassedMs = (GLib.get_monotonic_time() - startTime) / 1000;
+            if (timePassedMs > EXTENSION_LOAD_SLOW_MS)
+                log(`Calling enable on extension ${uuid} took long: ${timePassedMs}ms`);
         }
     }
 
@@ -355,11 +367,16 @@ var ExtensionManager = class {
         }
 
         if (extensionModule.init) {
+            let startTime = GLib.get_monotonic_time();
             try {
                 extensionState = extensionModule.init(extension);
             } catch (e) {
                 this.logExtensionError(uuid, e);
                 return false;
+            } finally {
+                let timePassedMs = (GLib.get_monotonic_time() - startTime) / 1000;
+                if (timePassedMs > EXTENSION_LOAD_SLOW_MS)
+                    log(`Calling init on extension ${uuid} took long: ${timePassedMs}ms`);
             }
         }
 
