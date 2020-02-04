@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-01 07:15+0000\n"
-"PO-Revision-Date: 2020-02-03 12:01+0100\n"
+"POT-Creation-Date: 2020-02-03 20:34+0000\n"
+"PO-Revision-Date: 2020-02-04 12:12+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -44,12 +44,18 @@ msgstr "Mostrar todas las aplicaciones"
 msgid "Open the application menu"
 msgstr "Abrir el menú de la aplicación"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:209
-msgid "Shell Extensions"
-msgstr "Extensiones de la Shell"
+#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
+#: js/extensionPrefs/ui/extensions-window.ui:61
+#| msgid "Shell Extensions"
+msgid "Extensions"
+msgstr "Extensiones"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:5
+#: data/org.gnome.Extensions.desktop.in.in:5
+#| msgid "Shell Extensions"
+msgid "org.gnome.Extensions"
+msgstr "org.gnome.Extensions"
+
+#: data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar las extensiones de GNOME Shell"
 
@@ -410,11 +416,48 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
-#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
+#: js/extensionPrefs/main.js:140
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "¿Quitar «%s»?"
+
+#: js/extensionPrefs/main.js:141
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Si quita la extensión necesitará volver a descargarla si quiere activarla de "
+"nuevo"
+
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: js/extensionPrefs/main.js:145
+msgid "Remove"
+msgstr "Quitar"
+
+#: js/extensionPrefs/main.js:217
+msgid "translator-credits"
+msgstr ""
+"Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2020\n"
+"Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011\n"
+"Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011"
+
+#: js/extensionPrefs/main.js:219
+#| msgid "Configure GNOME Shell Extensions"
+msgid "Manage your GNOME Extensions"
+msgstr "Gestionar sus extensiones de GNOME Shell"
+
+#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
 msgid "Something’s gone wrong"
 msgstr "Algo ha fallado"
 
-#: js/extensionPrefs/main.js:109
+#: js/extensionPrefs/main.js:268
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -423,39 +466,78 @@ msgstr ""
 "Ha habido un problema: no se puede mostrar la configuración para esta "
 "extensión. Se recomienda que informe del error a los autores de la extensión."
 
-#: js/extensionPrefs/main.js:116
+#: js/extensionPrefs/main.js:275
 msgid "Technical Details"
 msgstr "Detalles técnicos"
 
-#: js/extensionPrefs/main.js:151
+#: js/extensionPrefs/main.js:310
 msgid "Copy Error"
 msgstr "Copiar error"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:337
 msgid "Homepage"
 msgstr "Página web"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:338
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/extensionPrefs/main.js:467
-msgid "No Extensions Installed"
+#: js/extensionPrefs/main.js:449
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login.e"
+msgstr[0] "la próxima vez que inicie sesión se actualizará %d extensión"
+msgstr[1] "la próxima vez que inicie sesión se actualizarán %d extensiones"
+
+#: js/extensionPrefs/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Ayuda"
+
+#: js/extensionPrefs/ui/extensions-window.ui:12
+#| msgid "List extensions"
+msgid "About Extensions"
+msgstr "Acerca de extensiones"
+
+#: js/extensionPrefs/ui/extensions-window.ui:27
+#| msgid ""
+#| "Extensions can be installed through Software or <a href=\"https://"
+#| "extensions.gnome.org\">extensions.gnome.org</a>."
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"Para buscar y añadir extensiones visite <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+
+#: js/extensionPrefs/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Advertencia"
+
+#: js/extensionPrefs/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Las extensiones pueden causar problemas en el sistema, incluso problemas de "
+"rendimiento. Si tiene problemas con sus sistema se recomienda desactivar "
+"todas las extensiones."
+
+#: js/extensionPrefs/ui/extensions-window.ui:133
+msgid "Manually Installed"
+msgstr "Instalada manualmente"
+
+#: js/extensionPrefs/ui/extensions-window.ui:157
+#| msgid "Built-in Only"
+msgid "Built-In"
+msgstr "Integrada"
+
+#: js/extensionPrefs/ui/extensions-window.ui:198
+#| msgid "Install Extension"
+msgid "No Installed Extensions"
 msgstr "No hay extensiones instaladas"
 
-#: js/extensionPrefs/main.js:477
-msgid ""
-"Extensions can be installed through Software or <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
-msgstr ""
-"Las extensiones se puede instalar mediante software o <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
-
-#: js/extensionPrefs/main.js:492
-msgid "Browse in Software"
-msgstr "Buscar en Software"
-
-#: js/extensionPrefs/main.js:532
+#: js/extensionPrefs/ui/extensions-window.ui:234
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -463,13 +545,9 @@ msgstr ""
 "No es posible obtener la lista de extensiones instaladas. asegúrese de que "
 "ha iniciado sesión en GNOME e inténtelo de nuevo."
 
-#: js/gdm/authPrompt.js:170 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:910
-msgid "Cancel"
-msgstr "Cancelar"
+#: js/extensionPrefs/ui/extensions-window.ui:287
+msgid "Logout…"
+msgstr "Cerrar sesión…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
 msgid "Next"
@@ -1119,7 +1197,6 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "Eso no ha funcionado. Inténtelo de nuevo."
 
 #: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-#| msgid "Remember Password"
 msgid "Enter Password…"
 msgstr "Introduzca la contraseña…"
 
@@ -1350,6 +1427,15 @@ msgstr "Instalar extensión"
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
+
+#: js/ui/extensionSystem.js:228
+#| msgid "No Extensions Installed"
+msgid "Extension Updates Available"
+msgstr "Actualizaciones de extensiones disponibles"
+
+#: js/ui/extensionSystem.js:229
+msgid "Extension updates are ready to be installed."
+msgstr "Las actualizaciones de las extensiones están listas para instalarse."
 
 #: js/ui/inhibitShortcutsDialog.js:79
 msgid "Allow inhibiting shortcuts"
@@ -1725,7 +1811,6 @@ msgstr ""
 "%s</i> en su lugar."
 
 #: js/ui/shellMountOperation.js:306
-#| msgid "PIM Number"
 msgid "Enter PIM Number…"
 msgstr "Introduzca el número PIM…"
 
@@ -2280,7 +2365,6 @@ msgstr "«%s» está preparado"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:55
-#| msgid "Do you want to keep these display settings?"
 msgid "Keep these display settings?"
 msgstr "¿Quiere mantener esta configuración de la pantalla?"
 
@@ -2763,6 +2847,9 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
+#~ msgid "Browse in Software"
+#~ msgstr "Buscar en Software"
+
 #~ msgid "Password:"
 #~ msgstr "Contraseña:"
 
@@ -3093,9 +3180,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Open"
 #~ msgstr "Abrir"
-
-#~ msgid "Remove"
-#~ msgstr "Quitar"
 
 #~ msgid "Clear Messages"
 #~ msgstr "Limpiar mensajes"
