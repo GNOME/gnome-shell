@@ -11,7 +11,6 @@ $app_icon_padding: 24px;
 
   .overview-icon {
     icon-size: $app_icon_size;
-    StIcon { margin-bottom: $base_margin; } // margin on icon so label isn't close
   }
 }
 
@@ -36,9 +35,12 @@ $app_grid_fg_color: #fff;
 %app-well-app {
   @include overview-icon($app_grid_fg_color);
 
-  > .overview-icon.overview-icon-with-label {
+  .overview-icon.overview-icon-with-label {
     padding: 10px 8px 5px 8px;
-    spacing: $base_spacing;
+
+    > StBoxLayout {
+      spacing: $base_spacing;
+    }
   }
 }
 
