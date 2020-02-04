@@ -447,7 +447,7 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._updatesLabel.label = Gettext.ngettext(
             '%d extension will be updated on next login.',
-            '%d extensions will be updated on next login.e',
+            '%d extensions will be updated on next login.',
             nUpdates).format(nUpdates);
         this._updatesBar.visible = nUpdates > 0;
     }
