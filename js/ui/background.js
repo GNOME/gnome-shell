@@ -504,12 +504,10 @@ var SystemBackground = GObject.registerClass({
     Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
 
         if (_systemBackground == null) {
             _systemBackground = new Meta.Background({ meta_display: global.display });
             _systemBackground.set_color(DEFAULT_BACKGROUND_COLOR);
-            _systemBackground.set_file(file, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
         super._init({
