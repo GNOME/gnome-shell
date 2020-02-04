@@ -20,9 +20,13 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._createSubMenu();
 
         this._loginScreenItem.connect('notify::visible',
-                                      () => this._updateMultiUser());
+            () => this._updateSessionSubMenu());
         this._logoutItem.connect('notify::visible',
-                                 () => this._updateMultiUser());
+            () => this._updateSessionSubMenu());
+        this._suspendItem.connect('notify::visible',
+            () => this._updateSessionSubMenu());
+        this._powerOffItem.connect('notify::visible',
+            () => this._updateSessionSubMenu());
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
@@ -33,7 +37,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
             this._systemActions.forceUpdate();
         });
-        this._updateMultiUser();
+        this._updateSessionSubMenu();
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
@@ -43,11 +47,12 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._settingsItem.visible = Main.sessionMode.allowSettings;
     }
 
-    _updateMultiUser() {
-        let hasSwitchUser = this._loginScreenItem.visible;
-        let hasLogout = this._logoutItem.visible;
-
-        this._sessionSubMenu.visible = hasSwitchUser || hasLogout;
+    _updateSessionSubMenu() {
+        this._sessionSubMenu.visible =
+            this._loginScreenItem.visible ||
+            this._logoutItem.visible ||
+            this._suspendItem.visible ||
+            this._powerOffItem.visible;
     }
 
     _createSubMenu() {
