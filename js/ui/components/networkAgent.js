@@ -41,7 +41,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
             let entryParams = {
                 style_class: 'prompt-dialog-password-entry',
-                hint_text: secret.label,
+                hint_text: `${secret.label}…`,
                 text: secret.value,
                 can_focus: reactive,
                 reactive,
