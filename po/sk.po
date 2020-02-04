@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-01 23:06+0000\n"
-"PO-Revision-Date: 2020-02-02 21:33+0100\n"
+"POT-Creation-Date: 2020-02-03 20:34+0000\n"
+"PO-Revision-Date: 2020-02-04 10:59+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -51,12 +51,17 @@ msgstr "Zobraziť všetky aplikácie"
 msgid "Open the application menu"
 msgstr "Otvoriť ponuku aplikácií"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:209
-msgid "Shell Extensions"
-msgstr "Rozšírenia pre Shell"
+#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
+#: js/extensionPrefs/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Rozšírenia"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:5
+#: data/org.gnome.Extensions.desktop.in.in:5
+#| msgid "Shell Extensions"
+msgid "org.gnome.Extensions"
+msgstr "org.gnome.Extensions"
+
+#: data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "Nastavenie rozšírení pre Shell prostredia GNOME"
 
@@ -428,11 +433,44 @@ msgstr ""
 msgid "Network Login"
 msgstr "Sieťové prihlásenie"
 
-#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
+#: js/extensionPrefs/main.js:140
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Odstrániť rozšírenie „%s“?"
+
+#: js/extensionPrefs/main.js:141
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Ak odstránite rozšírenie, budete ho musieť pre jeho opätovné povolenie znovu "
+"prevziať."
+
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: js/extensionPrefs/main.js:145
+msgid "Remove"
+msgstr "Odstrániť"
+
+#: js/extensionPrefs/main.js:217
+msgid "translator-credits"
+msgstr "Dušan Kazik <prescott66@gmail.com>"
+
+#: js/extensionPrefs/main.js:219
+msgid "Manage your GNOME Extensions"
+msgstr "Spravuje vaše rozšírenia prostredia GNOME"
+
+#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
 msgid "Something’s gone wrong"
 msgstr "Niečo sa pokazilo"
 
-#: js/extensionPrefs/main.js:109
+#: js/extensionPrefs/main.js:268
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -441,39 +479,78 @@ msgstr ""
 "Ospravedlňujeme sa, ale vyskytol sa problém: Nastavenia tohoto rozšírenia sa "
 "nedajú zobraziť. Odporúčame vám nahlásiť problém autorom rozšírenia."
 
-#: js/extensionPrefs/main.js:116
+#: js/extensionPrefs/main.js:275
 msgid "Technical Details"
 msgstr "Technické podrobnosti"
 
-#: js/extensionPrefs/main.js:151
+#: js/extensionPrefs/main.js:310
 msgid "Copy Error"
 msgstr "Skopírovať chybu"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:337
 msgid "Homepage"
 msgstr "Domovská stránka"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:338
 msgid "Visit extension homepage"
 msgstr "Navštíviť domovskú stránku rozšírenia"
 
-#: js/extensionPrefs/main.js:467
-msgid "No Extensions Installed"
+#: js/extensionPrefs/main.js:449
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login.e"
+msgstr[0] "%d rozšírení bude aktualizovaných po najbližšom prihlásení."
+msgstr[1] "%d rozšírenie bude aktualizované po najbližšom prihlásení."
+msgstr[2] "%d rozšírenia budú aktualizované po najbližšom prihlásení."
+
+#: js/extensionPrefs/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Pomocník"
+
+# summary
+#: js/extensionPrefs/ui/extensions-window.ui:12
+msgid "About Extensions"
+msgstr "O aplikácii Rozšírenia"
+
+#: js/extensionPrefs/ui/extensions-window.ui:27
+#| msgid ""
+#| "Extensions can be installed through Software or <a href=\"https://"
+#| "extensions.gnome.org\">extensions.gnome.org</a>."
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"Ak chcete nájsť a pridať rozšírenia, navštívte adresu <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
+
+#: js/extensionPrefs/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Upozornenie"
+
+#: js/extensionPrefs/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Rozšírenia môžu spôsobiť problémy so systémom, vrátane problémov s výkonom. "
+"Ak sa stretnete s problémami s vaším systémom, odporúča sa zakázať všetky "
+"rozšírenia."
+
+#: js/extensionPrefs/ui/extensions-window.ui:133
+msgid "Manually Installed"
+msgstr "Ručne nainštalované"
+
+#: js/extensionPrefs/ui/extensions-window.ui:157
+msgid "Built-In"
+msgstr "Vstavané"
+
+# dialog title
+#: js/extensionPrefs/ui/extensions-window.ui:198
+msgid "No Installed Extensions"
 msgstr "Žiadne nainštalované rozšírenia"
 
-#: js/extensionPrefs/main.js:477
-msgid ""
-"Extensions can be installed through Software or <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
-msgstr ""
-"Rozšírenia môžu byť nainštalované prostredníctvom aplikácie Softvér alebo "
-"lokality <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
-
-#: js/extensionPrefs/main.js:492
-msgid "Browse in Software"
-msgstr "Prehliadať v aplikácii Softvér"
-
-#: js/extensionPrefs/main.js:532
+#: js/extensionPrefs/ui/extensions-window.ui:234
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -482,13 +559,9 @@ msgstr ""
 "rozšírení. Uistite sa, že ste prihlásený do prostredia GNOME a skúste to "
 "znovu."
 
-#: js/gdm/authPrompt.js:170 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:910
-msgid "Cancel"
-msgstr "Zrušiť"
+#: js/extensionPrefs/ui/extensions-window.ui:287
+msgid "Logout…"
+msgstr "Odhlásiť sa…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
 msgid "Next"
@@ -1395,6 +1468,14 @@ msgstr "Inštalácia rozšírenia"
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Prevziať a nainštalovať rozšírenie „%s“ z extensions.gnome.org?"
+
+#: js/ui/extensionSystem.js:228
+msgid "Extension Updates Available"
+msgstr "Sú dostupné aktualizácie rozšírení"
+
+#: js/ui/extensionSystem.js:229
+msgid "Extension updates are ready to be installed."
+msgstr "Aktualizácie rozšírení sú pripravené na inštaláciu."
 
 # dialog title
 #: js/ui/inhibitShortcutsDialog.js:79
@@ -2843,6 +2924,9 @@ msgstr[2] "%u vstupov"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
+#~ msgid "Browse in Software"
+#~ msgstr "Prehliadať v aplikácii Softvér"
+
 #~ msgid "Password:"
 #~ msgstr "Heslo:"
 
@@ -3172,9 +3256,6 @@ msgstr "Systémové zvuky"
 
 #~ msgid "Open"
 #~ msgstr "Otvoriť"
-
-#~ msgid "Remove"
-#~ msgstr "Odstrániť"
 
 #~ msgid "Clear Messages"
 #~ msgstr "Vymazať správy"
