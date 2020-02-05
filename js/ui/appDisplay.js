@@ -530,8 +530,10 @@ var AllView = GObject.registerClass({
     // Overridden from BaseAppView
     animate(animationDirection, onComplete) {
         this._scrollView.reactive = false;
+        this._swipeTracker.enabled = false;
         let completionFunc = () => {
             this._scrollView.reactive = true;
+            this._swipeTracker.enabled = this.mapped;
             if (onComplete)
                 onComplete();
         };
