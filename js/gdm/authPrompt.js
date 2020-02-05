@@ -99,15 +99,19 @@ var AuthPrompt = GObject.registerClass({
 
         this._initEntryRow();
 
-        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning();
+        this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._capsLockWarningLabel);
 
         this._message = new St.Label({
             opacity: 0,
             styleClass: 'login-dialog-message',
-            x_expand: false,
             y_expand: true,
+            x_expand: true,
             y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.CENTER,
         });
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
