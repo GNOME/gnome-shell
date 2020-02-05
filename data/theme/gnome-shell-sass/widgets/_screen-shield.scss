@@ -55,8 +55,7 @@
 }
 
 #lockDialogGroup {
-  background: lighten(#2e3436, 8%) url(resource:///org/gnome/shell/theme/noise-texture.png);
-  background-repeat: repeat;
+  background-color: lighten(#2e3436, 8%);
 }
 
 #unlockDialogNotifications {
