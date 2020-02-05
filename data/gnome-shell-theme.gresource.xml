@@ -18,7 +18,6 @@
     <file alias="icons/message-indicator-symbolic.svg">message-indicator-symbolic.svg</file>
     <file>no-events.svg</file>
     <file>no-notifications.svg</file>
-    <file>noise-texture.png</file>
     <file>pad-osd.css</file>
     <file alias="icons/eye-open-negative-filled-symbolic.svg">eye-open-negative-filled-symbolic.svg</file>
     <file alias="icons/eye-not-looking-symbolic.svg">eye-not-looking-symbolic.svg</file>
