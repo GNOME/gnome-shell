@@ -80,13 +80,17 @@
 
     StIcon { icon-size: $base_icon_size; }
   }
+
+  .caps-lock-warning-label,
+  .login-dialog-message-warning {
+    color: $osd_fg_color;
+  }
 }
 
 .login-dialog-logo-bin { padding: 24px 0px; }
 .login-dialog-banner { color: darken($osd_fg_color,10%); }
 .login-dialog-button-box { width: 23em; spacing: 5px; }
 .login-dialog-message { text-align: center; }
-.login-dialog-message-warning { color: $warning_color; }
 .login-dialog-message-hint { padding-top: 0; padding-bottom: 20px; }
 .login-dialog-user-selection-box { padding: 100px 0px; }
 .login-dialog-not-listed-label {
