@@ -145,6 +145,20 @@ var NotificationsBox = GObject.registerClass({
                source.narrowestPrivacyScope === MessageTray.PrivacyScope.SYSTEM;
     }
 
+    _updateSourceBoxStyle(source, obj, box) {
+        let hasCriticalNotification =
+            source.notifications.some(n => n.urgency === MessageTray.Urgency.CRITICAL);
+
+        if (hasCriticalNotification !== obj.hasCriticalNotification) {
+            obj.hasCriticalNotification = hasCriticalNotification;
+
+            if (hasCriticalNotification)
+                box.add_style_class_name('critical');
+            else
+                box.remove_style_class_name('critical');
+        }
+    }
+
     _showSource(source, obj, box) {
         if (obj.detailed)
             [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
@@ -152,6 +166,8 @@ var NotificationsBox = GObject.registerClass({
             [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
 
         box.visible = obj.visible && (source.unseenCount > 0);
+
+        this._updateSourceBoxStyle(source, obj, box);
     }
 
     _sourceAdded(tray, source, initial) {
@@ -165,6 +181,7 @@ var NotificationsBox = GObject.registerClass({
             sourceBox: null,
             titleLabel: null,
             countLabel: null,
+            hasCriticalNotification: false,
         };
 
         obj.sourceBox = new St.BoxLayout({
