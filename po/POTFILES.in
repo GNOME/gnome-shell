@@ -6,6 +6,7 @@ data/org.gnome.Shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 data/org.gnome.Shell.PortalHelper.desktop.in.in
 js/extensionPrefs/main.js
+js/extensionPrefs/ui/extension-row.ui
 js/extensionPrefs/ui/extensions-window.ui
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
