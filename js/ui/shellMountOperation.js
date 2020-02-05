@@ -323,7 +323,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
-            hint_text: _('Enter Password…'),
+            hint_text: `${_('Enter Password')}…`,
             can_focus: true,
             x_expand: true,
         });

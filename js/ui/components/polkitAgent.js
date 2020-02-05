@@ -274,7 +274,7 @@ var AuthenticationDialog = GObject.registerClass({
         // we replace it with our own, if it's something else we replace the
         // last colon and any trailing spaces with a "…".
         if (request === 'Password:' || request === 'Password: ')
-            this._passwordEntry.hint_text = _('Enter Password…');
+            this._passwordEntry.hint_text = `${_('Enter Password')}…`;
         else
             this._passwordEntry.hint_text = request.replace(/: *$/, '…');
 
