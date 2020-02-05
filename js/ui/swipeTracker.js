@@ -270,6 +270,8 @@ const ScrollGesture = GObject.registerClass({
             return;
 
         this._enabled = enabled;
+        this._began = false;
+
         this.notify('enabled');
     }
 
