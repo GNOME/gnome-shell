@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-03 20:34+0000\n"
-"PO-Revision-Date: 2020-02-04 12:12+0100\n"
+"POT-Creation-Date: 2020-02-04 18:00+0000\n"
+"PO-Revision-Date: 2020-02-05 11:16+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -46,12 +46,10 @@ msgstr "Abrir el menú de la aplicación"
 
 #: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
 #: js/extensionPrefs/ui/extensions-window.ui:61
-#| msgid "Shell Extensions"
 msgid "Extensions"
 msgstr "Extensiones"
 
 #: data/org.gnome.Extensions.desktop.in.in:5
-#| msgid "Shell Extensions"
 msgid "org.gnome.Extensions"
 msgstr "org.gnome.Extensions"
 
@@ -449,7 +447,6 @@ msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011"
 
 #: js/extensionPrefs/main.js:219
-#| msgid "Configure GNOME Shell Extensions"
 msgid "Manage your GNOME Extensions"
 msgstr "Gestionar sus extensiones de GNOME Shell"
 
@@ -484,8 +481,10 @@ msgstr "Visitar la página web de la extensión"
 
 #: js/extensionPrefs/main.js:449
 #, javascript-format
+#| msgid "%d extension will be updated on next login."
+#| msgid_plural "%d extensions will be updated on next login.e"
 msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login.e"
+msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "la próxima vez que inicie sesión se actualizará %d extensión"
 msgstr[1] "la próxima vez que inicie sesión se actualizarán %d extensiones"
 
@@ -494,14 +493,10 @@ msgid "Help"
 msgstr "Ayuda"
 
 #: js/extensionPrefs/ui/extensions-window.ui:12
-#| msgid "List extensions"
 msgid "About Extensions"
 msgstr "Acerca de extensiones"
 
 #: js/extensionPrefs/ui/extensions-window.ui:27
-#| msgid ""
-#| "Extensions can be installed through Software or <a href=\"https://"
-#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -528,12 +523,10 @@ msgid "Manually Installed"
 msgstr "Instalada manualmente"
 
 #: js/extensionPrefs/ui/extensions-window.ui:157
-#| msgid "Built-in Only"
 msgid "Built-In"
 msgstr "Integrada"
 
 #: js/extensionPrefs/ui/extensions-window.ui:198
-#| msgid "Install Extension"
 msgid "No Installed Extensions"
 msgstr "No hay extensiones instaladas"
 
@@ -1429,7 +1422,6 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:228
-#| msgid "No Extensions Installed"
 msgid "Extension Updates Available"
 msgstr "Actualizaciones de extensiones disponibles"
 
@@ -1731,7 +1723,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: js/ui/screenShield.js:454 js/ui/status/system.js:98
+#: js/ui/screenShield.js:454 js/ui/status/system.js:103
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -2251,23 +2243,23 @@ msgstr "Apagar"
 msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
-#: js/ui/status/system.js:111
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Apagar / cerrar sesión"
 
-#: js/ui/status/system.js:114
+#: js/ui/status/system.js:119
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: js/ui/status/system.js:126
+#: js/ui/status/system.js:131
 msgid "Switch User…"
 msgstr "Cambiar de usuario…"
 
-#: js/ui/status/system.js:140
+#: js/ui/status/system.js:145
 msgid "Suspend"
 msgstr "Suspender"
 
-#: js/ui/status/system.js:152
+#: js/ui/status/system.js:157
 msgid "Power Off…"
 msgstr "Apagar…"
 
