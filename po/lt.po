@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-01 07:15+0000\n"
-"PO-Revision-Date: 2020-02-02 22:10+0200\n"
+"POT-Creation-Date: 2020-02-05 19:49+0000\n"
+"PO-Revision-Date: 2020-02-05 22:49+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -47,12 +47,13 @@ msgstr "Rodyti visas programas"
 msgid "Open the application menu"
 msgstr "Atverti programų meniu"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:209
-msgid "Shell Extensions"
-msgstr "Shell plėtiniai"
+#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
+#: js/extensionPrefs/ui/extensions-window.ui:61
+#| msgid "Shell Extensions"
+msgid "Extensions"
+msgstr "Plėtiniai"
 
-#: data/gnome-shell-extension-prefs.desktop.in.in:5
+#: data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigūruoti GNOME Shell plėtinius"
 
@@ -397,11 +398,47 @@ msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 msgid "Network Login"
 msgstr "Tinklo prisijungimas"
 
-#: js/extensionPrefs/main.js:102 js/extensionPrefs/main.js:525
+#: js/extensionPrefs/main.js:140
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Pašalinti „%s“?"
+
+#: js/extensionPrefs/main.js:141
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Jei pašalinsite plėtinį, reikės grįžti prie jo atsisiuntimo, jei norėsite jį "
+"vėl įjungti"
+
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+msgid "Cancel"
+msgstr "Atsisakyti"
+
+#: js/extensionPrefs/main.js:145
+msgid "Remove"
+msgstr "Pašalinti"
+
+#: js/extensionPrefs/main.js:217
+msgid "translator-credits"
+msgstr ""
+"Išvertė:\n"
+"Aurimas Černius <aurisc4@gmail.com>"
+
+#: js/extensionPrefs/main.js:219
+#| msgid "Configure GNOME Shell Extensions"
+msgid "Manage your GNOME Extensions"
+msgstr "Tvarkyti GNOME plėtinius"
+
+#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
 msgid "Something’s gone wrong"
 msgstr "Atsitiko kažkas negero"
 
-#: js/extensionPrefs/main.js:109
+#: js/extensionPrefs/main.js:268
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -410,39 +447,102 @@ msgstr ""
 "Atsiprašome, bet kilo problema: šio plėtinio nustatymų parodyti nepavyksta. "
 "Rekomenduojame pranešti apie problemą plėtinio autoriams."
 
-#: js/extensionPrefs/main.js:116
+#: js/extensionPrefs/main.js:275
 msgid "Technical Details"
 msgstr "Techninė informacija"
 
-#: js/extensionPrefs/main.js:151
+#: js/extensionPrefs/main.js:310
 msgid "Copy Error"
 msgstr "Kopijuoti klaidą"
 
-#: js/extensionPrefs/main.js:178
+#: js/extensionPrefs/main.js:337
 msgid "Homepage"
 msgstr "Namų tinklalapis"
 
-#: js/extensionPrefs/main.js:179
+#: js/extensionPrefs/main.js:338
 msgid "Visit extension homepage"
 msgstr "Aplankyti plėtinio namų tinklalapį"
 
-#: js/extensionPrefs/main.js:467
-msgid "No Extensions Installed"
-msgstr "Nėra įdiegtų plėtinių"
+#: js/extensionPrefs/main.js:449
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d plėtinys bus atnaujintas kitą kartą prisijungus."
+msgstr[1] "%d plėtiniai bus atnaujintas kitą kartą prisijungus."
+msgstr[2] "%d plėtinių bus atnaujintas kitą kartą prisijungus."
 
-#: js/extensionPrefs/main.js:477
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Aprašymas"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Versija"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Autorius"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Tinklalapis"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+#| msgid "Remove"
+msgid "Remove…"
+msgstr "Pašalinti…"
+
+#: js/extensionPrefs/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Žinynas"
+
+#: js/extensionPrefs/ui/extensions-window.ui:12
+#| msgid "List extensions"
+msgid "About Extensions"
+msgstr "Apie plėtinius"
+
+#: js/extensionPrefs/ui/extensions-window.ui:27
+#| msgid ""
+#| "Extensions can be installed through Software or <a href=\"https://"
+#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
-"Extensions can be installed through Software or <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Plėtinius galima įdiegti per Programinę įrangą arba <a href=\"https://"
+"Plėtinius galima rasti ir įdiegti per apsilankius <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/main.js:492
-msgid "Browse in Software"
-msgstr "Naršyti Programinėje įrangoje"
+#: js/extensionPrefs/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Įspėjimas"
 
-#: js/extensionPrefs/main.js:532
+#: js/extensionPrefs/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Plėtiniai gali sukelti sistemai problemų, įskaitant našumo problemas. Jei su "
+"tokiomis susidursite, rekomenduojama išjungti visus plėtinius."
+
+#: js/extensionPrefs/ui/extensions-window.ui:133
+msgid "Manually Installed"
+msgstr "Įdiegtas rankomis"
+
+#: js/extensionPrefs/ui/extensions-window.ui:157
+#| msgid "Built-in Only"
+msgid "Built-In"
+msgstr "Vidinis"
+
+#: js/extensionPrefs/ui/extensions-window.ui:198
+#| msgid "Install Extension"
+msgid "No Installed Extensions"
+msgstr "Nėra įdiegtų plėtinių"
+
+#: js/extensionPrefs/ui/extensions-window.ui:234
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -450,13 +550,9 @@ msgstr ""
 "Atsiprašome, bet nepavyko gauti įdiegtų plėtinių sąrašo. Įsitikinkite, kad "
 "esate prisijungęs prie GNOME ir bandykite vėl."
 
-#: js/gdm/authPrompt.js:170 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:910
-msgid "Cancel"
-msgstr "Atsisakyti"
+#: js/extensionPrefs/ui/extensions-window.ui:287
+msgid "Logout…"
+msgstr "Atsijungti…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
 msgid "Next"
@@ -520,7 +616,6 @@ msgstr "Išjungti"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-#| msgid "power off;shutdown;reboot;restart"
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "išjungti;perleisti;perkrauti;sustabdyti"
 
@@ -570,20 +665,15 @@ msgstr "keisti naudotoją"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:131
-#| msgid "lock orientation;screen;rotation"
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "orientacijos užrakinimas;orientacijos atrakinimas;ekranas;pasukimas"
 
 #: js/misc/systemActions.js:251
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Atrakinti ekrano orientaciją"
 
 #: js/misc/systemActions.js:252
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Užrakinti ekrano orientaciją"
@@ -1094,7 +1184,6 @@ msgid "Network Manager"
 msgstr "Tinklo tvarkymas"
 
 #: js/ui/components/networkAgent.js:706
-#| msgid "Password"
 msgid "VPN password"
 msgstr "VPN slaptažodis"
 
@@ -1119,7 +1208,6 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 
 #: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-#| msgid "Remember Password"
 msgid "Enter Password…"
 msgstr "Įveskite slaptažodį…"
 
@@ -1318,19 +1406,16 @@ msgstr ""
 "yra įjungtas į elektros tinklą."
 
 #: js/ui/endSessionDialog.js:259
-#| msgid "Running on battery power: please plug in before installing updates."
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
 "Veikia naudojant baterijos energiją: įjunkite į elektros tinklą prieš "
 "įdiegdami atnaujinimus."
 
 #: js/ui/endSessionDialog.js:268
-#| msgid "Some applications are busy or have unsaved work."
 msgid "Some applications are busy or have unsaved work"
 msgstr "Kai kurios programos dirba arba turi neįrašyto darbo."
 
 #: js/ui/endSessionDialog.js:273
-#| msgid "Other users are logged in."
 msgid "Other users are logged in"
 msgstr "Yra prisijungusių kitų naudotojų"
 
@@ -1351,7 +1436,6 @@ msgid "Install"
 msgstr "Įdiegti"
 
 #: js/ui/extensionDownloader.js:176
-#| msgid "Uninstall extension"
 msgid "Install Extension"
 msgstr "Išdiegti plėtinį"
 
@@ -1360,20 +1444,26 @@ msgstr "Išdiegti plėtinį"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
+#: js/ui/extensionSystem.js:228
+#| msgid "No Extensions Installed"
+msgid "Extension Updates Available"
+msgstr "Yra plėtinių atnaujinimų"
+
+#: js/ui/extensionSystem.js:229
+msgid "Extension updates are ready to be installed."
+msgstr "Plėtinių atnaujinimai paruošti diegimui."
+
 #: js/ui/inhibitShortcutsDialog.js:79
-#| msgid "%s wants to inhibit shortcuts"
 msgid "Allow inhibiting shortcuts"
 msgstr "Leisti talpinti trumpinius"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
 #, javascript-format
-#| msgid "Application wants to inhibit shortcuts"
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Programa %s nori talpinti trumpinius"
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#| msgid "Application wants to inhibit shortcuts"
 msgid "An application wants to inhibit shortcuts"
 msgstr "Programa nori talpinti trumpinius"
 
@@ -1507,7 +1597,6 @@ msgid "Web Page"
 msgstr "Tinklalapis"
 
 #: js/ui/main.js:267
-#| msgid "Log in as another user"
 msgid "Logged in as a privileged user"
 msgstr "Prisijungta privilegijuotu naudotoju"
 
@@ -1621,12 +1710,10 @@ msgid "Top Bar"
 msgstr "Viršutinė juosta"
 
 #: js/ui/runDialog.js:58
-#| msgid "Enter a Command"
 msgid "Run a Command"
 msgstr "Vykdyti komandą"
 
 #: js/ui/runDialog.js:73
-#| msgid "Press Esc to exit"
 msgid "Press ESC to close"
 msgstr "Spauskit ESC užvėrimui"
 
@@ -1660,7 +1747,7 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: js/ui/screenShield.js:454 js/ui/status/system.js:98
+#: js/ui/screenShield.js:454 js/ui/status/system.js:103
 msgid "Lock"
 msgstr "Užrakinti"
 
@@ -1741,7 +1828,6 @@ msgstr ""
 "įrankį."
 
 #: js/ui/shellMountOperation.js:306
-#| msgid "PIM Number"
 msgid "Enter PIM Number…"
 msgstr "Įveskite PIM numerį…"
 
@@ -1903,7 +1989,6 @@ msgstr "Leisti vietos informacijos prieigą"
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
 #, javascript-format
-#| msgid "Give %s access to your location?"
 msgid "The app %s wants to access your location"
 msgstr "Programa %s nori prieigos prie jūsų būvimo vietos"
 
@@ -2185,26 +2270,23 @@ msgstr "Išjungti"
 msgid "Airplane Mode On"
 msgstr "Skrydžio veiksena įjungta"
 
-#: js/ui/status/system.js:111
-#| msgid "Power Off"
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Išjungti / Atsijungti"
 
-#: js/ui/status/system.js:114
+#: js/ui/status/system.js:119
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: js/ui/status/system.js:126
-#| msgid "Switch User"
+#: js/ui/status/system.js:131
 msgid "Switch User…"
 msgstr "Keisti naudotoją…"
 
-#: js/ui/status/system.js:140
+#: js/ui/status/system.js:145
 msgid "Suspend"
 msgstr "Pristabdyti"
 
-#: js/ui/status/system.js:152
-#| msgid "Power Off"
+#: js/ui/status/system.js:157
 msgid "Power Off…"
 msgstr "Išjungti…"
 
@@ -2301,7 +2383,6 @@ msgstr "„%s“ yra pasirengusi"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:55
-#| msgid "Do you want to keep these display settings?"
 msgid "Keep these display settings?"
 msgstr "Ar norite įrašyti šiuos vaizduoklio nustatymus?"
 
@@ -2469,11 +2550,6 @@ msgid ""
 msgstr ""
 "Aprašymas yra vieno sakinio paaiškinimas, ką daro plėtinys.\n"
 "Pavyzdžiai: %s"
-
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Aprašymas"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 msgid ""
@@ -2676,10 +2752,6 @@ msgstr "URL"
 msgid "Original author"
 msgstr "Pradinis autorius"
 
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Versija"
-
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
 msgstr "Būsena"
@@ -2783,6 +2855,9 @@ msgstr[2] "%u įvesčių"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistemos garsai"
+
+#~ msgid "Browse in Software"
+#~ msgstr "Naršyti Programinėje įrangoje"
 
 #~| msgid "Username: "
 #~ msgid "Rename"
@@ -3106,9 +3181,6 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Open"
 #~ msgstr "Atverti"
-
-#~ msgid "Remove"
-#~ msgstr "Pašalinti"
 
 #~ msgid "Clear Messages"
 #~ msgstr "Išvalyti pranešimus"
