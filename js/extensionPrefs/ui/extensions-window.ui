@@ -284,7 +284,7 @@
             </child>
             <child>
               <object class="GtkButton">
-                <property name="label" translatable="yes">Logout…</property>
+                <property name="label" translatable="yes">Log Out…</property>
                 <property name="visible">True</property>
                 <property name="valign">center</property>
                 <property name="action-name">win.logout</property>
