@@ -473,12 +473,10 @@ var AuthPrompt = GObject.registerClass({
         if (oldChild)
             oldChild.destroy();
 
-        if (user) {
-            let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
-            this._userWell.set_child(userWidget);
-        } else if (!user && userNotListed) {
-            let userWidget = new UserWidget.UserWidget(null, Clutter.Orientation.VERTICAL);
-            this._userWell.set_child(userWidget);
+        let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
+        this._userWell.set_child(userWidget);
+
+        if (!user && userNotListed) {
             this._updateRowsForUsernameBasedLogin();
             this.verificationStatus = AuthPromptStatus.VERIFYING;
         }
