@@ -256,7 +256,7 @@
                 <property name="margin">6</property>
                 <property name="icon_name">software-update-available-symbolic</property>
                 <style>
-                  <class name="warning"/>>
+                  <class name="warning"/>
                 </style>
               </object>
             </child>
