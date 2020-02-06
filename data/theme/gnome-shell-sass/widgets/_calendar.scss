@@ -16,44 +16,11 @@
   &:ltr {margin-right: $base_margin * 2; border-left-width: 1px; }
   &:rtl {margin-left: $base_margin * 2; border-right-width: 1px; }
 
-  // today button (the date)
-  .datemenu-today-button {
-    @include notification_bubble($flat: true);
-    padding: $base_padding * 1.5;
-
-    // weekday label
-    .day-label {
-      @include fontsize($base_font_size+1);
-      font-weight: bold;
-    }
-
-    // date label
-    .date-label {
-      @include fontsize($base_font_size+7);
-      font-weight: 1000;
-    }
-  }
-
-  // calendar
-  .calendar {
-    @include notification_bubble;
-    padding: $base_padding;
-
-    // more below for sub-elements
-  }
-
   .datemenu-displays-section {
   }
 
   .datemenu-displays-box {
     spacing: $base_spacing;
-
-    // world clocks and weather
-    .world-clocks-button,
-    .weather-button {
-      @include notification_bubble;
-      padding: $base_padding;
-    }
   }
 }
 
@@ -64,8 +31,28 @@
   padding: .4em;
 }
 
+/* today button (the date) */
+.datemenu-today-button {
+  @include notification_bubble($flat: true);
+  padding: $base_padding * 1.5;
+
+  // weekday label
+  .day-label {
+    @include fontsize($base_font_size+1);
+    font-weight: bold;
+  }
+
+  // date label
+  .date-label {
+    @include fontsize($base_font_size+7);
+    font-weight: 1000;
+  }
+}
+
 /* Calendar */
 .calendar {
+  @include notification_bubble;
+  padding: $base_padding;
 
   // month
   .calendar-month-label {
@@ -183,9 +170,13 @@
 
 
 /* Weather */
-.weather-box {
-  spacing: $base_spacing + $base_margin;
-  padding:$base_padding;
+.weather-button {
+  @include notification_bubble;
+  padding: $base_padding * 2;
+
+  .weather-box {
+    spacing: $base_spacing + $base_margin;
+  }
 
   .weather-header {
     color: desaturate(darken($fg_color,40%), 10%);
@@ -221,10 +212,14 @@
 }
 
 /* World clocks */
-.world-clocks-grid {
-  padding:$base_padding;
-  spacing-rows: $base_spacing;
-  spacing-columns: $base_spacing * 2;
+.world-clocks-button {
+  @include notification_bubble;
+  padding: $base_padding * 2;
+
+  .world-clocks-grid {
+    spacing-rows: $base_spacing;
+    spacing-columns: $base_spacing * 2;
+  }
 
   // title
   .world-clocks-header {
