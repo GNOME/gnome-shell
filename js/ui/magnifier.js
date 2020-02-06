@@ -430,8 +430,10 @@ var Magnifier = class Magnifier {
      *     lines making up the crosshairs.
      */
     setCrosshairsLength(length) {
-        if (this._crossHairs)
-            this._crossHairs.setLength(length);
+        if (this._crossHairs) {
+            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            this._crossHairs.setLength(length / scaleFactor);
+        }
     }
 
     /**
