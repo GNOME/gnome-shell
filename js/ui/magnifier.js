@@ -1133,6 +1133,13 @@ var ZoomRegion = class ZoomRegion {
         return this._screenPosition;
     }
 
+    _clearScrollContentsTimer() {
+        if (this._scrollContentsTimerId !== 0) {
+            GLib.source_remove(this._scrollContentsTimerId);
+            this._scrollContentsTimerId = 0;
+        }
+    }
+
     /**
      * scrollToMousePos:
      * Set the region of interest based on the position of the system pointer.
@@ -1146,28 +1153,29 @@ var ZoomRegion = class ZoomRegion {
         else
             this._updateMousePosition();
 
+        this._clearScrollContentsTimer();
+        this._scrollContentsTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
+            this._followingCursor = false;
+            if (this._xDelayed !== null && this._yDelayed !== null) {
+                this._scrollContentsToDelayed(this._xDelayed, this._yDelayed);
+                this._xDelayed = null;
+                this._yDelayed = null;
+            }
+
+            return GLib.SOURCE_REMOVE;
+        });
+
         // Determine whether the system mouse pointer is over this zoom region.
         return this._isMouseOverRegion();
     }
 
-    _clearScrollContentsTimer() {
-        if (this._scrollContentsTimerId != 0) {
-            GLib.source_remove(this._scrollContentsTimerId);
-            this._scrollContentsTimerId = 0;
-        }
-    }
-
     _scrollContentsToDelayed(x, y) {
-        if (this._pointerIdleMonitor.get_idletime() >= POINTER_REST_TIME) {
+        if (this._followingCursor) {
+            this._xDelayed = x;
+            this._yDelayed = y;
+        } else {
             this.scrollContentsTo(x, y);
-            return;
         }
-
-        this._clearScrollContentsTimer();
-        this._scrollContentsTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
-            this._scrollContentsToDelayed(x, y);
-            return GLib.SOURCE_REMOVE;
-        });
     }
 
     /**
