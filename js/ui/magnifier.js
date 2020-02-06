@@ -1168,6 +1168,10 @@ var ZoomRegion = class ZoomRegion {
      * @param {number} y: The y-coord of the point to center on.
      */
     scrollContentsTo(x, y) {
+        if (x < 0 || x > global.screen_width ||
+            y < 0 || y > global.screen_height)
+            return;
+
         this._clearScrollContentsTimer();
 
         this._followingCursor = false;
