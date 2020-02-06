@@ -182,7 +182,7 @@ var AuthPrompt = GObject.registerClass({
         this._defaultButtonWell.add_child(this._spinner);
     }
 
-    _updateEntry(secret) {
+    setSecret(secret) {
         if (secret && this._entry !== this._passwordEntry) {
             this._mainBox.replace_child(this._entry, this._passwordEntry);
             this._entry = this._passwordEntry;
@@ -204,7 +204,7 @@ var AuthPrompt = GObject.registerClass({
             return;
         }
 
-        this._updateEntry(secret);
+        this.setSecret(secret);
         this.setQuestion(question);
 
         this.updateSensitivity(true);
