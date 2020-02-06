@@ -864,6 +864,18 @@ var WindowManager = class {
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.OVERVIEW,
                            this._switchToApplication.bind(this));
+        this.addKeybinding('a11y-zoom-in',
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+                           Shell.ActionMode.NORMAL |
+                           Shell.ActionMode.OVERVIEW,
+                           this._a11yZoomIn.bind(this));
+        this.addKeybinding('a11y-zoom-out',
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+                           Shell.ActionMode.NORMAL |
+                           Shell.ActionMode.OVERVIEW,
+                           this._a11yZoomOut.bind(this));
 
         global.display.connect('show-resize-popup', this._showResizePopup.bind(this));
         global.display.connect('show-pad-osd', this._showPadOsd.bind(this));
@@ -2014,6 +2026,14 @@ var WindowManager = class {
         let app = apps[target - 1];
         if (app)
             app.activate();
+    }
+
+    _a11yZoomIn() {
+        Main.magnifier.zoomIn(2);
+    }
+
+    _a11yZoomOut() {
+        Main.magnifier.zoomOut(2);
     }
 
     _toggleAppMenu() {
