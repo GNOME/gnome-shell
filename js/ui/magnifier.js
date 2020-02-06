@@ -1809,12 +1809,10 @@ class Crosshairs extends Clutter.Actor {
         let clipWidth = this._clipSize[0];
         let clipHeight = this._clipSize[1];
 
-        // Note that clip, if present, is not centred on the cross hair
-        // intersection, but biased towards the top left.
-        let left = groupWidth / 2 - clipWidth * 0.25 - leftLength;
-        let right = groupWidth / 2 + clipWidth * 0.75;
-        let top = groupHeight / 2 - clipHeight * 0.25 - topLength - thickness / 2;
-        let bottom = groupHeight / 2 + clipHeight * 0.75 + thickness / 2;
+        let left = groupWidth / 2 - clipWidth / 2 - leftLength - thickness / 2;
+        let right = groupWidth / 2 + clipWidth / 2 + thickness / 2;
+        let top = groupHeight / 2 - clipHeight / 2 - topLength - thickness / 2;
+        let bottom = groupHeight / 2 + clipHeight / 2 + thickness / 2;
         this._horizLeftHair.set_position(left, (groupHeight - thickness) / 2);
         this._horizRightHair.set_position(right, (groupHeight - thickness) / 2);
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
