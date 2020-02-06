@@ -217,6 +217,10 @@
     spacing: $base_spacing + $base_margin;
   }
 
+  .weather-header-box {
+    spacing: $base_spacing;
+  }
+
   .weather-header {
     color: desaturate(darken($fg_color,40%), 10%);
     font-weight: bold;
