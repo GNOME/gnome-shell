@@ -181,10 +181,10 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _updateEntry(secret) {
-        if (secret && (this._entry != this._passwordEntry)) {
+        if (secret && this._entry !== this._passwordEntry) {
             this._mainBox.replace_child(this._entry, this._passwordEntry);
             this._entry = this._passwordEntry;
-        } else if (!secret && (this._entry != this._textEntry)) {
+        } else if (!secret && this._entry !== this._textEntry) {
             this._mainBox.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
         }
