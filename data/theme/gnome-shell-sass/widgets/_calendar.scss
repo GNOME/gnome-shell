@@ -168,6 +168,45 @@
   }
 }
 
+/* World clocks */
+.world-clocks-button {
+  @include notification_bubble;
+  padding: $base_padding * 2;
+
+  .world-clocks-grid {
+    spacing-rows: $base_spacing;
+    spacing-columns: $base_spacing * 2;
+  }
+
+  // title
+  .world-clocks-header {
+    color: desaturate(darken($fg_color,40%), 10%);
+    font-weight: bold;
+  }
+
+  // city label
+  .world-clocks-city {
+    color: $fg_color;
+    @include fontsize($base_font_size);
+    font-weight: normal;
+  }
+
+  // timezone time
+  .world-clocks-time {
+    font-weight: bold;
+    color: $fg_color;
+    font-feature-settings: "lnum";
+    @include fontsize($base_font_size);
+    text-align: right;
+  }
+
+  // timezone offset label
+  .world-clocks-timezone {
+    color: darken($fg_color,20%);
+    font-feature-settings: "tnum";
+    @include fontsize($base_font_size - 1);
+  }
+}
 
 /* Weather */
 .weather-button {
@@ -208,45 +247,5 @@
 
   .weather-forecast-temp {
     font-weight: bold;
-  }
-}
-
-/* World clocks */
-.world-clocks-button {
-  @include notification_bubble;
-  padding: $base_padding * 2;
-
-  .world-clocks-grid {
-    spacing-rows: $base_spacing;
-    spacing-columns: $base_spacing * 2;
-  }
-
-  // title
-  .world-clocks-header {
-    color: desaturate(darken($fg_color,40%), 10%);
-    font-weight: bold;
-  }
-
-  // city label
-  .world-clocks-city {
-    color: $fg_color;
-    @include fontsize($base_font_size);
-    font-weight: normal;
-  }
-
-  // timezone time
-  .world-clocks-time {
-    font-weight: bold;
-    color: $fg_color;
-    font-feature-settings: "lnum";
-    @include fontsize($base_font_size);
-    text-align: right;
-  }
-
-  // timezone offset label
-  .world-clocks-timezone {
-    color: darken($fg_color,20%);
-    font-feature-settings: "tnum";
-    @include fontsize($base_font_size - 1);
   }
 }
