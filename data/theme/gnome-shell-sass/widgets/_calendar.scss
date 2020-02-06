@@ -5,16 +5,13 @@
 // overall menu
 #calendarArea {
   padding:0;
-  margin:0;
 }
 
 // Calendar menu side column
 .datemenu-calendar-column {
-  spacing: 0;
+  spacing: $base_spacing;
   border: 0 solid $bubble_borders_color;
-  padding: $base_padding * 2;
-  padding-bottom: 3em; // account for the notifications clear button
-  padding-top:0;
+  padding: 0 $base_padding * 2;
 
   &:ltr {margin-right: $base_margin * 2; border-left-width: 1px; }
   &:rtl {margin-left: $base_margin * 2; border-right-width: 1px; }
@@ -40,19 +37,16 @@
   // calendar
   .calendar {
     @include notification_bubble;
-    margin-bottom: $base_padding + $base_margin;
     padding: $base_padding;
 
     // more below for sub-elements
   }
 
   .datemenu-displays-section {
-    margin:0;
   }
 
   .datemenu-displays-box {
     spacing: $base_spacing;
-    margin:0;
 
     // world clocks and weather
     .world-clocks-button,
@@ -122,6 +116,7 @@
       @include fontsize($base_font_size - 4);
     }
   }
+
   .calendar-day { //border collapse hack - see calendar.js
     border-width: 0;
   }
@@ -130,8 +125,12 @@
     border-top-width: 1px;
   }
 
-  .calendar-day-left { border-left-width: 1px; }
+  .calendar-day-left {
+    border-left-width: 1px;
+  }
+
   .calendar-work-day {}
+
   .calendar-nonwork-day {
     color: $insensitive_fg_color;
   }
@@ -151,13 +150,14 @@
     &:active,&:selected {
       background-color: $selected_bg_color;
       color: $selected_fg_color;
+
       &:hover,&:focus {
         background-color:lighten($selected_bg_color, 3%);
         color: $selected_fg_color;
       }
     }
-
   }
+
   .calendar-day-with-events {
     color: lighten($fg_color,10%);
     font-weight: bold;
@@ -184,12 +184,13 @@
 
 /* Weather */
 .weather-box {
-  spacing: $base_spacing;
+  spacing: $base_spacing + $base_margin;
   padding:$base_padding;
 
   .weather-header {
     color: desaturate(darken($fg_color,40%), 10%);
     font-weight: bold;
+
     &.location {
       font-weight: normal;
       @include fontsize($base_font_size - 1);
@@ -197,7 +198,6 @@
   }
 
   .weather-grid {
-    margin-top: $base_margin;
     spacing-rows: $base_spacing;
     spacing-columns: $base_spacing * 2;
   }
