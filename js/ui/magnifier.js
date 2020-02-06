@@ -706,6 +706,28 @@ var Magnifier = class Magnifier {
             this._zoomRegions[0].setContrast(contrast);
         }
     }
+
+    zoomIn(factor) {
+        if (!this.isActive())
+            return;
+
+        this._zoomRegions.forEach(zoomRegion => {
+            let [xMag, yMag] = zoomRegion.getMagFactor();
+            zoomRegion.setMagFactor(xMag * factor, yMag * factor);
+        });
+    }
+
+    zoomOut(factor) {
+        if (!this.isActive())
+            return;
+
+        this._zoomRegions.forEach(zoomRegion => {
+            let [xMag, yMag] = zoomRegion.getMagFactor();
+            xMag = Math.max(xMag / factor, 1);
+            yMag = Math.max(yMag / factor, 1);
+            zoomRegion.setMagFactor(xMag, yMag);
+        });
+    }
 };
 Signals.addSignalMethods(Magnifier.prototype);
 
