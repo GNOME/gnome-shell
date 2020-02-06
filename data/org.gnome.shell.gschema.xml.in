@@ -186,6 +186,14 @@
       <default>["&lt;Super&gt;9"]</default>
       <summary>Switch to application 9</summary>
     </key>
+    <key name="a11y-zoom-in" type="as">
+      <default>["&lt;Super&gt;Plus"]</default>
+      <summary>Accessibility zoom in</summary>
+    </key>
+    <key name="a11y-zoom-out" type="as">
+      <default>["&lt;Super&gt;Minus"]</default>
+      <summary>Accessibility zoom out</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"
