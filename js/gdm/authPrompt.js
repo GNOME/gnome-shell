@@ -89,13 +89,6 @@ var AuthPrompt = GObject.registerClass({
             y_expand: true,
         });
         this.add_child(this._userWell);
-        this._label = new St.Label({
-            style_class: 'login-dialog-prompt-label',
-            x_expand: false,
-            y_expand: true,
-        });
-
-        this.add_child(this._label);
 
         this._initEntryRow();
 
@@ -346,11 +339,9 @@ var AuthPrompt = GObject.registerClass({
     }
 
     setQuestion(question) {
-        this._label.set_text(question);
+        this._entry.hint_text = question;
 
-        this._label.show();
         this._entry.show();
-
         this._entry.grab_key_focus();
     }
 
