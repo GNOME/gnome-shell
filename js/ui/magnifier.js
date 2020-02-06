@@ -1395,7 +1395,8 @@ var ZoomRegion = class ZoomRegion {
                                         yMagFactor: this._yMagFactor,
                                         xCenter: this._xCenter,
                                         yCenter: this._yCenter,
-                                        redoCursorTracking: false });
+                                        redoCursorTracking: false,
+                                        animate: false });
 
         if (params.xMagFactor <= 0)
             params.xMagFactor = this._xMagFactor;
@@ -1434,8 +1435,7 @@ var ZoomRegion = class ZoomRegion {
                                 height: this._viewPortHeight }, true);
         }
 
-        this._updateCloneGeometry();
-        this._updateMousePosition();
+        this._updateCloneGeometry(params.animate);
     }
 
     _isMouseOverRegion() {
@@ -1573,20 +1573,38 @@ var ZoomRegion = class ZoomRegion {
         this._magView.set_position(this._viewPortX, this._viewPortY);
     }
 
-    _updateCloneGeometry() {
+    _setTransitionEasingState(actor, enabled) {
+        if (enabled) {
+            actor.save_easing_state();
+            actor.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+            actor.set_easing_delay(100);
+        } else {
+            actor.restore_easing_state();
+        }
+    }
+
+    _updateCloneGeometry(animate = false) {
         if (!this.isActive())
             return;
+
+        this._setTransitionEasingState(this._uiGroupClone, true);
+        this._setTransitionEasingState(this._mouseActor, true);
+        this._setTransitionEasingState(this._crossHairsActor, true);
 
         this._uiGroupClone.set_scale(this._xMagFactor, this._yMagFactor);
         this._mouseActor.set_scale(this._xMagFactor, this._yMagFactor);
 
         let [x, y] = this._screenToViewPort(0, 0);
-        this._uiGroupClone.set_position(Math.round(x), Math.round(y));
 
-        this._updateMousePosition();
+        this._uiGroupClone.set_position(Math.round(x), Math.round(y));
+        this._updateMousePosition(animate);
+
+        this._setTransitionEasingState(this._uiGroupClone, false);
+        this._setTransitionEasingState(this._mouseActor, false);
+        this._setTransitionEasingState(this._crossHairsActor, false);
     }
 
-    _updateMousePosition() {
+    _updateMousePosition(animate = false) {
         if (!this.isActive())
             return;
 
