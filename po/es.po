@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-04 18:00+0000\n"
-"PO-Revision-Date: 2020-02-05 11:16+0100\n"
+"POT-Creation-Date: 2020-02-05 19:49+0000\n"
+"PO-Revision-Date: 2020-02-06 11:25+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -49,11 +49,7 @@ msgstr "Abrir el menú de la aplicación"
 msgid "Extensions"
 msgstr "Extensiones"
 
-#: data/org.gnome.Extensions.desktop.in.in:5
-msgid "org.gnome.Extensions"
-msgstr "org.gnome.Extensions"
-
-#: data/org.gnome.Extensions.desktop.in.in:6
+#: data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar las extensiones de GNOME Shell"
 
@@ -481,12 +477,34 @@ msgstr "Visitar la página web de la extensión"
 
 #: js/extensionPrefs/main.js:449
 #, javascript-format
-#| msgid "%d extension will be updated on next login."
-#| msgid_plural "%d extensions will be updated on next login.e"
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "la próxima vez que inicie sesión se actualizará %d extensión"
 msgstr[1] "la próxima vez que inicie sesión se actualizarán %d extensiones"
+
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Descripción"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Versión"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Autor"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Página web"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+#| msgid "Remove"
+msgid "Remove…"
+msgstr "Quitar…"
 
 #: js/extensionPrefs/ui/extensions-window.ui:8
 msgid "Help"
@@ -2526,11 +2544,6 @@ msgstr ""
 "La descripción es una única frase para explicar qué hace su extensión.\n"
 "Algunos ejemplos: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Descripción"
-
 #: subprojects/extensions-tool/src/command-create.c:222
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
@@ -2733,10 +2746,6 @@ msgstr "URL"
 msgid "Original author"
 msgstr "Autor original"
 
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Versión"
-
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
 msgstr "Estado"
@@ -2838,6 +2847,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "org.gnome.Extensions"
+#~ msgstr "org.gnome.Extensions"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Buscar en Software"
