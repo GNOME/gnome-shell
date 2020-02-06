@@ -423,6 +423,9 @@ var AuthPrompt = GObject.registerClass({
 
         let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
         this._userWell.set_child(userWidget);
+
+        if (!user)
+            this._updateEntry(false);
     }
 
     reset() {
