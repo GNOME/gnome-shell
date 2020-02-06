@@ -1186,7 +1186,8 @@ var ZoomRegion = class ZoomRegion {
 
         this._followingCursor = false;
         this._changeROI({ xCenter: x,
-                          yCenter: y });
+                          yCenter: y,
+                          animate: true });
     }
 
     /**
