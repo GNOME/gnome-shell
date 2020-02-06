@@ -704,7 +704,7 @@ var UnlockDialog = GObject.registerClass({
             : this._clock;
 
         this._adjustment.ease(endProgress, {
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             duration,
             onComplete: () => {
                 if (this._activePage === this._clock)
