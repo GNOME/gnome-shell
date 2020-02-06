@@ -799,8 +799,9 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        let [xFocus, yFocus] = [extents.x + (extents.width / 2),
-                                extents.y + (extents.height / 2)];
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let [xFocus, yFocus] = [(extents.x + (extents.width / 2)) * scaleFactor,
+                                (extents.y + (extents.height / 2)) * scaleFactor];
 
         if (this._xFocus != xFocus || this._yFocus != yFocus) {
             [this._xFocus, this._yFocus] = [xFocus, yFocus];
@@ -820,7 +821,8 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        let [xCaret, yCaret] = [extents.x, extents.y];
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let [xCaret, yCaret] = [extents.x * scaleFactor, extents.y * scaleFactor];
 
         if (this._xCaret != xCaret || this._yCaret != yCaret) {
             [this._xCaret, this._yCaret] = [xCaret, yCaret];
