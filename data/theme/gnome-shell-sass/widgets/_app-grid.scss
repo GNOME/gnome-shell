@@ -11,7 +11,6 @@ $app_icon_padding: 24px;
 
   .overview-icon {
     icon-size: $app_icon_size;
-    StIcon { margin-bottom: $base_margin; } // margin on icon so label isn't close
   }
 }
 
@@ -33,47 +32,14 @@ $app_grid_fg_color: #fff;
 
 // Icon tiles in the app grid
 .app-well-app,
-.app-folder {
+%app-well-app {
+  @include overview-icon($app_grid_fg_color);
 
-  .overview-icon {
-    @extend %icon_tile;
-    color: $app_grid_fg_color !important;
-  }
+  .overview-icon.overview-icon-with-label {
+    padding: 10px 8px 5px 8px;
 
-  &:selected {
-    .overview-icon {
-      background-color: transparentize($osd_bg_color,0.7);
-      color: $app_grid_fg_color;
-    }
-  }
-
-  &:hover,
-  &:focus,
-  &:selected {
-    .overview-icon {
-      background-color: transparentize($osd_fg_color,0.9);
-      color: $osd_fg_color;
-    }
-  }
-
-  &:focus {
-    .overview-icon {
-      background-color: transparentize($osd_fg_color,0.7  );
-      // border-color: $selected_bg_color;
-      color: $app_grid_fg_color;
-    }
-  }
-
-  &:drop {
-    .overview-icon {
-      background-color: transparentize($selected_bg_color,.15);
-    }
-  }
-
-  &:active,
-  &:checked {
-    .overview-icon {
-      background-color: transparentize(darken($osd_bg_color,10%), 0.5);
+    > StBoxLayout {
+      spacing: $base_spacing;
     }
   }
 }
@@ -81,7 +47,6 @@ $app_grid_fg_color: #fff;
 /* App Folders */
 .app-folder {
   .overview-icon {
-    @extend %icon_tile;
   }
 }
 
@@ -178,11 +143,6 @@ $app_grid_fg_color: #fff;
   padding: 0px 88px 10px 88px;
 }
 
-.app-well-app > .overview-icon.overview-icon-with-label {
-  padding: 10px 8px 5px 8px;
-  spacing: $base_spacing;
-}
-
 // Label when no frequent apps
 .no-frequent-applications-label { @extend %status_text; }
 
@@ -203,13 +163,12 @@ $app_grid_fg_color: #fff;
 
 // buttons
 .app-view-control {
-
   padding: 4px 32px;
   margin: 0 4px;
+
   &, &:hover, &:checked {
     @include button(undecorated);
     color: darken($osd_fg_color, 25%);
-    background-color: transparent !important;
   }
 
   &:hover {
@@ -232,6 +191,6 @@ $app_grid_fg_color: #fff;
   }
 
   &:last-child {
-   border-radius: 0;
+    border-radius: 0;
   }
 }
