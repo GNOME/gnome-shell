@@ -930,7 +930,10 @@ var LoginDialog = GObject.registerClass({
             });
         this._updateCancelButton();
 
-        this._sessionMenuButton.updateSensitivity(this._shouldShowSessionMenuButton());
+        const showSessionMenu = this._shouldShowSessionMenuButton();
+        this._sessionMenuButton.updateSensitivity(showSessionMenu);
+        this._sessionMenuButton.visible = showSessionMenu;
+
         this._authPrompt.updateSensitivity(true);
         this._showPrompt();
     }
