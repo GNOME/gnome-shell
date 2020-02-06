@@ -875,7 +875,8 @@ var ZoomRegion = class ZoomRegion {
     setMagFactor(xMagFactor, yMagFactor) {
         this._changeROI({ xMagFactor,
                           yMagFactor,
-                          redoCursorTracking: this._followingCursor });
+                          redoCursorTracking: this._followingCursor,
+                          animate: true });
     }
 
     /**
