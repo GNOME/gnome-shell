@@ -799,9 +799,13 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        [this._xFocus, this._yFocus] = [extents.x + (extents.width / 2),
-                                        extents.y + (extents.height / 2)];
-        this._centerFromFocusPosition();
+        let [xFocus, yFocus] = [extents.x + (extents.width / 2),
+                                extents.y + (extents.height / 2)];
+
+        if (this._xFocus != xFocus || this._yFocus != yFocus) {
+            [this._xFocus, this._yFocus] = [xFocus, yFocus];
+            this._centerFromFocusPosition();
+        }
     }
 
     _updateCaret(caller, event) {
@@ -816,8 +820,12 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        [this._xCaret, this._yCaret] = [extents.x, extents.y];
-        this._centerFromCaretPosition();
+        let [xCaret, yCaret] = [extents.x, extents.y];
+
+        if (this._xCaret != xCaret || this._yCaret != yCaret) {
+            [this._xCaret, this._yCaret] = [xCaret, yCaret];
+            this._centerFromCaretPosition();
+        }
     }
 
     /**
