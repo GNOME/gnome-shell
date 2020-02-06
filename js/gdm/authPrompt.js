@@ -159,14 +159,16 @@ var AuthPrompt = GObject.registerClass({
         this._mainBox.add_child(this._entry);
         this._entry.grab_key_focus();
 
-        this._entry.clutter_text.connect('text-changed', () => {
-            if (!this._userVerifier.hasPendingMessages)
-                this._fadeOutMessage();
-        });
+        [this._textEntry, this._passwordEntry].forEach(entry => {
+            entry.clutter_text.connect('text-changed', () => {
+                if (!this._userVerifier.hasPendingMessages)
+                    this._fadeOutMessage();
+            });
 
-        this._entry.clutter_text.connect('activate', () => {
-            if (this._entry.reactive)
-                this.emit('next');
+            entry.clutter_text.connect('activate', () => {
+                if (entry.reactive)
+                    this.emit('next');
+            });
         });
 
         this._defaultButtonWell = new St.Widget({
