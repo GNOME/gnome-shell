@@ -1324,7 +1324,7 @@ var ZoomRegion = class ZoomRegion {
             this._crossHairsActor = null;
 
         // Contrast and brightness effects.
-        this._magShaderEffects = new MagShaderEffects(this._uiGroupClone);
+        this._magShaderEffects = new MagShaderEffects(mainGroup);
         this._magShaderEffects.setColorSaturation(this._colorSaturation);
         this._magShaderEffects.setInvertLightness(this._invertLightness);
         this._magShaderEffects.setBrightness(this._brightness);
