@@ -1395,7 +1395,8 @@ var ZoomRegion = class ZoomRegion {
                                         yMagFactor: this._yMagFactor,
                                         xCenter: this._xCenter,
                                         yCenter: this._yCenter,
-                                        redoCursorTracking: false });
+                                        redoCursorTracking: false,
+                                        animate: false });
 
         if (params.xMagFactor <= 0)
             params.xMagFactor = this._xMagFactor;
@@ -1434,8 +1435,7 @@ var ZoomRegion = class ZoomRegion {
                                 height: this._viewPortHeight }, true);
         }
 
-        this._updateCloneGeometry();
-        this._updateMousePosition();
+        this._updateCloneGeometry(params.animate);
     }
 
     _isMouseOverRegion() {
@@ -1573,36 +1573,62 @@ var ZoomRegion = class ZoomRegion {
         this._magView.set_position(this._viewPortX, this._viewPortY);
     }
 
-    _updateCloneGeometry() {
+    _updateCloneGeometry(animate = false) {
         if (!this.isActive())
             return;
 
-        this._uiGroupClone.set_scale(this._xMagFactor, this._yMagFactor);
-        this._mouseActor.set_scale(this._xMagFactor, this._yMagFactor);
-
         let [x, y] = this._screenToViewPort(0, 0);
-        this._uiGroupClone.set_position(Math.round(x), Math.round(y));
+        this._uiGroupClone.ease({
+            x: Math.round(x),
+            y: Math.round(y),
+            scale_x: this._xMagFactor,
+            scale_y: this._yMagFactor,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: animate ? 100 : 0,
+        });
 
-        this._updateMousePosition();
+        let [mouseX, mouseY] = this._getMousePosition();
+        this._mouseActor.ease({
+            x: mouseX,
+            y: mouseY,
+            scale_x: this._xMagFactor,
+            scale_y: this._yMagFactor,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: animate ? 100 : 0,
+        });
+
+        if (this._crossHairsActor) {
+            let [crossX, crossY] = this._getCrossHairsPosition();
+            this._crossHairsActor.ease({
+                x: crossX,
+                y: crossY,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: animate ? 100 : 0,
+            });
+        }
     }
 
     _updateMousePosition() {
-        if (!this.isActive())
-            return;
-
-        let [xMagMouse, yMagMouse] = this._screenToViewPort(this._magnifier.xMouse,
-                                                            this._magnifier.yMouse);
-
-        xMagMouse = Math.round(xMagMouse);
-        yMagMouse = Math.round(yMagMouse);
-
+        let [xMagMouse, yMagMouse] = this._getMousePosition();
         this._mouseActor.set_position(xMagMouse, yMagMouse);
 
         if (this._crossHairsActor) {
-            let [groupWidth, groupHeight] = this._crossHairsActor.get_size();
-            this._crossHairsActor.set_position(xMagMouse - groupWidth / 2,
-                                               yMagMouse - groupHeight / 2);
+            let [crossX, crossY] = this._getCrossHairsPosition();
+            this._crossHairsActor.set_position(crossX, crossY);
         }
+    }
+
+    _getMousePosition() {
+        let [xMagMouse, yMagMouse] = this._screenToViewPort(
+            this._magnifier.xMouse, this._magnifier.yMouse);
+        return [Math.round(xMagMouse), Math.round(yMagMouse)];
+    }
+
+    _getCrossHairsPosition() {
+        let [xMagMouse, yMagMouse] = this._getMousePosition();
+        let [groupWidth, groupHeight] = this._crossHairsActor.get_size();
+
+        return [xMagMouse - groupWidth / 2, yMagMouse - groupHeight / 2];
     }
 
     _monitorsChanged() {
