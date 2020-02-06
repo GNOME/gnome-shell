@@ -176,6 +176,10 @@ var AuthPrompt = GObject.registerClass({
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
         });
+        this._defaultButtonWell.add_constraint(new Clutter.BindConstraint({
+            source: this.cancelButton,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        }));
         this._mainBox.add_child(this._defaultButtonWell);
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
