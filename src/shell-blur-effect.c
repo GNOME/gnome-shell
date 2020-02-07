@@ -657,16 +657,8 @@ paint_background (ShellBlurEffect     *self,
   CoglFramebuffer *framebuffer;
   float transformed_x = 0.f;
   float transformed_y = 0.f;
-  guint8 paint_opacity;
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
-  paint_opacity = clutter_actor_get_paint_opacity (self->actor);
-
-  cogl_pipeline_set_color4ub (self->background_fb.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
 
   clutter_actor_get_transformed_position (self->actor,
                                           &transformed_x,
