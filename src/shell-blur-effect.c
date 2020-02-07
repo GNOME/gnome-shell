@@ -579,18 +579,17 @@ paint_texture (ShellBlurEffect     *self,
 static void
 apply_blur (ShellBlurEffect     *self,
             ClutterPaintContext *paint_context,
-            FramebufferData     *from)
+            FramebufferData     *from,
+            uint8_t              paint_opacity)
 {
   ClutterActor *actor;
   BlurData *vblur;
   BlurData *hblur;
-  guint8 paint_opacity;
 
   vblur = &self->blur[VERTICAL];
   hblur = &self->blur[HORIZONTAL];
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (self));
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
 
   /* Copy the actor contents into the vblur framebuffer */
   cogl_pipeline_set_color4ub (from->pipeline,
@@ -800,12 +799,13 @@ shell_blur_effect_paint (ClutterEffect           *effect,
             {
             case SHELL_BLUR_MODE_ACTOR:
               paint_actor_offscreen (self, paint_context, flags);
-              apply_blur (self, paint_context, &self->actor_fb);
+              apply_blur (self, paint_context, &self->actor_fb,
+                          clutter_actor_get_paint_opacity (self->actor));
               break;
 
             case SHELL_BLUR_MODE_BACKGROUND:
               paint_background (self, paint_context);
-              apply_blur (self, paint_context, &self->background_fb);
+              apply_blur (self, paint_context, &self->background_fb, 0xff);
               break;
             }
         }
