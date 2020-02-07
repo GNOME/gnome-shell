@@ -195,7 +195,7 @@ function zoomOutActorAtPos(actor, x, y) {
 }
 
 function animateIconPosition(icon, box, flags, nChangedIcons) {
-    if (!icon.has_allocation() || icon.allocation.equal(box)) {
+    if (!icon.has_allocation() || icon.allocation.equal(box) || icon.opacity === 0) {
         icon.allocate(box, flags);
         return false;
     }
