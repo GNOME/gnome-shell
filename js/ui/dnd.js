@@ -411,14 +411,18 @@ var _Draggable = class _Draggable {
         this._snapBackY = this._dragStartY + this._dragOffsetY;
         this._snapBackScale = this._dragActor.scale_x;
 
+        let origDragOffsetX = this._dragOffsetX;
+        let origDragOffsetY = this._dragOffsetY;
+        let [transX, transY] = this._dragActor.get_translation();
+        this._dragOffsetX -= transX;
+        this._dragOffsetY -= transY;
+
         if (this._dragActorMaxSize != undefined) {
             let [scaledWidth, scaledHeight] = this._dragActor.get_transformed_size();
             let currentSize = Math.max(scaledWidth, scaledHeight);
             if (currentSize > this._dragActorMaxSize) {
                 let scale = this._dragActorMaxSize / currentSize;
                 let origScale =  this._dragActor.scale_x;
-                let origDragOffsetX = this._dragOffsetX;
-                let origDragOffsetY = this._dragOffsetY;
 
                 // The position of the actor changes as we scale
                 // around the drag position, but we can't just tween
@@ -435,8 +439,8 @@ var _Draggable = class _Draggable {
 
                 this._dragActor.get_transition('scale-x').connect('new-frame', () => {
                     let currentScale = this._dragActor.scale_x / origScale;
-                    this._dragOffsetX = currentScale * origDragOffsetX;
-                    this._dragOffsetY = currentScale * origDragOffsetY;
+                    this._dragOffsetX = currentScale * origDragOffsetX - transX;
+                    this._dragOffsetY = currentScale * origDragOffsetY - transY;
                     this._dragActor.set_position(
                         this._dragX + this._dragOffsetX,
                         this._dragY + this._dragOffsetY);
