@@ -430,8 +430,10 @@ var Magnifier = class Magnifier {
      *     lines making up the crosshairs.
      */
     setCrosshairsLength(length) {
-        if (this._crossHairs)
-            this._crossHairs.setLength(length);
+        if (this._crossHairs) {
+            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            this._crossHairs.setLength(length / scaleFactor);
+        }
     }
 
     /**
@@ -797,9 +799,14 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        [this._xFocus, this._yFocus] = [extents.x + (extents.width / 2),
-                                        extents.y + (extents.height / 2)];
-        this._centerFromFocusPosition();
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let [xFocus, yFocus] = [(extents.x + (extents.width / 2)) * scaleFactor,
+                                (extents.y + (extents.height / 2)) * scaleFactor];
+
+        if (this._xFocus !== xFocus || this._yFocus !== yFocus) {
+            [this._xFocus, this._yFocus] = [xFocus, yFocus];
+            this._centerFromFocusPosition();
+        }
     }
 
     _updateCaret(caller, event) {
@@ -814,8 +821,13 @@ var ZoomRegion = class ZoomRegion {
             return;
         }
 
-        [this._xCaret, this._yCaret] = [extents.x, extents.y];
-        this._centerFromCaretPosition();
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let [xCaret, yCaret] = [extents.x * scaleFactor, extents.y * scaleFactor];
+
+        if (this._xCaret !== xCaret || this._yCaret !== yCaret) {
+            [this._xCaret, this._yCaret] = [xCaret, yCaret];
+            this._centerFromCaretPosition();
+        }
     }
 
     /**
@@ -863,7 +875,8 @@ var ZoomRegion = class ZoomRegion {
     setMagFactor(xMagFactor, yMagFactor) {
         this._changeROI({ xMagFactor,
                           yMagFactor,
-                          redoCursorTracking: this._followingCursor });
+                          redoCursorTracking: this._followingCursor,
+                          animate: true });
     }
 
     /**
@@ -1121,6 +1134,13 @@ var ZoomRegion = class ZoomRegion {
         return this._screenPosition;
     }
 
+    _clearScrollContentsTimer() {
+        if (this._scrollContentsTimerId !== 0) {
+            GLib.source_remove(this._scrollContentsTimerId);
+            this._scrollContentsTimerId = 0;
+        }
+    }
+
     /**
      * scrollToMousePos:
      * Set the region of interest based on the position of the system pointer.
@@ -1134,28 +1154,29 @@ var ZoomRegion = class ZoomRegion {
         else
             this._updateMousePosition();
 
+        this._clearScrollContentsTimer();
+        this._scrollContentsTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
+            this._followingCursor = false;
+            if (this._xDelayed !== null && this._yDelayed !== null) {
+                this._scrollContentsToDelayed(this._xDelayed, this._yDelayed);
+                this._xDelayed = null;
+                this._yDelayed = null;
+            }
+
+            return GLib.SOURCE_REMOVE;
+        });
+
         // Determine whether the system mouse pointer is over this zoom region.
         return this._isMouseOverRegion();
     }
 
-    _clearScrollContentsTimer() {
-        if (this._scrollContentsTimerId != 0) {
-            GLib.source_remove(this._scrollContentsTimerId);
-            this._scrollContentsTimerId = 0;
-        }
-    }
-
     _scrollContentsToDelayed(x, y) {
-        if (this._pointerIdleMonitor.get_idletime() >= POINTER_REST_TIME) {
+        if (this._followingCursor) {
+            this._xDelayed = x;
+            this._yDelayed = y;
+        } else {
             this.scrollContentsTo(x, y);
-            return;
         }
-
-        this._clearScrollContentsTimer();
-        this._scrollContentsTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
-            this._scrollContentsToDelayed(x, y);
-            return GLib.SOURCE_REMOVE;
-        });
     }
 
     /**
@@ -1166,11 +1187,16 @@ var ZoomRegion = class ZoomRegion {
      * @param {number} y: The y-coord of the point to center on.
      */
     scrollContentsTo(x, y) {
+        if (x < 0 || x > global.screen_width ||
+            y < 0 || y > global.screen_height)
+            return;
+
         this._clearScrollContentsTimer();
 
         this._followingCursor = false;
         this._changeROI({ xCenter: x,
-                          yCenter: y });
+                          yCenter: y,
+                          animate: true });
     }
 
     /**
@@ -1322,7 +1348,7 @@ var ZoomRegion = class ZoomRegion {
             this._crossHairsActor = null;
 
         // Contrast and brightness effects.
-        this._magShaderEffects = new MagShaderEffects(this._uiGroupClone);
+        this._magShaderEffects = new MagShaderEffects(mainGroup);
         this._magShaderEffects.setColorSaturation(this._colorSaturation);
         this._magShaderEffects.setInvertLightness(this._invertLightness);
         this._magShaderEffects.setBrightness(this._brightness);
@@ -1379,7 +1405,8 @@ var ZoomRegion = class ZoomRegion {
                                         yMagFactor: this._yMagFactor,
                                         xCenter: this._xCenter,
                                         yCenter: this._yCenter,
-                                        redoCursorTracking: false });
+                                        redoCursorTracking: false,
+                                        animate: false });
 
         if (params.xMagFactor <= 0)
             params.xMagFactor = this._xMagFactor;
@@ -1418,8 +1445,7 @@ var ZoomRegion = class ZoomRegion {
                                 height: this._viewPortHeight }, true);
         }
 
-        this._updateCloneGeometry();
-        this._updateMousePosition();
+        this._updateCloneGeometry(params.animate);
     }
 
     _isMouseOverRegion() {
@@ -1557,36 +1583,62 @@ var ZoomRegion = class ZoomRegion {
         this._magView.set_position(this._viewPortX, this._viewPortY);
     }
 
-    _updateCloneGeometry() {
+    _updateCloneGeometry(animate = false) {
         if (!this.isActive())
             return;
 
-        this._uiGroupClone.set_scale(this._xMagFactor, this._yMagFactor);
-        this._mouseActor.set_scale(this._xMagFactor, this._yMagFactor);
-
         let [x, y] = this._screenToViewPort(0, 0);
-        this._uiGroupClone.set_position(Math.round(x), Math.round(y));
+        this._uiGroupClone.ease({
+            x: Math.round(x),
+            y: Math.round(y),
+            scale_x: this._xMagFactor,
+            scale_y: this._yMagFactor,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: animate ? 100 : 0,
+        });
 
-        this._updateMousePosition();
+        let [mouseX, mouseY] = this._getMousePosition();
+        this._mouseActor.ease({
+            x: mouseX,
+            y: mouseY,
+            scale_x: this._xMagFactor,
+            scale_y: this._yMagFactor,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: animate ? 100 : 0,
+        });
+
+        if (this._crossHairsActor) {
+            let [crossX, crossY] = this._getCrossHairsPosition();
+            this._crossHairsActor.ease({
+                x: crossX,
+                y: crossY,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: animate ? 100 : 0,
+            });
+        }
     }
 
     _updateMousePosition() {
-        if (!this.isActive())
-            return;
-
-        let [xMagMouse, yMagMouse] = this._screenToViewPort(this._magnifier.xMouse,
-                                                            this._magnifier.yMouse);
-
-        xMagMouse = Math.round(xMagMouse);
-        yMagMouse = Math.round(yMagMouse);
-
+        let [xMagMouse, yMagMouse] = this._getMousePosition();
         this._mouseActor.set_position(xMagMouse, yMagMouse);
 
         if (this._crossHairsActor) {
-            let [groupWidth, groupHeight] = this._crossHairsActor.get_size();
-            this._crossHairsActor.set_position(xMagMouse - groupWidth / 2,
-                                               yMagMouse - groupHeight / 2);
+            let [crossX, crossY] = this._getCrossHairsPosition();
+            this._crossHairsActor.set_position(crossX, crossY);
         }
+    }
+
+    _getMousePosition() {
+        let [xMagMouse, yMagMouse] = this._screenToViewPort(
+            this._magnifier.xMouse, this._magnifier.yMouse);
+        return [Math.round(xMagMouse), Math.round(yMagMouse)];
+    }
+
+    _getCrossHairsPosition() {
+        let [xMagMouse, yMagMouse] = this._getMousePosition();
+        let [groupWidth, groupHeight] = this._crossHairsActor.get_size();
+
+        return [xMagMouse - groupWidth / 2, yMagMouse - groupHeight / 2];
     }
 
     _monitorsChanged() {
@@ -1807,12 +1859,10 @@ class Crosshairs extends Clutter.Actor {
         let clipWidth = this._clipSize[0];
         let clipHeight = this._clipSize[1];
 
-        // Note that clip, if present, is not centred on the cross hair
-        // intersection, but biased towards the top left.
-        let left = groupWidth / 2 - clipWidth * 0.25 - leftLength;
-        let right = groupWidth / 2 + clipWidth * 0.75;
-        let top = groupHeight / 2 - clipHeight * 0.25 - topLength - thickness / 2;
-        let bottom = groupHeight / 2 + clipHeight * 0.75 + thickness / 2;
+        let left = groupWidth / 2 - clipWidth / 2 - leftLength - thickness / 2;
+        let right = groupWidth / 2 + clipWidth / 2 + thickness / 2;
+        let top = groupHeight / 2 - clipHeight / 2 - topLength - thickness / 2;
+        let bottom = groupHeight / 2 + clipHeight / 2 + thickness / 2;
         this._horizLeftHair.set_position(left, (groupHeight - thickness) / 2);
         this._horizRightHair.set_position(right, (groupHeight - thickness) / 2);
         this._vertTopHair.set_position((groupWidth - thickness) / 2, top);
