@@ -588,12 +588,6 @@ apply_blur (ShellBlurEffect     *self,
   hblur = &self->blur[HORIZONTAL];
 
   /* Copy the actor contents into the vblur framebuffer */
-  cogl_pipeline_set_color4ub (from->pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
-
   clear_framebuffer (vblur->data.framebuffer);
   cogl_framebuffer_draw_rectangle (vblur->data.framebuffer,
                                    from->pipeline,
@@ -609,11 +603,6 @@ apply_blur (ShellBlurEffect     *self,
    * blurred image.
    */
   update_blur_uniforms (self, vblur);
-  cogl_pipeline_set_color4ub (vblur->data.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
 
   clear_framebuffer (hblur->data.framebuffer);
   cogl_framebuffer_draw_rectangle (hblur->data.framebuffer,
