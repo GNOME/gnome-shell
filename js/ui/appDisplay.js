@@ -1525,10 +1525,10 @@ var FolderIcon = GObject.registerClass({
     }
 
     vfunc_unmap() {
-        super.vfunc_unmap();
-
         if (this._dialog)
             this._dialog.popdown();
+
+        super.vfunc_unmap();
     }
 
     open() {
