@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-04 18:00+0000\n"
-"PO-Revision-Date: 2020-02-05 18:20+0100\n"
+"POT-Creation-Date: 2020-02-06 19:01+0000\n"
+"PO-Revision-Date: 2020-02-06 23:56+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -51,11 +51,7 @@ msgstr "Öppna programmenyn"
 msgid "Extensions"
 msgstr "Tillägg"
 
-#: data/org.gnome.Extensions.desktop.in.in:5
-msgid "org.gnome.Extensions"
-msgstr "org.gnome.Extensions"
-
-#: data/org.gnome.Extensions.desktop.in.in:6
+#: data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigurera tillägg för GNOME-skal"
 
@@ -474,6 +470,29 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d inlägg kommer att uppdateras vid nästa inloggning."
 msgstr[1] "%d inlägg kommer att uppdateras vid nästa inloggning."
 
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Beskrivning"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Version"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Upphovsman"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Webbplats"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "Ta bort…"
+
 #: js/extensionPrefs/ui/extensions-window.ui:8
 msgid "Help"
 msgstr "Hjälp"
@@ -524,7 +543,7 @@ msgstr ""
 "tillägg. Säkerställ att du är inloggad i GNOME och försök igen."
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-msgid "Logout…"
+msgid "Log Out…"
 msgstr "Logga ut…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
@@ -814,44 +833,44 @@ msgstr "Neka åtkomst"
 msgid "Grant Access"
 msgstr "Bevilja åtkomst"
 
-#: js/ui/appDisplay.js:904
+#: js/ui/appDisplay.js:906
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
 
-#: js/ui/appDisplay.js:927
+#: js/ui/appDisplay.js:929
 msgid "Frequently used applications will appear here"
 msgstr "Ofta använda program kommer visas här"
 
-#: js/ui/appDisplay.js:1062
+#: js/ui/appDisplay.js:1064
 msgid "Frequent"
 msgstr "Ofta använda"
 
-#: js/ui/appDisplay.js:1069
+#: js/ui/appDisplay.js:1071
 msgid "All"
 msgstr "Alla"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Öppna fönster"
 
-#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: js/ui/appDisplay.js:2483
+#: js/ui/appDisplay.js:2485
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Kör med diskret grafikkort"
 
-#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: js/ui/appDisplay.js:2517
+#: js/ui/appDisplay.js:2519
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
-#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Visa detaljer"
 
@@ -2511,11 +2530,6 @@ msgstr ""
 "Beskrivning är en ensam mening som förklarar vad ditt tillägg gör.\n"
 "Exempel: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Beskrivning"
-
 #: subprojects/extensions-tool/src/command-create.c:222
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
@@ -2718,10 +2732,6 @@ msgstr "URL"
 msgid "Original author"
 msgstr "Ursprunglig upphovsman"
 
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Version"
-
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
 msgstr "Tillstånd"
@@ -2823,6 +2833,12 @@ msgstr[1] "%u ingångar"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Systemljud"
+
+#~ msgid "org.gnome.Extensions"
+#~ msgstr "org.gnome.Extensions"
+
+#~ msgid "Logout…"
+#~ msgstr "Logga ut…"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Bläddra i Programvara"
