@@ -1,3 +1,45 @@
+3.35.90
+=======
+* Update default favorite apps [Michael; !907]
+* Add Shell.Blur effect [Georges; !864, !924]
+* Overhaul scroll/swipe gestures [Alexander; !821, !825, !826]
+* Fix VPN connections when delaying request [Florian; #2008]
+* Overhaul theme [Sam, Jakub, nana-4; !904, !931, !957]
+* Improve visual appearance of Weather integration [Florian; #1143]
+* Implement new system dialog designs [Jonas; #1343]
+* Animate position changes of app icons [Georges; !882]
+* Add St.Viewport [Georges; !929]
+* Make app folders behave as dialogs [Georges; !896]
+* Add do-not-disturb functionality to calendar popup [Florian; #239]
+* Show hint actor in focused entries [Jonas; !944]
+* Switch screen-recorder back to VP8 [Björn; #256]
+* Allow to run perf-tool as wayland compositor [Olivier; !941]
+* Handle extension updates [Florian; !945]
+* Animate showing and hiding caps-lock warning [Jonas; !952]
+* Support "auto" lengths in CSS [Florian; !971]
+* Turn extension-prefs into the offical Extensions app [Florian; #1968]
+* Sandbox the portal helper [Michael; !983]
+* Misc. bug fixes and cleanups [Florian, Björn, Jakub, Alexander, Daniel V.,
+  Jonas, nana-4, Carlos, Sebastian, Daniel G., Georges, Piotr; !918, !917,
+  !919, !920, #763, #791659, !927, #2091, !930, !926, !888, !934, !168, #2133,
+  #682, #2142, #2131, !943, #2132, #1958, #2146, !951, #1779, #2130, !964,
+  !965, !948, #2151, #1746, !967, !760, !968, !970, !973, #2169, #2176, !978,
+  !980, !979, #2177, !981, #2180, !974]
+
+Contributors:
+  Michael Catanzaro, Björn Daase, Jonas Dreßler, Piotr Drąg, Olivier Fourdan,
+  Carlos Garnacho, Sam Hewitt, Sebastian Keller, Andre Klapper,
+  Alexander Mikhaylenko, Daniel García Moreno, Florian Müllner,
+  Georges Basile Stavracas Neto, Jakub Steiner, Daniel van Vugt, nana-4
+
+Translators:
+  Asier Sarasua Garmendia [eu], Daniel Mustieles [es], Andrej Shadura [sk],
+  Carmen Bianca BAKKER [eo], Sucipto [id], Dušan Kazik [sk], Goran Vidović [hr],
+  sicklylife [ja], Kukuh Syafaat [id], Yi-Jyun Pan [zh_TW],
+  Rafael Fontenelle [pt_BR], Jordi Mas [ca], Jiri Grönroos [fi],
+  Fabio Tomat [fur], Umarzuki Bin Mochlis Moktar [ms], Daniel Korostil [uk],
+  Jor Teron [mjw], Anders Jonsson [sv], Aurimas Černius [lt]
+
 3.35.3
 ======
 * Add discrete GPU support for NVidia drivers [Bastien; #1810]

@@ -118,6 +118,10 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._webContext = WebKit.WebContext.new_ephemeral();
         this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
         this._webContext.set_network_proxy_settings(WebKit.NetworkProxyMode.NO_PROXY, null);
+        if (this._webContext.set_sandbox_enabled) {
+            // We have WebKitGTK 2.26 or newer.
+            this._webContext.set_sandbox_enabled(true);
+        }
 
         this._webView = WebKit.WebView.new_with_context(this._webContext);
         this._webView.connect('decide-policy', this._onDecidePolicy.bind(this));
