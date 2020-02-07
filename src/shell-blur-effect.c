@@ -158,7 +158,7 @@ struct _ShellBlurEffect
   ClutterEffect parent_instance;
 
   ClutterActor *actor;
-  uint8_t old_opacity_override;
+  int old_opacity_override;
 
   BlurData blur[2];
 
