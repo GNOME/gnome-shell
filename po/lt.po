@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-05 19:49+0000\n"
-"PO-Revision-Date: 2020-02-05 22:49+0200\n"
+"POT-Creation-Date: 2020-02-06 19:01+0000\n"
+"PO-Revision-Date: 2020-02-08 14:25+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -49,7 +49,6 @@ msgstr "Atverti programų meniu"
 
 #: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
 #: js/extensionPrefs/ui/extensions-window.ui:61
-#| msgid "Shell Extensions"
 msgid "Extensions"
 msgstr "Plėtiniai"
 
@@ -430,7 +429,6 @@ msgstr ""
 "Aurimas Černius <aurisc4@gmail.com>"
 
 #: js/extensionPrefs/main.js:219
-#| msgid "Configure GNOME Shell Extensions"
 msgid "Manage your GNOME Extensions"
 msgstr "Tvarkyti GNOME plėtinius"
 
@@ -491,7 +489,6 @@ msgid "Website"
 msgstr "Tinklalapis"
 
 #: js/extensionPrefs/ui/extension-row.ui:192
-#| msgid "Remove"
 msgid "Remove…"
 msgstr "Pašalinti…"
 
@@ -500,14 +497,10 @@ msgid "Help"
 msgstr "Žinynas"
 
 #: js/extensionPrefs/ui/extensions-window.ui:12
-#| msgid "List extensions"
 msgid "About Extensions"
 msgstr "Apie plėtinius"
 
 #: js/extensionPrefs/ui/extensions-window.ui:27
-#| msgid ""
-#| "Extensions can be installed through Software or <a href=\"https://"
-#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -533,12 +526,10 @@ msgid "Manually Installed"
 msgstr "Įdiegtas rankomis"
 
 #: js/extensionPrefs/ui/extensions-window.ui:157
-#| msgid "Built-in Only"
 msgid "Built-In"
 msgstr "Vidinis"
 
 #: js/extensionPrefs/ui/extensions-window.ui:198
-#| msgid "Install Extension"
 msgid "No Installed Extensions"
 msgstr "Nėra įdiegtų plėtinių"
 
@@ -551,7 +542,8 @@ msgstr ""
 "esate prisijungęs prie GNOME ir bandykite vėl."
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-msgid "Logout…"
+#| msgid "Log Out"
+msgid "Log Out…"
 msgstr "Atsijungti…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
@@ -844,44 +836,44 @@ msgstr "Atmesti prieigą"
 msgid "Grant Access"
 msgstr "Suteikti prieigą"
 
-#: js/ui/appDisplay.js:904
+#: js/ui/appDisplay.js:906
 msgid "Unnamed Folder"
 msgstr "Nepavadintas aplankas"
 
-#: js/ui/appDisplay.js:927
+#: js/ui/appDisplay.js:929
 msgid "Frequently used applications will appear here"
 msgstr "Čia bus matomos dažnai naudojamos programos"
 
-#: js/ui/appDisplay.js:1062
+#: js/ui/appDisplay.js:1064
 msgid "Frequent"
 msgstr "Dažnai naudojamos"
 
-#: js/ui/appDisplay.js:1069
+#: js/ui/appDisplay.js:1071
 msgid "All"
 msgstr "Visos"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Atverti langai"
 
-#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: js/ui/appDisplay.js:2483
+#: js/ui/appDisplay.js:2485
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Paleisti naudojant dedikuotą grafikos kortą"
 
-#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
-#: js/ui/appDisplay.js:2517
+#: js/ui/appDisplay.js:2519
 msgid "Add to Favorites"
 msgstr "Pridėti prie mėgstamų"
 
-#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Rodyti detalią informaciją"
 
@@ -1445,7 +1437,6 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:228
-#| msgid "No Extensions Installed"
 msgid "Extension Updates Available"
 msgstr "Yra plėtinių atnaujinimų"
 
@@ -2855,6 +2846,9 @@ msgstr[2] "%u įvesčių"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistemos garsai"
+
+#~ msgid "Logout…"
+#~ msgstr "Atsijungti…"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Naršyti Programinėje įrangoje"
