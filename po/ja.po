@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-01-23 02:00+0900\n"
+"PO-Revision-Date: 2020-02-08 20:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -52,10 +52,8 @@ msgstr "アプリケーションメニューを開く"
 
 #: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
 #: js/extensionPrefs/ui/extensions-window.ui:61
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Extensions"
-msgstr "Shell 拡張機能"
+msgstr "拡張機能"
 
 #: data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -405,13 +403,14 @@ msgstr "ネットワークログイン"
 #: js/extensionPrefs/main.js:140
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "“%s”を削除しますか?"
 
 #: js/extensionPrefs/main.js:141
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr ""
+"拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
 
 #: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
@@ -423,17 +422,25 @@ msgstr "キャンセル"
 
 #: js/extensionPrefs/main.js:145
 msgid "Remove"
-msgstr ""
+msgstr "削除"
 
 #: js/extensionPrefs/main.js:217
 msgid "translator-credits"
 msgstr ""
+"Hideki Yamane <henrich@debian.org>\n"
+"Ikuya Awashiro <ikuya@fruitsbasket.info>\n"
+"IWAI, Masaharu <iwaim.sub@gmail.com>\n"
+"Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
+"Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
+"Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
+"sicklylife <translation@sicklylife.jp>\n"
+"Takanori MATSUURA <t.matsuu@gmail.com>\n"
+"Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
+"Yoji TOYODA <bsyamato@sea.plala.or.jp>"
 
 #: js/extensionPrefs/main.js:219
-#, fuzzy
-#| msgid "Configure GNOME Shell Extensions"
 msgid "Manage your GNOME Extensions"
-msgstr "GNOME Shell 拡張機能の設定を行います"
+msgstr "GNOME Shell 拡張機能を管理します"
 
 #: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
 msgid "Something’s gone wrong"
@@ -469,6 +476,7 @@ msgstr "拡張機能のホームページを開く"
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] ""
+"%d 個の拡張機能が次回ログイン時に更新されます。"
 
 #: js/extensionPrefs/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -483,41 +491,35 @@ msgstr "バージョン"
 
 #: js/extensionPrefs/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: js/extensionPrefs/ui/extension-row.ui:175
 msgid "Website"
-msgstr ""
+msgstr "ウェブサイト"
 
 #: js/extensionPrefs/ui/extension-row.ui:192
 msgid "Remove…"
-msgstr ""
+msgstr "削除…"
 
 #: js/extensionPrefs/ui/extensions-window.ui:8
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
 #: js/extensionPrefs/ui/extensions-window.ui:12
-#, fuzzy
-#| msgid "List extensions"
 msgid "About Extensions"
-msgstr "拡張機能一覧を表示する"
+msgstr "“拡張機能”について"
 
 #: js/extensionPrefs/ui/extensions-window.ui:27
-#, fuzzy
-#| msgid ""
-#| "Extensions can be installed through Software or <a href=\"https://"
-#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
 msgstr ""
-"拡張機能は <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> "
-"または“ソフトウェア”でインストールできます。"
+"拡張機能の検索や追加は <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> で行うことができます。"
 
 #: js/extensionPrefs/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: js/extensionPrefs/ui/extensions-window.ui:46
 msgid ""
@@ -525,22 +527,21 @@ msgid ""
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
 msgstr ""
+"拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こ"
+"す可能性があります。システムに問題が発生した場合、すべての拡張機能を無効にす"
+"ることをお勧めします。"
 
 #: js/extensionPrefs/ui/extensions-window.ui:133
 msgid "Manually Installed"
-msgstr ""
+msgstr "手動でインストール"
 
 #: js/extensionPrefs/ui/extensions-window.ui:157
-#, fuzzy
-#| msgid "Built-in Only"
 msgid "Built-In"
-msgstr "組み込みのみ"
+msgstr "組み込み"
 
 #: js/extensionPrefs/ui/extensions-window.ui:198
-#, fuzzy
-#| msgid "List installed extensions"
 msgid "No Installed Extensions"
-msgstr "インストールされた拡張機能一覧を表示します"
+msgstr "インストールされた拡張機能はありません"
 
 #: js/extensionPrefs/ui/extensions-window.ui:234
 msgid ""
@@ -551,10 +552,8 @@ msgstr ""
 "GNOME にログインしていることを確認した上で再試行してください。"
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-#, fuzzy
-#| msgid "Log Out"
 msgid "Log Out…"
-msgstr "ログアウト"
+msgstr "ログアウト…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
 msgid "Next"
@@ -669,24 +668,18 @@ msgstr "switch user;ユーザー切り替え"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:131
-#, fuzzy
-#| msgid "lock orientation;screen;rotation"
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "lock orientation;画面回転;自動回転;スクリーン;画面;回転"
+msgstr ""
 
 #: js/misc/systemActions.js:251
-#, fuzzy
-#| msgid "Lock Screen Rotation"
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "画面回転ロック"
+msgstr "画面の回転をロック解除"
 
 #: js/misc/systemActions.js:252
-#, fuzzy
-#| msgid "Lock Screen Rotation"
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "画面回転ロック"
+msgstr "画面の回転をロック"
 
 #: js/misc/util.js:120
 msgid "Command not found"
@@ -1204,10 +1197,8 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "申し訳ありません、認証できませんでした。再試行してください。"
 
 #: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-#, fuzzy
-#| msgid "Remember Password"
 msgid "Enter Password…"
-msgstr "パスワードを保存"
+msgstr "パスワードを入力…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1249,7 +1240,7 @@ msgstr "%Y年%-m月%-e日 (%a)"
 
 #: js/ui/dateMenu.js:161
 msgid "Add world clocks…"
-msgstr "世界時計を追加する…"
+msgstr "世界時計を追加…"
 
 #: js/ui/dateMenu.js:162
 msgid "World Clocks"
@@ -1261,7 +1252,7 @@ msgstr "天気"
 
 #: js/ui/dateMenu.js:391
 msgid "Select a location…"
-msgstr "場所を選択する…"
+msgstr "場所を選択…"
 
 #: js/ui/dateMenu.js:404
 msgid "Loading…"
@@ -1420,10 +1411,8 @@ msgid "Install"
 msgstr "インストール"
 
 #: js/ui/extensionDownloader.js:176
-#, fuzzy
-#| msgid "Uninstall extension"
 msgid "Install Extension"
-msgstr "拡張機能をアンインストールする"
+msgstr "拡張機能をインストール"
 
 #: js/ui/extensionDownloader.js:177
 #, javascript-format
@@ -1431,14 +1420,12 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org から“%s”をダウンロードしてインストールしますか?"
 
 #: js/ui/extensionSystem.js:228
-#, fuzzy
-#| msgid "No Extensions Installed"
 msgid "Extension Updates Available"
-msgstr "機能拡張はインストールされていません"
+msgstr "拡張機能のアップデートが利用可能です"
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension updates are ready to be installed."
-msgstr ""
+msgstr "拡張機能のアップデートをインストールする準備ができました。"
 
 #: js/ui/inhibitShortcutsDialog.js:79
 msgid "Allow inhibiting shortcuts"
@@ -1642,7 +1629,7 @@ msgstr "アプリケーション定義"
 
 #: js/ui/padOsd.js:143
 msgid "Show on-screen help"
-msgstr ""
+msgstr "オンスクリーンヘルプを表示"
 
 #: js/ui/padOsd.js:144
 msgid "Switch monitor"
@@ -1696,16 +1683,12 @@ msgid "Top Bar"
 msgstr "トップバー"
 
 #: js/ui/runDialog.js:58
-#, fuzzy
-#| msgid "Enter a Command"
 msgid "Run a Command"
-msgstr "コマンドを入力"
+msgstr "コマンドを実行"
 
 #: js/ui/runDialog.js:73
-#, fuzzy
-#| msgid "Press Esc to exit"
 msgid "Press ESC to close"
-msgstr "Esc を押すと終了します"
+msgstr "Esc を押すと閉じます"
 
 #: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
@@ -1758,7 +1741,7 @@ msgstr "アプリケーションによってロックがブロックされまし
 
 #: js/ui/search.js:694
 msgid "Searching…"
-msgstr "検索しています…"
+msgstr "検索中…"
 
 #: js/ui/search.js:696
 msgid "No results."
@@ -1812,10 +1795,8 @@ msgstr ""
 "用します。"
 
 #: js/ui/shellMountOperation.js:306
-#, fuzzy
-#| msgid "PIM Number"
 msgid "Enter PIM Number…"
-msgstr "PIM 数値"
+msgstr "PIM 数値を入力…"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -1968,14 +1949,13 @@ msgstr "有効"
 
 #: js/ui/status/location.js:355
 msgid "Allow location access"
-msgstr ""
+msgstr "位置情報へのアクセスの許可"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
-#| msgid "Give %s access to your location?"
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "%s が現在の位置情報を取得することを許可しますか?"
+msgstr "アプリ %s が位置情報へのアクセスを要求しています"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
@@ -2283,8 +2263,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度切断"
-"し、再接続してください。"
+"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度取り"
+"外し、再接続してください。"
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
@@ -2363,8 +2343,6 @@ msgstr "“%s”の準備ができました"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:55
-#, fuzzy
-#| msgid "Do you want to keep these display settings?"
 msgid "Keep these display settings?"
 msgstr "このディスプレイ設定を保存しますか?"
 
