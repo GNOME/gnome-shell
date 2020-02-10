@@ -409,7 +409,10 @@ var SessionMenuButton = GObject.registerClass({
 });
 
 var LoginDialog = GObject.registerClass({
-    Signals: { 'failed': {} },
+    Signals: {
+        'failed': {},
+        'wake-up-screen': {},
+    },
 }, class LoginDialog extends St.Widget {
     _init(parentActor) {
         super._init({ style_class: 'login-dialog', visible: false });
@@ -1225,13 +1228,18 @@ var LoginDialog = GObject.registerClass({
         return GLib.SOURCE_REMOVE;
     }
 
+    activate() {
+        this._userList.grab_key_focus();
+        this.show();
+    }
+
     open() {
         Main.ctrlAltTabManager.addGroup(this,
                                         _("Login Window"),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
-        this._userList.grab_key_focus();
-        this.show();
+        this.activate();
+
         this.opacity = 0;
 
         Main.pushModal(this, { actionMode: Shell.ActionMode.LOGIN_SCREEN });

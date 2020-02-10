@@ -504,12 +504,9 @@ var SystemBackground = GObject.registerClass({
     Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
-
         if (_systemBackground == null) {
             _systemBackground = new Meta.Background({ meta_display: global.display });
             _systemBackground.set_color(DEFAULT_BACKGROUND_COLOR);
-            _systemBackground.set_file(file, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
         super._init({
@@ -518,22 +515,11 @@ var SystemBackground = GObject.registerClass({
             background: _systemBackground,
         });
 
-        let cache = Meta.BackgroundImageCache.get_default();
-        let image = cache.load(file);
-        if (image.is_loaded()) {
-            image = null;
-            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-                this.emit('loaded');
-                return GLib.SOURCE_REMOVE;
-            });
-            GLib.Source.set_name_by_id(id, '[gnome-shell] SystemBackground.loaded');
-        } else {
-            let id = image.connect('loaded', () => {
-                this.emit('loaded');
-                image.disconnect(id);
-                image = null;
-            });
-        }
+        let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this.emit('loaded');
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(id, '[gnome-shell] SystemBackground.loaded');
     }
 });
 

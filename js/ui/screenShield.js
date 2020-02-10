@@ -1,13 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { AccountsService, Clutter, Gio, GLib,
-        GnomeDesktop, GObject, Graphene, Meta, Shell, St } = imports.gi;
-const Cairo = imports.cairo;
+const { AccountsService, Clutter, Gio,
+        GLib, Graphene, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
-const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
-const Layout = imports.ui.layout;
 const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
@@ -27,17 +24,6 @@ const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const DISABLE_LOCK_KEY = 'disable-lock-screen';
 
 const LOCKED_STATE_STR = 'screenShield.locked';
-// fraction of screen height the arrow must reach before completing
-// the slide up automatically
-var ARROW_DRAG_THRESHOLD = 0.1;
-
-// Parameters for the arrow animation
-var N_ARROWS = 3;
-var ARROW_ANIMATION_TIME = 600;
-var ARROW_ANIMATION_PEAK_OPACITY = 0.4;
-var ARROW_IDLE_TIME = 30000; // ms
-
-var SUMMARY_ICON_SIZE = 48;
 
 // ScreenShield animation time
 // - STANDARD_FADE_TIME is used when the session goes idle
@@ -47,384 +33,6 @@ var SUMMARY_ICON_SIZE = 48;
 var STANDARD_FADE_TIME = 10000;
 var MANUAL_FADE_TIME = 300;
 var CURTAIN_SLIDE_TIME = 300;
-
-var Clock = GObject.registerClass(
-class ScreenShieldClock extends St.BoxLayout {
-    _init() {
-        super._init({ style_class: 'screen-shield-clock', vertical: true });
-
-        this._time = new St.Label({
-            style_class: 'screen-shield-clock-time',
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this._date = new St.Label({
-            style_class: 'screen-shield-clock-date',
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this.add_child(this._time);
-        this.add_child(this._date);
-
-        this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
-        this._wallClock.connect('notify::clock', this._updateClock.bind(this));
-
-        this._updateClock();
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _updateClock() {
-        this._time.text = this._wallClock.clock;
-
-        let date = new Date();
-        /* Translators: This is a time format for a date in
-           long format */
-        let dateFormat = Shell.util_translate_time_string(N_("%A, %B %d"));
-        this._date.text = date.toLocaleFormat(dateFormat);
-    }
-
-    _onDestroy() {
-        this._wallClock.run_dispose();
-    }
-});
-
-var NotificationsBox = GObject.registerClass({
-    Signals: { 'wake-up-screen': {} },
-}, class NotificationsBox extends St.BoxLayout {
-    _init() {
-        super._init({
-            vertical: true,
-            name: 'screenShieldNotifications',
-            style_class: 'screen-shield-notifications-container',
-        });
-
-        this._scrollView = new St.ScrollView({ hscrollbar_policy: St.PolicyType.NEVER });
-        this._notificationBox = new St.BoxLayout({ vertical: true,
-                                                   style_class: 'screen-shield-notifications-container' });
-        this._scrollView.add_actor(this._notificationBox);
-
-        this.add_child(this._scrollView);
-
-        this._sources = new Map();
-        Main.messageTray.getSources().forEach(source => {
-            this._sourceAdded(Main.messageTray, source, true);
-        });
-        this._updateVisibility();
-
-        this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        if (this._sourceAddedId) {
-            Main.messageTray.disconnect(this._sourceAddedId);
-            this._sourceAddedId = 0;
-        }
-
-        let items = this._sources.entries();
-        for (let [source, obj] of items)
-            this._removeSource(source, obj);
-    }
-
-    _updateVisibility() {
-        this._notificationBox.visible =
-            this._notificationBox.get_children().some(a => a.visible);
-
-        this.visible = this._notificationBox.visible;
-    }
-
-    _makeNotificationCountText(count, isChat) {
-        if (isChat)
-            return ngettext("%d new message", "%d new messages", count).format(count);
-        else
-            return ngettext("%d new notification", "%d new notifications", count).format(count);
-    }
-
-    _makeNotificationSource(source, box) {
-        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        box.add_child(sourceActor);
-
-        let textBox = new St.BoxLayout({ vertical: true });
-        box.add_child(textBox);
-
-        let title = new St.Label({ text: source.title,
-                                   style_class: 'screen-shield-notification-label' });
-        textBox.add(title);
-
-        let count = source.unseenCount;
-        let countLabel = new St.Label({ text: this._makeNotificationCountText(count, source.isChat),
-                                        style_class: 'screen-shield-notification-count-text' });
-        textBox.add(countLabel);
-
-        box.visible = count != 0;
-        return [title, countLabel];
-    }
-
-    _makeNotificationDetailedSource(source, box) {
-        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        let sourceBin = new St.Bin({ child: sourceActor });
-        box.add(sourceBin);
-
-        let textBox = new St.BoxLayout({ vertical: true });
-        box.add_child(textBox);
-
-        let title = new St.Label({ text: source.title,
-                                   style_class: 'screen-shield-notification-label' });
-        textBox.add(title);
-
-        let visible = false;
-        for (let i = 0; i < source.notifications.length; i++) {
-            let n = source.notifications[i];
-
-            if (n.acknowledged)
-                continue;
-
-            let body = '';
-            if (n.bannerBodyText) {
-                body = n.bannerBodyMarkup
-                    ? n.bannerBodyText
-                    : GLib.markup_escape_text(n.bannerBodyText, -1);
-            }
-
-            let label = new St.Label({ style_class: 'screen-shield-notification-count-text' });
-            label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
-            textBox.add(label);
-
-            visible = true;
-        }
-
-        box.visible = visible;
-        return [title, null];
-    }
-
-    _shouldShowDetails(source) {
-        return source.policy.detailsInLockScreen ||
-               source.narrowestPrivacyScope == MessageTray.PrivacyScope.SYSTEM;
-    }
-
-    _showSource(source, obj, box) {
-        if (obj.detailed)
-            [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
-        else
-            [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
-
-        box.visible = obj.visible && (source.unseenCount > 0);
-    }
-
-    _sourceAdded(tray, source, initial) {
-        let obj = {
-            visible: source.policy.showInLockScreen,
-            detailed: this._shouldShowDetails(source),
-            sourceDestroyId: 0,
-            sourceCountChangedId: 0,
-            sourceTitleChangedId: 0,
-            sourceUpdatedId: 0,
-            sourceBox: null,
-            titleLabel: null,
-            countLabel: null,
-        };
-
-        obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source',
-                                           x_expand: true });
-        this._showSource(source, obj, obj.sourceBox);
-        this._notificationBox.add_child(obj.sourceBox);
-
-        obj.sourceCountChangedId = source.connect('notify::count', () => {
-            this._countChanged(source, obj);
-        });
-        obj.sourceTitleChangedId = source.connect('notify::title', () => {
-            this._titleChanged(source, obj);
-        });
-        obj.policyChangedId = source.policy.connect('notify', (policy, pspec) => {
-            if (pspec.name == 'show-in-lock-screen')
-                this._visibleChanged(source, obj);
-            else
-                this._detailedChanged(source, obj);
-        });
-        obj.sourceDestroyId = source.connect('destroy', () => {
-            this._onSourceDestroy(source, obj);
-        });
-
-        this._sources.set(source, obj);
-
-        if (!initial) {
-            // block scrollbars while animating, if they're not needed now
-            let boxHeight = this._notificationBox.height;
-            if (this._scrollView.height >= boxHeight)
-                this._scrollView.vscrollbar_policy = St.PolicyType.NEVER;
-
-            let widget = obj.sourceBox;
-            let [, natHeight] = widget.get_preferred_height(-1);
-            widget.height = 0;
-            widget.ease({
-                height: natHeight,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: 250,
-                onComplete: () => {
-                    this._scrollView.vscrollbar_policy = St.PolicyType.AUTOMATIC;
-                    widget.set_height(-1);
-                },
-            });
-
-            this._updateVisibility();
-            if (obj.sourceBox.visible)
-                this.emit('wake-up-screen');
-        }
-    }
-
-    _titleChanged(source, obj) {
-        obj.titleLabel.text = source.title;
-    }
-
-    _countChanged(source, obj) {
-        // A change in the number of notifications may change whether we show
-        // details.
-        let newDetailed = this._shouldShowDetails(source);
-        let oldDetailed = obj.detailed;
-
-        obj.detailed = newDetailed;
-
-        if (obj.detailed || oldDetailed != newDetailed) {
-            // A new notification was pushed, or a previous notification was destroyed.
-            // Give up, and build the list again.
-
-            obj.sourceBox.destroy_all_children();
-            obj.titleLabel = obj.countLabel = null;
-            this._showSource(source, obj, obj.sourceBox);
-        } else {
-            let count = source.unseenCount;
-            obj.countLabel.text = this._makeNotificationCountText(count, source.isChat);
-        }
-
-        obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
-
-        this._updateVisibility();
-        if (obj.sourceBox.visible)
-            this.emit('wake-up-screen');
-    }
-
-    _visibleChanged(source, obj) {
-        if (obj.visible == source.policy.showInLockScreen)
-            return;
-
-        obj.visible = source.policy.showInLockScreen;
-        obj.sourceBox.visible = obj.visible && source.unseenCount > 0;
-
-        this._updateVisibility();
-        if (obj.sourceBox.visible)
-            this.emit('wake-up-screen');
-    }
-
-    _detailedChanged(source, obj) {
-        let newDetailed = this._shouldShowDetails(source);
-        if (obj.detailed == newDetailed)
-            return;
-
-        obj.detailed = newDetailed;
-
-        obj.sourceBox.destroy_all_children();
-        obj.titleLabel = obj.countLabel = null;
-        this._showSource(source, obj, obj.sourceBox);
-    }
-
-    _onSourceDestroy(source, obj) {
-        this._removeSource(source, obj);
-        this._updateVisibility();
-    }
-
-    _removeSource(source, obj) {
-        obj.sourceBox.destroy();
-        obj.sourceBox = obj.titleLabel = obj.countLabel = null;
-
-        source.disconnect(obj.sourceDestroyId);
-        source.disconnect(obj.sourceCountChangedId);
-        source.disconnect(obj.sourceTitleChangedId);
-        source.policy.disconnect(obj.policyChangedId);
-
-        this._sources.delete(source);
-    }
-});
-
-var Arrow = GObject.registerClass(
-class ScreenShieldArrow extends St.Bin {
-    _init(params) {
-        super._init(params);
-
-        this._drawingArea = new St.DrawingArea({
-            x_expand: true,
-            y_expand: true,
-        });
-        this._drawingArea.connect('repaint', this._drawArrow.bind(this));
-        this.child = this._drawingArea;
-
-        this._shadowHelper = null;
-        this._shadowWidth = this._shadowHeight = 0;
-    }
-
-    _drawArrow(arrow) {
-        let cr = arrow.get_context();
-        let [w, h] = arrow.get_surface_size();
-        let node = this.get_theme_node();
-        let thickness = node.get_length('-arrow-thickness');
-
-        Clutter.cairo_set_source_color(cr, node.get_foreground_color());
-
-        cr.setLineCap(Cairo.LineCap.ROUND);
-        cr.setLineWidth(thickness);
-
-        cr.moveTo(thickness / 2, h - thickness / 2);
-        cr.lineTo(w / 2, thickness);
-        cr.lineTo(w - thickness / 2, h - thickness / 2);
-        cr.stroke();
-        cr.$dispose();
-    }
-
-    vfunc_get_paint_volume(volume) {
-        if (!super.vfunc_get_paint_volume(volume))
-            return false;
-
-        if (!this._shadow)
-            return true;
-
-        let shadowBox = new Clutter.ActorBox();
-        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadowBox);
-
-        volume.set_width(Math.max(shadowBox.x2 - shadowBox.x1, volume.get_width()));
-        volume.set_height(Math.max(shadowBox.y2 - shadowBox.y1, volume.get_height()));
-
-        return true;
-    }
-
-    vfunc_style_changed() {
-        let node = this.get_theme_node();
-        this._shadow = node.get_shadow('-arrow-shadow');
-        if (this._shadow)
-            this._shadowHelper = St.ShadowHelper.new(this._shadow);
-        else
-            this._shadowHelper = null;
-
-        super.vfunc_style_changed();
-    }
-
-    vfunc_paint(paintContext) {
-        if (this._shadowHelper) {
-            this._shadowHelper.update(this._drawingArea);
-
-            let allocation = this._drawingArea.get_allocation_box();
-            let paintOpacity = this._drawingArea.get_paint_opacity();
-            let framebuffer = paintContext.get_framebuffer();
-
-            this._shadowHelper.paint(framebuffer, allocation, paintOpacity);
-        }
-
-        this._drawingArea.paint(paintContext);
-    }
-});
-
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
 
 /**
  * If you are setting org.gnome.desktop.session.idle-delay directly in dconf,
@@ -447,59 +55,18 @@ var ScreenShield = class {
             name: 'lockScreenGroup',
             visible: false,
         });
-        this._lockScreenGroup.connect('key-press-event',
-                                      this._onLockScreenKeyPress.bind(this));
-        this._lockScreenGroup.connect('scroll-event',
-                                      this._onLockScreenScroll.bind(this));
-        Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
-        this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                                   name: 'lockScreenContents' });
-        this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this._lockDialogGroup = new St.Widget({
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+            can_focus: true,
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            name: 'lockDialogGroup',
+        });
 
-        this._lockScreenGroup.add_actor(this._lockScreenContents);
-
-        this._backgroundGroup = new Clutter.Actor();
-
-        this._lockScreenGroup.add_actor(this._backgroundGroup);
-        this._lockScreenGroup.set_child_below_sibling(this._backgroundGroup, null);
-        this._bgManagers = [];
-
-        this._updateBackgrounds();
-        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
-
-        this._arrowAnimationId = 0;
-        this._arrowWatchId = 0;
-        this._arrowActiveWatchId = 0;
-        this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
-                                                  vertical: true,
-                                                  x_align: Clutter.ActorAlign.CENTER,
-                                                  y_align: Clutter.ActorAlign.END,
-                                                  // HACK: without these, ClutterBinLayout
-                                                  // ignores alignment properties on the actor
-                                                  x_expand: true,
-                                                  y_expand: true });
-
-        for (let i = 0; i < N_ARROWS; i++) {
-            let arrow = new Arrow({ opacity: 0 });
-            this._arrowContainer.add_actor(arrow);
-        }
-        this._lockScreenContents.add_actor(this._arrowContainer);
-
-        this._dragAction = new Clutter.GestureAction();
-        this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
-        this._dragAction.connect('gesture-progress', this._onDragMotion.bind(this));
-        this._dragAction.connect('gesture-end', this._onDragEnd.bind(this));
-        this._lockScreenGroup.add_action(this._dragAction);
-
-        this._lockDialogGroup = new St.Widget({ x_expand: true,
-                                                y_expand: true,
-                                                reactive: true,
-                                                pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-                                                name: 'lockDialogGroup' });
-
-        this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
+        this.actor.add_actor(this._lockDialogGroup);
 
         this._presence = new GnomeSession.Presence((proxy, error) => {
             if (error) {
@@ -519,14 +86,14 @@ var ScreenShield = class {
         this._smartcardManager.connect('smartcard-inserted',
                                        (manager, token) => {
                                            if (this._isLocked && token.UsedToLogin)
-                                               this._liftShield(true, 0);
+                                               this._activateDialog();
                                        });
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
         this._oVirtCredentialsManager.connect('user-authenticated',
                                               () => {
                                                   if (this._isLocked)
-                                                      this._liftShield(true, 0);
+                                                      this._activateDialog();
                                               });
 
         this._loginManager = LoginManager.getLoginManager();
@@ -551,7 +118,6 @@ var ScreenShield = class {
         this._lockSettings.connect(`changed::${DISABLE_LOCK_KEY}`, this._syncInhibitor.bind(this));
 
         this._isModal = false;
-        this._hasLockScreen = false;
         this._isGreeter = false;
         this._isActive = false;
         this._isLocked = false;
@@ -591,39 +157,10 @@ var ScreenShield = class {
         this._syncInhibitor();
     }
 
-    _createBackground(monitorIndex) {
-        let monitor = Main.layoutManager.monitors[monitorIndex];
-        let widget = new St.Widget({ style_class: 'screen-shield-background',
-                                     x: monitor.x,
-                                     y: monitor.y,
-                                     width: monitor.width,
-                                     height: monitor.height });
-
-        let bgManager = new Background.BackgroundManager({ container: widget,
-                                                           monitorIndex,
-                                                           controlPosition: false,
-                                                           settingsSchema: SCREENSAVER_SCHEMA });
-
-        this._bgManagers.push(bgManager);
-
-        this._backgroundGroup.add_child(widget);
-    }
-
-    _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
-
-        this._bgManagers = [];
-        this._backgroundGroup.destroy_all_children();
-
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
-            this._createBackground(i);
-    }
-
-    _liftShield(onPrimary, velocity) {
+    _activateDialog() {
         if (this._isLocked) {
-            if (this._ensureUnlockDialog(onPrimary, true /* allowCancel */))
-                this._hideLockScreen(true /* animate */, velocity);
+            this._ensureUnlockDialog(true /* allowCancel */);
+            this._dialog.activate();
         } else {
             this.deactivate(true /* animate */);
         }
@@ -638,9 +175,7 @@ var ScreenShield = class {
             // LoginDialog.cancel() will grab the key focus
             // on its own, so ensure it stays on lock screen
             // instead
-            this._lockScreenGroup.grab_key_focus();
-        } else {
-            this._dialog = null;
+            this._dialog.grab_key_focus();
         }
     }
 
@@ -657,55 +192,6 @@ var ScreenShield = class {
         this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
                                                      actionMode: Shell.ActionMode.LOCK_SCREEN });
         return this._isModal;
-    }
-
-    _onLockScreenKeyPress(actor, event) {
-        let symbol = event.get_key_symbol();
-        let unichar = event.get_key_unicode();
-
-        // Do nothing if the lock screen is not fully shown.
-        // This avoids reusing the previous (and stale) unlock
-        // dialog if esc is pressed while the curtain is going
-        // down after cancel.
-
-        if (this._lockScreenState != MessageTray.State.SHOWN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let isEnter = symbol == Clutter.KEY_Return ||
-                       symbol == Clutter.KEY_KP_Enter ||
-                       symbol == Clutter.KEY_ISO_Enter;
-        let isEscape = symbol == Clutter.KEY_Escape;
-        let isLiftChar = GLib.unichar_isprint(unichar) &&
-                          (this._isLocked || !GLib.unichar_isgraph(unichar));
-        if (!isEnter && !isEscape && !isLiftChar)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (this._isLocked &&
-            this._ensureUnlockDialog(true, true) &&
-            GLib.unichar_isgraph(unichar))
-            this._dialog.addCharacter(unichar);
-
-        this._liftShield(true, 0);
-        return Clutter.EVENT_STOP;
-    }
-
-    _onLockScreenScroll(actor, event) {
-        if (this._lockScreenState != MessageTray.State.SHOWN)
-            return Clutter.EVENT_PROPAGATE;
-
-        let delta = 0;
-        if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
-            delta = Math.abs(event.get_scroll_delta()[0]);
-        else
-            delta = 5;
-
-        this._lockScreenScrollCounter += delta;
-
-        // 7 standard scrolls to lift up
-        if (this._lockScreenScrollCounter > 35)
-            this._liftShield(true, 0);
-
-        return Clutter.EVENT_STOP;
     }
 
     _syncInhibitor() {
@@ -733,78 +219,6 @@ var ScreenShield = class {
                 this.lock(true);
         } else {
             this._wakeUpScreen();
-        }
-    }
-
-    _animateArrows() {
-        let arrows = this._arrowContainer.get_children();
-        let unitaryDelay = ARROW_ANIMATION_TIME / (arrows.length + 1);
-        let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
-        for (let i = 0; i < arrows.length; i++) {
-            arrows[i].opacity = 0;
-            arrows[i].ease({
-                opacity: maxOpacity,
-                delay: unitaryDelay * (N_ARROWS - (i + 1)),
-                duration: ARROW_ANIMATION_TIME / 2,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    arrows[i].ease({
-                        opacity: 0,
-                        duration: ARROW_ANIMATION_TIME / 2,
-                        mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                    });
-                },
-            });
-        }
-
-        return GLib.SOURCE_CONTINUE;
-    }
-
-    _onDragBegin() {
-        this._lockScreenGroup.remove_all_transitions();
-        this._lockScreenState = MessageTray.State.HIDING;
-
-        if (this._isLocked)
-            this._ensureUnlockDialog(false, false);
-
-        return true;
-    }
-
-    _onDragMotion() {
-        let [, origY] = this._dragAction.get_press_coords(0);
-        let [, currentY] = this._dragAction.get_motion_coords(0);
-
-        let newY = currentY - origY;
-        newY = clamp(newY, -global.stage.height, 0);
-
-        this._lockScreenGroup.translation_y = newY;
-
-        return true;
-    }
-
-    _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
-        if (this._lockScreenState != MessageTray.State.HIDING)
-            return;
-        if (this._lockScreenGroup.translation_y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
-            // Complete motion automatically
-            let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
-            this._liftShield(true, -velocityY);
-        } else {
-            // restore the lock screen to its original place
-            // try to use the same speed as the normal animation
-            let h = global.stage.height;
-            let duration = MANUAL_FADE_TIME * -this._lockScreenGroup.translation_y / h;
-            this._lockScreenGroup.remove_all_transitions();
-            this._lockScreenGroup.ease({
-                translation_y: 0,
-                duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => {
-                    this._lockScreenState = MessageTray.State.SHOWN;
-                },
-            });
-
-            this._maybeCancelDialog();
         }
     }
 
@@ -913,14 +327,10 @@ var ScreenShield = class {
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
-        if (this._ensureUnlockDialog(true, true))
-            this._hideLockScreen(false, 0);
+        this._ensureUnlockDialog(true);
     }
 
     _hideLockScreenComplete() {
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
-
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup.hide();
 
@@ -930,13 +340,13 @@ var ScreenShield = class {
         }
     }
 
-    _hideLockScreen(animate, velocity) {
+    _hideLockScreen(animate) {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
 
         this._lockScreenState = MessageTray.State.HIDING;
 
-        this._lockScreenGroup.remove_all_transitions();
+        this._lockDialogGroup.remove_all_transitions();
 
         if (animate) {
             // Tween the lock screen out of screen
@@ -944,16 +354,14 @@ var ScreenShield = class {
             // use the same speed regardless of original position
             // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
-            let delta = h + this._lockScreenGroup.translation_y;
-            let minVelocity = global.stage.height / CURTAIN_SLIDE_TIME;
-
-            velocity = Math.max(minVelocity, velocity);
+            let delta = h + this._lockDialogGroup.translation_y;
+            let velocity = global.stage.height / CURTAIN_SLIDE_TIME;
             let duration = delta / velocity;
 
-            this._lockScreenGroup.ease({
+            this._lockDialogGroup.ease({
                 translation_y: -h,
                 duration,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => this._hideLockScreenComplete(),
             });
         } else {
@@ -963,7 +371,7 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(true);
     }
 
-    _ensureUnlockDialog(onPrimary, allowCancel) {
+    _ensureUnlockDialog(allowCancel) {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
             if (!constructor) {
@@ -975,7 +383,7 @@ var ScreenShield = class {
             this._dialog = new constructor(this._lockDialogGroup);
 
             let time = global.get_current_time();
-            if (!this._dialog.open(time, onPrimary)) {
+            if (!this._dialog.open(time)) {
                 // This is kind of an impossible error: we're already modal
                 // by the time we reach this...
                 log('Could not open login dialog: failed to acquire grab');
@@ -984,9 +392,12 @@ var ScreenShield = class {
             }
 
             this._dialog.connect('failed', this._onUnlockFailed.bind(this));
+            this._wakeUpScreenId = this._dialog.connect(
+                'wake-up-screen', this._wakeUpScreen.bind(this));
         }
 
         this._dialog.allowCancel = allowCancel;
+        this._dialog.grab_key_focus();
         return true;
     }
 
@@ -1003,21 +414,17 @@ var ScreenShield = class {
         if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
-        this._ensureLockScreen();
-        this._lockDialogGroup.scale_x = 1;
-        this._lockDialogGroup.scale_y = 1;
-
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
         let fadeToBlack = params.fadeToBlack;
 
         if (params.animateLockScreen) {
-            this._lockScreenGroup.translation_y = -global.screen_height;
-            this._lockScreenGroup.remove_all_transitions();
-            this._lockScreenGroup.ease({
+            this._lockDialogGroup.translation_y = -global.screen_height;
+            this._lockDialogGroup.remove_all_transitions();
+            this._lockDialogGroup.ease({
                 translation_y: 0,
-                duration: MANUAL_FADE_TIME,
+                duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._lockScreenShown({ fadeToBlack, animateFade: true });
@@ -1028,69 +435,10 @@ var ScreenShield = class {
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
-        this._lockScreenGroup.grab_key_focus();
-
-        if (Main.sessionMode.currentMode != 'lock-screen')
-            Main.sessionMode.pushMode('lock-screen');
-    }
-
-    _startArrowAnimation() {
-        this._arrowActiveWatchId = 0;
-
-        if (!this._arrowAnimationId) {
-            this._arrowAnimationId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 6000, this._animateArrows.bind(this));
-            GLib.Source.set_name_by_id(this._arrowAnimationId, '[gnome-shell] this._animateArrows');
-            this._animateArrows();
-        }
-
-        if (!this._arrowWatchId) {
-            this._arrowWatchId = this.idleMonitor.add_idle_watch(ARROW_IDLE_TIME,
-                                                                 this._pauseArrowAnimation.bind(this));
-        }
-    }
-
-    _pauseArrowAnimation() {
-        if (this._arrowAnimationId) {
-            GLib.source_remove(this._arrowAnimationId);
-            this._arrowAnimationId = 0;
-        }
-
-        if (!this._arrowActiveWatchId)
-            this._arrowActiveWatchId = this.idleMonitor.add_user_active_watch(this._startArrowAnimation.bind(this));
-    }
-
-    _stopArrowAnimation() {
-        if (this._arrowAnimationId) {
-            GLib.source_remove(this._arrowAnimationId);
-            this._arrowAnimationId = 0;
-        }
-        if (this._arrowActiveWatchId) {
-            this.idleMonitor.remove_watch(this._arrowActiveWatchId);
-            this._arrowActiveWatchId = 0;
-        }
-        if (this._arrowWatchId) {
-            this.idleMonitor.remove_watch(this._arrowWatchId);
-            this._arrowWatchId = 0;
-        }
-    }
-
-    _checkArrowAnimation() {
-        let idleTime = this.idleMonitor.get_idletime();
-
-        if (idleTime < ARROW_IDLE_TIME)
-            this._startArrowAnimation();
-        else
-            this._pauseArrowAnimation();
+        this._dialog.grab_key_focus();
     }
 
     _lockScreenShown(params) {
-        if (this._dialog && !this._isGreeter) {
-            this._dialog.destroy();
-            this._dialog = null;
-        }
-
-        this._checkArrowAnimation();
-
         let motionId = global.stage.connect('captured-event', (stage, event) => {
             if (event.type() == Clutter.EventType.MOTION) {
                 this._cursorTracker.set_pointer_visible(true);
@@ -1102,7 +450,6 @@ var ScreenShield = class {
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
-        this._lockScreenScrollCounter = 0;
 
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
@@ -1125,50 +472,9 @@ var ScreenShield = class {
         this.emit('lock-screen-shown');
     }
 
-    // Some of the actors in the lock screen are heavy in
-    // resources, so we only create them when needed
-    _ensureLockScreen() {
-        if (this._hasLockScreen)
-            return;
-
-        this._lockScreenContentsBox = new St.BoxLayout({ x_align: Clutter.ActorAlign.CENTER,
-                                                         y_align: Clutter.ActorAlign.CENTER,
-                                                         x_expand: true,
-                                                         y_expand: true,
-                                                         vertical: true,
-                                                         style_class: 'screen-shield-contents-box' });
-        this._clock = new Clock();
-        this._lockScreenContentsBox.add_child(this._clock);
-
-        this._lockScreenContents.add_actor(this._lockScreenContentsBox);
-
-        this._notificationsBox = new NotificationsBox();
-        this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', this._wakeUpScreen.bind(this));
-        this._lockScreenContentsBox.add_child(this._notificationsBox);
-
-        this._hasLockScreen = true;
-    }
-
     _wakeUpScreen() {
         this._onUserBecameActive();
         this.emit('wake-up-screen');
-    }
-
-    _clearLockScreen() {
-        this._clock.destroy();
-        this._clock = null;
-
-        if (this._notificationsBox) {
-            this._notificationsBox.disconnect(this._wakeUpScreenId);
-            this._notificationsBox.destroy();
-            this._notificationsBox = null;
-        }
-
-        this._stopArrowAnimation();
-
-        this._lockScreenContentsBox.destroy();
-
-        this._hasLockScreen = false;
     }
 
     get locked() {
@@ -1191,13 +497,8 @@ var ScreenShield = class {
     }
 
     _continueDeactivate(animate) {
-        this._hideLockScreen(animate, 0);
+        this._hideLockScreen(animate);
 
-        if (this._hasLockScreen)
-            this._clearLockScreen();
-
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
@@ -1223,9 +524,8 @@ var ScreenShield = class {
         }
 
         this._lockDialogGroup.ease({
-            scale_x: 0,
-            scale_y: 0,
-            duration: animate ? Overview.ANIMATION_TIME : 0,
+            translation_y: -global.screen_height,
+            duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this._completeDeactivate(),
         });
@@ -1262,10 +562,11 @@ var ScreenShield = class {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
+        this._ensureUnlockDialog(true);
+
         this.actor.show();
 
-        if (Main.sessionMode.currentMode != 'unlock-dialog' &&
-            Main.sessionMode.currentMode != 'lock-screen') {
+        if (Main.sessionMode.currentMode !== 'unlock-dialog') {
             this._isGreeter = Main.sessionMode.isGreeter;
             if (!this._isGreeter)
                 Main.sessionMode.pushMode('unlock-dialog');
