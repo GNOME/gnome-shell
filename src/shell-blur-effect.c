@@ -80,15 +80,12 @@
  */
 
 static const gchar *gaussian_blur_glsl_declarations =
-"uniform float blur_radius;                                                \n"
+"uniform float sigma;                                                      \n"
 "uniform float pixel_step;                                                 \n"
 "uniform int vertical;                                                     \n";
 
 static const gchar *gaussian_blur_glsl =
 "  int horizontal = 1 - vertical;                                          \n"
-"                                                                          \n"
-"  int n_steps = int (ceil (blur_radius));                                 \n"
-"  float sigma = float (n_steps) / 3.0;                                    \n"
 "                                                                          \n"
 "  vec2 uv = vec2 (cogl_tex_coord.st);                                     \n"
 "                                                                          \n"
@@ -101,6 +98,8 @@ static const gchar *gaussian_blur_glsl =
 "                                                                          \n"
 "  vec4 ret = texture2D (cogl_sampler, uv) * gauss_coefficient.x;          \n"
 "  gauss_coefficient.xy *= gauss_coefficient.yz;                           \n"
+"                                                                          \n"
+"  int n_steps = int (ceil (3 * sigma));                                   \n"
 "                                                                          \n"
 "  for (int i = 1; i < n_steps; i += 2) {                                  \n"
 "    float coefficient_subtotal = gauss_coefficient.x;                     \n"
@@ -129,7 +128,7 @@ static const gchar *brightness_glsl =
 "  cogl_color_out.rgb *= brightness;                                       \n";
 
 #define MIN_DOWNSCALE_SIZE 256.f
-#define MAX_BLUR_RADIUS 10.f
+#define MAX_SIGMA 6.f
 
 typedef enum
 {
@@ -154,7 +153,7 @@ typedef struct
 {
   FramebufferData data;
   BlurType type;
-  int blur_radius_uniform;
+  int sigma_uniform;
   int pixel_step_uniform;
   int vertical_uniform;
 } BlurData;
@@ -182,14 +181,14 @@ struct _ShellBlurEffect
   ShellBlurMode mode;
   float downscale_factor;
   float brightness;
-  int blur_radius;
+  int sigma;
 };
 
 G_DEFINE_TYPE (ShellBlurEffect, shell_blur_effect, CLUTTER_TYPE_EFFECT)
 
 enum {
   PROP_0,
-  PROP_BLUR_RADIUS,
+  PROP_SIGMA,
   PROP_BRIGHTNESS,
   PROP_MODE,
   N_PROPS
@@ -272,8 +271,8 @@ setup_blur (BlurData *blur,
   blur->type = type;
   blur->data.pipeline = create_blur_pipeline ();
 
-  blur->blur_radius_uniform =
-    cogl_pipeline_get_uniform_location (blur->data.pipeline, "blur_radius");
+  blur->sigma_uniform =
+    cogl_pipeline_get_uniform_location (blur->data.pipeline, "sigma");
   blur->pixel_step_uniform =
     cogl_pipeline_get_uniform_location (blur->data.pipeline, "pixel_step");
   blur->vertical_uniform =
@@ -300,11 +299,11 @@ update_blur_uniforms (ShellBlurEffect *self,
                                     pixel_step);
     }
 
-  if (blur->blur_radius_uniform > -1)
+  if (blur->sigma_uniform > -1)
     {
       cogl_pipeline_set_uniform_1f (blur->data.pipeline,
-                                    blur->blur_radius_uniform,
-                                    self->blur_radius / self->downscale_factor);
+                                    blur->sigma_uniform,
+                                    self->sigma / self->downscale_factor);
     }
 
   if (blur->vertical_uniform > -1)
@@ -462,18 +461,18 @@ clear_framebuffer_data (FramebufferData *fb_data)
 static float
 calculate_downscale_factor (float width,
                             float height,
-                            float blur_radius)
+                            float sigma)
 {
   float downscale_factor = 1.0;
   float scaled_width = width;
   float scaled_height = height;
-  float scaled_radius = blur_radius;
+  float scaled_sigma = sigma;
 
   /* This is the algorithm used by Firefox; keep downscaling until either the
    * blur radius is lower than the threshold, or the downscaled texture is too
    * small.
    */
-  while (scaled_radius > MAX_BLUR_RADIUS &&
+  while (scaled_sigma > MAX_SIGMA &&
          scaled_width > MIN_DOWNSCALE_SIZE &&
          scaled_height > MIN_DOWNSCALE_SIZE)
     {
@@ -481,7 +480,7 @@ calculate_downscale_factor (float width,
 
       scaled_width = width / downscale_factor;
       scaled_height = height / downscale_factor;
-      scaled_radius = blur_radius / downscale_factor;
+      scaled_sigma = sigma / downscale_factor;
     }
 
   return downscale_factor;
@@ -689,7 +688,7 @@ update_framebuffers (ShellBlurEffect *self)
     return FALSE;
 
   get_target_size (self, &width, &height);
-  downscale_factor = calculate_downscale_factor (width, height, self->blur_radius);
+  downscale_factor = calculate_downscale_factor (width, height, self->sigma);
 
   updated =
     update_actor_fbo (self, width, height, downscale_factor) &&
@@ -777,7 +776,7 @@ shell_blur_effect_paint (ClutterEffect           *effect,
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
   uint8_t paint_opacity;
 
-  if (self->blur_radius > 0)
+  if (self->sigma > 0)
     {
       if (needs_repaint (self, flags))
         {
@@ -841,11 +840,11 @@ shell_blur_effect_modify_paint_volume (ClutterEffect      *effect,
   width = clutter_paint_volume_get_width (volume);
   height = clutter_paint_volume_get_height (volume);
 
-  origin.y -= self->blur_radius;
-  origin.x -= self->blur_radius;
+  origin.y -= self->sigma;
+  origin.x -= self->sigma;
 
-  height += 2 * self->blur_radius;
-  width += 2 * self->blur_radius;
+  height += 2 * self->sigma;
+  width += 2 * self->sigma;
 
   clutter_paint_volume_set_origin (volume, &origin);
   clutter_paint_volume_set_width (volume, width);
@@ -884,8 +883,8 @@ shell_blur_effect_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_BLUR_RADIUS:
-      g_value_set_int (value, self->blur_radius);
+    case PROP_SIGMA:
+      g_value_set_int (value, self->sigma);
       break;
 
     case PROP_BRIGHTNESS:
@@ -911,8 +910,8 @@ shell_blur_effect_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_BLUR_RADIUS:
-      shell_blur_effect_set_blur_radius (self, g_value_get_int (value));
+    case PROP_SIGMA:
+      shell_blur_effect_set_sigma (self, g_value_get_int (value));
       break;
 
     case PROP_BRIGHTNESS:
@@ -944,10 +943,10 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
   effect_class->paint = shell_blur_effect_paint;
   effect_class->modify_paint_volume = shell_blur_effect_modify_paint_volume;
 
-  properties[PROP_BLUR_RADIUS] =
-    g_param_spec_int ("blur-radius",
-                      "Blur radius",
-                      "Blur radius",
+  properties[PROP_SIGMA] =
+    g_param_spec_int ("sigma",
+                      "Sigma",
+                      "Sigma",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
@@ -973,7 +972,7 @@ static void
 shell_blur_effect_init (ShellBlurEffect *self)
 {
   self->mode = SHELL_BLUR_MODE_ACTOR;
-  self->blur_radius = 0;
+  self->sigma = 0;
   self->brightness = 1.f;
 
   self->actor_fb.pipeline = create_base_pipeline ();
@@ -993,29 +992,29 @@ shell_blur_effect_new (void)
 }
 
 int
-shell_blur_effect_get_blur_radius (ShellBlurEffect *self)
+shell_blur_effect_get_sigma (ShellBlurEffect *self)
 {
   g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), -1);
 
-  return self->blur_radius;
+  return self->sigma;
 }
 
 void
-shell_blur_effect_set_blur_radius (ShellBlurEffect *self,
-                                   int              radius)
+shell_blur_effect_set_sigma (ShellBlurEffect *self,
+                             int              sigma)
 {
   g_return_if_fail (SHELL_IS_BLUR_EFFECT (self));
 
-  if (self->blur_radius == radius)
+  if (self->sigma == sigma)
     return;
 
-  self->blur_radius = radius;
+  self->sigma = sigma;
   self->cache_flags &= ~BLUR_APPLIED;
 
   if (self->actor)
     clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
 
-  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_BLUR_RADIUS]);
+  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_SIGMA]);
 }
 
 float

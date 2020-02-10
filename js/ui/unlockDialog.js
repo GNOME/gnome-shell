@@ -19,7 +19,7 @@ const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const CROSSFADE_TIME = 300;
 
 const BLUR_BRIGHTNESS = 0.55;
-const BLUR_RADIUS = 200;
+const BLUR_SIGMA = 60;
 
 const SUMMARY_ICON_SIZE = 32;
 
@@ -516,7 +516,7 @@ var UnlockDialog = GObject.registerClass({
 
         widget.add_effect(new Shell.BlurEffect({
             brightness: BLUR_BRIGHTNESS,
-            blur_radius: BLUR_RADIUS,
+            sigma: BLUR_SIGMA,
         }));
     }
 
