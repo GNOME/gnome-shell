@@ -209,7 +209,8 @@ var AuthPrompt = GObject.registerClass({
         }
 
         this.setSecret(secret);
-        this.setQuestion(question);
+        // HACK: the question comes directly from PAM
+        this.setQuestion(question.replace(':', '').trim());
 
         this.updateSensitivity(true);
         this.emit('prompted');
