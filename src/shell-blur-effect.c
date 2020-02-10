@@ -68,59 +68,61 @@
  *
  * http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
  *
+ * ## Incremental gauss-factor calculation
+ *
+ * The kernel values for the gaussian kernel are computed incrementally instead
+ * of running the expensive calculations multiple times inside the blur shader.
+ * The implementation is based on the algorithm presented by K. Turkowski in
+ * GPU Gems 3, chapter 40:
+ *
+ * https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch40.html
+ *
  */
 
 static const gchar *gaussian_blur_glsl_declarations =
-"uniform float blur_radius;                                        \n"
-"uniform float pixel_step;                                         \n"
-"uniform int vertical;                                             \n"
-"                                                                  \n"
-"float gaussian (float sigma, float x) {                           \n"
-"  return exp ( - (x * x) / (2.0 * sigma * sigma));                \n"
-"}                                                                 \n"
-"                                                                  \n";
+"uniform float blur_radius;                                                \n"
+"uniform float pixel_step;                                                 \n"
+"uniform int vertical;                                                     \n";
 
 static const gchar *gaussian_blur_glsl =
-"  float total = 0.0;                                              \n"
-"  int horizontal = 1 - vertical;                                  \n"
-"                                                                  \n"
-"  vec4 ret = vec4 (0);                                            \n"
-"  vec2 uv = vec2 (cogl_tex_coord.st);                             \n"
-"                                                                  \n"
-"  float half_radius = blur_radius / 2.0;                          \n"
-"  int n_steps = int (ceil (half_radius)) + 1;                     \n"
-"                                                                  \n"
-"  for (int i = 0; i < n_steps; i++) {                             \n"
-"    float i0 = min (float (2 * i), blur_radius);                  \n"
-"    float i1 = min (i0 + 1.0, blur_radius);                       \n"
-"                                                                  \n"
-"    float step0 = i0 * pixel_step;                                \n"
-"    float step1 = i1 * pixel_step;                                \n"
-"                                                                  \n"
-"    float weight0 = gaussian (half_radius, i0);                   \n"
-"    float weight1 = gaussian (half_radius, i1);                   \n"
-"    float weight = weight0 + weight1;                             \n"
-"                                                                  \n"
-"    float foffset = (step0 * weight0 + step1 * weight1) / weight; \n"
-"    vec2 offset = vec2(foffset * float(horizontal),               \n"
-"                       foffset * float(vertical));                \n"
-"                                                                  \n"
-"    vec4 c = texture2D(cogl_sampler, uv + offset);                \n"
-"    total += weight;                                              \n"
-"    ret += c * weight;                                            \n"
-"                                                                  \n"
-"    c = texture2D(cogl_sampler, uv - offset);                     \n"
-"    total += weight;                                              \n"
-"    ret += c * weight;                                            \n"
-"  }                                                               \n"
-"                                                                  \n"
-"  cogl_texel = vec4 (ret / total);                                \n";
+"  int horizontal = 1 - vertical;                                          \n"
+"  vec2 uv = vec2 (cogl_tex_coord.st);                                     \n"
+"  int n_steps = int (ceil (blur_radius));                                 \n"
+"  float sigma = float (n_steps) / 3.0;                                    \n"
+"                                                                          \n"
+"  vec3 gauss_coefficient;                                                 \n"
+"  gauss_coefficient.x = 1.0 / (sqrt (2.0 * 3.14159265) * sigma);          \n"
+"  gauss_coefficient.y = exp (-0.5 / (sigma * sigma));                     \n"
+"  gauss_coefficient.z = gauss_coefficient.y * gauss_coefficient.y;        \n"
+"                                                                          \n"
+"  float gauss_coefficient_total = gauss_coefficient.x;                    \n"
+"  vec4 ret = texture2D (cogl_sampler, uv) * gauss_coefficient.x;          \n"
+"  gauss_coefficient.xy *= gauss_coefficient.yz;                           \n"
+"                                                                          \n"
+"  for (int i = 1; i < n_steps; i += 2) {                                  \n"
+"    float coefficient_subtotal = gauss_coefficient.x;                     \n"
+"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
+"    coefficient_subtotal += gauss_coefficient.x;                          \n"
+"    float gauss_ratio = gauss_coefficient.x / coefficient_subtotal;       \n"
+"                                                                          \n"
+"    float foffset = float (i) + gauss_ratio;                              \n"
+"    vec2 offset = vec2 (foffset * pixel_step * float (horizontal),        \n"
+"                        foffset * pixel_step * float (vertical));         \n"
+"                                                                          \n"
+"    ret += texture2D (cogl_sampler, uv + offset) * coefficient_subtotal;  \n"
+"    ret += texture2D (cogl_sampler, uv - offset) * coefficient_subtotal;  \n"
+"                                                                          \n"
+"    gauss_coefficient_total += 2.0 * coefficient_subtotal;                \n"
+"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
+"  }                                                                       \n"
+"                                                                          \n"
+"  cogl_texel = ret / gauss_coefficient_total;                             \n";
 
 static const gchar *brightness_glsl_declarations =
-"uniform float brightness;                                         \n";
+"uniform float brightness;                                                 \n";
 
 static const gchar *brightness_glsl =
-"  cogl_color_out.rgb *= brightness;                               \n";
+"  cogl_color_out.rgb *= brightness;                                       \n";
 
 #define MIN_DOWNSCALE_SIZE 256.f
 #define MAX_BLUR_RADIUS 10.f
