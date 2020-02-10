@@ -1102,6 +1102,9 @@ var KeyboardManager = class KeyBoardManager {
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
 
+        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._seat.connect('notify::touch-mode', this._syncEnabled.bind(this));
+
         this._lastDevice = null;
         Meta.get_backend().connect('last-device-changed', (backend, device) => {
             if (device.get_device_name().indexOf('XTEST') < 0) {
@@ -1122,7 +1125,9 @@ var KeyboardManager = class KeyBoardManager {
 
     _syncEnabled() {
         let enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
-        let enabled = enableKeyboard || this._lastDeviceIsTouchscreen();
+        let autoEnabled = this._seat.get_touch_mode() && this._lastDeviceIsTouchscreen();
+        let enabled = enableKeyboard || autoEnabled;
+
         if (!enabled && !this._keyboard)
             return;
 
