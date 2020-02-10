@@ -827,32 +827,6 @@ fail:
   clutter_actor_continue_paint (self->actor, paint_context);
 }
 
-static gboolean
-shell_blur_effect_modify_paint_volume (ClutterEffect      *effect,
-                                       ClutterPaintVolume *volume)
-{
-  ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
-  graphene_point3d_t origin;
-  float width;
-  float height;
-
-  clutter_paint_volume_get_origin (volume, &origin);
-  width = clutter_paint_volume_get_width (volume);
-  height = clutter_paint_volume_get_height (volume);
-
-  origin.y -= self->sigma;
-  origin.x -= self->sigma;
-
-  height += 2 * self->sigma;
-  width += 2 * self->sigma;
-
-  clutter_paint_volume_set_origin (volume, &origin);
-  clutter_paint_volume_set_width (volume, width);
-  clutter_paint_volume_set_height (volume, height);
-
-  return TRUE;
-}
-
 static void
 shell_blur_effect_finalize (GObject *object)
 {
@@ -941,7 +915,6 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
   meta_class->set_actor = shell_blur_effect_set_actor;
 
   effect_class->paint = shell_blur_effect_paint;
-  effect_class->modify_paint_volume = shell_blur_effect_modify_paint_volume;
 
   properties[PROP_SIGMA] =
     g_param_spec_int ("sigma",
