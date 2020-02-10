@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-03 20:34+0000\n"
-"PO-Revision-Date: 2020-02-04 13:57+0700\n"
+"POT-Creation-Date: 2020-02-06 19:01+0000\n"
+"PO-Revision-Date: 2020-02-07 13:32+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -53,11 +53,7 @@ msgstr "Buka menu aplikasi"
 msgid "Extensions"
 msgstr "Ekstensi"
 
-#: data/org.gnome.Extensions.desktop.in.in:5
-msgid "org.gnome.Extensions"
-msgstr "org.gnome.Extensions"
-
-#: data/org.gnome.Extensions.desktop.in.in:6
+#: data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigurasi Ekstensi GNOME Shell"
 
@@ -480,9 +476,32 @@ msgstr "Kunjungi halaman web ekstensi"
 #: js/extensionPrefs/main.js:449
 #, javascript-format
 msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login.e"
+msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d ekstensi akan diperbarui pada log masuk berikutnya."
 msgstr[1] "%d ekstensi akan diperbarui pada log masuk berikutnya."
+
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Deskripsi"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Versi"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Penulis"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Situs Web"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "Hapus…"
 
 #: js/extensionPrefs/ui/extensions-window.ui:8
 msgid "Help"
@@ -535,7 +554,7 @@ msgstr ""
 "dipasang. Pastikan Anda masuk ke GNOME dan coba lagi."
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-msgid "Logout…"
+msgid "Log Out…"
 msgstr "Keluar…"
 
 #: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
@@ -823,44 +842,44 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:904
+#: js/ui/appDisplay.js:906
 msgid "Unnamed Folder"
 msgstr "Folder Tanpa Nama"
 
-#: js/ui/appDisplay.js:927
+#: js/ui/appDisplay.js:929
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: js/ui/appDisplay.js:1062
+#: js/ui/appDisplay.js:1064
 msgid "Frequent"
 msgstr "Sering"
 
-#: js/ui/appDisplay.js:1069
+#: js/ui/appDisplay.js:1071
 msgid "All"
 msgstr "Semua"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2452 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:2472 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:2483
+#: js/ui/appDisplay.js:2485
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:2511 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:2517
+#: js/ui/appDisplay.js:2519
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:2527 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -1719,7 +1738,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 msgstr[1] "%d pemberitahuan baru"
 
-#: js/ui/screenShield.js:454 js/ui/status/system.js:98
+#: js/ui/screenShield.js:454 js/ui/status/system.js:103
 msgid "Lock"
 msgstr "Kunci"
 
@@ -2237,23 +2256,23 @@ msgstr "Matikan"
 msgid "Airplane Mode On"
 msgstr "Mode Pesawat Terbang Aktif"
 
-#: js/ui/status/system.js:111
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Matikan / Log Keluar"
 
-#: js/ui/status/system.js:114
+#: js/ui/status/system.js:119
 msgid "Log Out"
 msgstr "Keluar"
 
-#: js/ui/status/system.js:126
+#: js/ui/status/system.js:131
 msgid "Switch User…"
 msgstr "Beralih Pengguna…"
 
-#: js/ui/status/system.js:140
+#: js/ui/status/system.js:145
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: js/ui/status/system.js:152
+#: js/ui/status/system.js:157
 msgid "Power Off…"
 msgstr "Matikan…"
 
@@ -2519,11 +2538,6 @@ msgstr ""
 "Anda.\n"
 "Contohnya adalah: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Deskripsi"
-
 #: subprojects/extensions-tool/src/command-create.c:222
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
@@ -2725,10 +2739,6 @@ msgstr "URL"
 msgid "Original author"
 msgstr "Penulis asli"
 
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Versi"
-
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
 msgstr "Kondisi"
@@ -2830,6 +2840,12 @@ msgstr[1] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "org.gnome.Extensions"
+#~ msgstr "org.gnome.Extensions"
+
+#~ msgid "Logout…"
+#~ msgstr "Keluar…"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Ramban di Perangkat Lunak"
