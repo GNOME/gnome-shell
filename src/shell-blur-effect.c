@@ -42,7 +42,9 @@
  * # Optimizations
  *
  * There are a number of optimizations in place to make this blur implementation
- * real-time.
+ * real-time. All in all, the implementation performs best when using large
+ * blur-radii that allow downscaling the texture to smaller sizes, at small
+ * radii where no downscaling is possible this can easily halve the framerate.
  *
  * ## Multipass
  *
