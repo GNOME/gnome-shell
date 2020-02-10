@@ -324,21 +324,18 @@ update_brightness_uniform (ShellBlurEffect *self)
 static void
 setup_projection_matrix (CoglFramebuffer *framebuffer,
                          float            width,
-                         float            height,
-                         float            downscale_factor)
+                         float            height)
 {
   CoglMatrix projection;
-  float downscaled_width = width / downscale_factor;
-  float downscaled_height = height / downscale_factor;
 
   cogl_matrix_init_identity (&projection);
   cogl_matrix_scale (&projection,
-                     2.0 / downscaled_width,
-                     -2.0 / downscaled_height,
+                     2.0 / width,
+                     -2.0 / height,
                      1.f);
   cogl_matrix_translate (&projection,
-                         -downscaled_width / 2.0,
-                         -downscaled_height / 2.0,
+                         -width / 2.0,
+                         -height / 2.0,
                          0);
 
   cogl_framebuffer_set_projection_matrix (framebuffer, &projection);
@@ -356,10 +353,10 @@ update_fbo (FramebufferData *data,
   g_clear_pointer (&data->texture, cogl_object_unref);
   g_clear_pointer (&data->framebuffer, cogl_object_unref);
 
-  data->texture =
-    cogl_texture_2d_new_with_size (ctx,
-                                   width / downscale_factor,
-                                   height / downscale_factor);
+  unsigned int new_width = width / downscale_factor;
+  unsigned int new_height = height / downscale_factor;
+
+  data->texture = cogl_texture_2d_new_with_size (ctx, new_width, new_height);
   if (!data->texture)
     return FALSE;
 
@@ -372,7 +369,7 @@ update_fbo (FramebufferData *data,
       return FALSE;
     }
 
-  setup_projection_matrix (data->framebuffer, width, height, downscale_factor);
+  setup_projection_matrix (data->framebuffer, new_width, new_height);
 
   return TRUE;
 }
