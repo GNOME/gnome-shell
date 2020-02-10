@@ -142,7 +142,8 @@ var NotificationsBox = GObject.registerClass({
 
     _shouldShowDetails(source) {
         return source.policy.detailsInLockScreen ||
-               source.narrowestPrivacyScope === MessageTray.PrivacyScope.SYSTEM;
+               source.narrowestPrivacyScope === MessageTray.PrivacyScope.SYSTEM ||
+               source.notifications.some(n => n.urgency === MessageTray.Urgency.CRITICAL);
     }
 
     _updateSourceBoxStyle(source, obj, box) {
