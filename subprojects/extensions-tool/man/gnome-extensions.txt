@@ -96,6 +96,9 @@ Displays a list of installed extensions.
   *--prefs*;;
     Only include extensions with preferences
 
+  *--updates*;;
+    Only include extensions with pending updates
+
   *-d*;;
   *--details*;;
     Show some extra information for each extension
