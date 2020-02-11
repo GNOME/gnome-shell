@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-02-07 10:20+0100\n"
+"POT-Creation-Date: 2020-02-10 22:47+0000\n"
+"PO-Revision-Date: 2020-02-11 10:36+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -556,7 +556,6 @@ msgstr ""
 "ha iniciado sesión en GNOME e inténtelo de nuevo."
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-#| msgid "Log Out"
 msgid "Log Out…"
 msgstr "Cerrar la sesión…"
 
@@ -565,7 +564,7 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
+#: js/ui/unlockDialog.js:542
 msgid "Unlock"
 msgstr "Desbloquear"
 
@@ -578,13 +577,13 @@ msgstr "Iniciar sesión"
 msgid "Choose Session"
 msgstr "Elegir sesión"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:464
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -592,12 +591,12 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
+#: js/gdm/loginDialog.js:902 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -1721,31 +1720,7 @@ msgstr "Reiniciar no está disponible en Wayland"
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%A, %d de %B"
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d mensaje nuevo"
-msgstr[1] "%d mensajes nuevos"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d notificación nueva"
-msgstr[1] "%d notificaciones nuevas"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "Bloquear"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1756,11 +1731,11 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -2261,6 +2236,10 @@ msgstr "Apagar"
 msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Bloquear"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Apagar / cerrar sesión"
@@ -2352,13 +2331,13 @@ msgstr "Sólo la externa"
 msgid "Built-in Only"
 msgstr "Sólo la integrada"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "Iniciar sesión como otro usuario"
-
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:459
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
+
+#: js/ui/unlockDialog.js:549
+msgid "Log in as another user"
+msgstr "Iniciar sesión como otro usuario"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
@@ -2583,7 +2562,7 @@ msgid "Create a new extension"
 msgstr "Crear una extensión nueva"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Argumentos desconocidos"
 
@@ -2641,31 +2620,36 @@ msgstr "No se ha especificado un conjunto de extensiones"
 msgid "More than one extension bundle specified"
 msgstr "Se ha especificado más de un conjunto de extensiones"
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "Mostrar las extensiones de usuario instaladas"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "Mostrar las extensiones del sistema instaladas"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "Mostrar extensiones activadas"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "Mostrar extensiones desactivadas"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "Mostrar extensiones con preferencias"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+#| msgid "Show extensions with preferences"
+msgid "Show extensions with updates"
+msgstr "Mostrar extensiones con actualizaciones"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "Mostrar detalles de la extensión"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "Listar las extensiones instaladas"
 
@@ -2847,6 +2831,19 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %d de %B"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d mensaje nuevo"
+#~ msgstr[1] "%d mensajes nuevos"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d notificación nueva"
+#~ msgstr[1] "%d notificaciones nuevas"
 
 #~ msgid "Logout…"
 #~ msgstr "Cerrar sesión…"
