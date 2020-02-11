@@ -928,7 +928,6 @@ var LoginDialog = GObject.registerClass({
                 let answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
-                this._authPrompt.startSpinning();
                 this._authPrompt.begin({ userName: answer });
                 this._updateCancelButton();
             });
