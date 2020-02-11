@@ -32,6 +32,25 @@ stage {
     time-s: inherit;
 }
 
+#outline_longhand {
+    outline-color: #ff0000;
+    outline-width: 4;
+}
+
+#outline_shorthand {
+    outline: solid 4 #ff0000;
+}
+
+#outline_override1 {
+    outline: 4 #ff0000;
+    outline: none;
+}
+
+#outline_override2 {
+    outline: solid 4;
+    outline: hidden;
+}
+
 .special-text {
     font-size: 24pt;
     font-style: italic;
