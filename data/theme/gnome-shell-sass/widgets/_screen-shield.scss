@@ -4,12 +4,12 @@
   color: white;
   font-weight: 300;
   text-align: center;
+  spacing: 24px;
   padding-bottom: 2.5em;
 }
 
 .unlock-dialog-clock-time {
   font-size: 64pt;
-  padding-bottom: 24px;
   padding-top: 42px;
   font-feature-settings: "tnum";
 }
@@ -17,6 +17,11 @@
 .unlock-dialog-clock-date {
   font-size: 16pt;
   font-weight: normal;
+}
+
+.unlock-dialog-clock-hint {
+  font-weight: normal;
+  padding-top: 48px;
 }
 
 .unlock-dialog-notifications-container {
