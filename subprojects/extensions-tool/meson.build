@@ -36,7 +36,7 @@ if bash_completion.found()
 endif
 
 if get_option('man')
-  a2x = find_program('a2x')
+  asciidoctor = find_program('asciidoctor')
 
   subdir('man')
 endif
