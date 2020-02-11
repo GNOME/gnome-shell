@@ -143,7 +143,7 @@ if get_option('man')
   xsltproc = find_program('xsltproc')
 
   if get_option('extensions_tool')
-    a2x = find_program('a2x')
+    asciidoctor = find_program('asciidoctor')
   endif
 
   subdir('man')
