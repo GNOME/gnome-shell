@@ -157,8 +157,9 @@ var AuthPrompt = GObject.registerClass({
             });
 
             entry.clutter_text.connect('activate', () => {
+                let shouldSpin = entry === this._passwordEntry;
                 if (entry.reactive)
-                    this._activateNext();
+                    this._activateNext(shouldSpin);
             });
         });
 
@@ -177,9 +178,12 @@ var AuthPrompt = GObject.registerClass({
         this._defaultButtonWell.add_child(this._spinner);
     }
 
-    _activateNext() {
+    _activateNext(shouldSpin) {
         this.updateSensitivity(false);
-        this.startSpinning();
+
+        if (shouldSpin)
+            this.startSpinning();
+
         if (this._queryingService)
             this._userVerifier.answerQuery(this._queryingService, this._entry.text);
         else
