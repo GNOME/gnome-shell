@@ -15,6 +15,9 @@ const AuthPrompt = imports.gdm.authPrompt;
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
 
+// The timeout before showing the unlock hint (in seconds)
+const HINT_TIMEOUT = 4;
+
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
 const CROSSFADE_TIME = 300;
@@ -323,14 +326,37 @@ class UnlockDialogClock extends St.BoxLayout {
             style_class: 'unlock-dialog-clock-date',
             x_align: Clutter.ActorAlign.CENTER,
         });
+        this._hint = new St.Label({
+            style_class: 'unlock-dialog-clock-hint',
+            x_align: Clutter.ActorAlign.CENTER,
+            opacity: 0,
+        });
 
         this.add_child(this._time);
         this.add_child(this._date);
+        this.add_child(this._hint);
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
+        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._touchModeChangedId = this._seat.connect('notify::touch-mode',
+            this._updateHint.bind(this));
+
+        this._monitorManager = Meta.MonitorManager.get();
+        this._powerModeChangedId = this._monitorManager.connect(
+            'power-save-mode-changed', () => (this._hint.opacity = 0));
+
+        this._idleMonitor = Meta.IdleMonitor.get_core();
+        this._idleWatchId = this._idleMonitor.add_idle_watch(HINT_TIMEOUT * 1000, () => {
+            this._hint.ease({
+                opacity: 255,
+                duration: CROSSFADE_TIME,
+            });
+        });
+
         this._updateClock();
+        this._updateHint();
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -345,8 +371,18 @@ class UnlockDialogClock extends St.BoxLayout {
         this._date.text = date.toLocaleFormat(dateFormat);
     }
 
+    _updateHint() {
+        this._hint.text = this._seat.touch_mode
+            ? _('Swipe up to unlock')
+            : _('Click or press a key to unlock');
+    }
+
     _onDestroy() {
         this._wallClock.run_dispose();
+
+        this._seat.disconnect(this._touchModeChangedId);
+        this._idleMonitor.remove_watch(this._idleWatchId);
+        this._monitorManager.disconnect(this._powerModeChangedId);
     }
 });
 
