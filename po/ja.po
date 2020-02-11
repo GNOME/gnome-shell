@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
+"POT-Creation-Date: 2020-02-10 22:47+0000\n"
 "PO-Revision-Date: 2020-02-08 20:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -475,8 +475,7 @@ msgstr "拡張機能のホームページを開く"
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] ""
-"%d 個の拡張機能が次回ログイン時に更新されます。"
+msgstr[0] "%d 個の拡張機能が次回ログイン時に更新されます。"
 
 #: js/extensionPrefs/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -514,8 +513,8 @@ msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
 msgstr ""
-"拡張機能の検索や追加は <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> で行うことができます。"
+"拡張機能の検索や追加は <a href=\"https://extensions.gnome.org\">extensions."
+"gnome.org</a> で行うことができます。"
 
 #: js/extensionPrefs/ui/extensions-window.ui:35
 msgid "Warning"
@@ -560,7 +559,7 @@ msgid "Next"
 msgstr "次へ"
 
 #: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
+#: js/ui/unlockDialog.js:542
 msgid "Unlock"
 msgstr "ロック解除"
 
@@ -573,13 +572,13 @@ msgstr "サインイン"
 msgid "Choose Session"
 msgstr "セッションを選択する"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:464
 msgid "Not listed?"
 msgstr "アカウントが見つかりませんか?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(たとえば、user あるいは %s)"
@@ -587,12 +586,12 @@ msgstr "(たとえば、user あるいは %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
+#: js/gdm/loginDialog.js:902 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
 msgid "Username: "
 msgstr "ユーザー名: "
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "ログインウィンドウ"
 
@@ -1698,29 +1697,7 @@ msgstr "Wayland 上では再起動できません"
 msgid "Restarting…"
 msgstr "再起動中…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%B%-e日 (%a)"
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d 件の新しいメッセージ"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d 件の新しい通知"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "ロック"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "画面をロックする必要があります"
 
@@ -1731,11 +1708,11 @@ msgstr "画面をロックする必要があります"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "ロックできません"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
@@ -2230,6 +2207,10 @@ msgstr "オフにする"
 msgid "Airplane Mode On"
 msgstr "機内モードオン"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "ロック"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "電源オフ / ログアウト"
@@ -2263,8 +2244,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度取り"
-"外し、再接続してください。"
+"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度取り外"
+"し、再接続してください。"
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
@@ -2320,13 +2301,13 @@ msgstr "外部のみ"
 msgid "Built-in Only"
 msgstr "組み込みのみ"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "他のユーザーでログイン"
-
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:459
 msgid "Unlock Window"
 msgstr "ロック解除"
+
+#: js/ui/unlockDialog.js:549
+msgid "Log in as another user"
+msgstr "他のユーザーでログイン"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
@@ -2541,7 +2522,7 @@ msgid "Create a new extension"
 msgstr "新しい拡張機能を作成します"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "不明な引数です"
 
@@ -2599,31 +2580,37 @@ msgstr ""
 msgid "More than one extension bundle specified"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "ユーザーがインストールした拡張機能を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "システムにインストールされた拡張機能を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "有効化された拡張機能を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "無効化された拡張機能を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "設定画面付きの拡張機能を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+#, fuzzy
+#| msgid "Show extensions with preferences"
+msgid "Show extensions with updates"
+msgstr "設定画面付きの拡張機能を表示する"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "拡張機能の詳細を表示する"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "インストールされた拡張機能一覧を表示します"
 
@@ -2803,6 +2790,17 @@ msgstr[0] "入力数: %u"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "システムのサウンド"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%B%-e日 (%a)"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d 件の新しいメッセージ"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d 件の新しい通知"
 
 #~ msgid "Browse in Software"
 #~ msgstr "“ソフトウェア”で参照"
