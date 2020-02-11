@@ -40,6 +40,10 @@ static StThemeNode *group4;
 static StThemeNode *group5;
 static StThemeNode *group6;
 static StThemeNode *button;
+static StThemeNode *outline_longhand;
+static StThemeNode *outline_shorthand;
+static StThemeNode *outline_override1;
+static StThemeNode *outline_override2;
 static gboolean fail;
 
 static const char *test;
@@ -154,6 +158,25 @@ assert_background_color (StThemeNode *node,
   if (expected != value)
     {
       g_print ("%s: %s.background-color: expected: #%08x, got: #%08x\n",
+	       test, node_description, expected, value);
+      fail = TRUE;
+    }
+}
+
+static void
+assert_outline_color (StThemeNode *node,
+                      const char  *node_description,
+                      guint32      expected)
+{
+  ClutterColor color;
+  guint32 value;
+
+  st_theme_node_get_outline_color (node, &color);
+  value = clutter_color_to_pixel (&color);
+
+  if (expected != value)
+    {
+      g_print ("%s: %s.outline-color: expected: #%08x, got: #%08x\n",
 	       test, node_description, expected, value);
       fail = TRUE;
     }
@@ -468,6 +491,26 @@ test_border (void)
 }
 
 static void
+test_outline (void)
+{
+  test = "outline";
+
+  assert_length ("outline_longhand", "outline-width", 4.,
+                 st_theme_node_get_outline_width (outline_longhand));
+  assert_outline_color (outline_longhand, "outline_longhand", 0xff0000ff);
+
+  assert_length ("outline_shorthand", "outline-width", 4.,
+                 st_theme_node_get_outline_width (outline_shorthand));
+  assert_outline_color (outline_shorthand, "outline_shorthand", 0xff0000ff);
+
+  assert_length ("outline_override1", "outline-width", 0.,
+                 st_theme_node_get_outline_width (outline_override1));
+
+  assert_length ("outline_override2", "outline-width", 0.,
+                 st_theme_node_get_outline_width (outline_override2));
+}
+
+static void
 test_background (void)
 {
   test = "background";
@@ -649,6 +692,14 @@ main (int argc, char **argv)
                               CLUTTER_TYPE_ACTOR, "group3", NULL, "hover", NULL);
   button = st_theme_node_new (context, root, NULL,
                               ST_TYPE_BUTTON, "button", NULL, NULL, NULL);
+  outline_longhand = st_theme_node_new (context, root, NULL,
+                                        CLUTTER_TYPE_ACTOR, "outline_longhand", NULL, NULL, NULL);
+  outline_shorthand = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_shorthand", NULL, NULL, NULL);
+  outline_override1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_override1", NULL, NULL, NULL);
+  outline_override2 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_override2", NULL, NULL, NULL);
 
   test_defaults ();
   test_double ();
@@ -662,6 +713,7 @@ main (int argc, char **argv)
   test_padding ();
   test_margin ();
   test_border ();
+  test_outline ();
   test_background ();
   test_font ();
   test_font_features ();
