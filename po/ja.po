@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-02-10 22:47+0000\n"
-"PO-Revision-Date: 2020-02-08 20:00+0900\n"
+"PO-Revision-Date: 2020-02-12 00:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -2598,13 +2598,11 @@ msgstr "無効化された拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
-msgstr "設定画面付きの拡張機能を表示する"
+msgstr "設定画面がある拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
-#| msgid "Show extensions with preferences"
 msgid "Show extensions with updates"
-msgstr "設定画面付きの拡張機能を表示する"
+msgstr "アップデートがある拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
