@@ -73,15 +73,6 @@ var AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('ovirt-user-authenticated', this._onOVirtUserAuthenticated.bind(this));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
-        this.connect('next', () => {
-            this.updateSensitivity(false);
-            this.startSpinning();
-            if (this._queryingService)
-                this._userVerifier.answerQuery(this._queryingService, this._entry.text);
-            else
-                this._preemptiveAnswer = this._entry.text;
-        });
-
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._userWell = new St.Bin({
@@ -167,7 +158,7 @@ var AuthPrompt = GObject.registerClass({
 
             entry.clutter_text.connect('activate', () => {
                 if (entry.reactive)
-                    this.emit('next');
+                    this._prepareAndEmitNext();
             });
         });
 
@@ -184,6 +175,17 @@ var AuthPrompt = GObject.registerClass({
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._defaultButtonWell.add_child(this._spinner);
+    }
+
+    _prepareAndEmitNext() {
+        this.updateSensitivity(false);
+        this.startSpinning();
+        if (this._queryingService)
+            this._userVerifier.answerQuery(this._queryingService, this._entry.text);
+        else
+            this._preemptiveAnswer = this._entry.text;
+
+        this.emit('next');
     }
 
     _updateEntry(secret) {
