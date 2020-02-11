@@ -443,6 +443,18 @@ var UnlockDialog = GObject.registerClass({
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
         this._swipeTracker.connect('end', this._swipeEnd.bind(this));
 
+        this.connect('scroll-event', (o, event) => {
+            if (this._swipeTracker.canHandleScrollEvent(event))
+                return Clutter.EVENT_PROPAGATE;
+
+            let direction = event.get_scroll_direction();
+            if (direction === Clutter.ScrollDirection.UP)
+                this._showClock();
+            else if (direction === Clutter.ScrollDirection.DOWN)
+                this._showPrompt();
+            return Clutter.EVENT_STOP;
+        });
+
         this._activePage = null;
 
         let tapAction = new Clutter.TapAction();
