@@ -225,6 +225,14 @@ class UserWidget extends St.BoxLayout {
 
             this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
             this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+        } else {
+            this._label = new St.Label({
+                style_class: 'user-widget-label',
+                text: 'Empty User',
+                opacity: 0,
+            });
+            this.add_child(this._label);
+
         }
 
         this._updateUser();
