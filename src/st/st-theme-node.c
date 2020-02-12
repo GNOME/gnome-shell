@@ -1250,9 +1250,9 @@ do_outline_property (StThemeNode   *node,
     }
 
   if (color_set)
-    node->outline_color = color;
+    node->outline.color = color;
   if (width_set)
-    node->outline_width = width;
+    node->outline.width = width;
 }
 
 static void
@@ -1452,8 +1452,8 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       node->border_color[j] = TRANSPARENT_COLOR;
     }
 
-  node->outline_width = 0;
-  node->outline_color = TRANSPARENT_COLOR;
+  node->outline.width = 0;
+  node->outline.color = TRANSPARENT_COLOR;
 
   width = -1;
   height = -1;
@@ -1565,7 +1565,7 @@ st_theme_node_get_outline_width (StThemeNode  *node)
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->outline_width;
+  return node->outline.width;
 }
 
 /**
@@ -1583,7 +1583,7 @@ st_theme_node_get_outline_color (StThemeNode  *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  *color = node->outline_color;
+  *color = node->outline.color;
 }
 
 int
@@ -3773,11 +3773,11 @@ st_theme_node_paint_equal (StThemeNode *node,
         return FALSE;
     }
 
-  if (node->outline_width != other->outline_width)
+  if (node->outline.width != other->outline.width)
     return FALSE;
 
-  if (node->outline_width > 0 &&
-      !clutter_color_equal (&node->outline_color, &other->outline_color))
+  if (node->outline.width > 0 &&
+      !clutter_color_equal (&node->outline.color, &other->outline.color))
     return FALSE;
 
   border_image = st_theme_node_get_border_image (node);
