@@ -7,6 +7,7 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
+const UNKNOWN_AVATAR_ICON_SIZE = -1;
 var AVATAR_ICON_SIZE = 64;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
@@ -18,9 +19,11 @@ var Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
     _init(user, params) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        params = Params.parse(params, { reactive: false,
-                                        iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'user-icon' });
+        params = Params.parse(params, {
+            styleClass: 'user-icon',
+            reactive: false,
+            iconSize: UNKNOWN_AVATAR_ICON_SIZE,
+        });
 
         super._init({
             style_class: params.styleClass,
@@ -44,6 +47,23 @@ class Avatar extends St.Bin {
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
+    vfunc_style_changed() {
+        super.vfunc_style_changed();
+
+        let node = this.get_theme_node();
+        let [found, iconSize] = node.lookup_length('icon-size', false);
+
+        if (!found)
+            return;
+
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+
+        // node.lookup_length() returns a scaled value, but we
+        // need unscaled
+        this._iconSize = iconSize / themeContext.scaleFactor;
+        this.update();
+    }
+
     _onDestroy() {
         if (this._scaleFactorChangeId) {
             let themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -52,28 +72,43 @@ class Avatar extends St.Bin {
         }
     }
 
+    _getIconSize() {
+        if (this._iconSize !== UNKNOWN_AVATAR_ICON_SIZE)
+            return this._iconSize;
+        else
+            return AVATAR_ICON_SIZE;
+    }
+
     setSensitive(sensitive) {
         this.reactive = sensitive;
     }
 
     update() {
-        let iconFile = this._user.get_icon_file();
-        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-            iconFile = null;
+        let iconSize = this._getIconSize();
+
+        let iconFile = null;
+        if (this._user) {
+            iconFile = this._user.get_icon_file();
+            if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+                iconFile = null;
+        }
 
         if (iconFile) {
             this.child = null;
+
             let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
             this.set_size(
-                this._iconSize * scaleFactor,
-                this._iconSize * scaleFactor);
+                iconSize * scaleFactor,
+                iconSize * scaleFactor);
             this.style = `
                 background-image: url("${iconFile}");
                 background-size: cover;`;
         } else {
             this.style = null;
-            this.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                       icon_size: this._iconSize });
+            this.child = new St.Icon({
+                icon_name: 'avatar-default-symbolic',
+                icon_size: iconSize,
+            });
         }
     }
 });
@@ -159,24 +194,47 @@ class UserWidgetLabel extends St.Widget {
 
 var UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
-    _init(user) {
-        super._init({ style_class: 'user-widget', vertical: false });
-
+    _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
+        // If user is null, that implies a username-based login authorization.
         this._user = user;
+
+        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        let xAlign = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
+        let styleClass = vertical ? 'user-widget vertical' : 'user-widget horizontal';
+
+        super._init({
+            styleClass,
+            vertical,
+            xAlign,
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._avatar = new Avatar(user);
+        this._avatar.x_align = Clutter.ActorAlign.CENTER;
         this.add_child(this._avatar);
 
-        this._label = new UserWidgetLabel(user);
-        this.add_child(this._label);
+        this._userLoadedId = 0;
+        this._userChangedId = 0;
+        if (user) {
+            this._label = new UserWidgetLabel(user);
+            this.add_child(this._label);
 
-        this._label.bind_property('label-actor', this, 'label-actor',
-                                  GObject.BindingFlags.SYNC_CREATE);
+            this._label.bind_property('label-actor', this, 'label-actor',
+                                      GObject.BindingFlags.SYNC_CREATE);
 
-        this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
-        this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+            this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
+            this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+        } else {
+            this._label = new St.Label({
+                style_class: 'user-widget-label',
+                text: 'Empty User',
+                opacity: 0,
+            });
+            this.add_child(this._label);
+
+        }
+
         this._updateUser();
     }
 

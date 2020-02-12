@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported UnlockDialog */
 
-const { AccountsService, Atk, Clutter, Gdm, Gio,
+const { AccountsService, Atk, Clutter, Gdm,
         GnomeDesktop, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Background = imports.ui.background;
@@ -547,27 +547,8 @@ var UnlockDialog = GObject.registerClass({
         this._authPrompt.connect('failed', this._fail.bind(this));
         this._authPrompt.connect('cancelled', this._fail.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
-        this._authPrompt.nextButton.label = _("Unlock");
 
         this._promptBox.add_child(this._authPrompt);
-
-        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-        if (screenSaverSettings.get_boolean('user-switch-enabled')) {
-            let otherUserLabel = new St.Label({
-                text: _('Log in as another user'),
-                style_class: 'login-dialog-not-listed-label',
-            });
-            this._otherUserButton = new St.Button({
-                style_class: 'login-dialog-not-listed-button',
-                can_focus: true,
-                child: otherUserLabel,
-                reactive: true,
-            });
-            this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
-            this._promptBox.add_child(this._otherUserButton);
-        } else {
-            this._otherUserButton = null;
-        }
 
         this._authPrompt.reset();
         this._updateSensitivity(true);
@@ -576,28 +557,17 @@ var UnlockDialog = GObject.registerClass({
     _maybeDestroyAuthPrompt() {
         let focus = global.stage.key_focus;
         if (focus === null ||
-            (this._authPrompt && this._authPrompt.contains(focus)) ||
-            (this._otherUserButton && focus === this._otherUserButton))
+            (this._authPrompt && this._authPrompt.contains(focus)))
             this.grab_key_focus();
 
         if (this._authPrompt) {
             this._authPrompt.destroy();
             this._authPrompt = null;
         }
-
-        if (this._otherUserButton) {
-            this._otherUserButton.destroy();
-            this._otherUserButton = null;
-        }
     }
 
     _updateSensitivity(sensitive) {
         this._authPrompt.updateSensitivity(sensitive);
-
-        if (this._otherUserButton) {
-            this._otherUserButton.reactive = sensitive;
-            this._otherUserButton.can_focus = sensitive;
-        }
     }
 
     _showClock() {
@@ -667,12 +637,6 @@ var UnlockDialog = GObject.registerClass({
     _escape() {
         if (this.allowCancel)
             this._authPrompt.cancel();
-    }
-
-    _otherUserClicked() {
-        Gdm.goto_login_session_sync(null);
-
-        this._authPrompt.cancel();
     }
 
     _onDestroy() {
