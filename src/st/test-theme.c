@@ -44,6 +44,10 @@ static StThemeNode *outline_longhand;
 static StThemeNode *outline_shorthand;
 static StThemeNode *outline_override1;
 static StThemeNode *outline_override2;
+static StThemeNode *padding_shorthand1;
+static StThemeNode *padding_shorthand2;
+static StThemeNode *padding_shorthand3;
+static StThemeNode *padding_shorthand4;
 static gboolean fail;
 
 static const char *test;
@@ -409,6 +413,30 @@ test_padding (void)
 }
 
 static void
+assert_padding (const char *id, StThemeNode *node, double top, double right, double bottom, double left)
+{
+  assert_length (id, "padding-top", top,
+                 st_theme_node_get_padding (node, ST_SIDE_TOP));
+  assert_length (id, "padding-right", right,
+                 st_theme_node_get_padding (node, ST_SIDE_RIGHT));
+  assert_length (id, "padding-bottom", bottom,
+                 st_theme_node_get_padding (node, ST_SIDE_BOTTOM));
+  assert_length (id, "padding-left", left,
+                 st_theme_node_get_padding (node, ST_SIDE_LEFT));
+}
+
+static void
+test_padding_shorthand (void)
+{
+  test = "padding_shorthand";
+
+  assert_padding ("padding_shorthand1", padding_shorthand1, 1, 1, 1, 1);
+  assert_padding ("padding_shorthand2", padding_shorthand2, 1, 2, 1, 2);
+  assert_padding ("padding_shorthand3", padding_shorthand3, 1, 2, 3, 2);
+  assert_padding ("padding_shorthand4", padding_shorthand4, 1, 2, 3, 4);
+}
+
+static void
 test_margin (void)
 {
   test = "margin";
@@ -701,6 +729,15 @@ main (int argc, char **argv)
   outline_override2 = st_theme_node_new (context, root, NULL,
                                          CLUTTER_TYPE_GROUP, "outline_override2", NULL, NULL, NULL);
 
+  padding_shorthand1 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_GROUP, "padding_shorthand1", NULL, NULL, NULL);
+  padding_shorthand2 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_GROUP, "padding_shorthand2", NULL, NULL, NULL);
+  padding_shorthand3 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_GROUP, "padding_shorthand3", NULL, NULL, NULL);
+  padding_shorthand4 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_GROUP, "padding_shorthand4", NULL, NULL, NULL);
+
   test_defaults ();
   test_double ();
   test_time ();
@@ -711,6 +748,7 @@ main (int argc, char **argv)
   test_type_inheritance ();
   test_adjacent_selector ();
   test_padding ();
+  test_padding_shorthand ();
   test_margin ();
   test_border ();
   test_outline ();
