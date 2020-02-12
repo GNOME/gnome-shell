@@ -1168,10 +1168,6 @@ do_outline_property (StThemeNode   *node,
                      CRDeclaration *decl)
 {
   const char *property_name = cr_declaration_name (decl) + 7; /* Skip 'outline' */
-  ClutterColor color;
-  gboolean color_set = FALSE;
-  int width = 0; /* suppress warning */
-  gboolean width_set = FALSE;
 
   if (strcmp (property_name, "") == 0)
     {
@@ -1188,27 +1184,28 @@ do_outline_property (StThemeNode   *node,
     }
   else if (strcmp (property_name, "-color") == 0)
     {
+      ClutterColor color;
+
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
       if (stylish_get_color_from_term (decl->value, &color) == VALUE_FOUND)
-        /* Ignore inherit */
-        color_set = TRUE;
+        {
+          node->outline.color = color;
+        }
     }
   else if (strcmp (property_name, "-width") == 0)
     {
+      int width;
+
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
       if (get_length_from_term_int (decl->value, normalize_default (node), &width) == VALUE_FOUND)
-        /* Ignore inherit */
-        width_set = TRUE;
+        {
+          node->outline.width = width;
+        }
     }
-
-  if (color_set)
-    node->outline.color = color;
-  if (width_set)
-    node->outline.width = width;
 }
 
 static void
