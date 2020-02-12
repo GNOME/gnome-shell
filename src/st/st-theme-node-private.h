@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-/* Keep this in sync with stylish/src/outline.rs:Outline */
+/* Keep this in sync with stylish/src/outline.rs:StOutline */
 typedef struct {
   ClutterColor color;
   int width;
