@@ -1181,60 +1181,16 @@ do_outline_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Set value for width/color/style in any order */
-      CRTerm *term;
-
-      for (term = decl->value; term; term = term->next)
+      if (decl->value)
         {
-          GetFromTermResult result;
+          StOutline outline;
 
-          if (term->type == TERM_IDENT)
+          if (stylish_parse_outline_shorthand (decl->value, normalize_default (node), &outline)
+              == VALUE_FOUND)
             {
-              const char *ident = term->content.str->stryng->str;
-              if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
-                {
-                  width = 0;
-                  width_set = TRUE;
-                  continue;
-                }
-              else if (strcmp (ident, "solid") == 0)
-                {
-                  /* The only thing we support */
-                  continue;
-                }
-              else if (strcmp (ident, "dotted") == 0 ||
-                       strcmp (ident, "dashed") == 0 ||
-                       strcmp (ident, "double") == 0 ||
-                       strcmp (ident, "groove") == 0 ||
-                       strcmp (ident, "ridge") == 0 ||
-                       strcmp (ident, "inset") == 0 ||
-                       strcmp (ident, "outset") == 0)
-                {
-                  /* Treat the same as solid */
-                  continue;
-                }
-
-              /* Presumably a color, fall through */
-            }
-
-          if (term->type == TERM_NUMBER)
-            {
-              result = get_length_from_term_int (term, normalize_default (node), &width);
-              if (result != VALUE_NOT_FOUND)
-                {
-                  width_set = result == VALUE_FOUND;
-                  continue;
-                }
-            }
-
-          result = stylish_get_color_from_term (term, &color);
-          if (result != VALUE_NOT_FOUND)
-            {
-              color_set = result == VALUE_FOUND;
-              continue;
+              node->outline = outline;
             }
         }
-
     }
   else if (strcmp (property_name, "-color") == 0)
     {
