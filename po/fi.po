@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-02-10 23:27+0200\n"
+"POT-Creation-Date: 2020-02-12 19:34+0000\n"
+"PO-Revision-Date: 2020-02-12 22:33+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 "X-POT-Import-Date: 2012-03-05 15:06:10+0000\n"
@@ -448,11 +448,11 @@ msgstr ""
 "Ota huomioon jos poistat laajennuksen; sinun tulee palata ja ladata se "
 "uudelleen, jos haluat sen uudelleen käyttöön"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Peru"
 
@@ -536,9 +536,6 @@ msgid "About Extensions"
 msgstr "Tietoja - Laajennukset"
 
 #: js/extensionPrefs/ui/extensions-window.ui:27
-#| msgid ""
-#| "Extensions can be installed through Software or <a href=\"https://"
-#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -584,44 +581,26 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Kirjaudu ulos…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "Seuraava"
-
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
-msgid "Unlock"
-msgstr "Avaa lukitus"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "Kirjaudu sisään"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Valitse istunto"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "Ei luettelossa?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(esim. käyttäjä tai %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Käyttäjänimi: "
+#: js/gdm/loginDialog.js:917
+msgid "Username…"
+msgstr "Käyttäjänimi…"
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1252
 msgid "Login Window"
 msgstr "Kirjautumisikkuna"
 
@@ -696,7 +675,6 @@ msgstr "switch user"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:131
-#| msgid "lock orientation;screen;rotation"
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;unlock orientation;screen;rotation;lukitse kierto;lukitse "
@@ -1150,6 +1128,14 @@ msgstr "Salasana: "
 msgid "Key: "
 msgstr "Avain: "
 
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:275
+msgid "Username: "
+msgstr "Käyttäjänimi: "
+
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
 msgid "Private key password: "
 msgstr "Salaisen avaimen salasana: "
@@ -1234,7 +1220,6 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "Kirjautuminen epäonnistui. Yritä uudelleen."
 
 #: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-#| msgid "Remember Password"
 msgid "Enter Password…"
 msgstr "Kirjoita salasana…"
 
@@ -1752,31 +1737,7 @@ msgstr "Uudelleenkäynnistys ei ole käytettävissä Waylandilla"
 msgid "Restarting…"
 msgstr "Käynnistetään uudelleen…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%A, %e. %Bta"
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d uusi viesti"
-msgstr[1] "%d uutta viestiä"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d uusi ilmoitus"
-msgstr[1] "%d uutta ilmoitusta"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "Lukitse"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "Gnomen täytyy lukita näyttö"
 
@@ -1787,11 +1748,11 @@ msgstr "Gnomen täytyy lukita näyttö"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "Lukitus epäonnistui"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "Lukitus estettiin sovelluksen toimesta"
 
@@ -1856,6 +1817,10 @@ msgstr "Kirjoita PIM-numero…"
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
 msgstr "Muista salasana"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Avaa lukitus"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -2290,6 +2255,10 @@ msgstr "Sammuta"
 msgid "Airplane Mode On"
 msgstr "Lentokonetila on päällä"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Lukitse"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Sammuta / Kirjaudu ulos"
@@ -2380,11 +2349,7 @@ msgstr "Vain ulkoinen"
 msgid "Built-in Only"
 msgstr "Vain sisäinen"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "Kirjaudu toisena käyttäjänä"
-
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:459
 msgid "Unlock Window"
 msgstr "Lukituksen avausikkuna"
 
@@ -2609,7 +2574,7 @@ msgid "Create a new extension"
 msgstr "Luo uusi laajennus"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Tuntemattomat argumentit"
 
@@ -2667,31 +2632,35 @@ msgstr "Laajennuspakettia ei määritetty"
 msgid "More than one extension bundle specified"
 msgstr "Enemmän kuin yksi laajennuspaketti määritetty"
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "Näytä käyttäjän asentamat laajennukset"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "Näytä järjestelmän asentamat laajennukset"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "Näytä käytössä olevat laajennukset"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "Näytä käytöstä poistetut laajennukset"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "Näytä laajennukset, joilla on asetuksia"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show extensions with updates"
+msgstr "Näytä laajennukset, joihin on päivityksiä"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "Tulosta laajennuksen tiedot"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "Listaa asennetut laajennukset"
 
@@ -2840,10 +2809,8 @@ msgid "Create extension"
 msgstr "Luo laajennus"
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
-#| msgid "Extension"
 msgid "Package extension"
-msgstr "Laajennus"
+msgstr "Paketoi laajennus"
 
 #: subprojects/extensions-tool/src/main.c:260
 msgid "Install extension bundle"
@@ -2875,6 +2842,29 @@ msgstr[1] "%u sisääntuloa"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
+
+#~ msgid "Next"
+#~ msgstr "Seuraava"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Kirjaudu sisään"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %e. %Bta"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d uusi viesti"
+#~ msgstr[1] "%d uutta viestiä"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d uusi ilmoitus"
+#~ msgstr[1] "%d uutta ilmoitusta"
+
+#~ msgid "Log in as another user"
+#~ msgstr "Kirjaudu toisena käyttäjänä"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Selaa ohjelmistokeskuksessa"
