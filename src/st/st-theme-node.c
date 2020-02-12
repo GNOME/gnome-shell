@@ -1228,13 +1228,13 @@ do_padding_property_term (StThemeNode *node,
     return;
 
   if (left)
-    node->padding[ST_SIDE_LEFT] = value;
+    node->padding.left = value;
   if (right)
-    node->padding[ST_SIDE_RIGHT] = value;
+    node->padding.right = value;
   if (top)
-    node->padding[ST_SIDE_TOP] = value;
+    node->padding.top = value;
   if (bottom)
-    node->padding[ST_SIDE_BOTTOM] = value;
+    node->padding.bottom = value;
 }
 
 static void
@@ -1962,7 +1962,24 @@ st_theme_node_get_padding (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->padding[side];
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      return node->padding.top;
+
+    case ST_SIDE_RIGHT:
+      return node->padding.right;
+
+    case ST_SIDE_BOTTOM:
+      return node->padding.bottom;
+
+    case ST_SIDE_LEFT:
+      return node->padding.left;
+
+    default:
+      g_assert_not_reached ();
+      return 0.0;
+    }
 }
 
 double
@@ -3348,15 +3365,15 @@ st_theme_node_get_icon_colors (StThemeNode *node)
 static float
 get_width_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT] +
-          (int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
+  return ((int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding.left +
+          (int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding.right);
 }
 
 static float
 get_height_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP] +
-          (int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
+  return ((int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding.top +
+          (int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding.bottom);
 }
 
 /**
@@ -3518,10 +3535,10 @@ st_theme_node_get_content_box (StThemeNode           *node,
   avail_width = allocation->x2 - allocation->x1;
   avail_height = allocation->y2 - allocation->y1;
 
-  noncontent_left = node->border_width[ST_SIDE_LEFT] + node->padding[ST_SIDE_LEFT];
-  noncontent_top = node->border_width[ST_SIDE_TOP] + node->padding[ST_SIDE_TOP];
-  noncontent_right = node->border_width[ST_SIDE_RIGHT] + node->padding[ST_SIDE_RIGHT];
-  noncontent_bottom = node->border_width[ST_SIDE_BOTTOM] + node->padding[ST_SIDE_BOTTOM];
+  noncontent_left = node->border_width[ST_SIDE_LEFT] + node->padding.left;
+  noncontent_top = node->border_width[ST_SIDE_TOP] + node->padding.top;
+  noncontent_right = node->border_width[ST_SIDE_RIGHT] + node->padding.right;
+  noncontent_bottom = node->border_width[ST_SIDE_BOTTOM] + node->padding.bottom;
 
   content_box->x1 = (int)(0.5 + noncontent_left);
   content_box->y1 = (int)(0.5 + noncontent_top);
@@ -3650,9 +3667,13 @@ st_theme_node_geometry_equal (StThemeNode *node,
     {
       if (node->border_width[side] != other->border_width[side])
         return FALSE;
-      if (node->padding[side] != other->padding[side])
-        return FALSE;
     }
+
+  if (node->padding.top != other->padding.top
+      || node->padding.right != other->padding.right
+      || node->padding.bottom != other->padding.bottom
+      || node->padding.left != other->padding.left)
+    return FALSE;
 
   if (node->width != other->width || node->height != other->height)
     return FALSE;

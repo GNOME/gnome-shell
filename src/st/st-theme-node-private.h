@@ -36,6 +36,15 @@ typedef struct {
   int width;
 } StOutline;
 
+/* Keep this in sync with stylish/src/padding.rs:StPadding */
+/* Note that this matches the order in StSide */
+typedef struct {
+  double top;
+  double right;
+  double bottom;
+  double left;
+} StPadding;
+
 struct _StThemeNode {
   GObject parent;
 
@@ -64,7 +73,7 @@ struct _StThemeNode {
 
   int border_width[4];
   int border_radius[4];
-  guint padding[4];
+  StPadding padding;
   guint margin[4];
 
   int width;
