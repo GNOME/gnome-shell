@@ -167,6 +167,8 @@ struct _ShellBlurEffect
 
   BlurData blur[2];
 
+  ClutterActorBox actor_box;
+
   unsigned int tex_width;
   unsigned int tex_height;
 
@@ -522,24 +524,44 @@ shell_blur_effect_set_actor (ClutterActorMeta *meta,
 }
 
 static void
-get_target_size (ShellBlurEffect *self,
-                 float           *width,
-                 float           *height)
+update_actor_box (ShellBlurEffect     *self,
+                  ClutterPaintContext *paint_context)
 {
-  float resource_scale = 1.0;
-  float ceiled_resource_scale;
-  float transformed_width;
-  float transformed_height;
+  ClutterActorBox box;
+  ClutterStageView *stage_view;
+  float box_scale_factor = 1.0f;
+  float origin_x, origin_y;
+  float width, height;
+  cairo_rectangle_int_t stage_view_layout;
 
-  clutter_actor_get_resource_scale (self->actor, &resource_scale);
-  ceiled_resource_scale = ceilf (resource_scale);
 
-  clutter_actor_get_transformed_size (self->actor,
-                                      &transformed_width,
-                                      &transformed_height);
+  switch (self->mode)
+    {
+    case SHELL_BLUR_MODE_ACTOR:
+      clutter_actor_get_allocation_box (self->actor, &box);
+      break;
 
-  *width = ceilf (transformed_width * ceiled_resource_scale);
-  *height = ceilf (transformed_height * ceiled_resource_scale);
+    case SHELL_BLUR_MODE_BACKGROUND:
+      stage_view = clutter_paint_context_get_stage_view (paint_context);
+      box_scale_factor = clutter_stage_view_get_scale (stage_view);
+      clutter_stage_view_get_layout (stage_view, &stage_view_layout);
+
+      clutter_actor_get_transformed_position (self->actor, &origin_x, &origin_y);
+      clutter_actor_get_transformed_size (self->actor, &width, &height);
+
+      origin_x -= stage_view_layout.x;
+      origin_y -= stage_view_layout.y;
+
+      clutter_actor_box_set_origin (&box, origin_x, origin_y);
+      clutter_actor_box_set_size (&box, width, height);
+
+      clutter_actor_box_scale (&box, box_scale_factor);
+      break;
+    }
+
+  clutter_actor_box_clamp_to_pixel (&box);
+
+  self->actor_box = box;
 }
 
 static void
@@ -547,23 +569,9 @@ paint_texture (ShellBlurEffect     *self,
                ClutterPaintContext *paint_context)
 {
   CoglFramebuffer *framebuffer;
-  CoglMatrix modelview;
   float width, height;
-  float resource_scale;
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
-
-  cogl_framebuffer_push_matrix (framebuffer);
-  cogl_framebuffer_get_modelview_matrix (framebuffer, &modelview);
-
-  if (clutter_actor_get_resource_scale (self->actor, &resource_scale) &&
-      resource_scale != 1.0f)
-    {
-      float paint_scale = 1.0f / resource_scale;
-      cogl_matrix_scale (&modelview, paint_scale, paint_scale, 1);
-    }
-
-  cogl_framebuffer_set_modelview_matrix (framebuffer, &modelview);
 
   /* Use the untransformed actor size here, since the framebuffer itself already
    * has the actor transform matrix applied.
@@ -574,10 +582,8 @@ paint_texture (ShellBlurEffect     *self,
   cogl_framebuffer_draw_rectangle (framebuffer,
                                    self->brightness_fb.pipeline,
                                    0, 0,
-                                   ceilf (width),
-                                   ceilf (height));
-
-  cogl_framebuffer_pop_matrix (framebuffer);
+                                   width,
+                                   height);
 }
 
 static void
@@ -645,23 +651,24 @@ paint_background (ShellBlurEffect     *self,
 {
   g_autoptr (GError) error = NULL;
   CoglFramebuffer *framebuffer;
-  float transformed_x = 0.f;
-  float transformed_y = 0.f;
+  float transformed_x, transformed_y;
+  float transformed_width, transformed_height;
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
 
-  clutter_actor_get_transformed_position (self->actor,
-                                          &transformed_x,
-                                          &transformed_y);
+  clutter_actor_box_get_origin (&self->actor_box,
+                                &transformed_x, &transformed_y);
+  clutter_actor_box_get_size (&self->actor_box,
+                              &transformed_width, &transformed_height);
 
   clear_framebuffer (self->background_fb.framebuffer);
   cogl_blit_framebuffer (framebuffer,
                          self->background_fb.framebuffer,
-                         floor (transformed_x),
-                         floor (transformed_y),
+                         transformed_x,
+                         transformed_y,
                          0, 0,
-                         self->tex_width,
-                         self->tex_height,
+                         transformed_width,
+                         transformed_height,
                          &error);
 
   if (error)
@@ -674,7 +681,8 @@ paint_background (ShellBlurEffect     *self,
 }
 
 static gboolean
-update_framebuffers (ShellBlurEffect *self)
+update_framebuffers (ShellBlurEffect     *self,
+                     ClutterPaintContext *paint_context)
 {
   gboolean updated = FALSE;
   float downscale_factor;
@@ -687,7 +695,9 @@ update_framebuffers (ShellBlurEffect *self)
   if (!self->actor)
     return FALSE;
 
-  get_target_size (self, &width, &height);
+  update_actor_box (self, paint_context);
+  clutter_actor_box_get_size (&self->actor_box, &width, &height);
+
   downscale_factor = calculate_downscale_factor (width, height, self->sigma);
 
   updated =
@@ -783,7 +793,7 @@ shell_blur_effect_paint (ClutterEffect           *effect,
           /* Failing to create or update the offscreen framebuffers prevents
            * the entire effect to be applied.
            */
-          if (!update_framebuffers (self))
+          if (!update_framebuffers (self, paint_context))
             goto fail;
 
           switch (self->mode)
