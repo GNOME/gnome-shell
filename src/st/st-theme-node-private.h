@@ -30,6 +30,12 @@
 
 G_BEGIN_DECLS
 
+/* Keep this in sync with stylish/src/outline.rs:Outline */
+typedef struct {
+  ClutterColor color;
+  int width;
+} StOutline;
+
 struct _StThemeNode {
   GObject parent;
 
@@ -53,11 +59,11 @@ struct _StThemeNode {
 
   ClutterColor foreground_color;
   ClutterColor border_color[4];
-  ClutterColor outline_color;
+
+  StOutline outline;
 
   int border_width[4];
   int border_radius[4];
-  int outline_width;
   guint padding[4];
   guint margin[4];
 
