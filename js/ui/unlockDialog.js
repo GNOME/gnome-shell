@@ -19,7 +19,7 @@ const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const CROSSFADE_TIME = 300;
 
 const BLUR_BRIGHTNESS = 0.55;
-const BLUR_RADIUS = 200;
+const BLUR_SIGMA = 60;
 
 const SUMMARY_ICON_SIZE = 32;
 
@@ -514,10 +514,18 @@ var UnlockDialog = GObject.registerClass({
 
         this._backgroundGroup.add_child(widget);
 
-        widget.add_effect(new Shell.BlurEffect({
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
+
+        let effect = new Shell.BlurEffect({
             brightness: BLUR_BRIGHTNESS,
-            blur_radius: BLUR_RADIUS,
-        }));
+            sigma: BLUR_SIGMA * themeContext.scale_factor,
+        });
+
+        this._scaleChangedId = themeContext.connect('notify::scale-factor', () => {
+            effect.sigma = BLUR_SIGMA * themeContext.scale_factor;
+        });
+
+        widget.add_effect(effect);
     }
 
     _updateBackgrounds() {
@@ -678,6 +686,12 @@ var UnlockDialog = GObject.registerClass({
         if (this._monitorsChangedId) {
             Main.layoutManager.disconnect(this._monitorsChangedId);
             delete this._monitorsChangedId;
+        }
+
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        if (this._scaleChangedId) {
+            themeContext.disconnect(this._scaleChangedId);
+            delete this._scaleChangedId;
         }
     }
 

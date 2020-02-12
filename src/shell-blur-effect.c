@@ -42,7 +42,9 @@
  * # Optimizations
  *
  * There are a number of optimizations in place to make this blur implementation
- * real-time.
+ * real-time. All in all, the implementation performs best when using large
+ * blur-radii that allow downscaling the texture to smaller sizes, at small
+ * radii where no downscaling is possible this can easily halve the framerate.
  *
  * ## Multipass
  *
@@ -66,62 +68,67 @@
  *
  * http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
  *
+ * ## Incremental gauss-factor calculation
+ *
+ * The kernel values for the gaussian kernel are computed incrementally instead
+ * of running the expensive calculations multiple times inside the blur shader.
+ * The implementation is based on the algorithm presented by K. Turkowski in
+ * GPU Gems 3, chapter 40:
+ *
+ * https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch40.html
+ *
  */
 
 static const gchar *gaussian_blur_glsl_declarations =
-"uniform float blur_radius;                                        \n"
-"uniform float pixel_step;                                         \n"
-"uniform int vertical;                                             \n"
-"                                                                  \n"
-"float gaussian (float sigma, float x) {                           \n"
-"  return exp ( - (x * x) / (2.0 * sigma * sigma));                \n"
-"}                                                                 \n"
-"                                                                  \n";
+"uniform float sigma;                                                      \n"
+"uniform float pixel_step;                                                 \n"
+"uniform int vertical;                                                     \n";
 
 static const gchar *gaussian_blur_glsl =
-"  float total = 0.0;                                              \n"
-"  int horizontal = 1 - vertical;                                  \n"
-"                                                                  \n"
-"  vec4 ret = vec4 (0);                                            \n"
-"  vec2 uv = vec2 (cogl_tex_coord.st);                             \n"
-"                                                                  \n"
-"  float half_radius = blur_radius / 2.0;                          \n"
-"  int n_steps = int (ceil (half_radius)) + 1;                     \n"
-"                                                                  \n"
-"  for (int i = 0; i < n_steps; i++) {                             \n"
-"    float i0 = min (float (2 * i), blur_radius);                  \n"
-"    float i1 = min (i0 + 1.0, blur_radius);                       \n"
-"                                                                  \n"
-"    float step0 = i0 * pixel_step;                                \n"
-"    float step1 = i1 * pixel_step;                                \n"
-"                                                                  \n"
-"    float weight0 = gaussian (half_radius, i0);                   \n"
-"    float weight1 = gaussian (half_radius, i1);                   \n"
-"    float weight = weight0 + weight1;                             \n"
-"                                                                  \n"
-"    float foffset = (step0 * weight0 + step1 * weight1) / weight; \n"
-"    vec2 offset = vec2(foffset * float(horizontal),               \n"
-"                       foffset * float(vertical));                \n"
-"                                                                  \n"
-"    vec4 c = texture2D(cogl_sampler, uv + offset);                \n"
-"    total += weight;                                              \n"
-"    ret += c * weight;                                            \n"
-"                                                                  \n"
-"    c = texture2D(cogl_sampler, uv - offset);                     \n"
-"    total += weight;                                              \n"
-"    ret += c * weight;                                            \n"
-"  }                                                               \n"
-"                                                                  \n"
-"  cogl_texel = vec4 (ret / total);                                \n";
+"  int horizontal = 1 - vertical;                                          \n"
+"                                                                          \n"
+"  vec2 uv = vec2 (cogl_tex_coord.st);                                     \n"
+"                                                                          \n"
+"  vec3 gauss_coefficient;                                                 \n"
+"  gauss_coefficient.x = 1.0 / (sqrt (2.0 * 3.14159265) * sigma);          \n"
+"  gauss_coefficient.y = exp (-0.5 / (sigma * sigma));                     \n"
+"  gauss_coefficient.z = gauss_coefficient.y * gauss_coefficient.y;        \n"
+"                                                                          \n"
+"  float gauss_coefficient_total = gauss_coefficient.x;                    \n"
+"                                                                          \n"
+"  vec4 ret = texture2D (cogl_sampler, uv) * gauss_coefficient.x;          \n"
+"  gauss_coefficient.xy *= gauss_coefficient.yz;                           \n"
+"                                                                          \n"
+"  int n_steps = int (ceil (3 * sigma));                                   \n"
+"                                                                          \n"
+"  for (int i = 1; i < n_steps; i += 2) {                                  \n"
+"    float coefficient_subtotal = gauss_coefficient.x;                     \n"
+"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
+"    coefficient_subtotal += gauss_coefficient.x;                          \n"
+"                                                                          \n"
+"    float gauss_ratio = gauss_coefficient.x / coefficient_subtotal;       \n"
+"                                                                          \n"
+"    float foffset = float (i) + gauss_ratio;                              \n"
+"    vec2 offset = vec2 (foffset * pixel_step * float (horizontal),        \n"
+"                        foffset * pixel_step * float (vertical));         \n"
+"                                                                          \n"
+"    ret += texture2D (cogl_sampler, uv + offset) * coefficient_subtotal;  \n"
+"    ret += texture2D (cogl_sampler, uv - offset) * coefficient_subtotal;  \n"
+"                                                                          \n"
+"    gauss_coefficient_total += 2.0 * coefficient_subtotal;                \n"
+"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
+"  }                                                                       \n"
+"                                                                          \n"
+"  cogl_texel = ret / gauss_coefficient_total;                             \n";
 
 static const gchar *brightness_glsl_declarations =
-"uniform float brightness;                                         \n";
+"uniform float brightness;                                                 \n";
 
 static const gchar *brightness_glsl =
-"  cogl_color_out.rgb *= brightness;                               \n";
+"  cogl_color_out.rgb *= brightness;                                       \n";
 
 #define MIN_DOWNSCALE_SIZE 256.f
-#define MAX_BLUR_RADIUS 10.f
+#define MAX_SIGMA 6.f
 
 typedef enum
 {
@@ -146,7 +153,7 @@ typedef struct
 {
   FramebufferData data;
   BlurType type;
-  int blur_radius_uniform;
+  int sigma_uniform;
   int pixel_step_uniform;
   int vertical_uniform;
 } BlurData;
@@ -156,7 +163,7 @@ struct _ShellBlurEffect
   ClutterEffect parent_instance;
 
   ClutterActor *actor;
-  uint8_t old_opacity_override;
+  int old_opacity_override;
 
   BlurData blur[2];
 
@@ -174,14 +181,14 @@ struct _ShellBlurEffect
   ShellBlurMode mode;
   float downscale_factor;
   float brightness;
-  int blur_radius;
+  int sigma;
 };
 
 G_DEFINE_TYPE (ShellBlurEffect, shell_blur_effect, CLUTTER_TYPE_EFFECT)
 
 enum {
   PROP_0,
-  PROP_BLUR_RADIUS,
+  PROP_SIGMA,
   PROP_BRIGHTNESS,
   PROP_MODE,
   N_PROPS
@@ -264,8 +271,8 @@ setup_blur (BlurData *blur,
   blur->type = type;
   blur->data.pipeline = create_blur_pipeline ();
 
-  blur->blur_radius_uniform =
-    cogl_pipeline_get_uniform_location (blur->data.pipeline, "blur_radius");
+  blur->sigma_uniform =
+    cogl_pipeline_get_uniform_location (blur->data.pipeline, "sigma");
   blur->pixel_step_uniform =
     cogl_pipeline_get_uniform_location (blur->data.pipeline, "pixel_step");
   blur->vertical_uniform =
@@ -292,11 +299,11 @@ update_blur_uniforms (ShellBlurEffect *self,
                                     pixel_step);
     }
 
-  if (blur->blur_radius_uniform > -1)
+  if (blur->sigma_uniform > -1)
     {
       cogl_pipeline_set_uniform_1f (blur->data.pipeline,
-                                    blur->blur_radius_uniform,
-                                    self->blur_radius / self->downscale_factor);
+                                    blur->sigma_uniform,
+                                    self->sigma / self->downscale_factor);
     }
 
   if (blur->vertical_uniform > -1)
@@ -321,21 +328,18 @@ update_brightness_uniform (ShellBlurEffect *self)
 static void
 setup_projection_matrix (CoglFramebuffer *framebuffer,
                          float            width,
-                         float            height,
-                         float            downscale_factor)
+                         float            height)
 {
   CoglMatrix projection;
-  float downscaled_width = width / downscale_factor;
-  float downscaled_height = height / downscale_factor;
 
   cogl_matrix_init_identity (&projection);
   cogl_matrix_scale (&projection,
-                     2.0 / downscaled_width,
-                     -2.0 / downscaled_height,
+                     2.0 / width,
+                     -2.0 / height,
                      1.f);
   cogl_matrix_translate (&projection,
-                         -downscaled_width / 2.0,
-                         -downscaled_height / 2.0,
+                         -width / 2.0,
+                         -height / 2.0,
                          0);
 
   cogl_framebuffer_set_projection_matrix (framebuffer, &projection);
@@ -353,10 +357,10 @@ update_fbo (FramebufferData *data,
   g_clear_pointer (&data->texture, cogl_object_unref);
   g_clear_pointer (&data->framebuffer, cogl_object_unref);
 
-  data->texture =
-    cogl_texture_2d_new_with_size (ctx,
-                                   width / downscale_factor,
-                                   height / downscale_factor);
+  float new_width = floorf (width / downscale_factor);
+  float new_height = floorf (height / downscale_factor);
+
+  data->texture = cogl_texture_2d_new_with_size (ctx, new_width, new_height);
   if (!data->texture)
     return FALSE;
 
@@ -369,7 +373,7 @@ update_fbo (FramebufferData *data,
       return FALSE;
     }
 
-  setup_projection_matrix (data->framebuffer, width, height, downscale_factor);
+  setup_projection_matrix (data->framebuffer, new_width, new_height);
 
   return TRUE;
 }
@@ -457,18 +461,18 @@ clear_framebuffer_data (FramebufferData *fb_data)
 static float
 calculate_downscale_factor (float width,
                             float height,
-                            float blur_radius)
+                            float sigma)
 {
   float downscale_factor = 1.0;
   float scaled_width = width;
   float scaled_height = height;
-  float scaled_radius = blur_radius;
+  float scaled_sigma = sigma;
 
   /* This is the algorithm used by Firefox; keep downscaling until either the
    * blur radius is lower than the threshold, or the downscaled texture is too
    * small.
    */
-  while (scaled_radius > MAX_BLUR_RADIUS &&
+  while (scaled_sigma > MAX_SIGMA &&
          scaled_width > MIN_DOWNSCALE_SIZE &&
          scaled_height > MIN_DOWNSCALE_SIZE)
     {
@@ -476,7 +480,7 @@ calculate_downscale_factor (float width,
 
       scaled_width = width / downscale_factor;
       scaled_height = height / downscale_factor;
-      scaled_radius = blur_radius / downscale_factor;
+      scaled_sigma = sigma / downscale_factor;
     }
 
   return downscale_factor;
@@ -579,26 +583,16 @@ paint_texture (ShellBlurEffect     *self,
 static void
 apply_blur (ShellBlurEffect     *self,
             ClutterPaintContext *paint_context,
-            FramebufferData     *from)
+            FramebufferData     *from,
+            uint8_t              paint_opacity)
 {
-  ClutterActor *actor;
   BlurData *vblur;
   BlurData *hblur;
-  guint8 paint_opacity;
 
   vblur = &self->blur[VERTICAL];
   hblur = &self->blur[HORIZONTAL];
 
-  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (self));
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
-
   /* Copy the actor contents into the vblur framebuffer */
-  cogl_pipeline_set_color4ub (from->pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
-
   clear_framebuffer (vblur->data.framebuffer);
   cogl_framebuffer_draw_rectangle (vblur->data.framebuffer,
                                    from->pipeline,
@@ -614,11 +608,6 @@ apply_blur (ShellBlurEffect     *self,
    * blurred image.
    */
   update_blur_uniforms (self, vblur);
-  cogl_pipeline_set_color4ub (vblur->data.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
 
   clear_framebuffer (hblur->data.framebuffer);
   cogl_framebuffer_draw_rectangle (hblur->data.framebuffer,
@@ -658,16 +647,8 @@ paint_background (ShellBlurEffect     *self,
   CoglFramebuffer *framebuffer;
   float transformed_x = 0.f;
   float transformed_y = 0.f;
-  guint8 paint_opacity;
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
-  paint_opacity = clutter_actor_get_paint_opacity (self->actor);
-
-  cogl_pipeline_set_color4ub (self->background_fb.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
 
   clutter_actor_get_transformed_position (self->actor,
                                           &transformed_x,
@@ -707,7 +688,7 @@ update_framebuffers (ShellBlurEffect *self)
     return FALSE;
 
   get_target_size (self, &width, &height);
-  downscale_factor = calculate_downscale_factor (width, height, self->blur_radius);
+  downscale_factor = calculate_downscale_factor (width, height, self->sigma);
 
   updated =
     update_actor_fbo (self, width, height, downscale_factor) &&
@@ -793,8 +774,9 @@ shell_blur_effect_paint (ClutterEffect           *effect,
                          ClutterEffectPaintFlags  flags)
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
+  uint8_t paint_opacity;
 
-  if (self->blur_radius > 0)
+  if (self->sigma > 0)
     {
       if (needs_repaint (self, flags))
         {
@@ -807,13 +789,15 @@ shell_blur_effect_paint (ClutterEffect           *effect,
           switch (self->mode)
             {
             case SHELL_BLUR_MODE_ACTOR:
+              paint_opacity = clutter_actor_get_paint_opacity (self->actor);
+
               paint_actor_offscreen (self, paint_context, flags);
-              apply_blur (self, paint_context, &self->actor_fb);
+              apply_blur (self, paint_context, &self->actor_fb, paint_opacity);
               break;
 
             case SHELL_BLUR_MODE_BACKGROUND:
               paint_background (self, paint_context);
-              apply_blur (self, paint_context, &self->background_fb);
+              apply_blur (self, paint_context, &self->background_fb, 255);
               break;
             }
         }
@@ -841,32 +825,6 @@ fail:
    * couldn't be created, fallback to simply painting the actor.
    */
   clutter_actor_continue_paint (self->actor, paint_context);
-}
-
-static gboolean
-shell_blur_effect_modify_paint_volume (ClutterEffect      *effect,
-                                       ClutterPaintVolume *volume)
-{
-  ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
-  graphene_point3d_t origin;
-  float width;
-  float height;
-
-  clutter_paint_volume_get_origin (volume, &origin);
-  width = clutter_paint_volume_get_width (volume);
-  height = clutter_paint_volume_get_height (volume);
-
-  origin.y -= self->blur_radius;
-  origin.x -= self->blur_radius;
-
-  height += 2 * self->blur_radius;
-  width += 2 * self->blur_radius;
-
-  clutter_paint_volume_set_origin (volume, &origin);
-  clutter_paint_volume_set_width (volume, width);
-  clutter_paint_volume_set_height (volume, height);
-
-  return TRUE;
 }
 
 static void
@@ -899,8 +857,8 @@ shell_blur_effect_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_BLUR_RADIUS:
-      g_value_set_int (value, self->blur_radius);
+    case PROP_SIGMA:
+      g_value_set_int (value, self->sigma);
       break;
 
     case PROP_BRIGHTNESS:
@@ -926,8 +884,8 @@ shell_blur_effect_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_BLUR_RADIUS:
-      shell_blur_effect_set_blur_radius (self, g_value_get_int (value));
+    case PROP_SIGMA:
+      shell_blur_effect_set_sigma (self, g_value_get_int (value));
       break;
 
     case PROP_BRIGHTNESS:
@@ -957,12 +915,11 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
   meta_class->set_actor = shell_blur_effect_set_actor;
 
   effect_class->paint = shell_blur_effect_paint;
-  effect_class->modify_paint_volume = shell_blur_effect_modify_paint_volume;
 
-  properties[PROP_BLUR_RADIUS] =
-    g_param_spec_int ("blur-radius",
-                      "Blur radius",
-                      "Blur radius",
+  properties[PROP_SIGMA] =
+    g_param_spec_int ("sigma",
+                      "Sigma",
+                      "Sigma",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
@@ -988,7 +945,7 @@ static void
 shell_blur_effect_init (ShellBlurEffect *self)
 {
   self->mode = SHELL_BLUR_MODE_ACTOR;
-  self->blur_radius = 0;
+  self->sigma = 0;
   self->brightness = 1.f;
 
   self->actor_fb.pipeline = create_base_pipeline ();
@@ -1008,29 +965,29 @@ shell_blur_effect_new (void)
 }
 
 int
-shell_blur_effect_get_blur_radius (ShellBlurEffect *self)
+shell_blur_effect_get_sigma (ShellBlurEffect *self)
 {
   g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), -1);
 
-  return self->blur_radius;
+  return self->sigma;
 }
 
 void
-shell_blur_effect_set_blur_radius (ShellBlurEffect *self,
-                                   int              radius)
+shell_blur_effect_set_sigma (ShellBlurEffect *self,
+                             int              sigma)
 {
   g_return_if_fail (SHELL_IS_BLUR_EFFECT (self));
 
-  if (self->blur_radius == radius)
+  if (self->sigma == sigma)
     return;
 
-  self->blur_radius = radius;
+  self->sigma = sigma;
   self->cache_flags &= ~BLUR_APPLIED;
 
   if (self->actor)
     clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
 
-  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_BLUR_RADIUS]);
+  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_SIGMA]);
 }
 
 float
@@ -1082,7 +1039,7 @@ shell_blur_effect_set_mode (ShellBlurEffect *self,
   switch (mode)
     {
     case SHELL_BLUR_MODE_ACTOR:
-      clear_framebuffer (&self->background_fb);
+      clear_framebuffer (self->background_fb.framebuffer);
       break;
 
     case SHELL_BLUR_MODE_BACKGROUND:
