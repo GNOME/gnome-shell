@@ -1211,24 +1211,14 @@ do_outline_property (StThemeNode   *node,
 static void
 do_padding_property_term (StThemeNode *node,
                           CRTerm      *term,
-                          gboolean     left,
-                          gboolean     right,
-                          gboolean     top,
-                          gboolean     bottom)
+                          double      *dest)
 {
   int value;
 
   if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
-  if (left)
-    node->padding.left = value;
-  if (right)
-    node->padding.right = value;
-  if (top)
-    node->padding.top = value;
-  if (bottom)
-    node->padding.bottom = value;
+  *dest = value;
 }
 
 static void
@@ -1256,13 +1246,13 @@ do_padding_property (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-left") == 0)
-        do_padding_property_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        do_padding_property_term (node, decl->value, &node->padding.left);
       else if (strcmp (property_name, "-right") == 0)
-        do_padding_property_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        do_padding_property_term (node, decl->value, &node->padding.right);
       else if (strcmp (property_name, "-top") == 0)
-        do_padding_property_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        do_padding_property_term (node, decl->value, &node->padding.top);
       else if (strcmp (property_name, "-bottom") == 0)
-        do_padding_property_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        do_padding_property_term (node, decl->value, &node->padding.bottom);
     }
 }
 
