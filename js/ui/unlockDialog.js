@@ -18,8 +18,6 @@ const IDLE_TIMEOUT = 2 * 60;
 // The timeout before showing the unlock hint (in seconds)
 const HINT_TIMEOUT = 4;
 
-const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
-
 const CROSSFADE_TIME = 300;
 const FADE_OUT_TRANSLATION = 200;
 const FADE_OUT_SCALE = 0.3;
@@ -624,7 +622,6 @@ var UnlockDialog = GObject.registerClass({
             container: widget,
             monitorIndex,
             controlPosition: false,
-            settingsSchema: SCREENSAVER_SCHEMA,
         });
 
         this._bgManagers.push(bgManager);
