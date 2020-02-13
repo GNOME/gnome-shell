@@ -807,7 +807,9 @@ shell_blur_effect_paint (ClutterEffect           *effect,
               break;
 
             case SHELL_BLUR_MODE_BACKGROUND:
-              paint_background (self, paint_context, &source_actor_box);
+              if (!paint_background (self, paint_context, &source_actor_box))
+                goto fail;
+
               apply_blur (self, paint_context, &self->background_fb, 255);
               break;
             }
