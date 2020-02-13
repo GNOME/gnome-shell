@@ -35,6 +35,13 @@
   &:hover {
     color: lighten($osd_fg_color,30%);
   }
+
+  & StIcon {
+    background-color: transparentize($osd_fg_color,0.95);
+    padding: 18px 20px 22px 20px;
+    width: 88px; height: 88px;
+    border-radius: 99px;
+  }
 }
 
 .user-widget.vertical .user-icon {
