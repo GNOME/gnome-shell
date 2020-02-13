@@ -1,10 +1,10 @@
 [Unit]
-Description=GNOME Shell on Wayland
+Description=GNOME Shell on X11
 DefaultDependencies=no
 
 Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-Requires=gnome-shell-wayland.service
-After=gnome-shell-wayland.service
+Requires=org.gnome.Shell-x11.service
+After=org.gnome.Shell-x11.service
