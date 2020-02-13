@@ -99,6 +99,7 @@ var NotificationsBox = GObject.registerClass({
         let count = source.unseenCount;
         let countLabel = new St.Label({
             text: `${count}`,
+            visible: count > 1,
             style_class: 'unlock-dialog-notification-count-text',
         });
         textBox.add(countLabel);
@@ -262,6 +263,7 @@ var NotificationsBox = GObject.registerClass({
         } else {
             let count = source.unseenCount;
             obj.countLabel.text = `${count}`;
+            obj.countLabel.visible = count > 1;
         }
 
         obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
