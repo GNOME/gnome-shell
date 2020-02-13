@@ -465,6 +465,8 @@ var UnlockDialog = GObject.registerClass({
 
         parentActor.add_child(this);
 
+        this._gdmClient = new Gdm.Client();
+
         this._adjustment = new St.Adjustment({
             lower: 0,
             upper: 2,
@@ -615,7 +617,8 @@ var UnlockDialog = GObject.registerClass({
         if (this._authPrompt)
             return;
 
-        this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
+        this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient,
+            AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', this._fail.bind(this));
         this._authPrompt.connect('cancelled', this._fail.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
@@ -764,6 +767,11 @@ var UnlockDialog = GObject.registerClass({
         if (this._scaleChangedId) {
             themeContext.disconnect(this._scaleChangedId);
             delete this._scaleChangedId;
+        }
+
+        if (this._gdmClient) {
+            this._gdmClient = null;
+            delete this._gdmClient;
         }
     }
 
