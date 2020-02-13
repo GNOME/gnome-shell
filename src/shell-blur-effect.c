@@ -438,8 +438,8 @@ update_blur_fbo (ShellBlurEffect *self,
 
 static gboolean
 update_background_fbo (ShellBlurEffect *self,
-                    unsigned int     width,
-                    unsigned int     height)
+                       unsigned int     width,
+                       unsigned int     height)
 {
   if (self->tex_width == width &&
       self->tex_height == height &&
