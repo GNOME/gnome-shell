@@ -1139,6 +1139,7 @@ var LoginDialog = GObject.registerClass({
         this._authPrompt.hide();
         this._hideBannerView();
         this._sessionMenuButton.close();
+        this._sessionMenuButton.hide();
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.grab_key_focus();
