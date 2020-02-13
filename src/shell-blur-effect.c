@@ -513,6 +513,7 @@ shell_blur_effect_set_actor (ClutterActorMeta *meta,
 
   /* clear out the previous state */
   clear_framebuffer_data (&self->actor_fb);
+  clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
   clear_framebuffer_data (&self->blur[VERTICAL].data);
   clear_framebuffer_data (&self->blur[HORIZONTAL].data);
@@ -1051,7 +1052,7 @@ shell_blur_effect_set_mode (ShellBlurEffect *self,
   switch (mode)
     {
     case SHELL_BLUR_MODE_ACTOR:
-      clear_framebuffer (self->background_fb.framebuffer);
+      clear_framebuffer_data (&self->background_fb);
       break;
 
     case SHELL_BLUR_MODE_BACKGROUND:
