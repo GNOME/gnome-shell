@@ -1245,39 +1245,15 @@ do_padding_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
+      if (decl->value)
         {
-          do_padding_property_term (node, decl->value, TRUE, TRUE, TRUE, TRUE); /* left/right/top/bottom */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_padding_property_term (node, decl->value,       FALSE, FALSE, TRUE,  TRUE);  /* top/bottom */
-          do_padding_property_term (node, decl->value->next, TRUE, TRUE,   FALSE, FALSE); /* left/right */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_padding_property_term (node, decl->value,             FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_padding_property_term (node, decl->value->next,       TRUE,  TRUE,  FALSE, FALSE); /* left/right */
-          do_padding_property_term (node, decl->value->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottom */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_padding_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_padding_property_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* right */
-          do_padding_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);  /* bottom */
-          do_padding_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, FALSE); /* left */
-        }
-      else
-        {
-          g_warning ("Too many values for padding property");
-          return;
+          StPadding padding;
+
+          if (stylish_parse_padding_shorthand (decl->value, normalize_default (node), &padding)
+              == VALUE_FOUND)
+            {
+              node->padding = padding;
+            }
         }
     }
   else
