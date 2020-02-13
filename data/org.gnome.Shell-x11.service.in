@@ -1,8 +1,8 @@
 [Unit]
-Description=GNOME Shell on Wayland
-# On wayland, force a session shutdown
-OnFailure=gnome-shell-disable-extensions.service gnome-session-shutdown.target
-OnFailureJobMode=replace-irreversibly
+Description=GNOME Shell on X11
+# On X11, try to show the GNOME Session Failed screen
+OnFailure=org.gnome.Shell-disable-extensions.service gnome-session-failed.target
+OnFailureJobMode=replace
 CollectMode=inactive-or-failed
 RefuseManualStart=on
 RefuseManualStop=on
@@ -14,18 +14,20 @@ PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
 # The units already conflict because they use the same BusName
-#Conflicts=gnome-shell-x11.service
+#Conflicts=gnome-shell-wayland.service
+
+# Limit startup frequency more than the default
+StartLimitIntervalSec=15s
+StartLimitBurst=3
 
 [Service]
 Type=notify
 ExecStart=@bindir@/gnome-shell
-
-# unset some environment variables that were set by the shell and won't work now that the shell is gone
-ExecStopPost=-systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY
-
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
-# On wayland we cannot restart
-Restart=no
+# On X11 we want to restart on-success (Alt+F2 + r) and on-failure.
+Restart=always
+# Do not wait before restarting the shell
+RestartSec=0ms
 # Kill any stubborn child processes after this long
 TimeoutStopSec=5
