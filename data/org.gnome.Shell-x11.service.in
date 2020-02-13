@@ -13,9 +13,6 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-# The units already conflict because they use the same BusName
-#Conflicts=gnome-shell-wayland.service
-
 # Limit startup frequency more than the default
 StartLimitIntervalSec=15s
 StartLimitBurst=3

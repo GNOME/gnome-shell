@@ -13,9 +13,6 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-# The units already conflict because they use the same BusName
-#Conflicts=gnome-shell-x11.service
-
 [Service]
 Type=notify
 ExecStart=@bindir@/gnome-shell
