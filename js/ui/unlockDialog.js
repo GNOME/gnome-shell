@@ -8,15 +8,21 @@ const Background = imports.ui.background;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const SwipeTracker = imports.ui.swipeTracker;
 
 const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
 
+// The timeout before showing the unlock hint (in seconds)
+const HINT_TIMEOUT = 4;
+
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 
 const CROSSFADE_TIME = 300;
+const FADE_OUT_TRANSLATION = 200;
+const FADE_OUT_SCALE = 0.3;
 
 const BLUR_BRIGHTNESS = 0.55;
 const BLUR_SIGMA = 60;
@@ -320,14 +326,37 @@ class UnlockDialogClock extends St.BoxLayout {
             style_class: 'unlock-dialog-clock-date',
             x_align: Clutter.ActorAlign.CENTER,
         });
+        this._hint = new St.Label({
+            style_class: 'unlock-dialog-clock-hint',
+            x_align: Clutter.ActorAlign.CENTER,
+            opacity: 0,
+        });
 
         this.add_child(this._time);
         this.add_child(this._date);
+        this.add_child(this._hint);
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
+        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._touchModeChangedId = this._seat.connect('notify::touch-mode',
+            this._updateHint.bind(this));
+
+        this._monitorManager = Meta.MonitorManager.get();
+        this._powerModeChangedId = this._monitorManager.connect(
+            'power-save-mode-changed', () => (this._hint.opacity = 0));
+
+        this._idleMonitor = Meta.IdleMonitor.get_core();
+        this._idleWatchId = this._idleMonitor.add_idle_watch(HINT_TIMEOUT * 1000, () => {
+            this._hint.ease({
+                opacity: 255,
+                duration: CROSSFADE_TIME,
+            });
+        });
+
         this._updateClock();
+        this._updateHint();
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -342,8 +371,18 @@ class UnlockDialogClock extends St.BoxLayout {
         this._date.text = date.toLocaleFormat(dateFormat);
     }
 
+    _updateHint() {
+        this._hint.text = this._seat.touch_mode
+            ? _('Swipe up to unlock')
+            : _('Click or press a key to unlock');
+    }
+
     _onDestroy() {
         this._wallClock.run_dispose();
+
+        this._seat.disconnect(this._touchModeChangedId);
+        this._idleMonitor.remove_watch(this._idleWatchId);
+        this._monitorManager.disconnect(this._powerModeChangedId);
     }
 });
 
@@ -424,6 +463,34 @@ var UnlockDialog = GObject.registerClass({
 
         parentActor.add_child(this);
 
+        this._adjustment = new St.Adjustment({
+            lower: 0,
+            upper: 2,
+            page_size: 1,
+            page_increment: 1,
+        });
+        this._adjustment.connect('notify::value', () => {
+            this._setTransitionProgress(this._adjustment.value);
+        });
+
+        this._swipeTracker = new SwipeTracker.SwipeTracker(
+            this, Shell.ActionMode.UNLOCK_SCREEN);
+        this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
+        this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
+        this._swipeTracker.connect('end', this._swipeEnd.bind(this));
+
+        this.connect('scroll-event', (o, event) => {
+            if (this._swipeTracker.canHandleScrollEvent(event))
+                return Clutter.EVENT_PROPAGATE;
+
+            let direction = event.get_scroll_direction();
+            if (direction === Clutter.ScrollDirection.UP)
+                this._showClock();
+            else if (direction === Clutter.ScrollDirection.DOWN)
+                this._showPrompt();
+            return Clutter.EVENT_STOP;
+        });
+
         this._activePage = null;
 
         let tapAction = new Clutter.TapAction();
@@ -445,13 +512,16 @@ var UnlockDialog = GObject.registerClass({
         this._user = this._userManager.get_user(this._userName);
 
         // Authentication & Clock stack
-        let stack = new Shell.Stack();
+        this._stack = new Shell.Stack();
 
         this._promptBox = new St.BoxLayout({ vertical: true });
-        stack.add_child(this._promptBox);
+        this._promptBox.set_pivot_point(0.5, 0.5);
+        this._promptBox.hide();
+        this._stack.add_child(this._promptBox);
 
         this._clock = new Clock();
-        stack.add_child(this._clock);
+        this._clock.set_pivot_point(0.5, 0.5);
+        this._stack.add_child(this._clock);
         this._showClock();
 
         this.allowCancel = false;
@@ -465,10 +535,10 @@ var UnlockDialog = GObject.registerClass({
         // Main Box
         let mainBox = new Clutter.Actor();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        mainBox.add_child(stack);
+        mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
         mainBox.layout_manager = new UnlockDialogLayout(
-            stack,
+            this._stack,
             this._notificationsBox);
         this.add_child(mainBox);
 
@@ -575,22 +645,11 @@ var UnlockDialog = GObject.registerClass({
             return;
 
         this._activePage = this._clock;
-        this._clock.show();
 
-        this._promptBox.ease({
-            opacity: 0,
+        this._adjustment.ease(0, {
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._promptBox.hide();
-                this._maybeDestroyAuthPrompt();
-            },
-        });
-
-        this._clock.ease({
-            opacity: 255,
-            duration: CROSSFADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._maybeDestroyAuthPrompt(),
         });
     }
 
@@ -603,17 +662,30 @@ var UnlockDialog = GObject.registerClass({
         this._activePage = this._promptBox;
         this._promptBox.show();
 
-        this._clock.ease({
-            opacity: 0,
+        this._adjustment.ease(1, {
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._clock.hide(),
+        });
+    }
+
+    _setTransitionProgress(progress) {
+        this._promptBox.visible = progress > 0;
+        this._clock.visible = progress < 1;
+
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+
+        this._promptBox.set({
+            opacity: 255 * progress,
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            translation_y: FADE_OUT_TRANSLATION * (1 - progress) * scaleFactor,
         });
 
-        this._promptBox.ease({
-            opacity: 255,
-            duration: CROSSFADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        this._clock.set({
+            opacity: 255 * (1 - progress),
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+            translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
         });
     }
 
@@ -637,6 +709,40 @@ var UnlockDialog = GObject.registerClass({
     _escape() {
         if (this.allowCancel)
             this._authPrompt.cancel();
+    }
+
+    _swipeBegin(tracker, monitor) {
+        if (monitor !== Main.layoutManager.primaryIndex)
+            return;
+
+        this._adjustment.remove_transition('value');
+
+        this._ensureAuthPrompt();
+
+        let progress = this._adjustment.value;
+        tracker.confirmSwipe(this._stack.height,
+            [0, 1],
+            progress,
+            Math.round(progress));
+    }
+
+    _swipeUpdate(tracker, progress) {
+        this._adjustment.value = progress;
+    }
+
+    _swipeEnd(tracker, duration, endProgress) {
+        this._activePage = endProgress
+            ? this._promptBox
+            : this._clock;
+
+        this._adjustment.ease(endProgress, {
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            duration,
+            onComplete: () => {
+                if (this._activePage === this._clock)
+                    this._maybeDestroyAuthPrompt();
+            },
+        });
     }
 
     _onDestroy() {
