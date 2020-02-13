@@ -1209,9 +1209,9 @@ do_outline_property (StThemeNode   *node,
 }
 
 static void
-do_padding_property_term (StThemeNode *node,
-                          CRTerm      *term,
-                          double      *dest)
+get_padding_longhand (StThemeNode *node,
+                      CRTerm      *term,
+                      double      *dest)
 {
   int value;
 
@@ -1246,13 +1246,13 @@ do_padding_property (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-left") == 0)
-        do_padding_property_term (node, decl->value, &node->padding.left);
+        get_padding_longhand (node, decl->value, &node->padding.left);
       else if (strcmp (property_name, "-right") == 0)
-        do_padding_property_term (node, decl->value, &node->padding.right);
+        get_padding_longhand (node, decl->value, &node->padding.right);
       else if (strcmp (property_name, "-top") == 0)
-        do_padding_property_term (node, decl->value, &node->padding.top);
+        get_padding_longhand (node, decl->value, &node->padding.top);
       else if (strcmp (property_name, "-bottom") == 0)
-        do_padding_property_term (node, decl->value, &node->padding.bottom);
+        get_padding_longhand (node, decl->value, &node->padding.bottom);
     }
 }
 
