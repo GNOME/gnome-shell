@@ -10,15 +10,15 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2019.
 # Sabri Ünal <libreajans@gmail.com>, 2014, 2019.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-12 14:15+0000\n"
-"PO-Revision-Date: 2020-02-12 20:40+0300\n"
+"POT-Creation-Date: 2020-02-12 22:04+0000\n"
+"PO-Revision-Date: 2020-02-13 20:40+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -425,11 +425,11 @@ msgstr ""
 "Uzantıyı kaldırırsanız, yeniden etkinleştirmek istediğinizde yeniden "
 "indirmeniz gerekir"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "İptal"
 
@@ -559,44 +559,26 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Oturumu Kapat…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "Sonraki"
-
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:550
-msgid "Unlock"
-msgstr "Kilit Aç"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "Giriş"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Oturum Seç"
 
-#: js/gdm/loginDialog.js:464
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:898
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:902 js/ui/components/networkAgent.js:234
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Kullanıcı Adı: "
+#: js/gdm/loginDialog.js:917
+msgid "Username…"
+msgstr "Kullanıcı Adı…"
 
-#: js/gdm/loginDialog.js:1238
+#: js/gdm/loginDialog.js:1252
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -1116,6 +1098,14 @@ msgstr "Parola: "
 #: js/ui/components/networkAgent.js:207
 msgid "Key: "
 msgstr "Anahtar: "
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:275
+msgid "Username: "
+msgstr "Kullanıcı Adı: "
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
 msgid "Private key password: "
@@ -1787,6 +1777,10 @@ msgstr "PIM Numarası Gir…"
 msgid "Remember Password"
 msgstr "Parolayı Anımsa"
 
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Kilit Aç"
+
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
@@ -2313,10 +2307,6 @@ msgstr "Yalnızca İç"
 msgid "Unlock Window"
 msgstr "Kilit Açma Penceresi"
 
-#: js/ui/unlockDialog.js:557
-msgid "Log in as another user"
-msgstr "Başka kullanıcı olarak oturum aç"
-
 #: js/ui/viewSelector.js:181
 msgid "Applications"
 msgstr "Uygulamalar"
@@ -2802,6 +2792,16 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "Next"
+#~ msgstr "Sonraki"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Giriş"
+
+#~ msgid "Log in as another user"
+#~ msgstr "Başka kullanıcı olarak oturum aç"
 
 #~ msgid "%A, %B %d"
 #~ msgstr "%d %B %A"
