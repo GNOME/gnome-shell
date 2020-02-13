@@ -581,7 +581,6 @@ var UnlockDialog = GObject.registerClass({
             container: widget,
             monitorIndex,
             controlPosition: false,
-            settingsSchema: SCREENSAVER_SCHEMA,
         });
 
         this._bgManagers.push(bgManager);
