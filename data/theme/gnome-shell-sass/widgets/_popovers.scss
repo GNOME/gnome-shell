@@ -86,6 +86,11 @@ $popover_arrow_height: 12px;
   height: 1px; //not really the whole box
   margin: 6px 64px;
   background-color: lighten($borders_color, 2%);
+  .popup-sub-menu & { //submenu separators
+    @if $variant == 'dark' {
+      background-color: lighten($bg_color,10%);
+    }
+  }
 }
 
 // desktop background menu
