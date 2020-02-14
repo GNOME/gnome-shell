@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-10 22:47+0000\n"
+"POT-Creation-Date: 2020-02-12 19:34+0000\n"
 "PO-Revision-Date: 2020-02-12 00:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -412,11 +412,11 @@ msgid ""
 msgstr ""
 "拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -554,44 +554,28 @@ msgstr ""
 msgid "Log Out…"
 msgstr "ログアウト…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "次へ"
-
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:542
-msgid "Unlock"
-msgstr "ロック解除"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "サインイン"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "セッションを選択する"
 
-#: js/gdm/loginDialog.js:464
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "アカウントが見つかりませんか?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:898
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(たとえば、user あるいは %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:902 js/ui/components/networkAgent.js:234
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
+#: js/gdm/loginDialog.js:917
+#, fuzzy
+#| msgid "Username: "
+msgid "Username…"
 msgstr "ユーザー名: "
 
-#: js/gdm/loginDialog.js:1238
+#: js/gdm/loginDialog.js:1252
 msgid "Login Window"
 msgstr "ログインウィンドウ"
 
@@ -1110,6 +1094,14 @@ msgstr "パスワード: "
 #: js/ui/components/networkAgent.js:207
 msgid "Key: "
 msgstr "キー: "
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:275
+msgid "Username: "
+msgstr "ユーザー名: "
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
 msgid "Private key password: "
@@ -1779,6 +1771,10 @@ msgstr "PIM 数値を入力…"
 msgid "Remember Password"
 msgstr "パスワードを保存"
 
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "ロック解除"
+
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
@@ -2305,10 +2301,6 @@ msgstr "組み込みのみ"
 msgid "Unlock Window"
 msgstr "ロック解除"
 
-#: js/ui/unlockDialog.js:549
-msgid "Log in as another user"
-msgstr "他のユーザーでログイン"
-
 #: js/ui/viewSelector.js:181
 msgid "Applications"
 msgstr "アプリケーション"
@@ -2788,6 +2780,16 @@ msgstr[0] "入力数: %u"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "システムのサウンド"
+
+#~ msgid "Next"
+#~ msgstr "次へ"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "サインイン"
+
+#~ msgid "Log in as another user"
+#~ msgstr "他のユーザーでログイン"
 
 #~ msgid "%A, %B %d"
 #~ msgstr "%B%-e日 (%a)"
