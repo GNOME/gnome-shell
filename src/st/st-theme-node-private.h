@@ -45,6 +45,15 @@ typedef struct {
   double left;
 } StSides;
 
+/* Keep this in sync with stylish/src/corners.rs:StCorners */
+/* Note that this matches the order in StCorner */
+typedef struct {
+  int top_left;
+  int top_right;
+  int bottom_right;
+  int bottom_left;
+} StCorners;
+
 struct _StThemeNode {
   GObject parent;
 
@@ -72,7 +81,7 @@ struct _StThemeNode {
   StOutline outline;
 
   int border_width[4];
-  int border_radius[4];
+  StCorners border_radius;
   StSides padding;
   StSides margin;
 
