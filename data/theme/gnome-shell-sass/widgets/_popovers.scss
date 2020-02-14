@@ -90,6 +90,7 @@ $popover_arrow_height: 12px;
     margin: 6px 64px;
     background-color: lighten($borders_color, 2%);
     .popup-sub-menu & { //submenu separators
+      margin: 0 64px 0 32px;
       @if $variant == 'dark' {
         background-color: lighten($bg_color,10%);
       }
