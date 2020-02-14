@@ -948,26 +948,16 @@ st_theme_node_get_length (StThemeNode *node,
 }
 
 static void
-do_border_radius_term (StThemeNode *node,
-                       CRTerm      *term,
-                       gboolean     topleft,
-                       gboolean     topright,
-                       gboolean     bottomright,
-                       gboolean     bottomleft)
+get_corner_longhand (StThemeNode *node,
+                     CRTerm      *term,
+                     int         *dest)
 {
   int value;
 
   if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
-  if (topleft)
-    node->border_radius.top_left = value;
-  if (topright)
-    node->border_radius.top_right = value;
-  if (bottomright)
-    node->border_radius.bottom_right = value;
-  if (bottomleft)
-    node->border_radius.bottom_left = value;
+  *dest = value;
 }
 
 static void
@@ -995,13 +985,13 @@ do_border_radius (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-topleft") == 0)
-        do_border_radius_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.top_left);
       else if (strcmp (property_name, "-topright") == 0)
-        do_border_radius_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.top_right);
       else if (strcmp (property_name, "-bottomright") == 0)
-        do_border_radius_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.bottom_right);
       else if (strcmp (property_name, "-bottomleft") == 0)
-        do_border_radius_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        get_corner_longhand (node, decl->value, &node->border_radius.bottom_left);
     }
 }
 
