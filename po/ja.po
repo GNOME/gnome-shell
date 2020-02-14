@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-02-12 19:34+0000\n"
-"PO-Revision-Date: 2020-02-12 00:00+0900\n"
+"PO-Revision-Date: 2020-02-15 00:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -570,10 +570,8 @@ msgid "(e.g., user or %s)"
 msgstr "(たとえば、user あるいは %s)"
 
 #: js/gdm/loginDialog.js:917
-#, fuzzy
-#| msgid "Username: "
 msgid "Username…"
-msgstr "ユーザー名: "
+msgstr "ユーザー名…"
 
 #: js/gdm/loginDialog.js:1252
 msgid "Login Window"
