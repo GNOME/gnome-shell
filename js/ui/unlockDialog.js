@@ -593,6 +593,13 @@ var UnlockDialog = GObject.registerClass({
             (this._promptBox && this._promptBox.visible))
             return Clutter.EVENT_PROPAGATE;
 
+        const { keyval } = keyEvent;
+        if (keyval === Clutter.KEY_Shift_L ||
+            keyval === Clutter.KEY_Shift_R ||
+            keyval === Clutter.KEY_Shift_Lock ||
+            keyval === Clutter.KEY_Caps_Lock)
+            return Clutter.EVENT_PROPAGATE;
+
         let unichar = keyEvent.unicode_value;
 
         this._showPrompt();
