@@ -668,6 +668,8 @@ var UnlockDialog = GObject.registerClass({
 
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient,
             AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
+        this._authPrompt.cancelButton.visible = false;
+
         this._authPrompt.connect('failed', this._fail.bind(this));
         this._authPrompt.connect('cancelled', this._fail.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
