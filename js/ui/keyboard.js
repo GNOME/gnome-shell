@@ -257,11 +257,11 @@ var Key = GObject.registerClass({
         'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
     },
 }, class Key extends St.BoxLayout {
-    _init(key, extendedKeys) {
+    _init(key, extendedKeys, icon = null) {
         super._init({ style_class: 'key-container' });
 
         this.key = key || "";
-        this.keyButton = this._makeKey(this.key);
+        this.keyButton = this._makeKey(this.key, icon);
 
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
@@ -404,13 +404,20 @@ var Key = GObject.registerClass({
         this._capturedPress = false;
     }
 
-    _makeKey(key) {
-        let label = GLib.markup_escape_text(key, -1);
+    _makeKey(key, icon) {
         let button = new St.Button({
-            label,
             style_class: 'keyboard-key',
             x_expand: true,
         });
+
+        if (icon) {
+            let child = new St.Icon({ icon_name: icon });
+            button.set_child(child);
+            this._icon = child;
+        } else {
+            let label = GLib.markup_escape_text(key, -1);
+            button.set_label(label);
+        }
 
         button.keyWidth = 1;
         button.connect('button-press-event', () => {
@@ -475,10 +482,16 @@ var Key = GObject.registerClass({
     }
 
     setLatched(latched) {
-        if (latched)
+        if (!this._icon)
+            return;
+
+        if (latched) {
             this.keyButton.add_style_pseudo_class('latched');
-        else
+            this._icon.icon_name = 'keyboard-caps-lock-filled-symbolic';
+        } else {
             this.keyButton.remove_style_pseudo_class('latched');
+            this._icon.icon_name = 'keyboard-shift-filled-symbolic';
+        }
     }
 });
 
@@ -1439,12 +1452,16 @@ class Keyboard extends St.BoxLayout {
             let keyval = key.keyval;
             let switchToLevel = key.level;
             let action = key.action;
+            let icon = null;
 
             /* Skip emoji button if necessary */
             if (!this._emojiKeyVisible && action == 'emoji')
                 continue;
 
-            extraButton = new Key(key.label || '', []);
+            if (key.icon != null)
+                icon = key.icon;
+
+            extraButton = new Key(key.label || '', [], icon);
 
             extraButton.keyButton.add_style_class_name('default-key');
             if (key.extraClassName != null)
