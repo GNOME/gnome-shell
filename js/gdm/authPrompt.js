@@ -215,8 +215,14 @@ var AuthPrompt = GObject.registerClass({
         }
 
         this._updateEntry(secret);
-        // HACK: the question comes directly from PAM
-        this.setQuestion(question.replace(/: *$/, '…').trim());
+
+        // Hack: The request string comes directly from PAM, if it's "Password:"
+        // we replace it with our own, if it's something else we remove the
+        // last colon and any trailing or leading spaces.
+        if (request === 'Password:' || request === 'Password: ')
+            this.setQuestion(_('Enter Password'));
+        else
+            this.setQuestion(request.replace(/: *$/, '').trim());
 
         this.updateSensitivity(true);
         this.emit('prompted');
