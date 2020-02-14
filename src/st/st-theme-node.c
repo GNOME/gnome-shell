@@ -961,13 +961,13 @@ do_border_radius_term (StThemeNode *node,
     return;
 
   if (topleft)
-    node->border_radius[ST_CORNER_TOPLEFT] = value;
+    node->border_radius.top_left = value;
   if (topright)
-    node->border_radius[ST_CORNER_TOPRIGHT] = value;
+    node->border_radius.top_right = value;
   if (bottomright)
-    node->border_radius[ST_CORNER_BOTTOMRIGHT] = value;
+    node->border_radius.bottom_right = value;
   if (bottomleft)
-    node->border_radius[ST_CORNER_BOTTOMLEFT] = value;
+    node->border_radius.bottom_left = value;
 }
 
 static void
@@ -1394,7 +1394,23 @@ st_theme_node_get_border_radius (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->border_radius[corner];
+  switch (corner) {
+  case ST_CORNER_TOPLEFT:
+    return node->border_radius.top_left;
+
+  case ST_CORNER_TOPRIGHT:
+    return node->border_radius.top_right;
+
+  case ST_CORNER_BOTTOMRIGHT:
+    return node->border_radius.bottom_right;
+
+  case ST_CORNER_BOTTOMLEFT:
+    return node->border_radius.bottom_left;
+
+  default:
+    g_assert_not_reached ();
+    return 0;
+  }
 }
 
 int
@@ -3637,9 +3653,14 @@ st_theme_node_paint_equal (StThemeNode *node,
       if (node->border_width[i] > 0 &&
           !clutter_color_equal (&node->border_color[i], &other->border_color[i]))
         return FALSE;
+    }
 
-      if (node->border_radius[i] != other->border_radius[i])
-        return FALSE;
+  if (node->border_radius.top_left != other->border_radius.top_left
+      || node->border_radius.top_right != other->border_radius.top_right
+      || node->border_radius.bottom_right != other->border_radius.bottom_right
+      || node->border_radius.bottom_left != other->border_radius.bottom_left)
+    {
+      return FALSE;
     }
 
   if (node->outline.width != other->outline.width)
