@@ -36,9 +36,6 @@ static StThemeNode *group2;
 static StThemeNode *text3;
 static StThemeNode *text4;
 static StThemeNode *group3;
-static StThemeNode *group4;
-static StThemeNode *group5;
-static StThemeNode *group6;
 static StThemeNode *button;
 static StThemeNode *outline_longhand;
 static StThemeNode *outline_shorthand;
@@ -48,6 +45,10 @@ static StThemeNode *padding_shorthand1;
 static StThemeNode *padding_shorthand2;
 static StThemeNode *padding_shorthand3;
 static StThemeNode *padding_shorthand4;
+static StThemeNode *margin_shorthand1;
+static StThemeNode *margin_shorthand2;
+static StThemeNode *margin_shorthand3;
+static StThemeNode *margin_shorthand4;
 static gboolean fail;
 
 static const char *test;
@@ -426,6 +427,19 @@ assert_padding (const char *id, StThemeNode *node, double top, double right, dou
 }
 
 static void
+assert_margin (const char *id, StThemeNode *node, double top, double right, double bottom, double left)
+{
+  assert_length (id, "margin-top", top,
+                 st_theme_node_get_margin (node, ST_SIDE_TOP));
+  assert_length (id, "margin-right", right,
+                 st_theme_node_get_margin (node, ST_SIDE_RIGHT));
+  assert_length (id, "margin-bottom", bottom,
+                 st_theme_node_get_margin (node, ST_SIDE_BOTTOM));
+  assert_length (id, "margin-left", left,
+                 st_theme_node_get_margin (node, ST_SIDE_LEFT));
+}
+
+static void
 test_padding_shorthand (void)
 {
   test = "padding_shorthand";
@@ -437,51 +451,14 @@ test_padding_shorthand (void)
 }
 
 static void
-test_margin (void)
+test_margin_shorthand (void)
 {
-  test = "margin";
-  /* Test that a 4-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group2", "margin-top", 1.,
-		 st_theme_node_get_margin (group2, ST_SIDE_TOP));
-  assert_length ("group2", "margin-right", 2.,
-		 st_theme_node_get_margin (group2, ST_SIDE_RIGHT));
-  assert_length ("group2", "margin-bottom", 3.,
-		 st_theme_node_get_margin (group2, ST_SIDE_BOTTOM));
-  assert_length ("group2", "margin-left", 4.,
-		 st_theme_node_get_margin (group2, ST_SIDE_LEFT));
+  test = "margin_shorthand";
 
-  /* Test that a 3-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group4", "margin-top", 1.,
-     st_theme_node_get_margin (group4, ST_SIDE_TOP));
-  assert_length ("group4", "margin-right", 2.,
-     st_theme_node_get_margin (group4, ST_SIDE_RIGHT));
-  assert_length ("group4", "margin-bottom", 3.,
-     st_theme_node_get_margin (group4, ST_SIDE_BOTTOM));
-  assert_length ("group4", "margin-left", 2.,
-     st_theme_node_get_margin (group4, ST_SIDE_LEFT));
-
-  /* Test that a 2-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group5", "margin-top", 1.,
-     st_theme_node_get_margin (group5, ST_SIDE_TOP));
-  assert_length ("group5", "margin-right", 2.,
-     st_theme_node_get_margin (group5, ST_SIDE_RIGHT));
-  assert_length ("group5", "margin-bottom", 1.,
-     st_theme_node_get_margin (group5, ST_SIDE_BOTTOM));
-  assert_length ("group5", "margin-left", 2.,
-     st_theme_node_get_margin (group5, ST_SIDE_LEFT));
-
-  /* Test that all sides have a margin of 0 when not specified */
-  assert_length ("group6", "margin-top", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_TOP));
-  assert_length ("group6", "margin-right", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_RIGHT));
-  assert_length ("group6", "margin-bottom", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_BOTTOM));
-  assert_length ("group6", "margin-left", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_LEFT));
+  assert_margin ("margin_shorthand1", margin_shorthand1, 1, 1, 1, 1);
+  assert_margin ("margin_shorthand2", margin_shorthand2, 1, 2, 1, 2);
+  assert_margin ("margin_shorthand3", margin_shorthand3, 1, 2, 3, 2);
+  assert_margin ("margin_shorthand4", margin_shorthand4, 1, 2, 3, 4);
 }
 
 static void
@@ -704,12 +681,6 @@ main (int argc, char **argv)
                               CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = st_theme_node_new (context, root, NULL,
                               CLUTTER_TYPE_GROUP, "group2", NULL, NULL, NULL);
-  group4 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group4", NULL, NULL, NULL);
-  group5 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group5", NULL, NULL, NULL);
-  group6 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group6", NULL, NULL, NULL);
   text3 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
                               "color: #0000ff; padding-bottom: 12px;");
@@ -737,6 +708,15 @@ main (int argc, char **argv)
   padding_shorthand4 = st_theme_node_new (context, root, NULL,
                                           CLUTTER_TYPE_GROUP, "padding_shorthand4", NULL, NULL, NULL);
 
+  margin_shorthand1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_GROUP, "margin_shorthand1", NULL, NULL, NULL);
+  margin_shorthand2 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_GROUP, "margin_shorthand2", NULL, NULL, NULL);
+  margin_shorthand3 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_GROUP, "margin_shorthand3", NULL, NULL, NULL);
+  margin_shorthand4 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_GROUP, "margin_shorthand4", NULL, NULL, NULL);
+
   test_defaults ();
   test_double ();
   test_time ();
@@ -748,7 +728,7 @@ main (int argc, char **argv)
   test_adjacent_selector ();
   test_padding ();
   test_padding_shorthand ();
-  test_margin ();
+  test_margin_shorthand ();
   test_border ();
   test_outline ();
   test_background ();
@@ -761,9 +741,6 @@ main (int argc, char **argv)
   g_object_unref (group1);
   g_object_unref (group2);
   g_object_unref (group3);
-  g_object_unref (group4);
-  g_object_unref (group5);
-  g_object_unref (group6);
   g_object_unref (text1);
   g_object_unref (text2);
   g_object_unref (text3);
