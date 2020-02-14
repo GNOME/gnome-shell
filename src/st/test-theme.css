@@ -68,19 +68,19 @@ stage {
 }
 
 #margin_shorthand1 {
-    margin: 1px;
+    margin: 5px;
 }
 
 #margin_shorthand2 {
-    margin: 1px 2px;
+    margin: 5px 6px;
 }
 
 #margin_shorthand3 {
-    margin: 1px 2px 3px;
+    margin: 5px 6px 7px;
 }
 
 #margin_shorthand4 {
-    margin: 1px 2px 3px 4px;
+    margin: 5px 6px 7px 8px;
 }
 
 .special-text {
