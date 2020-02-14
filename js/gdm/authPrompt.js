@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AuthPrompt */
 
-const { Clutter, Gdm, Gio, GObject, Pango, Shell, St } = imports.gi;
+const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
@@ -81,6 +81,8 @@ var AuthPrompt = GObject.registerClass({
         });
         this.add_child(this._userWell);
 
+        this._hasCancelButton = this._mode === AuthPromptStatus.UNLOCK_OR_LOG_IN;
+
         this._initEntryRow();
 
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({
@@ -123,13 +125,16 @@ var AuthPrompt = GObject.registerClass({
         this.cancelButton = new St.Button({
             style_class: 'modal-dialog-button button cancel-button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-            reactive: true,
+            reactive: this._hasCancelButton,
             can_focus: true,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
             child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
         });
-        this.cancelButton.connect('clicked', () => this._onCancelButtonClicked());
+        if (this._hasCancelButton)
+            this.cancelButton.connect('clicked', () => this.cancel());
+        else
+            this.cancelButton.opacity = 0;
         this._mainBox.add_child(this.cancelButton);
 
         let entryParams = {
@@ -382,15 +387,6 @@ var AuthPrompt = GObject.registerClass({
         });
     }
 
-    _onCancelButtonClicked() {
-        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
-            let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-            if (screenSaverSettings.get_boolean('user-switch-enabled'))
-                Gdm.goto_login_session_sync(null);
-        }
-        this.cancel();
-    }
-
     setMessage(message, type) {
         if (type == GdmUtil.MessageType.ERROR)
             this._message.add_style_class_name('login-dialog-message-warning');
@@ -442,7 +438,7 @@ var AuthPrompt = GObject.registerClass({
     reset() {
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.cancelButton.reactive = true;
+        this.cancelButton.reactive = this._hasCancelButton;
         this._preemptiveAnswer = null;
 
         if (this._userVerifier)

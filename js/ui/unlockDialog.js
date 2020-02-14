@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported UnlockDialog */
 
-const { AccountsService, Atk, Clutter, Gdm,
+const { AccountsService, Atk, Clutter, Gdm, Gio,
         GnomeDesktop, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Background = imports.ui.background;
@@ -390,11 +390,12 @@ class UnlockDialogClock extends St.BoxLayout {
 
 var UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(stack, notifications) {
+    _init(stack, notifications, switchUserButton) {
         super._init();
 
         this._stack = stack;
         this._notifications = notifications;
+        this._switchUserButton = switchUserButton;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -445,6 +446,24 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         actorBox.y2 = stackY + stackHeight;
 
         this._stack.allocate(actorBox, flags);
+
+        // Switch User button
+        if (this._switchUserButton.visible) {
+            let [, , natWidth, natHeight] =
+                this._switchUserButton.get_preferred_size();
+
+            const textDirection = this._switchUserButton.get_text_direction();
+            if (textDirection === Clutter.TextDirection.RTL)
+                actorBox.x1 = box.x1 + natWidth;
+            else
+                actorBox.x1 = box.x2 - (natWidth * 2);
+
+            actorBox.y1 = box.y2 - (natHeight * 2);
+            actorBox.x2 = actorBox.x1 + natWidth;
+            actorBox.y2 = actorBox.y1 + natHeight;
+
+            this._switchUserButton.allocate(actorBox, flags);
+        }
     }
 });
 
@@ -536,14 +555,31 @@ var UnlockDialog = GObject.registerClass({
         this._notificationsBox = new NotificationsBox();
         this._notificationsBox.connect('wake-up-screen', () => this.emit('wake-up-screen'));
 
+        // Switch User button
+        this._otherUserButton = new St.Button({
+            style_class: 'modal-dialog-button button switch-user-button',
+            can_focus: true,
+            reactive: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+            child: new St.Icon({ icon_name: 'system-users-symbolic' }),
+        });
+        this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
+
+        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+        screenSaverSettings.bind('user-switch-enabled',
+            this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
+
         // Main Box
         let mainBox = new Clutter.Actor();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
+        mainBox.add_child(this._otherUserButton);
         mainBox.layout_manager = new UnlockDialogLayout(
             this._stack,
-            this._notificationsBox);
+            this._notificationsBox,
+            this._otherUserButton);
         this.add_child(mainBox);
 
         this._idleMonitor = Meta.IdleMonitor.get_core();
@@ -632,7 +668,8 @@ var UnlockDialog = GObject.registerClass({
     _maybeDestroyAuthPrompt() {
         let focus = global.stage.key_focus;
         if (focus === null ||
-            (this._authPrompt && this._authPrompt.contains(focus)))
+            (this._authPrompt && this._authPrompt.contains(focus)) ||
+            (this._otherUserButton && focus === this._otherUserButton))
             this.grab_key_focus();
 
         if (this._authPrompt) {
@@ -643,6 +680,9 @@ var UnlockDialog = GObject.registerClass({
 
     _updateSensitivity(sensitive) {
         this._authPrompt.updateSensitivity(sensitive);
+
+        this._otherUserButton.reactive = sensitive;
+        this._otherUserButton.can_focus = sensitive;
     }
 
     _showClock() {
@@ -747,6 +787,12 @@ var UnlockDialog = GObject.registerClass({
                     this._maybeDestroyAuthPrompt();
             },
         });
+    }
+
+    _otherUserClicked() {
+        Gdm.goto_login_session_sync(null);
+
+        this._authPrompt.cancel();
     }
 
     _onDestroy() {
