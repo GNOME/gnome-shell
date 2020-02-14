@@ -271,12 +271,12 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         // Hack: The request string comes directly from PAM, if it's "Password:"
-        // we replace it with our own, if it's something else we replace the
-        // last colon and any trailing spaces with a "…".
+        // we replace it with our own to allow localization, if it's something
+        // else we remove the last colon and any trailing or leading spaces.
         if (request === 'Password:' || request === 'Password: ')
-            this._passwordEntry.hint_text = _('Enter Password…');
+            this._passwordEntry.hint_text = _('Password');
         else
-            this._passwordEntry.hint_text = request.replace(/: *$/, '…');
+            this._passwordEntry.hint_text = request.replace(/: *$/, '').trim();
 
         this._passwordEntry.password_visible = echoOn;
 
