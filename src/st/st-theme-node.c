@@ -1263,29 +1263,6 @@ do_padding_property (StThemeNode   *node,
 }
 
 static void
-do_margin_property_term (StThemeNode *node,
-                         CRTerm      *term,
-                         gboolean     left,
-                         gboolean     right,
-                         gboolean     top,
-                         gboolean     bottom)
-{
-  int value;
-
-  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
-    return;
-
-  if (left)
-    node->margin[ST_SIDE_LEFT] = value;
-  if (right)
-    node->margin[ST_SIDE_RIGHT] = value;
-  if (top)
-    node->margin[ST_SIDE_TOP] = value;
-  if (bottom)
-    node->margin[ST_SIDE_BOTTOM] = value;
-}
-
-static void
 do_margin_property (StThemeNode   *node,
                     CRDeclaration *decl)
 {
@@ -1293,39 +1270,15 @@ do_margin_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
+      if (decl->value)
         {
-          do_margin_property_term (node, decl->value, TRUE, TRUE, TRUE, TRUE); /* left/right/top/bottom */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_margin_property_term (node, decl->value,       FALSE, FALSE, TRUE,  TRUE);  /* top/bottom */
-          do_margin_property_term (node, decl->value->next, TRUE, TRUE,   FALSE, FALSE); /* left/right */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_margin_property_term (node, decl->value,             FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_margin_property_term (node, decl->value->next,       TRUE,  TRUE,  FALSE, FALSE); /* left/right */
-          do_margin_property_term (node, decl->value->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottom */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_margin_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_margin_property_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* right */
-          do_margin_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);  /* bottom */
-          do_margin_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, FALSE); /* left */
-        }
-      else
-        {
-          g_warning ("Too many values for margin property");
-          return;
+          StSides margin;
+
+          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &margin)
+              == VALUE_FOUND)
+            {
+              node->margin = margin;
+            }
         }
     }
   else
@@ -1334,13 +1287,13 @@ do_margin_property (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-left") == 0)
-        do_margin_property_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        get_side_longhand (node, decl->value, &node->margin.left);
       else if (strcmp (property_name, "-right") == 0)
-        do_margin_property_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        get_side_longhand (node, decl->value, &node->margin.right);
       else if (strcmp (property_name, "-top") == 0)
-        do_margin_property_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        get_side_longhand (node, decl->value, &node->margin.top);
       else if (strcmp (property_name, "-bottom") == 0)
-        do_margin_property_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        get_side_longhand (node, decl->value, &node->margin.bottom);
     }
 }
 
@@ -1957,7 +1910,24 @@ st_theme_node_get_margin (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->margin[side];
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      return node->margin.top;
+
+    case ST_SIDE_RIGHT:
+      return node->margin.right;
+
+    case ST_SIDE_BOTTOM:
+      return node->margin.bottom;
+
+    case ST_SIDE_LEFT:
+      return node->margin.left;
+
+    default:
+      g_assert_not_reached ();
+      return 0.0;
+    }
 }
 
 /**

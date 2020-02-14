@@ -74,7 +74,7 @@ struct _StThemeNode {
   int border_width[4];
   int border_radius[4];
   StSides padding;
-  guint margin[4];
+  StSides margin;
 
   int width;
   int height;
