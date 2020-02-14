@@ -85,11 +85,18 @@ var AuthPrompt = GObject.registerClass({
 
         this._initEntryRow();
 
+        let capsLockPlaceholder = new St.Label();
+        this.add_child(capsLockPlaceholder);
+
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
         });
         this.add_child(this._capsLockWarningLabel);
+
+        this._capsLockWarningLabel.bind_property('visible',
+            capsLockPlaceholder, 'visible',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
 
         this._message = new St.Label({
             opacity: 0,
@@ -205,7 +212,7 @@ var AuthPrompt = GObject.registerClass({
             this._mainBox.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
         }
-        this._capsLockWarningLabel.opacity = secret ? 0 : 255;
+        this._capsLockWarningLabel.visible = secret;
     }
 
     _onAskQuestion(verifier, serviceName, question, secret) {
