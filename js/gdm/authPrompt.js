@@ -205,7 +205,7 @@ var AuthPrompt = GObject.registerClass({
             this._mainBox.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
         }
-        this._capsLockWarningLabel.opacity = secret ? 0 : 255;
+        this._capsLockWarningLabel.visible = secret;
     }
 
     _onAskQuestion(verifier, serviceName, question, secret) {
