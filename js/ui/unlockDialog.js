@@ -665,7 +665,6 @@ var UnlockDialog = GObject.registerClass({
             return;
 
         this._activePage = this._promptBox;
-        this._promptBox.show();
 
         this._adjustment.ease(1, {
             duration: CROSSFADE_TIME,
