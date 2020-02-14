@@ -49,6 +49,10 @@ static StThemeNode *margin_shorthand1;
 static StThemeNode *margin_shorthand2;
 static StThemeNode *margin_shorthand3;
 static StThemeNode *margin_shorthand4;
+static StThemeNode *border_radius_shorthand1;
+static StThemeNode *border_radius_shorthand2;
+static StThemeNode *border_radius_shorthand3;
+static StThemeNode *border_radius_shorthand4;
 static gboolean fail;
 
 static const char *test;
@@ -440,6 +444,19 @@ assert_margin (const char *id, StThemeNode *node, double top, double right, doub
 }
 
 static void
+assert_border_radius (const char *id, StThemeNode *node, double top_left, double top_right, double bottom_right, double bottom_left)
+{
+  assert_length (id, "border-radius-topleft", top_left,
+                 st_theme_node_get_border_radius (node, ST_CORNER_TOPLEFT));
+  assert_length (id, "border-radius-topright", top_right,
+                 st_theme_node_get_border_radius (node, ST_CORNER_TOPRIGHT));
+  assert_length (id, "border-radius-bottomright", bottom_right,
+                 st_theme_node_get_border_radius (node, ST_CORNER_BOTTOMRIGHT));
+  assert_length (id, "border-radius-bottomleft", bottom_left,
+                 st_theme_node_get_border_radius (node, ST_CORNER_BOTTOMLEFT));
+}
+
+static void
 test_padding_shorthand (void)
 {
   test = "padding_shorthand";
@@ -459,6 +476,17 @@ test_margin_shorthand (void)
   assert_margin ("margin_shorthand2", margin_shorthand2, 5, 6, 5, 6);
   assert_margin ("margin_shorthand3", margin_shorthand3, 5, 6, 7, 6);
   assert_margin ("margin_shorthand4", margin_shorthand4, 5, 6, 7, 8);
+}
+
+static void
+test_border_radius_shorthand (void)
+{
+  test = "border_radius_shorthand";
+
+  assert_border_radius ("border_radius_shorthand1", border_radius_shorthand1, 1, 1, 1, 1);
+  assert_border_radius ("border_radius_shorthand2", border_radius_shorthand2, 1, 2, 1, 2);
+  assert_border_radius ("border_radius_shorthand3", border_radius_shorthand3, 1, 2, 3, 2);
+  assert_border_radius ("border_radius_shorthand4", border_radius_shorthand4, 1, 2, 3, 4);
 }
 
 static void
@@ -718,6 +746,19 @@ main (int argc, char **argv)
   margin_shorthand4 = st_theme_node_new (context, root, NULL,
                                          CLUTTER_TYPE_GROUP, "margin_shorthand4", NULL, NULL, NULL);
 
+  border_radius_shorthand1 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_GROUP, "border_radius_shorthand1",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand2 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_GROUP, "border_radius_shorthand2",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand3 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_GROUP, "border_radius_shorthand3",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand4 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_GROUP, "border_radius_shorthand4",
+                                                NULL, NULL, NULL);
+
   test_defaults ();
   test_double ();
   test_time ();
@@ -730,6 +771,7 @@ main (int argc, char **argv)
   test_padding ();
   test_padding_shorthand ();
   test_margin_shorthand ();
+  test_border_radius_shorthand ();
   test_border ();
   test_outline ();
   test_background ();
