@@ -282,8 +282,11 @@ class PopupMenuItem extends PopupBaseMenuItem {
 var PopupSeparatorMenuItem = GObject.registerClass(
 class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     _init(text) {
-        super._init({ reactive: false,
-                      can_focus: false });
+        super._init({
+            style_class: 'popup-separator-menu-item',
+            reactive: false,
+            can_focus: false,
+        });
 
         this.label = new St.Label({ text: text || '' });
         this.add(this.label);
@@ -293,10 +296,12 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
                            this._syncVisibility.bind(this));
         this._syncVisibility();
 
-        this._separator = new St.Widget({ style_class: 'popup-separator-menu-item',
-                                          x_expand: true,
-                                          y_expand: true,
-                                          y_align: Clutter.ActorAlign.CENTER });
+        this._separator = new St.Widget({
+            style_class: 'popup-separator-menu-item-separator',
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._separator);
     }
 
