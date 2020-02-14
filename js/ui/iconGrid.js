@@ -558,12 +558,18 @@ var IconGrid = GObject.registerClass({
 
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
+            actor.clone = new Clutter.Clone({ source: actor });
+            this._clonesAnimating.push(actor.clone);
+            Main.uiGroup.add_actor(actor.clone);
+        }
+
+        for (let index = 0; index < actors.length; index++) {
+            let actor = actors[index];
             actor.opacity = 0;
             actor.reactive = false;
 
-            let actorClone = new Clutter.Clone({ source: actor });
-            this._clonesAnimating.push(actorClone);
-            Main.uiGroup.add_actor(actorClone);
+            let actorClone = actor.clone;
+            actor.clone = null;
 
             let [width, height] = this._getAllocatedChildSizeAndSpacing(actor);
             actorClone.set_size(width, height);
