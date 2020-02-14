@@ -72,7 +72,7 @@ function _getFolderName(folder) {
 
     if (folder.get_boolean('translate')) {
         let keyfile = new GLib.KeyFile();
-        let path = `desktop-directories/${name}`;
+        let path = 'desktop-directories/%s'.format(name);
 
         try {
             keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
@@ -219,7 +219,7 @@ var BaseAppView = GObject.registerClass({
         if (this._items.has(id))
             this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
-            log(`No such application ${id}`);
+            log('No such application %s'.format(id));
     }
 
     selectApp(id) {
@@ -293,7 +293,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     adaptToSize(_width, _height) {
-        throw new GObject.NotImplementedError(`adaptToSize in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('adaptToSize in %s'.format(this.constructor.name));
     }
 });
 
@@ -492,7 +492,7 @@ var AllView = GObject.registerClass({
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            let path = `${this._folderSettings.path}folders/${id}/`;
+            let path = '%sfolders/%s/'.format(this._folderSettings.path, id);
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
@@ -2278,7 +2278,7 @@ var AppIcon = GObject.registerClass({
 
     shellWorkspaceLaunch(params) {
         let { stack } = new Error();
-        log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
+        log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
 
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });

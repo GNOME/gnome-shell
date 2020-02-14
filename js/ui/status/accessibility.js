@@ -42,7 +42,7 @@ class ATIndicator extends PanelMenu.Button {
         this.add_child(this._hbox);
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
-        this._a11ySettings.connect(`changed::${KEY_ALWAYS_SHOW}`, this._queueSyncMenuVisibility.bind(this));
+        this._a11ySettings.connect('changed::%s'.format(KEY_ALWAYS_SHOW), this._queueSyncMenuVisibility.bind(this));
 
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
@@ -118,7 +118,7 @@ class ATIndicator extends PanelMenu.Button {
             settings.is_writable(key),
             enabled => settings.set_boolean(key, enabled));
 
-        settings.connect(`changed::${key}`, () => {
+        settings.connect('changed::%s'.format(key), () => {
             widget.setToggleState(settings.get_boolean(key));
 
             this._queueSyncMenuVisibility();
@@ -150,7 +150,7 @@ class ATIndicator extends PanelMenu.Button {
                 }
             });
 
-        interfaceSettings.connect(`changed::${KEY_GTK_THEME}`, () => {
+        interfaceSettings.connect('changed::%s'.format(KEY_GTK_THEME), () => {
             let value = interfaceSettings.get_string(KEY_GTK_THEME);
             if (value == HIGH_CONTRAST_THEME) {
                 highContrast.setToggleState(true);
@@ -162,7 +162,7 @@ class ATIndicator extends PanelMenu.Button {
             this._queueSyncMenuVisibility();
         });
 
-        interfaceSettings.connect(`changed::${KEY_ICON_THEME}`, () => {
+        interfaceSettings.connect('changed::%s'.format(KEY_ICON_THEME), () => {
             let value = interfaceSettings.get_string(KEY_ICON_THEME);
             if (value != HIGH_CONTRAST_THEME)
                 iconTheme = value;
@@ -187,7 +187,7 @@ class ATIndicator extends PanelMenu.Button {
                 }
             });
 
-        settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
+        settings.connect('changed::%s'.format(KEY_TEXT_SCALING_FACTOR), () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = factor > 1.0;
             widget.setToggleState(active);

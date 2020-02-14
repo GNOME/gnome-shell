@@ -231,18 +231,18 @@ var SearchResultsBase = GObject.registerClass({
             this.provider.getResultMetas(metasNeeded, metas => {
                 if (this._cancellable.is_cancelled()) {
                     if (metas.length > 0)
-                        log(`Search provider ${this.provider.id} returned results after the request was canceled`);
+                        log('Search provider %s returned results after the request was canceled'.format(this.provider.id));
                     callback(false);
                     return;
                 }
                 if (metas.length != metasNeeded.length) {
-                    log(`Wrong number of result metas returned by search provider ${this.provider.id}: ` +
-                        `expected ${metasNeeded.length} but got ${metas.length}`);
+                    log('Wrong number of result metas returned by search provider %s: '.format(this.provider.id) +
+                        'expected %d but got %d'.format(metasNeeded.length, metas.length));
                     callback(false);
                     return;
                 }
                 if (metas.some(meta => !meta.name || !meta.id)) {
-                    log(`Invalid result meta returned from search provider ${this.provider.id}`);
+                    log('Invalid result meta returned from search provider %s'.format(this.provider.id));
                     callback(false);
                     return;
                 }
@@ -609,7 +609,7 @@ var SearchResultsView = GObject.registerClass({
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
 
         let escapedTerms = this._terms.map(term => Shell.util_regex_escape(term));
-        this._highlightRegex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+        this._highlightRegex = new RegExp('(%s)'.format(escapedTerms.join('|')), 'gi');
 
         this.emit('terms-changed');
     }

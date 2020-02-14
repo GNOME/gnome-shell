@@ -1099,7 +1099,7 @@ class Panel extends St.Widget {
 
     addToStatusArea(role, indicator, position, box) {
         if (this.statusArea[role])
-            throw new Error(`Extension point conflict: there is already a status indicator for role ${role}`);
+            throw new Error('Extension point conflict: there is already a status indicator for role %s'.format(role));
 
         if (!(indicator instanceof PanelMenu.Button))
             throw new TypeError('Status indicator must be an instance of PanelMenu.Button');

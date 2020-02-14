@@ -204,10 +204,14 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                            validate: this._validateWpaPsk, password: true });
             break;
         case 'none': // static WEP
-            secrets.push({ label: _('Key'), key: `wep-key${wirelessSecuritySetting.wep_tx_keyidx}`,
-                           value: wirelessSecuritySetting.get_wep_key(wirelessSecuritySetting.wep_tx_keyidx) || '',
-                           wep_key_type: wirelessSecuritySetting.wep_key_type,
-                           validate: this._validateStaticWep, password: true });
+            secrets.push({
+                label: _('Key'),
+                key: 'wep-key%s'.format(wirelessSecuritySetting.wep_tx_keyidx),
+                value: wirelessSecuritySetting.get_wep_key(wirelessSecuritySetting.wep_tx_keyidx) || '',
+                wep_key_type: wirelessSecuritySetting.wep_key_type,
+                validate: this._validateStaticWep,
+                password: true,
+            });
             break;
         case 'ieee8021x':
             if (wirelessSecuritySetting.auth_alg == 'leap') { // Cisco LEAP
@@ -221,7 +225,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._get8021xSecrets(secrets);
             break;
         default:
-            log(`Invalid wireless key management: ${wirelessSecuritySetting.key_mgmt}`);
+            log('Invalid wireless key management: %s'.format(wirelessSecuritySetting.key_mgmt));
         }
     }
 
@@ -266,7 +270,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                            value: ieee8021xSetting.private_key_password || '', password: true });
             break;
         default:
-            log(`Invalid EAP/IEEE802.1x method: ${ieee8021xSetting.get_eap_method(0)}`);
+            log('Invalid EAP/IEEE802.1x method: %s'.format(ieee8021xSetting.get_eap_method(0)));
         }
     }
 
@@ -336,7 +340,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:
-            log(`Invalid connection type: ${connectionType}`);
+            log('Invalid connection type: %s'.format(connectionType));
         }
 
         return content;
@@ -581,12 +585,12 @@ var VPNRequestHandler = class {
 
         try {
             vpnSetting.foreach_data_item((key, value) => {
-                this._stdin.write(`DATA_KEY=${key}\n`, null);
-                this._stdin.write(`DATA_VAL=${value || ''}\n\n`, null);
+                this._stdin.write('DATA_KEY=%s\n'.format(key), null);
+                this._stdin.write('DATA_VAL=%s\n\n'.format(value || ''), null);
             });
             vpnSetting.foreach_secret((key, value) => {
-                this._stdin.write(`SECRET_KEY=${key}\n`, null);
-                this._stdin.write(`SECRET_VAL=${value || ''}\n\n`, null);
+                this._stdin.write('SECRET_KEY=%s\n'.format(key), null);
+                this._stdin.write('SECRET_VAL=%s\n\n'.format(value || ''), null);
             });
             this._stdin.write('DONE\n\n', null);
         } catch (e) {
@@ -616,7 +620,7 @@ var NetworkAgent = class {
             let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
             monitor.connect('changed', () => (this._vpnCacheBuilt = false));
         } catch (e) {
-            log(`Failed to create monitor for VPN plugin dir: ${e.message}`);
+            log('Failed to create monitor for VPN plugin dir: %s'.format(e.message));
         }
 
         this._native.connect('new-request', this._newRequest.bind(this));
@@ -707,7 +711,7 @@ var NetworkAgent = class {
             body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
         default:
-            log(`Invalid connection type: ${connectionType}`);
+            log('Invalid connection type: %s'.format(connectionType));
             this._native.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
             return;
         }

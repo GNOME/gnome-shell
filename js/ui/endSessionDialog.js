@@ -299,7 +299,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 try {
                     this._updatesPermission = Polkit.Permission.new_finish(res);
                 } catch (e) {
-                    log(`No permission to trigger offline updates: ${e}`);
+                    log('No permission to trigger offline updates: %s'.format(e.toString()));
                 }
             });
     }
@@ -563,7 +563,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 if (!sessionId) {
                     this._loginManager.getCurrentSessionProxy(currentSessionProxy => {
                         sessionId = currentSessionProxy.Id;
-                        log(`endSessionDialog: No XDG_SESSION_ID, fetched from logind: ${sessionId}`);
+                        log('endSessionDialog: No XDG_SESSION_ID, fetched from logind: %d'.format(sessionId));
                     });
                 }
 

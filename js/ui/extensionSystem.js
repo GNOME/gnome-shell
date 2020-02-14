@@ -42,7 +42,7 @@ var ExtensionManager = class {
         try {
             disableFile.create(Gio.FileCreateFlags.REPLACE_DESTINATION, null);
         } catch (e) {
-            log(`Failed to create file ${disableFilename}: ${e.message}`);
+            log('Failed to create file %s: %s'.format(disableFilename, e.message));
         }
 
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
@@ -140,7 +140,7 @@ var ExtensionManager = class {
         if (extension.state != ExtensionState.DISABLED)
             return;
 
-        let stylesheetNames = [`${global.session_mode}.css`, 'stylesheet.css'];
+        let stylesheetNames = ['%s.css'.format(global.session_mode), 'stylesheet.css'];
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
         for (let i = 0; i < stylesheetNames.length; i++) {
             try {
@@ -236,7 +236,7 @@ var ExtensionManager = class {
         if (!extension)
             return;
 
-        let message = `${error}`;
+        let message = error.toString();
 
         extension.error = message;
         extension.state = ExtensionState.ERROR;
@@ -244,7 +244,7 @@ var ExtensionManager = class {
             extension.errors = [];
         extension.errors.push(message);
 
-        logError(error, `Extension ${uuid}`);
+        logError(error, 'Extension %s'.format(uuid));
         this.emit('extension-state-changed', extension);
     }
 
@@ -259,24 +259,24 @@ var ExtensionManager = class {
             if (metadataContents instanceof Uint8Array)
                 metadataContents = imports.byteArray.toString(metadataContents);
         } catch (e) {
-            throw new Error(`Failed to load metadata.json: ${e}`);
+            throw new Error('Failed to load metadata.json: %s'.format(e.toString()));
         }
         let meta;
         try {
             meta = JSON.parse(metadataContents);
         } catch (e) {
-            throw new Error(`Failed to parse metadata.json: ${e}`);
+            throw new Error('Failed to parse metadata.json: %s'.format(e.toString()));
         }
 
         let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
         for (let i = 0; i < requiredProperties.length; i++) {
             let prop = requiredProperties[i];
             if (!meta[prop])
-                throw new Error(`missing "${prop}" property in metadata.json`);
+                throw new Error('missing "%s" property in metadata.json'.format(prop));
         }
 
         if (uuid != meta.uuid)
-            throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
+            throw new Error('uuid "%s" from metadata.json does not match directory name "%s"'.format(meta.uuid, uuid));
 
         let extension = {
             metadata: meta,
@@ -496,17 +496,17 @@ var ExtensionManager = class {
     }
 
     _loadExtensions() {
-        global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`,
+        global.settings.connect('changed::%s'.format(ENABLED_EXTENSIONS_KEY),
             this._onEnabledExtensionsChanged.bind(this));
-        global.settings.connect(`changed::${DISABLED_EXTENSIONS_KEY}`,
+        global.settings.connect('changed::%s'.format(DISABLED_EXTENSIONS_KEY),
             this._onEnabledExtensionsChanged.bind(this));
-        global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`,
+        global.settings.connect('changed::%s'.format(DISABLE_USER_EXTENSIONS_KEY),
             this._onUserExtensionsEnabledChanged.bind(this));
-        global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`,
+        global.settings.connect('changed::%s'.format(EXTENSION_DISABLE_VERSION_CHECK_KEY),
             this._onVersionValidationChanged.bind(this));
-        global.settings.connect(`writable-changed::${ENABLED_EXTENSIONS_KEY}`,
+        global.settings.connect('writable-changed::%s'.format(ENABLED_EXTENSIONS_KEY),
             this._onSettingsWritableChanged.bind(this));
-        global.settings.connect(`writable-changed::${DISABLED_EXTENSIONS_KEY}`,
+        global.settings.connect('writable-changed::%s'.format(DISABLED_EXTENSIONS_KEY),
             this._onSettingsWritableChanged.bind(this));
 
         this._enabledExtensions = this._getEnabledExtensions();
@@ -519,7 +519,7 @@ var ExtensionManager = class {
             let uuid = info.get_name();
             let existing = this.lookup(uuid);
             if (existing) {
-                log(`Extension ${uuid} already installed in ${existing.path}. ${dir.get_path()} will not be loaded`);
+                log('Extension %s already installed in %s. %s will not be loaded'.format(uuid, existing.path, dir.get_path()));
                 return;
             }
 
@@ -530,7 +530,7 @@ var ExtensionManager = class {
             try {
                 extension = this.createExtensionObject(uuid, dir, type);
             } catch (e) {
-                logError(e, `Could not load extension ${uuid}`);
+                logError(e, 'Could not load extension %s'.format(uuid));
                 return;
             }
             this.loadExtension(extension);

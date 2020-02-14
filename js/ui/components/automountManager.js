@@ -113,7 +113,7 @@ var AutomountManager = class {
                     try {
                         drive.stop_finish(res);
                     } catch (e) {
-                        log(`Unable to stop the drive after drive-eject-button ${e.toString()}`);
+                        log('Unable to stop the drive after drive-eject-button %s'.format(e.toString()));
                     }
                 });
         } else if (drive.can_eject()) {
@@ -122,7 +122,7 @@ var AutomountManager = class {
                     try {
                         drive.eject_with_operation_finish(res);
                     } catch (e) {
-                        log(`Unable to eject the drive after drive-eject-button ${e.toString()}`);
+                        log('Unable to eject the drive after drive-eject-button %s'.format(e.toString()));
                     }
                 });
         }
@@ -210,7 +210,7 @@ var AutomountManager = class {
                 }
 
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
-                    log(`Unable to mount volume ${volume.get_name()}: ${e.toString()}`);
+                    log('Unable to mount volume %s: %s'.format(volume.get_name(), e.toString()));
                 this._closeOperation(volume);
             }
         }
