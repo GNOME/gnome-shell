@@ -21,7 +21,7 @@ const _leadingJunk = '[\\s`(\\[{\'\\"<\u00AB\u201C\u2018]';
 const _notTrailingJunk = '[^\\s`!()\\[\\]{};:\'\\".,<>?\u00AB\u00BB\u200E\u200F\u201C\u201D\u2018\u2019\u202A\u202C]';
 
 const _urlRegexp = new RegExp(
-    `(^|${_leadingJunk})` +
+    '(^|%s)'.format(_leadingJunk) +
     '(' +
         '(?:' +
             '(?:http|https|ftp)://' +             // scheme://
@@ -33,12 +33,12 @@ const _urlRegexp = new RegExp(
         '(?:' +                                   // one or more:
             '[^\\s()<>]+' +                       // run of non-space non-()
             '|' +                                 // or
-            `${_balancedParens}` +                // balanced parens
+            '%s'.format(_balancedParens) +        // balanced parens
         ')+' +
         '(?:' +                                   // end with:
-            `${_balancedParens}` +                // balanced parens
+            '%s'.format(_balancedParens) +        // balanced parens
             '|' +                                 // or
-            `${_notTrailingJunk}` +               // last non-junk char
+            '%s'.format(_notTrailingJunk) +       // last non-junk char
         ')' +
     ')', 'gi');
 
@@ -153,7 +153,7 @@ function trySpawnCommandLine(commandLine) {
     } catch (err) {
         // Replace "Error invoking GLib.shell_parse_argv: " with
         // something nicer
-        err.message = err.message.replace(/[^:]*: /, `${_("Could not parse command:")}\n`);
+        err.message = err.message.replace(/[^:]*: /, '%s\n'.format(_('Could not parse command:')));
         throw err;
     }
 

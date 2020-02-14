@@ -315,7 +315,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         let auth = unlocked && allowed;
         policy[0] = auth;
 
-        log(`thunderbolt: [${device.Name}] auto enrollment: ${auth ? 'yes' : 'no'} (allowed: ${allowed ? 'yes' : 'no'})`);
+        log('thunderbolt: [%s] auto enrollment: %s (allowed: %s)'.format(
+            device.Name, auth ? 'yes' : 'no', allowed ? 'yes' : 'no'));
 
         if (auth)
             return; /* we are done */

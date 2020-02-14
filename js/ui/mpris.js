@@ -147,7 +147,7 @@ var MprisPlayer = class MprisPlayer {
         // so prefer activating the app via .desktop file if possible
         let app = null;
         if (this._mprisProxy.DesktopEntry) {
-            let desktopId = `${this._mprisProxy.DesktopEntry}.desktop`;
+            let desktopId = '%s.desktop'.format(this._mprisProxy.DesktopEntry);
             app = Shell.AppSystem.get_default().lookup_app(desktopId);
         }
 
@@ -192,9 +192,9 @@ var MprisPlayer = class MprisPlayer {
         if (!Array.isArray(this._trackArtists) ||
             !this._trackArtists.every(artist => typeof artist === 'string')) {
             if (typeof this._trackArtists !== 'undefined') {
-                log(`Received faulty track artist metadata from ${
-                    this._busName}; expected an array of strings, got ${
-                    this._trackArtists} (${typeof this._trackArtists})`);
+                log(('Received faulty track artist metadata from %s; ' +
+                    'expected an array of strings, got %s (%s)').format(
+                    this._busName, this._trackArtists, typeof this._trackArtists));
             }
             this._trackArtists =  [_("Unknown artist")];
         }
@@ -202,9 +202,9 @@ var MprisPlayer = class MprisPlayer {
         this._trackTitle = metadata['xesam:title'];
         if (typeof this._trackTitle !== 'string') {
             if (typeof this._trackTitle !== 'undefined') {
-                log(`Received faulty track title metadata from ${
-                    this._busName}; expected a string, got ${
-                    this._trackTitle} (${typeof this._trackTitle})`);
+                log(('Received faulty track title metadata from %s; ' +
+                    'expected a string, got %s (%s)').format(
+                    this._busName, this._trackTitle, typeof this._trackTitle));
             }
             this._trackTitle = _("Unknown title");
         }
@@ -212,9 +212,9 @@ var MprisPlayer = class MprisPlayer {
         this._trackCoverUrl = metadata['mpris:artUrl'];
         if (typeof this._trackCoverUrl !== 'string') {
             if (typeof this._trackCoverUrl !== 'undefined') {
-                log(`Received faulty track cover art metadata from ${
-                    this._busName}; expected a string, got ${
-                    this._trackCoverUrl} (${typeof this._trackCoverUrl})`);
+                log(('Received faulty track cover art metadata from %s; ' +
+                    'expected a string, got %s (%s)').format(
+                    this._busName, this._trackCoverUrl, typeof this._trackCoverUrl));
             }
             this._trackCoverUrl = '';
         }

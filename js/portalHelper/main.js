@@ -23,7 +23,6 @@ const PortalHelperSecurityLevel = {
 };
 
 const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
-const CONNECTIVITY_CHECK_URI = `http://${CONNECTIVITY_CHECK_HOST}`;
 const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
 const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
@@ -103,7 +102,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._headerBar.show();
 
         if (!url) {
-            url = CONNECTIVITY_CHECK_URI;
+            url = 'http://%s'.format(CONNECTIVITY_CHECK_HOST);
             this._originalUrlWasGnome = true;
         } else {
             this._originalUrlWasGnome = false;

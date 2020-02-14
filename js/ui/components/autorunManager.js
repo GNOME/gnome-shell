@@ -66,7 +66,7 @@ function startAppForMount(app, mount) {
         retval = app.launch(files,
                             global.create_app_launch_context(0, -1));
     } catch (e) {
-        log(`Unable to launch the application ${app.get_name()}: ${e}`);
+        log('Unable to launch the application %s: %s'.format(app.get_name(), e.toString()));
     }
 
     return retval;
@@ -105,7 +105,7 @@ var ContentTypeDiscoverer = class {
         try {
             contentTypes = mount.guess_content_type_finish(res);
         } catch (e) {
-            log(`Unable to guess content types on added mount ${mount.get_name()}: ${e}`);
+            log('Unable to guess content types on added mount %s: %s'.format(mount.get_name(), e.toString()));
         }
 
         if (contentTypes.length) {

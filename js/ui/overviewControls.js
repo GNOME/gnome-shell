@@ -127,7 +127,7 @@ class SlidingControl extends St.Widget {
     }
 
     _getSlide() {
-        throw new GObject.NotImplementedError(`_getSlide in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('_getSlide in %s'.format(this.constructor.name));
     }
 
     _updateSlide() {

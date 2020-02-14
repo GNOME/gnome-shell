@@ -10,10 +10,9 @@ const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
-var REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
-var REPOSITORY_URL_DOWNLOAD = `${REPOSITORY_URL_BASE}/download-extension/%s.shell-extension.zip`;
-var REPOSITORY_URL_INFO     = `${REPOSITORY_URL_BASE}/extension-info/`;
-var REPOSITORY_URL_UPDATE   = `${REPOSITORY_URL_BASE}/update-info/`;
+var REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
+var REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';
+var REPOSITORY_URL_UPDATE   = 'https://extensions.gnome.org/update-info/';
 
 let _httpSession;
 
@@ -25,7 +24,7 @@ function installExtension(uuid, invocation) {
 
     _httpSession.queue_message(message, () => {
         if (message.status_code != Soup.KnownStatusCode.OK) {
-            Main.extensionManager.logExtensionError(uuid, `downloading info: ${message.status_code}`);
+            Main.extensionManager.logExtensionError(uuid, 'downloading info: %d'.format(message.status_code));
             invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
             return;
         }
@@ -34,7 +33,7 @@ function installExtension(uuid, invocation) {
         try {
             info = JSON.parse(message.response_body.data);
         } catch (e) {
-            Main.extensionManager.logExtensionError(uuid, `parsing info: ${e}`);
+            Main.extensionManager.logExtensionError(uuid, 'parsing info: %s'.format(e.toString()));
             invocation.return_dbus_error('org.gnome.Shell.ParseInfoError', e.toString());
             return;
         }
@@ -112,7 +111,7 @@ function downloadExtensionUpdate(uuid) {
         gotExtensionZipFile(session, message, uuid, dir, () => {
             Main.extensionManager.notifyExtensionUpdate(uuid);
         }, (code, msg) => {
-            log(`Error while downloading update for extension ${uuid}: ${code} (${msg})`);
+            log('Error while downloading update for extension %s: %s (%s)'.format(uuid, code, msg));
         });
     });
 }
@@ -133,7 +132,7 @@ function checkForUpdates() {
     let params = {
         shell_version: Config.PACKAGE_VERSION,
         installed: JSON.stringify(metadatas),
-        disable_version_validation: `${versionCheck}`,
+        disable_version_validation: versionCheck.toString(),
     };
 
     let url = REPOSITORY_URL_UPDATE;
@@ -195,8 +194,8 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         let dir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
         let invocation = this._invocation;
         function errback(code, msg) {
-            log(`Error while installing ${uuid}: ${code} (${msg})`);
-            invocation.return_dbus_error(`org.gnome.Shell.${code}`, msg || '');
+            log('Error while installing %s: %s (%s)'.format(uuid, code, msg));
+            invocation.return_dbus_error('org.gnome.Shell.%s'.format(code), msg || '');
         }
 
         function callback() {
@@ -204,7 +203,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                 let extension = Main.extensionManager.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 Main.extensionManager.loadExtension(extension);
                 if (!Main.extensionManager.enableExtension(uuid))
-                    throw new Error(`Cannot add ${uuid} to enabled extensions gsettings key`);
+                    throw new Error('Cannot add %s to enabled extensions gsettings key'.format(uuid));
             } catch (e) {
                 uninstallExtension(uuid);
                 errback('LoadExtensionError', e);

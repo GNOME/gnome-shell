@@ -18,7 +18,7 @@ var ELLIPSIS_CHAR = '\u2026';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-var NC_ = (context, str) => `${context}\u0004${str}`;
+var NC_ = (context, str) => '%s\u0004%s'.format(context, str);
 
 function sameYear(dateA, dateB) {
     return dateA.getYear() == dateB.getYear();
@@ -114,26 +114,26 @@ var EventSourceBase = GObject.registerClass({
     Signals: { 'changed': {} },
 }, class EventSourceBase extends GObject.Object {
     get isLoading() {
-        throw new GObject.NotImplementedError(`isLoading in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('isLoading in %s'.format(this.constructor.name));
     }
 
     get hasCalendars() {
-        throw new GObject.NotImplementedError(`hasCalendars in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('hasCalendars in %s'.format(this.constructor.name));
     }
 
     destroy() {
     }
 
     requestRange(_begin, _end) {
-        throw new GObject.NotImplementedError(`requestRange in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('requestRange in %s'.format(this.constructor.name));
     }
 
     getEvents(_begin, _end) {
-        throw new GObject.NotImplementedError(`getEvents in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('getEvents in %s'.format(this.constructor.name));
     }
 
     hasEvents(_day) {
-        throw new GObject.NotImplementedError(`hasEvents in ${this.constructor.name}`);
+        throw new GObject.NotImplementedError('hasEvents in %s'.format(this.constructor.name));
     }
 });
 
@@ -215,7 +215,7 @@ class DBusEventSource extends EventSourceBase {
                     // about the HasCalendars property and would cause an exception trying
                     // to read it)
                 } else {
-                    log(`Error loading calendars: ${e.message}`);
+                    log('Error loading calendars: %s'.format(e.message));
                     return;
                 }
             }
@@ -359,7 +359,7 @@ var Calendar = GObject.registerClass({
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
-        this._settings.connect(`changed::${SHOW_WEEKDATE_KEY}`, this._onSettingsChange.bind(this));
+        this._settings.connect('changed::%s'.format(SHOW_WEEKDATE_KEY), this._onSettingsChange.bind(this));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
         /**
@@ -626,13 +626,13 @@ var Calendar = GObject.registerClass({
 
             // Hack used in lieu of border-collapse - see gnome-shell.css
             if (row == 2)
-                styleClass = `calendar-day-top ${styleClass}`;
+                styleClass = 'calendar-day-top %s'.format(styleClass);
 
             let leftMost = rtl
                 ? iter.getDay() == (this._weekStart + 6) % 7
                 : iter.getDay() == this._weekStart;
             if (leftMost)
-                styleClass = `calendar-day-left ${styleClass}`;
+                styleClass = 'calendar-day-left %s'.format(styleClass);
 
             if (sameDay(now, iter))
                 styleClass += ' calendar-today';
@@ -738,15 +738,15 @@ class EventMessage extends MessageList.Message {
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
         if (this._event.date < periodBegin && !this._event.allDay) {
             if (rtl)
-                title = `${title}${ELLIPSIS_CHAR}`;
+                title = '%s%s'.format(title, ELLIPSIS_CHAR);
             else
-                title = `${ELLIPSIS_CHAR}${title}`;
+                title = '%s%s'.format(ELLIPSIS_CHAR, title);
         }
         if (this._event.end > periodEnd && !this._event.allDay) {
             if (rtl)
-                title = `${ELLIPSIS_CHAR}${title}`;
+                title = '%s%s'.format(ELLIPSIS_CHAR, title);
             else
-                title = `${title}${ELLIPSIS_CHAR}`;
+                title = '%s%s'.format(title, ELLIPSIS_CHAR);
         }
         return title;
     }
@@ -1204,7 +1204,7 @@ class CalendarMessageList extends St.Widget {
 
         for (let prop of ['visible', 'empty', 'can-clear']) {
             connectionsIds.push(
-                section.connect(`notify::${prop}`, this._sync.bind(this)));
+                section.connect('notify::%s'.format(prop), this._sync.bind(this)));
         }
         connectionsIds.push(section.connect('message-focused', (_s, messageActor) => {
             Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
