@@ -390,11 +390,12 @@ class UnlockDialogClock extends St.BoxLayout {
 
 var UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(stack, notifications) {
+    _init(stack, notifications, switchUserButton) {
         super._init();
 
         this._stack = stack;
         this._notifications = notifications;
+        this._switchUserButton = switchUserButton;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -445,6 +446,24 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         actorBox.y2 = stackY + stackHeight;
 
         this._stack.allocate(actorBox, flags);
+
+        // Switch User button
+        if (this._switchUserButton.visible) {
+            let [, , natWidth, natHeight] =
+                this._switchUserButton.get_preferred_size();
+
+            const textDirection = this._switchUserButton.get_text_direction();
+            if (textDirection === Clutter.TextDirection.RTL)
+                actorBox.x1 = box.x1 + natWidth;
+            else
+                actorBox.x1 = box.x2 - (natWidth * 2);
+
+            actorBox.y1 = box.y2 - (natHeight * 2);
+            actorBox.x2 = actorBox.x1 + natWidth;
+            actorBox.y2 = actorBox.y1 + natHeight;
+
+            this._switchUserButton.allocate(actorBox, flags);
+        }
     }
 });
 
@@ -536,14 +555,33 @@ var UnlockDialog = GObject.registerClass({
         this._notificationsBox = new NotificationsBox();
         this._notificationsBox.connect('wake-up-screen', () => this.emit('wake-up-screen'));
 
+        // Switch User button
+        let otherUserLabel = new St.Label({
+            text: _('Log in as another user'),
+            style_class: 'login-dialog-not-listed-label',
+        });
+        this._otherUserButton = new St.Button({
+            style_class: 'login-dialog-not-listed-button',
+            can_focus: true,
+            child: otherUserLabel,
+            reactive: true,
+        });
+        this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
+
+        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+        screenSaverSettings.bind('user-switch-enabled',
+            this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
+
         // Main Box
         let mainBox = new Clutter.Actor();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
+        mainBox.add_child(this._otherUserButton);
         mainBox.layout_manager = new UnlockDialogLayout(
             this._stack,
-            this._notificationsBox);
+            this._notificationsBox,
+            this._otherUserButton);
         this.add_child(mainBox);
 
         this._idleMonitor = Meta.IdleMonitor.get_core();
@@ -625,24 +663,6 @@ var UnlockDialog = GObject.registerClass({
 
         this._promptBox.add_child(this._authPrompt);
 
-        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-        if (screenSaverSettings.get_boolean('user-switch-enabled')) {
-            let otherUserLabel = new St.Label({
-                text: _('Log in as another user'),
-                style_class: 'login-dialog-not-listed-label',
-            });
-            this._otherUserButton = new St.Button({
-                style_class: 'login-dialog-not-listed-button',
-                can_focus: true,
-                child: otherUserLabel,
-                reactive: true,
-            });
-            this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
-            this._promptBox.add_child(this._otherUserButton);
-        } else {
-            this._otherUserButton = null;
-        }
-
         this._authPrompt.reset();
         this._updateSensitivity(true);
     }
@@ -658,20 +678,13 @@ var UnlockDialog = GObject.registerClass({
             this._authPrompt.destroy();
             this._authPrompt = null;
         }
-
-        if (this._otherUserButton) {
-            this._otherUserButton.destroy();
-            this._otherUserButton = null;
-        }
     }
 
     _updateSensitivity(sensitive) {
         this._authPrompt.updateSensitivity(sensitive);
 
-        if (this._otherUserButton) {
-            this._otherUserButton.reactive = sensitive;
-            this._otherUserButton.can_focus = sensitive;
-        }
+        this._otherUserButton.reactive = sensitive;
+        this._otherUserButton.can_focus = sensitive;
     }
 
     _showClock() {
