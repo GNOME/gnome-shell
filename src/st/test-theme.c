@@ -455,10 +455,10 @@ test_margin_shorthand (void)
 {
   test = "margin_shorthand";
 
-  assert_margin ("margin_shorthand1", margin_shorthand1, 1, 1, 1, 1);
-  assert_margin ("margin_shorthand2", margin_shorthand2, 1, 2, 1, 2);
-  assert_margin ("margin_shorthand3", margin_shorthand3, 1, 2, 3, 2);
-  assert_margin ("margin_shorthand4", margin_shorthand4, 1, 2, 3, 4);
+  assert_margin ("margin_shorthand1", margin_shorthand1, 5, 5, 5, 5);
+  assert_margin ("margin_shorthand2", margin_shorthand2, 5, 6, 5, 6);
+  assert_margin ("margin_shorthand3", margin_shorthand3, 5, 6, 7, 6);
+  assert_margin ("margin_shorthand4", margin_shorthand4, 5, 6, 7, 8);
 }
 
 static void
@@ -681,7 +681,7 @@ main (int argc, char **argv)
   text2 = st_theme_node_new  (context, group1, NULL,
                               CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group2", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group2", NULL, NULL, NULL);
   text3 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
                               "color: #0000ff; padding-bottom: 12px;");
