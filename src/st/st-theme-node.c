@@ -1896,26 +1896,30 @@ get_side (StSides *sides,
     }
 }
 
-double
-st_theme_node_get_padding (StThemeNode *node,
-                           StSide       side)
+static double
+get_side_from_node (StThemeNode *node,
+                    StSides     *sides,
+                    StSide       side)
 {
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
   g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
 
   _st_theme_node_ensure_geometry (node);
-  return get_side (&node->padding, side);
+  return get_side (sides, side);
+}
+
+double
+st_theme_node_get_padding (StThemeNode *node,
+                           StSide       side)
+{
+  return get_side_from_node (node, &node->padding, side);
 }
 
 double
 st_theme_node_get_margin (StThemeNode *node,
                           StSide side)
 {
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
-  g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
-
-  _st_theme_node_ensure_geometry (node);
-  return get_side (&node->margin, side);
+  return get_side_from_node (node, &node->margin, side);
 }
 
 /**
