@@ -978,39 +978,15 @@ do_border_radius (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
+      if (decl->value)
         {
-          do_border_radius_term (node, decl->value,       TRUE, TRUE, TRUE, TRUE); /* all corners */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_border_radius_term (node, decl->value,       TRUE,  FALSE,  TRUE,  FALSE);  /* topleft/bottomright */
-          do_border_radius_term (node, decl->value->next, FALSE,  TRUE,   FALSE, TRUE);  /* topright/bottomleft */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_border_radius_term (node, decl->value,             TRUE,  FALSE, FALSE, FALSE); /* topleft */
-          do_border_radius_term (node, decl->value->next,       FALSE, TRUE,  FALSE, TRUE);  /* topright/bottomleft */
-          do_border_radius_term (node, decl->value->next->next, FALSE, FALSE, TRUE,  FALSE);  /* bottomright */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_border_radius_term (node, decl->value,                   TRUE,  FALSE, FALSE, FALSE); /* topleft */
-          do_border_radius_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* topright */
-          do_border_radius_term (node, decl->value->next->next,       FALSE, FALSE, TRUE,  FALSE); /* bottomright */
-          do_border_radius_term (node, decl->value->next->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottomleft */
-        }
-      else
-        {
-          g_warning ("Too many values for border-radius property");
-          return;
+          StCorners corners;
+
+          if (stylish_parse_corners_shorthand (decl->value, normalize_default (node), &corners)
+              == VALUE_FOUND)
+            {
+              node->border_radius = corners;
+            }
         }
     }
   else
