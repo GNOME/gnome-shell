@@ -83,6 +83,22 @@ stage {
     margin: 5px 6px 7px 8px;
 }
 
+#border_radius_shorthand1 {
+    border-radius: 1px;
+}
+
+#border_radius_shorthand2 {
+    border-radius: 1px 2px;
+}
+
+#border_radius_shorthand3 {
+    border-radius: 1px 2px 3px;
+}
+
+#border_radius_shorthand4 {
+    border-radius: 1px 2px 3px 4px;
+}
+
 .special-text {
     font-size: 24pt;
     font-style: italic;
