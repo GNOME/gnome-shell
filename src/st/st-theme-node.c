@@ -1872,6 +1872,30 @@ st_theme_node_get_border_color (StThemeNode  *node,
   *color = node->border_color[side];
 }
 
+static double
+get_side (StSides *sides,
+          StSide   side)
+{
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      return sides->top;
+
+    case ST_SIDE_RIGHT:
+      return sides->right;
+
+    case ST_SIDE_BOTTOM:
+      return sides->bottom;
+
+    case ST_SIDE_LEFT:
+      return sides->left;
+
+    default:
+      g_assert_not_reached ();
+      return 0.0;
+    }
+}
+
 double
 st_theme_node_get_padding (StThemeNode *node,
                            StSide       side)
@@ -1880,25 +1904,7 @@ st_theme_node_get_padding (StThemeNode *node,
   g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
 
   _st_theme_node_ensure_geometry (node);
-
-  switch (side)
-    {
-    case ST_SIDE_TOP:
-      return node->padding.top;
-
-    case ST_SIDE_RIGHT:
-      return node->padding.right;
-
-    case ST_SIDE_BOTTOM:
-      return node->padding.bottom;
-
-    case ST_SIDE_LEFT:
-      return node->padding.left;
-
-    default:
-      g_assert_not_reached ();
-      return 0.0;
-    }
+  return get_side (&node->padding, side);
 }
 
 double
@@ -1909,25 +1915,7 @@ st_theme_node_get_margin (StThemeNode *node,
   g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
 
   _st_theme_node_ensure_geometry (node);
-
-  switch (side)
-    {
-    case ST_SIDE_TOP:
-      return node->margin.top;
-
-    case ST_SIDE_RIGHT:
-      return node->margin.right;
-
-    case ST_SIDE_BOTTOM:
-      return node->margin.bottom;
-
-    case ST_SIDE_LEFT:
-      return node->margin.left;
-
-    default:
-      g_assert_not_reached ();
-      return 0.0;
-    }
+  return get_side (&node->margin, side);
 }
 
 /**
