@@ -1222,21 +1222,23 @@ get_side_longhand (StThemeNode *node,
 }
 
 static void
-do_padding_property (StThemeNode   *node,
-                     CRDeclaration *decl)
+do_side_property (StThemeNode   *node,
+                  CRDeclaration *decl,
+                  const char    *prefix,
+                  StSides       *out_sides)
 {
-  const char *property_name = cr_declaration_name (decl) + 7; /* Skip 'padding' */
+  const char *property_name = cr_declaration_name (decl) + strlen (prefix); /* Skip prefix */
 
   if (strcmp (property_name, "") == 0)
     {
       if (decl->value)
         {
-          StSides padding;
+          StSides sides;
 
-          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &padding)
+          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &sides)
               == VALUE_FOUND)
             {
-              node->padding = padding;
+              *out_sides = sides;
             }
         }
     }
@@ -1246,48 +1248,13 @@ do_padding_property (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-left") == 0)
-        get_side_longhand (node, decl->value, &node->padding.left);
+        get_side_longhand (node, decl->value, &out_sides->left);
       else if (strcmp (property_name, "-right") == 0)
-        get_side_longhand (node, decl->value, &node->padding.right);
+        get_side_longhand (node, decl->value, &out_sides->right);
       else if (strcmp (property_name, "-top") == 0)
-        get_side_longhand (node, decl->value, &node->padding.top);
+        get_side_longhand (node, decl->value, &out_sides->top);
       else if (strcmp (property_name, "-bottom") == 0)
-        get_side_longhand (node, decl->value, &node->padding.bottom);
-    }
-}
-
-static void
-do_margin_property (StThemeNode   *node,
-                    CRDeclaration *decl)
-{
-  const char *property_name = cr_declaration_name (decl) + 6; /* Skip 'margin' */
-
-  if (strcmp (property_name, "") == 0)
-    {
-      if (decl->value)
-        {
-          StSides margin;
-
-          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &margin)
-              == VALUE_FOUND)
-            {
-              node->margin = margin;
-            }
-        }
-    }
-  else
-    {
-      if (decl->value == NULL || decl->value->next != NULL)
-        return;
-
-      if (strcmp (property_name, "-left") == 0)
-        get_side_longhand (node, decl->value, &node->margin.left);
-      else if (strcmp (property_name, "-right") == 0)
-        get_side_longhand (node, decl->value, &node->margin.right);
-      else if (strcmp (property_name, "-top") == 0)
-        get_side_longhand (node, decl->value, &node->margin.top);
-      else if (strcmp (property_name, "-bottom") == 0)
-        get_side_longhand (node, decl->value, &node->margin.bottom);
+        get_side_longhand (node, decl->value, &out_sides->bottom);
     }
 }
 
@@ -1346,9 +1313,9 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       else if (g_str_has_prefix (property_name, "outline"))
         do_outline_property (node, decl);
       else if (g_str_has_prefix (property_name, "padding"))
-        do_padding_property (node, decl);
+        do_side_property (node, decl, "padding", &node->padding);
       else if (g_str_has_prefix (property_name, "margin"))
-        do_margin_property (node, decl);
+        do_side_property (node, decl, "margin", &node->margin);
       else if (strcmp (property_name, "width") == 0)
         do_size_property (node, decl, &width);
       else if (strcmp (property_name, "height") == 0)
