@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-02-09 23:24+0100\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"POT-Creation-Date: 2020-02-12 19:34+0000\n"
+"PO-Revision-Date: 2020-02-14 21:09+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -416,11 +416,11 @@ msgid ""
 "to enable it again"
 msgstr "Se quita a extensión debe descargala se quere activala de novo"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -550,44 +550,26 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Saír da sesión…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "Seguinte"
-
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
-msgid "Unlock"
-msgstr "Desbloquear"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "Iniciar sesión"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Escolla unha sesión"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Nome de usuario: "
+#: js/gdm/loginDialog.js:917
+msgid "Username…"
+msgstr "Nome de usuario…"
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1252
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -1112,6 +1094,14 @@ msgstr "Contrasinal: "
 #: js/ui/components/networkAgent.js:207
 msgid "Key: "
 msgstr "Chave: "
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
+#: js/ui/components/networkAgent.js:275
+msgid "Username: "
+msgstr "Nome de usuario: "
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
 msgid "Private key password: "
@@ -1713,31 +1703,7 @@ msgstr "Reiniciar non está dispoñíbel en Wayland"
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%A, %d de %B"
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d mensaxe nova"
-msgstr[1] "%d mensaxes novas"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d notificación nova"
-msgstr[1] "%d notificacións novas"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "Bloquear"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a pantalla"
 
@@ -1748,11 +1714,11 @@ msgstr "GNOME precisa bloquear a pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "Non foi posíbel bloquear"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "Unha aplicación impediu o bloqueo"
 
@@ -1819,6 +1785,10 @@ msgstr "Escriba o número PIM…"
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
 msgstr "Lembrar contrasinal"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Desbloquear"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -2253,6 +2223,10 @@ msgstr "Desactivar"
 msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Bloquear"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Apagar / Saír da sesión"
@@ -2344,11 +2318,7 @@ msgstr "Só a externa"
 msgid "Built-in Only"
 msgstr "Só a interna"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "Iniciar sesión como outro usuario"
-
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:459
 msgid "Unlock Window"
 msgstr "Desbloquear xanela"
 
@@ -2576,7 +2546,7 @@ msgid "Create a new extension"
 msgstr "Crear unha nova extensión"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Argumentos descoñecidos"
 
@@ -2634,31 +2604,35 @@ msgstr "Non se especificou ningún paquete"
 msgid "More than one extension bundle specified"
 msgstr "Especificouse máis dun paquete de extensión"
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "Mostra as extensións instaladas polo usuario"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "Mostra as extensións instaladas no sistema"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "Mostra as extensións activadas"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "Mostra as extensións desactivadas"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "Mostra as extensións con preferencias"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show extensions with updates"
+msgstr "Mostra as extensións con actualizacións"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "Imprime os detalles da extensión"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "Mostra as extensións instaladas"
 
@@ -2840,6 +2814,29 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Next"
+#~ msgstr "Seguinte"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Iniciar sesión"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %d de %B"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d mensaxe nova"
+#~ msgstr[1] "%d mensaxes novas"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d notificación nova"
+#~ msgstr[1] "%d notificacións novas"
+
+#~ msgid "Log in as another user"
+#~ msgstr "Iniciar sesión como outro usuario"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Explorar en Software"
