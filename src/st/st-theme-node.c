@@ -1231,9 +1231,9 @@ do_padding_property (StThemeNode   *node,
     {
       if (decl->value)
         {
-          StPadding padding;
+          StSides padding;
 
-          if (stylish_parse_padding_shorthand (decl->value, normalize_default (node), &padding)
+          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &padding)
               == VALUE_FOUND)
             {
               node->padding = padding;
