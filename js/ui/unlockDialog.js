@@ -556,15 +556,13 @@ var UnlockDialog = GObject.registerClass({
         this._notificationsBox.connect('wake-up-screen', () => this.emit('wake-up-screen'));
 
         // Switch User button
-        let otherUserLabel = new St.Label({
-            text: _('Log in as another user'),
-            style_class: 'login-dialog-not-listed-label',
-        });
         this._otherUserButton = new St.Button({
-            style_class: 'login-dialog-not-listed-button',
+            style_class: 'modal-dialog-button button switch-user-button',
             can_focus: true,
-            child: otherUserLabel,
             reactive: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+            child: new St.Icon({ icon_name: 'system-users-symbolic' }),
         });
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
 
