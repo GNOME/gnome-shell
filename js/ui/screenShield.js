@@ -281,11 +281,7 @@ var ScreenShield = class {
         // This function gets called here when the user becomes active
         // after we activated a lightbox
         // There are two possibilities here:
-        // - we're called when already locked/active; isLocked or isActive is true,
-        //   we just go back to the lock screen curtain
-        //   (isActive == isLocked == true: normal case
-        //    isActive == false, isLocked == true: during the fade for manual locking
-        //    isActive == true, isLocked == false: after session idle, before lock-delay)
+        // - we're called when already locked; we just go back to the lock screen curtain
         // - we're called because the session is IDLE but before the lightbox
         //   is fully shown; at this point isActive is false, so we just hide
         //   the lightbox, reset the activationTime and go back to the unlocked
@@ -299,7 +295,7 @@ var ScreenShield = class {
         this.idleMonitor.remove_watch(this._becameActiveId);
         this._becameActiveId = 0;
 
-        if (this._isActive || this._isLocked) {
+        if (this._isLocked) {
             this._longLightbox.lightOff();
             this._shortLightbox.lightOff();
         } else {
