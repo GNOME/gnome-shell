@@ -566,9 +566,14 @@ var UnlockDialog = GObject.registerClass({
         });
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
 
-        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-        screenSaverSettings.bind('user-switch-enabled',
-            this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
+        this._promptBox.connect('notify::visible',
+            this._updateOtherUserButton.bind(this));
+
+        this._screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+        this._screenSaverSettings.connect('changed::user-switch-enabled',
+            this._updateOtherUserButton.bind(this));
+
+        this._updateOtherUserButton();
 
         // Main Box
         let mainBox = new Clutter.Actor();
@@ -647,6 +652,14 @@ var UnlockDialog = GObject.registerClass({
 
         for (let i = 0; i < Main.layoutManager.monitors.length; i++)
             this._createBackground(i);
+    }
+
+    _updateOtherUserButton() {
+        const promptVisible = this._promptBox.visible;
+        const userSwitchEnabled =
+            this._screenSaverSettings.get_boolean('user-switch-enabled');
+
+        this._otherUserButton.visible = promptVisible && userSwitchEnabled;
     }
 
     _ensureAuthPrompt() {
