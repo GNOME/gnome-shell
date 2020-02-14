@@ -556,14 +556,26 @@ var IconGrid = GObject.registerClass({
         }, Infinity);
         let normalization = maxDist - minDist;
 
-        for (let index = 0; index < actors.length; index++) {
-            let actor = actors[index];
+        actors.forEach(actor => {
+            actor.clone = new Clutter.Clone({ source: actor });
+            this._clonesAnimating.push(actor.clone);
+            Main.uiGroup.add_actor(actor.clone);
+        });
+
+        /*
+         * ^
+         * | These need to be separate loops because Main.uiGroup.add_actor
+         * | is excessively slow if done inside the below loop and we want the
+         * | below loop to complete within one frame interval (#2065, !1002).
+         * v
+         */
+
+        actors.forEach(actor => {
             actor.opacity = 0;
             actor.reactive = false;
 
-            let actorClone = new Clutter.Clone({ source: actor });
-            this._clonesAnimating.push(actorClone);
-            Main.uiGroup.add_actor(actorClone);
+            let actorClone = actor.clone;
+            actor.clone = null;
 
             let [width, height] = this._getAllocatedChildSizeAndSpacing(actor);
             actorClone.set_size(width, height);
@@ -631,7 +643,7 @@ var IconGrid = GObject.registerClass({
 
             actorClone.ease(movementParams);
             actorClone.ease(fadeParams);
-        }
+        });
     }
 
     _getAllocatedChildSizeAndSpacing(child) {
