@@ -67,6 +67,22 @@ stage {
     padding: 1px 2px 3px 4px;
 }
 
+#margin_shorthand1 {
+    margin: 1px;
+}
+
+#margin_shorthand2 {
+    margin: 1px 2px;
+}
+
+#margin_shorthand3 {
+    margin: 1px 2px 3px;
+}
+
+#margin_shorthand4 {
+    margin: 1px 2px 3px 4px;
+}
+
 .special-text {
     font-size: 24pt;
     font-style: italic;
@@ -121,7 +137,6 @@ stage > #text2 {
 #group2 {
     background-image: url('other-background.png');
     padding: 1px 2px 3px 4px;
-    margin: 1px 2px 3px 4px;
 
     border: 2px solid #000000;
     border-bottom: 5px solid #0000ff;
@@ -138,16 +153,4 @@ ClutterText:visited, StLabel:visited {
 
 StLabel:boxed {
     border: 1px;
-}
-
-#group4 {
-    margin: 1px 2px 3px;
-}
-
-#group5 {
-    margin: 1px 2px;
-}
-
-#group6 {
-    padding: 5px;
 }
