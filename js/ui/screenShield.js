@@ -431,7 +431,7 @@ var ScreenShield = class {
                 },
             });
         } else {
-            this._lockScreenGroup.translation_y = 0;
+            this._lockDialogGroup.translation_y = 0;
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
