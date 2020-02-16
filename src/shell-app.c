@@ -961,6 +961,13 @@ shell_app_sync_running_state (ShellApp *app)
     }
 }
 
+static void
+shell_app_count_interesting_windows (MetaWindow *window,
+                                     ShellApp   *app)
+{
+  if (!meta_window_is_skip_taskbar (window))
+    app->running_state->interesting_windows++;
+}
 
 static void
 shell_app_on_skip_taskbar_changed (MetaWindow *window,
@@ -969,15 +976,10 @@ shell_app_on_skip_taskbar_changed (MetaWindow *window,
 {
   g_assert (app->running_state != NULL);
 
-  /* we rely on MetaWindow:skip-taskbar only being notified
-   * when it actually changes; when that assumption breaks,
-   * we'll have to track the "interesting" windows themselves
-   */
-  if (meta_window_is_skip_taskbar (window))
-    app->running_state->interesting_windows--;
-  else
-    app->running_state->interesting_windows++;
-
+  app->running_state->interesting_windows = 0;
+  g_slist_foreach (app->running_state->windows,
+                   (GFunc) shell_app_count_interesting_windows,
+                   app);
   shell_app_sync_running_state (app);
 }
 
