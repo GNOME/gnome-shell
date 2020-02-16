@@ -1308,7 +1308,7 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
         this.add_actor(this._scrollView);
 
         let scrollableContainer = new St.BoxLayout({
