@@ -36,8 +36,8 @@ $app_grid_fg_color: #fff;
 
 /* App Folders */
 .app-folder {
-  .overview-icon {
-  }
+  background-color: transparentize($osd_bg_color, 0.8);
+  border-radius: 8px;
 }
 
 // expanded folder
