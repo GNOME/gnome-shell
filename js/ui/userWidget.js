@@ -83,13 +83,13 @@ class Avatar extends St.Bin {
                 iconFile = null;
         }
 
+        let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        this.set_size(
+            this._iconSize * scaleFactor,
+            this._iconSize * scaleFactor);
+
         if (iconFile) {
             this.child = null;
-
-            let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-            this.set_size(
-                this._iconSize * scaleFactor,
-                this._iconSize * scaleFactor);
             this.style = `
                 background-image: url("${iconFile}");
                 background-size: cover;`;
