@@ -1,3 +1,13 @@
+3.34.4
+======
+* Switch screen-recorder back to VP8 [Björn; #256]
+
+Contributors:
+  Björn Daase
+
+Translators:
+  Jor Teron [mjw], Dušan Kazik [sk]
+
 3.34.3
 ======
 * polkitAgent: Fix confirming via keyboard when password-less [Jonas; #2066]
