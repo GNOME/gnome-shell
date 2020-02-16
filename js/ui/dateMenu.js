@@ -630,7 +630,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
                                                     x_expand: true,
                                                     overlay_scrollbars: true });
-        this._displaysSection.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this._displaysSection.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
         vbox.add_actor(this._displaysSection);
 
         let displaysBox = new St.BoxLayout({ vertical: true,
