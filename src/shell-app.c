@@ -967,17 +967,15 @@ shell_app_on_skip_taskbar_changed (MetaWindow *window,
                                    GParamSpec *pspec,
                                    ShellApp   *app)
 {
+  GSList *wlist;
+
   g_assert (app->running_state != NULL);
 
-  /* we rely on MetaWindow:skip-taskbar only being notified
-   * when it actually changes; when that assumption breaks,
-   * we'll have to track the "interesting" windows themselves
-   */
-  if (meta_window_is_skip_taskbar (window))
-    app->running_state->interesting_windows--;
-  else
-    app->running_state->interesting_windows++;
-
+  app->running_state->interesting_windows = 0;
+  for(wlist = app->running_state->windows; wlist != NULL; wlist = wlist->next) {
+    if (!meta_window_is_skip_taskbar (META_WINDOW (wlist->data)))
+      app->running_state->interesting_windows++;
+  }
   shell_app_sync_running_state (app);
 }
 
