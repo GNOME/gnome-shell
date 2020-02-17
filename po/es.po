@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-12 19:34+0000\n"
-"PO-Revision-Date: 2020-02-13 08:53+0100\n"
+"POT-Creation-Date: 2020-02-17 11:08+0000\n"
+"PO-Revision-Date: 2020-02-17 14:55+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -559,6 +559,15 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Cerrar la sesión…"
 
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:259 js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:289 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "Contraseña"
+
 #: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Elegir sesión"
@@ -574,12 +583,16 @@ msgstr "¿No está en la lista?"
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
 
-#: js/gdm/loginDialog.js:917
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
 #| msgid "Username: "
-msgid "Username…"
-msgstr "Nombre de usuario…"
+msgid "Username"
+msgstr "Nombre de usuario"
 
-#: js/gdm/loginDialog.js:1252
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -1092,37 +1105,26 @@ msgstr ""
 msgid "Connect"
 msgstr "Conectar"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "Contraseña: "
-
 #. static WEP
 #: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "Clave:"
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Nombre de usuario:"
+#| msgid "Key: "
+msgid "Key"
+msgstr "Clave"
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "Contraseña de la clave privada:"
+#| msgid "Private key password: "
+msgid "Private key password"
+msgstr "Contraseña de la clave privada"
 
 #: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "Identidad:"
+#| msgid "Identity: "
+msgid "Identity"
+msgstr "Identidad"
 
 #: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "Servicio:"
+#| msgid "Service: "
+msgid "Service"
+msgstr "Servicio"
 
 #: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
 #: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
@@ -1143,8 +1145,9 @@ msgid "Wired 802.1X authentication"
 msgstr "Autenticación 802.1X cableada"
 
 #: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "Nombre de la red: "
+#| msgid "Network name: "
+msgid "Network name"
+msgstr "Nombre de la red"
 
 #: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "DSL authentication"
@@ -1159,8 +1162,9 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Se necesita un código PIN para el dispositivo de banda ancha móvil"
 
 #: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "PIN: "
+#| msgid "PIN: "
+msgid "PIN"
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
 #: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
@@ -1196,10 +1200,6 @@ msgstr "Autenticar"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Eso no ha funcionado. Inténtelo de nuevo."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "Introduzca la contraseña…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1629,8 +1629,9 @@ msgstr "Vista general"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "Escribir para buscar…"
+#| msgid "Type to search…"
+msgid "Type to search"
+msgstr "Escribir para buscar"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1787,8 +1788,9 @@ msgstr ""
 "%s</i> en su lugar."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "Introduzca el número PIM…"
+#| msgid "Enter PIM Number…"
+msgid "PIM Number"
+msgstr "Número PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2326,7 +2328,7 @@ msgstr "Sólo la externa"
 msgid "Built-in Only"
 msgstr "Sólo la integrada"
 
-#: js/ui/unlockDialog.js:459
+#: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
@@ -2822,6 +2824,16 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
+#~| msgid "Username: "
+#~ msgid "Username…"
+#~ msgstr "Nombre de usuario…"
+
+#~ msgid "Password: "
+#~ msgstr "Contraseña: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Introduzca la contraseña…"
+
 #~ msgid "Next"
 #~ msgstr "Siguiente"
 
@@ -2865,9 +2877,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Mobile broadband network password"
 #~ msgstr "Contraseña de la red de banda ancha móvil"
-
-#~ msgid "Password"
-#~ msgstr "Contraseña"
 
 #~ msgctxt "search-result"
 #~ msgid "Lock Orientation"
