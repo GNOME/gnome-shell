@@ -19,12 +19,7 @@
   }
 }
 
-.mount-dialog-subject {
-  @include fontsize($base_font_size + 3);
-}
-
 /* End Session Dialog */
-
 .end-session-dialog {
   width: 30em;
 
@@ -170,9 +165,4 @@
 
 .audio-selection-device-icon {
   icon-size: $base_icon_size * 4;
-}
-
-/* Access Dialog */
-.access-dialog {
-  spacing: 30px;
 }
